@@ -1,0 +1,240 @@
+<!--
+  One template per kind of setting row (ViewModels/SettingItems.cs). Shared by Settings, Admin and the dialog host, so a
+  row looks and behaves the same everywhere. Theme styles are DynamicResource: the views load before they join the pane.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:Formcraft.Shell.Controls"
+                    xmlns:vm="clr-namespace:Formcraft.Shell.ViewModels">
+  <BooleanToVisibilityConverter x:Key="Vis"/>
+  <c:UpperCaseConverter x:Key="Upper"/>
+
+  <!-- Label above, hint below: shared by most rows -->
+  <DataTemplate x:Key="Hint">
+    <TextBlock Text="{Binding Hint}" Style="{DynamicResource FmcText.Hint}" Margin="0,3,0,0" Visibility="{Binding HasHint, Converter={StaticResource Vis}}"/>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:ReadOnlySetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}"/>
+      <TextBox x:Name="Box" Text="{Binding Value, Mode=OneWay}" Style="{DynamicResource FmcReadOnly}" FontFamily="{DynamicResource Fmc.Font}" FontSize="12"
+               AutomationProperties.Name="{Binding Label}" TextWrapping="Wrap"/>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Mono}" Value="True">
+        <Setter TargetName="Box" Property="FontFamily" Value="{DynamicResource Fmc.Mono}"/>
+        <Setter TargetName="Box" Property="FontSize" Value="11.5"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:ChoiceSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}" Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
+      <ListBox Style="{DynamicResource FmcSegmented}" ItemsSource="{Binding Options}" SelectedItem="{Binding Selected}"
+               AutomationProperties.Name="{Binding Label}" Visibility="{Binding IsSegmented, Converter={StaticResource Vis}}"/>
+      <ComboBox Style="{DynamicResource FmcComboBox}" ItemsSource="{Binding Options}" SelectedItem="{Binding Selected}"
+                AutomationProperties.Name="{Binding Label}" Visibility="{Binding IsDropdown, Converter={StaticResource Vis}}"/>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:ToggleSetting}">
+    <StackPanel Margin="0,0,0,8">
+      <CheckBox Content="{Binding Label}" IsChecked="{Binding IsOn}" Style="{DynamicResource FmcToggle}"
+                c:Fmc.Locked="{Binding Locked}" ToolTip="{Binding LockedWhy}"/>
+      <TextBlock Text="{Binding Hint}" Style="{DynamicResource FmcText.Hint}" Margin="48,0,0,0" Visibility="{Binding HasHint, Converter={StaticResource Vis}}"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:MultiSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}"/>
+      <ItemsControl ItemsSource="{Binding Options}" Focusable="False" AutomationProperties.Name="{Binding Label}"
+                    Visibility="{Binding AsChips, Converter={StaticResource Vis}}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <ToggleButton Content="{Binding Name}" IsChecked="{Binding IsOn}" Style="{DynamicResource FmcChipToggle}" Margin="0,0,4,4"
+                          AutomationProperties.Name="{Binding Name}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ItemsControl ItemsSource="{Binding Options}" Focusable="False" AutomationProperties.Name="{Binding Label}"
+                    Visibility="{Binding AsChecks, Converter={StaticResource Vis}}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <c:FmcCheckRow Content="{Binding Name}" IsChecked="{Binding IsOn}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:PartsSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}"/>
+      <ItemsControl ItemsSource="{Binding Parts.Switches}" Focusable="False" AutomationProperties.Name="Show these parts">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <ToggleButton Content="{Binding Name}" IsChecked="{Binding IsOn}" Style="{DynamicResource FmcChipToggle}" Margin="0,0,4,4"
+                          AutomationProperties.Name="{Binding Name}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:NoteSetting}">
+    <Border x:Name="Note" CornerRadius="4" Padding="8,6" Margin="0,0,0,10" Background="{DynamicResource Fmc.Chip.InfoBg}">
+      <TextBlock x:Name="Text" Text="{Binding Text}" FontSize="11.5" TextWrapping="Wrap" Foreground="{DynamicResource Fmc.Chip.InfoFg}"/>
+    </Border>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Kind}" Value="Warn">
+        <Setter TargetName="Note" Property="Background" Value="{DynamicResource Fmc.Chip.WarnBg}"/>
+        <Setter TargetName="Text" Property="Foreground" Value="{DynamicResource Fmc.Chip.WarnFg}"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Kind}" Value="Good">
+        <Setter TargetName="Note" Property="Background" Value="{DynamicResource Fmc.Chip.GoodBg}"/>
+        <Setter TargetName="Text" Property="Foreground" Value="{DynamicResource Fmc.Chip.GoodFg}"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:WorksWithSetting}">
+    <ItemsControl ItemsSource="{Binding Rows}" Focusable="False" Margin="0,0,0,8">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <c:FmcCheckRow x:Name="Row" Content="{Binding Text}" IsChecked="True" Status="{Binding Status}" StatusKind="{Binding Kind}"
+                         IsHitTestVisible="False" Focusable="False"/>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Kind}" Value="Grey">
+              <Setter TargetName="Row" Property="IsChecked" Value="False"/>
+            </DataTrigger>
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:ButtonsSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}" Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
+      <ItemsControl ItemsSource="{Binding Buttons}" Focusable="False">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button x:Name="B" Content="{Binding Label}" Command="{Binding Command}" Margin="0,0,6,6" c:Fmc.StyleKey="FmcButton.Secondary"/>
+            <DataTemplate.Triggers>
+              <DataTrigger Binding="{Binding Primary}" Value="True">
+                <Setter TargetName="B" Property="c:Fmc.StyleKey" Value="FmcButton.Primary"/>
+              </DataTrigger>
+            </DataTemplate.Triggers>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:ConsiderationsSetting}">
+    <StackPanel Margin="0,0,0,6">
+      <TextBlock Text="{Binding Hint}" Style="{DynamicResource FmcText.Hint}" Margin="0,0,0,6"/>
+      <ComboBox Style="{DynamicResource FmcComboBox}" ItemsSource="{Binding Saved.Options}" SelectedItem="{Binding Saved.Selected}"
+                AutomationProperties.Name="Saved considerations" Margin="0,0,0,6"/>
+      <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource FmcTextBox}" AcceptsReturn="True" TextWrapping="Wrap"
+               MinHeight="64" VerticalContentAlignment="Top" Padding="6,5" AutomationProperties.Name="Author's considerations"
+               c:Fmc.Placeholder="e.g. 'This client prints everything A3; keep Formcraft Orange off their sheets.'"/>
+      <WrapPanel Margin="0,6,0,0">
+        <Button Content="Save as…" Style="{DynamicResource FmcButton.Secondary}" Command="{Binding SaveAsCommand}" Margin="0,0,6,0"/>
+        <Button Content="Save" Style="{DynamicResource FmcButton.Primary}" Command="{Binding SaveCommand}"/>
+      </WrapPanel>
+    </StackPanel>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type vm:TextSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}" Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
+      <TextBox x:Name="Box" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource FmcTextBox}"
+               c:Fmc.Placeholder="{Binding Placeholder}" AutomationProperties.Name="{Binding Label}"/>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Mono}" Value="True">
+        <Setter TargetName="Box" Property="FontFamily" Value="{DynamicResource Fmc.Mono}"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:TableSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}" Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
+      <Border BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="1" CornerRadius="4">
+        <StackPanel>
+          <ItemsControl ItemsSource="{Binding Columns}" Focusable="False" Background="{DynamicResource Fmc.HeaderBrush}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource Upper}}" FontSize="10" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="6,5" TextTrimming="CharacterEllipsis"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <ListBox x:Name="Rows" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}" BorderThickness="0" Background="Transparent"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                   AutomationProperties.Name="{Binding Label}" IsHitTestVisible="{Binding Selectable}">
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource Fmc.FocusVisual}"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                      <Border x:Name="Bd" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0" Background="Transparent">
+                        <ContentPresenter/>
+                      </Border>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                          <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.HoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                          <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.SelectedBrush}"/>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <ItemsControl ItemsSource="{Binding Cells}" Focusable="False">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}" FontSize="11.5" Foreground="{DynamicResource Fmc.InkBrush}" Margin="6,6" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </StackPanel>
+      </Border>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
+</ResourceDictionary>

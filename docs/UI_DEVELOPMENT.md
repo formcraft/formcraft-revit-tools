@@ -71,7 +71,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: a new PC goes from sign-in to the main pane in four steps; every check line matches the board.
 - Test: P.
 
-### [~] U06 Settings: Account, General, Manage, Flow, Model, Build
+### [x] U06 Settings: Account, General, Manage, Flow, Model, Build
 - Boards: `account/PaneAccount`, `core/PaneSettings`, `*/PaneSettings*`
 - Files: `Views/SettingsView.xaml`, `ViewModels/SettingsViewModel.cs` (the catalogue of every tab) and `SettingItems.cs`;
   the store is `IUserSettings` / `JsonUserSettings` (U03, U05)
@@ -80,9 +80,10 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: every control on the six boards exists, saves and reloads.
 - Test: P, unit tests for the store.
 
-### [ ] U07 Admin: roles, permissions, licences and seats (UI on mocks)
+### [~] U07 Admin: roles, permissions, licences and seats (UI on mocks)
 - Boards: `core/PaneAdmin`, `account/PaneSeats`
-- Files: `Views/Admin/*`, `Services/IAdminService.cs` + mock
+- Files: `Views/AdminView.xaml`, `ViewModels/AdminViewModel.cs`, `Services/AdminService.cs` (+ mock); rows and dialogs use
+  `Views/SettingTemplates.xaml` (shared with Settings and the dialog host)
 - Admin button visible to admins only. Seats table, invites, requests, two-step rule, Claude key policy.
 - Done: matches both boards; non-admins never see Admin.
 - Test: P.

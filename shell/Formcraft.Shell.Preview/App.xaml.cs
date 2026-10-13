@@ -4,7 +4,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Linq;
 using Formcraft.Shell.Services;
+using Formcraft.Shell.ViewModels;
 
 namespace Formcraft.Shell.Preview
 {
@@ -123,6 +125,23 @@ namespace Formcraft.Shell.Preview
                 }
                 main.Services.Pane.Settings.Open("Account");
                 main.Services.Pane.OpenSettingsCommand.Execute(null);
+
+                // Admin (U07; boards core/PaneAdmin, account/PaneSeats): both sections at full height, then a dialog
+                foreach (var section in AdminViewModel.Sections)
+                {
+                    main.Services.Pane.Admin.Section = section;
+                    RenderFull(new Formcraft.Shell.Views.AdminView { DataContext = main.Services.Pane.Admin }, 440,
+                               Path.Combine(folder, $"admin-{name}-{(section.StartsWith("Team") ? "team" : "seats")}-440.png"));
+                }
+                main.Services.Pane.Admin.Section = AdminViewModel.Sections[0];
+                main.Services.Pane.OpenAdminCommand.Execute(null);
+                main.Shell.Width = 440;
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-admin-440.png"));
+                var addPerson = main.Services.Pane.Admin.Groups.SelectMany(g => g.Items).OfType<ButtonsSetting>().SelectMany(b => b.Buttons).First(b => b.Label == "Add person…");
+                addPerson.Command.Execute(null);
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-admin-addperson.png"));
+                main.Services.Pane.IsDialogOpen = false;
+                main.Services.Pane.OpenAdminCommand.Execute(null);
                 main.Services.Settings.SetPart("manage.drawings", true);
                 main.Services.Settings.SetPart("flow.touch", true);
 

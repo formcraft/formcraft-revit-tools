@@ -17,8 +17,8 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcColors.Light.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcTheme.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Views/SettingTemplates.xaml"/>
       </ResourceDictionary.MergedDictionaries>
-      <BooleanToVisibilityConverter x:Key="Vis"/>
     </ResourceDictionary>
   </UserControl.Resources>
 
@@ -98,6 +98,10 @@
           <!-- Settings: Account, General and a tab per licensed module (U06) -->
           <local:SettingsView Visibility="{Binding SettingsOpen, Converter={StaticResource Vis}}"/>
 
+          <!-- Admin (U07): admins only -->
+          <local:AdminView DataContext="{Binding Admin}"
+                           Visibility="{Binding DataContext.IsAdminOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
+
           <!-- Search results, in place of the body while there is a query (board core/UI_Palette) -->
           <parts:SearchView DataContext="{Binding Search}" Visibility="{Binding IsOpen, Converter={StaticResource Vis}}"/>
         </Grid>
@@ -111,7 +115,10 @@
       <Border Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8,6" Visibility="{Binding IsNote, Converter={StaticResource Vis}}">
         <TextBlock Text="{Binding Message}" Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontSize="11.5" TextWrapping="Wrap"/>
       </Border>
-      <TextBlock Text="{Binding Message}" Style="{StaticResource FmcText.Hint}" FontSize="11.5" Visibility="{Binding IsText, Converter={StaticResource Vis}}" Margin="0,0,0,8"/>
+      <TextBlock Text="{Binding Message}" Style="{StaticResource FmcText.Hint}" FontSize="11.5" Visibility="{Binding ShowText, Converter={StaticResource Vis}}" Margin="0,0,0,8"/>
+      <ItemsControl ItemsSource="{Binding Items}" Focusable="False" Visibility="{Binding HasItems, Converter={StaticResource Vis}}"/>
+      <TextBlock Text="{Binding Error}" FontSize="11" Foreground="{DynamicResource Fmc.CriticalBrush}" TextWrapping="Wrap"
+                 Visibility="{Binding HasItemsError, Converter={StaticResource Vis}}"/>
       <StackPanel Visibility="{Binding HasInput, Converter={StaticResource Vis}}">
         <TextBlock Text="{Binding InputLabel}" Style="{StaticResource FmcText.Label}"/>
         <TextBox x:Name="DialogInput" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FmcTextBox}"

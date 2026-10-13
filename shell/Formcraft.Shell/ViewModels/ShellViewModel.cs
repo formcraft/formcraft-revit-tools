@@ -109,7 +109,8 @@ namespace Formcraft.Shell.ViewModels
         private string _status = ReadyStatus;
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
-                              IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null)
+                              IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
+                              IAdminService? admin = null)
         {
             _licence = licence;
             _connection = connection;
@@ -124,6 +125,9 @@ namespace Formcraft.Shell.ViewModels
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog);
+            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
+            OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
+            SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
             SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
             ResetSettingsCommand = new RelayCommand(() => Settings.AskReset());
             Search = new SearchViewModel(_registry, () => Groups.SelectMany(g => g.Sections),
@@ -190,6 +194,11 @@ namespace Formcraft.Shell.ViewModels
         public RelayCommand SaveSettingsCommand { get; }
         public RelayCommand ResetSettingsCommand { get; }
 
+        /// <summary>Admin (boards core/PaneAdmin, account/PaneSeats). Only admins can open it.</summary>
+        public AdminViewModel Admin { get; }
+        public RelayCommand OpenTeamFileCommand { get; }
+        public RelayCommand SaveAdminCommand { get; }
+
         /// <summary>Ctrl+K search (board core/UI_Palette).</summary>
         public SearchViewModel Search { get; }
 
@@ -220,7 +229,7 @@ namespace Formcraft.Shell.ViewModels
         public bool IsConnectOpen => Page == ShellPage.Connect;
         public bool SettingsOpen => Page == ShellPage.Settings;
         public bool IsAdminOpen => Page == ShellPage.Admin;
-        public bool ShowSection => !SettingsOpen;
+        public bool ShowSection => Page == ShellPage.Section || Page == ShellPage.Connect;
 
         public GroupItem? CurrentGroup { get => _group; private set => Set(ref _group, value); }
         public SectionBody? Body { get => _body; private set => Set(ref _body, value); }
@@ -303,6 +312,7 @@ namespace Formcraft.Shell.ViewModels
             if (Page == ShellPage.Admin && !IsAdmin) Page = ShellPage.Section;
             Rebuild();
             Settings.Rebuild();
+            Admin.Rebuild();
             Account.Refresh();
         }
 
@@ -320,6 +330,12 @@ namespace Formcraft.Shell.ViewModels
                 FooterActions.Add(new FooterAction("Back", Welcome.BackCommand));
                 FooterActions.Add(new FooterAction(Welcome.NextText, Welcome.NextCommand, primary: true));
                 Status = Welcome.StepText;
+            }
+            else if (Page == ShellPage.Admin)
+            {
+                // Board core/PaneAdmin footer.
+                FooterActions.Add(new FooterAction("Open team file", OpenTeamFileCommand));
+                FooterActions.Add(new FooterAction("Save", SaveAdminCommand, primary: true));
             }
             else if (Page == ShellPage.Settings)
             {

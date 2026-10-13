@@ -222,6 +222,70 @@ namespace Formcraft.Shell.ViewModels
         public IReadOnlyList<SettingButton> Buttons { get; }
     }
 
+    /// <summary>A typed value: a name, a number, a reason for the audit log. Saved to the store when it has a key.</summary>
+    public sealed class TextSetting : SettingItem
+    {
+        private readonly SettingStore? _store;
+        private readonly string _key;
+        private string _value;
+
+        public TextSetting(string label, string value = "", string placeholder = "", string hint = "", SettingStore? store = null, string key = "", bool mono = false)
+            : base(label, hint)
+        {
+            _store = store;
+            _key = key;
+            _value = store != null && key.Length > 0 ? store.Get(key) ?? value : value;
+            Placeholder = placeholder;
+            Mono = mono;
+        }
+
+        public string Placeholder { get; }
+        public bool Mono { get; }
+
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                if (!Set(ref _value, value ?? "")) return;
+                if (_store != null && _key.Length > 0) _store.Set(_key, _value);
+            }
+        }
+    }
+
+    public sealed class TableRow : ObservableObject
+    {
+        public TableRow(object? tag, params string[] cells)
+        {
+            Tag = tag;
+            Cells = cells;
+        }
+
+        /// <summary>What the row stands for (a person, a request), for the buttons under the table.</summary>
+        public object? Tag { get; }
+        public IReadOnlyList<string> Cells { get; }
+    }
+
+    /// <summary>A small table (team, permissions, seats, audit log). Rows can be picked when buttons act on one.</summary>
+    public sealed class TableSetting : SettingItem
+    {
+        private TableRow? _selected;
+
+        public TableSetting(string label, IReadOnlyList<string> columns, IEnumerable<TableRow> rows, bool selectable = false, string hint = "")
+            : base(label, hint)
+        {
+            Columns = columns;
+            Rows = rows.ToList();
+            Selectable = selectable;
+        }
+
+        public IReadOnlyList<string> Columns { get; }
+        public IReadOnlyList<TableRow> Rows { get; }
+        public bool Selectable { get; }
+        public int ColumnCount => Columns.Count;
+        public TableRow? Selected { get => _selected; set => Set(ref _selected, value); }
+    }
+
     /// <summary>
     /// Author's considerations (every Settings board): notes sent with every Claude request from this panel and saved in
     /// the log. They never override a rule; a conflict is flagged. A saved set can be picked, or the text saved as one.
