@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Formcraft.Shell.Services;
-using Xunit;
 
 namespace Formcraft.Shell.Tests
 {
@@ -33,105 +32,120 @@ namespace Formcraft.Shell.Tests
             ("Fmc.OnPrimary", "Fmc.Primary"), ("Fmc.Navy", "Fmc.Orange"), ("Fmc.Critical", "Fmc.Surface"),
         };
 
-        [Fact]
-        public void Light_and_dark_have_the_same_keys_and_types()
+        [Test]
+        public async Task Light_and_dark_have_the_same_keys_and_types()
         {
-            Sta.Run(() =>
+            var (lightKeys, darkKeys, typeMismatches, names) = Sta.Run(() =>
             {
                 var light = ThemeService.LoadColours(PaneTheme.Light);
                 var dark = ThemeService.LoadColours(PaneTheme.Dark);
-                var lightKeys = light.Keys.Cast<object>().Select(k => k.ToString()!).OrderBy(k => k).ToList();
-                var darkKeys = dark.Keys.Cast<object>().Select(k => k.ToString()!).OrderBy(k => k).ToList();
-
-                Assert.Equal(lightKeys, darkKeys);
-                foreach (var key in lightKeys)
-                    Assert.Equal(light[key].GetType(), dark[key].GetType());
-                Assert.Equal("Light", light["Fmc.ThemeName"]);
-                Assert.Equal("Dark", dark["Fmc.ThemeName"]);
+                var l = light.Keys.Cast<object>().Select(k => k.ToString()!).OrderBy(k => k).ToList();
+                var d = dark.Keys.Cast<object>().Select(k => k.ToString()!).OrderBy(k => k).ToList();
+                var mismatches = l.Intersect(d).Where(k => light[k].GetType() != dark[k].GetType()).ToList();
+                return (l, d, mismatches, ((string)light["Fmc.ThemeName"], (string)dark["Fmc.ThemeName"]));
             });
+
+            await Assert.That(string.Join(",", darkKeys)).IsEqualTo(string.Join(",", lightKeys));
+            await Assert.That(string.Join("; ", typeMismatches)).IsEqualTo("");
+            await Assert.That(names.Item1).IsEqualTo("Light");
+            await Assert.That(names.Item2).IsEqualTo("Dark");
         }
 
-        [Fact]
-        public void Every_brush_has_a_colour_token()
+        [Test]
+        public async Task Every_brush_has_a_colour_token()
         {
-            Sta.Run(() =>
+            var problems = Sta.Run(() =>
             {
                 var light = ThemeService.LoadColours(PaneTheme.Light);
+                var found = new List<string>();
                 foreach (var key in light.Keys.Cast<object>().Select(k => k.ToString()!))
                 {
                     if (!key.EndsWith("Brush")) continue;
                     var token = key.Substring(0, key.Length - "Brush".Length);
-                    Assert.True(light.Contains(token), $"{key} has no colour {token}");
-                    Assert.Equal((Color)light[token], ((SolidColorBrush)light[key]).Color);
+                    if (!light.Contains(token)) found.Add($"{key} has no colour {token}");
+                    else if ((Color)light[token] != ((SolidColorBrush)light[key]).Color) found.Add($"{key} differs from {token}");
                 }
+                return found;
             });
+
+            await Assert.That(string.Join("; ", problems)).IsEqualTo("");
         }
 
-        [Fact]
-        public void Every_kit_style_exists()
+        [Test]
+        public async Task Every_kit_style_exists()
         {
-            Sta.Run(() =>
+            var missing = Sta.Run(() =>
             {
                 var styles = ThemeService.LoadStyles();
-                var missing = KitStyles.Where(k => !(styles.Contains(k) && styles[k] is Style)).ToList();
-                Assert.Empty(missing);
+                return KitStyles.Where(k => !(styles.Contains(k) && styles[k] is Style)).ToList();
             });
+
+            await Assert.That(string.Join("; ", missing)).IsEqualTo("");
         }
 
-        [Theory]
-        [InlineData(PaneTheme.Light)]
-        [InlineData(PaneTheme.Dark)]
-        public void Text_is_readable_in_both_themes(PaneTheme theme)
+        [Test]
+        [Arguments(PaneTheme.Light)]
+        [Arguments(PaneTheme.Dark)]
+        public async Task Text_is_readable_in_both_themes(PaneTheme theme)
         {
-            Sta.Run(() =>
+            var failures = Sta.Run(() =>
             {
                 var colours = ThemeService.LoadColours(theme);
                 var pairs = TextPairs.ToList();
                 foreach (var chip in new[] { "Good", "Warn", "Bad", "Info", "Grey" })
                     pairs.Add(($"Fmc.Chip.{chip}Fg", $"Fmc.Chip.{chip}Bg"));
 
-                var failures = new List<string>();
+                var found = new List<string>();
                 foreach (var (text, background) in pairs)
                 {
                     var ratio = Contrast.Ratio(ColourOf(colours, text), ColourOf(colours, background));
-                    if (ratio < 4.5) failures.Add($"{text} on {background}: {ratio:0.00}");
+                    if (ratio < 4.5) found.Add($"{text} on {background}: {ratio:0.00}");
                 }
-                Assert.Empty(failures);
+                return found;
             });
+
+            await Assert.That(string.Join("; ", failures)).IsEqualTo("");
         }
 
-        [Theory]
-        [InlineData(PaneTheme.Light)]
-        [InlineData(PaneTheme.Dark)]
-        public void Focus_ring_shows_against_the_pane(PaneTheme theme)
+        [Test]
+        [Arguments(PaneTheme.Light)]
+        [Arguments(PaneTheme.Dark)]
+        public async Task Focus_ring_shows_against_the_pane(PaneTheme theme)
         {
-            Sta.Run(() =>
+            var failures = Sta.Run(() =>
             {
                 var colours = ThemeService.LoadColours(theme);
-                foreach (var background in new[] { "Fmc.Surface", "Fmc.Header", "Fmc.Field" })
-                    Assert.True(Contrast.Ratio(ColourOf(colours, "Fmc.Accent"), ColourOf(colours, background)) >= 3.0, background);
+                return new[] { "Fmc.Surface", "Fmc.Header", "Fmc.Field" }
+                    .Select(b => (b, ratio: Contrast.Ratio(ColourOf(colours, "Fmc.Accent"), ColourOf(colours, b))))
+                    .Where(x => x.ratio < 3.0)
+                    .Select(x => $"Fmc.Accent on {x.b}: {x.ratio:0.00}")
+                    .ToList();
             });
+
+            await Assert.That(string.Join("; ", failures)).IsEqualTo("");
         }
 
-        [Theory]
-        [InlineData("Fmc.Font", "IBM Plex Sans", 400)]
-        [InlineData("Fmc.Font", "IBM Plex Sans", 500)]
-        [InlineData("Fmc.Font", "IBM Plex Sans", 600)]
-        [InlineData("Fmc.Font", "IBM Plex Sans", 700)]
-        [InlineData("Fmc.Mono", "IBM Plex Mono", 400)]
-        public void Plex_is_embedded_and_loads(string key, string family, int weight)
+        [Test]
+        [Arguments("Fmc.Font", "IBM Plex Sans", 400)]
+        [Arguments("Fmc.Font", "IBM Plex Sans", 500)]
+        [Arguments("Fmc.Font", "IBM Plex Sans", 600)]
+        [Arguments("Fmc.Font", "IBM Plex Sans", 700)]
+        [Arguments("Fmc.Mono", "IBM Plex Mono", 400)]
+        public async Task Plex_is_embedded_and_loads(string key, string family, int weight)
         {
-            Sta.Run(() =>
+            var (loaded, uri, familyName, actualWeight) = Sta.Run(() =>
             {
                 var styles = ThemeService.LoadStyles();
                 var font = (FontFamily)styles[key];
                 var typeface = new Typeface(font, FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), FontStretches.Normal);
-
-                Assert.True(typeface.TryGetGlyphTypeface(out var glyphs), $"{family} {weight} did not load");
-                Assert.Contains("Formcraft.Shell", glyphs.FontUri.ToString());
-                Assert.Contains(family, glyphs.Win32FamilyNames.Values.Concat(glyphs.FamilyNames.Values).First());
-                Assert.Equal(weight, glyphs.Weight.ToOpenTypeWeight());
+                if (!typeface.TryGetGlyphTypeface(out var glyphs)) return (false, "", "", 0);
+                return (true, glyphs.FontUri.ToString(), glyphs.Win32FamilyNames.Values.First(), glyphs.Weight.ToOpenTypeWeight());
             });
+
+            await Assert.That(loaded).IsTrue();
+            await Assert.That(uri).Contains("Formcraft.Shell");
+            await Assert.That(familyName).Contains(family);
+            await Assert.That(actualWeight).IsEqualTo(weight);
         }
 
         internal static Color ColourOf(ResourceDictionary colours, string key) =>
