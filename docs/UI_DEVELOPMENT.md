@@ -63,7 +63,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: the three sample searches on the board ("sheet", "qa", "level") return the same groups.
 - Test: P, unit tests.
 
-### [ ] U05 Sign in and first-run setup, complete
+### [~] U05 Sign in and first-run setup, complete
 - Boards: `account/PaneSignIn`, `account/PaneWelcome`
 - Files: `Views/SignInView.xaml`, `Views/WelcomeView.xaml` (split out of `ShellView`), view models
 - Microsoft and Google buttons open the browser flow (mocked); offline licence file drop; four setup steps (kit

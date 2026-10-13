@@ -109,18 +109,20 @@ namespace Formcraft.Shell.ViewModels
         private string _status = ReadyStatus;
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
-                              IUserSettings settings, SectionRegistry? registry = null)
+                              IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null)
         {
             _licence = licence;
             _connection = connection;
             _document = document;
             _settings = settings;
             _registry = registry ?? SectionRegistry.Default;
-            SignIn = new SignInViewModel(licence, s => Status = s);
-            Welcome = new WelcomeViewModel(() => Screen = ShellScreen.Main);
-            Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Groups = new ObservableCollection<GroupItem>();
             Parts = new ObservableCollection<ModuleParts>();
+            SignIn = new SignInViewModel(licence, settings, s => Status = s, ShowDialog);
+            Welcome = new WelcomeViewModel(settings, kit ?? new FolderKitService(), Parts, () => _licence.Current.Account?.Role ?? "",
+                                           () => Screen = ShellScreen.Main, s => Status = s);
+            Welcome.StepChanged += (_, __) => UpdateFooter();
+            Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Search = new SearchViewModel(_registry, () => Groups.SelectMany(g => g.Sections),
                                          m => _licence.Current.For(m).CanUse, AnyShown, OpenResult);
             SelectGroupCommand = new RelayCommand(p => { if (p is GroupItem g) SelectGroup(g); });
@@ -136,6 +138,7 @@ namespace Formcraft.Shell.ViewModels
             _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
             _settings.Changed += (_, __) => Rebuild();
             Rebuild();
+            UpdateFooter();
         }
 
         public SignInViewModel SignIn { get; }
@@ -160,6 +163,7 @@ namespace Formcraft.Shell.ViewModels
                     OnPropertyChanged(nameof(IsSignIn));
                     OnPropertyChanged(nameof(IsWelcome));
                     OnPropertyChanged(nameof(IsMain));
+                    UpdateFooter();
                 }
             }
         }
@@ -277,10 +281,36 @@ namespace Formcraft.Shell.ViewModels
         {
             OnPropertyChanged(nameof(IsAdmin));
             if (!_licence.Current.SignedIn) Screen = ShellScreen.SignIn;
-            else if (Screen == ShellScreen.SignIn) Screen = ShellScreen.Welcome;
+            else if (Screen == ShellScreen.SignIn)
+            {
+                // First run on this PC: four short steps; afterwards straight to the pane.
+                if (_settings.GetBool(SettingKeys.SetupDone, false)) Screen = ShellScreen.Main;
+                else
+                {
+                    Welcome.Restart();
+                    Screen = ShellScreen.Welcome;
+                }
+            }
             if (Page == ShellPage.Admin && !IsAdmin) Page = ShellPage.Section;
             Rebuild();
             Account.Refresh();
+        }
+
+        /// <summary>The footer's buttons for the screen (boards: sign in: Sign in, Work offline; first run: Back, Next).</summary>
+        private void UpdateFooter()
+        {
+            FooterActions.Clear();
+            if (Screen == ShellScreen.SignIn)
+            {
+                FooterActions.Add(new FooterAction("Sign in", SignIn.SignInCommand, primary: true));
+                FooterActions.Add(new FooterAction("Work offline", SignIn.WorkOfflineCommand));
+            }
+            else if (Screen == ShellScreen.Welcome)
+            {
+                FooterActions.Add(new FooterAction("Back", Welcome.BackCommand));
+                FooterActions.Add(new FooterAction(Welcome.NextText, Welcome.NextCommand, primary: true));
+                Status = Welcome.StepText;
+            }
         }
 
         /// <summary>

@@ -12,7 +12,8 @@ Update this file whenever a step changes state.
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
 | U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
 | U04 Search (Ctrl+K) | Done | PR #5: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
-| U05–U27 | To do | Next: U05 (sign in and first-run setup, complete) |
+| U05 Sign in and first-run setup | In progress | Branch `feat/u05-signin-first-run`: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
+| U06–U27 | To do | Next: U06 (Settings: Account, General, Manage, Flow, Model, Build) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -23,8 +24,8 @@ Update this file whenever a step changes state.
 | Pane frame (`core/PaneShell`, `core/ResponsivePane`) | Every part of the frame on the boards, at 320–560 px, compact below 400 px, light and dark (U02) | Search finds nothing yet (U04); Connected chip and banner read mocks until the add-in hosts the pane (U10, U12); quick tools only report in the footer (U22); no section fills the footer yet (Stage C) | U04, U10, U12, U22 |
 | Sections and parts (`core/Ribbon`, Settings boards) | 6 groups and 18 sections from `sections.json` (with board and part on each), parts switches per person, licence gating (U03) | Parts switches sit on the Settings page for now; the module tabs come in U06 and the ribbon parts switches in U10 | U06, U10 |
 | Search (`core/UI_Palette`) | Sections, actions, settings and help; "sheet", "qa" and "level" return the board's groups and rows; arrows, Enter, Esc, Ctrl+K; licence and parts (U04) | Results by role (Admin roles, U07); actions only open their section until they are built (Stage C); help opens no guide yet | U07, Stage C |
-| Sign in (`account/PaneSignIn`) | Email, password, two-step code, Microsoft button, work offline, privacy line | Google button, forgot password, ask your admin, offline licence file drop, "what signing in does" checks | U05 |
-| First-run setup (`account/PaneWelcome`) | Kit folder step | Steps 1–4 bar, kit checks, role and disciplines, parts to show, tour and shortcuts | U05 |
+| Sign in (`account/PaneSignIn`) | Everything on the board: email, password, keep me signed in, Microsoft and Google, forgot password, ask your admin, offline licence file (drop or choose), what signing in does, two-step code dialog (U05) | Microsoft, Google and the licence file are mocked until the licence service exists (D6, U17) | U17 |
+| First-run setup (`account/PaneWelcome`) | Step bar; kit folder with its four checks; role (read-only) and disciplines; parts to show; tour and shortcuts switches; saved per person; skipped after the first time (U05) | Tour and the shortcuts import arrive later (the switches are saved); role is read from the account until Admin sets it (U07) | U07, later |
 | Settings › Account (`account/PaneAccount`) | Who you are, module table with status and dates, offline days, check now, release seat, sign out, payments note | Settings tabs bar, request a module, licence key dialog, seat name, Ask Claude tokens | U06 |
 | Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | — | General, Manage, Flow, Model, Build tabs | U06 |
 | Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | — | Everything | U07 |
@@ -43,6 +44,19 @@ Update this file whenever a step changes state.
 | Header chip | "Connected" / "Not connected" (Revit service) | "Connected" | Matched in U02. Licence problems show in the state banners (U08) and Settings › Account, not in the header |
 | Brief icon | Clipboard (`resources/icons/pane-brief.svg`) | None | Added in U02 and to `gen_panes.py` ICONS; appears on the canvas at the next board rebuild |
 | Engineer › Structural | Section with an I-beam icon (`pane-structural.svg`), Model part Structural | Board `model/PaneModelStructural`, not in the canvas nav | Added in U03; add it to the canvas nav and ICONS at the next board rebuild |
+
+## Decisions taken without a board answer (U05 onwards)
+
+Each was decided during the unattended run on 13 October 2026 and can be overruled.
+
+| Step | Decision | Why |
+|---|---|---|
+| U05 | The kit check reads the kit and rulebook versions from `FMC_Kit.json` at the kit root; the shared parameters file and `_Staging` folders follow `fmc_guard.example.json` | The boards show "FMC Kit v2.2" and "Rulebooks v0.2" but no file says where they live. If the real kit keeps them elsewhere it is a kit change request or a change to `FolderKitService` |
+| U05 | Setup lets you go on when the kit isn't found; the hint says kit tools wait until it is | Blocking would stop anyone without the kit using the pane at all; the "kit missing" state is U08 |
+| U05 | One step per page (the board draws step 2 with the bar); a step that is done can be opened again, a later one can't | "Four short steps" on the board |
+| U05 | Setup runs once per PC and person (`setupDone` in settings.json); Settings changes everything later | Board: "Everything here can be changed later in Settings" |
+| U05 | The 6-digit code is a dialog (board) that stays open with the error on a wrong code | Typed input is never lost (U08 rule) |
+| U05 | Sample kit in `tests/shell/fixtures/kit`, marked as a sample everywhere it shows | No kit on the build PC; agreed before the run |
 
 ## Design files
 
