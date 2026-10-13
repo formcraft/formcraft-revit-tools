@@ -82,12 +82,17 @@ namespace Formcraft.Shell.ViewModels
     {
         private readonly ILicenceService _licence;
 
-        public AccountViewModel(ILicenceService licence, Action<string> status)
+        public AccountViewModel(ILicenceService licence, Action<string> status, Action<DialogViewModel> ask)
         {
             _licence = licence;
             CheckNowCommand = new AsyncCommand(async () => { await _licence.CheckNowAsync(); status("Licence checked."); }, status);
             SignOutCommand = new AsyncCommand(() => _licence.SignOutAsync(), status);
-            ReleaseSeatCommand = new AsyncCommand(() => _licence.ReleaseSeatAsync(), status);
+            // Board account/PaneAccount: releasing the seat asks first.
+            ReleaseSeatCommand = new RelayCommand(() => ask(new DialogViewModel(
+                "Release this seat",
+                "Frees your seat so someone else can use it. You'll need to sign in again here.",
+                "Release",
+                () => _licence.ReleaseSeatAsync())));
             Refresh();
         }
 
@@ -100,7 +105,7 @@ namespace Formcraft.Shell.ViewModels
             : "";
         public AsyncCommand CheckNowCommand { get; }
         public AsyncCommand SignOutCommand { get; }
-        public AsyncCommand ReleaseSeatCommand { get; }
+        public RelayCommand ReleaseSeatCommand { get; }
 
         public void Refresh()
         {

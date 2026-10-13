@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,8 +18,9 @@ namespace Formcraft.Shell.Controls
             nameof(IsOpen), typeof(bool), typeof(FmcDialog),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnIsOpenChanged));
 
+        // The footer joins the logical tree, so its buttons get the dialog's DataContext and bindings work.
         public static readonly DependencyProperty FooterProperty = DependencyProperty.Register(
-            nameof(Footer), typeof(object), typeof(FmcDialog), new FrameworkPropertyMetadata(null));
+            nameof(Footer), typeof(object), typeof(FmcDialog), new FrameworkPropertyMetadata(null, OnFooterChanged));
 
         public FmcDialog()
         {
@@ -37,6 +39,25 @@ namespace Formcraft.Shell.Controls
         {
             get => GetValue(FooterProperty);
             set => SetValue(FooterProperty, value);
+        }
+
+        protected override IEnumerator LogicalChildren
+        {
+            get
+            {
+                var children = new System.Collections.Generic.List<object>();
+                var inner = base.LogicalChildren;
+                while (inner != null && inner.MoveNext()) children.Add(inner.Current);
+                if (Footer != null) children.Add(Footer);
+                return children.GetEnumerator();
+            }
+        }
+
+        private static void OnFooterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dialog = (FmcDialog)d;
+            if (e.OldValue != null) dialog.RemoveLogicalChild(e.OldValue);
+            if (e.NewValue != null) dialog.AddLogicalChild(e.NewValue);
         }
 
         // Keyboard focus moves into the dialog when it opens, so Esc and Tab work at once.

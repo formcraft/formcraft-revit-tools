@@ -1,7 +1,14 @@
+<!--
+  The pane (boards: every pane board's frame in design/generators/gen_panes.py pane(), core/PaneShell,
+  core/ResponsivePane). Header, orange line, then sign-in, first-run or the main pane, then the footer.
+  Content stops at 560 px and stays left-aligned; below 400 px the layout is compact (c:Fmc.Compact).
+-->
 <UserControl x:Class="Formcraft.Shell.Views.ShellView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             MinWidth="320" MaxWidth="560"
+             xmlns:c="clr-namespace:Formcraft.Shell.Controls"
+             xmlns:parts="clr-namespace:Formcraft.Shell.Views.Parts"
+             MinWidth="320"
              FontFamily="{DynamicResource Fmc.Font}" FontSize="12.5"
              Background="{DynamicResource Fmc.SurfaceBrush}" Foreground="{DynamicResource Fmc.InkBrush}">
   <UserControl.Resources>
@@ -14,28 +21,18 @@
     </ResourceDictionary>
   </UserControl.Resources>
 
-  <DockPanel LastChildFill="True">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <!-- Wider than 560 px: the content stops and stays left-aligned (board core/ResponsivePane) -->
+      <ColumnDefinition Width="*" MaxWidth="560"/>
+    </Grid.ColumnDefinitions>
 
-    <!-- Header: name, connection state, Settings, Help -->
-    <Border DockPanel.Dock="Top" Background="{DynamicResource Fmc.HeaderBrush}" Height="34" Padding="10,0">
-      <DockPanel VerticalAlignment="Center">
-        <TextBlock Text="Formcraft" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-        <Border Margin="8,0,0,0" Padding="8,2" CornerRadius="11" Background="{DynamicResource Fmc.Chip.GreyBg}" VerticalAlignment="Center">
-          <TextBlock Text="{Binding HeaderStatus}" FontSize="11" Foreground="{DynamicResource Fmc.Chip.GreyFg}"/>
-        </Border>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Content="Settings" Style="{StaticResource FmcButton.Secondary}" Command="{Binding OpenSettingsCommand}"
-                  Visibility="{Binding IsMain, Converter={StaticResource Vis}}" Margin="0,0,6,0"/>
-          <Button Content="?" Style="{StaticResource FmcButton.Secondary}" ToolTip="Help and the first-run tour" AutomationProperties.Name="Help"/>
-        </StackPanel>
-      </DockPanel>
-    </Border>
+  <DockPanel x:Name="Pane" LastChildFill="True">
+
+    <parts:HeaderBar DockPanel.Dock="Top"/>
     <Border DockPanel.Dock="Top" Height="2" Background="{DynamicResource Fmc.OrangeBrush}"/>
 
-    <!-- Footer: status line -->
-    <Border DockPanel.Dock="Bottom" Background="{DynamicResource Fmc.FooterBrush}" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0" Padding="8,5">
-      <TextBlock Text="{Binding Status}" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" TextTrimming="CharacterEllipsis"/>
-    </Border>
+    <parts:FooterBar DockPanel.Dock="Bottom"/>
 
     <Grid>
 
@@ -76,50 +73,26 @@
       <!-- 3. Main pane -->
       <DockPanel Visibility="{Binding IsMain, Converter={StaticResource Vis}}">
 
-        <TextBox DockPanel.Dock="Top" Margin="10,6,10,0" Style="{StaticResource FmcTextBox}"
-                 Text="" ToolTip="Find a feature or rule… (Ctrl+K)" AutomationProperties.Name="Find a feature"/>
+        <TextBox x:Name="Search" DockPanel.Dock="Top" Margin="10,6,10,0" AutomationProperties.Name="Find a feature"
+                 ToolTip="Find a feature or rule (Ctrl+K)">
+          <TextBox.Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource FmcSearchBox}">
+              <Setter Property="c:Fmc.Placeholder" Value="Find a feature or rule… (Ctrl+K)"/>
+              <Style.Triggers>
+                <Trigger Property="c:Fmc.Compact" Value="True">
+                  <Setter Property="c:Fmc.Placeholder" Value="Find…"/>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </TextBox.Style>
+        </TextBox>
 
-        <!-- Groups -->
-        <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,0,0,1" Margin="10,2,10,0">
-          <ItemsControl ItemsSource="{Binding Groups}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <RadioButton Style="{StaticResource FmcNav.Group}" GroupName="FmcGroups" Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=OneWay}"
-                             Command="{Binding DataContext.SelectGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </Border>
-
-        <!-- Sections of the current group -->
-        <ItemsControl DockPanel.Dock="Top" Margin="10,6" ItemsSource="{Binding CurrentGroup.Sections}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <RadioButton Style="{StaticResource FmcNav.Section}" GroupName="FmcSections" IsChecked="{Binding IsSelected, Mode=OneWay}"
-                           Command="{Binding DataContext.SelectSectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
-                <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding Name}"/>
-                  <TextBlock Text="{Binding ModuleTag}" FontSize="9.5" Margin="5,0,0,0" Opacity="0.8"/>
-                </StackPanel>
-              </RadioButton>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <parts:GroupNav DockPanel.Dock="Top" Margin="0,2,0,0"/>
+        <parts:QuickTools DockPanel.Dock="Top" Visibility="{Binding ShowQuickTools, Converter={StaticResource Vis}}"/>
 
         <!-- Document banner: which model, and what the live-model lock allows -->
         <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1" Padding="10,6,10,8">
-          <Border Background="{DynamicResource Fmc.Chip.GoodBg}" CornerRadius="5" Padding="8,6">
-            <StackPanel>
-              <TextBlock Text="{Binding DocumentTitle}" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource Fmc.Chip.GoodFg}" TextTrimming="CharacterEllipsis"/>
-              <TextBlock Text="{Binding DocumentLock}" FontSize="11" Foreground="{DynamicResource Fmc.Chip.GoodFg}"/>
-            </StackPanel>
-          </Border>
+          <c:FmcDocBanner Header="{Binding Document.Title}" Content="{Binding Document.LockText}" State="{Binding Document.State}"/>
         </Border>
 
         <Grid>
@@ -177,4 +150,18 @@
       </DockPanel>
     </Grid>
   </DockPanel>
+
+  <!-- Dialog host: one dialog at a time, over the whole pane -->
+  <c:FmcDialog Header="{Binding Dialog.Title}" IsOpen="{Binding IsDialogOpen}">
+    <Border Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8,6">
+      <TextBlock Text="{Binding Dialog.Message}" Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontSize="11.5" TextWrapping="Wrap"/>
+    </Border>
+    <c:FmcDialog.Footer>
+      <StackPanel Orientation="Horizontal">
+        <Button Content="Cancel" Style="{StaticResource FmcButton.Secondary}" Command="{Binding Dialog.CancelCommand}" Margin="0,0,6,0"/>
+        <Button Content="{Binding Dialog.PrimaryText}" Style="{StaticResource FmcButton.Primary}" Command="{Binding Dialog.ConfirmCommand}"/>
+      </StackPanel>
+    </c:FmcDialog.Footer>
+  </c:FmcDialog>
+  </Grid>
 </UserControl>

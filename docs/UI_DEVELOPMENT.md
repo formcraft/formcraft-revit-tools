@@ -18,7 +18,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: CI green on `main`; the preview app opens; sign-in → first-run → main pane works on mocks.
 - Test: C, P.
 
-### [~] U01 Complete the UI kit in code
+### [x] U01 Complete the UI kit in code
 - Board: `core/UI_Kit`
 - Files: `Theme/FmcTheme.xaml`, new `Theme/FmcColors.Light.xaml` + `Theme/FmcColors.Dark.xaml` (same keys),
   `Services/ThemeService.cs`, `Controls/*`, `tests/shell/` (new test project)
@@ -30,7 +30,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: a "kit gallery" page in the preview app shows every style in every state, light and dark.
 - Test: P (compare with the UI kit board), C.
 
-### [ ] U02 Pane frame at full parity
+### [~] U02 Pane frame at full parity
 - Boards: `core/PaneShell`, `core/ResponsivePane`
 - Files: `Views/ShellView.xaml`, `ViewModels/ShellViewModel.cs`, new `Views/Parts/*`
 - Header: Formcraft, Connected chip (opens Connect), Settings, Admin (admins only), Help.

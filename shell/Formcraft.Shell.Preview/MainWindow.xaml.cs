@@ -1,6 +1,5 @@
 using System.Windows;
 using Formcraft.Shell.Services;
-using Formcraft.Shell.ViewModels;
 
 namespace Formcraft.Shell.Preview
 {
@@ -14,8 +13,12 @@ namespace Formcraft.Shell.Preview
             ThemeService.Shared.Attach(this);
             Themes.DataContext = new PreviewTheme(ThemeService.Shared);
             // Mock sign-in: any email and password, then code 123456.
-            Shell.DataContext = new ShellViewModel(new MockLicenceService());
+            Services = new PreviewServices();
+            Documents.DataContext = Services;
+            Shell.DataContext = Services.Pane;
         }
+
+        public PreviewServices Services { get; }
 
         private void OnOpenGallery(object sender, RoutedEventArgs e)
         {

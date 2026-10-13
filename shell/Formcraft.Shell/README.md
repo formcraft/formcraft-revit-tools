@@ -4,9 +4,9 @@
 |---|---|
 | `Theme/` | `FmcColors.Light.xaml` / `FmcColors.Dark.xaml` (colours, same keys) and `FmcTheme.xaml` (sizes, styles). Views never hard-code a colour and read colours with `DynamicResource` |
 | `Controls/` | Small kit controls (`FmcCheckRow`, `FmcDocBanner`, `FmcDialog`) and the `Fmc.*` attached properties |
-| `Views/` | XAML user controls. `ShellView` is the pane frame; sections become their own views as they are built |
+| `Views/` | XAML user controls. `ShellView` is the pane; `Views/Parts/` its frame (`HeaderBar`, `GroupNav`, `QuickTools`, `FooterBar`); sections become their own views as they are built. Parts load before they join the pane, so they use `DynamicResource` for theme styles |
 | `ViewModels/` | One view model per view. `ShellViewModel` owns navigation, licence gating and status |
-| `Services/` | Interfaces the shell depends on (`ILicenceService`…) and their mock implementations; `ThemeService` (follows Revit's theme) |
+| `Services/` | Interfaces the shell depends on (`ILicenceService`…) and their mock implementations: `ILicenceService`, `IConnectionService` (Connected chip), `IDocumentContext` (banner); `ThemeService` (follows Revit's theme) |
 
 Rules
 - MVVM: no logic in code-behind except what WPF forces (e.g. `PasswordBox`).

@@ -1,0 +1,57 @@
+<!--
+  Group tabs and the current group's section buttons (icon, name, module tag), one row each, shared equally
+  like the boards. Compact: section buttons show their icon only; the name is the tooltip and the accessible name.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.Parts.GroupNav"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:Formcraft.Shell.Controls">
+  <StackPanel>
+    <Border BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,0,0,1" Padding="10,2,10,0">
+      <ItemsControl ItemsSource="{Binding Groups}" Focusable="False" AutomationProperties.Name="Feature groups">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><c:FlexRow/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <c:FmcStateButton Style="{DynamicResource FmcNav.Group}" IsChecked="{Binding IsSelected, Mode=OneWay}"
+                              Command="{Binding DataContext.SelectGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                              AutomationProperties.Name="{Binding Name}">
+              <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+            </c:FmcStateButton>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Border>
+
+    <ItemsControl ItemsSource="{Binding CurrentGroup.Sections}" Margin="10,6" Focusable="False" AutomationProperties.Name="Sections">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate><c:FlexRow Gap="4"/></ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <c:FmcStateButton x:Name="Button" Style="{DynamicResource FmcNav.Section}" IsChecked="{Binding IsSelected, Mode=OneWay}"
+                            Command="{Binding DataContext.SelectSectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                            AutomationProperties.Name="{Binding Name}" ToolTip="{Binding Name}">
+            <StackPanel Orientation="Horizontal">
+              <c:FmcIcon IconKey="{Binding IconKey}"/>
+              <TextBlock Text="{Binding Name}" Margin="5,0,0,0" TextTrimming="CharacterEllipsis" Style="{DynamicResource Fmc.HideWhenCompact}"/>
+              <ContentControl x:Name="Tag" Content="{Binding ModuleTag}" Margin="5,0,0,0" Style="{DynamicResource FmcTag}"/>
+            </StackPanel>
+          </c:FmcStateButton>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding ModuleTag}" Value="{x:Null}">
+              <Setter TargetName="Tag" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+            <Trigger SourceName="Button" Property="IsChecked" Value="True">
+              <Setter TargetName="Tag" Property="Background" Value="{DynamicResource Fmc.TagOnPrimaryBrush}"/>
+            </Trigger>
+            <Trigger SourceName="Button" Property="c:Fmc.Compact" Value="True">
+              <Setter TargetName="Tag" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </StackPanel>
+</UserControl>

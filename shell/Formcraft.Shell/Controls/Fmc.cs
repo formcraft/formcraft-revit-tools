@@ -42,6 +42,32 @@ namespace Formcraft.Shell.Controls
             "Locked", typeof(bool), typeof(Fmc), new FrameworkPropertyMetadata(false));
         public static bool GetLocked(DependencyObject d) => (bool)d.GetValue(LockedProperty);
         public static void SetLocked(DependencyObject d, bool value) => d.SetValue(LockedProperty, value);
+
+        /// <summary>Pane narrower than this is compact (board core/ResponsivePane: 320-399 px).</summary>
+        public const double CompactBelow = 400;
+
+        /// <summary>
+        /// Set once on the pane and inherited by everything inside it, so any style can switch to the compact
+        /// layout with a plain trigger: icons only in section buttons, short labels, wrapped footer.
+        /// </summary>
+        public static readonly DependencyProperty CompactProperty = DependencyProperty.RegisterAttached(
+            "Compact", typeof(bool), typeof(Fmc), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+        public static bool GetCompact(DependencyObject d) => (bool)d.GetValue(CompactProperty);
+        public static void SetCompact(DependencyObject d, bool value) => d.SetValue(CompactProperty, value);
+
+        public static bool IsCompact(double paneWidth) => paneWidth < CompactBelow;
+
+        /// <summary>Applies a theme style by key from data ("FmcButton.Primary"), as DynamicResource would.</summary>
+        public static readonly DependencyProperty StyleKeyProperty = DependencyProperty.RegisterAttached(
+            "StyleKey", typeof(string), typeof(Fmc), new FrameworkPropertyMetadata("", OnStyleKeyChanged));
+        public static string GetStyleKey(DependencyObject d) => (string)d.GetValue(StyleKeyProperty);
+        public static void SetStyleKey(DependencyObject d, string value) => d.SetValue(StyleKeyProperty, value);
+
+        private static void OnStyleKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is FrameworkElement element && e.NewValue is string key && key.Length > 0)
+                element.SetResourceReference(FrameworkElement.StyleProperty, key);
+        }
     }
 
     /// <summary>Table headers are upper case on the boards; WPF has no text-transform.</summary>

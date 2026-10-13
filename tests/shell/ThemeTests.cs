@@ -20,6 +20,8 @@ namespace Formcraft.Shell.Tests
             "FmcCheckRow", "FmcTextBox", "FmcReadOnly", "FmcPasswordBox", "FmcTable", "FmcDocBanner", "FmcDialog",
             "FmcNav.Group", "FmcNav.Section", "FmcText.GroupTitle", "FmcText.Body", "FmcText.Hint", "FmcGroup",
             "Fmc.FocusVisual",
+            // U02 pane frame
+            "FmcToggleButton", "FmcStatusChip", "FmcButton.Pill", "FmcTag", "FmcSearchBox", "Fmc.HideWhenCompact",
         };
 
         // Text on background: WCAG AA, 4.5:1.
@@ -30,6 +32,7 @@ namespace Formcraft.Shell.Tests
             ("Fmc.Muted", "Fmc.Surface"), ("Fmc.Muted", "Fmc.Header"), ("Fmc.Muted", "Fmc.Footer"), ("Fmc.Muted", "Fmc.Field"),
             ("Fmc.Tab", "Fmc.Surface"), ("Fmc.SectionInk", "Fmc.Surface"),
             ("Fmc.OnPrimary", "Fmc.Primary"), ("Fmc.Navy", "Fmc.Orange"), ("Fmc.Critical", "Fmc.Surface"),
+            ("Fmc.OnPrimary", "Fmc.TagOnPrimary"), ("Fmc.SectionInk", "Fmc.Chip.GreyBg"),
         };
 
         [Test]
