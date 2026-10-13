@@ -29,3 +29,4 @@ claude.ai Project "REVIT MCP".
 
 ## Branches
 Treat `main` as protected: work on `feat/<step>` or `fix/<thing>` and open a pull request. CI must pass (shell, server, add-in).
+GitHub can't enforce this on a private repo without a paid plan, so it is a rule we keep, not a lock: never push to `main` directly.

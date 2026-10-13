@@ -2,6 +2,7 @@
 
 | File | What |
 |---|---|
+| `STATUS.md` | What is built, checked against the plan and the boards |
 | `ROADMAP.md` | Phases in order; a phase starts after the previous one ran on the pilot PC |
 | `UI_DEVELOPMENT.md` | The ordered UI work list Claude follows step by step |
 | `TESTING.md` | How each step is tested: CI, preview app, Revit with the Revit MCP |
