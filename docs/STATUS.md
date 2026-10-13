@@ -8,14 +8,15 @@ Update this file whenever a step changes state.
 | Step | State | Note |
 |---|---|---|
 | U00 Repo, CI, running shell | Done | CI green on the first push: shell (net8 and net48), server tests, add-in for Revit 2025 |
-| U01–U27 | To do | Next: U01 (UI kit in code) |
+| U01 UI kit in code | In progress | Branch `feat/u01-ui-kit`: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` |
+| U02–U27 | To do | Next: U02 (pane frame at full parity) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
 
 | Screen (board) | Built | Differs from the board / missing | Fixed in |
 |---|---|---|---|
-| Theme (`core/UI_Kit`) | Colours, type sizes, Primary and Secondary buttons, nav styles, text, input | Toggle, segmented, chips, check rows, read-only field, table, doc banner states, dialog, dark theme; IBM Plex not embedded (falls back to Segoe UI unless installed) | U01 |
+| Theme (`core/UI_Kit`) | Every style on the board in every state, light and dark (dark follows Revit); IBM Plex embedded; kit gallery in the preview app | Drop-down (`FmcComboBox`, first needed in U05); Touch sizes (U22); dark values to be compared with Revit's own panels | U01 (open), U05, U10, U22 |
 | Pane frame (`core/PaneShell`, `core/ResponsivePane`) | Header, orange line, search box (not working), group tabs, section buttons with module tag, document banner, footer status | Admin button; "Connected" chip for the Revit/Claude service (the header now shows licence state only); section icons; quick tools strip; footer action buttons; dialog host; banner's shared and live states; compact layout below 400 px | U02, U12 |
 | Sections and parts (`core/Ribbon`, Settings boards) | 6 groups, 17 sections, module and phase on each, licence gating | Registry is in code, not a config file; parts switches; per-person settings | U03 |
 | Search (`core/UI_Palette`) | — | Everything | U04 |
@@ -43,4 +44,5 @@ Update this file whenever a step changes state.
 - 54 boards in `design/boards/` (core 11, account 7, manage 18, flow 5, model 7, build 6).
 - The "Every screen in the plugin" board still lists Scripts under Manage and doesn't list the account website;
   fix at the next board rebuild.
-- Boards render only on the canvas; there are no PNG previews in the repo yet.
+- Boards render only on the canvas. The kit gallery's PNGs (light and dark, 440 and 360 px) come from
+  `Formcraft.Shell.Preview --snapshot`; CI uploads them as the `kit-snapshots` artifact.
