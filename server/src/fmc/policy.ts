@@ -63,6 +63,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_load_test_families",
 ]);
 
+/** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
+export const PANE_COMMANDS = new Set<string>(["fmc_ui"]);
+
 export const ROLE_CODES = ["A", "S", "C", "E", "M", "P", "Q", "Z", "I", "L", "LP", "FP", "G", "W", "K", "Y"];
 export const TYPE_CODES = ["M3", "M2", "DR", "SH", "SP", "RP", "IE", "PP", "RI", "CM", "CR", "MR", "BQ", "CA", "MI", "VS", "CO", "SU"];
 

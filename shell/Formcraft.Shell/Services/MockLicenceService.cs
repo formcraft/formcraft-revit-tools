@@ -101,6 +101,13 @@ namespace Formcraft.Shell.Services
 
         // ---- Preview states (board account/PaneStates) ----
 
+        /// <summary>Signed in as the canvas sample account, licence checked now (the fmc_ui test preset).</summary>
+        public void SetSignedIn()
+        {
+            if (_pendingEmail.Length == 0) _pendingEmail = "[name.a]@formcraft.example";
+            Grant(DateTime.Now, 14, "Signed in.");
+        }
+
         /// <summary>The last online check was <paramref name="daysAgo"/> days ago; <paramref name="daysLeft"/> offline days remain.</summary>
         public void SetOffline(int daysAgo, int daysLeft) =>
             Replace(DateTime.Now.AddDays(-daysAgo), daysLeft, online: false);
