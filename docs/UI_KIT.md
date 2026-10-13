@@ -78,6 +78,11 @@ at least 4.5:1 in both themes and the focus ring at least 3:1 (`tests/shell` che
 | `FmcSearchBox` | TextBox | magnifier, placeholder ("Find…" when compact) |
 | `Fmc.HideWhenCompact` | any | hidden below 400 px |
 | `FmcChipToggle` | ToggleButton | round on/off chip ("Show these parts"), navy when on |
+| `FmcText.Label` | TextBlock | field label above a control (12, semibold) |
+| `FmcText.Section` | TextBlock | block heading in a pane (11, semibold, muted; write the text in capitals) |
+| `FmcButton.Link` | Button | text link (Forgot password) |
+| `FmcSegmentButton` | ToggleButton | a step in a step bar, or a segment outside a ListBox |
+| `FmcComboBox` | ComboBox | drop-down: 28 px field, chevron, themed list |
 
 Controls (namespace `c:`): `FmcIcon` (a line icon from `Theme/FmcIcons.xaml` by `IconKey`, in the current Foreground),
 `FmcStateButton` (shows a state from its binding, a click only runs Command: tabs, sections, header pages),
@@ -86,7 +91,7 @@ Controls (namespace `c:`): `FmcIcon` (a line icon from `Theme/FmcIcons.xaml` by 
 Icons: `Theme/FmcIcons.xaml` holds the path data of `resources/icons/pane-*.svg`; tests keep the two the same.
 
 `c:` is `clr-namespace:Formcraft.Shell.Controls;assembly=Formcraft.Shell`. Scroll bars inside the pane are styled
-implicitly. Still to add when a step needs them: a drop-down (`FmcComboBox`, U05) and Touch sizes (U22).
+implicitly. Still to add when a step needs them: Touch sizes (U22).
 
 ## Seeing it
 
