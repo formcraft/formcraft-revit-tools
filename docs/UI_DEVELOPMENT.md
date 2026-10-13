@@ -80,7 +80,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: every control on the six boards exists, saves and reloads.
 - Test: P, unit tests for the store.
 
-### [~] U07 Admin: roles, permissions, licences and seats (UI on mocks)
+### [x] U07 Admin: roles, permissions, licences and seats (UI on mocks)
 - Boards: `core/PaneAdmin`, `account/PaneSeats`
 - Files: `Views/AdminView.xaml`, `ViewModels/AdminViewModel.cs`, `Services/AdminService.cs` (+ mock); rows and dialogs use
   `Views/SettingTemplates.xaml` (shared with Settings and the dialog host)
@@ -88,9 +88,9 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: matches both boards; non-admins never see Admin.
 - Test: P.
 
-### [ ] U08 States: locked, offline, grace over, not connected, kit missing, live model, Revit busy
+### [~] U08 States: locked, offline, grace over, not connected, kit missing, live model, Revit busy
 - Board: `account/PaneStates`
-- Files: `Views/Parts/StateBanner.xaml`, `Views/LockedView.xaml`, `ShellViewModel`
+- Files: `Views/Parts/StateBanner.xaml`, `Views/LockedView.xaml`, `ViewModels/PaneStates.cs`, `ShellViewModel`
 - Each state says what happened and the one next step, and keeps working parts working. Typed input is never lost.
 - Done: a "states" menu in the preview app switches through all seven; each matches the table on the board.
 - Test: P.

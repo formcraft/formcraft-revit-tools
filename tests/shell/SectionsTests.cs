@@ -34,6 +34,7 @@ namespace Formcraft.Shell.Tests
             public Task ReleaseSeatAsync() => Task.CompletedTask;
             public Task<bool> ActivateKeyAsync(string key) => Task.FromResult(false);
             public Task RequestModuleAsync(FmcModule module) => Task.CompletedTask;
+            public Task<bool> StartTrialAsync(FmcModule module) => Task.FromResult(false);
         }
 
         private static readonly (FmcModule, ModuleStatus)[] Everything =

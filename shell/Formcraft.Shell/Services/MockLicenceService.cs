@@ -73,7 +73,7 @@ namespace Formcraft.Shell.Services
         {
             if (Current.SignedIn)
             {
-                Current = new LicenceState(Current.Account, Current.Modules, DateTime.Now, 14);
+                Current = new LicenceState(Current.Account, Current.Modules, DateTime.Now, 14, online: true);
                 Changed?.Invoke(this, EventArgs.Empty);
             }
             return Task.CompletedTask;
@@ -91,5 +91,38 @@ namespace Formcraft.Shell.Services
         public Task<bool> ActivateKeyAsync(string key) => Task.FromResult((key ?? "").StartsWith("FMC-", StringComparison.OrdinalIgnoreCase));
 
         public Task RequestModuleAsync(FmcModule module) => Task.CompletedTask;
+
+        public Task<bool> StartTrialAsync(FmcModule module)
+        {
+            if (!Current.SignedIn || Current.For(module).CanUse) return Task.FromResult(false);
+            SetModule(module, ModuleStatus.Trial, DateTime.Today.AddDays(14));
+            return Task.FromResult(true);
+        }
+
+        // ---- Preview states (board account/PaneStates) ----
+
+        /// <summary>The last online check was <paramref name="daysAgo"/> days ago; <paramref name="daysLeft"/> offline days remain.</summary>
+        public void SetOffline(int daysAgo, int daysLeft) =>
+            Replace(DateTime.Now.AddDays(-daysAgo), daysLeft, online: false);
+
+        public void SetGraceOver() => Replace(DateTime.Now.AddDays(-14), 0, online: false);
+
+        public void SetOnline() => Replace(DateTime.Now, 14, online: true);
+
+        public void SetModule(FmcModule module, ModuleStatus status, DateTime? until = null)
+        {
+            if (!Current.SignedIn) return;
+            var modules = new List<ModuleLicence>();
+            foreach (var m in Current.Modules) modules.Add(m.Module == module ? new ModuleLicence(module, status, until) : m);
+            Current = new LicenceState(Current.Account, modules, Current.LastOnlineCheck, Current.OfflineDaysLeft, Current.Online);
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Replace(DateTime? checkedAt, int daysLeft, bool online)
+        {
+            if (!Current.SignedIn) return;
+            Current = new LicenceState(Current.Account, Current.Modules, checkedAt, daysLeft, online);
+            Changed?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

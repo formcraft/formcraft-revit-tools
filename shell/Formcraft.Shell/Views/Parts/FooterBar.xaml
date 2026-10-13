@@ -16,7 +16,8 @@
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
-      <ItemsControl ItemsSource="{Binding FooterActions}" Focusable="False" VerticalAlignment="Center">
+      <!-- Revit busy: nothing new starts -->
+      <ItemsControl ItemsSource="{Binding FooterActions}" Focusable="False" VerticalAlignment="Center" IsEnabled="{Binding RevitReady}">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>

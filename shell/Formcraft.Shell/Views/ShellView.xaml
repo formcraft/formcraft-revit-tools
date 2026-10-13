@@ -71,6 +71,10 @@
           <c:FmcDocBanner Header="{Binding Document.Title}" Content="{Binding Document.LockText}" State="{Binding Document.State}"/>
         </Border>
 
+        <!-- State banner (board account/PaneStates): one state at a time, with its next step -->
+        <parts:StateBanner DockPanel.Dock="Top" DataContext="{Binding StateBanner}" Margin="10,8,10,0"
+                           Visibility="{Binding DataContext.HasStateBanner, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}, Converter={StaticResource Vis}}"/>
+
         <Grid>
           <!-- Every part is off -->
           <StackPanel Margin="10" Visibility="{Binding ShowNoParts, Converter={StaticResource Vis}}">
@@ -82,15 +86,7 @@
           <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.ShowSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
             <StackPanel Margin="10">
               <TextBlock Text="{Binding Title}" Style="{StaticResource FmcText.GroupTitle}"/>
-              <Border Visibility="{Binding Locked, Converter={StaticResource Vis}}" Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8" Margin="0,0,0,8">
-                <StackPanel>
-                  <TextBlock Text="{Binding LockedText}" Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontWeight="SemiBold"/>
-                  <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                    <Button Content="Start a 14-day trial" Style="{StaticResource FmcButton.Primary}" Margin="0,0,6,0"/>
-                    <Button Content="Ask your admin" Style="{StaticResource FmcButton.Secondary}"/>
-                  </StackPanel>
-                </StackPanel>
-              </Border>
+              <local:LockedView Visibility="{Binding Locked, Converter={StaticResource Vis}}"/>
               <TextBlock Text="{Binding PlaceholderText}" Style="{StaticResource FmcText.Hint}"/>
             </StackPanel>
           </ScrollViewer>

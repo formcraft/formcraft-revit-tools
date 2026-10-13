@@ -48,12 +48,13 @@ namespace Formcraft.Shell.Services
     /// <summary>What the shell knows about the licence on this PC.</summary>
     public sealed class LicenceState
     {
-        public LicenceState(Account? account, IReadOnlyList<ModuleLicence> modules, DateTime? lastOnlineCheck, int offlineDaysLeft)
+        public LicenceState(Account? account, IReadOnlyList<ModuleLicence> modules, DateTime? lastOnlineCheck, int offlineDaysLeft, bool online = true)
         {
             Account = account;
             Modules = modules;
             LastOnlineCheck = lastOnlineCheck;
             OfflineDaysLeft = offlineDaysLeft;
+            Online = online;
         }
 
         public Account? Account { get; }
@@ -62,6 +63,9 @@ namespace Formcraft.Shell.Services
         public int OfflineDaysLeft { get; }
         public bool SignedIn => Account != null;
         public bool GraceOver => SignedIn && OfflineDaysLeft <= 0;
+        /// <summary>The last licence check reached the service. Offline, everything keeps working until the grace runs out.</summary>
+        public bool Online { get; }
+        public bool Offline => SignedIn && !Online && !GraceOver;
 
         public ModuleLicence For(FmcModule module)
         {
@@ -92,6 +96,8 @@ namespace Formcraft.Shell.Services
         Task ReleaseSeatAsync();
         Task<bool> ActivateKeyAsync(string key);
         Task RequestModuleAsync(FmcModule module);
+        /// <summary>Starts a 14-day trial of a module (board account/PaneStates: Start a 14-day trial).</summary>
+        Task<bool> StartTrialAsync(FmcModule module);
     }
 
     public enum SignInOutcome { SignedIn, NeedsCode, WrongPassword, NoSeat, Offline }
