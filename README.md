@@ -17,7 +17,10 @@ Private repository. Started fresh on 13 October 2026 from the design canvases an
 | `commandset/` | Revit command handlers the MCP server calls | Carried from the fork |
 | `server/` | MCP server for Claude: `fmc_file`, `fmc_family`, guard policy, pane CLI, Ask Claude | Carried from the fork |
 | `tests/` | Command set tests, guard parity tests | Carried from the fork |
-| `docs/` | Roadmap, decisions, UI kit, screen list; `docs/history/` keeps the fork's docs | New |
+| `design/` | Every screen's design board (source of the canvas) and the generators that wrote them | New |
+| `resources/` | Icons (SVG, ribbon PNG 16/32), IBM Plex fonts, brand pointer | New |
+| `docs/` | Roadmap, **UI development list**, testing, decisions, UI kit, screen list; `docs/history/` keeps the fork's docs | New |
+| `.claude/commands/` | `/ui-next` (plan the next UI step), `/ui-test` (run the test session) | New |
 
 ## Try the shell
 
@@ -27,6 +30,12 @@ dotnet run --project shell/Formcraft.Shell.Preview
 
 Sign in with any email and password, then the code `123456`. Model shows as a trial and Build as not licensed,
 so the locked state is visible. All values are samples.
+
+## How work runs
+
+1. `/ui-next` plans the next step in `docs/UI_DEVELOPMENT.md` and waits for a yes.
+2. The step is built on a `feat/` branch and tested as `docs/TESTING.md` says, including through the Revit MCP on the pilot PC.
+3. A pull request with the test report; CI must pass.
 
 ## Design reference
 

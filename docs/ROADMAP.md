@@ -2,6 +2,8 @@
 
 Build in order. A phase starts only after the previous one has run on the pilot PC (Revit 2025).
 
+The UI work inside each phase is listed step by step in `UI_DEVELOPMENT.md` (U00–U27).
+
 | Phase | What | Done when |
 |---|---|---|
 | 0 | New repo, CI for shell, server and add-in | CI green on `main` |

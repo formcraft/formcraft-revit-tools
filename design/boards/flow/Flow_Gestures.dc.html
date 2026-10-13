@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gestures and on-view feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1B2532}a:hover{color:#2C6B63}
+</style>
+</helmet>
+<div style="position: relative; width: 1200px; height: 900px; box-sizing: border-box; background: #F6F7F9; color: #1A1D21; font-family: 'IBM Plex Sans', sans-serif; padding: 40px 56px; display: flex; flex-direction: column; gap: 18px">
+  <img src="/_blob/c0d01c2697f491e1308003dd48747c8b" alt="Formcraft Design &amp; Construction" style="position: absolute; top: 10px; right: 24px; height: 22px; width: auto">
+  <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #4A515C">Formcraft Flow · TouchKit gestures</div><h2 style="margin: 8px 0 0; font-size: 36px; line-height: 1.08; font-weight: 700; letter-spacing: -1px">Fingers do what a mouse does, with clear feedback on the view</h2></div>
+<div style="display: flex; gap: 36px; flex-grow: 1; min-height: 0">
+
+  <section style="width: 500px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px">
+    <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4A515C">On the view</div>
+    <div style="position: relative; width: 500px; height: 600px; background: #E9EAEA; border-radius: 6px; box-shadow: inset 0 0 0 3px {{frame}}; overflow: hidden">
+      <div style="position: absolute; left: 60px; top: 70px; width: 300px; height: 220px; border: 6px solid #3B4148; box-sizing: border-box"></div>
+      <div style="position: absolute; left: 354px; top: 70px; width: 130px; height: 220px; border: 6px solid #3B4148; border-left: none; box-sizing: border-box"></div>
+      <div style="position: absolute; left: 60px; top: 284px; width: 424px; height: 220px; border: 6px solid #3B4148; border-top: none; box-sizing: border-box"></div>
+      <div style="position: absolute; left: 230px; top: 284px; width: 6px; height: 220px; background: #3B4148"></div>
+      <div style="position: absolute; left: 140px; top: 170px; font-size: 13px; color: #3B4148; font-weight: 600">LIVING<br>24.6 m²</div>
+      <div style="position: absolute; left: 380px; top: 170px; font-size: 13px; color: #3B4148; font-weight: 600">BED 1</div>
+      <div style="position: absolute; left: 110px; top: 390px; font-size: 13px; color: #3B4148; font-weight: 600">KITCHEN</div>
+      <div style="position: absolute; left: 330px; top: 390px; font-size: 13px; color: #3B4148; font-weight: 600">BED 2</div>
+
+      <div style="position: absolute; left: 198px; top: 247px; width: 76px; height: 76px; border-radius: 999px; background: conic-gradient(#7FC7BE {{progressDeg}}deg, rgba(28,37,45,0.18) 0deg); display: flex; align-items: center; justify-content: center">
+        <div style="width: 60px; height: 60px; border-radius: 999px; background: rgba(233,234,234,0.85); display: flex; align-items: center; justify-content: center">
+          <div style="width: 18px; height: 18px; border-radius: 999px; background: #1B2532"></div>
+        </div>
+      </div>
+      <div style="position: absolute; left: 160px; top: 330px; padding: 6px 10px; border-radius: 8px; background: #1B2532; color: #FFFFFF; font-size: 13px; font-weight: 600">Hold to select</div>
+
+      <div style="position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border-radius: 999px; background: #1B2532">
+        <div style="width: 10px; height: 10px; border-radius: 999px; background: #7FC7BE"></div>
+        <div style="font-size: 13px; font-weight: 600; color: #FFFFFF">Touch on</div>
+      </div>
+    </div>
+    <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #3B424D">Views TouchKit handles get a thin Studio Green frame. Holding a finger draws a ring that fills; when it closes the element under the finger is selected.</p>
+  </section>
+
+  <section style="flex: 1; display: flex; flex-direction: column; gap: 14px">
+    <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4A515C">Gestures</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="22" cy="40" r="7" fill="#7FC7BE" stroke="none"/><path d="M30 32l18-14M40 18h8v8"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">One-finger drag</div><div style="font-size: 14px; color: #3B424D">Pan in 2D · Orbit in 3D</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="24" cy="40" r="6" fill="#7FC7BE" stroke="none"/><circle cx="40" cy="24" r="6" fill="#7FC7BE" stroke="none"/><path d="M18 46l-8 8M10 48v6h6M46 18l8-8M48 10h6v6"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">Pinch</div><div style="font-size: 14px; color: #3B424D">Zoom about your fingers</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="38" r="6" fill="#7FC7BE" stroke="none"/><circle cx="32" cy="38" r="6" fill="#7FC7BE" stroke="none"/><path d="M42 38h14M50 32l6 6-6 6"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">Two-finger drag</div><div style="font-size: 14px; color: #3B424D">Pan, in any view</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px; box-shadow: inset 0 0 0 1.5px #2C6B63">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="32" r="7" fill="#7FC7BE" stroke="none"/><path d="M32 14a18 18 0 1 1-17 12"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">Long press</div><div style="font-size: 14px; color: #3B424D">Select the element under your finger</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="24" cy="32" r="6" fill="#7FC7BE" stroke="none"/><circle cx="40" cy="32" r="6" fill="#7FC7BE" stroke="none"/><circle cx="24" cy="32" r="12"/><circle cx="40" cy="32" r="12"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">Two-finger tap</div><div style="font-size: 14px; color: #3B424D">Right-click menu</div></div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 112px">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#2C6B63" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="32" r="6" fill="#7FC7BE" stroke="none"/><circle cx="32" cy="32" r="13"/><circle cx="32" cy="32" r="20" stroke-dasharray="3 5"/></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 17px; font-weight: 700">Double tap</div><div style="font-size: 14px; color: #3B424D">Zoom to fit</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4A515C">Long-press states</div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 18px; display: flex; align-items: center; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 999px; background: conic-gradient(#7FC7BE 120deg, #E3E6EA 0deg); display: flex; align-items: center; justify-content: center"><div style="width: 40px; height: 40px; border-radius: 999px; background: #FFFFFF"></div></div>
+        <div style="font-size: 14px; color: #3B424D">Holding</div>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 18px; display: flex; align-items: center; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 999px; background: #7FC7BE; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B2532" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <div style="font-size: 14px; color: #3B424D">Selected</div>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #DDE1E6; border-radius: 8px; padding: 18px; display: flex; align-items: center; gap: 14px">
+        <div style="width: 52px; height: 52px; border-radius: 999px; border: 2px dashed #9AA1AB; box-sizing: border-box; flex-shrink: 0"></div>
+        <div style="font-size: 14px; color: #3B424D">Moved: becomes pan</div>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"progress":{"editor":"range","min":0,"max":100,"step":5,"unit":"%","default":65},"frameOn":{"editor":"boolean","default":true},"$preview":{"width":1200,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props.progress ?? 65;
+    const on = this.props.frameOn ?? true;
+    return {
+      progressDeg: Math.round(p * 3.6),
+      frame: on ? '#7FC7BE' : 'transparent'
+    };
+  }
+}
+</script>
+</body>
+</html>
