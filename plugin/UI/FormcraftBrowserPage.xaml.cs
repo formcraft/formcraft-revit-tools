@@ -19,7 +19,7 @@ using revit_mcp_plugin.Fmc;
 namespace revit_mcp_plugin.UI
 {
     /// <summary>
-    /// The Formcraft Browser pane (FMC_MCP_Canvas_Handoff McpPane / McpStates): status strip, section tabs (Families,
+    /// The Connect page of the Formcraft pane, formerly the Formcraft Browser (FMC_MCP_Canvas_Handoff McpPane / McpStates): status strip, section tabs (Families,
     /// Files, Activity, Guard), section body and footer. It reads Revit state pushed in by FormcraftBrowser; every action
     /// runs the MCP server's own tool code through ServerCli: dry run first, then a clear yes, then the real run.
     /// </summary>

@@ -7,12 +7,9 @@ namespace revit_mcp_plugin.Core
     {
         public Result OnStartup(UIControlledApplication application)
         {
-            // Formcraft: the "Claude" panel on the Formcraft tab (Browser toggle, Claude service, Guard, Log, Probe)
-            // and the Formcraft Browser dockable pane. It replaces the upstream "Revit MCP Plugin" panel; the upstream
-            // command settings window opens from the pane's Guard section.
+            // Formcraft: one pane and one ribbon tab. The Connect page (Claude service, health, probe, families, files,
+            // activity, guard) is set up first; the Formcraft pane hosts it, with the Core and module panels.
             FormcraftBrowser.Register(application);
-            // The Formcraft pane (Formcraft.Shell) and the Core and module panels (U10). The Formcraft Browser above stays
-            // reachable until the pane covers everything it does.
             Shell.ShellHost.Register(application);
             return Result.Succeeded;
         }

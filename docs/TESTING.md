@@ -18,7 +18,7 @@ switched on for the session.
 
 ## R · In Revit 2025 (pilot PC)
 1. Build: `dotnet build mcp-servers-for-revit.sln -c "Release R25"`.
-2. Install: close Revit, copy `plugin/mcp-servers-for-revit.addin` and the built `revit_mcp_plugin` folder (from
+2. Install: close Revit, remove the old `mcp-servers-for-revit.addin` if it is there, copy `plugin/Formcraft.addin` and the built `revit_mcp_plugin` folder (from
    `plugin/bin/AddIn 2025 Release/`) into `%APPDATA%\Autodesk\Revit\Addins\2025\`. Keep the previous copy for rollback.
 3. Start Revit, open a test file from `_ChainTests` (never a live project for write tests).
 4. Check the pane and ribbon against the boards.
