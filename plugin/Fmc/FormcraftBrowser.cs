@@ -30,7 +30,10 @@ namespace revit_mcp_plugin.Fmc
         private static ExternalEvent _serviceEvent;
         private static List<DocState> _lastDocs = new List<DocState>();
         private static PushButton _browserButton, _serviceButton;
-        private static bool _paneShown = true;
+        private static bool _paneShown;
+        // The Formcraft pane (U10) is the one pane people see; this browser keeps the tools the pane doesn't have yet
+        // (Guard, Probe, files, the Claude service switch) and opens only from its ribbon button.
+        private static bool _hiddenAtStart;
 
         /// <summary>Called from OnStartup: Revit accepts pane registration and ExternalEvent.Create only there or in API context.</summary>
         public static void Register(UIControlledApplication application)
@@ -126,6 +129,16 @@ namespace revit_mcp_plugin.Fmc
         private static void OnIdling(object sender, IdlingEventArgs e)
         {
             if (!(sender is UIApplication uiApp) || Page == null) return;
+            if (!_hiddenAtStart)
+            {
+                _hiddenAtStart = true;
+                try
+                {
+                    DockablePane pane = uiApp.GetDockablePane(PaneId);
+                    if (pane.IsShown()) pane.Hide();
+                }
+                catch (Exception) { /* the pane stays as Revit left it */ }
+            }
             Document active = uiApp.ActiveUIDocument?.Document;
             var docs = new List<DocState>();
             foreach (Document d in uiApp.Application.Documents)
@@ -198,7 +211,7 @@ namespace revit_mcp_plugin.Fmc
             public void SetupDockablePane(DockablePaneProviderData data)
             {
                 data.FrameworkElement = _content;
-                data.VisibleByDefault = true;
+                data.VisibleByDefault = false;
                 // First run only: Revit remembers wherever the user docks or floats it after that.
                 data.InitialState = new DockablePaneState
                 {
