@@ -13,8 +13,9 @@ Update this file whenever a step changes state.
 | U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
 | U04 Search (Ctrl+K) | Done | PR #5: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
 | U05 Sign in and first-run setup | Done | PR #6: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
-| U06 Settings | In progress | Branch `feat/u06-settings`: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
-| U07–U27 | To do | Next: U07 (Admin: roles, permissions, licences and seats) |
+| U06 Settings | Done | PR #7: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
+| U07 Admin | In progress | Branch `feat/u07-admin`: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
+| U08–U27 | To do | Next: U08 (states) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -29,7 +30,7 @@ Update this file whenever a step changes state.
 | First-run setup (`account/PaneWelcome`) | Step bar; kit folder with its four checks; role (read-only) and disciplines; parts to show; tour and shortcuts switches; saved per person; skipped after the first time (U05) | Tour and the shortcuts import arrive later (the switches are saved); role is read from the account until Admin sets it (U07) | U07, later |
 | Settings › Account (`account/PaneAccount`) | Every row on the board: you, your modules with status chips and dates, Request <module>, Enter a licence key dialog, this PC (seat, last check, offline days), check now, release seat, sign out, Ask Claude key and today's use (U06) | Today's Ask Claude tokens arrive with Ask Claude (U27); seat registration date with the licence service (U17) | U17, U27 |
 | Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | General, Manage, Flow, Model, Build: every group and control on the boards; saved per person; locked rows stay locked; Works with follows the licence; Reset my settings and Apply shortcuts dialogs (U06) | Text size Large is saved but the pane doesn't scale yet; ribbon button choices take effect with the ribbon (U10); module settings feed their tools as those are built | U10, Stage C |
-| Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | — | Everything | U07 |
+| Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | Both boards: you, team table with Add person / Change role / Remove dialogs, permissions by role with Edit and Reset, project settings, AI caps, automation, project data, modules and licences, audit log, handover, considerations; subscription, seats, people with invite, requests with Approve, rules (U07) | All on a mock: the team file comes with U12, seats and invites with the licence service (U17) | U12, U17 |
 | States (`account/PaneStates`) | Locked module page with trial and ask-admin buttons | "See what it does"; offline, grace over, not connected, kit missing, live model, Revit busy | U08 |
 | Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | — | Everything | U09 |
 | Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Old fork ribbon still in the add-in | Five panels, parts switches, new icons (PNG ready in `resources/icons/png`) | U10 |
@@ -64,6 +65,11 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U06 | Text size Large is stored only; scaling the pane comes later | Needs every size in the theme to become a live resource |
 | U06 | "Revit user name" shows the Windows user name until Admin has the team file (U07) | No team file yet |
 | U06 | Reset my settings resets every tab of the person's own settings | The board text names General, Manage and Flow (written before Model and Build tabs) |
+| U07 | **Scheduled sync** (board core/PaneAdmin › Automation) is shown off and locked | CLAUDE.md rule 6: workshared models are never saved or synchronised by a tool. The board's switch conflicts with that rule; it stays locked until the rule changes. **Please confirm.** |
+| U07 | "Claude in shared models" sits in Admin as on the board, default off | CLAUDE.md rule 1 says only the user sets it; an admin is a person. **Please confirm** whether each person or the admin sets it |
+| U07 | People on the Admin boards appear as [NAME A]…[NAME E] / name.a… | The board shows real-looking sample names; placeholders avoid real people in code |
+| U07 | Admin is two sections in one page: Team and roles, Licences and seats | Board account/PaneSeats is "Admin › Licences and seats" |
+| U07 | Admin edits apply at once and go in the audit log; Save in the footer confirms | Every change is logged with who and when (board) |
 
 ## Design files
 
