@@ -16,8 +16,9 @@ Update this file whenever a step changes state.
 | U06 Settings | Done | PR #7: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
 | U07 Admin | Done | PR #8: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
 | U08 States | Done | PR #9: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
-| U09 Updates and the Log file window | In progress | Branch `feat/u09-updates-log`: Settings › Updates; Log file window reading the tools' own CSV format; filters, open, copy row |
-| U10–U27 | To do | Next: U10 (host the shell in Revit; the five-panel ribbon) |
+| U09 Updates and the Log file window | Done | PR #10: Settings › Updates; Log file window reading the tools' own CSV format; filters, open, copy row |
+| U10 Host the shell in Revit; ribbon | Done (R test partial) | PR #11. In Revit 2025.4 (journal 0031) the add-in starts and the Core, Manage, Flow, Model and Build panels build with every button; the pane itself, its theme switch and the banner on a new model still need a person to look (Revit's unsigned add-in prompt and the Home screen need clicks): Formcraft pane registered beside the Formcraft Browser; Core panel and a panel per licensed module; theme follows Revit; banner from the guard; built for Revit 2025 |
+| U11–U27 | To do | Next: U11 (the fmc_ui MCP bridge) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -35,8 +36,8 @@ Update this file whenever a step changes state.
 | Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | Both boards: you, team table with Add person / Change role / Remove dialogs, permissions by role with Edit and Reset, project settings, AI caps, automation, project data, modules and licences, audit log, handover, considerations; subscription, seats, people with invite, requests with Approve, rules (U07) | All on a mock: the team file comes with U12, seats and invites with the licence service (U17) | U12, U17 |
 | States (`account/PaneStates`) | Locked page (what it adds, 14-day trial, ask your admin, see what it does, footer Start a trial); a banner for offline, grace over, not connected, kit missing and Revit busy with the board's words and one next step; live model in the document banner; typed input kept (U08) | Real offline and connection checks arrive with the licence service (U17) and Connect (U12) | U12, U17 |
 | Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | Settings › Updates: installed, kit, channel, update that waits for Revit to close, release notes, rollback, guide, tour, support report, open the log, legal; Log file window: All / Pane clicks / Claude / Refused, today or all days, open the CSV or folder, copy a row for support (U09) | The update feed and the support report file come with the installer; From needs a `source` column in the tools' log (see decisions) | Installer, server |
-| Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Old fork ribbon still in the add-in | Five panels, parts switches, new icons (PNG ready in `resources/icons/png`) | U10 |
-| Pane in Revit | Old `FormcraftBrowserPage` still hosted | Shell not yet hosted in the dockable pane | U10 |
+| Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Core (Pane, Connect AI, Log file) and a panel per licensed module: parts drop-down with ticks, two small buttons from Settings (Build: Workspace, Web app), icons from `resources/icons/png` (U10) | Small buttons open the pane where their tool will live; the old "Claude" panel stays until the pane covers it | Stage C |
+| Pane in Revit | The Formcraft pane (ShellView) in its own dockable pane, tabbed with Properties on first run; theme from Revit (start and ThemeChanged); banner from GuardStatus.Verdict; Connected from the socket service; settings in %APPDATA%\Formcraft (U10). The Formcraft Browser stays reachable | Sign-in is still the mock (code 123456) until U17; workshared models show as live until "Claude in shared models" reaches the add-in; docking, floating and the live theme switch need a person at Revit to confirm | U17, R test |
 | Revit MCP UI bridge | Carried read-only tools work | `fmc_ui` tool | U11 |
 
 ## Navigation: code against canvas
@@ -78,6 +79,9 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U09 | The log window reads the tools' real columns (timestamp, action, dry_run, target, result, detail). The board's **From** column needs a `source` column the tools don't write yet: the reader takes one if present and shows "—" otherwise, so Pane clicks / Claude filter empty on today's logs | **Follow-up for the server:** add `source` (Pane, Claude, Ask, Script) to `fmc_file.ts` and `fmc_family.ts` log rows |
 | U09 | Kind comes from the row: refused → Refused, dry run → Dry run, plan/check → Check, list/read/info/statistics → Read, else Run | The board's Kind values |
 | U09 | Updates is a tab of Settings (board: "Pane · Settings › Updates"); the shell has one version, 0.1.0, shown in General and Updates | One place for version and updates |
+| U10 | The parts switch on the ribbon is a drop-down whose items toggle a part and show a tick | Revit's API has no checkbox in a split button |
+| U10 | Each ribbon button has its own small command class (generated from sections.json) | A Revit command can't tell which button ran it |
+| U10 | The new pane is a second dockable pane named "Formcraft"; the "Formcraft Browser" pane and its "Claude" panel stay | U10 says the browser stays reachable until the shell covers it |
 
 ## Design files
 

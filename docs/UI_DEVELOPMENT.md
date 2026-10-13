@@ -95,7 +95,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: a "states" menu in the preview app switches through all seven; each matches the table on the board.
 - Test: P.
 
-### [~] U09 Updates, about, and the Log file window
+### [x] U09 Updates, about, and the Log file window
 - Boards: `account/PaneUpdates`, `core/UI_Log`
 - Files: Settings › Updates tab (`SettingsViewModel`, `Services/UpdateService.cs`), `Views/LogWindow.xaml`,
   `ViewModels/LogViewModel.cs`, `Services/LogReader.cs` (reads `FMC_MCP_FileLog.csv`), `tests/shell/fixtures/FMC_MCP_FileLog.csv`
@@ -105,7 +105,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 
 ## Stage B: into Revit
 
-### [ ] U10 Host the shell in Revit; the five-panel ribbon
+### [~] U10 Host the shell in Revit; the five-panel ribbon
 - Boards: `core/Ribbon`, `manage|flow|model|build/R_*`
 - Files: `plugin/Core/Application.cs`, new `plugin/Shell/ShellHost.cs`, `plugin/Shell/RibbonBuilder.cs`
 - Register a dockable pane hosting `ShellView` (net48 and net8 builds). Ribbon: Core (Pane, Connect AI, Log file),

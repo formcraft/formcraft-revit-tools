@@ -11,6 +11,9 @@ namespace revit_mcp_plugin.Core
             // and the Formcraft Browser dockable pane. It replaces the upstream "Revit MCP Plugin" panel; the upstream
             // command settings window opens from the pane's Guard section.
             FormcraftBrowser.Register(application);
+            // The Formcraft pane (Formcraft.Shell) and the Core and module panels (U10). The Formcraft Browser above stays
+            // reachable until the pane covers everything it does.
+            Shell.ShellHost.Register(application);
             return Result.Succeeded;
         }
 

@@ -81,6 +81,12 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
     <ItemGroup>
+        <!-- The Formcraft pane (U10): the shell built on mock data in shell/, hosted in a dockable pane -->
+        <ProjectReference Include="..\shell\Formcraft.Shell\Formcraft.Shell.csproj"/>
+        <!-- Ribbon icons at 16 and 32 px (resources/icons/png) -->
+        <Resource Include="..\resources\icons\png\*.png" Link="Ribbon\%(Filename)%(Extension)"/>
+    </ItemGroup>
+    <ItemGroup>
         <None Update="mcp-servers-for-revit.addin">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
