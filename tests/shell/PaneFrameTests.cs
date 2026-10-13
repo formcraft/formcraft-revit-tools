@@ -18,11 +18,12 @@ namespace Formcraft.Shell.Tests
             public MockLicenceService Licence { get; } = new MockLicenceService();
             public MockConnectionService Connection { get; } = new MockConnectionService();
             public MockDocumentContext Document { get; } = new MockDocumentContext();
+            public InMemoryUserSettings Settings { get; } = new InMemoryUserSettings();
             public ShellViewModel Vm { get; }
 
             public Pane(bool signIn = true)
             {
-                Vm = new ShellViewModel(Licence, Connection, Document);
+                Vm = new ShellViewModel(Licence, Connection, Document, Settings);
                 if (!signIn) return;
                 Licence.SignInAsync("a@formcraft.example", "x").GetAwaiter().GetResult();
                 Licence.VerifyCodeAsync("123456").GetAwaiter().GetResult();

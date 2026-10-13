@@ -10,7 +10,8 @@ Update this file whenever a step changes state.
 | U00 Repo, CI, running shell | Done | CI green on the first push: shell (net8 and net48), server tests, add-in for Revit 2025 |
 | U01 UI kit in code | Done | PR #2: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` (TUnit) |
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
-| U03–U27 | To do | Next: U03 (sections registry, parts switches, licence gating) |
+| U03 Sections registry, parts switches, licence gating | In progress | Branch `feat/u03-sections-registry`: `sections.json`, parts switches saved per person, licence gating, Structural section |
+| U04–U27 | To do | Next: U04 (search, Ctrl+K) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -19,7 +20,7 @@ Update this file whenever a step changes state.
 |---|---|---|---|
 | Theme (`core/UI_Kit`) | Every style on the board in every state, light and dark (dark follows Revit); IBM Plex embedded; kit gallery in the preview app | Drop-down (`FmcComboBox`, first needed in U05); Touch sizes (U22); dark values to be compared with Revit's own panels | U01 (open), U05, U10, U22 |
 | Pane frame (`core/PaneShell`, `core/ResponsivePane`) | Every part of the frame on the boards, at 320–560 px, compact below 400 px, light and dark (U02) | Search finds nothing yet (U04); Connected chip and banner read mocks until the add-in hosts the pane (U10, U12); quick tools only report in the footer (U22); no section fills the footer yet (Stage C) | U04, U10, U12, U22 |
-| Sections and parts (`core/Ribbon`, Settings boards) | 6 groups, 17 sections, module and phase on each, licence gating | Registry is in code, not a config file; parts switches; per-person settings | U03 |
+| Sections and parts (`core/Ribbon`, Settings boards) | 6 groups and 18 sections from `sections.json` (with board and part on each), parts switches per person, licence gating (U03) | Parts switches sit on the Settings page for now; the module tabs come in U06 and the ribbon parts switches in U10 | U06, U10 |
 | Search (`core/UI_Palette`) | — | Everything | U04 |
 | Sign in (`account/PaneSignIn`) | Email, password, two-step code, Microsoft button, work offline, privacy line | Google button, forgot password, ask your admin, offline licence file drop, "what signing in does" checks | U05 |
 | First-run setup (`account/PaneWelcome`) | Kit folder step | Steps 1–4 bar, kit checks, role and disciplines, parts to show, tour and shortcuts | U05 |
@@ -40,6 +41,7 @@ Update this file whenever a step changes state.
 | Scripts | Check › Scripts, Model, `+Model` | Check › Scripts, `+Model` on the Scripts pane; Model column | Matched in this change |
 | Header chip | "Connected" / "Not connected" (Revit service) | "Connected" | Matched in U02. Licence problems show in the state banners (U08) and Settings › Account, not in the header |
 | Brief icon | Clipboard (`resources/icons/pane-brief.svg`) | None | Added in U02 and to `gen_panes.py` ICONS; appears on the canvas at the next board rebuild |
+| Engineer › Structural | Section with an I-beam icon (`pane-structural.svg`), Model part Structural | Board `model/PaneModelStructural`, not in the canvas nav | Added in U03; add it to the canvas nav and ICONS at the next board rebuild |
 
 ## Design files
 

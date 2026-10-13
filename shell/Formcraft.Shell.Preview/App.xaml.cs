@@ -56,7 +56,7 @@ namespace Formcraft.Shell.Preview
                 Render((FrameworkElement)gallery.Content, Path.Combine(folder, $"kit-{name}-dialog.png"));
                 gallery.Close();
 
-                var main = new MainWindow { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
+                var main = new MainWindow(new PreviewServices(new InMemoryUserSettings())) { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
                 main.Show();
                 Render((FrameworkElement)main.Content, Path.Combine(folder, $"pane-{name}-signin.png"));
 
@@ -71,6 +71,17 @@ namespace Formcraft.Shell.Preview
                         Render(main.Shell, Path.Combine(folder, $"pane-{name}-{label}-{width}.png"));
                     }
                 }
+                // Parts switches (U03): Drawings and Touch off; then the Settings page with its switches
+                main.Services.Settings.SetPart("manage.drawings", false);
+                main.Services.Settings.SetPart("flow.touch", false);
+                main.Shell.Width = 440;
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-parts-off-440.png"));
+                main.Services.Pane.OpenSettingsCommand.Execute(null);
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-settings-440.png"));
+                main.Services.Pane.OpenSettingsCommand.Execute(null);
+                main.Services.Settings.SetPart("manage.drawings", true);
+                main.Services.Settings.SetPart("flow.touch", true);
+
                 main.Services.Pane.Account.ReleaseSeatCommand.Execute(null);
                 main.Shell.Width = 440;
                 Render(main.Shell, Path.Combine(folder, $"pane-{name}-dialog.png"));

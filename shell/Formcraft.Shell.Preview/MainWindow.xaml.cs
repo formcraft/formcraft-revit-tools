@@ -7,13 +7,17 @@ namespace Formcraft.Shell.Preview
     {
         private KitGalleryWindow? _gallery;
 
-        public MainWindow()
+        public MainWindow() : this(new PreviewServices())
+        {
+        }
+
+        public MainWindow(PreviewServices services)
         {
             InitializeComponent();
             ThemeService.Shared.Attach(this);
             Themes.DataContext = new PreviewTheme(ThemeService.Shared);
             // Mock sign-in: any email and password, then code 123456.
-            Services = new PreviewServices();
+            Services = services;
             Documents.DataContext = Services;
             Shell.DataContext = Services.Pane;
         }

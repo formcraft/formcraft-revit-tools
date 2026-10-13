@@ -1,0 +1,74 @@
+{
+  "about": "The pane's groups, sections, quick tools and parts switches. UI configuration, not kit data. Boards are in design/boards; phases from docs/ROADMAP.md, U steps from docs/UI_DEVELOPMENT.md. A section or group with parts shows while any of them is on; a part only counts while its module is licensed.",
+  "parts": [
+    { "id": "manage.setup", "module": "Manage", "name": "Setup" },
+    { "id": "manage.drawings", "module": "Manage", "name": "Drawings" },
+    { "id": "manage.team", "module": "Manage", "name": "Team" },
+    { "id": "manage.check", "module": "Manage", "name": "Check" },
+    { "id": "flow.touch", "module": "Flow", "name": "Touch" },
+    { "id": "flow.sheetlayout", "module": "Flow", "name": "Sheet Layout" },
+    { "id": "flow.tags", "module": "Flow", "name": "Tags" },
+    { "id": "flow.3d", "module": "Flow", "name": "3D" },
+    { "id": "model.systems", "module": "Model", "name": "Systems" },
+    { "id": "model.structural", "module": "Model", "name": "Structural" },
+    { "id": "model.quantities", "module": "Model", "name": "Quantities" },
+    { "id": "build.views", "module": "Build", "name": "Views on the model" },
+    { "id": "build.boq", "module": "Build", "name": "BoQ" },
+    { "id": "build.package", "module": "Build", "name": "Data package" }
+  ],
+  "groups": [
+    {
+      "name": "Setup", "parts": ["manage.setup"],
+      "sections": [
+        { "name": "Project", "module": "Manage", "phase": "phase 2", "board": "manage/PaneProject" },
+        { "name": "Templates", "module": "Manage", "phase": "phase 2", "board": "manage/PaneTemplates" },
+        { "name": "Families", "module": "Manage", "tag": "+Model", "phase": "phase 2", "board": "manage/PaneFamilies" },
+        { "name": "Materials", "module": "Manage", "phase": "phase 3", "board": "manage/PaneMaterials" }
+      ]
+    },
+    {
+      "name": "Drawings", "parts": ["manage.drawings"],
+      "sections": [
+        { "name": "Sheets", "module": "Manage", "tag": "+Flow", "tagParts": ["flow.sheetlayout"], "phase": "phase 3", "board": "manage/PaneSheets" },
+        { "name": "Annotate", "module": "Manage", "tag": "+Flow", "tagParts": ["flow.tags"], "phase": "phase 3", "board": "manage/PaneAnnotate" },
+        { "name": "Issue", "module": "Manage", "phase": "phase 3", "board": "manage/PaneIssue" }
+      ]
+    },
+    {
+      "name": "Team", "parts": ["manage.team"],
+      "sections": [
+        { "name": "Review", "module": "Manage", "phase": "phase 3", "board": "manage/PaneReview" },
+        { "name": "Workshare", "module": "Manage", "phase": "phase 3", "board": "manage/PaneWorkshare" },
+        { "name": "Links", "module": "Manage", "phase": "phase 3", "board": "manage/PaneLinks" }
+      ]
+    },
+    {
+      "name": "Check", "parts": ["manage.check"],
+      "sections": [
+        { "name": "QA", "module": "Manage", "phase": "phase 2", "board": "manage/PaneQA" },
+        { "name": "Rules", "module": "Manage", "phase": "phase 2", "board": "manage/PaneRules" },
+        { "name": "Reports", "module": "Manage", "phase": "phase 3", "board": "manage/PaneReports" },
+        { "name": "Scripts", "module": "Model", "tag": "+Model", "phase": "phase 4", "board": "model/PaneScripts" }
+      ]
+    },
+    {
+      "name": "Engineer",
+      "sections": [
+        { "name": "Brief", "module": "Model", "tag": "+Model", "phase": "phase 4", "board": "model/PaneModelBrief" },
+        { "name": "Systems", "module": "Model", "tag": "+Model", "parts": ["model.systems"], "phase": "phase 5", "board": "model/PaneModelSystems" },
+        { "name": "Structural", "module": "Model", "tag": "+Model", "parts": ["model.structural"], "phase": "phase 5", "board": "model/PaneModelStructural" }
+      ]
+    },
+    {
+      "name": "Build",
+      "sections": [
+        { "name": "Build", "module": "Build", "tag": "+Build", "parts": ["build.views", "build.boq", "build.package"], "phase": "phase 6", "board": "build/PaneBuild" }
+      ]
+    }
+  ],
+  "quickTools": [
+    { "name": "Touch", "parts": ["flow.touch"] },
+    { "name": "Section Box", "parts": ["flow.3d"] },
+    { "name": "Tag Tidy", "parts": ["flow.tags"] }
+  ]
+}
