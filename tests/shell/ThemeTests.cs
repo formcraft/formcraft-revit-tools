@@ -22,6 +22,8 @@ namespace Formcraft.Shell.Tests
             "Fmc.FocusVisual",
             // U02 pane frame
             "FmcToggleButton", "FmcStatusChip", "FmcButton.Pill", "FmcTag", "FmcSearchBox", "Fmc.HideWhenCompact",
+            // U03 parts switches
+            "FmcChipToggle",
         };
 
         // Text on background: WCAG AA, 4.5:1.

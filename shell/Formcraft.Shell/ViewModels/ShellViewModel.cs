@@ -17,13 +17,14 @@ namespace Formcraft.Shell.ViewModels
     {
         private bool _isSelected;
 
-        public SectionItem(string group, string name, FmcModule module, string? moduleTag, string phase)
+        public SectionItem(string group, string name, FmcModule module, string? moduleTag, string phase, string board = "")
         {
             Group = group;
             Name = name;
             Module = module;
             ModuleTag = moduleTag;
             Phase = phase;
+            Board = board;
         }
 
         public string Group { get; }
@@ -32,6 +33,8 @@ namespace Formcraft.Shell.ViewModels
         public string? ModuleTag { get; }
         /// <summary>Roadmap phase or UI step that fills this section in (shown until it is built).</summary>
         public string Phase { get; }
+        /// <summary>Its board under design/boards (core/PaneConnect...).</summary>
+        public string Board { get; }
         /// <summary>Key of the section's icon in Theme/FmcIcons.xaml.</summary>
         public string IconKey => "Icon." + Name;
         public bool IsSelected { get => _isSelected; set => Set(ref _isSelected, value); }
@@ -93,8 +96,10 @@ namespace Formcraft.Shell.ViewModels
         private readonly ILicenceService _licence;
         private readonly IConnectionService _connection;
         private readonly IDocumentContext _document;
-        private readonly SectionItem _connect = new SectionItem("", "Connect", FmcModule.Core, null, "U12");
-        private readonly SectionItem _admin = new SectionItem("", "Admin", FmcModule.Core, null, "U07");
+        private readonly IUserSettings _settings;
+        private readonly SectionRegistry _registry;
+        private readonly SectionItem _connect = new SectionItem("", "Connect", FmcModule.Core, null, "U12", "core/PaneConnect");
+        private readonly SectionItem _admin = new SectionItem("", "Admin", FmcModule.Core, null, "U07", "core/PaneAdmin");
         private ShellScreen _screen = ShellScreen.SignIn;
         private ShellPage _page = ShellPage.Section;
         private GroupItem? _group;
@@ -103,15 +108,19 @@ namespace Formcraft.Shell.ViewModels
         private DialogViewModel? _dialog;
         private string _status = ReadyStatus;
 
-        public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document)
+        public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
+                              IUserSettings settings, SectionRegistry? registry = null)
         {
             _licence = licence;
             _connection = connection;
             _document = document;
+            _settings = settings;
+            _registry = registry ?? SectionRegistry.Default;
             SignIn = new SignInViewModel(licence, s => Status = s);
             Welcome = new WelcomeViewModel(() => Screen = ShellScreen.Main);
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
-            Groups = new ObservableCollection<GroupItem>(BuildGroups());
+            Groups = new ObservableCollection<GroupItem>();
+            Parts = new ObservableCollection<ModuleParts>();
             SelectGroupCommand = new RelayCommand(p => { if (p is GroupItem g) SelectGroup(g); });
             SelectSectionCommand = new RelayCommand(p => { if (p is SectionItem s) SelectSection(s); });
             OpenConnectCommand = new RelayCommand(() => Open(ShellPage.Connect));
@@ -123,7 +132,8 @@ namespace Formcraft.Shell.ViewModels
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); };
             _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
-            SelectGroup(Groups[0]);
+            _settings.Changed += (_, __) => Rebuild();
+            Rebuild();
         }
 
         public SignInViewModel SignIn { get; }
@@ -162,8 +172,16 @@ namespace Formcraft.Shell.ViewModels
         public bool IsAdmin => _licence.Current.Account?.IsAdmin == true;
 
         /// <summary>Touch, Section Box and Tag Tidy: only when Flow is on the licence.</summary>
-        public bool ShowQuickTools => _licence.Current.SignedIn && _licence.Current.For(FmcModule.Flow).CanUse;
-        public IReadOnlyList<string> QuickTools { get; } = new[] { "Touch", "Section Box", "Tag Tidy" };
+        public bool ShowQuickTools => _licence.Current.SignedIn && _licence.Current.For(FmcModule.Flow).CanUse && QuickTools.Count > 0;
+        /// <summary>Quick tools whose Flow part is on (Touch, Section Box, Tag Tidy).</summary>
+        public ObservableCollection<string> QuickTools { get; } = new ObservableCollection<string>();
+
+        /// <summary>Settings: parts in the pane, one row of switches per licensed module.</summary>
+        public ObservableCollection<ModuleParts> Parts { get; }
+
+        /// <summary>Every part is off: the body says how to get them back.</summary>
+        public bool NoParts => Groups.Count == 0;
+        public bool ShowNoParts => NoParts && Page == ShellPage.Section;
 
         public DocumentInfo Document => _document.Current;
 
@@ -177,6 +195,7 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(SettingsOpen));
                 OnPropertyChanged(nameof(IsAdminOpen));
                 OnPropertyChanged(nameof(ShowSection));
+                OnPropertyChanged(nameof(ShowNoParts));
             }
         }
 
@@ -252,53 +271,77 @@ namespace Formcraft.Shell.ViewModels
         private void OnLicenceChanged()
         {
             OnPropertyChanged(nameof(IsAdmin));
-            OnPropertyChanged(nameof(ShowQuickTools));
             if (!_licence.Current.SignedIn) Screen = ShellScreen.SignIn;
             else if (Screen == ShellScreen.SignIn) Screen = ShellScreen.Welcome;
             if (Page == ShellPage.Admin && !IsAdmin) Page = ShellPage.Section;
-            if (Page == ShellPage.Section && _section != null) SelectSection(_section);
+            Rebuild();
             Account.Refresh();
         }
 
-        /// <summary>The pane's groups and sections, as on the canvas (GROUPS in the generator).</summary>
-        private static IEnumerable<GroupItem> BuildGroups()
+        /// <summary>
+        /// A part counts only while its module is licensed: a module you don't have shows its sections with the
+        /// locked page instead (U08), whatever was switched off before.
+        /// </summary>
+        private bool PartShown(string id)
         {
-            SectionItem S(string g, string n, FmcModule m, string? tag, string phase) => new SectionItem(g, n, m, tag, phase);
-            yield return new GroupItem("Setup", new[]
-            {
-                S("Setup", "Project", FmcModule.Manage, null, "phase 2"),
-                S("Setup", "Templates", FmcModule.Manage, null, "phase 2"),
-                S("Setup", "Families", FmcModule.Manage, "+Model", "phase 2"),
-                S("Setup", "Materials", FmcModule.Manage, null, "phase 3"),
-            });
-            yield return new GroupItem("Drawings", new[]
-            {
-                S("Drawings", "Sheets", FmcModule.Manage, "+Flow", "phase 3"),
-                S("Drawings", "Annotate", FmcModule.Manage, "+Flow", "phase 3"),
-                S("Drawings", "Issue", FmcModule.Manage, null, "phase 3"),
-            });
-            yield return new GroupItem("Team", new[]
-            {
-                S("Team", "Review", FmcModule.Manage, null, "phase 3"),
-                S("Team", "Workshare", FmcModule.Manage, null, "phase 3"),
-                S("Team", "Links", FmcModule.Manage, null, "phase 3"),
-            });
-            yield return new GroupItem("Check", new[]
-            {
-                S("Check", "QA", FmcModule.Manage, null, "phase 2"),
-                S("Check", "Rules", FmcModule.Manage, null, "phase 2"),
-                S("Check", "Reports", FmcModule.Manage, null, "phase 3"),
-                S("Check", "Scripts", FmcModule.Model, "+Model", "phase 4"),
-            });
-            yield return new GroupItem("Engineer", new[]
-            {
-                S("Engineer", "Brief", FmcModule.Model, "+Model", "phase 4"),
-                S("Engineer", "Systems", FmcModule.Model, "+Model", "phase 5"),
-            });
-            yield return new GroupItem("Build", new[]
-            {
-                S("Build", "Build", FmcModule.Build, "+Build", "phase 6"),
-            });
+            var part = _registry.Part(id);
+            return !_licence.Current.For(part.Module).CanUse || _settings.IsPartOn(id);
         }
+
+        private bool AnyShown(string[]? parts) => parts == null || parts.Length == 0 || parts.Any(PartShown);
+
+        /// <summary>Rebuilds groups, sections, quick tools and the parts switches; keeps the open section if it still shows.</summary>
+        private void Rebuild()
+        {
+            var openName = _section?.Name;
+            Groups.Clear();
+            foreach (var g in _registry.Groups.Where(g => AnyShown(g.Parts)))
+            {
+                var sections = g.Sections.Where(s => AnyShown(s.Parts))
+                    .Select(s => new SectionItem(g.Name, s.Name, s.Module, AnyShown(s.TagParts) ? s.Tag : null, s.Phase, s.Board))
+                    .ToList();
+                if (sections.Count > 0) Groups.Add(new GroupItem(g.Name, sections));
+            }
+
+            QuickTools.Clear();
+            foreach (var t in _registry.QuickTools.Where(t => AnyShown(t.Parts))) QuickTools.Add(t.Name);
+
+            Parts.Clear();
+            foreach (var m in _registry.Parts.Select(p => p.Module).Distinct())
+            {
+                if (!_licence.Current.For(m).CanUse) continue;
+                Parts.Add(new ModuleParts(m, _registry.Parts.Where(p => p.Module == m)
+                    .Select(p => new PartSwitch(p, _settings.IsPartOn(p.Id), on => _settings.SetPart(p.Id, on)))));
+            }
+
+            OnPropertyChanged(nameof(ShowQuickTools));
+            OnPropertyChanged(nameof(NoParts));
+            OnPropertyChanged(nameof(ShowNoParts));
+
+            var open = Groups.SelectMany(x => x.Sections).FirstOrDefault(x => x.Name == openName);
+            if (open != null)
+            {
+                CurrentGroup = Groups.First(x => x.Sections.Contains(open));
+                if (Page == ShellPage.Section) SelectSection(open);
+                else _section = open;
+            }
+            else if (Groups.Count > 0)
+            {
+                if (Page == ShellPage.Section) SelectGroup(Groups[0]);
+                else
+                {
+                    CurrentGroup = Groups[0];
+                    _section = Groups[0].Sections[0];
+                }
+            }
+            else
+            {
+                CurrentGroup = null;
+                _section = null;
+                if (Page == ShellPage.Section) Body = null;
+            }
+        }
+
+
     }
 }

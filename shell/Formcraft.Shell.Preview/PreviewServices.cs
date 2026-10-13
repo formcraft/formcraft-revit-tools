@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Formcraft.Shell.Services;
 using Formcraft.Shell.ViewModels;
 
@@ -10,10 +12,17 @@ namespace Formcraft.Shell.Preview
     /// </summary>
     public sealed class PreviewServices : ObservableObject
     {
-        public PreviewServices()
+        /// <param name="settings">Defaults to the preview's own file, so trying switches never touches the real settings.json.</param>
+        public PreviewServices(IUserSettings? settings = null)
         {
-            Pane = new ShellViewModel(Licence, Connection, Document);
+            Settings = settings ?? new JsonUserSettings(PreviewSettingsPath);
+            Pane = new ShellViewModel(Licence, Connection, Document, Settings);
         }
+
+        public static string PreviewSettingsPath =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Formcraft", "Preview", "settings.json");
+
+        public IUserSettings Settings { get; }
 
         public MockLicenceService Licence { get; } = new MockLicenceService();
         public MockConnectionService Connection { get; } = new MockConnectionService();

@@ -77,6 +77,7 @@ at least 4.5:1 in both themes and the focus ring at least 3:1 (`tests/shell` che
 | `FmcTag` | ContentControl | small tag: module tags (`+Flow`, `+Model`, `+Build`), the quick tools' "Flow" |
 | `FmcSearchBox` | TextBox | magnifier, placeholder ("Find…" when compact) |
 | `Fmc.HideWhenCompact` | any | hidden below 400 px |
+| `FmcChipToggle` | ToggleButton | round on/off chip ("Show these parts"), navy when on |
 
 Controls (namespace `c:`): `FmcIcon` (a line icon from `Theme/FmcIcons.xaml` by `IconKey`, in the current Foreground),
 `FmcStateButton` (shows a state from its binding, a click only runs Command: tabs, sections, header pages),

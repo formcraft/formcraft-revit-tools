@@ -30,7 +30,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: a "kit gallery" page in the preview app shows every style in every state, light and dark.
 - Test: P (compare with the UI kit board), C.
 
-### [~] U02 Pane frame at full parity
+### [x] U02 Pane frame at full parity
 - Boards: `core/PaneShell`, `core/ResponsivePane`
 - Files: `Views/ShellView.xaml`, `ViewModels/ShellViewModel.cs`, new `Views/Parts/*`
 - Header: Formcraft, Connected chip (opens Connect), Settings, Admin (admins only), Help.
@@ -41,11 +41,16 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: side by side with the board at 440 px and at 360 px, layout and text match.
 - Test: P, C.
 
-### [ ] U03 Sections registry, parts switches and licence gating
+### [~] U03 Sections registry, parts switches and licence gating
 - Boards: `core/Ribbon`, `manage|flow|model|build/PaneSettings*`
-- Files: new `Services/SectionRegistry.cs` + `sections.json` (UI config, not kit data), `ShellViewModel`
+- Files: new `Services/SectionRegistry.cs` + `Services/sections.json` (UI config, not kit data, embedded),
+  `Services/UserSettings.cs`, `ViewModels/PartsViewModels.cs`, `ShellViewModel`
 - One registry lists every section: group, name, module, icon, phase, board. Parts switches hide or show groups per
   person (saved in `%APPDATA%\Formcraft\settings.json`). A module not licensed shows the locked page (U08).
+- Parts (boards `*/PaneSettings*`): Manage's four parts are groups; Model's Systems and Structural hide those sections
+  (Quantities is stored for Build); Flow's Touch, 3D and Tags hide quick tools, Sheet Layout and Tags the `+Flow` tags;
+  Build's three parts become tabs of the Build section (U26) and hide the group when all are off. A part counts only
+  while its module is licensed.
 - Done: turning a part off in Settings removes its group; licence changes in the mock update the pane at once.
 - Test: P, unit tests in `tests/shell`.
 

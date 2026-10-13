@@ -96,6 +96,12 @@
         </Border>
 
         <Grid>
+          <!-- Every part is off -->
+          <StackPanel Margin="10" Visibility="{Binding ShowNoParts, Converter={StaticResource Vis}}">
+            <TextBlock Text="Every part is off" Style="{StaticResource FmcText.GroupTitle}"/>
+            <TextBlock Text="Turn parts back on in Settings, under each module's parts in the pane." Style="{StaticResource FmcText.Hint}"/>
+          </StackPanel>
+
           <!-- Section body: locked state or placeholder until the feature is built -->
           <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.ShowSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
             <StackPanel Margin="10">
@@ -113,9 +119,10 @@
             </StackPanel>
           </ScrollViewer>
 
-          <!-- Settings › Account -->
-          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.SettingsOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Account}">
-            <StackPanel Margin="10">
+          <!-- Settings: Account, then each licensed module's parts (the full tabs come in U06) -->
+          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding SettingsOpen, Converter={StaticResource Vis}}">
+           <StackPanel>
+            <StackPanel Margin="10" DataContext="{Binding Account}">
               <TextBlock Text="Settings › Account" Style="{StaticResource FmcText.GroupTitle}"/>
               <TextBlock Text="{Binding Who}" Style="{StaticResource FmcText.Body}"/>
               <TextBlock Text="{Binding Organisation}" Style="{StaticResource FmcText.Hint}"/>
@@ -145,6 +152,31 @@
               </StackPanel>
               <TextBlock Text="Buying, renewals and invoices are on the Formcraft account website, never in Revit." Style="{StaticResource FmcText.Hint}" Margin="0,12,0,0"/>
             </StackPanel>
+            <ItemsControl ItemsSource="{Binding Parts}" Focusable="False">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Style="{StaticResource FmcGroup}" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                      <TextBlock Text="{Binding Title}" Style="{StaticResource FmcText.GroupTitle}"/>
+                      <TextBlock Text="Show these parts" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                      <ItemsControl ItemsSource="{Binding Switches}" Focusable="False" AutomationProperties.Name="Show these parts">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <ToggleButton Content="{Binding Name}" IsChecked="{Binding IsOn}" Style="{StaticResource FmcChipToggle}" Margin="0,0,4,4"
+                                          AutomationProperties.Name="{Binding Name}"/>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                      <TextBlock Text="{Binding Hint}" Style="{StaticResource FmcText.Hint}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+           </StackPanel>
           </ScrollViewer>
         </Grid>
       </DockPanel>
