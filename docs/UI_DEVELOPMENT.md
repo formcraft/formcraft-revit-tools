@@ -54,10 +54,12 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: turning a part off in Settings removes its group; licence changes in the mock update the pane at once.
 - Test: P, unit tests in `tests/shell`.
 
-### [ ] U04 Search (Ctrl+K)
+### [~] U04 Search (Ctrl+K)
 - Board: `core/UI_Palette`
-- Files: new `Views/SearchView.xaml`, `ViewModels/SearchViewModel.cs`
+- Files: new `Views/Parts/SearchView.xaml`, `ViewModels/SearchViewModel.cs`, `search` entries in `sections.json`
 - Finds sections, actions, settings and help from the registry; respects role and licence; Esc closes; arrow keys move.
+- Matches titles and each entry's extra words, never the grey detail. Results replace the section body while there is a
+  query. Unlicensed results show dimmed with why; parts switched off are not found. Roles come with Admin (U07).
 - Done: the three sample searches on the board ("sheet", "qa", "level") return the same groups.
 - Test: P, unit tests.
 

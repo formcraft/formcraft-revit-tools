@@ -121,6 +121,8 @@ namespace Formcraft.Shell.ViewModels
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Groups = new ObservableCollection<GroupItem>();
             Parts = new ObservableCollection<ModuleParts>();
+            Search = new SearchViewModel(_registry, () => Groups.SelectMany(g => g.Sections),
+                                         m => _licence.Current.For(m).CanUse, AnyShown, OpenResult);
             SelectGroupCommand = new RelayCommand(p => { if (p is GroupItem g) SelectGroup(g); });
             SelectSectionCommand = new RelayCommand(p => { if (p is SectionItem s) SelectSection(s); });
             OpenConnectCommand = new RelayCommand(() => Open(ShellPage.Connect));
@@ -175,6 +177,9 @@ namespace Formcraft.Shell.ViewModels
         public bool ShowQuickTools => _licence.Current.SignedIn && _licence.Current.For(FmcModule.Flow).CanUse && QuickTools.Count > 0;
         /// <summary>Quick tools whose Flow part is on (Touch, Section Box, Tag Tidy).</summary>
         public ObservableCollection<string> QuickTools { get; } = new ObservableCollection<string>();
+
+        /// <summary>Ctrl+K search (board core/UI_Palette).</summary>
+        public SearchViewModel Search { get; }
 
         /// <summary>Settings: parts in the pane, one row of switches per licensed module.</summary>
         public ObservableCollection<ModuleParts> Parts { get; }
@@ -340,6 +345,30 @@ namespace Formcraft.Shell.ViewModels
                 _section = null;
                 if (Page == ShellPage.Section) Body = null;
             }
+
+            Search.Refresh();
+        }
+
+        /// <summary>
+        /// Opens a search result like its button would: a section opens; an action opens its section (it runs there with a
+        /// dry run first, once built); a setting opens Settings; help says which part of the guide it opens.
+        /// </summary>
+        private void OpenResult(SearchResult r)
+        {
+            var section = Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == r.Opens);
+            if (section != null) SelectSection(section);
+            if (r.Opens == "Settings" && Page != ShellPage.Settings) Open(ShellPage.Settings);
+
+            if (!r.Allowed)
+                Status = r.Title + ": " + r.Module + " isn't on your licence. Ask your admin, or start a 14-day trial.";
+            else if (r.Kind == SearchKind.Action && section != null)
+                Status = r.Title + ": runs from " + Body!.Title + ", dry run first. It arrives with that section.";
+            else if (r.Kind == SearchKind.Setting)
+                Status = r.Title + ": " + r.Detail + ". The module tabs arrive in U06.";
+            else if (r.Kind == SearchKind.Help)
+                Status = "Help: " + r.Title + " · " + r.Detail + ".";
+
+            Search.Close();
         }
 
 

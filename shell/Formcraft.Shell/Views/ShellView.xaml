@@ -74,7 +74,8 @@
       <DockPanel Visibility="{Binding IsMain, Converter={StaticResource Vis}}">
 
         <TextBox x:Name="Search" DockPanel.Dock="Top" Margin="10,6,10,0" AutomationProperties.Name="Find a feature"
-                 ToolTip="Find a feature or rule (Ctrl+K)">
+                 ToolTip="Find a feature or rule (Ctrl+K)" Text="{Binding Search.Query, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewKeyDown="OnSearchKeyDown">
           <TextBox.Style>
             <Style TargetType="TextBox" BasedOn="{StaticResource FmcSearchBox}">
               <Setter Property="c:Fmc.Placeholder" Value="Find a feature or rule… (Ctrl+K)"/>
@@ -178,6 +179,9 @@
             </ItemsControl>
            </StackPanel>
           </ScrollViewer>
+
+          <!-- Search results, in place of the body while there is a query (board core/UI_Palette) -->
+          <parts:SearchView DataContext="{Binding Search}" Visibility="{Binding IsOpen, Converter={StaticResource Vis}}"/>
         </Grid>
       </DockPanel>
     </Grid>

@@ -50,6 +50,29 @@ namespace Formcraft.Shell.Services
         [DataMember(Name = "parts")] public string[]? Parts { get; set; }
     }
 
+    /// <summary>What a search result is (board core/UI_Palette groups results by it, in this order).</summary>
+    public enum SearchKind { Section, Action, Setting, Help }
+
+    /// <summary>
+    /// Something search finds besides the sections themselves: an action, a setting, a help page, or another name for a
+    /// section. "opens" is a section name, or "Settings"; help without "opens" points to the guide.
+    /// </summary>
+    [DataContract]
+    public sealed class SearchEntryDef
+    {
+        [DataMember(Name = "kind")] public string KindName { get; set; } = "";
+        [DataMember(Name = "title")] public string Title { get; set; } = "";
+        /// <summary>The grey text after the title. Shown, never searched.</summary>
+        [DataMember(Name = "detail")] public string Detail { get; set; } = "";
+        [DataMember(Name = "module")] public string ModuleName { get; set; } = "";
+        [DataMember(Name = "opens")] public string? Opens { get; set; }
+        /// <summary>More words that find it, besides its title.</summary>
+        [DataMember(Name = "words")] public string[]? Words { get; set; }
+        [DataMember(Name = "parts")] public string[]? Parts { get; set; }
+        public SearchKind Kind => (SearchKind)Enum.Parse(typeof(SearchKind), KindName);
+        public FmcModule Module => (FmcModule)Enum.Parse(typeof(FmcModule), ModuleName);
+    }
+
     /// <summary>
     /// Every group, section, quick tool and parts switch of the pane, from sections.json (embedded). The shell builds
     /// its navigation from this; search (U04) and the ribbon (U10) read the same list.
@@ -60,6 +83,7 @@ namespace Formcraft.Shell.Services
         [DataMember(Name = "parts")] public PartDef[] Parts { get; set; } = new PartDef[0];
         [DataMember(Name = "groups")] public GroupDef[] Groups { get; set; } = new GroupDef[0];
         [DataMember(Name = "quickTools")] public QuickToolDef[] QuickTools { get; set; } = new QuickToolDef[0];
+        [DataMember(Name = "search")] public SearchEntryDef[]? Search { get; set; }
 
         public IEnumerable<SectionDef> Sections => Groups.SelectMany(g => g.Sections);
 
@@ -123,6 +147,14 @@ namespace Formcraft.Shell.Services
                 }
             }
             foreach (var t in QuickTools) CheckParts("Quick tool " + t.Name, t.Parts);
+            var kinds = Enum.GetNames(typeof(SearchKind));
+            foreach (var e in Search ?? new SearchEntryDef[0])
+            {
+                if (!kinds.Contains(e.KindName)) errors.Add($"Search {e.Title}: unknown kind {e.KindName}");
+                if (!modules.Contains(e.ModuleName)) errors.Add($"Search {e.Title}: unknown module {e.ModuleName}");
+                if (e.Opens != null && e.Opens != "Settings" && !names.Contains(e.Opens)) errors.Add($"Search {e.Title}: opens unknown section {e.Opens}");
+                CheckParts("Search " + e.Title, e.Parts);
+            }
 
             if (errors.Count > 0) throw new InvalidDataException("sections.json: " + string.Join("; ", errors));
         }

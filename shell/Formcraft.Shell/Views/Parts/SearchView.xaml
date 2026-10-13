@@ -1,0 +1,103 @@
+<!--
+  Search results (board core/UI_Palette): grouped under SECTIONS, ACTIONS, SETTINGS, HELP; title in bold, detail in grey.
+  Shown in place of the section body while there is a query. Keyboard focus stays in the search box: arrows move the
+  selection, Enter opens it, Esc closes (ShellView forwards the keys). DataContext: SearchViewModel.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.Parts.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="Vis"/>
+    <CollectionViewSource x:Key="Grouped" Source="{Binding Results}">
+      <CollectionViewSource.GroupDescriptions>
+        <PropertyGroupDescription PropertyName="Heading"/>
+      </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+  </UserControl.Resources>
+
+  <Grid Background="{DynamicResource Fmc.SurfaceBrush}">
+    <ListBox x:Name="List" ItemsSource="{Binding Source={StaticResource Grouped}}" SelectedItem="{Binding Selected}"
+             Focusable="False" BorderThickness="0" Background="Transparent" Padding="0,2,0,6"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="Search results">
+      <ListBox.GroupStyle>
+        <GroupStyle>
+          <GroupStyle.HeaderTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}" FontSize="10.5" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="10,8,10,3"/>
+            </DataTemplate>
+          </GroupStyle.HeaderTemplate>
+        </GroupStyle>
+      </ListBox.GroupStyle>
+      <ListBox.ItemContainerStyle>
+        <Style TargetType="ListBoxItem">
+          <Setter Property="Focusable" Value="False"/>
+          <Setter Property="IsTabStop" Value="False"/>
+          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="ListBoxItem">
+                <Border x:Name="Bd" Background="Transparent">
+                  <Grid>
+                    <Border x:Name="Bar" Width="3" HorizontalAlignment="Left" Background="{DynamicResource Fmc.AccentBrush}" Visibility="Collapsed"/>
+                    <ContentPresenter/>
+                  </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.HoverBrush}"/>
+                  </Trigger>
+                  <Trigger Property="IsSelected" Value="True">
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.SelectedBrush}"/>
+                    <Setter TargetName="Bar" Property="Visibility" Value="Visible"/>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListBox.ItemContainerStyle>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <!-- A button so a click opens it; it never takes focus from the search box -->
+          <Button Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                  Focusable="False" Cursor="Hand" HorizontalContentAlignment="Stretch" AutomationProperties.Name="{Binding Title}">
+            <Button.Template>
+              <ControlTemplate TargetType="Button">
+                <ContentPresenter/>
+              </ControlTemplate>
+            </Button.Template>
+            <WrapPanel x:Name="Row" Margin="10,0" MinHeight="30" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="12.5" Foreground="{DynamicResource Fmc.InkBrush}"
+                         VerticalAlignment="Center" Margin="0,6,8,6"/>
+              <TextBlock Text="{Binding Detail}" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            </WrapPanel>
+          </Button>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Allowed}" Value="False">
+              <Setter TargetName="Row" Property="Opacity" Value="0.6"/>
+            </DataTrigger>
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <!-- Nothing found: offer the board's sample searches -->
+    <StackPanel Margin="10" Visibility="{Binding NothingFound, Converter={StaticResource Vis}}">
+      <TextBlock Text="{Binding NothingFoundText}" Style="{DynamicResource FmcText.Body}"/>
+      <WrapPanel Margin="0,8,0,0">
+        <TextBlock Text="Try:" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" VerticalAlignment="Center" Margin="0,0,2,0"/>
+        <ItemsControl ItemsSource="{Binding Samples}" Focusable="False">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Button Content="{Binding}" Style="{DynamicResource FmcButton.Pill}" Margin="4,0,0,0"
+                      Command="{Binding DataContext.TryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </WrapPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

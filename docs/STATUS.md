@@ -11,7 +11,8 @@ Update this file whenever a step changes state.
 | U01 UI kit in code | Done | PR #2: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` (TUnit) |
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
 | U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
-| U04–U27 | To do | Next: U04 (search, Ctrl+K) |
+| U04 Search (Ctrl+K) | In progress | Branch `feat/u04-search`: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
+| U05–U27 | To do | Next: U05 (sign in and first-run setup, complete) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -21,7 +22,7 @@ Update this file whenever a step changes state.
 | Theme (`core/UI_Kit`) | Every style on the board in every state, light and dark (dark follows Revit); IBM Plex embedded; kit gallery in the preview app | Drop-down (`FmcComboBox`, first needed in U05); Touch sizes (U22); dark values to be compared with Revit's own panels | U01 (open), U05, U10, U22 |
 | Pane frame (`core/PaneShell`, `core/ResponsivePane`) | Every part of the frame on the boards, at 320–560 px, compact below 400 px, light and dark (U02) | Search finds nothing yet (U04); Connected chip and banner read mocks until the add-in hosts the pane (U10, U12); quick tools only report in the footer (U22); no section fills the footer yet (Stage C) | U04, U10, U12, U22 |
 | Sections and parts (`core/Ribbon`, Settings boards) | 6 groups and 18 sections from `sections.json` (with board and part on each), parts switches per person, licence gating (U03) | Parts switches sit on the Settings page for now; the module tabs come in U06 and the ribbon parts switches in U10 | U06, U10 |
-| Search (`core/UI_Palette`) | — | Everything | U04 |
+| Search (`core/UI_Palette`) | Sections, actions, settings and help; "sheet", "qa" and "level" return the board's groups and rows; arrows, Enter, Esc, Ctrl+K; licence and parts (U04) | Results by role (Admin roles, U07); actions only open their section until they are built (Stage C); help opens no guide yet | U07, Stage C |
 | Sign in (`account/PaneSignIn`) | Email, password, two-step code, Microsoft button, work offline, privacy line | Google button, forgot password, ask your admin, offline licence file drop, "what signing in does" checks | U05 |
 | First-run setup (`account/PaneWelcome`) | Kit folder step | Steps 1–4 bar, kit checks, role and disciplines, parts to show, tour and shortcuts | U05 |
 | Settings › Account (`account/PaneAccount`) | Who you are, module table with status and dates, offline days, check now, release seat, sign out, payments note | Settings tabs bar, request a module, licence key dialog, seat name, Ask Claude tokens | U06 |
