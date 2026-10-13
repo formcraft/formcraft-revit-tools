@@ -12,8 +12,9 @@ Update this file whenever a step changes state.
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
 | U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
 | U04 Search (Ctrl+K) | Done | PR #5: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
-| U05 Sign in and first-run setup | In progress | Branch `feat/u05-signin-first-run`: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
-| U06–U27 | To do | Next: U06 (Settings: Account, General, Manage, Flow, Model, Build) |
+| U05 Sign in and first-run setup | Done | PR #6: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
+| U06 Settings | In progress | Branch `feat/u06-settings`: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
+| U07–U27 | To do | Next: U07 (Admin: roles, permissions, licences and seats) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -26,8 +27,8 @@ Update this file whenever a step changes state.
 | Search (`core/UI_Palette`) | Sections, actions, settings and help; "sheet", "qa" and "level" return the board's groups and rows; arrows, Enter, Esc, Ctrl+K; licence and parts (U04) | Results by role (Admin roles, U07); actions only open their section until they are built (Stage C); help opens no guide yet | U07, Stage C |
 | Sign in (`account/PaneSignIn`) | Everything on the board: email, password, keep me signed in, Microsoft and Google, forgot password, ask your admin, offline licence file (drop or choose), what signing in does, two-step code dialog (U05) | Microsoft, Google and the licence file are mocked until the licence service exists (D6, U17) | U17 |
 | First-run setup (`account/PaneWelcome`) | Step bar; kit folder with its four checks; role (read-only) and disciplines; parts to show; tour and shortcuts switches; saved per person; skipped after the first time (U05) | Tour and the shortcuts import arrive later (the switches are saved); role is read from the account until Admin sets it (U07) | U07, later |
-| Settings › Account (`account/PaneAccount`) | Who you are, module table with status and dates, offline days, check now, release seat, sign out, payments note | Settings tabs bar, request a module, licence key dialog, seat name, Ask Claude tokens | U06 |
-| Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | — | General, Manage, Flow, Model, Build tabs | U06 |
+| Settings › Account (`account/PaneAccount`) | Every row on the board: you, your modules with status chips and dates, Request <module>, Enter a licence key dialog, this PC (seat, last check, offline days), check now, release seat, sign out, Ask Claude key and today's use (U06) | Today's Ask Claude tokens arrive with Ask Claude (U27); seat registration date with the licence service (U17) | U17, U27 |
+| Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | General, Manage, Flow, Model, Build: every group and control on the boards; saved per person; locked rows stay locked; Works with follows the licence; Reset my settings and Apply shortcuts dialogs (U06) | Text size Large is saved but the pane doesn't scale yet; ribbon button choices take effect with the ribbon (U10); module settings feed their tools as those are built | U10, Stage C |
 | Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | — | Everything | U07 |
 | States (`account/PaneStates`) | Locked module page with trial and ask-admin buttons | "See what it does"; offline, grace over, not connected, kit missing, live model, Revit busy | U08 |
 | Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | — | Everything | U09 |
@@ -57,6 +58,12 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U05 | Setup runs once per PC and person (`setupDone` in settings.json); Settings changes everything later | Board: "Everything here can be changed later in Settings" |
 | U05 | The 6-digit code is a dialog (board) that stays open with the error on a wrong code | Typed input is never lost (U08 rule) |
 | U05 | Sample kit in `tests/shell/fixtures/kit`, marked as a sample everywhere it shows | No kit on the build PC; agreed before the run |
+| U06 | Account is the first tab and Settings opens on the tab used last | Board account/PaneAccount: "Account and licence sit first in Settings" |
+| U06 | Defaults where the board shows a sample state: tour again off, start-of-day card on, the first three "Tell me when" on, usage counts off, touch in view off, ghost preview on, all Tag Tidy rules on, view types Plans and 3D, systems Power, Small power and Lighting, links ARC and STR | Boards show one sample state; privacy-type switches default off |
+| U06 | Settings save as you change them; Save in the footer confirms; Author's considerations save on Save | Board footers show Save; nothing typed is lost |
+| U06 | Text size Large is stored only; scaling the pane comes later | Needs every size in the theme to become a live resource |
+| U06 | "Revit user name" shows the Windows user name until Admin has the team file (U07) | No team file yet |
+| U06 | Reset my settings resets every tab of the person's own settings | The board text names General, Manage and Flow (written before Model and Build tabs) |
 
 ## Design files
 

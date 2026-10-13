@@ -63,7 +63,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: the three sample searches on the board ("sheet", "qa", "level") return the same groups.
 - Test: P, unit tests.
 
-### [~] U05 Sign in and first-run setup, complete
+### [x] U05 Sign in and first-run setup, complete
 - Boards: `account/PaneSignIn`, `account/PaneWelcome`
 - Files: `Views/SignInView.xaml`, `Views/WelcomeView.xaml` (split out of `ShellView`), view models
 - Microsoft and Google buttons open the browser flow (mocked); offline licence file drop; four setup steps (kit
@@ -71,9 +71,10 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: a new PC goes from sign-in to the main pane in four steps; every check line matches the board.
 - Test: P.
 
-### [ ] U06 Settings: Account, General, Manage, Flow, Model, Build
+### [~] U06 Settings: Account, General, Manage, Flow, Model, Build
 - Boards: `account/PaneAccount`, `core/PaneSettings`, `*/PaneSettings*`
-- Files: `Views/Settings/*`, `Services/ISettingsStore.cs` + JSON store
+- Files: `Views/SettingsView.xaml`, `ViewModels/SettingsViewModel.cs` (the catalogue of every tab) and `SettingItems.cs`;
+  the store is `IUserSettings` / `JsonUserSettings` (U03, U05)
 - One Settings page with a tab per licensed module; each module tab has its parts list, its two ribbon buttons and
   "works with" status. Saved per person; never loosens a team rule.
 - Done: every control on the six boards exists, saves and reloads.

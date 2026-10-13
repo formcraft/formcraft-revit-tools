@@ -182,7 +182,7 @@ namespace Formcraft.Shell.Tests
 
             await Assert.That(section).StartsWith("Drawings › Sheets |");
             await Assert.That(alias).StartsWith("Drawings › Issue |");
-            await Assert.That(setting).IsEqualTo("Settings | Sheet grid and title block guides: Settings › Flow. The module tabs arrive in U06.");
+            await Assert.That(setting).IsEqualTo("Settings | Sheet grid and title block guides: Settings › Flow.");
             await Assert.That(help).EndsWith("| Help: Level naming (decision D3) · Manual 4.6.");
         }
 

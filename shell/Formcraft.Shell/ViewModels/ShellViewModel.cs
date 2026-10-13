@@ -109,7 +109,7 @@ namespace Formcraft.Shell.ViewModels
         private string _status = ReadyStatus;
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
-                              IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null)
+                              IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null)
         {
             _licence = licence;
             _connection = connection;
@@ -123,6 +123,9 @@ namespace Formcraft.Shell.ViewModels
                                            () => Screen = ShellScreen.Main, s => Status = s);
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
+            Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog);
+            SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
+            ResetSettingsCommand = new RelayCommand(() => Settings.AskReset());
             Search = new SearchViewModel(_registry, () => Groups.SelectMany(g => g.Sections),
                                          m => _licence.Current.For(m).CanUse, AnyShown, OpenResult);
             SelectGroupCommand = new RelayCommand(p => { if (p is GroupItem g) SelectGroup(g); });
@@ -182,6 +185,11 @@ namespace Formcraft.Shell.ViewModels
         /// <summary>Quick tools whose Flow part is on (Touch, Section Box, Tag Tidy).</summary>
         public ObservableCollection<string> QuickTools { get; } = new ObservableCollection<string>();
 
+        /// <summary>The one Settings page with its tabs (boards core/PaneSettings, account/PaneAccount, */PaneSettings*).</summary>
+        public SettingsViewModel Settings { get; }
+        public RelayCommand SaveSettingsCommand { get; }
+        public RelayCommand ResetSettingsCommand { get; }
+
         /// <summary>Ctrl+K search (board core/UI_Palette).</summary>
         public SearchViewModel Search { get; }
 
@@ -205,6 +213,7 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(IsAdminOpen));
                 OnPropertyChanged(nameof(ShowSection));
                 OnPropertyChanged(nameof(ShowNoParts));
+                UpdateFooter();
             }
         }
 
@@ -293,6 +302,7 @@ namespace Formcraft.Shell.ViewModels
             }
             if (Page == ShellPage.Admin && !IsAdmin) Page = ShellPage.Section;
             Rebuild();
+            Settings.Rebuild();
             Account.Refresh();
         }
 
@@ -310,6 +320,12 @@ namespace Formcraft.Shell.ViewModels
                 FooterActions.Add(new FooterAction("Back", Welcome.BackCommand));
                 FooterActions.Add(new FooterAction(Welcome.NextText, Welcome.NextCommand, primary: true));
                 Status = Welcome.StepText;
+            }
+            else if (Page == ShellPage.Settings)
+            {
+                // Board core/PaneSettings footer.
+                FooterActions.Add(new FooterAction("Save", SaveSettingsCommand, primary: true));
+                FooterActions.Add(new FooterAction("Reset mine", ResetSettingsCommand));
             }
         }
 
@@ -341,12 +357,20 @@ namespace Formcraft.Shell.ViewModels
             QuickTools.Clear();
             foreach (var t in _registry.QuickTools.Where(t => AnyShown(t.Parts))) QuickTools.Add(t.Name);
 
-            Parts.Clear();
-            foreach (var m in _registry.Parts.Select(p => p.Module).Distinct())
+
+            // The switches stay the same objects while the licensed modules don't change, so Settings, first-run setup and
+            // the pane all show the same chips; only their on/off state is refreshed.
+            var licensedModules = _registry.Parts.Select(p => p.Module).Distinct().Where(m => _licence.Current.For(m).CanUse).ToList();
+            if (!Parts.Select(p => p.Module).SequenceEqual(licensedModules))
             {
-                if (!_licence.Current.For(m).CanUse) continue;
-                Parts.Add(new ModuleParts(m, _registry.Parts.Where(p => p.Module == m)
-                    .Select(p => new PartSwitch(p, _settings.IsPartOn(p.Id), on => _settings.SetPart(p.Id, on)))));
+                Parts.Clear();
+                foreach (var m in licensedModules)
+                    Parts.Add(new ModuleParts(m, _registry.Parts.Where(p => p.Module == m)
+                        .Select(p => new PartSwitch(p, _settings.IsPartOn(p.Id), on => _settings.SetPart(p.Id, on)))));
+            }
+            else
+            {
+                foreach (var s in Parts.SelectMany(p => p.Switches)) s.Refresh(_settings.IsPartOn(s.Id));
             }
 
             OnPropertyChanged(nameof(ShowQuickTools));
@@ -387,14 +411,20 @@ namespace Formcraft.Shell.ViewModels
         {
             var section = Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == r.Opens);
             if (section != null) SelectSection(section);
-            if (r.Opens == "Settings" && Page != ShellPage.Settings) Open(ShellPage.Settings);
+            if (r.Opens == "Settings")
+            {
+                if (Page != ShellPage.Settings) Open(ShellPage.Settings);
+                // "Settings › Flow" opens that tab.
+                var tab = r.Detail.StartsWith("Settings › ") ? r.Detail.Substring("Settings › ".Length) : "General";
+                Settings.Open(tab);
+            }
 
             if (!r.Allowed)
                 Status = r.Title + ": " + r.Module + " isn't on your licence. Ask your admin, or start a 14-day trial.";
             else if (r.Kind == SearchKind.Action && section != null)
                 Status = r.Title + ": runs from " + Body!.Title + ", dry run first. It arrives with that section.";
             else if (r.Kind == SearchKind.Setting)
-                Status = r.Title + ": " + r.Detail + ". The module tabs arrive in U06.";
+                Status = r.Title + ": " + r.Detail + ".";
             else if (r.Kind == SearchKind.Help)
                 Status = "Help: " + r.Title + " · " + r.Detail + ".";
 

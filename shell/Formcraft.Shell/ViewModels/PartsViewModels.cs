@@ -27,6 +27,14 @@ namespace Formcraft.Shell.ViewModels
             get => _isOn;
             set { if (Set(ref _isOn, value)) _save(value); }
         }
+
+        /// <summary>Shows a value saved elsewhere (another chip, the ribbon) without saving it again.</summary>
+        public void Refresh(bool isOn)
+        {
+            if (_isOn == isOn) return;
+            _isOn = isOn;
+            OnPropertyChanged(nameof(IsOn));
+        }
     }
 
     /// <summary>A licensed module's parts switches (boards: */PaneSettings*, "parts in the pane").</summary>

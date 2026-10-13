@@ -56,7 +56,10 @@ namespace Formcraft.Shell.Preview
                 Render((FrameworkElement)gallery.Content, Path.Combine(folder, $"kit-{name}-dialog.png"));
                 gallery.Close();
 
-                var main = new MainWindow(new PreviewServices(new InMemoryUserSettings())) { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
+                // The theme as a person sets it: Settings › General › Theme (the pane restores it when it starts).
+                var settings = new InMemoryUserSettings();
+                settings.Set("settings.general.theme", theme == ThemeChoice.Dark ? "Dark" : "Light");
+                var main = new MainWindow(new PreviewServices(settings)) { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
                 main.Show();
                 // Sign in and first-run setup (U05; boards account/PaneSignIn, account/PaneWelcome)
                 var pane = main.Services.Pane;
@@ -111,6 +114,14 @@ namespace Formcraft.Shell.Preview
                 Render(main.Shell, Path.Combine(folder, $"pane-{name}-parts-off-440.png"));
                 main.Services.Pane.OpenSettingsCommand.Execute(null);
                 Render(main.Shell, Path.Combine(folder, $"pane-{name}-settings-440.png"));
+                // Every Settings tab at full height (U06; boards account/PaneAccount, core/PaneSettings, */PaneSettings*)
+                foreach (var tab in main.Services.Pane.Settings.TabNames)
+                {
+                    main.Services.Pane.Settings.Open(tab);
+                    RenderFull(new Formcraft.Shell.Views.SettingsView { DataContext = main.Services.Pane }, 440,
+                               Path.Combine(folder, $"settings-{name}-{tab.ToLowerInvariant()}-440.png"));
+                }
+                main.Services.Pane.Settings.Open("Account");
                 main.Services.Pane.OpenSettingsCommand.Execute(null);
                 main.Services.Settings.SetPart("manage.drawings", true);
                 main.Services.Settings.SetPart("flow.touch", true);
@@ -121,6 +132,23 @@ namespace Formcraft.Shell.Preview
                 main.Close();
             }
             Console.WriteLine("Snapshots saved to " + folder);
+        }
+
+        /// <summary>Renders a view on its own at a width and its full height (long pages that scroll in the pane).</summary>
+        private static void RenderFull(FrameworkElement view, double width, string path)
+        {
+            var host = new System.Windows.Controls.Border { Width = width, Child = view };
+            ThemeService.Shared.Attach(host);
+            host.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "Fmc.SurfaceBrush");
+            host.Measure(new Size(width, double.PositiveInfinity));
+            host.Arrange(new Rect(host.DesiredSize));
+            host.UpdateLayout();
+            var bitmap = new RenderTargetBitmap((int)Math.Ceiling(width * 2), (int)Math.Ceiling(host.ActualHeight * 2), 192, 192, PixelFormats.Pbgra32);
+            bitmap.Render(host);
+            var png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bitmap));
+            using var file = File.Create(path);
+            png.Save(file);
         }
 
         private static void Render(FrameworkElement element, string path)
