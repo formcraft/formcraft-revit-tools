@@ -52,6 +52,8 @@ namespace revit_mcp_plugin.Shell
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
             };
             _view = new ShellView { DataContext = Pane };
+            // fmc_ui (U11): Claude reads and steers the pane through the command set.
+            UiBridgeHost.Attach(new UiBridge(Pane, Licence, UiBridgeHost.AllowMockLicence, () => _view));
 
             application.RegisterDockablePane(PaneId, Title, new PaneProvider(_view));
             application.Idling += OnIdling;

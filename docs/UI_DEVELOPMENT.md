@@ -119,8 +119,10 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
   own panels (compare side by side; adjust `FmcColors.Dark.xaml` if not).
 - Test: R, M (the add-in answers `list_open` as before), C.
 
-### [ ] U11 A Revit MCP bridge for UI tests
-- Files: `commandset/Commands/Fmc/FmcUiCommand.cs`, `server/src/fmc/ui.ts`, guard classification
+### [~] U11 A Revit MCP bridge for UI tests
+- Files: `commandset/Commands/Fmc/FmcUiCommand.cs`, `commandset/Services/Fmc/FmcUiEventHandler.cs`,
+  `plugin/Shell/UiBridgeHost.cs`, `shell/Formcraft.Shell/Services/UiBridge.cs`, `server/src/fmc/ui.ts`,
+  `server/src/tools/fmc_ui.ts`, guard classification (`PANE_COMMANDS` in `server/src/fmc/policy.ts`)
 - New read-only MCP tool `fmc_ui`: `get_state` (signed in, licence, current group and section, open dialog, banner
   state, footer text), `open_section`, `set_mock_licence` (test builds only), `screenshot_pane` (saves a PNG of the
   pane to the reports folder). It never touches the model, so it is allowed on live models.

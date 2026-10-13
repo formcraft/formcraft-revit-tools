@@ -18,7 +18,8 @@ Update this file whenever a step changes state.
 | U08 States | Done | PR #9: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
 | U09 Updates and the Log file window | Done | PR #10: Settings › Updates; Log file window reading the tools' own CSV format; filters, open, copy row |
 | U10 Host the shell in Revit; ribbon | Done (R test partial) | PR #11. In Revit 2025.4 (journal 0031) the add-in starts and the Core, Manage, Flow, Model and Build panels build with every button; the pane itself, its theme switch and the banner on a new model still need a person to look (Revit's unsigned add-in prompt and the Home screen need clicks): Formcraft pane registered beside the Formcraft Browser; Core panel and a panel per licensed module; theme follows Revit; banner from the guard; built for Revit 2025 |
-| U11–U27 | To do | Next: U11 (the fmc_ui MCP bridge) |
+| U11 A Revit MCP bridge for UI tests | In progress (M test open) | Branch `feat/u11-ui-bridge`: `fmc_ui` tool (get_state, open_section, set_mock_licence in test builds, screenshot_pane); shell, command set and server unit tests pass. The M test in Revit needs the Claude service started from the ribbon, which needs a person |
+| U12–U27 | To do | Next: U12 (Connect wired to real checks) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -38,7 +39,7 @@ Update this file whenever a step changes state.
 | Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | Settings › Updates: installed, kit, channel, update that waits for Revit to close, release notes, rollback, guide, tour, support report, open the log, legal; Log file window: All / Pane clicks / Claude / Refused, today or all days, open the CSV or folder, copy a row for support (U09) | The update feed and the support report file come with the installer; From needs a `source` column in the tools' log (see decisions) | Installer, server |
 | Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Core (Pane, Connect AI, Log file) and a panel per licensed module: parts drop-down with ticks, two small buttons from Settings (Build: Workspace, Web app), icons from `resources/icons/png` (U10) | Small buttons open the pane where their tool will live; the old "Claude" panel stays until the pane covers it | Stage C |
 | Pane in Revit | The Formcraft pane (ShellView) in its own dockable pane, tabbed with Properties on first run; theme from Revit (start and ThemeChanged); banner from GuardStatus.Verdict; Connected from the socket service; settings in %APPDATA%\Formcraft (U10). The Formcraft Browser stays reachable | Sign-in is still the mock (code 123456) until U17; workshared models show as live until "Claude in shared models" reaches the add-in; docking, floating and the live theme switch need a person at Revit to confirm | U17, R test |
-| Revit MCP UI bridge | Carried read-only tools work | `fmc_ui` tool | U11 |
+| Revit MCP UI bridge | `fmc_ui`: get_state (screen, licence, group, section, settings tab, dialog, banner, footer, connection, document, theme, openable sections), open_section (section, "Group › Section", Connect, Settings › tab, Admin), set_mock_licence (presets and module statuses, test builds only), screenshot_pane (PNG to the reports folder) (U11) | Not yet run against Revit (M test) | Revit (M) |
 
 ## Navigation: code against canvas
 
@@ -82,6 +83,10 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U10 | The parts switch on the ribbon is a drop-down whose items toggle a part and show a tick | Revit's API has no checkbox in a split button |
 | U10 | Each ribbon button has its own small command class (generated from sections.json) | A Revit command can't tell which button ran it |
 | U10 | The new pane is a second dockable pane named "Formcraft"; the "Formcraft Browser" pane and its "Claude" panel stay | U10 says the browser stays reachable until the shell covers it |
+| U11 | "Test builds" for set_mock_licence means a Debug build of the add-in, or `FMC_UI_TEST=1` in Revit's environment; a Release build without it refuses | The step says "test builds only" without saying how a build is marked |
+| U11 | open_section can open only what the pane lists (parts switched off are hidden); Admin is refused for non-admins, as in the pane | The tool must not reach anything a person couldn't click |
+| U11 | The command set finds the pane by type name (`revit_mcp_plugin.Shell.UiBridgeHost`) and passes JSON, so neither assembly references the other | Two Revit add-in folders; a shared reference would load the shell twice |
+| U11 | fmc_ui calls write nothing to the tools' log | It changes no file and no model; **Please confirm** if pane clicks by Claude should be logged too |
 
 ## Design files
 
