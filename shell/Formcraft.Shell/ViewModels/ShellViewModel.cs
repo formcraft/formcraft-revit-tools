@@ -310,6 +310,7 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(SettingsOpen));
                 OnPropertyChanged(nameof(IsAdminOpen));
                 OnPropertyChanged(nameof(ShowSection));
+                OnPropertyChanged(nameof(ShowHostConnect));
                 OnPropertyChanged(nameof(ShowNoParts));
                 UpdateFooter();
             }
@@ -318,7 +319,25 @@ namespace Formcraft.Shell.ViewModels
         public bool IsConnectOpen => Page == ShellPage.Connect;
         public bool SettingsOpen => Page == ShellPage.Settings;
         public bool IsAdminOpen => Page == ShellPage.Admin;
-        public bool ShowSection => Page == ShellPage.Section || Page == ShellPage.Connect;
+        public bool ShowSection => Page == ShellPage.Section || (Page == ShellPage.Connect && ConnectContent == null);
+
+        /// <summary>
+        /// Connect as the host builds it: in Revit, the add-in's working page (health, Claude service, probe, families,
+        /// files, activity, guard). Null in the preview app, where Connect shows its placeholder.
+        /// </summary>
+        public object? ConnectContent
+        {
+            get => _connectContent;
+            set
+            {
+                if (!Set(ref _connectContent, value)) return;
+                OnPropertyChanged(nameof(ShowSection));
+                OnPropertyChanged(nameof(ShowHostConnect));
+            }
+        }
+        private object? _connectContent;
+
+        public bool ShowHostConnect => Page == ShellPage.Connect && ConnectContent != null;
 
         public GroupItem? CurrentGroup { get => _group; private set => Set(ref _group, value); }
         public SectionBody? Body { get => _body; private set => Set(ref _body, value); }

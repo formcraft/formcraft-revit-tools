@@ -15,9 +15,9 @@ using ShellDocState = Formcraft.Shell.Services.DocState;
 namespace revit_mcp_plugin.Shell
 {
     /// <summary>
-    /// Hosts the Formcraft pane (Formcraft.Shell's ShellView) in a Revit dockable pane, next to the Formcraft Browser which
-    /// stays reachable until the shell covers it (U10). The add-in supplies what the shell can't know on its own: Revit's
-    /// theme, the open document and the Claude service. Settings are the person's own (%APPDATA%\Formcraft\settings.json).
+    /// Hosts the Formcraft pane (Formcraft.Shell's ShellView) in a Revit dockable pane: the add-in's one pane. The add-in
+    /// supplies what the shell can't know on its own: Revit's theme, the open document, the Claude service and the working
+    /// Connect page (FormcraftBrowser.Page). Settings are the person's own (%APPDATA%\Formcraft\settings.json).
     /// </summary>
     public static class ShellHost
     {
@@ -50,6 +50,8 @@ namespace revit_mcp_plugin.Shell
             Pane = new ShellViewModel(Licence, Connection, Document, Settings)
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
+                // Connect is the add-in's working page: Claude service, health, probe, families, files, activity, guard.
+                ConnectContent = FormcraftBrowser.Page,
             };
             _view = new ShellView { DataContext = Pane };
             // fmc_ui (U11): Claude reads and steers the pane through the command set.
@@ -71,6 +73,13 @@ namespace revit_mcp_plugin.Shell
         {
             DockablePane pane = app.GetDockablePane(PaneId);
             if (!pane.IsShown()) pane.Show();
+        }
+
+        /// <summary>Shows the pane on Connect (Core › Connect AI, and the page's own links to Files, Activity, Guard).</summary>
+        public static void ShowConnect(UIApplication app)
+        {
+            ShowPane(app);
+            if (Pane.IsMain && !Pane.IsConnectOpen) Pane.OpenConnectCommand.Execute(null);
         }
 
         /// <summary>The Log file window (board core/UI_Log), from the ribbon's Core › Log file.</summary>

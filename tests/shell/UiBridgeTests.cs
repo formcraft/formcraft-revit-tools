@@ -150,6 +150,23 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task Connect_shows_the_host_page_in_place_of_the_placeholder()
+        {
+            var (placeholder, host, sectionAfter) = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Vm.ConnectContent = new System.Windows.Controls.TextBlock();
+                p.Bridge.OpenSection("Connect");
+                var r = (p.Vm.ShowSection, p.Vm.ShowHostConnect);
+                p.Bridge.OpenSection("QA");
+                return (r.ShowSection, r.ShowHostConnect, p.Vm.ShowSection && !p.Vm.ShowHostConnect);
+            });
+            await Assert.That(placeholder).IsFalse();
+            await Assert.That(host).IsTrue();
+            await Assert.That(sectionAfter).IsTrue();
+        }
+
+        [Test]
         public async Task Screenshot_needs_the_pane_showing()
         {
             var message = OnSta(() =>
