@@ -56,9 +56,24 @@ namespace Formcraft.Shell.Preview
                 Render((FrameworkElement)gallery.Content, Path.Combine(folder, $"kit-{name}-dialog.png"));
                 gallery.Close();
 
-                var main = new MainWindow { ShowActivated = false, Left = -20000, Top = -20000 };
+                var main = new MainWindow { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
                 main.Show();
                 Render((FrameworkElement)main.Content, Path.Combine(folder, $"pane-{name}-signin.png"));
+
+                // The main pane at the board widths, in each document state (boards: gen_panes.py pane(), core/ResponsivePane)
+                main.Services.SignInToMainPane();
+                foreach (var (doc, label) in new[] { (MockDocumentContext.LiveProject, "live"), (MockDocumentContext.SharedModel, "shared"), (MockDocumentContext.NewModel, "setup") })
+                {
+                    main.Services.OpenDocument = doc;
+                    foreach (var width in new[] { 440.0, 360.0 })
+                    {
+                        main.Shell.Width = width;
+                        Render(main.Shell, Path.Combine(folder, $"pane-{name}-{label}-{width}.png"));
+                    }
+                }
+                main.Services.Pane.Account.ReleaseSeatCommand.Execute(null);
+                main.Shell.Width = 440;
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-dialog.png"));
                 main.Close();
             }
             Console.WriteLine("Snapshots saved to " + folder);
@@ -75,7 +90,16 @@ namespace Formcraft.Shell.Preview
             var host = new DrawingVisual();
             using (var dc = host.RenderOpen())
             {
-                dc.DrawRectangle(new VisualBrush(element), null, new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+                // True size from the top-left; anything wider than the element is clipped, not squeezed in.
+                var brush = new VisualBrush(element)
+                {
+                    Stretch = Stretch.None,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top,
+                    ViewboxUnits = BrushMappingMode.Absolute,
+                    Viewbox = new Rect(VisualTreeHelper.GetOffset(element).X, VisualTreeHelper.GetOffset(element).Y, element.ActualWidth, element.ActualHeight),
+                };
+                dc.DrawRectangle(brush, null, new Rect(0, 0, element.ActualWidth, element.ActualHeight));
             }
             bitmap.Render(host);
             var png = new PngBitmapEncoder();

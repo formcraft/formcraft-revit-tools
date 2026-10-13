@@ -26,13 +26,14 @@ namespace Formcraft.Shell.Services
 
     public sealed class Account
     {
-        public Account(string name, string email, string organisation, string role, string plan)
+        public Account(string name, string email, string organisation, string role, string plan, bool isAdmin = false)
         {
             Name = name;
             Email = email;
             Organisation = organisation;
             Role = role;
             Plan = plan;
+            IsAdmin = isAdmin;
         }
 
         public string Name { get; }
@@ -40,6 +41,8 @@ namespace Formcraft.Shell.Services
         public string Organisation { get; }
         public string Role { get; }
         public string Plan { get; }
+        /// <summary>Admins manage roles, seats and licences (Admin button, U07).</summary>
+        public bool IsAdmin { get; }
     }
 
     /// <summary>What the shell knows about the licence on this PC.</summary>

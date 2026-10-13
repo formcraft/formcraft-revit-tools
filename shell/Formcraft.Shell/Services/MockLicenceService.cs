@@ -32,7 +32,7 @@ namespace Formcraft.Shell.Services
             var today = DateTime.Today;
             var yearEnd = new DateTime(today.Year, 12, 31);
             Current = new LicenceState(
-                new Account("[NAME A]", _pendingEmail, "Formcraft Design & Construction", "BIM Coordinator", "Team"),
+                new Account("[NAME A]", _pendingEmail, "Formcraft Design & Construction", "BIM Coordinator", "Team", isAdmin: true),
                 new List<ModuleLicence>
                 {
                     new ModuleLicence(FmcModule.Core, ModuleStatus.Included, null),

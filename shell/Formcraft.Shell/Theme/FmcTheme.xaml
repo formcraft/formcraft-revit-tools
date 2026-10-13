@@ -9,6 +9,10 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:c="clr-namespace:Formcraft.Shell.Controls">
 
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="FmcIcons.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
   <!-- Type: IBM Plex embedded in this assembly (resources/fonts), Segoe UI / Consolas if it can't load -->
   <FontFamily x:Key="Fmc.Font">pack://application:,,,/Formcraft.Shell;component/Fonts/#IBM Plex Sans, Segoe UI</FontFamily>
   <FontFamily x:Key="Fmc.Mono">pack://application:,,,/Formcraft.Shell;component/Fonts/#IBM Plex Mono, Consolas</FontFamily>
@@ -628,18 +632,197 @@
   </Style>
   <Style TargetType="c:FmcDialog" BasedOn="{StaticResource FmcDialog}"/>
 
-  <!-- Navigation tab (group row) and section button -->
-  <Style x:Key="FmcNav.Group" TargetType="RadioButton">
+  <!-- Line icon (Theme/FmcIcons.xaml), drawn in the current Foreground -->
+  <Style TargetType="c:FmcIcon">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:FmcIcon">
+          <Viewbox Width="{TemplateBinding Size}" Height="{TemplateBinding Size}" Stretch="Uniform">
+            <Canvas Width="24" Height="24">
+              <Path Data="{TemplateBinding Data}" Stroke="{TemplateBinding Foreground}" StrokeThickness="2"
+                    StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+            </Canvas>
+          </Viewbox>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Header buttons (Settings, Admin): pressed while that page is open -->
+  <Style x:Key="FmcToggleButton" TargetType="ToggleButton">
     <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
-    <Setter Property="FontSize" Value="12"/>
-    <Setter Property="Foreground" Value="{DynamicResource Fmc.TabBrush}"/>
-    <Setter Property="MinHeight" Value="30"/>
+    <Setter Property="FontSize" Value="{StaticResource Fmc.Size.Control}"/>
+    <Setter Property="FontWeight" Value="Normal"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.InkBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource Fmc.SurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Fmc.LineBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="8,1"/>
+    <Setter Property="MinHeight" Value="26"/>
     <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="RadioButton">
-          <Border x:Name="Bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,2" Padding="8,0">
+        <ControlTemplate TargetType="ToggleButton">
+          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource Fmc.Radius.Button}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.AccentBrush}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.PrimaryBrush}"/>
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.PrimaryBrush}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Fmc.OnPrimaryBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Round status chip button (header "Connected"): pressed while Connect is open -->
+  <Style x:Key="FmcStatusChip" TargetType="ToggleButton" BasedOn="{StaticResource FmcToggleButton}">
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToggleButton">
+          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.AccentBrush}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.PrimaryBrush}"/>
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.PrimaryBrush}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Fmc.OnPrimaryBrush}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Pill button (quick tools) -->
+  <Style x:Key="FmcButton.Pill" TargetType="Button">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.InkBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource Fmc.SurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Fmc.LineBrush}"/>
+    <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Padding" Value="7,0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Grid>
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="12"/>
+            <Border x:Name="Press" Background="{DynamicResource Fmc.InkBrush}" CornerRadius="12" Opacity="0"/>
+            <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.AccentBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Press" Property="Opacity" Value="0.10"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Small tag: module tags (+Flow, +Model, +Build) and the quick tools' "Flow" -->
+  <Style x:Key="FmcTag" TargetType="ContentControl">
+    <Setter Property="FontSize" Value="9.5"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Background" Value="{DynamicResource Fmc.Chip.GreyBg}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ContentControl">
+          <Border Background="{TemplateBinding Background}" CornerRadius="3" Padding="4,0">
+            <ContentPresenter TextElement.Foreground="{TemplateBinding Foreground}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Search box: magnifier, placeholder, 5 px radius -->
+  <Style x:Key="FmcSearchBox" TargetType="TextBox" BasedOn="{StaticResource FmcTextBox}">
+    <Setter Property="FontSize" Value="{StaticResource Fmc.Size.Control}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TextBox">
+          <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+            <DockPanel Margin="8,0">
+              <c:FmcIcon DockPanel.Dock="Left" Data="{StaticResource Icon.Search}" Size="13" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="0,0,6,0"/>
+              <Grid>
+                <TextBlock x:Name="Placeholder" Text="{TemplateBinding c:Fmc.Placeholder}" Foreground="{DynamicResource Fmc.MutedBrush}"
+                           Padding="2,0,0,0" VerticalAlignment="Center" Visibility="Collapsed" IsHitTestVisible="False" TextTrimming="CharacterEllipsis"/>
+                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Focusable="False"
+                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+              </Grid>
+            </DockPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="Text" Value="">
+              <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.MutedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Fmc.AccentBrush}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Compact layout helpers (c:Fmc.Compact is set on the pane below 400 px) -->
+  <Style x:Key="Fmc.HideWhenCompact" TargetType="FrameworkElement">
+    <Style.Triggers>
+      <Trigger Property="c:Fmc.Compact" Value="True">
+        <Setter Property="Visibility" Value="Collapsed"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- Navigation tab (group row) and section button -->
+  <Style x:Key="FmcNav.Group" TargetType="ToggleButton">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.TabBrush}"/>
+    <Setter Property="MinHeight" Value="30"/>
+    <Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToggleButton">
+          <Border x:Name="Bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="0,0,0,2" Padding="{TemplateBinding Padding}">
             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <ControlTemplate.Triggers>
@@ -652,9 +835,15 @@
         </ControlTemplate>
       </Setter.Value>
     </Setter>
+    <Style.Triggers>
+      <Trigger Property="c:Fmc.Compact" Value="True">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Padding" Value="3,0"/>
+      </Trigger>
+    </Style.Triggers>
   </Style>
 
-  <Style x:Key="FmcNav.Section" TargetType="RadioButton">
+  <Style x:Key="FmcNav.Section" TargetType="ToggleButton">
     <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
     <Setter Property="FontSize" Value="{StaticResource Fmc.Size.Control}"/>
     <Setter Property="Foreground" Value="{DynamicResource Fmc.SectionInkBrush}"/>
@@ -664,9 +853,9 @@
     <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="RadioButton">
+        <ControlTemplate TargetType="ToggleButton">
           <Border x:Name="Bd" Background="{DynamicResource Fmc.SurfaceBrush}" BorderBrush="{DynamicResource Fmc.LineBrush}" BorderThickness="1"
-                  CornerRadius="{StaticResource Fmc.Radius.Nav}" Padding="8,0">
+                  CornerRadius="{StaticResource Fmc.Radius.Nav}" Padding="6,0">
             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <ControlTemplate.Triggers>

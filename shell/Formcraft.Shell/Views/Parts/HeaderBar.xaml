@@ -1,0 +1,60 @@
+<!--
+  Pane header (board: every pane board's frame, gen_panes.py pane()): Formcraft, the Connected chip (opens Connect),
+  then Settings, Admin (admins only) and Help. Compact: the chip shows its dot only, Settings and Admin their icons.
+  Parts load before they join the pane, so they use DynamicResource for theme styles.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.Parts.HeaderBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:Formcraft.Shell.Controls">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="Vis"/>
+  </UserControl.Resources>
+  <Border Background="{DynamicResource Fmc.HeaderBrush}" Height="34" Padding="10,0">
+    <DockPanel VerticalAlignment="Center" LastChildFill="False">
+      <TextBlock Text="Formcraft" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Foreground="{DynamicResource Fmc.InkBrush}"/>
+
+      <c:FmcStateButton Style="{DynamicResource FmcStatusChip}" Margin="6,0,0,0" VerticalAlignment="Center"
+                        Command="{Binding OpenConnectCommand}" IsChecked="{Binding IsConnectOpen, Mode=OneWay}"
+                        AutomationProperties.Name="{Binding ConnectionText}" ToolTip="Connect: health, kit, folders, safety, chat, AI">
+        <StackPanel Orientation="Horizontal">
+          <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+            <Ellipse.Style>
+              <Style TargetType="Ellipse">
+                <Setter Property="Fill" Value="{DynamicResource Fmc.GoodBrush}"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                    <Setter Property="Fill" Value="{DynamicResource Fmc.CriticalBrush}"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Ellipse.Style>
+          </Ellipse>
+          <TextBlock Text="{Binding ConnectionText}" Margin="5,0,0,0" Style="{DynamicResource Fmc.HideWhenCompact}"/>
+        </StackPanel>
+      </c:FmcStateButton>
+
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Visibility="{Binding IsMain, Converter={StaticResource Vis}}">
+          <c:FmcStateButton Style="{DynamicResource FmcToggleButton}" Command="{Binding OpenSettingsCommand}" IsChecked="{Binding SettingsOpen, Mode=OneWay}"
+                            AutomationProperties.Name="Settings" ToolTip="Settings: yours, and the team's" Margin="0,0,6,0">
+            <StackPanel Orientation="Horizontal">
+              <c:FmcIcon IconKey="Icon.Settings"/>
+              <TextBlock Text="Settings" Margin="4,0,0,0" Style="{DynamicResource Fmc.HideWhenCompact}"/>
+            </StackPanel>
+          </c:FmcStateButton>
+          <c:FmcStateButton Style="{DynamicResource FmcToggleButton}" Command="{Binding OpenAdminCommand}" IsChecked="{Binding IsAdminOpen, Mode=OneWay}"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource Vis}}"
+                            AutomationProperties.Name="Admin" ToolTip="Admin: roles, permissions, licences and seats" Margin="0,0,6,0">
+            <StackPanel Orientation="Horizontal">
+              <c:FmcIcon IconKey="Icon.Admin"/>
+              <TextBlock Text="Admin" Margin="4,0,0,0" Style="{DynamicResource Fmc.HideWhenCompact}"/>
+            </StackPanel>
+          </c:FmcStateButton>
+        </StackPanel>
+        <Button Content="?" Style="{DynamicResource FmcButton.Secondary}" Command="{Binding HelpCommand}"
+                AutomationProperties.Name="Help" ToolTip="Help and the first-run tour"/>
+      </StackPanel>
+    </DockPanel>
+  </Border>
+</UserControl>

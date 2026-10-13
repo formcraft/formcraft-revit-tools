@@ -23,6 +23,7 @@ stay as accents. They are checked side by side with the real panels in U10 and a
 | Navy | `#1B2532` | `#1B2532` | Brand navy: AI tag text, logo |
 | Orange | `#FFAE61` | `#FFAE61` | Brand line under the header, AI tag |
 | Primary / OnPrimary | `#1B2532` / `#FFFFFF` | `#4A6B96` / `#FFFFFF` | Primary buttons, selected section, switch on |
+| TagOnPrimary | `#33465C` | `#3D5A80` | Module tag on a selected section button |
 | Accent | `#1B2532` | `#9DBBE3` | Selected group underline, focus ring, active borders |
 | Ink / Muted | `#1A1D21` / `#5B6270` | `#F1F3F5` / `#B9C0CB` | Body text / secondary text, hints |
 | Tab / SectionInk | `#4A515C` / `#3B424D` | `#C7CDD6` / `#DDE1E6` | Group tab text / section button text |
@@ -70,6 +71,18 @@ at least 4.5:1 in both themes and the focus ring at least 3:1 (`tests/shell` che
 | `FmcNav.Group`, `FmcNav.Section` | RadioButton | rest, hover, selected |
 | `FmcText.GroupTitle` / `.Body` / `.Hint`, `FmcGroup` | TextBlock, Border | |
 | `Fmc.FocusVisual` | all | keyboard focus ring, on every control |
+| `FmcToggleButton` | ToggleButton | header Settings and Admin: pressed while that page is open |
+| `FmcStatusChip` | ToggleButton | the header's round Connected chip |
+| `FmcButton.Pill` | Button | quick tools (Touch, Section Box, Tag Tidy) |
+| `FmcTag` | ContentControl | small tag: module tags (`+Flow`, `+Model`, `+Build`), the quick tools' "Flow" |
+| `FmcSearchBox` | TextBox | magnifier, placeholder ("Find…" when compact) |
+| `Fmc.HideWhenCompact` | any | hidden below 400 px |
+
+Controls (namespace `c:`): `FmcIcon` (a line icon from `Theme/FmcIcons.xaml` by `IconKey`, in the current Foreground),
+`FmcStateButton` (shows a state from its binding, a click only runs Command: tabs, sections, header pages),
+`FlexRow` (equal shares that never go below what a child needs, like the boards' `flex: 1`).
+`c:Fmc.Compact` is set on the pane below 400 px and inherited, so any style can switch with a plain trigger.
+Icons: `Theme/FmcIcons.xaml` holds the path data of `resources/icons/pane-*.svg`; tests keep the two the same.
 
 `c:` is `clr-namespace:Formcraft.Shell.Controls;assembly=Formcraft.Shell`. Scroll bars inside the pane are styled
 implicitly. Still to add when a step needs them: a drop-down (`FmcComboBox`, U05) and Touch sizes (U22).
