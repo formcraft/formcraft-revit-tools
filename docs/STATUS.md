@@ -8,7 +8,7 @@ Update this file whenever a step changes state.
 | Step | State | Note |
 |---|---|---|
 | U00 Repo, CI, running shell | Done | CI green on the first push: shell (net8 and net48), server tests, add-in for Revit 2025 |
-| U01 UI kit in code | In progress | Branch `feat/u01-ui-kit`: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` |
+| U01 UI kit in code | Done | PR #2: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` (TUnit) |
 | U02–U27 | To do | Next: U02 (pane frame at full parity) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
