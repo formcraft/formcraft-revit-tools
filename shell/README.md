@@ -9,5 +9,7 @@ drops into a shell that already handles sign-in, licences, navigation, settings 
 | `Formcraft.Shell.Preview` | Small WPF app that hosts the shell on its own, with mock services | net8.0-windows |
 
 Run it: `dotnet run --project shell/Formcraft.Shell.Preview`. Sign in with any email and password, then code `123456`.
+**Kit gallery** shows every UI kit style in every state. The "Revit theme" switch stands in for Revit's Light/Dark
+setting; "Pane theme" is the Settings choice. `-- --snapshot <folder>` saves PNGs of the gallery and pane, light and dark.
 
 The add-in (`plugin/`) will host `ShellView` in a Revit dockable pane (UI step U10 in `docs/UI_DEVELOPMENT.md`).

@@ -12,13 +12,34 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      # .NET 8 builds the shell; .NET 10 runs the tests on Microsoft.Testing.Platform (global.json)
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: |
+            8.0.x
+            10.0.x
       - name: Build the shell and its preview app
+        id: preview
         run: dotnet build shell/Formcraft.Shell.Preview/Formcraft.Shell.Preview.csproj -c Release
       - name: Build the shell for Revit 2020-2024 (net48)
         run: dotnet build shell/Formcraft.Shell/Formcraft.Shell.csproj -c Release -f net48
+      - name: Shell tests (theme, kit styles, services)
+        run: dotnet test --project tests/shell/Formcraft.Shell.Tests.csproj -c Release --report-trx --results-directory "${{ github.workspace }}/test-results"
+      # The next steps run even when tests fail, so a failure shows its test name, message and the screens
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: shell-test-results
+          path: test-results
+          if-no-files-found: ignore
+      - name: Kit gallery snapshots (light and dark, 440 and 360 px)
+        if: ${{ !cancelled() && steps.preview.outcome == 'success' }}
+        run: shell/Formcraft.Shell.Preview/bin/Release/net8.0-windows/Formcraft.Shell.Preview.exe --snapshot "${{ github.workspace }}/snapshots" | Out-Host
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.preview.outcome == 'success' }}
+        with:
+          name: kit-snapshots
+          path: snapshots
       - uses: actions/upload-artifact@v4
         with:
           name: shell-preview

@@ -1,0 +1,243 @@
+<Window x:Class="Formcraft.Shell.Preview.KitGalleryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:Formcraft.Shell.Controls;assembly=Formcraft.Shell"
+        xmlns:local="clr-namespace:Formcraft.Shell.Preview"
+        Title="Formcraft UI kit · gallery (compare with the UI kit board)" Width="640" Height="900" MinWidth="420"
+        Background="{DynamicResource Fmc.BackdropBrush}">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcColors.Light.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcTheme.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Gallery layout only -->
+      <Style x:Key="Heading" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Fmc.MutedBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+      </Style>
+      <Style x:Key="Name" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Fmc.Mono}"/>
+        <Setter Property="FontSize" Value="10.5"/>
+        <Setter Property="Foreground" Value="{DynamicResource Fmc.MutedBrush}"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+      </Style>
+      <Style x:Key="Row" TargetType="WrapPanel">
+        <Setter Property="Margin" Value="0,0,0,4"/>
+      </Style>
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <DockPanel>
+    <Border DockPanel.Dock="Top" Padding="10,8" Background="{DynamicResource Fmc.HeaderBrush}"
+            BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,0,0,1">
+      <StackPanel>
+        <local:ThemeBar DataContext="{Binding Theme}"/>
+        <WrapPanel Margin="0,6,0,0">
+          <TextBlock Text="Pane width" Style="{StaticResource FmcText.Hint}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+          <ListBox Style="{StaticResource FmcSegmented}" ItemsSource="{Binding Widths}" DisplayMemberPath="Label"
+                   SelectedValuePath="Value" SelectedValue="{Binding PaneWidth}" AutomationProperties.Name="Pane width" Margin="0,0,10,0"/>
+          <TextBlock Text="Hover, press and Tab through the controls to see those states." Style="{StaticResource FmcText.Hint}" VerticalAlignment="Center"/>
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+
+    <Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+      <Border x:Name="Pane" Width="{Binding PaneWidth}" Margin="12" HorizontalAlignment="Left" CornerRadius="{StaticResource Fmc.Radius.Dialog}"
+              Background="{DynamicResource Fmc.SurfaceBrush}" BorderBrush="{DynamicResource Fmc.LineBrush}" BorderThickness="1">
+          <StackPanel>
+            <Border Height="2" Background="{DynamicResource Fmc.OrangeBrush}" CornerRadius="8,8,0,0"/>
+
+            <!-- Colours -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="COLOURS" Style="{StaticResource Heading}"/>
+                <ItemsControl ItemsSource="{Binding Swatches}">
+                  <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Width="68" Margin="0,0,6,6">
+                        <Border Height="22" CornerRadius="3" BorderThickness="1" BorderBrush="{DynamicResource Fmc.DividerBrush}"
+                                local:Swatch.Token="{Binding}"/>
+                        <TextBlock Text="{Binding}" FontSize="10" Foreground="{DynamicResource Fmc.MutedBrush}" TextTrimming="CharacterEllipsis"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+
+            <!-- Buttons -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="BUTTONS" Style="{StaticResource Heading}"/>
+                <WrapPanel Style="{StaticResource Row}">
+                  <Button Content="Primary" Style="{StaticResource FmcButton.Primary}" Margin="0,0,6,6"/>
+                  <Button Content="Secondary" Style="{StaticResource FmcButton.Secondary}" Margin="0,0,6,6"/>
+                  <Button Content="Disabled" Style="{StaticResource FmcButton.Primary}" IsEnabled="False" Margin="0,0,6,6"/>
+                  <Button Content="Disabled" Style="{StaticResource FmcButton.Secondary}" IsEnabled="False" Margin="0,0,6,6"/>
+                </WrapPanel>
+                <WrapPanel Style="{StaticResource Row}">
+                  <Button Content="Run" Style="{StaticResource FmcButton.Primary}" c:Fmc.Busy="{Binding Busy}" Margin="0,0,6,6"/>
+                  <Button Content="Check now" Style="{StaticResource FmcButton.Secondary}" c:Fmc.Busy="{Binding Busy}" Margin="0,0,6,6"/>
+                  <Button Content="Busy on / off" Style="{StaticResource FmcButton.Secondary}" Command="{Binding ToggleBusyCommand}" Margin="0,0,6,6"/>
+                </WrapPanel>
+                <WrapPanel Style="{StaticResource Row}">
+                  <Button Content="Check with Claude" Style="{StaticResource FmcButton.Ai}" Margin="0,0,6,6"/>
+                  <Button Content="Check with Claude" Style="{StaticResource FmcButton.Ai}" c:Fmc.NeedsKey="True" Margin="0,0,6,6"/>
+                  <Button Style="{StaticResource FmcButton.Icon}" AutomationProperties.Name="Close" ToolTip="Icon button" Margin="0,0,6,6">
+                    <Path Data="M6,6 L18,18 M18,6 L6,18" Width="14" Height="14" Stretch="Uniform" StrokeThickness="2.2"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="{DynamicResource Fmc.SectionInkBrush}"/>
+                  </Button>
+                </WrapPanel>
+                <TextBlock Text="FmcButton.Primary / .Secondary / .Ai (needs key) / .Icon · c:Fmc.Busy" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Switch and segmented -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="SWITCH AND SEGMENTED" Style="{StaticResource Heading}"/>
+                <CheckBox Style="{StaticResource FmcToggle}" Content="On" IsChecked="True"/>
+                <CheckBox Style="{StaticResource FmcToggle}" Content="Off"/>
+                <CheckBox Style="{StaticResource FmcToggle}" Content="Claude in shared models (only you set this)" IsChecked="False" c:Fmc.Locked="True"
+                          ToolTip="Only you can turn this on, in Settings › General."/>
+                <CheckBox Style="{StaticResource FmcToggle}" Content="Team rule: dry run first" IsChecked="True" c:Fmc.Locked="True"
+                          ToolTip="Set by your BIM Manager."/>
+                <CheckBox Style="{StaticResource FmcToggle}" Content="Disabled" IsEnabled="False"/>
+                <TextBlock Text="FmcToggle · c:Fmc.Locked" Style="{StaticResource Name}" Margin="0,2,0,10"/>
+                <TextBlock Text="Theme" Style="{StaticResource FmcText.GroupTitle}" Margin="0,0,0,4"/>
+                <ListBox Style="{StaticResource FmcSegmented}" ItemsSource="{Binding SegmentedOptions}" DisplayMemberPath="Label"
+                         SelectedValuePath="Value" SelectedValue="{Binding SegmentedSample}" AutomationProperties.Name="Theme"/>
+                <TextBlock Text="FmcSegmented (ListBox)" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Chips and check rows -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="CHIPS AND CHECK LINES" Style="{StaticResource Heading}"/>
+                <WrapPanel Style="{StaticResource Row}">
+                  <ContentControl Style="{StaticResource FmcChip.Good}" Content="OK" Margin="0,0,6,6"/>
+                  <ContentControl Style="{StaticResource FmcChip.Warn}" Content="Check" Margin="0,0,6,6"/>
+                  <ContentControl Style="{StaticResource FmcChip.Bad}" Content="Refused" Margin="0,0,6,6"/>
+                  <ContentControl Style="{StaticResource FmcChip.Info}" Content="Info" Margin="0,0,6,6"/>
+                  <ContentControl Style="{StaticResource FmcChip.Grey}" Content="Not licensed" Margin="0,0,6,6"/>
+                </WrapPanel>
+                <TextBlock Text="FmcChip.Good / .Warn / .Bad / .Info / .Grey" Style="{StaticResource Name}" Margin="0,0,0,10"/>
+                <TextBlock Text="Kit check" Style="{StaticResource FmcText.GroupTitle}" Margin="0,0,0,2"/>
+                <c:FmcCheckRow Content="FMC Kit v2.2 found" IsChecked="True" Status="OK"/>
+                <c:FmcCheckRow Content="Shared parameters file" IsChecked="True" Status="OK"/>
+                <c:FmcCheckRow Content="Rulebooks v0.2" IsChecked="True" Status="Check" StatusKind="Warn"/>
+                <c:FmcCheckRow Content="Write folders (01_WIP, _Staging)" IsChecked="False" Status="Refused" StatusKind="Bad"/>
+                <c:FmcCheckRow Content="Line styles" IsChecked="False" Status="Info" StatusKind="Info"/>
+                <c:FmcCheckRow Content="Optional: keynote file" IsChecked="False" Status="Skipped" StatusKind="Grey"/>
+                <c:FmcCheckRow Content="No status" IsChecked="True"/>
+                <c:FmcCheckRow Content="Disabled" IsChecked="True" Status="OK" IsEnabled="False"/>
+                <TextBlock Text="FmcCheckRow (Status, StatusKind)" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Inputs -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="INPUTS" Style="{StaticResource Heading}"/>
+                <TextBlock Text="Empty" Style="{StaticResource FmcText.Hint}"/>
+                <TextBox Style="{StaticResource FmcTextBox}" c:Fmc.Placeholder="Project code" Margin="0,2,0,6" AutomationProperties.Name="Project code"/>
+                <TextBlock Text="Filled" Style="{StaticResource FmcText.Hint}"/>
+                <TextBox Style="{StaticResource FmcTextBox}" Text="F26001" Margin="0,2,0,6"/>
+                <TextBlock Text="Invalid" Style="{StaticResource FmcText.Hint}"/>
+                <TextBox Style="{StaticResource FmcTextBox}" Text="F26-001" c:Fmc.Invalid="True" Margin="0,2,0,2"/>
+                <TextBlock Text="Project codes are a letter and five digits, for example F26001." FontSize="11" Foreground="{DynamicResource Fmc.CriticalBrush}" Margin="0,0,0,6" TextWrapping="Wrap"/>
+                <TextBlock Text="Read-only" Style="{StaticResource FmcText.Hint}"/>
+                <TextBox Style="{StaticResource FmcReadOnly}" Text="Z:\00_Standards\04_Families\_Staging" Margin="0,2,0,6"/>
+                <TextBlock Text="Password" Style="{StaticResource FmcText.Hint}"/>
+                <PasswordBox Style="{StaticResource FmcPasswordBox}" Password="sample" Margin="0,2,0,6"/>
+                <TextBlock Text="Disabled" Style="{StaticResource FmcText.Hint}"/>
+                <TextBox Style="{StaticResource FmcTextBox}" Text="F26001" IsEnabled="False" Margin="0,2,0,0"/>
+                <TextBlock Text="FmcTextBox (c:Fmc.Placeholder, c:Fmc.Invalid) · FmcReadOnly · FmcPasswordBox" Style="{StaticResource Name}" TextWrapping="Wrap"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Document banner -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="DOCUMENT BANNER" Style="{StaticResource Heading}"/>
+                <c:FmcDocBanner State="Setup" Header="New model · not saved yet" Content="Setup tools open" Margin="0,0,0,6"/>
+                <c:FmcDocBanner State="Shared" Header="F26001-FMC-ZZ-ZZ-M3-A-0001 · shared" Content="Shared model: Claude in shared models is on" Margin="0,0,0,6"/>
+                <c:FmcDocBanner State="Live" Header="F26001-FMC-ZZ-ZZ-M3-A-0001" Content="Live project: Claude reads and reports"/>
+                <TextBlock Text="FmcDocBanner (State: Setup, Shared, Live)" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Table -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="TABLE" Style="{StaticResource Heading}"/>
+                <DataGrid Style="{StaticResource FmcTable}" ItemsSource="{Binding Modules}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Module" Binding="{Binding Module}" Width="*"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
+                    <DataGridTextColumn Header="Until" Binding="{Binding Until}" Width="100"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Text="FmcTable (DataGrid)" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Navigation -->
+            <Border Style="{StaticResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="NAVIGATION" Style="{StaticResource Heading}"/>
+                <UniformGrid Rows="1" Margin="0,0,0,6">
+                  <RadioButton Style="{StaticResource FmcNav.Group}" GroupName="GalleryGroups" Content="Manage" IsChecked="True"/>
+                  <RadioButton Style="{StaticResource FmcNav.Group}" GroupName="GalleryGroups" Content="Flow"/>
+                  <RadioButton Style="{StaticResource FmcNav.Group}" GroupName="GalleryGroups" Content="Model"/>
+                  <RadioButton Style="{StaticResource FmcNav.Group}" GroupName="GalleryGroups" Content="Build"/>
+                </UniformGrid>
+                <WrapPanel>
+                  <RadioButton Style="{StaticResource FmcNav.Section}" GroupName="GallerySections" Content="Project" IsChecked="True" Margin="0,0,4,4"/>
+                  <RadioButton Style="{StaticResource FmcNav.Section}" GroupName="GallerySections" Content="Templates" Margin="0,0,4,4"/>
+                  <RadioButton Style="{StaticResource FmcNav.Section}" GroupName="GallerySections" Content="Families" Margin="0,0,4,4"/>
+                </WrapPanel>
+                <TextBlock Text="FmcNav.Group / FmcNav.Section" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+
+            <!-- Text and dialog -->
+            <Border Style="{StaticResource FmcGroup}" BorderThickness="0">
+              <StackPanel>
+                <TextBlock Text="TEXT AND DIALOG" Style="{StaticResource Heading}"/>
+                <TextBlock Text="Group title" Style="{StaticResource FmcText.GroupTitle}"/>
+                <TextBlock Text="Body text at 12.5. Signing in checks your seat and modules. It never reads or sends model content." Style="{StaticResource FmcText.Body}"/>
+                <TextBlock Text="Hint text at 10.5: your BIM Manager gives you this path." Style="{StaticResource FmcText.Hint}" Margin="0,4,0,8"/>
+                <TextBlock Text="Z:\00_Standards · IBM Plex Mono" FontFamily="{StaticResource Fmc.Mono}" FontSize="11.5" Foreground="{DynamicResource Fmc.InkBrush}" Margin="0,0,0,10"/>
+                <Button Content="Open a dialog" Style="{StaticResource FmcButton.Secondary}" Command="{Binding OpenDialogCommand}" HorizontalAlignment="Left"/>
+                <TextBlock Text="FmcText.GroupTitle / .Body / .Hint · FmcDialog (Esc closes)" Style="{StaticResource Name}"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+      </Border>
+    </ScrollViewer>
+
+    <!-- Drawn over the visible part of the pane, as in Revit -->
+    <c:FmcDialog Header="Release this seat" IsOpen="{Binding DialogOpen}" Width="{Binding PaneWidth}" HorizontalAlignment="Left" Margin="12">
+      <Border Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8,6">
+        <TextBlock Text="Frees your seat so someone else can use it. You'll need to sign in again here."
+                   Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontSize="11.5" TextWrapping="Wrap"/>
+      </Border>
+      <c:FmcDialog.Footer>
+        <StackPanel Orientation="Horizontal">
+          <Button Content="Cancel" Style="{StaticResource FmcButton.Secondary}" Command="{Binding CloseDialogCommand}" Margin="0,0,6,0"/>
+          <Button Content="Release" Style="{StaticResource FmcButton.Primary}" Command="{Binding CloseDialogCommand}"/>
+        </StackPanel>
+      </c:FmcDialog.Footer>
+    </c:FmcDialog>
+    </Grid>
+  </DockPanel>
+</Window>

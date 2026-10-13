@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Shell tests: theme, kit styles, services and view models. No Revit, no window on screen.
+    TUnit on Microsoft.Testing.Platform, the runner global.json sets for the whole repo (as tests/commandset).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TUnit" Version="1.73.19"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\shell\Formcraft.Shell\Formcraft.Shell.csproj"/>
+  </ItemGroup>
+
+</Project>

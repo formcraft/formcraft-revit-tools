@@ -18,13 +18,15 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: CI green on `main`; the preview app opens; sign-in → first-run → main pane works on mocks.
 - Test: C, P.
 
-### [ ] U01 Complete the UI kit in code
+### [~] U01 Complete the UI kit in code
 - Board: `core/UI_Kit`
-- Files: `Theme/FmcTheme.xaml`, new `Theme/FmcTheme.Dark.xaml`, `tests/shell/` (new test project)
+- Files: `Theme/FmcTheme.xaml`, new `Theme/FmcColors.Light.xaml` + `Theme/FmcColors.Dark.xaml` (same keys),
+  `Services/ThemeService.cs`, `Controls/*`, `tests/shell/` (new test project)
 - Add styles: `FmcToggle` (on/off/locked), `FmcSegmented`, `FmcChip.{Good,Warn,Bad,Info,Grey}`, `FmcCheckRow`,
   `FmcReadOnly`, `FmcTable` (DataGrid), `FmcDocBanner` (setup/shared/live), `FmcDialog` overlay, focus visuals.
 - Embed IBM Plex from `resources/fonts` as a WPF resource; fall back to Segoe UI.
-- Dark dictionary with the same keys; theme follows Revit (Settings › General can override).
+- Dark dictionary with the same keys; theme follows Revit (Settings › General can override). `ThemeService.SetHostTheme`
+  takes Revit's theme from the add-in; dark values sit with Revit's own dark panels.
 - Done: a "kit gallery" page in the preview app shows every style in every state, light and dark.
 - Test: P (compare with the UI kit board), C.
 
@@ -100,7 +102,11 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
   then one panel per licensed module with its parts switch (split button with checkboxes) and two small buttons.
   Icons from `resources/icons/png`.
 - The current `FormcraftBrowserPage` stays reachable until the shell covers it.
-- Done: in Revit 2025 the pane docks, floats and remembers its place; ribbon shows only licensed panels.
+- Theme: pass `UIThemeManager.CurrentTheme` to `ThemeService.SetHostTheme` at start-up and on every
+  `UIApplication.ThemeChanged`.
+- Done: in Revit 2025 the pane docks, floats and remembers its place; ribbon shows only licensed panels. Switching
+  Revit between Light and Dark in Options › Colors switches the pane at once, and the dark pane sits flush with Revit's
+  own panels (compare side by side; adjust `FmcColors.Dark.xaml` if not).
 - Test: R, M (the add-in answers `list_open` as before), C.
 
 ### [ ] U11 A Revit MCP bridge for UI tests

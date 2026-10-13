@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Formcraft.Shell.Services;
 using Formcraft.Shell.ViewModels;
 
 namespace Formcraft.Shell.Views
@@ -9,6 +10,7 @@ namespace Formcraft.Shell.Views
         public ShellView()
         {
             InitializeComponent();
+            ThemeService.Shared.Attach(this);
         }
 
         // PasswordBox can't bind; pass the value to the view model without storing it elsewhere.
