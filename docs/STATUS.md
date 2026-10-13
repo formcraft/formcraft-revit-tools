@@ -17,7 +17,7 @@ Update this file whenever a step changes state.
 | U07 Admin | Done | PR #8: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
 | U08 States | Done | PR #9: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
 | U09 Updates and the Log file window | Done | PR #10: Settings › Updates; Log file window reading the tools' own CSV format; filters, open, copy row |
-| U10 Host the shell in Revit; ribbon | In progress | Branch `feat/u10-revit-host`: Formcraft pane registered beside the Formcraft Browser; Core panel and a panel per licensed module; theme follows Revit; banner from the guard; built for Revit 2025 |
+| U10 Host the shell in Revit; ribbon | Done (R test partial) | PR #11. In Revit 2025.4 (journal 0031) the add-in starts and the Core, Manage, Flow, Model and Build panels build with every button; the pane itself, its theme switch and the banner on a new model still need a person to look (Revit's unsigned add-in prompt and the Home screen need clicks): Formcraft pane registered beside the Formcraft Browser; Core panel and a panel per licensed module; theme follows Revit; banner from the guard; built for Revit 2025 |
 | U11–U27 | To do | Next: U11 (the fmc_ui MCP bridge) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
