@@ -28,3 +28,8 @@ SOFTWARE.
 ```
 
 Keep this notice while any of that code remains.
+
+## IBM Plex
+
+`resources/fonts/*.ttf` (embedded in `Formcraft.Shell.dll`) are IBM Plex Sans and IBM Plex Mono, Copyright © 2017 IBM
+Corp., released under the SIL Open Font License 1.1. The full licence is in `resources/fonts/OFL.txt`.

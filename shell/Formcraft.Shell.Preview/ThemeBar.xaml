@@ -1,0 +1,14 @@
+<UserControl x:Class="Formcraft.Shell.Preview.ThemeBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Preview only: stands in for Revit's theme setting and the pane's Theme setting -->
+  <WrapPanel VerticalAlignment="Center">
+    <TextBlock Text="Revit theme" Style="{DynamicResource FmcText.Hint}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+    <ListBox Style="{DynamicResource FmcSegmented}" ItemsSource="{Binding RevitThemes}" DisplayMemberPath="Label"
+             SelectedValuePath="Value" SelectedValue="{Binding RevitTheme}" AutomationProperties.Name="Revit theme" Margin="0,0,14,0"/>
+    <TextBlock Text="Pane theme" Style="{DynamicResource FmcText.Hint}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+    <ListBox Style="{DynamicResource FmcSegmented}" ItemsSource="{Binding Choices}" DisplayMemberPath="Label"
+             SelectedValuePath="Value" SelectedValue="{Binding Choice}" AutomationProperties.Name="Pane theme" Margin="0,0,10,0"/>
+    <TextBlock Text="{Binding Effective}" Style="{DynamicResource FmcText.Hint}" VerticalAlignment="Center"/>
+  </WrapPanel>
+</UserControl>

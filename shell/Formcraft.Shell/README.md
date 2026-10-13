@@ -2,10 +2,11 @@
 
 | Folder | What goes here |
 |---|---|
-| `Theme/` | `FmcTheme.xaml`: every colour, size and control style. Views never hard-code a colour |
+| `Theme/` | `FmcColors.Light.xaml` / `FmcColors.Dark.xaml` (colours, same keys) and `FmcTheme.xaml` (sizes, styles). Views never hard-code a colour and read colours with `DynamicResource` |
+| `Controls/` | Small kit controls (`FmcCheckRow`, `FmcDocBanner`, `FmcDialog`) and the `Fmc.*` attached properties |
 | `Views/` | XAML user controls. `ShellView` is the pane frame; sections become their own views as they are built |
 | `ViewModels/` | One view model per view. `ShellViewModel` owns navigation, licence gating and status |
-| `Services/` | Interfaces the shell depends on (`ILicenceService`…) and their mock implementations |
+| `Services/` | Interfaces the shell depends on (`ILicenceService`…) and their mock implementations; `ThemeService` (follows Revit's theme) |
 
 Rules
 - MVVM: no logic in code-behind except what WPF forces (e.g. `PasswordBox`).

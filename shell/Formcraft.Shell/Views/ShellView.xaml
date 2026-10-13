@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              MinWidth="320" MaxWidth="560"
              FontFamily="{DynamicResource Fmc.Font}" FontSize="12.5"
-             Background="White">
+             Background="{DynamicResource Fmc.SurfaceBrush}" Foreground="{DynamicResource Fmc.InkBrush}">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcColors.Light.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Theme/FmcTheme.xaml"/>
       </ResourceDictionary.MergedDictionaries>
       <BooleanToVisibilityConverter x:Key="Vis"/>
@@ -16,11 +17,11 @@
   <DockPanel LastChildFill="True">
 
     <!-- Header: name, connection state, Settings, Help -->
-    <Border DockPanel.Dock="Top" Background="{StaticResource Fmc.HeaderBrush}" Height="34" Padding="10,0">
+    <Border DockPanel.Dock="Top" Background="{DynamicResource Fmc.HeaderBrush}" Height="34" Padding="10,0">
       <DockPanel VerticalAlignment="Center">
         <TextBlock Text="Formcraft" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center"/>
-        <Border Margin="8,0,0,0" Padding="8,2" CornerRadius="11" Background="{StaticResource Fmc.Chip.GreyBg}" VerticalAlignment="Center">
-          <TextBlock Text="{Binding HeaderStatus}" FontSize="11" Foreground="{StaticResource Fmc.Chip.GreyFg}"/>
+        <Border Margin="8,0,0,0" Padding="8,2" CornerRadius="11" Background="{DynamicResource Fmc.Chip.GreyBg}" VerticalAlignment="Center">
+          <TextBlock Text="{Binding HeaderStatus}" FontSize="11" Foreground="{DynamicResource Fmc.Chip.GreyFg}"/>
         </Border>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
           <Button Content="Settings" Style="{StaticResource FmcButton.Secondary}" Command="{Binding OpenSettingsCommand}"
@@ -29,24 +30,24 @@
         </StackPanel>
       </DockPanel>
     </Border>
-    <Border DockPanel.Dock="Top" Height="2" Background="{StaticResource Fmc.OrangeBrush}"/>
+    <Border DockPanel.Dock="Top" Height="2" Background="{DynamicResource Fmc.OrangeBrush}"/>
 
     <!-- Footer: status line -->
-    <Border DockPanel.Dock="Bottom" Background="{StaticResource Fmc.FooterBrush}" BorderBrush="#E3E6EA" BorderThickness="0,1,0,0" Padding="8,5">
-      <TextBlock Text="{Binding Status}" FontSize="11" Foreground="{StaticResource Fmc.MutedBrush}" TextTrimming="CharacterEllipsis"/>
+    <Border DockPanel.Dock="Bottom" Background="{DynamicResource Fmc.FooterBrush}" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0" Padding="8,5">
+      <TextBlock Text="{Binding Status}" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" TextTrimming="CharacterEllipsis"/>
     </Border>
 
     <Grid>
 
       <!-- 1. Sign in -->
-      <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding IsSignIn, Converter={StaticResource Vis}}" DataContext="{Binding SignIn}">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.IsSignIn, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding SignIn}">
         <StackPanel Margin="10">
           <TextBlock Text="Sign in to Formcraft" Style="{StaticResource FmcText.GroupTitle}"/>
           <TextBlock Text="{Binding Message}" Style="{StaticResource FmcText.Hint}" Margin="0,0,0,8"/>
           <TextBlock Text="Work email" Style="{StaticResource FmcText.Hint}"/>
           <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FmcTextBox}" Margin="0,2,0,6" AutomationProperties.Name="Work email"/>
           <TextBlock Text="Password" Style="{StaticResource FmcText.Hint}"/>
-          <PasswordBox x:Name="PasswordInput" MinHeight="28" Padding="6,4" Margin="0,2,0,8" PasswordChanged="OnPasswordChanged" AutomationProperties.Name="Password"/>
+          <PasswordBox x:Name="PasswordInput" Style="{StaticResource FmcPasswordBox}" Margin="0,2,0,8" PasswordChanged="OnPasswordChanged" AutomationProperties.Name="Password"/>
           <StackPanel Orientation="Horizontal">
             <Button Content="Sign in" Style="{StaticResource FmcButton.Primary}" Command="{Binding SignInCommand}" IsDefault="True" Margin="0,0,6,0"/>
             <Button Content="Sign in with Microsoft" Style="{StaticResource FmcButton.Secondary}" Margin="0,0,6,0"/>
@@ -62,7 +63,7 @@
       </ScrollViewer>
 
       <!-- 2. First-run setup -->
-      <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding IsWelcome, Converter={StaticResource Vis}}" DataContext="{Binding Welcome}">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.IsWelcome, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Welcome}">
         <StackPanel Margin="10">
           <TextBlock Text="Set up this PC" Style="{StaticResource FmcText.GroupTitle}"/>
           <TextBlock Text="Formcraft kit folder" Style="{StaticResource FmcText.Hint}"/>
@@ -79,7 +80,7 @@
                  Text="" ToolTip="Find a feature or rule… (Ctrl+K)" AutomationProperties.Name="Find a feature"/>
 
         <!-- Groups -->
-        <Border DockPanel.Dock="Top" BorderBrush="#E3E6EA" BorderThickness="0,0,0,1" Margin="10,2,10,0">
+        <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,0,0,1" Margin="10,2,10,0">
           <ItemsControl ItemsSource="{Binding Groups}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
@@ -112,23 +113,23 @@
         </ItemsControl>
 
         <!-- Document banner: which model, and what the live-model lock allows -->
-        <Border DockPanel.Dock="Top" BorderBrush="#E3E6EA" BorderThickness="0,1" Padding="10,6,10,8">
-          <Border Background="{StaticResource Fmc.Chip.GoodBg}" CornerRadius="5" Padding="8,6">
+        <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1" Padding="10,6,10,8">
+          <Border Background="{DynamicResource Fmc.Chip.GoodBg}" CornerRadius="5" Padding="8,6">
             <StackPanel>
-              <TextBlock Text="{Binding DocumentTitle}" FontWeight="SemiBold" FontSize="12" Foreground="{StaticResource Fmc.Chip.GoodFg}" TextTrimming="CharacterEllipsis"/>
-              <TextBlock Text="{Binding DocumentLock}" FontSize="11" Foreground="{StaticResource Fmc.Chip.GoodFg}"/>
+              <TextBlock Text="{Binding DocumentTitle}" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource Fmc.Chip.GoodFg}" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding DocumentLock}" FontSize="11" Foreground="{DynamicResource Fmc.Chip.GoodFg}"/>
             </StackPanel>
           </Border>
         </Border>
 
         <Grid>
           <!-- Section body: locked state or placeholder until the feature is built -->
-          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding ShowSection, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.ShowSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
             <StackPanel Margin="10">
               <TextBlock Text="{Binding Title}" Style="{StaticResource FmcText.GroupTitle}"/>
-              <Border Visibility="{Binding Locked, Converter={StaticResource Vis}}" Background="{StaticResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8" Margin="0,0,0,8">
+              <Border Visibility="{Binding Locked, Converter={StaticResource Vis}}" Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8" Margin="0,0,0,8">
                 <StackPanel>
-                  <TextBlock Text="{Binding LockedText}" Foreground="{StaticResource Fmc.Chip.WarnFg}" FontWeight="SemiBold"/>
+                  <TextBlock Text="{Binding LockedText}" Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontWeight="SemiBold"/>
                   <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                     <Button Content="Start a 14-day trial" Style="{StaticResource FmcButton.Primary}" Margin="0,0,6,0"/>
                     <Button Content="Ask your admin" Style="{StaticResource FmcButton.Secondary}"/>
@@ -140,7 +141,7 @@
           </ScrollViewer>
 
           <!-- Settings › Account -->
-          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding SettingsOpen, Converter={StaticResource Vis}}" DataContext="{Binding Account}">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.SettingsOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Account}">
             <StackPanel Margin="10">
               <TextBlock Text="Settings › Account" Style="{StaticResource FmcText.GroupTitle}"/>
               <TextBlock Text="{Binding Who}" Style="{StaticResource FmcText.Body}"/>
@@ -158,7 +159,7 @@
                       </Grid.ColumnDefinitions>
                       <TextBlock Text="{Binding Name}"/>
                       <TextBlock Grid.Column="1" Text="{Binding Status}"/>
-                      <TextBlock Grid.Column="2" Text="{Binding Until}" Foreground="{StaticResource Fmc.MutedBrush}"/>
+                      <TextBlock Grid.Column="2" Text="{Binding Until}" Foreground="{DynamicResource Fmc.MutedBrush}"/>
                     </Grid>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
