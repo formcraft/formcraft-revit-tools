@@ -16,7 +16,10 @@
   <DockPanel>
     <!-- Preview tools: not part of the pane -->
     <DockPanel DockPanel.Dock="Top" Margin="8,8,8,0">
-      <Button DockPanel.Dock="Right" Content="Kit gallery" Style="{StaticResource FmcButton.Secondary}" Click="OnOpenGallery" VerticalAlignment="Top"/>
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+        <Button Content="Log file" Style="{StaticResource FmcButton.Secondary}" Click="OnOpenLog" Margin="0,0,6,0" ToolTip="Core › Log file on the ribbon (U10)"/>
+        <Button Content="Kit gallery" Style="{StaticResource FmcButton.Secondary}" Click="OnOpenGallery"/>
+      </StackPanel>
       <StackPanel>
         <local:ThemeBar x:Name="Themes"/>
         <local:DocumentBar x:Name="Documents" Margin="0,6,0,0"/>

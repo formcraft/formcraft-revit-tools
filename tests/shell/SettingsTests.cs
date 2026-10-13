@@ -48,8 +48,8 @@ namespace Formcraft.Shell.Tests
                 return (a, s);
             });
 
-            await Assert.That(all).IsEqualTo("Account,General,Manage,Flow,Model,Build");
-            await Assert.That(someOnly).IsEqualTo("Account,General,Manage,Flow");
+            await Assert.That(all).IsEqualTo("Account,General,Manage,Flow,Model,Build,Updates");
+            await Assert.That(someOnly).IsEqualTo("Account,General,Manage,Flow,Updates");
         }
 
         [Test]
@@ -63,8 +63,8 @@ namespace Formcraft.Shell.Tests
                 return (b, string.Join(",", p.S.TabNames));
             });
 
-            await Assert.That(before).IsEqualTo("Account,General,Manage");
-            await Assert.That(after).IsEqualTo("Account,General,Manage,Build");
+            await Assert.That(before).IsEqualTo("Account,General,Manage,Updates");
+            await Assert.That(after).IsEqualTo("Account,General,Manage,Build,Updates");
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace Formcraft.Shell.Tests
             await Assert.That(title).IsEqualTo("Reset my settings");
             await Assert.That(before).IsEqualTo("Never");
             await Assert.That(after).IsEqualTo("2 hours");
-            await Assert.That(tab).IsEqualTo(6);
+            await Assert.That(tab).IsEqualTo(7);
         }
 
         [Test]

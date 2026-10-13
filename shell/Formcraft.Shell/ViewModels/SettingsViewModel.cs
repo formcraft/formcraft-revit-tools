@@ -40,7 +40,10 @@ namespace Formcraft.Shell.ViewModels
     /// </summary>
     public sealed class SettingsViewModel : ObservableObject
     {
-        public static readonly string[] AllTabs = { "Account", "General", "Manage", "Flow", "Model", "Build" };
+        /// <summary>The shell's version (Formcraft.Shell.csproj Version).</summary>
+        public static string ProductVersion => typeof(SettingsViewModel).Assembly.GetName().Version is Version v ? v.ToString(3) : "0.1.0";
+
+        public static readonly string[] AllTabs = { "Account", "General", "Manage", "Flow", "Model", "Build", "Updates" };
 
         private readonly ILicenceService _licence;
         private readonly IUserSettings _settings;
@@ -50,11 +53,16 @@ namespace Formcraft.Shell.ViewModels
         private readonly IKitService _kit;
         private readonly Action<string> _status;
         private readonly Action<DialogViewModel> _ask;
+        private readonly IUpdateService _updates;
+        private readonly Action _openLog;
         private SettingsTab? _current;
 
         public SettingsViewModel(ILicenceService licence, IUserSettings settings, ObservableCollection<ModuleParts> parts, ThemeService theme,
-                                 IKitService kit, Action<string> status, Action<DialogViewModel> ask)
+                                 IKitService kit, Action<string> status, Action<DialogViewModel> ask, IUpdateService? updates = null, Action? openLog = null)
         {
+            _updates = updates ?? new MockUpdateService();
+            _openLog = openLog ?? (() => { });
+            _updates.Changed += (_, __) => { if (Current?.Name == "Updates") Rebuild(); };
             _licence = licence;
             _settings = settings;
             _store = new SettingStore(settings);
@@ -104,6 +112,7 @@ namespace Formcraft.Shell.ViewModels
         {
             "Account" => "Account and licence sit first in Settings.",
             "General" => "One Settings for every module. General is Core's; a module's tab appears when it is licensed.",
+            "Updates" => "Version, updates that wait for Revit to close, rollback and support.",
             _ => "One Settings page. General is Core's; each licensed module adds a tab.",
         };
 
@@ -117,6 +126,7 @@ namespace Formcraft.Shell.ViewModels
             Tabs.Add(new SettingsTab("General", FmcModule.Core, General()));
             foreach (var m in new[] { FmcModule.Manage, FmcModule.Flow, FmcModule.Model, FmcModule.Build })
                 if (Licensed(m)) Tabs.Add(new SettingsTab(m.ToString(), m, ModuleTab(m)));
+            Tabs.Add(new SettingsTab("Updates", FmcModule.Core, Updates()));
             OnPropertyChanged(nameof(TabNames));
             _current = null;
             Current = Tabs.FirstOrDefault(t => t.Name == keep) ?? Tabs[0];
@@ -184,7 +194,7 @@ namespace Formcraft.Shell.ViewModels
                     new ChoiceSetting(_store, "general.language", "Language", new[] { "English (UK)", "English (US)" }, dropdown: true),
                     new ToggleSetting(_store, "general.usage", "Share anonymous usage counts", false, "Never model content or names"),
                     new ChoiceSetting(_store, "general.channel", "Update channel", new[] { "Stable", "Beta (testers)" }),
-                    new ReadOnlySetting("Version", "Formcraft 0.1 · " + modules + " · rulebooks " + rulebooks)),
+                    new ReadOnlySetting("Version", "Formcraft " + ProductVersion + " · " + modules + " · rulebooks " + rulebooks)),
                 new SettingsGroup("Module tabs",
                     new ButtonsSetting("", new[] { FmcModule.Manage, FmcModule.Flow, FmcModule.Model, FmcModule.Build }
                         .Where(Licensed)
@@ -194,6 +204,61 @@ namespace Formcraft.Shell.ViewModels
                 new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "general.considerations", _status)),
             };
         }
+
+        // ---------- Updates (account/PaneUpdates) ----------
+        private IReadOnlyList<SettingsGroup> Updates()
+        {
+            var kit = _kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder);
+            var kitLine = kit.KitFound ? string.Join(" · ", kit.Lines.Where(l => l.Label.StartsWith("FMC Kit") || l.Label.StartsWith("Rulebooks")).Select(l => l.Label.Replace(" found", ""))) : "Kit not found";
+            var modules = string.Join(", ", new[] { FmcModule.Core, FmcModule.Manage, FmcModule.Flow, FmcModule.Model, FmcModule.Build }
+                .Where(m => m == FmcModule.Core || Licensed(m))
+                .Select(m => m + (_licence.Current.For(m).Status == ModuleStatus.Trial ? " (trial)" : "")));
+            var available = _updates.Available;
+            var groups = new List<SettingsGroup>
+            {
+                new SettingsGroup("Formcraft for Revit",
+                    new ReadOnlySetting("Installed", _updates.Installed + " · " + modules + " · Revit 2025"),
+                    new ReadOnlySetting("Kit", kitLine),
+                    // The same setting as General › Update channel.
+                    new ChoiceSetting(_store, "general.channel", "Update channel", new[] { "Stable", "Beta (testers)" })),
+            };
+            if (available != null)
+            {
+                groups.Add(new SettingsGroup("Update available",
+                    new ReadOnlySetting(available.Version, available.Notes + " · " + available.Gates),
+                    new NoteSetting(_updates.UpdatePending
+                        ? available.Version + " installs when Revit closes. Your settings are kept; " + _updates.Installed + " is kept for rollback."
+                        : "Before updating: close Revit or the update waits until it closes. Your settings are kept. The previous version is kept for rollback.",
+                        _updates.UpdatePending ? ChipKind.Good : ChipKind.Info),
+                    new ButtonsSetting("", new[]
+                    {
+                        new SettingButton("Update when Revit closes", new RelayCommand(() => { _updates.UpdateWhenRevitCloses(); _status(available.Version + " installs when Revit closes."); }), primary: true),
+                        new SettingButton("Release notes", new RelayCommand(() => _status("Release notes: " + available.Notes + "."))),
+                        new SettingButton("Roll back to " + (_updates.RollbackVersion ?? "—"), new RelayCommand(AskRollBack)),
+                    })));
+            }
+            groups.Add(new SettingsGroup("Help and support",
+                new ButtonsSetting("", new[]
+                {
+                    new SettingButton("Guide", new RelayCommand(() => _status("Guide: opens the Formcraft guide at this section."))),
+                    new SettingButton("Replay the tour", new RelayCommand(() => { _store.Set("general.tour", "true"); _status("The 2-minute tour plays next time the pane opens."); })),
+                    new SettingButton("Send a support report", new RelayCommand(() => _status("Support report made: versions and log rows, no model content (Manual 7.7)."))),
+                    new SettingButton("Open the log file", new RelayCommand(_openLog)),
+                }, "A support report holds versions and log rows, never model content.")));
+            groups.Add(new SettingsGroup("Legal",
+                new ReadOnlySetting("Licence terms and privacy", "Formcraft terms · Data Protection Act 2019 notice")));
+            return groups;
+        }
+
+        public void CheckForUpdates()
+        {
+            _ = _updates.CheckAsync(_store.Get("general.channel") ?? "Stable");
+            _status(_updates.Available == null ? "You have the latest version." : "Update " + _updates.Available.Version + " is available.");
+        }
+
+        private void AskRollBack() => _ask(new DialogViewModel("Roll back to " + (_updates.RollbackVersion ?? "—"),
+            "Puts the previous version back when Revit closes. Your settings are kept.", "Roll back",
+            () => { _updates.RollBack(); _status("Rolls back to " + _updates.RollbackVersion + " when Revit closes."); return System.Threading.Tasks.Task.CompletedTask; }));
 
         // ---------- Module tabs (*/PaneSettings*) ----------
         private IReadOnlyList<SettingsGroup> ModuleTab(FmcModule m)

@@ -97,6 +97,18 @@ namespace Formcraft.Shell.Preview
                         Render(main.Shell, Path.Combine(folder, $"pane-{name}-{label}-{width}.png"));
                     }
                 }
+                // Log file window (U09; board core/UI_Log): the sample log, every day, and the Refused filter
+                foreach (var filter in new[] { "All", "Refused" })
+                {
+                    var log = new Formcraft.Shell.Views.LogWindow(new CsvLogReader(main.Services.Pane.LogPath)) { ShowActivated = false, Left = -20000, Top = -20000 };
+                    var logVm = (LogViewModel)log.DataContext;
+                    logVm.OnlyToday = false;
+                    logVm.Filter = filter;
+                    log.Show();
+                    Render((FrameworkElement)log.Content, Path.Combine(folder, $"log-{name}-{filter.ToLowerInvariant()}.png"));
+                    log.Close();
+                }
+
                 // States (U08; board account/PaneStates): each of the seven, then back to normal
                 foreach (var state in PreviewServices.StateNames.Skip(1))
                 {

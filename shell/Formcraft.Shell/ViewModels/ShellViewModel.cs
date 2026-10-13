@@ -117,7 +117,7 @@ namespace Formcraft.Shell.ViewModels
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
-                              IAdminService? admin = null)
+                              IAdminService? admin = null, IUpdateService? updates = null)
         {
             _licence = licence;
             _connection = connection;
@@ -137,7 +137,10 @@ namespace Formcraft.Shell.ViewModels
                                            () => Screen = ShellScreen.Main, s => Status = s);
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
-            Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog);
+            Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog,
+                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty));
+            Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
+            CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
@@ -267,6 +270,13 @@ namespace Formcraft.Shell.ViewModels
         public bool ShowQuickTools => _licence.Current.SignedIn && _licence.Current.For(FmcModule.Flow).CanUse && QuickTools.Count > 0;
         /// <summary>Quick tools whose Flow part is on (Touch, Section Box, Tag Tidy).</summary>
         public ObservableCollection<string> QuickTools { get; } = new ObservableCollection<string>();
+
+        /// <summary>Raised to open the Log file window (board core/UI_Log); the view opens it.</summary>
+        public event EventHandler? OpenLogRequested;
+
+        /// <summary>The log the window reads: FMC_MCP_FileLog.csv in the reports folder (the host can point elsewhere).</summary>
+        public string LogPath { get; set; } = CsvLogReader.DefaultPath;
+        public RelayCommand CheckUpdatesCommand { get; }
 
         /// <summary>The one Settings page with its tabs (boards core/PaneSettings, account/PaneAccount, */PaneSettings*).</summary>
         public SettingsViewModel Settings { get; }
@@ -427,7 +437,8 @@ namespace Formcraft.Shell.ViewModels
             }
             else if (Page == ShellPage.Settings)
             {
-                // Board core/PaneSettings footer.
+                // Board core/PaneSettings footer; Updates adds "Check for updates" (account/PaneUpdates).
+                if (Settings.CurrentName == "Updates") FooterActions.Add(new FooterAction("Check for updates", CheckUpdatesCommand));
                 FooterActions.Add(new FooterAction("Save", SaveSettingsCommand, primary: true));
                 FooterActions.Add(new FooterAction("Reset mine", ResetSettingsCommand));
             }
