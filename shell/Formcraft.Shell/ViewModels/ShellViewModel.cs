@@ -114,8 +114,9 @@ namespace Formcraft.Shell.ViewModels
         public bool IsWelcome => Screen == ShellScreen.Welcome;
         public bool IsMain => Screen == ShellScreen.Main;
 
+        // Licence state only. The board's "Connected" chip means the Revit/Claude service and arrives in U02/U12.
         public string HeaderStatus => _licence.Current.SignedIn
-            ? (_licence.Current.GraceOver ? "Sign in again" : "Connected")
+            ? (_licence.Current.GraceOver ? "Sign in again" : "Signed in")
             : "Not signed in";
 
         public GroupItem? CurrentGroup { get => _group; private set => Set(ref _group, value); }
@@ -184,7 +185,7 @@ namespace Formcraft.Shell.ViewModels
                 S("Check", "QA", FmcModule.Manage, null, "phase 2"),
                 S("Check", "Rules", FmcModule.Manage, null, "phase 2"),
                 S("Check", "Reports", FmcModule.Manage, null, "phase 3"),
-                S("Check", "Scripts", FmcModule.Manage, null, "phase 3"),
+                S("Check", "Scripts", FmcModule.Model, "+Model", "phase 4"),
             });
             yield return new GroupItem("Engineer", new[]
             {
