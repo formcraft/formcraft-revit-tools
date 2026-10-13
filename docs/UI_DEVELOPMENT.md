@@ -54,7 +54,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: turning a part off in Settings removes its group; licence changes in the mock update the pane at once.
 - Test: P, unit tests in `tests/shell`.
 
-### [~] U04 Search (Ctrl+K)
+### [x] U04 Search (Ctrl+K)
 - Board: `core/UI_Palette`
 - Files: new `Views/Parts/SearchView.xaml`, `ViewModels/SearchViewModel.cs`, `search` entries in `sections.json`
 - Finds sections, actions, settings and help from the registry; respects role and licence; Esc closes; arrow keys move.

@@ -11,7 +11,7 @@ Update this file whenever a step changes state.
 | U01 UI kit in code | Done | PR #2: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` (TUnit) |
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
 | U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
-| U04 Search (Ctrl+K) | In progress | Branch `feat/u04-search`: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
+| U04 Search (Ctrl+K) | Done | PR #5: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
 | U05–U27 | To do | Next: U05 (sign in and first-run setup, complete) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
