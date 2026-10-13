@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  push:
+    branches: [main, "feat/**", "fix/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  shell:
+    name: Pane shell (WPF, mock data)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build the shell and its preview app
+        run: dotnet build shell/Formcraft.Shell.Preview/Formcraft.Shell.Preview.csproj -c Release
+      - name: Build the shell for Revit 2020-2024 (net48)
+        run: dotnet build shell/Formcraft.Shell/Formcraft.Shell.csproj -c Release -f net48
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shell-preview
+          path: shell/Formcraft.Shell.Preview/bin/Release/net8.0-windows
+
+  server:
+    name: MCP server (TypeScript) and guard tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - working-directory: server
+        run: npm ci
+      - working-directory: server
+        run: npm run build
+      - working-directory: server
+        run: npm test
+
+  addin:
+    name: Add-in and command set (Revit 2025)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build plugin and command set
+        run: dotnet build mcp-servers-for-revit.sln -c "Release R25"
