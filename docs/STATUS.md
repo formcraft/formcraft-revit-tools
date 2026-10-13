@@ -10,7 +10,7 @@ Update this file whenever a step changes state.
 | U00 Repo, CI, running shell | Done | CI green on the first push: shell (net8 and net48), server tests, add-in for Revit 2025 |
 | U01 UI kit in code | Done | PR #2: all kit styles, light and dark, theme follows Revit, Plex embedded, kit gallery, `tests/shell` (TUnit) |
 | U02 Pane frame at full parity | Done | PR #3: header with Connected chip, Settings, Admin, Help; search box; tabs and section buttons with icons and module tags; quick tools; banner in three states; footer; dialog host; compact below 400 px |
-| U03 Sections registry, parts switches, licence gating | In progress | Branch `feat/u03-sections-registry`: `sections.json`, parts switches saved per person, licence gating, Structural section |
+| U03 Sections registry, parts switches, licence gating | Done | PR #4: `sections.json`, parts switches saved per person, licence gating, Structural section |
 | U04–U27 | To do | Next: U04 (search, Ctrl+K) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 

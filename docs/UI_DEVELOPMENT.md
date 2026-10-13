@@ -41,7 +41,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: side by side with the board at 440 px and at 360 px, layout and text match.
 - Test: P, C.
 
-### [~] U03 Sections registry, parts switches and licence gating
+### [x] U03 Sections registry, parts switches and licence gating
 - Boards: `core/Ribbon`, `manage|flow|model|build/PaneSettings*`
 - Files: new `Services/SectionRegistry.cs` + `Services/sections.json` (UI config, not kit data, embedded),
   `Services/UserSettings.cs`, `ViewModels/PartsViewModels.cs`, `ShellViewModel`
