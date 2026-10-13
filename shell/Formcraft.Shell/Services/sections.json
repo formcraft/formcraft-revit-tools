@@ -1,5 +1,5 @@
 {
-  "about": "The pane's groups, sections, quick tools and parts switches. UI configuration, not kit data. Boards are in design/boards; phases from docs/ROADMAP.md, U steps from docs/UI_DEVELOPMENT.md. A section or group with parts shows while any of them is on; a part only counts while its module is licensed.",
+  "about": "The pane's groups, sections, quick tools, parts switches and search entries (board core/UI_Palette). UI configuration, not kit data. Boards are in design/boards; phases from docs/ROADMAP.md, U steps from docs/UI_DEVELOPMENT.md. A section or group with parts shows while any of them is on; a part only counts while its module is licensed.",
   "parts": [
     { "id": "manage.setup", "module": "Manage", "name": "Setup" },
     { "id": "manage.drawings", "module": "Manage", "name": "Drawings" },
@@ -70,5 +70,17 @@
     { "name": "Touch", "parts": ["flow.touch"] },
     { "name": "Section Box", "parts": ["flow.3d"] },
     { "name": "Tag Tidy", "parts": ["flow.tags"] }
+  ],
+  "search": [
+    { "kind": "Section", "title": "Ready to issue", "detail": "Manage", "module": "Manage", "opens": "Issue", "words": ["sheet", "issue", "ready"], "parts": ["manage.drawings"] },
+    { "kind": "Action", "title": "Sheet Layout: align viewports", "detail": "Flow · FA", "module": "Flow", "opens": "Sheets", "words": ["align", "viewport"], "parts": ["flow.sheetlayout"] },
+    { "kind": "Action", "title": "Create sheets from the register", "detail": "Manage · dry run first", "module": "Manage", "opens": "Sheets", "words": ["register"], "parts": ["manage.drawings"] },
+    { "kind": "Setting", "title": "Sheet grid and title block guides", "detail": "Settings › Flow", "module": "Flow", "opens": "Settings", "words": ["title block", "grid"] },
+    { "kind": "Action", "title": "Run QA on this model", "detail": "Manage · ribbon button", "module": "Manage", "opens": "QA", "words": ["check", "health"], "parts": ["manage.check"] },
+    { "kind": "Action", "title": "Brief compliance check", "detail": "Manage › QA · uses the CIS", "module": "Manage", "opens": "QA", "words": ["qa", "brief", "cis"], "parts": ["manage.check"] },
+    { "kind": "Help", "title": "QA rulebook", "detail": "Rules", "module": "Core", "opens": "Rules", "words": ["rulebook"] },
+    { "kind": "Action", "title": "Start from brief: create levels", "detail": "Model · new files only", "module": "Model", "opens": "Brief", "words": ["brief", "grid"] },
+    { "kind": "Action", "title": "Find levels that break the naming rule", "detail": "Manage › QA", "module": "Manage", "opens": "QA", "words": ["naming"], "parts": ["manage.check"] },
+    { "kind": "Help", "title": "Level naming (decision D3)", "detail": "Manual 4.6", "module": "Core", "words": ["naming", "d3"] }
   ]
 }

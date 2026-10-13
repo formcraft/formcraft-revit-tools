@@ -71,6 +71,18 @@ namespace Formcraft.Shell.Preview
                         Render(main.Shell, Path.Combine(folder, $"pane-{name}-{label}-{width}.png"));
                     }
                 }
+                // Search (U04): the board's three sample searches, and one that finds nothing
+                foreach (var query in new[] { "sheet", "qa", "level", "roof" })
+                {
+                    main.Services.Pane.Search.Query = query;
+                    foreach (var width in new[] { 440.0, 360.0 })
+                    {
+                        main.Shell.Width = width;
+                        Render(main.Shell, Path.Combine(folder, $"pane-{name}-search-{query}-{width}.png"));
+                    }
+                }
+                main.Services.Pane.Search.Close();
+
                 // Parts switches (U03): Drawings and Touch off; then the Settings page with its switches
                 main.Services.Settings.SetPart("manage.drawings", false);
                 main.Services.Settings.SetPart("flow.touch", false);

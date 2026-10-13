@@ -12,7 +12,7 @@ namespace Formcraft.Shell.Tests
     public class SectionsTests
     {
         /// <summary>A mock licence whose modules a test can change.</summary>
-        private sealed class TestLicence : ILicenceService
+        internal sealed class TestLicence : ILicenceService
         {
             public LicenceState Current { get; private set; } = LicenceState.SignedOut;
             public event EventHandler? Changed;

@@ -26,7 +26,22 @@ namespace Formcraft.Shell.Views
                 vm.SignIn.Password = box.Password;
         }
 
-        // Ctrl+K: find a feature (board core/UI_Palette; the search itself is U04).
+        // In the search box: arrows move through the results, Enter opens, Esc clears and puts the section back.
+        private void OnSearchKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!(DataContext is ShellViewModel vm) || !vm.Search.IsOpen) return;
+            switch (e.Key)
+            {
+                case Key.Down: vm.Search.MoveNext(); break;
+                case Key.Up: vm.Search.MovePrevious(); break;
+                case Key.Enter: vm.Search.OpenSelected(); break;
+                case Key.Escape: vm.Search.Close(); break;
+                default: return;
+            }
+            e.Handled = true;
+        }
+
+        // Ctrl+K: find a feature (board core/UI_Palette).
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.K && Keyboard.Modifiers == ModifierKeys.Control && Search.IsVisible)
