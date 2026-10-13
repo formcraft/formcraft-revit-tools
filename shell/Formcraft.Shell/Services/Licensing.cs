@@ -82,6 +82,10 @@ namespace Formcraft.Shell.Services
         LicenceState Current { get; }
         event EventHandler? Changed;
         Task<SignInResult> SignInAsync(string email, string password);
+        /// <summary>Microsoft or Google sign-in: opens the browser, then comes back signed in (or not).</summary>
+        Task<SignInResult> SignInWithAsync(SignInProvider provider);
+        /// <summary>A PC with no internet: the admin's FMC_Licence_&lt;PC&gt;.lic file. Works 30 days, then needs a check-in.</summary>
+        Task<SignInResult> UseOfflineLicenceAsync(string path);
         Task<SignInResult> VerifyCodeAsync(string code);
         Task CheckNowAsync();
         Task SignOutAsync();
@@ -91,6 +95,8 @@ namespace Formcraft.Shell.Services
     }
 
     public enum SignInOutcome { SignedIn, NeedsCode, WrongPassword, NoSeat, Offline }
+
+    public enum SignInProvider { Microsoft, Google }
 
     public sealed class SignInResult
     {

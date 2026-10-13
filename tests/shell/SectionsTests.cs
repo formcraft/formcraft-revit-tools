@@ -27,6 +27,8 @@ namespace Formcraft.Shell.Tests
 
             public Task<SignInResult> SignInAsync(string email, string password) => throw new NotSupportedException();
             public Task<SignInResult> VerifyCodeAsync(string code) => throw new NotSupportedException();
+            public Task<SignInResult> SignInWithAsync(SignInProvider provider) => throw new NotSupportedException();
+            public Task<SignInResult> UseOfflineLicenceAsync(string path) => throw new NotSupportedException();
             public Task CheckNowAsync() => Task.CompletedTask;
             public Task SignOutAsync() => Task.CompletedTask;
             public Task ReleaseSeatAsync() => Task.CompletedTask;

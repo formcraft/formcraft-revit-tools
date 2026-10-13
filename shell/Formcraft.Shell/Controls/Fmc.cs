@@ -5,9 +5,6 @@ using System.Windows.Data;
 
 namespace Formcraft.Shell.Controls
 {
-    /// <summary>The five chip states of the UI kit.</summary>
-    public enum ChipKind { Good, Warn, Bad, Info, Grey }
-
     /// <summary>
     /// Attached properties the kit styles read, so plain WPF controls can show the board states:
     /// placeholder text, invalid input, busy buttons, the AI button's missing key and locked switches.

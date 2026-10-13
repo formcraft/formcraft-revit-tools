@@ -16,7 +16,21 @@ namespace Formcraft.Shell.Preview
         public PreviewServices(IUserSettings? settings = null)
         {
             Settings = settings ?? new JsonUserSettings(PreviewSettingsPath);
+            // No Z:\00_Standards on most PCs: start the preview on the sample kit (tests/shell/fixtures/kit).
+            if (Settings.Get(SettingKeys.KitFolder) == null && SampleKit is string kit) Settings.Set(SettingKeys.KitFolder, kit);
             Pane = new ShellViewModel(Licence, Connection, Document, Settings);
+        }
+
+        /// <summary>The repo's sample kit, found by walking up from the app to the repo root (global.json).</summary>
+        public static string? SampleKit
+        {
+            get
+            {
+                var dir = AppContext.BaseDirectory;
+                while (dir != null && !File.Exists(Path.Combine(dir, "global.json"))) dir = Path.GetDirectoryName(dir);
+                var kit = dir == null ? null : Path.Combine(dir, "tests", "shell", "fixtures", "kit");
+                return kit != null && Directory.Exists(kit) ? kit : null;
+            }
         }
 
         public static string PreviewSettingsPath =>
@@ -62,12 +76,18 @@ namespace Formcraft.Shell.Preview
             }
         }
 
-        /// <summary>Mock sign-in: any email and password, then code 123456; then past first-run setup.</summary>
+        /// <summary>Mock sign-in: any email and password, then code 123456; then through the four first-run steps.</summary>
         public void SignInToMainPane()
+        {
+            SignInToSetup();
+            for (var i = 0; i < 3; i++) Pane.Welcome.NextCommand.Execute(null);
+        }
+
+        /// <summary>Signed in, on first-run step 2.</summary>
+        public void SignInToSetup()
         {
             Licence.SignInAsync("[name.a]@formcraft.example", "sample").GetAwaiter().GetResult();
             Licence.VerifyCodeAsync("123456").GetAwaiter().GetResult();
-            Pane.Welcome.ContinueCommand.Execute(null);
         }
     }
 }

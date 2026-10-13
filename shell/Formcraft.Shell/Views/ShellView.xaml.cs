@@ -19,13 +19,6 @@ namespace Formcraft.Shell.Views
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        // PasswordBox can't bind; pass the value to the view model without storing it elsewhere.
-        private void OnPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ShellViewModel vm && sender is PasswordBox box)
-                vm.SignIn.Password = box.Password;
-        }
-
         // In the search box: arrows move through the results, Enter opens, Esc clears and puts the section back.
         private void OnSearchKeyDown(object sender, KeyEventArgs e)
         {

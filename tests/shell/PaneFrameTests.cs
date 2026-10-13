@@ -27,7 +27,7 @@ namespace Formcraft.Shell.Tests
                 if (!signIn) return;
                 Licence.SignInAsync("a@formcraft.example", "x").GetAwaiter().GetResult();
                 Licence.VerifyCodeAsync("123456").GetAwaiter().GetResult();
-                Vm.Welcome.ContinueCommand.Execute(null);
+                for (var i = 0; i < 3; i++) Vm.Welcome.NextCommand.Execute(null);
             }
         }
 

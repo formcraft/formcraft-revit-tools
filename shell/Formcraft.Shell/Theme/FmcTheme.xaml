@@ -715,6 +715,82 @@
     </Setter>
   </Style>
 
+  <!-- Field label above a control (boards: 12 px, semibold) -->
+  <Style x:Key="FmcText.Label" TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.InkBrush}"/>
+    <Setter Property="Margin" Value="0,0,0,4"/>
+  </Style>
+
+  <!-- Heading of a block in a pane (boards: 11 px capitals, muted). Write the text in capitals. -->
+  <Style x:Key="FmcText.Section" TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.MutedBrush}"/>
+    <Setter Property="Margin" Value="0,0,0,8"/>
+  </Style>
+
+  <!-- Text link (Forgot password): accent, underlined on hover -->
+  <Style x:Key="FmcButton.Link" TargetType="Button">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="{StaticResource Fmc.Size.Control}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.InkBrush}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="MinHeight" Value="26"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border Background="Transparent" Padding="0,2">
+            <TextBlock x:Name="Text" Text="{TemplateBinding Content}" VerticalAlignment="Center" TextDecorations="Underline"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Text" Property="Foreground" Value="{DynamicResource Fmc.AccentBrush}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- A step in a step bar or a segment outside a ListBox: the current one is raised, done ones keep their tick -->
+  <Style x:Key="FmcSegmentButton" TargetType="ToggleButton">
+    <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>
+    <Setter Property="FontSize" Value="{StaticResource Fmc.Size.Control}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Fmc.TabBrush}"/>
+    <Setter Property="MinHeight" Value="26"/>
+    <Setter Property="Padding" Value="6,0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="FocusVisualStyle" Value="{StaticResource Fmc.FocusVisual}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToggleButton">
+          <Border x:Name="Bd" Background="Transparent" CornerRadius="{StaticResource Fmc.Radius.Input}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.HoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Fmc.SurfaceBrush}"/>
+              <Setter Property="Foreground" Value="{DynamicResource Fmc.InkBrush}"/>
+              <Setter Property="FontWeight" Value="SemiBold"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.6"/>
+              <Setter Property="Cursor" Value="Arrow"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
   <!-- Chip switch ("Show these parts"): round, navy when on -->
   <Style x:Key="FmcChipToggle" TargetType="ToggleButton">
     <Setter Property="FontFamily" Value="{StaticResource Fmc.Font}"/>

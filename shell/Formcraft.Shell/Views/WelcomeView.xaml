@@ -1,0 +1,120 @@
+<!--
+  First-run setup (board account/PaneWelcome): step bar, then one step at a time: kit folder and its checks, role and
+  disciplines, parts to show and the tour. Back and Next sit in the pane footer. DataContext: WelcomeViewModel.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:Formcraft.Shell.Controls">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="Vis"/>
+  </UserControl.Resources>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <Border Style="{DynamicResource FmcGroup}">
+        <StackPanel>
+          <TextBlock Text="{Binding Title}" Style="{DynamicResource FmcText.GroupTitle}"/>
+          <TextBlock Text="Steps" Style="{DynamicResource FmcText.Label}"/>
+          <Border Background="{DynamicResource Fmc.TrackBrush}" CornerRadius="{DynamicResource Fmc.Radius.Nav}" Padding="2">
+            <ItemsControl ItemsSource="{Binding Steps}" Focusable="False" AutomationProperties.Name="Steps">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><c:FlexRow Gap="2"/></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <c:FmcStateButton x:Name="Step" Style="{DynamicResource FmcSegmentButton}" IsChecked="{Binding IsCurrent, Mode=OneWay}"
+                                    Command="{Binding DataContext.GoToCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"
+                                    AutomationProperties.Name="{Binding Label}">
+                    <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis"/>
+                  </c:FmcStateButton>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <!-- Step 2: kit folder -->
+      <Border Style="{DynamicResource FmcGroup}" Visibility="{Binding IsKitStep, Converter={StaticResource Vis}}">
+        <StackPanel>
+          <TextBlock Text="Formcraft kit folder" Style="{DynamicResource FmcText.Label}"/>
+          <DockPanel>
+            <Button DockPanel.Dock="Right" Content="Browse…" Style="{DynamicResource FmcButton.Secondary}" Margin="6,0,0,0" Click="OnBrowse" MinHeight="28"/>
+            <TextBox x:Name="KitFolderBox" Text="{Binding KitFolder, UpdateSourceTrigger=LostFocus}" Style="{DynamicResource FmcTextBox}"
+                     FontFamily="{DynamicResource Fmc.Mono}" FontSize="11.5" AutomationProperties.Name="Formcraft kit folder" KeyDown="OnKitFolderKey"/>
+          </DockPanel>
+          <TextBlock Text="{Binding KitHint}" Style="{DynamicResource FmcText.Hint}" Margin="0,3,0,10"/>
+          <TextBlock Text="Kit check" Style="{DynamicResource FmcText.Label}"/>
+          <ItemsControl ItemsSource="{Binding KitCheck.Lines}" Focusable="False" AutomationProperties.Name="Kit check">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <c:FmcCheckRow Content="{Binding Label}" IsChecked="{Binding Found, Mode=OneWay}" Status="{Binding Status}" StatusKind="{Binding Kind}"
+                               IsHitTestVisible="False" Focusable="False"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <!-- Step 3: role and disciplines -->
+      <Border Style="{DynamicResource FmcGroup}" Visibility="{Binding IsRoleStep, Converter={StaticResource Vis}}">
+        <StackPanel>
+          <TextBlock Text="YOUR ROLE AND DISCIPLINES" Style="{DynamicResource FmcText.Section}"/>
+          <TextBlock Text="Role" Style="{DynamicResource FmcText.Label}"/>
+          <TextBox Text="{Binding Role, Mode=OneWay}" Style="{DynamicResource FmcReadOnly}" FontFamily="{DynamicResource Fmc.Font}" FontSize="12"
+                   AutomationProperties.Name="Role"/>
+          <TextBlock Text="Set by Admin; shown here to confirm." Style="{DynamicResource FmcText.Hint}" Margin="0,3,0,10"/>
+          <TextBlock Text="Disciplines I model" Style="{DynamicResource FmcText.Label}"/>
+          <ItemsControl ItemsSource="{Binding Disciplines}" Focusable="False" AutomationProperties.Name="Disciplines I model">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <ToggleButton Content="{Binding Code}" IsChecked="{Binding IsOn}" Style="{DynamicResource FmcChipToggle}" Margin="0,0,4,4"
+                              AutomationProperties.Name="{Binding Code}"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <!-- Step 4: parts to show, then the tour -->
+      <StackPanel Visibility="{Binding IsPartsStep, Converter={StaticResource Vis}}">
+        <Border Style="{DynamicResource FmcGroup}">
+          <StackPanel>
+            <TextBlock Text="PARTS TO SHOW IN THE PANE" Style="{DynamicResource FmcText.Section}"/>
+            <ItemsControl ItemsSource="{Binding Parts}" Focusable="False">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,0,0,6">
+                    <TextBlock Text="{Binding Module}" Style="{DynamicResource FmcText.Label}"/>
+                    <ItemsControl ItemsSource="{Binding Switches}" Focusable="False" AutomationProperties.Name="{Binding Module}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                          <ToggleButton Content="{Binding Name}" IsChecked="{Binding IsOn}" Style="{DynamicResource FmcChipToggle}" Margin="0,0,4,4"
+                                        AutomationProperties.Name="{Binding Name}"/>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="The same lists as each module's parts switch on the ribbon. Change them any time." Style="{DynamicResource FmcText.Hint}"/>
+          </StackPanel>
+        </Border>
+        <Border Style="{DynamicResource FmcGroup}" BorderThickness="0">
+          <StackPanel>
+            <TextBlock Text="THEN" Style="{DynamicResource FmcText.Section}"/>
+            <CheckBox Content="Show the 2-minute tour" IsChecked="{Binding ShowTour}" Style="{DynamicResource FmcToggle}"/>
+            <CheckBox Content="Apply the Formcraft shortcuts (opens Revit's import)" IsChecked="{Binding ApplyShortcuts}" Style="{DynamicResource FmcToggle}"/>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

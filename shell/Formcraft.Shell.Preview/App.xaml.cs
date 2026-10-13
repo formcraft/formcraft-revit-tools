@@ -58,10 +58,31 @@ namespace Formcraft.Shell.Preview
 
                 var main = new MainWindow(new PreviewServices(new InMemoryUserSettings())) { ShowActivated = false, Left = -20000, Top = -20000, Width = 640, Height = 900 };
                 main.Show();
-                Render((FrameworkElement)main.Content, Path.Combine(folder, $"pane-{name}-signin.png"));
+                // Sign in and first-run setup (U05; boards account/PaneSignIn, account/PaneWelcome)
+                var pane = main.Services.Pane;
+                foreach (var width in new[] { 440.0, 360.0 })
+                {
+                    main.Shell.Width = width;
+                    Render(main.Shell, Path.Combine(folder, $"pane-{name}-signin-{width}.png"));
+                }
+                main.Shell.Width = 440;
+                pane.SignIn.Email = "[name.a]@formcraft.example";
+                pane.SignIn.Password = "sample";
+                pane.SignIn.SignInCommand.Execute(null);
+                Render(main.Shell, Path.Combine(folder, $"pane-{name}-signin-code.png"));
+                pane.Dialog!.Input = "123456";
+                pane.Dialog.ConfirmCommand!.Execute(null);
+                for (var step = 2; step <= 4; step++)
+                {
+                    foreach (var width in new[] { 440.0, 360.0 })
+                    {
+                        main.Shell.Width = width;
+                        Render(main.Shell, Path.Combine(folder, $"pane-{name}-setup-step{step}-{width}.png"));
+                    }
+                    pane.Welcome.NextCommand.Execute(null);
+                }
 
                 // The main pane at the board widths, in each document state (boards: gen_panes.py pane(), core/ResponsivePane)
-                main.Services.SignInToMainPane();
                 foreach (var (doc, label) in new[] { (MockDocumentContext.LiveProject, "live"), (MockDocumentContext.SharedModel, "shared"), (MockDocumentContext.NewModel, "setup") })
                 {
                     main.Services.OpenDocument = doc;
