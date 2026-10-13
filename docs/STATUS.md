@@ -14,8 +14,9 @@ Update this file whenever a step changes state.
 | U04 Search (Ctrl+K) | Done | PR #5: sections, actions, settings and help from `sections.json`; the board's three sample searches match row for row; keys; licence and parts |
 | U05 Sign in and first-run setup | Done | PR #6: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
 | U06 Settings | Done | PR #7: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
-| U07 Admin | In progress | Branch `feat/u07-admin`: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
-| U08–U27 | To do | Next: U08 (states) |
+| U07 Admin | Done | PR #8: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
+| U08 States | In progress | Branch `feat/u08-states`: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
+| U09–U27 | To do | Next: U09 (updates, about, log file window) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -31,7 +32,7 @@ Update this file whenever a step changes state.
 | Settings › Account (`account/PaneAccount`) | Every row on the board: you, your modules with status chips and dates, Request <module>, Enter a licence key dialog, this PC (seat, last check, offline days), check now, release seat, sign out, Ask Claude key and today's use (U06) | Today's Ask Claude tokens arrive with Ask Claude (U27); seat registration date with the licence service (U17) | U17, U27 |
 | Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | General, Manage, Flow, Model, Build: every group and control on the boards; saved per person; locked rows stay locked; Works with follows the licence; Reset my settings and Apply shortcuts dialogs (U06) | Text size Large is saved but the pane doesn't scale yet; ribbon button choices take effect with the ribbon (U10); module settings feed their tools as those are built | U10, Stage C |
 | Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | Both boards: you, team table with Add person / Change role / Remove dialogs, permissions by role with Edit and Reset, project settings, AI caps, automation, project data, modules and licences, audit log, handover, considerations; subscription, seats, people with invite, requests with Approve, rules (U07) | All on a mock: the team file comes with U12, seats and invites with the licence service (U17) | U12, U17 |
-| States (`account/PaneStates`) | Locked module page with trial and ask-admin buttons | "See what it does"; offline, grace over, not connected, kit missing, live model, Revit busy | U08 |
+| States (`account/PaneStates`) | Locked page (what it adds, 14-day trial, ask your admin, see what it does, footer Start a trial); a banner for offline, grace over, not connected, kit missing and Revit busy with the board's words and one next step; live model in the document banner; typed input kept (U08) | Real offline and connection checks arrive with the licence service (U17) and Connect (U12) | U12, U17 |
 | Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | — | Everything | U09 |
 | Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Old fork ribbon still in the add-in | Five panels, parts switches, new icons (PNG ready in `resources/icons/png`) | U10 |
 | Pane in Revit | Old `FormcraftBrowserPage` still hosted | Shell not yet hosted in the dockable pane | U10 |
@@ -70,6 +71,9 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U07 | People on the Admin boards appear as [NAME A]…[NAME E] / name.a… | The board shows real-looking sample names; placeholders avoid real people in code |
 | U07 | Admin is two sections in one page: Team and roles, Licences and seats | Board account/PaneSeats is "Admin › Licences and seats" |
 | U07 | Admin edits apply at once and go in the audit log; Save in the footer confirms | Every change is logged with who and when (board) |
+| U08 | One state banner at a time, most urgent first: grace over, not connected, Revit busy, kit missing, offline | Several at once would bury the one next step the board asks for |
+| U08 | "What it adds" for Manage, Flow and Build written from their boards (the states board only gives Model's) | Needed for the locked page of each module |
+| U08 | Kit folder is now also in Settings › General › kit, where "kit missing" sends people | The board says "Point to the kit folder in Settings" |
 
 ## Design files
 

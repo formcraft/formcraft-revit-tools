@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Formcraft.Shell.Services;
 using Formcraft.Shell.ViewModels;
 
@@ -55,6 +56,46 @@ namespace Formcraft.Shell.Preview
             new Option<ConnectionState>(ConnectionState.Connected, "Connected"),
             new Option<ConnectionState>(ConnectionState.NotConnected, "Not connected"),
         };
+
+        /// <summary>The seven states of board account/PaneStates, plus Normal.</summary>
+        public static readonly string[] StateNames = { "Normal", "Not licensed", "Offline", "Grace over", "Not connected", "Kit missing", "Live model", "Revit busy" };
+        public IReadOnlyList<string> States => StateNames;
+        private string _state = "Normal";
+
+        /// <summary>Puts the mocks into one state (after putting everything back to normal).</summary>
+        public string PaneState
+        {
+            get => _state;
+            set
+            {
+                if (value == null || Array.IndexOf(StateNames, value) < 0) return;
+                _state = value;
+                ApplyState(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public void ApplyState(string state)
+        {
+            Licence.SetOnline();
+            Licence.SetModule(FmcModule.Model, ModuleStatus.Trial, DateTime.Today.AddDays(9));
+            Connection.Set(ConnectionState.Connected);
+            if (SampleKit is string kit) Settings.Set(SettingKeys.KitFolder, kit);
+            switch (state)
+            {
+                case "Not licensed":
+                    Licence.SetModule(FmcModule.Model, ModuleStatus.NotLicensed);
+                    var systems = Pane.Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == "Systems");
+                    if (systems != null) Pane.SelectSectionCommand.Execute(systems);
+                    break;
+                case "Offline": Licence.SetOffline(3, 11); break;
+                case "Grace over": Licence.SetGraceOver(); break;
+                case "Not connected": Connection.Set(ConnectionState.NotConnected); break;
+                case "Kit missing": Settings.Set(SettingKeys.KitFolder, @"C:\No kit here"); break;
+                case "Live model": Document.Open(MockDocumentContext.LiveProject); break;
+                case "Revit busy": Connection.Set(ConnectionState.RevitBusy); break;
+            }
+        }
 
         public DocumentInfo OpenDocument
         {

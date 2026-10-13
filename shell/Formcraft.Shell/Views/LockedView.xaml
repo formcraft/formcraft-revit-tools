@@ -1,0 +1,34 @@
+<!--
+  Locked section (board account/PaneStates): a module not on the licence shows what it adds, with a trial, a request to the
+  admin, or a look at what it does. When the offline grace is over: sign in. DataContext: SectionBody; commands come from
+  the pane's view model.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.LockedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="clr-namespace:Formcraft.Shell.Views">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="Vis"/>
+  </UserControl.Resources>
+  <StackPanel Margin="0,0,0,8">
+    <Border Background="{DynamicResource Fmc.Chip.WarnBg}" CornerRadius="4" Padding="8,6" Margin="0,0,0,10"
+            Visibility="{Binding NotLicensed, Converter={StaticResource Vis}}">
+      <TextBlock Text="{Binding LockedText}" Foreground="{DynamicResource Fmc.Chip.WarnFg}" FontWeight="SemiBold" FontSize="12" TextWrapping="Wrap"/>
+    </Border>
+    <StackPanel Visibility="{Binding NotLicensed, Converter={StaticResource Vis}}">
+      <TextBlock Text="What it adds" Style="{DynamicResource FmcText.Label}"/>
+      <TextBlock Text="{Binding WhatItAdds}" Style="{DynamicResource FmcText.Body}" Margin="0,0,0,10"/>
+      <WrapPanel>
+        <Button Content="Start a 14-day trial" Style="{DynamicResource FmcButton.Primary}" Margin="0,0,6,6"
+                Command="{Binding DataContext.StartTrialCommand, RelativeSource={RelativeSource AncestorType=v:ShellView}}"/>
+        <Button Content="Ask your admin" Style="{DynamicResource FmcButton.Secondary}" Margin="0,0,6,6"
+                Command="{Binding DataContext.AskAdminCommand, RelativeSource={RelativeSource AncestorType=v:ShellView}}"/>
+        <Button Content="See what it does" Style="{DynamicResource FmcButton.Link}" Margin="4,0,0,6"
+                Command="{Binding DataContext.SeeWhatItDoesCommand, RelativeSource={RelativeSource AncestorType=v:ShellView}}"/>
+      </WrapPanel>
+    </StackPanel>
+    <!-- Grace over: the state banner above says it and holds Sign in; the section only says what still works -->
+    <TextBlock Text="This section waits until you sign in. Connect, the log file and Help still work." Style="{DynamicResource FmcText.Body}"
+               Visibility="{Binding GraceOver, Converter={StaticResource Vis}}"/>
+  </StackPanel>
+</UserControl>

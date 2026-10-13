@@ -3,7 +3,8 @@ using System;
 namespace Formcraft.Shell.Services
 {
     /// <summary>The Revit/Claude service behind the header's Connected chip.</summary>
-    public enum ConnectionState { Connected, NotConnected }
+    /// <summary>Connected; not connected (start the Claude service); or Revit is busy and nothing new starts.</summary>
+    public enum ConnectionState { Connected, NotConnected, RevitBusy }
 
     /// <summary>Whether the Formcraft service in Revit answers. Real checks arrive in U12 (Connect).</summary>
     public interface IConnectionService

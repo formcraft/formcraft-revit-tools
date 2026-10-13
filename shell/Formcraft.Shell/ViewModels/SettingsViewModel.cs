@@ -159,6 +159,12 @@ namespace Formcraft.Shell.ViewModels
                 new SettingsGroup("General · you",
                     new ReadOnlySetting("Name and role", who),
                     new ReadOnlySetting("Revit user name", Environment.UserName, "Checked against the team file once Admin has the team (U07).")),
+                new SettingsGroup("General · kit",
+                    new TextSetting("Formcraft kit folder", WelcomeViewModel.DefaultKitFolder, store: new SettingStore(_settings, ""), key: SettingKeys.KitFolder, mono: true,
+                        hint: "Your BIM Manager gives you this path. " + (kit.KitFound
+                            ? string.Join(" · ", kit.Lines.Select(l => l.Label + ": " + l.Status))
+                            : "No kit found here: kit tools wait until it is.")),
+                    new ButtonsSetting("", new[] { new SettingButton("Check the kit again", new RelayCommand(() => { Rebuild(); _status("Kit checked."); })) })),
                 new SettingsGroup("General · pane",
                     new ChoiceSetting(_store, "general.theme", "Theme", new[] { "Follow Revit", "Light", "Dark" }, changed: _ => ApplyTheme()),
                     new ChoiceSetting(_store, "general.textsize", "Text size", new[] { "Normal", "Large" }),

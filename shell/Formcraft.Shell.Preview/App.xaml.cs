@@ -97,6 +97,15 @@ namespace Formcraft.Shell.Preview
                         Render(main.Shell, Path.Combine(folder, $"pane-{name}-{label}-{width}.png"));
                     }
                 }
+                // States (U08; board account/PaneStates): each of the seven, then back to normal
+                foreach (var state in PreviewServices.StateNames.Skip(1))
+                {
+                    main.Services.PaneState = state;
+                    main.Shell.Width = 440;
+                    Render(main.Shell, Path.Combine(folder, $"state-{name}-{state.Replace(' ', '-').ToLowerInvariant()}-440.png"));
+                }
+                main.Services.PaneState = "Normal";
+
                 // Search (U04): the board's three sample searches, and one that finds nothing
                 foreach (var query in new[] { "sheet", "qa", "level", "roof" })
                 {

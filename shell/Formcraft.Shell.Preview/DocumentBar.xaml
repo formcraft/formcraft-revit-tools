@@ -8,6 +8,9 @@
              SelectedValuePath="Value" SelectedValue="{Binding OpenDocument}" AutomationProperties.Name="Document" Margin="0,0,14,0"/>
     <TextBlock Text="Service" Style="{DynamicResource FmcText.Hint}" VerticalAlignment="Center" Margin="0,0,6,0"/>
     <ListBox Style="{DynamicResource FmcSegmented}" ItemsSource="{Binding Connections}" DisplayMemberPath="Label"
-             SelectedValuePath="Value" SelectedValue="{Binding ConnectionState}" AutomationProperties.Name="Service"/>
+             SelectedValuePath="Value" SelectedValue="{Binding ConnectionState}" AutomationProperties.Name="Service" Margin="0,0,14,0"/>
+    <TextBlock Text="State" Style="{DynamicResource FmcText.Hint}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+    <ComboBox Style="{DynamicResource FmcComboBox}" ItemsSource="{Binding States}" SelectedItem="{Binding PaneState}" MinWidth="130"
+              AutomationProperties.Name="State (board account/PaneStates)"/>
   </WrapPanel>
 </UserControl>

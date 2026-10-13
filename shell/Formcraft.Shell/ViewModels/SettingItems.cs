@@ -25,11 +25,16 @@ namespace Formcraft.Shell.ViewModels
     public sealed class SettingStore
     {
         private readonly IUserSettings _settings;
+        private readonly string _prefix;
 
-        public SettingStore(IUserSettings settings) => _settings = settings;
+        public SettingStore(IUserSettings settings, string prefix = "settings.")
+        {
+            _settings = settings;
+            _prefix = prefix;
+        }
 
-        public string? Get(string key) => _settings.Get("settings." + key);
-        public void Set(string key, string? value) => _settings.Set("settings." + key, value);
+        public string? Get(string key) => _settings.Get(_prefix + key);
+        public void Set(string key, string? value) => _settings.Set(_prefix + key, value);
     }
 
     /// <summary>A value the person can see and copy but not change here (set by Admin, the kit or Revit).</summary>

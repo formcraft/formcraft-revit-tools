@@ -58,17 +58,22 @@ namespace Formcraft.Shell.ViewModels
     /// <summary>What the body shows for a section: the feature, or why it is locked.</summary>
     public sealed class SectionBody
     {
-        public SectionBody(SectionItem section, ModuleLicence licence)
+        public SectionBody(SectionItem section, ModuleLicence licence, bool graceOver = false)
         {
             Section = section;
             Licence = licence;
+            GraceOver = graceOver && section.Module != FmcModule.Core;
         }
 
         public SectionItem Section { get; }
         public ModuleLicence Licence { get; }
-        public bool Locked => !Licence.CanUse;
+        /// <summary>Offline grace is over: only Connect, the log and Help work until the person signs in.</summary>
+        public bool GraceOver { get; }
+        public bool Locked => GraceOver || !Licence.CanUse;
+        public bool NotLicensed => !GraceOver && !Licence.CanUse;
         public string Title => Section.Group.Length == 0 ? Section.Name : Section.Group + " › " + Section.Name;
-        public string LockedText => "Formcraft " + Section.Module + " isn't on your licence.";
+        public string LockedText => GraceOver ? "Sign in to keep using Formcraft." : "Formcraft " + Section.Module + " isn't on your licence.";
+        public string WhatItAdds => ModulePitch.WhatItAdds(Section.Module);
         public string PlaceholderText => "This section is drawn on the central canvas and is built in " + Section.Phase + ". The shell, navigation and licence checks around it already work.";
     }
 
@@ -98,6 +103,8 @@ namespace Formcraft.Shell.ViewModels
         private readonly IDocumentContext _document;
         private readonly IUserSettings _settings;
         private readonly SectionRegistry _registry;
+        private readonly IKitService _kit;
+        private StateBannerInfo? _stateBanner;
         private readonly SectionItem _connect = new SectionItem("", "Connect", FmcModule.Core, null, "U12", "core/PaneConnect");
         private readonly SectionItem _admin = new SectionItem("", "Admin", FmcModule.Core, null, "U07", "core/PaneAdmin");
         private ShellScreen _screen = ShellScreen.SignIn;
@@ -117,6 +124,12 @@ namespace Formcraft.Shell.ViewModels
             _document = document;
             _settings = settings;
             _registry = registry ?? SectionRegistry.Default;
+            _kit = kit ?? new FolderKitService();
+            StartTrialCommand = new AsyncCommand(StartTrialAsync, s => Status = s);
+            AskAdminCommand = new AsyncCommand(AskAdminAsync, s => Status = s);
+            SeeWhatItDoesCommand = new RelayCommand(() => Status = (Body?.Section.Module.ToString() ?? "This module") + ": see what it does on the Formcraft account website.");
+            SignInAgainCommand = new AsyncCommand(() => _licence.SignOutAsync(), s => Status = s);
+            CheckLicenceCommand = new AsyncCommand(async () => { await _licence.CheckNowAsync(); Status = "Licence checked."; }, s => Status = s);
             Groups = new ObservableCollection<GroupItem>();
             Parts = new ObservableCollection<ModuleParts>();
             SignIn = new SignInViewModel(licence, settings, s => Status = s, ShowDialog);
@@ -141,11 +154,77 @@ namespace Formcraft.Shell.ViewModels
             HelpCommand = new RelayCommand(() => Status = "Help: opens this section of the guide and the first-run tour.");
             QuickToolCommand = new RelayCommand(p => Status = p + ": in the plugin this runs here (built in U22).");
             _licence.Changed += (_, __) => OnLicenceChanged();
-            _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); };
+            _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); UpdateState(); };
             _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
-            _settings.Changed += (_, __) => Rebuild();
+            _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
             Rebuild();
+            UpdateState();
             UpdateFooter();
+        }
+
+        public AsyncCommand StartTrialCommand { get; }
+        public AsyncCommand AskAdminCommand { get; }
+        public RelayCommand SeeWhatItDoesCommand { get; }
+        public AsyncCommand SignInAgainCommand { get; }
+        public AsyncCommand CheckLicenceCommand { get; }
+
+        /// <summary>The state banner (board account/PaneStates), or null when all is well.</summary>
+        public StateBannerInfo? StateBanner
+        {
+            get => _stateBanner;
+            private set
+            {
+                if (!Set(ref _stateBanner, value)) return;
+                OnPropertyChanged(nameof(State));
+                OnPropertyChanged(nameof(HasStateBanner));
+                OnPropertyChanged(nameof(RevitReady));
+            }
+        }
+
+        public PaneState State => StateBanner?.State ?? PaneState.Normal;
+        public bool HasStateBanner => StateBanner != null;
+        /// <summary>Revit busy: nothing new starts (footer buttons wait).</summary>
+        public bool RevitReady => State != PaneState.RevitBusy;
+
+        /// <summary>Works out the state, the most urgent first. Never touches what the person has typed.</summary>
+        private void UpdateState()
+        {
+            var l = _licence.Current;
+            StateBannerInfo? s = null;
+            if (!l.SignedIn) s = null;
+            else if (l.GraceOver)
+                s = new StateBannerInfo(PaneState.GraceOver, ChipKind.Bad, "Sign in to keep using Formcraft", "Connect, Log and Help still work", "Sign in", SignInAgainCommand);
+            else if (_connection.State == ConnectionState.NotConnected)
+                s = new StateBannerInfo(PaneState.NotConnected, ChipKind.Warn, "Start the Claude service: Core › Connect AI", "The pane and Settings still work", "Open Connect", OpenConnectCommand);
+            else if (_connection.State == ConnectionState.RevitBusy)
+                s = new StateBannerInfo(PaneState.RevitBusy, ChipKind.Grey, "Waiting for Revit to finish…", "Nothing new starts until Revit is ready");
+            else if (!_kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder).KitFound)
+                s = new StateBannerInfo(PaneState.KitMissing, ChipKind.Warn, "Point to the kit folder in Settings", "Connect and Settings still work", "Open Settings",
+                    new RelayCommand(() => { if (Page != ShellPage.Settings) Open(ShellPage.Settings); Settings.Open("General"); }));
+            else if (l.Offline)
+            {
+                var days = l.LastOnlineCheck is DateTime t ? Math.Max(0, (DateTime.Today - t.Date).Days) : 0;
+                s = new StateBannerInfo(PaneState.Offline, ChipKind.Info,
+                    "Licence checked " + (days == 0 ? "today" : days == 1 ? "1 day ago" : days + " days ago") + " · " + l.OfflineDaysLeft + " days left",
+                    "Everything still works", "Check now", CheckLicenceCommand);
+            }
+            StateBanner = s;
+        }
+
+        private async System.Threading.Tasks.Task StartTrialAsync()
+        {
+            if (Body == null) return;
+            var module = Body.Section.Module;
+            Status = await _licence.StartTrialAsync(module)
+                ? "Formcraft " + module + " trial started: 14 days."
+                : "A trial of " + module + " couldn't start here. Ask your admin.";
+        }
+
+        private async System.Threading.Tasks.Task AskAdminAsync()
+        {
+            if (Body == null) return;
+            await _licence.RequestModuleAsync(Body.Section.Module);
+            Status = "Request for " + Body.Section.Module + " sent to your admin (Admin › Licences and seats › Requests).";
         }
 
         public SignInViewModel SignIn { get; }
@@ -180,7 +259,7 @@ namespace Formcraft.Shell.ViewModels
         public bool IsMain => Screen == ShellScreen.Main;
 
         // Header: the Connected chip is the Revit/Claude service; licence problems show in the state banners (U08).
-        public bool IsConnected => _connection.State == ConnectionState.Connected;
+        public bool IsConnected => _connection.State != ConnectionState.NotConnected;
         public string ConnectionText => IsConnected ? "Connected" : "Not connected";
         public bool IsAdmin => _licence.Current.Account?.IsAdmin == true;
 
@@ -271,9 +350,12 @@ namespace Formcraft.Shell.ViewModels
                 g.IsSelected = g.Sections.Contains(s);
                 foreach (var x in g.Sections) x.IsSelected = x == s;
             }
+            // A section opened from search or elsewhere brings its group's buttons with it.
+            CurrentGroup = Groups.FirstOrDefault(g => g.Sections.Contains(s)) ?? CurrentGroup;
             _section = s;
             Page = ShellPage.Section;
-            Body = new SectionBody(s, _licence.Current.For(s.Module));
+            Body = new SectionBody(s, _licence.Current.For(s.Module), _licence.Current.GraceOver);
+            UpdateFooter();
         }
 
         /// <summary>Opens a header page; pressing its button again goes back to the section.</summary>
@@ -314,6 +396,7 @@ namespace Formcraft.Shell.ViewModels
             Settings.Rebuild();
             Admin.Rebuild();
             Account.Refresh();
+            UpdateState();
         }
 
         /// <summary>The footer's buttons for the screen (boards: sign in: Sign in, Work offline; first run: Back, Next).</summary>
@@ -330,6 +413,11 @@ namespace Formcraft.Shell.ViewModels
                 FooterActions.Add(new FooterAction("Back", Welcome.BackCommand));
                 FooterActions.Add(new FooterAction(Welcome.NextText, Welcome.NextCommand, primary: true));
                 Status = Welcome.StepText;
+            }
+            else if (Page == ShellPage.Section && Body?.NotLicensed == true)
+            {
+                // Board account/PaneStates footer.
+                FooterActions.Add(new FooterAction("Start a trial", StartTrialCommand, primary: true));
             }
             else if (Page == ShellPage.Admin)
             {
