@@ -24,6 +24,10 @@ namespace Formcraft.Shell.Preview
 
         public PreviewServices Services { get; }
 
+        // Stands in for the ribbon's Core › Log file button.
+        private void OnOpenLog(object sender, RoutedEventArgs e) =>
+            new Formcraft.Shell.Views.LogWindow(new CsvLogReader(Services.Pane.LogPath)) { Owner = this }.Show();
+
         private void OnOpenGallery(object sender, RoutedEventArgs e)
         {
             if (_gallery == null)

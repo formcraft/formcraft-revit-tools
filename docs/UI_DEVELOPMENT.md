@@ -88,16 +88,17 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: matches both boards; non-admins never see Admin.
 - Test: P.
 
-### [~] U08 States: locked, offline, grace over, not connected, kit missing, live model, Revit busy
+### [x] U08 States: locked, offline, grace over, not connected, kit missing, live model, Revit busy
 - Board: `account/PaneStates`
 - Files: `Views/Parts/StateBanner.xaml`, `Views/LockedView.xaml`, `ViewModels/PaneStates.cs`, `ShellViewModel`
 - Each state says what happened and the one next step, and keeps working parts working. Typed input is never lost.
 - Done: a "states" menu in the preview app switches through all seven; each matches the table on the board.
 - Test: P.
 
-### [ ] U09 Updates, about, and the Log file window
+### [~] U09 Updates, about, and the Log file window
 - Boards: `account/PaneUpdates`, `core/UI_Log`
-- Files: `Views/UpdatesView.xaml`, `Views/LogWindow.xaml`, `Services/ILogReader.cs` (reads `FMC_MCP_FileLog.csv`)
+- Files: Settings › Updates tab (`SettingsViewModel`, `Services/UpdateService.cs`), `Views/LogWindow.xaml`,
+  `ViewModels/LogViewModel.cs`, `Services/LogReader.cs` (reads `FMC_MCP_FileLog.csv`), `tests/shell/fixtures/FMC_MCP_FileLog.csv`
 - Log window filters All / Pane clicks / Claude / Refused and opens the CSV or folder. Never used to rank people.
 - Done: the log window reads a real sample CSV from `tests/shell/fixtures`.
 - Test: P, unit tests.

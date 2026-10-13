@@ -20,6 +20,8 @@ namespace Formcraft.Shell.Preview
             // No Z:\00_Standards on most PCs: start the preview on the sample kit (tests/shell/fixtures/kit).
             if (Settings.Get(SettingKeys.KitFolder) == null && SampleKit is string kit) Settings.Set(SettingKeys.KitFolder, kit);
             Pane = new ShellViewModel(Licence, Connection, Document, Settings);
+            // The sample log in the tools' own format (tests/shell/fixtures), so the Log file window has rows.
+            if (SampleKit is string sample) Pane.LogPath = Path.Combine(Path.GetDirectoryName(sample)!, "FMC_MCP_FileLog.csv");
         }
 
         /// <summary>The repo's sample kit, found by walking up from the app to the repo root (global.json).</summary>

@@ -17,6 +17,26 @@ namespace Formcraft.Shell.Views
             // Compact below 400 px; everything inside reads the inherited c:Fmc.Compact.
             Pane.SizeChanged += (_, e) => Fmc.SetCompact(this, Fmc.IsCompact(e.NewSize.Width));
             PreviewKeyDown += OnPreviewKeyDown;
+            DataContextChanged += (_, e) =>
+            {
+                if (e.OldValue is ShellViewModel old) old.OpenLogRequested -= OnOpenLog;
+                if (e.NewValue is ShellViewModel vm) vm.OpenLogRequested += OnOpenLog;
+            };
+        }
+
+        // Log file window (board core/UI_Log): a window of its own, one at a time.
+        private LogWindow? _log;
+
+        private void OnOpenLog(object? sender, EventArgs e)
+        {
+            if (!(DataContext is ShellViewModel vm)) return;
+            if (_log == null)
+            {
+                _log = new LogWindow(new CsvLogReader(vm.LogPath)) { Owner = Window.GetWindow(this) };
+                _log.Closed += (_, _) => _log = null;
+            }
+            _log.Show();
+            _log.Activate();
         }
 
         // In the search box: arrows move through the results, Enter opens, Esc clears and puts the section back.

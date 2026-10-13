@@ -15,8 +15,9 @@ Update this file whenever a step changes state.
 | U05 Sign in and first-run setup | Done | PR #6: both boards built; code dialog; Microsoft/Google and offline licence file (mocked); kit check; four steps; choices saved |
 | U06 Settings | Done | PR #7: Account, General and a tab per licensed module; every control on the six boards; saves and reloads; theme setting live; reset |
 | U07 Admin | Done | PR #8: Team and roles, Licences and seats; every group on both boards; add/change/remove people, permissions, handover, invites, requests; audit log |
-| U08 States | In progress | Branch `feat/u08-states`: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
-| U09–U27 | To do | Next: U09 (updates, about, log file window) |
+| U08 States | Done | PR #9: locked page, offline, grace over, not connected, kit missing, live model, Revit busy; the preview's State menu switches through all seven |
+| U09 Updates and the Log file window | In progress | Branch `feat/u09-updates-log`: Settings › Updates; Log file window reading the tools' own CSV format; filters, open, copy row |
+| U10–U27 | To do | Next: U10 (host the shell in Revit; the five-panel ribbon) |
 | Branch protection | Not available | GitHub needs a paid plan for protection on a private repo. Rule kept by convention (`CLAUDE.md`) |
 
 ## Shell code against its boards
@@ -33,7 +34,7 @@ Update this file whenever a step changes state.
 | Other Settings tabs (`core/PaneSettings`, `*/PaneSettings*`) | General, Manage, Flow, Model, Build: every group and control on the boards; saved per person; locked rows stay locked; Works with follows the licence; Reset my settings and Apply shortcuts dialogs (U06) | Text size Large is saved but the pane doesn't scale yet; ribbon button choices take effect with the ribbon (U10); module settings feed their tools as those are built | U10, Stage C |
 | Admin, seats (`core/PaneAdmin`, `account/PaneSeats`) | Both boards: you, team table with Add person / Change role / Remove dialogs, permissions by role with Edit and Reset, project settings, AI caps, automation, project data, modules and licences, audit log, handover, considerations; subscription, seats, people with invite, requests with Approve, rules (U07) | All on a mock: the team file comes with U12, seats and invites with the licence service (U17) | U12, U17 |
 | States (`account/PaneStates`) | Locked page (what it adds, 14-day trial, ask your admin, see what it does, footer Start a trial); a banner for offline, grace over, not connected, kit missing and Revit busy with the board's words and one next step; live model in the document banner; typed input kept (U08) | Real offline and connection checks arrive with the licence service (U17) and Connect (U12) | U12, U17 |
-| Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | — | Everything | U09 |
+| Updates, Log window (`account/PaneUpdates`, `core/UI_Log`) | Settings › Updates: installed, kit, channel, update that waits for Revit to close, release notes, rollback, guide, tour, support report, open the log, legal; Log file window: All / Pane clicks / Claude / Refused, today or all days, open the CSV or folder, copy a row for support (U09) | The update feed and the support report file come with the installer; From needs a `source` column in the tools' log (see decisions) | Installer, server |
 | Ribbon in Revit (`core/Ribbon`, `*/R_*`) | Old fork ribbon still in the add-in | Five panels, parts switches, new icons (PNG ready in `resources/icons/png`) | U10 |
 | Pane in Revit | Old `FormcraftBrowserPage` still hosted | Shell not yet hosted in the dockable pane | U10 |
 | Revit MCP UI bridge | Carried read-only tools work | `fmc_ui` tool | U11 |
@@ -74,6 +75,9 @@ Each was decided during the unattended run on 13 October 2026 and can be overrul
 | U08 | One state banner at a time, most urgent first: grace over, not connected, Revit busy, kit missing, offline | Several at once would bury the one next step the board asks for |
 | U08 | "What it adds" for Manage, Flow and Build written from their boards (the states board only gives Model's) | Needed for the locked page of each module |
 | U08 | Kit folder is now also in Settings › General › kit, where "kit missing" sends people | The board says "Point to the kit folder in Settings" |
+| U09 | The log window reads the tools' real columns (timestamp, action, dry_run, target, result, detail). The board's **From** column needs a `source` column the tools don't write yet: the reader takes one if present and shows "—" otherwise, so Pane clicks / Claude filter empty on today's logs | **Follow-up for the server:** add `source` (Pane, Claude, Ask, Script) to `fmc_file.ts` and `fmc_family.ts` log rows |
+| U09 | Kind comes from the row: refused → Refused, dry run → Dry run, plan/check → Check, list/read/info/statistics → Read, else Run | The board's Kind values |
+| U09 | Updates is a tab of Settings (board: "Pane · Settings › Updates"); the shell has one version, 0.1.0, shown in General and Updates | One place for version and updates |
 
 ## Design files
 
