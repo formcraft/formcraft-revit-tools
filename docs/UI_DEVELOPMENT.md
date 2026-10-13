@@ -12,7 +12,7 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 
 ## Stage A: shell foundations (mock data, no Revit)
 
-### [~] U00 Repo, CI and a running shell
+### [x] U00 Repo, CI and a running shell
 - Board: `core/PaneShell`
 - Files: `shell/`, `.github/workflows/build.yml`
 - Done: CI green on `main`; the preview app opens; sign-in → first-run → main pane works on mocks.
