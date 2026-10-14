@@ -49,10 +49,10 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Open |
 | F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Open |
 | F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Open |
-| F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Open |
+| F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Fixed – retest |
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Open |
-| F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Open (needs the user) |
-| F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Open |
+| F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Fixed – retest |
+| F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Fixed – retest |
 ---
 
 ## Test runs

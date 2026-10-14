@@ -124,12 +124,14 @@ export function readiness(
   if (!revisionOk(input.company_revision)) codes.push(`company revision "${input.company_revision}" isn't P01, C01 or A01 style`);
   if (!PURPOSES.includes(input.purpose)) codes.push(`purpose "${input.purpose}" isn't one of ${PURPOSES.join(", ")}`);
   const ruleFails = failing.length;
+  // F-018: Must rules QA couldn't check are never counted as passed.
+  const mustUnchecked = rules.filter((r) => r.severity === "Must" && r.state === "Not checked").length;
 
   const checklist: ChecklistLine[] = [
     line("Sheets exist with valid numbers", (s, f) => f(s, "missing") || f(s, "number"), (bad) => `${n - bad} / ${n}`),
     line("Title blocks filled", "title block", (bad) => `${n - bad} / ${n}`),
-    { check: "Mandatory rules pass", state: ruleFails ? (modelBlockers.length || count((s) => s.reasons.some((r) => r.startsWith("rule "))) ? "Fail" : "Warn") : "Pass",
-      detail: ruleFails ? `${ruleFails} fail` : "OK" },
+    { check: "Mandatory rules pass", state: ruleFails ? (modelBlockers.length || count((s) => s.reasons.some((r) => r.startsWith("rule "))) ? "Fail" : "Warn") : mustUnchecked ? "Warn" : "Pass",
+      detail: [ruleFails ? `${ruleFails} fail` : "", mustUnchecked ? `${mustUnchecked} not checked (a person reviews them)` : ""].filter(Boolean).join(", ") || "OK" },
     { check: "Open reviews on these sheets", state: "N/A", detail: "Review items arrive with Team › Review" },
     { check: "Links checked", state: unpinned.length ? "Warn" : "Pass", detail: links.length ? (unpinned.length ? `${unpinned.length} unpinned` : `${links.length} pinned`) : "No links" },
     line("Sheet status codes valid", "status", (bad) => bad ? `${bad} not valid` : "OK"),
@@ -147,7 +149,8 @@ export function readiness(
         modelBlockers.length ? `Must rules fail: ${modelBlockers.join(", ")}` : "",
         codes.length ? codes.join("; ") : "",
       ].filter(Boolean).join(". ") + ". Fix them, or record an approved exception."
-    : used.length ? `${n} sheets ready, ${used.length} with an approved exception.` : `${n} sheets ready.`;
+    : (used.length ? `${n} sheets ready, ${used.length} with an approved exception.` : `${n} sheets ready.`)
+      + (mustUnchecked ? ` ${mustUnchecked} Must rule${mustUnchecked === 1 ? " wasn't" : "s weren't"} checked: a person reviews ${mustUnchecked === 1 ? "it" : "them"} before the issue goes out.` : "");
 
   return { result, summary, checklist, sheets, model_blockers: modelBlockers, exceptions_used: used, revit_revision: revitRevision(revisions) };
 }

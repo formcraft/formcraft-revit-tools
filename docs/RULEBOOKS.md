@@ -1,4 +1,4 @@
-# Rulebooks: what QA and Rules read (rule schema v1)
+# Rulebooks: what QA and Rules read (kit schema v0.1, and rule schema v1)
 
 The kit's rulebooks are JSON files, one per book, in the folder `rulebooks_dir` names in `fmc_guard.json`
 (default `Z:\00_Standards\03_Master_Data\FMC_Rulebook`, the kit r4 layout). Check › Rules lists them; Check › QA runs the rules that name a check kind.
@@ -31,6 +31,34 @@ rulebooks v0.2; if the kit keeps them in another shape, the reader (`server/src/
 
 The reader also accepts `title` or `text` for `rule`, `fix` for `fix_hint`, `source` for `status`, `gate` for `gates`.
 Proposed rules are listed but never run. An exception in force marks a failure as excepted (it no longer blocks).
+
+## The kit's schema v0.1 (read as the kit writes it, F-017)
+
+The kit's rulebooks (`03_Master_Data\FMC_Rulebook\FMC_Rulebook_<Feature>.json`, kit r4) use their own schema. Rule 7:
+the kit wins, so the plugin reads it as written:
+
+| Kit | Plugin |
+|---|---|
+| `feature`, `rulebook_version` | book name and version |
+| `severity`: `error` / `warning` / `info` | Must / Should / Advice |
+| `status`: `from_standard` / `proposed` | Standard / Proposed (proposed rules are listed, never run) |
+| `stages`: `"all"` or RIBA stages `["4", "5"]` | runs at every stage, or only when `fmc_qa run` gets that `stage`; otherwise Not applicable |
+| `title`, `rule`, `applies_to`, `clause`, `auto_fix` | rule, test, scope, why, fix hint |
+| `check`: `{ "type": …, "params": {…} }` | bound to a check kind below when the kit's data is unambiguous |
+
+How a kit check type becomes a check the plugin runs:
+
+| Kit `check.type` | Runs as | When |
+|---|---|---|
+| `naming_regex` | `view_name_pattern`, `view_template_name_pattern`, `sheet_number_pattern` | `applies_to` is exactly `views`, `view templates` or `sheets`, and `params` show what the pattern names (`example`, `examples` or `roles`). Without that the pattern may be for a subset (working views, logistics sheets) or a parameter, so it isn't run |
+| `naming_regex` with `forbidden_regex` | `type_name_forbidden` | `applies_to` names types |
+| `parameter_present` | `sheet_parameters_filled`, `type_parameters_filled` | `params.required` or `params.parameter`, on `sheets` or on `OST_` categories |
+| `count_min` with `metric` | `health_count` (amber → Warning, red → Fail) | the plugin measures the metric: `warnings total`, `in-place families` |
+| `human_gate` | Not checked: "A person confirms this" | always |
+| anything else | Not checked, with the reason | until the plugin learns it |
+
+**The QA verdict (F-018)** is Blocked (a Must rule fails), **Not clear** (no Must rule fails, but Must rules weren't
+checked, or nothing was) or Clear (every Must rule that applies was checked and passed). Not checked is never a pass.
 
 ## Check kinds the plugin runs
 
