@@ -73,8 +73,8 @@ Hand-offs between the two:
 
     Raise them as one kit change request.
 11. **Electrical's 16 missing `FMC_` parameters** (U25) still block Enrich and Size. They should go into the same kit change request.
-12. **Tests.** Add the template rebuild to `tests/e2e` with a sample kit and a tiny recipe (IDEAS 21). A weekly Revit
-    journal smoke test (IDEAS 22) should run the template audit and one family load test.
+12. **Tests.** Add the template rebuild to `tests/e2e` with a sample kit and a tiny recipe (IDEAS: e2e in CI). A weekly Revit
+    journal smoke test (IDEAS 52: Revit smoke test) should run the template audit and one family load test.
 
 ## Phases
 Each phase ends with a Revit run (the tester's protocol in `TESTING.md`) and a report. The owner's yes comes before each one.
@@ -92,11 +92,11 @@ Each phase ends with a Revit run (the tester's protocol in `TESTING.md`) and a r
 | 6 | Discipline templates (B6) | Value tables per role, S analytical settings, clash matrix, released families loaded, publish gate, `fmc_project` + chain test per role; AI ops grow to Co-model (walls, floors, MEP layouts) | — | 1–5 |
 | AU | Automation | Scheduled runs (needs the workbench), Revit triggers (IUpdater), morning report | U32 | 1, 2 |
 | D | Data | Excel round trip (staging copies, dry run), kit tables via change requests, Power BI dashboards via Microsoft's authoring MCP | U34 | 3; Power BI licence |
-| 7 | Guided first project, then local permit packs | IDEAS 4 and 6 on top of the published templates | — | 6 |
+| 7 | Guided first project, then local permit packs | IDEAS 4 (guided first project) and 37 (permit packs) on top of the published templates | — | 6 |
 | N | Navisworks | Evaluate open-source Navisworks MCPs; connector; federate, clash matrix, nightly runs, Review; AI triage/fix within the policy | U35, U36 | Navisworks is being installed; can run in parallel with R after phase 1 |
 | 8 | Later | B7 recipes from datasheets/photos, LOD 400 assemblies and shop sheets, Design Automation, Blender renders, Speckle | — | — |
 
-**In parallel:** shortcuts standard (IDEAS 20), CI e2e and the weekly smoke test, and branch clean-up.
+**In parallel:** shortcuts standard (IDEAS 10), CI e2e and the weekly smoke test, and branch clean-up.
 
 ## People gates (unchanged by AI)
 These are always done by a person:
