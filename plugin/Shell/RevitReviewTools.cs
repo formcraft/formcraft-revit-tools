@@ -21,7 +21,37 @@ namespace revit_mcp_plugin.Shell
             Answers = (i["answers"] as JArray ?? new JArray()).OfType<JObject>()
                 .Select(a => new ReviewAnswer(a.Value<string>("discipline") ?? "", a.Value<string>("by") ?? "", a.Value<string>("text") ?? "", a.Value<string>("status") == "Done")).ToList(),
             Solution = i.Value<string>("solution") ?? "",
+            Cloud = i["cloud"] is JObject c ? (c.Value<string>("view") ?? "") + " · " + (c.Value<string>("revision") ?? "") : "",
         };
+
+        public async Task<ToolResult> CloudAsync(string projectFolder, string id, bool dryRun)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject { ["action"] = "cloud", ["project_folder"] = projectFolder, ["id"] = id, ["dry_run"] = dryRun });
+            if (!r.Ok) return ToolResult.Refused("Cloud refused: " + string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true, Count = 1 };
+            if (dryRun && r.Body["would"] is JObject w)
+                result.Details.Add($"On {w.Value<string>("view")}, revision {w.Value<string>("revision")}, around {w.Value<int?>("elements")} elements ({w.Value<string>("size_mm")} mm)");
+            else result.Messages.Add(new ToolMessage(ChipKind.Good, "Clouded " + id + ". Logged in FMC_MCP_FileLog.csv."));
+            return result;
+        }
+
+        public async Task<ToolResult> PrintAsync(string projectFolder, string sheet, string kind, string by)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject { ["action"] = "print", ["project_folder"] = projectFolder, ["sheet"] = sheet, ["kind"] = kind, ["by"] = by });
+            if (!r.Ok) return ToolResult.Refused("Print refused: " + string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true, Count = 1 };
+            int n = (r.Body["items"] as JArray)?.Count ?? 0;
+            string pdf = r.Body.Value<string>("pdf") ?? "";
+            result.Messages.Add(new ToolMessage(pdf == "exported" ? ChipKind.Good : ChipKind.Warn, $"{kind} print of {sheet}: {n} items, PDF {pdf}. Saved to {r.Body.Value<string>("folder")}."));
+            return result;
+        }
+
+        public async Task<List<PrintInfo>> PrintsAsync(string projectFolder, string sheet)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_review", new JObject { ["action"] = "prints", ["project_folder"] = projectFolder, ["sheet"] = sheet });
+            return (r.Body["prints"] as JArray ?? new JArray()).OfType<JObject>().Select(p => new PrintInfo(p.Value<string>("sheet") ?? "", p.Value<string>("kind") ?? "",
+                (p.Value<string>("at") ?? "").Length >= 10 ? p.Value<string>("at").Substring(0, 10) : "", (p["items"] as JArray)?.Count ?? 0, p.Value<string>("folder") ?? "")).ToList();
+        }
 
         public async Task<(bool Ok, string Message, List<ReviewItemInfo> Items)> ListAsync(string projectFolder, string filter, IReadOnlyList<string> myDisciplines)
         {

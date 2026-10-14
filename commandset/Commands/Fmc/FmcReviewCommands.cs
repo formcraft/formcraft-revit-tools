@@ -29,6 +29,14 @@ namespace RevitMCPCommandSet.Commands.Fmc
         }
     }
 
+    /// <summary>A revision cloud around a review item's elements in the active view (dry run unless dry_run is false; behind the lock).</summary>
+    public class FmcReviewCloudCommand : FmcReviewCommandBase
+    {
+        public FmcReviewCloudCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_review_cloud";
+        protected override string Action => "cloud";
+    }
+
     /// <summary>The model, the active view and the selected elements, for a review item (read-only).</summary>
     public class FmcReviewContextCommand : FmcReviewCommandBase
     {

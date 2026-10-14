@@ -16,8 +16,14 @@ export interface ReviewItem {
   id: string; title: string; description: string; disciplines: string[]; lead: string; owner: string; priority: Priority;
   due: string; status: ItemStatus; raised_by: string; raised_at: string; model: string; view: string; element_ids: number[];
   answers: Answer[]; solution: string; history: HistoryLine[];
+  /** The sheet the item was raised on (empty for a model view). */
+  sheet?: string;
+  /** The revision cloud on the drawing, once drawn: its element id, view and revision. */
+  cloud?: { id: number; view: string; revision: string };
 }
-export interface Register { project: string; items: ReviewItem[] }
+/** One print of a sheet: for review (open items) or as revised (closed items and their solutions). */
+export interface PrintLine { sheet: string; kind: "For review" | "As revised"; at: string; by: string; revision: string; items: string[]; folder: string }
+export interface Register { project: string; items: ReviewItem[]; prints?: PrintLine[] }
 
 const DAY = 86400000;
 
@@ -42,7 +48,7 @@ export function overdue(i: ReviewItem, today: string): boolean {
 
 export interface RaiseInput {
   title: string; description: string; disciplines: string[]; lead: string; owner: string; priority: Priority; due?: string;
-  raised_by: string; model: string; view: string; element_ids: number[];
+  raised_by: string; model: string; view: string; element_ids: number[]; sheet?: string;
 }
 
 export function raiseProblems(q: RaiseInput, today: string): string[] {
@@ -62,7 +68,7 @@ export function raise(reg: Register, q: RaiseInput, now: Date): ReviewItem {
   const item: ReviewItem = {
     id: nextId(reg), title: q.title.trim(), description: q.description.trim(), disciplines, lead: q.lead.trim().toUpperCase(),
     owner: q.owner.trim(), priority: q.priority, due: q.due || defaultDue(q.priority, now), status: "Open",
-    raised_by: q.raised_by, raised_at: at, model: q.model, view: q.view, element_ids: q.element_ids.slice(0, 200),
+    raised_by: q.raised_by, raised_at: at, model: q.model, view: q.view, element_ids: q.element_ids.slice(0, 200), sheet: q.sheet ?? "",
     answers: [], solution: "", history: [{ at, by: q.raised_by, what: `Raised for ${disciplines.join(", ")}; owner ${q.owner.trim()}, due ${q.due || defaultDue(q.priority, now)}` }],
   };
   reg.items.push(item);
@@ -120,6 +126,32 @@ export function filterItems(reg: Register, filter: Filter, myDisciplines: string
   });
   const rank: Record<ItemStatus, number> = { Open: 0, "In progress": 1, Resolved: 2, Closed: 3 };
   return items.sort((a, b) => rank[a.status] - rank[b.status] || a.due.localeCompare(b.due) || a.id.localeCompare(b.id));
+}
+
+/**
+ * The items a print of this sheet lists: raised on the sheet (or clouded on it). For review: the ones still open; as
+ * revised: the ones solved or closed, with their solutions.
+ */
+export function printItems(reg: Register, sheet: string, kind: PrintLine["kind"]): ReviewItem[] {
+  const on = reg.items.filter((i) => (i.sheet ?? "").toUpperCase() === sheet.toUpperCase() || (i.cloud?.view ?? "").toUpperCase().startsWith(sheet.toUpperCase() + " "));
+  return on.filter((i) => kind === "For review" ? i.status === "Open" || i.status === "In progress" : i.status === "Resolved" || i.status === "Closed");
+}
+
+/** The list that goes beside the sheet's PDF. */
+export function printList(sheet: string, kind: PrintLine["kind"], items: ReviewItem[], when: Date): string {
+  const lines = [`# ${sheet} · ${kind === "For review" ? "Print for review" : "Print as revised"} · ${when.toISOString().slice(0, 10)}`, ""];
+  if (!items.length) lines.push(kind === "For review" ? "No open items on this sheet." : "No solved items on this sheet yet.");
+  for (const i of items) {
+    lines.push(`## ${i.id} · ${i.title}`, "", `${i.description}`, "", `Owner ${i.owner} (lead ${i.lead}) · due ${i.due} · ${i.status}`);
+    if (kind === "As revised") {
+      lines.push("", `Solution: ${i.solution || "(none)"}`);
+      for (const a of i.answers) lines.push(`- ${a.discipline}: ${a.text} (${a.by})`);
+      const closed = [...i.history].reverse().find((h) => h.what.startsWith("Accepted"));
+      if (closed) lines.push(`- Accepted by ${closed.by} on ${closed.at.slice(0, 10)}`);
+    }
+    lines.push("");
+  }
+  return lines.join("\n") + "\n";
 }
 
 /** The line the register shows (Overdue replaces Open / In progress once the due date passes). */

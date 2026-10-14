@@ -31,6 +31,8 @@ namespace Formcraft.Shell.Services
         public List<long> ElementIds { get; set; } = new List<long>();
         public List<ReviewAnswer> Answers { get; set; } = new List<ReviewAnswer>();
         public string Solution { get; set; } = "";
+        /// <summary>Where its revision cloud is ("A-1001 Ground floor · rev P02"), empty until drawn.</summary>
+        public string Cloud { get; set; } = "";
         public ChipKind Kind => Status == "Closed" ? ChipKind.Grey : Status == "Resolved" ? ChipKind.Good : Status == "Overdue" ? ChipKind.Bad : Status == "In progress" ? ChipKind.Warn : ChipKind.Info;
     }
 
@@ -49,9 +51,24 @@ namespace Formcraft.Shell.Services
         public string By { get; set; } = "";
     }
 
+    public sealed class PrintInfo
+    {
+        public PrintInfo(string sheet, string kind, string at, int items, string folder) { Sheet = sheet; Kind = kind; At = at; Items = items; Folder = folder; }
+        public string Sheet { get; }
+        public string Kind { get; }
+        public string At { get; }
+        public int Items { get; }
+        public string Folder { get; }
+    }
+
     /// <summary>Team › Review: fmc_review through the server (the project's review register, MAN 10.5).</summary>
     public interface IReviewTools
     {
+        /// <summary>A revision cloud around the item's elements in the active view: dry run, then the real run (behind the lock).</summary>
+        Task<ToolResult> CloudAsync(string projectFolder, string id, bool dryRun);
+        /// <summary>The sheet's PDF and its items, "For review" or "As revised".</summary>
+        Task<ToolResult> PrintAsync(string projectFolder, string sheet, string kind, string by);
+        Task<List<PrintInfo>> PrintsAsync(string projectFolder, string sheet);
         Task<(bool Ok, string Message, List<ReviewItemInfo> Items)> ListAsync(string projectFolder, string filter, IReadOnlyList<string> myDisciplines);
         Task<(bool Ok, string Message, ReviewItemInfo? Item)> RaiseAsync(RaiseRequest q);
         /// <summary>answer (discipline, text, done), solve (text), check (accept, text).</summary>
@@ -79,6 +96,30 @@ namespace Formcraft.Shell.Services
                 || filter == "Overdue" && i.Status == "Overdue" || filter == "My discipline" && i.Status != "Closed" && i.Disciplines.Intersect(myDisciplines).Any()).ToList();
             return Task.FromResult((true, list.Count + " items (" + filter + ").", list));
         }
+
+        public List<(string Id, bool Dry)> Clouds { get; } = new List<(string, bool)>();
+        public List<PrintInfo> PrintLog { get; } = new List<PrintInfo>();
+
+        public Task<ToolResult> CloudAsync(string projectFolder, string id, bool dryRun)
+        {
+            Clouds.Add((id, dryRun));
+            var i = Items.First(x => x.Id == id);
+            var r = new ToolResult { Ok = true, Count = 1 };
+            if (dryRun) r.Details.Add("On A-1001 Ground floor plan, revision P02 Review, around " + i.ElementIds.Count + " elements (2400 x 1800 mm)");
+            else { i.Cloud = "A-1001 Ground floor plan · P02 Review"; r.Messages.Add(new ToolMessage(ChipKind.Good, "Clouded " + id + " on A-1001.")); }
+            return Task.FromResult(r);
+        }
+
+        public Task<ToolResult> PrintAsync(string projectFolder, string sheet, string kind, string by)
+        {
+            var count = Items.Count(i => kind == "For review" ? i.Status != "Closed" && i.Status != "Resolved" : i.Status == "Closed" || i.Status == "Resolved");
+            PrintLog.Insert(0, new PrintInfo(sheet, kind, "2026-10-14", count, projectFolder + @"\01_WIP\_Reviews\Prints\" + sheet));
+            var r = new ToolResult { Ok = true, Count = 1 };
+            r.Messages.Add(new ToolMessage(ChipKind.Good, kind + " print of " + sheet + " saved: PDF and " + count + " items."));
+            return Task.FromResult(r);
+        }
+
+        public Task<List<PrintInfo>> PrintsAsync(string projectFolder, string sheet) => Task.FromResult(PrintLog.Where(p => p.Sheet == sheet).ToList());
 
         public Task<(bool Ok, string Message, ReviewItemInfo? Item)> RaiseAsync(RaiseRequest q)
         {
