@@ -1,6 +1,6 @@
 # Change request: the AI-assisted modeller
 
-**Status: proposed, 14 October 2026.** A change request against the Master Manual, Part 18, raised through the
+**Status: proposed, 14 October 2026; v2 merges the owner's involvement level (see "Involvement level" below).** A change request against the Master Manual, Part 18, raised through the
 continuous improvement loop in Part 18.4:
 
 1. Capture
@@ -39,6 +39,7 @@ always syncs.
 | Decision | Who | Where |
 |---|---|---|
 | Allow the AI-assisted modeller on a project at all | BIM Manager | BEP, and the project's Formcraft settings |
+| The admin switch and the involvement level (v2) | BIM Manager | Admin › AI involvement (U28) |
 | The autonomy level per operation group | BIM Manager, with the Discipline Lead | Admin › AI modeller |
 | Use it on a model | The model's author (Level 2 or above for that discipline, 18.2) | Pane toggle, per session |
 | Stop it at once | Anyone on the project | "Stop AI" in the pane, and fmc_guard.json |
@@ -54,6 +55,32 @@ always syncs.
 
 The default for every new project is **Suggest**.
 
+## Involvement level (v2: the owner's direction)
+
+The owner wants a fully assisted plugin where AI can model, not only fix. Two controls sit above the autonomy levels:
+
+1. **The admin switch.** AI modelling is On or Off for the whole firm, with an override per project. Only the BIM
+   Manager can change it. Off means every AI write is refused, whatever the levels below say.
+2. **The involvement level, 0–100% (default 20%).** It does two jobs:
+   - **Which operation groups are available.** Each band unlocks more groups; the autonomy level per group still
+     applies inside the band.
+
+     | Band | Name | Adds these groups |
+     |---|---|---|
+     | 0 | Off | none |
+     | 1–20 | Assist | Data; Views and annotation; MEP small moves; Create from brief |
+     | 21–50 | Co-model | Fixtures and devices; MEP routing; Architecture modelling; Families |
+     | 51–80 | Lead | MEP layouts; whole-discipline drafts from the brief, approved per area |
+     | 81–100 | Full | Everything the rulebook allows; "auto allowed" groups may run as Auto in WIP |
+
+   - **A cap on how much of a model AI may author.** At the cap, every group drops to Suggest. The measure is
+     pluggable in the rulebook and **not decided yet**: share of elements stamped `FMC_Author = AI`, share of changes
+     per week, or no cap (bands only).
+
+The bands, the default and the measure live in the kit rulebook `FMC_Rulebook_AIUse`, not in code. They can change
+without a release. The hard limits in "What it never does" hold at every band, including Full. Structure stays
+manual at every band: the per-discipline override for S defaults to 5% and only unlocks Data and Views.
+
 ## What it may change (operation groups)
 
 Each group has its own autonomy level. "Auto allowed" says whether a project may set it to Auto in WIP.
@@ -67,6 +94,9 @@ Each group has its own autonomy level. "Auto allowed" says whether a project may
 | Fixtures and devices | Move a fixture or device up to 300 mm within the same room and host | No |
 | Openings and sleeves | Propose a sleeve or opening through a wall, slab or beam | No: Suggest only, and the structural engineer must say yes |
 | Families | Swap to the kit's approved family of the same category | No |
+| Create from brief (v2) | Place rooms, doors, windows and fixtures from the brief (CIS) with approved kit families, in a new model or the author's WIP | No |
+| Architecture modelling (v2) | Walls, floors, ceilings and roofs from approved kit types, not structural | No |
+| MEP layouts (v2) | Lights from `FMC_Lux_Target`, sockets from the room programme, circuits; pipe and duct layouts between connectors | No |
 
 ## What it never does, at any level
 
