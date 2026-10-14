@@ -121,7 +121,7 @@ namespace Formcraft.Shell.ViewModels
                               IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null,
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
-                              IMaterialTools? materials = null)
+                              IMaterialTools? materials = null, ISheetTools? sheets = null)
         {
             _licence = licence;
             _connection = connection;
@@ -155,6 +155,9 @@ namespace Formcraft.Shell.ViewModels
             Rules = new RulesPage(qa ?? new MockQaTools(), settings, () => IsAdmin, s => Status = s, ShowDialog);
             Materials = new MaterialsPage(materials ?? new MockMaterialTools(), settings, s => Status = s, ShowDialog);
             _hostSections["Materials"] = Materials;
+            Sheets = new SheetsPage(sheets ?? new MockSheetTools(), Project, picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog,
+                                    () => { var issue = Groups.SelectMany(g => g.Sections).FirstOrDefault(x => x.Name == "Issue"); if (issue != null) SelectSection(issue); });
+            _hostSections["Sheets"] = Sheets;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -181,7 +184,7 @@ namespace Formcraft.Shell.ViewModels
                 else Status = p + ": in the plugin this runs here (built in U22).";
             });
             _licence.Changed += (_, __) => OnLicenceChanged();
-            _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); UpdateState(); };
+            _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); OnPropertyChanged(nameof(ConnectionTip)); UpdateState(); };
             _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
             _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
             Rebuild();
@@ -221,8 +224,8 @@ namespace Formcraft.Shell.ViewModels
             if (!l.SignedIn) s = null;
             else if (l.GraceOver)
                 s = new StateBannerInfo(PaneState.GraceOver, ChipKind.Bad, "Sign in to keep using Formcraft", "Connect, Log and Help still work", "Sign in", SignInAgainCommand);
-            else if (_connection.State == ConnectionState.NotConnected)
-                s = new StateBannerInfo(PaneState.NotConnected, ChipKind.Warn, "Switch on the AI connection: Core › Connect AI", "The pane and Settings still work", "Open Connect", OpenConnectCommand);
+            // No banner for the AI connection being off: the chip by the pane title shows it and opens Connect, and the
+            // ribbon has Connect AI. A banner here took space from every page (your feedback, 14 Oct).
             else if (_connection.State == ConnectionState.RevitBusy)
                 s = new StateBannerInfo(PaneState.RevitBusy, ChipKind.Grey, "Waiting for Revit to finish…", "Nothing new starts until Revit is ready");
             else if (!_kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder).KitFound)
@@ -288,6 +291,9 @@ namespace Formcraft.Shell.ViewModels
         // Header: the Connected chip is the Revit/Claude service; licence problems show in the state banners (U08).
         public bool IsConnected => _connection.State != ConnectionState.NotConnected;
         public string ConnectionText => IsConnected ? "Connected" : "Not connected";
+        /// <summary>The chip by the pane title is where the AI connection shows; clicking it opens Connect.</summary>
+        public string ConnectionTip => IsConnected ? "AI connection on. Connect: health, kit, folders, safety, AI"
+                                                   : "AI connection off: click to open Connect and switch it on (or Core › Connect AI on the ribbon)";
         public bool IsAdmin => _licence.Current.Account?.IsAdmin == true;
 
         /// <summary>Touch, Section Box and Tag Tidy: only when Flow is on the licence.</summary>
@@ -347,6 +353,8 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Connect (board core/PaneConnect).</summary>
         public ConnectViewModel Connect { get; }
+        /// <summary>Drawings › Sheets: the register against the model.</summary>
+        public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
         public MaterialsPage Materials { get; }
         /// <summary>Check › QA: the kit's rules run on the open model.</summary>

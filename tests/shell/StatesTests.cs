@@ -80,18 +80,20 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
-        public async Task Not_connected_points_to_Connect()
+        public async Task Not_connected_shows_on_the_chip_only_and_the_chip_opens_Connect()
         {
-            var (banner, page) = OnSta(() =>
+            var (banner, tip, page) = OnSta(() =>
             {
                 var p = new Pane();
                 p.Connection.Set(ConnectionState.NotConnected);
                 var b = p.Banner;
-                p.Vm.StateBanner!.Command!.Execute(null);
-                return (b, p.Vm.Page);
+                var t = p.Vm.ConnectionTip;
+                p.Vm.OpenConnectCommand.Execute(null);
+                return (b, t, p.Vm.Page);
             });
 
-            await Assert.That(banner).IsEqualTo("Switch on the AI connection: Core › Connect AI | The pane and Settings still work | Open Connect");
+            await Assert.That(banner).IsEqualTo("none");
+            await Assert.That(tip).Contains("click to open Connect");
             await Assert.That(page).IsEqualTo(ShellPage.Connect);
         }
 
@@ -158,7 +160,7 @@ namespace Formcraft.Shell.Tests
                 return (b, p.Vm.State);
             });
 
-            await Assert.That(both).IsEqualTo(PaneState.NotConnected);
+            await Assert.That(both).IsEqualTo(PaneState.Offline);
             await Assert.That(graceAndConnection).IsEqualTo(PaneState.GraceOver);
         }
 
