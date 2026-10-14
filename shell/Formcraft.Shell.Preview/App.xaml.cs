@@ -144,6 +144,9 @@ namespace Formcraft.Shell.Preview
                     RenderFull(new Formcraft.Shell.Views.SettingsView { DataContext = main.Services.Pane }, 440,
                                Path.Combine(folder, $"settings-{name}-{tab.ToLowerInvariant()}-440.png"));
                 }
+                // Connect at full height (U12; board core/PaneConnect)
+                RenderFull(new Formcraft.Shell.Views.ConnectView { DataContext = main.Services.Pane.Connect }, 440,
+                           Path.Combine(folder, $"connect-{name}-440.png"));
                 main.Services.Pane.Settings.Open("Account");
                 main.Services.Pane.OpenSettingsCommand.Execute(null);
 

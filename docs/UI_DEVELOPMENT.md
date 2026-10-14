@@ -129,9 +129,10 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 - Done: Claude can drive the pane to any section and read back what it shows.
 - Test: M, server unit tests, C.
 
-### [ ] U12 Connect wired to real checks
+### [x] U12 Connect wired to real checks
 - Board: `core/PaneConnect`
-- Files: `Views/ConnectView.xaml`, adapter over `plugin/Fmc/Readiness.cs` and `GuardStatus.cs`
+- Files: `Views/ConnectView.xaml`, `ViewModels/ConnectViewModel.cs`, `Services/ConnectInfo.cs`; adapter
+  `plugin/Shell/RevitConnectInfo.cs` over `plugin/Fmc/Readiness.cs` and `GuardStatus.cs`; fixes in `plugin/Fmc/FmcFixes.cs`
 - Start-up health check, kit and folders, safety locks (D1 toggle shown, user-only), Claude service start/stop.
 - Done: matches the board with live values on the pilot PC.
 - Test: R, M (`fmc_ui get_state` shows the same values).

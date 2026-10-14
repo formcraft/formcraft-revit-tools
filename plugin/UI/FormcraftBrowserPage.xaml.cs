@@ -203,38 +203,12 @@ namespace revit_mcp_plugin.UI
 
         private void CreateGuardFromExample()
         {
-            string target = GuardStatus.DefaultConfigPath();
-            if (File.Exists(target)) { Reload(); return; }
-            using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("fmc_guard.example.json"))
-            {
-                if (s == null) { FmcDialog.Info("Create fmc_guard.json", "The example is missing from this add-in build."); return; }
-                if (!FmcDialog.Confirm("Create fmc_guard.json", $"Writes the example folder rules to\n{target}\n\n" +
-                        "Then edit the folders to match this PC: the example uses Z:\\00_Standards and Z:\\Projects.",
-                        null, "Create and open")) return;
-                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(target));
-                using (var f = File.Create(target)) s.CopyTo(f);
-            }
-            FormcraftBrowser.OpenGuardFile();
-            Reload();
+            if (FmcFixes.CreateGuardFromExample()) Reload();
         }
 
         private void LocateServer()
         {
-            using (var dlg = new System.Windows.Forms.FolderBrowserDialog
-            {
-                Description = "Choose the MCP server folder (the one with build\\index.js), e.g. C:\\Users\\<you>\\mcp\\revit-fmc",
-                ShowNewFolderButton = false,
-            })
-            {
-                if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-                if (!File.Exists(System.IO.Path.Combine(dlg.SelectedPath, "build", "index.js")))
-                {
-                    FmcDialog.Info("Locate server folder", $"{dlg.SelectedPath} has no build\\index.js.");
-                    return;
-                }
-                BrowserSettings.ServerDir = dlg.SelectedPath;
-            }
-            Reload();
+            if (FmcFixes.LocateServer()) Reload();
         }
 
         // ================================================================ probe
@@ -242,24 +216,9 @@ namespace revit_mcp_plugin.UI
         public async void RunProbe()
         {
             ProbeCard.Visibility = Visibility.Visible;
-            if (!SocketService.Instance.IsRunning)
-            {
-                SetProbe("bad", "Probe: the Claude service is off, so Claude can't reach Revit. Start it, then probe again.");
-                return;
-            }
             SetProbe("ready", "Probe: asking Revit through Claude's server on port 8080…");
-            CliResult r = await ServerCli.RunAsync("probe");
-            if (r.Ok)
-            {
-                string active = r.Body["active"]?.Value<string>("title");
-                int open = (r.Body["documents"] as JArray)?.Count ?? 0;
-                SetProbe("done", $"Probe OK in {r.Body.Value<int>("ms")} ms: server, port 8080, command set and Revit all answer. " +
-                    (active == null ? "No active document." : $"Active: {active}; {open} open."));
-            }
-            else
-            {
-                SetProbe("bad", "Probe failed: " + string.Join(" ", r.Reasons()));
-            }
+            var (ok, text) = await FmcFixes.ProbeAsync();
+            SetProbe(ok ? "done" : "bad", text);
         }
 
         private void SetProbe(string kind, string text)
@@ -892,13 +851,7 @@ namespace revit_mcp_plugin.UI
             _ = PlanAsync(quiet: true);
         }
 
-        private void OpenSettings_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new SettingsWindow();
-            _ = new System.Windows.Interop.WindowInteropHelper(window) { Owner = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle };
-            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            window.Show();
-        }
+        private void OpenSettings_Click(object sender, RoutedEventArgs e) => FmcFixes.OpenCommandSettings();
 
         // ================================================================ helpers
 

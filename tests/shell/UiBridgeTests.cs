@@ -150,16 +150,16 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
-        public async Task Connect_shows_the_host_page_in_place_of_the_placeholder()
+        public async Task A_host_section_shows_in_place_of_the_placeholder()
         {
             var (placeholder, host, sectionAfter) = OnSta(() =>
             {
                 var p = new Pane();
-                p.Vm.ConnectContent = new System.Windows.Controls.TextBlock();
-                p.Bridge.OpenSection("Connect");
-                var r = (p.Vm.ShowSection, p.Vm.ShowHostConnect);
+                p.Vm.SetHostSection("Families", new System.Windows.Controls.TextBlock());
+                p.Bridge.OpenSection("Families");
+                var r = (p.Vm.ShowSection, p.Vm.ShowHostSection);
                 p.Bridge.OpenSection("QA");
-                return (r.ShowSection, r.ShowHostConnect, p.Vm.ShowSection && !p.Vm.ShowHostConnect);
+                return (r.ShowSection, r.ShowHostSection, p.Vm.ShowSection && !p.Vm.ShowHostSection);
             });
             await Assert.That(placeholder).IsFalse();
             await Assert.That(host).IsTrue();

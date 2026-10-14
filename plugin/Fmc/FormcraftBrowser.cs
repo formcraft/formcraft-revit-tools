@@ -26,6 +26,8 @@ namespace revit_mcp_plugin.Fmc
 
         public static FormcraftBrowserPage Page { get; private set; }
         public static string RevitVersion { get; private set; } = "";
+        /// <summary>The update and build, e.g. "2025.4 · build 25.4.0.32" (Connect's health check).</summary>
+        public static string RevitBuild { get; private set; } = "";
 
         private static ExternalEvent _serviceEvent;
         private static List<DocState> _lastDocs = new List<DocState>();
@@ -34,6 +36,11 @@ namespace revit_mcp_plugin.Fmc
         public static void Register(UIControlledApplication application)
         {
             RevitVersion = application.ControlledApplication.VersionNumber;
+#if REVIT2024_OR_GREATER
+            RevitBuild = application.ControlledApplication.SubVersionNumber + " · build " + application.ControlledApplication.VersionBuild;
+#else
+            RevitBuild = RevitVersion + " · build " + application.ControlledApplication.VersionBuild;
+#endif
 #if REVIT2024_OR_GREATER
             Theme.SetDark(UIThemeManager.CurrentTheme == UITheme.Dark);
             application.ThemeChanged += (s, e) =>
