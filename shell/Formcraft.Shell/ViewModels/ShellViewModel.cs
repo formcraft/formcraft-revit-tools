@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null)
         {
             _licence = licence;
             _connection = connection;
@@ -174,6 +174,8 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Review"] = Review;
             Reports = new ReportsPage(reports ?? new MockReportTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Reports"] = Reports;
+            Brief = new BriefPage(brief ?? new MockBriefTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
+            _hostSections["Brief"] = Brief;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -402,6 +404,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Check › Reports: reports traced to the plugin's own saved files.</summary>
         public ReportsPage Reports { get; }
+
+        /// <summary>Model › Start from brief: a new model set up from the approved concept (U23).</summary>
+        public BriefPage Brief { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
