@@ -203,7 +203,8 @@ namespace Formcraft.Shell.Tests
             });
 
             await Assert.That(inSettings).IsEqualTo("Save,Reset mine");
-            await Assert.That(inSection).IsEqualTo("");
+            // Back on the first section, Setup › Project, which has its own footer (U13).
+            await Assert.That(inSection).IsEqualTo("Start (dry run),Preview");
         }
 
         [Test]

@@ -133,6 +133,8 @@ namespace Formcraft.Shell.Services
     {
         string? Open(string title, string filter, string startFolder);
         string? Save(string title, string filter, string fileName, string startFolder);
+        /// <summary>A folder; null when cancelled or when this Windows build has no folder dialog.</summary>
+        string? Folder(string title, string startFolder);
     }
 
     public sealed class WindowsFilePicker : IFilePicker
@@ -148,6 +150,17 @@ namespace Formcraft.Shell.Services
             // The server refuses to overwrite unless asked twice, so Windows doesn't ask here.
             var d = new Microsoft.Win32.SaveFileDialog { Title = title, Filter = filter, FileName = fileName, InitialDirectory = startFolder ?? "", OverwritePrompt = false };
             return d.ShowDialog() == true ? d.FileName : null;
+        }
+
+        public string? Folder(string title, string startFolder)
+        {
+#if NET8_0_OR_GREATER
+            var d = new Microsoft.Win32.OpenFolderDialog { Title = title, InitialDirectory = startFolder ?? "" };
+            return d.ShowDialog() == true ? d.FolderName : null;
+#else
+            // Revit 2020-2024 (.NET Framework) has no WPF folder dialog: type or paste the path instead.
+            return null;
+#endif
         }
     }
 

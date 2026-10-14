@@ -14,6 +14,7 @@ namespace Formcraft.Shell.Tests
             public string? Next { get; set; }
             public string? Open(string title, string filter, string startFolder) => Next;
             public string? Save(string title, string filter, string fileName, string startFolder) => Next;
+            public string? Folder(string title, string startFolder) => Next;
         }
 
         private sealed class Pane

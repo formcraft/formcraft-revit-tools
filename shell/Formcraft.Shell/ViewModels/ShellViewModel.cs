@@ -118,7 +118,8 @@ namespace Formcraft.Shell.ViewModels
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
                               IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null,
-                              IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null)
+                              IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null,
+                              IProjectTools? project = null)
         {
             _licence = licence;
             _connection = connection;
@@ -147,6 +148,8 @@ namespace Formcraft.Shell.ViewModels
             // Setup sections the pane builds itself (the families and files tools that were the Formcraft Browser).
             Families = new FamiliesPage(families ?? new MockFamilyTools(), settings, s => Status = s, ShowDialog);
             Templates = new TemplatesPage(files ?? new MockFileTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
+            Project = new ProjectPage(project ?? new MockProjectTools(), settings, picker ?? new WindowsFilePicker(), s => Status = s, ShowDialog);
+            _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
             _hostSections["Templates"] = Templates;
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
@@ -336,6 +339,8 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Connect (board core/PaneConnect).</summary>
         public ConnectViewModel Connect { get; }
+        /// <summary>Setup › Project: start a project (folder tree, manifest, models).</summary>
+        public ProjectPage Project { get; }
         /// <summary>Setup › Families: the family builder from the kit.</summary>
         public FamiliesPage Families { get; }
         /// <summary>Setup › Templates: new files from a template and the files open in Revit.</summary>

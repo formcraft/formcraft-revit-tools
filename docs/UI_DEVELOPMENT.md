@@ -142,7 +142,9 @@ Status: `[ ]` to do · `[~]` in progress · `[x]` done
 Build in roadmap order. Each section follows the same recipe: view from its board, view model, adapter over the
 carried server or command set tool, dry run → yes → run → log, and an `fmc_ui` check.
 
-- [ ] U13 Manage › Project (start a project: details, naming, folders, models, sheets) — `manage/PaneProject`
+- [~] U13 Manage › Project (start a project: details, naming, folders, models, sheets) — `manage/PaneProject`. **Done:** details,
+  naming, folder tree, manifest, one model per role with Project Information (`fmc_project`). **To do:** sheets from the
+  register, linking the models, project family set, first QA run, undo start
 - [ ] U14 Manage › Templates — `manage/PaneTemplates`
 - [ ] U15 Manage › Families (plan, build, load test via `fmc_family`) — `manage/PaneFamilies`
 - [ ] U16 Manage › QA and Rules — `manage/PaneQA`, `manage/PaneRules`
