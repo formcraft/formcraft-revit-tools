@@ -15,23 +15,32 @@ paid minutes without a payment method on file. A self-hosted runner costs nothin
 - **To go back to hosted runners** (after adding a payment method, for example): Settings › Secrets and variables ›
   Actions › Variables › New repository variable `CI_RUNNER` = `hosted`.
 
-## One-time install (the owner, about 10 minutes)
-1. On GitHub, open the repo's **Settings › Actions › Runners › New self-hosted runner** and choose **Windows**, **x64**.
-   The page shows the exact commands, including a one-hour registration token. Copy them from there; nobody needs to
-   paste the token anywhere else.
-2. Open **PowerShell as administrator**. Running as administrator is needed only to install the service. Run:
-   `mkdir D:\actions-runner; cd D:\actions-runner`
-   Then run the page's *Download* commands (download, optional hash check, extract).
-3. Run the page's *Configure* command (`./config.cmd --url … --token …`) and answer its prompts:
-   - **runner group:** Enter (Default)
-   - **runner name:** `formcraft-pc`
-   - **labels:** Enter (keeps `self-hosted, Windows, X64`, which the workflow asks for)
-   - **work folder:** Enter (`_work`)
-   - **run as service:** `Y`
-   - **service account:** Enter (`NT AUTHORITY\NETWORK SERVICE`)
-4. Back on the Runners page, `formcraft-pc` should show **Idle**. Queued checks start within a minute.
+## How it was installed (14 Oct, no admin rights)
+The runner is `D:\actions-runner` (v2.337.0, hash checked against GitHub's), registered as `formcraft-pc` with the
+labels `self-hosted, Windows, X64`. It runs in the owner's own account, not as a service: the checks then see the same
+PATH (Git, Node, .NET) and have a desktop for the WPF snapshots.
+
+```powershell
+cd D:\actions-runner
+$t = gh api -X POST repos/formcraft/formcraft-revit-tools/actions/runners/registration-token --jq .token
+.\config.cmd --unattended --url https://github.com/formcraft/formcraft-revit-tools --token $t --name formcraft-pc --labels self-hosted,Windows,X64 --work _work
+```
+
+**Starting it.** By hand: run `D:\actions-runner\run.cmd` (it stays running until the window is closed or the PC
+restarts). To start it at every logon, hidden, the owner registers a logon task once (no admin needed):
+
+```powershell
+$a = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument '/c "D:\actions-runner\run.cmd"' -WorkingDirectory 'D:\actions-runner'
+$g = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+Register-ScheduledTask -TaskName 'Formcraft CI Runner' -Action $a -Trigger $g -Settings $s -Description 'GitHub Actions runner for formcraft-revit-tools. Never touches Revit.'
+Start-ScheduledTask -TaskName 'Formcraft CI Runner'
+```
+
+On the repo's **Settings › Actions › Runners** page, `formcraft-pc` shows **Idle** when it's ready.
 
 ## Safety
 - Keep the repo private. On a public repo, anyone's pull request could run code on this PC.
-- To stop the runner, use Windows Services › "GitHub Actions Runner (…formcraft-pc)" › Stop.
-- To remove it, run `./config.cmd remove` in `D:\actions-runner` with a removal token from the same Runners page.
+- To stop the runner, close its window, or `Stop-ScheduledTask 'Formcraft CI Runner'`.
+- To remove it: `Unregister-ScheduledTask 'Formcraft CI Runner'`, then `.\config.cmd remove --token <removal token>` in
+  `D:\actions-runner` (`gh api -X POST repos/formcraft/formcraft-revit-tools/actions/runners/remove-token --jq .token`).
