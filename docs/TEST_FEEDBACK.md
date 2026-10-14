@@ -51,11 +51,40 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Fixed – retest |
 | F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Fixed – retest |
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Fixed – retest |
-| F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Fixed – retest |
-| F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Fixed – retest |
+| F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Closed (run 6) |
+| F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Closed (run 6) |
+| F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Open |
+| F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Open |
 ---
 
 ## Test runs
+
+### Run 6 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `6a6b61e`
+
+**`fmc_selftest`: Ready to test** (20 pass, 3 warn: materials file, annotation standard, no `.rte` in 06_Templates).
+Add-in and server both `6a6b61e`; 51 commands registered; "safe to close" correct. Info line "Ribbon updates: 3
+updates, 21 changed the ribbon" reads oddly (more changes than updates).
+
+| Id | Result | State |
+|---|---|---|
+| F-018 #50 | `fmc_qa run` → **Blocked**, `clear: false`, 3 pass / 8 fail / 305 not checked, "221 Must rules weren't checked either" | Closed |
+| F-017 #49 | Must 233 / Should 83 / Advice 28; 11 rules run; the rest grouped in `not_checked_by_reason` | Closed |
+| F-009 #39 | `fmc_qa` replies are summaries now; `fmc_library scan` not retested | Open |
+| F-014 #45 | Not retested: the tester's relaunch of Revit failed in Autodesk licensing ("The License Manager is not running… Revit will shut down now") | Open |
+| F-015 #46 | Not retested (the rulebook folder isn't empty any more) | Open |
+
+**Project start test (user's request):** empty folder `D:\Fomcraft\FMC_PROJECTS_27\F26901_TestHouse` (made by the
+tester on the user's behalf) → `fmc_project plan` → `start` dry run → `start` for real: 18 folders,
+`01_WIP\FMC_Project.json`, models A S M E P named `F26901-FMC-ZZ-ZZ-M3-<Role>-0001.rvt` (5–10 MB) from Revit's metric
+templates; Project Information in the A model: Name "Test House (3-bedroom bungalow)", Client "Formcraft (test)",
+Number F26901, Status G2. `FMC_District` reported as not in the template (correct). New **F-019 #55**: the PST-002
+subfolders aren't made. The test folder is left in place.
+
+**Close / reopen:** Revit closed cleanly from the tester (`ExitRevit`, only an unchanged new document open). From the
+next run on **the user opens Revit and the tester only closes it**. New **F-020 #56**: a sign-in bypass for the
+tester on the pilot PC (user's request).
+
+---
 
 ### Run 5 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `03e0f0c`
 
