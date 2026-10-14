@@ -39,6 +39,8 @@ export interface GuardConfig {
   family_template_dir: string;
   /** Family builder: new families are saved to <family_staging_root>\<Role>\ (must be inside write_roots) */
   family_staging_root: string;
+  /** The kit's keynote file (Revit keynote table: code, description, parent), read by Setup › Families */
+  keynote_file: string;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -53,6 +55,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   shared_parameter_file: "Z:\\00_Standards\\01_Shared_Parameters\\FMC_SharedParameters.txt",
   family_template_dir: "C:\\ProgramData\\Autodesk\\RVT 2025\\Family Templates\\English",
   family_staging_root: "Z:\\00_Standards\\04_Families\\_Staging",
+  keynote_file: "Z:\\00_Standards\\02_Keynotes\\FMC_Keynotes.txt",
 };
 
 /** Tools that change the model. They are refused on live project models. */

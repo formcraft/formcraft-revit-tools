@@ -60,7 +60,8 @@ namespace revit_mcp_plugin.Shell
 #endif
             Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: touch, connect: ConnectInfo,
                                       families: new RevitFamilyTools(), files: Files,
-                                      project: new RevitProjectTools(), templates: new RevitTemplateTools())
+                                      project: new RevitProjectTools(), templates: new RevitTemplateTools(),
+                                      library: new RevitLibraryTools())
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
             };

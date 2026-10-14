@@ -148,6 +148,7 @@ namespace Formcraft.Shell.Preview
                 foreach (var page in new Formcraft.Shell.ViewModels.SectionPage[] { main.Services.Pane.Project, main.Services.Pane.Templates, main.Services.Pane.Families })
                 {
                     page.Opened();
+                    if (page is Formcraft.Shell.ViewModels.FamiliesPage families) { families.ScanCommand.Execute(null); families.Select("Vendor_Socket_MK"); }
                     RenderFull(new Formcraft.Shell.Views.SectionPageView { DataContext = page }, 440,
                                Path.Combine(folder, $"setup-{name}-{page.Title.Split(' ').Last().ToLowerInvariant()}-440.png"));
                 }

@@ -313,3 +313,103 @@ namespace revit_mcp_plugin.Shell
         }
     }
 }
+
+namespace revit_mcp_plugin.Shell
+{
+    /// <summary>Setup › Families against the kit in Revit: fmc_library through the installed server.</summary>
+    public sealed class RevitLibraryTools : ILibraryTools
+    {
+        private static FamilyVerdict Verdict(JObject v) => new FamilyVerdict(
+            v.Value<string>("name"), v.Value<string>("category") ?? "", v.Value<string>("from") ?? "", v.Value<int?>("score") ?? 0,
+            v.Value<string>("state") ?? "", ((v["checks"] as JArray) ?? new JArray()).OfType<JObject>()
+                .Select(c => new FamilyCheckLine(c.Value<string>("check"), c.Value<string>("state"), c.Value<string>("detail") ?? "")).ToList(),
+            v.Value<string>("next") ?? "");
+
+        public async Task<ScanResult> ScanAsync()
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "scan" });
+            var result = new ScanResult { Ok = r.Ok && r.Body["families"] != null };
+            if (!result.Ok) { result.Message = "Scan refused: " + string.Join(" ", r.Reasons()); return result; }
+            result.Document = r.Body.Value<string>("document") ?? "";
+            foreach (JObject v in ((JArray)r.Body["families"]).OfType<JObject>()) result.Families.Add(Verdict(v));
+            foreach (JObject c in (r.Body["summary"]?["by_check"] as JArray ?? new JArray()).OfType<JObject>())
+                result.ByCheck.Add((c.Value<string>("check"), c.Value<int>("fail")));
+            var kitProblems = RevitFamilyTools.Strings(r.Body["kit_problems"]);
+            result.Message = $"Scanned {result.Families.Count} families in {result.Document}." + (kitProblems.Count > 0 ? " " + string.Join(" ", kitProblems) : "");
+            return result;
+        }
+
+        private static JObject Args(string action, string path, string role, string description, string keynote) => new JObject
+        {
+            ["action"] = action, ["path"] = path, ["role"] = role, ["description"] = description, ["keynote"] = keynote,
+        };
+
+        public async Task<BringInPlan> InspectAsync(string path, string role, string description, string keynote)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_library", Args("inspect", path, role, description, keynote));
+            var plan = new BringInPlan { Ok = r.Ok && r.Body["plan"] != null };
+            if (!plan.Ok) { plan.Message = "Check refused: " + string.Join(" ", r.Reasons()); return plan; }
+            var p = (JObject)r.Body["plan"];
+            plan.Verdict = new FamilyVerdict(p.Value<string>("family"), p.Value<string>("category") ?? "", "Outside file", p.Value<int?>("score") ?? 0,
+                p.Value<string>("state") ?? "", ((p["checks"] as JArray) ?? new JArray()).OfType<JObject>()
+                    .Select(c => new FamilyCheckLine(c.Value<string>("check"), c.Value<string>("state"), c.Value<string>("detail") ?? "")).ToList(), "");
+            plan.ProposedName = p.Value<string>("proposed_name") ?? "";
+            plan.SavePath = p.Value<string>("save_path") ?? "";
+            plan.SizeMb = p.Value<double?>("size_mb") ?? 0;
+            plan.ImportedCad = p.Value<int?>("imported_cad") ?? 0;
+            plan.AddParameters.AddRange(RevitFamilyTools.Strings(p["add_parameters"]));
+            return plan;
+        }
+
+        public async Task<ToolResult> BringInAsync(string path, string role, string description, string keynote, bool dryRun)
+        {
+            var args = Args("bring_in", path, role, description, keynote);
+            args["dry_run"] = dryRun;
+            CliResult r = await ServerCli.RunAsync("fmc_library", args);
+            if (!r.Ok) return ToolResult.Refused("Bring in refused: " + string.Join(" ", r.Reasons()));
+            if (dryRun)
+            {
+                var p = r.Body["would_do"] as JObject ?? new JObject();
+                var result = new ToolResult { Ok = true, Count = 1 };
+                result.Details.Add("Rename → " + p.Value<string>("proposed_name"));
+                var add = RevitFamilyTools.Strings(p["add_parameters"]);
+                result.Details.Add(add.Count == 0 ? "Parameters: none to add" : "Add " + string.Join(", ", add));
+                result.Details.Add("Keynote: " + (string.IsNullOrEmpty(p.Value<string>("keynote")) ? "none" : p.Value<string>("keynote")));
+                result.Details.Add("Save to " + p.Value<string>("save_path"));
+                return result;
+            }
+            var res = r.Body["result"] as JObject ?? new JObject();
+            var done = new ToolResult { Ok = true };
+            done.Messages.Add(new ToolMessage(ChipKind.Good, "Brought in: " + res.Value<string>("saved") + ". Release stays with the Family Librarian."));
+            var warnings = RevitFamilyTools.Strings(res["warnings"]);
+            if (warnings.Count > 0) done.Messages.Add(new ToolMessage(ChipKind.Warn, "Hand steps:\n• " + string.Join("\n• ", warnings)));
+            return done;
+        }
+
+        public async Task<IReadOnlyList<KitParameter>> ParametersAsync(string query)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "parameters", ["query"] = query });
+            return ((r.Body["parameters"] as JArray) ?? new JArray()).OfType<JObject>()
+                .Select(p => new KitParameter(p.Value<string>("name"), p.Value<string>("group") ?? "", p.Value<string>("datatype") ?? "")).ToList();
+        }
+
+        public async Task<KeynoteSearch> KeynotesAsync(string query, string group)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "keynotes", ["query"] = query, ["group"] = group });
+            var result = new KeynoteSearch { Ok = r.Ok, Message = r.Ok ? "" : string.Join(" ", r.Reasons()) };
+            result.File = r.Body.Value<string>("file") ?? "";
+            result.Groups.AddRange(RevitFamilyTools.Strings(r.Body["groups"]));
+            foreach (JObject k in ((r.Body["keynotes"] as JArray) ?? new JArray()).OfType<JObject>())
+                result.Keynotes.Add(new KeynoteEntry(k.Value<string>("code"), k.Value<string>("description") ?? ""));
+            result.NextCode = r.Body.Value<string>("next_code") ?? "";
+            return result;
+        }
+
+        public async Task<string> RequestKeynoteAsync(string group, string text)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "keynote_request", ["group"] = group, ["text"] = text });
+            return r.Ok ? "Requested " + r.Body.Value<string>("requested") + ". The BIM Manager approves it into the kit's keynote file."
+                        : "Keynote request refused: " + string.Join(" ", r.Reasons());
+        }
+    }
+}
