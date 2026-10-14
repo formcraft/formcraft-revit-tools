@@ -80,6 +80,7 @@ namespace revit_mcp_plugin.Fmc
             }
             if (docs.Count == _lastDocs.Count && docs.Zip(_lastDocs, (a, b) => a.SameAs(b)).All(x => x)) return;
             _lastDocs = docs;
+            if (SocketService.Instance.IsRunning) InstanceRegistry.Documents(docs);
             DocumentsChanged?.Invoke(docs);
         }
 

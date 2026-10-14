@@ -45,6 +45,9 @@ namespace revit_mcp_plugin.Core
 
         public bool IsRunning => _isRunning;
 
+        /// <summary>How many Revits can each have their own connection (ports from the configured one up).</summary>
+        public const int PortRange = 10;
+
         /// <summary>Why the last Start failed, in words a person can act on; empty when it started.</summary>
         public string LastError { get; private set; } = "";
 
@@ -80,7 +83,7 @@ namespace revit_mcp_plugin.Core
             // Load configuration and register commands.
             ConfigurationManager configManager = new ConfigurationManager(_logger);
             configManager.LoadConfiguration();
-            
+
 
             //// 从配置中读取服务端口
             //// Read the service port from the configuration.
@@ -106,25 +109,39 @@ namespace revit_mcp_plugin.Core
         {
             if (_isRunning) return;
 
+            // Two or more Revits each get their own connection: the first free port from the configured one up (8080-8089),
+            // announced in %APPDATA%\Formcraft\instances so the MCP server can reach each of them.
+            int first = ConnectSettings.Load().Port;
             try
             {
                 LastError = "";
+                for (int port = first; port < first + PortRange; port++)
+                {
+                    try
+                    {
+                        // This PC only: AI apps reach Revit through the MCP server running here, never over the network.
+                        _listener = new TcpListener(IPAddress.Loopback, port);
+                        _listener.Start();
+                        _port = port;
+                        break;
+                    }
+                    catch (SocketException ex) when (ex.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                    {
+                        _listener = null;
+                    }
+                }
+                if (_listener == null)
+                {
+                    LastError = $"Ports {first}-{first + PortRange - 1} are all in use ({PortRange} Revits or other programs). Close one, or set another port in {ConnectSettings.FilePath} and restart Revit.";
+                    return;
+                }
                 _isRunning = true;
-                // This PC only: AI apps reach Revit through the MCP server running here, never over the network.
-                _listener = new TcpListener(IPAddress.Loopback, _port);
-                _listener.Start();
-
                 _listenerThread = new Thread(ListenForClients)
                 {
                     IsBackground = true
                 };
-                _listenerThread.Start();              
-            }
-            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.AddressAlreadyInUse)
-            {
-                _isRunning = false;
-                _listener = null;
-                LastError = $"Port {_port} is already in use, by another Revit window or another program. Close it, or set another port in {ConnectSettings.FilePath} and restart Revit.";
+                _listenerThread.Start();
+                InstanceRegistry.Announce(_port);
             }
             catch (Exception ex)
             {
@@ -137,6 +154,7 @@ namespace revit_mcp_plugin.Core
         public void Stop()
         {
             if (!_isRunning) return;
+            InstanceRegistry.Remove();
 
             try
             {
@@ -173,7 +191,7 @@ namespace revit_mcp_plugin.Core
             }
             catch (SocketException)
             {
-                
+
             }
             catch(Exception)
             {
@@ -271,7 +289,7 @@ namespace revit_mcp_plugin.Core
                 // Execute command.
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
-                {                
+                {
                     object result = command.Execute(request.GetParamsObject(), request.Id);
 
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);

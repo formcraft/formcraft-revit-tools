@@ -5,7 +5,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { configPath, expandEnv, loadConfig } from "../fmc/policy.js";
-import { notListening, revitPort } from "../fmc/connect.js";
+import { label, notListening, readInstances, revitPort } from "../fmc/connect.js";
 import { AddinFacts, Line, PathProbe, guardPaths, kitLayout, revitLines, summary } from "../fmc/selftest.js";
 
 const probe: PathProbe = {
@@ -45,11 +45,15 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
   catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     // Revit answered but doesn't know the command: the add-in is older than the self-test.
-    if (!msg.includes("nothing in Revit is listening")) failure = `Revit answers, but the add-in in Revit has no self-test (it is older than this server): ${msg}. Install the latest build.`;
+    if (/Revits are open|No open Revit|matches \d+ Revits/.test(msg)) failure = msg;
+    else if (!msg.includes("nothing in Revit is listening")) failure = `Revit answers, but the add-in in Revit has no self-test (it is older than this server): ${msg}. Install the latest build.`;
   }
 
   const { config, problem } = loadConfig();
+  const open = readInstances();
   const lines: Line[] = [
+    { area: "Revit", check: "Revits open", state: "Info",
+      detail: open.length ? open.map(label).join("; ") + (open.length > 1 ? ". Pass revit to say which one a call (and this self-test) goes to" : "") : "None announced (an older add-in, or the AI connection is off)" },
     { area: "Server", check: "Server build", state: server.commit === "unknown" ? "Warn" : "Info", detail: `${server.commit} · built ${server.built}` },
     ...revitLines(facts, server, failure),
     { area: "Guard", check: "fmc_guard.json", state: problem ? "Fail" : "Pass", detail: problem ?? configPath() },

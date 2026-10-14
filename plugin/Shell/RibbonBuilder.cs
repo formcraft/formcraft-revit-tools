@@ -58,8 +58,9 @@ namespace revit_mcp_plugin.Shell
         {
             if (_connect == null || _connectShown == on) return;
             _connectShown = on;
-            _connect.ItemText = on ? "AI: on" : "AI: off";
-            _connect.ToolTip = ConnectTip(on);
+            int port = SocketService.Instance.Port;
+            _connect.ItemText = on ? (port == ConnectSettings.DefaultPort ? "AI: on" : "AI: on · " + port) : "AI: off";
+            _connect.ToolTip = ConnectTip(on) + (on ? " This Revit's port: " + port + "." : "");
         }
         private static readonly Dictionary<string, PushButton> PartButtons = new Dictionary<string, PushButton>();
         private static readonly Dictionary<(FmcModule, int), PushButton> SmallButtons = new Dictionary<(FmcModule, int), PushButton>();

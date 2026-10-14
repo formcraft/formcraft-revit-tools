@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -17,6 +17,7 @@
  */
 import fs from "node:fs";
 import { z } from "zod";
+import { revitTarget } from "./target.js";
 import { loadConfig } from "./policy.js";
 import { SpecFile } from "./specs.js";
 import { FMC_FILE_SHAPE, runFmcFile } from "../tools/fmc_file.js";
@@ -35,6 +36,7 @@ import { FMC_WORKSHARE_SHAPE, runFmcWorkshare } from "../tools/fmc_workshare.js"
 import { FMC_REVIEW_SHAPE, runFmcReview } from "../tools/fmc_review.js";
 import { FMC_REPORT_SHAPE, runFmcReport } from "../tools/fmc_report.js";
 import { FMC_DOC_SHAPE, runFmcDoc } from "../tools/fmc_doc.js";
+import { FMC_REVIT_SHAPE, runFmcRevit } from "../tools/fmc_revit.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, readApiKey, runAsk } from "./ask.js";
 
@@ -94,39 +96,45 @@ async function main() {
   console.log = (...a: unknown[]) => console.error(...a);
   const command = process.argv[2];
   try {
+    // One read of the arguments; "revit" (a project name, pid or port) picks the Revit when two or more are open.
+    const raw = (await readStdin()) as Record<string, unknown>;
+    const { revit, ...input } = raw && typeof raw === "object" ? raw : {};
+    revitTarget.enterWith(typeof revit === "string" ? revit : undefined);
     switch (command) {
       case "fmc_file":
-        return printReply(await runFmcFile(z.object(FMC_FILE_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcFile(z.object(FMC_FILE_SHAPE).parse(input)));
       case "fmc_family":
-        return printReply(await runFmcFamily(z.object(FMC_FAMILY_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcFamily(z.object(FMC_FAMILY_SHAPE).parse(input)));
       case "fmc_project":
-        return printReply(await runFmcProject(z.object(FMC_PROJECT_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcProject(z.object(FMC_PROJECT_SHAPE).parse(input)));
       case "fmc_template":
-        return printReply(await runFmcTemplate(z.object(FMC_TEMPLATE_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcTemplate(z.object(FMC_TEMPLATE_SHAPE).parse(input)));
       case "fmc_library":
-        return printReply(await runFmcLibrary(z.object(FMC_LIBRARY_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcLibrary(z.object(FMC_LIBRARY_SHAPE).parse(input)));
       case "fmc_qa":
-        return printReply(await runFmcQa(z.object(FMC_QA_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcQa(z.object(FMC_QA_SHAPE).parse(input)));
       case "fmc_material":
-        return printReply(await runFmcMaterial(z.object(FMC_MATERIAL_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcMaterial(z.object(FMC_MATERIAL_SHAPE).parse(input)));
       case "fmc_sheets":
-        return printReply(await runFmcSheets(z.object(FMC_SHEETS_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcSheets(z.object(FMC_SHEETS_SHAPE).parse(input)));
       case "fmc_annotate":
-        return printReply(await runFmcAnnotate(z.object(FMC_ANNOTATE_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcAnnotate(z.object(FMC_ANNOTATE_SHAPE).parse(input)));
       case "fmc_issue":
-        return printReply(await runFmcIssue(z.object(FMC_ISSUE_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcIssue(z.object(FMC_ISSUE_SHAPE).parse(input)));
       case "fmc_links":
-        return printReply(await runFmcLinks(z.object(FMC_LINKS_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcLinks(z.object(FMC_LINKS_SHAPE).parse(input)));
       case "fmc_selftest":
-        return printReply(await runFmcSelftest(z.object(FMC_SELFTEST_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcSelftest(z.object(FMC_SELFTEST_SHAPE).parse(input)));
       case "fmc_workshare":
-        return printReply(await runFmcWorkshare(z.object(FMC_WORKSHARE_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcWorkshare(z.object(FMC_WORKSHARE_SHAPE).parse(input)));
       case "fmc_review":
-        return printReply(await runFmcReview(z.object(FMC_REVIEW_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcReview(z.object(FMC_REVIEW_SHAPE).parse(input)));
       case "fmc_report":
-        return printReply(await runFmcReport(z.object(FMC_REPORT_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcReport(z.object(FMC_REPORT_SHAPE).parse(input)));
       case "fmc_doc":
-        return printReply(await runFmcDoc(z.object(FMC_DOC_SHAPE).parse(await readStdin())));
+        return printReply(await runFmcDoc(z.object(FMC_DOC_SHAPE).parse(input)));
+      case "fmc_revit":
+        return printReply(await runFmcRevit(z.object(FMC_REVIT_SHAPE).parse(input)));
       case "specs":
         return specs();
       case "probe":
@@ -135,7 +143,7 @@ async function main() {
         const r = await runAsk(z.object({
           question: z.string(),
           history: z.array(z.object({ role: z.enum(["user", "assistant"]), text: z.string() })).optional(),
-        }).parse(await readStdin()), {
+        }).parse(input), {
           fetch, env: process.env, now: () => new Date(), apiKey: () => readApiKey(), logFile: askLogFile,
           revit: (command, params) => withRevitConnection((c) => command === "fmc_document_info"
             ? c.sendRaw(command, params, 15000) : c.sendCommand(command, params, 60000)),
@@ -143,7 +151,7 @@ async function main() {
         return print(r.body, !r.ok);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|specs|probe|ask>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|specs|probe|ask>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {
