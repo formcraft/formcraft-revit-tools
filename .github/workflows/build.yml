@@ -1,19 +1,35 @@
 name: Build
 
+# The checks run on the pilot PC (a self-hosted runner, docs/CI_RUNNER.md): the free hosted minutes for a private repo
+# ran out on 14 Oct 2026. Set the repository variable CI_RUNNER to "hosted" to go back to GitHub's Windows runners.
+# Branches are checked through their pull request (and on demand), so a push to a PR branch runs once, not twice.
 on:
   push:
-    branches: [main, "feat/**", "fix/**"]
+    branches: [main]
   pull_request:
   workflow_dispatch:
+
+# A newer push to the same branch or PR cancels the older run, so the PC isn't busy with outdated checks
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Windows PowerShell 5.1 is on every Windows PC; PowerShell 7 (pwsh) isn't on the pilot PC
+defaults:
+  run:
+    shell: powershell
 
 jobs:
   shell:
     name: Pane shell (WPF, mock data)
-    runs-on: windows-latest
+    runs-on: ${{ vars.CI_RUNNER == 'hosted' && 'windows-latest' || fromJSON('["self-hosted", "Windows", "X64"]') }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       # .NET 8 builds the shell; .NET 10 runs the tests on Microsoft.Testing.Platform (global.json)
+      # The pilot PC already has the .NET 8 and 10 SDKs; installing them again needs admin rights the runner hasn't got
       - uses: actions/setup-dotnet@v4
+        if: ${{ vars.CI_RUNNER == 'hosted' }}
         with:
           dotnet-version: |
             8.0.x
@@ -29,27 +45,34 @@ jobs:
         run: dotnet test --project tests/touch/TouchKit.Core.Tests.csproj -c Release
       # The next steps run even when tests fail, so a failure shows its test name, message and the screens
       - uses: actions/upload-artifact@v4
+        continue-on-error: true # artifact storage is billed; a full quota mustn't fail the checks
         if: ${{ !cancelled() }}
         with:
           name: shell-test-results
           path: test-results
           if-no-files-found: ignore
+          retention-days: 3
       - name: Kit gallery snapshots (light and dark, 440 and 360 px)
         if: ${{ !cancelled() && steps.preview.outcome == 'success' }}
         run: shell/Formcraft.Shell.Preview/bin/Release/net8.0-windows/Formcraft.Shell.Preview.exe --snapshot "${{ github.workspace }}/snapshots" | Out-Host
       - uses: actions/upload-artifact@v4
+        continue-on-error: true # artifact storage is billed; a full quota mustn't fail the checks
         if: ${{ !cancelled() && steps.preview.outcome == 'success' }}
         with:
           name: kit-snapshots
           path: snapshots
+          retention-days: 3
       - uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
+          retention-days: 3
           name: shell-preview
           path: shell/Formcraft.Shell.Preview/bin/Release/net8.0-windows
 
   server:
     name: MCP server (TypeScript) and guard tests
-    runs-on: windows-latest
+    runs-on: ${{ vars.CI_RUNNER == 'hosted' && 'windows-latest' || fromJSON('["self-hosted", "Windows", "X64"]') }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -64,10 +87,13 @@ jobs:
 
   addin:
     name: Add-in and command set (Revit 2025)
-    runs-on: windows-latest
+    runs-on: ${{ vars.CI_RUNNER == 'hosted' && 'windows-latest' || fromJSON('["self-hosted", "Windows", "X64"]') }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      # The pilot PC already has the .NET 8 and 10 SDKs; installing them again needs admin rights the runner hasn't got
       - uses: actions/setup-dotnet@v4
+        if: ${{ vars.CI_RUNNER == 'hosted' }}
         with:
           dotnet-version: 8.0.x
       - name: Build plugin and command set

@@ -42,5 +42,6 @@ nor Claude Code ever closes Revit.
 - Keep tokens low: batch calls, ask for summaries, not element dumps.
 
 ## Branches
-Treat `main` as protected: work on `feat/<step>` or `fix/<thing>` and open a pull request. CI must pass (shell, server, add-in).
+Treat `main` as protected: work on `feat/<step>` or `fix/<thing>` and open a pull request. CI must pass (shell, server, add-in). CI runs on the pilot PC's self-hosted runner
+(`docs/CI_RUNNER.md`): checks queue while the PC is off, so a queued check is waiting, not failed.
 GitHub can't enforce this on a private repo without a paid plan, so it is a rule we keep, not a lock: never push to `main` directly.
