@@ -36,7 +36,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open a model first.");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
+                Document doc = target.Doc;
                 if (doc.IsFamilyDocument) throw new InvalidOperationException("Build reads a project model.");
                 Result = Facts(doc, Parameters);
             }

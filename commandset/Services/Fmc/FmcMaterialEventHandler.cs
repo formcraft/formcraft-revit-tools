@@ -35,12 +35,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                UIDocument ui = app.ActiveUIDocument ?? throw new InvalidOperationException("Open a model first.");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: Action == "facts");
                 switch (Action)
                 {
-                    case "facts": Result = Facts(ui.Document); break;
-                    case "assign": Result = Assign(ui); break;
-                    case "purge": Result = Purge(ui.Document); break;
+                    case "facts": Result = Facts(target.Doc); break;
+                    case "assign": Result = Assign(target); break;
+                    case "purge": Result = Purge(target.Doc); break;
                     default: Error = $"Unknown FMC material action '{Action}'"; break;
                 }
             }
@@ -117,12 +117,12 @@ namespace RevitMCPCommandSet.Services.Fmc
             ["Roofs"] = BuiltInCategory.OST_Roofs, ["Doors"] = BuiltInCategory.OST_Doors,
         };
 
-        private List<ElementType> Targets(UIDocument ui)
+        private List<ElementType> Targets(FmcTarget on)
         {
-            Document doc = ui.Document;
+            Document doc = on.Doc;
             string target = Parameters.Value<string>("target") ?? "category";
             if (target == "selection")
-                return ui.Selection.GetElementIds().Select(id => doc.GetElement(doc.GetElement(id)?.GetTypeId() ?? ElementId.InvalidElementId) as ElementType)
+                return on.RequireUi("Assigning to the selection").Selection.GetElementIds().Select(id => doc.GetElement(doc.GetElement(id)?.GetTypeId() ?? ElementId.InvalidElementId) as ElementType)
                     .Where(t => t != null).GroupBy(t => t.Id.Value).Select(g => g.First()).ToList();
             string category = Parameters.Value<string>("category") ?? "";
             if (!Categories.TryGetValue(category, out BuiltInCategory bic)) throw new ArgumentException($"Unknown category {category}");
@@ -161,15 +161,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        private JObject Assign(UIDocument ui)
+        private JObject Assign(FmcTarget on)
         {
-            Document doc = ui.Document;
+            Document doc = on.Doc;
             bool dry = Parameters.Value<bool?>("dry_run") != false;
             var db = Parameters["material"] as JObject ?? throw new ArgumentException("material is required");
             string name = db.Value<string>("name");
             string parameter = Parameters.Value<string>("parameter") ?? "finish_layer";
             Material existing = new FilteredElementCollector(doc).OfClass(typeof(Material)).Cast<Material>().FirstOrDefault(m => m.Name == name);
-            var targets = Targets(ui);
+            var targets = Targets(on);
             var counts = new FilteredElementCollector(doc).WhereElementIsNotElementType().ToElements()
                 .GroupBy(e => e.GetTypeId().Value).ToDictionary(g => g.Key, g => g.Count());
 

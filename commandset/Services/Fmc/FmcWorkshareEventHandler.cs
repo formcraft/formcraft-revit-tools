@@ -34,7 +34,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open a model first.");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: Action == "facts");
+                Document doc = target.Doc;
                 if (doc.IsFamilyDocument) throw new InvalidOperationException("Worksharing is for project models.");
                 switch (Action)
                 {

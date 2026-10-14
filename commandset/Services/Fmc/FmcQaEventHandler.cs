@@ -61,7 +61,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject Facts(UIApplication app)
         {
-            Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open a model to run QA.");
+            using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
+            Document doc = target.Doc;
             if (doc.IsFamilyDocument) throw new InvalidOperationException("QA runs on a project model.");
             var sheetParams = (Parameters["sheet"] as JArray)?.Select(x => x.ToString()).ToList() ?? new List<string>();
             var typeParams = (Parameters["type"] as JArray)?.Select(x => x.ToString()).ToList() ?? new List<string>();
@@ -105,7 +106,8 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// <summary>Selects the elements and shows them; selection never changes the model.</summary>
         private JObject Select(UIApplication app)
         {
-            UIDocument ui = app.ActiveUIDocument ?? throw new InvalidOperationException("Open the model first.");
+            using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+            UIDocument ui = target.RequireUi("Selecting elements");
             var ids = (Parameters["element_ids"] as JArray)?.Select(x => new ElementId(x.Value<long>()))
                 .Where(id => ui.Document.GetElement(id) != null).ToList() ?? new List<ElementId>();
             ui.Selection.SetElementIds(ids);

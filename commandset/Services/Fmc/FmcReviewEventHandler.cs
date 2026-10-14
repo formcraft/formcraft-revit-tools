@@ -33,7 +33,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                UIDocument ui = app.ActiveUIDocument ?? throw new InvalidOperationException("Open a model first.");
+                // Both actions work on the active view and the selection, so the document must be the active one.
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                UIDocument ui = target.RequireUi(Action == "cloud" ? "Drawing a revision cloud" : "Reading the review context");
                 switch (Action)
                 {
                     case "context": Result = Context(ui); break;

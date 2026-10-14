@@ -1,5 +1,6 @@
 import * as net from "net";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
+import { documentTarget } from "../fmc/target.js";
 
 export class RevitClientConnection {
   host: string;
@@ -118,6 +119,10 @@ export class RevitClientConnection {
   }
 
   public sendRaw(command: string, params: any = {}, timeoutMs: number = 120000): Promise<any> {
+    // The call's document target goes with every command (the live-model lock's document check included), unless the
+    // command names its own document.
+    const document = documentTarget.getStore();
+    if (document && params && typeof params === "object" && !Array.isArray(params) && !("document" in params)) params = { ...params, document };
     return new Promise((resolve, reject) => {
       try {
         if (!this.isConnected) {

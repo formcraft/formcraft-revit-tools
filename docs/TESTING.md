@@ -36,6 +36,26 @@ Yes, the Revit MCP can test the plugin. Claude on the pilot PC talks to the runn
 Limits: the Revit MCP talks to the add-in, not to Windows, so it can't click buttons in the pane. `fmc_ui` covers
 navigation and state; real clicks need a person or computer use.
 
+### Working in the background (issue #85)
+The owner keeps the screen while Revit runs minimised, so every Formcraft tool takes **`document`**: a document title
+or a full path. It is sent with every command, so a tool works on that document even when another one is active.
+
+| The document named | Read-only tools (facts, checks, measures, QA, issue facts, scans) | Model-changing tools |
+|---|---|---|
+| Open (active or in the background) | Work on it | Work on it, behind the live-model lock, which checks **this** document |
+| Not open, given as a path | Open it in the background (detached, worksets kept, if workshared), read it, close it without saving | Refused: open it first (`OpenDocumentFile` in the background is fine) |
+| Not given | The active document, else the only open one, else a clear refusal listing the open ones | Same |
+
+A few things need the document on screen, because they work on the active view or the selection, and say so when it
+isn't:
+- the missing-tags check on the current view (in the background, pass `sheet` with a sheet number instead)
+- assigning a material to the selection
+- review clouds and the review context
+- QA select
+
+Keep `04_Families\_Staging\FMC_Claude_Workbench.rvt` open (minimised is fine), so Revit always has a document and
+the AI connection stays on.
+
 ### Test session script for Claude (pilot PC)
 0. **First, `fmc_selftest`** (read-only): the build in Revit and whether it matches the server, the AI connection,
    every command known to Revit, the guard's paths and the kit layout. Fix-first lines are findings; go on when it says
