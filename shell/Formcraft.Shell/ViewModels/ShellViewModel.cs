@@ -123,7 +123,7 @@ namespace Formcraft.Shell.ViewModels
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
-                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null)
+                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null)
         {
             _licence = licence;
             _connection = connection;
@@ -166,6 +166,8 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Issue"] = Issue;
             Links = new LinksPage(links ?? new MockLinkTools(), Project, picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
             _hostSections["Links"] = Links;
+            Workshare = new WorksharePage(workshare ?? new MockWorkshareTools(), Project, settings, s => Status = s, ShowDialog);
+            _hostSections["Workshare"] = Workshare;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -369,6 +371,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Team › Links: coordinates, the links audit, link and pin.</summary>
         public LinksPage Links { get; }
+
+        /// <summary>Team › Workshare: worksets by the rule, the sync preflight and message; never syncs.</summary>
+        public WorksharePage Workshare { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
