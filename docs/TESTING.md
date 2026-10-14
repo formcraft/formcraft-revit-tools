@@ -56,6 +56,20 @@ isn't:
 Keep `04_Families\_Staging\FMC_Claude_Workbench.rvt` open (minimised is fine), so Revit always has a document and
 the AI connection stays on.
 
+### Templates as data (Phase 1, U29)
+`fmc_template recipe` reads the base template's layers from the kit, read-only. The counts should match the hand build
+of 14 October: 171 parameters, 42 filters, 81 view templates and 10 schedules. Its `readings` list every choice the
+kit's wording left open; each is a kit change request.
+
+To test a rebuild without touching the hand-built file:
+1. `fmc_template build` with a new `template_path` in `06_Templates\_Staging` (for example
+   `FMC_Base_Template_v2.2_rebuild.rte`), `seed_path` = Revit's Default-Multi-Discipline_Metric.rte, and `dry_run` true.
+   Then run it again with `dry_run` false. Revit's shared parameter file must be the kit's.
+2. `fmc_template compare` on that file: it should list nothing missing.
+3. `fmc_template audit` on that file: expect Pass with 0 warnings, the same as the hand-built file.
+
+A layer that runs out of time (view templates) carries on by itself in slices of about 33 seconds.
+
 ### Test session script for Claude (pilot PC)
 0. **First, `fmc_selftest`** (read-only): the build in Revit and whether it matches the server, the AI connection,
    every command known to Revit, the guard's paths and the kit layout. Fix-first lines are findings; go on when it says

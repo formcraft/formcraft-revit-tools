@@ -101,15 +101,67 @@ namespace Formcraft.Shell.Services
     }
 
     /// <summary>Setup › Templates: fmc_template through the server (audit; brand pack with a dry run first).</summary>
+    /// <summary>The base template's recipe read from the kit (fmc_template recipe): counts per kind and the readings made.</summary>
+    public sealed class TemplateRecipe
+    {
+        public bool Ok { get; set; }
+        public string Message { get; set; } = "";
+        public string Kit { get; set; } = "";
+        public List<(string Kind, int Count)> Counts { get; } = new List<(string, int)>();
+        public List<string> Readings { get; } = new List<string>();
+        public List<string> Roles { get; } = new List<string>();
+    }
+
+    /// <summary>What a template lacks against the recipe (fmc_template compare).</summary>
+    public sealed class TemplateCompare
+    {
+        public bool Ok { get; set; }
+        public string Message { get; set; } = "";
+        public bool Matches { get; set; }
+        public List<(string Kind, int Missing, string Examples)> Missing { get; } = new List<(string, int, string)>();
+    }
+
     public interface ITemplateTools
     {
         Task<AuditResult> AuditAsync(string templatePath, BrandPack? brand);
         Task<ToolResult> BrandAsync(string templatePath, BrandPack brand, bool dryRun);
+        /// <summary>Templates as data (U29): the base recipe read from the kit; nothing is changed.</summary>
+        Task<TemplateRecipe> RecipeAsync(string kitFolder);
+        Task<TemplateCompare> CompareAsync(string templatePath, string kitFolder);
+        /// <summary>Builds the template in staging from the recipe (from the seed when it doesn't exist yet); a dry run unless dryRun is false.</summary>
+        Task<ToolResult> BuildAsync(string templatePath, string kitFolder, string seedPath, bool roleCopies, bool dryRun);
     }
 
     public sealed class MockTemplateTools : ITemplateTools
     {
         public List<(string Path, bool Dry)> Brands { get; } = new List<(string, bool)>();
+        public List<(string Path, bool Dry, bool Copies)> Builds { get; } = new List<(string, bool, bool)>();
+
+        public Task<TemplateRecipe> RecipeAsync(string kitFolder)
+        {
+            var r = new TemplateRecipe { Ok = true, Kit = "FMC_Kit 2.2 r4", Message = "Read from the kit: 13 kinds." };
+            r.Counts.AddRange(new[] { ("Parameters", 171), ("Text types", 7), ("Line patterns", 6), ("Fill patterns", 12), ("Filters", 42), ("View templates", 81), ("Schedules", 10) });
+            r.Readings.Add("FMC_Solid: Revit allows one solid fill, so the built-in <Solid fill> stands in");
+            r.Readings.Add("Line weights: no Revit API sets them; set by hand once in the template");
+            r.Roles.AddRange(new[] { "Z", "A", "S", "E", "M", "P" });
+            return Task.FromResult(r);
+        }
+
+        public Task<TemplateCompare> CompareAsync(string templatePath, string kitFolder)
+        {
+            var c = new TemplateCompare { Ok = true, Matches = false, Message = "2 names missing." };
+            c.Missing.Add(("view_templates", 2, "VT_W_SitePlan_Phase, VT_W_3D_Logistics"));
+            return Task.FromResult(c);
+        }
+
+        public Task<ToolResult> BuildAsync(string templatePath, string kitFolder, string seedPath, bool roleCopies, bool dryRun)
+        {
+            Builds.Add((templatePath, dryRun, roleCopies));
+            var r = new ToolResult { Ok = true };
+            if (dryRun) { r.Details.AddRange(new[] { "units_params: 171 parameters", "filters: 42", "view_templates: 81 (first slice shown)" }); r.Count = 3; }
+            else r.Messages.Add(new ToolMessage(ChipKind.Good, "Built in staging. Compare, then audit; publishing is a request to the BIM Manager."));
+            return Task.FromResult(r);
+        }
 
         public Task<AuditResult> AuditAsync(string templatePath, BrandPack? brand)
         {

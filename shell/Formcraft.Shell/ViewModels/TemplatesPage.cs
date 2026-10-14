@@ -31,6 +31,9 @@ namespace Formcraft.Shell.ViewModels
         private readonly MessagesSetting _brandMessages = new MessagesSetting();
         private readonly MessagesSetting _auditMessages = new MessagesSetting();
         private AuditResult? _audit;
+        private TemplateRecipe? _recipe;
+        private TemplateCompare? _compare;
+        private readonly MessagesSetting _buildMessages = new MessagesSetting();
 
         public TemplatesPage(IFileTools files, ITemplateTools templates, IFilePicker picker, IUserSettings settings, ProjectPage project,
                              Action<string> status, Action<DialogViewModel> ask)
@@ -48,6 +51,9 @@ namespace Formcraft.Shell.ViewModels
             ApplyLookCommand = new AsyncCommand(ApplyLook, status);
             AuditCommand = new AsyncCommand(Audit, status);
             ArchiveCommand = new AsyncCommand(Archive, status);
+            RecipeCommand = new AsyncCommand(ReadRecipe, status);
+            CompareCommand = new AsyncCommand(Compare, status);
+            BuildCommand = new AsyncCommand(Build, status);
             _files.Changed += (_, __) => ShowDocuments();
             Rebuild();
         }
@@ -56,6 +62,10 @@ namespace Formcraft.Shell.ViewModels
         public ICommand ApplyLookCommand { get; }
         public ICommand AuditCommand { get; }
         public ICommand ArchiveCommand { get; }
+        public ICommand RecipeCommand { get; }
+        public ICommand CompareCommand { get; }
+        public ICommand BuildCommand { get; }
+        public TemplateRecipe? Recipe => _recipe;
         public DocumentListSetting Documents => _docs;
         public MessagesSetting Messages => _messages;
         public MessagesSetting BrandMessages => _brandMessages;
@@ -82,10 +92,7 @@ namespace Formcraft.Shell.ViewModels
             Groups.Add(NewFileGroup(library));
             Groups.Add(BrandGroup(library, packs));
             Groups.Add(AuditGroup(library, packs));
-            Groups.Add(new SettingsGroup("Build",
-                new NoteSetting("The template builder (Revit versions, full or starter, role templates, project types; parameters, keynotes, " +
-                                "filters, view templates, schedules, sheets and browser) is its own piece of work and comes after the Manage sections. " +
-                                "Builds land in 06_Templates\\_Staging.")));
+            Groups.Add(BuilderGroup());
             Groups.Add(LibraryGroup(library));
             Groups.Add(new SettingsGroup("Keep projects in step · Phase 2",
                 new NoteSetting("Pushes view templates, styles and filters to live projects on an older template; never geometry. Preview first, " +
@@ -102,6 +109,89 @@ namespace Formcraft.Shell.ViewModels
                 _messages));
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "templates.considerations", _status)));
             ShowDocuments();
+        }
+
+        // ---------- Builder: the base template from the kit (U29, Phase 1) ----------
+
+        private string BuildTarget => _store.Get("templates.builder.path") ?? Path.Combine(Kit, "06_Templates", "_Staging", "FMC_Base_Template_v2.2.rte");
+        private string BuildSeed => _store.Get("templates.builder.seed") ?? @"C:\ProgramData\Autodesk\RVT 2025\Templates\English\Default-Multi-Discipline_Metric.rte";
+
+        private SettingsGroup BuilderGroup()
+        {
+            var items = new List<SettingItem>
+            {
+                new NoteSetting("The base template built from the kit itself (FMC_Revit_Kit.xlsx and the master data): units and parameters, graphics, " +
+                                "electrical settings, system types, filters, view templates, QA views and schedules. Staging only.", ChipKind.Info),
+                new TextSetting("Template in staging", BuildTarget, store: _store, key: "templates.builder.path", mono: true),
+                new TextSetting("Seed, to start it when it doesn't exist", BuildSeed, store: _store, key: "templates.builder.seed", mono: true),
+                new ToggleSetting(_store, "templates.builder.roles", "Then make the role copies (never overwriting)", false),
+                new ButtonsSetting("", new[]
+                {
+                    new SettingButton("Read the recipe", RecipeCommand),
+                    new SettingButton("Compare", CompareCommand),
+                    new SettingButton("Dry run, then build", BuildCommand, primary: true),
+                }),
+            };
+            if (_recipe != null)
+            {
+                if (!_recipe.Ok) items.Add(new NoteSetting(_recipe.Message, ChipKind.Bad));
+                else
+                {
+                    items.Add(new TableSetting("Recipe · " + _recipe.Kit, new[] { "From the kit", "Count" }, _recipe.Counts.Select(c => new TableRow(c, c.Kind, c.Count.ToString()))));
+                    if (_recipe.Readings.Count > 0)
+                        items.Add(new ReadOnlySetting("Readings the plugin made (kit change requests)", string.Join(Environment.NewLine, _recipe.Readings), mono: false));
+                }
+            }
+            if (_compare != null)
+            {
+                if (!_compare.Ok) items.Add(new NoteSetting(_compare.Message, ChipKind.Bad));
+                else if (_compare.Matches) items.Add(new NoteSetting("The template holds everything the kit's recipe names.", ChipKind.Good));
+                else items.Add(new TableSetting("Missing from the template", new[] { "Kind", "Missing", "For example" },
+                    _compare.Missing.Select(m => new TableRow(m, m.Kind.Replace('_', ' '), m.Missing.ToString(), m.Examples))));
+            }
+            items.Add(new NoteSetting("Publishing to 06_Templates is a request to the BIM Manager: the builder never copies there itself.", ChipKind.Grey));
+            items.Add(_buildMessages);
+            return new SettingsGroup("Builder · base template from the kit", items.ToArray());
+        }
+
+        private bool KitReady()
+        {
+            if (Kit.Length > 0) return true;
+            _buildMessages.Show(ChipKind.Warn, "Set the kit folder in Settings › General first.");
+            return false;
+        }
+
+        private async Task ReadRecipe()
+        {
+            if (!KitReady()) return;
+            _recipe = await _templates.RecipeAsync(Kit);
+            _status(_recipe.Ok ? _recipe.Message : _recipe.Message);
+            Rebuild();
+        }
+
+        private async Task Compare()
+        {
+            if (!KitReady()) return;
+            _compare = await _templates.CompareAsync(BuildTarget, Kit);
+            _status(_compare.Message);
+            Rebuild();
+        }
+
+        private async Task Build()
+        {
+            if (!KitReady()) return;
+            bool roles = _store.Get("templates.builder.roles") == "true";
+            var dry = await _templates.BuildAsync(BuildTarget, Kit, BuildSeed, roles, dryRun: true);
+            if (!dry.Ok) { _buildMessages.Show(dry.Messages); _status(dry.Messages.FirstOrDefault()?.Text ?? "Refused."); return; }
+            _ask(DialogViewModel.WithItems("Build " + Path.GetFileName(BuildTarget) + "?", "In staging only. Each layer creates or updates by name and never deletes; it can run again.",
+                new SettingItem[] { new ReadOnlySetting("Dry run", string.Join(Environment.NewLine, dry.Details), mono: true) }, "Build", async () =>
+                {
+                    var r = await _templates.BuildAsync(BuildTarget, Kit, BuildSeed, roles, dryRun: false);
+                    _buildMessages.Show(r.Messages);
+                    _status(r.Messages.FirstOrDefault()?.Text ?? "Built.");
+                    await Compare();
+                    return null;
+                }));
         }
 
         // ---------- New file from a template ----------

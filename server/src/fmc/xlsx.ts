@@ -6,11 +6,37 @@ import zlib from "node:zlib";
  */
 export function readXlsx(buf: Buffer): string[][] {
   const files = unzip(buf);
+  const sheetName = [...files.keys()].filter((k) => /^xl\/worksheets\/sheet\d+\.xml$/.test(k)).sort((a, b) => num(a) - num(b))[0];
+  return rowsOf(sheetName ? files.get(sheetName)! : "", sharedStrings(files));
+}
+
+/** Every worksheet by its tab name (the kit's FMC_Revit_Kit.xlsx: View_Templates, Filters, Graphics…). */
+export function readXlsxSheets(buf: Buffer): Map<string, string[][]> {
+  const files = unzip(buf);
+  const shared = sharedStrings(files);
+  const rels = new Map<string, string>();
+  for (const r of files.get("xl/_rels/workbook.xml.rels")?.match(/<Relationship[^>]*>/g) ?? []) {
+    const id = /Id="([^"]+)"/.exec(r)?.[1], target = /Target="([^"]+)"/.exec(r)?.[1];
+    if (id && target) rels.set(id, target.replace(/^\/?xl\//, "").replace(/^\//, ""));
+  }
+  const out = new Map<string, string[][]>();
+  for (const s of files.get("xl/workbook.xml")?.match(/<sheet[^>]*>/g) ?? []) {
+    const name = unescape(/name="([^"]*)"/.exec(s)?.[1] ?? "");
+    const rid = /r:id="([^"]+)"/.exec(s)?.[1] ?? "";
+    const part = rels.get(rid);
+    if (name && part) out.set(name, rowsOf(files.get("xl/" + part) ?? "", shared));
+  }
+  return out;
+}
+
+function sharedStrings(files: Map<string, string>): string[] {
   const shared: string[] = [];
   const sst = files.get("xl/sharedStrings.xml");
   if (sst) for (const si of sst.match(/<si>[\s\S]*?<\/si>/g) ?? []) shared.push(text(si));
-  const sheetName = [...files.keys()].filter((k) => /^xl\/worksheets\/sheet\d+\.xml$/.test(k)).sort((a, b) => num(a) - num(b))[0];
-  const sheet = sheetName ? files.get(sheetName)! : "";
+  return shared;
+}
+
+function rowsOf(sheet: string, shared: string[]): string[][] {
   const rows: string[][] = [];
   for (const row of sheet.match(/<row[\s\S]*?<\/row>/g) ?? []) {
     const cells: string[] = [];
@@ -51,7 +77,7 @@ function unzip(buf: Buffer): Map<string, string> {
     const local = buf.readUInt32LE(p + 42);
     const name = buf.toString("utf8", p + 46, p + 46 + nameLen);
     p += 46 + nameLen + extraLen + commentLen;
-    if (!name.endsWith(".xml")) continue;
+    if (!name.endsWith(".xml") && !name.endsWith(".rels")) continue;
     const start = local + 30 + buf.readUInt16LE(local + 26) + buf.readUInt16LE(local + 28);
     const data = buf.subarray(start, start + size);
     out.set(name, (method === 8 ? zlib.inflateRawSync(data) : data).toString("utf8"));

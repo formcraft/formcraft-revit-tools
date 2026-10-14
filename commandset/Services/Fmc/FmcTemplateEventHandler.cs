@@ -39,6 +39,31 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     case "audit": Result = WithTemplate(app, false, Audit); break;
                     case "brand": Result = WithTemplate(app, Parameters.Value<bool?>("dry_run") == false, Brand); break;
+                    case "create":
+                        Result = FmcTemplateBuild.Create(app.Application, Parameters.Value<string>("seed_path") ?? "", Parameters.Value<string>("template_path") ?? "");
+                        break;
+                    case "build":
+                    {
+                        // One layer of the base recipe (Phase 1). A dry run applies it inside a group and rolls it back,
+                        // so it reports what would change even on a template that is already open; only a real run saves.
+                        bool dry = Parameters.Value<bool?>("dry_run") != false;
+                        string layer = Parameters.Value<string>("layer") ?? "";
+                        var payload = Parameters["payload"] as JObject ?? new JObject();
+                        double seconds = Parameters.Value<double?>("seconds") ?? 33;
+                        Result = WithTemplate(app, !dry, doc =>
+                        {
+                            using (var tg = new TransactionGroup(doc, "Formcraft template: " + layer))
+                            {
+                                tg.Start();
+                                JObject r = FmcTemplateBuild.Apply(doc, layer, payload, seconds);
+                                if (dry) tg.RollBack(); else tg.Assimilate();
+                                r["dry_run"] = dry;
+                                return r;
+                            }
+                        });
+                        break;
+                    }
+                    case "names": Result = WithTemplate(app, false, FmcTemplateBuild.Names); break;
                     default: Error = $"Unknown FMC template action '{Action}'"; break;
                 }
             }
