@@ -153,7 +153,8 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
 - [x] U16 Manage › QA and Rules — `manage/PaneQA`, `manage/PaneRules`. QA runs the kit's rules per gate (`fmc_qa`), Rules
   browses the rulebooks; format in `docs/RULEBOOKS.md`
 - [ ] U17 Real licence service behind `ILicenceService` (decision D6) — `account/*`
-- [ ] U18 Manage › Materials — `manage/PaneMaterials`
+- [~] U18 Manage › Materials — `manage/PaneMaterials`. **Done:** database, assign (dry run), audit, purge, requests (`fmc_material`).
+  **To do:** fix texture paths, merge duplicates; finish colour view and schedules with Build (U26)
 - [ ] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`
 - [ ] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`
 - [ ] U21 Manage › Reports — `manage/PaneReports`

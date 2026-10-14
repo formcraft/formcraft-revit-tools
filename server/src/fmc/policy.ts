@@ -43,6 +43,8 @@ export interface GuardConfig {
   keynote_file: string;
   /** The kit's rulebooks: one JSON file per book (rule schema v1), read by QA and Rules */
   rulebooks_dir: string;
+  /** The kit's material database (FMC_Materials.json), read by Setup › Materials */
+  materials_file: string;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -59,6 +61,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   family_staging_root: "Z:\\00_Standards\\04_Families\\_Staging",
   keynote_file: "Z:\\00_Standards\\02_Keynotes\\FMC_Keynotes.txt",
   rulebooks_dir: "Z:\\00_Standards\\05_Rulebooks",
+  materials_file: "Z:\\00_Standards\\07_Materials\\FMC_Materials.json",
 };
 
 /** Tools that change the model. They are refused on live project models. */
@@ -66,7 +69,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "create_point_based_element", "create_line_based_element", "create_surface_based_element",
   "create_level", "create_grid", "create_room", "create_dimensions", "create_structural_framing_system",
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
-  "fmc_load_test_families",
+  "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
