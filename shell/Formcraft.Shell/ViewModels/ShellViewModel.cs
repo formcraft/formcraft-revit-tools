@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null)
         {
             _licence = licence;
             _connection = connection;
@@ -186,6 +186,8 @@ namespace Formcraft.Shell.ViewModels
             Build = new BuildPage(build ?? new MockBuildTools(), Project, settings, s => Status = s, ShowDialog, () => OpenWorkspaceRequested?.Invoke(this, EventArgs.Empty));
             _hostSections["Build"] = Build;
             BuildWorkspace = new BuildWorkspacePage(Build, settings);
+            Ask = new AskPage(ask ?? new MockAskTools(), s => Status = s);
+            _hostSections["Ask"] = Ask;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -197,7 +199,7 @@ namespace Formcraft.Shell.ViewModels
             SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
             ResetSettingsCommand = new RelayCommand(() => Settings.AskReset());
             Search = new SearchViewModel(_registry, () => Groups.SelectMany(g => g.Sections),
-                                         m => _licence.Current.For(m).CanUse, AnyShown, OpenResult);
+                                         m => _licence.Current.For(m).CanUse, AnyShown, OpenResult) { Command = RunSearchCommand };
             SelectGroupCommand = new RelayCommand(p => { if (p is GroupItem g) SelectGroup(g); });
             SelectSectionCommand = new RelayCommand(p => { if (p is SectionItem s) SelectSection(s); });
             OpenConnectCommand = new RelayCommand(() => Open(ShellPage.Connect));
@@ -428,6 +430,21 @@ namespace Formcraft.Shell.ViewModels
         /// <summary>Build: quantities, view colours and the workspace window (U26).</summary>
         public BuildPage Build { get; }
         public BuildWorkspacePage BuildWorkspace { get; }
+
+        /// <summary>Ask Claude in the pane: read-only questions about the open model (U27).</summary>
+        public AskPage Ask { get; }
+
+        /// <summary>"ask …" or "? …" in the search box: opens Ask and sends the question (the old command box's syntax).</summary>
+        public bool RunSearchCommand(string text)
+        {
+            var q = AskPage.QuestionIn(text);
+            if (q == null) return false;
+            var section = Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == "Ask");
+            if (section == null) return false;
+            SelectSection(section);
+            _ = Ask.Ask(q);
+            return true;
+        }
 
         /// <summary>The Build workspace window opens beside the model (the view owns the window).</summary>
         public event EventHandler? OpenWorkspaceRequested;
