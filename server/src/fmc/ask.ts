@@ -235,3 +235,26 @@ export async function runAsk(args: AskArgs, deps: AskDeps): Promise<{ ok: boolea
   }
   return { ok: false, body: { error: "Unexpected end of the ask loop." } };
 }
+
+/**
+ * What the pane's Ask section shows (U27): whether a key is saved (never the key), the model, the daily budget, today's
+ * use, the read-only tools and the last log rows (time, tools, tokens: never the question or the answer).
+ */
+export function askStatus(logText: string, now: Date, env: NodeJS.ProcessEnv, keyPresent: boolean) {
+  const day = now.toISOString().slice(0, 10);
+  const rows = logText.split(/\r?\n/).slice(1).filter((l) => l.trim()).map((l) => {
+    const cells = (l.match(/("([^"]|"")*"|[^,]*)(,|$)/g) ?? []).map((c) => c.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"'));
+    return { time: cells[0] ?? "", model: cells[1] ?? "", tools: cells[2] ?? "", tokens: (Number(cells[3]) || 0) + (Number(cells[4]) || 0), result: cells[5] ?? "" };
+  });
+  const today = rows.filter((r) => r.time.startsWith(day));
+  return {
+    key: keyPresent ? "saved" : "missing",
+    key_file: "%APPDATA%\Formcraft\anthropic_api_key.txt",
+    model: env.FMC_ASK_MODEL?.trim() || ASK_DEFAULTS.model,
+    daily_tokens: Number(env.FMC_ASK_DAILY_TOKENS) || ASK_DEFAULTS.dailyTokens,
+    used_today: tokensToday(logText, now),
+    questions_today: today.filter((r) => r.result === "answered").length,
+    tools: ASK_TOOLS.map((t) => ({ name: t.name, description: t.description })),
+    log: rows.slice(-10).reverse(),
+  };
+}

@@ -152,7 +152,7 @@ namespace Formcraft.Shell.Tests
                 return (string.Join(",", p.Vm.Groups.Select(g => g.Name)), ReferenceEquals(parts.Parts, p.Vm.Parts.Single(m => m.Module == FmcModule.Manage)));
             });
 
-            await Assert.That(groups).IsEqualTo("Setup,Drawings,Check,Engineer,Build");
+            await Assert.That(groups).IsEqualTo("Setup,Drawings,Check,Engineer,Build,Ask");
             await Assert.That(same).IsTrue();
         }
 

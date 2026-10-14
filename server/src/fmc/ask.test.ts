@@ -78,3 +78,23 @@ test("helpers", () => {
   assert.equal(tokensToday("h\n\"2026-10-13T01:00:00Z\",m,,5,6,a\n2026-10-12T01:00:00Z,m,,9,9,a\n", new Date("2026-10-13T12:00:00Z")), 11);
   assert.match(trimResult("x".repeat(20), 10), /cut at 10/);
 });
+
+test("ask status: key saved or missing (never the key), today's use and the last rows without any text", async () => {
+  const { askStatus } = await import("./ask.js");
+  const log = [
+    "timestamp,model,tools,input_tokens,output_tokens,result",
+    "2026-10-13T09:00:00Z,claude-sonnet-5-5,document_info,1000,200,answered",
+    "2026-10-14T10:42:00Z,claude-sonnet-5-5,document_info model_statistics,1800,340,answered",
+    "2026-10-14T10:44:00Z,claude-sonnet-5-5,view_elements,3500,380,\"api error 400\"",
+  ].join("\n");
+  const s = askStatus(log, new Date("2026-10-14T12:00:00Z"), { FMC_ASK_DAILY_TOKENS: "50000" } as any, true);
+  assert.equal(s.key, "saved");
+  assert.equal(s.daily_tokens, 50000);
+  assert.equal(s.used_today, 1800 + 340 + 3500 + 380);
+  assert.equal(s.questions_today, 1);
+  assert.equal(s.log[0].tools, "view_elements");
+  assert.equal(s.log[0].result, "api error 400");
+  assert.equal(s.log.length, 3);
+  assert.ok(s.tools.length >= 6);
+  assert.equal(askStatus("", new Date(), {} as any, false).key, "missing");
+});

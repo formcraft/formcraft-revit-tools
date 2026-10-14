@@ -103,8 +103,12 @@ namespace Formcraft.Shell.ViewModels
         public void MovePrevious() => Move(-1);
 
         /// <summary>Enter: opens the selected result.</summary>
+        /// <summary>A command typed in the box ("ask …"): true when the host ran it, and the box clears.</summary>
+        public Func<string, bool>? Command { get; set; }
+
         public void OpenSelected()
         {
+            if (Command?.Invoke(Query) == true) { Close(); return; }
             if (Selected != null) Open(Selected);
         }
 

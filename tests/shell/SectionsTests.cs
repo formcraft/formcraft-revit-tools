@@ -72,8 +72,8 @@ namespace Formcraft.Shell.Tests
         {
             var registry = SectionRegistry.LoadEmbedded();
 
-            await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build");
-            await Assert.That(registry.Sections.Count()).IsEqualTo(18);
+            await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
+            await Assert.That(registry.Sections.Count()).IsEqualTo(19);
             await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
@@ -123,16 +123,16 @@ namespace Formcraft.Shell.Tests
                 return (p.Groups, p.Sections("Engineer"), p.Tools);
             });
 
-            await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build");
+            await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
             await Assert.That(engineer).IsEqualTo("Brief,Systems,Structural");
             await Assert.That(tools).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
         [Test]
-        [Arguments("manage.setup", "Drawings,Team,Check,Engineer,Build")]
-        [Arguments("manage.drawings", "Setup,Team,Check,Engineer,Build")]
-        [Arguments("manage.team", "Setup,Drawings,Check,Engineer,Build")]
-        [Arguments("manage.check", "Setup,Drawings,Team,Engineer,Build")]
+        [Arguments("manage.setup", "Drawings,Team,Check,Engineer,Build,Ask")]
+        [Arguments("manage.drawings", "Setup,Team,Check,Engineer,Build,Ask")]
+        [Arguments("manage.team", "Setup,Drawings,Check,Engineer,Build,Ask")]
+        [Arguments("manage.check", "Setup,Drawings,Team,Engineer,Build,Ask")]
         public async Task A_Manage_part_off_removes_its_group(string part, string groups)
         {
             var shown = OnSta(() =>
@@ -209,7 +209,7 @@ namespace Formcraft.Shell.Tests
                 return (p.Groups, p.Vm.Body!.Locked, string.Join(",", p.Vm.Parts.Select(m => m.Module)));
             });
 
-            await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build");
+            await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
             await Assert.That(buildLocked).IsTrue();
             await Assert.That(switchModules).IsEqualTo("Manage,Flow");
         }
@@ -257,12 +257,12 @@ namespace Formcraft.Shell.Tests
                 foreach (var id in new[] { "manage.setup", "manage.drawings", "manage.team", "manage.check", "model.systems", "model.structural",
                                            "build.views", "build.boq", "build.package" })
                     p.Settings.SetPart(id, false);
-                // Engineer › Brief has no part, so it stays: everything that can be switched off is off.
+                // Engineer › Brief and Ask have no part, so they stay: everything that can be switched off is off.
                 return (p.Vm.ShowNoParts, p.Groups);
             });
 
             await Assert.That(noParts).IsFalse();
-            await Assert.That(body).IsEqualTo("Engineer");
+            await Assert.That(body).IsEqualTo("Engineer,Ask");
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace Formcraft.Shell.Tests
                 return (p.Groups, !p.Settings.IsPartOn("manage.team"));
             });
 
-            await Assert.That(groupsAfterOff).IsEqualTo("Setup,Drawings,Check,Engineer,Build");
+            await Assert.That(groupsAfterOff).IsEqualTo("Setup,Drawings,Check,Engineer,Build,Ask");
             await Assert.That(savedOff).IsTrue();
         }
 
