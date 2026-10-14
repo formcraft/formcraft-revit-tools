@@ -9,22 +9,22 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using revit_mcp_plugin.Core;
-using revit_mcp_plugin.UI;
 
 namespace revit_mcp_plugin.Fmc
 {
     /// <summary>
-    /// The working Connect page of the Formcraft pane: Claude service, health, probe, families, files, activity and guard
-    /// (it was the separate "Formcraft Browser" pane and "Claude" panel before the add-in became one pane). The page only
-    /// reads Revit state; everything it changes goes through the server's own tool code (ServerCli), so the page and
-    /// Claude can never disagree about what is allowed.
+    /// What the Formcraft pane needs from Revit outside its own view models: the Revit version, the open documents
+    /// (pushed on Idling, for Setup › Templates), the Claude service switch, and opening the guard file and reports
+    /// folder. (It was the separate "Formcraft Browser" pane before the add-in became one pane; its page now lives in
+    /// the pane as Connect, Setup › Families and Setup › Templates.)
     /// </summary>
     public static class FormcraftBrowser
     {
         public const string Title = "Formcraft";
         public const string TabName = "Formcraft";
 
-        public static FormcraftBrowserPage Page { get; private set; }
+        /// <summary>The documents open in Revit changed (opened, closed, switched, saved, edited).</summary>
+        public static event Action<IReadOnlyList<DocState>> DocumentsChanged;
         public static string RevitVersion { get; private set; } = "";
         /// <summary>The update and build, e.g. "2025.4 · build 25.4.0.32" (Connect's health check).</summary>
         public static string RevitBuild { get; private set; } = "";
@@ -41,16 +41,7 @@ namespace revit_mcp_plugin.Fmc
 #else
             RevitBuild = RevitVersion + " · build " + application.ControlledApplication.VersionBuild;
 #endif
-#if REVIT2024_OR_GREATER
-            Theme.SetDark(UIThemeManager.CurrentTheme == UITheme.Dark);
-            application.ThemeChanged += (s, e) =>
-            {
-                Theme.SetDark(UIThemeManager.CurrentTheme == UITheme.Dark);
-                UpdateRibbon();
-            };
-#endif
             ServerCli.Locate();
-            Page = new FormcraftBrowserPage();
             _serviceEvent = ExternalEvent.Create(new ToggleServiceHandler());
 
             application.Idling += OnIdling;
@@ -67,7 +58,7 @@ namespace revit_mcp_plugin.Fmc
         /// </summary>
         private static void OnIdling(object sender, IdlingEventArgs e)
         {
-            if (!(sender is UIApplication uiApp) || Page == null) return;
+            if (!(sender is UIApplication uiApp)) return;
             Document active = uiApp.ActiveUIDocument?.Document;
             var docs = new List<DocState>();
             foreach (Document d in uiApp.Application.Documents)
@@ -85,7 +76,7 @@ namespace revit_mcp_plugin.Fmc
             }
             if (docs.Count == _lastDocs.Count && docs.Zip(_lastDocs, (a, b) => a.SameAs(b)).All(x => x)) return;
             _lastDocs = docs;
-            Page.SetDocuments(docs);
+            DocumentsChanged?.Invoke(docs);
         }
 
         public static void RequestToggleService() => _serviceEvent?.Raise();
@@ -103,14 +94,6 @@ namespace revit_mcp_plugin.Fmc
                 service.Start();
             }
             UpdateRibbon();
-            Page?.Refresh();
-        }
-
-        /// <summary>Opens Connect in the Formcraft pane, on one of its tabs (files, activity, guard) if given.</summary>
-        public static void ShowPane(UIApplication app, string tab = null)
-        {
-            Shell.ShellHost.ShowConnect(app);
-            if (tab != null) Page?.ShowTab(tab);
         }
 
         internal static void OpenGuardFile()

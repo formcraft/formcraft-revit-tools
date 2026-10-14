@@ -118,7 +118,7 @@ namespace Formcraft.Shell.ViewModels
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
                               IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null,
-                              IConnectInfo? connect = null)
+                              IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null)
         {
             _licence = licence;
             _connection = connection;
@@ -144,6 +144,11 @@ namespace Formcraft.Shell.ViewModels
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Connect = new ConnectViewModel(connect ?? new MockConnectInfo(), kit ?? new FolderKitService(), licence, settings, s => Status = s, ShowDialog,
                                            () => OpenSettingsTab("General", "Kit folder: Settings › General › kit."));
+            // Setup sections the pane builds itself (the families and files tools that were the Formcraft Browser).
+            Families = new FamiliesPage(families ?? new MockFamilyTools(), settings, s => Status = s, ShowDialog);
+            Templates = new TemplatesPage(files ?? new MockFileTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
+            _hostSections["Families"] = Families;
+            _hostSections["Templates"] = Templates;
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
@@ -331,13 +336,14 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Connect (board core/PaneConnect).</summary>
         public ConnectViewModel Connect { get; }
+        /// <summary>Setup › Families: the family builder from the kit.</summary>
+        public FamiliesPage Families { get; }
+        /// <summary>Setup › Templates: new files from a template and the files open in Revit.</summary>
+        public TemplatesPage Templates { get; }
 
         private readonly Dictionary<string, object> _hostSections = new Dictionary<string, object>();
 
-        /// <summary>
-        /// A section the host has built before the pane's own version exists: in Revit, Setup › Families shows the add-in's
-        /// working families and files page until U15 builds the section from its board.
-        /// </summary>
+        /// <summary>A section with its own page instead of the placeholder (the pane's own pages, or one the host supplies).</summary>
         public void SetHostSection(string sectionName, object content)
         {
             _hostSections[sectionName] = content;
@@ -402,6 +408,7 @@ namespace Formcraft.Shell.ViewModels
             Page = ShellPage.Section;
             Body = new SectionBody(s, _licence.Current.For(s.Module), _licence.Current.GraceOver);
             OnHostChanged();
+            (HostContent as SectionPage)?.Opened();
             UpdateFooter();
         }
 
@@ -465,6 +472,10 @@ namespace Formcraft.Shell.ViewModels
             {
                 // Board account/PaneStates footer.
                 FooterActions.Add(new FooterAction("Start a trial", StartTrialCommand, primary: true));
+            }
+            else if (Page == ShellPage.Section && HostContent is SectionPage page)
+            {
+                foreach (var action in page.Footer) FooterActions.Add(action);
             }
             else if (Page == ShellPage.Connect)
             {

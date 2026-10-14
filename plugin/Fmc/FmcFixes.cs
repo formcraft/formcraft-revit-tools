@@ -4,13 +4,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json.Linq;
+using Autodesk.Revit.UI;
 using revit_mcp_plugin.Core;
 using revit_mcp_plugin.UI;
 
 namespace revit_mcp_plugin.Fmc
 {
     /// <summary>
-    /// The fixes the readiness checks offer, and the probe, shared by Connect (U12) and the families and files page:
+    /// The fixes the readiness checks offer, and the probe, for Connect's health check (U12):
     /// create fmc_guard.json from the example, open it, open the command settings, locate the server, test the chain.
     /// </summary>
     public static class FmcFixes
@@ -22,10 +23,15 @@ namespace revit_mcp_plugin.Fmc
             if (File.Exists(target)) return true;
             using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("fmc_guard.example.json"))
             {
-                if (s == null) { FmcDialog.Info("Create fmc_guard.json", "The example is missing from this add-in build."); return false; }
-                if (!FmcDialog.Confirm("Create fmc_guard.json", $"Writes the example folder rules to\n{target}\n\n" +
-                        "Then edit the folders to match this PC: the example uses Z:\\00_Standards and Z:\\Projects.",
-                        null, "Create and open")) return false;
+                if (s == null) { TaskDialog.Show("Create fmc_guard.json", "The example is missing from this add-in build."); return false; }
+                var ask = new TaskDialog("Create fmc_guard.json")
+                {
+                    MainInstruction = "Create fmc_guard.json from the example?",
+                    MainContent = $"Writes the example folder rules to\n{target}\n\nThen edit the folders to match this PC: the example uses Z:\\00_Standards and Z:\\Projects.",
+                    CommonButtons = TaskDialogCommonButtons.Cancel,
+                };
+                ask.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, "Create and open");
+                if (ask.Show() != TaskDialogResult.CommandLink1) return false;
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
                 using (var f = File.Create(target)) s.CopyTo(f);
             }
@@ -45,7 +51,7 @@ namespace revit_mcp_plugin.Fmc
                 if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
                 if (!File.Exists(Path.Combine(dlg.SelectedPath, "build", "index.js")))
                 {
-                    FmcDialog.Info("Locate server folder", $"{dlg.SelectedPath} has no build\\index.js.");
+                    TaskDialog.Show("Locate server folder", $"{dlg.SelectedPath} has no build\\index.js.");
                     return false;
                 }
                 BrowserSettings.ServerDir = dlg.SelectedPath;
