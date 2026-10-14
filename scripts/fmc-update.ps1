@@ -49,6 +49,11 @@ function Install {
         New-Item -ItemType Directory -Force $mcp | Out-Null
         if (Test-Path (Join-Path $mcp 'build')) { Rename-Item (Join-Path $mcp 'build') ("build.bak-{0}" -f $stamp) }
         Copy-Item (Join-Path $next 'server\build') $mcp -Recurse -Force
+        # The Robot connector, when the build carried one (built only where Robot is installed).
+        if (Test-Path (Join-Path $next 'server\robot')) {
+            if (Test-Path (Join-Path $mcp 'robot')) { Rename-Item (Join-Path $mcp 'robot') ("robot.bak-{0}" -f $stamp) }
+            Copy-Item (Join-Path $next 'server\robot') $mcp -Recurse -Force
+        }
         $serverDone = $true
     }
 

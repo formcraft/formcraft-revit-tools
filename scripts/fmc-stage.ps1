@@ -29,6 +29,9 @@ New-Item -ItemType Directory -Force (Join-Path $next 'addin'), (Join-Path $next 
 Copy-Item (Join-Path $bundle 'revit_mcp_plugin') (Join-Path $next 'addin') -Recurse
 Copy-Item (Join-Path $bundle 'Formcraft.addin') (Join-Path $next 'addin')
 Copy-Item $server (Join-Path $next 'server') -Recurse
+# The Robot connector (connectors/robot), built where Robot is installed: it travels beside the server.
+$robot = Join-Path $repo 'server\robot'
+if (Test-Path (Join-Path $robot 'fmc-robot.exe')) { Copy-Item $robot (Join-Path $next 'server') -Recurse }
 
 [ordered]@{ commit = $commit; staged_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'); revit = $RevitYear } |
     ConvertTo-Json | Set-Content -Path (Join-Path $next 'ready.json') -Encoding UTF8
