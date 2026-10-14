@@ -5,8 +5,16 @@ plugin by driving Revit on the pilot PC with computer use) and **Claude Code** (
 
 ## The loop
 
+Since 14 Oct each finding is also a GitHub issue labelled `test-finding` (title `F-NNN: …`), so fixes and replies
+happen on the issue; this file keeps the runs and the summary. Labels: `fixed-retest` (a merged change should fix it),
+`needs-user` (answered, waits for the user). Claude Code never closes a finding issue; the tester closes it after a
+passing retest.
+
+0. **Start of every run:** call `fmc_selftest`. It reports the build in Revit (and whether it matches the server),
+   the AI connection, every command known to Revit, whether Revit may be closed, the guard's paths and the kit layout.
+   Fix-first lines become findings; a "Ready to test" result means the run can go on.
 1. **Tester** runs a live test in Revit and adds a new test run at the top of "Test runs", with one row per finding.
-   Each finding gets an id (`F-NNN`) that never changes, and the state **Open**.
+   Each finding gets an id (`F-NNN`) that never changes, and the state **Open**, and an issue.
 2. **Claude Code, before every push** (rule in `CLAUDE.md`), reads this file and the open findings:
    - For a finding the push fixes, set **Fixed in** to the commit or PR and the state to **Fixed – retest**.
    - For a finding it disagrees with, or that needs the user to decide, set the state to **Answered** and write why in
@@ -16,6 +24,10 @@ plugin by driving Revit on the pilot PC with computer use) and **Claude Code** (
 3. **Tester**, on the next run, retests every **Fixed – retest** finding: it becomes **Closed** if it now passes, or
    goes back to **Open** with a note if it doesn't.
 4. If the user says "leave fixing" for a run, Claude Code reads it but changes nothing until the user says to start.
+5. **Installs** (decision of 14 Oct): after each merge Claude Code stages the build; the Formcraft Updater installs it
+   when Revit is closed and never closes Revit itself. The tester may close Revit for an install only when every open
+   document is new (never saved) and unchanged, as `fmc_selftest` → "Safe to close Revit for an install" reports;
+   otherwise it asks the user. After reopening, `fmc_selftest` → "Add-in in Revit" shows the installed build.
 
 States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answered` (needs the user).
 
@@ -25,17 +37,17 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 |---|---|---|---|---|
 | F-001 | Blocker | Install | Installed add-in is older than `main` (#29) | Closed (run 2) |
 | F-002 | Blocker | AI connection | Connect AI doesn't start the listener; MCP gets "connect to revit client failed" | Closed (run 2) |
-| F-003 | High | Kit / guard | Kit folder set to the D: kit (run 3), but it still isn't a kit to the plugin → F-011 | Answered (step 1 done) |
-| F-004 | Medium | Pane results | Audit and Issue › Run check give no visible result | Fixed – retest (#32 not installed yet) |
-| F-005 | Medium | Pane layout | Banners leave too little room; wheel barely scrolls | Fixed – retest (#32 not installed yet) |
-| F-006 | Low | Pane footer | A tool's footer message stays after switching sections | Fixed – retest (#32 not installed yet) |
+| F-003 | High | Kit / guard | Kit folder set to the D: kit (run 3), but it still isn't a kit to the plugin → F-011 · #34 | Answered (step 1 done) |
+| F-004 | Medium | Pane results | Audit and Issue › Run check give no visible result · #35 | Fixed – retest (#32 not installed yet) |
+| F-005 | Medium | Pane layout | Banners leave too little room; wheel barely scrolls · #36 | Fixed – retest (#32 not installed yet) |
+| F-006 | Low | Pane footer | A tool's footer message stays after switching sections · #37 | Fixed – retest (#32 not installed yet) |
 | F-007 | Info | U11 / M test | `fmc_ui` bridge run against Revit | Closed (run 2) |
-| F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked | Open (seen again, run 3) |
-| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families | Open |
-| F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec | Open |
-| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC | Open (needs the user) |
-| F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it | Open |
-| F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update | Open |
+| F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Fixed – retest |
+| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Open |
+| F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec · #40 | Open |
+| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Answered (kit r4 shipped; rulebook files to copy) |
+| F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Open |
+| F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Open |
 ---
 
 ## Test runs
@@ -59,7 +71,7 @@ and saved. Nothing in the model was changed.
 
 | Id | Severity | What happened | Expected | Steps | Fixed in | Reply | State |
 |---|---|---|---|---|---|---|---|
-| F-011 | High | The kit folder on the PC is right, but `KitService` only counts a folder as a kit if `FMC_Kit.json` is at its root, and the real kit has none. Listing `D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2`: `_build`, `01_Shared_Parameters`, `02_Keynotes`, `03_Master_Data` (Family Register, Family Specs, Master Data .json/.xlsx, Revit Kit .xlsx, Sheet Register), `04_Families`, `05_Scripts`, `06_Templates` (only `_README.txt`), `07_IFC_IDS` … `11_Brand`, `README.md`. Missing against what the plugin expects: `FMC_Kit.json`, rulebooks (`05_Rulebooks` in the guard; in the kit `05_` is `05_Scripts`, and the claude.ai Project's copy keeps rulebooks in `03_Master_Data\FMC_Rulebook\`, which the PC doesn't have yet), `04_Families\_Staging`, `06_Templates\_Staging`, any `.rte`, the annotation standard and the materials database. | The plugin and the kit agree on one layout. Either a kit update (r4) adds `FMC_Kit.json`, the rulebooks and the `_Staging` folders, or the plugin reads the kit as it is (e.g. versions from `README.md`/`FMC_Master_Data.json`, rulebooks from `03_Master_Data\FMC_Rulebook`). | Settings › General › kit folder = the path above → Check the kit again. | | | Open (needs the user: kit change or code change) |
+| F-011 | High | The kit folder on the PC is right, but `KitService` only counts a folder as a kit if `FMC_Kit.json` is at its root, and the real kit has none. Listing `D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2`: `_build`, `01_Shared_Parameters`, `02_Keynotes`, `03_Master_Data` (Family Register, Family Specs, Master Data .json/.xlsx, Revit Kit .xlsx, Sheet Register), `04_Families`, `05_Scripts`, `06_Templates` (only `_README.txt`), `07_IFC_IDS` … `11_Brand`, `README.md`. Missing against what the plugin expects: `FMC_Kit.json`, rulebooks (`05_Rulebooks` in the guard; in the kit `05_` is `05_Scripts`, and the claude.ai Project's copy keeps rulebooks in `03_Master_Data\FMC_Rulebook\`, which the PC doesn't have yet), `04_Families\_Staging`, `06_Templates\_Staging`, any `.rte`, the annotation standard and the materials database. | The plugin and the kit agree on one layout. Either a kit update (r4) adds `FMC_Kit.json`, the rulebooks and the `_Staging` folders, or the plugin reads the kit as it is (e.g. versions from `README.md`/`FMC_Master_Data.json`, rulebooks from `03_Master_Data\FMC_Rulebook`). | Settings › General › kit folder = the path above → Check the kit again. | Kit r4 on the pilot PC (14 Oct): FMC_Kit.json, 03_Master_Data\FMC_Rulebook\, 04_Families\_Staging, 06_Templates\_Staging; fmc_guard.json rulebooks_dir points there | The user chose the kit change (r4). The rulebook files themselves are only in the claude.ai Project: the tester copies them into 03_Master_Data\FMC_Rulebook\ (fmc_selftest says when the folder has .json files). No .rte templates, annotation standard or materials database yet: fmc_selftest lists them as Warn | Answered |
 | F-012 | Medium | The banner says "Point to the kit folder in Settings", but pane search finds nothing for "kit" or "kit folder" ("Try: sheet, qa, level"), and the banner's Open Settings opens the top of General; the field is in "General · kit", several screens down. With F-005 it took six scrollbar drags to reach it. | Search finds settings by name (at least the kit folder), and Open Settings on the kit banner lands on the kit field with focus. | Kit missing → type "kit" in Find…; or click Open Settings on the banner. | | | Open |
 | F-013 | Low | Settings › Updates › Check for updates says "Update 0.1.1 is available" with "Update when Revit closes", "Release notes" and "Roll back to 0.0.9 (sample)". It's the sample feed (the real feed comes with the installer, STATUS U09), but only the rollback line says "sample". I didn't click Update. | Until the feed is real, label the whole card as a sample, or say "No update feed yet: updates come from the installer". | Settings › Updates → Check for updates. | | | Open |
 
@@ -105,7 +117,7 @@ in (test sign-in) by hand. Only read-only tools were run; nothing in the model w
 
 | Id | Severity | What happened | Expected | Steps | Fixed in | Reply | State |
 |---|---|---|---|---|---|---|---|
-| F-008 | High | Clicking the "Formcraft" ribbon tab (4 tries, on the label) leaves the current tab active. Structure, Add-Ins and the other tabs switch normally. In run 1 (older build) the same tab opened. | The Formcraft tab opens and shows Core, Manage, Flow, Model. | Revit 2025.4 with the new build, signed in or out → click the Formcraft tab. Check the journal for an exception while building the tab or its panels (a tab with no panels can't be selected). | | | Open |
+| F-008 | High | Clicking the "Formcraft" ribbon tab (4 tries, on the label) leaves the current tab active. Structure, Add-Ins and the other tabs switch normally. In run 1 (older build) the same tab opened. | The Formcraft tab opens and shows Core, Manage, Flow, Model. | Revit 2025.4 with the new build, signed in or out → click the Formcraft tab. Check the journal for an exception while building the tab or its panels (a tab with no panels can't be selected). | Selftest and updater PR (this push) | Likely cause: RibbonBuilder.Update() ran on every settings change (a keystroke in the pane saves one) and re-wrote every panel, label and icon, so Revit re-laid the ribbon over and over, which can swallow a tab click. It now writes only what differs. fmc_selftest shows "Ribbon updates": how often it ran and how often it changed the ribbon, so the retest can confirm it | Fixed – retest |
 | F-009 | Medium | `fmc_library scan` returned 428,144 characters (13,874 lines) for a new project from the Systems template: about 1.2 KB per family × 346. Too big for a Claude call (CLAUDE.md: "summaries, not element dumps"). | A summary by default (counts, by_check, worst N families), with a `limit` or `detail` option for the full list. | `fmc_library` action `scan` on a new project from the Systems template. | | | Open |
 | F-010 | Medium | Families scan: "Required FMC parameters present (by GUID)" is Pass with 0 fails, but none of the 346 Revit default families has a spec in `FMC_Family_Specs.json`, and the kit isn't even set (F-003). | "Not checked" (with the reason: no spec or no kit), never Pass. STATUS U16 rule: "A rule QA can't run shows as Not checked … never as a pass"; U15: a family with no spec "needs a person". | Setup › Families › Scan file with no kit set. | | | Open |
 

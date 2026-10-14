@@ -30,6 +30,8 @@ namespace revit_mcp_plugin.Shell
                 var list = new List<HealthCheck>
                 {
                     new HealthCheck("Revit", string.IsNullOrEmpty(FormcraftBrowser.RevitBuild) ? FormcraftBrowser.RevitVersion : FormcraftBrowser.RevitBuild, ChipKind.Good),
+                    new HealthCheck("Installed build", revit_mcp_plugin.FmcBuildInfo.Commit + " · built " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC",
+                        revit_mcp_plugin.FmcBuildInfo.Commit.EndsWith("+local") || revit_mcp_plugin.FmcBuildInfo.Commit == "unknown" ? ChipKind.Warn : ChipKind.Good),
                 };
                 if (!_guard.Found && _guard.Problem == "No fmc_guard.json")
                     list.Add(new HealthCheck("fmc_guard.json", "Missing", ChipKind.Bad, "Create from example…", "create-guard",

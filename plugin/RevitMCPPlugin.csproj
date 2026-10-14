@@ -121,4 +121,26 @@
         <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" Condition="$(Configuration.Contains('Debug'))"/>
     </Target>
 
+    <!-- Build stamp: the git commit and build time, shown in Connect, fmc_ui get_state and fmc_selftest, so anyone can
+         see which build is installed. "+local" marks a build from uncommitted changes. -->
+    <Target Name="FmcBuildInfo" BeforeTargets="CoreCompile">
+        <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true" ContinueOnError="true" WorkingDirectory="$(MSBuildProjectDirectory)">
+            <Output TaskParameter="ConsoleOutput" PropertyName="FmcCommit"/>
+        </Exec>
+        <Exec Command="git status --porcelain --untracked-files=no" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true" ContinueOnError="true" WorkingDirectory="$(MSBuildProjectDirectory)">
+            <Output TaskParameter="ConsoleOutput" PropertyName="FmcDirty"/>
+        </Exec>
+        <PropertyGroup>
+            <FmcCommit Condition="'$(FmcCommit)' == ''">unknown</FmcCommit>
+            <FmcCommit Condition="'$(FmcDirty)' != ''">$(FmcCommit)+local</FmcCommit>
+            <FmcBuildTime>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</FmcBuildTime>
+            <FmcBuildInfoFile>$(IntermediateOutputPath)FmcBuildInfo.g.cs</FmcBuildInfoFile>
+        </PropertyGroup>
+        <WriteLinesToFile File="$(FmcBuildInfoFile)" Overwrite="true"
+                          Lines="namespace revit_mcp_plugin { internal static class FmcBuildInfo { public const string Commit = &quot;$(FmcCommit)&quot;%3B public const string Time = &quot;$(FmcBuildTime)&quot;%3B } }"/>
+        <ItemGroup>
+            <Compile Include="$(FmcBuildInfoFile)"/>
+        </ItemGroup>
+    </Target>
+
 </Project>

@@ -37,6 +37,11 @@ Limits: the Revit MCP talks to the add-in, not to Windows, so it can't click but
 navigation and state; real clicks need a person or computer use.
 
 ### Test session script for Claude (pilot PC)
+0. **First, `fmc_selftest`** (read-only): the build in Revit and whether it matches the server, the AI connection,
+   every command known to Revit, the guard's paths and the kit layout. Fix-first lines are findings; go on when it says
+   "Ready to test". Installs come from the Formcraft Updater (it installs a staged build when Revit is closed and never
+   closes Revit). Close Revit for an install only when "Safe to close Revit for an install" passes (every open
+   document new and unchanged); otherwise ask the user.
 1. `git pull`, then build (R step 1). Report any build error and stop.
 2. Start the MCP server; confirm `fmc_file list_open` answers.
 3. Run the read-only checks above and the live-model refusal check; report pass/fail per line.
