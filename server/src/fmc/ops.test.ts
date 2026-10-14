@@ -40,3 +40,19 @@ test("duplicates, degenerate planes and dimensions: errors vs notes", () => {
   assert.equal(notes.length, 1);
   assert.throws(() => OPS.parse([{ op: "delete_element", name: "x" }]));
 });
+
+test("B1c geometry: a box between four planes, locked, with its material and visibility", () => {
+  const b = OPS.parse([
+    { op: "add_ref_plane", name: "Left", from: [-300, -1000], to: [-300, 1000] },
+    { op: "add_ref_plane", name: "Right", from: [300, -1000], to: [300, 1000] },
+    { op: "add_family_param", name: "Body Material", type: "Material" },
+    { op: "extrusion", name: "Body", rect: ["Left", "Right", "Front", "Back"], end: 900 },
+    { op: "set_material_param", name: "Body", param: "Body Material" },
+    { op: "set_visibility", name: "Body", coarse: false },
+  ]);
+  const { errors, notes } = splitProblems(opsProblems(b, dict));
+  assert.deepEqual(errors, []);
+  assert.equal(notes.length, 2); // Front and Back are expected in the file
+  const bad = OPS.parse([{ op: "void_extrusion", name: "Cut", start: 500, end: 100 }]);
+  assert.equal(splitProblems(opsProblems(bad, dict)).errors.length, 2);
+});

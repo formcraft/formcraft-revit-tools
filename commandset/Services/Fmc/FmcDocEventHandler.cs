@@ -53,6 +53,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "screenshot": Result = Screenshot(Get()); break;
                     case "save": Result = Save(Get()); break;
                     case "close": Result = Close(); break;
+                    case "flex": Result = FmcDocGeometry.Flex(Get().Doc); break;
                     case "apply":
                         var s = Get();
                         Result = FmcDocOps.Apply(s.Doc, Parameters["ops"] as JArray ?? new JArray(), Parameters.Value<bool?>("dry_run") != false,

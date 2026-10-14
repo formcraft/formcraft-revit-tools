@@ -70,6 +70,15 @@ namespace RevitMCPCommandSet.Commands.Fmc
         protected override int TimeoutMs => 300000;
     }
 
+    /// <summary>Flex: every type regenerated in turn, constraint errors per type; nothing is kept (plan B1c).</summary>
+    public class FmcDocFlexCommand : FmcDocCommandBase
+    {
+        public FmcDocFlexCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_doc_flex";
+        protected override string Action => "flex";
+        protected override int TimeoutMs => 300000;
+    }
+
     public class FmcDocCloseCommand : FmcDocCommandBase
     {
         public FmcDocCloseCommand(UIApplication uiApp) : base(uiApp) { }

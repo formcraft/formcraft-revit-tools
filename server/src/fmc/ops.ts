@@ -34,6 +34,19 @@ export const OP = z.discriminatedUnion("op", [
     between: z.tuple([z.string().min(1), z.string().min(1)]).describe("two reference planes by name"),
     view: z.string().optional(), label: z.string().optional().describe("a family parameter that drives the dimension"),
     offset: mm.default(300).describe("where the dimension line sits, mm from the first plane") }),
+  z.object({ op: z.literal("extrusion"), name: z.string().min(1),
+    rect: z.tuple([z.string(), z.string(), z.string(), z.string()]).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
+    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
+    view: z.string().optional() }),
+  z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
+    rect: z.tuple([z.string(), z.string(), z.string(), z.string()]).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
+    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
+    view: z.string().optional() }),
+  z.object({ op: z.literal("set_material_param"), name: z.string().min(1).describe("the solid"), param: z.string().min(1) }),
+  z.object({ op: z.literal("set_visibility"), name: z.string().min(1).describe("the solid"), coarse: z.boolean().optional(), medium: z.boolean().optional(),
+    fine: z.boolean().optional(), plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
@@ -42,6 +55,7 @@ export const OPS = z.array(OP).min(1).max(500);
 export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null): string[] {
   const p: string[] = [];
   const seen = new Set<string>();
+  const solids = new Set<string>();
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
@@ -63,6 +77,19 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null):
         params.add(o.name);
         break;
       case "add_type": types.add(o.name); break;
+      case "extrusion":
+      case "void_extrusion":
+        if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
+        if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
+        for (const pl of [...(o.rect ?? []), ...(o.end_plane ? [o.end_plane] : [])])
+          if (!planes.has(pl)) p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
+        solids.add(o.name);
+        break;
+      case "set_material_param":
+      case "set_visibility":
+        if (!solids.has(o.name)) p.push(`${at}: solid "${o.name}" isn't made earlier in this batch (it may exist in the file: then it's fine)`);
+        if (o.op === "set_material_param" && !params.has(o.param)) p.push(`${at}: parameter "${o.param}" isn't added earlier in this batch (it may exist in the file: then it's fine)`);
+        break;
       case "add_ref_plane":
         if (o.from[0] === o.to[0] && o.from[1] === o.to[1]) p.push(`${at}: from and to are the same point`);
         planes.add(o.name);

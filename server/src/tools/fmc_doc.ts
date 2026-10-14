@@ -50,13 +50,13 @@ export const FMC_DOC_DESCRIPTION =
     "report: what an open session holds (category, parameters, types, reference planes, solids, connectors, warnings). " +
     "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. Never a project or " +
-    "workshared model; sessions idle for 30 minutes close by themselves. apply: a batch of named ops (set_category, " +
+    "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
-  action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply"]),
+  action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply", "flex"]),
   ops: z.array(OP).optional().default([]).describe("apply: the batch, in order"),
   dry_run: z.boolean().optional().default(true).describe("apply: a dry run unless false"),
   template: z.string().optional().default("").describe("open: a family template (.rft) in the template roots"),
@@ -112,6 +112,11 @@ export async function runFmcDoc(args: FmcDocArgs) {
         log(config, "doc_apply", s.id, "done", `${r?.created ?? 0} created, ${r?.updated ?? 0} updated, ${r?.skipped ?? 0} skipped`);
       }
       return reply({ session: s.id, ...r, notes, next: dry ? "Run again with dry_run=false to apply" : "save writes it to staging with its build report" });
+    }
+
+    if (args.action === "flex") {
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_flex", { session: s.id }, 300000));
+      return reply({ session: s.id, ...r, next: r?.ok ? "Every type regenerates" : "Fix the constraints the failing types name, then flex again" });
     }
 
     if (args.action === "close") {

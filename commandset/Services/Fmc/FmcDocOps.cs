@@ -95,6 +95,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "add_type": return AddType(doc, op);
                 case "set_type_value": return SetTypeValue(doc, op);
                 case "add_dimension": return AddDimension(doc, op);
+                case "extrusion": return FmcDocGeometry.Extrusion(doc, op, false);
+                case "void_extrusion": return FmcDocGeometry.Extrusion(doc, op, true);
+                case "set_material_param": return FmcDocGeometry.MaterialParam(doc, op);
+                case "set_visibility": return FmcDocGeometry.Visibility(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
