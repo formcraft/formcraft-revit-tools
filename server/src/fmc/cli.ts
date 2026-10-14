@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -22,6 +22,7 @@ import { SpecFile } from "./specs.js";
 import { FMC_FILE_SHAPE, runFmcFile } from "../tools/fmc_file.js";
 import { FMC_FAMILY_SHAPE, runFmcFamily } from "../tools/fmc_family.js";
 import { FMC_PROJECT_SHAPE, runFmcProject } from "../tools/fmc_project.js";
+import { FMC_TEMPLATE_SHAPE, runFmcTemplate } from "../tools/fmc_template.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, readApiKey, runAsk } from "./ask.js";
 
@@ -88,6 +89,8 @@ async function main() {
         return printReply(await runFmcFamily(z.object(FMC_FAMILY_SHAPE).parse(await readStdin())));
       case "fmc_project":
         return printReply(await runFmcProject(z.object(FMC_PROJECT_SHAPE).parse(await readStdin())));
+      case "fmc_template":
+        return printReply(await runFmcTemplate(z.object(FMC_TEMPLATE_SHAPE).parse(await readStdin())));
       case "specs":
         return specs();
       case "probe":
@@ -104,7 +107,7 @@ async function main() {
         return print(r.body, !r.ok);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|specs|probe|ask>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|specs|probe|ask>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

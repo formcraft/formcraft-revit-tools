@@ -145,7 +145,9 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
 - [~] U13 Manage › Project (start a project: details, naming, folders, models, sheets) — `manage/PaneProject`. **Done:** details,
   naming, folder tree, manifest, one model per role with Project Information (`fmc_project`). **To do:** sheets from the
   register, linking the models, project family set, first QA run, undo start
-- [ ] U14 Manage › Templates — `manage/PaneTemplates`
+- [~] U14 Manage › Templates — `manage/PaneTemplates`. **Done:** new file from the kit's templates (named by the project, Project
+  Information filled in), firm look (brand pack fonts, dry run first), template audit (Must, Should, Advice), template library,
+  settings for new projects (`fmc_template`). **To do:** the template builder, compare versions, keep projects in step (Phase 2)
 - [ ] U15 Manage › Families (plan, build, load test via `fmc_family`) — `manage/PaneFamilies`
 - [ ] U16 Manage › QA and Rules — `manage/PaneQA`, `manage/PaneRules`
 - [ ] U17 Real licence service behind `ILicenceService` (decision D6) — `account/*`
