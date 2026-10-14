@@ -61,6 +61,15 @@ namespace RevitMCPCommandSet.Commands.Fmc
         protected override string Action => "save";
     }
 
+    /// <summary>Runs a batch of named ops on a session (plan B1b): dry run unless dry_run is false.</summary>
+    public class FmcDocApplyCommand : FmcDocCommandBase
+    {
+        public FmcDocApplyCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_doc_apply";
+        protected override string Action => "apply";
+        protected override int TimeoutMs => 300000;
+    }
+
     public class FmcDocCloseCommand : FmcDocCommandBase
     {
         public FmcDocCloseCommand(UIApplication uiApp) : base(uiApp) { }
