@@ -413,3 +413,75 @@ namespace revit_mcp_plugin.Shell
         }
     }
 }
+
+namespace revit_mcp_plugin.Shell
+{
+    /// <summary>Check › QA and Rules in Revit: fmc_qa through the installed server.</summary>
+    public sealed class RevitQaTools : IQaTools
+    {
+        public async Task<RulebookSet> RulesAsync()
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "rules" });
+            var set = new RulebookSet { Ok = r.Ok };
+            foreach (JObject b in (r.Body["books"] as JArray ?? new JArray()).OfType<JObject>())
+                set.Books.Add((b.Value<string>("name"), b.Value<string>("version") ?? "", b.Value<int?>("count") ?? 0));
+            foreach (JObject x in (r.Body["rules"] as JArray ?? new JArray()).OfType<JObject>())
+                set.Rules.Add(new RuleInfo
+                {
+                    Id = x.Value<string>("id"), Rule = x.Value<string>("rule") ?? "", Severity = x.Value<string>("severity") ?? "", Status = x.Value<string>("status") ?? "",
+                    Book = x.Value<string>("book") ?? "", Scope = x.Value<string>("scope") ?? "", Test = x.Value<string>("test") ?? "",
+                    FixHint = x.Value<string>("fix_hint") ?? "", Version = x.Value<string>("version") ?? "", Why = x.Value<string>("why") ?? "",
+                });
+            foreach (JObject e in (r.Body["exceptions"] as JArray ?? new JArray()).OfType<JObject>())
+                set.Exceptions.Add(new RuleException { Rule = e.Value<string>("rule"), Where = e.Value<string>("where") ?? "", ApprovedBy = e.Value<string>("approved_by") ?? "", Until = e.Value<string>("until") ?? "" });
+            foreach (JObject d in (r.Body["decisions"] as JArray ?? new JArray()).OfType<JObject>())
+                set.Decisions.Add((d.Value<string>("text") ?? "", d.Value<string>("state") ?? ""));
+            set.Problems.AddRange(RevitFamilyTools.Strings(r.Body["problems"]));
+            if (!r.Ok) set.Problems.AddRange(r.Reasons());
+            return set;
+        }
+
+        public async Task<QaRun> RunAsync(string gate, string projectFolder)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "run", ["gate"] = gate, ["project_folder"] = projectFolder ?? "" });
+            var run = new QaRun { Ok = r.Ok && r.Body["results"] != null };
+            if (!run.Ok) { run.Message = "QA refused: " + string.Join(" ", r.Reasons()); return run; }
+            var b = r.Body;
+            run.Model = b.Value<string>("model") ?? "";
+            run.GateName = b.Value<string>("gate_name") ?? gate;
+            run.Ran = b.Value<int?>("ran") ?? 0; run.Pass = b.Value<int?>("pass") ?? 0; run.Fail = b.Value<int?>("fail") ?? 0;
+            run.Warning = b.Value<int?>("warning") ?? 0; run.NotApplicable = b.Value<int?>("not_applicable") ?? 0; run.NotChecked = b.Value<int?>("not_checked") ?? 0;
+            run.Summary = b.Value<string>("summary") ?? "";
+            run.Report = b.Value<string>("report") ?? "";
+            run.Trend = (b["trend"]?.Value<int?>("new") ?? 0, b["trend"]?.Value<int?>("recurring") ?? 0, b["trend"]?.Value<int?>("resolved") ?? 0);
+            foreach (JObject h in (b["history"] as JArray ?? new JArray()).OfType<JObject>()) run.History.Add((h.Value<string>("at") ?? "", h.Value<int?>("failing") ?? 0));
+            foreach (JObject x in ((JArray)b["results"]).OfType<JObject>())
+            {
+                var q = new QaResult
+                {
+                    Id = x.Value<string>("id"), Rule = x.Value<string>("rule") ?? "", Severity = x.Value<string>("severity") ?? "", State = x.Value<string>("state") ?? "",
+                    Where = x.Value<string>("where") ?? "", FixHint = x.Value<string>("fix_hint") ?? "", Excepted = x.Value<string>("excepted") ?? "",
+                };
+                q.ElementIds.AddRange((x["element_ids"] as JArray ?? new JArray()).Select(i => i.Value<long>()));
+                run.Results.Add(q);
+            }
+            run.Message = $"QA ran on {run.Model}: {run.Ran} checks, {run.Fail} fail, {run.Warning} warnings. Report saved.";
+            return run;
+        }
+
+        public async Task<string> SelectAsync(IReadOnlyList<long> elementIds)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "select", ["element_ids"] = JArray.FromObject(elementIds) });
+            return r.Ok ? $"Selected {r.Body.Value<int?>("selected") ?? elementIds.Count} elements in Revit." : "Zoom failed: " + string.Join(" ", r.Reasons());
+        }
+
+        public async Task<string> RequestAsync(string rule, string kind, string text, string severity)
+        {
+            var args = new JObject { ["action"] = "request", ["rule"] = rule, ["kind"] = kind, ["text"] = text };
+            if (!string.IsNullOrEmpty(severity)) args["severity"] = severity;
+            CliResult r = await ServerCli.RunAsync("fmc_qa", args);
+            return r.Ok ? (kind == "approve" ? "Approval" : "Change request") + " for " + rule + " recorded for the BIM Manager: " + r.Body.Value<string>("next")
+                        : "Request refused: " + string.Join(" ", r.Reasons());
+        }
+    }
+}

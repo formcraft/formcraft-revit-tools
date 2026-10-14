@@ -41,6 +41,8 @@ export interface GuardConfig {
   family_staging_root: string;
   /** The kit's keynote file (Revit keynote table: code, description, parent), read by Setup › Families */
   keynote_file: string;
+  /** The kit's rulebooks: one JSON file per book (rule schema v1), read by QA and Rules */
+  rulebooks_dir: string;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -56,6 +58,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   family_template_dir: "C:\\ProgramData\\Autodesk\\RVT 2025\\Family Templates\\English",
   family_staging_root: "Z:\\00_Standards\\04_Families\\_Staging",
   keynote_file: "Z:\\00_Standards\\02_Keynotes\\FMC_Keynotes.txt",
+  rulebooks_dir: "Z:\\00_Standards\\05_Rulebooks",
 };
 
 /** Tools that change the model. They are refused on live project models. */
