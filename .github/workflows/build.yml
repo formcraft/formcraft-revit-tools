@@ -26,7 +26,7 @@ jobs:
       - name: Shell tests (theme, kit styles, services)
         run: dotnet test --project tests/shell/Formcraft.Shell.Tests.csproj -c Release --report-trx --results-directory "${{ github.workspace }}/test-results"
       - name: Flow touch engine tests (gestures, settings)
-        run: dotnet test --project tests/touch/TouchKit.Core.Tests.csproj -c Release --report-trx --results-directory "${{ github.workspace }}/test-results"
+        run: dotnet test --project tests/touch/TouchKit.Core.Tests.csproj -c Release
       # The next steps run even when tests fail, so a failure shows its test name, message and the screens
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
