@@ -73,7 +73,7 @@ export const WRITE_COMMANDS = new Set<string>([
   "create_level", "create_grid", "create_room", "create_dimensions", "create_structural_framing_system",
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
   "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge", "fmc_sheet_create", "fmc_sheet_rename",
-  "fmc_link_add", "fmc_link_pin",
+  "fmc_link_add", "fmc_link_pin", "fmc_workset_create",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
