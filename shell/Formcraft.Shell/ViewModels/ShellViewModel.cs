@@ -123,7 +123,8 @@ namespace Formcraft.Shell.ViewModels
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
-                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null)
+                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
+                              IFlowTools? flow = null)
         {
             _licence = licence;
             _connection = connection;
@@ -144,7 +145,7 @@ namespace Formcraft.Shell.ViewModels
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog,
-                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch);
+                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch, flow);
             Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Connect = new ConnectViewModel(connect ?? new MockConnectInfo(), kit ?? new FolderKitService(), licence, settings, s => Status = s, ShowDialog,
@@ -193,10 +194,17 @@ namespace Formcraft.Shell.ViewModels
             OpenAdminCommand = new RelayCommand(() => { if (IsAdmin) Open(ShellPage.Admin); });
             HelpCommand = new RelayCommand(() => Status = "Help: opens this section of the guide and the first-run tour.");
             // Board flow/PaneFlowTouch: Touch in the quick tools strip opens Settings › Flow › Touch.
+            // U22: Section box, Align (Sheet Layout) and Tag Tidy run in Revit; each asks first and is one Undo.
+            var flowTools = flow ?? new MockFlowTools();
             QuickToolCommand = new RelayCommand(p =>
             {
-                if (p as string == "Touch") OpenSettingsTab("Flow", "Touch: master switch, views, gestures and what shows on the view.");
-                else Status = p + ": in the plugin this runs here (built in U22).";
+                var tool = p as string ?? "";
+                if (tool == "Touch") OpenSettingsTab("Flow", "Touch: master switch, views, gestures and what shows on the view.");
+                else
+                {
+                    flowTools.Run(tool);
+                    Status = tool + ": " + FlowHint(tool);
+                }
             });
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); OnPropertyChanged(nameof(ConnectionTip)); UpdateState(); };
@@ -283,6 +291,15 @@ namespace Formcraft.Shell.ViewModels
         public RelayCommand OpenAdminCommand { get; }
         public RelayCommand HelpCommand { get; }
         public RelayCommand QuickToolCommand { get; }
+
+        /// <summary>What the person does next in Revit for each Flow tool.</summary>
+        public static string FlowHint(string tool) => tool switch
+        {
+            "Section Box" or "Section box" => "on a floor plan, drag the area; your own 3D view opens with the box.",
+            "Align" or "Sheet Layout" => "on a sheet, select the viewports (or none for all) and pick how to line them up.",
+            "Tag Tidy" => "select the tags in the view, then pick how to tidy them.",
+            _ => "runs in Revit.",
+        };
 
         public ShellScreen Screen
         {

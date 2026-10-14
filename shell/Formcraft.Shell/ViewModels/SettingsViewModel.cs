@@ -56,14 +56,16 @@ namespace Formcraft.Shell.ViewModels
         private readonly IUpdateService _updates;
         private readonly Action _openLog;
         private readonly ITouchService? _touch;
+        private readonly IFlowTools _flow;
         private readonly List<Action> _touchRefresh = new List<Action>();
         private SettingsTab? _current;
 
         public SettingsViewModel(ILicenceService licence, IUserSettings settings, ObservableCollection<ModuleParts> parts, ThemeService theme,
                                  IKitService kit, Action<string> status, Action<DialogViewModel> ask, IUpdateService? updates = null, Action? openLog = null,
-                                 ITouchService? touch = null)
+                                 ITouchService? touch = null, IFlowTools? flow = null)
         {
             _touch = touch;
+            _flow = flow ?? new MockFlowTools();
             if (_touch != null) _touch.Changed += (_, __) => { foreach (var refresh in _touchRefresh) refresh(); };
             _updates = updates ?? new MockUpdateService();
             _openLog = openLog ?? (() => { });
@@ -342,12 +344,11 @@ namespace Formcraft.Shell.ViewModels
                     new[] { "Leaders never cross", "One elbow", "Clear of geometry", "Keep text horizontal" }, asChecks: true)),
             new SettingsGroup("Flow · 3D and shortcuts",
                 new ChoiceSetting(_store, "flow.boxoffset", "Section box offset", new[] { "300 mm around the area", "500 mm", "1 m" }, dropdown: true),
-                new ToggleSetting(_store, "flow.boxlevels", "Level-aware: box from the level below to the level above", true),
-                new ReadOnlySetting("Shortcuts", "Formcraft Shortcuts v1.0 · not applied on this PC yet"),
+                new ToggleSetting(_store, "flow.boxlevels", "Level-aware: box from the plan's level to the level above", true),
+                new ReadOnlySetting("Shortcuts", "The kit has no Formcraft shortcuts file yet"),
                 new ButtonsSetting("", new[]
                 {
-                    new SettingButton("Apply the standard", new RelayCommand(AskApplyShortcuts)),
-                    new SettingButton("Fix the clash", new RelayCommand(() => _status("Fix the clash: shows which of your shortcuts clash with the standard (in Revit, with the shortcuts import)."))),
+                    new SettingButton("Keyboard Shortcuts", new RelayCommand(AskApplyShortcuts)),
                 })),
         });
 
@@ -467,11 +468,13 @@ namespace Formcraft.Shell.ViewModels
         }
 
         /// <summary>Board core/PaneSettings dialog: Revit applies shortcuts through its own import, so the last click is there.</summary>
-        private void AskApplyShortcuts() => _ask(new DialogViewModel("Apply Formcraft Shortcuts v1.0",
-            "1. Back up your current shortcuts (KeyboardShortcuts_backup.xml). 2. Merge your extras on top. 3. Open Revit's import dialog with the file ready. " +
-            "Revit applies shortcuts through its own Keyboard Shortcuts import, so you confirm the last click there.",
-            "Apply",
-            () => { _status("Shortcuts: in Revit this opens its Keyboard Shortcuts import with the Formcraft file ready (from U10)."); return System.Threading.Tasks.Task.CompletedTask; }));
+        // Rule 7: the shortcuts standard comes from the kit, and the kit has none yet, so nothing is merged or applied
+        // here; Revit's own Keyboard Shortcuts dialog opens for an import or export by hand.
+        private void AskApplyShortcuts() => _ask(new DialogViewModel("Keyboard Shortcuts",
+            "The kit has no Formcraft shortcuts file yet, so there is no standard to apply. Revit's Keyboard Shortcuts opens: " +
+            "export yours there first if you change anything.",
+            "Open in Revit",
+            () => { _flow.OpenShortcutsImport(); _status("Shortcuts: Revit's Keyboard Shortcuts is open."); return System.Threading.Tasks.Task.CompletedTask; }));
 
         /// <summary>Board core/PaneSettings dialog: puts the person's General and module settings back to the defaults.</summary>
         public void AskReset() => _ask(new DialogViewModel("Reset my settings",
