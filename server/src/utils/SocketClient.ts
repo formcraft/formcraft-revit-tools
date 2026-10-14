@@ -1,6 +1,7 @@
 import * as net from "net";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
+import { aiGate } from "../fmc/aigate.js";
 
 export class RevitClientConnection {
   host: string;
@@ -112,7 +113,12 @@ export class RevitClientConnection {
           );
         }
         const verdict = liveLockVerdict(info?.active, config);
-        if (!verdict.ok) throw new Error(verdict.reasons.join(" "));
+        if (!verdict.ok) {
+          // The lock's one new case: the AI-assisted modeller, Off unless the kit rulebook and the BIM Manager allow it.
+          const gate = await aiGate(command, params, info?.active, config, (c, p) => this.sendRaw(c, p, 60000));
+          if (!gate.ok || !gate.run) throw new Error([...verdict.reasons, gate.reason].filter(Boolean).join(" "));
+          return gate.run(() => this.sendRaw(command, params, timeoutMs));
+        }
       }
     }
     return this.sendRaw(command, params, timeoutMs);

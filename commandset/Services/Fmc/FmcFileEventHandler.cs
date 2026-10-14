@@ -68,7 +68,23 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["isWorkshared"] = d.IsWorkshared,
                 ["isModified"] = d.IsModified,
                 ["isActive"] = active != null && d.Equals(active),
+                // A person's local copy of a workshared model (not the central): the only workshared file the
+                // AI-assisted modeller may change. Null when it isn't workshared.
+                ["isLocal"] = d.IsWorkshared ? (JToken)IsLocalCopy(d) : null,
             };
+        }
+
+        private static bool IsLocalCopy(Document d)
+        {
+            try
+            {
+                if (d.IsDetached) return false;
+                ModelPath central = d.GetWorksharingCentralModelPath();
+                if (central == null) return false;
+                string c = ModelPathUtils.ConvertModelPathToUserVisiblePath(central);
+                return !string.IsNullOrEmpty(d.PathName) && !string.Equals(Path.GetFullPath(c), Path.GetFullPath(d.PathName), StringComparison.OrdinalIgnoreCase);
+            }
+            catch (Exception) { return false; } // unknown counts as central: AI stays out
         }
 
         /// <summary>

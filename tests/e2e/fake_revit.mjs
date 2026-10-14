@@ -47,15 +47,26 @@ const fixtures = {
 
 const server = net.createServer((sock) => {
   let buf = "";
+  // Requests can arrive split across reads or two in one read: take each complete JSON object by counting braces.
   sock.on("data", (d) => {
     buf += d.toString();
-    let req;
-    try { req = JSON.parse(buf); } catch { return; }
-    buf = "";
-    const f = mode === "empty" && req.method !== "fmc_document_info" ? {} : fixtures[req.method];
-    const result = typeof f === "function" ? f(req.params || {}) : f ?? {};
-    if (logFile) fs.appendFileSync(logFile, JSON.stringify({ method: req.method, params: req.params }) + "\n");
-    sock.write(JSON.stringify({ jsonrpc: "2.0", id: req.id, result }));
+    for (;;) {
+      let depth = 0, inString = false, escaped = false, end = -1;
+      for (let i = 0; i < buf.length; i++) {
+        const ch = buf[i];
+        if (inString) { if (escaped) escaped = false; else if (ch === "\\") escaped = true; else if (ch === '"') inString = false; continue; }
+        if (ch === '"') inString = true;
+        else if (ch === "{") depth++;
+        else if (ch === "}" && --depth === 0) { end = i; break; }
+      }
+      if (end < 0) return;
+      const req = JSON.parse(buf.slice(0, end + 1));
+      buf = buf.slice(end + 1);
+      const f = mode === "empty" && req.method !== "fmc_document_info" ? {} : fixtures[req.method];
+      const result = typeof f === "function" ? f(req.params || {}) : f ?? {};
+      if (logFile) fs.appendFileSync(logFile, JSON.stringify({ method: req.method, params: req.params }) + "\n");
+      sock.write(JSON.stringify({ jsonrpc: "2.0", id: req.id, result }));
+    }
   });
   sock.on("error", () => {});
 });

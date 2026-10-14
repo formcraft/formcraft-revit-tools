@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null)
         {
             _licence = licence;
             _connection = connection;
@@ -193,7 +193,7 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
             _hostSections["Templates"] = Templates;
-            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
+            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, ai);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
             SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
