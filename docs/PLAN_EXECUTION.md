@@ -35,7 +35,7 @@ Hand-offs between the two:
 
     Audit: Pass, 0 warnings.
 - **Kit change request** (34 items) and the **Uganda product research** (`docs/research/`).
-- **Pilot PC:** Revit 2025 and Robot Structural Analysis are installed; Navisworks Manage is not.
+- **Pilot PC:** Revit 2025 and Robot Structural Analysis are installed; Navisworks Manage is being installed (14 Oct).
 
 ## Improvements found in the review (before moving on)
 1. **`fmc_doc` can't be called from the Claude client.** `server/src/fmc/ops.ts:10` builds a JSON Schema tuple the API
@@ -50,7 +50,7 @@ Hand-offs between the two:
 5. **Nine "Please confirm" items in `STATUS.md`** (rule 6 vs scheduled sync, who sets "Claude in shared models", annotation
    standard shape, sheet register columns, revision codes, links source, print folder, material DB shape, rulebook
    location). Several touch this plan. Answer them in one sitting.
-6. **Hard rule 1 (live-model lock) vs AI modelling.** The owner wants AI to model. That needs a deliberate rule change:
+6. **Hard rule 1 (live-model lock) vs AI modelling.** Merged into one change request, `AI_ASSISTED_MODELLER.md` v2: autonomy levels per operation group plus the owner's admin switch and involvement level. The owner wants AI to model. That needs a deliberate rule change:
    - Manual role;
    - kit rulebook;
    - CLAUDE.md wording;
@@ -59,7 +59,7 @@ Hand-offs between the two:
    It must not be worked around. It's phase A, and U28 is its pane.
 7. **The AI involvement measure is undecided** (elements, changes, or tier-only). Make it pluggable in the rulebook so
    the build doesn't wait for the decision.
-8. **Robot is installed and Navisworks isn't.** Move the Robot track (R) ahead of Navisworks (N). Coordinate › Clashes
+8. **Robot is installed and Navisworks is only now being installed.** Move the Robot track (R) ahead of Navisworks (N). Coordinate › Clashes
    (U35) can start on an imported Navisworks XML report before the connector exists.
 9. **Stale branches.** About 25 remote branches are already squash-merged or superseded. Archive the list in
    `docs/history/` and prune, to keep "what's open" honest.
@@ -93,7 +93,7 @@ Each phase ends with a Revit run (the tester's protocol in `TESTING.md`) and a r
 | AU | Automation | Scheduled runs (needs the workbench), Revit triggers (IUpdater), morning report | U32 | 1, 2 |
 | D | Data | Excel round trip (staging copies, dry run), kit tables via change requests, Power BI dashboards via Microsoft's authoring MCP | U34 | 3; Power BI licence |
 | 7 | Guided first project, then local permit packs | IDEAS 4 and 6 on top of the published templates | — | 6 |
-| N | Navisworks | Evaluate open-source Navisworks MCPs; connector; federate, clash matrix, nightly runs, Review; AI triage/fix within the policy | U35 (from XML first), U36 | Navisworks installed |
+| N | Navisworks | Evaluate open-source Navisworks MCPs; connector; federate, clash matrix, nightly runs, Review; AI triage/fix within the policy | U35, U36 | Navisworks is being installed; can run in parallel with R after phase 1 |
 | 8 | Later | B7 recipes from datasheets/photos, LOD 400 assemblies and shop sheets, Design Automation, Blender renders, Speckle | — | — |
 
 **In parallel:** shortcuts standard (IDEAS 20), CI e2e and the weekly smoke test, and branch clean-up.
@@ -120,4 +120,4 @@ AI batches above the policy threshold also wait for a person.
 5. The kit change request for the new tables (improvement 10) and the 16 electrical parameters.
 6. Supplier visits for the Uganda gaps.
 7. A Power BI licence (Pro or Fabric), or skip D3 for now.
-8. When Navisworks Manage will be installed.
+8. Navisworks Manage: being installed (14 Oct), so N can run in parallel with R.

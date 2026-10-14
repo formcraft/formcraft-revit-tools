@@ -181,10 +181,10 @@ first and wait for a yes. New server tools are named here as proposals. Each one
 before code.
 
 Order: U28 first (it gates every AI write), then U29–U32, then U33 (Robot is installed on the pilot PC), then U34,
-then U35–U36 (Navisworks is not installed yet).
+then U35–U36 (Navisworks Manage is being installed on the pilot PC).
 
-- [ ] U28 Admin › AI involvement — `core/PaneAdminAI`. **Needs first:** the owner approves the Manual role "AI
-  assistant modeller", the kit rulebook `FMC_Rulebook_AIUse` and the new wording of CLAUDE.md hard rule 1 (the lock
+- [ ] U28 Admin › AI involvement — `core/PaneAdminAI`. **Needs first:** the owner approves `docs/AI_ASSISTED_MODELLER.md` v2 (Manual role "AI
+  assistant modeller"), the kit rulebook `FMC_Rulebook_AIUse` and the new wording of CLAUDE.md hard rule 1 (the lock
   becomes policy-aware, WIP models only). Guide:
   - **AI modelling switch.** Calls `fmc_ai policy set {enabled}`. Admin only: locked with a padlock for every other role. Off means every AI write is refused.
   - **Involvement level slider (0–100, default 20).** Calls `fmc_ai policy set {level}`. The tier bands and the cap
@@ -304,7 +304,7 @@ then U35–U36 (Navisworks is not installed yet).
   - **Send to Review.** Uses `fmc_review raise`.
 
   **Needs:** clash results from U36, or an imported Navisworks XML report until then.
-- [ ] U36 Formcraft pane in Navisworks — `coord/PaneNavisworks`. **Waits:** Navisworks Manage isn't installed on the pilot PC.
+- [ ] U36 Formcraft pane in Navisworks — `coord/PaneNavisworks`. Navisworks Manage is being installed on the pilot PC (14 Oct).
   Plan:
   - Evaluate the open-source Navisworks MCPs (e.g. NavisWorksMaster, naviscoord-mcp) and use one as a reference or fork it, after a licence check.
   - Host the same shell in Navisworks.
