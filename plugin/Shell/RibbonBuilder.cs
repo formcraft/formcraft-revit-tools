@@ -183,12 +183,14 @@ namespace revit_mcp_plugin.Shell
                 ToggleTouch();
                 return;
             }
-            ShellHost.ShowPane(app);
             if (m == FmcModule.Flow)
             {
-                _pane.QuickToolCommand.Execute(action == "Touch on" ? "Touch" : action == "Section box" ? "Section Box" : action);
+                // Already in Revit's API context: the tool runs now (asks first, one Undo).
+                _pane.Status = action + ": " + Formcraft.Shell.ViewModels.ShellViewModel.FlowHint(action);
+                FlowTools.Run(app, action);
                 return;
             }
+            ShellHost.ShowPane(app);
             if (Section.TryGetValue(action, out var name))
             {
                 var section = _pane.Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == name);
