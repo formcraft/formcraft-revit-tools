@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null)
         {
             _licence = licence;
             _connection = connection;
@@ -176,6 +176,8 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Reports"] = Reports;
             Brief = new BriefPage(brief ?? new MockBriefTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
             _hostSections["Brief"] = Brief;
+            Scripts = new ScriptsPage(scripts ?? new MockScriptTools(), Project, settings, s => Status = s, ShowDialog);
+            _hostSections["Scripts"] = Scripts;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -407,6 +409,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Model › Start from brief: a new model set up from the approved concept (U23).</summary>
         public BriefPage Brief { get; }
+
+        /// <summary>Check › Scripts: the kit's scripts and automations of Formcraft's own checks (U24).</summary>
+        public ScriptsPage Scripts { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
