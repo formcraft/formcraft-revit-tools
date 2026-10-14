@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
@@ -128,12 +129,49 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             if (doc == null) throw new InvalidOperationException($"Revit could not create a {kind} from {template}");
 
+            // Project start (fmc_project): Project Information is typed once in the pane and written into each new model.
+            var missing = new JArray();
+            if (kind == "project" && Parameters["project_info"] is JObject info && info.Count > 0)
+                foreach (string name in SetProjectInfo(doc, info)) missing.Add(name);
+
             Directory.CreateDirectory(Path.GetDirectoryName(target));
             doc.SaveAs(target, Options());
             string title = doc.Title;
             bool closed = false;
             if (closeAfter) closed = doc.Close(false);
-            return new JObject { ["created"] = target, ["title"] = title, ["kind"] = kind, ["closed"] = closed };
+            return new JObject { ["created"] = target, ["title"] = title, ["kind"] = kind, ["closed"] = closed, ["projectInfoMissing"] = missing };
+        }
+
+        /// <summary>
+        /// Writes Project Information into a new model: Revit's own fields (Project Name, Number, Client Name, Address,
+        /// Status) and any other text parameter on Project Information by name (the kit's FMC_ parameters, where the
+        /// template has them). Returns the names the template doesn't have.
+        /// </summary>
+        private static List<string> SetProjectInfo(Document doc, JObject info)
+        {
+            var missing = new List<string>();
+            using (var t = new Transaction(doc, "Formcraft: Project Information"))
+            {
+                t.Start();
+                ProjectInfo p = doc.ProjectInformation;
+                foreach (var prop in info.Properties())
+                {
+                    string value = prop.Value?.ToString() ?? "";
+                    switch (prop.Name)
+                    {
+                        case "Project Name": p.Name = value; continue;
+                        case "Project Number": p.Number = value; continue;
+                        case "Client Name": p.ClientName = value; continue;
+                        case "Project Address": p.Address = value; continue;
+                        case "Project Status": p.Status = value; continue;
+                    }
+                    Parameter param = p.LookupParameter(prop.Name);
+                    if (param != null && !param.IsReadOnly && param.StorageType == StorageType.String) param.Set(value);
+                    else missing.Add(prop.Name);
+                }
+                t.Commit();
+            }
+            return missing;
         }
 
         private JObject SaveAs(UIApplication app)

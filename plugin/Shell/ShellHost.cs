@@ -59,7 +59,8 @@ namespace revit_mcp_plugin.Shell
             ITouchService touch = null;
 #endif
             Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: touch, connect: ConnectInfo,
-                                      families: new RevitFamilyTools(), files: Files)
+                                      families: new RevitFamilyTools(), files: Files,
+                                      project: new RevitProjectTools())
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
             };

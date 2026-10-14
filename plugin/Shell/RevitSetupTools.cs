@@ -231,3 +231,46 @@ namespace revit_mcp_plugin.Shell
         }
     }
 }
+
+namespace revit_mcp_plugin.Shell
+{
+    /// <summary>Setup › Project in Revit: fmc_project through the installed server (plan, then start), as Claude runs it.</summary>
+    public sealed class RevitProjectTools : Formcraft.Shell.ViewModels.IProjectTools
+    {
+        public async Task<ToolResult> RunAsync(Formcraft.Shell.ViewModels.ProjectRequest q, bool dryRun)
+        {
+            var args = new JObject
+            {
+                ["action"] = "start", ["dry_run"] = dryRun, ["project_folder"] = q.Folder, ["code"] = q.Code,
+                ["originator"] = q.Originator, ["volume"] = q.Volume, ["level"] = q.Level, ["type"] = q.Type,
+                ["roles"] = JArray.FromObject(q.Roles), ["templates"] = JObject.FromObject(q.Templates),
+                ["details"] = JObject.FromObject(q.Details), ["stage"] = q.Stage, ["issue_set"] = q.IssueSet, ["standard"] = q.Standard,
+            };
+            CliResult r = await ServerCli.RunAsync("fmc_project", args);
+            if (r.Body["refused"] != null || (!r.Ok && r.Body["steps"] == null))
+            {
+                var refused = new ToolResult();
+                foreach (string reason in r.Reasons()) refused.Messages.Add(new ToolMessage(ChipKind.Bad, reason));
+                return refused;
+            }
+            if (dryRun)
+            {
+                var would = r.Body["would_do"] as JObject ?? new JObject();
+                var result = new ToolResult { Ok = true, Count = q.Roles.Count };
+                var folders = (would["folders"] as JArray)?.Select(f => Path.GetFileName(f.ToString())).Distinct().ToList() ?? new List<string>();
+                result.Details.Add("Folders: " + string.Join(" · ", folders.Where(f => f.Length > 2 && char.IsDigit(f[0]))));
+                foreach (JObject m in (would["models"] as JArray ?? new JArray()).OfType<JObject>())
+                    result.Details.Add(m.Value<string>("name") + "  ←  " + Path.GetFileName(m.Value<string>("template") ?? ""));
+                result.Details.Add("Manifest: " + would.Value<string>("manifest_path"));
+                return result;
+            }
+            var done = new ToolResult { Ok = r.Ok };
+            foreach (JObject s in (r.Body["steps"] as JArray ?? new JArray()).OfType<JObject>())
+                done.Messages.Add(new ToolMessage(s.Value<bool>("ok") ? ChipKind.Good : ChipKind.Bad, s.Value<string>("step") + ": " + s.Value<string>("detail")));
+            done.Messages.Insert(0, new ToolMessage(r.Ok ? ChipKind.Good : ChipKind.Warn,
+                r.Ok ? $"Started {q.Code}. Logged in FMC_MCP_FileLog.csv." : $"{q.Code} started with problems: see the lines below."));
+            done.Messages.Add(new ToolMessage(ChipKind.Info, "Next: link the models, project families and the first QA run."));
+            return done;
+        }
+    }
+}
