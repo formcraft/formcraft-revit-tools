@@ -5,7 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { IssueException, IssueInput, IssueSheet, Revision, manifest, readiness, readinessReport, registerCsv, transmittal } from "../fmc/issue.js";
-import { QaFacts, neededParameters, runQa } from "../fmc/rules.js";
+import { neededParameters, qaFacts, runQa } from "../fmc/rules.js";
 import { parseRegister, planned } from "../fmc/sheets.js";
 import { readRulebooks } from "./fmc_qa.js";
 import { DEFAULT_FIELDS, csvRow, readRegisterFile } from "./fmc_sheets.js";
@@ -87,7 +87,7 @@ async function check(args: FmcIssueArgs, cfg: GuardConfig) {
   const books = readRulebooks(cfg.rulebooks_dir);
   const need = neededParameters(books.rules);
   need.sheet = [...new Set([...need.sheet, ...input.fields, input.approval_field, input.status_field])];
-  const facts = (await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", need, 300000))) as QaFacts;
+  const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", need, 300000)));
   const issueFacts = await withRevitConnection((c) => c.sendRaw("fmc_issue_facts", {}, 60000));
   const current = new Map<number, string>(((issueFacts?.sheets ?? []) as Array<{ id: number; current_revision: string }>).map((s) => [s.id, s.current_revision]));
   const model: IssueSheet[] = facts.sheets.map((s) => ({ id: s.id, number: s.number, name: s.name, views: 0, fields: s.parameters, current_revision: current.get(s.id) ?? "" }));

@@ -61,7 +61,8 @@ export async function runFmcBuild(args: FmcBuildArgs) {
     if (missing.length) return reply({ refused: true, reasons: [`The kit has no ${missing.join(", ")}: Build reads them from the kit`] }, true);
     const categories = [...new Set([...params[CODE].categories, ...params[STATUS].categories])];
     const facts = await withRevitConnection((c) => c.sendRaw("fmc_build_facts", { code_param: CODE, status_param: STATUS, package_param: PACKAGE, categories }, 300000));
-    const model = String(facts?.model ?? "");
+    const model = String(facts?.model ?? "").trim();
+    if (!model) return reply({ refused: true, reasons: ["Revit didn't say which model is open, so its quantities can't be kept apart from another model's: open the model and measure again"] }, true);
     const file = baselineFile(config, args.project_folder, model);
     let baseline: { saved: string; quantities: Record<string, number | null> } | null = null;
     try { baseline = JSON.parse(fs.readFileSync(file, "utf8")); } catch { /* no baseline yet */ }

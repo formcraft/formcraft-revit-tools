@@ -19,7 +19,7 @@ namespace Formcraft.Shell.ViewModels
         private readonly IAskTools _tools;
         private readonly Action<string> _status;
         private readonly List<(string Role, string Text, string Meta)> _turns = new List<(string, string, string)>();
-        private readonly TextSetting _input = new TextSetting("Ask", "", "ask … (Enter in search, or here and Send)");
+        private readonly TextSetting _input = new TextSetting("Your question", "", "e.g. which views aren't on a sheet? (or type ask … in search)");
         private readonly MessagesSetting _messages = new MessagesSetting();
         private AskStatus? _state;
         private bool _busy;
@@ -67,7 +67,7 @@ namespace Formcraft.Shell.ViewModels
             talk.Add(new ButtonsSetting("", new[] { new SettingButton("Send", SendCommand, primary: true), new SettingButton("ask reset", ResetCommand) }));
             talk.Add(_messages);
             talk.Add(new NoteSetting("Claude can read the open model but not change it. Changes go through the sections' buttons and their dry run.", ChipKind.Info));
-            Groups.Add(new SettingsGroup("Ask Claude · test build", talk.ToArray()));
+            Groups.Add(new SettingsGroup("Conversation", talk.ToArray()));
 
             var read = new List<SettingItem>();
             if (_state != null && _state.Ok)

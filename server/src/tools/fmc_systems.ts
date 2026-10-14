@@ -29,7 +29,8 @@ export const FMC_SYSTEMS_DESCRIPTION =
   "Formcraft Engineer › Systems and Structural, read-only. electrical: every board (electrical equipment) with its " +
     "connected and demand load, circuits and the circuit feeding it; devices with a power connector on no circuit; " +
     "circuits on no board. structural: columns and beams without an analytical member, physical and analytical out by " +
-    "more than 50 mm, members not joined at nodes, columns with nothing below, kit fields left empty (FMC_Member_Mark, " +
+    "more than 50 mm, members not joined at nodes, columns with nothing below (no footing, beam, slab, wall or column), kit " +
+    "fields left empty (FMC_Member_Mark, " +
     "grades, exposure class), load cases, and analysis results already in the model (FMC_FEA_Utilisation). save: true " +
     "writes the list to <project>\\06_QA\\Systems for the engineer. Nothing in the model is changed: sizing, load cases " +
     "and design stay with the engineer.";

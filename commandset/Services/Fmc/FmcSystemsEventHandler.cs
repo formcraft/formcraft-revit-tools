@@ -165,8 +165,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                     }
                 }
 
+            // A column stands on a footing, a beam, a slab, a wall or the column of the floor below (a stacked frame).
             var supportCats = new ElementMulticategoryFilter(new List<BuiltInCategory>
-                { BuiltInCategory.OST_StructuralFoundation, BuiltInCategory.OST_StructuralFraming, BuiltInCategory.OST_Floors, BuiltInCategory.OST_Walls });
+                { BuiltInCategory.OST_StructuralFoundation, BuiltInCategory.OST_StructuralFraming, BuiltInCategory.OST_Floors, BuiltInCategory.OST_Walls,
+                  BuiltInCategory.OST_StructuralColumns });
             var nothingBelow = new List<long>();
             foreach (FamilyInstance col in members.Where(x => x.Category.Id.Value == (long)BuiltInCategory.OST_StructuralColumns))
             {
