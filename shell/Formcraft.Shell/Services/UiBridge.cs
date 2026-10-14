@@ -139,7 +139,7 @@ namespace Formcraft.Shell.Services
         public Dictionary<string, object?> SetMockLicence(string preset, IDictionary<string, string>? modules = null)
         {
             if (!_allowMockLicence || _mock == null)
-                throw new InvalidOperationException("set_mock_licence works in test builds only (a Debug build, or FMC_UI_TEST=1 set before Revit starts).");
+                throw new InvalidOperationException("set_mock_licence works in test mode only: a Debug build, FMC_UI_TEST=1 set before Revit starts, or the test PC's %APPDATA%\\Formcraft\\fmc_test.json naming this PC.");
             switch ((preset ?? "").Trim().ToLowerInvariant())
             {
                 case "": break;

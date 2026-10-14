@@ -61,7 +61,27 @@ export function codeProblems(code: string): string[] {
   return [];
 }
 
-export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderReader, now: Date = new Date()): ProjectPlan {
+/**
+ * The project tree from the kit (PST-002 "folders", MAN 7.4), for these roles. <Role> becomes each role; a folder made
+ * at its own time (<Stage>, <Date>_<Milestone>, <Party>\<Date>) stops at its parent, which is made now. Rule 7: the
+ * kit's list wins; without it the plugin's own top folders are used and the plan says so.
+ */
+export function treeFolders(kitTree: string[] | null, roles: string[]): string[] {
+  const out: string[] = [];
+  for (const entry of kitTree ?? []) {
+    const segs = entry.split(/[\\/]+/).filter(Boolean);
+    let paths: string[][] = [[]];
+    for (const seg of segs) {
+      if (seg === "<Role>") { paths = paths.flatMap((p) => roles.map((r) => [...p, r])); continue; }
+      if (/<[^>]+>/.test(seg)) break;
+      paths = paths.map((p) => [...p, seg]);
+    }
+    for (const p of paths) if (p.length) out.push(p.join("\\"));
+  }
+  return [...new Set(out)];
+}
+
+export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderReader, now: Date = new Date(), kitTree: string[] | null = null): ProjectPlan {
   const reasons: string[] = [];
   const folder = win.normalize(expandEnv(input.project_folder ?? "")).replace(/[\\/]+$/, "");
   const code = (input.code ?? "").trim().toUpperCase();
@@ -90,6 +110,7 @@ export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderRea
   const models: PlannedModel[] = [];
   if (folder) {
     folders.push(...PROJECT_FOLDERS.map((f) => win.join(folder, f)));
+    folders.push(...treeFolders(kitTree, roles).map((f) => win.join(folder, f)));
     for (const role of roles) {
       folders.push(win.join(folder, "01_WIP", role), win.join(folder, "01_WIP", role, "Families"));
       const name = modelName(code, originator, volume, level, type, role);
@@ -117,6 +138,7 @@ export function planProject(input: ProjectInput, cfg: GuardConfig, fs: FolderRea
     issue_set: input.issue_set ?? "",
     naming: { originator, volume, level, type },
     roles,
+    tree: kitTree ? "kit rulebook PST-002" : "plugin top folders (the kit's PST-002 wasn't found)",
     models: models.map((m) => ({ role: m.role, name: m.name, template: win.basename(m.template) })),
     details: Object.fromEntries(Object.entries(input.details ?? {}).filter(([, v]) => (v ?? "").trim().length)),
   };

@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { ProjectInput, planProject, projectInfo } from "../fmc/project.js";
+import { readRulebooks } from "./fmc_qa.js";
 
 const win = path.win32;
 
@@ -59,7 +60,10 @@ const realFs = {
 export async function runFmcProject(args: FmcProjectArgs) {
   const { config, problem } = loadConfig();
   const input: ProjectInput = { ...args, project_folder: args.project_folder, templates: args.templates ?? {}, details: args.details ?? {} };
-  const plan = planProject(input, config, realFs);
+  // F-019: the tree comes from the kit's rulebook (PST-002), rule 7.
+  const pst = readRulebooks(config.rulebooks_dir).rules.find((r) => r.id === "PST-002");
+  const kitTree = Array.isArray(pst?.kit_params?.folders) ? (pst!.kit_params!.folders as unknown[]).map(String) : null;
+  const plan = planProject(input, config, realFs, new Date(), kitTree);
   const dry = args.action === "plan" || args.dry_run !== false;
   const summary = { folders: plan.folders, models: plan.models, manifest_path: plan.manifest_path, manifest: plan.manifest };
   if (!plan.ok) {
