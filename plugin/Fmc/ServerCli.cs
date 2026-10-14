@@ -146,6 +146,9 @@ namespace revit_mcp_plugin.Fmc
                     StandardOutputEncoding = Encoding.UTF8,
                     StandardErrorEncoding = Encoding.UTF8,
                 };
+                // The pane's tools reach this Revit, even when another Revit is open on another port.
+                if (revit_mcp_plugin.Core.SocketService.Instance.IsRunning)
+                    psi.EnvironmentVariables["REVIT_PORT"] = revit_mcp_plugin.Core.SocketService.Instance.Port.ToString();
                 try
                 {
                     using (var p = Process.Start(psi))

@@ -1,28 +1,33 @@
 import { RevitClientConnection } from "./SocketClient.js";
-import { HOST, notListening, revitPort } from "../fmc/connect.js";
+import { HOST, notListening, readInstances, resolvePort } from "../fmc/connect.js";
+import { getChosen, revitTarget } from "../fmc/target.js";
 
-// Mutex to serialize all Revit connections - prevents race conditions
-// when multiple requests are made in parallel
-let connectionMutex: Promise<void> = Promise.resolve();
+// One queue per Revit: calls to the same Revit run one at a time (its API is single-threaded), calls to two Revits
+// run side by side, so two projects can be automated at once.
+const queues = new Map<number, Promise<void>>();
+
+/** The port the current call goes to (see resolvePort: the call's revit, the pane's REVIT_PORT, fmc_revit use, the only Revit). */
+export function currentPort(): number {
+  return resolvePort(revitTarget.getStore(), readInstances(), process.env, getChosen());
+}
 
 /**
  * 连接到Revit客户端并执行操作
+ * Connects to the Revit this call targets and runs the operation.
  * @param operation 连接成功后要执行的操作函数
  * @returns 操作的结果
  */
 export async function withRevitConnection<T>(
   operation: (client: RevitClientConnection) => Promise<T>
 ): Promise<T> {
-  // Wait for any pending connection to complete before starting a new one
-  const previousMutex = connectionMutex;
-  let releaseMutex: () => void;
-  connectionMutex = new Promise<void>((resolve) => {
-    releaseMutex = resolve;
-  });
-  await previousMutex;
+  const port = currentPort();
+  const previous = queues.get(port) ?? Promise.resolve();
+  let release: () => void;
+  const mine = new Promise<void>((resolve) => { release = resolve; });
+  const chain = previous.then(() => mine);
+  queues.set(port, chain);
+  await previous;
 
-  // Port from %APPDATA%\Formcraft\fmc_connect.json (shared with the add-in); the add-in listens on 127.0.0.1 only.
-  const port = revitPort();
   const revitClient = new RevitClientConnection(HOST, port);
 
   try {
@@ -59,7 +64,7 @@ export async function withRevitConnection<T>(
   } finally {
     // 断开连接
     revitClient.disconnect();
-    // Release the mutex so the next request can proceed
-    releaseMutex!();
+    release!();
+    if (queues.get(port) === chain) queues.delete(port); // nobody queued behind this call
   }
 }
