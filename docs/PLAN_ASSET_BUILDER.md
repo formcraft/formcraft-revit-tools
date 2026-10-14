@@ -104,3 +104,22 @@ Each is tried first; only a confirmed API limit becomes a manual step recorded i
 
 The tester (Claude in the claude.ai Project) runs `fmc_selftest`, then each phase's "Done when" in Revit on new or
 staging files only, closes Revit with "Don't save" when needed (the user opens it), and files findings as issues.
+
+## Lessons from the first hand-built title block (14 Oct, `FMC_TB_A1_Cover`)
+
+Built by the tester through `send_code_to_revit` on the user's own cover sheet (design kept); see
+`04_Families\_Staging\Z\FMC_TB_A1_Cover.labels.md`. Carry these into B1/B4:
+
+- **SVG → filled regions works.** The `11_Brand` lockup (31 paths, cubic Béziers flattened to 8 segments each) became
+  74 filled regions with letter holes intact, at 295 × 64 mm and 74 × 16 mm, turned 90° where needed. Make it an op:
+  `add_svg(file, box, rotation, colour)`. Merge points closer than `Application.ShortCurveTolerance` (~0.8 mm)
+  in Revit, not before: pre-simplifying clipped glyph corners.
+- **Minimum size:** glyphs under ~1.5 mm can't be drawn (the 1.3 mm tagline on small logos was dropped). The op should
+  drop or swap to text below a threshold and say so.
+- **Solid fills in families must be masking** (`IsMasking = true`), else Revit throws. Use invisible boundary lines.
+- **Labels can't be created through the API.** Builders draw captions and produce a label map (typed placeholder →
+  parameter, size); a person converts them. Keep looking for a workaround (nested label families made once by hand).
+- **Visibility** of filled regions can be tied to Yes/No family parameters (`IS_VISIBLE_PARAM`): 67 logo shapes follow
+  `FMC_TB_Brand_Main`.
+- **Shared parameters by GUID:** switch `SharedParametersFilename` to the kit file, add, then restore.
+- Save to staging first (SaveAs), so the user's original stays untouched.
