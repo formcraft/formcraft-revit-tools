@@ -311,7 +311,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Audit()
         {
             var library = KitLibrary.Templates(Kit);
-            if (library.Count == 0) { _auditMessages.Show(ChipKind.Warn, "The kit has no templates to audit."); return; }
+            if (library.Count == 0) { _auditMessages.Show(ChipKind.Warn, "The kit has no templates to audit."); _status("The kit has no templates to audit."); return; }
             var chosen = _store.Get("templates.audittarget");
             var target = library.FirstOrDefault(t => chosen != null && chosen.StartsWith(t.Name + " · ")) ?? library[0];
             var packs = KitLibrary.BrandPacks(Kit);

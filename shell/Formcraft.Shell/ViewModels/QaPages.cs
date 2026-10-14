@@ -125,7 +125,7 @@ namespace Formcraft.Shell.ViewModels
 
         private async Task Zoom()
         {
-            if (_selected == null || _selected.ElementIds.Count == 0) { _messages.Show(ChipKind.Warn, "Click a result with elements first."); return; }
+            if (_selected == null || _selected.ElementIds.Count == 0) { _messages.Show(ChipKind.Warn, "Click a result with elements first."); _status("Click a result with elements first."); return; }
             _status(await _qa.SelectAsync(_selected.ElementIds));
         }
 
@@ -257,8 +257,8 @@ namespace Formcraft.Shell.ViewModels
 
         private void AskApprove()
         {
-            if (_selected == null || _selected.Status != "Proposed") { _messages.Show(ChipKind.Warn, "Pick a proposed rule to approve."); return; }
-            if (!_isAdmin()) { _messages.Show(ChipKind.Warn, "Only the BIM Manager approves rules."); return; }
+            if (_selected == null || _selected.Status != "Proposed") { _messages.Show(ChipKind.Warn, "Pick a proposed rule to approve."); _status("Pick a proposed rule to approve."); return; }
+            if (!_isAdmin()) { _messages.Show(ChipKind.Warn, "Only the BIM Manager approves rules."); _status("Only the BIM Manager approves rules."); return; }
             var form = new InMemoryUserSettings();
             var store = new SettingStore(form, "");
             var severity = new ChoiceSetting(store, "severity", "Severity", new[] { "Should", "Must", "Advice" }, Math.Max(0, Array.IndexOf(new[] { "Should", "Must", "Advice" }, _selected.Severity)));
@@ -276,7 +276,7 @@ namespace Formcraft.Shell.ViewModels
 
         private void AskChange()
         {
-            if (_selected == null) { _messages.Show(ChipKind.Warn, "Pick a rule first."); return; }
+            if (_selected == null) { _messages.Show(ChipKind.Warn, "Pick a rule first."); _status("Pick a rule first."); return; }
             var form = new InMemoryUserSettings();
             var store = new SettingStore(form, "");
             var wording = new TextSetting("Proposed wording", _selected.Rule, store: store, key: "wording");

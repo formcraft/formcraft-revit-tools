@@ -216,7 +216,7 @@ namespace Formcraft.Shell.ViewModels
 
         private void ListForAPerson()
         {
-            if (_scan == null) { _scanMessages.Show(ChipKind.Warn, "Scan the file first."); return; }
+            if (_scan == null) { _scanMessages.Show(ChipKind.Warn, "Scan the file first."); _status("Scan the file first."); return; }
             var names = _scan.Families.Where(f => f.State == "Needs a person").Select(f => f.Name + ": " + f.Next).ToList();
             _scanMessages.Show(names.Count == 0 ? ChipKind.Good : ChipKind.Warn,
                 names.Count == 0 ? "No family needs a person." : "For a person:\n• " + string.Join("\n• ", names));
@@ -305,7 +305,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Check()
         {
             var (path, role, description, keynote) = BringInputs();
-            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); return; }
+            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); _status("Choose a family file first."); return; }
             _status("Checking " + System.IO.Path.GetFileName(path) + "…");
             var plan = await _library.InspectAsync(path, role, description, keynote);
             _plan = plan.Ok ? plan : null;
@@ -316,7 +316,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task BringIn()
         {
             var (path, role, description, keynote) = BringInputs();
-            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); return; }
+            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); _status("Choose a family file first."); return; }
             var dry = await _library.BringInAsync(path, role, description, keynote, true);
             if (!dry.Ok) { _bringMessages.Show(dry.Messages); return; }
             _ask(DialogViewModel.WithItems("Bring in " + System.IO.Path.GetFileName(path) + "?",
@@ -390,7 +390,7 @@ namespace Formcraft.Shell.ViewModels
         {
             var group = _store.Get("families.keygroup") ?? _keynotes?.Groups.FirstOrDefault() ?? "";
             var text = (_store.Get("families.keytext") ?? "").Trim();
-            if (group.Length == 0 || text.Length == 0) { _keynoteMessages.Show(ChipKind.Warn, "Pick a group and describe the keynote."); return; }
+            if (group.Length == 0 || text.Length == 0) { _keynoteMessages.Show(ChipKind.Warn, "Pick a group and describe the keynote."); _status("Pick a group and describe the keynote."); return; }
             var message = await _library.RequestKeynoteAsync(group, text);
             _keynoteMessages.Show(ChipKind.Good, message);
             _status(message);
@@ -475,7 +475,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Build()
         {
             var names = Picked();
-            if (names.Count == 0) { _messages.Show(ChipKind.Warn, "No families selected."); return; }
+            if (names.Count == 0) { _messages.Show(ChipKind.Warn, "No families selected."); _status("No families selected."); return; }
             if (_busy) return;
             _busy = true;
             ToolResult dry;
@@ -511,7 +511,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task LoadTest()
         {
             var names = Picked();
-            if (names.Count == 0) { _messages.Show(ChipKind.Warn, "No families selected."); return; }
+            if (names.Count == 0) { _messages.Show(ChipKind.Warn, "No families selected."); _status("No families selected."); return; }
             var dry = await _tools.LoadTestAsync(names, true);
             _messages.Show(dry.Messages);
             if (!dry.Ok || dry.Count == 0) return;

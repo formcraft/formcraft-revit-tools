@@ -150,7 +150,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Check()
         {
             var q = Request();
-            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); return; }
+            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); _status(m); return; }
             _status("Checking " + q.IssueSet + " " + q.CompanyRevision + "…");
             var r = await _tools.CheckAsync(q);
             _check = r.Ok ? r : null;
@@ -162,7 +162,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Report()
         {
             var q = Request();
-            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); return; }
+            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); _status(m); return; }
             var r = await _tools.ReportAsync(q);
             _messages.Show(r.Messages);
             _status(r.Messages.FirstOrDefault()?.Text ?? "Report saved.");
@@ -171,8 +171,8 @@ namespace Formcraft.Shell.ViewModels
         private async Task Issue()
         {
             var q = Request();
-            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); return; }
-            if (q.ProjectFolder.Length == 0) { _messages.Show(ChipKind.Warn, "Set the project folder in Setup › Project: the issue is written into its 01_WIP."); return; }
+            if (Missing(q) is string m) { _messages.Show(ChipKind.Warn, m); _status(m); return; }
+            if (q.ProjectFolder.Length == 0) { _messages.Show(ChipKind.Warn, "Set the project folder in Setup › Project: the issue is written into its 01_WIP."); _status("Set the project folder in Setup › Project: the issue is written into its 01_WIP."); return; }
             var dry = await _tools.IssueAsync(q, true);
             if (!dry.Ok) { _messages.Show(dry.Messages); return; }
             _ask(DialogViewModel.WithItems("Issue " + q.CompanyRevision + "?", q.IssueSet + " · " + q.Purpose + (_check != null ? " · " + _check.Result : "") + ".",
@@ -191,7 +191,7 @@ namespace Formcraft.Shell.ViewModels
 
         private async Task Zoom()
         {
-            if (_zoom.Count == 0) { _messages.Show(ChipKind.Warn, "Click a sheet first."); return; }
+            if (_zoom.Count == 0) { _messages.Show(ChipKind.Warn, "Click a sheet first."); _status("Click a sheet first."); return; }
             _status(await _select.SelectAsync(_zoom));
         }
 

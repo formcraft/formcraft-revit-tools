@@ -202,7 +202,7 @@ namespace Formcraft.Shell.ViewModels
 
         private async Task Zoom()
         {
-            if (_zoom.Count == 0) { _messages.Show(ChipKind.Warn, "Click a line with something to select first."); return; }
+            if (_zoom.Count == 0) { _messages.Show(ChipKind.Warn, "Click a line with something to select first."); _status("Click a line with something to select first."); return; }
             _status(await _select.SelectAsync(_zoom));
         }
 

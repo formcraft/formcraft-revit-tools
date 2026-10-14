@@ -18,5 +18,15 @@ namespace Formcraft.Shell.Controls
             get => (DocState)GetValue(StateProperty);
             set => SetValue(StateProperty, value);
         }
+
+        /// <summary>One line only (the model name): set while a state banner shows, so the page keeps its room (F-005).</summary>
+        public static readonly DependencyProperty CompactProperty = DependencyProperty.Register(
+            nameof(Compact), typeof(bool), typeof(FmcDocBanner), new FrameworkPropertyMetadata(false));
+
+        public bool Compact
+        {
+            get => (bool)GetValue(CompactProperty);
+            set => SetValue(CompactProperty, value);
+        }
     }
 }

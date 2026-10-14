@@ -165,7 +165,7 @@ namespace Formcraft.Shell.ViewModels
         {
             var dry = await _tools.PinAsync(true);
             if (!dry.Ok) { _messages.Show(dry.Messages); return; }
-            if (dry.Details.Count == 0) { _messages.Show(ChipKind.Good, "Every link is pinned."); return; }
+            if (dry.Details.Count == 0) { _messages.Show(ChipKind.Good, "Every link is pinned."); _status("Every link is pinned."); return; }
             _ask(DialogViewModel.WithItems("Pin " + dry.Details.Count + " links?", "Pinned links can't be moved by accident.",
                 new SettingItem[] { new ReadOnlySetting("Will pin", string.Join(Environment.NewLine, dry.Details), mono: true) }, "Pin", async () =>
                 {

@@ -154,9 +154,9 @@ namespace Formcraft.Shell.ViewModels
 
         private async Task Assign()
         {
-            if (_selected == null) { _assignMessages.Show(ChipKind.Warn, "Pick a material in the database first."); return; }
+            if (_selected == null) { _assignMessages.Show(ChipKind.Warn, "Pick a material in the database first."); _status("Pick a material in the database first."); return; }
             var (target, category, contains, parameter) = AssignInputs();
-            if (target == "rule" && contains.Length == 0) { _assignMessages.Show(ChipKind.Warn, "Say what the type name contains."); return; }
+            if (target == "rule" && contains.Length == 0) { _assignMessages.Show(ChipKind.Warn, "Say what the type name contains."); _status("Say what the type name contains."); return; }
             var material = _selected.Name;
             var dry = await _tools.AssignAsync(material, target, category, contains, parameter, true);
             if (!dry.Ok) { _assignMessages.Show(ChipKind.Bad, dry.Message); return; }
