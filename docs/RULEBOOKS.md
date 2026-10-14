@@ -1,7 +1,7 @@
 # Rulebooks: what QA and Rules read (rule schema v1)
 
 The kit's rulebooks are JSON files, one per book, in the folder `rulebooks_dir` names in `fmc_guard.json`
-(default `Z:\00_Standards\05_Rulebooks`). Check › Rules lists them; Check › QA runs the rules that name a check kind.
+(default `Z:\00_Standards\03_Master_Data\FMC_Rulebook`, the kit r4 layout). Check › Rules lists them; Check › QA runs the rules that name a check kind.
 Rule content lives in the kit, never in the plugin (CLAUDE.md rule 7). **Please confirm** this matches the kit's
 rulebooks v0.2; if the kit keeps them in another shape, the reader (`server/src/fmc/rules.ts`) follows the kit.
 

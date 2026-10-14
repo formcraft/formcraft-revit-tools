@@ -62,7 +62,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   family_template_dir: "C:\\ProgramData\\Autodesk\\RVT 2025\\Family Templates\\English",
   family_staging_root: "Z:\\00_Standards\\04_Families\\_Staging",
   keynote_file: "Z:\\00_Standards\\02_Keynotes\\FMC_Keynotes.txt",
-  rulebooks_dir: "Z:\\00_Standards\\05_Rulebooks",
+  rulebooks_dir: "Z:\\00_Standards\\03_Master_Data\\FMC_Rulebook", // kit r4: the rulebooks live with the master data
   materials_file: "Z:\\00_Standards\\07_Materials\\FMC_Materials.json",
   annotation_standard_file: "Z:\\00_Standards\\03_Master_Data\\FMC_Annotation_Standard.json",
 };

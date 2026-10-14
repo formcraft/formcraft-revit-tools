@@ -32,6 +32,9 @@ namespace revit_mcp_plugin.Fmc
         private static ExternalEvent _serviceEvent;
         private static List<DocState> _lastDocs = new List<DocState>();
 
+        /// <summary>The documents open at the last idle moment (fmc_selftest: may the tester close Revit for an install?).</summary>
+        public static IReadOnlyList<DocState> OpenDocuments => _lastDocs;
+
         /// <summary>Called from OnStartup: Revit accepts pane registration and ExternalEvent.Create only there or in API context.</summary>
         public static void Register(UIControlledApplication application)
         {

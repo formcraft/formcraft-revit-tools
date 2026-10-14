@@ -41,7 +41,10 @@ namespace revit_mcp_plugin.Shell
             switch (action)
             {
                 case "get_state":
-                    result = _bridge.GetState();
+                    // With the installed build, so a tester sees at once which build is in Revit.
+                    var state = JObject.FromObject(_bridge.GetState());
+                    state["build"] = new JObject { ["commit"] = revit_mcp_plugin.FmcBuildInfo.Commit, ["built"] = revit_mcp_plugin.FmcBuildInfo.Time };
+                    result = state;
                     break;
                 case "open_section":
                     result = _bridge.OpenSection((string)p["section"] ?? "");

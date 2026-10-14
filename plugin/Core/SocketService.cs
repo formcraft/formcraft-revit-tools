@@ -96,6 +96,8 @@ namespace revit_mcp_plugin.Core
             CommandManager commandManager = new CommandManager(
                 _commandRegistry, _logger, configManager, _uiApp);
             commandManager.LoadCommands();
+            // Formcraft: the self-test's facts come from the add-in itself (build stamp, this registry, ribbon, kit folder).
+            _commandRegistry.RegisterCommand(new FmcSelfTestCommand(() => new System.Collections.Generic.List<string>(((RevitCommandRegistry)_commandRegistry).GetRegisteredCommands())));
 
             _logger.Info($"Socket service initialized on port {_port}");
         }

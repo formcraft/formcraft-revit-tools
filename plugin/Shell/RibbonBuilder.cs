@@ -124,25 +124,39 @@ namespace revit_mcp_plugin.Shell
             Update();
         }
 
-        /// <summary>Panels show only for licensed modules; part ticks and small-button labels follow the settings.</summary>
+        /// <summary>How often Update ran and how often it actually changed the ribbon (F-008 diagnostics, in the log at exit).</summary>
+        public static int Updates { get; private set; }
+        public static int RibbonChanges { get; private set; }
+
+        /// <summary>
+        /// Panels show only for licensed modules; part ticks and small-button labels follow the settings. Runs on every
+        /// settings change (a keystroke in the pane saves one), so it writes to the ribbon only what differs: each write
+        /// makes Revit re-lay the ribbon, and constant re-layouts swallowed clicks on the Formcraft tab (F-008).
+        /// </summary>
         public static void Update()
         {
+            Updates++;
             try
             {
                 foreach (var m in Modules)
-                    if (Panels.TryGetValue(m, out var panel)) panel.Visible = _licence.Current.For(m).CanUse;
+                {
+                    bool show = _licence.Current.For(m).CanUse;
+                    if (Panels.TryGetValue(m, out var panel) && panel.Visible != show) { panel.Visible = show; RibbonChanges++; }
+                }
                 foreach (var p in PartButtons)
                 {
-                    var name = SectionRegistry.Default.Part(p.Key).Name;
-                    p.Value.ItemText = (_settings.IsPartOn(p.Key) ? "✓ " : "    ") + name;
+                    var text = (_settings.IsPartOn(p.Key) ? "✓ " : "    ") + SectionRegistry.Default.Part(p.Key).Name;
+                    if (p.Value.ItemText != text) { p.Value.ItemText = text; RibbonChanges++; }
                 }
                 foreach (var b in SmallButtons)
                 {
                     if (b.Key.Item1 == FmcModule.Build) continue;
                     var label = Small(b.Key.Item1, b.Key.Item2);
+                    if (b.Value.ItemText == label) continue;
                     b.Value.ItemText = label;
                     b.Value.Image = Png(Icon[label], 16);
                     b.Value.LargeImage = Png(Icon[label], 32);
+                    RibbonChanges++;
                 }
             }
             catch (Exception) { /* cosmetic only */ }

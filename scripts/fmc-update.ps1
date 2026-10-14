@@ -1,0 +1,86 @@
+<#
+  Formcraft updater: installs a staged build the moment Revit is closed. It never closes Revit.
+
+  Claude Code stages a build after each merge (scripts/fmc-stage.ps1) into
+    %LOCALAPPDATA%\Formcraft\Staging\next\  (addin\, server\build\, ready.json written last)
+  When ready.json is there and no Revit is running, this script:
+    1. backs up the installed add-in to %APPDATA%\Autodesk\Revit\Addins\_FormcraftBackup\<date>_before-<commit>
+    2. copies the add-in into %APPDATA%\Autodesk\Revit\Addins\2025 and the server into %USERPROFILE%\mcp\revit-fmc\build
+       (the old server is kept as build.bak-<date>)
+    3. writes %APPDATA%\Formcraft\installed.json (commit, time, backup), which fmc_selftest and Connect show
+    4. moves the staged build to Staging\_installed\
+  Every step is logged to %APPDATA%\Formcraft\updater.log.
+
+  Run by the "Formcraft Updater" logon task (scripts/fmc-updater-task.ps1), or by hand with -Once.
+#>
+param([switch]$Once, [int]$PollSeconds = 3, [string]$RevitYear = '2025')
+
+$ErrorActionPreference = 'Stop'
+$root    = Join-Path $env:LOCALAPPDATA 'Formcraft\Staging'
+$next    = Join-Path $root 'next'
+$ready   = Join-Path $next 'ready.json'
+$addins  = Join-Path $env:APPDATA "Autodesk\Revit\Addins\$RevitYear"
+$backups = Join-Path $env:APPDATA 'Autodesk\Revit\Addins\_FormcraftBackup'
+$mcp     = Join-Path $env:USERPROFILE 'mcp\revit-fmc'
+$state   = Join-Path $env:APPDATA 'Formcraft'
+$log     = Join-Path $state 'updater.log'
+
+New-Item -ItemType Directory -Force $state, $root | Out-Null
+
+function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
+function RevitRunning { [bool](Get-Process -Name 'Revit' -ErrorAction SilentlyContinue) }
+
+function Install {
+    $info  = Get-Content $ready -Raw | ConvertFrom-Json
+    $stamp = Get-Date -Format 'yyyy-MM-dd_HHmm'
+    $backup = Join-Path $backups ("{0}_before-{1}" -f $stamp, $info.commit)
+    New-Item -ItemType Directory -Force $backup | Out-Null
+    if (Test-Path (Join-Path $addins 'revit_mcp_plugin')) { Copy-Item (Join-Path $addins 'revit_mcp_plugin') $backup -Recurse -Force }
+    if (Test-Path (Join-Path $addins 'Formcraft.addin'))  { Copy-Item (Join-Path $addins 'Formcraft.addin') $backup -Force }
+
+    # Revit may have started while backing up: then nothing is replaced, and the next poll tries again.
+    if (RevitRunning) { Log "Revit started during the backup: install of $($info.commit) waits for the next close"; return }
+
+    Copy-Item (Join-Path $next 'addin\revit_mcp_plugin') $addins -Recurse -Force
+    Copy-Item (Join-Path $next 'addin\Formcraft.addin') $addins -Force
+
+    $serverDone = $false
+    if (Test-Path (Join-Path $next 'server\build')) {
+        New-Item -ItemType Directory -Force $mcp | Out-Null
+        if (Test-Path (Join-Path $mcp 'build')) { Rename-Item (Join-Path $mcp 'build') ("build.bak-{0}" -f $stamp) }
+        Copy-Item (Join-Path $next 'server\build') $mcp -Recurse -Force
+        $serverDone = $true
+    }
+
+    $record = [ordered]@{
+        commit       = $info.commit
+        staged_at    = $info.staged_at
+        installed_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+        backup       = $backup
+        server       = $serverDone
+    }
+    $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
+
+    $done = Join-Path $root '_installed'
+    New-Item -ItemType Directory -Force $done | Out-Null
+    Move-Item $next (Join-Path $done ("{0}_{1}" -f $stamp, $info.commit))
+    Log "Installed $($info.commit) (server: $serverDone); backup $backup"
+}
+
+# One updater at a time.
+$mutex = New-Object System.Threading.Mutex($false, 'Local\FormcraftUpdater')
+if (-not $mutex.WaitOne(0)) { Log 'Another updater is running: this one exits'; exit 0 }
+try {
+    Log ("Updater started (poll {0}s{1})" -f $PollSeconds, $(if ($Once) { ', once' } else { '' }))
+    while ($true) {
+        if ((Test-Path $ready) -and -not (RevitRunning)) {
+            Start-Sleep -Seconds 2   # Revit may be restarting: make sure it stays closed
+            if (-not (RevitRunning)) {
+                try { Install } catch { Log ("Install failed: {0}" -f $_.Exception.Message) }
+            }
+        }
+        if ($Once) { break }
+        Start-Sleep -Seconds $PollSeconds
+    }
+}
+finally { $mutex.ReleaseMutex() }
