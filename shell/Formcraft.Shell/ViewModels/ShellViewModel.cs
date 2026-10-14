@@ -123,7 +123,7 @@ namespace Formcraft.Shell.ViewModels
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
-                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null)
+                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null)
         {
             _licence = licence;
             _connection = connection;
@@ -168,6 +168,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Links"] = Links;
             Workshare = new WorksharePage(workshare ?? new MockWorkshareTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Workshare"] = Workshare;
+            Review = new ReviewPage(review ?? new MockReviewTools(), qa ?? new MockQaTools(), Project, settings,
+                                    () => _licence.Current.Account?.Name ?? "", s => Status = s, ShowDialog);
+            _hostSections["Review"] = Review;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -374,6 +377,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Team › Workshare: worksets by the rule, the sync preflight and message; never syncs.</summary>
         public WorksharePage Workshare { get; }
+
+        /// <summary>Team › Review: the project's review register (MAN 10.5).</summary>
+        public ReviewPage Review { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
