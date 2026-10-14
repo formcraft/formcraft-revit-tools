@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { FamilySpec, SpParam, SpecFile, parseSharedParameters } from "../fmc/specs.js";
+import { DEFAULT_LIMIT, worstFamilies } from "../fmc/digest.js";
 import {
   ScannedFamily, categoryTokens, checkFamily, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
 } from "../fmc/library.js";
@@ -58,6 +59,9 @@ export const FMC_LIBRARY_SHAPE = {
   text: z.string().optional().describe("keynote_request: the new keynote's description"),
   overwrite: z.boolean().optional().default(false),
   dry_run: z.boolean().optional().default(true),
+  detail: z.enum(["summary", "full"]).optional().default("summary")
+    .describe("scan: summary (default: counts and the worst families, each with what it fails) or full (every family and check)"),
+  limit: z.number().int().min(1).max(500).optional().default(DEFAULT_LIMIT).describe("scan summary: how many of the worst families to list"),
 };
 
 export type FmcLibraryArgs = z.infer<z.ZodObject<typeof FMC_LIBRARY_SHAPE>>;
@@ -71,7 +75,11 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
         const r = await withRevitConnection((c) => c.sendRaw("fmc_family_scan", {}, 300000));
         const verdicts = ((r?.families ?? []) as ScannedFamily[]).map((f) => checkFamily(f, k.specMap, k.kit));
         log(config, "family_scan", false, r?.document ?? "", "done", `${verdicts.length} families`);
-        return reply({ document: r?.document, summary: summarise(verdicts), families: verdicts, kit_problems: k.problems });
+        if (args.detail === "full") return reply({ document: r?.document, summary: summarise(verdicts), families: verdicts, kit_problems: k.problems });
+        // F-009: a summary by default, so a scan fits an AI caller's context.
+        return reply({ document: r?.document, summary: summarise(verdicts), worst: worstFamilies(verdicts, args.limit),
+          more: Math.max(0, verdicts.filter((v) => v.state !== "Compliant").length - args.limit),
+          next: "detail: \"full\" lists every family and check (large); the pane's Setup › Families shows them all", kit_problems: k.problems });
       }
 
       case "parameters": {

@@ -43,12 +43,12 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-006 | Low | Pane footer | A tool's footer message stays after switching sections · #37 | Closed (run 4) |
 | F-007 | Info | U11 / M test | `fmc_ui` bridge run against Revit | Closed (run 2) |
 | F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Closed (run 5: not a plugin bug, see run 5) |
-| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Open |
+| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Fixed – retest |
 | F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec · #40 | Open |
 | F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Closed for layout (run 5); schema → F-017 |
 | F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Open |
 | F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Open |
-| F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Open |
+| F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Fixed – retest |
 | F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Fixed – retest |
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Open |
 | F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Fixed – retest |

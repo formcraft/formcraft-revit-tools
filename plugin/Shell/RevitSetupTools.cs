@@ -327,7 +327,7 @@ namespace revit_mcp_plugin.Shell
 
         public async Task<ScanResult> ScanAsync()
         {
-            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "scan" });
+            CliResult r = await ServerCli.RunAsync("fmc_library", new JObject { ["action"] = "scan", ["detail"] = "full" });
             var result = new ScanResult { Ok = r.Ok && r.Body["families"] != null };
             if (!result.Ok) { result.Message = "Scan refused: " + string.Join(" ", r.Reasons()); return result; }
             result.Document = r.Body.Value<string>("document") ?? "";
@@ -421,7 +421,7 @@ namespace revit_mcp_plugin.Shell
     {
         public async Task<RulebookSet> RulesAsync()
         {
-            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "rules" });
+            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "rules", ["detail"] = "full" });
             var set = new RulebookSet { Ok = r.Ok };
             foreach (JObject b in (r.Body["books"] as JArray ?? new JArray()).OfType<JObject>())
                 set.Books.Add((b.Value<string>("name"), b.Value<string>("version") ?? "", b.Value<int?>("count") ?? 0));
@@ -443,7 +443,7 @@ namespace revit_mcp_plugin.Shell
 
         public async Task<QaRun> RunAsync(string gate, string projectFolder)
         {
-            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "run", ["gate"] = gate, ["project_folder"] = projectFolder ?? "" });
+            CliResult r = await ServerCli.RunAsync("fmc_qa", new JObject { ["action"] = "run", ["gate"] = gate, ["project_folder"] = projectFolder ?? "", ["detail"] = "full" });
             var run = new QaRun { Ok = r.Ok && r.Body["results"] != null };
             if (!run.Ok) { run.Message = "QA refused: " + string.Join(" ", r.Reasons()); return run; }
             var b = r.Body;
