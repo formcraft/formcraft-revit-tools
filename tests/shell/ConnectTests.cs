@@ -86,14 +86,26 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
+        public async Task Switch_on_when_Revit_starts_is_saved_per_person()
+        {
+            var saved = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single(t => t.Label == "Switch on when Revit starts").IsOn = true;
+                return p.Settings.Get("settings." + ConnectViewModel.AutoStartKey);
+            });
+            await Assert.That(saved).IsEqualTo("true");
+        }
+
+        [Test]
         public async Task Mcp_switch_starts_and_stops_the_service()
         {
             var (on, off) = OnSta(() =>
             {
                 var p = new Pane();
-                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single().IsOn = true;
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().First().IsOn = true;
                 bool a = p.Info.ServiceRunning;
-                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single().IsOn = false;
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().First().IsOn = false;
                 return (a, p.Info.ServiceRunning);
             });
             await Assert.That(on).IsTrue();

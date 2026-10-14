@@ -37,6 +37,7 @@ namespace revit_mcp_plugin.Shell
         private static readonly RevitConnectInfo ConnectInfo = new RevitConnectInfo();
         private static readonly RevitFileTools Files = new RevitFileTools();
         private static ShellView _view;
+        private static bool _autoStartDone;
 
         /// <summary>Called from OnStartup: dockable panes can only be registered there.</summary>
         public static void Register(UIControlledApplication application)
@@ -108,6 +109,13 @@ namespace revit_mcp_plugin.Shell
         private static void OnIdling(object sender, IdlingEventArgs e)
         {
             if (!(sender is UIApplication app)) return;
+            if (!_autoStartDone)
+            {
+                // Connect › AI connection › "Switch on when Revit starts": once, at the first idle moment.
+                _autoStartDone = true;
+                if (Settings.Get("settings." + ConnectViewModel.AutoStartKey) == "true" && !SocketService.Instance.IsRunning)
+                    FormcraftBrowser.RequestToggleService();
+            }
             Connection.Update(SocketService.Instance.IsRunning);
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);
