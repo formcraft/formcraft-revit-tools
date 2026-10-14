@@ -41,3 +41,15 @@ test("the rulebooks in brief", () => {
   assert.deepEqual(d.by_severity, { Must: 1, Advice: 1 });
   assert.deepEqual(d.runs, { "a person confirms": 1, "proposed (listed, not run)": 1 });
 });
+
+test("F-010: the scan summary counts families a check couldn't run apart from passes", async () => {
+  const { summarise } = await import("./library.js");
+  const s = summarise([
+    { name: "A", category: "Doors", from: "Loaded", score: 50, state: "Needs a person", next: "",
+      checks: [{ check: "Required FMC parameters present (by GUID)", state: "na", detail: "", fixable: false }] },
+    { name: "B", category: "Doors", from: "Loaded", score: 100, state: "Compliant", next: "",
+      checks: [{ check: "Required FMC parameters present (by GUID)", state: "pass", detail: "", fixable: true }] },
+  ]);
+  const line = s.by_check.find((c) => c.check === "Required FMC parameters present (by GUID)")!;
+  assert.deepEqual([line.fail, line.pass, line.not_checked], [0, 1, 1]);
+});

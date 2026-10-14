@@ -5,7 +5,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 export function registerExportRoomDataTool(server: McpServer) {
   server.tool(
     "export_room_data",
-    "Export all room data from the current Revit project. Returns detailed information about each room including name, number, level, area, volume, perimeter, department, and more. Useful for generating room schedules, space analysis, and facility management data.",
+    "Export all room data from the current Revit project. Returns detailed information about each room including name, number, level, area, volume, perimeter, department, and more. Useful for generating room schedules, space analysis, and facility management data. Units: area_m2, volume_m3, perimeter_mm, unbounded_height_mm, total_area_m2.",
     {
       includeUnplacedRooms: z
         .boolean()

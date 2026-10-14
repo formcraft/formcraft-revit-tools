@@ -11,8 +11,9 @@ namespace Formcraft.Shell.ViewModels
     {
         private bool _isSelected;
 
-        public SearchResult(SearchKind kind, string title, string detail, FmcModule module, string? opens, bool allowed)
+        public SearchResult(SearchKind kind, string title, string detail, FmcModule module, string? opens, bool allowed, string? focus = null)
         {
+            Focus = focus;
             Kind = kind;
             Title = title;
             Module = module;
@@ -29,6 +30,8 @@ namespace Formcraft.Shell.ViewModels
         public FmcModule Module { get; }
         /// <summary>Section name, "Settings", or null (help in the guide).</summary>
         public string? Opens { get; }
+        /// <summary>Settings: the group the result lands on (F-012).</summary>
+        public string? Focus { get; }
         /// <summary>Its module is on the licence. Results you can't run still show, dimmed, with why and who can help.</summary>
         public bool Allowed { get; }
         public bool IsSelected { get => _isSelected; set => Set(ref _isSelected, value); }
@@ -130,7 +133,7 @@ namespace Formcraft.Shell.ViewModels
                     if (!_partsShown(e.Parts) || !Matches(e.Title, e.Words)) continue;
                     // An entry that opens a section only shows while that section does.
                     if (e.Opens != null && e.Opens != "Settings" && visible.All(s => s.Name != e.Opens)) continue;
-                    found.Add(new SearchResult(e.Kind, e.Title, e.Detail, e.Module, e.Opens, _licensed(e.Module)));
+                    found.Add(new SearchResult(e.Kind, e.Title, e.Detail, e.Module, e.Opens, _licensed(e.Module), e.Focus));
                 }
             }
 

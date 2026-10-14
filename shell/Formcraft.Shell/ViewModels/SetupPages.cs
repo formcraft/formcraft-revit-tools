@@ -191,8 +191,7 @@ namespace Formcraft.Shell.ViewModels
             else
             {
                 items.Add(new ReadOnlySetting(_scan.Document, $"{_scan.Families.Count} scanned · {_scan.Compliant} compliant · {_scan.Fixable} fixable in one pass · {_scan.NeedAPerson} need a person"));
-                items.Add(new CheckListSetting(_scan.ByCheck.Select(c => new CheckRow(new HealthCheck(c.Check, c.Fail == 0 ? "Pass" : c.Fail + " fail",
-                    c.Fail == 0 ? ChipKind.Good : ChipKind.Bad), null))));
+                items.Add(new CheckListSetting(_scan.ByCheck.Select(c => new CheckRow(ByCheckLine(c), null))));
             }
             items.Add(new ButtonsSetting("", new[]
             {
@@ -202,6 +201,19 @@ namespace Formcraft.Shell.ViewModels
                "the families in a live model are never changed by a tool."));
             items.Add(_scanMessages);
             return new SettingsGroup("Compliance scan · every family in this file", items.ToArray());
+        }
+
+        /// <summary>
+        /// One check across the scan. Zero failures is a pass only for the families actually checked: with no kit spec a
+        /// family isn't checked (a person decides), and that never shows as Pass (F-010).
+        /// </summary>
+        public static HealthCheck ByCheckLine((string Check, int Fail, int Pass, int NotChecked) c)
+        {
+            string unchecked_ = c.NotChecked > 0 ? c.NotChecked + " not checked (no kit spec: a person decides)" : "";
+            if (c.Fail > 0) return new HealthCheck(c.Check, c.Fail + " fail", ChipKind.Bad, detail: unchecked_);
+            if (c.Pass == 0 && c.NotChecked > 0) return new HealthCheck(c.Check, "Not checked", ChipKind.Grey, detail: unchecked_);
+            if (c.NotChecked > 0) return new HealthCheck(c.Check, c.Pass + " pass", ChipKind.Warn, detail: unchecked_);
+            return new HealthCheck(c.Check, "Pass", ChipKind.Good);
         }
 
         private async Task Scan()

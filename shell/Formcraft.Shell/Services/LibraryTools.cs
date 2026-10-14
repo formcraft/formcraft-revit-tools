@@ -39,7 +39,8 @@ namespace Formcraft.Shell.Services
         public string Message { get; set; } = "";
         public string Document { get; set; } = "";
         public List<FamilyVerdict> Families { get; } = new List<FamilyVerdict>();
-        public List<(string Check, int Fail)> ByCheck { get; } = new List<(string, int)>();
+        /// <summary>Per check: families failing, passing, and not checked (no kit spec, F-010).</summary>
+        public List<(string Check, int Fail, int Pass, int NotChecked)> ByCheck { get; } = new List<(string, int, int, int)>();
         public int Compliant => Families.Count(f => f.State == "Compliant");
         public int Fixable => Families.Count(f => f.State == "Fixable");
         public int NeedAPerson => Families.Count(f => f.State == "Needs a person");
@@ -112,9 +113,9 @@ namespace Formcraft.Shell.Services
             r.Families.Add(new FamilyVerdict("Vendor_Socket_MK", "Electrical Fixtures", "Loaded", 41, "Needs a person",
                 new[] { C("Name follows FMC_[Role]_[Category]_[Description]", "fail", "Vendor_Socket_MK doesn't follow the kit's naming rule"),
                         C("Required FMC parameters present (by GUID)", "na", "The kit has no spec for this family") }, "The kit has no spec for this family"));
-            r.ByCheck.Add(("Name follows FMC_[Role]_[Category]_[Description]", 1));
-            r.ByCheck.Add(("Required FMC parameters present (by GUID)", 0));
-            r.ByCheck.Add(("Keynote set", 1));
+            r.ByCheck.Add(("Name follows FMC_[Role]_[Category]_[Description]", 1, 3, 0));
+            r.ByCheck.Add(("Required FMC parameters present (by GUID)", 0, 2, 2));
+            r.ByCheck.Add(("Keynote set", 1, 3, 0));
             return Task.FromResult(r);
         }
 

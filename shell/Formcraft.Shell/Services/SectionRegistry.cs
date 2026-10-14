@@ -66,6 +66,8 @@ namespace Formcraft.Shell.Services
         [DataMember(Name = "detail")] public string Detail { get; set; } = "";
         [DataMember(Name = "module")] public string ModuleName { get; set; } = "";
         [DataMember(Name = "opens")] public string? Opens { get; set; }
+        /// <summary>Settings: the group to scroll to and focus, e.g. "General · kit" (F-012).</summary>
+        [DataMember(Name = "focus")] public string? Focus { get; set; }
         /// <summary>More words that find it, besides its title.</summary>
         [DataMember(Name = "words")] public string[]? Words { get; set; }
         [DataMember(Name = "parts")] public string[]? Parts { get; set; }

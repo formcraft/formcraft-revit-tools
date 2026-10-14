@@ -333,7 +333,7 @@ namespace revit_mcp_plugin.Shell
             result.Document = r.Body.Value<string>("document") ?? "";
             foreach (JObject v in ((JArray)r.Body["families"]).OfType<JObject>()) result.Families.Add(Verdict(v));
             foreach (JObject c in (r.Body["summary"]?["by_check"] as JArray ?? new JArray()).OfType<JObject>())
-                result.ByCheck.Add((c.Value<string>("check"), c.Value<int>("fail")));
+                result.ByCheck.Add((c.Value<string>("check"), c.Value<int>("fail"), c.Value<int?>("pass") ?? 0, c.Value<int?>("not_checked") ?? 0));
             var kitProblems = RevitFamilyTools.Strings(r.Body["kit_problems"]);
             result.Message = $"Scanned {result.Families.Count} families in {result.Document}." + (kitProblems.Count > 0 ? " " + string.Join(" ", kitProblems) : "");
             return result;
