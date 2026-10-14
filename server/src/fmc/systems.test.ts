@@ -20,7 +20,7 @@ test("the structural check: nothing below fails, analytical problems warn, load 
   assert.equal(by["Columns and beams without an analytical member"].state, "Warn");
   assert.equal(by["Physical and analytical out by more than 50 mm"].state, "Pass");
   assert.equal(by["Members not joined at nodes"].found, "3");
-  assert.equal(by["Columns with no footing, beam, slab or wall below"].state, "Fail");
+  assert.equal(by["Columns with nothing below (footing, beam, slab, wall or column)"].state, "Fail");
   assert.equal(by["Members missing FMC_Concrete_Grade"].found, "12");
   assert.equal(by["FMC_Member_Mark not loaded in this model"].state, "Warn");
   assert.ok(!checks.some((c) => c.check.includes("FMC_Steel_Grade")));

@@ -85,7 +85,13 @@ namespace Formcraft.Shell.ViewModels
             else
             {
                 boq.Add(new ReadOnlySetting("Measured", $"{Last.Model} · {Last.Elements:N0} elements · baseline {(Last.Baseline.Length > 0 ? Last.Baseline : "none yet")}"));
-                boq.Add(new TableSetting("", new[] { "Bill", "Items", "Changed" }, Last.Bills.Select(b => new TableRow(b, b.Bill, b.Items.ToString(), b.Changed.ToString()))));
+                // The code alone means little at a glance: the bill's first item says what it is.
+                string Name(BillLine b)
+                {
+                    var d = Last.Items.FirstOrDefault(i => i.Bill == b.Bill)?.Description ?? "";
+                    return d.Length == 0 ? b.Bill : b.Bill + " · " + (d.Length > 34 ? d.Substring(0, 33).TrimEnd() + "…" : d);
+                }
+                boq.Add(new TableSetting("", new[] { "Bill", "Items", "Changed" }, Last.Bills.Select(b => new TableRow(b, Name(b), b.Items.ToString(), b.Changed.ToString()))));
                 if (Last.Unmapped.Count > 0)
                     boq.Add(new NoteSetting("No FMC_Keynote_Code, so not in the BOQ: " + string.Join(", ", Last.Unmapped.Select(u => $"{u.Count} {u.Category}")) + ". Nothing is dropped silently: the QS assigns or excludes them.", ChipKind.Warn));
                 if (Last.UnknownCodes.Count > 0)

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { GATES, QaFacts, Rulebooks, mergeRulebooks, neededParameters, qaReport, runQa, trend } from "../fmc/rules.js";
+import { GATES, Rulebooks, mergeRulebooks, neededParameters, qaFacts, qaReport, runQa, trend } from "../fmc/rules.js";
 import { DEFAULT_LIMIT, qaDigest, rulebooksDigest } from "../fmc/digest.js";
 
 const win = path.win32;
@@ -99,7 +99,7 @@ export async function runFmcQa(args: FmcQaArgs) {
 
     // run: facts from Revit (read-only), checks from the kit
     if (!books.rules.length) return reply({ refused: true, reasons: books.problems.length ? books.problems : ["The kit's rulebooks have no rules"] }, true);
-    const facts = (await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000))) as QaFacts;
+    const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000)));
     const today = new Date().toISOString().slice(0, 10);
     const result = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
     const failing = result.results.filter((x) => x.state === "Fail" || x.state === "Warning").map((x) => x.id);

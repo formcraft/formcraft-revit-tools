@@ -33,7 +33,7 @@ export function structuralChecks(f: any): Check[] {
   out.push(f?.free_ends_checked === false
     ? { check: "Members not joined at nodes", found: "Not checked", state: "Info", ids: [] }
     : { check: "Members not joined at nodes", found: String(n("free_end_count")), state: n("free_end_count") ? "Warn" : "Pass", ids: ids(f?.free_ends) });
-  out.push({ check: "Columns with no footing, beam, slab or wall below", found: String(n("nothing_below_count")), state: n("nothing_below_count") ? "Fail" : "Pass", ids: ids(f?.nothing_below) });
+  out.push({ check: "Columns with nothing below (footing, beam, slab, wall or column)", found: String(n("nothing_below_count")), state: n("nothing_below_count") ? "Fail" : "Pass", ids: ids(f?.nothing_below) });
   for (const x of (f?.fields ?? []) as any[]) {
     if (!x.applies) continue;
     if (!x.in_model) out.push({ check: `${x.name} not loaded in this model`, found: String(x.applies), state: "Warn", ids: [] });

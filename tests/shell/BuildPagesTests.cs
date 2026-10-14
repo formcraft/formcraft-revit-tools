@@ -36,7 +36,7 @@ namespace Formcraft.Shell.Tests
                 return (b, l, w);
             });
 
-            await Assert.That(bills[1]).IsEqualTo("C.COL|1|1");
+            await Assert.That(bills[1]).IsEqualTo("C.COL · RC column C25/30|1|1");
             await Assert.That(legend).IsEqualTo(4);
             await Assert.That(workspace[1]).IsEqualTo("C.COL_01|RC column C25/30|m3|38.4|36.1|Yes");
             await Assert.That(workspace[2]).IsEqualTo("J.HRD_01|Door ironmongery set|set|QS|—|");

@@ -150,6 +150,22 @@ export interface QaFacts {
   warnings: number;
 }
 
+/**
+ * The add-in's reply made safe to check: every list present (empty when Revit sent none), so a partial reply from an
+ * older add-in never turns into a crash. A reply with none of the parts is refused with the reason, not guessed at.
+ */
+export function qaFacts(raw: unknown): QaFacts {
+  const f = (raw ?? {}) as Partial<QaFacts>;
+  if (!["views", "sheets", "types", "families", "links"].some((k) => Array.isArray((f as any)[k])))
+    throw new Error("Revit's reply has no views, sheets or types: the add-in in Revit is older than this server. Install the latest build.");
+  const arr = <T>(v: T[] | undefined) => (Array.isArray(v) ? v : []);
+  return {
+    model: String(f.model ?? ""), views: arr(f.views), warnings: Number(f.warnings ?? 0) || 0, links: arr(f.links), families: arr(f.families),
+    sheets: arr(f.sheets).map((s) => ({ ...s, parameters: s?.parameters ?? {} })),
+    types: arr(f.types).map((t) => ({ ...t, parameters: t?.parameters ?? {} })),
+  };
+}
+
 export type ResultState = "Fail" | "Warning" | "Pass" | "Not applicable" | "Not checked";
 export interface RuleResult { id: string; rule: string; severity: Severity; state: ResultState; where: string; element_ids: number[]; fix_hint: string; excepted?: string; human?: boolean }
 

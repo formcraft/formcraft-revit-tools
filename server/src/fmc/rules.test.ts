@@ -83,3 +83,12 @@ test("trend: new, recurring and resolved against the last run", () => {
   assert.deepEqual(trend(["A", "B"], ["B", "C", "D"]), { new: 2, recurring: 1, resolved: 1 });
   assert.deepEqual(trend(null, ["A"]), { new: 1, recurring: 0, resolved: 0 });
 });
+
+test("a partial reply from an older add-in is made safe; a reply with nothing is refused with the reason", async () => {
+  const { qaFacts } = await import("./rules.js");
+  const f = qaFacts({ model: "M", sheets: [{ id: 1, number: "A-0001", name: "Plan" }] });
+  assert.deepEqual(f.views, []);
+  assert.deepEqual(f.sheets[0].parameters, {});
+  assert.equal(f.warnings, 0);
+  assert.throws(() => qaFacts({}), /older than this server/);
+});

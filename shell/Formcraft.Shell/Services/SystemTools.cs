@@ -75,7 +75,7 @@ namespace Formcraft.Shell.Services
             var c = new SystemsCheck { Ok = true, Model = "F26001-FMC-ZZ-ZZ-M3-S-0001", Members = "48 columns, 166 beams, 32 foundations", Message = "214 members checked.",
                 Saved = save ? projectFolder + @"\06_QA\Systems\FMC_Structural_Check.md" : "" };
             c.Checks.Add(new CheckLine("Members not joined at nodes", "3", "Warn"));
-            c.Checks.Add(new CheckLine("Columns with no footing, beam, slab or wall below", "1", "Fail"));
+            c.Checks.Add(new CheckLine("Columns with nothing below (footing, beam, slab, wall or column)", "1", "Fail"));
             c.Checks.Add(new CheckLine("Physical and analytical out by more than 50 mm", "0", "Pass"));
             c.Checks.Add(new CheckLine("Members missing FMC_Concrete_Grade", "12", "Warn"));
             c.Checks.Add(new CheckLine("Load cases and combinations", "None yet", "Engineer"));

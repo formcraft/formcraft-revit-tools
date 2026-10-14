@@ -152,6 +152,21 @@ namespace Formcraft.Shell.Preview
                     RenderFull(new Formcraft.Shell.Views.SectionPageView { DataContext = page }, 440,
                                Path.Combine(folder, $"setup-{name}-{page.Title.Split(' ').Last().ToLowerInvariant()}-440.png"));
                 }
+                // Every other section the pane builds (U16-U27), opened with the sample data, at full height
+                var others = typeof(ShellViewModel).GetProperties()
+                    .Where(p => typeof(Formcraft.Shell.ViewModels.SectionPage).IsAssignableFrom(p.PropertyType))
+                    .Select(p => (p.Name, Page: (Formcraft.Shell.ViewModels.SectionPage)p.GetValue(main.Services.Pane)!))
+                    .Where(x => x.Page != null && x.Name != "Project" && x.Name != "Templates" && x.Name != "Families");
+                foreach (var (prop, page) in others)
+                {
+                    page.Opened();
+                    if (page is Formcraft.Shell.ViewModels.BuildPage build) build.MeasureCommand.Execute(null);
+                    if (page is Formcraft.Shell.ViewModels.SystemsPage systems) systems.CheckCommand.Execute(null);
+                    if (page is Formcraft.Shell.ViewModels.StructuralPage structural) structural.CheckCommand.Execute(null);
+                    if (page is Formcraft.Shell.ViewModels.BriefPage brief) brief.ReadCommand.Execute(null);
+                    RenderFull(new Formcraft.Shell.Views.SectionPageView { DataContext = page }, 440,
+                               Path.Combine(folder, $"section-{name}-{prop.ToLowerInvariant()}-440.png"));
+                }
                 // Connect at full height (U12; board core/PaneConnect)
                 RenderFull(new Formcraft.Shell.Views.ConnectView { DataContext = main.Services.Pane.Connect }, 440,
                            Path.Combine(folder, $"connect-{name}-440.png"));

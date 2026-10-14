@@ -127,6 +127,9 @@ namespace revit_mcp_plugin.Fmc
             return File.Exists(pf) ? pf : null;
         }
 
+        /// <summary>Longer than the longest tool (the issue export allows 15 minutes).</summary>
+        public static readonly TimeSpan Timeout = TimeSpan.FromMinutes(20);
+
         /// <summary>Runs one CLI command off the UI thread. Revit stays responsive, which the tool's own Revit call needs.</summary>
         public static Task<CliResult> RunAsync(string command, JObject args = null)
         {
@@ -154,11 +157,18 @@ namespace revit_mcp_plugin.Fmc
                     using (var p = Process.Start(psi))
                     {
                         var stderr = p.StandardError.ReadToEndAsync();
+                        var stdoutTask = p.StandardOutput.ReadToEndAsync();
                         var stdin = new StreamWriter(p.StandardInput.BaseStream, new UTF8Encoding(false));
                         stdin.Write((args ?? new JObject()).ToString(Newtonsoft.Json.Formatting.None));
                         stdin.Close();
-                        string stdout = p.StandardOutput.ReadToEnd();
+                        // A stuck server must never leave a pane button busy until Revit closes.
+                        if (!p.WaitForExit((int)Timeout.TotalMilliseconds))
+                        {
+                            try { p.Kill(); } catch (Exception) { /* it ended on its own */ }
+                            return new CliResult { Ok = false, Error = $"{command} didn't answer within {Timeout.TotalMinutes:0} minutes and was stopped. Nothing after that point ran; try again, or check the log." };
+                        }
                         p.WaitForExit();
+                        string stdout = stdoutTask.Result;
                         JObject body;
                         try { body = JObject.Parse(stdout); }
                         catch (Exception)
