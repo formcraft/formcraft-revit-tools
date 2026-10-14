@@ -117,7 +117,8 @@ namespace Formcraft.Shell.ViewModels
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
-                              IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null)
+                              IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null,
+                              IConnectInfo? connect = null)
         {
             _licence = licence;
             _connection = connection;
@@ -141,6 +142,8 @@ namespace Formcraft.Shell.ViewModels
                                              updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch);
             Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
+            Connect = new ConnectViewModel(connect ?? new MockConnectInfo(), kit ?? new FolderKitService(), licence, settings, s => Status = s, ShowDialog,
+                                           () => OpenSettingsTab("General", "Kit folder: Settings › General › kit."));
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
@@ -314,9 +317,8 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(IsConnectOpen));
                 OnPropertyChanged(nameof(SettingsOpen));
                 OnPropertyChanged(nameof(IsAdminOpen));
-                OnPropertyChanged(nameof(ShowSection));
-                OnPropertyChanged(nameof(ShowHostConnect));
                 OnPropertyChanged(nameof(ShowNoParts));
+                OnHostChanged();
                 UpdateFooter();
             }
         }
@@ -324,25 +326,35 @@ namespace Formcraft.Shell.ViewModels
         public bool IsConnectOpen => Page == ShellPage.Connect;
         public bool SettingsOpen => Page == ShellPage.Settings;
         public bool IsAdminOpen => Page == ShellPage.Admin;
-        public bool ShowSection => Page == ShellPage.Section || (Page == ShellPage.Connect && ConnectContent == null);
+        /// <summary>A section's placeholder or locked state; hidden while the host supplies the section (<see cref="HostContent"/>).</summary>
+        public bool ShowSection => Page == ShellPage.Section && HostContent == null;
+
+        /// <summary>Connect (board core/PaneConnect).</summary>
+        public ConnectViewModel Connect { get; }
+
+        private readonly Dictionary<string, object> _hostSections = new Dictionary<string, object>();
 
         /// <summary>
-        /// Connect as the host builds it: in Revit, the add-in's working page (health, Claude service, probe, families,
-        /// files, activity, guard). Null in the preview app, where Connect shows its placeholder.
+        /// A section the host has built before the pane's own version exists: in Revit, Setup › Families shows the add-in's
+        /// working families and files page until U15 builds the section from its board.
         /// </summary>
-        public object? ConnectContent
+        public void SetHostSection(string sectionName, object content)
         {
-            get => _connectContent;
-            set
-            {
-                if (!Set(ref _connectContent, value)) return;
-                OnPropertyChanged(nameof(ShowSection));
-                OnPropertyChanged(nameof(ShowHostConnect));
-            }
+            _hostSections[sectionName] = content;
+            OnHostChanged();
         }
-        private object? _connectContent;
 
-        public bool ShowHostConnect => Page == ShellPage.Connect && ConnectContent != null;
+        /// <summary>The host's content for the open section, if it supplies one and the section isn't locked.</summary>
+        public object? HostContent => Page == ShellPage.Section && _section != null && Body?.Locked != true &&
+                                      _hostSections.TryGetValue(_section.Name, out var content) ? content : null;
+        public bool ShowHostSection => HostContent != null;
+
+        private void OnHostChanged()
+        {
+            OnPropertyChanged(nameof(HostContent));
+            OnPropertyChanged(nameof(ShowHostSection));
+            OnPropertyChanged(nameof(ShowSection));
+        }
 
         public GroupItem? CurrentGroup { get => _group; private set => Set(ref _group, value); }
         public SectionBody? Body { get => _body; private set => Set(ref _body, value); }
@@ -389,6 +401,7 @@ namespace Formcraft.Shell.ViewModels
             _section = s;
             Page = ShellPage.Section;
             Body = new SectionBody(s, _licence.Current.For(s.Module), _licence.Current.GraceOver);
+            OnHostChanged();
             UpdateFooter();
         }
 
@@ -452,6 +465,12 @@ namespace Formcraft.Shell.ViewModels
             {
                 // Board account/PaneStates footer.
                 FooterActions.Add(new FooterAction("Start a trial", StartTrialCommand, primary: true));
+            }
+            else if (Page == ShellPage.Connect)
+            {
+                // Board core/PaneConnect footer.
+                FooterActions.Add(new FooterAction("Health check", Connect.HealthCheckCommand, primary: true));
+                FooterActions.Add(new FooterAction("Feedback", Connect.FeedbackCommand));
             }
             else if (Page == ShellPage.Admin)
             {

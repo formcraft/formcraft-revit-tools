@@ -80,6 +80,11 @@
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <!-- Connect's diagnostics zip (ZipFile) -->
+        <Reference Include="System.IO.Compression"/>
+        <Reference Include="System.IO.Compression.FileSystem"/>
+    </ItemGroup>
     <ItemGroup>
         <!-- The Formcraft pane (U10): the shell built on mock data in shell/, hosted in a dockable pane -->
         <ProjectReference Include="..\shell\Formcraft.Shell\Formcraft.Shell.csproj"/>

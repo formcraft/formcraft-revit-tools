@@ -296,4 +296,30 @@
     </StackPanel>
   </DataTemplate>
 
+  <!-- Health check (board core/PaneConnect): a line per check with its status chip, and a fix button where there is one -->
+  <DataTemplate DataType="{x:Type vm:CheckListSetting}">
+    <ItemsControl ItemsSource="{Binding Rows}" Focusable="False" Margin="0,0,0,8">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Margin="0,0,0,2">
+            <c:FmcCheckRow x:Name="Row" Content="{Binding Label}" IsChecked="True" Status="{Binding Status}" StatusKind="{Binding Kind}"
+                           IsHitTestVisible="False" Focusable="False"/>
+            <TextBlock Text="{Binding Detail}" Style="{DynamicResource FmcText.Hint}" Margin="26,0,0,2" TextWrapping="Wrap"
+                       Visibility="{Binding HasDetail, Converter={StaticResource Vis}}"/>
+            <Button Content="{Binding FixLabel}" Command="{Binding FixCommand}" HorizontalAlignment="Left" Margin="26,0,0,6"
+                    c:Fmc.StyleKey="FmcButton.Secondary" Visibility="{Binding HasFix, Converter={StaticResource Vis}}"/>
+          </StackPanel>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Kind}" Value="Bad">
+              <Setter TargetName="Row" Property="IsChecked" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Grey">
+              <Setter TargetName="Row" Property="IsChecked" Value="False"/>
+            </DataTrigger>
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DataTemplate>
+
 </ResourceDictionary>

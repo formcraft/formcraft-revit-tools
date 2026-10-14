@@ -91,10 +91,14 @@
             </StackPanel>
           </ScrollViewer>
 
-          <!-- Connect from the host (in Revit: the add-in's page with the Claude service, probe, families, files, activity, guard) -->
-          <ContentControl Content="{Binding DataContext.ConnectContent, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                          Visibility="{Binding DataContext.ShowHostConnect, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"
+          <!-- A section the host supplies until the pane builds it (in Revit: Setup › Families, the add-in's families and files page) -->
+          <ContentControl Content="{Binding DataContext.HostContent, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                          Visibility="{Binding DataContext.ShowHostSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"
                           Focusable="False"/>
+
+          <!-- Connect (board core/PaneConnect, U12) -->
+          <local:ConnectView DataContext="{Binding Connect}"
+                             Visibility="{Binding DataContext.IsConnectOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}"/>
 
           <!-- Settings: Account, General and a tab per licensed module (U06) -->
           <local:SettingsView Visibility="{Binding SettingsOpen, Converter={StaticResource Vis}}"/>
