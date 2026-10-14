@@ -118,7 +118,11 @@ Built by the tester through `send_code_to_revit` on the user's own cover sheet (
   drop or swap to text below a threshold and say so.
 - **Solid fills in families must be masking** (`IsMasking = true`), else Revit throws. Use invisible boundary lines.
 - **Labels can't be created through the API.** Builders draw captions and produce a label map (typed placeholder →
-  parameter, size); a person converts them. Keep looking for a workaround (nested label families made once by hand).
+  parameter, size); a person converts them. **Workaround found (14 Oct):** `ElementTransformUtils.CopyElements` copies an
+  existing label between family documents, shared parameter included. A seed-label library (one label per parameter, made once
+  by hand, since a label's parameter can't be changed by API) then lets `add_label` copy, resize and place instead of
+  asking a person. 37 tags and heads were finished this way and by the label
+  dialog; see `scripts/kitbuild/annotation/README.md`.
 - **Visibility** of filled regions can be tied to Yes/No family parameters (`IS_VISIBLE_PARAM`): 67 logo shapes follow
   `FMC_TB_Brand_Main`.
 - **Shared parameters by GUID:** switch `SharedParametersFilename` to the kit file, add, then restore.
