@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -27,6 +27,7 @@ import { FMC_LIBRARY_SHAPE, runFmcLibrary } from "../tools/fmc_library.js";
 import { FMC_QA_SHAPE, runFmcQa } from "../tools/fmc_qa.js";
 import { FMC_MATERIAL_SHAPE, runFmcMaterial } from "../tools/fmc_material.js";
 import { FMC_SHEETS_SHAPE, runFmcSheets } from "../tools/fmc_sheets.js";
+import { FMC_ANNOTATE_SHAPE, runFmcAnnotate } from "../tools/fmc_annotate.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, readApiKey, runAsk } from "./ask.js";
 
@@ -103,6 +104,8 @@ async function main() {
         return printReply(await runFmcMaterial(z.object(FMC_MATERIAL_SHAPE).parse(await readStdin())));
       case "fmc_sheets":
         return printReply(await runFmcSheets(z.object(FMC_SHEETS_SHAPE).parse(await readStdin())));
+      case "fmc_annotate":
+        return printReply(await runFmcAnnotate(z.object(FMC_ANNOTATE_SHAPE).parse(await readStdin())));
       case "specs":
         return specs();
       case "probe":
@@ -119,7 +122,7 @@ async function main() {
         return print(r.body, !r.ok);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|specs|probe|ask>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|specs|probe|ask>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

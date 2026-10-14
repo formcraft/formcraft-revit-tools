@@ -62,7 +62,8 @@ namespace revit_mcp_plugin.Shell
                                       families: new RevitFamilyTools(), files: Files,
                                       project: new RevitProjectTools(), templates: new RevitTemplateTools(),
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
-                                      materials: new RevitMaterialTools(), sheets: new RevitSheetTools())
+                                      materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
+                                      annotate: new RevitAnnotateTools())
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
             };

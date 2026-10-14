@@ -45,6 +45,8 @@ export interface GuardConfig {
   rulebooks_dir: string;
   /** The kit's material database (FMC_Materials.json), read by Setup › Materials */
   materials_file: string;
+  /** The kit's annotation standard (FMC_Annotation_Standard.json), read by Drawings › Annotate */
+  annotation_standard_file: string;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -62,6 +64,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   keynote_file: "Z:\\00_Standards\\02_Keynotes\\FMC_Keynotes.txt",
   rulebooks_dir: "Z:\\00_Standards\\05_Rulebooks",
   materials_file: "Z:\\00_Standards\\07_Materials\\FMC_Materials.json",
+  annotation_standard_file: "Z:\\00_Standards\\03_Master_Data\\FMC_Annotation_Standard.json",
 };
 
 /** Tools that change the model. They are refused on live project models. */
