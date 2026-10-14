@@ -161,7 +161,7 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
   **Done** (`fmc_links`, `fmc_workshare`, `fmc_review` with clouds and prints)
 - [x] U21 Manage › Reports — `manage/PaneReports`. **Done** (`fmc_report`: Markdown and CSV; branded PDF, Excel, sending and the weekly run later)
 - [x] U22 Flow: Touch, Section box, Sheet Layout, Tag Tidy, shortcuts — `flow/*`. Touch (touch engine in `touch/`, formerly TouchKit; Settings › Flow › Touch; Flow ribbon Touch on). `plugin/Shell/FlowTools.cs`: Section box (drag on a plan → your own `FMC_3D_<user>` view with the box, offset and level-aware from Settings › Flow), Sheet Layout (align tops, lefts or distribute viewports), Tag Tidy (selected tags only: row, column, leaders, duplicates). Each asks first in a Revit dialog and is one Undo; from the ribbon and the pane's quick tools. Shortcuts: the kit has no shortcuts file yet (rule 7), so Settings › Flow opens Revit's Keyboard Shortcuts. On-view ghost previews wait for a kit sheet grid
-- [ ] U23 Model › Start from brief — `model/PaneModelBrief`
+- [x] U23 Model › Start from brief — `model/PaneModelBrief`. **Done** (`fmc_brief` + `fmc_brief_apply`: CIS fmc-cis/0.1 in docs/CIS.md, every parameter checked against the kit; levels with floor plans, Project Information, unplaced rooms with programme data, approved kit families; new unsaved models only, dry run then one Undo; materials wait for the kit library, F-011)
 - [ ] U24 Model › Scripts and automation — `model/PaneScripts`, `model/M_Automation`
 - [ ] U25 Model › Systems and Structural — `model/PaneModelSystems`, `PaneModelStructural`
 - [ ] U26 Build pane, workspace window, Revit views — `build/*`

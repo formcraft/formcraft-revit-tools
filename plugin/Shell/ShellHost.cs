@@ -75,7 +75,7 @@ namespace revit_mcp_plugin.Shell
                                       project: new RevitProjectTools(), templates: new RevitTemplateTools(),
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
                                       materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
-                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), flow: new RevitFlowTools(),
+                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), flow: new RevitFlowTools(), brief: new RevitBriefTools(),
                                       // F-013: no update feed yet; the installed build from the build stamp.
                                       updates: new NoFeedUpdateService("build " + revit_mcp_plugin.FmcBuildInfo.Commit + " · " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC"))
             {
