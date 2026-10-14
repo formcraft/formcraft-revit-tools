@@ -8,6 +8,20 @@ Proposal of 14 Oct 2026, awaiting the owner's yes. It joins three things:
 The same plan lives in the claude.ai Project as `FMC_MCP/EXECUTION_PLAN_TEMPLATES_FAMILIES.md`. UI steps are U28–U36 in
 `UI_DEVELOPMENT.md`; boards are in `design/boards/`.
 
+## Who does what (owner's decision, 14 Oct)
+| Track | Who | How |
+|---|---|---|
+| All code: the full UI (U28–U36), server tools, the policy-aware lock, recipes engine ops, connectors (Robot, Navisworks), automation, data | **Claude Code** in this repo | One step at a time from `UI_DEVELOPMENT.md` Stage D and the phases below: plan → owner's yes → branch → PR → CI → the tester's run in Revit |
+| Templates and families: building, filling and checking them in Revit | **Claude in the claude.ai Project** (the tester) | Through the Revit MCP only, in the background, in staging: open files with `OpenDocumentFile`, never `OpenAndActivateDocument`, no zooming, no clicks, no screenshots. The owner keeps the PC screen. Revit stays open (minimised) with a document open (`_Staging\FMC_Claude_Workbench.rvt`) and AI on |
+
+Hand-offs between the two:
+- The tester's hand-built work lands in `scripts/kitbuild/` and in a findings issue. Claude Code turns it into tools and ops.
+- When Claude Code ships a tool (e.g. `fmc_doc` ops, `fmc_library release`), the tester switches from raw `send_code_to_revit` to that tool and reports gaps as `test-finding` issues.
+- Steps that need a person at the screen are batched, so the owner can do them in one short sitting:
+  - the first legend component per legend;
+  - a seed label per parameter;
+  - line weights.
+
 ## Where things stand
 - **UI:** U00–U27 are done in code. The B1 `fmc_doc` engine passed its Revit run (39 ops, 0 warnings).
 - **In staging on the pilot PC, built by hand on 13–14 Oct:**
