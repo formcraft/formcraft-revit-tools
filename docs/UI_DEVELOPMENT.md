@@ -169,3 +169,148 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
 
 The account website (`account/UI_AccountWeb`) and the Build web workspace (`build/B_Web`) are separate web projects,
 not part of the add-in.
+
+---
+
+## Stage D: assisted modelling, builders, coordination and data (proposed 14 Oct 2026)
+
+From `docs/PLAN_EXECUTION.md`. Boards are in `design/boards/{core,manage,model,coord}/` (drawn on the claude.ai canvas
+"Formcraft New Panes"). They have no guide table, so each step below carries it: **control → what it calls → rule**.
+The same rules apply as in Stage C: view + view model + adapter, dry run → yes → run → log, `fmc_ui` check, and plan
+first and wait for a yes. New server tools are named here as proposals. Each one is designed in its own plan
+before code.
+
+Order: U28 first (it gates every AI write), then U29–U32, then U33 (Robot is installed on the pilot PC), then U34,
+then U35–U36 (Navisworks Manage is being installed on the pilot PC).
+
+- [ ] U28 Admin › AI involvement — `core/PaneAdminAI`. **Needs first:** the owner approves `docs/AI_ASSISTED_MODELLER.md` v2 (Manual role "AI
+  assistant modeller"), the kit rulebook `FMC_Rulebook_AIUse` and the new wording of CLAUDE.md hard rule 1 (the lock
+  becomes policy-aware, WIP models only). Guide:
+  - **AI modelling switch.** Calls `fmc_ai policy set {enabled}`. Admin only: locked with a padlock for every other role. Off means every AI write is refused.
+  - **Involvement level slider (0–100, default 20).** Calls `fmc_ai policy set {level}`. The tier bands and the cap
+    meaning come from the rulebook, not code. The metric is open: share of elements, share of changes, or tier-only.
+    The owner hasn't decided, so the measure is pluggable.
+  - **"At this level, AI may".** Calls `fmc_ai policy explain`, which lists the allowed op classes for the level from the rulebook.
+  - **AI share gauge.** Calls `fmc_ai share {model}`. It counts elements stamped `FMC_Author` = AI plus the log. At the cap, the server answers Suggest-only. It never shows per-person figures (Manual 14.5).
+  - **Rules table.** Read-only view of the rulebook (risk class Low/Medium/High/Never, approval thresholds, Nevers).
+    Edits go through a kit change request.
+  - **Per-discipline overrides** (e.g. S 5). Calls `fmc_ai policy set {overrides}`. Admin only.
+  - **Save policy.** Shows a dry run (what changes for open models), then writes to the kit's policy file and the log.
+  - **Server:** every write tool asks `policy.allows(op, model, count)` before its dry run. Hard Nevers, whatever the level:
+    - grids, levels and coordinates;
+    - `02_Shared` / `03_Published` models;
+    - sync, issue and sign;
+    - structural sizing, loads and demand factors;
+    - openings and sleeves without the engineer.
+
+  **Test:** P, M, and R on a `_ChainTests` model.
+- [ ] U29 Manage › Templates › Builder — `manage/PaneTemplatesBuilder` (grows U14). Guide:
+  - **Template picker.** Lists `06_Templates\_Staging\*.rte`.
+  - **Recipe layers table.** Calls `fmc_template compare {recipe}`. Each layer shows Same, n changes or To do, against the built file.
+  - **Discipline chips.** Green when the role's kit value tables exist; amber when missing (link to the change request).
+  - **Dry run (compare)** and **Rebuild all 13.** Call `fmc_template build {recipe, dry_run}`, staging only (TPL-029).
+  - **Explain this change (AI).** Plain words from the compare result.
+  - **Ask to publish.** Raises a publish request for the BIM Manager; the tool never copies to `06_Templates` itself.
+  - **Source:** `scripts/kitbuild/template/*` is the hand-run reference. Phase 1 turns it into `fmc_doc` project ops
+    and `Base.recipe.json`.
+
+  **Test:** M (rebuild matches the 14 Oct audit: Pass, 0 warnings).
+- [ ] U30 Manage › Families › Quality and release — `manage/PaneFamiliesRelease` (grows U15). Guide:
+  - **Gate A list.** Calls `fmc_family load_test` extended. It checks:
+    - name and category against the register;
+    - kit parameters by GUID;
+    - flex of every type;
+    - Coarse, Medium and Fine geometry;
+    - code checks (e.g. clear opening ≥ 900 mm);
+    - tag, schedule and legend;
+    - materials and IFC class;
+    - values from a verified source (kit field `source_status`: verified, EA, assumed, pending).
+  - **Gate B reviewer and note.** The reviewer is picked from roles. Engineering families need the discipline's engineer.
+  - **Write the review summary (AI).** Drafts the note; a person edits it.
+  - **Send back** and **Release to `04_Families\<Role>`.** Call `fmc_library release {family, reviewer, note}`, which moves the file from staging and appends the release log. People only; never automatic.
+
+  **Test:** M with the steel fanlight door; R for flex.
+- [ ] U31 Manage › Sheets › Legends and schedules — `manage/PaneLegends` (grows U19). Guide:
+  - **Column set segmented control** (Permit / Tender / Construction / Client). Calls `fmc_legend columns {set}`, which hides and shows schedule fields from the kit's `Column_Sets` tab (kit change). Dry run first, one Undo.
+  - **Preview.** Legend view (live legend components with dimensions) over its schedule. Rows follow the legend order.
+  - **Legends list.** Calls `fmc_legend status`. Each legend shows new types not yet in it.
+  - **Refresh legends.** Calls `fmc_legend refresh`. It copies the seed legend component (Revit has no API to create the first one), sets the type, dimensions and re-sorts. If dimensions can't be placed by API, it flags the type instead.
+  - **Hide a column everywhere (AI).** Turns a sentence into a `columns` call, with a dry run.
+
+  **Test:** R on the door chain test; M.
+- [ ] U32 Model › Automation › Runs and triggers — `model/PaneAutomationRuns` (grows U24). Guide:
+  - **Scheduled runs table:**
+    - template rebuild and audit;
+    - clash tests;
+    - family quality gate;
+    - weekly QA;
+    - morning report.
+
+    Calls `fmc_automation list/run`. Runs need Revit open with the workbench file (`_Staging\FMC_Claude_Workbench.rvt`). The schedule itself is a Claude scheduled task or Windows Task Scheduler (to decide).
+  - **Revit triggers:**
+    - QA on save;
+    - refresh legends on type change;
+    - before issue;
+    - export on publish.
+
+    Each is a switch backed by an IUpdater/event in the add-in. Each trigger checks and reports only, unless the AI policy allows auto-apply for that op class.
+  - **Always a person:** a fixed list from the policy Nevers plus the people gates.
+  - **Propose fixes (AI).** A dry run on a failed run's items.
+
+  **Test:** R, M.
+- [ ] U33 Model › Structure with Robot — `model/PaneStructRobot` (grows U25). **Robot Structural Analysis is
+  installed on the pilot PC.** Guide:
+  - **Step bar** (Check, Send, Loads, Run, Back).
+  - **Check.** Uses `fmc_systems structural` (exists).
+  - **Send.** Calls `fmc_robot send`, a new connector through Robot's COM API (RobotOM). It writes a WIP `.rtd` only.
+  - **Loads and code form.** The engineer enters every value. No defaults, never AI (CLAUDE.md rule 5).
+  - **Run analysis.** Calls `fmc_robot run`, enabled only when the form is complete.
+  - **Results table.** Calls `fmc_robot results`, which writes the `FMC_FEA_NEd_kN`, `MEd_kNm`, `Utilisation` and `Run_Ref` fields in WIP. `FMC_FEA_Approval_Ref` is filled only by the engineer.
+  - **What changed (AI).** Compares runs.
+  - **Sign as engineer.** Records the signature in the log. Never automatic.
+
+  **Test:** R with Robot on a `_ChainTests` structural model.
+- [ ] U34 Manage › Reports › Data: Excel and Power BI — `manage/PaneData` (grows U21). Guide:
+  - **Excel tables:**
+    - door and window types;
+    - room data sheet;
+    - sheet register;
+    - priced BOQ.
+
+    Calls `fmc_data export/import`. Exports go to `01_WIP\Data`.
+  - **Coming back from Excel.** Shows a dry run of the changes, flags values not in the kit, and applies in WIP only.
+  - **Kit-in-Excel note.** Kit files change only by change request. Excel MCP writes go to staging copies.
+  - **Power BI tiles:**
+    - model health;
+    - clashes;
+    - cost;
+    - procurement.
+
+    Fed from the log and schedules. Built through Microsoft's Power BI authoring MCP when the owner has a licence (to confirm).
+  - **Ask the dashboard (AI).**
+
+  **Test:** M; Power BI part when a licence exists.
+- [ ] U35 Coordinate › Clashes — `coord/PaneCoordClashes`. New **Coordinate** group in the Revit pane, `+Coord` tag
+  (new module accent to add to the UI kit). Guide:
+  - **Counts.** New, active and resolved.
+  - **Clash matrix.** A discipline × discipline grid of open clashes per pair, worst pairs in red. Selecting a cell
+    filters the list. Pairs, tests and tolerances come from the kit clash matrix (a new kit table, by change request).
+  - **Groups by owner.**
+  - **Clash card:**
+    - **Show in Revit**;
+    - **Assign** (a Review item);
+    - **Mark tolerable**.
+  - **Sort these clashes (AI)** and **Suggest a fix (AI).** Fixes are WIP-only, within the AI involvement policy. Structure, grids and levels are never touched. Openings and sleeves need the engineer.
+  - **Send to Review.** Uses `fmc_review raise`.
+
+  **Needs:** clash results from U36, or an imported Navisworks XML report until then.
+- [ ] U36 Formcraft pane in Navisworks — `coord/PaneNavisworks`. Navisworks Manage is being installed on the pilot PC (14 Oct).
+  Plan:
+  - Evaluate the open-source Navisworks MCPs (e.g. NavisWorksMaster, naviscoord-mcp) and use one as a reference or fork it, after a licence check.
+  - Host the same shell in Navisworks.
+  - **Federate.** NWCs from `02_Shared`.
+  - **Clash matrix.** The kit's tolerances, a new kit table.
+  - **Run now or nightly.**
+  - **TimeLiner links.** Through `FMC_Task_ID`.
+  - **Send clashes to Review.**
+  - Navisworks never edits Revit models.

@@ -19,6 +19,11 @@ defaults:
   run:
     shell: powershell
 
+# On the self-hosted runner MSBuild's worker processes would outlive a job and keep files locked for the next one
+# (CS2012 on TouchKit.Core.dll, 14 Oct), so every build starts its own workers and ends them
+env:
+  MSBUILDDISABLENODEREUSE: 1
+
 jobs:
   shell:
     name: Pane shell (WPF, mock data)
@@ -97,4 +102,5 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Build plugin and command set
-        run: dotnet build mcp-servers-for-revit.sln -c "Release R25"
+        # One build process: in parallel, two projects can write the same TouchKit.Core.dll at once
+        run: dotnet build mcp-servers-for-revit.sln -c "Release R25" -m:1 -nodeReuse:false

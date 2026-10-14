@@ -7,7 +7,9 @@ import { z } from "zod";
 import { SpParam } from "./specs.js";
 
 const mm = z.number().finite();
-const point = z.tuple([mm, mm]);
+// Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
+// ("items must be object,boolean"), and the whole tool drops out of the client. schemas.test.ts checks every tool.
+const point = z.array(mm).length(2).describe("[x, y] in mm");
 
 export const DATA_TYPES = ["Length", "Number", "Integer", "YesNo", "Text", "Material", "Area", "Volume", "Angle",
   "Voltage", "ApparentPower", "NumberOfPoles", "PipeSize", "Flow", "LoadClassification"] as const;
@@ -34,16 +36,16 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_type_value"), name: z.string().min(1).describe("<type>/<parameter>"), type: z.string().min(1),
     param: z.string().min(1), value: z.union([z.number(), z.string(), z.boolean()]).describe("Length and pipe size in mm, Angle in degrees, Voltage in V, apparent power in VA, flow in L/s") }),
   z.object({ op: z.literal("add_dimension"), name: z.string().min(1).describe("identity: usually the label, e.g. Width"),
-    between: z.tuple([z.string().min(1), z.string().min(1)]).describe("two reference planes by name"),
+    between: z.array(z.string().min(1)).length(2).describe("two reference planes by name"),
     view: z.string().optional(), label: z.string().optional().describe("a family parameter that drives the dimension"),
     offset: mm.default(300).describe("where the dimension line sits, mm from the first plane") }),
   z.object({ op: z.literal("extrusion"), name: z.string().min(1),
-    rect: z.tuple([z.string(), z.string(), z.string(), z.string()]).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
+    rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
     start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
     view: z.string().optional() }),
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
-    rect: z.tuple([z.string(), z.string(), z.string(), z.string()]).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
+    rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
     start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
     view: z.string().optional() }),
