@@ -120,7 +120,7 @@ namespace Formcraft.Shell.ViewModels
                               IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null,
                               IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null,
                               IProjectTools? project = null, ITemplateTools? templates = null,
-                              ILibraryTools? library = null)
+                              ILibraryTools? library = null, IQaTools? qa = null)
         {
             _licence = licence;
             _connection = connection;
@@ -150,6 +150,10 @@ namespace Formcraft.Shell.ViewModels
             Project = new ProjectPage(project ?? new MockProjectTools(), settings, picker ?? new WindowsFilePicker(), s => Status = s, ShowDialog);
             Families = new FamiliesPage(families ?? new MockFamilyTools(), library ?? new MockLibraryTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
             Templates = new TemplatesPage(files ?? new MockFileTools(), templates ?? new MockTemplateTools(), picker ?? new WindowsFilePicker(), settings, Project, s => Status = s, ShowDialog);
+            Qa = new QaPage(qa ?? new MockQaTools(), Project, settings, s => Status = s);
+            Rules = new RulesPage(qa ?? new MockQaTools(), settings, () => IsAdmin, s => Status = s, ShowDialog);
+            _hostSections["QA"] = Qa;
+            _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
             _hostSections["Templates"] = Templates;
@@ -340,6 +344,10 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Connect (board core/PaneConnect).</summary>
         public ConnectViewModel Connect { get; }
+        /// <summary>Check › QA: the kit's rules run on the open model.</summary>
+        public QaPage Qa { get; }
+        /// <summary>Check › Rules: the kit's rulebooks.</summary>
+        public RulesPage Rules { get; }
         /// <summary>Setup › Project: start a project (folder tree, manifest, models).</summary>
         public ProjectPage Project { get; }
         /// <summary>Setup › Families: the family builder from the kit.</summary>

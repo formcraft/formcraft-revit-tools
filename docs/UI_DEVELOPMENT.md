@@ -150,7 +150,8 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
   settings for new projects (`fmc_template`). **To do:** the template builder, compare versions, keep projects in step (Phase 2)
 - [x] U15 Manage › Families (plan, build, load test via `fmc_family`) — `manage/PaneFamilies`. Compliance scan, families and
   what each needs, bring in from outside, shared parameters, keynotes (`fmc_library`), and the builder
-- [ ] U16 Manage › QA and Rules — `manage/PaneQA`, `manage/PaneRules`
+- [x] U16 Manage › QA and Rules — `manage/PaneQA`, `manage/PaneRules`. QA runs the kit's rules per gate (`fmc_qa`), Rules
+  browses the rulebooks; format in `docs/RULEBOOKS.md`
 - [ ] U17 Real licence service behind `ILicenceService` (decision D6) — `account/*`
 - [ ] U18 Manage › Materials — `manage/PaneMaterials`
 - [ ] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`
