@@ -99,6 +99,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "void_extrusion": return FmcDocGeometry.Extrusion(doc, op, true);
                 case "set_material_param": return FmcDocGeometry.MaterialParam(doc, op);
                 case "set_visibility": return FmcDocGeometry.Visibility(doc, op);
+                case "add_connector": return FmcDocMep.AddConnector(doc, op);
+                case "link_connector_param": return FmcDocMep.LinkConnectorParam(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
@@ -187,6 +189,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "Area": return SpecTypeId.Area;
                 case "Volume": return SpecTypeId.Volume;
                 case "Angle": return SpecTypeId.Angle;
+                case "Voltage": return SpecTypeId.ElectricalPotential;
+                case "ApparentPower": return SpecTypeId.ApparentPower;
+                case "NumberOfPoles": return SpecTypeId.Int.NumberOfPoles;
+                case "PipeSize": return SpecTypeId.PipeSize;
+                case "Flow": return SpecTypeId.Flow;
+                case "LoadClassification": return SpecTypeId.Reference.LoadClassification;
                 default: throw new InvalidOperationException("unknown data type " + type);
             }
         }
@@ -265,7 +273,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 case StorageType.Double:
                 {
-                    double want = spec == SpecTypeId.Length ? Mm(v.Value<double>()) : spec == SpecTypeId.Angle ? v.Value<double>() * Math.PI / 180 : v.Value<double>();
+                    double raw = v.Value<double>();
+                    double want = spec == SpecTypeId.Length || spec == SpecTypeId.PipeSize ? Mm(raw)
+                        : spec == SpecTypeId.Angle ? raw * Math.PI / 180
+                        : spec == SpecTypeId.ElectricalPotential ? UnitUtils.ConvertToInternalUnits(raw, UnitTypeId.Volts)
+                        : spec == SpecTypeId.ApparentPower ? UnitUtils.ConvertToInternalUnits(raw, UnitTypeId.VoltAmperes)
+                        : spec == SpecTypeId.Flow ? UnitUtils.ConvertToInternalUnits(raw, UnitTypeId.LitersPerSecond)
+                        : raw;
                     double? now = type.AsDouble(p);
                     if (now.HasValue && Math.Abs(now.Value - want) < 1e-9) return ("skip", "");
                     fm.Set(p, want);

@@ -9,7 +9,10 @@ import { SpParam } from "./specs.js";
 const mm = z.number().finite();
 const point = z.tuple([mm, mm]);
 
-export const DATA_TYPES = ["Length", "Number", "Integer", "YesNo", "Text", "Material", "Area", "Volume", "Angle"] as const;
+export const DATA_TYPES = ["Length", "Number", "Integer", "YesNo", "Text", "Material", "Area", "Volume", "Angle",
+  "Voltage", "ApparentPower", "NumberOfPoles", "PipeSize", "Flow", "LoadClassification"] as const;
+export const CONNECTOR_PARAMS = ["Diameter", "Radius", "Width", "Height", "Voltage", "Number of Poles", "Apparent Load", "Power Factor",
+  "Load Classification", "Pipe Flow", "Duct Flow"] as const;
 export const GROUPS = ["Dimensions", "Constraints", "Data", "Text", "Materials", "IdentityData", "Graphics", "Electrical", "ElectricalLoads",
   "Mechanical", "Plumbing", "General"] as const;
 export const REFERENCES = ["NotAReference", "WeakReference", "StrongReference", "Left", "CenterLeftRight", "Right", "Front", "CenterFrontBack",
@@ -29,7 +32,7 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_formula"), name: z.string().min(1).describe("the parameter"), formula: z.string() }),
   z.object({ op: z.literal("add_type"), name: z.string().min(1) }),
   z.object({ op: z.literal("set_type_value"), name: z.string().min(1).describe("<type>/<parameter>"), type: z.string().min(1),
-    param: z.string().min(1), value: z.union([z.number(), z.string(), z.boolean()]).describe("Length in mm, Angle in degrees") }),
+    param: z.string().min(1), value: z.union([z.number(), z.string(), z.boolean()]).describe("Length and pipe size in mm, Angle in degrees, Voltage in V, apparent power in VA, flow in L/s") }),
   z.object({ op: z.literal("add_dimension"), name: z.string().min(1).describe("identity: usually the label, e.g. Width"),
     between: z.tuple([z.string().min(1), z.string().min(1)]).describe("two reference planes by name"),
     view: z.string().optional(), label: z.string().optional().describe("a family parameter that drives the dimension"),
@@ -45,6 +48,12 @@ export const OP = z.discriminatedUnion("op", [
     start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
     view: z.string().optional() }),
   z.object({ op: z.literal("set_material_param"), name: z.string().min(1).describe("the solid"), param: z.string().min(1) }),
+  z.object({ op: z.literal("add_connector"), name: z.string().min(1), domain: z.enum(["electrical", "pipe", "duct"]),
+    system: z.string().min(1).describe("e.g. Domestic Cold Water, PowerUnBalanced, SupplyAir"), solid: z.string().min(1),
+    side: z.enum(["left", "right", "front", "back", "top", "bottom"]).default("top"),
+    flow: z.enum(["In", "Out", "Bidirectional"]).optional(), diameter: mm.positive().optional(), width: mm.positive().optional(), height: mm.positive().optional() }),
+  z.object({ op: z.literal("link_connector_param"), name: z.string().min(1).describe("<connector>/<connector parameter>"),
+    connector: z.string().min(1), connector_param: z.enum(CONNECTOR_PARAMS), param: z.string().min(1) }),
   z.object({ op: z.literal("set_visibility"), name: z.string().min(1).describe("the solid"), coarse: z.boolean().optional(), medium: z.boolean().optional(),
     fine: z.boolean().optional(), plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() }),
 ]);
@@ -55,7 +64,7 @@ export const OPS = z.array(OP).min(1).max(500);
 export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null): string[] {
   const p: string[] = [];
   const seen = new Set<string>();
-  const solids = new Set<string>();
+  const solids = new Set<string>(), connectors = new Set<string>();
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
@@ -84,6 +93,16 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null):
         for (const pl of [...(o.rect ?? []), ...(o.end_plane ? [o.end_plane] : [])])
           if (!planes.has(pl)) p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         solids.add(o.name);
+        break;
+      case "add_connector":
+        if (!solids.has(o.solid)) p.push(`${at}: solid "${o.solid}" isn't made earlier in this batch (it may exist in the file: then it's fine)`);
+        if (o.domain === "duct" && o.width && !o.height) p.push(`${at}: a rectangular duct connector needs width and height`);
+        connectors.add(o.name);
+        break;
+      case "link_connector_param":
+        if (o.name !== `${o.connector}/${o.connector_param}`) p.push(`${at}: name must be "${o.connector}/${o.connector_param}"`);
+        if (!connectors.has(o.connector)) p.push(`${at}: connector "${o.connector}" isn't made earlier in this batch (it may exist in the file: then it's fine)`);
+        if (!params.has(o.param)) p.push(`${at}: parameter "${o.param}" isn't added earlier in this batch (it may exist in the file: then it's fine)`);
         break;
       case "set_material_param":
       case "set_visibility":
