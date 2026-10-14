@@ -85,7 +85,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (t.Category == null || t.Category.CategoryType != CategoryType.Model) continue;
                 var values = new JObject();
                 foreach (string p in typeParams) values[p] = Value(t, p);
-                types.Add(new JObject { ["id"] = t.Id.Value, ["family"] = t.FamilyName, ["name"] = t.Name, ["category"] = t.Category.Name, ["parameters"] = values });
+                // bic: the BuiltInCategory name (OST_GenericModel), which the kit's rules name in applies_to.
+                types.Add(new JObject { ["id"] = t.Id.Value, ["family"] = t.FamilyName, ["name"] = t.Name, ["category"] = t.Category.Name,
+                    ["bic"] = ((BuiltInCategory)(int)t.Category.Id.Value).ToString(), ["parameters"] = values });
             }
 
             var families = new JArray(new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>()

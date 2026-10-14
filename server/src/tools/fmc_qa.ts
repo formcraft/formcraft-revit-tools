@@ -37,6 +37,8 @@ export function readRulebooks(dir: string): Rulebooks {
   }
   const books = mergeRulebooks(parsed);
   books.problems.unshift(...problems);
+  // F-015: an empty folder must never read as "no rules apply".
+  if (!files.length) books.problems.push(`No rulebook files (.json) in ${folder} (rulebooks_dir in fmc_guard.json)`);
   return books;
 }
 
@@ -56,6 +58,7 @@ export const FMC_QA_SHAPE = {
   text: z.string().optional().describe("request: proposed wording, reason or comment"),
   severity: z.enum(["Must", "Should", "Advice"]).optional().describe("request approve: severity to approve with"),
   project_folder: z.string().optional().describe("run: the project folder, for the report in 06_QA\\Health where the guard allows"),
+  stage: z.string().optional().describe("run: the project's RIBA stage (e.g. 3); kit rules for other stages show Not applicable"),
 };
 
 export type FmcQaArgs = z.infer<z.ZodObject<typeof FMC_QA_SHAPE>>;
@@ -91,7 +94,7 @@ export async function runFmcQa(args: FmcQaArgs) {
     if (!books.rules.length) return reply({ refused: true, reasons: books.problems.length ? books.problems : ["The kit's rulebooks have no rules"] }, true);
     const facts = (await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", neededParameters(books.rules), 300000))) as QaFacts;
     const today = new Date().toISOString().slice(0, 10);
-    const result = runQa(books, facts, args.gate, today);
+    const result = runQa(books, facts, args.gate, today, (args.stage ?? "").trim());
     const failing = result.results.filter((x) => x.state === "Fail" || x.state === "Warning").map((x) => x.id);
 
     const historyFile = win.join(expandEnv(config.reports_dir), "FMC_QA_History.json");

@@ -452,6 +452,7 @@ namespace revit_mcp_plugin.Shell
             run.Ran = b.Value<int?>("ran") ?? 0; run.Pass = b.Value<int?>("pass") ?? 0; run.Fail = b.Value<int?>("fail") ?? 0;
             run.Warning = b.Value<int?>("warning") ?? 0; run.NotApplicable = b.Value<int?>("not_applicable") ?? 0; run.NotChecked = b.Value<int?>("not_checked") ?? 0;
             run.Summary = b.Value<string>("summary") ?? "";
+            run.Verdict = b.Value<string>("verdict") ?? ((b["blocking"] as JArray)?.Count > 0 ? "Blocked" : "Not clear");
             run.Report = b.Value<string>("report") ?? "";
             run.Trend = (b["trend"]?.Value<int?>("new") ?? 0, b["trend"]?.Value<int?>("recurring") ?? 0, b["trend"]?.Value<int?>("resolved") ?? 0);
             foreach (JObject h in (b["history"] as JArray ?? new JArray()).OfType<JObject>()) run.History.Add((h.Value<string>("at") ?? "", h.Value<int?>("failing") ?? 0));

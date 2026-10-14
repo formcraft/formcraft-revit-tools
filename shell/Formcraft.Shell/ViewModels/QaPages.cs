@@ -61,7 +61,7 @@ namespace Formcraft.Shell.ViewModels
             {
                 Groups.Add(new SettingsGroup("Checks · " + _run.GateName,
                     new ReadOnlySetting(_run.Model, $"{_run.Ran} checks ran · {_run.Pass} pass · {_run.Fail} fail · {_run.Warning} warnings · {_run.NotApplicable} not applicable · {_run.NotChecked} not checked"),
-                    new NoteSetting(_run.Summary, _run.Summary.StartsWith("No Must") ? ChipKind.Good : ChipKind.Bad)));
+                    new NoteSetting(_run.Summary, _run.VerdictKind)));
                 Groups.Add(ResultsGroup(_run));
                 if (_selected != null)
                     Groups.Add(new SettingsGroup("Selected · " + _selected.Id,

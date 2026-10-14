@@ -64,6 +64,9 @@ namespace Formcraft.Shell.Services
         public int NotApplicable { get; set; }
         public int NotChecked { get; set; }
         public string Summary { get; set; } = "";
+        /// <summary>Blocked, Not clear or Clear (F-018: Clear only when every Must rule that applies was checked).</summary>
+        public string Verdict { get; set; } = "";
+        public ChipKind VerdictKind => Verdict == "Clear" ? ChipKind.Good : Verdict == "Blocked" ? ChipKind.Bad : ChipKind.Warn;
         public List<QaResult> Results { get; } = new List<QaResult>();
         public (int New, int Recurring, int Resolved) Trend { get; set; }
         public List<(string At, int Failing)> History { get; } = new List<(string, int)>();
@@ -109,7 +112,7 @@ namespace Formcraft.Shell.Services
             var r = new QaRun
             {
                 Ok = true, Model = "F26001-FMC-ZZ-ZZ-M3-A-0001.rvt", GateName = "WIP → Shared (Discipline Lead)", Ran = 41, Pass = 36, Fail = 2, Warning = 0, NotApplicable = 3, NotChecked = 0,
-                Summary = "2 Must rules block the move: QA-011 (12 types), NAM-012 (3 views).", Trend = (2, 15, 6),
+                Summary = "2 Must rules block the move: QA-011 (12 types), NAM-012 (3 views).", Verdict = "Blocked", Trend = (2, 15, 6),
                 Report = @"%USERPROFILE%\FMC_Reports\QA\FMC_QA_F26001-FMC-ZZ-ZZ-M3-A-0001_20261014-1042.md", Message = "QA ran: 41 checks, 2 fail.",
             };
             var a = new QaResult { Id = "NAM-012", Rule = "View name pattern", Severity = "Must", State = "Fail", Where = "3 views", FixHint = "Rename to A_FP_Lxx_Purpose" };
