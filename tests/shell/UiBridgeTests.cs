@@ -158,7 +158,7 @@ namespace Formcraft.Shell.Tests
                 p.Vm.SetHostSection("Families", new System.Windows.Controls.TextBlock());
                 p.Bridge.OpenSection("Families");
                 var r = (p.Vm.ShowSection, p.Vm.ShowHostSection);
-                p.Bridge.OpenSection("Systems");
+                p.Bridge.OpenSection("Build");
                 return (r.ShowSection, r.ShowHostSection, p.Vm.ShowSection && !p.Vm.ShowHostSection);
             });
             await Assert.That(placeholder).IsFalse();
