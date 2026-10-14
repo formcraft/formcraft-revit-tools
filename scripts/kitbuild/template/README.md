@@ -17,8 +17,12 @@ or updates items by name and never deletes (TPL-028). They are the reference for
 | 6 | `06_view_templates.cs` + `FMC_VT_build.txt` + `FMC_FilterStyle_build.txt` | 81 view templates with filter overrides | View_Templates, Filters |
 | 7 | `07_qa_views_schedules.cs` | QA, model and export views; schedules 00–09 | TPL-014/15/16/17 |
 | 8 | `08_role_copies.cs` | 12 `FMC_<Role>_Template_v2.2.rte` copied from Base | 06_Templates README |
+| 9 | `09_type_legend_schedules.cs` | 21 type legend schedules (one row per type), proposed to the kit | Change request items 38–39 |
+| 10 | `10_legend_views.cs` | 52 legend views: 22 from the Sheet Register, 30 notes legends from `10_Notes` | Sheet_Register, 10_Notes |
+| — | by hand, once | `LG_Seed_Component`: the first legend component, placed in any project and copied in; W and H dimensions by API (issue #85) | — |
 
-Then run `fmc_template audit`. On 14 Oct the result was Pass with 0 warnings, 36.9 MB.
+Then run `fmc_template audit`. On 14 Oct the result was Pass with 0 warnings: 36.9 MB after step 8, 37.2 MB after step 10 (109 schedules).
+After steps 9–10 the role templates were copied again; the previous copies are in `_Staging\_Archive\2026-10-14_b`. Step 8 skips existing files, so archive them first.
 
 The `.txt` files are compact specs made from `FMC_Revit_Kit.xlsx` (tabs View_Templates and Filters). Phase 1
 replaces them with a reader of the kit itself, so the kit stays the only source (rule 7).
