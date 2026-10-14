@@ -11,7 +11,7 @@ The same plan lives in the claude.ai Project as `FMC_MCP/EXECUTION_PLAN_TEMPLATE
 ## Who does what (owner's decision, 14 Oct)
 | Track | Who | How |
 |---|---|---|
-| All code: the full UI (U28–U36), server tools, the policy-aware lock, recipes engine ops, connectors (Robot, Navisworks), automation, data | **Claude Code** in this repo | One step at a time from `UI_DEVELOPMENT.md` Stage D and the phases below: plan → owner's yes → branch → PR → CI → the tester's run in Revit |
+| All code: the full UI (U28–U36), server tools, the policy-aware lock, recipes engine ops, connectors (Robot, Navisworks, Rhino), automation, data | **Claude Code** in this repo | One step at a time from `UI_DEVELOPMENT.md` Stage D and the phases below: plan → owner's yes → branch → PR → CI → the tester's run in Revit |
 | Templates and families: building, filling and checking them in Revit | **Claude in the claude.ai Project** (the tester) | Through the Revit MCP only, in the background, in staging: open files with `OpenDocumentFile`, never `OpenAndActivateDocument`, no zooming, no clicks, no screenshots. The owner keeps the PC screen. Revit stays open (minimised) with a document open (`_Staging\FMC_Claude_Workbench.rvt`) and AI on |
 
 Hand-offs between the two:
@@ -94,6 +94,7 @@ Each phase ends with a Revit run (the tester's protocol in `TESTING.md`) and a r
 | D | Data | Excel round trip (staging copies, dry run), kit tables via change requests, Power BI dashboards via Microsoft's authoring MCP | U34 | 3; Power BI licence |
 | 7 | Guided first project, then local permit packs | IDEAS 4 (guided first project) and 37 (permit packs) on top of the published templates | — | 6 |
 | N | Navisworks | Evaluate open-source Navisworks MCPs; connector; federate, clash matrix, nightly runs, Review; AI triage/fix within the policy | U35, U36 | Navisworks is being installed; can run in parallel with R after phase 1 |
+| RH | Rhino | McNeel's official Rhino MCP (MIT; Rhino 8/9; Grasshopper tools, Python/C#) for massing, facades, form-finding and complex families. Geometry goes to Revit only through staging, as DirectShape or a family from a Rhino export, never into a live model. One hub with the Revit, Robot and Navisworks connectors; same log and policy | U37 (Model › Rhino) | Rhino isn't installed on the pilot PC; licence (Rhino 8); after phase 2 |
 | 8 | Later | B7 recipes from datasheets/photos, LOD 400 assemblies and shop sheets, Design Automation, Blender renders, Speckle | — | — |
 
 **In parallel:** shortcuts standard (IDEAS 10), CI e2e and the weekly smoke test, and branch clean-up.
@@ -121,3 +122,4 @@ AI batches above the policy threshold also wait for a person.
 6. Supplier visits for the Uganda gaps.
 7. A Power BI licence (Pro or Fabric), or skip D3 for now.
 8. Navisworks Manage: being installed (14 Oct), so N can run in parallel with R.
+9. Rhino (track RH): a Rhino 8 licence and install on the pilot PC. Also, whether Rhino.Inside.Revit is wanted alongside the MCP for live exchange.
