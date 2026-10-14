@@ -18,6 +18,8 @@ export interface Rule {
   stages: string[];
   /** Kit schema v0.1: the kit's own check type, kept as written (the check above is what the plugin runs for it). */
   kit_check?: string;
+  /** Kit schema v0.1: the check's params as written, for tools that read the kit's data from a rule (PST-002's tree). */
+  kit_params?: Record<string, unknown>;
   /** Why the plugin can't run this rule (shown as Not checked), when it has no check. */
   not_runnable?: string;
   /** A person confirms this rule (kit check type human_gate): never a model check. */
@@ -93,6 +95,7 @@ export function parseRulebook(fileName: string, json: any, problems: string[]): 
     const stages = Array.isArray(r?.stages) ? r.stages.map(str) : [];  // "all" or missing: every stage
     const appliesTo = list(r?.applies_to);
     let check: RuleCheck | undefined, notRunnable: string | undefined, human = false, kitCheck: string | undefined;
+    const kitParams = r?.check && typeof r.check.params === "object" && r.check.params ? r.check.params as Record<string, unknown> : undefined;
     if (r?.check && typeof r.check.kind === "string") check = r.check;
     else if (r?.check && typeof r.check.type === "string") {
       kitCheck = r.check.type;
@@ -106,7 +109,7 @@ export function parseRulebook(fileName: string, json: any, problems: string[]): 
       test: str(r.test) || (title ? str(r.rule) : ""),
       fix_hint: str(r.fix_hint ?? r.fix) || (r.auto_fix === true ? "A safe fix can do this (auto_fix in the kit)" : ""),
       version: str(r.version ?? r.changed) || version, why: str(r.why) || (r.clause ? str(r.clause) : ""),
-      gates, check, stages, kit_check: kitCheck, not_runnable: notRunnable, human,
+      gates, check, stages, kit_check: kitCheck, kit_params: kitParams, not_runnable: notRunnable, human,
     });
   }
   const exceptions = (Array.isArray(json?.exceptions) ? json.exceptions : []).map((e: any) => ({

@@ -53,8 +53,8 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Closed (run 7) |
 | F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Closed (run 6) |
 | F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Closed (run 6) |
-| F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Open |
-| F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Open |
+| F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Fixed – retest |
+| F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Fixed – retest |
 | F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Open |
 ---
 

@@ -117,7 +117,7 @@ namespace Formcraft.Shell.Tests
                 try { new Pane(allowMock: false).Bridge.SetMockLicence("grace_over"); return ""; }
                 catch (InvalidOperationException e) { return e.Message; }
             });
-            await Assert.That(message).Contains("test builds only");
+            await Assert.That(message).Contains("test mode only");
         }
 
         [Test]
