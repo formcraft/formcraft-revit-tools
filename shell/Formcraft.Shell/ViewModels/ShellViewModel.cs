@@ -114,6 +114,7 @@ namespace Formcraft.Shell.ViewModels
         private SectionBody? _body;
         private DialogViewModel? _dialog;
         private string _status = ReadyStatus;
+        private SectionItem? _shownSection;
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
@@ -447,6 +448,9 @@ namespace Formcraft.Shell.ViewModels
             // A section opened from search or elsewhere brings its group's buttons with it.
             CurrentGroup = Groups.FirstOrDefault(g => g.Sections.Contains(s)) ?? CurrentGroup;
             _section = s;
+            // A footer message belongs to the section that wrote it (F-006): a new section starts clean.
+            if (s != _shownSection) Status = ReadyStatus;
+            _shownSection = s;
             Page = ShellPage.Section;
             Body = new SectionBody(s, _licence.Current.For(s.Module), _licence.Current.GraceOver);
             OnHostChanged();

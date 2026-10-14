@@ -131,7 +131,7 @@ namespace Formcraft.Shell.ViewModels
         private async Task Compare()
         {
             var register = Register();
-            if (register.Length == 0) { _messages.Show(ChipKind.Warn, "Choose the sheet register first."); return; }
+            if (register.Length == 0) { _messages.Show(ChipKind.Warn, "Choose the sheet register first."); _status("Choose the sheet register first."); return; }
             _status("Comparing the register with the model…");
             var r = await _tools.CompareAsync(register, IssueSet, Roles());
             _compare = r.Ok ? r : null;
@@ -148,7 +148,7 @@ namespace Formcraft.Shell.ViewModels
                 return;
             }
             var register = Register();
-            if (register.Length == 0) { _messages.Show(ChipKind.Warn, "Choose the sheet register first."); return; }
+            if (register.Length == 0) { _messages.Show(ChipKind.Warn, "Choose the sheet register first."); _status("Choose the sheet register first."); return; }
             string titleBlock = _store.Get("sheets.titleblock") ?? _compare?.TitleBlocks.FirstOrDefault() ?? "";
             var dry = action == "create" ? await _tools.CreateAsync(register, IssueSet, Roles(), titleBlock, true)
                                          : await _tools.RenameAsync(register, IssueSet, Roles(), true);

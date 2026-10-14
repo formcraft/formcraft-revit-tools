@@ -553,12 +553,18 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="c:FmcDocBanner">
-          <Border Background="{TemplateBinding Background}" CornerRadius="{StaticResource Fmc.Radius.Nav}" Padding="8,6">
+          <Border x:Name="Box" Background="{TemplateBinding Background}" CornerRadius="{StaticResource Fmc.Radius.Nav}" Padding="8,6">
             <StackPanel TextElement.Foreground="{TemplateBinding Foreground}">
               <TextBlock Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}" FontWeight="SemiBold" FontSize="12" TextTrimming="CharacterEllipsis"/>
-              <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" FontSize="11" TextWrapping="Wrap"/>
+              <TextBlock x:Name="Detail" Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" FontSize="11" TextWrapping="Wrap"/>
             </StackPanel>
           </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="Compact" Value="True">
+              <Setter TargetName="Detail" Property="Visibility" Value="Collapsed"/>
+              <Setter TargetName="Box" Property="Padding" Value="8,3"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
