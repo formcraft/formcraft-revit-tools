@@ -8,7 +8,6 @@ using Formcraft.Shell.Services;
 using Formcraft.Shell.ViewModels;
 using revit_mcp_plugin.Core;
 using revit_mcp_plugin.Fmc;
-using revit_mcp_plugin.UI;
 
 namespace revit_mcp_plugin.Shell
 {
@@ -72,8 +71,8 @@ namespace revit_mcp_plugin.Shell
                 new PushButtonData("FMC_ClaudeService", "Claude service", assembly, typeof(ToggleClaudeService).FullName)
                 {
                     ToolTip = "Starts or stops listening for Claude on port 8080. Hiding the pane never stops it.",
-                    Image = Icons.RibbonSmall(Icons.Power),
-                    LargeImage = Icons.RibbonLarge(Icons.Power, false),
+                    Image = Png("ai", 16),
+                    LargeImage = Png("ai", 32),
                     AvailabilityClassName = typeof(AlwaysAvailable).FullName,
                 },
                 Button("FMC_LogFile", "Log file", typeof(LogFileCommand), "log", "Opens today's log for this PC: every action, dry run and refusal.", assembly));
@@ -151,7 +150,6 @@ namespace revit_mcp_plugin.Shell
                 if (_service == null) return;
                 bool on = SocketService.Instance.IsRunning;
                 _service.ItemText = on ? "Claude service on" : "Claude service";
-                _service.LargeImage = Icons.RibbonLarge(Icons.Power, on);
             }
             catch (Exception) { /* cosmetic only */ }
         }

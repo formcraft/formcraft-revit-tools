@@ -1,0 +1,34 @@
+<!--
+  A section the pane builds itself (Setup › Families, Setup › Templates, …): its title, then groups of rows drawn with
+  the same templates as Settings and Connect. DataContext: a SectionPage.
+-->
+<UserControl x:Class="Formcraft.Shell.Views.SectionPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Formcraft.Shell;component/Views/SettingTemplates.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+      <TextBlock Text="{Binding Title}" Style="{DynamicResource FmcText.GroupTitle}" Margin="10,10,10,0"/>
+      <TextBlock Text="{Binding Subtitle}" TextWrapping="Wrap" Style="{DynamicResource FmcText.Hint}" Margin="10,0,10,4"/>
+      <ItemsControl ItemsSource="{Binding Groups}" Focusable="False">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Style="{DynamicResource FmcGroup}">
+              <StackPanel>
+                <TextBlock Text="{Binding Title, Converter={StaticResource Upper}}" Style="{DynamicResource FmcText.Section}"/>
+                <ItemsControl ItemsSource="{Binding Items}" Focusable="False"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

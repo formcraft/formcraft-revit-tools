@@ -35,6 +35,7 @@ namespace revit_mcp_plugin.Shell
         private static readonly RevitDocumentContext Document = new RevitDocumentContext();
         private static readonly RevitConnection Connection = new RevitConnection();
         private static readonly RevitConnectInfo ConnectInfo = new RevitConnectInfo();
+        private static readonly RevitFileTools Files = new RevitFileTools();
         private static ShellView _view;
 
         /// <summary>Called from OnStartup: dockable panes can only be registered there.</summary>
@@ -57,13 +58,12 @@ namespace revit_mcp_plugin.Shell
 #else
             ITouchService touch = null;
 #endif
-            Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: touch, connect: ConnectInfo)
+            Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: touch, connect: ConnectInfo,
+                                      families: new RevitFamilyTools(), files: Files)
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
             };
-            // Until U15 builds Setup › Families from its board, that section is the add-in's working page (families,
-            // files, activity, guard). Connect itself is the pane's own (board core/PaneConnect, U12).
-            Pane.SetHostSection("Families", FormcraftBrowser.Page);
+            FormcraftBrowser.DocumentsChanged += Files.Update;
             _view = new ShellView { DataContext = Pane };
             // fmc_ui (U11): Claude reads and steers the pane through the command set.
             UiBridgeHost.Attach(new UiBridge(Pane, Licence, UiBridgeHost.AllowMockLicence, () => _view));

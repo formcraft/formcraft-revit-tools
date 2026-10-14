@@ -111,7 +111,6 @@ namespace revit_mcp_plugin.Shell
                 case "locate-server": FmcFixes.LocateServer(); break;
             }
             Refresh();
-            FormcraftBrowser.Page?.Refresh();
             return Task.CompletedTask;
         }
 
