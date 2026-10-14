@@ -281,7 +281,7 @@ namespace Formcraft.Shell.ViewModels
 
         public OpenDocument Doc { get; }
         public string Title => Doc.Title;
-        public string State => (Doc.IsActive ? "Active · " : "") + (Doc.Live ? "Live project: Claude reads, never models" : Doc.IsFamily ? "Family" : string.IsNullOrEmpty(Doc.Path) ? "New file" : "Library file")
+        public string State => (Doc.IsActive ? "Active · " : "") + (Doc.Live ? "Live project: AI reads, never models" : Doc.IsFamily ? "Family" : string.IsNullOrEmpty(Doc.Path) ? "New file" : "Library file")
                                + (Doc.IsWorkshared ? " · workshared" : "") + (Doc.IsModified ? " · unsaved changes" : "");
         public ChipKind Kind => Doc.Live ? ChipKind.Bad : ChipKind.Good;
         /// <summary>Workshared models are never saved by a tool (CLAUDE.md rule 6).</summary>

@@ -55,7 +55,7 @@ namespace revit_mcp_plugin.Shell
                 list.Add(server == null
                     ? new HealthCheck("MCP server", "Found", ChipKind.Good)
                     : new HealthCheck("MCP server", server, ChipKind.Bad, server == "Node.js not found" ? "" : "Locate server folder…", "locate-server",
-                        server == "Node.js not found" ? "Install Node.js 20 or later, then check again." : "The pane runs the same checks Claude does, from the installed server."));
+                        server == "Node.js not found" ? "Install Node.js 20 or later, then check again." : "The pane runs the same checks an AI request does, from the installed server."));
 
                 if (_guard.Found)
                 {

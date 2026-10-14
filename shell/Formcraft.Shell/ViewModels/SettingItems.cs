@@ -385,7 +385,7 @@ namespace Formcraft.Shell.ViewModels
         private string _text;
 
         public ConsiderationsSetting(SettingStore store, string key, Action<string> status)
-            : base("Author's considerations", "Sent with every Claude request from this panel and saved in the log. It never overrides a rule; a conflict is flagged.")
+            : base("Author's considerations", "Sent with every AI request from this panel and saved in the log. It never overrides a rule; a conflict is flagged.")
         {
             _store = store;
             _key = key;

@@ -211,7 +211,7 @@ namespace Formcraft.Shell.ViewModels
             else if (l.GraceOver)
                 s = new StateBannerInfo(PaneState.GraceOver, ChipKind.Bad, "Sign in to keep using Formcraft", "Connect, Log and Help still work", "Sign in", SignInAgainCommand);
             else if (_connection.State == ConnectionState.NotConnected)
-                s = new StateBannerInfo(PaneState.NotConnected, ChipKind.Warn, "Start the Claude service: Core › Connect AI", "The pane and Settings still work", "Open Connect", OpenConnectCommand);
+                s = new StateBannerInfo(PaneState.NotConnected, ChipKind.Warn, "Switch on the AI connection: Core › Connect AI", "The pane and Settings still work", "Open Connect", OpenConnectCommand);
             else if (_connection.State == ConnectionState.RevitBusy)
                 s = new StateBannerInfo(PaneState.RevitBusy, ChipKind.Grey, "Waiting for Revit to finish…", "Nothing new starts until Revit is ready");
             else if (!_kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder).KitFound)

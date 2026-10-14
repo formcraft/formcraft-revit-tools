@@ -83,7 +83,7 @@
           </StackPanel>
 
           <!-- Section body: locked state or placeholder until the feature is built -->
-          <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding DataContext.ShowSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
+          <ScrollViewer VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly" Visibility="{Binding DataContext.ShowSection, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource Vis}}" DataContext="{Binding Body}">
             <StackPanel Margin="10">
               <TextBlock Text="{Binding Title}" Style="{StaticResource FmcText.GroupTitle}"/>
               <local:LockedView Visibility="{Binding Locked, Converter={StaticResource Vis}}"/>

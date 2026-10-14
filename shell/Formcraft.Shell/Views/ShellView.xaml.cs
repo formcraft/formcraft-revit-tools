@@ -17,6 +17,8 @@ namespace Formcraft.Shell.Views
             // Compact below 400 px; everything inside reads the inherited c:Fmc.Compact.
             Pane.SizeChanged += (_, e) => Fmc.SetCompact(this, Fmc.IsCompact(e.NewSize.Width));
             PreviewKeyDown += OnPreviewKeyDown;
+            // Finger panning reaches the end of a list: don't bounce Revit's window (WPF's default boundary feedback).
+            ManipulationBoundaryFeedback += (_, e) => e.Handled = true;
             DataContextChanged += (_, e) =>
             {
                 if (e.OldValue is ShellViewModel old) old.OpenLogRequested -= OnOpenLog;

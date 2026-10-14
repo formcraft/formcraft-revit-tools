@@ -102,7 +102,7 @@ namespace Formcraft.Shell.Tests
                 p.Open("Templates");
                 return p.Vm.Templates.Documents.Rows.Select(r => r.CanSaveAs + "|" + r.CanClose + "|" + r.State).ToList();
             });
-            await Assert.That(rows[0]).IsEqualTo("False|False|Active · Live project: Claude reads, never models · workshared");
+            await Assert.That(rows[0]).IsEqualTo("False|False|Active · Live project: AI reads, never models · workshared");
             await Assert.That(rows[1]).IsEqualTo("True|True|Family · unsaved changes");
         }
 

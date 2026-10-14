@@ -14,7 +14,7 @@ namespace Formcraft.Shell.ViewModels
     /// </summary>
     public sealed class LogViewModel : ObservableObject
     {
-        public static readonly string[] Filters = { "All", "Pane clicks", "Claude", "Refused" };
+        public static readonly string[] Filters = { "All", "Pane clicks", "AI", "Refused" };
 
         private readonly ILogReader _reader;
         private readonly Action<string> _open;
@@ -75,7 +75,7 @@ namespace Formcraft.Shell.ViewModels
         public string Message { get => _message; private set => Set(ref _message, value); }
         public bool IsEmpty => Rows.Count == 0;
         public string EmptyText => _all.Count == 0
-            ? "No log yet on this PC. Rows appear here when a pane button or Claude runs a Formcraft tool."
+            ? "No log yet on this PC. Rows appear here when a pane button or an AI runs a Formcraft tool."
             : "No rows for this filter" + (_onlyToday ? " today." : ".");
 
         public void Refresh()
@@ -93,7 +93,7 @@ namespace Formcraft.Shell.ViewModels
             rows = _filter switch
             {
                 "Pane clicks" => rows.Where(r => r.From == "Pane"),
-                "Claude" => rows.Where(r => r.From == "Claude" || r.From == "Ask"),
+                "AI" => rows.Where(r => r.From == "AI" || r.From == "Claude" || r.From == "Ask"),
                 "Refused" => rows.Where(r => r.Refused),
                 _ => rows,
             };

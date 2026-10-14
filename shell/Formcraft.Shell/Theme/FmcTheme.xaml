@@ -107,7 +107,7 @@
     <Setter Property="FontWeight" Value="SemiBold"/>
   </Style>
 
-  <!-- AI button: secondary with the orange AI tag. Fmc.NeedsKey: no Claude key, so it can't run -->
+  <!-- AI button: secondary with the orange AI tag. Fmc.NeedsKey: no AI key, so it can't run -->
   <Style x:Key="FmcButton.Ai" TargetType="Button" BasedOn="{StaticResource FmcButton.Secondary}">
     <Setter Property="ContentTemplate">
       <Setter.Value>
@@ -125,7 +125,7 @@
     <Style.Triggers>
       <Trigger Property="c:Fmc.NeedsKey" Value="True">
         <Setter Property="IsEnabled" Value="False"/>
-        <Setter Property="ToolTip" Value="Needs a Claude key. Add one in Settings."/>
+        <Setter Property="ToolTip" Value="Needs an AI key. Your admin adds one in Admin › AI."/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -610,7 +610,7 @@
                         BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0" Padding="12,8">
                   <ContentPresenter Content="{TemplateBinding Footer}" HorizontalAlignment="Right"/>
                 </Border>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False" PanningMode="VerticalOnly">
                   <ContentPresenter Margin="12"/>
                 </ScrollViewer>
               </DockPanel>
@@ -860,7 +860,7 @@
               <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="260" Margin="0,2,0,6"
                       Background="{DynamicResource Fmc.SurfaceBrush}" BorderBrush="{DynamicResource Fmc.LineBrush}" BorderThickness="1"
                       CornerRadius="{StaticResource Fmc.Radius.Input}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
                   <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
                 </ScrollViewer>
               </Border>

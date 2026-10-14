@@ -91,7 +91,7 @@ namespace Formcraft.Shell.Tests
                 return (b, p.Vm.Page);
             });
 
-            await Assert.That(banner).IsEqualTo("Start the Claude service: Core › Connect AI | The pane and Settings still work | Open Connect");
+            await Assert.That(banner).IsEqualTo("Switch on the AI connection: Core › Connect AI | The pane and Settings still work | Open Connect");
             await Assert.That(page).IsEqualTo(ShellPage.Connect);
         }
 
@@ -141,7 +141,7 @@ namespace Formcraft.Shell.Tests
                 return (p.Vm.Document.LockText, p.Vm.State);
             });
 
-            await Assert.That(doc).IsEqualTo("Live project: Claude reads and reports");
+            await Assert.That(doc).IsEqualTo("Live project: AI reads and reports");
             await Assert.That(state).IsEqualTo(PaneState.Normal);
         }
 

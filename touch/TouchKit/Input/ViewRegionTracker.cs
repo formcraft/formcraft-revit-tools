@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using TouchKit.Core.Gestures;
 
 namespace TouchKit.Input
 {
@@ -37,6 +39,9 @@ namespace TouchKit.Input
 
         private readonly Stopwatch _sinceRefresh = Stopwatch.StartNew();
         private volatile ViewRegion[] _regions = Array.Empty<ViewRegion>();
+        // When each view was last the active one: in a stack of tabs, the most recent is the one showing.
+        private readonly Dictionary<long, long> _lastActive = new();
+        private long _activations;
 
         public IReadOnlyList<ViewRegion> Regions => _regions;
         public string? LastError { get; private set; }
@@ -81,14 +86,7 @@ namespace TouchKit.Input
                 // Active view first so hit-testing prefers it when tiled views overlap at edges.
                 list.Sort((a, b) => b.IsActive.CompareTo(a.IsActive));
 
-                // Revit stacks tabbed views in the active view's rectangle: those are background tabs, never touched
-                // or drawn on. A view somewhere else (tiled windows) is on screen.
-                ViewRegion? active = list.Find(r => r.IsActive);
-                if (active is not null)
-                    list = list.ConvertAll(r => r.IsActive ? r : r with
-                    {
-                        OnScreen = r.Left != active.Left || r.Top != active.Top || r.Right != active.Right || r.Bottom != active.Bottom,
-                    });
+                list = MarkOnScreen(list);
                 _regions = list.ToArray();
                 LastError = null;
             }
@@ -97,6 +95,23 @@ namespace TouchKit.Input
                 // Never let a tracking failure disturb Revit; just remember it for the diagnostics log.
                 LastError = ex.Message;
             }
+        }
+
+        /// <summary>
+        /// Revit stacks tabbed views in (nearly) the same rectangle, and only the front one shows: the others are background
+        /// tabs, never touched or drawn on. A view is on screen unless it mostly overlaps one that is in front of it: the
+        /// active view, else the one activated most recently (first in the list if neither ever was).
+        /// </summary>
+        private List<ViewRegion> MarkOnScreen(List<ViewRegion> list)
+        {
+            ViewRegion? active = list.Find(r => r.IsActive);
+            if (active is not null && (!_lastActive.TryGetValue(active.ViewId, out long last) || last != _activations))
+                _lastActive[active.ViewId] = ++_activations;
+
+            var stack = list.ConvertAll(r => new StackedView(r.Left, r.Top, r.Right, r.Bottom, r.IsActive,
+                _lastActive.TryGetValue(r.ViewId, out long t) ? t : 0));
+            bool[] onScreen = ViewStack.OnScreen(stack);
+            return list.Select((r, i) => r with { OnScreen = onScreen[i] }).ToList();
         }
 
         /// <summary>Which open view (if any) contains this screen point.</summary>

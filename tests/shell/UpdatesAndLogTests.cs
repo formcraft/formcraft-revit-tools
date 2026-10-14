@@ -83,7 +83,7 @@ namespace Formcraft.Shell.Tests
 
                 await Assert.That(counts["All"]).IsEqualTo(3);
                 await Assert.That(counts["Pane clicks"]).IsEqualTo(1);
-                await Assert.That(counts["Claude"]).IsEqualTo(2);
+                await Assert.That(counts["AI"]).IsEqualTo(2);
                 await Assert.That(counts["Refused"]).IsEqualTo(1);
                 await Assert.That(counts["All days"]).IsEqualTo(4);
             }
@@ -121,7 +121,7 @@ namespace Formcraft.Shell.Tests
         public async Task An_empty_log_says_so()
         {
             var text = Sta.Run(() => new LogViewModel(new CsvLogReader(Path.Combine(Path.GetTempPath(), "none-" + Guid.NewGuid() + ".csv")), _ => { }, _ => { }).EmptyText);
-            await Assert.That(text).IsEqualTo("No log yet on this PC. Rows appear here when a pane button or Claude runs a Formcraft tool.");
+            await Assert.That(text).IsEqualTo("No log yet on this PC. Rows appear here when a pane button or an AI runs a Formcraft tool.");
         }
 
         private sealed class Pane
