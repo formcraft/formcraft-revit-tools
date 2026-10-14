@@ -43,21 +43,43 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-006 | Low | Pane footer | A tool's footer message stays after switching sections · #37 | Closed (run 4) |
 | F-007 | Info | U11 / M test | `fmc_ui` bridge run against Revit | Closed (run 2) |
 | F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Closed (run 5: not a plugin bug, see run 5) |
-| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Fixed – retest |
+| F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Closed (run 7) |
 | F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec · #40 | Fixed – retest |
 | F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Closed for layout (run 5); schema → F-017 |
 | F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Fixed – retest |
-| F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Fixed – retest |
+| F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Closed (run 7) |
 | F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Fixed – retest |
 | F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Fixed – retest |
-| F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Fixed – retest |
+| F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Closed (run 7) |
 | F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Closed (run 6) |
 | F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Closed (run 6) |
 | F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Open |
 | F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Open |
+| F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Open |
 ---
 
 ## Test runs
+
+### Run 7 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `a4e2e72`
+
+**`fmc_selftest`: Ready to test** (add-in and server `a4e2e72`). The user opened Revit; the tester closed it (Exit
+command after checking only a new, unsaved model was open; "Save changes?" → **No**).
+
+| Id | Result | State |
+|---|---|---|
+| F-009 #39 | `fmc_library scan` → summary + 15 worst + `more` | Closed |
+| F-016 #47 | `create_room` → `area_m2: 14.8`, `perimeter_mm: 15390` | Closed |
+| F-013 #43 | "No update feed yet…", installed build shown | Closed |
+| F-010 #40 | Pane: "Not checked · 346 (no kit spec: a person decides)" ✅; MCP `by_check` still `fail: 0` with no not-checked count | Open |
+| F-012 #42 | Search "kit" finds **Kit folder** ✅; Enter opens General at the top, not at the field | Open |
+| F-014 #45 | Licence kept after two restarts (`signed_in: true`) but the pane opens on **Sign in**; with no model, state reads "Live" | Open |
+| F-020 #56 | Still needed: the tester can't get past Sign in without typing credentials | Open |
+| New F-021 #59 | Clicks at the top edge of Revit (tabs, window buttons, right half) are lost during tests: not a plugin bug | Open (low) |
+
+Also seen: the server's "not listening" error now says exactly what to click ("AI: off" → "AI: on", or
+start_with_revit) — the #29 promise. Footer carry-over between Settings tabs noted on #37.
+
+---
 
 ### Run 6 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `6a6b61e`
 
