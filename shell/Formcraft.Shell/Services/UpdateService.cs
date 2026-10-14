@@ -32,6 +32,26 @@ namespace Formcraft.Shell.Services
         void UpdateWhenRevitCloses();
         void RollBack();
         event EventHandler? Changed;
+        /// <summary>Where updates come from: "sample" for the preview's sample feed, null when there is no feed yet (F-013).</summary>
+        string? Feed { get; }
+    }
+
+    /// <summary>
+    /// No update feed yet (F-013): the installed build and nothing to offer. Until the installer's feed exists, builds
+    /// arrive through the Formcraft Updater when Revit closes (pilot PC), so the pane never shows a sample update as real.
+    /// </summary>
+    public sealed class NoFeedUpdateService : IUpdateService
+    {
+        public NoFeedUpdateService(string installed) { Installed = installed; }
+        public string Installed { get; }
+        public string? RollbackVersion => null;
+        public UpdateInfo? Available => null;
+        public bool UpdatePending => false;
+        public string? Feed => null;
+        public event EventHandler? Changed { add { } remove { } }
+        public Task CheckAsync(string channel) => Task.CompletedTask;
+        public void UpdateWhenRevitCloses() { }
+        public void RollBack() { }
     }
 
     /// <summary>Sample update for the preview and tests; the real feed comes with the installer.</summary>
@@ -43,6 +63,7 @@ namespace Formcraft.Shell.Services
             "Fixes Tag Tidy on rotated views; Search finds settings (sample notes)", "passed release gates R1–R3");
         public bool UpdatePending { get; private set; }
         public event EventHandler? Changed;
+        public string? Feed => "sample";
 
         public Task CheckAsync(string channel)
         {

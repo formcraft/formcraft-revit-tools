@@ -159,7 +159,7 @@ namespace Formcraft.Shell.Tests
                         p.Tab.Groups[0].Items.OfType<ReadOnlySetting>().First().Value);
             });
 
-            await Assert.That(groups).IsEqualTo("Formcraft for Revit | Update available | Help and support | Legal");
+            await Assert.That(groups).IsEqualTo("Formcraft for Revit | Update available · sample feed (preview only) | Help and support | Legal");
             await Assert.That(footer).IsEqualTo("Check for updates,Save,Reset mine");
             await Assert.That(installed).IsEqualTo("0.1.0 · Core, Manage, Flow, Model (trial) · Revit 2025");
         }
@@ -171,7 +171,7 @@ namespace Formcraft.Shell.Tests
             {
                 var p = new Pane();
                 p.Button("Update when Revit closes").Command.Execute(null);
-                return (p.Updates.UpdatePending, p.Tab.Groups.Single(g => g.Title == "Update available").Items.OfType<NoteSetting>().Single().Text);
+                return (p.Updates.UpdatePending, p.Tab.Groups.Single(g => g.Title.StartsWith("Update available")).Items.OfType<NoteSetting>().Single().Text);
             });
 
             await Assert.That(pending).IsTrue();

@@ -93,7 +93,11 @@ export function summarise(verdicts: FamilyVerdict[]) {
     compliant: verdicts.filter((v) => v.state === "Compliant").length,
     fixable: verdicts.filter((v) => v.state === "Fixable").length,
     need_a_person: verdicts.filter((v) => v.state === "Needs a person").length,
-    by_check: CHECKS.map((c) => ({ check: c, fail: verdicts.filter((v) => v.checks.some((x) => x.check === c && x.state === "fail")).length })),
+    // F-010: a check that couldn't run (no kit spec) is counted apart, so zero failures never reads as a pass.
+    by_check: CHECKS.map((c) => {
+      const n = (state: CheckState) => verdicts.filter((v) => v.checks.some((x) => x.check === c && x.state === state)).length;
+      return { check: c, fail: n("fail"), pass: n("pass"), not_checked: n("na") };
+    }),
   };
 }
 

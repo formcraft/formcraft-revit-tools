@@ -148,7 +148,7 @@ namespace Formcraft.Shell.ViewModels
             Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Connect = new ConnectViewModel(connect ?? new MockConnectInfo(), kit ?? new FolderKitService(), licence, settings, s => Status = s, ShowDialog,
-                                           () => OpenSettingsTab("General", "Kit folder: Settings › General › kit."));
+                                           () => OpenSettingsTab("General", "Kit folder: Settings › General › kit.", "General · kit"));
             // Setup sections the pane builds itself (the families and files tools that were the Formcraft Browser).
             Project = new ProjectPage(project ?? new MockProjectTools(), settings, picker ?? new WindowsFilePicker(), s => Status = s, ShowDialog);
             Families = new FamiliesPage(families ?? new MockFamilyTools(), library ?? new MockLibraryTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
@@ -238,7 +238,7 @@ namespace Formcraft.Shell.ViewModels
                 s = new StateBannerInfo(PaneState.RevitBusy, ChipKind.Grey, "Waiting for Revit to finish…", "Nothing new starts until Revit is ready");
             else if (!_kit.Check(_settings.Get(SettingKeys.KitFolder) ?? WelcomeViewModel.DefaultKitFolder).KitFound)
                 s = new StateBannerInfo(PaneState.KitMissing, ChipKind.Warn, "Point to the kit folder in Settings", "Connect and Settings still work", "Open Settings",
-                    new RelayCommand(() => { if (Page != ShellPage.Settings) Open(ShellPage.Settings); Settings.Open("General"); }));
+                    new RelayCommand(() => { if (Page != ShellPage.Settings) Open(ShellPage.Settings); Settings.Open("General", "General · kit"); }));
             else if (l.Offline)
             {
                 var days = l.LastOnlineCheck is DateTime t ? Math.Max(0, (DateTime.Today - t.Date).Days) : 0;
@@ -623,11 +623,11 @@ namespace Formcraft.Shell.ViewModels
         /// dry run first, once built); a setting opens Settings; help says which part of the guide it opens.
         /// </summary>
         /// <summary>Opens Settings on one tab (quick tools, the ribbon).</summary>
-        public void OpenSettingsTab(string tab, string status)
+        public void OpenSettingsTab(string tab, string status, string? focus = null)
         {
             if (!IsMain) return;
             if (Page != ShellPage.Settings) Open(ShellPage.Settings);
-            Settings.Open(tab);
+            Settings.Open(tab, focus);
             Status = status;
         }
 
@@ -638,9 +638,9 @@ namespace Formcraft.Shell.ViewModels
             if (r.Opens == "Settings")
             {
                 if (Page != ShellPage.Settings) Open(ShellPage.Settings);
-                // "Settings › Flow" opens that tab.
-                var tab = r.Detail.StartsWith("Settings › ") ? r.Detail.Substring("Settings › ".Length) : "General";
-                Settings.Open(tab);
+                // "Settings › Flow" opens that tab; a focus lands on the setting itself (F-012).
+                var tab = r.Detail.StartsWith("Settings › ") ? r.Detail.Substring("Settings › ".Length).Split(' ')[0] : "General";
+                Settings.Open(tab, r.Focus);
             }
 
             if (!r.Allowed)

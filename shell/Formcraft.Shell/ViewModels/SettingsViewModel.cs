@@ -141,6 +141,17 @@ namespace Formcraft.Shell.ViewModels
         /// <summary>Opens a tab from elsewhere (a module tab link, search).</summary>
         public void Open(string tab) => CurrentName = tab;
 
+        /// <summary>The group the view scrolls to and focuses (search, banners: F-012). Raised again for the same group.</summary>
+        public string? FocusGroup { get; private set; }
+
+        /// <summary>Opens a tab on one group: the view brings it into view and puts the cursor in its first field.</summary>
+        public void Open(string tab, string? focus)
+        {
+            CurrentName = tab;
+            FocusGroup = focus;
+            OnPropertyChanged(nameof(FocusGroup));
+        }
+
         private bool Licensed(FmcModule m) => _licence.Current.For(m).CanUse;
 
         private string Status(FmcModule m) =>
@@ -228,9 +239,11 @@ namespace Formcraft.Shell.ViewModels
                     // The same setting as General › Update channel.
                     new ChoiceSetting(_store, "general.channel", "Update channel", new[] { "Stable", "Beta (testers)" })),
             };
+            if (_updates.Feed == null)
+                groups.Add(new SettingsGroup("Updates", new NoteSetting(NoFeed, ChipKind.Info)));
             if (available != null)
             {
-                groups.Add(new SettingsGroup("Update available",
+                groups.Add(new SettingsGroup(_updates.Feed == "sample" ? "Update available · sample feed (preview only)" : "Update available",
                     new ReadOnlySetting(available.Version, available.Notes + " · " + available.Gates),
                     new NoteSetting(_updates.UpdatePending
                         ? available.Version + " installs when Revit closes. Your settings are kept; " + _updates.Installed + " is kept for rollback."
@@ -256,10 +269,15 @@ namespace Formcraft.Shell.ViewModels
             return groups;
         }
 
+        /// <summary>Said instead of "latest version" while there is no update feed (F-013).</summary>
+        public const string NoFeed = "No update feed yet: updates come with the installer. On the pilot PC the Formcraft Updater installs each new build when Revit is closed.";
+
         public void CheckForUpdates()
         {
             _ = _updates.CheckAsync(_store.Get("general.channel") ?? "Stable");
-            _status(_updates.Available == null ? "You have the latest version." : "Update " + _updates.Available.Version + " is available.");
+            _status(_updates.Feed == null ? NoFeed
+                : _updates.Available == null ? "You have the latest version."
+                : "Update " + _updates.Available.Version + " is available" + (_updates.Feed == "sample" ? " (sample feed, preview only)." : "."));
         }
 
         private void AskRollBack() => _ask(new DialogViewModel("Roll back to " + (_updates.RollbackVersion ?? "—"),

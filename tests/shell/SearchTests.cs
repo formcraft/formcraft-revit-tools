@@ -246,7 +246,7 @@ namespace Formcraft.Shell.Tests
                 .Select(e => e.Title).ToList();
 
             await Assert.That(string.Join("; ", bad)).IsEqualTo("");
-            await Assert.That((registry.Search ?? new SearchEntryDef[0]).Length).IsEqualTo(10);
+            await Assert.That((registry.Search ?? new SearchEntryDef[0]).Length).IsEqualTo(16);
         }
     }
 }

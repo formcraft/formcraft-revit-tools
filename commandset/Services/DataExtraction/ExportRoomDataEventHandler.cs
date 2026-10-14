@@ -64,10 +64,10 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                         Name = room.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? "",
                         Number = room.Number ?? "",
                         Level = room.Level?.Name ?? "No Level",
-                        Area = room.Area, // Already in square feet
-                        Volume = room.Volume, // Already in cubic feet
-                        Perimeter = room.Perimeter, // Already in feet
-                        UnboundedHeight = room.UnboundedHeight, // Already in feet
+                        AreaM2 = Math.Round(room.Area * 0.09290304, 2),
+                        VolumeM3 = Math.Round(room.Volume * 0.028316846592, 2),
+                        PerimeterMm = Math.Round(room.Perimeter * 304.8),
+                        UnboundedHeightMm = Math.Round(room.UnboundedHeight * 304.8),
                         Department = room.get_Parameter(BuiltInParameter.ROOM_DEPARTMENT)?.AsString() ?? "",
                         Comments = room.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString() ?? "",
                         Phase = doc.GetElement(room.get_Parameter(BuiltInParameter.ROOM_PHASE)?.AsElementId())?.Name ?? "",
@@ -75,13 +75,13 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                     };
 
                     rooms.Add(roomData);
-                    totalArea += room.Area;
+                    totalArea += room.Area * 0.09290304;
                 }
 
                 ResultInfo = new ExportRoomDataResult
                 {
                     TotalRooms = rooms.Count,
-                    TotalArea = totalArea,
+                    TotalAreaM2 = Math.Round(totalArea, 2),
                     Rooms = rooms,
                     Success = true,
                     Message = $"Successfully exported {rooms.Count} rooms"
