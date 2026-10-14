@@ -17,7 +17,11 @@ namespace revit_mcp_plugin.Shell
     {
         private static UiBridge _bridge;
 
-        /// <summary>set_mock_licence is for test builds: a Debug build, or FMC_UI_TEST=1 in Revit's environment.</summary>
+        /// <summary>
+        /// set_mock_licence is for testing: a Debug build, FMC_UI_TEST=1 in Revit's environment, or the test PC's file
+        /// %APPDATA%\Formcraft\fmc_test.json {"ui_test": true, "pc": "&lt;computer name&gt;"} (F-020). The file counts only on
+        /// the PC it names, so a copy elsewhere does nothing; it is never part of a customer install.
+        /// </summary>
         public static bool AllowMockLicence
         {
             get
@@ -25,9 +29,24 @@ namespace revit_mcp_plugin.Shell
 #if DEBUG
                 return true;
 #else
-                return Environment.GetEnvironmentVariable("FMC_UI_TEST") == "1";
+                return Environment.GetEnvironmentVariable("FMC_UI_TEST") == "1" || TestPcFile();
 #endif
             }
+        }
+
+        public static string TestFilePath => System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Formcraft", "fmc_test.json");
+
+        private static bool TestPcFile()
+        {
+            try
+            {
+                if (!System.IO.File.Exists(TestFilePath)) return false;
+                var o = JObject.Parse(System.IO.File.ReadAllText(TestFilePath));
+                return o.Value<bool?>("ui_test") == true
+                    && string.Equals(o.Value<string>("pc") ?? "", Environment.MachineName, StringComparison.OrdinalIgnoreCase);
+            }
+            catch (Exception) { return false; }
         }
 
         internal static void Attach(UiBridge bridge) => _bridge = bridge;

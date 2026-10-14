@@ -73,3 +73,15 @@ test("Project Information takes Revit's fields and the kit's parameters, blanks 
     FMC_Project_Name: "Pilot House", FMC_District: "Kampala",
   });
 });
+
+test("F-019: the tree comes from the kit's PST-002, roles expanded, later folders stop at their parent", async () => {
+  const { treeFolders } = await import("./project.js");
+  const kit = ["00_Info", "01_WIP\\<Role>", "02_Shared\\<Role>", "03_Published\\<Stage>", "04_Archive\\<Date>_<Milestone>",
+    "05_Incoming\\<Party>\\<Date>", "06_QA\\Health", "06_QA\\Sync", "07_Cost\\QTO"];
+  assert.deepEqual(treeFolders(kit, ["A", "S"]), ["00_Info", "01_WIP\\A", "01_WIP\\S", "02_Shared\\A", "02_Shared\\S", "03_Published",
+    "04_Archive", "05_Incoming", "06_QA\\Health", "06_QA\\Sync", "07_Cost\\QTO"]);
+  const plan = planProject(input(), cfg, disk({ "Z:\\Projects\\F26001": [] }, [A, S]), new Date(), kit);
+  assert.ok(plan.folders.includes("Z:\\Projects\\F26001\\06_QA\\Health"));
+  assert.equal((plan.manifest as any).tree, "kit rulebook PST-002");
+  assert.deepEqual(treeFolders(null, ["A"]), []);
+});
