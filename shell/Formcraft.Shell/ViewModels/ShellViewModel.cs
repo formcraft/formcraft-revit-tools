@@ -123,7 +123,7 @@ namespace Formcraft.Shell.ViewModels
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
-                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null)
+                              IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null)
         {
             _licence = licence;
             _connection = connection;
@@ -171,6 +171,8 @@ namespace Formcraft.Shell.ViewModels
             Review = new ReviewPage(review ?? new MockReviewTools(), qa ?? new MockQaTools(), Project, settings,
                                     () => _licence.Current.Account?.Name ?? "", s => Status = s, ShowDialog);
             _hostSections["Review"] = Review;
+            Reports = new ReportsPage(reports ?? new MockReportTools(), Project, settings, s => Status = s, ShowDialog);
+            _hostSections["Reports"] = Reports;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -380,6 +382,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Team › Review: the project's review register (MAN 10.5).</summary>
         public ReviewPage Review { get; }
+
+        /// <summary>Check › Reports: reports traced to the plugin's own saved files.</summary>
+        public ReportsPage Reports { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
