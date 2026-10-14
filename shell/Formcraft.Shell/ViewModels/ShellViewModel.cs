@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null)
         {
             _licence = licence;
             _connection = connection;
@@ -152,7 +152,7 @@ namespace Formcraft.Shell.ViewModels
                                            () => OpenSettingsTab("General", "Kit folder: Settings › General › kit.", "General · kit"));
             // Setup sections the pane builds itself (the families and files tools that were the Formcraft Browser).
             Project = new ProjectPage(project ?? new MockProjectTools(), settings, picker ?? new WindowsFilePicker(), s => Status = s, ShowDialog);
-            Families = new FamiliesPage(families ?? new MockFamilyTools(), library ?? new MockLibraryTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
+            Families = new FamiliesPage(families ?? new MockFamilyTools(), library ?? new MockLibraryTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog, release);
             Templates = new TemplatesPage(files ?? new MockFileTools(), templates ?? new MockTemplateTools(), picker ?? new WindowsFilePicker(), settings, Project, s => Status = s, ShowDialog);
             Qa = new QaPage(qa ?? new MockQaTools(), Project, settings, s => Status = s);
             Rules = new RulesPage(qa ?? new MockQaTools(), settings, () => IsAdmin, s => Status = s, ShowDialog);
