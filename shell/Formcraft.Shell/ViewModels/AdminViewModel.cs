@@ -14,10 +14,15 @@ namespace Formcraft.Shell.ViewModels
     /// </summary>
     public sealed class AdminViewModel : ObservableObject
     {
-        public static readonly string[] Sections = { "Team and roles", "Licences and seats" };
+        public static readonly string[] Sections = { "Team and roles", "Licences and seats", "AI involvement" };
         private static readonly string[] DisciplineCodes = { "Z", "A", "S", "M", "E", "P", "FP", "C", "L" };
 
         private readonly IAdminService _admin;
+        private readonly IAiTools _ai;
+        private AiPolicy? _policy;
+        private List<AiQueueLine> _queue = new List<AiQueueLine>();
+        private readonly InMemoryUserSettings _aiDraft = new InMemoryUserSettings();
+        private readonly MessagesSetting _aiMessages = new MessagesSetting();
         private readonly ILicenceService _licence;
         private readonly SettingStore _team;
         private readonly Action<string> _status;
@@ -26,9 +31,10 @@ namespace Formcraft.Shell.ViewModels
         private IReadOnlyList<SettingsGroup> _groups = new SettingsGroup[0];
         private TableSetting? _teamTable;
 
-        public AdminViewModel(IAdminService admin, ILicenceService licence, Action<string> status, Action<DialogViewModel> ask)
+        public AdminViewModel(IAdminService admin, ILicenceService licence, Action<string> status, Action<DialogViewModel> ask, IAiTools? ai = null)
         {
             _admin = admin;
+            _ai = ai ?? new MockAiTools();
             _licence = licence;
             _team = new SettingStore(admin.TeamValues);
             _status = status;
@@ -46,16 +52,19 @@ namespace Formcraft.Shell.ViewModels
             {
                 if (value == null || !Sections.Contains(value) || !Set(ref _section, value)) return;
                 Rebuild();
+                if (value == Sections[2]) _ = LoadAi();
             }
         }
 
         public string SectionHint => _section == Sections[0]
             ? "Only admins see this. Roles hide and lock the plugin's own buttons; real file protection comes from folder permissions or a common data environment."
-            : "Plan and renewal, seats per module, who holds which modules, invites, offline licence files and module requests. Payments stay on the account website.";
+            : _section == Sections[1]
+            ? "Plan and renewal, seats per module, who holds which modules, invites, offline licence files and module requests. Payments stay on the account website."
+            : "How much AI may model, and how: the firm switch, the involvement level, each group's level, the approval queue and Stop AI. The bands and limits come from the kit rulebook.";
 
         public IReadOnlyList<SettingsGroup> Groups { get => _groups; private set => Set(ref _groups, value); }
 
-        public void Rebuild() => Groups = _section == Sections[0] ? TeamAndRoles() : LicencesAndSeats();
+        public void Rebuild() => Groups = _section == Sections[0] ? TeamAndRoles() : _section == Sections[1] ? LicencesAndSeats() : AiInvolvement();
 
         // ---------- Team and roles (core/PaneAdmin) ----------
         private IReadOnlyList<SettingsGroup> TeamAndRoles()
@@ -254,6 +263,122 @@ namespace Formcraft.Shell.ViewModels
                 new ToggleSetting(_team, "admin.twostep", "Require two-step sign-in", true),
                 new ToggleSetting(_team, "admin.claudepane", "Ask AI in the pane", false, "Organisation key for the AI provider you choose, 200,000 tokens per PC per day")),
         };
+
+        // ---------- AI involvement (core/PaneAdminAI, U28; docs/AI_ASSISTED_MODELLER.md) ----------
+        public static readonly string[] AiLevels = { "Off", "Suggest", "Fix with approval", "Auto in WIP" };
+
+        public AiPolicy? Policy => _policy;
+        public IReadOnlyList<AiQueueLine> Queue => _queue;
+        public MessagesSetting AiMessages => _aiMessages;
+
+        public async Task LoadAi()
+        {
+            _policy = await _ai.StatusAsync();
+            _queue = await _ai.QueueAsync();
+            _aiDraft.SetBool("ai.on", _policy.On);
+            _aiDraft.Set("ai.involvement", _policy.Involvement.ToString());
+            foreach (var g in _policy.Groups) _aiDraft.Set("ai.level." + g.Id, g.Level);
+            if (_section == Sections[2]) Rebuild();
+        }
+
+        private IReadOnlyList<SettingsGroup> AiInvolvement()
+        {
+            var p = _policy;
+            if (p == null) return new[] { new SettingsGroup("AI modelling", new NoteSetting("Reading the policy…", ChipKind.Grey)) };
+            var store = new SettingStore(_aiDraft, "");
+            var groups = new List<SettingsGroup>();
+
+            var head = new List<SettingItem>();
+            if (!p.Ok) head.Add(new NoteSetting(p.Message, ChipKind.Bad));
+            if (!p.GuardSection) head.Add(new NoteSetting("Not set up: fmc_guard.json has no ai_modeller section, so AI modelling is Off. Saving the policy here creates it.", ChipKind.Warn));
+            if (p.Rulebook.Length == 0)
+                head.Add(new NoteSetting("The kit has no FMC_Rulebook_AIUse yet. AI modelling stays Off until the BIM Manager adds it through a kit change request (a proposal is in docs/kit-proposals).", ChipKind.Warn));
+            if (p.Stop) head.Add(new NoteSetting("Stop AI is on: every AI change is refused.", ChipKind.Bad));
+            head.Add(new ToggleSetting(store, "ai.on", "AI modelling (firm-wide switch)", false, "Off refuses every AI change, whatever the levels say. Only admins change it."));
+            head.Add(new TextSetting("Involvement level, 0–100%", _aiDraft.Get("ai.involvement") ?? "20", "20", store: store, key: "ai.involvement",
+                hint: "1–20 Assist · 21–50 Co-model · 51–80 Lead · 81–100 Full (bands from the kit rulebook)"));
+            groups.Add(new SettingsGroup("AI modelling", head.ToArray()));
+
+            var levels = new List<SettingItem>();
+            foreach (var g in p.Groups)
+            {
+                var options = g.AutoAllowed ? AiLevels : AiLevels.Take(3).ToArray();
+                levels.Add(new ChoiceSetting(store, "ai.level." + g.Id, g.Name, options, Math.Max(0, Array.IndexOf(options, g.Level)), dropdown: true,
+                    hint: (g.AllowedNow ? "Allowed now on " + p.Model : g.Why) + (g.AutoAllowed ? "" : " · never Auto")));
+            }
+            if (p.Groups.Count == 0) levels.Add(new NoteSetting("The groups come from the kit rulebook.", ChipKind.Grey));
+            levels.Add(new ButtonsSetting("", new[] { new SettingButton("Save policy", new RelayCommand(AskSave), primary: true) }));
+            levels.Add(_aiMessages);
+            groups.Add(new SettingsGroup("Operation groups · level each", levels.ToArray()));
+
+            var waiting = new List<SettingItem>();
+            var pending = _queue.Where(q => q.Status == "pending").ToList();
+            if (pending.Count == 0) waiting.Add(new NoteSetting("Nothing is waiting. A batch at Fix with approval waits here for the model's author.", ChipKind.Grey));
+            foreach (var q in pending.Take(10))
+                waiting.Add(new ButtonsSetting(q.Id + " · " + q.Summary + " · " + q.Model, new[]
+                {
+                    new SettingButton("Approve", new AsyncCommand(() => Decide(q.Id, true), _status), primary: true),
+                    new SettingButton("Reject", new AsyncCommand(() => Decide(q.Id, false), _status)),
+                }));
+            if (_queue.Count > 0)
+                waiting.Add(new TableSetting("Recent batches", new[] { "Batch", "Model", "What", "Status" },
+                    _queue.Take(20).Select(q => new TableRow(q, q.Id, q.Model, q.Summary, q.Status))));
+            groups.Add(new SettingsGroup("Waiting for approval", waiting.ToArray()));
+
+            groups.Add(new SettingsGroup("Stop AI",
+                new NoteSetting(p.Stop ? "Stopped. Resume lets AI work again at the levels above." : "Anyone on the project can stop AI at once; every AI change is then refused.", p.Stop ? ChipKind.Bad : ChipKind.Info),
+                new ButtonsSetting("", new[] { p.Stop
+                    ? new SettingButton("Resume AI", new AsyncCommand(() => StopAi(false), _status), primary: true)
+                    : new SettingButton("Stop AI", new AsyncCommand(() => StopAi(true), _status)) })));
+
+            groups.Add(new SettingsGroup("Never, at any level",
+                new NoteSetting("Structure, grids, levels and coordinates; central, shared or published models; sync, issue and signatures; deleting what AI didn't make; loads, sizes and demand factors. "
+                                + (p.Limits.Length > 0 ? "Limits: " + p.Limits + ". " : "")
+                                + "The AI log counts work per model, never per person (Manual 14.5).", ChipKind.Warn)));
+            return groups;
+        }
+
+        private void AskSave()
+        {
+            if (_policy == null) return;
+            bool on = _aiDraft.GetBool("ai.on", false);
+            if (!int.TryParse(_aiDraft.Get("ai.involvement") ?? "", out int involvement) || involvement < 0 || involvement > 100)
+            {
+                _aiMessages.Show(ChipKind.Warn, "The involvement level is a whole number from 0 to 100.");
+                return;
+            }
+            var levels = _policy.Groups.ToDictionary(g => g.Id, g => _aiDraft.Get("ai.level." + g.Id) ?? g.Level);
+            var changes = new List<string>();
+            if (on != _policy.On) changes.Add("AI modelling: " + (on ? "On" : "Off"));
+            if (involvement != _policy.Involvement) changes.Add($"Involvement: {_policy.Involvement}% → {involvement}%");
+            foreach (var g in _policy.Groups) if (levels[g.Id] != g.Level) changes.Add($"{g.Name}: {g.Level} → {levels[g.Id]}");
+            if (changes.Count == 0) { _aiMessages.Show(ChipKind.Info, "Nothing changed."); return; }
+            _ask(DialogViewModel.WithItems("Save the AI policy?", "It applies to every open model at once, and it is logged.",
+                new SettingItem[] { new ReadOnlySetting("Changes", string.Join(Environment.NewLine, changes), mono: true) }, "Save", async () =>
+                {
+                    var r = await _ai.SaveAsync(on, involvement, levels);
+                    _aiMessages.Show(r.Messages);
+                    _status(r.Messages.FirstOrDefault()?.Text ?? "Saved.");
+                    await LoadAi();
+                    return null;
+                }));
+        }
+
+        private async Task Decide(string id, bool approve)
+        {
+            var r = await _ai.DecideAsync(id, approve);
+            _aiMessages.Show(r.Messages);
+            _status(r.Messages.FirstOrDefault()?.Text ?? "");
+            await LoadAi();
+        }
+
+        private async Task StopAi(bool stop)
+        {
+            var r = await _ai.StopAsync(stop);
+            _aiMessages.Show(r.Messages);
+            _status(r.Messages.FirstOrDefault()?.Text ?? "");
+            await LoadAi();
+        }
 
         private void AskInvite()
         {

@@ -178,7 +178,7 @@ namespace Formcraft.Shell.Preview
                 {
                     main.Services.Pane.Admin.Section = section;
                     RenderFull(new Formcraft.Shell.Views.AdminView { DataContext = main.Services.Pane.Admin }, 440,
-                               Path.Combine(folder, $"admin-{name}-{(section.StartsWith("Team") ? "team" : "seats")}-440.png"));
+                               Path.Combine(folder, $"admin-{name}-{(section.StartsWith("Team") ? "team" : section.StartsWith("AI") ? "ai" : "seats")}-440.png"));
                 }
                 main.Services.Pane.Admin.Section = AdminViewModel.Sections[0];
                 main.Services.Pane.OpenAdminCommand.Execute(null);
