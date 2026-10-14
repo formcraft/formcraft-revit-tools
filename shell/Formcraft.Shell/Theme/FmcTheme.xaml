@@ -610,7 +610,7 @@
                         BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0" Padding="12,8">
                   <ContentPresenter Content="{TemplateBinding Footer}" HorizontalAlignment="Right"/>
                 </Border>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False" PanningMode="VerticalOnly">
                   <ContentPresenter Margin="12"/>
                 </ScrollViewer>
               </DockPanel>
@@ -860,7 +860,7 @@
               <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="260" Margin="0,2,0,6"
                       Background="{DynamicResource Fmc.SurfaceBrush}" BorderBrush="{DynamicResource Fmc.LineBrush}" BorderThickness="1"
                       CornerRadius="{StaticResource Fmc.Radius.Input}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
                   <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
                 </ScrollViewer>
               </Border>
