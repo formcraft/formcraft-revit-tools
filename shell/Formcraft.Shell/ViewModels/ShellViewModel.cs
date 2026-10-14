@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null)
         {
             _licence = licence;
             _connection = connection;
@@ -183,6 +183,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Systems"] = Systems;
             Structural = new StructuralPage(systemTools, Project, settings, s => Status = s);
             _hostSections["Structural"] = Structural;
+            Build = new BuildPage(build ?? new MockBuildTools(), Project, settings, s => Status = s, ShowDialog, () => OpenWorkspaceRequested?.Invoke(this, EventArgs.Empty));
+            _hostSections["Build"] = Build;
+            BuildWorkspace = new BuildWorkspacePage(Build, settings);
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -421,6 +424,13 @@ namespace Formcraft.Shell.ViewModels
         /// <summary>Engineer › Systems and Structural: honest capability status and read-only checks (U25).</summary>
         public SystemsPage Systems { get; }
         public StructuralPage Structural { get; }
+
+        /// <summary>Build: quantities, view colours and the workspace window (U26).</summary>
+        public BuildPage Build { get; }
+        public BuildWorkspacePage BuildWorkspace { get; }
+
+        /// <summary>The Build workspace window opens beside the model (the view owns the window).</summary>
+        public event EventHandler? OpenWorkspaceRequested;
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>

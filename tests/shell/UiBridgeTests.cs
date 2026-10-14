@@ -158,8 +158,9 @@ namespace Formcraft.Shell.Tests
                 p.Vm.SetHostSection("Families", new System.Windows.Controls.TextBlock());
                 p.Bridge.OpenSection("Families");
                 var r = (p.Vm.ShowSection, p.Vm.ShowHostSection);
-                p.Bridge.OpenSection("Build");
-                return (r.ShowSection, r.ShowHostSection, p.Vm.ShowSection && !p.Vm.ShowHostSection);
+                // Every section now has its own page (U26): the next one shows its page, not a placeholder.
+                p.Bridge.OpenSection("Brief");
+                return (r.ShowSection, r.ShowHostSection, p.Vm.HostContent is BriefPage);
             });
             await Assert.That(placeholder).IsFalse();
             await Assert.That(host).IsTrue();
