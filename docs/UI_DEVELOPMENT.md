@@ -150,7 +150,7 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
 - [ ] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`
 - [ ] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`
 - [ ] U21 Manage › Reports — `manage/PaneReports`
-- [ ] U22 Flow: Touch, on-view previews, Section box, shortcuts — `flow/*`
+- [~] U22 Flow: Touch, on-view previews, Section box, shortcuts — `flow/*`. **Touch done** (touch engine in `touch/`, formerly TouchKit; Settings › Flow › Touch; Flow ribbon Touch on; Touch quick tool). On-view previews, Section box and shortcuts to do
 - [ ] U23 Model › Start from brief — `model/PaneModelBrief`
 - [ ] U24 Model › Scripts and automation — `model/PaneScripts`, `model/M_Automation`
 - [ ] U25 Model › Systems and Structural — `model/PaneModelSystems`, `PaneModelStructural`

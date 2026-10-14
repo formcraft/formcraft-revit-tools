@@ -27,6 +27,10 @@ namespace revit_mcp_plugin.Shell
         public static ShellViewModel Pane { get; private set; }
         public static IUserSettings Settings { get; private set; }
         public static MockLicenceService Licence { get; private set; }
+#if REVIT2025_OR_GREATER
+        /// <summary>Formcraft Flow's touch engine, started just before the pane (null if it couldn't start).</summary>
+        public static TouchKit.App Touch { get; set; }
+#endif
 
         private static readonly RevitDocumentContext Document = new RevitDocumentContext();
         private static readonly RevitConnection Connection = new RevitConnection();
@@ -47,7 +51,12 @@ namespace revit_mcp_plugin.Shell
             Settings = new JsonUserSettings(JsonUserSettings.DefaultPath);
             // The licence service arrives in U17 (decision D6); until then sign-in is the mock (code 123456).
             Licence = new MockLicenceService();
-            Pane = new ShellViewModel(Licence, Connection, Document, Settings)
+#if REVIT2025_OR_GREATER
+            ITouchService touch = Touch != null ? new RevitTouch(Touch) : null;
+#else
+            ITouchService touch = null;
+#endif
+            Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: touch)
             {
                 LogPath = Path.Combine(GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir), "FMC_MCP_FileLog.csv"),
                 // Connect is the add-in's working page: Claude service, health, probe, families, files, activity, guard.

@@ -237,4 +237,63 @@
     </StackPanel>
   </DataTemplate>
 
+  <!-- Touch views (board flow/PaneFlowTouch): on screen, then background tabs; each view has its own switch -->
+  <DataTemplate x:Key="TouchViewTable">
+    <Border BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="1" CornerRadius="4" Margin="0,0,0,8">
+      <StackPanel>
+        <Grid Background="{DynamicResource Fmc.HeaderBrush}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="56"/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Text="VIEW" FontSize="10" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="6,5"/>
+          <TextBlock Grid.Column="1" Text="TYPE" FontSize="10" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="6,5"/>
+          <TextBlock Grid.Column="2" Text="TOUCH" FontSize="10" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="6,5"/>
+        </Grid>
+        <ItemsControl ItemsSource="{Binding}" Focusable="False">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border BorderBrush="{DynamicResource Fmc.DividerBrush}" BorderThickness="0,1,0,0">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="56"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Text="{Binding Name}" FontSize="11.5" Foreground="{DynamicResource Fmc.InkBrush}" Margin="6,6" TextTrimming="CharacterEllipsis"
+                             ToolTip="{Binding Name}" VerticalAlignment="Center"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Type}" FontSize="11.5" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="6,6"
+                             TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                  <CheckBox Grid.Column="2" IsChecked="{Binding On}" Style="{DynamicResource FmcToggle}" Margin="6,4" VerticalAlignment="Center"
+                            AutomationProperties.Name="{Binding Name, StringFormat='Touch in {0}'}"/>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </Border>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:TouchViewsSetting}">
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="{Binding Label}" Style="{DynamicResource FmcText.Label}"/>
+      <TextBlock Text="No model open: views appear here when one is." Style="{DynamicResource FmcText.Hint}" Visibility="{Binding NoViews, Converter={StaticResource Vis}}"/>
+      <StackPanel Visibility="{Binding HasOnScreen, Converter={StaticResource Vis}}">
+        <TextBlock Text="On screen" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="0,2,0,4"/>
+        <ContentPresenter Content="{Binding OnScreen}" ContentTemplate="{StaticResource TouchViewTable}"/>
+      </StackPanel>
+      <StackPanel Visibility="{Binding HasBackground, Converter={StaticResource Vis}}">
+        <TextBlock Text="In background tabs" FontSize="11" Foreground="{DynamicResource Fmc.MutedBrush}" Margin="0,2,0,4"/>
+        <ContentPresenter Content="{Binding Background}" ContentTemplate="{StaticResource TouchViewTable}"/>
+      </StackPanel>
+      <WrapPanel>
+        <Button Content="All on" Command="{Binding AllOnCommand}" Margin="0,0,6,6" c:Fmc.StyleKey="FmcButton.Secondary"/>
+        <Button Content="All off" Command="{Binding AllOffCommand}" Margin="0,0,6,6" c:Fmc.StyleKey="FmcButton.Secondary"/>
+      </WrapPanel>
+      <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
+    </StackPanel>
+  </DataTemplate>
+
 </ResourceDictionary>
