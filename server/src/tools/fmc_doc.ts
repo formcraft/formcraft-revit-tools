@@ -6,6 +6,8 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { SessionRecord, buildReport, openProblems, saveProblems } from "../fmc/doc.js";
 import { serverBuild } from "./fmc_selftest.js";
+import { OP, opsProblems, splitProblems } from "../fmc/ops.js";
+import { parseSharedParameters } from "../fmc/specs.js";
 
 const win = path.win32;
 
@@ -48,10 +50,15 @@ export const FMC_DOC_DESCRIPTION =
     "report: what an open session holds (category, parameters, types, reference planes, solids, connectors, warnings). " +
     "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. Never a project or " +
-    "workshared model; sessions idle for 30 minutes close by themselves. The ops that build content come in B1b.";
+    "workshared model; sessions idle for 30 minutes close by themselves. apply: a batch of named ops (set_category, " +
+    "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
+    "add_dimension); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
-  action: z.enum(["open", "report", "screenshot", "save", "close", "list"]),
+  action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply"]),
+  ops: z.array(OP).optional().default([]).describe("apply: the batch, in order"),
+  dry_run: z.boolean().optional().default(true).describe("apply: a dry run unless false"),
   template: z.string().optional().default("").describe("open: a family template (.rft) in the template roots"),
   file: z.string().optional().default("").describe("open: a family file (.rfa) in the library roots"),
   session: z.string().optional().default(""),
@@ -87,6 +94,24 @@ export async function runFmcDoc(args: FmcDocArgs) {
       const folder = win.join(expandEnv(config.reports_dir), "Screenshots");
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_screenshot", { session: s.id, folder }, 120000));
       return reply({ session: s.id, files: r?.files ?? [] });
+    }
+
+    if (args.action === "apply") {
+      if (!args.ops.length) return reply({ refused: true, reasons: ["apply needs ops"] }, true);
+      let dictionary = null;
+      try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
+      const { errors, notes } = splitProblems(opsProblems(args.ops, dictionary));
+      if (errors.length) return reply({ refused: true, reasons: errors }, true);
+      const dry = args.dry_run !== false;
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_apply",
+        { session: s.id, ops: args.ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000));
+      if (!dry) {
+        s.ops.push(...((r?.ops ?? []) as Array<{ op: string; name: string; result: string }>).map((o) => ({ op: o.op, name: o.name, result: o.result })));
+        ledger[s.id] = s;
+        writeLedger(config, ledger);
+        log(config, "doc_apply", s.id, "done", `${r?.created ?? 0} created, ${r?.updated ?? 0} updated, ${r?.skipped ?? 0} skipped`);
+      }
+      return reply({ session: s.id, ...r, notes, next: dry ? "Run again with dry_run=false to apply" : "save writes it to staging with its build report" });
     }
 
     if (args.action === "close") {

@@ -1,0 +1,324 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Autodesk.Revit.DB;
+using Newtonsoft.Json.Linq;
+
+namespace RevitMCPCommandSet.Services.Fmc
+{
+    /// <summary>
+    /// fmc_doc apply (plan B1b): runs a batch of named ops on a session's family document in one TransactionGroup. Each op
+    /// answers create, update or skip, so a second run of the same batch changes nothing. The dry run is the real run rolled
+    /// back, so its diff is what Revit actually did, warnings included. Any error rolls the whole batch back and names the op.
+    /// The server has already validated every op (names, dictionary GUIDs, units in mm).
+    /// </summary>
+    public static class FmcDocOps
+    {
+        private static double Mm(double v) => UnitUtils.ConvertToInternalUnits(v, UnitTypeId.Millimeters);
+
+        /// <summary>Collects Revit's warnings instead of showing dialogs; errors make the transaction fail.</summary>
+        private sealed class Collector : IFailuresPreprocessor
+        {
+            public readonly List<string> Warnings = new List<string>();
+            public FailureProcessingResult PreprocessFailures(FailuresAccessor a)
+            {
+                foreach (FailureMessageAccessor f in a.GetFailureMessages())
+                {
+                    if (f.GetSeverity() == FailureSeverity.Warning) { Warnings.Add(f.GetDescriptionText()); a.DeleteWarning(f); }
+                }
+                return FailureProcessingResult.Continue;
+            }
+        }
+
+        public static JObject Apply(Document doc, JArray ops, bool dry, string sharedParameterFile)
+        {
+            if (!doc.IsFamilyDocument) throw new InvalidOperationException("B1 ops build families; project templates come in B5.");
+            var results = new JArray();
+            var warnings = new List<string>();
+            var app = doc.Application;
+            string previousSp = app.SharedParametersFilename;
+            using (var group = new TransactionGroup(doc, "Formcraft: build"))
+            {
+                group.Start();
+                int i = 0;
+                try
+                {
+                    if (!string.IsNullOrEmpty(sharedParameterFile)) app.SharedParametersFilename = sharedParameterFile;
+                    foreach (JObject op in ops.OfType<JObject>())
+                    {
+                        i++;
+                        var collector = new Collector();
+                        using (var t = new Transaction(doc, op.Value<string>("op") + " " + op.Value<string>("name")))
+                        {
+                            var fho = t.GetFailureHandlingOptions();
+                            fho.SetFailuresPreprocessor(collector);
+                            t.SetFailureHandlingOptions(fho);
+                            t.Start();
+                            var (result, detail) = Run(doc, op);
+                            var status = t.Commit();
+                            if (status != TransactionStatus.Committed) throw new InvalidOperationException("Revit refused it (" + status + ")");
+                            results.Add(new JObject { ["op"] = op.Value<string>("op"), ["name"] = op.Value<string>("name"), ["result"] = result, ["detail"] = detail });
+                        }
+                        warnings.AddRange(collector.Warnings.Select(w => $"op {i} ({op.Value<string>("op")} {op.Value<string>("name")}): {w}"));
+                    }
+                    if (dry) group.RollBack(); else group.Assimilate();
+                }
+                catch (Exception e)
+                {
+                    if (group.HasStarted() && !group.HasEnded()) group.RollBack();
+                    throw new InvalidOperationException($"op {i} failed, nothing was changed: {e.Message}");
+                }
+                finally
+                {
+                    app.SharedParametersFilename = previousSp ?? "";
+                }
+            }
+            return new JObject
+            {
+                ["dry_run"] = dry, ["ops"] = results, ["warnings"] = new JArray(warnings),
+                ["created"] = results.Count(r => r.Value<string>("result") == "create"),
+                ["updated"] = results.Count(r => r.Value<string>("result") == "update"),
+                ["skipped"] = results.Count(r => r.Value<string>("result") == "skip"),
+            };
+        }
+
+        private static (string Result, string Detail) Run(Document doc, JObject op)
+        {
+            switch (op.Value<string>("op"))
+            {
+                case "set_category": return SetCategory(doc, op);
+                case "set_family_params": return SetFamilyParams(doc, op);
+                case "add_ref_plane": return AddRefPlane(doc, op);
+                case "add_family_param": return AddFamilyParam(doc, op);
+                case "add_shared_param": return AddSharedParam(doc, op);
+                case "set_formula": return SetFormula(doc, op);
+                case "add_type": return AddType(doc, op);
+                case "set_type_value": return SetTypeValue(doc, op);
+                case "add_dimension": return AddDimension(doc, op);
+                default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
+            }
+        }
+
+        private static (string, string) SetCategory(Document doc, JObject op)
+        {
+            string want = op.Value<string>("name");
+            Category cat = want.StartsWith("OST_") && Enum.TryParse(want, out BuiltInCategory bic)
+                ? Category.GetCategory(doc, bic)
+                : doc.Settings.Categories.Cast<Category>().FirstOrDefault(c => string.Equals(c.Name, want, StringComparison.OrdinalIgnoreCase));
+            if (cat == null) throw new InvalidOperationException("No category " + want);
+            if (doc.OwnerFamily.FamilyCategory?.Id == cat.Id) return ("skip", cat.Name);
+            string from = doc.OwnerFamily.FamilyCategory?.Name ?? "";
+            doc.OwnerFamily.FamilyCategory = cat;
+            return ("update", from + " → " + cat.Name);
+        }
+
+        private static (string, string) SetFamilyParams(Document doc, JObject op)
+        {
+            var changed = new List<string>();
+            void Flag(string key, BuiltInParameter bip)
+            {
+                if (op[key] == null) return;
+                Parameter p = doc.OwnerFamily.get_Parameter(bip);
+                if (p == null || p.IsReadOnly) return;
+                int want = op.Value<bool>(key) ? 1 : 0;
+                if (p.AsInteger() == want) return;
+                p.Set(want);
+                changed.Add(key + "=" + (want == 1));
+            }
+            Flag("work_plane_based", BuiltInParameter.FAMILY_WORK_PLANE_BASED);
+            Flag("always_vertical", BuiltInParameter.FAMILY_ALWAYS_VERTICAL);
+            Flag("shared", BuiltInParameter.FAMILY_SHARED);
+            Flag("room_calculation_point", BuiltInParameter.ROOM_CALCULATION_POINT);
+            return changed.Count == 0 ? ("skip", "") : ("update", string.Join(", ", changed));
+        }
+
+        private static View PlanView(Document doc, string name)
+        {
+            var views = new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate).ToList();
+            return views.FirstOrDefault(v => v.Name == (string.IsNullOrEmpty(name) ? "Ref. Level" : name))
+                ?? views.FirstOrDefault(v => v.ViewType == ViewType.FloorPlan)
+                ?? throw new InvalidOperationException("No view " + name + " to draw in");
+        }
+
+        private static ReferencePlane Plane(Document doc, string name) =>
+            new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(p => p.Name == name);
+
+        private static (string, string) AddRefPlane(Document doc, JObject op)
+        {
+            string name = op.Value<string>("name");
+            var from = (JArray)op["from"]; var to = (JArray)op["to"];
+            View view = PlanView(doc, op.Value<string>("view"));
+            XYZ a = new XYZ(Mm(from[0].Value<double>()), Mm(from[1].Value<double>()), 0), b = new XYZ(Mm(to[0].Value<double>()), Mm(to[1].Value<double>()), 0);
+            ReferencePlane plane = Plane(doc, name);
+            string result = "skip", detail = "";
+            if (plane == null)
+            {
+                plane = doc.FamilyCreate.NewReferencePlane(a, b, view.ViewDirection.Negate(), view);
+                plane.Name = name;
+                result = "create";
+            }
+            else if (!plane.BubbleEnd.IsAlmostEqualTo(a) || !plane.FreeEnd.IsAlmostEqualTo(b))
+            {
+                detail = "exists in another place: left as it is (moving planes comes with lock_alignment, B1c)";
+            }
+            string reference = op.Value<string>("is_reference");
+            if (!string.IsNullOrEmpty(reference) && Enum.TryParse(reference, out FamilyInstanceReferenceType kind))
+            {
+                Parameter p = plane.get_Parameter(BuiltInParameter.ELEM_REFERENCE_NAME);
+                if (p != null && !p.IsReadOnly && p.AsInteger() != (int)kind) { p.Set((int)kind); if (result == "skip") result = "update"; detail = (detail + " is reference " + reference).Trim(); }
+            }
+            return (result, detail);
+        }
+
+        private static ForgeTypeId Spec(string type)
+        {
+            switch (type)
+            {
+                case "Length": return SpecTypeId.Length;
+                case "Number": return SpecTypeId.Number;
+                case "Integer": return SpecTypeId.Int.Integer;
+                case "YesNo": return SpecTypeId.Boolean.YesNo;
+                case "Text": return SpecTypeId.String.Text;
+                case "Material": return SpecTypeId.Reference.Material;
+                case "Area": return SpecTypeId.Area;
+                case "Volume": return SpecTypeId.Volume;
+                case "Angle": return SpecTypeId.Angle;
+                default: throw new InvalidOperationException("unknown data type " + type);
+            }
+        }
+
+        private static ForgeTypeId Group(string group)
+        {
+            switch (group)
+            {
+                case "Constraints": return GroupTypeId.Constraints;
+                case "Data": return GroupTypeId.Data;
+                case "Text": return GroupTypeId.Text;
+                case "Materials": return GroupTypeId.Materials;
+                case "IdentityData": return GroupTypeId.IdentityData;
+                case "Graphics": return GroupTypeId.Graphics;
+                case "Electrical": return GroupTypeId.Electrical;
+                case "ElectricalLoads": return GroupTypeId.ElectricalLoads;
+                case "Mechanical": return GroupTypeId.Mechanical;
+                case "Plumbing": return GroupTypeId.Plumbing;
+                case "General": return GroupTypeId.General;
+                default: return GroupTypeId.Geometry;
+            }
+        }
+
+        private static (string, string) AddFamilyParam(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            string name = op.Value<string>("name");
+            bool instance = op.Value<bool?>("instance") == true;
+            FamilyParameter p = fm.get_Parameter(name);
+            if (p == null) { fm.AddParameter(name, Group(op.Value<string>("group")), Spec(op.Value<string>("type")), instance); return ("create", op.Value<string>("type")); }
+            if (p.IsInstance == instance) return ("skip", "");
+            if (instance) fm.MakeInstance(p); else fm.MakeType(p);
+            return ("update", instance ? "now instance" : "now type");
+        }
+
+        private static (string, string) AddSharedParam(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            Guid guid = Guid.Parse(op.Value<string>("guid"));
+            if (fm.GetParameters().Any(x => x.IsShared && x.GUID == guid)) return ("skip", "");
+            DefinitionFile df = doc.Application.OpenSharedParameterFile() ?? throw new InvalidOperationException("The kit's shared parameter file isn't set");
+            ExternalDefinition def = df.Groups.SelectMany(g => g.Definitions.Cast<ExternalDefinition>()).FirstOrDefault(d => d.GUID == guid)
+                ?? throw new InvalidOperationException("GUID " + guid + " isn't in " + Path.GetFileName(doc.Application.SharedParametersFilename));
+            fm.AddParameter(def, Group(op.Value<string>("group") ?? "Data"), op.Value<bool?>("instance") == true);
+            return ("create", def.Name);
+        }
+
+        private static (string, string) SetFormula(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            FamilyParameter p = fm.get_Parameter(op.Value<string>("name")) ?? throw new InvalidOperationException("No parameter " + op.Value<string>("name"));
+            string formula = op.Value<string>("formula") ?? "";
+            if ((p.Formula ?? "") == formula) return ("skip", "");
+            fm.SetFormula(p, formula.Length == 0 ? null : formula);
+            return ("update", formula);
+        }
+
+        private static (string, string) AddType(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            string name = op.Value<string>("name");
+            if (fm.Types.Cast<FamilyType>().Any(t => t.Name == name)) return ("skip", "");
+            fm.NewType(name);
+            return ("create", "");
+        }
+
+        private static (string, string) SetTypeValue(Document doc, JObject op)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            FamilyType type = fm.Types.Cast<FamilyType>().FirstOrDefault(t => t.Name == op.Value<string>("type")) ?? throw new InvalidOperationException("No type " + op.Value<string>("type"));
+            FamilyParameter p = fm.get_Parameter(op.Value<string>("param")) ?? throw new InvalidOperationException("No parameter " + op.Value<string>("param"));
+            fm.CurrentType = type;
+            JToken v = op["value"];
+            ForgeTypeId spec = p.Definition.GetDataType();
+            switch (p.StorageType)
+            {
+                case StorageType.Double:
+                {
+                    double want = spec == SpecTypeId.Length ? Mm(v.Value<double>()) : spec == SpecTypeId.Angle ? v.Value<double>() * Math.PI / 180 : v.Value<double>();
+                    double? now = type.AsDouble(p);
+                    if (now.HasValue && Math.Abs(now.Value - want) < 1e-9) return ("skip", "");
+                    fm.Set(p, want);
+                    break;
+                }
+                case StorageType.Integer:
+                {
+                    int want = v.Type == JTokenType.Boolean ? (v.Value<bool>() ? 1 : 0) : v.Value<int>();
+                    if (type.AsInteger(p) == want) return ("skip", "");
+                    fm.Set(p, want);
+                    break;
+                }
+                case StorageType.String:
+                {
+                    string want = v.ToString();
+                    if (type.AsString(p) == want) return ("skip", "");
+                    fm.Set(p, want);
+                    break;
+                }
+                default: throw new InvalidOperationException(p.Definition.Name + " can't be set by value");
+            }
+            return ("update", v.ToString());
+        }
+
+        private static (string, string) AddDimension(Document doc, JObject op)
+        {
+            var between = (JArray)op["between"];
+            ReferencePlane a = Plane(doc, between[0].ToString()) ?? throw new InvalidOperationException("No reference plane " + between[0]);
+            ReferencePlane b = Plane(doc, between[1].ToString()) ?? throw new InvalidOperationException("No reference plane " + between[1]);
+            View view = PlanView(doc, op.Value<string>("view"));
+            string label = op.Value<string>("label");
+            FamilyParameter p = string.IsNullOrEmpty(label) ? null : doc.FamilyManager.get_Parameter(label) ?? throw new InvalidOperationException("No parameter " + label);
+            // Already there: a dimension in this view referencing both planes.
+            Dimension existing = new FilteredElementCollector(doc, view.Id).OfClass(typeof(Dimension)).Cast<Dimension>().FirstOrDefault(d =>
+            {
+                var ids = d.References.Cast<Reference>().Select(r => r.ElementId).ToList();
+                return ids.Contains(a.Id) && ids.Contains(b.Id);
+            });
+            if (existing != null)
+            {
+                if (p == null || existing.FamilyLabel?.Id == p.Id) return ("skip", "");
+                existing.FamilyLabel = p;
+                return ("update", "labelled " + label);
+            }
+            XYZ dir = (a.FreeEnd - a.BubbleEnd).Normalize();
+            XYZ across = b.BubbleEnd - a.BubbleEnd;
+            double offset = Mm(op.Value<double?>("offset") ?? 300);
+            XYZ start = a.BubbleEnd + dir * offset;
+            XYZ normal = dir.CrossProduct(view.ViewDirection).Normalize();
+            XYZ end = start + normal * across.DotProduct(normal);
+            if (start.DistanceTo(end) < 1e-6) throw new InvalidOperationException(a.Name + " and " + b.Name + " are not apart");
+            var refs = new ReferenceArray();
+            refs.Append(a.GetReference());
+            refs.Append(b.GetReference());
+            Dimension dim = doc.FamilyCreate.NewLinearDimension(view, Line.CreateBound(start, end), refs);
+            if (p != null) dim.FamilyLabel = p;
+            return ("create", p != null ? "labelled " + label : "");
+        }
+    }
+}

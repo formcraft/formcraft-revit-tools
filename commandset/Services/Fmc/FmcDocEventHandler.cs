@@ -53,6 +53,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "screenshot": Result = Screenshot(Get()); break;
                     case "save": Result = Save(Get()); break;
                     case "close": Result = Close(); break;
+                    case "apply":
+                        var s = Get();
+                        Result = FmcDocOps.Apply(s.Doc, Parameters["ops"] as JArray ?? new JArray(), Parameters.Value<bool?>("dry_run") != false,
+                            Parameters.Value<string>("shared_parameter_file") ?? "");
+                        break;
                     default: Error = $"Unknown fmc_doc action '{Action}'"; break;
                 }
             }
