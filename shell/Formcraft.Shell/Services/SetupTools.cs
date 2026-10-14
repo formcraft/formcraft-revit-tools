@@ -116,6 +116,8 @@ namespace Formcraft.Shell.Services
         public bool Save { get; set; }
         public bool CloseAfter { get; set; } = true;
         public bool Overwrite { get; set; }
+        /// <summary>create_from_template (project): Project Information to fill in before saving.</summary>
+        public Dictionary<string, string> ProjectInfo { get; set; } = new Dictionary<string, string>();
     }
 
     /// <summary>Setup › Templates: files through fmc_file, with the folder rules the server enforces.</summary>

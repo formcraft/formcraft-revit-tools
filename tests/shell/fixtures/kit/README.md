@@ -6,3 +6,7 @@ and the two `_Staging` write folders. **This is not the Formcraft kit** and hold
 
 `FMC_Kit.json` (kit and rulebook versions) is the U05 decision for where the kit check reads versions from. If the real
 kit keeps them elsewhere, that is a kit change request or a change to `FolderKitService`.
+
+`06_Templates` holds empty placeholder `.rte` files (two released, one in `_Staging`) and a sample `FMC_BrandPacks.json`,
+so Setup › Templates can list a library, pick a brand pack and run its flows against the mock tools. They are not
+templates; Revit can't open them.

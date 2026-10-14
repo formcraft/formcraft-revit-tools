@@ -22,6 +22,7 @@ namespace Formcraft.Shell.Tests
             public MockLicenceService Licence { get; } = new MockLicenceService();
             public MockFamilyTools Families { get; } = new MockFamilyTools();
             public MockFileTools Files { get; } = new MockFileTools();
+            public MockTemplateTools Templates { get; } = new MockTemplateTools();
             public Picker Picker { get; } = new Picker();
             public InMemoryUserSettings Settings { get; } = new InMemoryUserSettings();
             public ShellViewModel Vm { get; }
@@ -31,7 +32,7 @@ namespace Formcraft.Shell.Tests
                 Settings.SetBool(SettingKeys.SetupDone, true);
                 Settings.Set(SettingKeys.KitFolder, SetupTests.SampleKit);
                 Vm = new ShellViewModel(Licence, new MockConnectionService(), new MockDocumentContext(), Settings, theme: new ThemeService(),
-                                        families: Families, files: Files, picker: Picker);
+                                        families: Families, files: Files, picker: Picker, templates: Templates);
                 Licence.SetSignedIn();
             }
 
@@ -108,26 +109,102 @@ namespace Formcraft.Shell.Tests
         }
 
         [Test]
-        public async Task New_file_needs_template_and_target_then_dry_runs_asks_and_runs()
+        public async Task A_new_model_comes_from_the_kit_template_named_by_the_project_with_its_information()
         {
-            var (warning, runs, title) = OnSta(() =>
+            var (warning, request, title, runs) = OnSta(() =>
             {
                 var p = new Pane();
                 p.Open("Templates");
                 p.Vm.Templates.NewFileCommand.Execute(null);
                 var w = p.Vm.Templates.Messages.Lines.Single().Text;
-                p.Picker.Next = @"C:\ProgramData\Autodesk\RVT 2025\Templates\FMC_A_Template_v2.2.rte";
-                p.Vm.Templates.Groups[0].Items.OfType<ButtonsSetting>().First().Buttons.Single().Command.Execute(null);
-                p.Picker.Next = @"Z:\Projects\F26001\01_WIP\A\F26001-FMC-ZZ-ZZ-M3-A-0002.rvt";
-                p.Vm.Templates.Groups[0].Items.OfType<ButtonsSetting>().ElementAt(1).Buttons.Single().Command.Execute(null);
+                p.Settings.Set("settings.project.folder", @"Z:\Projects\F26001");
+                p.Settings.Set("settings.project.code", "F26001");
+                p.Settings.Set("settings.project.d.FMC_Project_Name", "Pilot House");
+                p.Vm.Templates.Rebuild();
                 p.Vm.Templates.NewFileCommand.Execute(null);
                 var t = p.Vm.Dialog!.Title;
                 p.Vm.Dialog.ConfirmCommand!.Execute(null);
-                return (w, p.Files.Runs.Select(r => r.Request.Action + ":" + r.Dry).ToList(), t);
+                return (w, p.Files.Runs.Last().Request, t, p.Files.Runs.Select(r => r.Dry).ToList());
             });
-            await Assert.That(warning).Contains("Choose a template");
-            await Assert.That(title).IsEqualTo("Create F26001-FMC-ZZ-ZZ-M3-A-0002.rvt?");
-            await Assert.That(runs).IsEquivalentTo(new[] { "create_from_template:True", "create_from_template:False" });
+            await Assert.That(warning).Contains("set the project folder and code");
+            await Assert.That(request.TemplatePath).EndsWith("FMC_A_Template_v2.2.rte");
+            await Assert.That(request.SavePath).IsEqualTo(@"Z:\Projects\F26001\01_WIP\A\F26001-FMC-ZZ-ZZ-M3-A-0001.rvt");
+            await Assert.That(request.ProjectInfo["Project Number"]).IsEqualTo("F26001");
+            await Assert.That(request.ProjectInfo["Project Name"]).IsEqualTo("Pilot House");
+            await Assert.That(title).IsEqualTo("Create F26001-FMC-ZZ-ZZ-M3-A-0001.rvt?");
+            await Assert.That(runs).IsEquivalentTo(new[] { true, false });
+        }
+
+        [Test]
+        public async Task A_family_needs_its_template_and_target()
+        {
+            var (warning, runs) = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Settings.Set("settings.templates.kind", "Family");
+                p.Open("Templates");
+                p.Vm.Templates.NewFileCommand.Execute(null);
+                var w = p.Vm.Templates.Messages.Lines.Single().Text;
+                p.Picker.Next = @"C:\ProgramData\Autodesk\RVT 2025\Family Templates\English\Generic Model.rft";
+                p.Vm.Templates.Groups[0].Items.OfType<ButtonsSetting>().First().Buttons.Single().Command.Execute(null);
+                p.Picker.Next = @"Z:\00_Standards\04_Families\_Staging\E\FMC_E_ElecFixture_SocketMK.rfa";
+                p.Vm.Templates.Groups[0].Items.OfType<ButtonsSetting>().ElementAt(1).Buttons.Single().Command.Execute(null);
+                p.Vm.Templates.NewFileCommand.Execute(null);
+                p.Vm.Dialog!.ConfirmCommand!.Execute(null);
+                return (w, p.Files.Runs.Select(r => r.Request.Kind + ":" + r.Dry).ToList());
+            });
+            await Assert.That(warning).Contains("Choose a family template");
+            await Assert.That(runs).IsEquivalentTo(new[] { "family:True", "family:False" });
+        }
+
+        [Test]
+        public async Task The_brand_pack_comes_from_the_kit_and_is_previewed_before_it_applies()
+        {
+            var (fonts, title, runs) = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Open("Templates");
+                var brand = p.Vm.Templates.Groups.Single(g => g.Title == "Firm look · brand pack");
+                var f = string.Join(",", brand.Items.OfType<ReadOnlySetting>().Select(r => r.Value));
+                p.Vm.Templates.ApplyLookCommand.Execute(null);
+                var t = p.Vm.Dialog!.Title;
+                p.Vm.Dialog.ConfirmCommand!.Execute(null);
+                return (f, t, p.Templates.Brands.Select(b => System.IO.Path.GetFileName(b.Path) + ":" + b.Dry).ToList());
+            });
+            await Assert.That(fonts).IsEqualTo("Arial,Arial Bold");
+            await Assert.That(title).IsEqualTo("Apply the brand pack: preview");
+            await Assert.That(runs).IsEquivalentTo(new[] { "FMC_A_Template_v2.3.rte:True", "FMC_A_Template_v2.3.rte:False" });
+        }
+
+        [Test]
+        public async Task The_audit_lists_its_lines_and_filters_by_severity()
+        {
+            var (all, must) = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Open("Templates");
+                p.Vm.Templates.AuditCommand.Execute(null);
+                CheckListSetting List() => p.Vm.Templates.Groups.Single(g => g.Title == "Audit a template").Items.OfType<CheckListSetting>().Single();
+                var a = List().Rows.Count;
+                p.Settings.Set("settings.templates.show", "Must");
+                p.Vm.Templates.Rebuild();
+                return (a, List().Rows.Select(r => r.Label + "=" + r.Status).ToList());
+            });
+            await Assert.That(all).IsEqualTo(6);
+            await Assert.That(must).IsEquivalentTo(new[] { "Shared parameters vs FMC_SharedParameters.txt=2 differ" });
+        }
+
+        [Test]
+        public async Task The_library_lists_released_and_staging_templates_from_the_kit()
+        {
+            var rows = OnSta(() =>
+            {
+                var p = new Pane();
+                p.Open("Templates");
+                var table = p.Vm.Templates.Groups.Single(g => g.Title == "Template library").Items.OfType<TableSetting>().Single();
+                return table.Rows.Select(r => string.Join("|", r.Cells)).ToList();
+            });
+            await Assert.That(rows).IsEquivalentTo(new[] { "FMC_A_Template|2.3|Staging", "FMC_A_Template|2.2|Released", "FMC_S_Template|2.2|Released" });
         }
 
         [Test]

@@ -53,6 +53,7 @@ export const FMC_FILE_SHAPE = {
   overwrite: z.boolean().optional().default(false).describe("Replace an existing file (needs confirm=true)"),
   save: z.boolean().optional().default(false).describe("close: save before closing"),
   close_after: z.boolean().optional().default(true).describe("create_from_template: close the new file after saving"),
+  project_info: z.record(z.string(), z.string()).optional().describe("create_from_template (project): Project Information to fill in before saving"),
   dry_run: z.boolean().optional().default(true).describe("Report what would happen without doing it"),
   confirm: z.boolean().optional().default(false).describe("Required for overwrite and archive"),
 };
@@ -91,7 +92,8 @@ export async function runFmcFile(args: FmcFileArgs) {
         if (args.overwrite && !args.confirm) reasons.push("overwrite needs confirm=true");
       }
       const plan = { action: args.action, kind: args.kind, template_path: args.template_path, document: args.document,
-        save_path: target, overwrite: args.overwrite, close_after: args.close_after, max_backups: config.max_backups };
+        save_path: target, overwrite: args.overwrite, close_after: args.close_after, max_backups: config.max_backups,
+        project_info: args.action === "create_from_template" ? args.project_info : undefined };
       if (reasons.length) {
         log(config, args.action, dry, target, "refused", reasons.join(" | "));
         return reply({ refused: true, reasons, config_problem: problem, plan }, true);

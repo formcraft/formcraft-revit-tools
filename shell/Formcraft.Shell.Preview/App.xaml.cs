@@ -144,6 +144,13 @@ namespace Formcraft.Shell.Preview
                     RenderFull(new Formcraft.Shell.Views.SettingsView { DataContext = main.Services.Pane }, 440,
                                Path.Combine(folder, $"settings-{name}-{tab.ToLowerInvariant()}-440.png"));
                 }
+                // Setup sections at full height (U13-U15; boards manage/PaneProject, PaneTemplates, PaneFamilies)
+                foreach (var page in new Formcraft.Shell.ViewModels.SectionPage[] { main.Services.Pane.Project, main.Services.Pane.Templates, main.Services.Pane.Families })
+                {
+                    page.Opened();
+                    RenderFull(new Formcraft.Shell.Views.SectionPageView { DataContext = page }, 440,
+                               Path.Combine(folder, $"setup-{name}-{page.Title.Split(' ').Last().ToLowerInvariant()}-440.png"));
+                }
                 // Connect at full height (U12; board core/PaneConnect)
                 RenderFull(new Formcraft.Shell.Views.ConnectView { DataContext = main.Services.Pane.Connect }, 440,
                            Path.Combine(folder, $"connect-{name}-440.png"));

@@ -202,6 +202,7 @@ namespace revit_mcp_plugin.Shell
             if (q.Action == "close") args["save"] = q.Save;
             if (q.Action == "create_from_template") args["close_after"] = q.CloseAfter;
             if (q.Overwrite) { args["overwrite"] = true; args["confirm"] = true; }
+            if (q.ProjectInfo.Count > 0) args["project_info"] = JObject.FromObject(q.ProjectInfo);
             if (q.Action == "archive" && !dryRun) args["confirm"] = true;
 
             CliResult r = await ServerCli.RunAsync("fmc_file", args);
@@ -271,6 +272,44 @@ namespace revit_mcp_plugin.Shell
                 r.Ok ? $"Started {q.Code}. Logged in FMC_MCP_FileLog.csv." : $"{q.Code} started with problems: see the lines below."));
             done.Messages.Add(new ToolMessage(ChipKind.Info, "Next: link the models, project families and the first QA run."));
             return done;
+        }
+    }
+}
+
+namespace revit_mcp_plugin.Shell
+{
+    /// <summary>Setup › Templates in Revit: fmc_template through the installed server (audit; brand pack with a dry run first).</summary>
+    public sealed class RevitTemplateTools : ITemplateTools
+    {
+        public async Task<AuditResult> AuditAsync(string templatePath, BrandPack brand)
+        {
+            var args = new JObject { ["action"] = "audit", ["template_path"] = templatePath };
+            if (brand != null) args["brand"] = new JObject { ["name"] = brand.Name, ["main_font"] = brand.MainFont, ["title_font"] = brand.TitleFont };
+            CliResult r = await ServerCli.RunAsync("fmc_template", args);
+            var result = new AuditResult { Ok = r.Ok && r.Body["lines"] != null };
+            if (!result.Ok) { result.Message = "Audit refused: " + string.Join(" ", r.Reasons()); return result; }
+            foreach (JObject l in ((JArray)r.Body["lines"]).OfType<JObject>())
+                result.Lines.Add(new AuditLine(l.Value<string>("area"), l.Value<string>("severity"), l.Value<string>("status"), l.Value<string>("detail") ?? ""));
+            int must = result.Lines.Count(l => l.Severity == "Must"), should = result.Lines.Count(l => l.Severity == "Should");
+            result.Message = $"Audited {Path.GetFileName(templatePath)}: {must} must, {should} should. Logged in FMC_MCP_FileLog.csv.";
+            return result;
+        }
+
+        public async Task<ToolResult> BrandAsync(string templatePath, BrandPack brand, bool dryRun)
+        {
+            var args = new JObject
+            {
+                ["action"] = "brand", ["template_path"] = templatePath, ["dry_run"] = dryRun,
+                ["brand"] = new JObject { ["name"] = brand.Name, ["main_font"] = brand.MainFont, ["title_font"] = brand.TitleFont },
+            };
+            CliResult r = await ServerCli.RunAsync("fmc_template", args);
+            if (!r.Ok) return ToolResult.Refused("Brand pack refused: " + string.Join(" ", r.Reasons()));
+            var changes = (dryRun ? r.Body["would_change"] : r.Body["changed"]) as JArray ?? new JArray();
+            var result = new ToolResult { Ok = true, Count = changes.Count };
+            foreach (JObject c in changes.OfType<JObject>())
+                result.Details.Add($"{c.Value<string>("item")}   {c.Value<string>("now")} → {c.Value<string>("after")}");
+            if (!dryRun) result.Messages.Add(new ToolMessage(ChipKind.Good, $"Brand pack {brand.Name} applied to {changes.Count} types and saved. Logged in FMC_MCP_FileLog.csv."));
+            return result;
         }
     }
 }
