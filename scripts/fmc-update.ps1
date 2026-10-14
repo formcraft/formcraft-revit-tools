@@ -83,4 +83,8 @@ try {
         Start-Sleep -Seconds $PollSeconds
     }
 }
-finally { $mutex.ReleaseMutex() }
+catch { Log ("Updater stopped on an error: {0}" -f $_.Exception.Message) }
+finally {
+    if (-not $Once) { Log 'Updater stopped (the logon task starts it again within 5 minutes)' }
+    $mutex.ReleaseMutex()
+}
