@@ -159,7 +159,7 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
   `fmc_annotate`, `fmc_issue`)
 - [x] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`.
   **Done** (`fmc_links`, `fmc_workshare`, `fmc_review` with clouds and prints)
-- [ ] U21 Manage › Reports — `manage/PaneReports`
+- [x] U21 Manage › Reports — `manage/PaneReports`. **Done** (`fmc_report`: Markdown and CSV; branded PDF, Excel, sending and the weekly run later)
 - [~] U22 Flow: Touch, on-view previews, Section box, shortcuts — `flow/*`. **Touch done** (touch engine in `touch/`, formerly TouchKit; Settings › Flow › Touch; Flow ribbon Touch on; Touch quick tool). On-view previews, Section box and shortcuts to do
 - [ ] U23 Model › Start from brief — `model/PaneModelBrief`
 - [ ] U24 Model › Scripts and automation — `model/PaneScripts`, `model/M_Automation`
