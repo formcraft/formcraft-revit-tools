@@ -10,6 +10,10 @@ claude.ai Project "REVIT MCP".
    "Claude in shared models" toggle is on (D1). Only the user sets it.
 2. **Files.** Writes go only to WIP and staging folders, never to `02_Shared`, `03_Published`, `04_Archive`,
    `05_Incoming` or `04_Families\<Role>`. Nothing is deleted: archive moves a file to `_Archive`.
+   One exception (owner's approval, 15 Oct): a person's **Release** in the pane (Setup › Families › Quality and
+   release) copies a family that passed Gate A from staging into `04_Families\<Role>`, with a reviewer, a note and a
+   confirmation, and logs it in `04_Families\FMC_Release_Log.csv`. It is a pane-only command: no MCP tool or AI can
+   release.
 3. **Dry run first.** Every write shows a dry run and waits for a clear yes.
 4. **Names** follow the kit: models `[Project]-[Originator]-[Volume]-[Level]-[Type]-[Role]-[Number].rvt`, library
    families `FMC_[Role]_[CategoryToken]_[Description].rfa`, project families `[Project]_[Role]_…` (D4).
@@ -42,5 +46,6 @@ nor Claude Code ever closes Revit.
 - Keep tokens low: batch calls, ask for summaries, not element dumps.
 
 ## Branches
-Treat `main` as protected: work on `feat/<step>` or `fix/<thing>` and open a pull request. CI must pass (shell, server, add-in).
+Treat `main` as protected: work on `feat/<step>` or `fix/<thing>` and open a pull request. CI must pass (shell, server, add-in). CI runs on the pilot PC's self-hosted runner
+(`docs/CI_RUNNER.md`): checks queue while the PC is off, so a queued check is waiting, not failed.
 GitHub can't enforce this on a private repo without a paid plan, so it is a rule we keep, not a lock: never push to `main` directly.

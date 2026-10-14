@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Automation › Runs and triggers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1B2532}a:hover{color:#33465C}
+</style>
+</helmet>
+<div style="width: 440px; height: 940px; box-sizing: border-box; background: #FFFFFF; font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif; color: #1A1D21; display: flex; flex-direction: column; border: 1px solid #C9CED6; border-radius: 8px; overflow: hidden">
+  <div style="background: #F1F3F5; border-bottom: 2px solid #FFAE61; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 13px; font-weight: 700; color: #1B2532">Formcraft</div>
+    <span style="font-size: 10.5px; background: #E6F4EA; color: #1E6B34; border-radius: 10px; padding: 2px 8px">Connected</span>
+  </div>
+  <div style="display: flex; gap: 14px; padding: 8px 12px 0; border-bottom: 1px solid #E3E6EA; font-size: 11.5px; color: #4A515C">
+    <span style="padding-bottom: 6px">Scripts</span><span style="padding-bottom: 6px; border-bottom: 2px solid #1B2532; color: #1B2532; font-weight: 600">Automation</span><span style="padding-bottom: 6px">Log</span>
+  </div>
+  <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="font-size: 13px; font-weight: 600">Scheduled runs</div>
+      <span style="font-size: 10.5px; background: #E3F2EF; color: #2C6B63; border-radius: 10px; padding: 2px 8px">Workbench open · ready</span>
+    </div>
+    <div style="border: 1px solid #C9CED6; border-radius: 6px; overflow: hidden">
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; background: #F1F3F5; font-size: 11px; color: #5B6270; padding: 6px 10px"><span>Run</span><span>When</span><span>Last</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; font-size: 11.5px; padding: 7px 10px; border-top: 1px solid #E3E6EA; align-items: center"><span>Rebuild + audit 13 templates</span><span>Daily 01:00</span><span style="font-size: 10.5px; background: #E6F4EA; color: #1E6B34; border-radius: 10px; padding: 2px 6px; justify-self: start">Pass</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; font-size: 11.5px; padding: 7px 10px; border-top: 1px solid #E3E6EA; align-items: center"><span>Clash tests (Navisworks)</span><span>Daily 02:00</span><span style="font-size: 10.5px; background: #FFF4E0; color: #6B4100; border-radius: 10px; padding: 2px 6px; justify-self: start">42 new</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; font-size: 11.5px; padding: 7px 10px; border-top: 1px solid #E3E6EA; align-items: center"><span>Family quality gate (staging)</span><span>Daily 03:00</span><span style="font-size: 10.5px; background: #FDECEA; color: #A50E0E; border-radius: 10px; padding: 2px 6px; justify-self: start">3 fail</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; font-size: 11.5px; padding: 7px 10px; border-top: 1px solid #E3E6EA; align-items: center"><span>Weekly QA gate</span><span>Mon 06:00</span><span style="font-size: 10.5px; background: #E6F4EA; color: #1E6B34; border-radius: 10px; padding: 2px 6px; justify-self: start">Pass</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 74px 78px; font-size: 11.5px; padding: 7px 10px; border-top: 1px solid #E3E6EA; align-items: center"><span>Morning report to Project</span><span>Daily 07:00</span><span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 2px 6px; justify-self: start">Sent</span></div>
+    </div>
+    <div style="font-size: 11px; font-weight: 600; color: #5B6270; letter-spacing: 0.04em">TRIGGERS IN REVIT</div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><label for="t1">QA check when a model is saved</label><input id="t1" type="checkbox" checked style="width: 16px; height: 16px; accent-color: #1B2532"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><label for="t2">Refresh legends when a type changes</label><input id="t2" type="checkbox" checked style="width: 16px; height: 16px; accent-color: #1B2532"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><label for="t3">Before issue: column set + legends + QA</label><input id="t3" type="checkbox" checked style="width: 16px; height: 16px; accent-color: #1B2532"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><label for="t4">On publish to Shared: export NWC + IFC</label><input id="t4" type="checkbox" style="width: 16px; height: 16px; accent-color: #1B2532"></div>
+    </div>
+    <div style="font-size: 11px; font-weight: 600; color: #5B6270; letter-spacing: 0.04em">ALWAYS A PERSON</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px">
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Release families</span>
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Publish templates</span>
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Approve clash fixes</span>
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Engineer sign-off</span>
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Sync</span>
+      <span style="font-size: 10.5px; background: #EEF0F3; color: #4A515C; border-radius: 10px; padding: 3px 8px">Issue</span>
+    </div>
+    <div style="border: 1px solid #C9CED6; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 12.5px; font-weight: 600">Family quality gate · 3 failed</div>
+      <div style="font-size: 11.5px; color: #5B6270">FMC_A_Door_SteelFanlight: flex fails at 1000 wide · FMC_C_Gate_Sliding: no Fine geometry · FMC_E_CCTV_Bullet: tag missing</div>
+      <button type="button" style="font-family: inherit; font-size: 11.5px; height: 28px; padding: 0 12px; border-radius: 3px; border: 1px solid #1B2532; background: #FFFFFF; color: #1B2532; display: flex; gap: 6px; align-items: center; align-self: flex-start"><span style="font-size: 10px; font-weight: 700; background: #FFAE61; border-radius: 3px; padding: 1px 4px">AI</span>Propose fixes (dry run)</button>
+    </div>
+  </div>
+  <div style="background: #F8F9FA; border-top: 1px solid #E3E6EA; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center">
+    <span style="font-size: 10.5px; color: #5B6270">Runs need Revit open with the workbench file</span>
+    <button type="button" style="font-family: inherit; font-size: 11.5px; height: 28px; padding: 0 14px; border-radius: 3px; border: none; background: #1B2532; color: #FFFFFF">Add a run</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":440,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

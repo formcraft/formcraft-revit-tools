@@ -7,6 +7,7 @@
 | `UI_DEVELOPMENT.md` | The ordered UI work list Claude follows step by step |
 | `TESTING.md` | How each step is tested: CI, preview app, Revit with the Revit MCP |
 | `PLAN_ASSET_BUILDER.md` | The asset builder: families, symbols and templates from scratch (agreed 14 Oct) |
+| `PLAN_EXECUTION.md` | Execution plan: templates, families, AI involvement policy, Robot, Navisworks, Excel/Power BI (proposal, 14 Oct) |
 | `TEST_FEEDBACK.md` | Findings from the last live tests in Revit; Claude Code reads it before every push |
 | `DECISIONS.md` | Decisions D1–D8, open and closed |
 | `UI_KIT.md` | Tokens and styles (source of truth: `FmcTheme.xaml`) |
