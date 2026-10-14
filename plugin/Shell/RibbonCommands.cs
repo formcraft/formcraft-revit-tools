@@ -23,30 +23,15 @@ namespace revit_mcp_plugin.Shell
         }
     }
 
-    /// <summary>Opens Connect in the pane (Core › Connect AI).</summary>
+    /// <summary>Switches the AI connection on or off in one click (Core › Connect AI), like the original MCP switch.</summary>
     [Transaction(TransactionMode.Manual)]
     public class ConnectAiCommand : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            ShellHost.ShowPane(commandData.Application);
-            if (ShellHost.Pane.IsMain)
-            {
-                if (!ShellHost.Pane.IsConnectOpen) ShellHost.Pane.OpenConnectCommand.Execute(null);
-                return Result.Succeeded;
-            }
-            // Connect opens after sign-in, but the AI connection doesn't need a licence: offer it here.
-            bool on = SocketService.Instance.IsRunning;
-            var ask = new TaskDialog("Connect AI")
-            {
-                MainInstruction = on ? "The AI connection is on" : "Switch on the AI connection?",
-                MainContent = (on ? "AI apps that speak MCP (Claude, ChatGPT, Copilot, a local model) can reach Revit on port " + SocketService.Instance.Port + "."
-                                  : "Lets AI apps that speak MCP (Claude, ChatGPT, Copilot, a local model) reach Revit on port 8080.")
-                              + "\n\nConnect, with its health check and safety settings, opens in the pane once you sign in.",
-                CommonButtons = TaskDialogCommonButtons.Close,
-            };
-            ask.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, on ? "Switch it off" : "Switch it on");
-            if (ask.Show() == TaskDialogResult.CommandLink1) FormcraftBrowser.ToggleService(commandData.Application);
+            // The AI connection doesn't need a licence or the pane: one click, like the original MCP switch.
+            FormcraftBrowser.ToggleService(commandData.Application);
+            RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
             return Result.Succeeded;
         }
     }

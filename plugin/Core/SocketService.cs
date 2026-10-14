@@ -45,6 +45,9 @@ namespace revit_mcp_plugin.Core
 
         public bool IsRunning => _isRunning;
 
+        /// <summary>Why the last Start failed, in words a person can act on; empty when it started.</summary>
+        public string LastError { get; private set; } = "";
+
         public int Port
         {
             get => _port;
@@ -85,7 +88,8 @@ namespace revit_mcp_plugin.Core
             //{
             //    _port = configManager.Config.Settings.Port;
             //}
-            _port = 8080; // 固定端口号 - Hard-wired port number.
+            // Formcraft: the port comes from %APPDATA%\Formcraftmc_connect.json, which the MCP server reads too.
+            _port = ConnectSettings.Load().Port;
 
             // 加载命令
             // Load command.
@@ -102,8 +106,10 @@ namespace revit_mcp_plugin.Core
 
             try
             {
+                LastError = "";
                 _isRunning = true;
-                _listener = new TcpListener(IPAddress.Any, _port);
+                // This PC only: AI apps reach Revit through the MCP server running here, never over the network.
+                _listener = new TcpListener(IPAddress.Loopback, _port);
                 _listener.Start();
 
                 _listenerThread = new Thread(ListenForClients)
@@ -112,9 +118,17 @@ namespace revit_mcp_plugin.Core
                 };
                 _listenerThread.Start();              
             }
-            catch (Exception)
+            catch (SocketException ex) when (ex.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
                 _isRunning = false;
+                _listener = null;
+                LastError = $"Port {_port} is already in use, by another Revit window or another program. Close it, or set another port in {ConnectSettings.FilePath} and restart Revit.";
+            }
+            catch (Exception ex)
+            {
+                _isRunning = false;
+                _listener = null;
+                LastError = ex.Message;
             }
         }
 

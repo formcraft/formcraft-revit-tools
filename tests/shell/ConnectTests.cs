@@ -91,10 +91,11 @@ namespace Formcraft.Shell.Tests
             var saved = OnSta(() =>
             {
                 var p = new Pane();
-                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single(t => t.Label == "Switch on when Revit starts").IsOn = true;
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single(t => t.Label == "Switch on when Revit starts").IsOn = false;
                 return p.Settings.Get("settings." + ConnectViewModel.AutoStartKey);
             });
-            await Assert.That(saved).IsEqualTo("true");
+            // On by default (fmc_connect.json start_with_revit); switching it off is saved.
+            await Assert.That(saved).IsEqualTo("false");
         }
 
         [Test]

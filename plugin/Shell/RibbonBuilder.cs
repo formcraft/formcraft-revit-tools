@@ -45,6 +45,22 @@ namespace revit_mcp_plugin.Shell
         };
 
         private static readonly Dictionary<FmcModule, RibbonPanel> Panels = new Dictionary<FmcModule, RibbonPanel>();
+        private static PushButton _connect;
+        private static bool? _connectShown;
+
+        private static string ConnectTip(bool on) =>
+            (on ? "The AI connection is on: AI apps that speak MCP (Claude, ChatGPT, Copilot, a local model) on this PC can reach Revit. Click to switch it off."
+                : "The AI connection is off. Click to switch it on, so AI apps that speak MCP (Claude, ChatGPT, Copilot, a local model) on this PC can reach Revit.")
+            + " Settings (start with Revit, port): " + ConnectSettings.FilePath + ". Health check: the chip next to the pane title.";
+
+        /// <summary>Shows the AI connection's state on the Connect AI button (called at idle; changes only when it changed).</summary>
+        public static void ShowConnection(bool on)
+        {
+            if (_connect == null || _connectShown == on) return;
+            _connectShown = on;
+            _connect.ItemText = on ? "AI: on" : "AI: off";
+            _connect.ToolTip = ConnectTip(on);
+        }
         private static readonly Dictionary<string, PushButton> PartButtons = new Dictionary<string, PushButton>();
         private static readonly Dictionary<(FmcModule, int), PushButton> SmallButtons = new Dictionary<(FmcModule, int), PushButton>();
         private static ShellViewModel _pane;
@@ -60,14 +76,14 @@ namespace revit_mcp_plugin.Shell
             try { app.CreateRibbonTab(FormcraftBrowser.TabName); }
             catch (Autodesk.Revit.Exceptions.ArgumentException) { /* made already by the Formcraft Browser or another Formcraft add-in */ }
 
-            // Core: Pane, Connect AI, Log file (board core/Ribbon). The AI connection is switched on in Connect, for any
-            // AI app that speaks MCP, not one vendor.
+            // Core: Pane, Connect AI, Log file (board core/Ribbon). Connect AI switches the AI connection on and off in
+            // one click, for any AI app that speaks MCP, not one vendor; its label shows the state.
             var core = app.CreateRibbonPanel(FormcraftBrowser.TabName, "Core");
             core.AddItem(Button("FMC_Pane", "Formcraft\npane", typeof(TogglePaneCommand), "pane", "Shows or hides the Formcraft pane.", assembly, large: true));
-            core.AddStackedItems(
-                Button("FMC_ConnectAI", "Connect AI", typeof(ConnectAiCommand), "ai",
-                    "Opens Connect: switch on the AI connection (any AI app that speaks MCP: Claude, ChatGPT, Copilot, a local model), check health, kit, folders and safety.", assembly),
+            var stacked = core.AddStackedItems(
+                Button("FMC_ConnectAI", "AI: off", typeof(ConnectAiCommand), "ai", ConnectTip(false), assembly),
                 Button("FMC_LogFile", "Log file", typeof(LogFileCommand), "log", "Opens today's log for this PC: every action, dry run and refusal.", assembly));
+            _connect = stacked[0] as PushButton;
 
             foreach (var m in Modules)
             {

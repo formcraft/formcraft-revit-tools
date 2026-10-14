@@ -52,6 +52,15 @@ namespace revit_mcp_plugin.Shell
             ThemeService.Shared.SetHostTheme(PaneTheme.Light);
 #endif
             Settings = new JsonUserSettings(JsonUserSettings.DefaultPath);
+            // Connect's "Switch on when Revit starts" is start_with_revit in fmc_connect.json, the file the MCP server reads too.
+            string autoStart = "settings." + ConnectViewModel.AutoStartKey;
+            Settings.Set(autoStart, ConnectSettings.Load().StartWithRevit ? "true" : "false");
+            Settings.Changed += (_, __) =>
+            {
+                var c = ConnectSettings.Load();
+                bool want = Settings.Get(autoStart) == "true";
+                if (c.StartWithRevit != want) { c.StartWithRevit = want; c.Save(); }
+            };
             // The licence service arrives in U17 (decision D6); until then sign-in is the mock (code 123456).
             Licence = new MockLicenceService();
 #if REVIT2025_OR_GREATER
@@ -111,12 +120,13 @@ namespace revit_mcp_plugin.Shell
             if (!(sender is UIApplication app)) return;
             if (!_autoStartDone)
             {
-                // Connect › AI connection › "Switch on when Revit starts": once, at the first idle moment.
+                // start_with_revit in fmc_connect.json (Connect › "Switch on when Revit starts"): once, at the first idle moment.
                 _autoStartDone = true;
-                if (Settings.Get("settings." + ConnectViewModel.AutoStartKey) == "true" && !SocketService.Instance.IsRunning)
+                if (ConnectSettings.Load().StartWithRevit && !SocketService.Instance.IsRunning)
                     FormcraftBrowser.RequestToggleService();
             }
             Connection.Update(SocketService.Instance.IsRunning);
+            RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);
         }
@@ -179,7 +189,7 @@ namespace revit_mcp_plugin.Shell
         }
     }
 
-    /// <summary>The Claude service (the plugin's socket on port 8080) behind the header's Connected chip.</summary>
+    /// <summary>The AI connection (the plugin's socket on 127.0.0.1, port from fmc_connect.json) behind the header's Connected chip.</summary>
     public sealed class RevitConnection : IConnectionService
     {
         public ConnectionState State { get; private set; } = ConnectionState.NotConnected;
