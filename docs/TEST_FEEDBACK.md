@@ -55,7 +55,7 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Closed (run 6) |
 | F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Fixed – retest |
 | F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Fixed – retest |
-| F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Open |
+| F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Fixed – retest (fmc_ui close_revit) |
 ---
 
 ## Test runs

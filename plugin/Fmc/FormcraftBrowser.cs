@@ -32,6 +32,9 @@ namespace revit_mcp_plugin.Fmc
         private static ExternalEvent _serviceEvent;
         private static List<DocState> _lastDocs = new List<DocState>();
 
+        /// <summary>Revit's application, from the last idle moment (fmc_ui close_revit posts Exit through it).</summary>
+        public static UIApplication App { get; private set; }
+
         /// <summary>The documents open at the last idle moment (fmc_selftest: may the tester close Revit for an install?).</summary>
         public static IReadOnlyList<DocState> OpenDocuments => _lastDocs;
 
@@ -59,6 +62,7 @@ namespace revit_mcp_plugin.Fmc
         private static void OnIdling(object sender, IdlingEventArgs e)
         {
             if (!(sender is UIApplication uiApp)) return;
+            App = uiApp;
             Document active = uiApp.ActiveUIDocument?.Document;
             var docs = new List<DocState>();
             foreach (Document d in uiApp.Application.Documents)

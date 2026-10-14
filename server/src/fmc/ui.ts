@@ -11,13 +11,14 @@ export const FMC_UI_DESCRIPTION =
     "connection, document, theme, and the groups and sections that can be opened); open_section (a section name such as " +
     "\"QA\" or \"Setup › Templates\", or Connect, Settings, \"Settings › Flow\", Admin); set_mock_licence (test builds " +
     "only: preset signed_out, signed_in, online, offline or grace_over, and optional module statuses); screenshot_pane " +
-    "(saves a PNG of the pane to the reports folder and returns its path).";
+    "(saves a PNG of the pane to the reports folder and returns its path); close_revit (test mode only, for an install: " +
+    "exits Revit only when every open document is new and unchanged, never saves, otherwise refuses and names them).";
 
 export const MOCK_PRESETS = ["signed_out", "signed_in", "online", "offline", "grace_over"] as const;
 export const MODULE_STATUSES = ["Included", "Active", "Trial", "NotLicensed", "Expired"] as const;
 
 export const FMC_UI_SHAPE = {
-  action: z.enum(["get_state", "open_section", "set_mock_licence", "screenshot_pane"]),
+  action: z.enum(["get_state", "open_section", "set_mock_licence", "screenshot_pane", "close_revit"]),
   section: z.string().optional().describe("open_section: section name, \"Group › Section\", Connect, Settings, \"Settings › <tab>\" or Admin"),
   preset: z.enum(MOCK_PRESETS).optional().describe("set_mock_licence: the licence state to put the pane in"),
   modules: z.record(z.enum(["Manage", "Flow", "Model", "Build"]), z.enum(MODULE_STATUSES)).optional()
