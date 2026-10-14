@@ -53,6 +53,7 @@ namespace revit_mcp_plugin.Shell
 #endif
             Settings = new JsonUserSettings(JsonUserSettings.DefaultPath);
             FlowTools.Register();
+            BuildViews.Register();
             // Connect's "Switch on when Revit starts" is start_with_revit in fmc_connect.json, the file the MCP server reads too.
             string autoStart = "settings." + ConnectViewModel.AutoStartKey;
             Settings.Set(autoStart, ConnectSettings.Load().StartWithRevit ? "true" : "false");
@@ -75,7 +76,7 @@ namespace revit_mcp_plugin.Shell
                                       project: new RevitProjectTools(), templates: new RevitTemplateTools(),
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
                                       materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
-                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(),
+                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(), build: new RevitBuildTools(),
                                       // F-013: no update feed yet; the installed build from the build stamp.
                                       updates: new NoFeedUpdateService("build " + revit_mcp_plugin.FmcBuildInfo.Commit + " · " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC"))
             {

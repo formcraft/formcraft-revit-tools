@@ -22,8 +22,8 @@ namespace Formcraft.Shell.Views
             PreviewMouseWheel += OnWheel;
             DataContextChanged += (_, e) =>
             {
-                if (e.OldValue is ShellViewModel old) old.OpenLogRequested -= OnOpenLog;
-                if (e.NewValue is ShellViewModel vm) vm.OpenLogRequested += OnOpenLog;
+                if (e.OldValue is ShellViewModel old) { old.OpenLogRequested -= OnOpenLog; old.OpenWorkspaceRequested -= OnOpenWorkspace; }
+                if (e.NewValue is ShellViewModel vm) { vm.OpenLogRequested += OnOpenLog; vm.OpenWorkspaceRequested += OnOpenWorkspace; }
             };
         }
 
@@ -72,6 +72,21 @@ namespace Formcraft.Shell.Views
             }
             _log.Show();
             _log.Activate();
+        }
+
+        // Build workspace window (board build/B_Workspace): one at a time, beside the model.
+        private BuildWorkspaceWindow? _workspace;
+
+        private void OnOpenWorkspace(object? sender, EventArgs e)
+        {
+            if (!(DataContext is ShellViewModel vm)) return;
+            if (_workspace == null)
+            {
+                _workspace = new BuildWorkspaceWindow(vm.BuildWorkspace) { Owner = Window.GetWindow(this) };
+                _workspace.Closed += (_, _) => _workspace = null;
+            }
+            _workspace.Show();
+            _workspace.Activate();
         }
 
         // In the search box: arrows move through the results, Enter opens, Esc clears and puts the section back.
