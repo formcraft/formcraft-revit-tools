@@ -122,7 +122,7 @@ namespace Formcraft.Shell.ViewModels
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
-                              IAnnotateTools? annotate = null)
+                              IAnnotateTools? annotate = null, IIssueTools? issue = null)
         {
             _licence = licence;
             _connection = connection;
@@ -161,6 +161,8 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Sheets"] = Sheets;
             Annotate = new AnnotatePage(annotate ?? new MockAnnotateTools(), qa ?? new MockQaTools(), settings, s => Status = s, ShowDialog);
             _hostSections["Annotate"] = Annotate;
+            Issue = new IssuePage(issue ?? new MockIssueTools(), qa ?? new MockQaTools(), Project, () => Sheets.Register(), settings, s => Status = s, ShowDialog);
+            _hostSections["Issue"] = Issue;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -358,6 +360,9 @@ namespace Formcraft.Shell.ViewModels
         public ConnectViewModel Connect { get; }
         /// <summary>Drawings › Annotate: the kit's annotation standard against the model.</summary>
         public AnnotatePage Annotate { get; }
+
+        /// <summary>Drawings › Issue: the readiness check, exceptions and the issue into 01_WIP\_Issue.</summary>
+        public IssuePage Issue { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>

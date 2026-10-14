@@ -155,8 +155,8 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
 - [ ] U17 Real licence service behind `ILicenceService` (decision D6) — `account/*`
 - [~] U18 Manage › Materials — `manage/PaneMaterials`. **Done:** database, assign (dry run), audit, purge, requests (`fmc_material`).
   **To do:** fix texture paths, merge duplicates; finish colour view and schedules with Build (U26)
-- [~] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`. **Sheets and Annotate done** (`fmc_sheets`,
-  `fmc_annotate`); Issue next
+- [x] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`. **Done** (`fmc_sheets`,
+  `fmc_annotate`, `fmc_issue`)
 - [ ] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`
 - [ ] U21 Manage › Reports — `manage/PaneReports`
 - [~] U22 Flow: Touch, on-view previews, Section box, shortcuts — `flow/*`. **Touch done** (touch engine in `touch/`, formerly TouchKit; Settings › Flow › Touch; Flow ribbon Touch on; Touch quick tool). On-view previews, Section box and shortcuts to do
