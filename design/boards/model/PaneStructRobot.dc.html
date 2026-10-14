@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Engineer › Structure with Robot</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1B2532}a:hover{color:#33465C}
+</style>
+</helmet>
+<div style="width: 440px; height: 940px; box-sizing: border-box; background: #FFFFFF; font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif; color: #1A1D21; display: flex; flex-direction: column; border: 1px solid #C9CED6; border-radius: 8px; overflow: hidden">
+  <div style="background: #F1F3F5; border-bottom: 2px solid #FFAE61; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 13px; font-weight: 700; color: #1B2532">Formcraft</div>
+    <span style="font-size: 10.5px; background: #E6F4EA; color: #1E6B34; border-radius: 10px; padding: 2px 8px">Robot 2026 linked</span>
+  </div>
+  <div style="display: flex; gap: 14px; padding: 8px 12px 0; border-bottom: 1px solid #E3E6EA; font-size: 11.5px; color: #4A515C">
+    <span style="padding-bottom: 6px">Systems</span><span style="padding-bottom: 6px; border-bottom: 2px solid #1B2532; color: #1B2532; font-weight: 600">Structure</span><span style="padding-bottom: 6px">Results</span>
+  </div>
+  <div style="background: #E3F2EF; color: #2C6B63; font-size: 11.5px; padding: 6px 12px">The registered engineer sets loads and code, and signs. AI never chooses sizes.</div>
+  <div style="padding: 12px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1">
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; font-size: 10.5px; text-align: center">
+      <span style="background: #1E8E3E; color: #FFFFFF; border-radius: 3px; padding: 5px 0">1 Check</span>
+      <span style="background: #1E8E3E; color: #FFFFFF; border-radius: 3px; padding: 5px 0">2 Send</span>
+      <span style="background: #1B2532; color: #FFFFFF; border-radius: 3px; padding: 5px 0">3 Loads</span>
+      <span style="background: #EEF0F3; color: #4A515C; border-radius: 3px; padding: 5px 0">4 Run</span>
+      <span style="background: #EEF0F3; color: #4A515C; border-radius: 3px; padding: 5px 0">5 Back</span>
+    </div>
+    <div style="border: 1px solid #C9CED6; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 12.5px; font-weight: 600">1 · Analytical model</div>
+      <div style="font-size: 11.5px; color: #5B6270">214 members · 96 nodes · 0 unsupported · 2 short members (warning)</div>
+      <div style="font-size: 12.5px; font-weight: 600">2 · Sent to Robot</div>
+      <div style="font-size: 11.5px; color: #5B6270">14 Oct 15:02 · F26901_S_Analysis.rtd (WIP)</div>
+    </div>
+    <div style="font-size: 11px; font-weight: 600; color: #5B6270; letter-spacing: 0.04em">3 · LOADS AND DESIGN CODE · ENGINEER</div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <label for="code" style="font-size: 12px; font-weight: 600">Design code</label>
+      <div id="code" style="height: 28px; border: 1px solid #C9CED6; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 12px; color: #5B6270">[Engineer selects] <span>⌄</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><label for="dl" style="font-size: 12px; font-weight: 600">Dead load kN/m²</label><input id="dl" type="text" placeholder="[Engineer]" style="font-family: inherit; height: 28px; border: 1px solid #C9CED6; border-radius: 4px; padding: 0 8px; font-size: 12px"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><label for="ll" style="font-size: 12px; font-weight: 600">Live load kN/m²</label><input id="ll" type="text" placeholder="[Engineer]" style="font-family: inherit; height: 28px; border: 1px solid #C9CED6; border-radius: 4px; padding: 0 8px; font-size: 12px"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><label for="wl" style="font-size: 12px; font-weight: 600">Wind</label><input id="wl" type="text" placeholder="[Engineer]" style="font-family: inherit; height: 28px; border: 1px solid #C9CED6; border-radius: 4px; padding: 0 8px; font-size: 12px"></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><label for="cb" style="font-size: 12px; font-weight: 600">Combinations</label><input id="cb" type="text" placeholder="[Engineer]" style="font-family: inherit; height: 28px; border: 1px solid #C9CED6; border-radius: 4px; padding: 0 8px; font-size: 12px"></div>
+      </div>
+    </div>
+    <button type="button" style="font-family: inherit; font-size: 12px; height: 30px; border-radius: 3px; border: none; background: #6B7280; color: #FFFFFF">Run analysis (needs loads)</button>
+    <div style="font-size: 11px; font-weight: 600; color: #5B6270; letter-spacing: 0.04em">5 · RESULTS BACK INTO REVIT · LAST RUN</div>
+    <div style="border: 1px solid #C9CED6; border-radius: 6px; overflow: hidden">
+      <div style="display: grid; grid-template-columns: 1fr 64px 64px 60px; background: #F1F3F5; font-size: 11px; color: #5B6270; padding: 6px 10px"><span>Member</span><span>NEd kN</span><span>MEd kNm</span><span>Util.</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 64px 64px 60px; font-size: 11.5px; padding: 6px 10px; border-top: 1px solid #E3E6EA"><span>B-12</span><span>—</span><span>[run]</span><span>[run]</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 64px 64px 60px; font-size: 11.5px; padding: 6px 10px; border-top: 1px solid #E3E6EA"><span>C-04</span><span>[run]</span><span>[run]</span><span>[run]</span></div>
+    </div>
+    <div style="font-size: 10.5px; color: #5B6270">Writes <span style="font-family: 'IBM Plex Mono', Consolas, monospace">FMC_FEA_NEd_kN · MEd_kNm · Utilisation · Run_Ref</span>. Approval ref filled only by the engineer.</div>
+    <button type="button" style="font-family: inherit; font-size: 11.5px; height: 28px; padding: 0 12px; border-radius: 3px; border: 1px solid #1B2532; background: #FFFFFF; color: #1B2532; display: flex; gap: 6px; align-items: center; align-self: flex-start"><span style="font-size: 10px; font-weight: 700; background: #FFAE61; border-radius: 3px; padding: 1px 4px">AI</span>List what changed since the last run</button>
+  </div>
+  <div style="background: #F8F9FA; border-top: 1px solid #E3E6EA; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center">
+    <span style="font-size: 10.5px; color: #5B6270">Engineer sign-off: not signed</span>
+    <button type="button" style="font-family: inherit; font-size: 11.5px; height: 28px; padding: 0 14px; border-radius: 3px; border: 1px solid #1B2532; background: #FFFFFF; color: #1B2532">Sign as engineer</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":440,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
