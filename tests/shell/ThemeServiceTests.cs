@@ -77,7 +77,7 @@ namespace Formcraft.Shell.Tests
                 themes.Attach(root);
 
                 var primary = new Button { Content = "Run" };
-                var banner = new FmcDocBanner { Header = "Model", Content = "Live project: Claude reads and reports", State = DocState.Live };
+                var banner = new FmcDocBanner { Header = "Model", Content = "Live project: AI reads and reports", State = DocState.Live };
                 var input = new TextBox();
                 root.Children.Add(primary);
                 root.Children.Add(banner);

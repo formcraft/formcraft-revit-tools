@@ -29,8 +29,8 @@ namespace Formcraft.Shell.Services
         public string LockText => State switch
         {
             DocState.Setup => "Setup tools open",
-            DocState.Shared => "Shared model: Claude in shared models is on",
-            _ => "Live project: Claude reads and reports",
+            DocState.Shared => "Shared model: AI in shared models is on",
+            _ => "Live project: AI reads and reports",
         };
     }
 

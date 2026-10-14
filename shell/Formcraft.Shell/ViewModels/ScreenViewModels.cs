@@ -83,8 +83,8 @@ namespace Formcraft.Shell.ViewModels
         public string Seat => Environment.MachineName.ToLowerInvariant() + " · this PC";
         public string LastChecked => _licence.Current.LastOnlineCheck?.ToString("d MMM HH:mm") ?? "Not yet (offline licence)";
         public string WorksOfflineFor => _licence.Current.OfflineDaysLeft + " days";
-        public string ClaudeKey => "Organisation key set by Admin · billed on the Claude Console";
-        public string ClaudeToday => "No Ask Claude use yet (Ask Claude arrives in U27)";
+        public string ClaudeKey => "Organisation key set by Admin, for the AI provider your organisation chooses";
+        public string ClaudeToday => "No Ask AI use yet (Ask AI arrives in U27)";
         public RelayCommand RequestModuleCommand { get; }
         public RelayCommand EnterKeyCommand { get; }
         public AsyncCommand CheckNowCommand { get; }

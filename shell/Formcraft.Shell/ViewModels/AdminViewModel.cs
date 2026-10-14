@@ -95,11 +95,11 @@ namespace Formcraft.Shell.ViewModels
                     new ReadOnlySetting("Sheet status", "Manual 4.4: S0–S4, S6, S7, A1…, B1…, CR"),
                     new ReadOnlySetting("Revisions", "P01… preliminary · C01… contract")),
                 new SettingsGroup("AI",
-                    new ReadOnlySetting("Claude in shared models", "Each person's own switch, in Connect › Safety",
+                    new ReadOnlySetting("AI in shared models", "Each person's own switch, in Connect › Safety",
                         "Setup tools on workshared models (D1). Only the person sets it (CLAUDE.md rule 1), so it isn't a team setting."),
                     new TextSetting("Cap per person (USD/month)", "10", store: _team, key: "admin.capperson"),
                     new TextSetting("Team cap (USD/month)", "40", store: _team, key: "admin.capteam"),
-                    new ReadOnlySetting("Spent this month", "No Ask Claude use yet (Ask Claude arrives in U27)")),
+                    new ReadOnlySetting("Spent this month", "No Ask AI use yet (Ask AI arrives in U27)")),
                 new SettingsGroup("Automation",
                     new ToggleSetting(_team, "admin.autosave", "Auto-save files that are not workshared", false, "Every 15 minutes"),
                     // CLAUDE.md rule 6: workshared models are never saved or synchronised by a tool. Kept off and locked.
@@ -108,7 +108,7 @@ namespace Formcraft.Shell.ViewModels
                         locked: true, lockedWhy: "CLAUDE.md rule 6"),
                     new ChoiceSetting(_team, "admin.syncinterval", "Sync interval (reminder only)", new[] { "Every 2 hours", "Every hour", "At 12:30 and 17:00" }, dropdown: true),
                     new ChoiceSetting(_team, "admin.coordinates", "Coordinate changes approved by", new[] { "Lead or Admin", "Admin only" }),
-                    new NoteSetting("Claude can never save, sync or move coordinates. These switches are for the plugin only.", ChipKind.Warn)),
+                    new NoteSetting("AI can never save, sync or move coordinates. These switches are for the plugin only.", ChipKind.Warn)),
                 new SettingsGroup("Project data · version bridge (Phase 2)",
                     new ReadOnlySetting("Shared data file", @"<project>\FMC_ProjectData · reviews, sync log, rules, registers, roster", mono: true),
                     new MultiSetting(_team, "admin.versions", "Revit versions on this project", new[] { "2025", "2026", "2027" }, new[] { "2025" }),
@@ -252,7 +252,7 @@ namespace Formcraft.Shell.ViewModels
             new SettingsGroup("Rules",
                 new NoteSetting("Seat lists show who holds a licence. They are never used to rank people (Manual 14.5).", ChipKind.Warn),
                 new ToggleSetting(_team, "admin.twostep", "Require two-step sign-in", true),
-                new ToggleSetting(_team, "admin.claudepane", "Claude in the pane", false, "Organisation key, 200,000 tokens per PC per day")),
+                new ToggleSetting(_team, "admin.claudepane", "Ask AI in the pane", false, "Organisation key for the AI provider you choose, 200,000 tokens per PC per day")),
         };
 
         private void AskInvite()

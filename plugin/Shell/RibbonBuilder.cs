@@ -12,8 +12,7 @@ using revit_mcp_plugin.Fmc;
 namespace revit_mcp_plugin.Shell
 {
     /// <summary>
-    /// The Formcraft tab (boards core/Ribbon and manage|flow|model|build/R_*): a Core panel (Pane, Connect AI, Claude
-    /// service, Log file),
+    /// The Formcraft tab (boards core/Ribbon and manage|flow|model|build/R_*): a Core panel (Pane, Connect AI, Log file),
     /// then one panel per licensed module with its parts switch and its two small buttons. Three tools per module, never
     /// more; everything else is in the pane and Ctrl+K. Revit has no checkbox in a split button, so the parts switch is a
     /// drop-down whose items toggle the part and show a tick.
@@ -51,7 +50,6 @@ namespace revit_mcp_plugin.Shell
         private static ShellViewModel _pane;
         private static IUserSettings _settings;
         private static ILicenceService _licence;
-        private static PushButton _service;
 
         public static void Create(UIControlledApplication app, ShellViewModel pane, IUserSettings settings, ILicenceService licence)
         {
@@ -62,22 +60,14 @@ namespace revit_mcp_plugin.Shell
             try { app.CreateRibbonTab(FormcraftBrowser.TabName); }
             catch (Autodesk.Revit.Exceptions.ArgumentException) { /* made already by the Formcraft Browser or another Formcraft add-in */ }
 
-            // Core: Pane, then Connect AI, Claude service and Log file. The service switch is here as well as in Connect
-            // because Connect needs a signed-in pane and the service must start without one.
+            // Core: Pane, Connect AI, Log file (board core/Ribbon). The AI connection is switched on in Connect, for any
+            // AI app that speaks MCP, not one vendor.
             var core = app.CreateRibbonPanel(FormcraftBrowser.TabName, "Core");
             core.AddItem(Button("FMC_Pane", "Formcraft\npane", typeof(TogglePaneCommand), "pane", "Shows or hides the Formcraft pane.", assembly, large: true));
-            var stacked = core.AddStackedItems(
-                Button("FMC_ConnectAI", "Connect AI", typeof(ConnectAiCommand), "ai", "Opens Connect in the pane: Claude service, health, probe, families, files, activity and guard.", assembly),
-                new PushButtonData("FMC_ClaudeService", "Claude service", assembly, typeof(ToggleClaudeService).FullName)
-                {
-                    ToolTip = "Starts or stops listening for Claude on port 8080. Hiding the pane never stops it.",
-                    Image = Png("ai", 16),
-                    LargeImage = Png("ai", 32),
-                    AvailabilityClassName = typeof(AlwaysAvailable).FullName,
-                },
+            core.AddStackedItems(
+                Button("FMC_ConnectAI", "Connect AI", typeof(ConnectAiCommand), "ai",
+                    "Opens Connect: switch on the AI connection (any AI app that speaks MCP: Claude, ChatGPT, Copilot, a local model), check health, kit, folders and safety.", assembly),
                 Button("FMC_LogFile", "Log file", typeof(LogFileCommand), "log", "Opens today's log for this PC: every action, dry run and refusal.", assembly));
-            _service = stacked.OfType<PushButton>().FirstOrDefault(b => b.Name == "FMC_ClaudeService");
-            UpdateService();
 
             foreach (var m in Modules)
             {
@@ -138,18 +128,6 @@ namespace revit_mcp_plugin.Shell
                     b.Value.Image = Png(Icon[label], 16);
                     b.Value.LargeImage = Png(Icon[label], 32);
                 }
-            }
-            catch (Exception) { /* cosmetic only */ }
-        }
-
-        /// <summary>The ribbon has no pressed state, so the Claude service button says "on" and fills its icon.</summary>
-        public static void UpdateService()
-        {
-            try
-            {
-                if (_service == null) return;
-                bool on = SocketService.Instance.IsRunning;
-                _service.ItemText = on ? "Claude service on" : "Claude service";
             }
             catch (Exception) { /* cosmetic only */ }
         }

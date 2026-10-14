@@ -107,7 +107,7 @@
     <Setter Property="FontWeight" Value="SemiBold"/>
   </Style>
 
-  <!-- AI button: secondary with the orange AI tag. Fmc.NeedsKey: no Claude key, so it can't run -->
+  <!-- AI button: secondary with the orange AI tag. Fmc.NeedsKey: no AI key, so it can't run -->
   <Style x:Key="FmcButton.Ai" TargetType="Button" BasedOn="{StaticResource FmcButton.Secondary}">
     <Setter Property="ContentTemplate">
       <Setter.Value>
@@ -125,7 +125,7 @@
     <Style.Triggers>
       <Trigger Property="c:Fmc.NeedsKey" Value="True">
         <Setter Property="IsEnabled" Value="False"/>
-        <Setter Property="ToolTip" Value="Needs a Claude key. Add one in Settings."/>
+        <Setter Property="ToolTip" Value="Needs an AI key. Your admin adds one in Admin › AI."/>
       </Trigger>
     </Style.Triggers>
   </Style>

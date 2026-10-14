@@ -99,8 +99,8 @@ namespace Formcraft.Shell.Tests
 
         [Test]
         [Arguments(DocState.Setup, "Setup tools open")]
-        [Arguments(DocState.Shared, "Shared model: Claude in shared models is on")]
-        [Arguments(DocState.Live, "Live project: Claude reads and reports")]
+        [Arguments(DocState.Shared, "Shared model: AI in shared models is on")]
+        [Arguments(DocState.Live, "Live project: AI reads and reports")]
         public async Task Banner_text_matches_the_boards(DocState state, string text)
         {
             var doc = new[] { MockDocumentContext.NewModel, MockDocumentContext.SharedModel, MockDocumentContext.LiveProject }.Single(d => d.State == state);

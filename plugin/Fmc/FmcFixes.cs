@@ -73,7 +73,7 @@ namespace revit_mcp_plugin.Fmc
         public static async Task<(bool Ok, string Text)> ProbeAsync()
         {
             if (!SocketService.Instance.IsRunning)
-                return (false, "Probe: the Claude service is off, so Claude can't reach Revit. Start it, then probe again.");
+                return (false, "Probe: the AI connection is off, so no AI app can reach Revit. Switch it on in Connect, then probe again.");
             CliResult r = await ServerCli.RunAsync("probe");
             if (!r.Ok) return (false, "Probe failed: " + string.Join(" ", r.Reasons()));
             string active = r.Body["active"]?.Value<string>("title");

@@ -103,7 +103,7 @@ namespace Formcraft.Shell.Services
 
         public Task<string> ProbeAsync() => Task.FromResult(ServiceRunning
             ? "Probe OK in 42 ms: server, port 8080, command set and Revit all answer."
-            : "Probe: the Claude service is off, so Claude can't reach Revit. Start it, then probe again.");
+            : "Probe: the AI connection is off, so no AI app can reach Revit. Switch it on in Connect, then probe again.");
 
         public void Refresh() => Changed?.Invoke(this, EventArgs.Empty);
         public void OpenReportsFolder() { }

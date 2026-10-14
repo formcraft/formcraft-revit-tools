@@ -47,9 +47,6 @@ namespace revit_mcp_plugin.Fmc
             application.Idling += OnIdling;
         }
 
-        /// <summary>The Claude service button on the Core panel shows whether the service is on.</summary>
-        public static void UpdateRibbon() => Shell.RibbonBuilder.UpdateService();
-
         // ---- Revit state --------------------------------------------------------------------------------------------
 
         /// <summary>
@@ -93,7 +90,6 @@ namespace revit_mcp_plugin.Fmc
                 service.Initialize(app);
                 service.Start();
             }
-            UpdateRibbon();
         }
 
         internal static void OpenGuardFile()
@@ -120,33 +116,14 @@ namespace revit_mcp_plugin.Fmc
             public void Execute(UIApplication app)
             {
                 try { ToggleService(app); }
-                catch (Exception ex) { TaskDialog.Show(Title, "The Claude service could not be switched: " + ex.Message); }
+                catch (Exception ex) { TaskDialog.Show(Title, "The AI connection could not be switched: " + ex.Message); }
             }
 
-            public string GetName() => "Formcraft Browser: start or stop the Claude service";
+            public string GetName() => "Formcraft: switch the AI connection on or off";
         }
     }
 
     // ---- Ribbon commands ------------------------------------------------------------------------------------------
-
-    /// <summary>Starts or stops listening on port 8080 (the plugin's socket service), without dialogs.</summary>
-    [Transaction(TransactionMode.Manual)]
-    public class ToggleClaudeService : IExternalCommand
-    {
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-        {
-            try
-            {
-                FormcraftBrowser.ToggleService(commandData.Application);
-                return Result.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                message = ex.Message;
-                return Result.Failed;
-            }
-        }
-    }
 
     /// <summary>Keeps the Formcraft buttons usable with no document open (Revit greys out commands by default there).</summary>
     public class AlwaysAvailable : IExternalCommandAvailability

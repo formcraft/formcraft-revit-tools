@@ -78,7 +78,7 @@ namespace Formcraft.Shell.ViewModels
         public ICommand HealthCheckCommand { get; }
         public ICommand FeedbackCommand { get; }
 
-        /// <summary>Claude in shared models (D1, CLAUDE.md rule 1): each person's own switch, never an admin's.</summary>
+        /// <summary>AI in shared models (D1, CLAUDE.md rule 1): each person's own switch, never an admin's.</summary>
         public const string SharedModelsKey = "connect.sharedmodels";
 
         /// <summary>Every line of the health check: the host's, then kit, rulebooks, licence and the AI service.</summary>
@@ -129,12 +129,12 @@ namespace Formcraft.Shell.ViewModels
                 new ButtonsSetting("", new[] { new SettingButton("Open reports folder", new RelayCommand(_info.OpenReportsFolder)) })));
 
             var service = new ServiceToggle(_info);
-            Groups.Add(new SettingsGroup("Chat through MCP · experimental",
-                new ToggleSetting(new SettingStore(service, ""), "on", "MCP service", false,
-                    "Port " + _info.Port + " · for the BIM manager while developing. Hiding the pane never stops it."),
+            Groups.Add(new SettingsGroup("AI connection (MCP) · experimental",
+                new ToggleSetting(new SettingStore(service, ""), "on", "AI connection", false,
+                    "Port " + _info.Port + ". Any AI app that speaks MCP connects here: Claude, ChatGPT, Copilot or a model on this PC. Hiding the pane never stops it."),
                 new ReadOnlySetting("Tools offered", "Files and families with guard rails · document info · the pane (fmc_ui) · read-only model tools"),
                 new ButtonsSetting("", new[] { new SettingButton("Probe the chain", new AsyncCommand(Probe, _status)) }, _probe),
-                new NoteSetting("No feature needs chat. Every chat request passes the same checks as a pane button.")));
+                new NoteSetting("No feature needs an AI. Every AI request passes the same checks as a pane button.")));
 
             Groups.Add(new SettingsGroup("AI buttons · Phase 2",
                 new ReadOnlySetting("API key", "Kept in Windows Credential Manager, never in logs or the kit"),
@@ -142,12 +142,12 @@ namespace Formcraft.Shell.ViewModels
                 new NoteSetting("Arrives after 1.0, so the engine proves itself first.")));
 
             Groups.Add(new SettingsGroup("Safety",
-                new ToggleSetting(_store, SharedModelsKey, "Claude in shared models", false,
+                new ToggleSetting(_store, SharedModelsKey, "AI in shared models", false,
                     "Setup tools on workshared models (D1). Only you set this; it never saves or syncs a model."),
                 new ToggleSetting(_store, "connect.lock", "Live-model lock", true, _info.LiveModelLock
-                    ? "Claude's model tools never run on live projects" : "Switched off in fmc_guard.json on this PC", locked: true, lockedWhy: "Set in fmc_guard.json"),
+                    ? "AI model tools never run on live projects" : "Switched off in fmc_guard.json on this PC", locked: true, lockedWhy: "Set in fmc_guard.json"),
                 new ToggleSetting(_store, "connect.dryrun", "Dry run first", true, "Every change shows its plan first", locked: true, lockedWhy: "Fixed principle"),
-                new ToggleSetting(_store, "connect.neversave", "Claude never saves, syncs or moves coordinates", true, "Fixed principle", locked: true, lockedWhy: "Fixed principle")));
+                new ToggleSetting(_store, "connect.neversave", "AI never saves, syncs or moves coordinates", true, "Fixed principle", locked: true, lockedWhy: "Fixed principle")));
 
             Groups.Add(new SettingsGroup("Support",
                 new ButtonsSetting("", new[]
@@ -168,7 +168,7 @@ namespace Formcraft.Shell.ViewModels
 
         private async System.Threading.Tasks.Task Probe()
         {
-            _status("Probe: asking Revit through Claude's server…");
+            _status("Probe: asking Revit through the MCP server…");
             _probe = await _info.ProbeAsync();
             _status(_probe);
             Rebuild();

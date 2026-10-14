@@ -40,7 +40,7 @@ namespace Formcraft.Shell.Tests
                 return (p.Vm.Connect.Groups.Select(g => g.Title).ToList(), string.Join(",", p.Vm.FooterActions.Select(a => a.Label)), p.Vm.ShowSection);
             });
             await Assert.That(groups).IsEquivalentTo(new[] { "Start-up health check", "Kit and rules", "Folders the plugin may write",
-                "Chat through MCP · experimental", "AI buttons · Phase 2", "Safety", "Support", "Author's considerations" });
+                "AI connection (MCP) · experimental", "AI buttons · Phase 2", "Safety", "Support", "Author's considerations" });
             await Assert.That(footer).IsEqualTo("Health check,Feedback");
             await Assert.That(placeholder).IsFalse();
         }
@@ -91,9 +91,9 @@ namespace Formcraft.Shell.Tests
             var (on, off) = OnSta(() =>
             {
                 var p = new Pane();
-                p.Group("Chat through MCP · experimental").Items.OfType<ToggleSetting>().Single().IsOn = true;
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single().IsOn = true;
                 bool a = p.Info.ServiceRunning;
-                p.Group("Chat through MCP · experimental").Items.OfType<ToggleSetting>().Single().IsOn = false;
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ToggleSetting>().Single().IsOn = false;
                 return (a, p.Info.ServiceRunning);
             });
             await Assert.That(on).IsTrue();
@@ -107,14 +107,14 @@ namespace Formcraft.Shell.Tests
             {
                 var p = new Pane();
                 var safety = p.Group("Safety").Items.OfType<ToggleSetting>().ToList();
-                safety.Single(t => t.Label == "Claude in shared models").IsOn = true;
+                safety.Single(t => t.Label == "AI in shared models").IsOn = true;
                 var lockedLabels = string.Join(",", safety.Where(t => t.Locked).Select(t => t.Label));
                 var adminRow = p.Vm.Admin.Groups.SelectMany(g => g.Items)
-                                .OfType<ReadOnlySetting>().Single(r => r.Label == "Claude in shared models").Value;
+                                .OfType<ReadOnlySetting>().Single(r => r.Label == "AI in shared models").Value;
                 return (p.Settings.Get("settings." + ConnectViewModel.SharedModelsKey), lockedLabels, adminRow);
             });
             await Assert.That(saved).IsEqualTo("true");
-            await Assert.That(locks).IsEqualTo("Live-model lock,Dry run first,Claude never saves, syncs or moves coordinates");
+            await Assert.That(locks).IsEqualTo("Live-model lock,Dry run first,AI never saves, syncs or moves coordinates");
             await Assert.That(admin).Contains("Connect › Safety");
         }
 
@@ -142,10 +142,10 @@ namespace Formcraft.Shell.Tests
             var status = OnSta(() =>
             {
                 var p = new Pane();
-                p.Group("Chat through MCP · experimental").Items.OfType<ButtonsSetting>().Single().Buttons.Single().Command.Execute(null);
+                p.Group("AI connection (MCP) · experimental").Items.OfType<ButtonsSetting>().Single().Buttons.Single().Command.Execute(null);
                 return p.Vm.Status;
             });
-            await Assert.That(status).Contains("Claude service is off");
+            await Assert.That(status).Contains("AI connection is off");
         }
     }
 }
