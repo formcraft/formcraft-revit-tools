@@ -121,7 +121,8 @@ namespace Formcraft.Shell.ViewModels
                               IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null,
                               IProjectTools? project = null, ITemplateTools? templates = null,
                               ILibraryTools? library = null, IQaTools? qa = null,
-                              IMaterialTools? materials = null, ISheetTools? sheets = null)
+                              IMaterialTools? materials = null, ISheetTools? sheets = null,
+                              IAnnotateTools? annotate = null)
         {
             _licence = licence;
             _connection = connection;
@@ -158,6 +159,8 @@ namespace Formcraft.Shell.ViewModels
             Sheets = new SheetsPage(sheets ?? new MockSheetTools(), Project, picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog,
                                     () => { var issue = Groups.SelectMany(g => g.Sections).FirstOrDefault(x => x.Name == "Issue"); if (issue != null) SelectSection(issue); });
             _hostSections["Sheets"] = Sheets;
+            Annotate = new AnnotatePage(annotate ?? new MockAnnotateTools(), qa ?? new MockQaTools(), settings, s => Status = s, ShowDialog);
+            _hostSections["Annotate"] = Annotate;
             _hostSections["QA"] = Qa;
             _hostSections["Rules"] = Rules;
             _hostSections["Project"] = Project;
@@ -353,6 +356,8 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Connect (board core/PaneConnect).</summary>
         public ConnectViewModel Connect { get; }
+        /// <summary>Drawings › Annotate: the kit's annotation standard against the model.</summary>
+        public AnnotatePage Annotate { get; }
         /// <summary>Drawings › Sheets: the register against the model.</summary>
         public SheetsPage Sheets { get; }
         /// <summary>Setup › Materials: the kit's material database.</summary>
