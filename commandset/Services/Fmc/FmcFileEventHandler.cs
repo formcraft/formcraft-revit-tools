@@ -39,7 +39,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 switch (Action)
                 {
-                    case "info": Result = Info(app); break;
+                    case "info": Result = Info(app, Parameters?.Value<string>("document")); break;
                     case "create": Result = Create(app); break;
                     case "save_as": Result = SaveAs(app); break;
                     case "close": Result = Close(app); break;
@@ -71,20 +71,44 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private static JObject Info(UIApplication app)
+        /// <summary>
+        /// The open documents, and "active": the document the call works on. With a document target (issue #85) that is
+        /// the named document, open in the background or not, so the live-model lock checks the document a change goes
+        /// to, never just whichever is on screen. A named file that isn't open is described from the file itself.
+        /// </summary>
+        private static JObject Info(UIApplication app, string target)
         {
             Document active = app.ActiveUIDocument?.Document;
             var docs = new JArray();
+            Document named = null;
+            target = (target ?? "").Trim();
             foreach (Document d in app.Application.Documents)
             {
                 if (d.IsLinked) continue;
                 docs.Add(Describe(d, active));
+                if (target.Length > 0 && named == null && FmcTarget.Same(d, target)) named = d;
             }
+            JObject subject = target.Length == 0 ? (active != null ? Describe(active, active) : null)
+                : named != null ? Describe(named, active)
+                : File.Exists(target) ? FromFile(target) : null;
             return new JObject
             {
-                ["active"] = active != null ? Describe(active, active) : null,
+                ["active"] = subject,
+                ["target"] = target.Length > 0 ? target : null,
                 ["documents"] = docs,
                 ["revitVersion"] = app.Application.VersionNumber,
+            };
+        }
+
+        private static JObject FromFile(string path)
+        {
+            bool workshared = false;
+            try { workshared = BasicFileInfo.Extract(path).IsWorkshared; } catch (Exception) { /* not a project file */ }
+            return new JObject
+            {
+                ["title"] = Path.GetFileName(path), ["path"] = path,
+                ["isFamily"] = string.Equals(Path.GetExtension(path), ".rfa", StringComparison.OrdinalIgnoreCase),
+                ["isWorkshared"] = workshared, ["isActive"] = false, ["open"] = false,
             };
         }
 

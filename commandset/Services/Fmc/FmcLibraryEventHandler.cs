@@ -57,9 +57,10 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         // ------------------------------------------------------------------ scan (read-only)
 
-        private static JObject Scan(UIApplication app)
+        private JObject Scan(UIApplication app)
         {
-            Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open a model to scan its families.");
+            using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
+            Document doc = target.Doc;
             if (doc.IsFamilyDocument) throw new InvalidOperationException("Scan reads the families loaded in a project; open a project.");
             var placed = new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).Cast<FamilyInstance>()
                 .GroupBy(i => i.Symbol?.Family?.Id?.Value ?? -1).ToDictionary(g => g.Key, g => g.Count());

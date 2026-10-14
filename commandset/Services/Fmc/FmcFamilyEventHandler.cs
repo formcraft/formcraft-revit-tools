@@ -416,7 +416,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private JObject LoadTest(UIApplication app)
         {
-            Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No active document");
+            using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+            Document doc = target.Doc;
             if (doc.IsFamilyDocument) throw new InvalidOperationException("Open the chain-test project (FMC_ChainTest_<Role>.rvt), not a family");
             Level? level = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().OrderBy(l => l.Elevation).FirstOrDefault();
             var results = new JArray();

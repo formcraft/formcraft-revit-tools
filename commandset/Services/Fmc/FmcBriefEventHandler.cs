@@ -39,7 +39,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open a new model first.");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Document doc = target.Doc;
                 if (doc.IsFamilyDocument) throw new InvalidOperationException("Start from brief sets up a project model, not a family.");
                 if (!string.IsNullOrEmpty(doc.PathName)) throw new InvalidOperationException($"{doc.Title} is saved: Start from brief runs only on a new, unsaved model.");
                 if (doc.IsWorkshared) throw new InvalidOperationException($"{doc.Title} is workshared: Start from brief runs only on a new, unsaved model.");

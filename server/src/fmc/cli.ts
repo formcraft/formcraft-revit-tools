@@ -17,7 +17,7 @@
  */
 import fs from "node:fs";
 import { z } from "zod";
-import { revitTarget } from "./target.js";
+import { documentTarget, revitTarget } from "./target.js";
 import { loadConfig } from "./policy.js";
 import { SpecFile } from "./specs.js";
 import { FMC_FILE_SHAPE, runFmcFile } from "../tools/fmc_file.js";
@@ -104,6 +104,9 @@ async function main() {
     const raw = (await readStdin()) as Record<string, unknown>;
     const { revit, ...input } = raw && typeof raw === "object" ? raw : {};
     revitTarget.enterWith(typeof revit === "string" ? revit : undefined);
+    // "document" (a title or path) is the document every command goes to; tools that have their own keep it in input.
+    const doc = (input as Record<string, unknown>).document;
+    documentTarget.enterWith(typeof doc === "string" && doc.trim() ? doc.trim() : undefined);
     switch (command) {
       case "fmc_file":
         return printReply(await runFmcFile(z.object(FMC_FILE_SHAPE).parse(input)));

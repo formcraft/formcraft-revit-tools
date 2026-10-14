@@ -34,11 +34,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                UIDocument ui = app.ActiveUIDocument ?? throw new InvalidOperationException("Open a model first.");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: true);
                 switch (Action)
                 {
-                    case "facts": Result = Facts(ui.Document); break;
-                    case "missing_tags": Result = MissingTags(ui); break;
+                    case "facts": Result = Facts(target.Doc); break;
+                    case "missing_tags": Result = MissingTags(target); break;
                     default: Error = $"Unknown FMC annotation action '{Action}'"; break;
                 }
             }
@@ -81,10 +81,24 @@ namespace RevitMCPCommandSet.Services.Fmc
             ("Electrical fixtures", BuiltInCategory.OST_ElectricalFixtures, BuiltInCategory.OST_ElectricalFixtureTags),
         };
 
-        /// <summary>The views in scope: the active view, or every view on the active sheet (or on the sheet that holds the active view).</summary>
-        private List<View> Views(UIDocument ui)
+        /// <summary>
+        /// The views in scope: the active view, or every view on the active sheet (or on the sheet that holds the active
+        /// view). In the background there is no active view, so a sheet number (<c>sheet</c>) names the sheet.
+        /// </summary>
+        private List<View> Views(FmcTarget target)
         {
-            Document doc = ui.Document;
+            Document doc = target.Doc;
+            string sheetNumber = (Parameters.Value<string>("sheet") ?? "").Trim();
+            if (target.Ui == null || sheetNumber.Length > 0)
+            {
+                if (sheetNumber.Length == 0) throw new InvalidOperationException($"{doc.Title} is open in the background, so there is no current view: pass sheet (a sheet number) to check the views on it.");
+                ViewSheet named = new FilteredElementCollector(doc).OfClass(typeof(ViewSheet)).Cast<ViewSheet>()
+                    .FirstOrDefault(s => string.Equals(s.SheetNumber, sheetNumber, StringComparison.OrdinalIgnoreCase))
+                    ?? throw new InvalidOperationException($"No sheet {sheetNumber} in {doc.Title}.");
+                return named.GetAllPlacedViews().Select(id => doc.GetElement(id) as View)
+                    .Where(v => v != null && !v.IsTemplate && !(v is ViewSchedule) && v.ViewType != ViewType.Legend).ToList();
+            }
+            UIDocument ui = target.Ui;
             View active = ui.ActiveView;
             bool sheet = (Parameters.Value<string>("scope") ?? "current_view") == "sheet_views";
             ViewSheet onSheet = active as ViewSheet;
@@ -95,10 +109,10 @@ namespace RevitMCPCommandSet.Services.Fmc
             return views.Where(v => v != null && !v.IsTemplate && !(v is ViewSheet) && !(v is ViewSchedule) && v.ViewType != ViewType.Legend).ToList();
         }
 
-        private JObject MissingTags(UIDocument ui)
+        private JObject MissingTags(FmcTarget target)
         {
-            Document doc = ui.Document;
-            var views = Views(ui);
+            Document doc = target.Doc;
+            var views = Views(target);
             var rows = new JArray();
             foreach (var (name, category, tagCategory) in Tagged)
             {

@@ -3,21 +3,31 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
-import { revitTarget } from "../fmc/target.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
 
 export const REVIT_ARG = z.string().optional()
   .describe("Which Revit, when two or more are open: a project or document name, a pid or a port (fmc_revit list shows them). Leave out with one Revit.");
 
-/** Adds `revit` to every tool registered as server.tool(name, description, shape, handler). */
+export const DOCUMENT_ARG = z.string().optional()
+  .describe("Which document: a title or a full path. It may be open in the background; read-only tools open a closed file " +
+    "in the background themselves (detached if workshared) and close it without saving. Leave out for the active document.");
+
+/** Adds `revit` and `document` to every tool registered as server.tool(name, description, shape, handler). */
 export function withRevitTarget(server: McpServer) {
   const original = server.tool.bind(server) as (...a: unknown[]) => unknown;
   (server as unknown as { tool: (...a: unknown[]) => unknown }).tool = (...a: unknown[]) => {
     if (a.length === 4 && typeof a[2] === "object" && a[2] !== null && typeof a[3] === "function") {
       const handler = a[3] as (args: Record<string, unknown>, extra: unknown) => unknown;
-      return original(a[0], a[1], { ...(a[2] as object), revit: REVIT_ARG }, (args: Record<string, unknown>, extra: unknown) => {
-        const { revit, ...rest } = args ?? {};
-        return revitTarget.run(typeof revit === "string" ? revit : undefined, () => handler(rest, extra));
-      });
+      // A tool with its own `document` argument (fmc_file) keeps it: it means the same thing, and it sets the target too.
+      const own = "document" in (a[2] as object);
+      return original(a[0], a[1], { ...(a[2] as object), revit: REVIT_ARG, ...(own ? {} : { document: DOCUMENT_ARG }) },
+        (args: Record<string, unknown>, extra: unknown) => {
+          const { revit, ...rest } = args ?? {};
+          const document = typeof rest.document === "string" && rest.document.trim() ? rest.document.trim() : undefined;
+          if (!own) delete rest.document;
+          return revitTarget.run(typeof revit === "string" ? revit : undefined,
+            () => documentTarget.run(document, () => handler(rest, extra)));
+        });
     }
     return original(...a);
   };
