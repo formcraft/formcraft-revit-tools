@@ -89,6 +89,8 @@ namespace revit_mcp_plugin.Fmc
             {
                 service.Initialize(app);
                 service.Start();
+                if (!service.IsRunning)
+                    TaskDialog.Show("Connect AI", "The AI connection couldn't start.\n\n" + service.LastError);
             }
         }
 

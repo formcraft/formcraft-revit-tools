@@ -135,8 +135,8 @@ namespace Formcraft.Shell.ViewModels
             Groups.Add(new SettingsGroup("AI connection (MCP) · experimental",
                 new ToggleSetting(new SettingStore(service, ""), "on", "AI connection", false,
                     "Port " + _info.Port + ". Any AI app that speaks MCP connects here: Claude, ChatGPT, Copilot or a model on this PC. Hiding the pane never stops it."),
-                new ToggleSetting(_store, AutoStartKey, "Switch on when Revit starts", false,
-                    "So an AI app finds Revit without you opening Connect first. Only for you, on this PC."),
+                new ToggleSetting(_store, AutoStartKey, "Switch on when Revit starts", true,
+                    "So an AI app finds Revit without you switching it on first. Kept in %APPDATA%\\Formcraft\\fmc_connect.json with the port."),
                 new ReadOnlySetting("Tools offered", "Files and families with guard rails · document info · the pane (fmc_ui) · read-only model tools"),
                 new ButtonsSetting("", new[] { new SettingButton("Probe the chain", new AsyncCommand(Probe, _status)) }, _probe),
                 new NoteSetting("No feature needs an AI. Every AI request passes the same checks as a pane button.")));

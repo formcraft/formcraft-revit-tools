@@ -69,7 +69,7 @@ namespace revit_mcp_plugin.Fmc
             window.Show();
         }
 
-        /// <summary>Tests the chain Claude uses (node server, port 8080, command set, Revit). A sentence, and whether it passed.</summary>
+        /// <summary>Tests the chain Claude uses (node server, the port in fmc_connect.json, command set, Revit). A sentence, and whether it passed.</summary>
         public static async Task<(bool Ok, string Text)> ProbeAsync()
         {
             if (!SocketService.Instance.IsRunning)
@@ -78,7 +78,7 @@ namespace revit_mcp_plugin.Fmc
             if (!r.Ok) return (false, "Probe failed: " + string.Join(" ", r.Reasons()));
             string active = r.Body["active"]?.Value<string>("title");
             int open = (r.Body["documents"] as JArray)?.Count ?? 0;
-            return (true, $"Probe OK in {r.Body.Value<int>("ms")} ms: server, port 8080, command set and Revit all answer. " +
+            return (true, $"Probe OK in {r.Body.Value<int>("ms")} ms: server, port {revit_mcp_plugin.Core.SocketService.Instance.Port}, command set and Revit all answer. " +
                           (active == null ? "No active document." : $"Active: {active}; {open} open."));
         }
     }

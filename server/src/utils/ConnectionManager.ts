@@ -1,4 +1,5 @@
 import { RevitClientConnection } from "./SocketClient.js";
+import { HOST, notListening, revitPort } from "../fmc/connect.js";
 
 // Mutex to serialize all Revit connections - prevents race conditions
 // when multiple requests are made in parallel
@@ -20,7 +21,9 @@ export async function withRevitConnection<T>(
   });
   await previousMutex;
 
-  const revitClient = new RevitClientConnection("localhost", 8080);
+  // Port from %APPDATA%\Formcraft\fmc_connect.json (shared with the add-in); the add-in listens on 127.0.0.1 only.
+  const port = revitPort();
+  const revitClient = new RevitClientConnection(HOST, port);
 
   try {
     // 连接到Revit客户端
@@ -35,7 +38,7 @@ export async function withRevitConnection<T>(
         const onError = (error: any) => {
           revitClient.socket.removeListener("connect", onConnect);
           revitClient.socket.removeListener("error", onError);
-          reject(new Error("connect to revit client failed"));
+          reject(new Error(notListening(port)));
         };
 
         revitClient.socket.on("connect", onConnect);
@@ -46,7 +49,7 @@ export async function withRevitConnection<T>(
         setTimeout(() => {
           revitClient.socket.removeListener("connect", onConnect);
           revitClient.socket.removeListener("error", onError);
-          reject(new Error("连接到Revit客户端失败"));
+          reject(new Error(notListening(port)));
         }, 5000);
       });
     }
