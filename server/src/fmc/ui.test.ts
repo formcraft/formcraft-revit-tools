@@ -53,3 +53,7 @@ test("results and Revit errors come back as JSON", async () => {
   assert.equal(bad.isError, true);
   assert.match(text(bad).error, /test builds only/);
 });
+
+test("close_revit is an fmc_ui action (F-021); the add-in decides whether it may close", () => {
+  assert.equal(z.object(FMC_UI_SHAPE).safeParse({ action: "close_revit" }).success, true);
+});

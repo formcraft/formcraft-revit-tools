@@ -51,6 +51,28 @@ namespace revit_mcp_plugin.Shell
 
         internal static void Attach(UiBridge bridge) => _bridge = bridge;
 
+        /// <summary>
+        /// F-021: closes Revit for an install, in test mode only (the pilot PC), and only when every open document is new
+        /// (never saved) and unchanged, so nothing can be lost. It never saves. Otherwise it refuses and names the
+        /// documents, and a person decides (the user's rule of 14 Oct). Revit is asked to exit after this call returns.
+        /// </summary>
+        private static Dictionary<string, object> CloseRevit()
+        {
+            if (!AllowMockLicence) throw new InvalidOperationException("close_revit works in test mode only (the pilot PC's fmc_test.json, FMC_UI_TEST=1 or a Debug build).");
+            var app = FormcraftBrowser.App ?? throw new InvalidOperationException("Revit hasn't been idle yet: try again in a moment.");
+            var risky = new List<string>();
+            foreach (Autodesk.Revit.DB.Document d in app.Application.Documents)
+            {
+                if (d.IsLinked) continue;
+                if (!string.IsNullOrEmpty(d.PathName)) risky.Add(d.Title + " (saved file)");
+                else if (d.IsModified) risky.Add(d.Title + " (changed)");
+            }
+            if (risky.Count > 0)
+                throw new InvalidOperationException("Not closing: " + string.Join(", ", risky) + ". Ask the user; nothing is ever saved by a tool.");
+            app.PostCommand(Autodesk.Revit.UI.RevitCommandId.LookupPostableCommandId(Autodesk.Revit.UI.PostableCommand.ExitRevit));
+            return new Dictionary<string, object> { ["closing"] = true, ["next"] = "Revit exits; the Formcraft Updater installs a staged build within seconds." };
+        }
+
         /// <summary>Runs one fmc_ui action. Returns the result as JSON; throws with a message Claude can act on.</summary>
         public static string Run(string action, string parametersJson)
         {
@@ -76,8 +98,11 @@ namespace revit_mcp_plugin.Shell
                     var folder = GuardStatus.ExpandEnv(GuardStatus.Load().ReportsDir);
                     result = new Dictionary<string, object> { ["path"] = _bridge.ScreenshotPane(folder) };
                     break;
+                case "close_revit":
+                    result = CloseRevit();
+                    break;
                 default:
-                    throw new ArgumentException("Unknown fmc_ui action '" + action + "'. Actions: get_state, open_section, set_mock_licence, screenshot_pane.");
+                    throw new ArgumentException("Unknown fmc_ui action '" + action + "'. Actions: get_state, open_section, set_mock_licence, screenshot_pane, close_revit.");
             }
             return JsonConvert.SerializeObject(result);
         }
