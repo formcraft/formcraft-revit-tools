@@ -88,32 +88,55 @@ namespace Formcraft.Shell.ViewModels
     }
 
     /// <summary>
-    /// Setup › Families (board manage/PaneFamilies, U15 in progress): the family builder from the kit. Plan checks every
-    /// family before Revit is touched; Build and Load test always run a dry run first and ask (CLAUDE.md rule 3).
+    /// Setup › Families (board manage/PaneFamilies, U15): the compliance scan of every family in the open file, each
+    /// family's needs, bringing in a family from outside, the kit's shared parameters and keynotes, and the builder that
+    /// makes families from the kit. Read-only checks work on live models; anything that writes runs a dry run first and
+    /// asks (CLAUDE.md rule 3), and lands in staging: release stays with the Family Librarian.
     /// </summary>
     public sealed class FamiliesPage : SectionPage
     {
+        public static readonly string[] ShowOptions = { "Not compliant", "Fixable", "Need a person", "All" };
+
         private readonly IFamilyTools _tools;
+        private readonly ILibraryTools _library;
+        private readonly IFilePicker _picker;
         private readonly SettingStore _store;
         private readonly Action<string> _status;
         private readonly Action<DialogViewModel> _ask;
         private readonly FamilyPickSetting _list = new FamilyPickSetting();
         private readonly MessagesSetting _messages = new MessagesSetting();
+        private readonly MessagesSetting _scanMessages = new MessagesSetting();
+        private readonly MessagesSetting _bringMessages = new MessagesSetting();
+        private readonly MessagesSetting _keynoteMessages = new MessagesSetting();
+        private readonly SettingsGroup _builder;
         private FamilySpecs? _specs;
+        private ScanResult? _scan;
+        private FamilyVerdict? _selected;
+        private BringInPlan? _plan;
+        private IReadOnlyList<KitParameter>? _parameters;
+        private KeynoteSearch? _keynotes;
         private bool _busy;
 
-        public FamiliesPage(IFamilyTools tools, IUserSettings settings, Action<string> status, Action<DialogViewModel> ask)
-            : base("Setup › Families", "Families built from the kit land in staging; release to the library stays with the Family Librarian.")
+        public FamiliesPage(IFamilyTools tools, ILibraryTools library, IFilePicker picker, IUserSettings settings, Action<string> status, Action<DialogViewModel> ask)
+            : base("Setup › Families", "Every family checked against the kit, families brought in from outside, and families built from the kit. Release stays with the Family Librarian.")
         {
             _tools = tools;
+            _library = library;
+            _picker = picker;
             _store = new SettingStore(settings);
             _status = status;
             _ask = ask;
             PlanCommand = new AsyncCommand(() => Plan(quiet: false), status);
             BuildCommand = new AsyncCommand(Build, status);
             LoadTestCommand = new AsyncCommand(LoadTest, status);
+            ScanCommand = new AsyncCommand(Scan, status);
+            CheckCommand = new AsyncCommand(Check, status);
+            BringInCommand = new AsyncCommand(BringIn, status);
+            SearchParametersCommand = new AsyncCommand(SearchParameters, status);
+            SearchKeynotesCommand = new AsyncCommand(SearchKeynotes, status);
+            RequestKeynoteCommand = new AsyncCommand(RequestKeynote, status);
 
-            Groups.Add(new SettingsGroup("Build from the kit",
+            _builder = new SettingsGroup("Build from the kit",
                 new ButtonsSetting("Select", new[]
                 {
                     new SettingButton("Pilot set", new RelayCommand(() => Pick(_specs?.Pilot ?? new string[0]))),
@@ -129,11 +152,248 @@ namespace Formcraft.Shell.ViewModels
                     new SettingButton("Build", BuildCommand, primary: true),
                     new SettingButton("Load test", LoadTestCommand),
                 }, "Build makes data-shell families in " + tools.StagingRoot + "\\<Role>. Load test runs in the active chain-test file."),
-                _messages));
-            Groups.Add(new SettingsGroup("Compliance, bring in, parameters and keynotes",
-                new NoteSetting("The compliance scan of the families in a file, bringing in a family from outside, shared parameters and keynotes " +
-                                "come with the rest of this section (U15, board manage/PaneFamilies).")));
-            Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "families.considerations", status)));
+                _messages);
+            Rebuild();
+        }
+
+        public ICommand ScanCommand { get; }
+        public ICommand CheckCommand { get; }
+        public ICommand BringInCommand { get; }
+        public ICommand SearchParametersCommand { get; }
+        public ICommand SearchKeynotesCommand { get; }
+        public ICommand RequestKeynoteCommand { get; }
+        public ScanResult? LastScan => _scan;
+        public BringInPlan? LastPlan => _plan;
+        public MessagesSetting BringMessages => _bringMessages;
+        public MessagesSetting KeynoteMessages => _keynoteMessages;
+
+        public void Rebuild()
+        {
+            Groups.Clear();
+            Groups.Add(ScanGroup());
+            Groups.Add(FamiliesGroup());
+            if (_selected != null) Groups.Add(SelectedGroup(_selected));
+            Groups.Add(BringInGroup());
+            Groups.Add(ParametersGroup());
+            Groups.Add(KeynotesGroup());
+            Groups.Add(_builder);
+            Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "families.considerations", _status)));
+        }
+
+        // ---------- Compliance scan ----------
+
+        private SettingsGroup ScanGroup()
+        {
+            var items = new List<SettingItem>();
+            if (_scan == null)
+                items.Add(new NoteSetting("Scan file checks every family in the open model against the Families rulebook: names, the kit's parameters " +
+                                          "by GUID, keynotes and type names. It only reads, so it works on live models too."));
+            else
+            {
+                items.Add(new ReadOnlySetting(_scan.Document, $"{_scan.Families.Count} scanned · {_scan.Compliant} compliant · {_scan.Fixable} fixable in one pass · {_scan.NeedAPerson} need a person"));
+                items.Add(new CheckListSetting(_scan.ByCheck.Select(c => new CheckRow(new HealthCheck(c.Check, c.Fail == 0 ? "Pass" : c.Fail + " fail",
+                    c.Fail == 0 ? ChipKind.Good : ChipKind.Bad), null))));
+            }
+            items.Add(new ButtonsSetting("", new[]
+            {
+                new SettingButton(_scan == null ? "Scan file" : "Scan again", ScanCommand, primary: true),
+                new SettingButton("List the families for a person", new RelayCommand(ListForAPerson)),
+            }, "Checked against the Families rulebook. Fixable families are put right by bringing them in again (below), into staging; " +
+               "the families in a live model are never changed by a tool."));
+            items.Add(_scanMessages);
+            return new SettingsGroup("Compliance scan · every family in this file", items.ToArray());
+        }
+
+        private async Task Scan()
+        {
+            _status("Scanning the families in the open model…");
+            var r = await _library.ScanAsync();
+            _scanMessages.Show(r.Ok ? ChipKind.Info : ChipKind.Bad, r.Message);
+            _status(r.Message);
+            if (r.Ok) { _scan = r; _selected = null; }
+            Rebuild();
+        }
+
+        private void ListForAPerson()
+        {
+            if (_scan == null) { _scanMessages.Show(ChipKind.Warn, "Scan the file first."); return; }
+            var names = _scan.Families.Where(f => f.State == "Needs a person").Select(f => f.Name + ": " + f.Next).ToList();
+            _scanMessages.Show(names.Count == 0 ? ChipKind.Good : ChipKind.Warn,
+                names.Count == 0 ? "No family needs a person." : "For a person:\n• " + string.Join("\n• ", names));
+        }
+
+        // ---------- Families table ----------
+
+        private SettingsGroup FamiliesGroup()
+        {
+            if (_scan == null)
+                return new SettingsGroup("Families · click one to see what it needs", new NoteSetting("Scan the file to list its families."));
+            var show = _store.Get("families.show") ?? ShowOptions[0];
+            var rows = _scan.Families.Where(f => show == "All" || (show == "Not compliant" ? f.State != "Compliant" : show == "Fixable" ? f.State == "Fixable" : f.State == "Needs a person"));
+            var table = new TableSetting("", new[] { "Family", "From", "Score", "State" },
+                rows.Select(f => new TableRow(f, f.Name, f.From, f.Score.ToString(), f.State)), selectable: true);
+            table.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(TableSetting.Selected) && table.Selected?.Tag is FamilyVerdict v) { _selected = v; Rebuild(); }
+            };
+            return new SettingsGroup("Families · click one to see what it needs",
+                new ChoiceSetting(_store, "families.show", "Show", ShowOptions, changed: _ => Rebuild()), table);
+        }
+
+        /// <summary>Opens a family's details as if it was clicked in the table.</summary>
+        public void Select(string name)
+        {
+            _selected = _scan?.Families.FirstOrDefault(f => f.Name == name);
+            Rebuild();
+        }
+
+        private SettingsGroup SelectedGroup(FamilyVerdict f) => new SettingsGroup("Selected · " + f.Name,
+            new ReadOnlySetting("Category", f.Category),
+            new ReadOnlySetting("Score", f.Score + " · " + f.State),
+            new CheckListSetting(f.Checks.Select(c => new CheckRow(new HealthCheck(c.Check, c.StatusText, c.Kind, detail: c.State == "pass" ? "" : c.Detail), null))),
+            new NoteSetting("Next: " + f.Next, f.Kind == ChipKind.Good ? ChipKind.Good : ChipKind.Info));
+
+        // ---------- Bring in ----------
+
+        private SettingsGroup BringInGroup()
+        {
+            var path = _store.Get("families.bring.path") ?? "";
+            var items = new List<SettingItem>
+            {
+                new ReadOnlySetting("Downloaded family", path.Length == 0 ? "None chosen" : path, mono: true,
+                    hint: "Manufacturer sites, other firms, old projects. The original file is never changed."),
+                new ButtonsSetting("", new[] { new SettingButton("Choose a family file…", new RelayCommand(ChooseFamily)) }),
+                new ChoiceSetting(_store, "families.bring.role", "Role", ProjectPage.Roles, 4, dropdown: true),
+                new TextSetting("Description", "", "e.g. Socket MK", store: _store, key: "families.bring.description",
+                    hint: "Plain words for the name; the category token comes from the kit."),
+                new TextSetting("Keynote", "", "e.g. E.SOC_04", store: _store, key: "families.bring.keynote", mono: true,
+                    hint: "Search the kit's keynotes below, or request a new one."),
+                new ButtonsSetting("", new[] { new SettingButton("Check it", CheckCommand), new SettingButton("Bring in", BringInCommand, primary: true) }),
+            };
+            if (_plan != null)
+            {
+                var steps = new List<HealthCheck>
+                {
+                    new HealthCheck("Check it", "score " + (_plan.Verdict?.Score ?? 0), _plan.Verdict?.Kind ?? ChipKind.Grey, detail: _plan.Verdict?.State ?? ""),
+                    new HealthCheck("Rename to the naming rule", _plan.ProposedName.Length > 0 ? "→ " + _plan.ProposedName : "Needs role and description",
+                        _plan.ProposedName.Length > 0 ? ChipKind.Info : ChipKind.Warn),
+                    new HealthCheck("Add the kit's parameters", _plan.AddParameters.Count + " to add", ChipKind.Info, detail: string.Join(", ", _plan.AddParameters)),
+                    new HealthCheck("Set the keynote", (_store.Get("families.bring.keynote") ?? "").Length > 0 ? _store.Get("families.bring.keynote")! : "None", ChipKind.Info),
+                    new HealthCheck("Purge CAD and unused types", _plan.ImportedCad > 0 ? _plan.ImportedCad + " CAD: by hand" : "No CAD", _plan.ImportedCad > 0 ? ChipKind.Warn : ChipKind.Good),
+                    new HealthCheck("Save to library staging", _plan.SavePath.Length > 0 ? _plan.SavePath : "—", ChipKind.Info),
+                };
+                items.Add(new CheckListSetting(steps.Select(c => new CheckRow(c, null))));
+            }
+            items.Add(_bringMessages);
+            items.Add(new NoteSetting("Connectors and technical modelling: Formcraft Model. Release from staging to the library stays with the Family Librarian."));
+            return new SettingsGroup("Bring in a family from outside", items.ToArray());
+        }
+
+        private void ChooseFamily()
+        {
+            var path = _picker.Open("Choose a family to bring in", "Revit family (*.rfa)|*.rfa", "");
+            if (path == null) return;
+            _store.Set("families.bring.path", path);
+            _plan = null;
+            Rebuild();
+        }
+
+        private (string Path, string Role, string Description, string Keynote) BringInputs() => (
+            _store.Get("families.bring.path") ?? "", _store.Get("families.bring.role") ?? ProjectPage.Roles[4],
+            (_store.Get("families.bring.description") ?? "").Trim(), (_store.Get("families.bring.keynote") ?? "").Trim());
+
+        private async Task Check()
+        {
+            var (path, role, description, keynote) = BringInputs();
+            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); return; }
+            _status("Checking " + System.IO.Path.GetFileName(path) + "…");
+            var plan = await _library.InspectAsync(path, role, description, keynote);
+            _plan = plan.Ok ? plan : null;
+            _bringMessages.Show(plan.Ok ? ChipKind.Info : ChipKind.Bad, plan.Ok ? "Checked. Every step is shown before it runs." : plan.Message);
+            Rebuild();
+        }
+
+        private async Task BringIn()
+        {
+            var (path, role, description, keynote) = BringInputs();
+            if (path.Length == 0) { _bringMessages.Show(ChipKind.Warn, "Choose a family file first."); return; }
+            var dry = await _library.BringInAsync(path, role, description, keynote, true);
+            if (!dry.Ok) { _bringMessages.Show(dry.Messages); return; }
+            _ask(DialogViewModel.WithItems("Bring in " + System.IO.Path.GetFileName(path) + "?",
+                "Saves a copy under its standard name in library staging; the original is never changed.",
+                new SettingItem[] { new ReadOnlySetting("Will do", string.Join(Environment.NewLine, dry.Details), mono: true) }, "Bring in", async () =>
+                {
+                    var r = await _library.BringInAsync(path, role, description, keynote, false);
+                    _bringMessages.Show(r.Messages);
+                    _status(r.Messages.FirstOrDefault()?.Text ?? "Done.");
+                    return null;
+                }));
+        }
+
+        // ---------- Shared parameters ----------
+
+        private SettingsGroup ParametersGroup()
+        {
+            var items = new List<SettingItem>
+            {
+                new TextSetting("Search the kit's shared parameters", "", "e.g. Asset or Mounting", store: _store, key: "families.paramquery"),
+                new ButtonsSetting("", new[] { new SettingButton("Search", SearchParametersCommand) }),
+            };
+            if (_parameters != null)
+                items.Add(_parameters.Count == 0 ? (SettingItem)new NoteSetting("No parameter matches.")
+                    : new TableSetting("", new[] { "Parameter", "Group", "Type" }, _parameters.Select(p => new TableRow(p, p.Name, p.Group, p.Datatype))));
+            items.Add(new NoteSetting("Only the kit's FMC_SharedParameters.txt, matched by GUID and data type, not just by name. A new parameter goes " +
+                                      "through a change request. Bring in adds a family's parameters from its spec."));
+            return new SettingsGroup("Shared parameters", items.ToArray());
+        }
+
+        private async Task SearchParameters()
+        {
+            _parameters = await _library.ParametersAsync((_store.Get("families.paramquery") ?? "").Trim());
+            Rebuild();
+        }
+
+        // ---------- Keynotes ----------
+
+        private SettingsGroup KeynotesGroup()
+        {
+            var items = new List<SettingItem>
+            {
+                new TextSetting("Search keynotes", "", "e.g. socket", store: _store, key: "families.keyquery"),
+                new ButtonsSetting("", new[] { new SettingButton("Search", SearchKeynotesCommand) }),
+            };
+            if (_keynotes != null)
+            {
+                if (_keynotes.File.Length > 0) items.Insert(0, new ReadOnlySetting("Keynote file", _keynotes.File, mono: true));
+                items.Add(_keynotes.Keynotes.Count == 0 ? (SettingItem)new NoteSetting(_keynotes.Ok ? "No keynote matches." : _keynotes.Message, _keynotes.Ok ? ChipKind.Info : ChipKind.Warn)
+                    : new TableSetting("", new[] { "Code", "Description" }, _keynotes.Keynotes.Select(k => new TableRow(k, k.Code, k.Description))));
+                if (_keynotes.Groups.Count > 0)
+                {
+                    items.Add(new ChoiceSetting(_store, "families.keygroup", "Add a keynote · group", _keynotes.Groups.ToArray(), dropdown: true, changed: g => { Task unused = SearchKeynotes(); }));
+                    items.Add(new ReadOnlySetting("Next code", _keynotes.NextCode, mono: true));
+                    items.Add(new TextSetting("Description", "", "Plain words; material, size and finish.", store: _store, key: "families.keytext"));
+                    items.Add(new ButtonsSetting("", new[] { new SettingButton("Request this keynote", RequestKeynoteCommand) }));
+                }
+            }
+            items.Add(_keynoteMessages);
+            items.Add(new NoteSetting("New keynotes are requests: the BIM Manager approves them into the kit's keynote file."));
+            return new SettingsGroup("Keynotes", items.ToArray());
+        }
+
+        private async Task SearchKeynotes()
+        {
+            _keynotes = await _library.KeynotesAsync((_store.Get("families.keyquery") ?? "").Trim(), _store.Get("families.keygroup") ?? "");
+            Rebuild();
+        }
+
+        private async Task RequestKeynote()
+        {
+            var group = _store.Get("families.keygroup") ?? _keynotes?.Groups.FirstOrDefault() ?? "";
+            var text = (_store.Get("families.keytext") ?? "").Trim();
+            if (group.Length == 0 || text.Length == 0) { _keynoteMessages.Show(ChipKind.Warn, "Pick a group and describe the keynote."); return; }
+            var message = await _library.RequestKeynoteAsync(group, text);
+            _keynoteMessages.Show(ChipKind.Good, message);
+            _status(message);
         }
 
         public ICommand PlanCommand { get; }
@@ -144,9 +404,9 @@ namespace Formcraft.Shell.ViewModels
 
         public override IEnumerable<FooterAction> Footer => new[]
         {
-            new FooterAction("Build", BuildCommand, primary: true),
-            new FooterAction("Plan", PlanCommand),
-            new FooterAction("Load test", LoadTestCommand),
+            new FooterAction("Scan file", ScanCommand, primary: true),
+            new FooterAction("Bring in", BringInCommand),
+            new FooterAction("Build", BuildCommand),
         };
 
         public override void Opened() { if (_specs == null) _ = LoadAsync(); }

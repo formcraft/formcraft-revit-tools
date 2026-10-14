@@ -119,7 +119,8 @@ namespace Formcraft.Shell.ViewModels
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
                               IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null,
                               IConnectInfo? connect = null, IFamilyTools? families = null, IFileTools? files = null, IFilePicker? picker = null,
-                              IProjectTools? project = null, ITemplateTools? templates = null)
+                              IProjectTools? project = null, ITemplateTools? templates = null,
+                              ILibraryTools? library = null)
         {
             _licence = licence;
             _connection = connection;
@@ -147,7 +148,7 @@ namespace Formcraft.Shell.ViewModels
                                            () => OpenSettingsTab("General", "Kit folder: Settings › General › kit."));
             // Setup sections the pane builds itself (the families and files tools that were the Formcraft Browser).
             Project = new ProjectPage(project ?? new MockProjectTools(), settings, picker ?? new WindowsFilePicker(), s => Status = s, ShowDialog);
-            Families = new FamiliesPage(families ?? new MockFamilyTools(), settings, s => Status = s, ShowDialog);
+            Families = new FamiliesPage(families ?? new MockFamilyTools(), library ?? new MockLibraryTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
             Templates = new TemplatesPage(files ?? new MockFileTools(), templates ?? new MockTemplateTools(), picker ?? new WindowsFilePicker(), settings, Project, s => Status = s, ShowDialog);
             _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
