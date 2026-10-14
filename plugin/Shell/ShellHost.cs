@@ -62,7 +62,8 @@ namespace revit_mcp_plugin.Shell
                 if (c.StartWithRevit != want) { c.StartWithRevit = want; c.Save(); }
             };
             // The licence service arrives in U17 (decision D6); until then sign-in is the mock (code 123456).
-            Licence = new MockLicenceService();
+            // F-014: the mock keeps the session when "Keep me signed in on this PC" is on (until U17's real service).
+            Licence = new MockLicenceService(Settings);
 #if REVIT2025_OR_GREATER
             ITouchService touch = Touch != null ? new RevitTouch(Touch) : null;
 #else

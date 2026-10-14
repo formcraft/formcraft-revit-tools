@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { GATES, QaFacts, Rulebooks, mergeRulebooks, neededParameters, qaReport, runQa, trend } from "../fmc/rules.js";
+import { DEFAULT_LIMIT, qaDigest, rulebooksDigest } from "../fmc/digest.js";
 
 const win = path.win32;
 
@@ -58,6 +59,9 @@ export const FMC_QA_SHAPE = {
   text: z.string().optional().describe("request: proposed wording, reason or comment"),
   severity: z.enum(["Must", "Should", "Advice"]).optional().describe("request approve: severity to approve with"),
   project_folder: z.string().optional().describe("run: the project folder, for the report in 06_QA\\Health where the guard allows"),
+  detail: z.enum(["summary", "full"]).optional().default("summary")
+    .describe("rules, run: summary (default: counts, the verdict, what needs attention, why rules weren't checked) or full (every rule or result)"),
+  limit: z.number().int().min(1).max(500).optional().default(DEFAULT_LIMIT).describe("run summary: how many results needing attention to list"),
   stage: z.string().optional().describe("run: the project's RIBA stage (e.g. 3); kit rules for other stages show Not applicable"),
 };
 
@@ -69,7 +73,10 @@ export async function runFmcQa(args: FmcQaArgs) {
     const books = readRulebooks(config.rulebooks_dir);
     switch (args.action) {
       case "rules":
-        return reply({ ...books, gates: GATES, config_problem: problem });
+        if (args.detail === "full") return reply({ ...books, gates: GATES, config_problem: problem });
+        // F-009: 344 rules are too many for an AI caller; the pane's Check › Rules asks for them all.
+        return reply({ ...rulebooksDigest(books), gates: GATES, config_problem: problem,
+          next: "detail: \"full\" lists every rule (large); rule ids are in Check › Rules" });
 
       case "select": {
         const ids = args.element_ids ?? [];
@@ -117,7 +124,12 @@ export async function runFmcQa(args: FmcQaArgs) {
     fs.writeFileSync(report, qaReport(result, new Date()));
     log(config, "qa_run", false, facts.model, "done", `${result.gate}: ${result.fail} fail, ${result.warning} warnings · ${report}`);
 
-    return reply({ ...result, trend: t, history: runs.slice(-4).map((r) => ({ at: r.at, failing: r.failing.length })), report, rulebook_problems: books.problems });
+    const recent = runs.slice(-4).map((r) => ({ at: r.at, failing: r.failing.length }));
+    if (args.detail === "full") return reply({ ...result, trend: t, history: recent, report, rulebook_problems: books.problems });
+    // F-009: counts, the verdict and what needs attention; every result is in the saved report.
+    const { results, ...head } = result;
+    return reply({ ...head, ...qaDigest(results, args.limit), trend: t, history: recent, report, rulebook_problems: books.problems,
+      next: "detail: \"full\" returns every result (large); the saved report lists them all" });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, "qa_" + args.action, false, "", "error", msg);

@@ -10,7 +10,30 @@ namespace Formcraft.Shell.Services
     /// </summary>
     public sealed class MockLicenceService : ILicenceService
     {
+        /// <summary>The kept session (F-014): email, last check (ISO, empty for an offline licence) and offline days.</summary>
+        public const string SessionKey = "licence.session";
+
+        private readonly IUserSettings? _settings;
         private string _pendingEmail = "";
+
+        public MockLicenceService() { }
+
+        /// <summary>
+        /// With settings, "Keep me signed in on this PC" keeps the session across Revit restarts (F-014), until the person
+        /// signs out or the offline grace runs out. The real licence service (U17, decision D6) keeps its own session.
+        /// </summary>
+        public MockLicenceService(IUserSettings settings)
+        {
+            _settings = settings;
+            var saved = (settings.Get(SessionKey) ?? "").Split('|');
+            if (saved.Length != 3 || !settings.GetBool(SettingKeys.KeepSignedIn, true)) return;
+            DateTime? checkedAt = DateTime.TryParse(saved[1], null, System.Globalization.DateTimeStyles.RoundtripKind, out var at) ? at : (DateTime?)null;
+            _pendingEmail = saved[0];
+            int days = int.TryParse(saved[2], out var d) ? d : 14;
+            // The grace runs from the last check, not from this start; within it the mock counts as checked (no server to ask).
+            int left = checkedAt.HasValue ? days - (int)Math.Floor((DateTime.Now - checkedAt.Value).TotalDays) : days;
+            Grant(checkedAt, left, "Signed in (kept on this PC).", keep: false, online: left > 0);
+        }
 
         public LicenceState Current { get; private set; } = LicenceState.SignedOut;
         public event EventHandler? Changed;
@@ -49,8 +72,11 @@ namespace Formcraft.Shell.Services
             return Task.FromResult(Grant(null, 30, "Offline licence loaded. It works for 30 days, then needs a check-in."));
         }
 
-        private SignInResult Grant(DateTime? checkedAt, int offlineDays, string message)
+        private SignInResult Grant(DateTime? checkedAt, int offlineDays, string message, bool keep = true, bool online = true)
         {
+            if (keep && _settings != null)
+                _settings.Set(SessionKey, _settings.GetBool(SettingKeys.KeepSignedIn, true)
+                    ? _pendingEmail + "|" + (checkedAt?.ToString("o") ?? "") + "|" + offlineDays : null);
             var today = DateTime.Today;
             var yearEnd = new DateTime(today.Year, 12, 31);
             Current = new LicenceState(
@@ -64,7 +90,8 @@ namespace Formcraft.Shell.Services
                     new ModuleLicence(FmcModule.Build, ModuleStatus.NotLicensed, null),
                 },
                 checkedAt,
-                offlineDays);
+                offlineDays,
+                online);
             Changed?.Invoke(this, EventArgs.Empty);
             return new SignInResult(SignInOutcome.SignedIn, message);
         }
@@ -74,6 +101,7 @@ namespace Formcraft.Shell.Services
             if (Current.SignedIn)
             {
                 Current = new LicenceState(Current.Account, Current.Modules, DateTime.Now, 14, online: true);
+                if (_settings != null && _settings.Get(SessionKey) != null) _settings.Set(SessionKey, _pendingEmail + "|" + DateTime.Now.ToString("o") + "|14");
                 Changed?.Invoke(this, EventArgs.Empty);
             }
             return Task.CompletedTask;
@@ -81,6 +109,7 @@ namespace Formcraft.Shell.Services
 
         public Task SignOutAsync()
         {
+            _settings?.Set(SessionKey, null);
             Current = LicenceState.SignedOut;
             Changed?.Invoke(this, EventArgs.Empty);
             return Task.CompletedTask;
