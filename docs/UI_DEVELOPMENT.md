@@ -293,6 +293,8 @@ then U35–U36 (Navisworks is not installed yet).
 - [ ] U35 Coordinate › Clashes — `coord/PaneCoordClashes`. New **Coordinate** group in the Revit pane, `+Coord` tag
   (new module accent to add to the UI kit). Guide:
   - **Counts.** New, active and resolved.
+  - **Clash matrix.** A discipline × discipline grid of open clashes per pair, worst pairs in red. Selecting a cell
+    filters the list. Pairs, tests and tolerances come from the kit clash matrix (a new kit table, by change request).
   - **Groups by owner.**
   - **Clash card:**
     - **Show in Revit**;
