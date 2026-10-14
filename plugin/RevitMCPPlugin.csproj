@@ -43,14 +43,14 @@
         <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
         <OutputPath>bin\$(Configuration.Split(' ')[0])\$(RevitVersion)\</OutputPath>
         <EnableDynamicLoading>true</EnableDynamicLoading>
-        <DefineConstants>$(DefineConstants);REVIT2024_OR_GREATER</DefineConstants>
+        <DefineConstants>$(DefineConstants);REVIT2024_OR_GREATER;REVIT2025_OR_GREATER</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="$(Configuration.Contains('R26'))">
         <RevitVersion>2026</RevitVersion>
         <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
         <OutputPath>bin\$(Configuration.Split(' ')[0])\$(RevitVersion)\</OutputPath>
         <EnableDynamicLoading>true</EnableDynamicLoading>
-        <DefineConstants>$(DefineConstants);REVIT2024_OR_GREATER</DefineConstants>
+        <DefineConstants>$(DefineConstants);REVIT2024_OR_GREATER;REVIT2025_OR_GREATER</DefineConstants>
     </PropertyGroup>
     <PropertyGroup>
         <StartAction>Program</StartAction>
@@ -85,6 +85,10 @@
         <ProjectReference Include="..\shell\Formcraft.Shell\Formcraft.Shell.csproj"/>
         <!-- Ribbon icons at 16 and 32 px (resources/icons/png) -->
         <Resource Include="..\resources\icons\png\*.png" Link="Ribbon\%(Filename)%(Extension)"/>
+    </ItemGroup>
+    <ItemGroup Condition="'$(RevitVersion)' == '2025' Or '$(RevitVersion)' == '2026'">
+        <!-- Formcraft Flow's touch engine (formerly TouchKit), started from OnStartup (U22). .NET 8 Revit only. -->
+        <ProjectReference Include="..\touch\TouchKit\TouchKit.csproj" AdditionalProperties="RevitVersion=$(RevitVersion)"/>
     </ItemGroup>
     <ItemGroup>
         <None Update="Formcraft.addin">

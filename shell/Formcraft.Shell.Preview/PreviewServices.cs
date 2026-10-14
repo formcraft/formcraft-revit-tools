@@ -19,7 +19,7 @@ namespace Formcraft.Shell.Preview
             Settings = settings ?? new JsonUserSettings(PreviewSettingsPath);
             // No Z:\00_Standards on most PCs: start the preview on the sample kit (tests/shell/fixtures/kit).
             if (Settings.Get(SettingKeys.KitFolder) == null && SampleKit is string kit) Settings.Set(SettingKeys.KitFolder, kit);
-            Pane = new ShellViewModel(Licence, Connection, Document, Settings);
+            Pane = new ShellViewModel(Licence, Connection, Document, Settings, touch: Touch);
             // The sample log in the tools' own format (tests/shell/fixtures), so the Log file window has rows.
             if (SampleKit is string sample) Pane.LogPath = Path.Combine(Path.GetDirectoryName(sample)!, "FMC_MCP_FileLog.csv");
         }
@@ -44,6 +44,8 @@ namespace Formcraft.Shell.Preview
         public MockLicenceService Licence { get; } = new MockLicenceService();
         public MockConnectionService Connection { get; } = new MockConnectionService();
         public MockDocumentContext Document { get; } = new MockDocumentContext();
+        /// <summary>Sample touch views and settings (board flow/PaneFlowTouch).</summary>
+        public MockTouchService Touch { get; } = new MockTouchService();
         public ShellViewModel Pane { get; }
 
         public IReadOnlyList<Option<DocumentInfo>> Documents { get; } = new[]

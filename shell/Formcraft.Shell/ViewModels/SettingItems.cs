@@ -85,6 +85,9 @@ namespace Formcraft.Shell.ViewModels
                 _changed?.Invoke(value);
             }
         }
+
+        /// <summary>The value changed somewhere else (the ribbon, Revit): show it.</summary>
+        public void Refresh() => OnPropertyChanged(nameof(Selected));
     }
 
     /// <summary>An on/off switch. Locked ones show the padlock: set by a team rule, a professional or Admin.</summary>
@@ -118,6 +121,9 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>The value changed somewhere else (the ribbon, Revit): show it.</summary>
+        public void Refresh() => OnPropertyChanged(nameof(IsOn));
     }
 
     public sealed class OptionChip : ObservableObject
@@ -160,6 +166,81 @@ namespace Formcraft.Shell.ViewModels
         public IEnumerable<string> On => Options.Where(o => o.IsOn).Select(o => o.Name);
 
         private void Save() => _store.Set(_key, string.Join("|", On));
+    }
+
+    /// <summary>One view's row in Settings › Flow › Touch: its name, type and touch switch.</summary>
+    public sealed class TouchViewRow : ObservableObject
+    {
+        private readonly ITouchService _touch;
+        private bool _on;
+
+        public TouchViewRow(ITouchService touch, TouchView view)
+        {
+            _touch = touch;
+            Id = view.Id;
+            Name = view.Name;
+            Type = view.IsActive ? view.Type + " · active" : view.Type;
+            _on = view.On;
+        }
+
+        public long Id { get; }
+        public string Name { get; }
+        public string Type { get; }
+
+        public bool On
+        {
+            get => _on;
+            set { if (Set(ref _on, value)) _touch.SetView(Id, value); }
+        }
+
+        internal void Show(bool on) { _on = on; OnPropertyChanged(nameof(On)); }
+    }
+
+    /// <summary>
+    /// Touch views (board flow/PaneFlowTouch): every open view with its own switch, on screen first and then background
+    /// tabs, with All on and All off. Background tabs never get touch until they are on screen, but keep their switch.
+    /// </summary>
+    public sealed class TouchViewsSetting : SettingItem
+    {
+        private readonly ITouchService _touch;
+
+        public TouchViewsSetting(ITouchService touch) : base("Touch views", "Per view, remembered for this project on this computer. Nothing is written into the model.")
+        {
+            _touch = touch;
+            AllOnCommand = new RelayCommand(() => _touch.SetAllViews(true));
+            AllOffCommand = new RelayCommand(() => _touch.SetAllViews(false));
+            Update();
+        }
+
+        public System.Collections.ObjectModel.ObservableCollection<TouchViewRow> OnScreen { get; } = new System.Collections.ObjectModel.ObservableCollection<TouchViewRow>();
+        public System.Collections.ObjectModel.ObservableCollection<TouchViewRow> Background { get; } = new System.Collections.ObjectModel.ObservableCollection<TouchViewRow>();
+        public bool HasOnScreen => OnScreen.Count > 0;
+        public bool HasBackground => Background.Count > 0;
+        public bool NoViews => !HasOnScreen && !HasBackground;
+        public ICommand AllOnCommand { get; }
+        public ICommand AllOffCommand { get; }
+
+        /// <summary>Follows the views open in Revit; rows that stay keep their place so a switch under a finger doesn't jump.</summary>
+        public void Update()
+        {
+            Sync(OnScreen, _touch.Views.Where(v => v.OnScreen).ToList());
+            Sync(Background, _touch.Views.Where(v => !v.OnScreen).ToList());
+            OnPropertyChanged(nameof(HasOnScreen));
+            OnPropertyChanged(nameof(HasBackground));
+            OnPropertyChanged(nameof(NoViews));
+        }
+
+        private void Sync(System.Collections.ObjectModel.ObservableCollection<TouchViewRow> rows, List<TouchView> views)
+        {
+            bool same = rows.Count == views.Count && rows.Zip(views, (r, v) => r.Id == v.Id && r.Name == v.Name && r.Type.StartsWith(v.Type) && r.Type.EndsWith("active") == v.IsActive).All(x => x);
+            if (same)
+            {
+                for (int i = 0; i < rows.Count; i++) if (rows[i].On != views[i].On) rows[i].Show(views[i].On);
+                return;
+            }
+            rows.Clear();
+            foreach (var v in views) rows.Add(new TouchViewRow(_touch, v));
+        }
     }
 
     /// <summary>A module's parts switches: the same chips as Settings parts and the ribbon parts switch.</summary>

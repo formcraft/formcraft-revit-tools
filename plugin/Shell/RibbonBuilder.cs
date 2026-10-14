@@ -171,6 +171,11 @@ namespace revit_mcp_plugin.Shell
         public static void RunSmall(UIApplication app, FmcModule m, int slot)
         {
             var action = Small(m, slot);
+            if (m == FmcModule.Flow && action == "Touch on")
+            {
+                ToggleTouch();
+                return;
+            }
             ShellHost.ShowPane(app);
             if (m == FmcModule.Flow)
             {
@@ -183,6 +188,23 @@ namespace revit_mcp_plugin.Shell
                 if (section != null) _pane.SelectSectionCommand.Execute(section);
             }
             _pane.Status = action + ": from the ribbon. It runs here with a dry run first once its section is built.";
+        }
+
+        /// <summary>Flow › Touch on: the master switch for touch everywhere, as in Settings › Flow › Touch.</summary>
+        private static void ToggleTouch()
+        {
+#if REVIT2025_OR_GREATER
+            var touch = ShellHost.Touch;
+            if (touch == null || !touch.TouchAvailable)
+            {
+                TaskDialog.Show("Formcraft Flow", "Touch didn't start on this PC. Open Settings › Flow › Touch in the pane for the touch probe.");
+                return;
+            }
+            touch.SetMaster(!touch.MasterOn);
+            _pane.Status = touch.MasterOn ? "Touch is on: fingers pan, zoom, orbit and select in views with touch on." : "Touch is off everywhere. Revit gets touch as usual.";
+#else
+            TaskDialog.Show("Formcraft Flow", "Touch runs in Revit 2025 and later.");
+#endif
         }
 
         private static PushButtonData Button(string id, string text, Type command, string icon, string tip, string assembly, bool large = false) =>

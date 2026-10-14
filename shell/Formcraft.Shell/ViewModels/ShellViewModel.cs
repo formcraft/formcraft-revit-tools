@@ -117,7 +117,7 @@ namespace Formcraft.Shell.ViewModels
 
         public ShellViewModel(ILicenceService licence, IConnectionService connection, IDocumentContext document,
                               IUserSettings settings, SectionRegistry? registry = null, IKitService? kit = null, ThemeService? theme = null,
-                              IAdminService? admin = null, IUpdateService? updates = null)
+                              IAdminService? admin = null, IUpdateService? updates = null, ITouchService? touch = null)
         {
             _licence = licence;
             _connection = connection;
@@ -138,7 +138,7 @@ namespace Formcraft.Shell.ViewModels
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog,
-                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty));
+                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch);
             Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog);
@@ -155,7 +155,12 @@ namespace Formcraft.Shell.ViewModels
             // The Admin button is only shown to admins; the check here keeps it that way for keyboard and MCP too.
             OpenAdminCommand = new RelayCommand(() => { if (IsAdmin) Open(ShellPage.Admin); });
             HelpCommand = new RelayCommand(() => Status = "Help: opens this section of the guide and the first-run tour.");
-            QuickToolCommand = new RelayCommand(p => Status = p + ": in the plugin this runs here (built in U22).");
+            // Board flow/PaneFlowTouch: Touch in the quick tools strip opens Settings › Flow › Touch.
+            QuickToolCommand = new RelayCommand(p =>
+            {
+                if (p as string == "Touch") OpenSettingsTab("Flow", "Touch: master switch, views, gestures and what shows on the view.");
+                else Status = p + ": in the plugin this runs here (built in U22).";
+            });
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); UpdateState(); };
             _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
@@ -541,6 +546,15 @@ namespace Formcraft.Shell.ViewModels
         /// Opens a search result like its button would: a section opens; an action opens its section (it runs there with a
         /// dry run first, once built); a setting opens Settings; help says which part of the guide it opens.
         /// </summary>
+        /// <summary>Opens Settings on one tab (quick tools, the ribbon).</summary>
+        public void OpenSettingsTab(string tab, string status)
+        {
+            if (!IsMain) return;
+            if (Page != ShellPage.Settings) Open(ShellPage.Settings);
+            Settings.Open(tab);
+            Status = status;
+        }
+
         private void OpenResult(SearchResult r)
         {
             var section = Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == r.Opens);

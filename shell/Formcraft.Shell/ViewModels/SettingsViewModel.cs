@@ -55,11 +55,16 @@ namespace Formcraft.Shell.ViewModels
         private readonly Action<DialogViewModel> _ask;
         private readonly IUpdateService _updates;
         private readonly Action _openLog;
+        private readonly ITouchService? _touch;
+        private readonly List<Action> _touchRefresh = new List<Action>();
         private SettingsTab? _current;
 
         public SettingsViewModel(ILicenceService licence, IUserSettings settings, ObservableCollection<ModuleParts> parts, ThemeService theme,
-                                 IKitService kit, Action<string> status, Action<DialogViewModel> ask, IUpdateService? updates = null, Action? openLog = null)
+                                 IKitService kit, Action<string> status, Action<DialogViewModel> ask, IUpdateService? updates = null, Action? openLog = null,
+                                 ITouchService? touch = null)
         {
+            _touch = touch;
+            if (_touch != null) _touch.Changed += (_, __) => { foreach (var refresh in _touchRefresh) refresh(); };
             _updates = updates ?? new MockUpdateService();
             _openLog = openLog ?? (() => { });
             _updates.Changed += (_, __) => { if (Current?.Name == "Updates") Rebuild(); };
@@ -121,6 +126,7 @@ namespace Formcraft.Shell.ViewModels
         {
             // The tab the person last chose, even if its module wasn't licensed a moment ago (before sign-in).
             var keep = _store.Get("tab") ?? Current?.Name ?? "Account";
+            _touchRefresh.Clear();
             Tabs.Clear();
             Tabs.Add(new SettingsTab("Account", FmcModule.Core, new SettingsGroup[0]));
             Tabs.Add(new SettingsTab("General", FmcModule.Core, General()));
@@ -307,10 +313,8 @@ namespace Formcraft.Shell.ViewModels
         private IEnumerable<SettingsGroup> Flow() => new[]
         {
             Ribbon("Flow", new[] { "Touch on", "Section box", "Tag Tidy", "Align" }, 0, 1),
-            new SettingsGroup("Flow · touch",
-                new ToggleSetting(_store, "flow.touchview", "Touch on in this view", false, "Pan, zoom, orbit and select with fingers"),
-                new ChoiceSetting(_store, "flow.sensitivity", "Sensitivity", new[] { "Gentle", "Normal", "Fast" }, 1),
-                new MultiSetting(_store, "flow.viewtypes", "Touch on these view types", new[] { "Plans", "3D", "Sections", "Sheets" }, new[] { "Plans", "3D" })),
+        }.Concat(Touch()).Concat(new[]
+        {
             new SettingsGroup("Flow · sheet layout and tags",
                 new ChoiceSetting(_store, "flow.align", "Align viewports to", new[] { "Sheet grid from Manage", "Title block guides only" }, dropdown: true,
                     hint: Licensed(FmcModule.Manage) ? "" : "Manage isn't licensed, so the sheet grid falls back to title block guides."),
@@ -320,13 +324,80 @@ namespace Formcraft.Shell.ViewModels
                     new[] { "Leaders never cross", "One elbow", "Clear of geometry", "Keep text horizontal" }, asChecks: true)),
             new SettingsGroup("Flow · 3D and shortcuts",
                 new ChoiceSetting(_store, "flow.boxoffset", "Section box offset", new[] { "300 mm around the area", "500 mm", "1 m" }, dropdown: true),
+                new ToggleSetting(_store, "flow.boxlevels", "Level-aware: box from the level below to the level above", true),
                 new ReadOnlySetting("Shortcuts", "Formcraft Shortcuts v1.0 · not applied on this PC yet"),
                 new ButtonsSetting("", new[]
                 {
                     new SettingButton("Apply the standard", new RelayCommand(AskApplyShortcuts)),
                     new SettingButton("Fix the clash", new RelayCommand(() => _status("Fix the clash: shows which of your shortcuts clash with the standard (in Revit, with the shortcuts import)."))),
                 })),
-        };
+        });
+
+        /// <summary>
+        /// Settings › Flow › Touch (board flow/PaneFlowTouch): the master switch, touch per view, gestures and what shows
+        /// on the view, all live: a change applies at once and is saved on this computer. Gestures follow board
+        /// flow/Flow_Gestures.
+        /// </summary>
+        private IEnumerable<SettingsGroup> Touch()
+        {
+            if (_touch == null)
+                return new[] { new SettingsGroup("Flow · touch", new NoteSetting("Touch runs in Revit 2025 and later, from the Formcraft add-in.")) };
+            if (!_touch.Available)
+                return new[] { new SettingsGroup("Flow · touch", new NoteSetting(_touch.Problem, ChipKind.Warn),
+                    new ButtonsSetting("", new[] { new SettingButton("Touch probe", new RelayCommand(() => _touch.OpenProbe())) })) };
+
+            var store = new SettingStore(new TouchSettingsStore(_touch), "");
+            ToggleSetting Toggle(string key, string label, string hint = "")
+            {
+                var t = new ToggleSetting(store, key, label, TouchKeys.Defaults.TryGetValue(key, out var d) && d == "true", hint);
+                _touchRefresh.Add(t.Refresh);
+                return t;
+            }
+            ChoiceSetting Choice(string key, string label, string[] options, bool dropdown = false, string hint = "")
+            {
+                var c = new ChoiceSetting(store, key, label, options, Array.IndexOf(options, TouchKeys.Defaults[key]), dropdown, hint);
+                _touchRefresh.Add(c.Refresh);
+                return c;
+            }
+
+            var views = new TouchViewsSetting(_touch);
+            _touchRefresh.Add(views.Update);
+            return new[]
+            {
+                new SettingsGroup("Flow · touch",
+                    Toggle(TouchSettingsStore.MasterKey, "Touch on", "Master switch · also Touch on on the ribbon and Touch in the quick tools strip"),
+                    views,
+                    Choice(TouchKeys.NewViews, "New views start with touch", TouchKeys.NewViewsOptions),
+                    new MultiSetting(store, TouchKeys.ViewTypes, "By view type", TouchKeys.ViewTypeOptions, TouchKeys.Defaults[TouchKeys.ViewTypes].Split('|'),
+                        hint: "Used when new views start with touch by view type.")),
+                new SettingsGroup("Flow · gestures",
+                    Choice(TouchKeys.SelectWith, "Select elements with", TouchKeys.SelectWithOptions,
+                        hint: "Long press selects, so orbit and zoom never select by accident."),
+                    Choice(TouchKeys.Tap, "Single tap", TouchKeys.TapOptions),
+                    Choice(TouchKeys.TwoFingerTap, "Two-finger tap", TouchKeys.TwoFingerTapOptions),
+                    Choice(TouchKeys.DoubleTap, "Double tap", TouchKeys.DoubleTapOptions),
+                    Choice(TouchKeys.Drag3D, "One-finger drag in 3D", TouchKeys.Drag3DOptions),
+                    Choice(TouchKeys.Drag2D, "One-finger drag in plans, sections and sheets", TouchKeys.Drag2DOptions),
+                    Choice(TouchKeys.Zoom, "Zoom sensitivity", TouchKeys.SpeedOptions),
+                    Choice(TouchKeys.Orbit, "Orbit speed", TouchKeys.SpeedOptions),
+                    Toggle(TouchKeys.InvertZoom, "Invert pinch zoom"),
+                    new NoteSetting("Pinch zooms about your fingers; two fingers pan in any view.")),
+                new SettingsGroup("Flow · on the view",
+                    Toggle(TouchKeys.Frame, "Thin Studio Green frame on views Flow handles"),
+                    Toggle(TouchKeys.Ring, "Ring that fills while holding to select"),
+                    Toggle(TouchKeys.Badge, "'Touch on' badge in the view corner", "Tap the badge to switch touch for that view."),
+                    new NoteSetting("Moving a finger while holding turns the press into a pan, so nothing is selected by accident."),
+                    new ButtonsSetting("", new[]
+                    {
+                        new SettingButton("Reset touch settings", new RelayCommand(AskResetTouch)),
+                        new SettingButton("Touch probe", new RelayCommand(() => _touch.OpenProbe())),
+                    })),
+            };
+        }
+
+        private void AskResetTouch() => _ask(new DialogViewModel("Reset touch settings",
+            "Puts gestures and sensitivity back to the defaults on this computer.", "Reset",
+            () => { _touch?.ResetToDefaults(); _status("Touch settings are back to the defaults."); return System.Threading.Tasks.Task.CompletedTask; }));
 
         private IEnumerable<SettingsGroup> Model() => new[]
         {

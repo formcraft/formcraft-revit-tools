@@ -87,7 +87,7 @@ namespace Formcraft.Shell.Tests
                 var settings = new InMemoryUserSettings();
                 var p = new Pane(settings);
                 p.Item<ChoiceSetting>("Manage", "Remind me to sync after").Selected = "Never";
-                p.Item<ToggleSetting>("Flow", "Touch on in this view").IsOn = true;
+                p.Item<ToggleSetting>("Flow", "Ghost preview before moving").IsOn = false;
                 p.Item<MultiSetting>("Model", "Systems I work on").Options.Single(o => o.Name == "HVAC").IsOn = true;
                 var c = p.Tab("Build").Groups.SelectMany(g => g.Items).OfType<ConsiderationsSetting>().Single();
                 c.Text = "Client prints A3.";
@@ -95,13 +95,13 @@ namespace Formcraft.Shell.Tests
 
                 var again = new Pane(settings);
                 return (again.Item<ChoiceSetting>("Manage", "Remind me to sync after").Selected,
-                        again.Item<ToggleSetting>("Flow", "Touch on in this view").IsOn,
+                        again.Item<ToggleSetting>("Flow", "Ghost preview before moving").IsOn,
                         string.Join(",", again.Item<MultiSetting>("Model", "Systems I work on").On),
                         again.Tab("Build").Groups.SelectMany(g => g.Items).OfType<ConsiderationsSetting>().Single().Text);
             });
 
             await Assert.That(choice).IsEqualTo("Never");
-            await Assert.That(toggle).IsTrue();
+            await Assert.That(toggle).IsFalse();
             await Assert.That(chips).IsEqualTo("Power,Small power,Lighting,HVAC");
             await Assert.That(considerations).IsEqualTo("Client prints A3.");
         }
