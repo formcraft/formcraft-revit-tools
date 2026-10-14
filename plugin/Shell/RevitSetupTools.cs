@@ -311,6 +311,53 @@ namespace revit_mcp_plugin.Shell
             if (!dryRun) result.Messages.Add(new ToolMessage(ChipKind.Good, $"Brand pack {brand.Name} applied to {changes.Count} types and saved. Logged in FMC_MCP_FileLog.csv."));
             return result;
         }
+
+        public async Task<TemplateRecipe> RecipeAsync(string kitFolder)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_template", new JObject { ["action"] = "recipe", ["template_path"] = "base.rte", ["kit_folder"] = kitFolder });
+            var t = new TemplateRecipe { Ok = r.Ok && r.Body["counts"] != null };
+            if (!t.Ok) { t.Message = "The recipe can't be read: " + string.Join(" ", r.Reasons()); return t; }
+            t.Kit = r.Body.Value<string>("kit") ?? "";
+            foreach (var kv in ((JObject)r.Body["counts"]).Properties()) t.Counts.Add((kv.Name.Replace('_', ' '), kv.Value.Value<int>()));
+            t.Readings.AddRange(RevitFamilyTools.Strings(r.Body["readings"]));
+            t.Roles.AddRange(RevitFamilyTools.Strings(r.Body["roles"]));
+            t.Message = $"Recipe read from {t.Kit}: {t.Readings.Count} readings to settle in the kit.";
+            return t;
+        }
+
+        public async Task<TemplateCompare> CompareAsync(string templatePath, string kitFolder)
+        {
+            CliResult r = await ServerCli.RunAsync("fmc_template", new JObject { ["action"] = "compare", ["template_path"] = templatePath, ["kit_folder"] = kitFolder });
+            var c = new TemplateCompare { Ok = r.Ok && r.Body["missing"] != null };
+            if (!c.Ok) { c.Message = "Compare refused: " + string.Join(" ", r.Reasons()); return c; }
+            c.Matches = r.Body.Value<bool?>("matches") ?? false;
+            foreach (var kv in ((JObject)r.Body["missing"]).Properties())
+            {
+                var names = RevitFamilyTools.Strings(kv.Value);
+                c.Missing.Add((kv.Name, names.Count, string.Join(", ", names.Take(3)) + (names.Count > 3 ? ", …" : "")));
+            }
+            c.Message = c.Matches ? "The template holds everything the recipe names." : $"{c.Missing.Sum(m => m.Missing)} names missing from {Path.GetFileName(templatePath)}.";
+            return c;
+        }
+
+        public async Task<ToolResult> BuildAsync(string templatePath, string kitFolder, string seedPath, bool roleCopies, bool dryRun)
+        {
+            var args = new JObject { ["action"] = "build", ["template_path"] = templatePath, ["kit_folder"] = kitFolder, ["seed_path"] = seedPath,
+                ["role_copies"] = roleCopies, ["dry_run"] = dryRun };
+            CliResult r = await ServerCli.RunAsync("fmc_template", args);
+            if (!r.Ok) return ToolResult.Refused("Build refused: " + string.Join(" ", r.Reasons()));
+            var result = new ToolResult { Ok = true };
+            foreach (string w in RevitFamilyTools.Strings(r.Body["would"])) result.Details.Add(w);
+            foreach (JObject s in (r.Body["steps"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                string line = $"{s.Value<string>("step")}: {s.Value<int?>("made") ?? 0} new, {s.Value<int?>("updated") ?? 0} updated, {s.Value<int?>("skipped") ?? 0} already there";
+                if (dryRun) result.Details.Add(line); else result.Messages.Add(new ToolMessage(ChipKind.Info, line));
+            }
+            foreach (string c in RevitFamilyTools.Strings(r.Body["role_copies"])) { if (dryRun) result.Details.Add(c); else result.Messages.Add(new ToolMessage(ChipKind.Info, c)); }
+            result.Count = result.Details.Count;
+            if (!dryRun) result.Messages.Insert(0, new ToolMessage(ChipKind.Good, $"{Path.GetFileName(templatePath)} built in staging. Logged. Compare, then audit; publishing is a request to the BIM Manager."));
+            return result;
+        }
     }
 }
 

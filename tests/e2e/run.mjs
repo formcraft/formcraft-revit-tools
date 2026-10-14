@@ -41,7 +41,7 @@ const cases = [
   ["fmc_material", { action: "database" }], ["fmc_material", { action: "audit" }],
   ["fmc_library", { action: "parameters" }], ["fmc_library", { action: "keynotes" }],
   ["fmc_project", { action: "plan", project_folder: path.join(work, "Projects", "F26002"), code: "F26002", roles: ["A", "S"] }],
-  ["fmc_file", { action: "list_open" }], ["fmc_doc", { action: "list" }], ["ask_status", {}],
+  ["fmc_file", { action: "list_open" }], ["fmc_template", { action: "recipe", template_path: "base.rte", kit_folder: kit }], ["fmc_ai", { action: "status" }], ["fmc_doc", { action: "list" }], ["ask_status", {}],
 ];
 
 const port = 8099;

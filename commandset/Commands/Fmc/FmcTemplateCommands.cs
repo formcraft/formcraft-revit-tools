@@ -45,4 +45,28 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_template_brand";
         protected override string Action => "brand";
     }
+
+    /// <summary>Templates as data (Phase 1): makes a new template in staging from a seed template.</summary>
+    public class FmcTemplateCreateCommand : FmcTemplateCommandBase
+    {
+        public FmcTemplateCreateCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_template_create";
+        protected override string Action => "create";
+    }
+
+    /// <summary>Templates as data (Phase 1): applies one layer of the base recipe to a template in staging.</summary>
+    public class FmcTemplateBuildCommand : FmcTemplateCommandBase
+    {
+        public FmcTemplateBuildCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_template_build";
+        protected override string Action => "build";
+    }
+
+    /// <summary>Templates as data (Phase 1): the names a template holds, to compare with the recipe (read-only).</summary>
+    public class FmcTemplateNamesCommand : FmcTemplateCommandBase
+    {
+        public FmcTemplateNamesCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_template_names";
+        protected override string Action => "names";
+    }
 }

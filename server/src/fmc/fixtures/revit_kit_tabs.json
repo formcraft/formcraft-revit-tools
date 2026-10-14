@@ -1,0 +1,2375 @@
+{
+ "source": "FMC_Revit_Kit.xlsx v2.2 (2026-10-09), tabs used by the template builder",
+ "tabs": {
+  "Filters": [
+   [
+    "Name",
+    "Categories",
+    "Rule",
+    "RGB",
+    "Line pattern",
+    "Purpose"
+   ],
+   [
+    "F_QA_NoCode",
+    "All 5D model categories",
+    "FMC_Keynote_Code has no value",
+    "255,0,0",
+    "Solid",
+    "Uncoded elements (QA)"
+   ],
+   [
+    "F_QA_Unpriced",
+    "All 5D model categories",
+    "FMC_Rate_Source_Date begins with UNPRICED",
+    "255,165,0",
+    "Solid",
+    "Unpriced elements (QA)"
+   ],
+   [
+    "F_QA_NoStage",
+    "All 5D model categories",
+    "FMC_Geometry_Stage has no value",
+    "255,255,0",
+    "Solid",
+    "No geometry stage (QA)"
+   ],
+   [
+    "F_A_ExternalWalls",
+    "Walls",
+    "Function equals Exterior",
+    "0,0,0",
+    "Solid",
+    "Heavier cut line on the envelope"
+   ],
+   [
+    "F_A_FireRated",
+    "Walls, Doors, Floors",
+    "FMC_Fire_Resistance_Min is greater than 0",
+    "255,0,0",
+    "Dash",
+    "Fire-rated construction"
+   ],
+   [
+    "F_S_Concrete",
+    "Structural Columns, Structural Framing, Structural Foundations, Floors, Walls",
+    "FMC_Concrete_Grade has a value",
+    "128,128,128",
+    "Solid",
+    "In-situ and precast concrete"
+   ],
+   [
+    "F_S_Steel",
+    "Structural Columns, Structural Framing",
+    "FMC_Steel_Grade has a value",
+    "0,112,192",
+    "Solid",
+    "Structural steel"
+   ],
+   [
+    "F_S_Timber",
+    "Structural Columns, Structural Framing",
+    "FMC_Timber_Grade has a value",
+    "153,102,51",
+    "Solid",
+    "Structural timber"
+   ],
+   [
+    "F_E_Power",
+    "Electrical Fixtures, Electrical Equipment, Wires",
+    "System Type equals Power OR Load Classification contains Power",
+    "255,174,97",
+    "Solid",
+    "Power (Formcraft Orange)"
+   ],
+   [
+    "F_E_Lighting",
+    "Lighting Fixtures, Lighting Devices, Wires",
+    "Category is Lighting Fixtures or Lighting Devices",
+    "64,128,191",
+    "Solid",
+    "Lighting"
+   ],
+   [
+    "F_E_ELV",
+    "Data Devices, Communication Devices, Security Devices, Nurse Call Devices",
+    "Category in ELV categories",
+    "0,153,153",
+    "Solid",
+    "ELV and data"
+   ],
+   [
+    "F_E_FireAlarm",
+    "Fire Alarm Devices",
+    "Category is Fire Alarm Devices",
+    "255,0,0",
+    "Solid",
+    "Fire detection and alarm"
+   ],
+   [
+    "F_E_Containment",
+    "Cable Trays, Cable Tray Fittings, Conduits, Conduit Fittings",
+    "Category is containment",
+    "128,128,128",
+    "Solid",
+    "Containment"
+   ],
+   [
+    "F_E_Earth",
+    "Electrical Equipment, Generic Models",
+    "Type Name contains EARTH OR FMC_LP_Part equals Bond",
+    "0,150,80",
+    "Dash",
+    "Power earthing and bonding"
+   ],
+   [
+    "F_M_SupplyAir",
+    "Ducts, Duct Fittings, Air Terminals, Flex Ducts",
+    "System Classification equals Supply Air",
+    "0,102,204",
+    "Solid",
+    "Supply air"
+   ],
+   [
+    "F_M_ReturnAir",
+    "Ducts, Duct Fittings, Air Terminals, Flex Ducts",
+    "System Classification equals Return Air",
+    "153,0,153",
+    "Solid",
+    "Return air"
+   ],
+   [
+    "F_M_ExhaustAir",
+    "Ducts, Duct Fittings, Air Terminals, Flex Ducts",
+    "System Classification equals Exhaust Air",
+    "204,153,0",
+    "Solid",
+    "Exhaust and extract"
+   ],
+   [
+    "F_M_OutdoorAir",
+    "Ducts, Duct Fittings, Air Terminals",
+    "System Type contains Outdoor",
+    "0,153,153",
+    "Dash",
+    "Outdoor (fresh) air"
+   ],
+   [
+    "F_M_Refrigerant",
+    "Pipes, Pipe Fittings",
+    "System Type equals M_Refrigerant",
+    "112,48,160",
+    "Solid",
+    "Refrigerant liquid and gas"
+   ],
+   [
+    "F_M_Condensate",
+    "Pipes, Pipe Fittings",
+    "System Type equals M_Condensate",
+    "128,64,0",
+    "Dash",
+    "Condensate"
+   ],
+   [
+    "F_P_DCW",
+    "Pipes, Pipe Fittings, Pipe Accessories, Plumbing Fixtures",
+    "System Classification equals Domestic Cold Water",
+    "0,112,192",
+    "Solid",
+    "Cold water"
+   ],
+   [
+    "F_P_DHW",
+    "Pipes, Pipe Fittings, Pipe Accessories",
+    "System Classification equals Domestic Hot Water",
+    "192,0,0",
+    "Solid",
+    "Hot water"
+   ],
+   [
+    "F_P_Sanitary",
+    "Pipes, Pipe Fittings, Plumbing Equipment",
+    "System Classification equals Sanitary",
+    "128,64,0",
+    "Solid",
+    "Soil and waste"
+   ],
+   [
+    "F_P_Vent",
+    "Pipes, Pipe Fittings",
+    "System Classification equals Vent",
+    "0,153,0",
+    "Dash",
+    "Vent"
+   ],
+   [
+    "F_P_Storm",
+    "Pipes, Pipe Fittings",
+    "System Type equals P_Storm",
+    "0,176,240",
+    "Dash dot",
+    "Rainwater and storm"
+   ],
+   [
+    "F_P_RWH",
+    "Pipes, Pipe Fittings, Mechanical Equipment",
+    "System Type equals P_RWH",
+    "0,128,128",
+    "Dash dot",
+    "Rainwater harvesting"
+   ],
+   [
+    "F_FP_Wet",
+    "Pipes, Pipe Fittings, Sprinklers, Specialty Equipment",
+    "System Classification equals Fire Protection Wet",
+    "255,0,0",
+    "Solid",
+    "Fire water"
+   ],
+   [
+    "F_FP_Compartment",
+    "Walls, Floors, Doors",
+    "FMC_Fire_Compartment has a value",
+    "255,0,0",
+    "Dash dot dot",
+    "Compartment boundaries"
+   ],
+   [
+    "F_LP_AirTermination",
+    "Generic Models, Specialty Equipment",
+    "FMC_LP_Part equals Air",
+    "112,48,160",
+    "Solid",
+    "Air termination"
+   ],
+   [
+    "F_LP_DownConductor",
+    "Generic Models, Specialty Equipment",
+    "FMC_LP_Part equals Down",
+    "112,48,160",
+    "Dash",
+    "Down conductors and test joints"
+   ],
+   [
+    "F_LP_Earth",
+    "Generic Models, Specialty Equipment",
+    "FMC_LP_Part equals Earth",
+    "0,150,80",
+    "Solid",
+    "Earth electrodes and ring"
+   ],
+   [
+    "F_C_Storm",
+    "Generic Models, Pipes, Plumbing Equipment",
+    "FMC_Role_Code equals C AND FMC_Pipe_System equals SW",
+    "0,176,240",
+    "Dash dot",
+    "External stormwater"
+   ],
+   [
+    "F_C_Pavement",
+    "Toposolid, Floors",
+    "Type Name begins with PAV_",
+    "128,128,128",
+    "Solid",
+    "Pavements"
+   ],
+   [
+    "F_L_Planting_Existing",
+    "Planting",
+    "Phase Created equals Existing",
+    "0,128,0",
+    "Solid",
+    "Existing trees to retain"
+   ],
+   [
+    "F_L_Planting_Remove",
+    "Planting",
+    "Phase Demolished equals New Construction",
+    "255,0,0",
+    "Dash",
+    "Trees to remove"
+   ],
+   [
+    "F_L_Irrigation",
+    "Pipes, Pipe Accessories",
+    "System Type equals L_Irrigation",
+    "0,112,192",
+    "Dot",
+    "Irrigation"
+   ],
+   [
+    "F_W_Logistics",
+    "Generic Models, Specialty Equipment",
+    "FMC_Role_Code equals W AND Type Name does not begin with TW_",
+    "128,128,128",
+    "Solid",
+    "Logistics: hoarding, gates, cabins, laydown, routes"
+   ],
+   [
+    "F_W_TempWorks",
+    "Generic Models, Structural Columns, Structural Framing",
+    "FMC_Role_Code equals W AND Type Name begins with TW_",
+    "255,174,97",
+    "Dash",
+    "Temporary works: props, scaffold, excavation support"
+   ],
+   [
+    "F_W_Zone_01",
+    "All model categories",
+    "FMC_Zone equals Z01",
+    "255,224,178",
+    "Solid",
+    "Construction zone 01"
+   ],
+   [
+    "F_W_Zone_02",
+    "All model categories",
+    "FMC_Zone equals Z02",
+    "200,230,201",
+    "Solid",
+    "Construction zone 02"
+   ],
+   [
+    "F_W_Zone_03",
+    "All model categories",
+    "FMC_Zone equals Z03",
+    "187,222,251",
+    "Solid",
+    "Construction zone 03"
+   ],
+   [
+    "F_W_Zone_04",
+    "All model categories",
+    "FMC_Zone equals Z04",
+    "225,190,231",
+    "Solid",
+    "Construction zone 04"
+   ]
+  ],
+  "View_Templates": [
+   [
+    "Name",
+    "View type",
+    "Scale",
+    "Detail level",
+    "Discipline",
+    "Filters",
+    "Linked models",
+    "Purpose"
+   ],
+   [
+    "VT_Z_SitePlan_Coordinates",
+    "Floor plan",
+    "1:500",
+    "Medium",
+    "Coordination",
+    "-",
+    "All links by shared coordinates, halftone",
+    "Z-0005 site, Survey Point, Project Base Point and control points with spot coordinates"
+   ],
+   [
+    "VT_Z_SitePlan_Survey",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "-",
+    "Survey link normal",
+    "Checking the toposolid and boundary against the survey"
+   ],
+   [
+    "VT_Z_3D_Coordination",
+    "3D",
+    "NTS",
+    "Medium",
+    "Coordination",
+    "Discipline colour filters",
+    "All links normal",
+    "Federated coordination views and clash renditions (9xxx)"
+   ],
+   [
+    "VT_Z_3D_QA",
+    "3D",
+    "NTS",
+    "Medium",
+    "Coordination",
+    "F_QA_NoCode; F_QA_Unpriced; F_QA_NoStage",
+    "Links hidden",
+    "Data health in one look (Manual 9.10, 14.4)"
+   ],
+   [
+    "VT_Z_3D_ModelReview",
+    "3D",
+    "NTS",
+    "Fine",
+    "Coordination",
+    "-",
+    "Links hidden",
+    "Model review walk-through storey by storey (Manual 14.6)"
+   ],
+   [
+    "VT_Z_3D_Export",
+    "3D",
+    "NTS",
+    "Fine",
+    "Coordination",
+    "-",
+    "Links hidden",
+    "NWC and IFC export views: only the categories this role owns (Manual 9.10)"
+   ],
+   [
+    "VT_A_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Coarse",
+    "Architectural",
+    "-",
+    "Linked models halftone",
+    "Building on the plot, setbacks, access"
+   ],
+   [
+    "VT_A_FloorPlan_Permit",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "F_A_ExternalWalls; F_A_FireRated",
+    "Linked models halftone",
+    "Permit plans: dimensions, room names and areas, no construction notes"
+   ],
+   [
+    "VT_A_FloorPlan_Construction",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "F_A_ExternalWalls; F_A_FireRated",
+    "Linked models halftone",
+    "Construction GA: tags, keynotes, wall types, setting-out grids"
+   ],
+   [
+    "VT_A_FloorPlan_Enlarged",
+    "Floor plan",
+    "1:50",
+    "Fine",
+    "Architectural",
+    "-",
+    "Linked models halftone",
+    "Wet areas, kitchens, stairs"
+   ],
+   [
+    "VT_A_FloorPlan_SettingOut",
+    "Floor plan",
+    "1:100",
+    "Coarse",
+    "Architectural",
+    "-",
+    "Links hidden",
+    "Setting-out dimensions to grids only"
+   ],
+   [
+    "VT_A_RoofPlan",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "-",
+    "Linked models halftone",
+    "Roof falls, gutters, outlets"
+   ],
+   [
+    "VT_A_RCP",
+    "Ceiling plan",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "-",
+    "E lighting and M terminals halftone",
+    "Ceiling heights, bulkheads, access panels"
+   ],
+   [
+    "VT_A_Elevation",
+    "Elevation",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "-",
+    "Links hidden",
+    "Elevations with levels in m MSL and FFL"
+   ],
+   [
+    "VT_A_Section",
+    "Section",
+    "1:100",
+    "Medium",
+    "Architectural",
+    "-",
+    "S halftone",
+    "Building sections"
+   ],
+   [
+    "VT_A_Detail",
+    "Section / callout",
+    "1:10-1:20",
+    "Fine",
+    "Architectural",
+    "-",
+    "S halftone",
+    "Wall sections and details"
+   ],
+   [
+    "VT_A_AreaPlan_GFA",
+    "Area plan",
+    "1:200",
+    "Coarse",
+    "Architectural",
+    "-",
+    "Links hidden",
+    "Gross Building area plan feeding Z12_Area_GFA"
+   ],
+   [
+    "VT_A_3D_Presentation",
+    "3D",
+    "NTS",
+    "Fine",
+    "Architectural",
+    "-",
+    "All links normal",
+    "Client views; realistic, shadows on"
+   ],
+   [
+    "VT_I_FloorPlan_FFE",
+    "Floor plan",
+    "1:50",
+    "Medium",
+    "Architectural",
+    "-",
+    "A halftone",
+    "Furniture and equipment"
+   ],
+   [
+    "VT_I_FloorPlan_Finishes",
+    "Floor plan",
+    "1:50",
+    "Medium",
+    "Architectural",
+    "-",
+    "A halftone",
+    "Finish codes per room"
+   ],
+   [
+    "VT_I_RCP",
+    "Ceiling plan",
+    "1:50",
+    "Medium",
+    "Architectural",
+    "-",
+    "E lighting halftone",
+    "Interior ceilings"
+   ],
+   [
+    "VT_I_InteriorElevation",
+    "Elevation",
+    "1:50",
+    "Fine",
+    "Architectural",
+    "-",
+    "Links hidden",
+    "Interior elevations"
+   ],
+   [
+    "VT_I_Joinery",
+    "Section / callout",
+    "1:20",
+    "Fine",
+    "Architectural",
+    "-",
+    "Links hidden",
+    "Joinery and tile setting-out"
+   ],
+   [
+    "VT_I_3D_Presentation",
+    "3D",
+    "NTS",
+    "Fine",
+    "Architectural",
+    "-",
+    "All links normal",
+    "Interior renders"
+   ],
+   [
+    "VT_S_FoundationPlan",
+    "Structural plan",
+    "1:100",
+    "Medium",
+    "Structural",
+    "F_S_Concrete",
+    "A halftone",
+    "Foundations and ground beams with founding levels"
+   ],
+   [
+    "VT_S_FramingPlan",
+    "Structural plan",
+    "1:100",
+    "Medium",
+    "Structural",
+    "F_S_Concrete; F_S_Steel; F_S_Timber",
+    "A halftone",
+    "Slabs, beams and columns per level"
+   ],
+   [
+    "VT_S_Section",
+    "Section",
+    "1:50",
+    "Medium",
+    "Structural",
+    "-",
+    "A halftone",
+    "Structural sections"
+   ],
+   [
+    "VT_S_Detail",
+    "Section / callout",
+    "1:20",
+    "Fine",
+    "Structural",
+    "-",
+    "Links hidden",
+    "Reinforcement and connection details"
+   ],
+   [
+    "VT_S_3D_Analytical",
+    "3D",
+    "NTS",
+    "Medium",
+    "Structural",
+    "-",
+    "Links hidden",
+    "Analytical model check before the Robot round trip"
+   ],
+   [
+    "VT_E_FloorPlan_Power",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_E_Power",
+    "Linked models halftone",
+    "Sockets, power connections, circuits, boards"
+   ],
+   [
+    "VT_E_FloorPlan_Lighting",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_E_Lighting",
+    "Linked models halftone",
+    "Luminaires, switches, emergency lighting"
+   ],
+   [
+    "VT_E_FloorPlan_ELV",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_E_ELV",
+    "Linked models halftone",
+    "Data, CCTV, access control"
+   ],
+   [
+    "VT_E_FloorPlan_FireAlarm",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_E_FireAlarm",
+    "Linked models halftone",
+    "Detectors, call points, sounders"
+   ],
+   [
+    "VT_E_FloorPlan_Containment",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_E_Containment",
+    "Linked models halftone",
+    "Trays, trunking, conduit routes"
+   ],
+   [
+    "VT_E_FloorPlan_Enlarged",
+    "Floor plan",
+    "1:50",
+    "Fine",
+    "Electrical",
+    "F_E_Power; F_E_Earth",
+    "Linked models halftone",
+    "Switchrooms, meter rooms, generator and ATS"
+   ],
+   [
+    "VT_E_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Electrical",
+    "F_E_Power; F_E_Lighting; F_E_Earth",
+    "Linked models halftone",
+    "External lighting and site power"
+   ],
+   [
+    "VT_E_Drafting_SLD",
+    "Drafting",
+    "NTS",
+    "Medium",
+    "Electrical",
+    "-",
+    "-",
+    "Single-line diagram and risers from FMC_DI_E_SLD_* detail items"
+   ],
+   [
+    "VT_E_3D_Coordination",
+    "3D",
+    "NTS",
+    "Medium",
+    "Electrical",
+    "F_E_Power; F_E_Lighting; F_E_Containment",
+    "All links normal",
+    "Containment coordination"
+   ],
+   [
+    "VT_M_FloorPlan_Ventilation",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Mechanical",
+    "F_M_SupplyAir; F_M_ReturnAir; F_M_ExhaustAir; F_M_OutdoorAir",
+    "Linked models halftone",
+    "Ducts, fans and terminals"
+   ],
+   [
+    "VT_M_FloorPlan_AC",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Mechanical",
+    "F_M_Refrigerant; F_M_Condensate",
+    "Linked models halftone",
+    "Split and VRF units, refrigerant and condensate"
+   ],
+   [
+    "VT_M_Section",
+    "Section",
+    "1:50",
+    "Medium",
+    "Mechanical",
+    "Duct system filters",
+    "A and S halftone",
+    "Ceiling void coordination"
+   ],
+   [
+    "VT_M_Drafting",
+    "Drafting",
+    "NTS",
+    "Medium",
+    "Mechanical",
+    "-",
+    "-",
+    "Schematics and typical details"
+   ],
+   [
+    "VT_M_3D_Coordination",
+    "3D",
+    "NTS",
+    "Medium",
+    "Mechanical",
+    "All M filters",
+    "All links normal",
+    "Duct and plant coordination"
+   ],
+   [
+    "VT_P_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Plumbing",
+    "F_P_DCW; F_P_Sanitary; F_P_Storm",
+    "Linked models halftone",
+    "Site water, drainage, septic and soakaway"
+   ],
+   [
+    "VT_P_FloorPlan_Water",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Plumbing",
+    "F_P_DCW; F_P_DHW",
+    "Linked models halftone",
+    "Cold and hot water"
+   ],
+   [
+    "VT_P_FloorPlan_Drainage",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Plumbing",
+    "F_P_Sanitary; F_P_Vent; F_P_Storm; F_P_RWH",
+    "Linked models halftone",
+    "Soil, waste, vent and rainwater"
+   ],
+   [
+    "VT_P_Enlarged",
+    "Floor plan",
+    "1:50",
+    "Fine",
+    "Plumbing",
+    "All P filters",
+    "Linked models halftone",
+    "Wet areas and plant rooms"
+   ],
+   [
+    "VT_P_Section",
+    "Section",
+    "1:100",
+    "Medium",
+    "Plumbing",
+    "F_P_Sanitary; F_P_Storm",
+    "C halftone",
+    "Drainage long sections with inverts"
+   ],
+   [
+    "VT_P_Detail",
+    "Section / callout",
+    "1:20",
+    "Fine",
+    "Plumbing",
+    "-",
+    "Links hidden",
+    "Septic, manhole and installation details"
+   ],
+   [
+    "VT_P_Drafting_Schematic",
+    "Drafting",
+    "NTS",
+    "Medium",
+    "Plumbing",
+    "-",
+    "-",
+    "Water and drainage schematics"
+   ],
+   [
+    "VT_P_3D_Coordination",
+    "3D",
+    "NTS",
+    "Medium",
+    "Plumbing",
+    "All P filters",
+    "All links normal",
+    "Pipe coordination"
+   ],
+   [
+    "VT_FP_FloorPlan_Strategy",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Coordination",
+    "F_FP_Compartment; F_A_FireRated",
+    "A normal",
+    "Compartments, escape routes, travel distances, exits"
+   ],
+   [
+    "VT_FP_FloorPlan_Sprinkler",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Plumbing",
+    "F_FP_Wet",
+    "Linked models halftone",
+    "Hose reels, sprinklers, risers"
+   ],
+   [
+    "VT_FP_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_FP_Wet",
+    "Linked models halftone",
+    "Fire access, hydrants, assembly point"
+   ],
+   [
+    "VT_FP_Enlarged",
+    "Floor plan",
+    "1:50",
+    "Fine",
+    "Plumbing",
+    "F_FP_Wet",
+    "Linked models halftone",
+    "Pump room and tank"
+   ],
+   [
+    "VT_FP_Detail",
+    "Section / callout",
+    "1:10",
+    "Fine",
+    "Coordination",
+    "-",
+    "Links hidden",
+    "Fire-stopping details"
+   ],
+   [
+    "VT_FP_3D_Strategy",
+    "3D",
+    "NTS",
+    "Medium",
+    "Coordination",
+    "F_FP_Compartment",
+    "A normal",
+    "Escape route views for the authority"
+   ],
+   [
+    "VT_LP_RoofPlan",
+    "Floor plan",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_LP_AirTermination; F_LP_DownConductor",
+    "A halftone",
+    "Air termination mesh and rods"
+   ],
+   [
+    "VT_LP_Elevation",
+    "Elevation",
+    "1:100",
+    "Medium",
+    "Electrical",
+    "F_LP_DownConductor; F_LP_Earth",
+    "A halftone",
+    "Down conductors and test joints"
+   ],
+   [
+    "VT_LP_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Electrical",
+    "F_LP_Earth; F_E_Earth",
+    "Linked models halftone",
+    "Earth electrodes and ring"
+   ],
+   [
+    "VT_LP_Detail",
+    "Section / callout",
+    "1:10",
+    "Fine",
+    "Electrical",
+    "-",
+    "Links hidden",
+    "Fixing and earth pit details"
+   ],
+   [
+    "VT_LP_3D_RollingSphere",
+    "3D",
+    "NTS",
+    "Medium",
+    "Electrical",
+    "All LP filters",
+    "A normal",
+    "Rolling sphere check (CA-LP-01)"
+   ],
+   [
+    "VT_C_SitePlan",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_C_Pavement",
+    "A halftone",
+    "Survey and external works layout"
+   ],
+   [
+    "VT_C_SitePlan_Grading",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Contours at 0.5 m, spot levels, cut and fill"
+   ],
+   [
+    "VT_C_SitePlan_Drainage",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_C_Storm",
+    "A halftone",
+    "Stormwater drains and outfalls"
+   ],
+   [
+    "VT_C_SitePlan_Services",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_C_Storm; F_P_Sanitary; F_P_DCW; F_E_Power; F_L_Planting_Existing",
+    "All links normal",
+    "Combined external services and tree clashes"
+   ],
+   [
+    "VT_C_SettingOut",
+    "Floor plan",
+    "1:200",
+    "Coarse",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Setting-out coordinates from the coordinate record"
+   ],
+   [
+    "VT_C_Section",
+    "Section",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Site and drain long sections"
+   ],
+   [
+    "VT_C_Detail",
+    "Section / callout",
+    "1:20",
+    "Fine",
+    "Coordination",
+    "-",
+    "Links hidden",
+    "Pavement, kerb, drain and boundary details"
+   ],
+   [
+    "VT_C_3D_Site",
+    "3D",
+    "NTS",
+    "Medium",
+    "Coordination",
+    "-",
+    "All links normal",
+    "Site views"
+   ],
+   [
+    "VT_L_SitePlan_Master",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Landscape master plan"
+   ],
+   [
+    "VT_L_SitePlan_Hardscape",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Paving, edging, furniture"
+   ],
+   [
+    "VT_L_SitePlan_Planting",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_L_Planting_Existing; F_L_Planting_Remove",
+    "A halftone",
+    "Planting by species with tags"
+   ],
+   [
+    "VT_L_SitePlan_Irrigation",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_L_Irrigation",
+    "A halftone",
+    "Irrigation heads and pipes"
+   ],
+   [
+    "VT_L_Section",
+    "Section",
+    "1:100",
+    "Medium",
+    "Coordination",
+    "-",
+    "A halftone",
+    "Landscape sections"
+   ],
+   [
+    "VT_L_Detail",
+    "Section / callout",
+    "1:20",
+    "Fine",
+    "Coordination",
+    "-",
+    "Links hidden",
+    "Hardscape and tree pit details"
+   ],
+   [
+    "VT_L_3D_Presentation",
+    "3D",
+    "NTS",
+    "Fine",
+    "Coordination",
+    "-",
+    "All links normal",
+    "Landscape renders"
+   ],
+   [
+    "VT_W_SitePlan_Logistics",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_W_Logistics; F_W_TempWorks",
+    "All links halftone",
+    "Hoarding, gates, crane radius, laydown, welfare, traffic routes"
+   ],
+   [
+    "VT_W_SitePlan_Phase",
+    "Floor plan",
+    "1:200",
+    "Medium",
+    "Coordination",
+    "F_W_Zone_01; F_W_Zone_02; F_W_Zone_03; F_W_Zone_04",
+    "All links halftone",
+    "Logistics per construction phase; zones coloured by FMC_Zone"
+   ],
+   [
+    "VT_W_Section_TempWorks",
+    "Section",
+    "1:100",
+    "Medium",
+    "Coordination",
+    "F_W_TempWorks",
+    "S normal",
+    "Propping, scaffold, excavation support"
+   ],
+   [
+    "VT_W_3D_Logistics",
+    "3D",
+    "NTS",
+    "Medium",
+    "Coordination",
+    "F_W_Logistics; F_W_TempWorks",
+    "All links normal",
+    "Logistics 3D views and 4D sequence stills"
+   ]
+  ],
+  "Graphics": [
+   [
+    "Kind",
+    "Name",
+    "Definition",
+    "Use"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_1.8",
+    "Arial 1.8 mm",
+    "Container name strip, A3 minimum"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_2.5",
+    "Arial 2.5 mm",
+    "Notes, tags, dimensions"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_2.5_Bold",
+    "Arial 2.5 mm bold",
+    "Note headings"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_3.5",
+    "Arial 3.5 mm",
+    "View titles"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_3.5_Bold",
+    "Arial 3.5 mm bold",
+    "Legend headings"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_5.0_Bold",
+    "Arial 5.0 mm bold",
+    "Sheet titles"
+   ],
+   [
+    "Text type",
+    "FMC_Arial_7.0_Bold",
+    "Arial 7.0 mm bold",
+    "Cover headings"
+   ],
+   [
+    "Line weight",
+    "Pen 1",
+    "0.10 mm",
+    "Hatch, hidden"
+   ],
+   [
+    "Line weight",
+    "Pen 2",
+    "0.13 mm",
+    "Fine detail"
+   ],
+   [
+    "Line weight",
+    "Pen 3",
+    "0.18 mm",
+    "Annotation, beyond"
+   ],
+   [
+    "Line weight",
+    "Pen 4",
+    "0.25 mm",
+    "Light cut, projection"
+   ],
+   [
+    "Line weight",
+    "Pen 5",
+    "0.35 mm",
+    "Medium cut"
+   ],
+   [
+    "Line weight",
+    "Pen 6",
+    "0.50 mm",
+    "Heavy cut, sheet frame"
+   ],
+   [
+    "Line weight",
+    "Pen 7",
+    "0.70 mm",
+    "Very heavy cut"
+   ],
+   [
+    "Line weight",
+    "Pen 8",
+    "1.00 mm",
+    "Site boundary, sections through ground"
+   ],
+   [
+    "Line pattern",
+    "FMC_Dash",
+    "3 mm dash, 1.5 mm space",
+    "Hidden, below"
+   ],
+   [
+    "Line pattern",
+    "FMC_DashDot",
+    "6 dash, 1.5 space, dot",
+    "Storm, centre"
+   ],
+   [
+    "Line pattern",
+    "FMC_DashDotDot",
+    "6 dash, dot, dot",
+    "Compartment lines"
+   ],
+   [
+    "Line pattern",
+    "FMC_Dot",
+    "Dot 1.5 mm",
+    "Irrigation, overhead"
+   ],
+   [
+    "Line pattern",
+    "FMC_CentreLine",
+    "12 dash, 3 dash",
+    "Centre lines, grids"
+   ],
+   [
+    "Line pattern",
+    "FMC_Boundary",
+    "12 dash, 3 dot",
+    "Plot boundary"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Blockwork",
+    "Drafting, diagonal 45 deg 3 mm",
+    "Cut blockwork"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Brickwork",
+    "Drafting, diagonal crosshatch",
+    "Cut brickwork"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Concrete",
+    "Drafting, stipple and triangles",
+    "Cut concrete"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Hardcore",
+    "Drafting, random stone",
+    "Hardcore and sub-base"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Earth",
+    "Drafting, earth",
+    "Natural ground"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Sand",
+    "Drafting, dots",
+    "Sand blinding"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Insulation",
+    "Drafting, batt",
+    "Insulation"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Timber",
+    "Drafting, grain",
+    "Cut timber"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Screed",
+    "Drafting, fine dots",
+    "Screed"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Tile_300",
+    "Model, 300 x 300 grid",
+    "Floor tiles"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Tile_600",
+    "Model, 600 x 600 grid",
+    "Large tiles"
+   ],
+   [
+    "Fill pattern",
+    "FMC_Solid",
+    "Solid fill",
+    "Poch&#233;, filled regions"
+   ]
+  ],
+  "Electrical_Settings": [
+   [
+    "Item",
+    "Name",
+    "Value / phase / factor",
+    "Min / config",
+    "Max / wires",
+    "L-L",
+    "L-G",
+    "Use"
+   ],
+   [
+    "Voltage",
+    "240 V",
+    "240",
+    "216",
+    "264",
+    "",
+    "",
+    ""
+   ],
+   [
+    "Voltage",
+    "415 V",
+    "415",
+    "374",
+    "457",
+    "",
+    "",
+    ""
+   ],
+   [
+    "Voltage",
+    "11 kV",
+    "11000",
+    "9900",
+    "12100",
+    "",
+    "",
+    ""
+   ],
+   [
+    "Voltage",
+    "33 kV",
+    "33000",
+    "29700",
+    "36300",
+    "",
+    "",
+    ""
+   ],
+   [
+    "Distribution system",
+    "DS_33kV_3Ph_3W",
+    "Three",
+    "Delta",
+    "3",
+    "33 kV",
+    "None",
+    "Utility primary where the supply is 33 kV"
+   ],
+   [
+    "Distribution system",
+    "DS_11kV_3Ph_3W",
+    "Three",
+    "Delta",
+    "3",
+    "11 kV",
+    "None",
+    "Transformer primary"
+   ],
+   [
+    "Distribution system",
+    "DS_415-240V_3Ph_4W",
+    "Three",
+    "Wye",
+    "4",
+    "415 V",
+    "240 V",
+    "Transformer secondary, check meter, ATS, MDB, floor DBs, generator"
+   ],
+   [
+    "Distribution system",
+    "DS_240V_1Ph_2W",
+    "Single",
+    "-",
+    "2",
+    "None",
+    "240 V",
+    "Room prepaid meters, consumer units, single-phase DBs"
+   ],
+   [
+    "Load classification",
+    "Lighting",
+    "0.8",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Power",
+    "0.4",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Water Heater",
+    "0.33",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Emergency Lighting",
+    "1",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "HVAC",
+    "1",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Motor",
+    "0.8",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Site Lighting",
+    "1",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ],
+   [
+    "Load classification",
+    "Other",
+    "1",
+    "Constant",
+    "",
+    "",
+    "",
+    "Demand factor; the electrical engineer approves per project"
+   ]
+  ],
+  "Discipline_Settings": [
+   [
+    "Role",
+    "Setting",
+    "Where in Revit",
+    "Formcraft value"
+   ],
+   [
+    "A",
+    "Materials",
+    "Manage > Materials",
+    "FMC_[Group]_[Description] with keynote, cut and surface patterns, appearance asset"
+   ],
+   [
+    "A",
+    "Compound types",
+    "Wall, floor, roof, ceiling types",
+    "[Location]_[Core][Thk]_[Finish], e.g. EXT_Blk200_Pls20-Pls15 (Manual 4.6); finish-only types for G4"
+   ],
+   [
+    "A",
+    "Phases",
+    "Manage > Phases",
+    "Existing, Demolition, New Construction only (Manual 9.7)"
+   ],
+   [
+    "A",
+    "Area schemes",
+    "Area and Volume Computations",
+    "Gross Building, Site (coverage)"
+   ],
+   [
+    "A",
+    "Room calculation",
+    "Area and Volume Computations",
+    "At wall finish; volumes on"
+   ],
+   [
+    "I",
+    "Key schedule",
+    "Rooms > Key schedule",
+    "FMC_Finish_Set keys F01-W01-C01-SK01"
+   ],
+   [
+    "I",
+    "Materials",
+    "Manage > Materials",
+    "Finish materials with codes and surface patterns"
+   ],
+   [
+    "I",
+    "Finish types",
+    "Wall and floor types",
+    "Finish-only types; Revit Parts only where the BEP allows (Manual 9.7)"
+   ],
+   [
+    "S",
+    "Materials",
+    "Manage > Materials",
+    "FMC_Concrete_C25-30 etc. with physical assets"
+   ],
+   [
+    "S",
+    "Rebar cover settings",
+    "Structure > Rebar Cover Settings",
+    "Covers by exposure (S-0002 table)"
+   ],
+   [
+    "S",
+    "Rebar bar types",
+    "Structural Rebar types",
+    "H8-H32, R8-R12 with bend diameters"
+   ],
+   [
+    "S",
+    "Structural settings",
+    "Structure > Structural Settings",
+    "Symbolic cutback, analytical settings"
+   ],
+   [
+    "S",
+    "Load cases and combinations",
+    "Analyze > Loads",
+    "Set per project by the engineer (no fixed combinations, Manual Part 12)"
+   ],
+   [
+    "E",
+    "Voltage definitions",
+    "Electrical Settings > Voltage Definitions",
+    "240 V, 415 V, 11 kV, 33 kV (+-10%)"
+   ],
+   [
+    "E",
+    "Distribution systems",
+    "Electrical Settings > Distribution Systems",
+    "DS_33kV_3Ph_3W, DS_11kV_3Ph_3W, DS_415-240V_3Ph_4W, DS_240V_1Ph_2W (L-L None)"
+   ],
+   [
+    "E",
+    "Load classifications and demand factors",
+    "Electrical Settings > Load Classifications / Demand Factors",
+    "Lighting, Power, Water Heater, Motor, HVAC, Emergency Lighting, Site Lighting, Other"
+   ],
+   [
+    "E",
+    "Wire types and sizes",
+    "Electrical Settings > Wiring",
+    "Cu PVC / XLPE, 1.5-240 mm2"
+   ],
+   [
+    "E",
+    "Circuit naming",
+    "Electrical Settings > Circuit Naming (Revit 2022+)",
+    "Panel name / way, e.g. CU-01-03/2"
+   ],
+   [
+    "M",
+    "Duct system types",
+    "Mechanical systems",
+    "Supply Air, Return Air, Exhaust Air, Outdoor Air with FMC colours"
+   ],
+   [
+    "M",
+    "Duct types and sizes",
+    "Mechanical Settings > Duct sizes",
+    "Rectangular and round, galvanised"
+   ],
+   [
+    "M",
+    "Piping system types",
+    "Piping systems",
+    "M_Refrigerant (Other), M_Condensate (Sanitary)"
+   ],
+   [
+    "M",
+    "Spaces",
+    "Spaces from linked rooms",
+    "Occupancy, design airflow, cooling load"
+   ],
+   [
+    "P",
+    "Piping system types",
+    "Piping systems",
+    "DCW, DHW, Sanitary, Vent, P_Storm, P_RWH with classification and colours"
+   ],
+   [
+    "P",
+    "Pipe types and segments",
+    "Mechanical Settings > Pipe settings",
+    "PPR PN16/PN20, uPVC drainage, sizes"
+   ],
+   [
+    "P",
+    "Slopes",
+    "Mechanical Settings > Slopes",
+    "2.5% (1:40) for 110 mm, 1.67% (1:60) for 160 mm, 1%"
+   ],
+   [
+    "P",
+    "Fluids",
+    "Mechanical Settings > Fluids",
+    "Water at 20 C and 60 C"
+   ],
+   [
+    "FP",
+    "Piping system types",
+    "Piping systems",
+    "FP_Wet (Fire Protection Wet), FP_Dry where needed"
+   ],
+   [
+    "FP",
+    "Pipe types",
+    "Pipe settings",
+    "Galvanised steel or approved, sizes"
+   ],
+   [
+    "FP",
+    "Fire parameters",
+    "Shared parameters",
+    "FMC_Fire_Resistance_Min on walls and doors, FMC_Fire_Compartment"
+   ],
+   [
+    "LP",
+    "Materials",
+    "Manage > Materials",
+    "Copper tape 25x3, aluminium 8 mm"
+   ],
+   [
+    "LP",
+    "Shared parameters",
+    "Group 09",
+    "FMC_LPS_Class, FMC_Earth_Resistance_Ohm, FMC_LP_Part"
+   ],
+   [
+    "LP",
+    "Filters",
+    "View filters",
+    "F_LP_AirTermination, F_LP_DownConductor, F_LP_Earth"
+   ],
+   [
+    "C",
+    "Toposolid types",
+    "Toposolid (Revit 2024+)",
+    "EXIST_Ground, PROP_Platform, PAV_* build-ups"
+   ],
+   [
+    "C",
+    "Site settings",
+    "Site Settings",
+    "Contour interval 0.5 m, cut and fill colours"
+   ],
+   [
+    "C",
+    "Property lines",
+    "Site",
+    "From survey, with bearings"
+   ],
+   [
+    "C",
+    "Coordinates",
+    "Shared from Z",
+    "Manual Part 8"
+   ],
+   [
+    "L",
+    "Planting type catalogue",
+    "Planting family + .txt catalogue",
+    "One type per species"
+   ],
+   [
+    "L",
+    "Materials",
+    "Manage > Materials",
+    "Lawn, groundcover, paving"
+   ],
+   [
+    "L",
+    "Piping system",
+    "Piping systems",
+    "L_Irrigation (Other)"
+   ],
+   [
+    "W",
+    "Worksets",
+    "Collaborate > Worksets",
+    "W_Logistics, W_TempWorks, W_Zones, Z_Links_<Role>"
+   ],
+   [
+    "W",
+    "Zones",
+    "FMC_Zone values",
+    "Z01-Z04 (extend per project); filters F_W_Zone_01-04"
+   ],
+   [
+    "W",
+    "Programme link",
+    "FMC_Task_ID",
+    "Activity IDs from the programme (Manual 11.6)"
+   ],
+   [
+    "W",
+    "Measurement",
+    "FMC_Measurement_Rule / FMC_Trade_Package",
+    "MR-NMD-01 and PRELIMS so logistics never enter the measured BoQ"
+   ],
+   [
+    "W",
+    "Coordinates",
+    "Shared from Z",
+    "Manual Part 8; crane bases set out by the surveyor"
+   ]
+  ],
+  "Schedules": [
+   [
+    "Name",
+    "Role",
+    "Category",
+    "Fields",
+    "Filter / sort / group",
+    "Placed on",
+    "Purpose",
+    "Feeds"
+   ],
+   [
+    "00_Codes_Used",
+    "Z",
+    "Multi-category",
+    "FMC_Keynote_Code, FMC_Code_Description, Count",
+    "Group by code",
+    "-",
+    "Every code used in the model",
+    "BoQ check"
+   ],
+   [
+    "01_Types_Without_Code",
+    "Z",
+    "Multi-category",
+    "Family and Type, Count",
+    "FMC_Keynote_Code has no value",
+    "-",
+    "Types still to code",
+    "QA"
+   ],
+   [
+    "02_Walls",
+    "A",
+    "Walls",
+    "Type, FMC_Keynote_Code, Length, Area, Volume, Base Constraint",
+    "Group by type and level",
+    "-",
+    "Wall quantities by type and storey",
+    "BoQ"
+   ],
+   [
+    "03_Doors",
+    "A",
+    "Doors",
+    "Mark, Width, Height, Type, FMC_Frame_Spec, FMC_Fire_Resistance_Min, FMC_Ironmongery_Set",
+    "Sort by mark",
+    "A-5001",
+    "Door schedule",
+    "BoQ, procurement"
+   ],
+   [
+    "04_Windows",
+    "A",
+    "Windows",
+    "Mark, Width, Height, Type, FMC_Glazing_Spec, FMC_Glazed_Area_m2, FMC_Openable_Area_m2",
+    "Sort by mark",
+    "A-5002",
+    "Window schedule",
+    "CA-A-01"
+   ],
+   [
+    "05_Room_Finishes",
+    "A",
+    "Rooms",
+    "Number, Name, Area, FMC_Finish_Set, finish keys F, W, C, SK",
+    "Sort by number",
+    "A-5003",
+    "Room finishes from the FMC_Finish_Set key schedule",
+    "BoQ"
+   ],
+   [
+    "06_Floors",
+    "A",
+    "Floors",
+    "Type, FMC_Keynote_Code, Area, Volume, Level",
+    "Group by type and level",
+    "-",
+    "Slab, screed and finish quantities",
+    "BoQ"
+   ],
+   [
+    "07_Cost_Estimate",
+    "Z",
+    "Multi-category",
+    "FMC_Keynote_Code, FMC_Cost_Unit, quantity, FMC_Unit_Rate, amount (calculated)",
+    "Group by code",
+    "-",
+    "Model cost check before the BoQ build",
+    "fmc_boq_build.py"
+   ],
+   [
+    "08_Procurement_Status",
+    "Z",
+    "Multi-category",
+    "FMC_Trade_Package, FMC_Procurement_Status, FMC_Lead_Time_Weeks, FMC_PO_Reference",
+    "Group by package",
+    "-",
+    "What is ordered and what is late",
+    "4D"
+   ],
+   [
+    "09_QA_MissingData",
+    "Z",
+    "Multi-category",
+    "Family and Type, FMC_Keynote_Code, FMC_Geometry_Stage, FMC_Role_Code",
+    "Any of the three has no value",
+    "-",
+    "Modellers clear this daily",
+    "QA"
+   ],
+   [
+    "Z10_Sheet_Index",
+    "Z",
+    "Sheets",
+    "Sheet Number, Sheet Name, Current Revision, Current Revision Date, FMC_Sheet_Status, FMC_Issue_Set",
+    "Filter FMC_Issue_Set contains the issue; group by FMC_Sheet_Role",
+    "Z-0001",
+    "Drawing index for every discipline",
+    "-"
+   ],
+   [
+    "Z11_Sheet_Notes",
+    "Z",
+    "Generic Annotations (note block of FMC_GA_SheetNote)",
+    "Note number, note text, sheet",
+    "Filter by sheet",
+    "Every X-1xxx sheet",
+    "Sheet-specific notes, numbered automatically",
+    "-"
+   ],
+   [
+    "Z12_Area_GFA",
+    "Z",
+    "Areas (Gross Building)",
+    "Level, Name, Area",
+    "Group by level, totals",
+    "Z-0004, A-5004",
+    "GFA by level",
+    "CA-Z-01"
+   ],
+   [
+    "Z13_Model_Register",
+    "Z",
+    "Revit Links (and the host model via Project Information)",
+    "Type name (container), FMC_Role_Code, status, geometry stage",
+    "Sort by role",
+    "Z-0006",
+    "Models in this set, their names, status and G-stage",
+    "-"
+   ],
+   [
+    "Z14_Drawing_Register",
+    "Z",
+    "Sheets",
+    "Sheet Number, Sheet Name, FMC_Container_Name, FMC_Sheet_Status, Current Revision",
+    "All sheets; exported to CSV at every issue",
+    "-",
+    "Drawing register filed with the transmittal (Manual 9.14)",
+    "Transmittal"
+   ],
+   [
+    "A10_Room_Daylight_Check",
+    "A",
+    "Rooms",
+    "Number, Name, Area, FMC_Daylight_Ratio_pct",
+    "FMC_Daylight_Ratio_pct below 10 highlighted",
+    "A-5004",
+    "Result of CA-A-01 written back to rooms",
+    "CA-A-01"
+   ],
+   [
+    "I10_FFE_Schedule",
+    "I",
+    "Furniture, Furniture Systems, Specialty Equipment",
+    "FMC_Keynote_Code, Type, Room, Count, FMC_Unit_Rate, amount",
+    "Group by room",
+    "I-5001",
+    "FF&E with costs",
+    "BoQ"
+   ],
+   [
+    "I11_Joinery_Cutlist",
+    "I",
+    "Casework",
+    "FMC_Assembly_Mark, Type, Width, Height, Depth, FMC_Carcass_Spec, FMC_Worktop_Spec",
+    "Group by assembly mark",
+    "I-5002",
+    "Workshop cut list",
+    "Formcraft workshop"
+   ],
+   [
+    "S10_Column_Schedule",
+    "S",
+    "Structural Columns",
+    "FMC_Member_Mark, Type, Base Level, Top Level, FMC_Concrete_Grade, FMC_Exposure_Class",
+    "Group by mark",
+    "S-5001",
+    "Column schedule",
+    "-"
+   ],
+   [
+    "S11_Beam_Schedule",
+    "S",
+    "Structural Framing",
+    "FMC_Member_Mark, Type, Reference Level, Length, FMC_Concrete_Grade",
+    "Group by mark",
+    "S-5002",
+    "Beam schedule",
+    "-"
+   ],
+   [
+    "S12_Foundation_Schedule",
+    "S",
+    "Structural Foundations",
+    "FMC_Member_Mark, Type, FMC_Founding_Depth_mm, FMC_Bearing_Capacity_kPa",
+    "Group by mark",
+    "S-5003",
+    "Foundation schedule",
+    "-"
+   ],
+   [
+    "S13_Rebar_BBS",
+    "S",
+    "Structural Rebar",
+    "Host Mark, Bar Diameter, Shape, Bar Length, Quantity, Total Bar Length, mass (calculated)",
+    "Group by host and bar mark",
+    "S-5004",
+    "Bar bending schedule to BS 8666 (G4)",
+    "Procurement"
+   ],
+   [
+    "S14_Concrete_ByGrade",
+    "S",
+    "Multi-category (structural)",
+    "FMC_Concrete_Grade, Volume, FMC_Rebar_Ratio_kg_m3, rebar estimate (calculated)",
+    "Group by grade",
+    "S-5005",
+    "Concrete orders for Formcraft Concrete",
+    "CA-S-01"
+   ],
+   [
+    "S15_Formwork",
+    "S",
+    "Multi-category (structural)",
+    "FMC_Formwork_Type, Category, Area (from FMC_FormworkArea, P2)",
+    "Group by type",
+    "S-5005",
+    "Formwork areas",
+    "CA-S-02"
+   ],
+   [
+    "S16_Steel_Tonnage",
+    "S",
+    "Structural Framing, Structural Columns",
+    "Type, Length, FMC_Steel_Grade, mass (from steel_mass_template.csv)",
+    "Group by section",
+    "S-5005",
+    "Steel tonnage",
+    "BoQ"
+   ],
+   [
+    "E10_Load_Summary",
+    "E",
+    "Electrical Equipment",
+    "Panel Name, Total Connected Load, Total Demand Load, Distribution System",
+    "Boards only",
+    "E-0003",
+    "Connected and demand load per board",
+    "CA-E-01"
+   ],
+   [
+    "E11_Panel_Summary",
+    "E",
+    "Electrical Equipment",
+    "Panel Name, Supply From, Ways (FMC_Ways), Mains rating, Location",
+    "Sort supply order",
+    "E-5001",
+    "Board register",
+    "-"
+   ],
+   [
+    "E12_Lighting_Fixtures",
+    "E",
+    "Lighting Fixtures",
+    "Type Mark, Type, Count, FMC_Power_W, FMC_IP_Rating, Panel, Circuit Number",
+    "Group by type",
+    "E-5002",
+    "Luminaire schedule",
+    "BoQ"
+   ],
+   [
+    "E13_Device_Count",
+    "E",
+    "Electrical Fixtures, Lighting Devices, Data Devices, Fire Alarm Devices",
+    "Type, Level, Count",
+    "Group by type and level",
+    "E-5003",
+    "Device counts",
+    "BoQ"
+   ],
+   [
+    "E14_Circuit_VoltageDrop",
+    "E",
+    "Electrical Circuits",
+    "Panel, Circuit Number, Load, Length, Wire Size, voltage drop %",
+    "Sort by panel and circuit",
+    "E-5004",
+    "Circuit data for CA-E-02",
+    "CA-E-02"
+   ],
+   [
+    "E15_Electrical_Equipment",
+    "E",
+    "Electrical Equipment",
+    "FMC_Asset_Tag, Type, FMC_Manufacturer, FMC_Model_Number, Rating",
+    "Group by type",
+    "E-5005",
+    "Equipment and asset data",
+    "Handover"
+   ],
+   [
+    "M10_Mechanical_Equipment",
+    "M",
+    "Mechanical Equipment",
+    "Mark, Type, FMC_Cooling_Capacity_kW, FMC_Cooling_Capacity_BTUh, FMC_Airflow_Ls, FMC_Refrigerant, Room",
+    "Group by type",
+    "M-5001",
+    "Equipment schedule",
+    "CA-M-01"
+   ],
+   [
+    "M11_Air_Terminals",
+    "M",
+    "Air Terminals",
+    "Type, Size, Flow, System Type, Room",
+    "Group by system",
+    "M-5002",
+    "Grilles and diffusers",
+    "CA-M-02"
+   ],
+   [
+    "M12_Fans",
+    "M",
+    "Mechanical Equipment (fans)",
+    "Mark, Type, Flow, FMC_Power_W",
+    "Sort by mark",
+    "M-5002",
+    "Fan schedule",
+    "CA-M-02"
+   ],
+   [
+    "M13_Duct_Pipe_Quantities",
+    "M",
+    "Ducts, Pipes (M systems)",
+    "System Type, Size, Length, Area",
+    "Group by system and size",
+    "M-5003",
+    "Duct and refrigerant quantities",
+    "BoQ"
+   ],
+   [
+    "P10_Plumbing_Fixtures",
+    "P",
+    "Plumbing Fixtures",
+    "Type, Room, Count, FMC_Discharge_Units, Fixture Units",
+    "Group by type",
+    "P-5001",
+    "Sanitary fixtures with discharge units",
+    "CA-P-02"
+   ],
+   [
+    "P11_Plumbing_Equipment",
+    "P",
+    "Mechanical Equipment (P), Plumbing Equipment",
+    "Mark, Type, FMC_Power_W, FMC_Tank_Capacity_L",
+    "Sort by mark",
+    "P-5004",
+    "Pumps, heaters, tanks",
+    "-"
+   ],
+   [
+    "P12_Manholes",
+    "P",
+    "Plumbing Equipment",
+    "Mark, Size, FMC_Cover_Level_m, FMC_Invert_In_m, FMC_Invert_Out_m, depth (calculated), cover type",
+    "Sort by mark",
+    "P-5002",
+    "Manhole schedule",
+    "-"
+   ],
+   [
+    "P13_Pipe_Quantities",
+    "P",
+    "Pipes, Pipe Fittings",
+    "System Type, Material, Size, Length",
+    "Group by system and size",
+    "P-5003",
+    "Pipe quantities",
+    "BoQ"
+   ],
+   [
+    "P14_Valves",
+    "P",
+    "Pipe Accessories",
+    "Type, Size, System Type, Count",
+    "Group by type",
+    "P-5003",
+    "Valves and meters",
+    "BoQ"
+   ],
+   [
+    "P15_Tanks_Pumps",
+    "P",
+    "Mechanical Equipment, Plumbing Equipment",
+    "Type, FMC_Tank_Capacity_L, Count",
+    "Group by type",
+    "P-5004",
+    "Storage provided against CA-P-01",
+    "CA-P-01"
+   ],
+   [
+    "FP10_Fire_Equipment",
+    "FP",
+    "Specialty Equipment, Sprinklers",
+    "FMC_Asset_Tag, Type, FMC_Extinguisher_Rating, Level, Room",
+    "Group by level",
+    "FP-5001",
+    "Fire equipment with asset tags",
+    "CA-FP-01"
+   ],
+   [
+    "FP11_Safety_Signs",
+    "FP",
+    "Generic Models (signs)",
+    "FMC_Sign_Code, Type, Level, Count",
+    "Group by sign code",
+    "FP-5001",
+    "ISO 7010 signs",
+    "BoQ"
+   ],
+   [
+    "LP10_LPS_Materials",
+    "LP",
+    "Generic Models, Specialty Equipment",
+    "FMC_LP_Part, Type, Length, Count",
+    "Group by part",
+    "LP-5001",
+    "Conductor lengths and components",
+    "CA-LP-01"
+   ],
+   [
+    "LP11_Earth_Test_Record",
+    "LP",
+    "Specialty Equipment (earth pits)",
+    "Mark, rod length, FMC_Earth_Resistance_Ohm, test date, tested by",
+    "Sort by mark",
+    "LP-5001",
+    "Commissioning record",
+    "CA-LP-02"
+   ],
+   [
+    "C10_Drainage_Structures",
+    "C",
+    "Plumbing Equipment, Generic Models (C)",
+    "Mark, Type, Size, FMC_Cover_Level_m, FMC_Invert_In_m, FMC_Invert_Out_m",
+    "Sort by mark",
+    "C-5001",
+    "Catch pits and outfalls",
+    "-"
+   ],
+   [
+    "C11_Earthworks",
+    "C",
+    "Toposolid",
+    "Type, Volume, cut, fill",
+    "Existing vs proposed",
+    "C-5001",
+    "Earthworks summary",
+    "CA-C-01"
+   ],
+   [
+    "C12_Pavement_Areas",
+    "C",
+    "Toposolid (sub-divisions), Floors",
+    "Type, Area, FMC_Layer_Thickness_mm",
+    "Group by build-up",
+    "C-5001",
+    "Paved areas by build-up",
+    "BoQ"
+   ],
+   [
+    "L10_Planting",
+    "L",
+    "Planting",
+    "Type Mark, FMC_Botanical_Name, FMC_Local_Name, FMC_Planting_Size, FMC_Plant_Spacing_mm, Count",
+    "Group by species",
+    "L-5001",
+    "Planting schedule",
+    "CA-L-01"
+   ],
+   [
+    "L11_Hardscape_Areas",
+    "L",
+    "Toposolid (sub-divisions), Floors",
+    "Type, Area",
+    "Group by type",
+    "L-5002",
+    "Hardscape areas",
+    "BoQ"
+   ],
+   [
+    "L12_Site_Furniture",
+    "L",
+    "Site, Furniture",
+    "Type, Count, FMC_Assembly_Mark",
+    "Group by type",
+    "L-5002",
+    "Site furniture made by Formcraft",
+    "BoQ"
+   ],
+   [
+    "W10_TempWorks_Register",
+    "W",
+    "Generic Models (TW_ types)",
+    "Mark, Type, FMC_Zone, FMC_Task_ID, designer, permit to load / strike",
+    "Sort by zone",
+    "W-5001",
+    "Temporary works register (design check before use)",
+    "-"
+   ],
+   [
+    "W11_Laydown_Areas",
+    "W",
+    "Generic Models (laydown)",
+    "FMC_Laydown_Area, Area, FMC_Zone, FMC_Task_ID",
+    "Sort by area ID",
+    "W-8101",
+    "Laydown areas and their phases",
+    "-"
+   ],
+   [
+    "W12_Lift_Schedule",
+    "W",
+    "Multi-category (FMC_Lift_Weight_kg has a value)",
+    "Mark, FMC_Lift_Weight_kg, lift radius (from crane), FMC_Zone",
+    "Sort by weight",
+    "W-5001, W-8004",
+    "Lifts checked against the crane capacity chart",
+    "-"
+   ]
+  ]
+ }
+}
