@@ -37,6 +37,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             return en.IsValid() ? en.Get<string>("Name") ?? "" : "";
         }
 
+        /// <summary>Stores the op name on an element (solids, connectors), so a second run finds it.</summary>
+        public static void Label(Element e, string name) => Name(e, name);
+
         private static void Name(Element e, string name)
         {
             Schema s = NameSchema();

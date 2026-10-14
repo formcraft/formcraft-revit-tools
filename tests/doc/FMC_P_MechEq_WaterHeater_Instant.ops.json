@@ -1,0 +1,300 @@
+{
+ "family": "FMC_P_MechEq_WaterHeater_Instant",
+ "template": "Metric Generic Model face based.rft",
+ "about": "B1d acceptance batch (docs/PLAN_B1_ENGINE.md): built from the kit's spec for this family. Sizes are placeholders until a datasheet confirms them (FAM-036). Run: fmc_doc open (template) -> apply (dry run, then real) -> flex -> save to _ChainTests.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "OST_MechanicalEquipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Width",
+   "type": "Length"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Depth",
+   "type": "Length"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Height",
+   "type": "Length"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Body Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Left",
+   "from": [
+    -175,
+    -400
+   ],
+   "to": [
+    -175,
+    400
+   ],
+   "is_reference": "Left"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Right",
+   "from": [
+    175,
+    -400
+   ],
+   "to": [
+    175,
+    400
+   ],
+   "is_reference": "Right"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Front",
+   "from": [
+    -400,
+    -120
+   ],
+   "to": [
+    400,
+    -120
+   ],
+   "is_reference": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Back",
+   "from": [
+    -400,
+    120
+   ],
+   "to": [
+    400,
+    120
+   ],
+   "is_reference": "Back"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Width",
+   "between": [
+    "Left",
+    "Right"
+   ],
+   "label": "Width"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Depth",
+   "between": [
+    "Front",
+    "Back"
+   ],
+   "label": "Depth"
+  },
+  {
+   "op": "extrusion",
+   "name": "Body",
+   "rect": [
+    "Left",
+    "Right",
+    "Front",
+    "Back"
+   ],
+   "start": 0,
+   "end": 450
+  },
+  {
+   "op": "set_material_param",
+   "name": "Body",
+   "param": "Body Material"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_connector",
+   "name": "DCW",
+   "domain": "pipe",
+   "system": "Domestic Cold Water",
+   "solid": "Body",
+   "side": "left",
+   "flow": "In",
+   "diameter": 15
+  },
+  {
+   "op": "add_connector",
+   "name": "DHW",
+   "domain": "pipe",
+   "system": "Domestic Hot Water",
+   "solid": "Body",
+   "side": "right",
+   "flow": "Out",
+   "diameter": 15
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerUnBalanced",
+   "solid": "Body",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "add_type",
+   "name": "3 kW"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3 kW/Width",
+   "type": "3 kW",
+   "param": "Width",
+   "value": 350
+  },
+  {
+   "op": "set_type_value",
+   "name": "3 kW/Depth",
+   "type": "3 kW",
+   "param": "Depth",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "3 kW/Voltage",
+   "type": "3 kW",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "3 kW/Number of Poles",
+   "type": "3 kW",
+   "param": "Number of Poles",
+   "value": 1
+  },
+  {
+   "op": "add_type",
+   "name": "6 kW"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6 kW/Width",
+   "type": "6 kW",
+   "param": "Width",
+   "value": 400
+  },
+  {
+   "op": "set_type_value",
+   "name": "6 kW/Depth",
+   "type": "6 kW",
+   "param": "Depth",
+   "value": 260
+  },
+  {
+   "op": "set_type_value",
+   "name": "6 kW/Voltage",
+   "type": "6 kW",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "6 kW/Number of Poles",
+   "type": "6 kW",
+   "param": "Number of Poles",
+   "value": 1
+  }
+ ]
+}

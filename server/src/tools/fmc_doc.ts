@@ -52,7 +52,7 @@ export const FMC_DOC_DESCRIPTION =
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. Never a project or " +
     "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
