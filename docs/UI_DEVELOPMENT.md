@@ -157,8 +157,8 @@ carried server or command set tool, dry run → yes → run → log, and an `fmc
   **To do:** fix texture paths, merge duplicates; finish colour view and schedules with Build (U26)
 - [x] U19 Manage › Sheets, Annotate, Issue — `manage/PaneSheets`, `PaneAnnotate`, `PaneIssue`. **Done** (`fmc_sheets`,
   `fmc_annotate`, `fmc_issue`)
-- [~] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`.
-  **Links, Workshare and the Review register done** (`fmc_links`, `fmc_workshare`, `fmc_review`); revision clouds and review prints next
+- [x] U20 Manage › Review, Workshare, Links; revision on the drawing — `manage/PaneReview`, `PaneWorkshare`, `PaneLinks`, `ReviewOnSheet`.
+  **Done** (`fmc_links`, `fmc_workshare`, `fmc_review` with clouds and prints)
 - [ ] U21 Manage › Reports — `manage/PaneReports`
 - [~] U22 Flow: Touch, on-view previews, Section box, shortcuts — `flow/*`. **Touch done** (touch engine in `touch/`, formerly TouchKit; Settings › Flow › Touch; Flow ribbon Touch on; Touch quick tool). On-view previews, Section box and shortcuts to do
 - [ ] U23 Model › Start from brief — `model/PaneModelBrief`

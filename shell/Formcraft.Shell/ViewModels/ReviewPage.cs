@@ -48,6 +48,9 @@ namespace Formcraft.Shell.ViewModels
             AcceptCommand = new AsyncCommand(() => Check(true, ""), status);
             ReopenCommand = new RelayCommand(AskReopen);
             ZoomCommand = new AsyncCommand(Zoom, status);
+            CloudCommand = new AsyncCommand(Cloud, status);
+            PrintReviewCommand = new AsyncCommand(() => Print("For review"), status);
+            PrintRevisedCommand = new AsyncCommand(() => Print("As revised"), status);
             Rebuild();
         }
 
@@ -58,6 +61,10 @@ namespace Formcraft.Shell.ViewModels
         public ICommand AcceptCommand { get; }
         public ICommand ReopenCommand { get; }
         public ICommand ZoomCommand { get; }
+        public ICommand CloudCommand { get; }
+        public ICommand PrintReviewCommand { get; }
+        public ICommand PrintRevisedCommand { get; }
+        private List<PrintInfo> _prints = new List<PrintInfo>();
         public IReadOnlyList<ReviewItemInfo> Items => _items ?? new List<ReviewItemInfo>();
         public ReviewItemInfo? Selected => _selected;
         public MessagesSetting Messages => _messages;
@@ -118,6 +125,7 @@ namespace Formcraft.Shell.ViewModels
                             return new TableRow(d, d + (d == i.Lead ? " (lead)" : ""), a?.Text ?? "—", a == null ? "Waiting" : a.Done ? "Done" : "Open"); })),
                 };
                 if (i.Solution.Length > 0) items.Add(new ReadOnlySetting("Solution", i.Solution));
+                items.Add(new ReadOnlySetting("Cloud on the drawing", i.Cloud.Length > 0 ? i.Cloud : i.ElementIds.Count > 0 ? "Not drawn yet" : "No linked elements to cloud"));
                 var buttons = new List<SettingButton>();
                 if (i.Status != "Closed")
                 {
@@ -125,6 +133,7 @@ namespace Formcraft.Shell.ViewModels
                     if (i.Status != "Resolved") buttons.Add(new SettingButton("Mark done…", SolveCommand, primary: true));
                 }
                 if (i.ElementIds.Count > 0) buttons.Add(new SettingButton("Zoom (" + i.ElementIds.Count + ")", ZoomCommand));
+                if (i.ElementIds.Count > 0 && i.Cloud.Length == 0 && i.Status != "Closed") buttons.Add(new SettingButton("Cloud it (dry run)", CloudCommand));
                 items.Add(new ButtonsSetting("", buttons.ToArray(), "Mark done needs every asked discipline's answer; it waits for the raiser's check."));
                 Groups.Add(new SettingsGroup("Selected: " + i.Id, items.ToArray()));
                 if (i.Status == "Resolved")
@@ -133,9 +142,18 @@ namespace Formcraft.Shell.ViewModels
                             "Closed only after the raiser's check (MAN 10.5).")));
             }
 
-            Groups.Add(new SettingsGroup("Revision clouds and prints",
-                new NoteSetting("Next: a revision cloud on the drawing for each item (it changes the model, so it goes through the live-model lock), " +
-                                "prints for review and as revised, and BCF in Phase 2. Codes stay separate: company revision, Revit revision, sheet status, approval.", ChipKind.Grey)));
+            Groups.Add(new SettingsGroup("Prints of a sheet",
+                new TextSetting("Sheet", "", "e.g. A-1001", store: _store, key: "review.sheet", mono: true),
+                new ButtonsSetting("", new[]
+                {
+                    new SettingButton("Print for review", PrintReviewCommand),
+                    new SettingButton("Print as revised", PrintRevisedCommand, primary: true),
+                }, "The sheet's PDF and its list of items (open ones to fix, or solved ones with their solutions), in 01_WIP\\_Reviews\\Prints."),
+                _prints.Count == 0 ? (SettingItem)new NoteSetting("No prints of this sheet yet.")
+                    : new TableSetting("Print history", new[] { "Date", "Print", "Items" }, _prints.Select(p => new TableRow(p, p.At, p.Kind, p.Items.ToString())))));
+            Groups.Add(new SettingsGroup("Clouds, BCF and change requests",
+                new NoteSetting("A cloud goes on an unissued revision (Revit's rule): the latest one, or a new \"Review\" revision. BCF import and export come in Phase 2. " +
+                                "Codes stay separate: company revision, Revit revision, sheet status, approval.", ChipKind.Grey)));
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "review.considerations", _status)));
         }
 
@@ -256,6 +274,34 @@ namespace Formcraft.Shell.ViewModels
             _status(r.Message);
             await Refresh();
             return null;
+        }
+
+        private async Task Cloud()
+        {
+            if (_selected == null) return;
+            var id = _selected.Id;
+            var dry = await _tools.CloudAsync(Folder, id, true);
+            if (!dry.Ok) { _messages.Show(dry.Messages); _status(dry.Messages.FirstOrDefault()?.Text ?? "Refused."); return; }
+            _ask(DialogViewModel.WithItems("Cloud " + id + "?", "This changes the model: a revision cloud on the drawing. Refused on live projects.",
+                new SettingItem[] { new ReadOnlySetting("Will do", string.Join(Environment.NewLine, dry.Details), mono: true) }, "Cloud it", async () =>
+                {
+                    var r = await _tools.CloudAsync(Folder, id, false);
+                    _messages.Show(r.Messages);
+                    _status(r.Messages.FirstOrDefault()?.Text ?? "Clouded.");
+                    await Refresh();
+                    return null;
+                }));
+        }
+
+        private async Task Print(string kind)
+        {
+            var sheet = (_store.Get("review.sheet") ?? "").Trim().ToUpperInvariant();
+            if (sheet.Length == 0) { _messages.Show(ChipKind.Warn, "Type the sheet number to print, e.g. A-1001."); _status("Type the sheet number to print, e.g. A-1001."); return; }
+            var r = await _tools.PrintAsync(Folder, sheet, kind, _me());
+            _messages.Show(r.Messages);
+            _status(r.Messages.FirstOrDefault()?.Text ?? "Printed.");
+            _prints = await _tools.PrintsAsync(Folder, sheet);
+            Rebuild();
         }
 
         private async Task Zoom()

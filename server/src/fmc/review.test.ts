@@ -49,3 +49,18 @@ test("filters: my discipline, overdue, closed", () => {
   assert.deepEqual(filterItems(reg, "My discipline", ["FP"], "2026-10-14").map((x) => x.id), [late.id]);
   assert.deepEqual(filterItems(reg, "Closed", [], "2026-10-14"), []);
 });
+
+test("prints list the sheet's open items for review, solved ones as revised, with solutions", async () => {
+  const { printItems, printList } = await import("./review.js");
+  const reg: Register = { project: "F26001", items: [] };
+  const open = raise(reg, { ...base, sheet: "A-1001" }, now);
+  const done = raise(reg, { ...base, title: "Door swing", lead: "A", disciplines: [], sheet: "A-1001" }, now);
+  raise(reg, { ...base, title: "Elsewhere", sheet: "S-1001" }, now);
+  answer(done, "A", "NAME A", "Swing reversed", true, now);
+  solve(done, "NAME A", "D12 now opens inward", now);
+  assert.deepEqual(printItems(reg, "a-1001", "For review").map((i) => i.id), [open.id]);
+  assert.deepEqual(printItems(reg, "A-1001", "As revised").map((i) => i.id), [done.id]);
+  const md = printList("A-1001 Ground floor", "As revised", printItems(reg, "A-1001", "As revised"), now);
+  assert.match(md, /Solution: D12 now opens inward/);
+  assert.match(md, /- A: Swing reversed \(NAME A\)/);
+});
