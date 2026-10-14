@@ -20,6 +20,13 @@ claude.ai Project "REVIT MCP".
    the Formcraft account website.
 9. **Activity is never used to rank people** (Manual 14.5). Logs hold tools and results; Ask Claude logs tokens only.
 
+## Before every push: read the test feedback
+Read `docs/TEST_FEEDBACK.md` first. It holds the findings from the last live tests in Revit (written by the tester,
+Claude in the claude.ai Project). For each open finding your push fixes, fill **Fixed in** and set it to
+**Fixed – retest**; for one you disagree with or that needs the user, write a **Reply** and set **Answered**. Never
+delete or close a finding yourself. List the findings you touch in the PR description (`Touches F-00N`). If you
+touch none, say so in the PR description.
+
 ## How work runs
 - Plan first and wait for a yes before coding a step. Build phases in order (`docs/ROADMAP.md`).
 - Every tool follows one pattern: server check → dry run → one Revit handler → log → pane.
