@@ -42,18 +42,43 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-005 | Medium | Pane layout | Banners leave too little room; wheel barely scrolls · #36 | Closed (run 4) |
 | F-006 | Low | Pane footer | A tool's footer message stays after switching sections · #37 | Closed (run 4) |
 | F-007 | Info | U11 / M test | `fmc_ui` bridge run against Revit | Closed (run 2) |
-| F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Fixed – retest (still fails on run 4, but #44 wasn't installed) |
+| F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Closed (run 5: not a plugin bug, see run 5) |
 | F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Open |
 | F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec · #40 | Open |
-| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Answered (kit r4 shipped; rulebook files to copy) |
+| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Closed for layout (run 5); schema → F-017 |
 | F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Open |
 | F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Open |
 | F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Open |
 | F-015 | Low | QA rules | `fmc_qa rules` is silently empty when the rulebook folder has no books · #46 | Open |
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Open |
+| F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Open (needs the user) |
+| F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Open |
 ---
 
 ## Test runs
+
+### Run 5 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `03e0f0c`
+
+**Installed build:** `03e0f0c` (updater.log: "Installed 03e0f0c (server: True)" at 10:20:27, backup kept);
+`fmc_ui get_state` shows `build.commit = 03e0f0c`. `fmc_selftest` isn't offered yet: the Revit MCP connector in the
+Claude app needs a restart to load the new server.
+**Kit:** the tester copied the 11 rulebooks + index from the claude.ai Project into
+`03_Master_Data\FMC_Rulebook\` (user's yes): 344 rules, counts per book and status match `FMC_Rulebook_Index.md`.
+
+| Id | Result | State |
+|---|---|---|
+| F-001 #— | Core button now reads **"AI: on"** (last open part of F-001) | Closed |
+| F-008 #38 | **Not a plugin bug.** At y≈36 clicks on every tab right of x≈950 were lost (ElectroBIM, FireBIM and Formcraft alike) while Structure and Enscape opened; at y≈43 the Formcraft tab opens with Core, Manage, Flow, Model. An invisible overlay (likely the tester's remote-control indicator) swallowed the clicks. | Closed |
+| F-011 #41 | Rulebooks in place; `fmc_qa rules` reads 11 books, 344 rules, no problems | Layout done → F-017 |
+| F-014 #45 | Seen again after the update and restart | Open |
+| F-009 #39 | Same on `fmc_qa`: `rules` 120 k characters, `run` 93 k characters | Open |
+| New F-017 #49 | Kit severities error/warning/info all map to **Advice**; kit `check.type` isn't a plugin `check.kind`, so nothing runs | Open (needs the user) |
+| New F-018 #50 | `fmc_qa run` wip_to_shared: 319 of 319 **Not checked**, verdict "No Must rule blocks the move." | Open |
+
+**Tester's note:** for clicks on the right half of Revit's tab row, aim a few pixels below the label (y≈43 on a
+1456 × 819 frame).
+
+---
 
 ### Run 4 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · new unsaved models
 
