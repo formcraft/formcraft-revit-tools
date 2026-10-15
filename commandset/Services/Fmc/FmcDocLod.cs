@@ -119,8 +119,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     f.Subcategory = sub; return true;
                 case CurveElement c:
                     GraphicsStyle gs = sub.GetGraphicsStyle(GraphicsStyleType.Projection);
-                    if (c.Subcategory?.Id == gs.Id) return false;
-                    c.Subcategory = gs; return true;
+                    if (c.LineStyle?.Id == gs.Id) return false;
+                    c.LineStyle = gs; return true;
                 default:
                     throw new InvalidOperationException(e.GetType().Name + " can't take a subcategory");
             }
@@ -255,7 +255,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             foreach (Curve curve in curves)
             {
                 SymbolicCurve sc = doc.FamilyCreate.NewSymbolicCurve(curve, sketch);
-                sc.Subcategory = style;
+                sc.LineStyle = style;
                 sc.SetVisibility(vis);
                 FmcDocGeometry.Label(sc, name);
             }
