@@ -67,16 +67,7 @@ namespace Formcraft.Shell.ViewModels
 
         public ICommand CheckCommand { get; }
         public ICommand SaveCommand { get; }
-        public ICommand RobotStatusCommand { get; }
-        public ICommand RobotPreviewCommand { get; }
-        public ICommand RobotSendCommand { get; }
-        public ICommand RobotCalculateCommand { get; }
-        public ICommand RobotResultsCommand { get; }
-        public ICommand RobotWriteCommand { get; }
         public SystemsCheck? Last => _last;
-        public RobotResult? RobotLast => _robotLast;
-        public SettingStore RobotDraft => _robotDraft;
-        public MessagesSetting RobotMessages => _robotMessages;
 
         public override IEnumerable<FooterAction> Footer => Discipline == "Electrical"
             ? new[] { new FooterAction("Save the list", SaveCommand), new FooterAction("Check (read only)", CheckCommand, primary: true) }
@@ -140,13 +131,136 @@ namespace Formcraft.Shell.ViewModels
             else
                 Groups.Add(new SettingsGroup("Run on this model", new NoteSetting(Discipline + ": no tools yet. Each capability arrives with a dry run and the same control layer as Manage.", ChipKind.Grey)));
 
-            Groups.Add(RobotGroup());
             Groups.Add(new SettingsGroup("Hand-offs to Manage",
                 new NoteSetting("Diagram sheets go to Drawings › Sheets, calculation reports join Ready to issue, and quantities feed Check › Reports, as each capability ships.", ChipKind.Grey)));
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "systems.considerations", _status)));
         }
 
         private static string Kva(double va) => (va / 1000).ToString("0.0", CultureInfo.InvariantCulture);
+
+
+        private async Task Check(bool save)
+        {
+            var folder = _project.Request().Folder;
+            _last = await _tools.ElectricalAsync(folder, save);
+            if (!_last.Ok) _messages.Show(ChipKind.Bad, _last.Message);
+            else _messages.Show(save && _last.Saved.Length > 0 ? ChipKind.Good : ChipKind.Info, save && _last.Saved.Length > 0 ? "Saved for the engineer: " + _last.Saved : _last.Message);
+            _status(_last.Ok ? _last.Message : _last.Message);
+            Rebuild();
+        }
+    }
+
+    /// <summary>
+    /// Engineer › Structural (board model/PaneModelStructural, U25): the seven steps with honest status, the read-only
+    /// analytical model check, and analysis results already in the model. Formcraft never sizes or changes a structural
+    /// member: the engineer decides (CLAUDE.md rule 5).
+    /// </summary>
+    public sealed class StructuralPage : SectionPage
+    {
+        public static readonly (string Step, string Status)[] Steps =
+        {
+            ("1 Enrich: grades, exposure class, member marks (kit fields)", "Check only: lists empty kit fields"),
+            ("2 Analytical check: members joined, supports, offsets", "Partly"),
+            ("3 Loads: cases and combinations (set by the engineer)", "Engineer"),
+            ("4 Hand-off: the analytical model to the engineer's analysis software", "Robot: sends members, nodes and the engineer's supports and cases"),
+            ("5 Results back: sizes and utilisation, differences listed", "Partly: Robot's NEd and MEd into FMC_FEA_; sizes stay the engineer's"),
+            ("6 Quantities: concrete m³ by grade, steel t, rebar BBS", "Planned"),
+            ("7 Document: S sheet set, schedules, BBS", "Planned"),
+        };
+
+        private readonly ISystemTools _tools;
+        private readonly ProjectPage _project;
+        private readonly IUserSettings _settings;
+        private readonly SettingStore _store;
+        private readonly Action<string> _status;
+        private readonly MessagesSetting _messages = new MessagesSetting();
+        private SystemsCheck? _last;
+        private readonly IRobotTools _robot;
+        private readonly Action<DialogViewModel> _ask;
+        private readonly SettingStore _robotDraft = new SettingStore(new InMemoryUserSettings(), "");
+        private readonly MessagesSetting _robotMessages = new MessagesSetting();
+        private RobotResult? _robotStatus;
+        private RobotResult? _robotLast;
+        private RobotForm? _previewed;
+        private bool _resultsReady;
+
+        public static readonly string[] SupportOptions = { "Choose", "Fixed", "Pinned" };
+
+        public StructuralPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status,
+                              IRobotTools? robot = null, Action<DialogViewModel>? ask = null)
+            : base("Engineer › Structural", "Prepare and check the structural model; the engineer designs and signs.")
+        {
+            _robot = robot ?? new MockRobotTools();
+            _ask = ask ?? (_ => { });
+            RobotStatusCommand = new AsyncCommand(RobotStatus, status);
+            RobotPreviewCommand = new AsyncCommand(RobotPreview, status);
+            RobotSendCommand = new AsyncCommand(RobotSend, status);
+            RobotCalculateCommand = new AsyncCommand(RobotCalculate, status);
+            RobotResultsCommand = new AsyncCommand(() => RobotResults(true), status);
+            RobotWriteCommand = new AsyncCommand(RobotWrite, status);
+            _tools = tools;
+            _project = project;
+            _settings = settings;
+            _store = new SettingStore(settings);
+            _status = status;
+            CheckCommand = new AsyncCommand(() => Check(false), status);
+            SaveCommand = new AsyncCommand(() => Check(true), status);
+            Rebuild();
+        }
+
+        public ICommand CheckCommand { get; }
+        public ICommand SaveCommand { get; }
+        public SystemsCheck? Last => _last;
+        public ICommand RobotStatusCommand { get; }
+        public ICommand RobotPreviewCommand { get; }
+        public ICommand RobotSendCommand { get; }
+        public ICommand RobotCalculateCommand { get; }
+        public ICommand RobotResultsCommand { get; }
+        public ICommand RobotWriteCommand { get; }
+        public RobotResult? RobotLast => _robotLast;
+        public SettingStore RobotDraft => _robotDraft;
+        public MessagesSetting RobotMessages => _robotMessages;
+
+        public override IEnumerable<FooterAction> Footer => new[]
+        {
+            new FooterAction("Save the list", SaveCommand),
+            new FooterAction("Check (read only)", CheckCommand, primary: true),
+        };
+
+        public void Rebuild()
+        {
+            Groups.Clear();
+            Groups.Add(new SettingsGroup("Structural systems",
+                new TableSetting("", new[] { "System", "Done", "Status" },
+                    new[] { "Foundations (pads, strips, ground beams)", "RC frame (columns, beams, slabs)", "Steel frame (UB, UC, purlins)", "Roof (timber and steel trusses)", "Stairs and walls" }
+                        .Select(s => new TableRow(s, s, "0 of 7", "Check only"))),
+                new NoteSetting("A structural system is covered only when all seven steps work end to end on a real client model.", ChipKind.Grey)));
+            Groups.Add(new SettingsGroup("Seven steps", new TableSetting("", new[] { "Step", "Status" }, Steps.Select(s => new TableRow(s, s.Step, s.Status)))));
+
+            var check = new List<SettingItem>();
+            if (_last != null && _last.Ok)
+            {
+                if (_last.Members.Length > 0) check.Add(new ReadOnlySetting("Checked", _last.Model + " · " + _last.Members));
+                check.Add(new TableSetting("", new[] { "Check", "Found", "Result" }, _last.Checks.Select(c => new TableRow(c, c.Check, c.Found, c.State))));
+                if (_last.NotInKit.Count > 0) check.Add(new NoteSetting("Not in the kit, so not checked: " + string.Join(", ", _last.NotInKit) + ".", ChipKind.Grey));
+            }
+            check.Add(new NoteSetting("Formcraft reports these; the engineer fixes or accepts them. Load cases and combinations are set per project by the engineer (Manual Part 12).", ChipKind.Info));
+            check.Add(new ButtonsSetting("", new[] { new SettingButton("Save the list", SaveCommand), new SettingButton("Check (read only)", CheckCommand, primary: true) }));
+            check.Add(_messages);
+            Groups.Add(new SettingsGroup("Analytical model check", check.ToArray()));
+
+            var results = new List<SettingItem>();
+            if (_last == null) results.Add(new NoteSetting("Run the check to read the analysis results already in the model (FMC_FEA_Utilisation).", ChipKind.Grey));
+            else if (_last.Results.Count == 0) results.Add(new NoteSetting("No analysis results in this model yet: they come back with the hand-off (step 4).", ChipKind.Grey));
+            else results.Add(new TableSetting("", new[] { "Member", "Type", "Util.", "Run" },
+                _last.Results.Select(r => new TableRow(r, r.Mark, r.Type, r.Utilisation.ToString("0.00", CultureInfo.InvariantCulture), r.Run))));
+            results.Add(new NoteSetting("Section changes are the engineer's decision. Formcraft lists the differences; the engineer applies them in Revit. Claude never changes a structural section.", ChipKind.Warn));
+            Groups.Add(new SettingsGroup("Results back from analysis", results.ToArray()));
+            Groups.Add(RobotGroup());
+            Groups.Add(new SettingsGroup("Hand-offs to Manage",
+                new NoteSetting("S sheets and schedules go to Drawings › Sheets, the design basis and calculation summary join Ready to issue, and quantities and the BBS feed Check › Reports, as each step ships.", ChipKind.Grey)));
+            Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "structural.considerations", _status)));
+        }
 
         private SettingsGroup RobotGroup()
         {
@@ -189,6 +303,7 @@ namespace Formcraft.Shell.ViewModels
                 ["wind"] = "WIND", ["snow"] = "SNOW", ["temperature"] = "TEMPERATURE", ["accidental"] = "ACCIDENTAL", ["seismic"] = "SEISMIC",
             };
             var cases = new List<RobotCase>();
+            int before = problems.Count;
             foreach (string part in (text ?? "").Split(';').Select(p => p.Trim()).Where(p => p.Length > 0))
             {
                 int colon = part.IndexOf(':');
@@ -198,7 +313,7 @@ namespace Formcraft.Shell.ViewModels
                 if (name.Length == 0 || nature == null) { problems.Add("'" + part + "': write it as Name: nature (permanent, imposed, wind, snow, temperature, accidental or seismic)."); continue; }
                 cases.Add(new RobotCase(name, nature, words.Any(w => w.StartsWith("self", StringComparison.OrdinalIgnoreCase))));
             }
-            if (cases.Count == 0 && problems.Count == 0) problems.Add("Name at least one load case.");
+            if (cases.Count == 0 && problems.Count == before) problems.Add("Name at least one load case.");
             return cases;
         }
 
@@ -279,120 +394,6 @@ namespace Formcraft.Shell.ViewModels
                 _robotLast.Count + " members get FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref " + Run + ", as one Undo. Nothing else changes.",
                 "Write", () => RobotResults(false)));
             return Task.CompletedTask;
-        }
-
-
-        private async Task Check(bool save)
-        {
-            var folder = _project.Request().Folder;
-            _last = await _tools.ElectricalAsync(folder, save);
-            if (!_last.Ok) _messages.Show(ChipKind.Bad, _last.Message);
-            else _messages.Show(save && _last.Saved.Length > 0 ? ChipKind.Good : ChipKind.Info, save && _last.Saved.Length > 0 ? "Saved for the engineer: " + _last.Saved : _last.Message);
-            _status(_last.Ok ? _last.Message : _last.Message);
-            Rebuild();
-        }
-    }
-
-    /// <summary>
-    /// Engineer › Structural (board model/PaneModelStructural, U25): the seven steps with honest status, the read-only
-    /// analytical model check, and analysis results already in the model. Formcraft never sizes or changes a structural
-    /// member: the engineer decides (CLAUDE.md rule 5).
-    /// </summary>
-    public sealed class StructuralPage : SectionPage
-    {
-        public static readonly (string Step, string Status)[] Steps =
-        {
-            ("1 Enrich: grades, exposure class, member marks (kit fields)", "Check only: lists empty kit fields"),
-            ("2 Analytical check: members joined, supports, offsets", "Partly"),
-            ("3 Loads: cases and combinations (set by the engineer)", "Engineer"),
-            ("4 Hand-off: the analytical model to the engineer's analysis software", "Robot: sends members, nodes and the engineer's supports and cases"),
-            ("5 Results back: sizes and utilisation, differences listed", "Partly: Robot's NEd and MEd into FMC_FEA_; sizes stay the engineer's"),
-            ("6 Quantities: concrete m³ by grade, steel t, rebar BBS", "Planned"),
-            ("7 Document: S sheet set, schedules, BBS", "Planned"),
-        };
-
-        private readonly ISystemTools _tools;
-        private readonly ProjectPage _project;
-        private readonly IUserSettings _settings;
-        private readonly SettingStore _store;
-        private readonly Action<string> _status;
-        private readonly MessagesSetting _messages = new MessagesSetting();
-        private SystemsCheck? _last;
-        private readonly IRobotTools _robot;
-        private readonly Action<DialogViewModel> _ask;
-        private readonly SettingStore _robotDraft = new SettingStore(new InMemoryUserSettings(), "");
-        private readonly MessagesSetting _robotMessages = new MessagesSetting();
-        private RobotResult? _robotStatus;
-        private RobotResult? _robotLast;
-        private RobotForm? _previewed;
-        private bool _resultsReady;
-
-        public static readonly string[] SupportOptions = { "Choose", "Fixed", "Pinned" };
-
-        public StructuralPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status,
-                              IRobotTools? robot = null, Action<DialogViewModel>? ask = null)
-            : base("Engineer › Structural", "Prepare and check the structural model; the engineer designs and signs.")
-        {
-            _robot = robot ?? new MockRobotTools();
-            _ask = ask ?? (_ => { });
-            RobotStatusCommand = new AsyncCommand(RobotStatus, status);
-            RobotPreviewCommand = new AsyncCommand(RobotPreview, status);
-            RobotSendCommand = new AsyncCommand(RobotSend, status);
-            RobotCalculateCommand = new AsyncCommand(RobotCalculate, status);
-            RobotResultsCommand = new AsyncCommand(() => RobotResults(true), status);
-            RobotWriteCommand = new AsyncCommand(RobotWrite, status);
-            _tools = tools;
-            _project = project;
-            _settings = settings;
-            _store = new SettingStore(settings);
-            _status = status;
-            CheckCommand = new AsyncCommand(() => Check(false), status);
-            SaveCommand = new AsyncCommand(() => Check(true), status);
-            Rebuild();
-        }
-
-        public ICommand CheckCommand { get; }
-        public ICommand SaveCommand { get; }
-        public SystemsCheck? Last => _last;
-
-        public override IEnumerable<FooterAction> Footer => new[]
-        {
-            new FooterAction("Save the list", SaveCommand),
-            new FooterAction("Check (read only)", CheckCommand, primary: true),
-        };
-
-        public void Rebuild()
-        {
-            Groups.Clear();
-            Groups.Add(new SettingsGroup("Structural systems",
-                new TableSetting("", new[] { "System", "Done", "Status" },
-                    new[] { "Foundations (pads, strips, ground beams)", "RC frame (columns, beams, slabs)", "Steel frame (UB, UC, purlins)", "Roof (timber and steel trusses)", "Stairs and walls" }
-                        .Select(s => new TableRow(s, s, "0 of 7", "Check only"))),
-                new NoteSetting("A structural system is covered only when all seven steps work end to end on a real client model.", ChipKind.Grey)));
-            Groups.Add(new SettingsGroup("Seven steps", new TableSetting("", new[] { "Step", "Status" }, Steps.Select(s => new TableRow(s, s.Step, s.Status)))));
-
-            var check = new List<SettingItem>();
-            if (_last != null && _last.Ok)
-            {
-                if (_last.Members.Length > 0) check.Add(new ReadOnlySetting("Checked", _last.Model + " · " + _last.Members));
-                check.Add(new TableSetting("", new[] { "Check", "Found", "Result" }, _last.Checks.Select(c => new TableRow(c, c.Check, c.Found, c.State))));
-                if (_last.NotInKit.Count > 0) check.Add(new NoteSetting("Not in the kit, so not checked: " + string.Join(", ", _last.NotInKit) + ".", ChipKind.Grey));
-            }
-            check.Add(new NoteSetting("Formcraft reports these; the engineer fixes or accepts them. Load cases and combinations are set per project by the engineer (Manual Part 12).", ChipKind.Info));
-            check.Add(new ButtonsSetting("", new[] { new SettingButton("Save the list", SaveCommand), new SettingButton("Check (read only)", CheckCommand, primary: true) }));
-            check.Add(_messages);
-            Groups.Add(new SettingsGroup("Analytical model check", check.ToArray()));
-
-            var results = new List<SettingItem>();
-            if (_last == null) results.Add(new NoteSetting("Run the check to read the analysis results already in the model (FMC_FEA_Utilisation).", ChipKind.Grey));
-            else if (_last.Results.Count == 0) results.Add(new NoteSetting("No analysis results in this model yet: they come back with the hand-off (step 4).", ChipKind.Grey));
-            else results.Add(new TableSetting("", new[] { "Member", "Type", "Util.", "Run" },
-                _last.Results.Select(r => new TableRow(r, r.Mark, r.Type, r.Utilisation.ToString("0.00", CultureInfo.InvariantCulture), r.Run))));
-            results.Add(new NoteSetting("Section changes are the engineer's decision. Formcraft lists the differences; the engineer applies them in Revit. Claude never changes a structural section.", ChipKind.Warn));
-            Groups.Add(new SettingsGroup("Results back from analysis", results.ToArray()));
-            Groups.Add(new SettingsGroup("Hand-offs to Manage",
-                new NoteSetting("S sheets and schedules go to Drawings › Sheets, the design basis and calculation summary join Ready to issue, and quantities and the BBS feed Check › Reports, as each step ships.", ChipKind.Grey)));
-            Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "structural.considerations", _status)));
         }
 
         private async Task Check(bool save)

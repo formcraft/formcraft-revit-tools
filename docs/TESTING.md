@@ -70,6 +70,18 @@ To test a rebuild without touching the hand-built file:
 
 A layer that runs out of time (view templates) carries on by itself in slices of about 33 seconds.
 
+### Robot (track R, U33)
+The connector `fmc-robot.exe` is built on the pilot PC (`dotnet build connectors/robot`, Robot 2025 installed) into
+`server\robot` and is staged beside the server. Use a staging copy of a small frame model, never a live one.
+1. `fmc_robot status`: installed true. It never starts Robot.
+2. `fmc_robot send` with the engineer's form (supports, cases with nature and self-weight yes/no, engineer), dry run:
+   the node, bar and support counts. Members without an analytical model are counted, not sent.
+3. The same with `dry_run` false: Robot opens a new frame model, saved as `<reports_dir>\Robot\FEA-yyyymmdd-hhmm.rtd` with
+   its `.json` mapping. Check in Robot: bars, sections (unresolved ones are listed), materials, supports, the cases.
+4. In Robot the engineer adds the loads; then `fmc_robot calculate` and `fmc_robot results` (dry run): NEd and MEd per member.
+5. `results` with `dry_run` false on the staging copy: FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref are set as one
+   Undo. FMC_FEA_Approval_Ref stays empty. On a live model it's refused by the lock.
+
 ### Test session script for Claude (pilot PC)
 0. **First, `fmc_selftest`** (read-only): the build in Revit and whether it matches the server, the AI connection,
    every command known to Revit, the guard's paths and the kit layout. Fix-first lines are findings; go on when it says
