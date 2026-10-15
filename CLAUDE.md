@@ -34,7 +34,7 @@ delete a finding: the tester closes it after a passing retest (so write `Touches
 the findings you touch in the PR description, or say you touch none.
 
 ## After every merge: stage the build
-Build `main` (add-in, command set, server) and run `scripts/fmc-stage.ps1`. The Formcraft Updater (a logon task)
+CI does it: on a push to `main` the `stage` job on the pilot PC's runner builds the add-in, command set and server and drops them in `%ProgramData%\Formcraft\Staging\next` (`scripts/fmc-stage.ps1 -Target`); the updater moves the drop in. Run `scripts/fmc-stage.ps1` by hand only when CI is off (`CI_RUNNER=hosted`). The Formcraft Updater (a logon task)
 installs it the next time Revit is closed and records it in `%APPDATA%\Formcraft\installed.json`. Neither the updater
 nor Claude Code ever closes Revit.
 

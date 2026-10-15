@@ -8,13 +8,13 @@
   A newer staged build replaces one not yet installed. ready.json is written last, so the updater never installs a
   half-copied build. Builds from uncommitted changes ("+local") are refused unless -AllowLocal.
 #>
-param([string]$RevitYear = '2025', [switch]$AllowLocal)
+param([string]$RevitYear = '2025', [switch]$AllowLocal, [string]$Target = '')
 
 $ErrorActionPreference = 'Stop'
 $repo   = Split-Path $PSScriptRoot -Parent
 $bundle = Join-Path $repo "plugin\bin\AddIn $RevitYear Release R$($RevitYear.Substring(2))"
 $server = Join-Path $repo 'server\build'
-$next   = Join-Path $env:LOCALAPPDATA 'Formcraft\Staging\next'
+$next   = if ($Target) { $Target } else { Join-Path $env:LOCALAPPDATA 'Formcraft\Staging\next' }
 
 if (-not (Test-Path (Join-Path $bundle 'Formcraft.addin'))) { throw "No add-in bundle at ${bundle}: build the plugin first" }
 if (-not (Test-Path (Join-Path $server 'build-info.json'))) { throw "No server build at ${server}: npm run build --prefix server" }
@@ -40,6 +40,16 @@ if (Test-Path (Join-Path $navis 'Formcraft.Navis.dll')) {
     Copy-Item $navis (Join-Path $next 'navis') -Recurse
 }
 
+# The updater itself travels with the build, so a merged change to fmc-update.ps1 reaches the PC without a manual step.
+New-Item -ItemType Directory -Force (Join-Path $next 'updater') | Out-Null
+Copy-Item (Join-Path $PSScriptRoot 'fmc-update.ps1') (Join-Path $next 'updater') -Force
+
 [ordered]@{ commit = $commit; staged_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'); revit = $RevitYear } |
     ConvertTo-Json | Set-Content -Path (Join-Path $next 'ready.json') -Encoding UTF8
 Write-Output "Staged $commit in $next. It installs the next time Revit is closed."
+# A drop outside the user's profile (the CI runner's machine-wide drop, -Target): the person's updater moves it in, so
+# it needs modify rights for local users.
+if ($Target) {
+    $dropRoot = Split-Path $next -Parent
+    & icacls $dropRoot /grant '*S-1-5-32-545:(OI)(CI)M' /T /Q | Out-Null
+}

@@ -27,6 +27,18 @@ $log     = Join-Path $state 'updater.log'
 
 New-Item -ItemType Directory -Force $state, $root | Out-Null
 
+# The CI runner (a service account) stages merged builds of main here; the updater moves the drop into the person's
+# staging folder, newest wins. See .github/workflows/build.yml, job "stage".
+$drop = Join-Path $env:ProgramData 'Formcraft\Staging\next'
+function PullDrop {
+    if (-not (Test-Path (Join-Path $drop 'ready.json'))) { return }
+    $info = Get-Content (Join-Path $drop 'ready.json') -Raw | ConvertFrom-Json
+    if (Test-Path $next) { Remove-Item $next -Recurse -Force }
+    Copy-Item $drop $root -Recurse -Force
+    Remove-Item $drop -Recurse -Force
+    Log "Took the CI build $($info.commit) from $drop"
+}
+
 function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
 function RevitRunning { [bool](Get-Process -Name 'Revit' -ErrorAction SilentlyContinue) }
 function NavisRunning { [bool](Get-Process -Name 'Roamer' -ErrorAction SilentlyContinue) }
@@ -91,10 +103,21 @@ function Install {
     }
     $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
 
+    # A newer updater came with the build: it replaces this script's copy and runs from the next start (the logon task
+    # starts it again within 5 minutes).
+    $newUpdater = Join-Path $next 'updater\fmc-update.ps1'
+    $selfUpdated = $false
+    if ((Test-Path $newUpdater) -and $PSCommandPath -and ((Get-FileHash $newUpdater).Hash -ne (Get-FileHash $PSCommandPath).Hash)) {
+        Copy-Item $newUpdater $PSCommandPath -Force
+        $selfUpdated = $true
+        Log "Updater script updated from $($info.commit)"
+    }
+
     $done = Join-Path $root '_installed'
     New-Item -ItemType Directory -Force $done | Out-Null
     Move-Item $next (Join-Path $done ("{0}_{1}" -f $stamp, $info.commit))
     Log "Installed $($info.commit) (server: $serverDone); backup $backup"
+    if ($selfUpdated) { $script:restart = $true }
 }
 
 # One updater at a time.
@@ -103,6 +126,7 @@ if (-not $mutex.WaitOne(0)) { Log 'Another updater is running: this one exits'; 
 try {
     Log ("Updater started (poll {0}s{1})" -f $PollSeconds, $(if ($Once) { ', once' } else { '' }))
     while ($true) {
+        try { PullDrop } catch { Log ("Couldn't take the CI drop: {0}" -f $_.Exception.Message) }
         if ((Test-Path $ready) -and -not (RevitRunning)) {
             Start-Sleep -Seconds 2   # Revit may be restarting: make sure it stays closed
             if (-not (RevitRunning)) {
@@ -112,7 +136,7 @@ try {
         if ((Test-Path $navisNext) -and -not (NavisRunning)) {
             try { InstallNavis } catch { Log ("Navisworks add-in install failed: {0}" -f $_.Exception.Message) }
         }
-        if ($Once) { break }
+        if ($Once -or $script:restart) { break }
         Start-Sleep -Seconds $PollSeconds
     }
 }

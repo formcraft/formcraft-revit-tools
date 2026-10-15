@@ -110,3 +110,25 @@ jobs:
           $code = $LASTEXITCODE
           Select-String -Path build.log -Pattern ': error [A-Z]+[0-9]+' | Select-Object -ExpandProperty Line -Unique | Select-Object -First 30 | ForEach-Object { Write-Output "::error::$_" }
           exit $code
+
+  # After a merge to main, on the pilot PC only: build and stage for the Formcraft Updater (CLAUDE.md "After every
+  # merge"). The runner's service account can't write to the person's profile, so it drops the build in
+  # %ProgramData%\Formcraft\Staging\next; the updater (scripts/fmc-update.ps1) moves it in and installs it when Revit
+  # is closed. It never closes Revit.
+  stage:
+    name: Stage main for the updater
+    needs: [shell, server, addin]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CI_RUNNER != 'hosted' }}
+    runs-on: [self-hosted, Windows, X64]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build plugin and command set
+        run: dotnet build mcp-servers-for-revit.sln -c "Release R25" -m:1 -nodeReuse:false
+      - working-directory: server
+        run: npm ci
+      - working-directory: server
+        run: npm run build
+      - name: Stage
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/fmc-stage.ps1 -Target "$env:ProgramData\Formcraft\Staging\next"
+
