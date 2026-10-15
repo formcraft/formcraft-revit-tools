@@ -1,0 +1,2780 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Window_SteelCasementVent",
+ "template": "Metric Window.rft",
+ "about": "LOD 400 Ugandan steel casement window (LTZ 40x40x2 angle) with a transom and a louvred vent or top-hung glass fanlight over, mid-height glazing bar, mosquito mesh and 12 mm burglar bars, on a precast sill projecting 30 mm. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Leaf Count (1-4) places up to three fixed mullions; unused mullions, louvres vs fanlight glass, mesh and burglar bars (Show Burglar Bars) are switched by Yes/No- and count-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width) until the engine has a visibility op. Burglar bars: up to 8 verticals at <= 150 centres (Bar Count = roundup(clear / 150) - 1, max 8, so widths over ~1.3 m clear space them wider) plus flat rails at the glazing bar and transom; when off they also move inside the frame depth (Bar Y Offset). Exterior is -y; frame centred on the wall. Elevation opening triangles are symbolic lines drawn for the default 2-leaf type and do not flex.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "OST_Windows"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "group": "IdentityData"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Frame_Spec",
+   "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fanlight_Height_mm",
+   "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Vent_Type",
+   "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mosquito_Mesh",
+   "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Glazed_Area_m2",
+   "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Openable_Area_m2",
+   "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "group": "Data"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Frame Width",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Fanlight Height",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mullion Width",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar Size",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar Target Pitch",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar Pitch",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar Y Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blade Height",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Sill Depth",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Hide Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Hide Width",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mullion 1 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mullion 2 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mullion 3 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Louvre L Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Louvre R Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass L Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass R Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mesh L Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mesh R Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 1 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 2 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 3 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 4 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 5 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 6 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 7 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar 8 Offset",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leaf Count",
+   "type": "Integer",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bar Count",
+   "type": "Integer",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Vent Louvred",
+   "type": "YesNo",
+   "group": "Constraints"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show Burglar Bars",
+   "type": "YesNo",
+   "group": "Constraints"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Frame Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mesh Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Sill Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Frame",
+   "line_weight_projection": 2,
+   "line_weight_cut": 4
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Glass",
+   "line_weight_projection": 1,
+   "line_weight_cut": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Louvre",
+   "line_weight_projection": 1,
+   "line_weight_cut": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mesh",
+   "line_weight_projection": 1,
+   "line_weight_cut": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Burglar Bars",
+   "line_weight_projection": 1,
+   "line_weight_cut": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Sill",
+   "line_weight_projection": 2,
+   "line_weight_cut": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Elevation Swing",
+   "line_weight_projection": 1,
+   "line_weight_cut": 1
+  },
+  {
+   "op": "add_type",
+   "name": "1200x1600_2Leaf-Louvre400"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Width",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Width",
+   "value": 1200
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Height",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Height",
+   "value": 1600
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Wall Centre",
+   "from": [
+    -2000,
+    0
+   ],
+   "to": [
+    2000,
+    0
+   ],
+   "is_reference": "CenterFrontBack"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Frame Ext",
+   "from": [
+    -2000,
+    -20.0
+   ],
+   "to": [
+    2000,
+    -20.0
+   ],
+   "is_reference": "StrongReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Frame Int",
+   "from": [
+    -2000,
+    20.0
+   ],
+   "to": [
+    2000,
+    20.0
+   ],
+   "is_reference": "StrongReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glass Front",
+   "from": [
+    -2000,
+    -8
+   ],
+   "to": [
+    2000,
+    -8
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glass Back",
+   "from": [
+    -2000,
+    -4
+   ],
+   "to": [
+    2000,
+    -4
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mesh Front",
+   "from": [
+    -2000,
+    17
+   ],
+   "to": [
+    2000,
+    17
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mesh Back",
+   "from": [
+    -2000,
+    18
+   ],
+   "to": [
+    2000,
+    18
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar Front",
+   "from": [
+    -2000,
+    20.0
+   ],
+   "to": [
+    2000,
+    20.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar Back",
+   "from": [
+    -2000,
+    32.0
+   ],
+   "to": [
+    2000,
+    32.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sill Front",
+   "from": [
+    -2000,
+    -160.0
+   ],
+   "to": [
+    2000,
+    -160.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Frame L In",
+   "from": [
+    -560.0,
+    -1500
+   ],
+   "to": [
+    -560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Frame R In",
+   "from": [
+    560.0,
+    -1500
+   ],
+   "to": [
+    560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 1 L",
+   "from": [
+    -15.0,
+    -1500
+   ],
+   "to": [
+    -15.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 1 R",
+   "from": [
+    15.0,
+    -1500
+   ],
+   "to": [
+    15.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 2 L",
+   "from": [
+    -595.0,
+    -1500
+   ],
+   "to": [
+    -595.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 2 R",
+   "from": [
+    -565.0,
+    -1500
+   ],
+   "to": [
+    -565.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 3 L",
+   "from": [
+    -595.0,
+    -1500
+   ],
+   "to": [
+    -595.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mullion 3 R",
+   "from": [
+    -565.0,
+    -1500
+   ],
+   "to": [
+    -565.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Louvre L",
+   "from": [
+    -560.0,
+    -1500
+   ],
+   "to": [
+    -560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Louvre R",
+   "from": [
+    560.0,
+    -1500
+   ],
+   "to": [
+    560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glass L",
+   "from": [
+    -595.0,
+    -1500
+   ],
+   "to": [
+    -595.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glass R",
+   "from": [
+    -565.0,
+    -1500
+   ],
+   "to": [
+    -565.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mesh L",
+   "from": [
+    -560.0,
+    -1500
+   ],
+   "to": [
+    -560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Mesh R",
+   "from": [
+    560.0,
+    -1500
+   ],
+   "to": [
+    560.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 1 L",
+   "from": [
+    -426.0,
+    -1500
+   ],
+   "to": [
+    -426.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 1 R",
+   "from": [
+    -414.0,
+    -1500
+   ],
+   "to": [
+    -414.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 2 L",
+   "from": [
+    -286.0,
+    -1500
+   ],
+   "to": [
+    -286.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 2 R",
+   "from": [
+    -274.0,
+    -1500
+   ],
+   "to": [
+    -274.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 3 L",
+   "from": [
+    -146.0,
+    -1500
+   ],
+   "to": [
+    -146.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 3 R",
+   "from": [
+    -134.0,
+    -1500
+   ],
+   "to": [
+    -134.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 4 L",
+   "from": [
+    -6.0,
+    -1500
+   ],
+   "to": [
+    -6.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 4 R",
+   "from": [
+    6.0,
+    -1500
+   ],
+   "to": [
+    6.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 5 L",
+   "from": [
+    134.0,
+    -1500
+   ],
+   "to": [
+    134.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 5 R",
+   "from": [
+    146.0,
+    -1500
+   ],
+   "to": [
+    146.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 6 L",
+   "from": [
+    274.0,
+    -1500
+   ],
+   "to": [
+    274.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 6 R",
+   "from": [
+    286.0,
+    -1500
+   ],
+   "to": [
+    286.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 7 L",
+   "from": [
+    414.0,
+    -1500
+   ],
+   "to": [
+    414.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 7 R",
+   "from": [
+    426.0,
+    -1500
+   ],
+   "to": [
+    426.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 8 L",
+   "from": [
+    -595.0,
+    -1500
+   ],
+   "to": [
+    -595.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Bar 8 R",
+   "from": [
+    -583.0,
+    -1500
+   ],
+   "to": [
+    -583.0,
+    1500
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sill Inner",
+   "from": [
+    -2000,
+    840.0
+   ],
+   "to": [
+    2000,
+    840.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Leaf Top",
+   "from": [
+    -2000,
+    2000.0
+   ],
+   "to": [
+    2000,
+    2000.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Transom Top",
+   "from": [
+    -2000,
+    2040.0
+   ],
+   "to": [
+    2000,
+    2040.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Head Inner",
+   "from": [
+    -2000,
+    2360.0
+   ],
+   "to": [
+    2000,
+    2360.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glazing Bar Bot",
+   "from": [
+    -2000,
+    1420.0
+   ],
+   "to": [
+    2000,
+    1420.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Glazing Bar Top",
+   "from": [
+    -2000,
+    1450.0
+   ],
+   "to": [
+    2000,
+    1450.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 1 Bot",
+   "from": [
+    -2000,
+    2093.3333333333
+   ],
+   "to": [
+    2000,
+    2093.3333333333
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 1 Top",
+   "from": [
+    -2000,
+    2113.3333333333
+   ],
+   "to": [
+    2000,
+    2113.3333333333
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 2 Bot",
+   "from": [
+    -2000,
+    2146.6666666667
+   ],
+   "to": [
+    2000,
+    2146.6666666667
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 2 Top",
+   "from": [
+    -2000,
+    2166.6666666667
+   ],
+   "to": [
+    2000,
+    2166.6666666667
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 3 Bot",
+   "from": [
+    -2000,
+    2200.0
+   ],
+   "to": [
+    2000,
+    2200.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 3 Top",
+   "from": [
+    -2000,
+    2220.0
+   ],
+   "to": [
+    2000,
+    2220.0
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 4 Bot",
+   "from": [
+    -2000,
+    2253.3333333333
+   ],
+   "to": [
+    2000,
+    2253.3333333333
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 4 Top",
+   "from": [
+    -2000,
+    2273.3333333333
+   ],
+   "to": [
+    2000,
+    2273.3333333333
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 5 Bot",
+   "from": [
+    -2000,
+    2306.6666666667
+   ],
+   "to": [
+    2000,
+    2306.6666666667
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Blade 5 Top",
+   "from": [
+    -2000,
+    2326.6666666667
+   ],
+   "to": [
+    2000,
+    2326.6666666667
+   ],
+   "is_reference": "WeakReference",
+   "view": "Exterior"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Frame Width L",
+   "between": [
+    "Left",
+    "Frame L In"
+   ],
+   "label": "Frame Width"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Frame Width R",
+   "between": [
+    "Frame R In",
+    "Right"
+   ],
+   "label": "Frame Width"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Frame Depth",
+   "between": [
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "label": "Frame Width",
+   "offset": 600
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ frame depth",
+   "planes": [
+    "Frame Ext",
+    "Wall Centre",
+    "Frame Int"
+   ],
+   "offset": 700
+  },
+  {
+   "op": "add_dimension",
+   "name": "Sill Depth",
+   "between": [
+    "Sill Front",
+    "Frame Ext"
+   ],
+   "label": "Sill Depth",
+   "offset": 800
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar Y Offset",
+   "between": [
+    "Frame Ext",
+    "Bar Front"
+   ],
+   "label": "Bar Y Offset",
+   "offset": -700
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar Size Y",
+   "between": [
+    "Bar Front",
+    "Bar Back"
+   ],
+   "label": "Bar Size",
+   "offset": -750
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 1 Offset",
+   "between": [
+    "Left",
+    "Mullion 1 L"
+   ],
+   "label": "Mullion 1 Offset",
+   "offset": -400
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 1 Width",
+   "between": [
+    "Mullion 1 L",
+    "Mullion 1 R"
+   ],
+   "label": "Mullion Width",
+   "offset": -400
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 2 Offset",
+   "between": [
+    "Left",
+    "Mullion 2 L"
+   ],
+   "label": "Mullion 2 Offset",
+   "offset": -450
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 2 Width",
+   "between": [
+    "Mullion 2 L",
+    "Mullion 2 R"
+   ],
+   "label": "Mullion Width",
+   "offset": -450
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 3 Offset",
+   "between": [
+    "Left",
+    "Mullion 3 L"
+   ],
+   "label": "Mullion 3 Offset",
+   "offset": -500
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mullion 3 Width",
+   "between": [
+    "Mullion 3 L",
+    "Mullion 3 R"
+   ],
+   "label": "Mullion Width",
+   "offset": -500
+  },
+  {
+   "op": "add_dimension",
+   "name": "Louvre L Offset",
+   "between": [
+    "Left",
+    "Louvre L"
+   ],
+   "label": "Louvre L Offset",
+   "offset": -600
+  },
+  {
+   "op": "add_dimension",
+   "name": "Louvre R Offset",
+   "between": [
+    "Left",
+    "Louvre R"
+   ],
+   "label": "Louvre R Offset",
+   "offset": -625
+  },
+  {
+   "op": "add_dimension",
+   "name": "Glass L Offset",
+   "between": [
+    "Left",
+    "Glass L"
+   ],
+   "label": "Glass L Offset",
+   "offset": -650
+  },
+  {
+   "op": "add_dimension",
+   "name": "Glass R Offset",
+   "between": [
+    "Left",
+    "Glass R"
+   ],
+   "label": "Glass R Offset",
+   "offset": -675
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mesh L Offset",
+   "between": [
+    "Left",
+    "Mesh L"
+   ],
+   "label": "Mesh L Offset",
+   "offset": -700
+  },
+  {
+   "op": "add_dimension",
+   "name": "Mesh R Offset",
+   "between": [
+    "Left",
+    "Mesh R"
+   ],
+   "label": "Mesh R Offset",
+   "offset": -725
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 1 Offset",
+   "between": [
+    "Left",
+    "Bar 1 L"
+   ],
+   "label": "Bar 1 Offset",
+   "offset": -800
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 1 Size",
+   "between": [
+    "Bar 1 L",
+    "Bar 1 R"
+   ],
+   "label": "Bar Size",
+   "offset": -800
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 2 Offset",
+   "between": [
+    "Left",
+    "Bar 2 L"
+   ],
+   "label": "Bar 2 Offset",
+   "offset": -820
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 2 Size",
+   "between": [
+    "Bar 2 L",
+    "Bar 2 R"
+   ],
+   "label": "Bar Size",
+   "offset": -820
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 3 Offset",
+   "between": [
+    "Left",
+    "Bar 3 L"
+   ],
+   "label": "Bar 3 Offset",
+   "offset": -840
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 3 Size",
+   "between": [
+    "Bar 3 L",
+    "Bar 3 R"
+   ],
+   "label": "Bar Size",
+   "offset": -840
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 4 Offset",
+   "between": [
+    "Left",
+    "Bar 4 L"
+   ],
+   "label": "Bar 4 Offset",
+   "offset": -860
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 4 Size",
+   "between": [
+    "Bar 4 L",
+    "Bar 4 R"
+   ],
+   "label": "Bar Size",
+   "offset": -860
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 5 Offset",
+   "between": [
+    "Left",
+    "Bar 5 L"
+   ],
+   "label": "Bar 5 Offset",
+   "offset": -880
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 5 Size",
+   "between": [
+    "Bar 5 L",
+    "Bar 5 R"
+   ],
+   "label": "Bar Size",
+   "offset": -880
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 6 Offset",
+   "between": [
+    "Left",
+    "Bar 6 L"
+   ],
+   "label": "Bar 6 Offset",
+   "offset": -900
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 6 Size",
+   "between": [
+    "Bar 6 L",
+    "Bar 6 R"
+   ],
+   "label": "Bar Size",
+   "offset": -900
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 7 Offset",
+   "between": [
+    "Left",
+    "Bar 7 L"
+   ],
+   "label": "Bar 7 Offset",
+   "offset": -920
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 7 Size",
+   "between": [
+    "Bar 7 L",
+    "Bar 7 R"
+   ],
+   "label": "Bar Size",
+   "offset": -920
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 8 Offset",
+   "between": [
+    "Left",
+    "Bar 8 L"
+   ],
+   "label": "Bar 8 Offset",
+   "offset": -940
+  },
+  {
+   "op": "add_dimension",
+   "name": "Bar 8 Size",
+   "between": [
+    "Bar 8 L",
+    "Bar 8 R"
+   ],
+   "label": "Bar Size",
+   "offset": -940
+  },
+  {
+   "op": "add_dimension",
+   "name": "Frame Width Sill",
+   "between": [
+    "Sill",
+    "Sill Inner"
+   ],
+   "label": "Frame Width",
+   "view": "Exterior",
+   "offset": 700
+  },
+  {
+   "op": "add_dimension",
+   "name": "Frame Width Head",
+   "between": [
+    "Head Inner",
+    "Head"
+   ],
+   "label": "Frame Width",
+   "view": "Exterior",
+   "offset": 700
+  },
+  {
+   "op": "add_dimension",
+   "name": "Fanlight Height",
+   "between": [
+    "Leaf Top",
+    "Head"
+   ],
+   "label": "Fanlight Height",
+   "view": "Exterior",
+   "offset": -600
+  },
+  {
+   "op": "add_dimension",
+   "name": "Transom Depth",
+   "between": [
+    "Leaf Top",
+    "Transom Top"
+   ],
+   "label": "Frame Width",
+   "view": "Exterior",
+   "offset": 750
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ glazing bar",
+   "planes": [
+    "Sill Inner",
+    "Glazing Bar Bot",
+    "Leaf Top"
+   ],
+   "view": "Exterior",
+   "offset": 800
+  },
+  {
+   "op": "add_dimension",
+   "name": "Glazing Bar Size",
+   "between": [
+    "Glazing Bar Bot",
+    "Glazing Bar Top"
+   ],
+   "label": "Mullion Width",
+   "view": "Exterior",
+   "offset": 800
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ louvre blades",
+   "planes": [
+    "Transom Top",
+    "Blade 1 Bot",
+    "Blade 2 Bot",
+    "Blade 3 Bot",
+    "Blade 4 Bot",
+    "Blade 5 Bot",
+    "Head Inner"
+   ],
+   "view": "Exterior",
+   "offset": 850
+  },
+  {
+   "op": "add_dimension",
+   "name": "Blade 1 Height",
+   "between": [
+    "Blade 1 Bot",
+    "Blade 1 Top"
+   ],
+   "label": "Blade Height",
+   "view": "Exterior",
+   "offset": 850
+  },
+  {
+   "op": "add_dimension",
+   "name": "Blade 2 Height",
+   "between": [
+    "Blade 2 Bot",
+    "Blade 2 Top"
+   ],
+   "label": "Blade Height",
+   "view": "Exterior",
+   "offset": 870
+  },
+  {
+   "op": "add_dimension",
+   "name": "Blade 3 Height",
+   "between": [
+    "Blade 3 Bot",
+    "Blade 3 Top"
+   ],
+   "label": "Blade Height",
+   "view": "Exterior",
+   "offset": 890
+  },
+  {
+   "op": "add_dimension",
+   "name": "Blade 4 Height",
+   "between": [
+    "Blade 4 Bot",
+    "Blade 4 Top"
+   ],
+   "label": "Blade Height",
+   "view": "Exterior",
+   "offset": 910
+  },
+  {
+   "op": "add_dimension",
+   "name": "Blade 5 Height",
+   "between": [
+    "Blade 5 Bot",
+    "Blade 5 Top"
+   ],
+   "label": "Blade Height",
+   "view": "Exterior",
+   "offset": 930
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Fanlight Height",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Fanlight Height",
+   "value": 400
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/FMC_Fanlight_Height_mm",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "FMC_Fanlight_Height_mm",
+   "value": 400
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Leaf Count",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Leaf Count",
+   "value": 2
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Vent Louvred",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Vent Louvred",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/FMC_Mosquito_Mesh",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "FMC_Mosquito_Mesh",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Show Burglar Bars",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Show Burglar Bars",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/FMC_Frame_Spec",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "FMC_Frame_Spec",
+   "value": "LTZ steel casement, frame 40x40x2 angle (IOM BoQ W1), 30 mm T mullions and glazing bar, 4 mm clear glass in putty; louvred or top-hung glass vent over; 12 mm sq burglar bars; precast sill"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Frame Width",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Frame Width",
+   "value": 40
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Mullion Width",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Mullion Width",
+   "value": 30
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Bar Size",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Bar Size",
+   "value": 12
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Bar Target Pitch",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Bar Target Pitch",
+   "value": 150
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Blade Height",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Blade Height",
+   "value": 20
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Sill Depth",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Sill Depth",
+   "value": 140
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Hide Offset",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Hide Offset",
+   "value": 5
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/Hide Width",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "Hide Width",
+   "value": 30
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/FMC_Geometry_Stage",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1600_2Leaf-Louvre400/IfcExportAs",
+   "type": "1200x1600_2Leaf-Louvre400",
+   "param": "IfcExportAs",
+   "value": "IfcWindow"
+  },
+  {
+   "op": "set_formula",
+   "name": "Mullion 1 Offset",
+   "formula": "if(Leaf Count > 1, Frame Width + (Width - 2 * Frame Width - (Leaf Count - 1) * Mullion Width) / Leaf Count, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Mullion 2 Offset",
+   "formula": "if(Leaf Count > 2, Frame Width + 2 * (Width - 2 * Frame Width - (Leaf Count - 1) * Mullion Width) / Leaf Count + Mullion Width, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Mullion 3 Offset",
+   "formula": "if(Leaf Count > 3, Frame Width + 3 * (Width - 2 * Frame Width - (Leaf Count - 1) * Mullion Width) / Leaf Count + 2 * Mullion Width, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Louvre L Offset",
+   "formula": "if(Vent Louvred, Frame Width, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Louvre R Offset",
+   "formula": "if(Vent Louvred, Width - Frame Width, Hide Offset + Hide Width)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Glass L Offset",
+   "formula": "if(Vent Louvred, Hide Offset, Frame Width)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Glass R Offset",
+   "formula": "if(Vent Louvred, Hide Offset + Hide Width, Width - Frame Width)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Mesh L Offset",
+   "formula": "if(FMC_Mosquito_Mesh, Frame Width, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Mesh R Offset",
+   "formula": "if(FMC_Mosquito_Mesh, Width - Frame Width, Hide Offset + Hide Width)"
+  },
+  {
+   "op": "set_formula",
+   "name": "FMC_Vent_Type",
+   "formula": "if(Vent Louvred, \"Louvre\", \"Top-hung glass fanlight\")"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar Y Offset",
+   "formula": "if(Show Burglar Bars, Frame Width, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar Count",
+   "formula": "if(roundup((Width - 2 * Frame Width) / Bar Target Pitch) - 1 > 8, 8, roundup((Width - 2 * Frame Width) / Bar Target Pitch) - 1)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar Pitch",
+   "formula": "(Width - 2 * Frame Width) / (Bar Count + 1)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 1 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 0), Frame Width + 1 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 2 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 1), Frame Width + 2 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 3 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 2), Frame Width + 3 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 4 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 3), Frame Width + 4 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 5 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 4), Frame Width + 5 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 6 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 5), Frame Width + 6 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 7 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 6), Frame Width + 7 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "Bar 8 Offset",
+   "formula": "if(and(Show Burglar Bars, Bar Count > 7), Frame Width + 8 * Bar Pitch - Bar Size / 2, Hide Offset)"
+  },
+  {
+   "op": "set_formula",
+   "name": "FMC_Glazed_Area_m2",
+   "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height - Frame Width) + if(Vent Louvred, 0, (Width - 2 * Frame Width) * (Fanlight Height - 2 * Frame Width))"
+  },
+  {
+   "op": "set_formula",
+   "name": "FMC_Openable_Area_m2",
+   "formula": "(Width - 2 * Frame Width - (Leaf Count - 1) * Mullion Width) * (Height - Fanlight Height - Frame Width) + if(Vent Louvred, 0, (Width - 2 * Frame Width) * (Fanlight Height - 2 * Frame Width))"
+  },
+  {
+   "op": "extrusion",
+   "name": "Jamb L",
+   "rect": [
+    "Left",
+    "Frame L In",
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "start": 800.0,
+   "end": 2400.0,
+   "end_plane": "Head"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Jamb L",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Jamb L",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Jamb R",
+   "rect": [
+    "Frame R In",
+    "Right",
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "start": 800.0,
+   "end": 2400.0,
+   "end_plane": "Head"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Jamb R",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Jamb R",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Sill Rail",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "start": 800.0,
+   "end": 840.0,
+   "end_plane": "Sill Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sill Rail",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sill Rail",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Head",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "start": 2360.0,
+   "end": 2400.0,
+   "end_plane": "Head"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Head/Head Inner",
+   "solid": "Head",
+   "plane": "Head Inner",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Transom",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Frame Ext",
+    "Frame Int"
+   ],
+   "start": 2000.0,
+   "end": 2040.0,
+   "end_plane": "Transom Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Transom",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Transom",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Transom/Leaf Top",
+   "solid": "Transom",
+   "plane": "Leaf Top",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Mullion 1",
+   "rect": [
+    "Mullion 1 L",
+    "Mullion 1 R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 840.0,
+   "end": 2000.0,
+   "end_plane": "Leaf Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mullion 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mullion 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Mullion 2",
+   "rect": [
+    "Mullion 2 L",
+    "Mullion 2 R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 840.0,
+   "end": 2000.0,
+   "end_plane": "Leaf Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mullion 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mullion 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Mullion 3",
+   "rect": [
+    "Mullion 3 L",
+    "Mullion 3 R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 840.0,
+   "end": 2000.0,
+   "end_plane": "Leaf Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mullion 3",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mullion 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Glazing Bar",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Frame Ext",
+    "Wall Centre"
+   ],
+   "start": 1420.0,
+   "end": 1450.0,
+   "end_plane": "Glazing Bar Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glazing Bar",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glazing Bar",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Glazing Bar/Glazing Bar Bot",
+   "solid": "Glazing Bar",
+   "plane": "Glazing Bar Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Glass",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Glass Front",
+    "Glass Back"
+   ],
+   "start": 840.0,
+   "end": 2000.0,
+   "end_plane": "Leaf Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glass",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glass",
+   "param": "Glass Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre 1",
+   "rect": [
+    "Louvre L",
+    "Louvre R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 2093.3333333333,
+   "end": 2113.3333333333,
+   "end_plane": "Blade 1 Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre 1",
+   "subcategory": "Louvre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Louvre 1/Blade 1 Bot",
+   "solid": "Louvre 1",
+   "plane": "Blade 1 Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre 2",
+   "rect": [
+    "Louvre L",
+    "Louvre R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 2146.6666666667,
+   "end": 2166.6666666667,
+   "end_plane": "Blade 2 Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre 2",
+   "subcategory": "Louvre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Louvre 2/Blade 2 Bot",
+   "solid": "Louvre 2",
+   "plane": "Blade 2 Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre 3",
+   "rect": [
+    "Louvre L",
+    "Louvre R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 2200.0,
+   "end": 2220.0,
+   "end_plane": "Blade 3 Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre 3",
+   "subcategory": "Louvre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Louvre 3/Blade 3 Bot",
+   "solid": "Louvre 3",
+   "plane": "Blade 3 Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre 4",
+   "rect": [
+    "Louvre L",
+    "Louvre R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 2253.3333333333,
+   "end": 2273.3333333333,
+   "end_plane": "Blade 4 Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre 4",
+   "subcategory": "Louvre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre 4",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Louvre 4/Blade 4 Bot",
+   "solid": "Louvre 4",
+   "plane": "Blade 4 Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre 5",
+   "rect": [
+    "Louvre L",
+    "Louvre R",
+    "Glass Front",
+    "Mesh Front"
+   ],
+   "start": 2306.6666666667,
+   "end": 2326.6666666667,
+   "end_plane": "Blade 5 Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre 5",
+   "subcategory": "Louvre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre 5",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Louvre 5/Blade 5 Bot",
+   "solid": "Louvre 5",
+   "plane": "Blade 5 Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Fanlight Glass",
+   "rect": [
+    "Glass L",
+    "Glass R",
+    "Glass Front",
+    "Glass Back"
+   ],
+   "start": 2040.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fanlight Glass",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fanlight Glass",
+   "param": "Glass Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Fanlight Glass/Transom Top",
+   "solid": "Fanlight Glass",
+   "plane": "Transom Top",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Mosquito Mesh",
+   "rect": [
+    "Mesh L",
+    "Mesh R",
+    "Mesh Front",
+    "Mesh Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mosquito Mesh",
+   "subcategory": "Mesh"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mosquito Mesh",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mosquito Mesh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 1",
+   "rect": [
+    "Bar 1 L",
+    "Bar 1 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 1",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 2",
+   "rect": [
+    "Bar 2 L",
+    "Bar 2 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 2",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 3",
+   "rect": [
+    "Bar 3 L",
+    "Bar 3 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 3",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 4",
+   "rect": [
+    "Bar 4 L",
+    "Bar 4 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 4",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 4",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 5",
+   "rect": [
+    "Bar 5 L",
+    "Bar 5 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 5",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 5",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 6",
+   "rect": [
+    "Bar 6 L",
+    "Bar 6 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 6",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 6",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 7",
+   "rect": [
+    "Bar 7 L",
+    "Bar 7 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 7",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 7",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar 8",
+   "rect": [
+    "Bar 8 L",
+    "Bar 8 R",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 840.0,
+   "end": 2360.0,
+   "end_plane": "Head Inner"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar 8",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar 8",
+   "param": "Frame Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar Rail Mid",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 1420.0,
+   "end": 1450.0,
+   "end_plane": "Glazing Bar Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar Rail Mid",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar Rail Mid",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Bar Rail Mid/Glazing Bar Bot",
+   "solid": "Bar Rail Mid",
+   "plane": "Glazing Bar Bot",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Bar Rail Transom",
+   "rect": [
+    "Frame L In",
+    "Frame R In",
+    "Bar Front",
+    "Bar Back"
+   ],
+   "start": 2000.0,
+   "end": 2040.0,
+   "end_plane": "Transom Top"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bar Rail Transom",
+   "subcategory": "Burglar Bars"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bar Rail Transom",
+   "param": "Frame Material"
+  },
+  {
+   "op": "lock_face",
+   "name": "Bar Rail Transom/Leaf Top",
+   "solid": "Bar Rail Transom",
+   "plane": "Leaf Top",
+   "view": "front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Sill",
+   "rect": [
+    "Left",
+    "Right",
+    "Sill Front",
+    "Frame Int"
+   ],
+   "start": 750.0,
+   "end": 800.0,
+   "end_plane": "Sill"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sill",
+   "subcategory": "Sill"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sill",
+   "param": "Sill Material"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "Casement L",
+   "view": "front",
+   "points": [
+    [
+     -15.0,
+     840.0
+    ],
+    [
+     -560.0,
+     1420.0
+    ],
+    [
+     -15.0,
+     2000.0
+    ]
+   ],
+   "subcategory": "Elevation Swing",
+   "coarse": false
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "Casement R",
+   "view": "front",
+   "points": [
+    [
+     15.0,
+     840.0
+    ],
+    [
+     560.0,
+     1420.0
+    ],
+    [
+     15.0,
+     2000.0
+    ]
+   ],
+   "subcategory": "Elevation Swing",
+   "coarse": false
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "Sill line",
+   "view": "plan",
+   "points": [
+    [
+     -600.0,
+     -160.0
+    ],
+    [
+     600.0,
+     -160.0
+    ]
+   ],
+   "subcategory": "Sill"
+  },
+  {
+   "op": "add_type",
+   "name": "2400x1600_4Leaf-Louvre400"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x1600_4Leaf-Louvre400/Width",
+   "type": "2400x1600_4Leaf-Louvre400",
+   "param": "Width",
+   "value": 2400
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x1600_4Leaf-Louvre400/Leaf Count",
+   "type": "2400x1600_4Leaf-Louvre400",
+   "param": "Leaf Count",
+   "value": 4
+  },
+  {
+   "op": "add_type",
+   "name": "0600x1500_1Leaf-Louvre300"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1500_1Leaf-Louvre300/Width",
+   "type": "0600x1500_1Leaf-Louvre300",
+   "param": "Width",
+   "value": 600
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1500_1Leaf-Louvre300/Height",
+   "type": "0600x1500_1Leaf-Louvre300",
+   "param": "Height",
+   "value": 1500
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1500_1Leaf-Louvre300/Fanlight Height",
+   "type": "0600x1500_1Leaf-Louvre300",
+   "param": "Fanlight Height",
+   "value": 300
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1500_1Leaf-Louvre300/FMC_Fanlight_Height_mm",
+   "type": "0600x1500_1Leaf-Louvre300",
+   "param": "FMC_Fanlight_Height_mm",
+   "value": 300
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1500_1Leaf-Louvre300/Leaf Count",
+   "type": "0600x1500_1Leaf-Louvre300",
+   "param": "Leaf Count",
+   "value": 1
+  },
+  {
+   "op": "add_type",
+   "name": "0600x0900_WC-Louvre300"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x0900_WC-Louvre300/Height",
+   "type": "0600x0900_WC-Louvre300",
+   "param": "Height",
+   "value": 900
+  },
+  {
+   "op": "add_type",
+   "name": "1200x1500_2Leaf-Fanlight300"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_2Leaf-Fanlight300/Width",
+   "type": "1200x1500_2Leaf-Fanlight300",
+   "param": "Width",
+   "value": 1200
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_2Leaf-Fanlight300/Height",
+   "type": "1200x1500_2Leaf-Fanlight300",
+   "param": "Height",
+   "value": 1500
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_2Leaf-Fanlight300/Leaf Count",
+   "type": "1200x1500_2Leaf-Fanlight300",
+   "param": "Leaf Count",
+   "value": 2
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_2Leaf-Fanlight300/Vent Louvred",
+   "type": "1200x1500_2Leaf-Fanlight300",
+   "param": "Vent Louvred",
+   "value": false
+  },
+  {
+   "op": "add_type",
+   "name": "1500x1500_2Leaf-Fanlight300"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x1500_2Leaf-Fanlight300/Width",
+   "type": "1500x1500_2Leaf-Fanlight300",
+   "param": "Width",
+   "value": 1500
+  },
+  {
+   "op": "add_type",
+   "name": "1800x1500_3Leaf-Fanlight300"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800x1500_3Leaf-Fanlight300/Width",
+   "type": "1800x1500_3Leaf-Fanlight300",
+   "param": "Width",
+   "value": 1800
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800x1500_3Leaf-Fanlight300/Leaf Count",
+   "type": "1800x1500_3Leaf-Fanlight300",
+   "param": "Leaf Count",
+   "value": 3
+  }
+ ],
+ "values": {
+  "Frame LTZ steel 40x40x2 angle (Frame Width / Frame Depth 40)": {
+   "value": "40x40x2",
+   "source_status": "EA",
+   "source": "IOM BoQ W1 1200x1600, LTZ 40x40x2 (register)"
+  },
+  "Overall size W1 1200x1600 with 400 louvred vent": {
+   "value": "1200x1600",
+   "source_status": "EA",
+   "source": "IOM BoQ W1"
+  },
+  "Glass 4 mm clear in putty": {
+   "value": 4,
+   "source_status": "EA",
+   "source": "register: glass 4/5 mm in putty; IOM BoQ"
+  },
+  "Other type sizes and leaf counts": {
+   "value": "register type names",
+   "source_status": "assumed",
+   "source": "FMC_Family_Register.csv"
+  },
+  "Fanlight / vent height 300 / 400": {
+   "value": "300/400",
+   "source_status": "assumed",
+   "source": "register type names"
+  },
+  "Transom and frame depth 40 (same equal angle, Frame Width)": {
+   "value": 40,
+   "source_status": "assumed"
+  },
+  "Mullion and glazing bar T 30x30 (Mullion Width); glazing bar just above mid leaf height": {
+   "value": 30,
+   "source_status": "assumed"
+  },
+  "Louvre blades: 5 pressed steel, 20 mm projected height": {
+   "value": "5 x 20",
+   "source_status": "assumed"
+  },
+  "Burglar bars 12 mm sq at <= 150 centres, max 8, rails at glazing bar and transom": {
+   "value": "12 @ 150",
+   "source_status": "assumed",
+   "source": "owner brief; pattern to confirm with fabricator"
+  },
+  "Mosquito mesh on the interior, full opening": {
+   "value": "full opening",
+   "source_status": "assumed"
+  },
+  "Sill: precast 50 thick, depth 140 from frame face (230 brick + 15 plaster, 30 projection)": {
+   "value": 140,
+   "source_status": "assumed"
+  },
+  "Keynote": {
+   "value": "",
+   "source_status": "pending",
+   "source": "FMC_Keynotes.txt has no steel casement code (G.CAS_00/01 are aluminium double glazed): kit change request"
+  }
+ },
+ "checks": {
+  "clear_opening_min_mm": 600,
+  "clear_opening_param": "Width"
+ }
+}
