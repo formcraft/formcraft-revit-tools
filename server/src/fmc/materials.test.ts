@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { auditMaterials, duplicateOf, parseMaterialDb, searchMaterials } from "./materials.js";
+import { auditMaterials, duplicateOf, parseMaterialDb, resolveMaterial, searchMaterials } from "./materials.js";
 
 const db = parseMaterialDb({
   version: "1.3",
@@ -42,6 +42,27 @@ test("the audit counts what's not in the database, duplicates, broken textures, 
   ], db, (p) => p.endsWith("ok.jpg"));
   assert.deepEqual(checks.map((c) => `${c.found} ${c.result}`), ["2 Warn", "1 Warn", "1 Fail", "1 Info", "2 Warn"]);
   assert.deepEqual(checks[2].ids, [3]);
+});
+
+test("a kit material resolves to absolute texture paths beside the database; a missing file is a warning, never a guess", () => {
+  const kit = parseMaterialDb({ version: "2026-10-15", materials: [{
+    name: "FMC_Concrete_C20", class: "Concrete", keynote: "C.STR_02", cost_code: "PKG-02-CONCRETE", description: "C20/25 in-situ concrete",
+    graphics: { shaded: "#B8B6AE", cut: "FMC_Concrete_Reinforced" },
+    maps: [{ map: "albedo", file: "Textures/FMC_Concrete_C20_albedo.jpg", size_mm: 1000, height_mm: 1000 },
+      { map: "bump", file: "Textures/FMC_Concrete_C20_bump.jpg", size_mm: 1000 },
+      { map: "roughness", file: "Textures/x.jpg" }] }] });
+  const file = "Z:\\00_Standards\\07_Materials\\FMC_Materials.json";
+  const on = new Set(["Z:\\00_Standards\\07_Materials\\Textures\\FMC_Concrete_C20_albedo.jpg"]);
+  const { material, warnings } = resolveMaterial(kit.materials[0], file, (p) => on.has(p));
+  assert.equal(material.shaded, "#B8B6AE");
+  assert.equal(material.description, "C20/25 in-situ concrete");
+  assert.deepEqual(material.maps.map((m) => [m.map, m.path, m.found, m.height_mm]), [
+    ["albedo", "Z:\\00_Standards\\07_Materials\\Textures\\FMC_Concrete_C20_albedo.jpg", true, 1000],
+    ["bump", "Z:\\00_Standards\\07_Materials\\Textures\\FMC_Concrete_C20_bump.jpg", false, 1000],
+  ]);
+  assert.equal(warnings.length, 2);
+  assert.match(warnings.join(" | "), /roughness map isn't applied/);
+  assert.match(warnings.join(" | "), /isn't on disk, so the material is made without its bump map/);
 });
 
 test("without the database the audit says so instead of flagging everything", () => {

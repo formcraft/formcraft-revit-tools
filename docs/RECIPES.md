@@ -37,6 +37,36 @@ recipe; version 0.1 adds value sources and code checks.
 | `lock_face` | Aligns and locks a solid's face to a named plane | 1.4: faces locked to planes |
 | `add_eq_dimension` | An EQ dimension across three or more planes | 1.4: symmetry |
 | `load_family`, `place_nested` | Loads an `.rfa` from the kit's `04_Families` and places it, with parameters associated | 1.7: nested parts; 3.4: detail kit |
+| `profile_lines` | A profile family's closed loop (template `Metric Profile.rft`, category Profiles): detail lines and 3-point arcs in the Ref. Level plan, mm, x across and y up | 3.1: the `FMC_Profile_*` families that sweeps load |
+| `set_visible_param` | Ties a solid's (or sweep's) Visible to a Yes/No family parameter | One parameter switches which part shows |
+| `add_material` | A material from the kit's library (`07_Materials\FMC_Materials.json`) with its class, colour, keynote, description and textures; optionally the value of a Material parameter in every type | Rule 7: kit materials only, never made up |
+
+### Profiles, switches and kit materials
+
+```json
+{ "op": "profile_lines", "name": "Architrave", "start": [0, 0], "subcategory": "Profile",
+  "segments": [ { "to": [70, 0] }, { "to": [70, 12] }, { "to": [62, 20], "through": [67.66, 17.66] }, { "to": [0, 20] }, { "to": [0, 0] } ] }
+{ "op": "set_visible_param", "name": "Track M7/Visible", "solid": "Track M7", "param": "Show M7" }
+{ "op": "add_material", "name": "FMC_Timber_Mvule", "param": "Frame Material" }
+```
+
+- **profile_lines.** Each segment runs from the previous point to `to`. A segment with `through` is an arc through
+  that point, else it's a straight line. The last `to` must be the start (within 0.01 mm). The server refuses an open
+  loop, a segment with no length, an arc whose three points are in a line, and a loop that crosses or touches itself.
+  A second run skips a loop that's already there. If the loop is there with another shape, it's left as it is: rename
+  the op to draw it again. `tests/doc/FMC_Profile_Sample.ops.json` is a sample.
+- **set_visible_param.** Name it `<solid>/Visible`. The parameter must be Yes/No: add it earlier in the batch with
+  `add_family_param` (type `YesNo`) and give it a formula. For example, with `FMC_Design_Movement = 7`, one shared
+  parameter picks which movement's sweep shows.
+- **add_material.** The server looks the name up in the kit's library. A name that isn't there is refused (ask the
+  BIM Manager: `fmc_material request`). The server passes the material's fields and each texture's path on this PC to
+  Revit. Revit then:
+  - makes the material if it's missing, or updates what differs
+  - gives it its own appearance, named after the material and copied from a Generic one, with the albedo map as the
+    colour bitmap and the bump map, at the kit's real-world size
+  - sets the material in every type when `param` names a Material parameter
+
+  A texture file that isn't on disk is left out with a warning, and the material is still made.
 
 Sizes stay `pending` until the supplier visits give them (section 7); a recipe with a pending value builds, but Gate A
 holds it in staging. Masking regions and freeform shapes stay hand work (FAM-039).

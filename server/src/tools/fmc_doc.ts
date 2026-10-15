@@ -8,6 +8,8 @@ import { SessionRecord, buildReport, openProblems, saveProblems } from "../fmc/d
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, opsProblems, splitProblems } from "../fmc/ops.js";
 import { parseSharedParameters } from "../fmc/specs.js";
+import { resolveMaterial } from "../fmc/materials.js";
+import { readDb } from "./fmc_material.js";
 
 const win = path.win32;
 
@@ -52,7 +54,7 @@ export const FMC_DOC_DESCRIPTION =
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. Never a project or " +
     "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
@@ -100,11 +102,20 @@ export async function runFmcDoc(args: FmcDocArgs) {
       if (!args.ops.length) return reply({ refused: true, reasons: ["apply needs ops"] }, true);
       let dictionary = null;
       try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
-      const { errors, notes } = splitProblems(opsProblems(args.ops, dictionary, win.dirname(expandEnv(config.family_staging_root))));
+      const materials = args.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
+      const { errors, notes } = splitProblems(opsProblems(args.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials));
       if (errors.length) return reply({ refused: true, reasons: errors }, true);
+      // add_material: the server resolves the material from the kit's library (rule 7) and hands Revit its fields and
+      // texture paths; Revit never looks a material up by itself.
+      const ops = args.ops.map((o) => {
+        if (o.op !== "add_material" || !materials) return o;
+        const r = resolveMaterial(materials.materials.find((m) => m.name === o.name)!, expandEnv(config.materials_file), (f) => fs.existsSync(f));
+        notes.push(...r.warnings);
+        return { ...o, material: r.material };
+      });
       const dry = args.dry_run !== false;
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_apply",
-        { session: s.id, ops: args.ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000));
+        { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000));
       if (!dry) {
         s.ops.push(...((r?.ops ?? []) as Array<{ op: string; name: string; result: string }>).map((o) => ({ op: o.op, name: o.name, result: o.result })));
         ledger[s.id] = s;

@@ -8,6 +8,7 @@ import { opsProblems, splitProblems } from "../fmc/ops.js";
 import { Recipe, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
+import { readDb } from "./fmc_material.js";
 
 const win = path.win32;
 
@@ -101,7 +102,8 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     if (!recipe) return reply({ refused: true, reasons: problems }, true);
     let dictionary = null;
     try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
-    const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root))));
+    const materials = recipe.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
+    const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials));
     const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
     const sources = Object.fromEntries(["verified", "EA", "assumed", "pending"].map((s) => [s, Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k)]));
     if (args.action === "check")
