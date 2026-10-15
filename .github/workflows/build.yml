@@ -46,6 +46,18 @@ jobs:
         run: dotnet build shell/Formcraft.Shell/Formcraft.Shell.csproj -c Release -f net48
       - name: Shell tests (theme, kit styles, services)
         run: dotnet test --project tests/shell/Formcraft.Shell.Tests.csproj -c Release --report-trx --results-directory "${{ github.workspace }}/test-results"
+      # Test logs and artifacts can't be read from Claude's sessions, so failed tests also go out as annotations
+      - name: Failed shell tests as annotations
+        if: ${{ failure() }}
+        run: |
+          Get-ChildItem "${{ github.workspace }}/test-results" -Filter *.trx -Recurse | ForEach-Object {
+            [xml]$t = Get-Content $_.FullName
+            $t.TestRun.Results.UnitTestResult | Where-Object { $_.outcome -eq 'Failed' } | ForEach-Object {
+              $m = ($_.Output.ErrorInfo.Message -replace "`r?`n", ' ')
+              if ($m.Length -gt 600) { $m = $m.Substring(0, 600) }
+              Write-Output "::error title=$($_.testName)::$m"
+            }
+          }
       - name: Flow touch engine tests (gestures, settings)
         run: dotnet test --project tests/touch/TouchKit.Core.Tests.csproj -c Release
       # The next steps run even when tests fail, so a failure shows its test name, message and the screens
