@@ -63,9 +63,33 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-026 | Medium | Recipes | Labelled dimension left a plane on the wrong side (Head Inner above Head); cause: recipe dimensioned while the template's default size was current. Recipe side fixed here (size first) · #111 | Answered (recipe fixed; engine warning still asked) |
 | F-027 | Low | Recipes | `lock_face` needs exact coordinates; 3-decimal heights missed the plane. Recipe side fixed here (10 decimals) · #112 | Answered (recipe fixed; engine tolerance still asked) |
 | F-028 | High | Touch | Touch doesn't follow a view dragged out of the main window (owner report, 15 Oct) · #114 | Fixed – retest (fix/touch-floating-views) |
+| F-029 | Blocker | Recipe build | `fmc_recipe build` never returned: requests over 8 KB never reached Revit whole (one 8 KB socket read) · #121 | Fixed – retest (#134 stepwise build, #135 whole-request reader) |
+| F-030 | Blocker | Bridge | Timeout reported at ~50 s, then the script finished anyway · #122 | Fixed – retest (#135 jobs, fmc_job) |
+| F-031 | Blocker | Bridge | Scripts over ~10 KB hung (same 8 KB read) · #123 | Fixed – retest (#135) |
+| F-032 | Blocker | Bridge | Any modal dialog blocked the bridge · #124 | Fixed – retest (#135 failures preprocessor, save reminder closed with Cancel) |
+| F-033 | High | Code runner | TargetInvocationException not unwrapped · #125 | Fixed – retest (#135) |
+| F-034 | High | Code runner | Error text in Chinese · #126 | Fixed – retest (#135 English codes) |
+| F-035 | High | Code runner | No usings field or helper types · #127 | Fixed – retest (#135) |
+| F-036 | High | Bridge | No tool read FMC_LateResults.jsonl · #128 | Fixed – retest (#135 fmc_job) |
+| F-037 | High | Family builds | Shared-parameter file switched and not restored · #129 | Fixed – retest (#134) |
+| F-038 | Medium | Recipe check | Template planes reported as 'not made earlier' · #130 | Fixed – retest (#134) |
+| F-039 | Medium | Gate A | Keynote, required-parameter and inspection checks misreported · #131 | Fixed – retest (#134) |
+| F-040 | Medium | Family builds | Failed builds left invisible background documents · #132 | Fixed – retest (#134 fmc_doc background, fmc_recipe cleanup) |
+| F-041 | High | AI rules | fmc_ai expected FMC_Rulebook_AIUse.json; kit ships ClaudeUse; read-only send_code refused after a save · #133 | Answered: rulebook name fixed (#135); kit needs the AI-use section; read-only code after save needs the owner (live-model lock) |
 ---
 
 ## Test runs
+
+### Run 9 · 2026-10-15 · pilot PC · Revit 2025.4 · field review of the Ogala Residence LOD 400 build
+
+A whole ground floor, its families and site were taken to LOD 400 in one session; the review was written from the AI's
+side of every tool. Findings F-029 to F-041 (#121–#133). Owner report the same day: touch didn't follow a view dragged
+out of the main window, F-028 (#114, fixed in #115). Kit gaps from the review were applied in kit r6: D.FLD_00
+(sliding-folding doorset), D.MET_01 (steel doorset with fanlight), trim and ornament item codes (J.TRM_00–04,
+A.ORN_00–08), profile families per design movement (320 recipes) with a Plinth element. Still open: a door template
+with a taller host wall (Revit), an FMC project template with kit system types, add-in hooks for Enscape, and the
+owner's decisions on delegation, WIP saves and read-only code.
+
 
 ### Run 8 · 2026-10-15 · pilot PC · Revit 2025.4 · build `1052d3b`
 
