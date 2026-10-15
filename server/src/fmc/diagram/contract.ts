@@ -20,6 +20,7 @@ export const DIAGRAM_KINDS = [
   "p_drainage",     // soil, waste and rainwater stacks per level
   "m_refrigerant",  // outdoor-indoor pairing, refrigerant and condensate
   "lp_schematic",   // air terminations, down conductors, test joints, earth pits, bonds (BS EN 62305)
+  "m_controls",     // building automation: controls network riser (head end, controllers per level) and points list (added 15 Oct)
 ] as const;
 export type DiagramKind = (typeof DIAGRAM_KINDS)[number];
 
@@ -27,6 +28,8 @@ export const NODE_KINDS = [
   "supply", "board", "load", "device", "panel", "equipment", "pump", "tank", "valve", "meter", "fixture", "sprinkler",
   "hose_reel", "hydrant", "inlet", "riser", "stack", "indoor_unit", "outdoor_unit", "air_terminal", "down_conductor",
   "test_joint", "earth_pit", "earth_bar", "spd", "bond", "other",
+  // building automation (m_controls, added 15 Oct): a controller or gateway is a network node; the rest are its points
+  "controller", "sensor", "actuator", "drive", "gateway",
 ] as const;
 export const EDGE_KINDS = ["feeder", "circuit", "pipe", "duct", "conductor", "loop", "refrigerant", "condensate", "data", "bond"] as const;
 
@@ -109,6 +112,12 @@ export const PARAM_KEYS = {
   size: ["size", "Size"],
   liquid_size: ["liquid_size"],
   gas_size: ["gas_size"],
+  // building automation (m_controls, added 15 Oct)
+  controller_id: ["controller_id", "FMC_Controller_ID"],
+  point_type: ["point_type", "FMC_Point_Type"],
+  signal: ["signal", "FMC_Point_Signal"],
+  protocol: ["protocol", "FMC_Protocol"],
+  mark: ["mark", "Mark"],
 } as const;
 export type ParamKey = keyof typeof PARAM_KEYS;
 

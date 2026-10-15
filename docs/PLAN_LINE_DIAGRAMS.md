@@ -24,6 +24,7 @@ refrigerant schematics, and the lightning protection schematic.
    | P water and drainage | Domestic water and sanitary systems: tanks, pumps, risers and stacks per level, fixtures counted per level |
    | M refrigerant | Outdoor-to-indoor unit pairing (refrigerant systems), condensate routes |
    | LP schematic | Air terminations, down conductors, test joints, earth pits, ring electrode, bonds (`FMC_LP_Part`) |
+   | M controls (`m_controls`, added 15 Oct) | Elements carrying `FMC_Controller_ID` (with `FMC_Point_Type` AI/AO/DI/DO, `FMC_Point_Signal`, `FMC_Protocol`) in Electrical Equipment, Data Devices, Mechanical Equipment, Duct and Pipe Accessories, Lighting Devices, Electrical Fixtures, Security Devices and Specialty Equipment: controllers, gateways, drives, sensors and actuators; a device's id names its controller (Mark, then Panel Name, then type name), a controller's id names its supervisor |
 
    The scan reports the gaps: devices not on a circuit, circuits with no rating, pipes not connected, levels with no
    name, and parts with no `FMC_Keynote_Code`.
@@ -71,6 +72,10 @@ refrigerant schematics, and the lightning protection schematic.
   (`circuit`, `rating` in A, `apparent_load` in VA, `size` as "50 mm"…); each edge carries `id` (the circuit, system or
   first pipe's UniqueId) and runs upstream to downstream: from the connector's flow when Revit has one, else by part kind
   (supply side first, terminals last; LP air terminal to earth). A request for `e_power_riser` scans the SLDs.
+  Controls (`m_controls`): node kinds `controller`, `gateway`, `drive`, `sensor`, `actuator` (else `device`) from the
+  category and names; params `controller_id`, `point_type`, `signal`, `protocol`, `mark`, `level`; "data" edges from
+  each controller to the devices that name it and from each supervisor to the controllers that name it. Gaps: a point
+  type with no controller id, an id that matches no controller, a controller with no protocol.
 - `fmc_diagram_draw` (DRAW_SPEC + optional `document`, documents already open): `FmcDiagramDraw.cs`. One transaction
   group, rolled back on a dry run; never saves. Tool-drawn items carry the key `view|source_id or index|t` in
   extensible storage (schema `FMC_DiagramSource`), so a rerun redraws them and keeps a person's notes (`kept_by_hand`).
@@ -87,6 +92,7 @@ refrigerant schematics, and the lightning protection schematic.
 | `riser.ts` | E power riser (`e_power_riser`, added 15 Oct, laid out from the e_sld graph): level bands, the supply and each board on its level (boards on one level side by side) with part type, ways, the feeder serving it (rating · poles · device, cable; TBC when null) and "See E-SLD-…"; feeders run on a track at the foot of the parent's level and rise or drop on the fed board's own column. Final circuits stay on the SLDs |
 | `bands.ts` | Level bands (top level at the top): FA zone chart (columns per zone, panel at the base), ELV (columns per system, head end at the base), FP / water / drainage (a column per riser or stack, plant in flow order, devices counted per level, pipe sizes beside the riser), LP (bands by part, a column per down conductor, MET, SPDs and bonds at the base) |
 | `schematic.ts` | Refrigerant: outdoor-unit trees, refrigerant on FMC_Medium, condensate on the kit's dashed style (FMC_Thin and a note while there is none) |
+| `controls.ts` | Controls (`m_controls`, added 15 Oct), two views. `M-Controls-Riser`: level bands, each controller on its level in its own column with its symbol, protocol, points by type (AI/AO/DI/DO) and its points counted by kit symbol; its link drops to the supervisor's track labelled with the link's protocol; supervisors (head end, gateways with controllers under them) in the base row with their level and backbone protocol. `M-Controls-Points`: per controller a table (mark, device, point type, signal), or counts and "see M15_Controls_Points" above `layout.controls_points_max` (40). Points with no or an unknown controller id are listed in the notes. Symbols: FMC_SYM_M_BMSController, _DDCController, _Gateway, _Sensor, _Actuator, _RoomThermostatController, FMC_SYM_E_VFD, _MotorStarter, _LightingController, _OccupancyPIRSensor (families to be drawn; until then a labelled box) |
 | `layout.ts` | `layoutScan(scan, kit, kinds)` → views with TBC counts, collisions, warnings and coverage; `drawSpec`, `planSummary` |
 
 Layouts are pure and deterministic (stable sorts by name and id), so regenerating gives the same items. A view with a

@@ -63,6 +63,10 @@ export interface DiagramLayoutConfig {
   label_params: string[];
   /** View name prefix per diagram kind; SLDs add the board name. */
   view_names: Record<DiagramKind, string>;
+  /** m_controls points list: a controller with more points than this shows counts only and refers to the schedule. */
+  controls_points_max: number;
+  /** m_controls: the controls points schedule the points list refers to when a controller has too many points. */
+  controls_points_schedule: string;
 }
 
 export interface DiagramKit {
@@ -103,8 +107,10 @@ export const DEFAULT_DIAGRAM_KIT: DiagramKit = {
     view_names: {
       e_sld: "E-SLD", e_power_riser: "E-Power-Riser", e_fa_riser: "E-FA-Riser", e_elv_riser: "E-ELV-Riser", fp_schematic: "FP-Schematic",
       p_water: "P-Water-Schematic", p_drainage: "P-Drainage-Schematic", m_refrigerant: "M-Refrigerant-Schematic",
-      lp_schematic: "LP-Schematic",
+      lp_schematic: "LP-Schematic", m_controls: "M-Controls",
     },
+    controls_points_max: 40,
+    controls_points_schedule: "M15_Controls_Points",
   },
   breaker_family: "FMC_DI_E_SLD_Breaker",
   breaker_default: "MCB",
@@ -192,6 +198,17 @@ export const DEFAULT_DIAGRAM_KIT: DiagramKit = {
     S(["earth_bar"], "FMC_SYM_LP_MainEarthingTerminal", "Main earthing terminal (MET)", { base: true }),
     S(["spd"], "FMC_SYM_LP_SurgeProtectiveDevice", "Surge protective device (SPD)"),
     S(["bond"], "FMC_SYM_LP_BondToMetalwork", "Bond to metalwork"),
+    // Building automation and controls (m_controls)
+    S(["controller", "gateway"], "FMC_SYM_M_BMSController", "BMS head end / supervisory controller", { diagrams: ["m_controls"], match: "\\bbms\\b|head ?end|supervis|building ?management" }),
+    S(["gateway"], "FMC_SYM_M_Gateway", "Protocol gateway", { diagrams: ["m_controls"] }),
+    S(["controller"], "FMC_SYM_E_LightingController", "Lighting controller", { diagrams: ["m_controls"], match: "lighting|\\bdali\\b" }),
+    S(["controller"], "FMC_SYM_M_DDCController", "DDC controller", { diagrams: ["m_controls"] }),
+    S(["drive"], "FMC_SYM_E_MotorStarter", "Motor starter", { diagrams: ["m_controls"], match: "starter|\\bdol\\b" }),
+    S(["drive"], "FMC_SYM_E_VFD", "Variable frequency drive (VFD)", { diagrams: ["m_controls"] }),
+    S(["sensor"], "FMC_SYM_M_RoomThermostatController", "Room thermostat / controller", { diagrams: ["m_controls"], match: "thermostat|room ?(controller|sensor)" }),
+    S(["sensor"], "FMC_SYM_E_OccupancyPIRSensor", "Occupancy (PIR) sensor", { diagrams: ["m_controls"], match: "occupancy|\\bpir\\b|presence|motion" }),
+    S(["sensor"], "FMC_SYM_M_Sensor", "Sensor", { diagrams: ["m_controls"] }),
+    S(["actuator"], "FMC_SYM_M_Actuator", "Actuator", { diagrams: ["m_controls"] }),
   ],
   sizes: {
     "*": [6, 6],
@@ -214,6 +231,12 @@ export const DEFAULT_DIAGRAM_KIT: DiagramKit = {
     "FMC_SYM_M_ACIndoorUnit": [10, 6],
     "FMC_SYM_LP_DownConductor": [4, 8],
     "FMC_SYM_LP_MainEarthingTerminal": [10, 6],
+    "FMC_SYM_M_BMSController": [10, 8],
+    "FMC_SYM_M_DDCController": [10, 6],
+    "FMC_SYM_M_Gateway": [8, 6],
+    "FMC_SYM_E_LightingController": [10, 6],
+    "FMC_SYM_E_VFD": [8, 6],
+    "FMC_SYM_E_MotorStarter": [8, 6],
   },
   box: [10, 6],
 };

@@ -2,6 +2,7 @@ import { DIAGRAM_KINDS, DiagramKind, DrawSpec, DrawView, ScanDiagram, ScanResult
 import { BandSetup, COUNTED_KINDS, bandPage, nearestSpine } from "./bands.js";
 import { Collision, collisions, natural, viewSafe } from "./geometry.js";
 import { treePage } from "./schematic.js";
+import { controlsPages } from "./controls.js";
 import { powerRiserPage } from "./riser.js";
 import { Page, sldPages } from "./sld.js";
 import { DEFAULT_DIAGRAM_KIT, DiagramKit, Mark, param, text } from "./symbols.js";
@@ -17,6 +18,7 @@ import { DEFAULT_DIAGRAM_KIT, DiagramKit, Mark, param, text } from "./symbols.js
  *   p_drainage
  *   lp_schematic                bands.ts      bands by part: air terminations, down conductors, test joints, earths
  *   m_refrigerant               schematic.ts  outdoor unit trees, left to right
+ *   m_controls                  controls.ts   controls network riser (head end at the base) and a points list view
  */
 
 export interface PlannedView {
@@ -110,6 +112,7 @@ const TITLES: Record<DiagramKind, string> = {
   e_sld: "Single-line diagram", e_power_riser: "Power riser", e_fa_riser: "Fire alarm riser and zone chart", e_elv_riser: "ELV and security riser",
   fp_schematic: "Fire fighting schematic", p_water: "Water supply schematic", p_drainage: "Drainage schematic",
   m_refrigerant: "Refrigerant schematic", lp_schematic: "Lightning protection and earthing schematic",
+  m_controls: "Controls network riser",
 };
 
 /** Views for every diagram in the scan (or only `kinds`). */
@@ -158,6 +161,10 @@ export function layoutScan(scan: ScanResult, kit: DiagramKit = DEFAULT_DIAGRAM_K
       const p = powerRiserPage(d, scan.levels, viewName(), { kit, model: scan.model, sldView: (id) => sldOf.get(id) ?? null }, title);
       p.canvas.frame(p.title, `${scan.model} · values from the model only`);
       pages = [p];
+    } else if (d.kind === "m_controls") {
+      const wanted = (perKind.get(d.kind) ?? 0) > 1 ? `${prefix}-${d.system}` : prefix;
+      pages = controlsPages(d, scan.levels, wanted, { kit, model: scan.model, name }, title);
+      for (const p of pages) p.canvas.frame(p.title, `${scan.model} · values from the model only`);
     } else if (d.kind === "m_refrigerant") {
       const p = treePage(d, viewName(), { kit, model: scan.model }, { title, rootKinds: ["outdoor_unit"] });
       p.canvas.frame(p.title, `${scan.model} · values from the model only`);
