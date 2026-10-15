@@ -1,4 +1,7 @@
 import * as net from "net";
+import fs from "fs";
+import os from "os";
+import path from "path";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
@@ -170,16 +173,66 @@ export class RevitClientConnection {
         const commandString = JSON.stringify(commandObj);
         this.socket.write(commandString);
 
+        // F-022: answer before the client's own 60 s cutoff. The command stays queued in Revit; if it finishes later, its
+        // result goes to the late-results log instead of being dropped silently.
+        const soft = softTimeoutMs();
+        let settled = false;
+        const finish = this.responseCallbacks.get(requestId)!;
+        this.responseCallbacks.set(requestId, (data) => {
+          if (settled) { logLateResult(command, requestId, data); this.responseCallbacks.delete(requestId); return; }
+          settled = true;
+          finish(data);
+        });
+        if (soft > 0 && soft < timeoutMs) {
+          setTimeout(() => {
+            if (settled || !this.responseCallbacks.has(requestId)) return;
+            settled = true;
+            reject(new Error(
+              `Revit hasn't answered ${command} in ${Math.round(soft / 1000)} s: it is busy, or waiting for its window to wake. ` +
+              `The command is still queued in Revit and may finish; its result will be written to ${lateResultsPath()}. ` +
+              `Check that file (or the staging folder) before running it again.`));
+          }, soft);
+        }
+
         // 设置超时
         setTimeout(() => {
           if (this.responseCallbacks.has(requestId)) {
             this.responseCallbacks.delete(requestId);
-            reject(new Error(`Command timed out after ${Math.round(timeoutMs / 1000)} s: ${command}`));
+            if (!settled) { settled = true; reject(new Error(`Command timed out after ${Math.round(timeoutMs / 1000)} s: ${command}`)); }
+            else logLateResult(command, requestId, JSON.stringify({ error: { message: `no answer after ${Math.round(timeoutMs / 1000)} s` } }));
           }
         }, timeoutMs);
       } catch (error) {
         reject(error);
       }
     });
+  }
+}
+
+let softTimeoutOn = false;
+/** The MCP (stdio) server turns this on: its clients cut a call at about 60 s. The pane's CLI waits longer and leaves it off. */
+export function enableSoftTimeout() { softTimeoutOn = true; }
+
+/** Soft timeout (ms) before a tool replies "still queued"; FMC_SOFT_TIMEOUT_MS overrides, 0 turns it off. */
+export function softTimeoutMs(): number {
+  if (!softTimeoutOn) return 0;
+  const v = Number(process.env.FMC_SOFT_TIMEOUT_MS);
+  return Number.isFinite(v) && v >= 0 ? v : 50000;
+}
+
+export function lateResultsPath(): string {
+  const base = process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming");
+  return path.join(base, "Formcraft", "FMC_LateResults.jsonl");
+}
+
+/** A result that arrived after the tool had already replied: kept, one JSON line each, never dropped. */
+export function logLateResult(command: string, id: string, data: string) {
+  try {
+    let result: unknown = data;
+    try { result = JSON.parse(data); } catch { /* keep the raw text */ }
+    fs.mkdirSync(path.dirname(lateResultsPath()), { recursive: true });
+    fs.appendFileSync(lateResultsPath(), JSON.stringify({ at: new Date().toISOString(), command, id, result }) + "\n");
+  } catch {
+    // logging must never block the work
   }
 }

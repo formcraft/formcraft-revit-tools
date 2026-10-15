@@ -66,6 +66,8 @@ namespace revit_mcp_plugin.Core
             // 初始化事件管理器
             // Initialize ExternalEventManager
             ExternalEventManager.Instance.Initialize(uiApp, _logger);
+            // F-022: keep Revit's loop awake while a command waits, so background work runs while the person uses other apps.
+            RevitWake.Initialize(uiApp);
 
             // 记录当前 Revit 版本
             // Get the current Revit version.
@@ -290,7 +292,9 @@ namespace revit_mcp_plugin.Core
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
-                    object result = command.Execute(request.GetParamsObject(), request.Id);
+                    object result;
+                    using (RevitWake.Busy())
+                        result = command.Execute(request.GetParamsObject(), request.Id);
 
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
                     return CreateSuccessResponse(request.Id, result);
