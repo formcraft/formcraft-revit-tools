@@ -102,5 +102,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Build plugin and command set
-        # One build process: in parallel, two projects can write the same TouchKit.Core.dll at once
-        run: dotnet build mcp-servers-for-revit.sln -c "Release R25" -m:1 -nodeReuse:false
+        # One build process: in parallel, two projects can write the same TouchKit.Core.dll at once.
+        # Compiler errors are also written as annotations, so they can be read through the API (job logs can't be
+        # fetched from every client).
+        run: |
+          dotnet build mcp-servers-for-revit.sln -c "Release R25" -m:1 -nodeReuse:false 2>&1 | Tee-Object -FilePath build.log
+          $code = $LASTEXITCODE
+          Select-String -Path build.log -Pattern ': error [A-Z]+[0-9]+' | Select-Object -ExpandProperty Line -Unique | Select-Object -First 30 | ForEach-Object { Write-Output "::error::$_" }
+          exit $code

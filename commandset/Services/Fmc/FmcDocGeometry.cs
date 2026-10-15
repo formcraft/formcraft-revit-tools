@@ -124,7 +124,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         /// <summary>Aligns and locks the solid's planar face that faces the same way as the plane and lies on it.</summary>
-        private static bool LockFace(Document doc, View view, GenericForm form, Reference planeRef, XYZ normal)
+        internal static bool LockFace(Document doc, View view, GenericForm form, Reference planeRef, XYZ normal)
         {
             var options = new Options { ComputeReferences = true, View = view, IncludeNonVisibleObjects = true };
             foreach (GeometryObject g in form.get_Geometry(options))
