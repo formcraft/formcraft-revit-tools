@@ -1,7 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { OPS, opsProblems, splitProblems } from "./ops.js";
+import { OPS, opsProblems, profileLoopProblems, splitProblems } from "./ops.js";
 import { SpParam } from "./specs.js";
+import { parseMaterialDb } from "./materials.js";
 
 const dict = new Map<string, SpParam>([["FMC_Keynote_Code", { name: "FMC_Keynote_Code", guid: "1111-AAAA", datatype: "TEXT", group: "FMC_Identity" }]]);
 
@@ -104,4 +105,68 @@ test("LOD 400 pack: bad input is refused", () => {
   assert.match(all, /isn't inside the kit's families folder/);
   assert.match(all, /name must be "S\/Left"/);
   assert.throws(() => OPS.parse([{ op: "add_subcategory", name: "X", line_weight_projection: 17 }]));
+});
+
+test("profile_lines: a closed loop of lines and one arc passes; open, zero-length, in-line arcs and crossings are refused", () => {
+  const good = OPS.parse([
+    { op: "add_subcategory", name: "Profile" },
+    { op: "profile_lines", name: "Architrave", start: [0, 0], subcategory: "Profile",
+      segments: [{ to: [70, 0] }, { to: [70, 15] }, { to: [50, 20], through: [62, 19] }, { to: [0, 20] }, { to: [0, 0] }] },
+  ]);
+  assert.deepEqual(opsProblems(good, dict), []);
+  // A half-round: one line and one arc close the loop.
+  assert.deepEqual(profileLoopProblems([0, 0], [{ to: [40, 0] }, { to: [0, 0], through: [20, 20] }]), []);
+  assert.match(profileLoopProblems([0, 0], [{ to: [10, 0] }, { to: [10, 10] }])[0], /isn't closed/);
+  assert.deepEqual(profileLoopProblems([0, 0], [{ to: [10, 0] }, { to: [10, 10] }, { to: [0, 0.005] }]), []); // within 0.01 mm
+  assert.match(profileLoopProblems([0, 0], [{ to: [0, 0] }, { to: [10, 0] }, { to: [0, 10] }, { to: [0, 0] }]).join(), /segment 1 has no length/);
+  assert.match(profileLoopProblems([0, 0], [{ to: [10, 0] }, { to: [20, 0], through: [15, 0] }, { to: [0, 10] }, { to: [0, 0] }]).join(), /in line/);
+  // A bow tie crosses itself.
+  assert.match(profileLoopProblems([0, 0], [{ to: [10, 10] }, { to: [10, 0] }, { to: [0, 10] }, { to: [0, 0] }]).join(), /crosses or touches itself/);
+  // An arc that bulges back across the base line crosses it.
+  assert.match(profileLoopProblems([0, 0], [{ to: [40, 0] }, { to: [40, 10] }, { to: [0, 10], through: [20, -5] }, { to: [0, 0] }]).join(), /crosses/);
+  // Out and back on the same line has no area.
+  assert.match(profileLoopProblems([0, 0], [{ to: [10, 0] }, { to: [0, 0] }]).join(), /no area/);
+  const open = OPS.parse([{ op: "profile_lines", name: "P", start: [0, 0], segments: [{ to: [10, 0] }, { to: [10, 10] }] }]);
+  assert.equal(splitProblems(opsProblems(open, dict)).errors.length, 1);
+});
+
+test("set_visible_param: a solid's Visible from a Yes/No parameter added earlier", () => {
+  const sp = new Map(dict).set("FMC_Design_Movement", { name: "FMC_Design_Movement", guid: "2222-BBBB", datatype: "INTEGER", group: "FMC_Design" });
+  const b = OPS.parse([
+    { op: "add_shared_param", name: "FMC_Design_Movement", guid: "2222-BBBB", instance: true },
+    { op: "add_family_param", name: "Show M7", type: "YesNo" },
+    { op: "set_formula", name: "Show M7", formula: "FMC_Design_Movement = 7" },
+    { op: "sweep", name: "Track M7", path: [[0, 0], [1000, 0]], profile: [[0, 0], [10, 0], [10, 10]] },
+    { op: "set_visible_param", name: "Track M7/Visible", solid: "Track M7", param: "Show M7" },
+  ]);
+  assert.deepEqual(opsProblems(b, sp), []);
+  const bad = OPS.parse([
+    { op: "add_family_param", name: "Width", type: "Length" },
+    { op: "set_visible_param", name: "Body/Visible", solid: "Body", param: "Width" },
+    { op: "set_visible_param", name: "wrong", solid: "Body", param: "In the file" },
+  ]);
+  const { errors, notes } = splitProblems(opsProblems(bad, dict));
+  assert.match(errors.join(" | "), /"Width" is Length: Visible takes a Yes\/No parameter/);
+  assert.match(errors.join(" | "), /name must be "Body\/Visible"/);
+  assert.equal(notes.length, 3); // Body twice and "In the file": they may exist in the file
+  // A Yes/No kit shared parameter counts as Yes/No.
+  const yn = new Map(dict).set("FMC_Prefabricated", { name: "FMC_Prefabricated", guid: "3333", datatype: "YESNO", group: "x" });
+  const b2 = OPS.parse([{ op: "add_shared_param", name: "FMC_Prefabricated", guid: "3333" },
+    { op: "extrusion", name: "Box", points: [[0, 0], [1, 0], [1, 1]] }, { op: "set_visible_param", name: "Box/Visible", solid: "Box", param: "FMC_Prefabricated" }]);
+  assert.deepEqual(opsProblems(b2, yn), []);
+});
+
+test("add_material: only materials in the kit's library, and a Material parameter", () => {
+  const materials = parseMaterialDb({ version: "1", materials: [{ name: "FMC_Timber_Mvule", class: "Timber" }] });
+  const b = OPS.parse([
+    { op: "add_family_param", name: "Frame Material", type: "Material", group: "Materials" },
+    { op: "add_material", name: "FMC_Timber_Mvule", param: "Frame Material" },
+  ]);
+  assert.deepEqual(opsProblems(b, dict, undefined, materials), []);
+  assert.deepEqual(opsProblems(b, dict), []); // no kit (tests): the name isn't checked
+  const unknown = OPS.parse([{ op: "add_material", name: "FMC_Timber_Teak" }]);
+  assert.match(opsProblems(unknown, dict, undefined, materials)[0], /isn't in the kit's material library \(07_Materials\\FMC_Materials\.json\)/);
+  assert.match(opsProblems(unknown, dict, undefined, null)[0], /isn't readable/);
+  const wrongType = OPS.parse([{ op: "add_family_param", name: "Width", type: "Length" }, { op: "add_material", name: "FMC_Timber_Mvule", param: "Width" }]);
+  assert.match(opsProblems(wrongType, dict, undefined, materials).join(), /"Width" is Length: add_material sets a Material parameter/);
 });

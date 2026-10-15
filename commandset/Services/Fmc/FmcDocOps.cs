@@ -58,6 +58,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                             var status = t.Commit();
                             if (status != TransactionStatus.Committed) throw new InvalidOperationException("Revit refused it (" + status + ")");
                             results.Add(new JObject { ["op"] = op.Value<string>("op"), ["name"] = op.Value<string>("name"), ["result"] = result, ["detail"] = detail });
+                            // An op's own warnings (a texture not on disk) travel in its detail as "warning: …"; list them too.
+                            warnings.AddRange((detail ?? "").Split(new[] { "; " }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.StartsWith("warning: "))
+                                .Select(x => $"op {i} ({op.Value<string>("op")} {op.Value<string>("name")}): {x.Substring(9)}"));
                         }
                         warnings.AddRange(collector.Warnings.Select(w => $"op {i} ({op.Value<string>("op")} {op.Value<string>("name")}): {w}"));
                     }
@@ -112,6 +115,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "add_eq_dimension": return FmcDocLod.EqDimension(doc, op);
                 case "load_family": return FmcDocLod.LoadFamily(doc, op);
                 case "place_nested": return FmcDocLod.PlaceNested(doc, op);
+                case "profile_lines": return FmcDocKit.ProfileLines(doc, op);
+                case "set_visible_param": return FmcDocKit.VisibleParam(doc, op);
+                case "add_material": return FmcDocKit.AddMaterial(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
