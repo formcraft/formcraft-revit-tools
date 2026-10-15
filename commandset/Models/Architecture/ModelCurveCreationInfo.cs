@@ -103,7 +103,7 @@ public class ModelCurveCreationInfo
     ///     Sketch plane ID for curve
     /// </summary>
     [JsonProperty("sketchPlaneId")]
-    public int SketchPlaneId { get; set; }
+    public long SketchPlaneId { get; set; }
 
     /// <summary>
     ///     Line style name

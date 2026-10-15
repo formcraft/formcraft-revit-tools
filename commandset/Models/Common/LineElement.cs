@@ -22,7 +22,7 @@ public class LineElement
     ///     类型Id
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     路径曲线

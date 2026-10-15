@@ -43,10 +43,10 @@ namespace RevitMCPCommandSet.Commands
                     tagTypeId = parameters["tagTypeId"].ToString();
                 }
 
-                List<int> roomIds = null;
+                List<long> roomIds = null;
                 if (parameters["roomIds"] != null)
                 {
-                    roomIds = parameters["roomIds"].ToObject<List<int>>();
+                    roomIds = parameters["roomIds"].ToObject<List<long>>();
                 }
 
                 // Set parameters for the event handler

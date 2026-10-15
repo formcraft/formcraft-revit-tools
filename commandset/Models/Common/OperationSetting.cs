@@ -73,7 +73,7 @@ namespace RevitMCPCommandSet.Models.Common
         /// 需要操作的元素ID列表
         /// </summary>
         [JsonProperty("elementIds")]
-        public List<int> ElementIds = new List<int>();
+        public List<long> ElementIds = new List<long>();
 
         /// <summary>
         /// 需要执行的动作，存储ElementOperationType枚举的string类型的值

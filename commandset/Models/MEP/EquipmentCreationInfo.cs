@@ -131,7 +131,7 @@ public class EquipmentCreationInfo
     ///     Equipment type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; }
+    public long TypeId { get; set; }
 
     /// <summary>
     ///     Is electrical connected

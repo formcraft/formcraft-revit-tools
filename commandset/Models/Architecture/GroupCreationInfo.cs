@@ -35,7 +35,7 @@ public class GroupCreationInfo
     /// </summary>
     public GroupCreationInfo()
     {
-        ElementIds = new List<int>();
+        ElementIds = new List<long>();
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class GroupCreationInfo
     ///     Element IDs to include in the group
     /// </summary>
     [JsonProperty("elementIds")]
-    public List<int> ElementIds { get; set; }
+    public List<long> ElementIds { get; set; }
 }
 
 /// <summary>
@@ -60,7 +60,7 @@ public class GroupInstanceInfo
     ///     Group type ID to place
     /// </summary>
     [JsonProperty("groupTypeId")]
-    public int GroupTypeId { get; set; }
+    public long GroupTypeId { get; set; }
 
     /// <summary>
     ///     Insertion point for the group (millimeters)
@@ -96,13 +96,13 @@ public class GroupResult
     ///     Group instance ID
     /// </summary>
     [JsonProperty("groupId")]
-    public int GroupId { get; set; }
+    public long GroupId { get; set; }
 
     /// <summary>
     ///     Group type ID
     /// </summary>
     [JsonProperty("groupTypeId")]
-    public int GroupTypeId { get; set; }
+    public long GroupTypeId { get; set; }
 
     /// <summary>
     ///     Group name

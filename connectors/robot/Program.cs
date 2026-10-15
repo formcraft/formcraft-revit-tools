@@ -17,7 +17,7 @@ namespace Formcraft.Robot
         public static int Main(string[] args)
         {
             JObject input;
-            try { input = JObject.Parse(Console.In.ReadToEnd() is string s && s.Trim().Length > 0 ? s : "{}"); }
+            try { string text = Console.In.ReadToEnd().TrimStart('\uFEFF').Trim(); input = JObject.Parse(text.Length > 0 ? text : "{}"); } // PowerShell pipes add a BOM
             catch (Exception e) { return Reply(new JObject { ["error"] = "The input isn't JSON: " + e.Message }, 2); }
             try
             {

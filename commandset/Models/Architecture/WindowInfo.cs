@@ -105,7 +105,7 @@ public class WindowInfo
     ///     Window type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     Window frame material

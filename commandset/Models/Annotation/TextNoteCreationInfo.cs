@@ -68,13 +68,13 @@ public class TextNoteCreationInfo
     ///     Text note type ID
     /// </summary>
     [JsonProperty("textNoteTypeId")]
-    public int TextNoteTypeId { get; set; } = -1;
+    public long TextNoteTypeId { get; set; } = -1;
 
     /// <summary>
     ///     View ID - view to create text note in
     /// </summary>
     [JsonProperty("viewId")]
-    public int ViewId { get; set; } = -1;
+    public long ViewId { get; set; } = -1;
 
     /// <summary>
     ///     Text horizontal alignment (Left=0, Center=1, Right=2)

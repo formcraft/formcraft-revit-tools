@@ -54,7 +54,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
     /// <summary>
     ///     Result of the execution
     /// </summary>
-    public AIResult<List<int>> Result { get; private set; }
+    public AIResult<List<long>> Result { get; private set; }
 
     #endregion
 
@@ -79,7 +79,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
         _uiApp = app;
         try
         {
-            var createdDimensionIds = new List<int>();
+            var createdDimensionIds = new List<long>();
 
             // Process each dimension in the list
             foreach (var dimInfo in DimensionsToCreate)
@@ -190,7 +190,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
                             // Apply additional parameters
                             ApplyDimensionParameters(dimension, dimInfo);
 
-                            createdDimensionIds.Add(dimension.Id.GetIntValue());
+                            createdDimensionIds.Add(dimension.Id.GetValue());
                         }
 
                         transaction.Commit();
@@ -204,7 +204,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
             }
 
             // Set successful result
-            Result = new AIResult<List<int>>
+            Result = new AIResult<List<long>>
             {
                 Success = true,
                 Message = $"Successfully created {createdDimensionIds.Count} dimensions. ElementIds saved in Response.",
@@ -214,11 +214,11 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
         catch (Exception ex)
         {
             // Set error result
-            Result = new AIResult<List<int>>
+            Result = new AIResult<List<long>>
             {
                 Success = false,
                 Message = $"Error creating dimensions: {ex.Message}",
-                Response = new List<int>()
+                Response = new List<long>()
             };
             TaskDialog.Show("Error", $"Error creating dimensions: {ex.Message}");
         }

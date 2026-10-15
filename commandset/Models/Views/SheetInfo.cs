@@ -58,5 +58,5 @@ public class SheetInfo
     ///     Title block ID
     /// </summary>
     [JsonProperty("titleBlockId")]
-    public int TitleBlockId { get; set; }
+    public long TitleBlockId { get; set; }
 }

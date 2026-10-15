@@ -37,7 +37,7 @@ public class ZoneCreationInfo
     public ZoneCreationInfo()
     {
         Location = new JZPoint(0, 0, 0);
-        RoomIds = new List<int>();
+        RoomIds = new List<long>();
         Options = new Dictionary<string, object>();
     }
 
@@ -57,7 +57,7 @@ public class ZoneCreationInfo
     ///     List of room IDs to add to this zone
     /// </summary>
     [JsonProperty("roomIds")]
-    public List<int> RoomIds { get; set; }
+    public List<long> RoomIds { get; set; }
 
     /// <summary>
     ///     Zone color (RGB hex code)

@@ -30,7 +30,7 @@ namespace RevitMCPCommandSet.Models.Common
         /// 注意：此过滤器仅适用于元素实例，不适用于类型元素。
         /// </summary>
         [JsonProperty("filterFamilySymbolId")]
-        public int FilterFamilySymbolId { get; set; } = -1;
+        public long FilterFamilySymbolId { get; set; } = -1;
         /// <summary>
         /// 获取或设置是否包含元素类型（如墙类型、门类型等）
         /// </summary>

@@ -107,7 +107,7 @@ public class PipeCreationInfo
     ///     Pipe type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     Pipe material

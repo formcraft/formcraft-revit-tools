@@ -112,7 +112,7 @@ public class OpeningCreationInfo
     ///     Host element ID
     /// </summary>
     [JsonProperty("hostElementId")]
-    public int HostElementId { get; set; }
+    public long HostElementId { get; set; }
 
     /// <summary>
     ///     Width of the opening (mm)

@@ -22,7 +22,7 @@ public class SurfaceElement
     ///     类型Id
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     壳形轮廓边界

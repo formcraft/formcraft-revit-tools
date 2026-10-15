@@ -60,7 +60,7 @@ public class FloorInfo
     ///     Element ID
     /// </summary>
     [JsonProperty("elementId")]
-    public int ElementId { get; set; }
+    public long ElementId { get; set; }
 
     /// <summary>
     ///     Floor name
@@ -108,7 +108,7 @@ public class FloorInfo
     ///     Floor type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     Floor type name

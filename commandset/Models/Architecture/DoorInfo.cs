@@ -102,7 +102,7 @@ public class DoorInfo
     ///     Door type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; }
+    public long TypeId { get; set; }
 
     /// <summary>
     ///     Door material

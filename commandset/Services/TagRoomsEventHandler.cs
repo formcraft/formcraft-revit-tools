@@ -54,12 +54,12 @@ namespace RevitMCPCommandSet.Services
 
         private bool _useLeader;
         private string _tagTypeId;
-        private List<int> _roomIds;
+        private List<long> _roomIds;
 
         /// <summary>
         /// Set the tagging parameters
         /// </summary>
-        public void SetParameters(bool useLeader, string tagTypeId, List<int> roomIds = null)
+        public void SetParameters(bool useLeader, string tagTypeId, List<long> roomIds = null)
         {
             _useLeader = useLeader;
             _tagTypeId = tagTypeId;
@@ -372,7 +372,7 @@ namespace RevitMCPCommandSet.Services
         private FamilySymbol FindRoomTagType(Document doc)
         {
             // If specific tag type ID was specified, try to use it
-            if (!string.IsNullOrEmpty(_tagTypeId) && int.TryParse(_tagTypeId, out int id))
+            if (!string.IsNullOrEmpty(_tagTypeId) && long.TryParse(_tagTypeId, out long id))
             {
                 ElementId elementId = new ElementId(id);
                 Element element = doc.GetElement(elementId);

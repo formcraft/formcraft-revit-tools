@@ -22,7 +22,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
-        public AIResult<List<int>> Result { get; private set; }
+        public AIResult<List<long>> Result { get; private set; }
         public string _floorName = "常规 - ";
         public bool _structural = true;
         private List<string> _warnings = new List<string>();
@@ -41,11 +41,11 @@ namespace RevitMCPCommandSet.Services
 
             try
             {
-                var elementIds = new List<int>();
+                var elementIds = new List<long>();
                 _warnings.Clear();
                 foreach (var data in CreatedInfo)
                 {
-                    int requestedTypeId = data.TypeId;
+                    long requestedTypeId = data.TypeId;
                     // Step0 获取构件类型
                     BuiltInCategory builtInCategory = BuiltInCategory.INVALID;
                     Enum.TryParse(data.Category.Replace(".", "").Replace("BuiltInCategory", ""), true, out builtInCategory);
@@ -116,7 +116,7 @@ namespace RevitMCPCommandSet.Services
                                 }
                                 if (requestedTypeId != -1 && requestedTypeId != 0)
                                 {
-                                    _warnings.Add($"Requested floor typeId {requestedTypeId} not found. Defaulted to '{floorType.Name}' (ID: {floorType.Id.GetIntValue()})");
+                                    _warnings.Add($"Requested floor typeId {requestedTypeId} not found. Defaulted to '{floorType.Name}' (ID: {floorType.Id.GetValue()})");
                                 }
                             }
                             break;
@@ -136,7 +136,7 @@ namespace RevitMCPCommandSet.Services
                                 }
                                 if (requestedTypeId != -1 && requestedTypeId != 0)
                                 {
-                                    _warnings.Add($"Requested roof typeId {requestedTypeId} not found. Defaulted to '{roofType.Name}' (ID: {roofType.Id.GetIntValue()})");
+                                    _warnings.Add($"Requested roof typeId {requestedTypeId} not found. Defaulted to '{roofType.Name}' (ID: {roofType.Id.GetValue()})");
                                 }
                             }
                             break;
@@ -156,7 +156,7 @@ namespace RevitMCPCommandSet.Services
                                 }
                                 if (requestedTypeId != -1 && requestedTypeId != 0)
                                 {
-                                    _warnings.Add($"Requested ceiling typeId {requestedTypeId} not found. Defaulted to '{ceilingType.Name}' (ID: {ceilingType.Id.GetIntValue()})");
+                                    _warnings.Add($"Requested ceiling typeId {requestedTypeId} not found. Defaulted to '{ceilingType.Name}' (ID: {ceilingType.Id.GetValue()})");
                                 }
                             }
                             break;
@@ -208,7 +208,7 @@ namespace RevitMCPCommandSet.Services
                                 if (floor != null)
                                 {
                                     floor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM).Set(baseOffset);
-                                    elementIds.Add(floor.Id.GetIntValue());
+                                    elementIds.Add(floor.Id.GetValue());
                                 }
                                 break;
                             case BuiltInCategory.OST_Roofs:
@@ -234,7 +234,7 @@ namespace RevitMCPCommandSet.Services
                                     {
                                         offsetParam.Set(baseOffset);
                                     }
-                                    elementIds.Add(roof.Id.GetIntValue());
+                                    elementIds.Add(roof.Id.GetValue());
                                 }
                                 break;
                             case BuiltInCategory.OST_Ceilings:
@@ -255,7 +255,7 @@ namespace RevitMCPCommandSet.Services
                                     {
                                         ceilingOffsetParam.Set(baseOffset);
                                     }
-                                    elementIds.Add(ceiling.Id.GetIntValue());
+                                    elementIds.Add(ceiling.Id.GetValue());
                                 }
                                 break;
                             default:
@@ -270,7 +270,7 @@ namespace RevitMCPCommandSet.Services
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = true,
                     Message = message,
@@ -279,7 +279,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = false,
                     Message = $"创建面状构件时出错: {ex.Message}",

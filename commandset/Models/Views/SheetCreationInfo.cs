@@ -36,7 +36,7 @@ public class SheetCreationInfo
     public SheetCreationInfo()
     {
         Parameters = new Dictionary<string, object>();
-        RevisionIds = new List<int>();
+        RevisionIds = new List<long>();
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public class SheetCreationInfo
     ///     Title block type ID
     /// </summary>
     [JsonProperty("titleBlockTypeId")]
-    public int TitleBlockTypeId { get; set; }
+    public long TitleBlockTypeId { get; set; }
 
     /// <summary>
     ///     Title block family name
@@ -73,7 +73,7 @@ public class SheetCreationInfo
     ///     Revision IDs to apply to the sheet
     /// </summary>
     [JsonProperty("revisionIds")]
-    public List<int> RevisionIds { get; set; }
+    public List<long> RevisionIds { get; set; }
 
     /// <summary>
     ///     Additional parameters

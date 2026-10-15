@@ -58,7 +58,7 @@ public class ScheduleCreationInfo
     ///     Category ID for the schedule
     /// </summary>
     [JsonProperty("categoryId")]
-    public int CategoryId { get; set; }
+    public long CategoryId { get; set; }
 
     /// <summary>
     ///     Category name for the schedule
@@ -154,7 +154,7 @@ public class ScheduleFieldInfo
     ///     Parameter ID for the field
     /// </summary>
     [JsonProperty("parameterId")]
-    public int ParameterId { get; set; }
+    public long ParameterId { get; set; }
 
     /// <summary>
     ///     Parameter name for the field

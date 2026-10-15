@@ -42,13 +42,13 @@ public class ViewportCreationInfo
     ///     Sheet ID to place viewport on
     /// </summary>
     [JsonProperty("sheetId")]
-    public int SheetId { get; set; }
+    public long SheetId { get; set; }
 
     /// <summary>
     ///     View ID to place in viewport
     /// </summary>
     [JsonProperty("viewId")]
-    public int ViewId { get; set; }
+    public long ViewId { get; set; }
 
     /// <summary>
     ///     X position on sheet in millimeters
@@ -66,7 +66,7 @@ public class ViewportCreationInfo
     ///     Viewport type ID
     /// </summary>
     [JsonProperty("viewportTypeId")]
-    public int ViewportTypeId { get; set; }
+    public long ViewportTypeId { get; set; }
 
     /// <summary>
     ///     Whether to display the view title

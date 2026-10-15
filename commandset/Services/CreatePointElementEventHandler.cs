@@ -23,7 +23,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
-        public AIResult<List<int>> Result { get; private set; }
+        public AIResult<List<long>> Result { get; private set; }
         private List<string> _warnings = new List<string>();
 
         /// <summary>
@@ -40,11 +40,11 @@ namespace RevitMCPCommandSet.Services
 
             try
             {
-                var elementIds = new List<int>();
+                var elementIds = new List<long>();
                 _warnings.Clear();
                 foreach (var data in CreatedInfo)
                 {
-                    int requestedTypeId = data.TypeId;
+                    long requestedTypeId = data.TypeId;
 
                     // Step0 获取构件类型
                     BuiltInCategory builtInCategory = BuiltInCategory.INVALID;
@@ -209,7 +209,7 @@ namespace RevitMCPCommandSet.Services
                                 ElementTransformUtils.RotateElement(doc, instance.Id, rotationAxis, angleRadians);
                             }
 
-                            elementIds.Add(instance.Id.GetIntValue());
+                            elementIds.Add(instance.Id.GetValue());
                         }
 
                         transaction.Commit();
@@ -220,7 +220,7 @@ namespace RevitMCPCommandSet.Services
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = true,
                     Message = message,
@@ -229,7 +229,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = false,
                     Message = $"创建点状构件时出错: {ex.Message}",

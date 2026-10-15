@@ -22,7 +22,7 @@ public class PointElement
     ///     类型Id
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     定位点坐标
@@ -70,7 +70,7 @@ public class PointElement
     ///     显式宿主墙体ElementId，-1表示自动检测
     /// </summary>
     [JsonProperty("hostWallId")]
-    public int HostWallId { get; set; } = -1;
+    public long HostWallId { get; set; } = -1;
 
     /// <summary>
     ///     是否翻转门窗朝向

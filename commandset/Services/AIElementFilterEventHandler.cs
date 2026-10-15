@@ -387,7 +387,7 @@ namespace RevitMCPCommandSet.Services
 
                 ElementInstanceInfo elementInfo = new ElementInstanceInfo();        //创建存储元素完整信息的自定义类
                 // ID
-                elementInfo.Id = element.Id.GetIntValue();
+                elementInfo.Id = element.Id.GetValue();
                 // UniqueId
                 elementInfo.UniqueId = element.UniqueId;
                 // 类型名称
@@ -399,10 +399,10 @@ namespace RevitMCPCommandSet.Services
                 // 内置类别
                 elementInfo.BuiltInCategory = Enum.GetName(typeof(BuiltInCategory), element.Category.Id.GetIntValue());
                 // 类型Id
-                elementInfo.TypeId = element.GetTypeId().GetIntValue();
+                elementInfo.TypeId = element.GetTypeId().GetValue();
                 //所属房间Id  
                 if (element is FamilyInstance instance)
-                    elementInfo.RoomId = instance.Room?.Id.GetIntValue() ?? -1;
+                    elementInfo.RoomId = instance.Room?.Id.GetValue() ?? -1;
                 // 标高
                 elementInfo.Level = GetElementLevel(doc, element);
                 // 最大包围盒
@@ -439,7 +439,7 @@ namespace RevitMCPCommandSet.Services
         {
             ElementTypeInfo typeInfo = new ElementTypeInfo();
             // Id
-            typeInfo.Id = elementType.Id.GetIntValue();
+            typeInfo.Id = elementType.Id.GetValue();
             // UniqueId
             typeInfo.UniqueId = elementType.UniqueId;
             // 类型名称
@@ -471,7 +471,7 @@ namespace RevitMCPCommandSet.Services
                     return null;
                 PositioningElementInfo info = new PositioningElementInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -526,7 +526,7 @@ namespace RevitMCPCommandSet.Services
                 SpatialElement spatialElement = element as SpatialElement;
                 SpatialElementInfo info = new SpatialElementInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -589,7 +589,7 @@ namespace RevitMCPCommandSet.Services
 
                 ViewInfo info = new ViewInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -610,7 +610,7 @@ namespace RevitMCPCommandSet.Services
                     Level level = viewPlan.GenLevel;
                     info.AssociatedLevel = new LevelInfo
                     {
-                        Id = level.Id.GetIntValue(),
+                        Id = level.Id.GetValue(),
                         Name = level.Name,
                         Height = level.Elevation * 304.8 // 转换为mm
                     };
@@ -657,7 +657,7 @@ namespace RevitMCPCommandSet.Services
                     return null;
                 AnnotationInfo info = new AnnotationInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -734,7 +734,7 @@ namespace RevitMCPCommandSet.Services
                     return null;
                 GroupOrLinkInfo info = new GroupOrLinkInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -805,7 +805,7 @@ namespace RevitMCPCommandSet.Services
                     return null;
                 ElementBasicInfo basicInfo = new ElementBasicInfo
                 {
-                    Id = element.Id.GetIntValue(),
+                    Id = element.Id.GetValue(),
                     UniqueId = element.UniqueId,
                     Name = element.Name,
                     FamilyName = element?.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM)?.AsValueString(),
@@ -933,7 +933,7 @@ namespace RevitMCPCommandSet.Services
                 {
                     LevelInfo levelInfo = new LevelInfo
                     {
-                        Id = level.Id.GetIntValue(),
+                        Id = level.Id.GetValue(),
                         Name = level.Name,
                         Height = level.Elevation * 304.8
                     };
@@ -1101,7 +1101,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// Id
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Id
         /// </summary>
@@ -1109,7 +1109,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 类型Id
         /// </summary>
-        public int TypeId { get; set; }
+        public long TypeId { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -1129,7 +1129,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 所属房间Id
         /// </summary>
-        public int RoomId { get; set; }
+        public long RoomId { get; set; }
         /// <summary>
         /// 所属标高名称
         /// </summary>
@@ -1153,7 +1153,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Id
         /// </summary>
@@ -1189,7 +1189,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1239,7 +1239,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1298,7 +1298,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1372,7 +1372,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1427,7 +1427,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1486,7 +1486,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 元素ID
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 元素唯一ID
         /// </summary>
@@ -1539,7 +1539,7 @@ namespace RevitMCPCommandSet.Services
     /// </summary>
     public class LevelInfo
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public double Height { get; set; }
     }
