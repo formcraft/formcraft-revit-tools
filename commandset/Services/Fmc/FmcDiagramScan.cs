@@ -789,18 +789,40 @@ namespace RevitMCPCommandSet.Services.Fmc
         };
 
         /// <summary>
-        /// Node kind from the category and the family, type and instance names: in Electrical Equipment a gateway, a drive
-        /// (VFD, drive, starter) or a controller (controller, DDC, BMS, head end); elsewhere too an actuator (actuator,
-        /// motorised, solenoid) or a sensor (sensor, detector, thermostat, switch, meter); else a device.
+        /// Name rules for the controls network, first match wins (lower-case keys matched in the family, type and instance
+        /// names). Kit families such as FMC_M_DataDevice_Gateway, FMC_E_EQ_Timer and FMC_E_EQ_LightingControlPanel live
+        /// in Data Devices, Lighting Devices and other categories, not only Electrical Equipment.
         /// </summary>
-        private static string ControlsKind(Document doc, Element e)
+        private static readonly (string kind, string[] keys)[] ControlsNameRules =
+        {
+            ("gateway", new[] { "gateway" }),
+            ("controller", new[] { "controller", "ddc", "bms", "headend", "head end", "head_end", "head-end",
+                                   "lightingcontrolpanel", "lighting control panel", "pumpcontroller", "pump controller", "timer" }),
+            ("drive", new[] { "vfd", "motorstarter", "motor starter", "starter", "drive" }),
+            ("actuator", new[] { "actuator", "motorisedvalve", "motorizedvalve", "motorised", "motorized", "picv", "damper", "solenoid" }),
+        };
+
+        private static string NameRuleKind(string words)
+        {
+            foreach (var (kind, keys) in ControlsNameRules)
+                if (Has(words, keys)) return kind;
+            return null;
+        }
+
+        /// <summary>
+        /// Node kind from the family, type and instance names. An element in any scanned category with a non-empty
+        /// FMC_Controller_ID (on itself or its type), or any Electrical Equipment, takes the name rules (gateway,
+        /// controller, drive, actuator); with an id and no rule it is a sensor. Otherwise an actuator (actuator,
+        /// motorised, solenoid) or a sensor (sensor, detector, thermostat, switch, meter) by name; else a device.
+        /// </summary>
+        private static string ControlsKind(Document doc, Element e, bool hasControllerId)
         {
             string w = Words(doc, e);
-            if (CatKey(e) == "OST_ElectricalEquipment")
+            if (hasControllerId || CatKey(e) == "OST_ElectricalEquipment")
             {
-                if (Has(w, "gateway")) return "gateway";
-                if (Has(w, "vfd", "drive", "starter")) return "drive";
-                if (Has(w, "controller", "ddc", "bms", "headend", "head end", "head_end", "head-end")) return "controller";
+                string k = NameRuleKind(w);
+                if (k != null) return k;
+                if (hasControllerId) return "sensor";
             }
             if (Has(w, "actuator", "motorised", "motorized", "solenoid")) return "actuator";
             if (Has(w, "sensor", "detector", "thermostat", "switch", "meter")) return "sensor";
@@ -827,8 +849,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 Parameter cid = Shared(doc, e, "FMC_Controller_ID");
                 if (cid == null) continue; // the kit parameter isn't on this element
-                string kind = ControlsKind(doc, e);
-                JToken id = Text(cid), pointType = Text(Shared(doc, e, "FMC_Point_Type"));
+                JToken id = Text(cid);
+                string kind = ControlsKind(doc, e, !IsNull(id) && id.ToString().Trim().Length > 0);
+                JToken pointType = Text(Shared(doc, e, "FMC_Point_Type"));
                 bool network = kind == "controller" || kind == "gateway";
                 if (!network && IsNull(id) && IsNull(pointType)) continue; // carries the parameter but takes no part
                 JObject n = NodeOf(c, K, e, kind);
