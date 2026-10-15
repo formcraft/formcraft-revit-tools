@@ -74,7 +74,7 @@ namespace Formcraft.Shell.Tests
 
             await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
             await Assert.That(registry.Sections.Count()).IsEqualTo(21);
-            await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,Tag Tidy");
+            await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,View range,Tag Tidy");
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Formcraft.Shell.Tests
 
             await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
             await Assert.That(engineer).IsEqualTo("Brief,Systems,Structural,Casework,Ceilings");
-            await Assert.That(tools).IsEqualTo("Touch,Section Box,Tag Tidy");
+            await Assert.That(tools).IsEqualTo("Touch,Section Box,View range,Tag Tidy");
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace Formcraft.Shell.Tests
                 return (p.Tools, p.Tag("Sheets"), p.Tag("Annotate"));
             });
 
-            await Assert.That(tools).IsEqualTo("Section Box");
+            await Assert.That(tools).IsEqualTo("Section Box,View range");
             await Assert.That(sheetsTag).IsNull();
             await Assert.That(annotateTag).IsNull();
         }

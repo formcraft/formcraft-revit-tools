@@ -214,7 +214,7 @@ namespace Formcraft.Shell.ViewModels
             OpenAdminCommand = new RelayCommand(() => { if (IsAdmin) Open(ShellPage.Admin); });
             HelpCommand = new RelayCommand(() => Status = "Help: opens this section of the guide and the first-run tour.");
             // Board flow/PaneFlowTouch: Touch in the quick tools strip opens Settings › Flow › Touch.
-            // U22: Section box, Align (Sheet Layout) and Tag Tidy run in Revit; each asks first and is one Undo.
+            // U22: Section box, View range, Align (Sheet Layout) and Tag Tidy run in Revit; each asks first and is one Undo.
             var flowTools = flow ?? new MockFlowTools();
             QuickToolCommand = new RelayCommand(p =>
             {
@@ -316,6 +316,7 @@ namespace Formcraft.Shell.ViewModels
         public static string FlowHint(string tool) => tool switch
         {
             "Section Box" or "Section box" => "on a floor plan, drag the area; your own 3D view opens with the box.",
+            "View range" => "on a floor, ceiling or structural plan, drag an area (or click its corners), then set its view range here.",
             "Align" or "Sheet Layout" => "on a sheet, select the viewports (or none for all) and pick how to line them up.",
             "Tag Tidy" => "select the tags in the view, then pick how to tidy them.",
             _ => "runs in Revit.",
@@ -348,9 +349,9 @@ namespace Formcraft.Shell.ViewModels
                                                    : "AI connection off: click to open Connect and switch it on (or Core › Connect AI on the ribbon)";
         public bool IsAdmin => _licence.Current.Account?.IsAdmin == true;
 
-        /// <summary>Touch, Section Box and Tag Tidy: only when Flow is on the licence.</summary>
+        /// <summary>Touch, Section Box, View range and Tag Tidy: only when Flow is on the licence.</summary>
         public bool ShowQuickTools => _licence.Current.SignedIn && _licence.Current.For(FmcModule.Flow).CanUse && QuickTools.Count > 0;
-        /// <summary>Quick tools whose Flow part is on (Touch, Section Box, Tag Tidy).</summary>
+        /// <summary>Quick tools whose Flow part is on (Touch, Section Box, View range, Tag Tidy).</summary>
         public ObservableCollection<string> QuickTools { get; } = new ObservableCollection<string>();
 
         /// <summary>Raised to open the Log file window (board core/UI_Log); the view opens it.</summary>

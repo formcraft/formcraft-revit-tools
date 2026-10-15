@@ -72,7 +72,7 @@ namespace Formcraft.Shell.Tests
 
             await Assert.That(signedOut).IsFalse();
             await Assert.That(withFlow).IsTrue();
-            await Assert.That(string.Join(", ", OnSta(p => p.Vm.QuickTools))).IsEqualTo("Touch, Section Box, Tag Tidy");
+            await Assert.That(string.Join(", ", OnSta(p => p.Vm.QuickTools))).IsEqualTo("Touch, Section Box, View range, Tag Tidy");
         }
 
         [Test]
