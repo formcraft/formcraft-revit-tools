@@ -15,6 +15,8 @@ namespace Formcraft.Shell.ViewModels
         public string Title { get; }
         public string Subtitle { get; }
         public ObservableCollection<SettingsGroup> Groups { get; } = new ObservableCollection<SettingsGroup>();
+        /// <summary>Rows above the groups, outside a card: a section's step bar (boards CW_Pane, CL_Pane).</summary>
+        public ObservableCollection<SettingItem> Top { get; } = new ObservableCollection<SettingItem>();
         public virtual IEnumerable<FooterAction> Footer => Enumerable.Empty<FooterAction>();
         /// <summary>Called when the section opens (load what it shows).</summary>
         public virtual void Opened() { }

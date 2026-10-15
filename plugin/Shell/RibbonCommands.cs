@@ -83,6 +83,8 @@ namespace revit_mcp_plugin.Shell
     [Transaction(TransactionMode.Manual)] public class TogglePart_ModelSystems : PartCommand { public TogglePart_ModelSystems() : base("model.systems") { } }
     [Transaction(TransactionMode.Manual)] public class TogglePart_ModelStructural : PartCommand { public TogglePart_ModelStructural() : base("model.structural") { } }
     [Transaction(TransactionMode.Manual)] public class TogglePart_ModelQuantities : PartCommand { public TogglePart_ModelQuantities() : base("model.quantities") { } }
+    [Transaction(TransactionMode.Manual)] public class TogglePart_ModelCasework : PartCommand { public TogglePart_ModelCasework() : base("model.casework") { } }
+    [Transaction(TransactionMode.Manual)] public class TogglePart_ModelCeilings : PartCommand { public TogglePart_ModelCeilings() : base("model.ceilings") { } }
     [Transaction(TransactionMode.Manual)] public class TogglePart_BuildViews : PartCommand { public TogglePart_BuildViews() : base("build.views") { } }
     [Transaction(TransactionMode.Manual)] public class TogglePart_BuildBoq : PartCommand { public TogglePart_BuildBoq() : base("build.boq") { } }
     [Transaction(TransactionMode.Manual)] public class TogglePart_BuildPackage : PartCommand { public TogglePart_BuildPackage() : base("build.package") { } }
@@ -111,6 +113,8 @@ namespace revit_mcp_plugin.Shell
             ["model.systems"] = typeof(TogglePart_ModelSystems),
             ["model.structural"] = typeof(TogglePart_ModelStructural),
             ["model.quantities"] = typeof(TogglePart_ModelQuantities),
+            ["model.casework"] = typeof(TogglePart_ModelCasework),
+            ["model.ceilings"] = typeof(TogglePart_ModelCeilings),
             ["build.views"] = typeof(TogglePart_BuildViews),
             ["build.boq"] = typeof(TogglePart_BuildBoq),
             ["build.package"] = typeof(TogglePart_BuildPackage),

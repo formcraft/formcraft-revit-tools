@@ -73,7 +73,7 @@ namespace Formcraft.Shell.Tests
             var registry = SectionRegistry.LoadEmbedded();
 
             await Assert.That(string.Join(",", registry.Groups.Select(g => g.Name))).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
-            await Assert.That(registry.Sections.Count()).IsEqualTo(19);
+            await Assert.That(registry.Sections.Count()).IsEqualTo(21);
             await Assert.That(string.Join(",", registry.QuickTools.Select(t => t.Name))).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
@@ -86,7 +86,7 @@ namespace Formcraft.Shell.Tests
             // design/generators/gen_panes.py parts(...)
             await Assert.That(Parts(FmcModule.Manage)).IsEqualTo("Setup,Drawings,Team,Check");
             await Assert.That(Parts(FmcModule.Flow)).IsEqualTo("Touch,Sheet Layout,Tags,3D");
-            await Assert.That(Parts(FmcModule.Model)).IsEqualTo("Systems,Structural,Quantities");
+            await Assert.That(Parts(FmcModule.Model)).IsEqualTo("Systems,Structural,Quantities,Casework,Ceilings");
             await Assert.That(Parts(FmcModule.Build)).IsEqualTo("Views on the model,BoQ,Data package");
         }
 
@@ -124,7 +124,7 @@ namespace Formcraft.Shell.Tests
             });
 
             await Assert.That(groups).IsEqualTo("Setup,Drawings,Team,Check,Engineer,Build,Ask");
-            await Assert.That(engineer).IsEqualTo("Brief,Systems,Structural");
+            await Assert.That(engineer).IsEqualTo("Brief,Systems,Structural,Casework,Ceilings");
             await Assert.That(tools).IsEqualTo("Touch,Section Box,Tag Tidy");
         }
 
@@ -157,8 +157,8 @@ namespace Formcraft.Shell.Tests
                 return (a, p.Sections("Engineer"));
             });
 
-            await Assert.That(afterSystems).IsEqualTo("Brief,Structural");
-            await Assert.That(afterStructural).IsEqualTo("Brief");
+            await Assert.That(afterSystems).IsEqualTo("Brief,Structural,Casework,Ceilings");
+            await Assert.That(afterStructural).IsEqualTo("Brief,Casework,Ceilings");
         }
 
         [Test]
@@ -254,7 +254,7 @@ namespace Formcraft.Shell.Tests
             var (noParts, body) = OnSta(() =>
             {
                 var p = new Pane((FmcModule.Manage, ModuleStatus.Active), (FmcModule.Model, ModuleStatus.Active), (FmcModule.Build, ModuleStatus.Active));
-                foreach (var id in new[] { "manage.setup", "manage.drawings", "manage.team", "manage.check", "model.systems", "model.structural",
+                foreach (var id in new[] { "manage.setup", "manage.drawings", "manage.team", "manage.check", "model.systems", "model.structural", "model.casework", "model.ceilings",
                                            "build.views", "build.boq", "build.package" })
                     p.Settings.SetPart(id, false);
                 // Engineer › Brief and Ask have no part, so they stay: everything that can be switched off is off.

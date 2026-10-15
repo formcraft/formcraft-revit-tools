@@ -124,7 +124,8 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
+                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null)
         {
             _licence = licence;
             _connection = connection;
@@ -186,6 +187,11 @@ namespace Formcraft.Shell.ViewModels
             Build = new BuildPage(build ?? new MockBuildTools(), Project, settings, s => Status = s, ShowDialog, () => OpenWorkspaceRequested?.Invoke(this, EventArgs.Empty));
             _hostSections["Build"] = Build;
             BuildWorkspace = new BuildWorkspacePage(Build, settings);
+            // Engineer › Casework and Ceilings (CW3, CL3): questions from their Ask box open Ask with the context.
+            Casework = new CaseworkPage(casework ?? new MockCaseworkTools(), Project, picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog, AskFromSection);
+            _hostSections["Casework"] = Casework;
+            Ceilings = new CeilingsPage(ceilings ?? new MockCeilingTools(), Project, picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog, AskFromSection);
+            _hostSections["Ceilings"] = Ceilings;
             Ask = new AskPage(ask ?? new MockAskTools(), s => Status = s);
             _hostSections["Ask"] = Ask;
             _hostSections["QA"] = Qa;
@@ -431,8 +437,23 @@ namespace Formcraft.Shell.ViewModels
         public BuildPage Build { get; }
         public BuildWorkspacePage BuildWorkspace { get; }
 
+        /// <summary>Engineer › Casework: from a room to cabinets and a workshop pack (CW3, fmc_casework).</summary>
+        public CaseworkPage Casework { get; }
+
+        /// <summary>Engineer › Ceilings: designs, checks, set-out and BoQ for a room (CL3, fmc_ceiling).</summary>
+        public CeilingsPage Ceilings { get; }
+
         /// <summary>Ask Claude in the pane: read-only questions about the open model (U27).</summary>
         public AskPage Ask { get; }
+
+        /// <summary>A section's Ask box: opens Ask and sends the question with the section's context.</summary>
+        private void AskFromSection(string question)
+        {
+            var section = Groups.SelectMany(g => g.Sections).FirstOrDefault(s => s.Name == "Ask");
+            if (section == null) { Status = "Ask isn't shown: switch it on in Settings."; return; }
+            SelectSection(section);
+            _ = Ask.Ask(question);
+        }
 
         /// <summary>"ask …" or "? …" in the search box: opens Ask and sends the question (the old command box's syntax).</summary>
         public bool RunSearchCommand(string text)

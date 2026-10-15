@@ -33,6 +33,8 @@ ICONS = {
     "Settings": "M4 6h9 M17 6h3 M4 12h3 M11 12h9 M4 18h11 M19 18h1 M15 4v4 M9 10v4 M17 16v4",
     "Admin": "M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z M12 2.5v3 M12 18.5v3 M2.5 12h3 M18.5 12h3 M5.3 5.3l2.1 2.1 M16.6 16.6l2.1 2.1 M5.3 18.7l2.1-2.1 M16.6 7.4l2.1-2.1",
     "Brief": "M15 4h2a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2 M9 3h6v3H9z M9 11h6 M9 15h4",
+    "Casework": "M4 4h16v16H4z M4 10h16 M12 10v10 M10 7h4 M9.5 14v2 M14.5 14v2",
+    "Ceilings": "M3 4h18 M5 4v4h14V4 M12 8v5 M9 16a3 3 0 0 1 6 0z",
     "Claude": "M12 3v4 M12 17v4 M3 12h4 M17 12h4 M6 6l2.5 2.5 M15.5 15.5L18 18 M6 18l2.5-2.5 M15.5 8.5L18 6",
 }
 NAV = ["Connect", "Project", "Templates", "Families", "Sheets", "Annotate", "Review", "Workshare", "QA", "Issue", "Links", "Rules", "Reports", "Scripts"]
