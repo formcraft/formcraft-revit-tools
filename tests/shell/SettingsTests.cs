@@ -69,7 +69,7 @@ namespace Formcraft.Shell.Tests
 
         [Test]
         [Arguments("General", "Modules | General · you | General · kit | General · pane | General · start-of-day card and notifications | General · defaults, privacy, updates | Module tabs | Author's considerations")]
-        [Arguments("Manage", "Manage · parts in the pane | Manage · ribbon buttons | Manage · sync and start-of-day card | Manage · QA and issues | Manage · materials | Works with | Author's considerations")]
+        [Arguments("Manage", "Manage · parts in the pane | Manage · ribbon buttons | Manage · sync and start-of-day card | Manage · QA and issues | Manage · materials | Manage · keep FMC data filled | Works with | Author's considerations")]
         [Arguments("Flow", "Flow · parts in the pane | Flow · ribbon buttons | Flow · touch | Flow · sheet layout and tags | Flow · 3D and shortcuts | Works with | Author's considerations")]
         [Arguments("Model", "Model · parts in the pane | Model · ribbon buttons | Model · systems | Model · structural | Model · enrich and links | Works with | Author's considerations")]
         [Arguments("Build", "Build · parts in the pane | Build · ribbon buttons | Build · views on the model | Build · BoQ and rates | Build · 4D and web app | Works with | Author's considerations")]

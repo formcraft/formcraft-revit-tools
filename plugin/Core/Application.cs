@@ -17,6 +17,15 @@ namespace revit_mcp_plugin.Core
             catch (Exception) { /* touch is optional; Settings › Flow says it didn't start */ }
 #endif
             Shell.ShellHost.Register(application);
+            // Keep FMC data filled (docs/LIVE_DATA.md): registered for every model as optional; it only acts in project
+            // models whose BIM Manager switched it on (LiveDataSwitch), checked inside the updater.
+            try
+            {
+                LiveDataUpdater.Register(application, () =>
+                    Shell.ShellHost.Settings?.Get(global::Formcraft.Shell.Services.SettingKeys.KitFolder)
+                    ?? global::Formcraft.Shell.ViewModels.WelcomeViewModel.DefaultKitFolder);
+            }
+            catch (Exception) { /* the add-in works without it; Settings › Manage shows the switch either way */ }
             return Result.Succeeded;
         }
 
