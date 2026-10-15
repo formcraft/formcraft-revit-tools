@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
-import { buildReport, openProblems, saveProblems } from "./doc.js";
+import { buildReport, hoursSince, idleLimit, markStale, openProblems, saveProblems } from "./doc.js";
 
 const cfg: GuardConfig = {
   ...DEFAULT_CONFIG,
@@ -35,4 +35,23 @@ test("the build report: same ops give the same hash", () => {
   assert.equal(a.kit, "2.2 r4");
   assert.equal(a.result.parameters, 2);
   assert.equal(a.source, "Metric Generic Model.rft");
+});
+
+test("F-046: sessions idle longer than the guard's limit (default 12 h) are marked stale", () => {
+  assert.equal(DEFAULT_CONFIG.session_idle_hours, 12);
+  assert.equal(idleLimit(DEFAULT_CONFIG), 12);
+  assert.equal(idleLimit({ session_idle_hours: 4 }), 4);
+  assert.equal(idleLimit({ session_idle_hours: -1 }), 12, "a bad value falls back to 12");
+  assert.equal(idleLimit({ session_idle_hours: "x" as unknown as number }), 12);
+
+  const now = new Date("2026-10-15T12:00:00Z");
+  const marked = markStale([
+    { id: "a", opened: "2026-10-14T11:31:00Z", used: "2026-10-14T11:40:00Z" }, // the audit's oldest: a day idle
+    { id: "b", opened: "2026-10-15T11:00:00Z" },                               // older ledger entry: opened only
+    { id: "c", idle_minutes: 12 * 60 + 6 },                                    // the add-in's own count wins
+    { id: "d" },                                                               // nothing known: never stale
+  ], now, 12);
+  assert.deepEqual(marked.map((s) => [s.id, s.idle_hours, s.stale]), [["a", 24.3, true], ["b", 1, false], ["c", 12.1, true], ["d", null, false]]);
+  assert.equal(marked[0].stale_after_hours, 12);
+  assert.equal(hoursSince("not a time", now), null);
 });

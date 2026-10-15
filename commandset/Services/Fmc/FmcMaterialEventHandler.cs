@@ -58,8 +58,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         // ------------------------------------------------------------------ facts
 
-        /// <summary>Materials used by elements, compound layers, type and category material settings.</summary>
-        private static HashSet<long> UsedMaterials(Document doc)
+        /// <summary>Materials used by elements, compound layers, type and category material settings (also the template audit's, F-044).</summary>
+        internal static HashSet<long> UsedMaterials(Document doc)
         {
             var used = new HashSet<long>();
             foreach (Element e in new FilteredElementCollector(doc).WhereElementIsNotElementType())
@@ -80,7 +80,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             return used;
         }
 
-        private static IEnumerable<string> Textures(Document doc, Material m)
+        internal static IEnumerable<string> Textures(Document doc, Material m)
         {
             var paths = new List<string>();
             if (!(doc.GetElement(m.AppearanceAssetId) is AppearanceAssetElement aae)) return paths;

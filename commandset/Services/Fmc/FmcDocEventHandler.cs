@@ -11,8 +11,9 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// <summary>
     /// fmc_doc sessions (plan B1a) on the Revit main thread. A session is a background document: new from a template the
     /// server checked (.rft), or a family file in staging. It never shows in Revit's window and is never a project or
-    /// workshared model. open, report, screenshot, save (to a path the server checked) and close; sessions idle for 30
-    /// minutes are closed without saving.
+    /// workshared model. open, report, screenshot, save (to a path the server checked) and close. A session is never
+    /// closed silently (F-046): background reports how long each has been idle, the server marks the ones idle longer
+    /// than the guard's session_idle_hours as stale, and fmc_recipe cleanup closes them without saving, after a dry run.
     /// </summary>
     public class FmcDocEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
@@ -27,7 +28,6 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         private static readonly Dictionary<string, Session> Sessions = new Dictionary<string, Session>();
-        private static readonly TimeSpan Idle = TimeSpan.FromMinutes(30);
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
 
         public string Action { get; set; } = "";
@@ -48,7 +48,6 @@ namespace RevitMCPCommandSet.Services.Fmc
             try
             {
                 FmcSharedParams.RestoreIfPending(app.Application);
-                CloseIdle(app);
                 switch (Action)
                 {
                     case "open": Result = Open(app); break;
@@ -80,16 +79,6 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public string GetName() => "FMC doc";
 
-        private static void CloseIdle(UIApplication app)
-        {
-            foreach (var id in Sessions.Where(s => DateTime.Now - s.Value.Used > Idle).Select(s => s.Key).ToList())
-            {
-                Session s = Sessions[id];
-                try { if (CanClose(app, s)) s.Doc.Close(false); } catch (Exception) { /* already gone */ }
-                Sessions.Remove(id);
-            }
-        }
-
         /// <summary>Only background documents this tool opened itself are closed; never the person's window (F-023).</summary>
         private static bool CanClose(UIApplication app, Session s)
         {
@@ -107,7 +96,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (!Sessions.TryGetValue(id, out Session s) || !s.Doc.IsValidObject)
             {
                 Sessions.Remove(id);
-                throw new InvalidOperationException($"No open session '{id}' (closed, idle for 30 minutes, or Revit restarted). Open it again.");
+                throw new InvalidOperationException($"No open session '{id}' (closed, closed by fmc_recipe cleanup, or Revit restarted). Open it again.");
             }
             s.Used = DateTime.Now;
             return s;
@@ -237,6 +226,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 {
                     ["session"] = kv.Key, ["title"] = valid ? s.Doc.Title : "", ["source"] = s.Source, ["valid"] = valid,
                     ["opened"] = s.Opened.ToString("s"), ["used"] = s.Used.ToString("s"), ["closable"] = closable,
+                    // F-046: the server marks a session idle longer than the guard's limit as stale
+                    ["idle_minutes"] = Math.Round((DateTime.Now - s.Used).TotalMinutes),
                     ["reason"] = !valid ? "already closed" : closable ? "opened by a Formcraft session, not in a Revit window"
                         : s.Borrowed ? "the person had this file open: it stays (F-023)" : "shown in a Revit window: it stays",
                 });

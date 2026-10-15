@@ -4,7 +4,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { gateA, parseRecipe, releasePath, roleOf, stagingPath, typeValues } from "./recipes.js";
+import { CATEGORY_CHECK, SIDES_CHECK, categoryLine, gateA, nameToken, parseRecipe, recordSides, releasePath, roleOf, stagingPath, typeValues } from "./recipes.js";
+import { checkFamily, familyKind, nameCheck } from "./library.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const heater = fs.readFileSync(path.join(REPO, "tests", "doc", "FMC_P_MechEq_WaterHeater_Instant.ops.json"), "utf8");
@@ -23,6 +24,8 @@ const door = (o: object = {}) => JSON.stringify({
   ...o,
 });
 const passInspect = { category: "Doors", checks: [{ check: "Name follows the kit", state: "pass", detail: "ok" }] };
+/** Part of the kit's Family_Name_Tokens (FMC_Revit_Kit.xlsx): token → Revit category. */
+const TOKENS = new Map([["Door", "Doors"], ["Window", "Windows"], ["GenericModel", "Generic Models"], ["Profile", "Profiles"], ["DetailItem", "Detail Items"]]);
 const passFlex = { ok: true, types: [{ type: "900x2100", ok: true }] };
 
 test("the B1 water-heater batch is a recipe as it stands", () => {
@@ -63,13 +66,139 @@ test("Gate A: a type narrower than the code's clear opening fails; assumed value
 
 test("Gate A: flex failures and a wrong category fail; checks that need a project are never shown as passed", () => {
   const g = gateA("FMC_A_Door_SteelFanlight", null, { inspect: { ...passInspect, category: "Windows" },
-    flex: { ok: false, types: [{ type: "900x2100", ok: false, errors: ["Can't keep Width"] }] }, registerCategory: "Doors" });
+    flex: { ok: false, types: [{ type: "900x2100", ok: false, errors: ["Can't keep Width"] }] }, registerCategory: "Doors", tokenCategories: TOKENS });
   const by = Object.fromEntries(g.lines.map((l) => [l.check, l]));
   assert.equal(by["Every type flexes"].state, "Fail");
   assert.match(by["Every type flexes"].detail, /Can't keep Width/);
-  assert.equal(by["Category against the register"].state, "Fail");
+  assert.equal(by[CATEGORY_CHECK].state, "Fail");
+  assert.match(by[CATEGORY_CHECK].detail, /Windows; the register says Doors; the name's token Door means Doors/);
   assert.equal(by["Code checks and value sources"].state, "Not checked");
   assert.ok(!g.lines.some((l) => l.state === "Pass" && /schedule/.test(l.check)));
+});
+
+test("F-047: the category is checked against the register, the spec and the name's token; any mismatch fails", () => {
+  // The kit files FloorFall under Generic Annotations, but its name says GenericModel
+  const floorFall = categoryLine("FMC_A_GenericModel_FloorFall", "Generic Annotations",
+    { registerCategory: "Generic Annotations", specCategory: "Generic Annotations", tokenCategories: TOKENS });
+  assert.equal(floorFall.state, "Fail");
+  assert.match(floorFall.detail, /the name's token GenericModel means Generic Models, but the register files it under Generic Annotations/);
+  const g = gateA("FMC_A_GenericModel_FloorFall", null, { inspect: { ...passInspect, category: "Generic Annotations" }, flex: passFlex,
+    registerCategory: "Generic Annotations", specCategory: "Generic Annotations", tokenCategories: TOKENS });
+  assert.equal(g.verdict, "Fail");
+
+  assert.equal(categoryLine("FMC_A_Door_X", "Doors", { registerCategory: "Doors", specCategory: "Doors", tokenCategories: TOKENS }).state, "Pass");
+  // the spec disagreeing with the family is a fail too
+  const spec = categoryLine("FMC_A_GenericModel_X", "Generic Models", { registerCategory: "Generic Models", specCategory: "Generic Annotations", tokenCategories: TOKENS });
+  assert.equal(spec.state, "Fail");
+  assert.match(spec.detail, /the spec says Generic Annotations/);
+  // a register that records the exception in its category text warns; alternatives and notes in brackets are read
+  assert.equal(categoryLine("FMC_S_GenericModel_BasePlate", "Structural Connections",
+    { registerCategory: "Structural Connections (no kit token; GenericModel until StrConnection is added)", tokenCategories: TOKENS }).state, "Warn");
+  assert.equal(categoryLine("FMC_A_GenericModel_Plinth", "Generic Models", { registerCategory: "Walls (system) / Generic Models", tokenCategories: TOKENS }).state, "Pass");
+  assert.equal(categoryLine("FMC_TB_KeyPlan", "Generic Annotations", { registerCategory: "Generic Annotations (nested in title block)", tokenCategories: TOKENS }).state, "Pass");
+  assert.equal(categoryLine("FMC_Profile_Cornice", "Profiles", { registerCategory: "Profiles", tokenCategories: TOKENS }).state, "Pass");
+  assert.equal(categoryLine("FMC_Profile_Cornice", "Generic Models", { registerCategory: null, tokenCategories: TOKENS }).state, "Fail");
+  // the token table unreadable: said, never passed silently
+  assert.match(categoryLine("FMC_A_Door_X", "Doors", { registerCategory: "Doors", tokenCategories: null }).detail, /Family_Name_Tokens table wasn't readable/);
+  assert.equal(categoryLine("Vendor_Thing", "Doors", { registerCategory: null, tokenCategories: TOKENS }).state, "Not checked");
+  assert.equal(categoryLine("FMC_A_Door_X", "", { registerCategory: "Doors", tokenCategories: TOKENS }).state, "Not checked");
+  assert.equal(nameToken("FMC_A_Door_X"), "Door");
+  assert.equal(nameToken("F26001_E_ElecFixture_Isolator"), "ElecFixture");
+  assert.equal(nameToken("FMC_TB_Panel_ProjectData"), null);
+  assert.equal(nameToken("FMC_DI_A_DoorHead"), null);
+});
+
+const SPECS = new Map([
+  ["FMC_Profile_Cornice", { family: "FMC_Profile_Cornice", category: "Profiles", shared_parameters: [{ name: "FMC_Theme", binding: "Type", guid: null }] }],
+  ["FMC_TB_Panel_ProjectData", { family: "FMC_TB_Panel_ProjectData", category: "Title Blocks", shared_parameters: [{ name: "FMC_Theme", binding: "Type", guid: null }] }],
+  ["FMC_DI_A_DoorHead", { family: "FMC_DI_A_DoorHead", category: "Detail Items", shared_parameters: [{ name: "FMC_Theme", binding: "Type", guid: null }] }],
+]) as any;
+const KIT = new Map([["FMC_Theme", { name: "FMC_Theme", guid: "11111111-2222-3333-4444-555555555555" }]]) as any;
+const GUIDS = ["11111111-2222-3333-4444-555555555555"];
+
+test("F-045: profiles, title blocks and annotations use their own naming; keynotes and type names by kind", () => {
+  assert.equal(familyKind("Profiles"), "profile");
+  assert.equal(familyKind("Title Blocks"), "title block");
+  assert.equal(familyKind("Generic Annotations"), "annotation");
+  assert.equal(familyKind("Door Tags"), "annotation");
+  assert.equal(familyKind("Section Heads"), "annotation");
+  assert.equal(familyKind("Generic Models"), "model");
+  assert.equal(familyKind("Detail Items"), "model");
+  assert.equal(familyKind("", "FMC_Profile_Cornice"), "profile");
+  assert.equal(familyKind("", "FMC_TB_Panel_ProjectData"), "title block");
+
+  // A profile: FMC_Profile_<Element>, keynoted (J.TRM / A.ORN codes), types named by movement
+  const profile = checkFamily({ name: "FMC_Profile_Cornice", category: "Profiles", shared_guids: GUIDS,
+    types: [{ name: "Greek", keynote: "A.ORN_00" }, { name: "Federal / Adam", keynote: "A.ORN_00" }] }, SPECS, KIT);
+  const p = Object.fromEntries(profile.checks.map((c) => [c.check, c]));
+  assert.equal(p["Name follows FMC_[Role]_[Category]_[Description]"].state, "pass");
+  assert.equal(p["Keynote set"].state, "pass");
+  assert.equal(p["Type names [KeySize]_[Variant]"].state, "na");
+  assert.equal(p["Type names [KeySize]_[Variant]"].applies, false);
+  assert.equal(profile.state, "Compliant");
+  const bare = checkFamily({ name: "FMC_Profile_StringCourse", category: "Profiles", shared_guids: [], types: [{ name: "Greek", keynote: "" }] }, SPECS, KIT);
+  assert.equal(bare.checks.find((c) => c.check === "Keynote set")!.state, "fail", "a profile needs its keynote");
+  assert.equal(bare.checks[0].state, "pass", "FMC_Profile_<Element> is the kit's naming even when the register doesn't list it");
+  assert.equal(checkFamily({ name: "FMC_Profile_Cornice_J.TRM", category: "Profiles", shared_guids: [], types: [] }, new Map(), KIT).checks[0].state, "fail");
+
+  // A title block: FMC_TB_*, no keynote, types by sheet size
+  const tb = checkFamily({ name: "FMC_TB_Panel_ProjectData", category: "Title Blocks", shared_guids: GUIDS, types: [{ name: "Standard", keynote: "" }] }, SPECS, KIT);
+  const t = Object.fromEntries(tb.checks.map((c) => [c.check, c]));
+  assert.equal(t["Name follows FMC_[Role]_[Category]_[Description]"].state, "pass");
+  assert.equal(t["Keynote set"].state, "na");
+  assert.match(t["Keynote set"].detail, /Not applied to title blocks/);
+  assert.equal(t["Type names [KeySize]_[Variant]"].state, "na");
+  assert.equal(tb.state, "Compliant");
+  assert.equal(checkFamily({ name: "FMC_TitleBlock", category: "Title Blocks", shared_guids: [], types: [{ name: "A1", keynote: "" }] }, new Map(), KIT).checks[0].state, "pass");
+  assert.equal(checkFamily({ name: "A1 metric", category: "Title Blocks", shared_guids: [], types: [] }, new Map(), KIT).checks[0].state, "fail");
+
+  // An annotation symbol and a kit name outside the model pattern (FMC_DI_*: listed in the register)
+  assert.equal(nameCheck("FMC_SYM_A_FloorFall", "annotation").ok, true);
+  assert.equal(nameCheck("FMC_DI_A_DoorHead", "model", SPECS).ok, true);
+  assert.equal(nameCheck("FMC_DI_A_DoorHead", "model").ok, false);
+  // A model family still follows FMC_[Role]_[Token]_[Description] and [KeySize]_[Variant]
+  const door = checkFamily({ name: "FMC_A_Door_X", category: "Doors", shared_guids: [], types: [{ name: "Standard", keynote: "D.MET_01" }] }, new Map(), KIT);
+  assert.equal(door.checks.find((c) => c.check === "Type names [KeySize]_[Variant]")!.state, "fail");
+});
+
+test("F-045: 'Required FMC parameters' never passes on nothing, whatever the library's line says", () => {
+  const req = "Required FMC parameters present (by GUID)";
+  const line = (detail: string, state = "pass") => gateA("FMC_A_Door_X", null, { inspect: { ...passInspect, checks: [{ check: req, state, detail }] }, flex: passFlex, registerCategory: "Doors" })
+    .lines.find((l) => l.check === req)!;
+  assert.equal(line("0 present").state, "Fail");
+  assert.equal(line("present").state, "Fail");
+  assert.equal(line("0 of 0 present by GUID").state, "Fail");
+  assert.equal(line("3 present").state, "Pass");
+  assert.equal(line("20 present").state, "Pass");
+  // no such line at all: said, not skipped
+  assert.equal(gateA("FMC_A_Door_X", null, { inspect: passInspect, flex: passFlex, registerCategory: "Doors" }).lines.find((l) => l.check === req)!.state, "Not checked");
+});
+
+test("F-045: the dimension-sides line is on every gate: from this flex, else the build's record, else Not checked with why", () => {
+  const recorded = recordSides({ ok: true, dimension_sides: { checked: 4, unrecorded: 0 }, types: [{ type: "900x2100", ok: true }] }, "2026-10-15T10:00:00Z")!;
+  assert.deepEqual(recorded.dimension_sides, { checked: 4, unrecorded: 0 });
+  assert.equal(recordSides({ ok: true, types: [] }, "t"), null, "an add-in that doesn't report sides records nothing");
+
+  // the gate couldn't open the file (F-024: open in Revit's window): the build's record answers
+  const fromRecord = gateA("FMC_A_Door_X", null, { inspect: passInspect, flex: null, flexError: "the file is open in a Revit window", registerCategory: "Doors", recordedSides: recorded });
+  const s = fromRecord.lines.find((l) => l.check === SIDES_CHECK)!;
+  assert.equal(s.state, "Pass");
+  assert.match(s.detail, /4 labelled dimensions keep their sides .*from the build's flex, 2026-10-15T10:00:00Z.*open in a Revit window/);
+
+  // a flex that answered with an error is "didn't run", not a failing type; the record still answers
+  const errored = gateA("FMC_A_Door_X", null, { inspect: passInspect, flex: { ok: false, error: "No open session 's1'" }, registerCategory: "Doors", recordedSides: recorded });
+  assert.equal(errored.lines.find((l) => l.check === "Every type flexes")!.state, "Not checked");
+  assert.match(errored.lines.find((l) => l.check === "Every type flexes")!.detail, /No open session/);
+  assert.equal(errored.lines.find((l) => l.check === SIDES_CHECK)!.state, "Pass");
+
+  // a flipped plane in the record still fails
+  const flipped = { ...recorded, wrong: [{ type: "900x2400", a: "Head Inner", b: "Head", label: "Frame Width", axis: "z", drawn: 1, now_mm: -40 }] };
+  assert.equal(gateA("FMC_A_Door_X", null, { inspect: passInspect, flex: null, registerCategory: "Doors", recordedSides: flipped }).verdict, "Fail");
+
+  // nothing to go on: the line is there, Not checked, with the reason
+  const none = gateA("FMC_A_Door_X", null, { inspect: passInspect, flex: null, flexError: "file in use", registerCategory: "Doors" }).lines.find((l) => l.check === SIDES_CHECK)!;
+  assert.equal(none.state, "Not checked");
+  assert.match(none.detail, /Flex didn't run: file in use, and no build record holds the sides/);
 });
 
 test("release is the pane's: it needs a reviewer, a note and a passed gate, never overwrites, and logs every decision", async () => {
@@ -402,4 +531,44 @@ test("F-029: a chunk Revit is still working on is reported with its op, and resu
   const done = await buildRecipe(recipe, { ...base, resume: true }, deps);
   assert.equal(done.body.dry_run, true, JSON.stringify(done.body));
   assert.equal(revit.open.size, 0);
+});
+
+test("F-046: cleanup closes stale sessions and left-overs (dry run first), keeps an unfinished build's live one and the person's, and forgets lost ledger entries", async () => {
+  const { cleanupBackground } = await import("../tools/fmc_recipe_build.js");
+  const { writeBuild } = await import("./recipebuild.js");
+  const { readLedger, writeLedger } = await import("./doc.js");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-stale-"));
+  const now = new Date("2026-10-15T10:00:00Z");
+  // two builds waiting for a resume: one used 20 minutes ago, one idle 13 hours
+  writeBuild(dir, { family: "FMC_A_Door_Live", state: "waiting", session: "live", sessions: ["live"] } as any);
+  writeBuild(dir, { family: "FMC_A_Door_Old", state: "waiting", session: "old", sessions: ["old"] } as any);
+  writeLedger(dir, Object.fromEntries(["live", "old", "window", "orphan", "gone"].map((id) => [id, { id, source: "x.rft", opened: "2026-10-14T11:31:00Z", ops: [] }])));
+  const sessions = [
+    { session: "live", title: "Family1", closable: true, idle_minutes: 20 },
+    { session: "old", title: "Family2", closable: true, idle_minutes: 13 * 60 },
+    { session: "window", title: "FMC_A_Door_X", closable: false, idle_minutes: 30 * 60, reason: "shown in a Revit window: it stays" },
+    { session: "orphan", title: "Family4", closable: true, used: "2026-10-15T09:00:00Z" },
+  ];
+  const closed: string[] = [];
+  const doc = async (a: Record<string, any>): Promise<any> =>
+    a.action === "background" ? { ok: true, sessions, other_background: [] }
+      : a.action === "close" ? (closed.push(a.session), { ok: true, closed: true, unsaved_changes_discarded: true }) : { ok: false, error: "unexpected" };
+
+  const dry = await cleanupBackground(true, dir, doc, 12, now);
+  const would = dry.body.would_close as any[];
+  assert.deepEqual(would.map((s) => s.session), ["old", "orphan"]);
+  assert.match(would[0].why, /stale: idle 13 h, over the 12 h limit/);
+  assert.match(would[1].why, /left open by an earlier call/);
+  const stays = dry.body.stays_open as any[];
+  assert.deepEqual(stays.map((s) => s.session), ["live", "window"]);
+  assert.match(stays[0].reason, /in use by the FMC_A_Door_Live build \(waiting\), idle 0.3 h of 12 h/);
+  assert.match(stays[1].reason, /Revit window/, "the person's document is never closed");
+  assert.deepEqual(dry.body.would_forget, ["gone"]);
+  assert.equal(closed.length, 0, "a dry run closes nothing");
+  assert.equal(Object.keys(readLedger(dir)).length, 5);
+
+  const real = await cleanupBackground(false, dir, doc, 12, now);
+  assert.deepEqual(closed, ["old", "orphan"]);
+  assert.deepEqual((real.body.closed as any[]).map((c) => c.closed), [true, true]);
+  assert.deepEqual(Object.keys(readLedger(dir)).sort(), ["live", "window"]);
 });

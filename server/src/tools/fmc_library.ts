@@ -132,7 +132,8 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
     };
     const verdict = checkFamily(scanned, k.specMap, k.kit, "Outside file");
     const keynoteCheck = verdict.checks.find((c) => c.check === "Keynote set");
-    if (keynoteCheck && !facts.type_keynotes) Object.assign(keynoteCheck, { state: "na", detail: "This add-in doesn't read type keynotes from the file: update the add-in" });
+    if (keynoteCheck?.applies === false) { /* F-045: title blocks and annotations carry no keynote */ }
+    else if (keynoteCheck && !facts.type_keynotes) Object.assign(keynoteCheck, { state: "na", detail: "This add-in doesn't read type keynotes from the file: update the add-in" });
     else if (keynoteCheck && keynoteCheck.state === "pass") {
       const codes = [...new Set(scanned.types.map((t) => t.keynote))];
       keynoteCheck.detail = `${scanned.types.length} types: ${codes.slice(0, 3).join(", ")}${codes.length > 3 ? "…" : ""}`;

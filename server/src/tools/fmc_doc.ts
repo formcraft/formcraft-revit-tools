@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { SessionRecord, buildReport, openProblems, saveProblems } from "../fmc/doc.js";
+import { SessionRecord, buildReport, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, opsProblems, splitProblems } from "../fmc/ops.js";
@@ -30,13 +30,9 @@ function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
 }
 
-/** The sessions the server knows (each CLI call is its own process): source, opened, ops applied (B1b). */
-function ledgerFile(cfg: GuardConfig) { return win.join(expandEnv(cfg.reports_dir), "FMC_Doc_Sessions.json"); }
-function readLedger(cfg: GuardConfig): Record<string, SessionRecord> { try { return JSON.parse(fs.readFileSync(ledgerFile(cfg), "utf8")); } catch { return {}; } }
-function writeLedger(cfg: GuardConfig, l: Record<string, SessionRecord>) {
-  fs.mkdirSync(win.dirname(ledgerFile(cfg)), { recursive: true });
-  fs.writeFileSync(ledgerFile(cfg), JSON.stringify(l, null, 2));
-}
+/** The sessions the server knows (each CLI call is its own process): source, opened, last used, ops applied (B1b, F-046). */
+function readLedger(cfg: GuardConfig): Record<string, SessionRecord> { return readDocLedger(expandEnv(cfg.reports_dir)); }
+function writeLedger(cfg: GuardConfig, l: Record<string, SessionRecord>) { writeDocLedger(expandEnv(cfg.reports_dir), l); }
 
 /** The kit's manifest (FMC_Kit.json) beside the specs, for the build report. */
 function kitManifest(cfg: GuardConfig): { kit?: string; revision?: string } {
@@ -53,8 +49,10 @@ export const FMC_DOC_DESCRIPTION =
     "report: what an open session holds (category, parameters, types, reference planes, solids, connectors, warnings). " +
     "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
-    "sessions Revit holds, which close may close, and other background family documents. Never a project or " +
-    "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
+    "sessions Revit holds, which close may close, and other background family documents. list and background mark a " +
+    "session idle longer than the guard's session_idle_hours (default 12) as stale; fmc_recipe cleanup closes stale and " +
+    "left-over sessions without saving (dry run first), never a document in a Revit window or one the person opened. " +
+    "Never a project or workshared model. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
     "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
@@ -76,16 +74,28 @@ export async function runFmcDoc(args: FmcDocArgs) {
   const { config } = loadConfig();
   try {
     const ledger = readLedger(config);
-    if (args.action === "list") return reply({ sessions: Object.values(ledger) });
+    const limit = idleLimit(config);
+    // F-046: each session with its idle time; stale ones are for fmc_recipe cleanup (dry run first)
+    if (args.action === "list") {
+      const sessions = markStale(Object.values(ledger), new Date(), limit);
+      const stale = sessions.filter((s) => s.stale).length;
+      return reply({ sessions, stale, stale_after_hours: limit,
+        next: stale ? `${stale} stale: fmc_doc background shows which Revit still holds; fmc_recipe cleanup closes them without saving (dry run first)` : undefined });
+    }
     // F-040 (read-only): the sessions Revit holds (closable unless the person has the file open) and other background family documents
-    if (args.action === "background") return reply(await withRevitConnection((c) => c.sendRaw("fmc_doc_background", {}, 60000)));
+    if (args.action === "background") {
+      const bg = await withRevitConnection((c) => c.sendRaw("fmc_doc_background", {}, 60000));
+      const sessions = markStale((bg?.sessions ?? []) as Array<Record<string, any>>, new Date(), limit);
+      return reply({ ...bg, sessions, stale: sessions.filter((s) => s.stale).length, stale_after_hours: limit });
+    }
 
     if (args.action === "open") {
       const problems = openProblems(args, config);
       if (problems.length) return reply({ refused: true, reasons: problems }, true);
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_open", { template: args.template.trim(), file: args.file.trim() }, 120000));
       const id = String(r?.session ?? "");
-      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: new Date().toISOString(), ops: [] };
+      const at = new Date().toISOString();
+      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [] };
       writeLedger(config, ledger);
       log(config, "doc_open", ledger[id].source, "done", id);
       return reply({ session: id, document: r });
@@ -93,6 +103,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (!args.session.trim()) return reply({ refused: true, reasons: [`${args.action} needs the session id from open`] }, true);
     const s = ledger[args.session.trim()] ?? { id: args.session.trim(), source: "", opened: "", ops: [] };
+    // F-046: every call on a session counts as use (its idle time starts again)
+    if (ledger[s.id] && args.action !== "close") { s.used = new Date().toISOString(); writeLedger(config, ledger); }
 
     if (args.action === "report") return reply({ session: s.id, document: await withRevitConnection((c) => c.sendRaw("fmc_doc_report", { session: s.id }, 60000)) });
 

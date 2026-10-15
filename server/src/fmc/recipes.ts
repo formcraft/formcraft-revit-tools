@@ -1,6 +1,8 @@
 import path from "node:path";
 import { z } from "zod";
 import { OP } from "./ops.js";
+import { RUNNING_BUILD, diskBuild, invalidOpNote } from "./buildinfo.js";
+import { ROLE_CODES } from "./policy.js";
 
 const win = path.win32;
 
@@ -35,7 +37,12 @@ export function parseRecipe(raw: string): { recipe: Recipe | null; problems: str
   let o: unknown;
   try { o = JSON.parse(raw.replace(/^﻿/, "")); } catch (e) { return { recipe: null, problems: [`Not JSON: ${e instanceof Error ? e.message : e}`] }; }
   const r = RECIPE.safeParse(o);
-  if (!r.success) return { recipe: null, problems: r.error.issues.slice(0, 10).map((i) => `${i.path.join(".")}: ${i.message}`) };
+  if (!r.success) {
+    const problems = r.error.issues.slice(0, 10).map((i) => `${i.path.join(".")}: ${i.message}`);
+    // F-042: an op this build doesn't know may be one the installed build knows (the Claude app runs an old server)
+    if (r.error.issues.some((i) => i.code === "invalid_union_discriminator" || /discriminator/i.test(i.message))) problems.push(invalidOpNote(RUNNING_BUILD, diskBuild()));
+    return { recipe: null, problems };
+  }
   if (!/^fmc-recipe\/0\.\d+$/.test(r.data.schema)) return { recipe: null, problems: [`schema must be fmc-recipe/0.1 (found ${r.data.schema})`] };
   return { recipe: r.data, problems: [] };
 }
@@ -86,12 +93,105 @@ export interface GateInputs {
     ok?: boolean;
     types?: Array<{ type: string; ok: boolean; errors?: string[]; dimension_sides?: DimensionSide[] }>;
     dimension_sides?: { checked: number; unrecorded: number };
+    /** A flex call that failed (session gone, file open in a window) answers with an error, not types. */
+    error?: string; refused?: boolean; reasons?: string[];
   } | null;
   flexError?: string;
   registerCategory: string | null;
+  /** F-047: the family's category in FMC_Family_Specs.json (null: not in the specs). */
+  specCategory?: string | null;
+  /** F-047: the kit's Family_Name_Tokens (token → Revit category); null when the table couldn't be read. */
+  tokenCategories?: Map<string, string> | null;
+  /** F-045: the dimension sides the build's own flex recorded (FMC_Recipe_Builds.json), when the gate can't flex the file now. */
+  recordedSides?: RecordedSides | null;
+}
+
+/** What a build's flex said about labelled dimension sides, kept in its build record (F-045). */
+export interface RecordedSides {
+  at: string;
+  dimension_sides: { checked: number; unrecorded: number };
+  wrong: Array<DimensionSide & { type: string }>;
+}
+
+/** The sides part of a flex result, for the build record; null when this add-in's flex doesn't report sides. */
+export function recordSides(flex: GateInputs["flex"], at: string): RecordedSides | null {
+  if (!flex || !flex.dimension_sides || !Array.isArray(flex.types)) return null;
+  return { at, dimension_sides: flex.dimension_sides, wrong: flex.types.flatMap((t) => (t.dimension_sides ?? []).map((s) => ({ type: t.type, ...s }))) };
 }
 
 const REQUIRED_PARAMS = "Required FMC parameters present (by GUID)";
+export const CATEGORY_CHECK = "Category against the register, the spec and the name";
+export const SIDES_CHECK = "Labelled dimensions keep their planes' sides";
+
+const normCat = (c: string) => c.toLowerCase().replace(/\(.*?\)/g, "").replace(/\s+/g, " ").trim();
+/** "Walls (system) / Generic Models": either; "Generic Annotations (nested)": Generic Annotations. */
+const sameCategory = (actual: string, ref: string) => ref.split("/").map(normCat).filter(Boolean).includes(normCat(actual));
+
+/**
+ * The category token in a family's name: FMC_<Role>_<Token>_…, a project family's [Project]_[Role]_<Token>_…, and
+ * Profile for FMC_Profile_*. Title blocks and annotations (FMC_TitleBlock, FMC_TB_, FMC_SYM_, FMC_TAG_, FMC_GA_) carry none.
+ */
+export function nameToken(family: string): string | null {
+  if (/^FMC_Profile_/.test(family)) return "Profile";
+  if (/^FMC_(TitleBlock|TB_|SYM_|TAG_|GA_)/.test(family)) return null;
+  const lib = /^FMC_([A-Z]{1,2})_([A-Za-z0-9]+)_/.exec(family);
+  if (lib) return ROLE_CODES.includes(lib[1]) ? lib[2] : null;
+  const project = /^([A-Z0-9]{2,6})_([A-Z]{1,2})_([A-Za-z0-9]+)_/.exec(family);
+  return project && ROLE_CODES.includes(project[2]) ? project[3] : null;
+}
+
+/**
+ * F-047 (issue #148): the family's own category against the register's, the spec's and the one its name's token stands
+ * for (the kit's Family_Name_Tokens). Any mismatch Fails: FMC_A_GenericModel_FloorFall in Generic Annotations fails on
+ * its token even though the register files it there too. A register entry that records the exception in its category
+ * text ("…; GenericModel until StrConnection is added") is a Warn.
+ */
+export function categoryLine(family: string, actual: string, inputs: Pick<GateInputs, "registerCategory" | "specCategory" | "tokenCategories">): GateLine {
+  const register = inputs.registerCategory ?? null, spec = inputs.specCategory ?? null;
+  if (!actual) return { check: CATEGORY_CHECK, state: "Not checked", detail: "The saved file's category wasn't read" };
+  const fails: string[] = [], warns: string[] = [], passes: string[] = [];
+  if (register != null) (sameCategory(actual, register) ? passes : fails).push(`the register says ${register}`);
+  if (spec != null && (register == null || normCat(spec) !== normCat(register))) (sameCategory(actual, spec) ? passes : fails).push(`the spec says ${spec}`);
+  const token = nameToken(family);
+  if (token) {
+    const tokens = inputs.tokenCategories;
+    const meant = tokens?.get(token);
+    if (!tokens) warns.push(`the name's token ${token} wasn't checked: the kit's Family_Name_Tokens table wasn't readable`);
+    else if (!meant) warns.push(`the name's token ${token} isn't in the kit's Family_Name_Tokens`);
+    else if (sameCategory(actual, meant)) passes.push(`the name's token ${token} is ${meant}`);
+    else if (register && new RegExp(`\\b${token}\\b`).test(register)) warns.push(`the name's token ${token} is ${meant}; the register records the exception (${register})`);
+    else fails.push(`the name's token ${token} means ${meant}` + (register != null && sameCategory(actual, register)
+      ? `, but the register files it under ${register}: the kit's entry disagrees with its own name (rename the family or change the register: a kit change request)` : ""));
+  }
+  if (!fails.length && !warns.length && !passes.length)
+    return { check: CATEGORY_CHECK, state: "Not checked", detail: `${actual}: ${family} isn't in FMC_Family_Register.csv or the specs, and its name has no category token` };
+  const state: GateState = fails.length ? "Fail" : warns.length ? "Warn" : "Pass";
+  return { check: CATEGORY_CHECK, state, detail: `${actual}` + (fails.length ? `; ${fails.join("; ")}` : "") + (warns.length ? `; ${warns.join("; ")}` : "") +
+    (!fails.length && !warns.length && passes.length ? ` (${passes.join("; ")})` : "") };
+}
+
+/**
+ * F-045 (issue #146): the labelled-dimension sides line, on every gate. From this gate's flex of the saved file when it
+ * ran and the add-in reports sides; else from the build's own flex (its record); else Not checked with why.
+ */
+export function sidesLine(flex: GateInputs["flex"], flexUsable: boolean, flexError: string, recorded: RecordedSides | null | undefined): GateLine {
+  const fromFlex = flexUsable && flex?.dimension_sides
+    ? { sides: flex.dimension_sides, wrong: (flex.types ?? []).flatMap((t) => (t.dimension_sides ?? []).map((s) => ({ type: t.type, ...s }))), source: "" }
+    : null;
+  const from = fromFlex ?? (recorded ? { sides: recorded.dimension_sides, wrong: recorded.wrong, source: ` (from the build's flex, ${recorded.at}: the saved file couldn't be flexed now${flexError ? `: ${flexError}` : ""})` } : null);
+  if (!from) {
+    const why = !flexUsable ? `Flex didn't run${flexError ? `: ${flexError}` : ""}, and no build record holds the sides`
+      : "This add-in's flex doesn't report dimension sides: update the add-in";
+    return { check: SIDES_CHECK, state: "Not checked", detail: why };
+  }
+  const { sides, wrong } = from;
+  return { check: SIDES_CHECK,
+    state: wrong.length ? "Fail" : sides.checked ? "Pass" : "Not checked",
+    detail: (wrong.length
+      ? wrong.slice(0, 4).map((w) => `${w.type}: ${w.b} was drawn ${side(w.axis, w.drawn)} ${w.a}${w.label ? ` (${w.label})` : ""}, now ${Math.abs(w.now_mm)} mm ${side(w.axis, w.now_mm)} it`).join("; ")
+      : sides.checked ? `${sides.checked} labelled dimensions keep their sides in every type${sides.unrecorded ? `; ${sides.unrecorded} older ones have no recorded side` : ""}`
+      : `No dimension recorded the side it was drawn on${sides.unrecorded ? ` (${sides.unrecorded} were made before this check: rebuild the family)` : " (the family has no labelled dimensions between two planes)"}`) + from.source };
+}
 const SIDE_WORDS: Record<string, [string, string]> = { z: ["above", "below"], x: ["to the right of (+x)", "to the left of (-x)"], y: ["on the +y side of", "on the -y side of"] };
 const side = (axis: string, sign: number) => (SIDE_WORDS[axis] ?? ["after", "before"])[sign > 0 ? 0 : 1];
 
@@ -116,15 +216,21 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
     lines.push(line);
   }
   if (!inputs.inspect) lines.push({ check: "Library checks on the saved file", state: "Not checked", detail: `The file couldn't be inspected: ${inputs.inspectError || "no reason given"}` });
-
-  if (inputs.registerCategory == null) lines.push({ check: "Category against the register", state: "Not checked", detail: `${family} isn't in FMC_Family_Register.csv` });
   else {
-    const cat = inputs.inspect?.category ?? "";
-    lines.push({ check: "Category against the register", state: !cat ? "Not checked" : cat === inputs.registerCategory ? "Pass" : "Fail",
-      detail: cat ? `${cat}${cat === inputs.registerCategory ? "" : `, the register says ${inputs.registerCategory}`}` : "Category not read" });
+    // F-045: "Required FMC parameters" never passes on nothing, whatever shape the library's line came in
+    const req = lines.find((l) => l.check === REQUIRED_PARAMS);
+    if (!req) lines.push({ check: REQUIRED_PARAMS, state: "Not checked", detail: "The library's checks didn't include it: update the add-in and server" });
+    else if (req.state === "Pass" && (/^0\b|\b0 (present|of|required)\b/.test(req.detail) || !/[1-9]/.test(req.detail)))
+      Object.assign(req, { state: "Fail", detail: `${req.detail}: nothing shows the family carries its kit parameters (never a pass on 0)` });
   }
 
-  if (!inputs.flex) lines.push({ check: "Every type flexes", state: "Not checked", detail: `Flex didn't run${inputs.flexError ? `: ${inputs.flexError}` : ""}` });
+  // F-047: the category against the register, the spec and the name's token
+  lines.push(categoryLine(family, inputs.inspect?.category ?? "", inputs));
+
+  // A flex that answered with an error (session gone, the file open in a window) didn't run (F-045)
+  const flexUsable = !!inputs.flex && !inputs.flex.error && !inputs.flex.refused && (Array.isArray(inputs.flex.types) || inputs.flex.ok === true);
+  const flexError = inputs.flexError || (inputs.flex && !flexUsable ? String(inputs.flex.error ?? (inputs.flex.reasons ?? []).join("; ")) : "");
+  if (!flexUsable || !inputs.flex) lines.push({ check: "Every type flexes", state: "Not checked", detail: `Flex didn't run${flexError ? `: ${flexError}` : ""}` });
   else {
     const types = inputs.flex.types ?? [];
     const failing = types.filter((t) => !t.ok);
@@ -133,20 +239,9 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
     lines.push({ check: "Every type flexes", state: inputs.flex.ok && !failing.length ? "Pass" : "Fail",
       detail: (failing.length ? failing.slice(0, 3).map((f) => `${f.type}${f.errors?.length ? `: ${f.errors[0]}` : ""}`).join("; ") : `${types.length || "all"} types regenerate`) +
         (cutOut ? ". The opening is bigger than the template's host wall: raise the host wall (its height, and its length for wide types) in the recipe's template so the largest type cuts" : "") });
-
-    // F-039/F-026: a labelled dimension whose plane ended on the other side of its reference
-    const sides = inputs.flex.dimension_sides;
-    if (!sides) lines.push({ check: "Labelled dimensions keep their planes' sides", state: "Not checked", detail: "This add-in's flex doesn't report dimension sides: update the add-in" });
-    else {
-      const wrong = types.flatMap((t) => (t.dimension_sides ?? []).map((s) => ({ type: t.type, ...s })));
-      lines.push({ check: "Labelled dimensions keep their planes' sides",
-        state: wrong.length ? "Fail" : sides.checked ? "Pass" : "Not checked",
-        detail: wrong.length
-          ? wrong.slice(0, 4).map((w) => `${w.type}: ${w.b} was drawn ${side(w.axis, w.drawn)} ${w.a}${w.label ? ` (${w.label})` : ""}, now ${Math.abs(w.now_mm)} mm ${side(w.axis, w.now_mm)} it`).join("; ")
-          : sides.checked ? `${sides.checked} labelled dimensions keep their sides in every type${sides.unrecorded ? `; ${sides.unrecorded} older ones have no recorded side` : ""}`
-          : `No dimension recorded the side it was drawn on${sides.unrecorded ? ` (${sides.unrecorded} were made before this check: rebuild the family)` : ""}` });
-    }
   }
+  // F-039/F-026/F-045: a labelled dimension whose plane ended on the other side of its reference; on every gate
+  lines.push(sidesLine(inputs.flex, flexUsable, flexError, inputs.recordedSides));
 
   if (!recipe) lines.push({ check: "Code checks and value sources", state: "Not checked", detail: "No recipe beside the family (.recipe.json)" });
   else {

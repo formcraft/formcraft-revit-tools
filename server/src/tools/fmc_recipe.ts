@@ -5,10 +5,15 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { opsProblems, splitProblems } from "../fmc/ops.js";
-import { BRIDGE_LIMIT_BYTES, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
+import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { softTimeoutMs } from "../utils/SocketClient.js";
-import { Recipe, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { RecordedSides, Recipe, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { SpecFile } from "../fmc/specs.js";
+import { idleLimit } from "../fmc/doc.js";
+import { readXlsxSheets } from "../fmc/xlsx.js";
+import { table } from "../fmc/templatekit.js";
+import { csvRow } from "./fmc_sheets.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
 import { readDb } from "./fmc_material.js";
@@ -46,9 +51,14 @@ export const FMC_RECIPE_DESCRIPTION =
     "(chunk_size), one TransactionGroup each, with a result per chunk; each call does what fits in its time and says how far " +
     "it got, and resume: true carries on from the last good op (same recipe_file, dry_run and stepwise). A failed build " +
     "closes the template without saving and says which op stopped it. cleanup lists the background family documents builds " +
-    "left open (dry run) and closes them without saving (dry_run false); never a document a person opened. gate runs Gate A " +
-    "on a staged family: the library's checks (name, kit parameters by GUID, type keynotes, size, type names), category " +
-    "against the register, flex, labelled dimensions keeping their planes' sides, code checks (clear opening), IFC class and " +
+    "left open and fmc_doc sessions idle longer than the guard's session_idle_hours (default 12) (dry run) and closes them " +
+    "without saving (dry_run false); an unfinished build's live session stays until stale; never a document in a Revit " +
+    "window or one a person opened. gate runs Gate A " +
+    "on a staged family: the library's checks by family kind (model families FMC_[Role]_[Token]_…, profiles " +
+    "FMC_Profile_<Element>…, title blocks FMC_TB_*, annotations; kit parameters by GUID, never a pass on 0; type keynotes " +
+    "except on title blocks and annotations; size; type names on model families), category against the register, the spec " +
+    "and the name's token, flex, labelled dimensions keeping their planes' sides (from the build's record when the file " +
+    "can't be flexed), code checks (clear opening), IFC class and " +
     "value sources; tags, schedules and detail levels need the chain-test load test and are listed as not checked. Release " +
     "to 04_Families is a person's act in the pane, never this tool.";
 
@@ -70,16 +80,42 @@ function readRecipe(file: string): { recipe: Recipe | null; problems: string[] }
   return parseRecipe(fs.readFileSync(file, "utf8"));
 }
 
-/** The register's category for a family (03_Master_Data\FMC_Family_Register.csv: Role,Family,Category,…). */
+/** The register's category for a family (03_Master_Data\FMC_Family_Register.csv: Role,Family,Category,…; quoted cells read whole). */
 function registerCategory(cfg: GuardConfig, family: string): string | null {
   try {
     const file = win.join(win.dirname(expandEnv(cfg.specs_path)), "FMC_Family_Register.csv");
-    for (const line of fs.readFileSync(file, "utf8").split(/\r?\n/).slice(1)) {
-      const cells = line.split(",");
-      if (cells[1] === family) return cells[2] ?? "";
-    }
+    const rows = fs.readFileSync(file, "utf8").replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim()).map(csvRow);
+    const head = rows[0]?.map((h) => h.trim().toLowerCase()) ?? [];
+    const cFam = Math.max(0, head.indexOf("family")), cCat = head.indexOf("category") >= 0 ? head.indexOf("category") : 2;
+    for (const cells of rows.slice(1)) if ((cells[cFam] ?? "").trim() === family) return (cells[cCat] ?? "").trim();
   } catch { /* no register: not checked */ }
   return null;
+}
+
+/** F-047: the family's category in FMC_Family_Specs.json (null: not there or unreadable). */
+function specCategory(cfg: GuardConfig, family: string): string | null {
+  try {
+    const specs = JSON.parse(fs.readFileSync(expandEnv(cfg.specs_path), "utf8").replace(/^﻿/, "")) as SpecFile;
+    return specs.families.find((f) => f.family === family)?.category ?? null;
+  } catch { return null; }
+}
+
+/** F-047: the kit's Family_Name_Tokens (FMC_Revit_Kit.xlsx beside the specs): token → Revit category (rule 7). */
+function tokenCategories(cfg: GuardConfig): Map<string, string> | null {
+  try {
+    const sheets = readXlsxSheets(fs.readFileSync(win.join(win.dirname(expandEnv(cfg.specs_path)), "FMC_Revit_Kit.xlsx")));
+    const rows = table(sheets.get("Family_Name_Tokens"));
+    const map = new Map(rows.map((r) => [String(r["Token"] ?? "").trim(), String(r["Revit category"] ?? "").trim()] as [string, string]).filter(([t, c]) => t && c));
+    return map.size ? map : null;
+  } catch { return null; }
+}
+
+/** F-045: the dimension sides the family's last build recorded from its own flex, when it built this file. */
+function recordedSides(cfg: GuardConfig, family: string, file: string): RecordedSides | null {
+  const rec: BuildRecord | undefined = readBuilds(expandEnv(cfg.reports_dir))[family];
+  const built = (rec?.result as { built?: string } | undefined)?.built;
+  if (!rec?.sides || (built && win.normalize(built).toLowerCase() !== win.normalize(file).toLowerCase())) return null;
+  return rec.sides;
 }
 
 export async function runGate(file: string, cfg: GuardConfig, flex: object | null = null) {
@@ -100,7 +136,8 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
       await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false });
     } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
-  const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family) });
+  const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family),
+    specCategory: specCategory(cfg, family), tokenCategories: tokenCategories(cfg), recordedSides: recordedSides(cfg, family, file) });
   const result = { family, file, at: new Date().toISOString(), ...gate };
   try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;
@@ -120,7 +157,7 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     }
 
     if (args.action === "cleanup") {
-      const r = await cleanupBackground(dry, expandEnv(config.reports_dir), docCall);
+      const r = await cleanupBackground(dry, expandEnv(config.reports_dir), docCall, idleLimit(config));
       if (!dry) log(config, "recipe_cleanup", false, "background documents", r.isError ? "error" : "done", JSON.stringify((r.body as any).closed ?? r.body).slice(0, 400));
       return reply(r.body, r.isError);
     }

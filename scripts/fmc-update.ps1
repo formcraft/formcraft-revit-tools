@@ -7,7 +7,9 @@
     1. backs up the installed add-in to %APPDATA%\Autodesk\Revit\Addins\_FormcraftBackup\<date>_before-<commit>
     2. copies the add-in into %APPDATA%\Autodesk\Revit\Addins\2025 and the server into %USERPROFILE%\mcp\revit-fmc\build
        (the old server is kept as build.bak-<date>)
-    3. writes %APPDATA%\Formcraft\installed.json (commit, time, backup), which fmc_selftest and Connect show
+    3. writes %APPDATA%\Formcraft\installed.json (commit, time, backup), which fmc_selftest and Connect show; when an
+       MCP server process (started by the Claude app) still runs the old build, the log and installed.json say the
+       Claude app must be restarted (F-042). The updater never stops that process.
     4. moves the staged build to Staging\_installed\
   Every step is logged to %APPDATA%\Formcraft\updater.log.
 
@@ -40,6 +42,18 @@ function PullDrop {
 }
 
 function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
+
+# F-042: the Claude app starts the Formcraft MCP server itself and keeps it running. Replacing the files doesn't
+# change the running process: it keeps the code it started with until the app (or its connector) restarts. The
+# updater never stops it; it lists it, so the log and installed.json say a restart is due (fmc_selftest fails too).
+function RunningServers {
+    $build = (Join-Path $mcp 'build').ToLowerInvariant()
+    try {
+        @(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object {
+            $_.CommandLine -and $_.CommandLine.Replace('/', '\').ToLowerInvariant().Contains($build) -and $_.CommandLine -match 'index\.js'
+        } | ForEach-Object { '{0} (pid {1})' -f $_.Name, $_.ProcessId })
+    } catch { @() }
+}
 function RevitRunning { [bool](Get-Process -Name 'Revit' -ErrorAction SilentlyContinue) }
 function NavisRunning { [bool](Get-Process -Name 'Roamer' -ErrorAction SilentlyContinue) }
 
@@ -94,12 +108,23 @@ function Install {
         Copy-Item (Join-Path $next 'navis\Formcraft.Navis') $navisNext -Recurse
     }
 
+    $stale = @()
+    if ($serverDone) {
+        $stale = @(RunningServers)
+        if ($stale.Count) {
+            Log ("Server files are now {0}, but {1} still run the server it started with: restart the Claude app (or its Formcraft connector) to load build {0}. fmc_selftest fails until then." -f $info.commit, ($stale -join ', '))
+        }
+    }
+
     $record = [ordered]@{
         commit       = $info.commit
         staged_at    = $info.staged_at
         installed_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
         backup       = $backup
         server       = $serverDone
+        # F-042: MCP server processes still running the previous build when the files were replaced
+        server_restart_needed = ($stale.Count -gt 0)
+        server_processes      = $stale
     }
     $record | ConvertTo-Json | Set-Content -Path (Join-Path $state 'installed.json') -Encoding UTF8
 
