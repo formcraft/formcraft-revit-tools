@@ -1,0 +1,50 @@
+{
+ "family": "FMC_A_Door_FoldingSample",
+ "template": "Metric Door.rft",
+ "about": "Schema fixture for the field-review recipe ops (run 9): the default size first (F-026), the template's frame, panel and swing lines cleared by match, a three-leaf fold whose plan swings follow Width and Leaf Count (planes per leaf, arcs centred on planes with the radius labelled Leaf Width, leaf k shown when Leaf Count > k - 1), grille bars as copies shown by Bar Count, and shared nested hardware (a released lever and a staged hinge) with an associated material. Run: fmc_doc open (template) -> apply (dry run, then real) -> flex -> save to _ChainTests.",
+ "ops": [
+  { "op": "set_default_size", "name": "Default size", "type": "1800x2100", "values": { "Width": 1800, "Height": 2100 } },
+  { "op": "delete_template_element", "name": "Template frame", "kind": "solid", "subcategory": "Frame/Mullion" },
+  { "op": "delete_template_element", "name": "Template panel", "kind": "solid", "subcategory": "Panel" },
+  { "op": "delete_template_element", "name": "Template plan swing", "kind": "symbolic_line", "subcategory": "Plan Swing" },
+  { "op": "delete_template_element", "name": "Template elevation swing", "kind": "symbolic_line", "subcategory": "Elevation Swing" },
+
+  { "op": "add_family_param", "name": "Leaf Count", "type": "Integer" },
+  { "op": "add_family_param", "name": "Leaf Width", "type": "Length" },
+  { "op": "set_type_value", "name": "1800x2100/Leaf Count", "type": "1800x2100", "param": "Leaf Count", "value": 3 },
+  { "op": "set_formula", "name": "Leaf Width", "formula": "Width / Leaf Count" },
+  { "op": "add_family_param", "name": "Leaf 1 Reach", "type": "Length" },
+  { "op": "add_family_param", "name": "Leaf 2 Reach", "type": "Length" },
+  { "op": "add_family_param", "name": "Leaf 3 Reach", "type": "Length" },
+  { "op": "set_formula", "name": "Leaf 1 Reach", "formula": "Leaf Width" },
+  { "op": "set_formula", "name": "Leaf 2 Reach", "formula": "Leaf Width * 2" },
+  { "op": "set_formula", "name": "Leaf 3 Reach", "formula": "Leaf Width * 3" },
+  { "op": "add_ref_plane", "name": "Leaf 1 Free", "from": [-300, -1000], "to": [-300, 1000], "is_reference": "WeakReference" },
+  { "op": "add_ref_plane", "name": "Leaf 2 Free", "from": [300, -1000], "to": [300, 1000], "is_reference": "WeakReference" },
+  { "op": "add_ref_plane", "name": "Leaf 3 Free", "from": [900, -1000], "to": [900, 1000], "is_reference": "WeakReference" },
+  { "op": "add_dimension", "name": "Leaf 1 Reach", "between": ["Left", "Leaf 1 Free"], "label": "Leaf 1 Reach", "offset": 600 },
+  { "op": "add_dimension", "name": "Leaf 2 Reach", "between": ["Left", "Leaf 2 Free"], "label": "Leaf 2 Reach", "offset": 700 },
+  { "op": "add_dimension", "name": "Leaf 3 Reach", "between": ["Left", "Leaf 3 Free"], "label": "Leaf 3 Reach", "offset": 800 },
+  { "op": "add_ref_plane", "name": "Leaf Swing", "from": [-1200, 675], "to": [1200, 675], "is_reference": "WeakReference" },
+  { "op": "add_dimension", "name": "Leaf Swing", "between": ["Exterior", "Leaf Swing"], "label": "Leaf Width", "offset": 300 },
+
+  { "op": "add_subcategory", "name": "Plan Swing", "line_weight_projection": 1 },
+  { "op": "symbolic_lines", "name": "Fold swing", "view": "plan", "subcategory": "Plan Swing", "coarse": true, "medium": true, "fine": true,
+    "lines": [ { "from": { "planes": ["Leaf {k} Free", "Exterior"] }, "to": { "planes": ["Leaf {k} Free", "Leaf Swing"] } } ],
+    "arc": { "center": { "planes": ["Leaf {k} Free", "Exterior"] }, "radius": 600, "radius_param": "Leaf Width", "start_deg": 90, "end_deg": 180 },
+    "repeat": { "count_param": "Leaf Count", "max": 3 } },
+
+  { "op": "add_family_param", "name": "Bar Count", "type": "Integer" },
+  { "op": "set_type_value", "name": "1800x2100/Bar Count", "type": "1800x2100", "param": "Bar Count", "value": 6 },
+  { "op": "extrusion", "name": "Grille bar", "points": [[-850, -10], [-750, -10], [-750, 10], [-850, 10]], "start": 300, "end": 320 },
+  { "op": "array", "name": "Grille bars", "solid": "Grille bar", "direction": "z", "count_param": "Bar Count", "spacing_mm": 150, "max": 12 },
+
+  { "op": "add_family_param", "name": "Hardware Material", "type": "Material", "group": "Materials" },
+  { "op": "load_family", "name": "FMC_A_Hardware_Lever", "path": "Z:\\00_Standards\\04_Families\\A\\FMC_A_Hardware_Lever.rfa", "shared": true },
+  { "op": "load_family", "name": "FMC_A_Hardware_Hinge", "path": "Z:\\00_Standards\\04_Families\\_Staging\\A\\FMC_A_Hardware_Hinge.rfa", "shared": true },
+  { "op": "place_nested", "name": "Lever", "family": "FMC_A_Hardware_Lever", "type": "Standard", "at": [800, 40, 1000],
+    "params": { "Hardware Material": "Hardware Material" } },
+  { "op": "place_nested", "name": "Hinge top", "family": "FMC_A_Hardware_Hinge", "type": "100x75", "at": [-900, 40, 1850],
+    "params": { "Hardware Material": "Hardware Material" } }
+ ]
+}

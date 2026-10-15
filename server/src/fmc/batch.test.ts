@@ -32,3 +32,18 @@ test("profile sample batch: a closed profile loop with one arc validates", () =>
   const loop = ops.find((o) => o.op === "profile_lines") as any;
   assert.equal(loop.segments.filter((s: any) => s.through).length, 1);
 });
+
+test("recipe ops sample: default size first, template clean-up, per-leaf swings, copies and shared nested hardware validate", () => {
+  const batch = JSON.parse(fs.readFileSync(path.join(path.dirname(file), "FMC_A_Door_RecipeOps_Sample.ops.json"), "utf8"));
+  assert.equal(batch.template, "Metric Door.rft");
+  const ops = OPS.parse(batch.ops);
+  const { errors, notes } = splitProblems(opsProblems(ops, new Map(), "Z:\\00_Standards\\04_Families"));
+  assert.deepEqual(errors, []);
+  // Only the template's own planes (Left, Exterior) are named without being made in the batch.
+  assert.ok(notes.length > 0 && notes.every((n) => /reference plane "(Left|Exterior)"/.test(n)), notes.join("\n"));
+  assert.equal(ops[0].op, "set_default_size");
+  const loads = ops.filter((o) => o.op === "load_family") as any[];
+  assert.deepEqual(loads.map((o) => o.shared), [true, true]);
+  assert.ok(loads.some((o) => /\\_Staging\\/.test(o.path)) && loads.some((o) => !/\\_Staging\\/.test(o.path)), "one released, one staged");
+  assert.equal((ops.find((o) => o.op === "array") as any).mode, "copies");
+});

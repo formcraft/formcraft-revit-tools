@@ -23,7 +23,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             (t as JArray ?? new JArray()).Select(p => ((JArray)p).Select(v => v.Value<double>()).ToArray()).ToList();
 
         /// <summary>A 2D point in a view plane → model XYZ. plan: (x, y) at z = at; front: (x, z) at y = at; right: (y, z) at x = at.</summary>
-        private static XYZ To3D(string plane, double[] p, double at)
+        internal static XYZ To3D(string plane, double[] p, double at)
         {
             switch (plane)
             {
@@ -33,7 +33,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        private static Plane PlaneOf(string plane, double at)
+        internal static Plane PlaneOf(string plane, double at)
         {
             switch (plane)
             {
@@ -214,61 +214,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (!string.IsNullOrEmpty(sub)) Assign(form, Subcategory(doc, sub));
         }
 
-        // ---- symbolic lines -------------------------------------------------------------------------------------------
-
-        public static (string, string) SymbolicLines(Document doc, JObject op)
-        {
-            string name = op.Value<string>("name");
-            if (Named(doc, name) != null) return ("skip", "exists");
-            string plane = op.Value<string>("view") ?? "plan";
-            double at = op.Value<double?>("at") ?? 0;
-            SketchPlane sketch = SketchPlane.Create(doc, PlaneOf(plane, at));
-            var curves = new List<Curve>();
-            if (op["arc"] is JObject arc)
-            {
-                var c = arc["center"].Select(v => v.Value<double>()).ToArray();
-                XYZ center = To3D(plane, c, at);
-                XYZ ax, ay;
-                switch (plane)
-                {
-                    case "front": ax = XYZ.BasisX; ay = XYZ.BasisZ; break;
-                    case "right": ax = XYZ.BasisY; ay = XYZ.BasisZ; break;
-                    default: ax = XYZ.BasisX; ay = XYZ.BasisY; break;
-                }
-                double s = Rad(arc.Value<double>("start_deg")), e = Rad(arc.Value<double>("end_deg"));
-                if (e < s) { double t = s; s = e; e = t; }
-                curves.Add(Arc.Create(center, Mm(arc.Value<double>("radius")), s, e, ax, ay));
-            }
-            if (op["points"] is JArray)
-            {
-                var pts = Points(op["points"]).Select(p => To3D(plane, p, at)).ToList();
-                for (int k = 0; k + 1 < pts.Count; k++) curves.Add(Line.CreateBound(pts[k], pts[k + 1]));
-            }
-            if (curves.Count == 0) throw new InvalidOperationException("give points or arc");
-
-            Category sub = Subcategory(doc, op.Value<string>("subcategory"));
-            GraphicsStyle style = sub.GetGraphicsStyle(GraphicsStyleType.Projection);
-            var vis = new FamilyElementVisibility(FamilyElementVisibilityType.ViewSpecific);
-            if (op["coarse"] != null) vis.IsShownInCoarse = op.Value<bool>("coarse");
-            if (op["medium"] != null) vis.IsShownInMedium = op.Value<bool>("medium");
-            if (op["fine"] != null) vis.IsShownInFine = op.Value<bool>("fine");
-            foreach (Curve curve in curves)
-            {
-                SymbolicCurve sc = doc.FamilyCreate.NewSymbolicCurve(curve, sketch);
-                sc.LineStyle = style;
-                sc.SetVisibility(vis);
-                FmcDocGeometry.Label(sc, name);
-            }
-            return ("create", curves.Count + " symbolic curve(s) in " + plane + " on " + sub.Name);
-        }
+        // symbolic_lines (fixed and parametric: ends on planes, a labelled radius, per-leaf repeats) is in FmcDocRecipe.
 
         // ---- constraints ----------------------------------------------------------------------------------------------
 
-        private static ReferencePlane PlaneNamed(Document doc, string name) =>
+        internal static ReferencePlane PlaneNamed(Document doc, string name) =>
             new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(p => p.Name == name)
             ?? throw new InvalidOperationException("No reference plane " + name);
 
-        private static View ViewFor(Document doc, string kind)
+        internal static View ViewFor(Document doc, string kind)
         {
             var views = new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate).ToList();
             if (kind == "front") return views.FirstOrDefault(v => v.Name == "Front") ?? views.First(v => v.ViewType == ViewType.Elevation);
@@ -329,11 +283,30 @@ namespace RevitMCPCommandSet.Services.Fmc
         public static (string, string) LoadFamily(Document doc, JObject op)
         {
             string name = op.Value<string>("name"), path = op.Value<string>("path");
-            if (new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().Any(f => f.Name == name)) return ("skip", "already loaded");
+            bool shared = op.Value<bool?>("shared") == true;
+            Family loaded = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().FirstOrDefault(f => f.Name == name);
+            if (loaded != null) return ("skip", Joined("already loaded", SharedNote(loaded, shared)));
             if (!System.IO.File.Exists(path)) throw new InvalidOperationException("No file " + path);
             if (!doc.LoadFamily(path, new NoOverwrite(), out Family fam) || fam == null) throw new InvalidOperationException("Revit didn't load " + path);
-            if (fam.Name != name) return ("create", "loaded as " + fam.Name + " (the op calls it " + name + ")");
-            return ("create", "loaded " + fam.Name);
+            string note = SharedNote(fam, shared);
+            if (fam.Name != name) return ("create", Joined("loaded as " + fam.Name + " (the op calls it " + name + ")", note));
+            return ("create", Joined("loaded " + fam.Name, note));
+        }
+
+        private static string Joined(string a, string b) => string.IsNullOrEmpty(b) ? a : a + "; " + b;
+
+        /// <summary>
+        /// A nested family asked for as shared (hardware that schedules on its own) must be one. Revit 2025 is expected to
+        /// show the Shared flag on the loaded Family element; if it doesn't, the op says so and the retest checks by hand.
+        /// </summary>
+        private static string SharedNote(Family fam, bool wantShared)
+        {
+            if (!wantShared) return "";
+            Parameter p = fam.get_Parameter(BuiltInParameter.FAMILY_SHARED);
+            if (p == null) return "warning: Revit doesn't show here whether " + fam.Name + " is shared; check it by hand (Family Category and Parameters > Shared)";
+            if (p.AsInteger() != 1)
+                throw new InvalidOperationException(fam.Name + " isn't a shared family: rebuild it with set_family_params shared: true, or load it without shared");
+            return "shared";
         }
 
         public static (string, string) PlaceNested(Document doc, JObject op)
