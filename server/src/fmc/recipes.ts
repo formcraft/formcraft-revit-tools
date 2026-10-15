@@ -69,20 +69,53 @@ export function typeValues(recipe: Recipe): Map<string, Map<string, number | str
 export type GateState = "Pass" | "Fail" | "Warn" | "Not checked";
 export interface GateLine { check: string; state: GateState; detail: string }
 
+/** A labelled dimension whose plane ended on the other side of its reference (F-026), as the add-in's flex reports it. */
+export interface DimensionSide { a: string; b: string; label?: string; axis: string; drawn: number; now_mm: number }
+
 /** What fmc_library inspect says about the saved file (its checks), and what fmc_doc flex says. */
 export interface GateInputs {
-  inspect: { checks?: Array<{ check: string; state: string; detail: string }>; category?: string } | null;
-  /** fmc_doc flex: every type, whether it regenerated, and why not. */
-  flex: { ok?: boolean; types?: Array<{ type: string; ok: boolean; errors?: string[] }> } | null;
+  inspect: {
+    checks?: Array<{ check: string; state: string; detail: string }>; category?: string;
+    /** The kit shared parameters the saved file carries (name and GUID). */
+    shared_parameters?: Array<{ name: string; guid: string }>;
+  } | null;
+  /** Why inspect gave nothing (F-039: never swallowed). */
+  inspectError?: string;
+  /** fmc_doc flex: every type, whether it regenerated, and why not; labelled dimensions that changed side. */
+  flex: {
+    ok?: boolean;
+    types?: Array<{ type: string; ok: boolean; errors?: string[]; dimension_sides?: DimensionSide[] }>;
+    dimension_sides?: { checked: number; unrecorded: number };
+  } | null;
+  flexError?: string;
   registerCategory: string | null;
 }
 
+const REQUIRED_PARAMS = "Required FMC parameters present (by GUID)";
+const SIDE_WORDS: Record<string, [string, string]> = { z: ["above", "below"], x: ["to the right of (+x)", "to the left of (-x)"], y: ["on the +y side of", "on the -y side of"] };
+const side = (axis: string, sign: number) => (SIDE_WORDS[axis] ?? ["after", "before"])[sign > 0 ? 0 : 1];
+
 export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs): { verdict: "Pass" | "Fail"; lines: GateLine[] } {
   const lines: GateLine[] = [];
+  // F-039: the recipe's kit parameters (add_shared_param, by GUID) are what the saved file must carry
+  const expected = (recipe?.ops ?? []).filter((o) => o.op === "add_shared_param").map((o) => ({ name: o.name, guid: String((o as { guid?: string }).guid ?? "") }));
   // 1-4: the library's own checks on the saved file (name, kit parameters by GUID, keynotes, size, type names)
-  for (const c of inputs.inspect?.checks ?? [])
-    lines.push({ check: c.check, state: c.state === "pass" ? "Pass" : c.state === "fail" ? "Fail" : "Not checked", detail: c.detail });
-  if (!inputs.inspect) lines.push({ check: "Library checks on the saved file", state: "Not checked", detail: "The file couldn't be inspected" });
+  for (const c of inputs.inspect?.checks ?? []) {
+    let line: GateLine = { check: c.check, state: c.state === "pass" ? "Pass" : c.state === "fail" ? "Fail" : "Not checked", detail: c.detail };
+    if (c.check === REQUIRED_PARAMS && expected.length && inputs.inspect?.shared_parameters) {
+      // Never Pass on 0: the recipe names what the file must hold, so check every GUID and list the missing ones.
+      const have = new Set(inputs.inspect.shared_parameters.map((p) => p.guid.toLowerCase()));
+      const missing = expected.filter((p) => !have.has(p.guid.toLowerCase()));
+      const spec = line.state === "Fail" && !/^0 required/.test(c.detail) ? line : null;
+      line = { check: c.check, state: missing.length || spec ? "Fail" : "Pass",
+        detail: (missing.length ? `${expected.length - missing.length} of ${expected.length} present; missing ${missing.map((p) => `${p.name} (${p.guid})`).join(", ")}`
+          : `${expected.length} of ${expected.length} present by GUID: ${expected.map((p) => p.name).join(", ")}`) + (spec ? `; the kit spec: ${spec.detail}` : "") };
+    } else if (c.check === REQUIRED_PARAMS && line.state === "Pass" && /^0 /.test(c.detail)) {
+      line = { ...line, state: "Fail", detail: `0 required and 0 checked: the kit spec lists none and the recipe adds none, so nothing shows the family carries its kit parameters` };
+    }
+    lines.push(line);
+  }
+  if (!inputs.inspect) lines.push({ check: "Library checks on the saved file", state: "Not checked", detail: `The file couldn't be inspected: ${inputs.inspectError || "no reason given"}` });
 
   if (inputs.registerCategory == null) lines.push({ check: "Category against the register", state: "Not checked", detail: `${family} isn't in FMC_Family_Register.csv` });
   else {
@@ -91,12 +124,28 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
       detail: cat ? `${cat}${cat === inputs.registerCategory ? "" : `, the register says ${inputs.registerCategory}`}` : "Category not read" });
   }
 
-  if (!inputs.flex) lines.push({ check: "Every type flexes", state: "Not checked", detail: "Flex didn't run" });
+  if (!inputs.flex) lines.push({ check: "Every type flexes", state: "Not checked", detail: `Flex didn't run${inputs.flexError ? `: ${inputs.flexError}` : ""}` });
   else {
     const types = inputs.flex.types ?? [];
     const failing = types.filter((t) => !t.ok);
+    // F-039: a type bigger than the template's host wall can't cut its opening; say what to change
+    const cutOut = failing.some((f) => (f.errors ?? []).some((e) => /cut-?out|cut the host|opening.*host/i.test(e)));
     lines.push({ check: "Every type flexes", state: inputs.flex.ok && !failing.length ? "Pass" : "Fail",
-      detail: failing.length ? failing.slice(0, 3).map((f) => `${f.type}${f.errors?.length ? `: ${f.errors[0]}` : ""}`).join("; ") : `${types.length || "all"} types regenerate` });
+      detail: (failing.length ? failing.slice(0, 3).map((f) => `${f.type}${f.errors?.length ? `: ${f.errors[0]}` : ""}`).join("; ") : `${types.length || "all"} types regenerate`) +
+        (cutOut ? ". The opening is bigger than the template's host wall: raise the host wall (its height, and its length for wide types) in the recipe's template so the largest type cuts" : "") });
+
+    // F-039/F-026: a labelled dimension whose plane ended on the other side of its reference
+    const sides = inputs.flex.dimension_sides;
+    if (!sides) lines.push({ check: "Labelled dimensions keep their planes' sides", state: "Not checked", detail: "This add-in's flex doesn't report dimension sides: update the add-in" });
+    else {
+      const wrong = types.flatMap((t) => (t.dimension_sides ?? []).map((s) => ({ type: t.type, ...s })));
+      lines.push({ check: "Labelled dimensions keep their planes' sides",
+        state: wrong.length ? "Fail" : sides.checked ? "Pass" : "Not checked",
+        detail: wrong.length
+          ? wrong.slice(0, 4).map((w) => `${w.type}: ${w.b} was drawn ${side(w.axis, w.drawn)} ${w.a}${w.label ? ` (${w.label})` : ""}, now ${Math.abs(w.now_mm)} mm ${side(w.axis, w.now_mm)} it`).join("; ")
+          : sides.checked ? `${sides.checked} labelled dimensions keep their sides in every type${sides.unrecorded ? `; ${sides.unrecorded} older ones have no recorded side` : ""}`
+          : `No dimension recorded the side it was drawn on${sides.unrecorded ? ` (${sides.unrecorded} were made before this check: rebuild the family)` : ""}` });
+    }
   }
 
   if (!recipe) lines.push({ check: "Code checks and value sources", state: "Not checked", detail: "No recipe beside the family (.recipe.json)" });

@@ -50,7 +50,8 @@ export const FMC_CEILING_SHAPE = {
   action: z.enum(["designs", "checks", "setout", "quantities", "boq", "pack"]),
   room: z.object({
     name: z.string().optional().default("Room"),
-    outline_mm: z.array(z.tuple([z.number(), z.number()])).optional()
+    // not z.tuple: the Claude API rejects tuple schemas ("items" as an array) and drops the tool (schemas.test.ts)
+    outline_mm: z.array(z.array(z.number()).length(2)).optional()
       .describe("Corners of an orthogonal outline in mm, in order. Or give width_mm and depth_mm for a rectangle"),
     width_mm: z.number().optional(),
     depth_mm: z.number().optional(),

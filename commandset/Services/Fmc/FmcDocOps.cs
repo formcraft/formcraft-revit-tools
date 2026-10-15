@@ -30,23 +30,30 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        public static JObject Apply(Document doc, JArray ops, bool dry, string sharedParameterFile)
+        /// <param name="progressFile">Where to write per-op progress (FmcDocProgress, F-029); empty writes none.</param>
+        public static JObject Apply(Document doc, JArray ops, bool dry, string sharedParameterFile, string progressFile = "")
         {
             if (!doc.IsFamilyDocument) throw new InvalidOperationException("B1 ops build families; project templates come in B5.");
             var results = new JArray();
             var warnings = new List<string>();
             var app = doc.Application;
-            string previousSp = app.SharedParametersFilename;
+            IDisposable sp = null;
+            var progress = new JObject { ["state"] = "running", ["started"] = DateTime.UtcNow.ToString("o"), ["dry_run"] = dry, ["ops_total"] = ops.Count, ["op"] = 0, ["done"] = 0 };
+            FmcDocProgress.Write(progressFile, progress);
+            JArray sides = new JArray();
             using (var group = new TransactionGroup(doc, "Formcraft: build"))
             {
                 group.Start();
                 int i = 0;
                 try
                 {
-                    if (!string.IsNullOrEmpty(sharedParameterFile)) app.SharedParametersFilename = sharedParameterFile;
+                    // F-037: the kit's file only for this batch; the person's comes back in finally
+                    sp = FmcSharedParams.Use(app, sharedParameterFile);
                     foreach (JObject op in ops.OfType<JObject>())
                     {
                         i++;
+                        progress["op"] = i; progress["kind"] = op.Value<string>("op"); progress["name"] = op.Value<string>("name"); progress["done"] = i - 1;
+                        FmcDocProgress.Write(progressFile, progress);
                         var collector = new Collector();
                         using (var t = new Transaction(doc, op.Value<string>("op") + " " + op.Value<string>("name")))
                         {
@@ -58,27 +65,49 @@ namespace RevitMCPCommandSet.Services.Fmc
                             var status = t.Commit();
                             if (status != TransactionStatus.Committed) throw new InvalidOperationException("Revit refused it (" + status + ")");
                             results.Add(new JObject { ["op"] = op.Value<string>("op"), ["name"] = op.Value<string>("name"), ["result"] = result, ["detail"] = detail });
+                            // An op's own warnings (a texture not on disk) travel in its detail as "warning: …"; list them too.
+                            warnings.AddRange((detail ?? "").Split(new[] { "; " }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.StartsWith("warning: "))
+                                .Select(x => $"op {i} ({op.Value<string>("op")} {op.Value<string>("name")}): {x.Substring(9)}"));
                         }
                         warnings.AddRange(collector.Warnings.Select(w => $"op {i} ({op.Value<string>("op")} {op.Value<string>("name")}): {w}"));
+                    }
+
+                    // F-026: a labelled dimension whose plane ended on the other side of its reference
+                    var (wrong, _, _) = FmcDimSides.Check(doc);
+                    foreach (JObject w in wrong)
+                    {
+                        sides.Add(w);
+                        warnings.Add($"dimension {w.Value<string>("a")}-{w.Value<string>("b")} ({w.Value<string>("label")}): {w.Value<string>("b")} is now on the other side of {w.Value<string>("a")} than drawn ({w.Value<double>("now_mm")} mm along {w.Value<string>("axis")})");
                     }
                     if (dry) group.RollBack(); else group.Assimilate();
                 }
                 catch (Exception e)
                 {
                     if (group.HasStarted() && !group.HasEnded()) group.RollBack();
+                    progress["state"] = "failed"; progress["error"] = e.Message;
+                    FmcDocProgress.Write(progressFile, progress);
                     throw new InvalidOperationException($"op {i} failed, nothing was changed: {e.Message}");
                 }
                 finally
                 {
-                    app.SharedParametersFilename = previousSp ?? "";
+                    sp?.Dispose();
                 }
             }
-            return new JObject
+            var summary = new JObject
             {
-                ["dry_run"] = dry, ["ops"] = results, ["warnings"] = new JArray(warnings),
                 ["created"] = results.Count(r => r.Value<string>("result") == "create"),
                 ["updated"] = results.Count(r => r.Value<string>("result") == "update"),
                 ["skipped"] = results.Count(r => r.Value<string>("result") == "skip"),
+                ["warnings"] = warnings.Count,
+            };
+            progress["state"] = "finished"; progress["done"] = results.Count; progress["result"] = summary;
+            FmcDocProgress.Write(progressFile, progress);
+            return new JObject
+            {
+                ["dry_run"] = dry, ["ops"] = results, ["warnings"] = new JArray(warnings),
+                ["created"] = summary["created"], ["updated"] = summary["updated"], ["skipped"] = summary["skipped"],
+                ["dimension_sides"] = sides,
+                ["shared_parameter_file"] = FmcSharedParams.Status(app),
             };
         }
 
@@ -112,6 +141,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "add_eq_dimension": return FmcDocLod.EqDimension(doc, op);
                 case "load_family": return FmcDocLod.LoadFamily(doc, op);
                 case "place_nested": return FmcDocLod.PlaceNested(doc, op);
+                case "profile_lines": return FmcDocKit.ProfileLines(doc, op);
+                case "set_visible_param": return FmcDocKit.VisibleParam(doc, op);
+                case "add_material": return FmcDocKit.AddMaterial(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
@@ -352,6 +384,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             refs.Append(a.GetReference());
             refs.Append(b.GetReference());
             Dimension dim = doc.FamilyCreate.NewLinearDimension(view, Line.CreateBound(start, end), refs);
+            // F-026: keep the side b was drawn on, before the label can move it
+            if (p != null) FmcDimSides.Record(dim, a, b);
             if (p != null) dim.FamilyLabel = p;
             return ("create", p != null ? "labelled " + label : "");
         }

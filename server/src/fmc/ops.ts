@@ -5,6 +5,7 @@
  */
 import { z } from "zod";
 import { SpParam } from "./specs.js";
+import { MaterialDb } from "./materials.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
@@ -106,14 +107,108 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
     at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
     params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
+  // Profiles, switches and kit materials (FAM-040): profile families drawn as data, a Yes/No parameter that shows or
+  // hides a solid, and materials made from the kit's library with their textures.
+  z.object({ op: z.literal("profile_lines"), name: z.string().min(1).describe("one name for the loop"),
+    start: point.describe("[x, y] in mm in the profile family's Ref. Level plan: x across, y up"),
+    segments: z.array(z.object({ to: point, through: point.optional().describe("a point on the arc: the segment is a 3-point arc") }))
+      .min(1).describe("each segment runs from the previous point to `to`; the last `to` must equal start (a closed loop)"),
+    subcategory: z.string().optional() }),
+  z.object({ op: z.literal("set_visible_param"), name: z.string().min(1).describe("<solid>/Visible"), solid: z.string().min(1),
+    param: z.string().min(1).describe("a Yes/No family parameter, e.g. one with a formula such as FMC_Design_Movement = 7") }),
+  z.object({ op: z.literal("add_material"), name: z.string().min(1).describe("an FMC_ material in the kit's 07_Materials\\FMC_Materials.json"),
+    param: z.string().optional().describe("a Material family parameter whose value becomes this material in every type") }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
 
-/** Checks the batch as a whole: unique names per op kind, shared parameters from the dictionary, references made earlier. */
-export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string): string[] {
+// ---- profile loops ----------------------------------------------------------------------------------------------------
+
+type P2 = [number, number];
+const TOL = 0.01; // mm: closer than this is the same point
+const dist = (a: P2, b: P2) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+const cross = (o: P2, a: P2, b: P2) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+
+/** The points along a 3-point arc from a through m to b (16 pieces), or null when the three points are in a line. */
+function arcPoints(a: P2, m: P2, b: P2): P2[] | null {
+  const d = 2 * (a[0] * (m[1] - b[1]) + m[0] * (b[1] - a[1]) + b[0] * (a[1] - m[1]));
+  const scale = Math.max(dist(a, m), dist(m, b), dist(a, b));
+  if (Math.abs(cross(a, m, b)) < 1e-9 * scale * scale || d === 0) return null;
+  const sq = (p: P2) => p[0] * p[0] + p[1] * p[1];
+  const cx = (sq(a) * (m[1] - b[1]) + sq(m) * (b[1] - a[1]) + sq(b) * (a[1] - m[1])) / d;
+  const cy = (sq(a) * (b[0] - m[0]) + sq(m) * (a[0] - b[0]) + sq(b) * (m[0] - a[0])) / d;
+  const r = Math.hypot(a[0] - cx, a[1] - cy);
+  const ang = (p: P2) => Math.atan2(p[1] - cy, p[0] - cx);
+  const ccw = (from: number, to: number) => { let s = to - from; while (s < 0) s += 2 * Math.PI; while (s >= 2 * Math.PI) s -= 2 * Math.PI; return s; };
+  const a0 = ang(a), toM = ccw(a0, ang(m)), toB = ccw(a0, ang(b));
+  // Counter-clockwise from a reaches m before b: the arc runs counter-clockwise; otherwise clockwise.
+  const sweep = toM < toB ? toB : toB - 2 * Math.PI;
+  const out: P2[] = [];
+  for (let k = 1; k <= 16; k++) { const t = a0 + (sweep * k) / 16; out.push([cx + r * Math.cos(t), cy + r * Math.sin(t)]); }
+  out[out.length - 1] = b;
+  return out;
+}
+
+/** Proper or touching intersection of segments p1-p2 and q1-q2 (shared end points count as touching). */
+function segmentsMeet(p1: P2, p2: P2, q1: P2, q2: P2): boolean {
+  const eps = 1e-9;
+  const d1 = cross(q1, q2, p1), d2 = cross(q1, q2, p2), d3 = cross(p1, p2, q1), d4 = cross(p1, p2, q2);
+  if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) return true;
+  const on = (a: P2, b: P2, c: P2) => Math.abs(cross(a, b, c)) <= eps * Math.max(1, dist(a, b)) &&
+    Math.min(a[0], b[0]) - TOL <= c[0] && c[0] <= Math.max(a[0], b[0]) + TOL && Math.min(a[1], b[1]) - TOL <= c[1] && c[1] <= Math.max(a[1], b[1]) + TOL;
+  return on(q1, q2, p1) || on(q1, q2, p2) || on(p1, p2, q1) || on(p1, p2, q2);
+}
+
+/**
+ * A profile loop Revit accepts: closed (the last point is the start, within 0.01 mm), no zero-length segment, no arc
+ * whose three points are in a line, no crossing or touching of itself, and some area. Arcs are checked as 16 short
+ * pieces, which is close enough to catch a loop that crosses itself.
+ */
+export function profileLoopProblems(start: number[], segments: Array<{ to: number[]; through?: number[] }>): string[] {
+  const p: string[] = [];
+  const flat: P2[] = [[start[0], start[1]]];
+  let from: P2 = [start[0], start[1]];
+  segments.forEach((s, k) => {
+    const to: P2 = [s.to[0], s.to[1]];
+    if (dist(from, to) < TOL) p.push(`segment ${k + 1} has no length`);
+    if (s.through) {
+      const m: P2 = [s.through[0], s.through[1]];
+      const pts = dist(from, m) < TOL || dist(m, to) < TOL ? null : arcPoints(from, m, to);
+      if (!pts) p.push(`segment ${k + 1}: the arc's through point is on its ends or in line with them (use a line, or move the point)`);
+      else flat.push(...pts);
+    } else flat.push(to);
+    from = to;
+  });
+  if (dist(from, [start[0], start[1]]) >= TOL) {
+    p.push(`the loop isn't closed: it ends at [${from.join(", ")}], not at the start [${start.join(", ")}]`);
+    return p;
+  }
+  if (p.length) return p;
+  flat.pop(); // the last point is the start again
+  const n = flat.length;
+  for (let i = 0; i < n && p.length === 0; i++)
+    for (let j = i + 2; j < n; j++) {
+      if (i === 0 && j === n - 1) continue; // neighbours across the start
+      if (segmentsMeet(flat[i], flat[(i + 1) % n], flat[j], flat[(j + 1) % n])) { p.push("the loop crosses or touches itself"); break; }
+    }
+  if (p.length) return p;
+  let area = 0;
+  for (let i = 0; i < n; i++) { const a = flat[i], b = flat[(i + 1) % n]; area += a[0] * b[1] - b[0] * a[1]; }
+  if (n < 3 || Math.abs(area) / 2 < 1e-6) p.push("the loop encloses no area");
+  return p;
+}
+
+const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : /^MATERIAL$/i.test(datatype) ? "Material" : datatype);
+
+/**
+ * Checks the batch as a whole: unique names per op kind, shared parameters from the dictionary, references made earlier.
+ * materials is the kit's material library: null when it isn't readable (add_material is then refused), left out when
+ * the caller has no kit (tests), and add_material isn't checked against it.
+ */
+export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null): string[] {
   const p: string[] = [];
   const seen = new Set<string>();
+  const paramTypes = new Map<string, string>();
   const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>();
   const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
@@ -128,13 +223,37 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         const d = [...dictionary.values()].find((x) => x.guid.toLowerCase() === o.guid.toLowerCase());
         if (!d) p.push(`${at}: GUID ${o.guid} isn't in FMC_SharedParameters.txt (shared parameters come only from the dictionary)`);
         else if (d.name !== o.name) p.push(`${at}: the dictionary names ${o.guid} "${d.name}", not "${o.name}"`);
+        if (d) paramTypes.set(o.name, sharedType(d.datatype));
         params.add(o.name);
         break;
       }
       case "add_family_param":
         if (dictionary && [...dictionary.values()].some((x) => x.name === o.name))
           p.push(`${at}: "${o.name}" is a kit shared parameter: add it with add_shared_param and its GUID`);
+        paramTypes.set(o.name, o.type);
         params.add(o.name);
+        break;
+      case "profile_lines":
+        for (const x of profileLoopProblems(o.start, o.segments)) p.push(`${at}: ${x}`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        lines.add(o.name);
+        break;
+      case "set_visible_param":
+        if (o.name !== `${o.solid}/Visible`) p.push(`${at}: name must be "${o.solid}/Visible"`);
+        if (!solids.has(o.solid) && !lines.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
+        if (!params.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
+        else if (paramTypes.has(o.param) && paramTypes.get(o.param) !== "YesNo")
+          p.push(`${at}: "${o.param}" is ${paramTypes.get(o.param)}: Visible takes a Yes/No parameter`);
+        break;
+      case "add_material":
+        if (materials === null) p.push(`${at}: the kit's material library (07_Materials\\FMC_Materials.json) isn't readable`);
+        else if (materials && !materials.materials.some((m) => m.name === o.name))
+          p.push(`${at}: "${o.name}" isn't in the kit's material library (07_Materials\\FMC_Materials.json): ask the BIM Manager to add it (fmc_material request)`);
+        if (o.param) {
+          if (!params.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
+          else if (paramTypes.has(o.param) && paramTypes.get(o.param) !== "Material")
+            p.push(`${at}: "${o.param}" is ${paramTypes.get(o.param)}: add_material sets a Material parameter`);
+        }
         break;
       case "add_type": types.add(o.name); break;
       case "extrusion":

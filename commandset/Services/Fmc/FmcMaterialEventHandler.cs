@@ -174,12 +174,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 .GroupBy(e => e.GetTypeId().Value).ToDictionary(g => g.Key, g => g.Count());
 
             var plan = new JArray();
+            var warnings = new List<string>();
             Transaction tx = dry ? null : new Transaction(doc, "Formcraft: assign material");
             tx?.Start();
             try
             {
                 ElementId materialId = existing?.Id ?? ElementId.InvalidElementId;
-                if (!dry && existing == null) materialId = CreateMaterial(doc, db);
+                if (!dry && existing == null) materialId = CreateMaterial(doc, db, warnings);
                 foreach (ElementType t in targets)
                 {
                     string change = Change(t, parameter, materialId, name, apply: !dry);
@@ -196,23 +197,19 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 tx?.Dispose();
             }
-            return new JObject { ["types"] = plan, ["creates"] = existing == null };
+            return new JObject { ["types"] = plan, ["creates"] = existing == null, ["warnings"] = new JArray(warnings) };
         }
 
-        /// <summary>A database material made in the model: name, class, shaded colour, keynote and cost code.</summary>
-        private static ElementId CreateMaterial(Document doc, JObject db)
+        /// <summary>
+        /// A database material made in the model: name, class, shaded colour, keynote, description and cost code, and its
+        /// appearance with the kit's albedo and bump textures (the same helper fmc_doc add_material uses). A texture that
+        /// isn't on disk is left out and reported.
+        /// </summary>
+        private static ElementId CreateMaterial(Document doc, JObject db, List<string> warnings)
         {
-            ElementId id = Material.Create(doc, db.Value<string>("name"));
-            var m = (Material)doc.GetElement(id);
-            m.MaterialClass = db.Value<string>("class") ?? "";
-            string shaded = db["graphics"]?.Value<string>("shaded") ?? "";
-            if (shaded.StartsWith("#") && shaded.Length == 7)
-                m.Color = new Color(Convert.ToByte(shaded.Substring(1, 2), 16), Convert.ToByte(shaded.Substring(3, 2), 16), Convert.ToByte(shaded.Substring(5, 2), 16));
-            Parameter keynote = m.get_Parameter(BuiltInParameter.KEYNOTE_PARAM);
-            if (keynote != null && !keynote.IsReadOnly) keynote.Set(db.Value<string>("keynote") ?? "");
-            Parameter cost = m.LookupParameter("FMC_Cost_Code");
-            if (cost != null && !cost.IsReadOnly && cost.StorageType == StorageType.String) cost.Set(db.Value<string>("cost_code") ?? "");
-            return id;
+            FmcMaterialKit.Outcome made = FmcMaterialKit.Ensure(doc, db);
+            warnings.AddRange(made.Warnings);
+            return made.Material.Id;
         }
 
         // ------------------------------------------------------------------ purge

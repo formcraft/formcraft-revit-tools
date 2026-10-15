@@ -54,7 +54,12 @@ export function checkFamily(f: ScannedFamily, specs: Map<string, FamilySpec>, ki
 
   const required = requiredParameters(f.name, specs, kit);
   if (!required) checks.push({ check: CHECKS[1], state: "na", detail: "The kit has no spec for this family, so a person decides its parameters", fixable: false });
-  else {
+  else if (!required.length) {
+    // F-039: never Pass on 0. The spec names no parameter the kit's dictionary has, so nothing was checked.
+    const named = specs.get(f.name)?.shared_parameters.map((p) => p.name) ?? [];
+    checks.push({ check: CHECKS[1], state: "fail", fixable: false,
+      detail: `0 required: the kit spec for ${f.name} names ${named.length ? `${named.length} that FMC_SharedParameters.txt doesn't have (${named.slice(0, 5).join(", ")})` : "no shared parameters"}, a kit change request; the file carries ${f.shared_guids.length} shared parameters` });
+  } else {
     const have = new Set(f.shared_guids.map((g) => g.toLowerCase()));
     const missing = required.filter((p) => !have.has(p.guid.toLowerCase()));
     checks.push({ check: CHECKS[1], state: missing.length ? "fail" : "pass",

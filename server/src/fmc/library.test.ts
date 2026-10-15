@@ -25,6 +25,13 @@ const fam = (o: Partial<ScannedFamily> = {}): ScannedFamily => ({
   shared_guids: ["AAAAAAAA-0000-0000-0000-000000000001", "aaaaaaaa-0000-0000-0000-000000000002"], ...o,
 });
 
+test("F-039: a spec that names no kit parameter never passes as '0 present'", () => {
+  const empty = new Map([["FMC_E_ElecFixture_SocketDouble", spec("FMC_E_ElecFixture_SocketDouble", "Electrical Fixtures", ["Not_In_Kit"])]]);
+  const c = checkFamily(fam(), empty, kit).checks.find((x) => x.check === "Required FMC parameters present (by GUID)")!;
+  assert.equal(c.state, "fail");
+  assert.match(c.detail, /^0 required: .*Not_In_Kit.*kit change request; the file carries 2 shared parameters/);
+});
+
 test("names: library FMC_[Role]_[Token]_[Desc] and project families (D4) pass", () => {
   assert.ok(nameOk("FMC_E_ElecFixture_SocketDouble"));
   assert.ok(nameOk("F26001_E_ElecFixture_Isolator"));
