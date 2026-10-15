@@ -1,7 +1,9 @@
 /**
  * fmc_doc ops (docs/PLAN_B1_ENGINE.md, B1b): the fixed vocabulary a builder sends, validated before Revit sees it.
  * Every op names what it makes, so a batch is idempotent: Revit answers create, update or skip per op. Sizes are mm.
- * Shared parameters come only from the kit's dictionary, by GUID (rule 7). Deleting is never an op.
+ * Shared parameters come only from the kit's dictionary, by GUID (rule 7). The only delete is delete_template_element:
+ * elements the family template ships, matched by kind, category, subcategory or name (never an id), never one an op
+ * made, in the background family document being built. Files are never deleted.
  */
 import { z } from "zod";
 import { SpParam } from "./specs.js";
@@ -13,6 +15,10 @@ const mm = z.number().finite();
 const point = z.array(mm).length(2).describe("[x, y] in mm");
 const point3 = z.array(mm).length(3).describe("[x, y, z] in mm");
 const VIEWS = ["plan", "front", "right"] as const;
+// A point as the crossing of two named reference planes: an end drawn there is locked to both, so it follows them.
+const planeEnd = z.object({ planes: z.array(z.string().min(1)).length(2)
+  .describe("two reference planes that cross in the view (in plan: a left/right plane and a front/back plane); {k} is the leaf number in a repeat") });
+const end = z.union([point, planeEnd]);
 const visibility = {
   coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional(),
 };
@@ -93,9 +99,17 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
     view: z.enum(VIEWS).default("plan").describe("plan lines show in plan views; front in front/back elevations; right in side elevations"),
     at: mm.default(0),
-    points: z.array(point).min(2).optional().describe("a polyline in the view's plane, mm"),
-    arc: z.object({ center: point, radius: mm.positive(), start_deg: z.number(), end_deg: z.number() }).optional()
-      .describe("or an arc, e.g. a door swing"),
+    points: z.array(point).min(2).optional().describe("a polyline in the view's plane, mm (fixed: it doesn't follow parameters)"),
+    lines: z.array(z.object({ from: end, to: end })).min(1).optional()
+      .describe("parametric lines: each end is [x, y] in mm or {planes: [a, b]}; an end on planes is locked to them and a line whose ends share a plane is locked to it, so plan swings and fold symbols follow Width and the leaf planes"),
+    arc: z.object({ center: end, radius: mm.positive().describe("mm, as drawn"),
+      radius_param: z.string().optional().describe("a Length parameter that drives the radius (a radial dimension labelled with it), e.g. Leaf Width"),
+      start_deg: z.number(), end_deg: z.number() }).optional()
+      .describe("or an arc, e.g. a door swing; its center can be {planes: [a, b]} (locked there)"),
+    show_if: z.string().optional().describe("a Yes/No formula: the lines show only when it is true, e.g. Leaf Count > 1"),
+    repeat: z.object({ count_param: z.string().min(1).describe("an Integer parameter, e.g. Leaf Count"),
+      max: z.number().int().min(2).max(12).describe("how many sets are drawn; the ones above the count are hidden") }).optional()
+      .describe("per-leaf repeats: the set is drawn for k = 1..max with {k} in plane names replaced by k, and set k shows when count_param > k - 1"),
     subcategory: z.string().min(1).describe("Plan Swing, Elevation Swing, Hidden Lines…"), ...visibility }),
   z.object({ op: z.literal("lock_face"), name: z.string().min(1).describe("<solid>/<plane>"), solid: z.string().min(1), plane: z.string().min(1),
     view: z.enum(VIEWS).default("plan").describe("plan for vertical planes, front for level planes") }),
@@ -103,7 +117,8 @@ export const OP = z.discriminatedUnion("op", [
     .describe("three or more reference planes in order, e.g. Left, Center (Left/Right), Right"),
     view: z.string().optional(), offset: mm.default(600) }),
   z.object({ op: z.literal("load_family"), name: z.string().min(1).describe("the family name once loaded"),
-    path: z.string().min(1).describe("an .rfa in the kit's 04_Families (profiles, detail kit, nested parts)") }),
+    path: z.string().min(1).describe("an .rfa in the kit's 04_Families: a released family (04_Families\\<Role>) or one in _Staging (profiles, detail kit, nested parts, hardware)"),
+    shared: z.boolean().optional().describe("true for a shared nested family (handles, hinges, locks) that schedules on its own: the load checks the family is shared") }),
   z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
     at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
     params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
@@ -118,6 +133,27 @@ export const OP = z.discriminatedUnion("op", [
     param: z.string().min(1).describe("a Yes/No family parameter, e.g. one with a formula such as FMC_Design_Movement = 7") }),
   z.object({ op: z.literal("add_material"), name: z.string().min(1).describe("an FMC_ material in the kit's 07_Materials\\FMC_Materials.json"),
     param: z.string().optional().describe("a Material family parameter whose value becomes this material in every type") }),
+  // Recipe ops from the Ogala field review (run 9): arrays tied to a count, template clean-up, the default size first.
+  z.object({ op: z.literal("array"), name: z.string().min(1).describe("the array, e.g. Louvre blades"),
+    solid: z.string().min(1).describe("the solid to repeat (by op name); it is member 1"),
+    direction: z.enum(["x", "y", "z"]).describe("x across, y front/back, z up"),
+    count_param: z.string().min(1).describe("an Integer family parameter: how many show"),
+    mode: z.enum(["copies", "linear"]).default("copies")
+      .describe("copies (default, reliable): max - 1 copies at spacing_mm named \"<solid> #k\", member k shows when count_param > k - 1; linear: Revit's LinearArray with its count labelled count_param (to be confirmed in Revit)"),
+    max: z.number().int().min(2).max(50).default(12).describe("copies: how many members are made (the most the count can show)"),
+    spacing_mm: mm.optional().describe("the step between members in mm (negative goes the other way)"),
+    spacing_param: z.string().optional().describe("linear only: a Length parameter that drives the step"),
+    between: z.array(z.string().min(1)).length(2).optional()
+      .describe("linear only: [first, last] reference planes; the members spread between them (the solid lies on the first)") }),
+  z.object({ op: z.literal("delete_template_element"), name: z.string().min(1).describe("what goes, e.g. Template frame"),
+    kind: z.enum(["solid", "void", "symbolic_line", "model_line", "detail_line", "nested_family", "opening", "any"]).default("any"),
+    category: z.string().optional().describe("the element's category, e.g. Doors or OST_Doors"),
+    subcategory: z.string().optional().describe("e.g. Frame/Mullion, Panel, Plan Swing, Elevation Swing"),
+    element_name: z.string().optional().describe("the element's name in Revit (Extrusion, a nested family's name)"),
+    max: z.number().int().min(1).max(50).default(10).describe("refuse when more than this match") }),
+  z.object({ op: z.literal("set_default_size"), name: z.string().min(1).describe("identity, e.g. Default size"),
+    type: z.string().optional().describe("the type to make current (made when missing); default: the template's current type"),
+    values: z.record(mm.positive()).describe("Length parameter → mm, e.g. { \"Width\": 900, \"Height\": 2100 }") }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
@@ -198,6 +234,13 @@ export function profileLoopProblems(start: number[], segments: Array<{ to: numbe
   return p;
 }
 
+/** Marks a problem that is passed on as a note, not an error. */
+export const WARNING = "warning:";
+/** The size parameters a door or window template ships (they exist in the file before any op). */
+const TEMPLATE_SIZE_PARAMS = new Set(["Width", "Height"]);
+const SIZE_PARAMS = TEMPLATE_SIZE_PARAMS;
+const sameSet = (a: string[], b: string[]) => a.length === b.length && a.every((x) => b.includes(x));
+
 const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : /^MATERIAL$/i.test(datatype) ? "Material" : datatype);
 
 /**
@@ -212,6 +255,11 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>();
   const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
+  const typedParam = (want: string) => (n: string, at: string) => {
+    if (!params.has(n) && !TEMPLATE_SIZE_PARAMS.has(n)) p.push(`${at}: ${mayExist("parameter", n)}`);
+    else if (paramTypes.has(n) && paramTypes.get(n) !== want) p.push(`${at}: "${n}" is ${paramTypes.get(n)}, not ${want}`);
+  };
+  const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
     const key = `${o.op}|${o.name.toLowerCase()}`;
@@ -305,11 +353,61 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
         break;
-      case "symbolic_lines":
-        if (!o.points && !o.arc) p.push(`${at}: give points or arc`);
+      case "symbolic_lines": {
+        if (!o.points && !o.arc && !o.lines) p.push(`${at}: give points, lines or arc`);
         if (o.arc && o.arc.start_deg === o.arc.end_deg) p.push(`${at}: the arc's start and end angles are the same`);
         if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        const ends = [...(o.lines ?? []).flatMap((l) => [l.from, l.to]), ...(o.arc ? [o.arc.center] : [])];
+        const planeNames = ends.flatMap((e) => (Array.isArray(e) ? [] : e.planes));
+        for (const e of ends) if (!Array.isArray(e) && e.planes[0] === e.planes[1]) p.push(`${at}: an end names the plane "${e.planes[0]}" twice (it needs two planes that cross)`);
+        (o.lines ?? []).forEach((l, k) => {
+          if (Array.isArray(l.from) && Array.isArray(l.to) && l.from[0] === l.to[0] && l.from[1] === l.to[1]) p.push(`${at}: line ${k + 1} has no length`);
+          if (!Array.isArray(l.from) && !Array.isArray(l.to) && sameSet(l.from.planes, l.to.planes)) p.push(`${at}: line ${k + 1} starts and ends on the same two planes (no length)`);
+        });
+        const ks = o.repeat ? Array.from({ length: o.repeat.max }, (_, i) => i + 1) : [0];
+        if (o.repeat) {
+          if (!planeNames.some((n) => n.includes("{k}"))) p.push(`${at}: a repeat needs {k} in a plane name (e.g. "Leaf {k} Left"), or every set is drawn in the same place`);
+          integerParam(o.repeat.count_param, `${at}: repeat`);
+        } else if (planeNames.some((n) => n.includes("{k}"))) p.push(`${at}: {k} in a plane name needs repeat`);
+        const want = new Set(ks.flatMap((k) => planeNames.map((n) => n.split("{k}").join(String(k)))));
+        for (const pl of want) if (!planes.has(pl)) p.push(`${at}: ${mayExist("reference plane", pl)}`);
+        if (o.arc?.radius_param) lengthParam(o.arc.radius_param, `${at}: radius_param`);
+        if (o.show_if !== undefined && !o.show_if.trim()) p.push(`${at}: show_if is empty`);
         lines.add(o.name);
+        break;
+      }
+      case "array": {
+        if (o.name === o.solid) p.push(`${at}: the array needs its own name, not the solid's`);
+        if (!solids.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
+        integerParam(o.count_param, at);
+        const ways = [o.spacing_mm !== undefined, !!o.spacing_param, !!o.between].filter(Boolean).length;
+        if (o.spacing_mm === 0) p.push(`${at}: spacing_mm can't be 0`);
+        if (o.mode === "copies") {
+          if (o.spacing_mm === undefined) p.push(`${at}: copies need spacing_mm`);
+          if (o.spacing_param) p.push(`${at}: spacing_param needs mode "linear" (copies sit at spacing_mm; let the count follow the size instead, e.g. a formula rounddown(Height / 100))`);
+          if (o.between) p.push(`${at}: between needs mode "linear"`);
+        } else {
+          if (ways !== 1) p.push(`${at}: linear takes exactly one of spacing_mm, spacing_param or between`);
+          if (o.spacing_param) lengthParam(o.spacing_param, at);
+          if (o.between) {
+            if (o.between[0] === o.between[1]) p.push(`${at}: between needs two different planes`);
+            for (const pl of o.between) if (!planes.has(pl)) p.push(`${at}: ${mayExist("reference plane", pl)}`);
+          }
+        }
+        for (let k = 2; k <= (o.mode === "copies" ? o.max : 0); k++) solids.add(`${o.solid} #${k}`);
+        break;
+      }
+      case "delete_template_element":
+        if (o.kind === "any" && !o.subcategory && !o.element_name)
+          p.push(`${at}: say what goes: a kind, a subcategory or an element_name (a category alone would match everything)`);
+        break;
+      case "set_default_size":
+        if (!Object.keys(o.values).length) p.push(`${at}: values names no parameter`);
+        for (const n of Object.keys(o.values)) {
+          if (paramTypes.has(n) && paramTypes.get(n) !== "Length") p.push(`${at}: "${n}" is ${paramTypes.get(n)}: set_default_size sets Length parameters`);
+          else if (!params.has(n) && !TEMPLATE_SIZE_PARAMS.has(n)) p.push(`${at}: ${mayExist("parameter", n)}`);
+        }
+        if (o.type) types.add(o.type);
         break;
       case "set_subcategory":
         if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
@@ -344,11 +442,23 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
     }
   });
+  // F-026: planes drawn while the template's default size is current can end on the wrong side once a labelled
+  // dimension takes the type's size. A batch that sizes Width or Height sets its default size before any plane.
+  const sizes = ops.some((o) => (o.op === "add_dimension" && SIZE_PARAMS.has(o.label ?? "")) || (o.op === "set_type_value" && SIZE_PARAMS.has(o.param))
+    || (o.op === "add_family_param" && SIZE_PARAMS.has(o.name)));
+  const firstPlane = ops.findIndex((o) => o.op === "add_ref_plane");
+  const firstSize = ops.findIndex((o) => o.op === "set_default_size");
+  if (sizes && firstPlane >= 0 && firstSize >= 0 && firstPlane < firstSize) {
+    const o = ops[firstPlane];
+    p.push(`op ${firstPlane + 1} (${o.op} ${o.name}): ${WARNING} (F-026) this plane is drawn before set_default_size (op ${firstSize + 1}), ` +
+      "so it is placed at the template's default size and a labelled dimension can pull a plane to the other side. Put set_default_size with the first type's Width and Height first");
+  }
   // A plane named only in a warning is fine when the file has it; the hard errors are the ones above other than "may exist".
   return p;
 }
 
-/** Hard problems stop the batch; "may exist in the file" notes are passed on as warnings. */
+/** Hard problems stop the batch; "may exist in the file" notes and warnings are passed on as notes. */
 export function splitProblems(problems: string[]): { errors: string[]; notes: string[] } {
-  return { errors: problems.filter((x) => !x.includes("may exist in the file")), notes: problems.filter((x) => x.includes("may exist in the file")) };
+  const note = (x: string) => x.includes("may exist in the file") || x.includes(WARNING);
+  return { errors: problems.filter((x) => !note(x)), notes: problems.filter(note) };
 }
