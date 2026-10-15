@@ -206,11 +206,15 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        /// <summary>Flex: every type in turn, regenerated; constraint errors per type. Nothing is kept.</summary>
+        /// <summary>
+        /// Flex: every type in turn, regenerated; constraint errors per type, and the labelled dimensions whose plane ended
+        /// on the other side of its reference in that type (F-026, F-039). Nothing is kept.
+        /// </summary>
         public static JObject Flex(Document doc)
         {
             FamilyManager fm = doc.FamilyManager;
             var results = new JArray();
+            int sidesChecked = 0, sidesUnrecorded = 0;
             using (var group = new TransactionGroup(doc, "Formcraft: flex"))
             {
                 group.Start();
@@ -224,16 +228,30 @@ namespace RevitMCPCommandSet.Services.Fmc
                         t.SetFailureHandlingOptions(fho);
                         t.Start();
                         string error = "";
-                        try { fm.CurrentType = type; doc.Regenerate(); } catch (Exception e) { error = e.Message; }
+                        var wrong = new List<JObject>();
+                        try
+                        {
+                            fm.CurrentType = type;
+                            doc.Regenerate();
+                            var sides = FmcDimSides.Check(doc);
+                            wrong = sides.Wrong;
+                            sidesChecked = Math.Max(sidesChecked, sides.Checked);
+                            sidesUnrecorded = Math.Max(sidesUnrecorded, sides.Unrecorded);
+                        }
+                        catch (Exception e) { error = e.Message; }
                         var status = t.Commit();
                         if (status != TransactionStatus.Committed && error.Length == 0 && c.Errors.Count == 0) error = "Revit couldn't regenerate it (" + status + ")";
                         var all = c.Errors.Concat(error.Length > 0 ? new[] { error } : new string[0]).ToList();
-                        results.Add(new JObject { ["type"] = type.Name, ["ok"] = all.Count == 0, ["errors"] = new JArray(all) });
+                        results.Add(new JObject { ["type"] = type.Name, ["ok"] = all.Count == 0, ["errors"] = new JArray(all), ["dimension_sides"] = new JArray(wrong) });
                     }
                 }
                 group.RollBack();
             }
-            return new JObject { ["types"] = results, ["ok"] = results.All(r => r.Value<bool>("ok")) };
+            return new JObject
+            {
+                ["types"] = results, ["ok"] = results.All(r => r.Value<bool>("ok")),
+                ["dimension_sides"] = new JObject { ["checked"] = sidesChecked, ["unrecorded"] = sidesUnrecorded },
+            };
         }
     }
 }

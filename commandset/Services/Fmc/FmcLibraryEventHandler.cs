@@ -49,6 +49,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             finally
             {
+                try { FmcSharedParams.RestoreIfPending(app.Application); } catch (Exception) { /* F-037: reported by the next build */ }
                 _resetEvent.Set();
             }
         }
@@ -95,18 +96,27 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         // ------------------------------------------------------------------ inspect an outside .rfa (read-only)
 
-        private static JObject WithFamilyFile(UIApplication app, string path, bool keepOpen, Func<Document, JObject> work)
+        private static JObject WithFamilyFile(UIApplication app, string path, bool keepOpen, Func<Document, JObject> work, bool readOnly = true)
         {
             if (!File.Exists(path)) throw new FileNotFoundException($"Family not found: {path}");
-            Document doc = app.Application.OpenDocumentFile(path);
+            // Already open (the person's window, or a build's session): read it and leave it open (F-023, F-039).
+            Document already = app.Application.Documents.Cast<Document>().FirstOrDefault(d =>
+                !d.IsLinked && string.Equals(d.PathName, path, StringComparison.OrdinalIgnoreCase));
+            if (already != null && !readOnly)
+                throw new InvalidOperationException($"{Path.GetFileName(path)} is open in Revit: close it there first, so the copy saved to staging can't take over the open file");
+            Document doc;
+            try { doc = already ?? app.Application.OpenDocumentFile(path); }
+            catch (Exception e) { throw new InvalidOperationException($"Revit couldn't open {Path.GetFileName(path)}: {e.Message}", e); }
             try
             {
                 if (!doc.IsFamilyDocument) throw new InvalidOperationException($"{Path.GetFileName(path)} is not a family.");
-                return work(doc);
+                JObject r = work(doc);
+                if (already != null) r["already_open"] = true;
+                return r;
             }
             finally
             {
-                if (!keepOpen) doc.Close(false);
+                if (!keepOpen && already == null) doc.Close(false);
             }
         }
 
@@ -116,6 +126,25 @@ namespace RevitMCPCommandSet.Services.Fmc
             var parameters = new JArray();
             foreach (FamilyParameter p in fm.Parameters)
                 parameters.Add(new JObject { ["name"] = p.Definition.Name, ["shared"] = p.IsShared, ["guid"] = p.IsShared ? p.GUID.ToString() : "", ["instance"] = p.IsInstance });
+            // F-039: each type's keynote as saved: the built-in Keynote and every text parameter named like a keynote
+            // (the kit's keynote code parameter among them); the server decides what counts.
+            var keynoteParams = new List<FamilyParameter>();
+            FamilyParameter builtIn = fm.get_Parameter(BuiltInParameter.KEYNOTE_PARAM);
+            if (builtIn != null) keynoteParams.Add(builtIn);
+            keynoteParams.AddRange(fm.Parameters.Cast<FamilyParameter>().Where(p => p.StorageType == StorageType.String
+                && p.Definition.Name.IndexOf("keynote", StringComparison.OrdinalIgnoreCase) >= 0 && (builtIn == null || p.Id != builtIn.Id)));
+            var typeKeynotes = new JArray();
+            foreach (FamilyType t in fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)))
+            {
+                var values = new JObject();
+                foreach (FamilyParameter p in keynoteParams)
+                {
+                    string v = "";
+                    try { v = t.AsString(p) ?? ""; } catch (Exception) { /* not readable for this type */ }
+                    values[p == builtIn ? "Keynote" : p.Definition.Name] = v;
+                }
+                typeKeynotes.Add(new JObject { ["name"] = t.Name, ["values"] = values });
+            }
             return new JObject
             {
                 ["name"] = Path.GetFileNameWithoutExtension(doc.PathName),
@@ -124,6 +153,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["imported_cad"] = new FilteredElementCollector(doc).OfClass(typeof(ImportInstance)).GetElementCount(),
                 ["nested"] = new FilteredElementCollector(doc).OfClass(typeof(Family)).GetElementCount(),
                 ["types"] = new JArray(fm.Types.Cast<FamilyType>().Select(t => t.Name).Where(n => !string.IsNullOrWhiteSpace(n))),
+                ["type_keynotes"] = typeKeynotes,
                 ["parameters"] = parameters,
             };
         }
@@ -145,12 +175,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (wanted.Count > 0 && !File.Exists(spFile)) throw new FileNotFoundException($"Shared parameter file not found: {spFile}");
 
             var rvt = app.Application;
-            string previous = rvt.SharedParametersFilename;
             var added = new JArray();
             var warnings = new JArray();
-            try
+            // F-037: the kit's file only while bringing in; the person's comes back when the scope ends
+            using (FmcSharedParams.Use(rvt, wanted.Count > 0 ? spFile : ""))
             {
-                if (wanted.Count > 0) rvt.SharedParametersFilename = spFile;
                 DefinitionFile df = wanted.Count > 0 ? rvt.OpenSharedParameterFile() : null;
                 return WithFamilyFile(app, source, false, doc =>
                 {
@@ -189,11 +218,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Directory.CreateDirectory(Path.GetDirectoryName(target));
                     doc.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") ?? false, MaximumBackups = 1 });
                     return new JObject { ["saved"] = target, ["added"] = added, ["keynote"] = keynote, ["warnings"] = warnings };
-                });
-            }
-            finally
-            {
-                rvt.SharedParametersFilename = previous ?? "";
+                }, readOnly: false);
             }
         }
     }

@@ -69,12 +69,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             var plans = Parameters["families"] as JArray ?? new JArray();
             if (!File.Exists(spFile)) throw new System.IO.FileNotFoundException($"Shared parameter file not found: {spFile}");
 
-            string previous = rvt.SharedParametersFilename;
             var results = new JArray();
             int built = 0;
-            try
+            // F-037: the kit's file for the build only; the person's comes back when the scope ends, whatever happens
+            using (FmcSharedParams.Use(rvt, spFile))
             {
-                rvt.SharedParametersFilename = spFile;
                 DefinitionFile df = rvt.OpenSharedParameterFile()
                     ?? throw new InvalidOperationException($"Revit could not open the shared parameter file {spFile}");
                 foreach (JObject plan in plans)
@@ -84,11 +83,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     results.Add(r);
                 }
             }
-            finally
-            {
-                rvt.SharedParametersFilename = previous ?? "";
-            }
-            return new JObject { ["built"] = built, ["failed"] = plans.Count - built, ["families"] = results };
+            return new JObject { ["built"] = built, ["failed"] = plans.Count - built, ["families"] = results, ["shared_parameter_file"] = FmcSharedParams.Status(rvt) };
         }
 
         private static ExternalDefinition? FindDefinition(DefinitionFile df, string name, string guid)
