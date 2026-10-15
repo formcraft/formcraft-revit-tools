@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null)
         {
             _licence = licence;
             _connection = connection;
@@ -181,7 +181,7 @@ namespace Formcraft.Shell.ViewModels
             var systemTools = systems ?? new MockSystemTools();
             Systems = new SystemsPage(systemTools, Project, settings, s => Status = s);
             _hostSections["Systems"] = Systems;
-            Structural = new StructuralPage(systemTools, Project, settings, s => Status = s);
+            Structural = new StructuralPage(systemTools, Project, settings, s => Status = s, robot, ShowDialog);
             _hostSections["Structural"] = Structural;
             Build = new BuildPage(build ?? new MockBuildTools(), Project, settings, s => Status = s, ShowDialog, () => OpenWorkspaceRequested?.Invoke(this, EventArgs.Empty));
             _hostSections["Build"] = Build;
