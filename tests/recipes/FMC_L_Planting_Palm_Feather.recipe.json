@@ -1,0 +1,3556 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_L_Planting_Palm_Feather",
+ "template": "Metric Planting.rft",
+ "about": "Feather palm: fronds on a stick: tapered trunk + crownshaft cylinder + n arched fronds (sweeps), 6-14 by visibility (Fam_Plants board, 15 Oct 2026). 2 species as types, size first (height in mm, then the species). Coarse: a box at the type's true overall size, locked to the labelled planes (Height, Crown Diameter, Crown Height, Trunk Height, Trunk Diameter), so it flexes for any type. Medium and Fine: each species' own primitives at its size, switched by Species Index (Show <Species> = Species Index = k on every solid's and plan line's Visible); a revolution's profile can't be locked to planes yet, so a type a person adds shows the Coarse box at its size but the species shapes of the type it was copied from until its own are drawn. Fine adds the secondary parts. Plan: symbolic lines per species (the board's symbol, crown outline at the mature spread) at every detail level; 3D solids are off in plan. Flower dots (Fine) and Growth / Variation are not built: they wait for an array op and kit parameters. FMC_Planting_Size and FMC_Plant_Spacing_mm are left for the landscape designer.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "OST_Planting"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false,
+   "group": "IdentityData"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Botanical_Name",
+   "guid": "92a0ab90-e543-57c6-a940-c3b1aa34ec75",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Name",
+   "guid": "1b5f0a82-221c-5216-98d8-77903d31405a",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Planting_Size",
+   "guid": "6b6409ef-63f2-54e1-ae6b-1d3d465b7a64",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Plant_Spread_mm",
+   "guid": "83ffa9f4-9a93-546d-a66e-99642f2dfb56",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Height",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Crown Diameter",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Crown Height",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Trunk Height",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Trunk Diameter",
+   "type": "Length",
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Species Index",
+   "type": "Integer",
+   "group": "Graphics"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show RoystoneaRegia",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show PhoenixReclinata",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Foliage Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Trunk Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Foliage",
+   "line_weight_projection": 1,
+   "line_weight_cut": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Trunk",
+   "line_weight_projection": 1,
+   "line_weight_cut": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Plan Symbol",
+   "line_weight_projection": 1,
+   "line_weight_cut": 1
+  },
+  {
+   "op": "set_formula",
+   "name": "Show RoystoneaRegia",
+   "formula": "Species Index = 1"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show PhoenixReclinata",
+   "formula": "Species Index = 2"
+  },
+  {
+   "op": "add_type",
+   "name": "15000_RoystoneaRegia"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Height",
+   "type": "15000_RoystoneaRegia",
+   "param": "Height",
+   "value": 15000
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Crown Diameter",
+   "type": "15000_RoystoneaRegia",
+   "param": "Crown Diameter",
+   "value": 6000
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Crown Height",
+   "type": "15000_RoystoneaRegia",
+   "param": "Crown Height",
+   "value": 4000
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Trunk Height",
+   "type": "15000_RoystoneaRegia",
+   "param": "Trunk Height",
+   "value": 11000
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Trunk Diameter",
+   "type": "15000_RoystoneaRegia",
+   "param": "Trunk Diameter",
+   "value": 500
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Ground",
+   "from": [
+    -4500.0,
+    0.0
+   ],
+   "to": [
+    4500.0,
+    0.0
+   ],
+   "is_reference": "Bottom",
+   "view": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Left",
+   "from": [
+    -3000.0,
+    -4500.0
+   ],
+   "to": [
+    -3000.0,
+    4500.0
+   ],
+   "is_reference": "Left"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Right",
+   "from": [
+    3000.0,
+    -4500.0
+   ],
+   "to": [
+    3000.0,
+    4500.0
+   ],
+   "is_reference": "Right"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Front",
+   "from": [
+    -4500.0,
+    -3000.0
+   ],
+   "to": [
+    4500.0,
+    -3000.0
+   ],
+   "is_reference": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Back",
+   "from": [
+    -4500.0,
+    3000.0
+   ],
+   "to": [
+    4500.0,
+    3000.0
+   ],
+   "is_reference": "Back"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Crown Diameter X",
+   "between": [
+    "Crown Left",
+    "Crown Right"
+   ],
+   "label": "Crown Diameter",
+   "offset": -600
+  },
+  {
+   "op": "add_dimension",
+   "name": "Crown Diameter Y",
+   "between": [
+    "Crown Front",
+    "Crown Back"
+   ],
+   "label": "Crown Diameter",
+   "offset": -600
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ Crown X",
+   "planes": [
+    "Crown Left",
+    "Center (Left/Right)",
+    "Crown Right"
+   ],
+   "offset": -450
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ Crown Y",
+   "planes": [
+    "Crown Front",
+    "Center (Front/Back)",
+    "Crown Back"
+   ],
+   "offset": -450
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Top",
+   "from": [
+    -4500.0,
+    15000
+   ],
+   "to": [
+    4500.0,
+    15000
+   ],
+   "is_reference": "Top",
+   "view": "Front"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Height",
+   "between": [
+    "Ground",
+    "Crown Top"
+   ],
+   "label": "Height",
+   "offset": -400,
+   "view": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trunk Left",
+   "from": [
+    -250.0,
+    -4500.0
+   ],
+   "to": [
+    -250.0,
+    4500.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trunk Right",
+   "from": [
+    250.0,
+    -4500.0
+   ],
+   "to": [
+    250.0,
+    4500.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trunk Front",
+   "from": [
+    -4500.0,
+    -250.0
+   ],
+   "to": [
+    4500.0,
+    -250.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trunk Back",
+   "from": [
+    -4500.0,
+    250.0
+   ],
+   "to": [
+    4500.0,
+    250.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Trunk Diameter X",
+   "between": [
+    "Trunk Left",
+    "Trunk Right"
+   ],
+   "label": "Trunk Diameter",
+   "offset": -300
+  },
+  {
+   "op": "add_dimension",
+   "name": "Trunk Diameter Y",
+   "between": [
+    "Trunk Front",
+    "Trunk Back"
+   ],
+   "label": "Trunk Diameter",
+   "offset": -300
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ Trunk X",
+   "planes": [
+    "Trunk Left",
+    "Center (Left/Right)",
+    "Trunk Right"
+   ],
+   "offset": -150
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "EQ Trunk Y",
+   "planes": [
+    "Trunk Front",
+    "Center (Front/Back)",
+    "Trunk Back"
+   ],
+   "offset": -150
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Crown Bottom",
+   "from": [
+    -4500.0,
+    11000
+   ],
+   "to": [
+    4500.0,
+    11000
+   ],
+   "is_reference": "WeakReference",
+   "view": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trunk Top",
+   "from": [
+    -4500.0,
+    11000
+   ],
+   "to": [
+    4500.0,
+    11000
+   ],
+   "is_reference": "WeakReference",
+   "view": "Front"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Crown Height",
+   "between": [
+    "Crown Bottom",
+    "Crown Top"
+   ],
+   "label": "Crown Height",
+   "offset": -700,
+   "view": "Front"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Trunk Height",
+   "between": [
+    "Ground",
+    "Trunk Top"
+   ],
+   "label": "Trunk Height",
+   "offset": -1000,
+   "view": "Front"
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Trunk",
+   "rect": [
+    "Trunk Left",
+    "Trunk Right",
+    "Trunk Front",
+    "Trunk Back"
+   ],
+   "start": 0,
+   "end": 11000,
+   "end_plane": "Crown Bottom"
+  },
+  {
+   "op": "lock_face",
+   "name": "Coarse Trunk/Ground",
+   "solid": "Coarse Trunk",
+   "plane": "Ground",
+   "view": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Trunk",
+   "subcategory": "Trunk"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coarse Trunk",
+   "param": "Trunk Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Trunk",
+   "coarse": true,
+   "medium": false,
+   "fine": false,
+   "plan_rcp": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Crown",
+   "rect": [
+    "Crown Left",
+    "Crown Right",
+    "Crown Front",
+    "Crown Back"
+   ],
+   "start": 11000,
+   "end": 15000,
+   "end_plane": "Crown Top"
+  },
+  {
+   "op": "lock_face",
+   "name": "Coarse Crown/Crown Bottom",
+   "solid": "Coarse Crown",
+   "plane": "Crown Bottom",
+   "view": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Crown",
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coarse Crown",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Crown",
+   "coarse": true,
+   "medium": false,
+   "fine": false,
+   "plan_rcp": false
+  },
+  {
+   "op": "revolution",
+   "name": "RoystoneaRegia Trunk",
+   "profile": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     250.0,
+     0.0
+    ],
+    [
+     180.0,
+     11000
+    ],
+    [
+     0.0,
+     11000
+    ]
+   ],
+   "subcategory": "Trunk"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Trunk",
+   "param": "Trunk Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Trunk",
+   "coarse": false,
+   "medium": true,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Trunk/Visible",
+   "solid": "RoystoneaRegia Trunk",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "revolution",
+   "name": "RoystoneaRegia Crownshaft",
+   "profile": [
+    [
+     0.0,
+     10950
+    ],
+    [
+     160,
+     10950
+    ],
+    [
+     150,
+     12600
+    ],
+    [
+     0.0,
+     12600
+    ]
+   ],
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Crownshaft",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Crownshaft",
+   "coarse": false,
+   "medium": true,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Crownshaft/Visible",
+   "solid": "RoystoneaRegia Crownshaft",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "revolution",
+   "name": "RoystoneaRegia Crown",
+   "profile": [
+    [
+     0.0,
+     11600.0
+    ],
+    [
+     698.8,
+     11657.9
+    ],
+    [
+     1350.0,
+     11827.8
+    ],
+    [
+     1909.2,
+     12097.9
+    ],
+    [
+     2338.3,
+     12450.0
+    ],
+    [
+     2608.0,
+     12860.0
+    ],
+    [
+     2700.0,
+     13300.0
+    ],
+    [
+     2608.0,
+     13740.0
+    ],
+    [
+     2338.3,
+     14150.0
+    ],
+    [
+     1909.2,
+     14502.1
+    ],
+    [
+     1350.0,
+     14772.2
+    ],
+    [
+     698.8,
+     14942.1
+    ],
+    [
+     0.0,
+     15000.0
+    ]
+   ],
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Crown",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Crown",
+   "coarse": false,
+   "medium": true,
+   "fine": false,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Crown/Visible",
+   "solid": "RoystoneaRegia Crown",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 1a",
+   "base": [
+    [
+     102.0,
+     25.0
+    ],
+    [
+     -102.0,
+     25.0
+    ],
+    [
+     -102.0,
+     -25.0
+    ],
+    [
+     102.0,
+     -25.0
+    ]
+   ],
+   "top": [
+    [
+     2075.0,
+     25.0
+    ],
+    [
+     1225.0,
+     25.0
+    ],
+    [
+     1225.0,
+     -25.0
+    ],
+    [
+     2075.0,
+     -25.0
+    ]
+   ],
+   "start": 12600,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 1a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 1a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 1a/Visible",
+   "solid": "RoystoneaRegia Frond 1a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 1b",
+   "base": [
+    [
+     3025.0,
+     25.0
+    ],
+    [
+     2975.0,
+     25.0
+    ],
+    [
+     2975.0,
+     -25.0
+    ],
+    [
+     3025.0,
+     -25.0
+    ]
+   ],
+   "top": [
+    [
+     1962.5,
+     25.0
+    ],
+    [
+     1337.5,
+     25.0
+    ],
+    [
+     1337.5,
+     -25.0
+    ],
+    [
+     1962.5,
+     -25.0
+    ]
+   ],
+   "start": 12000,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 1b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 1b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 1b/Visible",
+   "solid": "RoystoneaRegia Frond 1b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 2a",
+   "base": [
+    [
+     -11.3,
+     77.1
+    ],
+    [
+     -77.9,
+     3.2
+    ],
+    [
+     11.3,
+     -77.1
+    ],
+    [
+     77.9,
+     -3.2
+    ]
+   ],
+   "top": [
+    [
+     951.5,
+     1430.4
+    ],
+    [
+     885.0,
+     1356.5
+    ],
+    [
+     1256.6,
+     1022.0
+    ],
+    [
+     1323.1,
+     1095.8
+    ]
+   ],
+   "start": 12600,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 2a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 2a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 2a/Visible",
+   "solid": "RoystoneaRegia Frond 2a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 2b",
+   "base": [
+    [
+     2023.7,
+     2277.4
+    ],
+    [
+     1961.4,
+     2208.2
+    ],
+    [
+     1991.1,
+     2181.5
+    ],
+    [
+     2053.4,
+     2250.6
+    ]
+   ],
+   "top": [
+    [
+     949.4,
+     1428.1
+    ],
+    [
+     887.1,
+     1358.9
+    ],
+    [
+     1258.7,
+     1024.3
+    ],
+    [
+     1321.0,
+     1093.5
+    ]
+   ],
+   "start": 12700,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 2b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 2b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 2b/Visible",
+   "solid": "RoystoneaRegia Frond 2b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 3a",
+   "base": [
+    [
+     7.7,
+     104.7
+    ],
+    [
+     -55.3,
+     -89.3
+    ],
+    [
+     -7.7,
+     -104.7
+    ],
+    [
+     55.3,
+     89.3
+    ]
+   ],
+   "top": [
+    [
+     617.4,
+     1981.2
+    ],
+    [
+     354.8,
+     1172.7
+    ],
+    [
+     402.3,
+     1157.3
+    ],
+    [
+     665.0,
+     1965.8
+    ]
+   ],
+   "start": 12600,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 3a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 3a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 3a/Visible",
+   "solid": "RoystoneaRegia Frond 3a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 3b",
+   "base": [
+    [
+     911.0,
+     2884.7
+    ],
+    [
+     895.5,
+     2837.1
+    ],
+    [
+     943.1,
+     2821.7
+    ],
+    [
+     958.6,
+     2869.2
+    ]
+   ],
+   "top": [
+    [
+     582.7,
+     1874.2
+    ],
+    [
+     389.5,
+     1279.8
+    ],
+    [
+     437.1,
+     1264.3
+    ],
+    [
+     630.2,
+     1858.7
+    ]
+   ],
+   "start": 12000,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 3b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 3b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 3b/Visible",
+   "solid": "RoystoneaRegia Frond 3b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 4a",
+   "base": [
+    [
+     -76.8,
+     13.1
+    ],
+    [
+     -27.1,
+     -73.1
+    ],
+    [
+     76.8,
+     -13.1
+    ],
+    [
+     27.1,
+     73.1
+    ]
+   ],
+   "top": [
+    [
+     -1066.4,
+     1347.0
+    ],
+    [
+     -1016.7,
+     1260.9
+    ],
+    [
+     -583.6,
+     1510.9
+    ],
+    [
+     -633.3,
+     1597.0
+    ]
+   ],
+   "start": 12600,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 4a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 4a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 4a/Visible",
+   "solid": "RoystoneaRegia Frond 4a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 4b",
+   "base": [
+    [
+     -1540.6,
+     2628.4
+    ],
+    [
+     -1494.1,
+     2547.8
+    ],
+    [
+     -1459.4,
+     2567.8
+    ],
+    [
+     -1505.9,
+     2648.4
+    ]
+   ],
+   "top": [
+    [
+     -1064.8,
+     1344.2
+    ],
+    [
+     -1018.2,
+     1263.6
+    ],
+    [
+     -585.2,
+     1513.6
+    ],
+    [
+     -631.8,
+     1594.2
+    ]
+   ],
+   "start": 12700,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 4b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 4b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 4b/Visible",
+   "solid": "RoystoneaRegia Frond 4b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 5a",
+   "base": [
+    [
+     -97.2,
+     39.7
+    ],
+    [
+     67.8,
+     -80.2
+    ],
+    [
+     97.2,
+     -39.7
+    ],
+    [
+     -67.8,
+     80.2
+    ]
+   ],
+   "top": [
+    [
+     -1693.4,
+     1199.5
+    ],
+    [
+     -1005.7,
+     699.8
+    ],
+    [
+     -976.3,
+     740.2
+    ],
+    [
+     -1664.1,
+     1239.9
+    ]
+   ],
+   "start": 12600,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 5a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 5a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 5a/Visible",
+   "solid": "RoystoneaRegia Frond 5a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 5b",
+   "base": [
+    [
+     -2462.0,
+     1757.8
+    ],
+    [
+     -2421.5,
+     1728.4
+    ],
+    [
+     -2392.1,
+     1768.9
+    ],
+    [
+     -2432.6,
+     1798.3
+    ]
+   ],
+   "top": [
+    [
+     -1602.4,
+     1133.3
+    ],
+    [
+     -1096.8,
+     765.9
+    ],
+    [
+     -1067.4,
+     806.4
+    ],
+    [
+     -1573.0,
+     1173.8
+    ]
+   ],
+   "start": 12000,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 5b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 5b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 5b/Visible",
+   "solid": "RoystoneaRegia Frond 5b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 6a",
+   "base": [
+    [
+     -36.2,
+     -69.0
+    ],
+    [
+     61.1,
+     -48.4
+    ],
+    [
+     36.2,
+     69.0
+    ],
+    [
+     -61.1,
+     48.4
+    ]
+   ],
+   "top": [
+    [
+     -1610.6,
+     -597.9
+    ],
+    [
+     -1513.3,
+     -577.3
+    ],
+    [
+     -1617.3,
+     -88.2
+    ],
+    [
+     -1714.5,
+     -108.9
+    ]
+   ],
+   "start": 12600,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 6a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 6a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 6a/Visible",
+   "solid": "RoystoneaRegia Frond 6a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 6b",
+   "base": [
+    [
+     -2975.8,
+     -653.0
+    ],
+    [
+     -2884.8,
+     -633.6
+    ],
+    [
+     -2893.1,
+     -594.5
+    ],
+    [
+     -2984.1,
+     -613.8
+    ]
+   ],
+   "top": [
+    [
+     -1607.5,
+     -597.3
+    ],
+    [
+     -1516.5,
+     -577.9
+    ],
+    [
+     -1620.4,
+     -88.8
+    ],
+    [
+     -1711.4,
+     -108.2
+    ]
+   ],
+   "start": 12700,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 6b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 6b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 6b/Visible",
+   "solid": "RoystoneaRegia Frond 6b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 7a",
+   "base": [
+    [
+     -67.8,
+     -80.2
+    ],
+    [
+     97.2,
+     39.7
+    ],
+    [
+     67.8,
+     80.2
+    ],
+    [
+     -97.2,
+     -39.7
+    ]
+   ],
+   "top": [
+    [
+     -1664.1,
+     -1239.9
+    ],
+    [
+     -976.3,
+     -740.2
+    ],
+    [
+     -1005.7,
+     -699.8
+    ],
+    [
+     -1693.4,
+     -1199.5
+    ]
+   ],
+   "start": 12600,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 7a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 7a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 7a/Visible",
+   "solid": "RoystoneaRegia Frond 7a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 7b",
+   "base": [
+    [
+     -2432.6,
+     -1798.3
+    ],
+    [
+     -2392.1,
+     -1768.9
+    ],
+    [
+     -2421.5,
+     -1728.4
+    ],
+    [
+     -2462.0,
+     -1757.8
+    ]
+   ],
+   "top": [
+    [
+     -1573.0,
+     -1173.8
+    ],
+    [
+     -1067.4,
+     -806.4
+    ],
+    [
+     -1096.8,
+     -765.9
+    ],
+    [
+     -1602.4,
+     -1133.3
+    ]
+   ],
+   "start": 12000,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 7b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 7b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 7b/Visible",
+   "solid": "RoystoneaRegia Frond 7b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 8a",
+   "base": [
+    [
+     54.5,
+     -55.7
+    ],
+    [
+     64.9,
+     43.2
+    ],
+    [
+     -54.5,
+     55.7
+    ],
+    [
+     -64.9,
+     -43.2
+    ]
+   ],
+   "top": [
+    [
+     71.0,
+     -1716.5
+    ],
+    [
+     81.4,
+     -1617.7
+    ],
+    [
+     -415.9,
+     -1565.4
+    ],
+    [
+     -426.3,
+     -1664.3
+    ]
+   ],
+   "start": 12600,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 8a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 8a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 8a/Visible",
+   "solid": "RoystoneaRegia Frond 8a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 8b",
+   "base": [
+    [
+     -298.6,
+     -3031.9
+    ],
+    [
+     -288.8,
+     -2939.4
+    ],
+    [
+     -328.6,
+     -2935.2
+    ],
+    [
+     -338.3,
+     -3027.8
+    ]
+   ],
+   "top": [
+    [
+     71.3,
+     -1713.4
+    ],
+    [
+     81.0,
+     -1620.8
+    ],
+    [
+     -416.2,
+     -1568.6
+    ],
+    [
+     -426.0,
+     -1661.1
+    ]
+   ],
+   "start": 12700,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 8b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 8b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 8b/Visible",
+   "solid": "RoystoneaRegia Frond 8b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 9a",
+   "base": [
+    [
+     55.3,
+     -89.3
+    ],
+    [
+     -7.7,
+     104.7
+    ],
+    [
+     -55.3,
+     89.3
+    ],
+    [
+     7.7,
+     -104.7
+    ]
+   ],
+   "top": [
+    [
+     665.0,
+     -1965.8
+    ],
+    [
+     402.3,
+     -1157.3
+    ],
+    [
+     354.8,
+     -1172.7
+    ],
+    [
+     617.4,
+     -1981.2
+    ]
+   ],
+   "start": 12600,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 9a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 9a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 9a/Visible",
+   "solid": "RoystoneaRegia Frond 9a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 9b",
+   "base": [
+    [
+     958.6,
+     -2869.2
+    ],
+    [
+     943.1,
+     -2821.7
+    ],
+    [
+     895.5,
+     -2837.1
+    ],
+    [
+     911.0,
+     -2884.7
+    ]
+   ],
+   "top": [
+    [
+     630.2,
+     -1858.7
+    ],
+    [
+     437.1,
+     -1264.3
+    ],
+    [
+     389.5,
+     -1279.8
+    ],
+    [
+     582.7,
+     -1874.2
+    ]
+   ],
+   "start": 12000,
+   "end": 13800.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 9b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 9b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 9b/Visible",
+   "solid": "RoystoneaRegia Frond 9b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 10a",
+   "base": [
+    [
+     69.8,
+     34.6
+    ],
+    [
+     -21.0,
+     75.0
+    ],
+    [
+     -69.8,
+     -34.6
+    ],
+    [
+     21.0,
+     -75.0
+    ]
+   ],
+   "top": [
+    [
+     1654.4,
+     -462.9
+    ],
+    [
+     1563.6,
+     -422.5
+    ],
+    [
+     1360.3,
+     -879.3
+    ],
+    [
+     1451.1,
+     -919.7
+    ]
+   ],
+   "start": 12600,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 10a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 10a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 10a/Visible",
+   "solid": "RoystoneaRegia Frond 10a",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "blend",
+   "name": "RoystoneaRegia Frond 10b",
+   "base": [
+    [
+     2791.3,
+     -1220.9
+    ],
+    [
+     2706.3,
+     -1183.0
+    ],
+    [
+     2690.0,
+     -1219.6
+    ],
+    [
+     2775.0,
+     -1257.4
+    ]
+   ],
+   "top": [
+    [
+     1651.5,
+     -461.7
+    ],
+    [
+     1566.5,
+     -423.8
+    ],
+    [
+     1363.2,
+     -880.6
+    ],
+    [
+     1448.2,
+     -918.4
+    ]
+   ],
+   "start": 12700,
+   "end": 13560.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RoystoneaRegia Frond 10b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RoystoneaRegia Frond 10b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Frond 10b/Visible",
+   "solid": "RoystoneaRegia Frond 10b",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "RoystoneaRegia Plan Fronds",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "points": [
+    [
+     3000.0,
+     0.0
+    ],
+    [
+     347.7,
+     93.2
+    ],
+    [
+     2598.1,
+     1500.0
+    ],
+    [
+     254.6,
+     254.6
+    ],
+    [
+     1500.0,
+     2598.1
+    ],
+    [
+     93.2,
+     347.7
+    ],
+    [
+     0.0,
+     3000.0
+    ],
+    [
+     -93.2,
+     347.7
+    ],
+    [
+     -1500.0,
+     2598.1
+    ],
+    [
+     -254.6,
+     254.6
+    ],
+    [
+     -2598.1,
+     1500.0
+    ],
+    [
+     -347.7,
+     93.2
+    ],
+    [
+     -3000.0,
+     0.0
+    ],
+    [
+     -347.7,
+     -93.2
+    ],
+    [
+     -2598.1,
+     -1500.0
+    ],
+    [
+     -254.6,
+     -254.6
+    ],
+    [
+     -1500.0,
+     -2598.1
+    ],
+    [
+     -93.2,
+     -347.7
+    ],
+    [
+     0.0,
+     -3000.0
+    ],
+    [
+     93.2,
+     -347.7
+    ],
+    [
+     1500.0,
+     -2598.1
+    ],
+    [
+     254.6,
+     -254.6
+    ],
+    [
+     2598.1,
+     -1500.0
+    ],
+    [
+     347.7,
+     -93.2
+    ],
+    [
+     3000.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Plan Fronds/Visible",
+   "solid": "RoystoneaRegia Plan Fronds",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "RoystoneaRegia Plan Trunk A",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "arc": {
+    "center": [
+     0.0,
+     0.0
+    ],
+    "radius": 250.0,
+    "start_deg": 0,
+    "end_deg": 180
+   }
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Plan Trunk A/Visible",
+   "solid": "RoystoneaRegia Plan Trunk A",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "RoystoneaRegia Plan Trunk B",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "arc": {
+    "center": [
+     0.0,
+     0.0
+    ],
+    "radius": 250.0,
+    "start_deg": 180,
+    "end_deg": 360
+   }
+  },
+  {
+   "op": "set_visible_param",
+   "name": "RoystoneaRegia Plan Trunk B/Visible",
+   "solid": "RoystoneaRegia Plan Trunk B",
+   "param": "Show RoystoneaRegia"
+  },
+  {
+   "op": "revolution",
+   "name": "PhoenixReclinata Trunk",
+   "profile": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     250.0,
+     0.0
+    ],
+    [
+     180.0,
+     4000
+    ],
+    [
+     0.0,
+     4000
+    ]
+   ],
+   "subcategory": "Trunk"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Trunk",
+   "param": "Trunk Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Trunk",
+   "coarse": false,
+   "medium": true,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Trunk/Visible",
+   "solid": "PhoenixReclinata Trunk",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "revolution",
+   "name": "PhoenixReclinata Crown",
+   "profile": [
+    [
+     0.0,
+     3000.0
+    ],
+    [
+     582.3,
+     3051.1
+    ],
+    [
+     1125.0,
+     3201.0
+    ],
+    [
+     1591.0,
+     3439.3
+    ],
+    [
+     1948.6,
+     3750.0
+    ],
+    [
+     2173.3,
+     4111.8
+    ],
+    [
+     2250.0,
+     4500.0
+    ],
+    [
+     2173.3,
+     4888.2
+    ],
+    [
+     1948.6,
+     5250.0
+    ],
+    [
+     1591.0,
+     5560.7
+    ],
+    [
+     1125.0,
+     5799.0
+    ],
+    [
+     582.3,
+     5948.9
+    ],
+    [
+     0.0,
+     6000.0
+    ]
+   ],
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Crown",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Crown",
+   "coarse": false,
+   "medium": true,
+   "fine": false,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Crown/Visible",
+   "solid": "PhoenixReclinata Crown",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 1a",
+   "base": [
+    [
+     91.2,
+     25.0
+    ],
+    [
+     -91.2,
+     25.0
+    ],
+    [
+     -91.2,
+     -25.0
+    ],
+    [
+     91.2,
+     -25.0
+    ]
+   ],
+   "top": [
+    [
+     1755.2,
+     25.0
+    ],
+    [
+     994.8,
+     25.0
+    ],
+    [
+     994.8,
+     -25.0
+    ],
+    [
+     1755.2,
+     -25.0
+    ]
+   ],
+   "start": 4000,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 1a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 1a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 1a/Visible",
+   "solid": "PhoenixReclinata Frond 1a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 1b",
+   "base": [
+    [
+     2523.6,
+     25.0
+    ],
+    [
+     2476.4,
+     25.0
+    ],
+    [
+     2476.4,
+     -25.0
+    ],
+    [
+     2523.6,
+     -25.0
+    ]
+   ],
+   "top": [
+    [
+     1669.8,
+     25.0
+    ],
+    [
+     1080.2,
+     25.0
+    ],
+    [
+     1080.2,
+     -25.0
+    ],
+    [
+     1669.8,
+     -25.0
+    ]
+   ],
+   "start": 3400,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 1b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 1b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 1b/Visible",
+   "solid": "PhoenixReclinata Frond 1b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 2a",
+   "base": [
+    [
+     -26.5,
+     69.3
+    ],
+    [
+     -74.1,
+     -3.9
+    ],
+    [
+     26.5,
+     -69.3
+    ],
+    [
+     74.1,
+     3.9
+    ]
+   ],
+   "top": [
+    [
+     563.0,
+     1326.0
+    ],
+    [
+     515.4,
+     1252.7
+    ],
+    [
+     934.8,
+     980.4
+    ],
+    [
+     982.3,
+     1053.6
+    ]
+   ],
+   "start": 4000,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 2a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 2a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 2a/Visible",
+   "solid": "PhoenixReclinata Frond 2a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 2b",
+   "base": [
+    [
+     1358.6,
+     2137.9
+    ],
+    [
+     1322.7,
+     2082.7
+    ],
+    [
+     1364.6,
+     2055.4
+    ],
+    [
+     1400.5,
+     2110.7
+    ]
+   ],
+   "top": [
+    [
+     952.1,
+     1512.0
+    ],
+    [
+     503.7,
+     821.6
+    ],
+    [
+     545.6,
+     794.3
+    ],
+    [
+     994.0,
+     1484.8
+    ]
+   ],
+   "start": 4100,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 2b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 2b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 2b/Visible",
+   "solid": "PhoenixReclinata Frond 2b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 3a",
+   "base": [
+    [
+     -25.0,
+     91.2
+    ],
+    [
+     -25.0,
+     -91.2
+    ],
+    [
+     25.0,
+     -91.2
+    ],
+    [
+     25.0,
+     91.2
+    ]
+   ],
+   "top": [
+    [
+     -25.0,
+     1755.2
+    ],
+    [
+     -25.0,
+     994.8
+    ],
+    [
+     25.0,
+     994.8
+    ],
+    [
+     25.0,
+     1755.2
+    ]
+   ],
+   "start": 4000,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 3a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 3a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 3a/Visible",
+   "solid": "PhoenixReclinata Frond 3a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 3b",
+   "base": [
+    [
+     -25.0,
+     2523.6
+    ],
+    [
+     -25.0,
+     2476.4
+    ],
+    [
+     25.0,
+     2476.4
+    ],
+    [
+     25.0,
+     2523.6
+    ]
+   ],
+   "top": [
+    [
+     -25.0,
+     1669.8
+    ],
+    [
+     -25.0,
+     1080.2
+    ],
+    [
+     25.0,
+     1080.2
+    ],
+    [
+     25.0,
+     1669.8
+    ]
+   ],
+   "start": 3400,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 3b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 3b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 3b/Visible",
+   "solid": "PhoenixReclinata Frond 3b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 4a",
+   "base": [
+    [
+     -69.3,
+     -26.5
+    ],
+    [
+     3.9,
+     -74.1
+    ],
+    [
+     69.3,
+     26.5
+    ],
+    [
+     -3.9,
+     74.1
+    ]
+   ],
+   "top": [
+    [
+     -1326.0,
+     563.0
+    ],
+    [
+     -1252.7,
+     515.4
+    ],
+    [
+     -980.4,
+     934.8
+    ],
+    [
+     -1053.6,
+     982.3
+    ]
+   ],
+   "start": 4000,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 4a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 4a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 4a/Visible",
+   "solid": "PhoenixReclinata Frond 4a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 4b",
+   "base": [
+    [
+     -2137.9,
+     1358.6
+    ],
+    [
+     -2082.7,
+     1322.7
+    ],
+    [
+     -2055.4,
+     1364.6
+    ],
+    [
+     -2110.7,
+     1400.5
+    ]
+   ],
+   "top": [
+    [
+     -1512.0,
+     952.1
+    ],
+    [
+     -821.6,
+     503.7
+    ],
+    [
+     -794.3,
+     545.6
+    ],
+    [
+     -1484.8,
+     994.0
+    ]
+   ],
+   "start": 4100,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 4b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 4b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 4b/Visible",
+   "solid": "PhoenixReclinata Frond 4b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 5a",
+   "base": [
+    [
+     -91.2,
+     -25.0
+    ],
+    [
+     91.2,
+     -25.0
+    ],
+    [
+     91.2,
+     25.0
+    ],
+    [
+     -91.2,
+     25.0
+    ]
+   ],
+   "top": [
+    [
+     -1755.2,
+     -25.0
+    ],
+    [
+     -994.8,
+     -25.0
+    ],
+    [
+     -994.8,
+     25.0
+    ],
+    [
+     -1755.2,
+     25.0
+    ]
+   ],
+   "start": 4000,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 5a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 5a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 5a/Visible",
+   "solid": "PhoenixReclinata Frond 5a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 5b",
+   "base": [
+    [
+     -2523.6,
+     -25.0
+    ],
+    [
+     -2476.4,
+     -25.0
+    ],
+    [
+     -2476.4,
+     25.0
+    ],
+    [
+     -2523.6,
+     25.0
+    ]
+   ],
+   "top": [
+    [
+     -1669.8,
+     -25.0
+    ],
+    [
+     -1080.2,
+     -25.0
+    ],
+    [
+     -1080.2,
+     25.0
+    ],
+    [
+     -1669.8,
+     25.0
+    ]
+   ],
+   "start": 3400,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 5b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 5b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 5b/Visible",
+   "solid": "PhoenixReclinata Frond 5b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 6a",
+   "base": [
+    [
+     26.5,
+     -69.3
+    ],
+    [
+     74.1,
+     3.9
+    ],
+    [
+     -26.5,
+     69.3
+    ],
+    [
+     -74.1,
+     -3.9
+    ]
+   ],
+   "top": [
+    [
+     -563.0,
+     -1326.0
+    ],
+    [
+     -515.4,
+     -1252.7
+    ],
+    [
+     -934.8,
+     -980.4
+    ],
+    [
+     -982.3,
+     -1053.6
+    ]
+   ],
+   "start": 4000,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 6a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 6a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 6a/Visible",
+   "solid": "PhoenixReclinata Frond 6a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 6b",
+   "base": [
+    [
+     -1358.6,
+     -2137.9
+    ],
+    [
+     -1322.7,
+     -2082.7
+    ],
+    [
+     -1364.6,
+     -2055.4
+    ],
+    [
+     -1400.5,
+     -2110.7
+    ]
+   ],
+   "top": [
+    [
+     -952.1,
+     -1512.0
+    ],
+    [
+     -503.7,
+     -821.6
+    ],
+    [
+     -545.6,
+     -794.3
+    ],
+    [
+     -994.0,
+     -1484.8
+    ]
+   ],
+   "start": 4100,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 6b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 6b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 6b/Visible",
+   "solid": "PhoenixReclinata Frond 6b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 7a",
+   "base": [
+    [
+     25.0,
+     -91.2
+    ],
+    [
+     25.0,
+     91.2
+    ],
+    [
+     -25.0,
+     91.2
+    ],
+    [
+     -25.0,
+     -91.2
+    ]
+   ],
+   "top": [
+    [
+     25.0,
+     -1755.2
+    ],
+    [
+     25.0,
+     -994.8
+    ],
+    [
+     -25.0,
+     -994.8
+    ],
+    [
+     -25.0,
+     -1755.2
+    ]
+   ],
+   "start": 4000,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 7a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 7a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 7a/Visible",
+   "solid": "PhoenixReclinata Frond 7a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 7b",
+   "base": [
+    [
+     25.0,
+     -2523.6
+    ],
+    [
+     25.0,
+     -2476.4
+    ],
+    [
+     -25.0,
+     -2476.4
+    ],
+    [
+     -25.0,
+     -2523.6
+    ]
+   ],
+   "top": [
+    [
+     25.0,
+     -1669.8
+    ],
+    [
+     25.0,
+     -1080.2
+    ],
+    [
+     -25.0,
+     -1080.2
+    ],
+    [
+     -25.0,
+     -1669.8
+    ]
+   ],
+   "start": 3400,
+   "end": 5200.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 7b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 7b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 7b/Visible",
+   "solid": "PhoenixReclinata Frond 7b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 8a",
+   "base": [
+    [
+     69.3,
+     26.5
+    ],
+    [
+     -3.9,
+     74.1
+    ],
+    [
+     -69.3,
+     -26.5
+    ],
+    [
+     3.9,
+     -74.1
+    ]
+   ],
+   "top": [
+    [
+     1326.0,
+     -563.0
+    ],
+    [
+     1252.7,
+     -515.4
+    ],
+    [
+     980.4,
+     -934.8
+    ],
+    [
+     1053.6,
+     -982.3
+    ]
+   ],
+   "start": 4000,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 8a",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 8a",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 8a/Visible",
+   "solid": "PhoenixReclinata Frond 8a",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "blend",
+   "name": "PhoenixReclinata Frond 8b",
+   "base": [
+    [
+     2137.9,
+     -1358.6
+    ],
+    [
+     2082.7,
+     -1322.7
+    ],
+    [
+     2055.4,
+     -1364.6
+    ],
+    [
+     2110.7,
+     -1400.5
+    ]
+   ],
+   "top": [
+    [
+     1512.0,
+     -952.1
+    ],
+    [
+     821.6,
+     -503.7
+    ],
+    [
+     794.3,
+     -545.6
+    ],
+    [
+     1484.8,
+     -994.0
+    ]
+   ],
+   "start": 4100,
+   "end": 4960.0,
+   "subcategory": "Foliage"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PhoenixReclinata Frond 8b",
+   "param": "Foliage Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PhoenixReclinata Frond 8b",
+   "coarse": false,
+   "medium": false,
+   "fine": true,
+   "plan_rcp": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Frond 8b/Visible",
+   "solid": "PhoenixReclinata Frond 8b",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "PhoenixReclinata Plan Fronds",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "points": [
+    [
+     2500.0,
+     0.0
+    ],
+    [
+     289.8,
+     77.6
+    ],
+    [
+     2165.1,
+     1250.0
+    ],
+    [
+     212.1,
+     212.1
+    ],
+    [
+     1250.0,
+     2165.1
+    ],
+    [
+     77.6,
+     289.8
+    ],
+    [
+     0.0,
+     2500.0
+    ],
+    [
+     -77.6,
+     289.8
+    ],
+    [
+     -1250.0,
+     2165.1
+    ],
+    [
+     -212.1,
+     212.1
+    ],
+    [
+     -2165.1,
+     1250.0
+    ],
+    [
+     -289.8,
+     77.6
+    ],
+    [
+     -2500.0,
+     0.0
+    ],
+    [
+     -289.8,
+     -77.6
+    ],
+    [
+     -2165.1,
+     -1250.0
+    ],
+    [
+     -212.1,
+     -212.1
+    ],
+    [
+     -1250.0,
+     -2165.1
+    ],
+    [
+     -77.6,
+     -289.8
+    ],
+    [
+     0.0,
+     -2500.0
+    ],
+    [
+     77.6,
+     -289.8
+    ],
+    [
+     1250.0,
+     -2165.1
+    ],
+    [
+     212.1,
+     -212.1
+    ],
+    [
+     2165.1,
+     -1250.0
+    ],
+    [
+     289.8,
+     -77.6
+    ],
+    [
+     2500.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Plan Fronds/Visible",
+   "solid": "PhoenixReclinata Plan Fronds",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "PhoenixReclinata Plan Trunk A",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "arc": {
+    "center": [
+     0.0,
+     0.0
+    ],
+    "radius": 250.0,
+    "start_deg": 0,
+    "end_deg": 180
+   }
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Plan Trunk A/Visible",
+   "solid": "PhoenixReclinata Plan Trunk A",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "symbolic_lines",
+   "name": "PhoenixReclinata Plan Trunk B",
+   "view": "plan",
+   "subcategory": "Plan Symbol",
+   "arc": {
+    "center": [
+     0.0,
+     0.0
+    ],
+    "radius": 250.0,
+    "start_deg": 180,
+    "end_deg": 360
+   }
+  },
+  {
+   "op": "set_visible_param",
+   "name": "PhoenixReclinata Plan Trunk B/Visible",
+   "solid": "PhoenixReclinata Plan Trunk B",
+   "param": "Show PhoenixReclinata"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Species Index",
+   "type": "15000_RoystoneaRegia",
+   "param": "Species Index",
+   "value": 1
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/FMC_Botanical_Name",
+   "type": "15000_RoystoneaRegia",
+   "param": "FMC_Botanical_Name",
+   "value": "Roystonea regia"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/FMC_Local_Name",
+   "type": "15000_RoystoneaRegia",
+   "param": "FMC_Local_Name",
+   "value": "Royal palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/FMC_Plant_Spread_mm",
+   "type": "15000_RoystoneaRegia",
+   "param": "FMC_Plant_Spread_mm",
+   "value": 6000
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/Keynote",
+   "type": "15000_RoystoneaRegia",
+   "param": "Keynote",
+   "value": "L.PLT_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/FMC_Keynote_Code",
+   "type": "15000_RoystoneaRegia",
+   "param": "FMC_Keynote_Code",
+   "value": "L.PLT_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/IfcExportAs",
+   "type": "15000_RoystoneaRegia",
+   "param": "IfcExportAs",
+   "value": "IfcGeographicElement"
+  },
+  {
+   "op": "set_type_value",
+   "name": "15000_RoystoneaRegia/FMC_Geometry_Stage",
+   "type": "15000_RoystoneaRegia",
+   "param": "FMC_Geometry_Stage",
+   "value": "G3"
+  },
+  {
+   "op": "add_type",
+   "name": "6000_PhoenixReclinata"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Height",
+   "type": "6000_PhoenixReclinata",
+   "param": "Height",
+   "value": 6000
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Crown Diameter",
+   "type": "6000_PhoenixReclinata",
+   "param": "Crown Diameter",
+   "value": 5000
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Crown Height",
+   "type": "6000_PhoenixReclinata",
+   "param": "Crown Height",
+   "value": 2000
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Trunk Height",
+   "type": "6000_PhoenixReclinata",
+   "param": "Trunk Height",
+   "value": 4000
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Trunk Diameter",
+   "type": "6000_PhoenixReclinata",
+   "param": "Trunk Diameter",
+   "value": 500
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Species Index",
+   "type": "6000_PhoenixReclinata",
+   "param": "Species Index",
+   "value": 2
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/FMC_Botanical_Name",
+   "type": "6000_PhoenixReclinata",
+   "param": "FMC_Botanical_Name",
+   "value": "Phoenix reclinata"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/FMC_Local_Name",
+   "type": "6000_PhoenixReclinata",
+   "param": "FMC_Local_Name",
+   "value": "Wild date palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/FMC_Plant_Spread_mm",
+   "type": "6000_PhoenixReclinata",
+   "param": "FMC_Plant_Spread_mm",
+   "value": 5000
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/Keynote",
+   "type": "6000_PhoenixReclinata",
+   "param": "Keynote",
+   "value": "L.PLT_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/FMC_Keynote_Code",
+   "type": "6000_PhoenixReclinata",
+   "param": "FMC_Keynote_Code",
+   "value": "L.PLT_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/IfcExportAs",
+   "type": "6000_PhoenixReclinata",
+   "param": "IfcExportAs",
+   "value": "IfcGeographicElement"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_PhoenixReclinata/FMC_Geometry_Stage",
+   "type": "6000_PhoenixReclinata",
+   "param": "FMC_Geometry_Stage",
+   "value": "G3"
+  }
+ ],
+ "values": {
+  "15000_RoystoneaRegia sizes (mm): Height 15000, Crown Diameter 6000, Crown Height 4000, Trunk Height 11000, Trunk Diameter 500": {
+   "value": "15000 x 6000 x 4000 x 11000 x 500",
+   "source_status": "assumed",
+   "source": "Fam_Plants board (15 Oct 2026): typical mature sizes from general horticultural knowledge, estimates to confirm with a Kampala landscaper"
+  },
+  "6000_PhoenixReclinata sizes (mm): Height 6000, Crown Diameter 5000, Crown Height 2000, Trunk Height 4000, Trunk Diameter 500": {
+   "value": "6000 x 5000 x 2000 x 4000 x 500",
+   "source_status": "assumed",
+   "source": "Fam_Plants board (15 Oct 2026): typical mature sizes from general horticultural knowledge, estimates to confirm with a Kampala landscaper"
+  },
+  "Trunk Diameter (every type)": {
+   "value": "max(0.25 m, 3 % of crown) or the form's board width",
+   "source_status": "assumed",
+   "source": "the board's drawing rule for trunk width (plants_board.py elevation())"
+  },
+  "Botanical and local names": {
+   "value": "Roystonea regia, Phoenix reclinata",
+   "source_status": "assumed",
+   "source": "Fam_Plants board species list; kit register type lists; Luganda names as the board gives them"
+  },
+  "Keynotes, one per species": {
+   "value": "L.PLT_00, L.PLT_01",
+   "source_status": "assumed",
+   "source": "FMC_Keynotes.txt items added for these species (fmc_plants.keynote)"
+  },
+  "IFC class IfcGeographicElement": {
+   "value": "IfcGeographicElement",
+   "source_status": "assumed",
+   "source": "IFC4 class for planting"
+  },
+  "Foliage material": {
+   "value": "",
+   "source_status": "pending",
+   "source": "07_Materials has no foliage materials: kit change request (FMC_Plant_Foliage_*, board 'Plant materials'); Foliage Material stays unassigned"
+  },
+  "Trunk material": {
+   "value": "",
+   "source_status": "pending",
+   "source": "07_Materials has no bark or palm-trunk material: kit change request (FMC_Plant_Bark, FMC_Plant_PalmTrunk)"
+  }
+ }
+}

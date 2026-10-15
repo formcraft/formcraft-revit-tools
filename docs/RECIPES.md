@@ -127,6 +127,32 @@ Revit's shared parameter file is switched to the kit's only for the length of ea
 back in a `finally`, and the next Formcraft call puts it back if that ever failed (F-037). Every apply reports
 `shared_parameter_file.restored`.
 
+## Planting forms
+The kit's `_build/build_plant_recipes.py` writes one recipe per planting form to `03_Master_Data/Recipes/Families/L/`,
+from `_build/fmc_plants.py` (the Fam_Plants board: 13 forms, 42 Ugandan species, plus 3 species kept from the
+register). Each one starts from Metric Planting.rft and uses only the ops above. `tests/recipes/` has two samples:
+`FMC_L_Planting_Tree_Sphere` (revolutions) and `FMC_L_Planting_Palm_Feather` (blended fronds).
+
+- **Split (the board's default):** one family per form (sphere, umbrella, tiered, cone and column trees, feather and
+  fan palms, clump, paddle, mound and rosette shrubs, hedge, climber), each species a type named size first
+  (`12000_MangiferaIndica`). The owner's question on the split is still open (decisions tracker).
+- **Coarse:** a box at the type's true size, locked to labelled planes (Height, Crown Diameter, Crown Height, Trunk
+  Height, Trunk Diameter, EQ about the centre), so it flexes for any type. Type 1 is set before the first plane (F-026).
+- **Medium and Fine:** each species' own primitives at its size. A revolution's profile can't be locked to planes yet,
+  so each species has its own solids and plan lines, shown by `Show <Species>` = `Species Index = k`. A type a person
+  adds shows the right Coarse box, but the copied type's shapes. Fine adds forks, fronds, fan leaves and the middle tiers.
+- **Plan:** symbolic lines per species (the board's symbols at the mature spread) at every detail level. The 3D solids
+  are off in plan. Hedge and climber are locked boxes at every level and show their own outline in plan. The hedge is a
+  2.6 m module with an instance Length until a line-based version exists.
+- **Materials:** the solids use Foliage and Trunk Material. The library has no foliage or bark materials yet, so these
+  stay unassigned and are `pending` (kit change request). The hedge uses `FMC_Plant_Hedge_Duranta`, and the climber's
+  trellis uses treated pine.
+- **Data:** each type gets FMC_Botanical_Name, FMC_Local_Name, FMC_Plant_Spread_mm, one keynote (new L.TRE, L.PLT,
+  L.SHR, L.HDG and L.CLM items), IfcExportAs `IfcGeographicElement` and FMC_Geometry_Stage G3. Sizes are the board's
+  estimates (`assumed`). FMC_Planting_Size and FMC_Plant_Spacing_mm are left for the landscape designer.
+- **Not built yet:** flower dots (they wait for an array op), Growth and Variation (kit parameters) and the hedge's
+  rounded top.
+
 ## Template planes (F-038)
 `fmc_recipe check` doesn't flag planes the template already has. It uses a table of each template's named planes,
 and the planes a build read from the template the first time it opened it take over from the table
