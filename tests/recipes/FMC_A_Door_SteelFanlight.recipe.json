@@ -2,7 +2,7 @@
   "schema": "fmc-recipe/0.1",
   "family": "FMC_A_Door_SteelFanlight",
   "template": "Metric Door.rft",
-  "about": "LOD 400 steel door: RHS 40x40 frame with transom and louvred or glazed vent over, sheet leaf with stiffener ribs, optional half-glazed upper leaf with grille bars, single, equal or unequal pair. Type-dependent parts collapse into the left jamb through Yes/No-driven formulas (no visibility-parameter op yet). Exterior is -y; leaf flush with the interior face, swings in. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Architrave sweeps (Ext and Int faces) from FMC_Profile_Architrave_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (900x2400) and don't flex with Width/Height until sweep paths can be locked to planes.",
+  "about": "LOD 400 steel door: RHS 40x40 frame with transom and louvred or glazed vent over, sheet leaf with stiffener ribs, optional half-glazed upper leaf with grille bars, single, equal or unequal pair. Type-dependent parts collapse into the left jamb through Yes/No-driven formulas (no visibility-parameter op yet). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; leaf flush with the interior face, swings in. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Architrave sweeps (Ext and Int faces) from FMC_Profile_Architrave_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (900x2400) and don't flex with Width/Height until sweep paths can be locked to planes.",
   "ops": [
     {
       "op": "set_category",

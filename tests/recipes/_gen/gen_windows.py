@@ -1,5 +1,5 @@
 """Generates the two window recipes (fmc-recipe/0.1), mirroring FMC_A_Door_TimberFanlight's structure.
-Coordinates: x across (Left/Right = -W/2..W/2), y depth (exterior is -y), z up from the template Sill plane (z = 0).
+Coordinates: x across (Left/Right = -W/2..W/2), y depth (outer face at -y; the template's Exterior plane is at +y, see docs/RECIPES.md), z up from the template Sill plane (z = 0).
 Plane positions are computed from type 1's values so every lock_face sits on its plane at the default type."""
 import json, sys
 
@@ -120,7 +120,7 @@ def steel():
     leaf_top, tr_top, head_in = H - FH, H - FH + TD, H - FW
     gb = (FW + H - FH) / 2
 
-    # y planes (exterior -y)
+    # y planes (outer face at -y)
     r.yplane("Wall Centre", 0, "CenterFrontBack")
     r.yplane("Frame Ext", -FD / 2, "StrongReference")
     r.yplane("Frame Int", FD / 2, "StrongReference")
@@ -275,7 +275,7 @@ def steel():
                   "collapse the part into the left jamb (Hide Offset / Hide Width) until the engine has a visibility op. "
                   "Burglar bars: up to 8 verticals at <= 150 centres (Bar Count = roundup(clear / 150) - 1, max 8, so "
                   "widths over ~1.3 m clear space them wider) plus flat rails at the glazing bar and transom; when off "
-                  "they also move inside the frame depth (Bar Y Offset). Exterior is -y; frame centred on the wall. "
+                  "they also move inside the frame depth (Bar Y Offset). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on the wall. "
                   "Elevation opening triangles are symbolic lines drawn for the default 2-leaf type and do not flex."),
         "ops": r.dump(),
         "values": {
@@ -435,7 +435,7 @@ def alu():
                   "2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) "
                   "vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - "
                   "Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas "
-                  "that collapse the part into the left jamb (Hide Offset / Hide Width). Exterior is -y; frame centred on "
+                  "that collapse the part into the left jamb (Hide Offset / Hide Width). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on "
                   "the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex."),
         "ops": r.dump(),
         "values": {
