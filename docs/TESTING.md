@@ -82,6 +82,17 @@ The connector `fmc-robot.exe` is built on the pilot PC (`dotnet build connectors
 5. `results` with `dry_run` false on the staging copy: FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref are set as one
    Undo. FMC_FEA_Approval_Ref stays empty. On a live model it's refused by the lock.
 
+### Navisworks (track N, step 1: read-only)
+The add-in `Formcraft.Navis` is built on the pilot PC (`dotnet build connectors/navisworks -c Release`, Navisworks Manage
+2025 installed). The updater puts it in `%APPDATA%\Autodesk Navisworks Manage 2025\Plugins\Formcraft.Navis` when Navisworks
+is closed. Use a copy of a federated file (NWF or NWD) with clash tests in it.
+1. Open Navisworks and the file. View › Windows › Formcraft: the pane says "Listening on 127.0.0.1:8190", lists the models
+   and each clash test with its results and New/Active counts. Refresh after running a test by hand.
+2. `fmc_navis status`: running, with the file and the number of tests. With Navisworks closed: closed or not found.
+3. `fmc_navis tests`, then `fmc_navis results` with a test's name: each clash has both items' Revit Element ID,
+   category and source model, and `groups` puts the clashes by model and category pair, largest first.
+4. Nothing changes in Navisworks: no test runs, no status changes, no saves.
+
 ### Test session script for Claude (pilot PC)
 0. **First, `fmc_selftest`** (read-only): the build in Revit and whether it matches the server, the AI connection,
    every command known to Revit, the guard's paths and the kit layout. Fix-first lines are findings; go on when it says

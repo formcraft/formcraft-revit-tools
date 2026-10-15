@@ -32,6 +32,13 @@ Copy-Item $server (Join-Path $next 'server') -Recurse
 # The Robot connector (connectors/robot), built where Robot is installed: it travels beside the server.
 $robot = Join-Path $repo 'server\robot'
 if (Test-Path (Join-Path $robot 'fmc-robot.exe')) { Copy-Item $robot (Join-Path $next 'server') -Recurse }
+# The Navisworks add-in (connectors/navisworks), built where Navisworks is installed: the updater installs it when
+# Navisworks is closed.
+$navis = Join-Path $repo 'connectors\navisworks\bin\Release\Formcraft.Navis'
+if (Test-Path (Join-Path $navis 'Formcraft.Navis.dll')) {
+    New-Item -ItemType Directory -Force (Join-Path $next 'navis') | Out-Null
+    Copy-Item $navis (Join-Path $next 'navis') -Recurse
+}
 
 [ordered]@{ commit = $commit; staged_at = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ'); revit = $RevitYear } |
     ConvertTo-Json | Set-Content -Path (Join-Path $next 'ready.json') -Encoding UTF8
