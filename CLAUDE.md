@@ -11,7 +11,7 @@ claude.ai Project "REVIT MCP".
 2. **Files.** Writes go only to WIP and staging folders, never to `02_Shared`, `03_Published`, `04_Archive`,
    `05_Incoming` or `04_Families\<Role>`. Nothing is deleted: archive moves a file to `_Archive`.
    One exception (owner's approval, 15 Oct): a person's **Release** in the pane (Setup › Families › Quality and
-   release) copies a family that passed Gate A from staging into `04_Families\<Role>`, with a reviewer, a note and a
+   release) moves a family that passed Gate A from staging into `04_Families\<Role>`, with a reviewer, a note and a
    confirmation, and logs it in `04_Families\FMC_Release_Log.csv`. It is a pane-only command: no MCP tool or AI can
    release.
 3. **Dry run first.** Every write shows a dry run and waits for a clear yes.
