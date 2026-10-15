@@ -54,18 +54,13 @@ refrigerant schematics, and the lightning protection schematic.
 | LD4 | Schematics: refrigerant (M), lightning protection and earthing (LP), drainage long section (C) |
 | LD5 | Sheets from the Sheet Register, legends, the regenerate-in-place flow, and Gate D in QA |
 
-## Decisions for the owner
-1. **Where the diagrams are drawn in a live project.** Rule 1 refuses model changes on live projects. The options:
-   - **(a)** The person presses **Generate** in the pane. The tool only scans and plans; the person's click is the
-     write, like a sync.
-   - **(b)** A separate diagrams model per role in `01_WIP\<Role>\` that links the discipline model.
-   - **(c)** Allow the tool to draw drafting views only while the "Claude in shared models" toggle is on.
-
-   Recommended: (a), with (c) for teams that want it.
-2. **Drawing conventions:** IEC 60617 symbols (already used by the kit's symbols). The layout follows BS 7671 SLD
-   practice, BS 5839 fire alarm zone charts and BS EN 12845 sprinkler schematics. Confirm these, or name the
-   Ugandan or authority conventions to follow.
-3. **Order:** E SLD first (LD2), then fire alarm and FP risers. Confirm the order or re-order.
+## Owner's decisions (15 Oct)
+1. **A person presses Generate in the pane** to draw diagrams in a live project. The tool scans and plans
+   everywhere, and draws by itself only in new documents, `_Staging` and `_ChainTests` (rule 1 unchanged).
+2. **IEC/BS conventions:** IEC 60617 symbols, BS 7671 single-lines, BS 5839 fire alarm zone charts and BS EN 12845
+   sprinkler schematics.
+3. **All disciplines at once:** LD2–LD4 are built in parallel on the shared contract
+   (`server/src/fmc/diagram/contract.ts`).
 
 ## Third-party tools already on the pilot PC
 The ribbon shows the ElectroBIM Single Line and FireBIM Riser add-ins. They may cover SLDs and FP risers today. LD
