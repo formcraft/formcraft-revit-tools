@@ -37,7 +37,7 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 |---|---|---|---|---|
 | F-001 | Blocker | Install | Installed add-in is older than `main` (#29) | Closed (run 2) |
 | F-002 | Blocker | AI connection | Connect AI doesn't start the listener; MCP gets "connect to revit client failed" | Closed (run 2) |
-| F-003 | High | Kit / guard | Kit folder set to the D: kit (run 3), but it still isn't a kit to the plugin → F-011 · #34 | Answered (step 1 done) |
+| F-003 | High | Kit / guard | Kit folder set to the D: kit (run 3), but it still isn't a kit to the plugin → F-011 · #34 | Closed (run 8) |
 | F-004 | Medium | Pane results | Audit and Issue › Run check give no visible result · #35 | Closed (run 4) |
 | F-005 | Medium | Pane layout | Banners leave too little room; wheel barely scrolls · #36 | Closed (run 4) |
 | F-006 | Low | Pane footer | A tool's footer message stays after switching sections · #37 | Closed (run 4) |
@@ -45,7 +45,7 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-008 | High | Ribbon | The Formcraft ribbon tab doesn't open when clicked · #38 | Closed (run 5: not a plugin bug, see run 5) |
 | F-009 | Medium | Server / tokens | `fmc_library scan` returns 428,000 characters for 346 families · #39 | Closed (run 7) |
 | F-010 | Medium | Families scan | "Required FMC parameters" shows Pass for families with no kit spec · #40 | Fixed – retest |
-| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Closed for layout (run 5); schema → F-017 |
+| F-011 | High | Kit layout | The plugin's idea of a kit doesn't match the real kit on the PC · #41 | Closed (run 8) |
 | F-012 | Medium | Search / banner | Search can't find the kit setting; the banner's Open Settings doesn't go to it · #42 | Fixed – retest |
 | F-013 | Low | Updates page | Settings › Updates shows the sample feed as a real update · #43 | Closed (run 7) |
 | F-014 | Medium | Sign-in | Sign-in isn't kept after Revit restarts with "Keep me signed in" on · #45 | Fixed – retest |
@@ -53,12 +53,27 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-016 | Low | Carried tools | `create_room` returns feet / sq ft while inputs are mm · #47 | Closed (run 7) |
 | F-017 | High | Rulebooks | Kit rulebook schema ≠ plugin schema: all 344 rules become Advice, 0 can run · #49 | Closed (run 6) |
 | F-018 | High | QA verdict | "No Must rule blocks the move" when 319 of 319 rules were Not checked · #50 | Closed (run 6) |
-| F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Fixed – retest |
+| F-019 | Medium | Project start | PST-002 subfolders (06_QA\Health…, 07_Cost\QTO…) aren't made · #55 | Closed (run 8) |
 | F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Fixed – retest |
 | F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Fixed – retest (fmc_ui close_revit) |
+| F-022 | High | Background work | Background commands stall (60 s timeouts) while the user works in other apps; queued calls dropped · #95 | Fixed – retest |
 ---
 
 ## Test runs
+
+### Run 8 · 2026-10-15 · pilot PC · Revit 2025.4 · build `1052d3b`
+
+**`fmc_selftest`: Ready to test** (0 fail, 19 pass, 4 warn: materials and annotation standard files not on Z:, no
+published .rte yet, only a saved family open). Background only: the user needed the screen.
+
+| Id | Result | State |
+|---|---|---|
+| F-019 #55 | `fmc_project plan` on an empty folder lists 06_QA\Health/Sync/Clash/IDS/ModelReview/Sheets, 07_Cost\QTO/BoQ, 01_WIP\<Role>\Families, 02_Shared\<Role> | Closed |
+| F-011 #41, F-003 #34 | Kit folder, FMC_Kit.json, rulebooks (11 books, 344 rules), both staging folders: Pass | Closed |
+| F-015 #46 | `problems` field is returned; the empty-folder case itself not retested (needs a test guard) | Fixed – retest |
+| New F-022 #95 | `fmc_family build` and `send_code_to_revit` stall 60 s again and again while Revit has no input; queued calls are dropped. 28 shells built, then nothing ran | Fixed – retest (this push) |
+
+Also done: 46 Revit backup copies (`*.000N.rfa`) moved from `04_Families\_Staging\<Role>` to `_Staging\_Archive\2026-10-15_backups`.
 
 ### Run 7 · 2026-10-14 (later) · pilot PC · Revit 2025.4 · build `a4e2e72`
 
