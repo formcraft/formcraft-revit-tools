@@ -8,6 +8,7 @@
 | `TESTING.md` | How each step is tested: CI, preview app, Revit with the Revit MCP |
 | `PLAN_ASSET_BUILDER.md` | The asset builder: families, symbols and templates from scratch (agreed 14 Oct) |
 | `PLAN_EXECUTION.md` | Execution plan: templates, families, AI involvement policy, Robot, Navisworks, Excel/Power BI (proposal, 14 Oct) |
+| `PLAN_CASEWORK.md` | Casework Assistant (Engineer › Casework): engine, Revit placement, pane, workshop pack (CW1–CW4, 15 Oct) |
 | `TEST_FEEDBACK.md` | Findings from the last live tests in Revit; Claude Code reads it before every push |
 | `DECISIONS.md` | Decisions D1–D8, open and closed |
 | `UI_KIT.md` | Tokens and styles (source of truth: `FmcTheme.xaml`) |

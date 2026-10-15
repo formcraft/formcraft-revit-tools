@@ -1,0 +1,86 @@
+{
+  "about": "The example kitchen on boards CW_Overview, CW_Pane and CW_Outputs (reference maths: cw_kitchen.py). Wall A 3600 with a 1200 window at 1200, wall B 3000 returning from the corner. Golden numbers: 12 units, 88 part lines, 120 pieces, ply 9 sheets at 76 %, MDF back 3 at 84 %, MDF fronts 3 at 66 %, edge 98.5 m, worktop 4.8 m, 28 hinges.",
+  "standards": {
+    "sheet": { "length": 2440, "width": 1220 },
+    "kerf": 4,
+    "carcass_board": "FMC_Board_Plywood_Marine18",
+    "carcass_thickness": 18,
+    "front_board": "FMC_Board_MDF_Raw",
+    "back_board": "FMC_Board_MDF_Back6",
+    "worktop": "FMC_Stone_Granite_Black_Polished",
+    "worktop_depth": 600,
+    "base": { "height": 720, "depth": 560 },
+    "wall": { "height": 720, "depth": 320 },
+    "tall": { "height": 2100, "depth": 560 },
+    "plinth": 150,
+    "corner_return": 600,
+    "construction": {
+      "front_gap": 3,
+      "back_clearance": 6,
+      "top_rail": 100,
+      "top_rails": 2,
+      "sink_top_rails": 1,
+      "shelf_setback": 30,
+      "shelf_clearance": 2,
+      "blind_panel": 420,
+      "corner_door": 577,
+      "drawer": {
+        "side_length": 500,
+        "side_drop": 60,
+        "back_allowance": 58,
+        "bottom_allowance": 26,
+        "bottom_depth": 490,
+        "heights": { "2": [287, 430], "3": [140, 287, 287] }
+      }
+    },
+    "shelves": { "base": 1, "wall": 1, "tall": 4 },
+    "hardware": {
+      "hinges_per_door": 2,
+      "hinges_per_tall_door": 4,
+      "legs": 4,
+      "legs_wide": 6,
+      "legs_wide_from": 900,
+      "shelf_pins_per_shelf": 4,
+      "hangers_per_wall_unit": 2,
+      "runner_length": 500
+    }
+  },
+  "run": {
+    "walls": [
+      {
+        "name": "A", "length": 3600, "corner": "start",
+        "openings": [{ "kind": "window", "offset": 1200, "width": 1200 }],
+        "fixed": [{ "kind": "sink", "offset": 1600, "width": 900 }],
+        "tall": { "at": "end", "width": 600 }
+      },
+      {
+        "name": "B", "length": 3000, "after_corner": "start",
+        "fixed": [
+          { "kind": "cooker", "offset": 1200, "width": 600, "hood": true },
+          { "kind": "fridge", "offset": 2400, "width": 600 }
+        ]
+      }
+    ],
+    "modules": [900, 600, 450, 300],
+    "wall_modules": [600, 450, 300],
+    "corner_width": 1000,
+    "fronts": { "K02": "3drawer", "K08": "2drawer" }
+  },
+  "units": [
+    ["K01", "corner", 1000, "A", 0, "door"],
+    ["K02", "base", 600, "A", 1000, "3drawer"],
+    ["K03", "sink", 900, "A", 1600, "2door"],
+    ["K04", "base", 450, "A", 2500, "door"],
+    ["K05", "tall", 600, "A", 2950, "2door"],
+    ["K06", "base", 600, "B", 600, "door"],
+    ["K07", "gap", 600, "B", 1200, "cooker"],
+    ["K08", "base", 600, "B", 1800, "2drawer"],
+    ["K09", "gap", 600, "B", 2400, "fridge"],
+    ["W01", "wall", 600, "A", 0, "door"],
+    ["W02", "wall", 600, "A", 600, "door"],
+    ["W03", "wall", 450, "A", 2500, "door"],
+    ["W04", "wall", 600, "B", 600, "door"],
+    ["W05", "gap", 600, "B", 1200, "hood"],
+    ["W06", "wall", 600, "B", 1800, "door"]
+  ]
+}
