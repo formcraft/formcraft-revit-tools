@@ -17,7 +17,8 @@ namespace TouchKit.UI
 {
     /// <summary>
     /// Draws a touch badge (tap to toggle) and an optional coloured frame on every open view.
-    /// These are small borderless windows owned by Revit's main window, positioned over each view.
+    /// These are small borderless windows owned by the window that shows the view (Revit's main window, or a view window
+    /// dragged out of it), positioned over each view.
     /// They never take focus, and the frame lets every click and touch pass straight through.
     /// </summary>
     internal sealed class ViewOverlayManager : IDisposable
@@ -72,18 +73,26 @@ namespace TouchKit.UI
                     _overlays.Remove(gone);
                 }
 
-                double scale = Math.Max(1, GetDpiForWindow(_revitWindow)) / 96.0;
-
                 foreach (ViewRegion region in regions)
                 {
-                    if (!_overlays.TryGetValue(region.ViewId, out Overlay? overlay))
+                    // A view dragged out of the main window lives in its own window: the overlays belong to that window,
+                    // so they stay above it, and take its monitor's scaling.
+                    IntPtr owner = region.Frame != 0 ? new IntPtr(region.Frame) : _revitWindow;
+                    if (_overlays.TryGetValue(region.ViewId, out Overlay? overlay) && overlay.Owner != owner)
                     {
-                        overlay = new Overlay(_revitWindow, region, _onBadgeTapped);
+                        overlay.Close();
+                        _overlays.Remove(region.ViewId);
+                        overlay = null;
+                    }
+                    if (overlay is null)
+                    {
+                        overlay = new Overlay(owner, region, _onBadgeTapped);
                         _overlays[region.ViewId] = overlay;
                     }
 
+                    double scale = Math.Max(1, GetDpiForWindow(owner)) / 96.0;
                     bool on = _takeover.IsOnIgnoringMaster(region);
-                    overlay.Update(region, on, _takeover.MasterOn, s, scale, suppress);
+                    overlay.Update(region, on, _takeover.MasterOn, s, scale, suppress || (owner != _revitWindow && IsIconic(owner)));
                 }
             }
             catch
@@ -140,8 +149,11 @@ namespace TouchKit.UI
             private readonly BadgeWindow _badge;
             private ViewRegion _region;
 
+            public IntPtr Owner { get; }
+
             public Overlay(IntPtr owner, ViewRegion region, Action<ViewRegion> onTapped)
             {
+                Owner = owner;
                 _region = region;
                 _frame = new FrameWindow(owner);
                 _badge = new BadgeWindow(owner, () => onTapped(_region));
@@ -201,6 +213,8 @@ namespace TouchKit.UI
 
                 var helper = new WindowInteropHelper(this) { Owner = owner };
                 _hwnd = helper.EnsureHandle();
+                RevitWindows.AddOwn(_hwnd);
+                Closed += (_, _) => RevitWindows.RemoveOwn(_hwnd);
                 long flags = WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW;
                 if (clickThrough) flags |= WS_EX_TRANSPARENT | WS_EX_LAYERED;
                 AddExStyle(_hwnd, flags);

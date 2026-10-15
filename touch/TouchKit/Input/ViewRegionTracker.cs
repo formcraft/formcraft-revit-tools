@@ -18,10 +18,13 @@ namespace TouchKit.Input
         Other,
     }
 
-    /// <summary>Screen rectangle of one open Revit view, in physical screen pixels.</summary>
+    /// <summary>
+    /// Screen rectangle of one open Revit view, in physical screen pixels, and the top-level window that shows it
+    /// (<see cref="Frame"/>: Revit's main window, or the window of a view dragged out of it).
+    /// </summary>
     public sealed record ViewRegion(
         int Left, int Top, int Right, int Bottom,
-        long ViewId, string ViewName, ViewType ViewType, ViewKind Kind, bool IsActive, bool OnScreen = true)
+        long ViewId, string ViewName, ViewType ViewType, ViewKind Kind, bool IsActive, bool OnScreen = true, long Frame = 0)
     {
         public bool Contains(int x, int y) => x >= Left && x < Right && y >= Top && y < Bottom;
         public override string ToString() =>
@@ -44,6 +47,9 @@ namespace TouchKit.Input
         private long _activations;
 
         public IReadOnlyList<ViewRegion> Regions => _regions;
+
+        /// <summary>Revit's main window, as a number (set on each refresh).</summary>
+        public long MainWindow { get; private set; }
         public string? LastError { get; private set; }
 
         /// <summary>Call from Revit's Idling event. Cheap when not due.</summary>
@@ -68,6 +74,9 @@ namespace TouchKit.Input
                 Document doc = uiDoc.Document;
                 ElementId activeId = uiDoc.ActiveView?.Id ?? ElementId.InvalidElementId;
                 var list = new List<ViewRegion>();
+                long main = uiApp.MainWindowHandle.ToInt64();
+                MainWindow = main;
+                List<FrameWindow> frames = RevitWindows.Candidates();
 
                 foreach (UIView uiView in uiDoc.GetOpenUIViews())
                 {
@@ -80,7 +89,8 @@ namespace TouchKit.Input
                         view.Name,
                         view.ViewType,
                         Classify(view),
-                        uiView.ViewId == activeId));
+                        uiView.ViewId == activeId,
+                        Frame: ViewFrames.Pick(r.Left, r.Top, r.Right, r.Bottom, frames, main)));
                 }
 
                 // Active view first so hit-testing prefers it when tiled views overlap at edges.
@@ -109,20 +119,28 @@ namespace TouchKit.Input
                 _lastActive[active.ViewId] = ++_activations;
 
             var stack = list.ConvertAll(r => new StackedView(r.Left, r.Top, r.Right, r.Bottom, r.IsActive,
-                _lastActive.TryGetValue(r.ViewId, out long t) ? t : 0));
+                _lastActive.TryGetValue(r.ViewId, out long t) ? t : 0, r.Frame));
             bool[] onScreen = ViewStack.OnScreen(stack);
             return list.Select((r, i) => r with { OnScreen = onScreen[i] }).ToList();
         }
 
-        /// <summary>Which open view (if any) contains this screen point.</summary>
-        public ViewRegion? HitTest(int x, int y)
+        /// <summary>Which open view (if any) contains this screen point, in the top-level window the input went to.</summary>
+        public ViewRegion? HitTest(int x, int y, long window)
         {
             ViewRegion[] snapshot = _regions;
             foreach (ViewRegion region in snapshot)
             {
-                if (region.OnScreen && region.Contains(x, y)) return region;
+                if (region.OnScreen && region.Frame == window && region.Contains(x, y)) return region;
             }
             return null;
+        }
+
+        /// <summary>The window is Revit's main window or holds a view dragged out of it.</summary>
+        public bool IsViewWindow(long window)
+        {
+            if (window == MainWindow) return true;
+            foreach (ViewRegion region in _regions) if (region.Frame == window) return true;
+            return false;
         }
 
         private static ViewKind Classify(View view)
