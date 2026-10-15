@@ -33,6 +33,12 @@ with or that needs the user, comment why, add `needs-user`, and set **Answered**
 delete a finding: the tester closes it after a passing retest (so write `Touches #N`, never `Fixes #N`, in PRs). List
 the findings you touch in the PR description, or say you touch none.
 
+## Keep the build tracker true
+The owner's Formcraft Build Tracker (a dashboard) is built from `docs/tracker/` by `scripts/tracker/refresh.py`, with merges,
+open PRs and findings read from git and GitHub. A PR that changes what a feature can do, or its state (Planned, Designed,
+In progress, Built – Revit check due, Tested in Revit, Waiting on you), updates `docs/tracker/features.json` in the same PR;
+a kit release updates `kit.json` and `events.json`; a new owner decision goes in `decisions.json`.
+
 ## After every merge: stage the build
 CI does it: on a push to `main` the `stage` job on the pilot PC's runner builds the add-in, command set and server and drops them in `%ProgramData%\Formcraft\Staging\next` (`scripts/fmc-stage.ps1 -Target`); the updater moves the drop in. Run `scripts/fmc-stage.ps1` by hand only when CI is off (`CI_RUNNER=hosted`). The Formcraft Updater (a logon task)
 installs it the next time Revit is closed and records it in `%APPDATA%\Formcraft\installed.json`. Neither the updater

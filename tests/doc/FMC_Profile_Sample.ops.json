@@ -1,0 +1,21 @@
+{
+ "family": "FMC_Profile_A_Architrave_Sample",
+ "template": "Metric Profile.rft",
+ "about": "Schema fixture for profile_lines (FAM-040): a 70 x 20 mm architrave with a rounded nosing (one 3-point arc), drawn in the profile family's Ref. Level plan, x across and y up. No Keynote: a profile family's types may not carry the Keynote parameter, so it is left out until the Revit test confirms it. Run: fmc_doc open (template) -> apply (dry run, then real) -> save to _ChainTests.",
+ "ops": [
+  { "op": "set_category", "name": "OST_ProfileFamilies" },
+  { "op": "add_type", "name": "70x20" },
+  {
+   "op": "profile_lines",
+   "name": "Architrave",
+   "start": [0, 0],
+   "segments": [
+    { "to": [70, 0] },
+    { "to": [70, 12] },
+    { "to": [62, 20], "through": [67.66, 17.66] },
+    { "to": [0, 20] },
+    { "to": [0, 0] }
+   ]
+  }
+ ]
+}

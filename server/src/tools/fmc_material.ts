@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { MaterialDb, ModelMaterial, auditMaterials, parseMaterialDb, searchMaterials } from "../fmc/materials.js";
+import { MaterialDb, ModelMaterial, auditMaterials, parseMaterialDb, resolveMaterial, searchMaterials } from "../fmc/materials.js";
 
 const win = path.win32;
 
@@ -24,7 +24,8 @@ function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
 }
 
-function readDb(cfg: GuardConfig): MaterialDb | null {
+/** The kit's material library (materials_file in fmc_guard.json), or null when it isn't readable. fmc_doc uses it too. */
+export function readDb(cfg: GuardConfig): MaterialDb | null {
   try { return parseMaterialDb(JSON.parse(fs.readFileSync(expandEnv(cfg.materials_file), "utf8").replace(/^﻿/, ""))); }
   catch { return null; }
 }
@@ -62,7 +63,7 @@ export async function runFmcMaterial(args: FmcMaterialArgs) {
       case "database":
         if (!db) return reply({ refused: true, reasons: [`Material database not readable at ${config.materials_file} (materials_file in fmc_guard.json)`] }, true);
         return reply({ file: config.materials_file, version: db.version, count: db.materials.length, classes: db.classes,
-          materials: searchMaterials(db, args.class ?? "All", args.query ?? ""), problems: db.problems });
+          materials: searchMaterials(db, args.class ?? "All", args.query ?? "").map(({ description, ...m }) => m), problems: db.problems });
 
       case "updates": {
         if (!db) return reply({ refused: true, reasons: [`Material database not readable at ${config.materials_file}`] }, true);
@@ -99,12 +100,16 @@ export async function runFmcMaterial(args: FmcMaterialArgs) {
         if (args.target !== "selection" && !args.category) reasons.push("Pick the category");
         if (args.target === "rule" && !(args.contains ?? "").trim()) reasons.push("Say what the type name contains");
         if (reasons.length) return reply({ refused: true, reasons }, true);
-        const params = { material: m, target: args.target, category: args.category, contains: args.contains ?? "", parameter: args.parameter, dry_run: dry };
+        // A material the model doesn't have yet is made from the database, textures included (absolute paths on this PC).
+        const resolved = resolveMaterial(m!, expandEnv(config.materials_file), (p) => fs.existsSync(p));
+        const params = { material: { ...m, ...resolved.material }, target: args.target, category: args.category, contains: args.contains ?? "", parameter: args.parameter, dry_run: dry };
         // The plan only reads; the real run is model-changing and goes through the live-model lock.
         const r = await withRevitConnection((c) => dry ? c.sendRaw("fmc_material_assign", params, 300000) : c.sendCommand("fmc_material_assign", params, 300000));
         if (!dry) log(config, "material_assign", false, args.material!, "done", `${(r?.types ?? []).length} types`);
-        return reply(dry ? { dry_run: true, would_change: r?.types ?? [], creates_material: r?.creates ?? false, next: "Run again with dry_run=false" }
-                         : { done: true, changed: r?.types ?? [], created: r?.creates ?? false });
+        const textureWarnings = [...resolved.warnings, ...((r?.warnings ?? []) as string[])];
+        return reply(dry ? { dry_run: true, would_change: r?.types ?? [], creates_material: r?.creates ?? false,
+                             ...(r?.creates && textureWarnings.length ? { texture_warnings: textureWarnings } : {}), next: "Run again with dry_run=false" }
+                         : { done: true, changed: r?.types ?? [], created: r?.creates ?? false, ...(textureWarnings.length && r?.creates ? { texture_warnings: textureWarnings } : {}) });
       }
 
       case "purge": {

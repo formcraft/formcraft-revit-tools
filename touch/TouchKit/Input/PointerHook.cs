@@ -17,7 +17,7 @@ namespace TouchKit.Input
     /// Rules this class must never break:
     ///  - never throw out of the callback (an exception here could take Revit down)
     ///  - never do slow work in the callback (it runs for every message Revit processes)
-    ///  - only block input that lands inside a Revit view, inside Revit's main window
+    ///  - only block input that lands inside a Revit view, in Revit's main window or a view window dragged out of it
     /// </summary>
     public sealed class PointerHook : IDisposable
     {
@@ -147,8 +147,10 @@ namespace TouchKit.Input
                 y = msg.pt.Y;
             }
 
-            bool inMain = GetAncestor(msg.hwnd, GA_ROOT) == _revitMainWindow;
-            ViewRegion? view = inMain ? _views.HitTest(x, y) : null;
+            // The view may sit in Revit's main window or in a window of its own (a view tab dragged out, Revit 2022+).
+            long root = GetAncestor(msg.hwnd, GA_ROOT).ToInt64();
+            bool inMain = root == _revitMainWindow.ToInt64() || _views.IsViewWindow(root);
+            ViewRegion? view = inMain ? _views.HitTest(x, y, root) : null;
 
             bool blockThisSource =
                 (source == InputSource.Touch && BlockTouchInViews) ||

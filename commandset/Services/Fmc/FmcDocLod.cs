@@ -54,10 +54,10 @@ namespace RevitMCPCommandSet.Services.Fmc
         private static Element Named(Document doc, string name) =>
             new FilteredElementCollector(doc).WhereElementIsNotElementType().FirstOrDefault(e => FmcDocGeometry.NameOf(e) == name);
 
-        private static List<Element> AllNamed(Document doc, string name) =>
+        internal static List<Element> AllNamed(Document doc, string name) =>
             new FilteredElementCollector(doc).WhereElementIsNotElementType().Where(e => FmcDocGeometry.NameOf(e) == name).ToList();
 
-        private static Category Subcategory(Document doc, string name)
+        internal static Category Subcategory(Document doc, string name)
         {
             Category parent = doc.OwnerFamily.FamilyCategory ?? throw new InvalidOperationException("Set the family category first");
             foreach (Category c in parent.SubCategories) if (string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase)) return c;

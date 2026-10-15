@@ -62,6 +62,7 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-025 | High | Code runner | `send_code_to_revit` ignores `document` and runs on the active document (edited the open door instead of the window) · #110 | Open |
 | F-026 | Medium | Recipes | Labelled dimension left a plane on the wrong side (Head Inner above Head); cause: recipe dimensioned while the template's default size was current. Recipe side fixed here (size first) · #111 | Answered (recipe fixed; engine warning still asked) |
 | F-027 | Low | Recipes | `lock_face` needs exact coordinates; 3-decimal heights missed the plane. Recipe side fixed here (10 decimals) · #112 | Answered (recipe fixed; engine tolerance still asked) |
+| F-028 | High | Touch | Touch doesn't follow a view dragged out of the main window (owner report, 15 Oct) · #114 | Fixed – retest (fix/touch-floating-views) |
 ---
 
 ## Test runs
