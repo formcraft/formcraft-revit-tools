@@ -62,6 +62,17 @@ refrigerant schematics, and the lightning protection schematic.
 3. **All disciplines at once:** LD2–LD4 are built in parallel on the shared contract
    (`server/src/fmc/diagram/contract.ts`).
 
+## Revit side (commands)
+- `fmc_diagram_scan` (read-only; `kinds`, optional `document`): `commandset/Services/Fmc/FmcDiagramScan.cs`. Element
+  nodes use the UniqueId, circuits `circuit:<id>`, the synthetic supply `supply:<board name>`. SLDs are one diagram
+  per top-level supply tree (feeders are circuits whose loads include a board); piping schematics are one diagram per
+  piping system, with edges found by following connectors through pipes and fittings to the next component; the LP
+  schematic joins parts whose points or line ends lie within 100 mm.
+- `fmc_diagram_draw` (DRAW_SPEC + optional `document`, documents already open): `FmcDiagramDraw.cs`. One transaction
+  group, rolled back on a dry run; never saves. Tool-drawn items carry the key `view|source_id or index|t` in
+  extensible storage (schema `FMC_DiagramSource`), so a rerun redraws them and keeps a person's notes (`kept_by_hand`).
+  Symbols must already be loaded (Generic Annotations or Detail Items); a missing one is a warning, never a load from disk.
+
 ## Third-party tools already on the pilot PC
 The ribbon shows the ElectroBIM Single Line and FireBIM Riser add-ins. They may cover SLDs and FP risers today. LD
 reads the same model data, but uses Formcraft's kit, keynotes and QA gates, and covers every discipline from one scan.
