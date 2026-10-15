@@ -76,6 +76,8 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
     /// <param name="app">UIApplication instance</param>
     public void Execute(UIApplication app)
     {
+        // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+        RevitMCPCommandSet.Bridge.FmcAiJob.Enter(app, "");
         _uiApp = app;
         try
         {
@@ -220,7 +222,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
                 Message = $"Error creating dimensions: {ex.Message}",
                 Response = new List<long>()
             };
-            TaskDialog.Show("Error", $"Error creating dimensions: {ex.Message}");
+            RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Error creating dimensions: {ex.Message}");
         }
         finally
         {
@@ -464,7 +466,7 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
         catch (Exception ex)
         {
             // Log error but continue processing
-            TaskDialog.Show("Debug", $"Error finding reference at point: {ex.Message}");
+            RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Debug", $"Error finding reference at point: {ex.Message}");
         }
 
         return null;

@@ -6,7 +6,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { configPath, expandEnv, loadConfig } from "../fmc/policy.js";
 import { label, notListening, readInstances, revitPort } from "../fmc/connect.js";
-import { AddinFacts, Line, PathProbe, guardPaths, kitLayout, revitLines, summary } from "../fmc/selftest.js";
+import { AddinFacts, Line, PathProbe, aiRulebookLine, guardPaths, kitLayout, revitLines, summary } from "../fmc/selftest.js";
+import { loadRulebook } from "../fmc/aiuse_io.js";
 
 const probe: PathProbe = {
   exists: (p) => fs.existsSync(p),
@@ -58,6 +59,7 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
     ...revitLines(facts, server, failure),
     { area: "Guard", check: "fmc_guard.json", state: problem ? "Fail" : "Pass", detail: problem ?? configPath() },
     ...guardPaths(config, probe, (p) => expandEnv(p)),
+    aiRulebookLine(loadRulebook(config), config.rulebooks_dir),
     ...kitLayout((facts?.kit_folder || args.kit_folder || "").trim(), probe),
   ];
   const s = summary(lines);
