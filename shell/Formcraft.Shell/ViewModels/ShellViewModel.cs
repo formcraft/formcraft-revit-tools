@@ -124,7 +124,7 @@ namespace Formcraft.Shell.ViewModels
                               ILibraryTools? library = null, IQaTools? qa = null,
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
-                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null)
+                              IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null)
         {
             _licence = licence;
             _connection = connection;
@@ -145,7 +145,7 @@ namespace Formcraft.Shell.ViewModels
             Welcome.StepChanged += (_, __) => UpdateFooter();
             Account = new AccountViewModel(licence, s => Status = s, ShowDialog);
             Settings = new SettingsViewModel(licence, settings, Parts, theme ?? ThemeService.Shared, kit ?? new FolderKitService(), s => Status = s, ShowDialog,
-                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch, flow);
+                                             updates, () => OpenLogRequested?.Invoke(this, EventArgs.Empty), touch, flow, liveData);
             Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(SettingsViewModel.CurrentName)) UpdateFooter(); };
             CheckUpdatesCommand = new RelayCommand(() => Settings.CheckForUpdates());
             Connect = new ConnectViewModel(connect ?? new MockConnectInfo(), kit ?? new FolderKitService(), licence, settings, s => Status = s, ShowDialog,

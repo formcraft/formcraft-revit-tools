@@ -27,6 +27,8 @@ namespace revit_mcp_plugin.Shell
         public static ShellViewModel Pane { get; private set; }
         public static IUserSettings Settings { get; private set; }
         public static MockLicenceService Licence { get; private set; }
+        /// <summary>Keep FMC data filled: the open model's switch for Settings › Manage (docs/LIVE_DATA.md).</summary>
+        public static RevitLiveData LiveData { get; private set; }
 #if REVIT2025_OR_GREATER
         /// <summary>Formcraft Flow's touch engine, started just before the pane (null if it couldn't start).</summary>
         public static TouchKit.App Touch { get; set; }
@@ -54,6 +56,7 @@ namespace revit_mcp_plugin.Shell
             Settings = new JsonUserSettings(JsonUserSettings.DefaultPath);
             FlowTools.Register();
             BuildViews.Register();
+            LiveData = new RevitLiveData();
             // Connect's "Switch on when Revit starts" is start_with_revit in fmc_connect.json, the file the MCP server reads too.
             string autoStart = "settings." + ConnectViewModel.AutoStartKey;
             Settings.Set(autoStart, ConnectSettings.Load().StartWithRevit ? "true" : "false");
@@ -76,7 +79,7 @@ namespace revit_mcp_plugin.Shell
                                       project: new RevitProjectTools(), templates: new RevitTemplateTools(),
                                       library: new RevitLibraryTools(), qa: new RevitQaTools(),
                                       materials: new RevitMaterialTools(), sheets: new RevitSheetTools(),
-                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(), build: new RevitBuildTools(), ask: new RevitAskTools(), ai: new RevitAiTools(), release: new RevitReleaseTools(), robot: new RevitRobotTools(),
+                                      annotate: new RevitAnnotateTools(), issue: new RevitIssueTools(), links: new RevitLinkTools(), workshare: new RevitWorkshareTools(), review: new RevitReviewTools(), reports: new RevitReportTools(), liveData: LiveData, flow: new RevitFlowTools(), brief: new RevitBriefTools(), scripts: new RevitScriptTools(), systems: new RevitSystemTools(), build: new RevitBuildTools(), ask: new RevitAskTools(), ai: new RevitAiTools(), release: new RevitReleaseTools(), robot: new RevitRobotTools(),
                                       // F-013: no update feed yet; the installed build from the build stamp.
                                       updates: new NoFeedUpdateService("build " + revit_mcp_plugin.FmcBuildInfo.Commit + " · " + revit_mcp_plugin.FmcBuildInfo.Time.Replace("T", " ").TrimEnd('Z') + " UTC"))
             {
@@ -134,6 +137,7 @@ namespace revit_mcp_plugin.Shell
             RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);
+            LiveData?.Update(app.ActiveUIDocument?.Document);
         }
 
         private sealed class PaneProvider : IDockablePaneProvider

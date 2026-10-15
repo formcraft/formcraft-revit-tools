@@ -57,14 +57,16 @@ namespace Formcraft.Shell.ViewModels
         private readonly Action _openLog;
         private readonly ITouchService? _touch;
         private readonly IFlowTools _flow;
+        private readonly ILiveDataService? _liveData;
         private readonly List<Action> _touchRefresh = new List<Action>();
         private SettingsTab? _current;
 
         public SettingsViewModel(ILicenceService licence, IUserSettings settings, ObservableCollection<ModuleParts> parts, ThemeService theme,
                                  IKitService kit, Action<string> status, Action<DialogViewModel> ask, IUpdateService? updates = null, Action? openLog = null,
-                                 ITouchService? touch = null, IFlowTools? flow = null)
+                                 ITouchService? touch = null, IFlowTools? flow = null, ILiveDataService? liveData = null)
         {
             _touch = touch;
+            _liveData = liveData;
             _flow = flow ?? new MockFlowTools();
             if (_touch != null) _touch.Changed += (_, __) => { foreach (var refresh in _touchRefresh) refresh(); };
             _updates = updates ?? new MockUpdateService();
@@ -80,6 +82,8 @@ namespace Formcraft.Shell.ViewModels
             _ask = ask;
             ApplyTheme();
             Rebuild();
+            // Another model opened, or the switch changed: the Manage tab shows the open model's setting.
+            if (_liveData != null) _liveData.Changed += (_, __) => Rebuild();
         }
 
         public ObservableCollection<SettingsTab> Tabs { get; } = new ObservableCollection<SettingsTab>();
@@ -328,7 +332,77 @@ namespace Formcraft.Shell.ViewModels
                 new ChoiceSetting(_store, "manage.library", "Material library", new[] { @"FMC Materials v1.0 · 00_Standards\12_Materials", "Project copy" }, dropdown: true),
                 new ToggleSetting(_store, "manage.textures", "Show texture previews", true),
                 new ReadOnlySetting("Library owner", "Visualisation Lead · names FMC_[Group]_[Description]")),
+            LiveData(),
         };
+
+        public const string LiveDataGroup = "Manage · keep FMC data filled";
+
+        /// <summary>The BIM Manager (or an admin) switches "Keep FMC data filled" on per project; others see it.</summary>
+        private bool MaySwitchLiveData()
+        {
+            var a = _licence.Current.Account;
+            return a != null && (a.IsAdmin || a.Role.IndexOf("BIM Manager", StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        /// <summary>
+        /// Keep FMC data filled (docs/LIVE_DATA.md): Revit fills derived FMC fields as people model, per project, off by
+        /// default. The setting lives in the model, so everyone on the project gets it after they sync.
+        /// </summary>
+        private SettingsGroup LiveData()
+        {
+            const string fills = "Fills only copies and look-ups as people model: FMC_Keynote_Code from the type's Keynote, "
+                + "FMC_Code_Description and FMC_Code_Group from the kit, FMC_Role_Code from the model's file name, FMC_Panel_ID "
+                + "from the board's Panel Name, FMC_Circuit_Ref as panel/circuit, and FMC_Data_Sync_Stamp. Only where the field "
+                + "exists; a value a person typed is kept unless the field is a pure copy.";
+            const string never = "Never sizes, ratings, loads, demand factors or anything a professional decides. Never saves or "
+                + "syncs: you sync in Revit. Every value it fills is logged (no names).";
+            if (_liveData == null)
+                return new SettingsGroup(LiveDataGroup,
+                    new NoteSetting("Keep FMC data filled runs in Revit, from the Formcraft add-in."),
+                    new NoteSetting(fills), new NoteSetting(never, ChipKind.Warn));
+
+            var s = _liveData.Current;
+            var items = new List<SettingItem>();
+            if (!s.Applies)
+            {
+                items.Add(new ReadOnlySetting("This project", s.Model.Length == 0 ? "No model open" : s.Model, s.Why));
+            }
+            else
+            {
+                var state = s.On
+                    ? "On" + (s.By.Length > 0 ? " · switched on by " + s.By : "") + (s.At.Length > 0 ? " · " + s.At.Replace("T", " ") : "")
+                    : "Off";
+                items.Add(new ReadOnlySetting("This project", state, s.Model));
+                if (s.On) items.Add(new ReadOnlySetting("Filled in this session", s.FilledThisSession + " values"));
+                if (MaySwitchLiveData())
+                    items.Add(new ButtonsSetting("", new[]
+                    {
+                        s.On
+                            ? new SettingButton("Switch off for this project", new RelayCommand(() => AskLiveData(false)))
+                            : new SettingButton("Switch on for this project", new RelayCommand(() => AskLiveData(true)), primary: true),
+                    }));
+                else
+                    items.Add(new NoteSetting("Only the BIM Manager switches this on or off for a project.", ChipKind.Info));
+            }
+            items.Add(new NoteSetting(fills));
+            items.Add(new NoteSetting(never, ChipKind.Warn));
+            items.Add(new ReadOnlySetting("Log", _liveData.LogPath, mono: true));
+            return new SettingsGroup(LiveDataGroup, items.ToArray());
+        }
+
+        private void AskLiveData(bool on)
+        {
+            var model = _liveData?.Current.Model ?? "";
+            _ask(on
+                ? new DialogViewModel("Keep FMC data filled",
+                    "Switch on for " + model + "? From now on Revit fills the derived FMC fields on elements people add or change, "
+                    + "as part of their own change (one Undo). Nothing is filled until someone changes the model. The setting is "
+                    + "saved in the model: sync so the team gets it.", "Switch on",
+                    () => { _liveData?.SetOn(true, _status); return System.Threading.Tasks.Task.CompletedTask; })
+                : new DialogViewModel("Keep FMC data filled",
+                    "Switch off for " + model + "? Values already filled stay as they are.", "Switch off",
+                    () => { _liveData?.SetOn(false, _status); return System.Threading.Tasks.Task.CompletedTask; }));
+        }
 
         private IEnumerable<SettingsGroup> Flow() => new[]
         {
