@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEFAULT_CONFIG, GuardConfig, archivePlan, checkTemplatePath, checkWritePath, csvLine, isInside,
-  liveLockVerdict, loadConfig, nameProblems, projectFamily, WRITE_COMMANDS,
+  activityOf, callActivity, liveLockVerdict, loadConfig, nameProblems, projectFamily, WRITE_COMMANDS,
 } from "./policy.js";
 
 const cfg: GuardConfig = {
@@ -120,4 +120,17 @@ test("live-model lock agrees with the shared cases (the Formcraft Browser's C# c
     const cfgCase: GuardConfig = { ...DEFAULT_CONFIG, ...fixture.config, live_model_lock: c.lock ?? fixture.config.live_model_lock };
     assert.equal(liveLockVerdict(c.doc, cfgCase).ok, c.ok, c.name);
   }
+});
+
+test("activityOf tags each call for the AI activity strip: change, dry run or read", () => {
+  assert.equal(activityOf("delete_element", { ids: [1] }), "change");
+  assert.equal(activityOf("fmc_diagram_draw", { dry_run: true }), "dryrun");
+  assert.equal(activityOf("fmc_recipe_apply", { dry_run: false }), "change");
+  assert.equal(activityOf("fmc_recipe_apply", { dry_run: true }), "dryrun");
+  assert.equal(activityOf("get_selected_elements", {}), "read");
+  assert.equal(activityOf("fmc_document_info", undefined), "read");
+  assert.equal(activityOf("send_code_to_revit", [1, 2]), "change");
+  // A person's own click in the pane (the pane runs the CLI with FMC_CALLER=pane) never sets the strip.
+  assert.equal(callActivity("delete_element", {}, { FMC_CALLER: "pane" }), "person");
+  assert.equal(callActivity("delete_element", {}, {}), "change");
 });

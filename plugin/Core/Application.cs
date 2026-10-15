@@ -34,6 +34,8 @@ namespace revit_mcp_plugin.Core
 #if REVIT2025_OR_GREATER
             try { Shell.ShellHost.Touch?.Stop(application); } catch { }
 #endif
+            // Put Revit's own ribbon colours back if the AI activity strip is showing.
+            try { Shell.AiRibbonStrip.Stop(); } catch { }
             try
             {
                 if (SocketService.Instance.IsRunning)

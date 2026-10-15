@@ -2,7 +2,7 @@ import * as net from "net";
 import fs from "fs";
 import path from "path";
 import { appendJobEvent, jobFiles } from "../fmc/jobs.js";
-import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
+import { WRITE_COMMANDS, callActivity, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
 
@@ -132,6 +132,8 @@ export class RevitClientConnection {
     // command names its own document.
     const document = documentTarget.getStore();
     if (document && params && typeof params === "object" && !Array.isArray(params) && !("document" in params)) params = { ...params, document };
+    // The AI activity strip: what this call does, for the ribbon's colour while it runs (policy.ts callActivity).
+    if (params && typeof params === "object" && !Array.isArray(params)) params = { ...params, _fmcActivity: callActivity(command, params) };
     return new Promise((resolve, reject) => {
       try {
         if (!this.isConnected) {
