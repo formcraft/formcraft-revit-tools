@@ -109,7 +109,7 @@ public class BeamInfo
     ///     Beam family type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     Beam material

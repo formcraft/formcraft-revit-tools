@@ -94,7 +94,7 @@ public class RailingCreationInfo
     ///     Host element ID for the railing (if attaching to a stair, ramp, etc.)
     /// </summary>
     [JsonProperty("hostElementId")]
-    public int HostElementId { get; set; } = -1;
+    public long HostElementId { get; set; } = -1;
 
     /// <summary>
     ///     Is this a closed loop railing
@@ -106,7 +106,7 @@ public class RailingCreationInfo
     ///     Railing type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; } = -1;
+    public long TypeId { get; set; } = -1;
 
     /// <summary>
     ///     Railing type name

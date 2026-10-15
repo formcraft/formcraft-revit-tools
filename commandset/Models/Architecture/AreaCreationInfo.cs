@@ -57,7 +57,7 @@ public class AreaCreationInfo
     ///     Area level ID in Revit
     /// </summary>
     [JsonProperty("levelId")]
-    public int LevelId { get; set; }
+    public long LevelId { get; set; }
 
     /// <summary>
     ///     Level elevation (mm)
@@ -69,7 +69,7 @@ public class AreaCreationInfo
     ///     Area scheme ID in Revit
     /// </summary>
     [JsonProperty("areaSchemeId")]
-    public int AreaSchemeId { get; set; }
+    public long AreaSchemeId { get; set; }
 
     /// <summary>
     ///     Area scheme name
@@ -81,7 +81,7 @@ public class AreaCreationInfo
     ///     Area view ID in Revit
     /// </summary>
     [JsonProperty("areaViewId")]
-    public int AreaViewId { get; set; }
+    public long AreaViewId { get; set; }
 
     /// <summary>
     ///     Additional options

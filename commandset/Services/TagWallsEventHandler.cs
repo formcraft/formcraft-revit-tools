@@ -223,7 +223,7 @@ try
             // If specific tag type ID was specified, try to use it
             if (!string.IsNullOrEmpty(_tagTypeId))
             {
-                if (int.TryParse(_tagTypeId, out int id))
+                if (long.TryParse(_tagTypeId, out long id))
                 {
                     ElementId elementId = new ElementId(id);
                     Element element = doc.GetElement(elementId);
@@ -262,7 +262,7 @@ try
             // If specific tag type ID was specified, try to use it
             if (!string.IsNullOrEmpty(_tagTypeId))
             {
-                if (int.TryParse(_tagTypeId, out int id))
+                if (long.TryParse(_tagTypeId, out long id))
                 {
                     ElementId elementId = new ElementId(id);
                     Element element = doc.GetElement(elementId);

@@ -74,7 +74,7 @@ public class FoundationInfo
     ///     Optional ID of the column or wall supported by this foundation
     /// </summary>
     [JsonProperty("supportedElementId")]
-    public int SupportedElementId { get; set; }
+    public long SupportedElementId { get; set; }
 
     /// <summary>
     ///     Optional rotation angle in degrees
@@ -110,5 +110,5 @@ public class FoundationInfo
     ///     Optional parameter for family type ID
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; }
+    public long TypeId { get; set; }
 }

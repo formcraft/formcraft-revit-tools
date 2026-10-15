@@ -107,7 +107,7 @@ public class ConduitCreationInfo
     ///     Conduit type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; }
+    public long TypeId { get; set; }
 
     /// <summary>
     ///     Conduit material

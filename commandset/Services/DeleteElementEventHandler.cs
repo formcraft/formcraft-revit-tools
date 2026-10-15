@@ -38,7 +38,7 @@ namespace RevitMCPCommandSet.Services
                 List<string> invalidIds = new List<string>();
                 foreach (var idStr in ElementIds)
                 {
-                    if (int.TryParse(idStr, out int elementIdValue))
+                    if (long.TryParse(idStr, out long elementIdValue))
                     {
                         var elementId = new ElementId(elementIdValue);
                         // 检查元素是否存在

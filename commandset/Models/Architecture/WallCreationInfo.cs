@@ -109,7 +109,7 @@ public class WallCreationInfo
     ///     Top level ID (only used if TopConstraintType = 1)
     /// </summary>
     [JsonProperty("topLevelId")]
-    public int TopLevelId { get; set; }
+    public long TopLevelId { get; set; }
 
     /// <summary>
     ///     Top offset (mm) (used if TopConstraintType = 1)
@@ -127,7 +127,7 @@ public class WallCreationInfo
     ///     Wall type ID in Revit
     /// </summary>
     [JsonProperty("typeId")]
-    public int TypeId { get; set; }
+    public long TypeId { get; set; }
 
     /// <summary>
     ///     Wall material

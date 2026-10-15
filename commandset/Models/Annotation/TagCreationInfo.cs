@@ -50,7 +50,7 @@ public class TagCreationInfo
     ///     Element ID to tag
     /// </summary>
     [JsonProperty("elementId")]
-    public int ElementId { get; set; } = -1;
+    public long ElementId { get; set; } = -1;
 
     /// <summary>
     ///     Tag orientation (horizontal=0, vertical=1)
@@ -74,7 +74,7 @@ public class TagCreationInfo
     ///     Tag type ID
     /// </summary>
     [JsonProperty("tagTypeId")]
-    public int TagTypeId { get; set; } = -1;
+    public long TagTypeId { get; set; } = -1;
 
     /// <summary>
     ///     Tag category (Door, Window, Wall, etc.)
@@ -86,7 +86,7 @@ public class TagCreationInfo
     ///     View ID - view to create tag in
     /// </summary>
     [JsonProperty("viewId")]
-    public int ViewId { get; set; } = -1;
+    public long ViewId { get; set; } = -1;
 
     /// <summary>
     ///     Additional options

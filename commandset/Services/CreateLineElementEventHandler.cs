@@ -23,7 +23,7 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
-        public AIResult<List<int>> Result { get; private set; }
+        public AIResult<List<long>> Result { get; private set; }
         private List<string> _warnings = new List<string>();
 
         public string _wallName = "常规 - ";
@@ -43,11 +43,11 @@ namespace RevitMCPCommandSet.Services
 
             try
             {
-                var elementIds = new List<int>();
+                var elementIds = new List<long>();
                 _warnings.Clear();
                 foreach (var data in CreatedInfo)
                 {
-                    int requestedTypeId = data.TypeId;
+                    long requestedTypeId = data.TypeId;
 
                     // Step0 获取构件类型
                     BuiltInCategory builtInCategory = BuiltInCategory.INVALID;
@@ -186,7 +186,7 @@ namespace RevitMCPCommandSet.Services
                                 );
                                 if (wall != null)
                                 {
-                                    elementIds.Add(wall.Id.GetIntValue());
+                                    elementIds.Add(wall.Id.GetValue());
                                 }
                                 break;
                             case BuiltInCategory.OST_DuctCurves:
@@ -214,7 +214,7 @@ namespace RevitMCPCommandSet.Services
                                         Parameter offsetParam = duct.get_Parameter(BuiltInParameter.RBS_OFFSET_PARAM);
                                         if (offsetParam != null)
                                             offsetParam.Set(baseOffset);
-                                        elementIds.Add(duct.Id.GetIntValue());
+                                        elementIds.Add(duct.Id.GetValue());
                                     }
                                 }
                                 break;
@@ -226,7 +226,7 @@ namespace RevitMCPCommandSet.Services
                                 var instance = doc.CreateInstance(symbol, null, JZLine.ToLine(data.LocationLine), baseLevel, topLevel, baseOffset, topOffset);
                                 if (instance != null)
                                 {
-                                    elementIds.Add(instance.Id.GetIntValue());
+                                    elementIds.Add(instance.Id.GetValue());
                                 }
                                 break;
                         }
@@ -239,7 +239,7 @@ namespace RevitMCPCommandSet.Services
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = true,
                     Message = message,
@@ -248,7 +248,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<int>>
+                Result = new AIResult<List<long>>
                 {
                     Success = false,
                     Message = $"创建线状构件时出错: {ex.Message}",

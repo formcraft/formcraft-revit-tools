@@ -250,7 +250,7 @@ namespace RevitMCPCommandSet.Services.Architecture
                         // Add to result list
                         createdRooms.Add(new RoomResultInfo
                         {
-                            Id = room.Id.GetIntValue(),
+                            Id = room.Id.GetValue(),
                             UniqueId = room.UniqueId,
                             Name = roomInfo.Name ?? "Room",
                             Number = roomNumber, // Use the actual assigned number (may differ from requested if made unique)
@@ -470,7 +470,7 @@ namespace RevitMCPCommandSet.Services.Architecture
     /// </summary>
     public class RoomResultInfo
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string UniqueId { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }
