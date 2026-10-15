@@ -7,7 +7,9 @@ were rewritten on 14 Oct (below).
 
 ## 1. Parametric skeleton
 1. Origin at the set-out point (FAM-007): door and window = wall centre and opening centre; device = mounting point;
-   equipment = floor centre. The two origin planes carry *Defines Origin*.
+   equipment = floor centre. The two origin planes carry *Defines Origin*. Which side is exterior comes from the
+   template: in Metric Door.rft the plane named Exterior is at +75 mm Y (Interior at −75 mm, the 150 mm host wall),
+   so exterior is +y, not −y. Read it from the template's Exterior plane; never assume it.
 2. Named planes with their named *Is Reference* values: Center (Left/Right), Center (Front/Back), Left, Right, Front,
    Back, Top, Bottom. Construction-only planes are *Not a Reference*.
 3. Labelled dimensions on every driving size. Sizes are type parameters; per-element offsets (sill, mounting height)

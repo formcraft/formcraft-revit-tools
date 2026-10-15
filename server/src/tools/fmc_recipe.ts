@@ -5,6 +5,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { opsProblems, splitProblems } from "../fmc/ops.js";
+import { BRIDGE_LIMIT_BYTES, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
+import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
+import { softTimeoutMs } from "../utils/SocketClient.js";
 import { Recipe, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
@@ -30,21 +33,34 @@ function reply(body: object, isError = false) {
 
 const body = (r: { content: Array<{ text: string }>; isError?: boolean }) => ({ ok: !r.isError, ...JSON.parse(r.content[0]?.text ?? "{}") });
 
+/** fmc_doc for a build: the call's own defaults, the reply as parsed JSON with ok. */
+const docCall = async (a: Record<string, unknown>) =>
+  body(await runFmcDoc({ template: "", file: "", session: "", ops: [], dry_run: true, path: "", overwrite: false, ...a } as any));
+
 export const FMC_RECIPE_DESCRIPTION =
   "Formcraft family recipes and Gate A (Phase 2). A recipe (fmc-recipe/0.1: template, fmc_doc ops, each value's source " +
-    "status verified/EA/assumed/pending, code checks) builds a family in staging. check (read-only) validates a recipe. " +
-    "build opens the template in the background, applies the ops (a dry run unless dry_run is false), flexes every type, " +
-    "saves to <family_staging_root>\\<Role>\\<family>.rfa with the recipe beside it, and runs Gate A. gate runs Gate A on a " +
-    "staged family: the library's checks (name, kit parameters by GUID, keynotes, size, type names), category against the " +
-    "register, flex, code checks (clear opening), IFC class and value sources; tags, schedules and detail levels need the " +
-    "chain-test load test and are listed as not checked. Release to 04_Families is a person's act in the pane, never this tool.";
+    "status verified/EA/assumed/pending, code checks) builds a family in staging. check (read-only) validates a recipe and " +
+    "says whether its ops fit one call to Revit. build opens the template in the background, applies the ops (a dry run " +
+    "unless dry_run is false), flexes every type, saves to <family_staging_root>\\<Role>\\<family>.rfa with the recipe beside " +
+    "it, and runs Gate A. A recipe bigger than one call to Revit takes builds with stepwise: true: the ops go in chunks " +
+    "(chunk_size), one TransactionGroup each, with a result per chunk; each call does what fits in its time and says how far " +
+    "it got, and resume: true carries on from the last good op (same recipe_file, dry_run and stepwise). A failed build " +
+    "closes the template without saving and says which op stopped it. cleanup lists the background family documents builds " +
+    "left open (dry run) and closes them without saving (dry_run false); never a document a person opened. gate runs Gate A " +
+    "on a staged family: the library's checks (name, kit parameters by GUID, type keynotes, size, type names), category " +
+    "against the register, flex, labelled dimensions keeping their planes' sides, code checks (clear opening), IFC class and " +
+    "value sources; tags, schedules and detail levels need the chain-test load test and are listed as not checked. Release " +
+    "to 04_Families is a person's act in the pane, never this tool.";
 
 export const FMC_RECIPE_SHAPE = {
-  action: z.enum(["check", "build", "gate"]),
+  action: z.enum(["check", "build", "gate", "cleanup"]),
   recipe_file: z.string().optional().default("").describe("check, build: the recipe (.json)"),
   file: z.string().optional().default("").describe("gate: the staged family (.rfa); its recipe is read from <name>.recipe.json beside it"),
   dry_run: z.boolean().optional().default(true),
   overwrite: z.boolean().optional().default(false).describe("build: replace the staged family (a person decided)"),
+  stepwise: z.boolean().optional().default(false).describe("build: send the ops in chunks Revit's bridge can take, one TransactionGroup per chunk"),
+  chunk_size: z.number().int().min(1).max(100).optional().default(DEFAULT_CHUNK_OPS).describe("build, stepwise: most ops per chunk (chunks also stay under the bridge's size)"),
+  resume: z.boolean().optional().default(false).describe("build: carry on the last build of this recipe's family from its last good op"),
 };
 
 export type FmcRecipeArgs = z.infer<z.ZodObject<typeof FMC_RECIPE_SHAPE>>;
@@ -70,16 +86,21 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   const family = win.basename(file, ".rfa");
   const recipeFile = file.replace(/\.rfa$/i, ".recipe.json");
   const recipe = fs.existsSync(recipeFile) ? parseRecipe(fs.readFileSync(recipeFile, "utf8")).recipe : null;
-  const inspect = body(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true } as any));
+  let inspect: any;
+  try { inspect = body(await runFmcLibrary({ action: "inspect", path: file, overwrite: false, dry_run: true } as any)); }
+  catch (e) { inspect = { ok: false, error: e instanceof Error ? e.message : String(e) }; }
+  // F-039: never "couldn't be inspected" without the reason
+  const inspectError = inspect.plan ? "" : String(inspect.error ?? (inspect.reasons ?? []).join("; ") ?? "") || "fmc_library inspect gave no plan";
   let flexResult = flex;
+  let flexError = "";
   if (!flexResult) {
     const open = body(await runFmcDoc({ action: "open", file, template: "", session: "", ops: [], dry_run: true, path: "", overwrite: false }));
     if (open.session) {
       flexResult = body(await runFmcDoc({ action: "flex", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false }));
       await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false });
-    }
+    } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
-  const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, flex: flexResult as any, registerCategory: registerCategory(cfg, family) });
+  const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family) });
   const result = { family, file, at: new Date().toISOString(), ...gate };
   try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;
@@ -98,6 +119,12 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
       return reply({ ...g, next: g.verdict === "Pass" ? "A reviewer can release it in the pane (Families › Quality and release)" : "Fix what fails, rebuild, and run the gate again" });
     }
 
+    if (args.action === "cleanup") {
+      const r = await cleanupBackground(dry, expandEnv(config.reports_dir), docCall);
+      if (!dry) log(config, "recipe_cleanup", false, "background documents", r.isError ? "error" : "done", JSON.stringify((r.body as any).closed ?? r.body).slice(0, 400));
+      return reply(r.body, r.isError);
+    }
+
     const { recipe, problems } = readRecipe(args.recipe_file.trim());
     if (!recipe) return reply({ refused: true, reasons: problems }, true);
     let dictionary = null;
@@ -106,9 +133,20 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials));
     const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
     const sources = Object.fromEntries(["verified", "EA", "assumed", "pending"].map((s) => [s, Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k)]));
-    if (args.action === "check")
-      return reply({ family: recipe.family, role: roleOf(recipe.family), template: recipe.template, ops: recipe.ops.length, errors, notes, sources,
-        staging: target, release_to: releasePath(expandEnv(config.family_staging_root), recipe.family), ready: errors.length === 0 });
+    const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
+    // F-038: the template's own planes (Left, Right, Exterior, Head…) aren't "not made earlier"
+    const planes = templatePlanes(template, expandEnv(config.reports_dir));
+    const shown = dropTemplateNotes(notes, planes.planes);
+    if (args.action === "check") {
+      const envelope = requestBytes("fmc_doc_apply", applyEnvelope("00000000", expandEnv(config.shared_parameter_file)));
+      const bytes = envelope + Buffer.byteLength(JSON.stringify(recipe.ops), "utf8");
+      const chunks = planChunks(recipe.ops, args.chunk_size, CHUNK_BYTES, envelope);
+      return reply({ family: recipe.family, role: roleOf(recipe.family), template: recipe.template, ops: recipe.ops.length, errors, notes: shown.notes,
+        template_planes: { planes: planes.planes, source: planes.source, notes_dropped: shown.dropped }, sources,
+        bridge: { bytes, limit: BRIDGE_LIMIT_BYTES, fits_one_call: bytes <= BRIDGE_LIMIT_BYTES, stepwise_chunks: chunks.chunks.length,
+          too_big_ops: chunks.tooBig.map((t) => t.op), build_with: bytes <= BRIDGE_LIMIT_BYTES ? "build" : "build with stepwise: true" },
+        staging: target, release_to: releasePath(expandEnv(config.family_staging_root), recipe.family), ready: errors.length === 0 && chunks.tooBig.length === 0 });
+    }
 
     // build
     if (errors.length) return reply({ refused: true, reasons: errors }, true);
@@ -116,27 +154,16 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     const where = checkWritePath(target, config);
     if (!where.ok) return reply({ refused: true, reasons: where.reasons }, true);
     if (fs.existsSync(target) && !args.overwrite) return reply({ refused: true, reasons: [`${target} exists: a person decides to overwrite (overwrite: true)`] }, true);
-    const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
-    const call = (a: Record<string, unknown>) => runFmcDoc({ template: "", file: "", session: "", ops: [], dry_run: true, path: "", overwrite: false, ...a } as any);
-    const open = body(await call({ action: "open", template }));
-    if (!open.session) return reply({ refused: true, reasons: open.reasons ?? [open.error ?? "The template didn't open"] }, true);
-    const session = open.session;
-    try {
-      const applied = body(await call({ action: "apply", session, ops: recipe.ops, dry_run: dry }));
-      if (!applied.ok) return reply({ refused: true, reasons: applied.reasons ?? [applied.error ?? "apply failed"] }, true);
-      if (dry) return reply({ dry_run: true, family: recipe.family, would_save: target, created: applied.created, updated: applied.updated, skipped: applied.skipped,
-        warnings: applied.warnings ?? [], notes, sources, next: "Run again with dry_run=false to build, flex, save to staging and run Gate A" });
-      const flex = body(await call({ action: "flex", session }));
-      const saved = body(await call({ action: "save", session, path: target, overwrite: args.overwrite }));
-      if (!saved.ok) return reply({ refused: true, reasons: saved.reasons ?? [saved.error ?? "save failed"] }, true);
-      fs.writeFileSync(target.replace(/\.rfa$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));
-      await call({ action: "close", session });
-      const gate = await runGate(target, config, flex);
-      log(config, "recipe_build", false, target, gate.verdict, `${recipe.ops.length} ops`);
-      return reply({ built: target, flex: { ok: flex.ok }, gate, next: gate.verdict === "Pass" ? "A reviewer releases it in the pane" : "Fix what fails and build again" });
-    } finally {
-      if (dry) await call({ action: "close", session });
-    }
+    const soft = softTimeoutMs();
+    const r = await buildRecipe(recipe, {
+      recipeFile: args.recipe_file.trim(), template, target, dry, overwrite: args.overwrite, stepwise: args.stepwise, chunkSize: args.chunk_size,
+      resume: args.resume, reportsDir: expandEnv(config.reports_dir), sharedParameterFile: expandEnv(config.shared_parameter_file),
+      notes: shown.notes, sources,
+    }, { doc: docCall, gate: (file, flex) => runGate(file, config, flex), budgetMs: soft > 0 ? Math.max(soft - 15000, 10000) : Infinity });
+    const b = r.body as Record<string, any>;
+    if (b.built || b.failed || b.dry_run) log(config, "recipe_build", dry, target, b.built ? b.gate?.verdict ?? "built" : b.failed ? "failed" : "dry run",
+      b.failed ? `${b.failed_at?.text ?? ""} · ${b.ops_done}` : `${recipe.ops.length} ops${args.stepwise ? " stepwise" : ""}`);
+    return reply(b, r.isError);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, "recipe_" + args.action, dry, args.recipe_file || args.file, "error", msg);

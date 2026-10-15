@@ -119,12 +119,26 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
     if (reasons.length) return reply({ refused: true, reasons }, true);
 
     const facts = await withRevitConnection((c) => c.sendRaw("fmc_family_inspect", { path: source }, 300000));
+    // F-039: each type's keynote from the saved file (the Keynote parameter, or the kit's keynote code parameter)
+    const typeKeynotes = new Map<string, Record<string, string>>(((facts.type_keynotes ?? []) as Array<{ name: string; values: Record<string, string> }>).map((t) => [t.name, t.values ?? {}]));
+    const keynoteOf = (t: string) => {
+      const v = typeKeynotes.get(t) ?? {};
+      return (v["Keynote"] ?? "").trim() || (Object.entries(v).find(([n, x]) => n !== "Keynote" && /keynote/i.test(n) && x.trim())?.[1] ?? "").trim();
+    };
     const scanned: ScannedFamily = {
       name: facts.name, category: facts.category, size_mb: facts.size_mb, imported_cad: facts.imported_cad, nested: facts.nested,
-      types: (facts.types ?? []).map((t: string) => ({ name: t, keynote: "" })),
+      types: (facts.types ?? []).map((t: string) => ({ name: t, keynote: keynoteOf(t) })),
       shared_guids: (facts.parameters ?? []).filter((p: any) => p.shared).map((p: any) => p.guid),
     };
     const verdict = checkFamily(scanned, k.specMap, k.kit, "Outside file");
+    const keynoteCheck = verdict.checks.find((c) => c.check === "Keynote set");
+    if (keynoteCheck && !facts.type_keynotes) Object.assign(keynoteCheck, { state: "na", detail: "This add-in doesn't read type keynotes from the file: update the add-in" });
+    else if (keynoteCheck && keynoteCheck.state === "pass") {
+      const codes = [...new Set(scanned.types.map((t) => t.keynote))];
+      keynoteCheck.detail = `${scanned.types.length} types: ${codes.slice(0, 3).join(", ")}${codes.length > 3 ? "…" : ""}`;
+      const differ = [...typeKeynotes].filter(([, v]) => Object.entries(v).some(([n, x]) => n !== "Keynote" && /keynote_code/i.test(n) && x.trim() && (v["Keynote"] ?? "").trim() && x.trim() !== v["Keynote"].trim()));
+      if (differ.length) keynoteCheck.detail += `; Keynote and the keynote code differ in ${differ.map(([t]) => t).join(", ")}`;
+    }
     const tokens = categoryTokens(k.specs);
     const token = tokens.get(facts.category) ?? "";
     const role = (args.role ?? "").toUpperCase();
@@ -137,6 +151,8 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
     const plan = {
       family: facts.name, category: facts.category, score: verdict.score, state: verdict.state, checks: verdict.checks,
       size_mb: facts.size_mb, imported_cad: facts.imported_cad, types: facts.types,
+      shared_parameters: (facts.parameters ?? []).filter((p: any) => p.shared).map((p: any) => ({ name: p.name, guid: p.guid })),
+      type_keynotes: scanned.types.map((t) => ({ type: t.name, keynote: t.keynote })), already_open: facts.already_open ?? false,
       proposed_name: proposed, save_path: target, add_parameters: wanted.map((p) => p.name), keynote: args.keynote ?? "",
       category_token: token,
     };

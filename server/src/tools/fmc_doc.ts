@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { SessionRecord, buildReport, openProblems, saveProblems } from "../fmc/doc.js";
+import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, opsProblems, splitProblems } from "../fmc/ops.js";
 import { parseSharedParameters } from "../fmc/specs.js";
@@ -51,14 +52,15 @@ export const FMC_DOC_DESCRIPTION =
     "template roots, or a family file in staging (_Staging, _ChainTests); returns a session id and what the document holds. " +
     "report: what an open session holds (category, parameters, types, reference planes, solids, connectors, warnings). " +
     "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
-    "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. Never a project or " +
+    "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
+    "sessions Revit holds, which close may close, and other background family documents. Never a project or " +
     "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
     "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
-  action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply", "flex"]),
+  action: z.enum(["open", "report", "screenshot", "save", "close", "list", "apply", "flex", "background"]),
   ops: z.array(OP).optional().default([]).describe("apply: the batch, in order"),
   dry_run: z.boolean().optional().default(true).describe("apply: a dry run unless false"),
   template: z.string().optional().default("").describe("open: a family template (.rft) in the template roots"),
@@ -75,6 +77,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
   try {
     const ledger = readLedger(config);
     if (args.action === "list") return reply({ sessions: Object.values(ledger) });
+    // F-040 (read-only): the sessions Revit holds (closable unless the person has the file open) and other background family documents
+    if (args.action === "background") return reply(await withRevitConnection((c) => c.sendRaw("fmc_doc_background", {}, 60000)));
 
     if (args.action === "open") {
       const problems = openProblems(args, config);
@@ -100,6 +104,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (args.action === "apply") {
       if (!args.ops.length) return reply({ refused: true, reasons: ["apply needs ops"] }, true);
+      const bytes = requestBytes("fmc_doc_apply", { ...applyEnvelope(s.id, expandEnv(config.shared_parameter_file)), ops: args.ops });
+      if (bytes > BRIDGE_LIMIT_BYTES) return reply({ refused: true, reasons: [`The batch is ${bytes} bytes; the Revit bridge reads ${BRIDGE_LIMIT_BYTES} per call, so Revit would never see it (F-029). Send fewer ops per apply, or build the recipe with fmc_recipe build stepwise: true`] }, true);
       let dictionary = null;
       try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
       const materials = args.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
@@ -151,6 +157,11 @@ export async function runFmcDoc(args: FmcDocArgs) {
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     log(config, "doc_" + args.action, args.session || args.template || args.file, "error", msg);
+    // F-029: when Revit didn't answer an apply, say where it got to (the add-in writes its progress before every op)
+    if (args.action === "apply" && args.session.trim() && (isStillQueued(msg) || isNoAnswer(msg))) {
+      const p = readProgress(progressPath(args.session.trim()));
+      return reply({ error: msg, progress: p, stopped_at: stoppedAt(p, 0, new Date(Date.now() - 310000).toISOString()).text }, true);
+    }
     return reply({ error: msg }, true);
   }
 }
