@@ -141,6 +141,12 @@ jobs:
         run: npm ci
       - working-directory: server
         run: npm run build
+      # The connectors build against the installed Robot and Navisworks 2025, so only where they are; the stage script
+      # carries whichever were built (Robot beside the server, the Navisworks add-in for when Navisworks is closed)
+      - name: Build the Robot and Navisworks connectors (where installed)
+        run: |
+          if (Test-Path 'C:\Program Files\Autodesk\Robot Structural Analysis Professional 2025\Exe\Interop.RobotOM.dll') { dotnet build connectors/robot/FormcraftRobot.csproj -c Release -nodeReuse:false; if ($LASTEXITCODE) { exit $LASTEXITCODE } } else { 'Robot 2025 not installed: no Robot connector' }
+          if (Test-Path 'C:\Program Files\Autodesk\Navisworks Manage 2025\Autodesk.Navisworks.Api.dll') { dotnet build connectors/navisworks/FormcraftNavis.csproj -c Release -nodeReuse:false; if ($LASTEXITCODE) { exit $LASTEXITCODE } } else { 'Navisworks Manage 2025 not installed: no Navisworks add-in' }
       - name: Stage
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/fmc-stage.ps1 -Target "$env:ProgramData\Formcraft\Staging\next"
 
