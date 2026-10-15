@@ -140,12 +140,30 @@
               <DataTrigger Binding="{Binding Primary}" Value="True">
                 <Setter TargetName="B" Property="c:Fmc.StyleKey" Value="FmcButton.Primary"/>
               </DataTrigger>
+              <DataTrigger Binding="{Binding Ai}" Value="True">
+                <Setter TargetName="B" Property="c:Fmc.StyleKey" Value="FmcButton.Ai"/>
+              </DataTrigger>
             </DataTemplate.Triggers>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
       <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource Hint}"/>
     </StackPanel>
+  </DataTemplate>
+
+  <!-- A section's step bar (boards CW_Pane, CL_Pane): "1 Room", numbers only when the pane is compact -->
+  <DataTemplate DataType="{x:Type vm:StepBarSetting}">
+    <ListBox Style="{DynamicResource FmcSegmented}" ItemsSource="{Binding Steps}" SelectedItem="{Binding Selected}" Margin="0,4,0,6"
+             AutomationProperties.Name="{Binding Label}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal" ToolTip="{Binding Text}" AutomationProperties.Name="{Binding Text}">
+            <TextBlock Text="{Binding Number}"/>
+            <TextBlock Text="{Binding Name}" Margin="4,0,0,0" Style="{DynamicResource Fmc.HideWhenCompact}"/>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
   </DataTemplate>
 
   <DataTemplate DataType="{x:Type vm:ConsiderationsSetting}">

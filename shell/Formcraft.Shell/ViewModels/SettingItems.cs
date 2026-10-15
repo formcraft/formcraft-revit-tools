@@ -288,16 +288,57 @@ namespace Formcraft.Shell.ViewModels
 
     public sealed class SettingButton
     {
-        public SettingButton(string label, ICommand command, bool primary = false)
+        public SettingButton(string label, ICommand command, bool primary = false, bool ai = false)
         {
             Label = label;
             Command = command;
             Primary = primary;
+            Ai = ai;
         }
 
         public string Label { get; }
         public ICommand Command { get; }
         public bool Primary { get; }
+        /// <summary>An AI action: FmcButton.Ai with the AI tag (UI kit).</summary>
+        public bool Ai { get; }
+    }
+
+    /// <summary>One step of a step bar: its number and name ("1 Room").</summary>
+    public sealed class StepItem
+    {
+        public StepItem(int number, string name) { Number = number; Name = name; }
+        public int Number { get; }
+        public string Name { get; }
+        public string Text => Number + " " + Name;
+    }
+
+    /// <summary>
+    /// The step bar of a section with steps (FmcSegmented, boards CW_Pane and CL_Pane): number and name, numbers only when
+    /// the pane is compact (below 400 px). Picking a step opens it.
+    /// </summary>
+    public sealed class StepBarSetting : SettingItem
+    {
+        private readonly Action<int> _go;
+
+        public StepBarSetting(IReadOnlyList<string> names, int current, Action<int> go) : base("Steps")
+        {
+            Steps = names.Select((n, i) => new StepItem(i + 1, n)).ToList();
+            Current = Math.Max(0, Math.Min(current, Steps.Count - 1));
+            _go = go;
+        }
+
+        public IReadOnlyList<StepItem> Steps { get; }
+        public int Current { get; }
+
+        public StepItem Selected
+        {
+            get => Steps[Current];
+            set
+            {
+                if (value == null || value.Number - 1 == Current) return;
+                _go(value.Number - 1);
+            }
+        }
     }
 
     /// <summary>A row of buttons (Apply the standard, Fix the clash, a module tab link…).</summary>

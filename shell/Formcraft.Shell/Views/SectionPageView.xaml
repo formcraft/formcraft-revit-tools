@@ -17,6 +17,8 @@
     <StackPanel>
       <TextBlock Text="{Binding Title}" Style="{DynamicResource FmcText.GroupTitle}" Margin="10,10,10,0"/>
       <TextBlock Text="{Binding Subtitle}" TextWrapping="Wrap" Style="{DynamicResource FmcText.Hint}" Margin="10,0,10,4"/>
+      <!-- Rows above the groups (a section's step bar); empty for most sections -->
+      <ItemsControl ItemsSource="{Binding Top}" Focusable="False" Margin="10,0"/>
       <ItemsControl ItemsSource="{Binding Groups}" Focusable="False">
         <ItemsControl.ItemTemplate>
           <DataTemplate>

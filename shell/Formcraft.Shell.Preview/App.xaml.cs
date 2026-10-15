@@ -167,6 +167,25 @@ namespace Formcraft.Shell.Preview
                     RenderFull(new Formcraft.Shell.Views.SectionPageView { DataContext = page }, 440,
                                Path.Combine(folder, $"section-{name}-{prop.ToLowerInvariant()}-440.png"));
                 }
+                // Engineer › Casework and Ceilings (CW3, CL3; boards CW_Pane, CL_Pane): each of the five steps on the sample,
+                // at 440 px and compact at 360 px (the step bar shows numbers only)
+                void Steps(string key, Formcraft.Shell.ViewModels.SectionPage page, Action<int> go)
+                {
+                    page.Opened();
+                    for (var step = 0; step < 5; step++)
+                    {
+                        go(step);
+                        foreach (var width in new[] { 440.0, 360.0 })
+                        {
+                            var view = new Formcraft.Shell.Views.SectionPageView { DataContext = page };
+                            Formcraft.Shell.Controls.Fmc.SetCompact(view, Formcraft.Shell.Controls.Fmc.IsCompact(width));
+                            RenderFull(view, width, Path.Combine(folder, $"{key}-{name}-step{step + 1}-{width}.png"));
+                        }
+                    }
+                    go(0);
+                }
+                Steps("casework", pane.Casework, pane.Casework.Go);
+                Steps("ceilings", pane.Ceilings, pane.Ceilings.Go);
                 // Connect at full height (U12; board core/PaneConnect)
                 RenderFull(new Formcraft.Shell.Views.ConnectView { DataContext = main.Services.Pane.Connect }, 440,
                            Path.Combine(folder, $"connect-{name}-440.png"));
