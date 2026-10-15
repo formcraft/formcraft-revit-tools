@@ -581,8 +581,9 @@ export function forTask(task: string, deps: ContextDeps) {
       const best = top[0]?.s;
       const profileRows = ((out.profile_sets as { rows?: Array<{ recipe: boolean }> } | undefined)?.rows ?? []).filter((r) => r.recipe).length;
       if (best && best.category === "Profiles" && profileRows) {
-        // The profile spec's 20 theme types are the profile set rows: build from their recipes, don't write a new one.
-        notes.push(`${best.family}'s theme types are the profile set rows above: build from their recipes`);
+        // Profiles come one family per design movement (FMC_Profile_<Element>_<Token>, FMC_Design_Movement 1-20; the old
+        // theme-typed single profiles are superseded): build from the profile set rows' recipes, don't write a new one.
+        notes.push(`${best.family}: profiles are one family per design movement (the profile set rows above, picked by FMC_Design_Movement): build from their recipes`);
       } else if (best) {
         const r = recipeFor(best.family);
         const staged = files.staged.get(best.family);
