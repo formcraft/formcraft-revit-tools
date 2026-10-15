@@ -116,6 +116,19 @@ test("the reference LOD 400 door recipe parses and its ops pass the batch checks
   assert.ok(Object.values(recipe!.values).some((v) => v.source_status === "pending"));
 });
 
+test("a kit profile recipe parses and its closed profile_lines loop passes the batch checks", async () => {
+  const { OPS, opsProblems, splitProblems } = await import("./ops.js");
+  const raw = fs.readFileSync(path.join(REPO, "tests", "recipes", "_profiles", "FMC_Profile_Architrave_Contemporary.recipe.json"), "utf8");
+  const { recipe, problems } = parseRecipe(raw);
+  assert.deepEqual(problems, []);
+  assert.equal(recipe!.template, "Metric Profile.rft");
+  OPS.parse(recipe!.ops);
+  const { errors, notes } = splitProblems(opsProblems(recipe!.ops, null));
+  assert.ok(errors.every((e) => /shared parameter file isn't readable/.test(e)), errors.join(" | "));
+  assert.deepEqual(notes, []);
+  assert.ok(recipe!.ops.some((o) => o.op === "set_type_value" && o.param === "Keynote" && /^J\.TRM_\d\d$/.test(String(o.value))));
+});
+
 // ---------------------------------------------------------------- F-029, F-038, F-039, F-040
 
 const recipeFile = (name: string) => parseRecipe(fs.readFileSync(path.join(REPO, "tests", "recipes", name), "utf8")).recipe!;
@@ -125,9 +138,12 @@ test("F-029: the LOD 400 recipes are too big for one call to Revit; stepwise chu
   const envelope = requestBytes("fmc_doc_apply", applyEnvelope("abcd1234", "Z:\\00_Standards\\01_Shared_Parameters\\FMC_SharedParameters.txt"));
   const steel = recipeFile("FMC_A_Door_SteelFanlight.recipe.json");
   assert.ok(envelope + Buffer.byteLength(JSON.stringify(steel.ops)) > BRIDGE_LIMIT_BYTES, "the whole batch is over the 8 KB read");
-  const small = recipeFile("FMC_A_Door_FlushSingleLeaf.recipe.json");
-  assert.ok(envelope + Buffer.byteLength(JSON.stringify(small.ops)) < BRIDGE_LIMIT_BYTES, "the 47-op door still fits one call");
-  for (const r of [steel, small]) {
+  // The doors and windows carry 20 profile sweeps per trimmed face, so even the reference door needs chunks now; a
+  // profile family (a copy of one of the kit's 320 profile recipes) still fits one call.
+  const door = recipeFile("FMC_A_Door_FlushSingleLeaf.recipe.json");
+  const small = recipeFile("_profiles/FMC_Profile_Architrave_Contemporary.recipe.json");
+  assert.ok(envelope + Buffer.byteLength(JSON.stringify(small.ops)) < BRIDGE_LIMIT_BYTES, "a profile recipe still fits one call");
+  for (const r of [steel, door, small]) {
     const { chunks, tooBig } = planChunks(r.ops, 20, 6000, envelope);
     assert.deepEqual(tooBig, []);
     assert.equal(chunks[0].from, 1);
