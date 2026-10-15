@@ -223,6 +223,46 @@ test("F-039: Gate A checks the recipe's parameters by GUID, never passes on 0, g
   assert.equal(gateA("X", null, { inspect: passInspect, registerCategory: "Doors", flex: passFlex }).lines.find((l) => /planes' sides/.test(l.check))!.state, "Not checked");
 });
 
+test("plant recipes (Planting forms): parse, pass the batch checks, chunk under the bridge, size first, one keynote per type", async () => {
+  const { OPS, opsProblems, splitProblems } = await import("./ops.js");
+  const { BRIDGE_LIMIT_BYTES, applyEnvelope, dropTemplateNotes, planChunks, requestBytes, templatePlanes } = await import("./recipebuild.js");
+  const envelope = requestBytes("fmc_doc_apply", applyEnvelope("abcd1234", "Z:\\00_Standards\\01_Shared_Parameters\\FMC_SharedParameters.txt"));
+  for (const file of ["FMC_L_Planting_Tree_Sphere.recipe.json", "FMC_L_Planting_Palm_Feather.recipe.json"]) {
+    const r = recipeFile(file);
+    assert.equal(r.template, "Metric Planting.rft");
+    OPS.parse(r.ops);
+    const { errors, notes } = splitProblems(opsProblems(r.ops, null));
+    // With no dictionary, only the shared parameters are flagged; every other op is well formed.
+    assert.ok(errors.every((e) => /shared parameter file isn't readable/.test(e)), `${file}: ${errors.filter((e) => !/shared parameter/.test(e)).join(" | ")}`);
+    // The template's own planes (Center planes) aren't "not made earlier" once the table knows Metric Planting.rft.
+    const kept = dropTemplateNotes(notes, templatePlanes(r.template).planes).notes;
+    assert.deepEqual(kept.filter((n) => /reference plane/.test(n)), [], file);
+    // #134 / F-029: too big for one call, but every stepwise chunk fits the 8 KB bridge read.
+    assert.ok(envelope + Buffer.byteLength(JSON.stringify(r.ops)) > BRIDGE_LIMIT_BYTES);
+    const { chunks, tooBig } = planChunks(r.ops, 20, 6000, envelope);
+    assert.deepEqual(tooBig, []);
+    assert.equal(chunks[chunks.length - 1].to, r.ops.length);
+    for (const c of chunks) assert.ok(requestBytes("fmc_doc_apply", { ...applyEnvelope("abcd1234", "Z:\\x.txt"), ops: r.ops.slice(c.from - 1, c.to) }) <= BRIDGE_LIMIT_BYTES);
+    // Size first (F-026): type 1 and its sizes come before the first reference plane.
+    const ops = r.ops as Array<Record<string, any>>;
+    const firstPlane = ops.findIndex((o) => o.op === "add_ref_plane");
+    const t1 = ops.find((o) => o.op === "add_type")!.name;
+    for (const p of ["Height", "Crown Diameter", "Crown Height", "Trunk Height", "Trunk Diameter"])
+      assert.ok(ops.findIndex((o) => o.op === "set_type_value" && o.type === t1 && o.param === p) < firstPlane, `${file}: ${p} before the planes`);
+    // Every species solid and plan line is switched by its Show <Species> (Species Index = k); Coarse is the parametric box.
+    const shows = new Set(ops.filter((o) => o.op === "set_formula").map((o) => o.name));
+    const species = ops.filter((o) => (o.op === "revolution" || o.op === "blend" || o.op === "symbolic_lines"));
+    assert.ok(species.length > 0 && species.every((s) => ops.some((o) => o.op === "set_visible_param" && o.solid === s.name && shows.has(o.param))));
+    const coarse = ops.find((o) => o.op === "set_visibility" && o.name === "Coarse Crown")!;
+    assert.deepEqual([coarse.coarse, coarse.medium, coarse.fine, coarse.plan_rcp], [true, false, false, false]);
+    // One keynote per type; sizes are assumed, foliage material pending (kit change request).
+    const types = ops.filter((o) => o.op === "add_type").map((o) => o.name);
+    const keys = typeValues(r);
+    assert.ok(types.every((t) => /^\d+_[A-Za-z]+$/.test(t) && /^L\.[A-Z]{3}_\d\d$/.test(String(keys.get(t)!.get("Keynote")))), file);
+    assert.equal(Object.entries(r.values).find(([k]) => /^Foliage material/.test(k))![1].source_status, "pending");
+  }
+});
+
 /** A Revit that answers fmc_doc like the add-in: sessions, chunks under the bridge limit, an op that fails, a chunk that's slow. */
 function fakeRevit(o: { failOp?: number; slowOp?: number; appData: string; clock: { t: number }; msPerOp?: number }) {
   const calls: Array<Record<string, any>> = [];
