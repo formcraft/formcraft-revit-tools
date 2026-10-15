@@ -2,7 +2,7 @@
   "schema": "fmc-recipe/0.1",
   "family": "FMC_A_Door_FlushSingleLeaf",
   "template": "Metric Door.rft",
-  "about": "Reference LOD 400 recipe (Family Authoring Standard): swept frame on the Frame subcategory and locked to Left/Right, leaf locked to four planes with labelled and EQ dimensions, plan swing arc and elevation opening lines per detail level, clearance zone off by default. Run fmc_doc report on Metric Door.rft first: Metric Door.rft names Left and Right but leaves the wall centre plane unnamed (Revit won't rename a plane to the reserved name Center (Front/Back)), so the recipe draws its own Wall Centre plane. Sizes stay pending until the supplier visits.",
+  "about": "Reference LOD 400 recipe (Family Authoring Standard): swept frame on the Frame subcategory and locked to Left/Right, leaf locked to four planes with labelled and EQ dimensions, plan swing arc and elevation opening lines per detail level, clearance zone off by default. Run fmc_doc report on Metric Door.rft first: Metric Door.rft names Left and Right but leaves the wall centre plane unnamed (Revit won't rename a plane to the reserved name Center (Front/Back)), so the recipe draws its own Wall Centre plane. Sizes stay pending until the supplier visits. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Architrave sweeps (Ext and Int faces) from FMC_Profile_Architrave_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (900x2100) and don't flex with Width/Height until sweep paths can be locked to planes.",
   "ops": [
     {
       "op": "set_category",
@@ -425,6 +425,2196 @@
       "type": "0900x2100",
       "param": "IfcExportAs",
       "value": "IfcDoor"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Trim Material",
+      "type": "Material",
+      "instance": false,
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Mvule",
+      "param": "Frame Material"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Mahogany",
+      "param": "Leaf Material"
+    },
+    {
+      "op": "set_formula",
+      "name": "Trim Material",
+      "formula": "Frame Material"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Greek",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Greek.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Greek",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Greek",
+      "formula": "FMC_Design_Movement = 1"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Greek Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Greek",
+      "profile_type": "110x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Greek Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Greek Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Greek Ext/Visible",
+      "solid": "Architrave Greek Ext",
+      "param": "Show_Greek"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Greek Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Greek",
+      "profile_type": "110x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Greek Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Greek Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Greek Int/Visible",
+      "solid": "Architrave Greek Int",
+      "param": "Show_Greek"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Roman",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Roman.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Roman",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Roman",
+      "formula": "FMC_Design_Movement = 2"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Roman Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Roman",
+      "profile_type": "125x24",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Roman Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Roman Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Roman Ext/Visible",
+      "solid": "Architrave Roman Ext",
+      "param": "Show_Roman"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Roman Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Roman",
+      "profile_type": "125x24",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Roman Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Roman Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Roman Int/Visible",
+      "solid": "Architrave Roman Int",
+      "param": "Show_Roman"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Romanesque",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Romanesque.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Romanesque",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Romanesque",
+      "formula": "FMC_Design_Movement = 3"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Romanesque Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Romanesque",
+      "profile_type": "150x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Romanesque Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Romanesque Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Romanesque Ext/Visible",
+      "solid": "Architrave Romanesque Ext",
+      "param": "Show_Romanesque"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Romanesque Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Romanesque",
+      "profile_type": "150x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Romanesque Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Romanesque Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Romanesque Int/Visible",
+      "solid": "Architrave Romanesque Int",
+      "param": "Show_Romanesque"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Gothic",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Gothic.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Gothic",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Gothic",
+      "formula": "FMC_Design_Movement = 4"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Gothic Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Gothic",
+      "profile_type": "115x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Gothic Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Gothic Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Gothic Ext/Visible",
+      "solid": "Architrave Gothic Ext",
+      "param": "Show_Gothic"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Gothic Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Gothic",
+      "profile_type": "115x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Gothic Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Gothic Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Gothic Int/Visible",
+      "solid": "Architrave Gothic Int",
+      "param": "Show_Gothic"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Renaissance",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Renaissance.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Renaissance",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Renaissance",
+      "formula": "FMC_Design_Movement = 5"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Renaissance Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Renaissance",
+      "profile_type": "120x23",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Renaissance Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Renaissance Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Renaissance Ext/Visible",
+      "solid": "Architrave Renaissance Ext",
+      "param": "Show_Renaissance"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Renaissance Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Renaissance",
+      "profile_type": "120x23",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Renaissance Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Renaissance Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Renaissance Int/Visible",
+      "solid": "Architrave Renaissance Int",
+      "param": "Show_Renaissance"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Baroque",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Baroque.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Baroque",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Baroque",
+      "formula": "FMC_Design_Movement = 6"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Baroque Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Baroque",
+      "profile_type": "160x31",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Baroque Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Baroque Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Baroque Ext/Visible",
+      "solid": "Architrave Baroque Ext",
+      "param": "Show_Baroque"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Baroque Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Baroque",
+      "profile_type": "160x31",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Baroque Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Baroque Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Baroque Int/Visible",
+      "solid": "Architrave Baroque Int",
+      "param": "Show_Baroque"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Georgian",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Georgian.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Georgian",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Georgian",
+      "formula": "FMC_Design_Movement = 7"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Georgian Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Georgian",
+      "profile_type": "110x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Georgian Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Georgian Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Georgian Ext/Visible",
+      "solid": "Architrave Georgian Ext",
+      "param": "Show_Georgian"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Georgian Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Georgian",
+      "profile_type": "110x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Georgian Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Georgian Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Georgian Int/Visible",
+      "solid": "Architrave Georgian Int",
+      "param": "Show_Georgian"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_FederalAdam",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_FederalAdam.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_FederalAdam",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_FederalAdam",
+      "formula": "FMC_Design_Movement = 8"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave FederalAdam Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_FederalAdam",
+      "profile_type": "90x15",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave FederalAdam Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave FederalAdam Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave FederalAdam Ext/Visible",
+      "solid": "Architrave FederalAdam Ext",
+      "param": "Show_FederalAdam"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave FederalAdam Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_FederalAdam",
+      "profile_type": "90x15",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave FederalAdam Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave FederalAdam Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave FederalAdam Int/Visible",
+      "solid": "Architrave FederalAdam Int",
+      "param": "Show_FederalAdam"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_GreekRevival",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_GreekRevival.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_GreekRevival",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_GreekRevival",
+      "formula": "FMC_Design_Movement = 9"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave GreekRevival Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_GreekRevival",
+      "profile_type": "170x18",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave GreekRevival Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave GreekRevival Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave GreekRevival Ext/Visible",
+      "solid": "Architrave GreekRevival Ext",
+      "param": "Show_GreekRevival"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave GreekRevival Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_GreekRevival",
+      "profile_type": "170x18",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave GreekRevival Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave GreekRevival Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave GreekRevival Int/Visible",
+      "solid": "Architrave GreekRevival Int",
+      "param": "Show_GreekRevival"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Italianate",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Italianate.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Italianate",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Italianate",
+      "formula": "FMC_Design_Movement = 10"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Italianate Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Italianate",
+      "profile_type": "140x25",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Italianate Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Italianate Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Italianate Ext/Visible",
+      "solid": "Architrave Italianate Ext",
+      "param": "Show_Italianate"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Italianate Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Italianate",
+      "profile_type": "140x25",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Italianate Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Italianate Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Italianate Int/Visible",
+      "solid": "Architrave Italianate Int",
+      "param": "Show_Italianate"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Victorian",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Victorian.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Victorian",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Victorian",
+      "formula": "FMC_Design_Movement = 11"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Victorian Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Victorian",
+      "profile_type": "130x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Victorian Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Victorian Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Victorian Ext/Visible",
+      "solid": "Architrave Victorian Ext",
+      "param": "Show_Victorian"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Victorian Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Victorian",
+      "profile_type": "130x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Victorian Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Victorian Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Victorian Int/Visible",
+      "solid": "Architrave Victorian Int",
+      "param": "Show_Victorian"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_ArtsCrafts",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtsCrafts.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtsCrafts",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtsCrafts",
+      "formula": "FMC_Design_Movement = 12"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtsCrafts Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtsCrafts",
+      "profile_type": "120x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtsCrafts Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtsCrafts Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtsCrafts Ext/Visible",
+      "solid": "Architrave ArtsCrafts Ext",
+      "param": "Show_ArtsCrafts"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtsCrafts Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtsCrafts",
+      "profile_type": "120x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtsCrafts Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtsCrafts Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtsCrafts Int/Visible",
+      "solid": "Architrave ArtsCrafts Int",
+      "param": "Show_ArtsCrafts"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_ArtNouveau",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtNouveau.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtNouveau",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtNouveau",
+      "formula": "FMC_Design_Movement = 13"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtNouveau Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtNouveau",
+      "profile_type": "115x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtNouveau Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtNouveau Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtNouveau Ext/Visible",
+      "solid": "Architrave ArtNouveau Ext",
+      "param": "Show_ArtNouveau"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtNouveau Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtNouveau",
+      "profile_type": "115x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtNouveau Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtNouveau Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtNouveau Int/Visible",
+      "solid": "Architrave ArtNouveau Int",
+      "param": "Show_ArtNouveau"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_ArtDeco",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtDeco.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_ArtDeco",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_ArtDeco",
+      "formula": "FMC_Design_Movement = 14"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtDeco Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtDeco",
+      "profile_type": "110x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtDeco Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtDeco Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtDeco Ext/Visible",
+      "solid": "Architrave ArtDeco Ext",
+      "param": "Show_ArtDeco"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave ArtDeco Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_ArtDeco",
+      "profile_type": "110x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave ArtDeco Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave ArtDeco Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave ArtDeco Int/Visible",
+      "solid": "Architrave ArtDeco Int",
+      "param": "Show_ArtDeco"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Modernist",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Modernist.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Modernist",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Modernist",
+      "formula": "FMC_Design_Movement = 15"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Modernist Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Modernist",
+      "profile_type": "70x11",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Modernist Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Modernist Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Modernist Ext/Visible",
+      "solid": "Architrave Modernist Ext",
+      "param": "Show_Modernist"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Modernist Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Modernist",
+      "profile_type": "70x11",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Modernist Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Modernist Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Modernist Int/Visible",
+      "solid": "Architrave Modernist Int",
+      "param": "Show_Modernist"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Brutalist",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Brutalist.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Brutalist",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Brutalist",
+      "formula": "FMC_Design_Movement = 16"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Brutalist Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Brutalist",
+      "profile_type": "200x33",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Brutalist Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Brutalist Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Brutalist Ext/Visible",
+      "solid": "Architrave Brutalist Ext",
+      "param": "Show_Brutalist"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Brutalist Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Brutalist",
+      "profile_type": "200x33",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Brutalist Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Brutalist Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Brutalist Int/Visible",
+      "solid": "Architrave Brutalist Int",
+      "param": "Show_Brutalist"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Contemporary",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Contemporary.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Contemporary",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Contemporary",
+      "formula": "FMC_Design_Movement = 17"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Contemporary Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Contemporary",
+      "profile_type": "60x13",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Contemporary Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Contemporary Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Contemporary Ext/Visible",
+      "solid": "Architrave Contemporary Ext",
+      "param": "Show_Contemporary"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Contemporary Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Contemporary",
+      "profile_type": "60x13",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Contemporary Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Contemporary Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Contemporary Int/Visible",
+      "solid": "Architrave Contemporary Int",
+      "param": "Show_Contemporary"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_SwahiliZanzibar",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_SwahiliZanzibar.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_SwahiliZanzibar",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_SwahiliZanzibar",
+      "formula": "FMC_Design_Movement = 18"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave SwahiliZanzibar Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_SwahiliZanzibar",
+      "profile_type": "160x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave SwahiliZanzibar Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave SwahiliZanzibar Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave SwahiliZanzibar Ext/Visible",
+      "solid": "Architrave SwahiliZanzibar Ext",
+      "param": "Show_SwahiliZanzibar"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave SwahiliZanzibar Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_SwahiliZanzibar",
+      "profile_type": "160x26",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave SwahiliZanzibar Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave SwahiliZanzibar Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave SwahiliZanzibar Int/Visible",
+      "solid": "Architrave SwahiliZanzibar Int",
+      "param": "Show_SwahiliZanzibar"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_Islamic",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Islamic.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_Islamic",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_Islamic",
+      "formula": "FMC_Design_Movement = 19"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Islamic Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_Islamic",
+      "profile_type": "120x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Islamic Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Islamic Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Islamic Ext/Visible",
+      "solid": "Architrave Islamic Ext",
+      "param": "Show_Islamic"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave Islamic Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_Islamic",
+      "profile_type": "120x22",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Islamic Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Islamic Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave Islamic Int/Visible",
+      "solid": "Architrave Islamic Int",
+      "param": "Show_Islamic"
+    },
+    {
+      "op": "load_family",
+      "name": "FMC_Profile_Architrave_TropicalEastAfrican",
+      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_TropicalEastAfrican.rfa"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Show_TropicalEastAfrican",
+      "type": "YesNo",
+      "instance": true,
+      "group": "Graphics"
+    },
+    {
+      "op": "set_formula",
+      "name": "Show_TropicalEastAfrican",
+      "formula": "FMC_Design_Movement = 20"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave TropicalEastAfrican Ext",
+      "path": [
+        [
+          -450.0,
+          0.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": -130.0,
+      "profile_family": "FMC_Profile_Architrave_TropicalEastAfrican",
+      "profile_type": "150x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave TropicalEastAfrican Ext",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave TropicalEastAfrican Ext",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave TropicalEastAfrican Ext/Visible",
+      "solid": "Architrave TropicalEastAfrican Ext",
+      "param": "Show_TropicalEastAfrican"
+    },
+    {
+      "op": "sweep",
+      "name": "Architrave TropicalEastAfrican Int",
+      "path": [
+        [
+          450.0,
+          0.0
+        ],
+        [
+          450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          2100.0
+        ],
+        [
+          -450.0,
+          0.0
+        ]
+      ],
+      "path_plane": "front",
+      "at": 130.0,
+      "profile_family": "FMC_Profile_Architrave_TropicalEastAfrican",
+      "profile_type": "150x20",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave TropicalEastAfrican Int",
+      "param": "Trim Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave TropicalEastAfrican Int",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_visible_param",
+      "name": "Architrave TropicalEastAfrican Int/Visible",
+      "solid": "Architrave TropicalEastAfrican Int",
+      "param": "Show_TropicalEastAfrican"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/Keynote",
+      "type": "0900x2100",
+      "param": "Keynote",
+      "value": "D.FLU_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/FMC_Keynote_Code",
+      "type": "0900x2100",
+      "param": "FMC_Keynote_Code",
+      "value": "D.FLU_00"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/FMC_Design_Movement",
+      "type": "0900x2100",
+      "param": "FMC_Design_Movement",
+      "value": 17
     }
   ],
   "values": {
@@ -453,9 +2643,29 @@
       "source": "to confirm against the building regulations"
     },
     "Keynote": {
-      "value": "",
-      "source_status": "pending",
-      "source": "one keynote per type from FMC_Keynotes.txt (FAM-017); fmc_library keynote_request if missing"
+      "value": "D.FLU_00",
+      "source_status": "assumed",
+      "source": "D.FLU_00 45 mm solid-core flush, Mahogany: matches the 45 mm leaf; solid core not confirmed"
+    },
+    "Materials (kit library)": {
+      "value": "Frame Material = FMC_Timber_Mvule; Leaf Material = FMC_Timber_Mahogany; Trim Material = FMC_Timber_Mvule",
+      "source_status": "assumed",
+      "source": "FMC_Materials.json; chosen for the family, the reviewer confirms"
+    },
+    "Design movement default 17 (Contemporary)": {
+      "value": 17,
+      "source_status": "assumed",
+      "source": "canvas boards; FMC_Profile_Sets.json has no default"
+    },
+    "Architrave profiles: 20 movements": {
+      "value": "FMC_Profile_Architrave_<Token>",
+      "source_status": "assumed",
+      "source": "FMC_Profile_Sets.json (outlines proposed for the designer to approve)"
+    },
+    "Trim position": {
+      "value": "jambs and head at the opening edge",
+      "source_status": "assumed",
+      "source": "wall faces at y = -/+130 (230 wall + 15 plaster), the frame is 100 deep"
     }
   }
 }

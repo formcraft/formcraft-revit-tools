@@ -71,6 +71,31 @@ recipe; version 0.1 adds value sources and code checks.
 Sizes stay `pending` until the supplier visits give them (section 7); a recipe with a pending value builds, but Gate A
 holds it in staging. Masking regions and freeform shapes stay hand work (FAM-039).
 
+## Profile slots and design movements
+Trims, surrounds, sills, quoins, copings and cornices come in one set per design movement (owner, 15 Oct): 16 elements
+× 20 movements = 320 profile families `FMC_Profile_<Element>_<MovementToken>`, planned in the kit's
+`03_Master_Data/FMC_Profile_Sets.json` (movement 1 Greek … 17 Contemporary … 20 Tropical / East African).
+
+- **Profile recipes** live in the kit, one per profile: `03_Master_Data/Recipes/Families/_Profiles/*.recipe.json`, written by
+  `_build/build_profile_recipes.py`. `Metric Profile.rft`, category Profiles, one type named by size (height × projection,
+  mm), the element's keynote (A.ORN, J.TRM, I.MLD, R.FAS; one code for all 20 movements) and the outline as one closed
+  `profile_lines` loop (true circular arcs as 3-point arcs, other curves as straight segments, 0.01 mm). The kit test
+  checks every loop closes and doesn't cross itself. They build to `04_Families\_Staging\_Profiles\`.
+- **A slot in a host family** is one profile element shown in 20 versions. The host carries the kit shared parameter
+  `FMC_Design_Movement` (Integer, instance; in the project it follows the global parameter *Design Movement*). For each
+  movement n: `load_family` the profile, a Yes/No instance parameter `Show_<Token>` with the formula
+  `FMC_Design_Movement = n`, and one `sweep` per trimmed face with `set_visible_param` binding its Visible to
+  `Show_<Token>`. Changing one number swaps every trim in the project to the other set.
+- **Doors** take `Architrave` on both faces, **windows** `Surround` on the exterior face, along the jambs and head on
+  the wall face. Default movement 17 (Contemporary). The sweeps sit on the Frame subcategory with `Trim Material`.
+- **Materials** come from `07_Materials/FMC_Materials.json` with `add_material` (one per material; a second parameter
+  with the same material follows the first by formula), and each type gets its `Keynote` and `FMC_Keynote_Code` from
+  codes that exist in `FMC_Keynotes.txt`. Choices are recorded in `values` as `assumed`.
+- `tests/recipes/_gen/gen_profile_slots.py --kit <kit>` adds all of this to the door and window recipes without
+  touching their geometry ops (it strips what it added before, so it can run again); `gen_windows.py` makes the window
+  bases. Known limit: sweep paths are points drawn at the first type's size, so trims don't flex with Width and Height
+  until a sweep path can be locked to reference planes.
+
 ## The flow
 1. **Check:** `fmc_recipe check`, read-only. It validates the operations against the kit's parameter dictionary and
    shows where the family will be staged and released.
