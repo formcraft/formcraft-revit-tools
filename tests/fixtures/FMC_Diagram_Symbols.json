@@ -1,0 +1,910 @@
+{
+  "version": "1.0",
+  "styles": {
+    "grid_mm": 5,
+    "text": {
+      "label": "FMC_Arial_2.5",
+      "title": "FMC_Arial_3.5_Bold"
+    },
+    "text_height_mm": {
+      "FMC_Arial_2.5": 2.5,
+      "FMC_Arial_3.5_Bold": 3.5
+    },
+    "char_width": 0.8,
+    "line_pitch": 1.7,
+    "lines": {
+      "thin": "FMC_Thin",
+      "medium": "FMC_Medium",
+      "wide": "FMC_Wide",
+      "dashed": null
+    },
+    "scale": 50
+  },
+  "layout": {
+    "sld_way_pitch_mm": 20,
+    "sld_max_ways": 24,
+    "band_min_height_mm": 25,
+    "tree_row_mm": 35,
+    "label_params": [
+      "size",
+      "rating",
+      "capacity",
+      "resistance"
+    ],
+    "view_names": {
+      "e_sld": "E-SLD",
+      "e_power_riser": "E-Power-Riser",
+      "e_fa_riser": "E-FA-Riser",
+      "e_elv_riser": "E-ELV-Riser",
+      "fp_schematic": "FP-Schematic",
+      "p_water": "P-Water-Schematic",
+      "p_drainage": "P-Drainage-Schematic",
+      "m_refrigerant": "M-Refrigerant-Schematic",
+      "lp_schematic": "LP-Schematic"
+    }
+  },
+  "breaker_family": "FMC_DI_E_SLD_Breaker",
+  "breaker_default": "MCB",
+  "breakers": [
+    {
+      "match": "\\bacb\\b|air circuit",
+      "type": "ACB",
+      "label": "Air circuit breaker (ACB)"
+    },
+    {
+      "match": "mccb|moulded case|molded case",
+      "type": "MCCB",
+      "label": "Moulded-case circuit breaker (MCCB)"
+    },
+    {
+      "match": "rcbo|\\brcd\\b|rccb|residual",
+      "type": "RCD",
+      "label": "Residual current device (RCD)"
+    },
+    {
+      "match": "\\bmcb\\b|miniature",
+      "type": "MCB",
+      "label": "Miniature circuit breaker (MCB)"
+    }
+  ],
+  "symbols": [
+    {
+      "kinds": [
+        "supply"
+      ],
+      "drawn": "supply",
+      "label": "Incoming supply"
+    },
+    {
+      "kinds": [
+        "board",
+        "panel",
+        "equipment"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "match": "\\bats\\b|transfer",
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "ATS",
+      "label": "Automatic transfer switch (ATS)"
+    },
+    {
+      "kinds": [
+        "meter"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "Meter",
+      "label": "Meter"
+    },
+    {
+      "kinds": [
+        "board",
+        "panel",
+        "equipment"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "match": "meter",
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "Meter",
+      "label": "Meter"
+    },
+    {
+      "kinds": [
+        "board",
+        "panel"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "match": "\\bmdb\\b|\\bmsb\\b|main ?(distribution|switch)|switchboard",
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "MDB",
+      "label": "Main distribution board (MDB)"
+    },
+    {
+      "kinds": [
+        "board",
+        "panel"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "match": "\\bcu\\b|consumer",
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "CU",
+      "label": "Consumer unit (CU)"
+    },
+    {
+      "kinds": [
+        "board",
+        "panel"
+      ],
+      "diagrams": [
+        "e_sld",
+        "e_power_riser"
+      ],
+      "family": "FMC_DI_E_SLD_Board",
+      "type": "DB",
+      "label": "Distribution board (DB)"
+    },
+    {
+      "kinds": [
+        "panel",
+        "equipment",
+        "board",
+        "device"
+      ],
+      "family": "FMC_SYM_E_FireAlarmPanel",
+      "type": "Standard",
+      "label": "Fire alarm control panel",
+      "match": "fire ?alarm ?(control )?panel|\\bfacp\\b|\\bcie\\b|fire ?panel",
+      "base": true
+    },
+    {
+      "kinds": [
+        "device",
+        "equipment"
+      ],
+      "family": "FMC_SYM_E_LoopIsolator",
+      "type": "Standard",
+      "label": "Loop isolator",
+      "match": "isolator"
+    },
+    {
+      "kinds": [
+        "device",
+        "equipment"
+      ],
+      "family": "FMC_SYM_E_InterfaceModule",
+      "type": "Standard",
+      "label": "Interface module",
+      "match": "interface|\\bmodule\\b|input.?output"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_SmokeDetector",
+      "type": "Standard",
+      "label": "Smoke detector",
+      "match": "smoke|optical|ionisation|multi.?sensor"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_HeatDetector",
+      "type": "Standard",
+      "label": "Heat detector",
+      "match": "heat|thermal|rate.?of.?rise"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_ManualCallPoint",
+      "type": "Standard",
+      "label": "Manual call point",
+      "match": "manual ?call|\\bmcp\\b|break ?glass|call ?point"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_VisualAlarmDeviceBeacon",
+      "type": "Standard",
+      "label": "Visual alarm device (beacon)",
+      "match": "beacon|\\bvad\\b|visual|strobe"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_Sounder",
+      "type": "Standard",
+      "label": "Sounder",
+      "match": "sounder|\\bbell\\b|horn|siren"
+    },
+    {
+      "kinds": [
+        "device",
+        "equipment",
+        "valve"
+      ],
+      "family": "FMC_SYM_FP_FlowSwitch",
+      "type": "Standard",
+      "label": "Flow switch",
+      "match": "flow ?switch"
+    },
+    {
+      "kinds": [
+        "panel",
+        "equipment",
+        "device"
+      ],
+      "family": "FMC_SYM_E_NVR",
+      "type": "Standard",
+      "label": "Network video recorder (NVR)",
+      "match": "\\bnvr\\b|video ?recorder",
+      "base": true,
+      "group": "CCTV"
+    },
+    {
+      "kinds": [
+        "panel",
+        "equipment",
+        "device"
+      ],
+      "family": "FMC_SYM_E_ElectricFenceEnergiser",
+      "type": "Standard",
+      "label": "Electric fence energiser",
+      "match": "energi[sz]er",
+      "base": true,
+      "group": "Electric fence"
+    },
+    {
+      "kinds": [
+        "device",
+        "equipment"
+      ],
+      "family": "FMC_SYM_E_FenceZone",
+      "type": "Standard",
+      "label": "Electric fence zone",
+      "match": "fence",
+      "group": "Electric fence"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_CCTVCamera",
+      "type": "Standard",
+      "label": "CCTV camera",
+      "match": "cctv|camera",
+      "group": "CCTV"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_WirelessAccessPoint",
+      "type": "Standard",
+      "label": "Wireless access point",
+      "match": "access ?point|\\bwap\\b|wi ?fi|wireless",
+      "group": "Data and TV"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_AccessReader",
+      "type": "Standard",
+      "label": "Access control reader",
+      "match": "reader|keypad|biometric",
+      "group": "Access control"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_DoorRelease",
+      "type": "Standard",
+      "label": "Door release",
+      "match": "door ?release|maglock|mag ?lock|electric ?strike",
+      "group": "Access control"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_Intercom",
+      "type": "Standard",
+      "label": "Intercom",
+      "match": "intercom|door ?entry|video ?entry",
+      "group": "Intercom"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_TVCoaxialOutlet",
+      "type": "Standard",
+      "label": "TV coaxial outlet",
+      "match": "\\btv\\b|coax|television",
+      "group": "Data and TV"
+    },
+    {
+      "kinds": [
+        "device"
+      ],
+      "family": "FMC_SYM_E_DataOutlet",
+      "type": "Standard",
+      "label": "Data outlet",
+      "match": "data|rj ?45|network",
+      "group": "Data and TV"
+    },
+    {
+      "kinds": [
+        "pump"
+      ],
+      "family": "FMC_SYM_FP_JockeyPump",
+      "type": "Standard",
+      "label": "Jockey pump",
+      "match": "jockey|pressure ?maint"
+    },
+    {
+      "kinds": [
+        "pump"
+      ],
+      "family": "FMC_SYM_FP_FirePump",
+      "type": "Standard",
+      "label": "Fire pump",
+      "diagrams": [
+        "fp_schematic"
+      ]
+    },
+    {
+      "kinds": [
+        "tank"
+      ],
+      "family": "FMC_SYM_FP_FireWaterTank",
+      "type": "Standard",
+      "label": "Fire water tank",
+      "diagrams": [
+        "fp_schematic"
+      ]
+    },
+    {
+      "kinds": [
+        "valve",
+        "equipment"
+      ],
+      "family": "FMC_SYM_FP_AlarmValveSet",
+      "type": "Standard",
+      "label": "Alarm valve set",
+      "match": "alarm ?valve|installation ?valve|control ?valve ?set"
+    },
+    {
+      "kinds": [
+        "valve",
+        "fixture",
+        "equipment"
+      ],
+      "family": "FMC_SYM_FP_LandingValveRiserOutlet",
+      "type": "Standard",
+      "label": "Landing valve (riser outlet)",
+      "match": "landing ?valve|riser ?outlet",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "family": "FMC_SYM_FP_DrainTestValve",
+      "type": "Standard",
+      "label": "Drain and test valve",
+      "diagrams": [
+        "fp_schematic"
+      ],
+      "match": "drain|test"
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "family": "FMC_SYM_FP_CheckValve",
+      "type": "Standard",
+      "label": "Check valve",
+      "diagrams": [
+        "fp_schematic"
+      ],
+      "match": "check|non.?return|\\bnrv\\b"
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "family": "FMC_SYM_FP_GateValve",
+      "type": "Standard",
+      "label": "Gate valve",
+      "diagrams": [
+        "fp_schematic"
+      ],
+      "match": "gate|sluice"
+    },
+    {
+      "kinds": [
+        "hose_reel"
+      ],
+      "family": "FMC_SYM_FP_FireHoseReel",
+      "type": "Standard",
+      "label": "Fire hose reel",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "hydrant"
+      ],
+      "family": "FMC_SYM_FP_ExternalFireHydrant",
+      "type": "Standard",
+      "label": "External fire hydrant"
+    },
+    {
+      "kinds": [
+        "inlet"
+      ],
+      "family": "FMC_SYM_FP_BreechingInlet",
+      "type": "Standard",
+      "label": "Breeching inlet",
+      "diagrams": [
+        "fp_schematic"
+      ]
+    },
+    {
+      "kinds": [
+        "riser"
+      ],
+      "family": "FMC_SYM_FP_WetDryRiser",
+      "type": "Standard",
+      "label": "Wet or dry riser",
+      "diagrams": [
+        "fp_schematic"
+      ]
+    },
+    {
+      "kinds": [
+        "sprinkler"
+      ],
+      "family": "FMC_SYM_FP_SprinklerHeadSidewall",
+      "type": "Standard",
+      "label": "Sprinkler head, sidewall",
+      "match": "side ?wall",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "sprinkler"
+      ],
+      "family": "FMC_SYM_FP_SprinklerHeadUpright",
+      "type": "Standard",
+      "label": "Sprinkler head, upright",
+      "match": "upright",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "sprinkler"
+      ],
+      "family": "FMC_SYM_FP_SprinklerHeadPendent",
+      "type": "Standard",
+      "label": "Sprinkler head, pendent",
+      "match": "pend[ae]nt",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "tank",
+        "equipment",
+        "other"
+      ],
+      "family": "FMC_SYM_P_SepticTank",
+      "type": "Standard",
+      "label": "Septic tank",
+      "match": "septic"
+    },
+    {
+      "kinds": [
+        "equipment",
+        "other",
+        "fixture",
+        "tank"
+      ],
+      "family": "FMC_SYM_P_Soakaway",
+      "type": "Standard",
+      "label": "Soakaway",
+      "match": "soak ?away|soak ?pit"
+    },
+    {
+      "kinds": [
+        "equipment",
+        "other",
+        "fixture"
+      ],
+      "family": "FMC_SYM_P_Manhole",
+      "type": "Standard",
+      "label": "Manhole",
+      "match": "manhole"
+    },
+    {
+      "kinds": [
+        "equipment",
+        "other",
+        "fixture"
+      ],
+      "family": "FMC_SYM_P_InspectionChamber",
+      "type": "Standard",
+      "label": "Inspection chamber",
+      "match": "inspection ?chamber|\\bic\\b"
+    },
+    {
+      "kinds": [
+        "tank"
+      ],
+      "family": "FMC_SYM_P_WaterStorageTank",
+      "type": "Standard",
+      "label": "Water storage tank",
+      "diagrams": [
+        "p_water"
+      ]
+    },
+    {
+      "kinds": [
+        "pump"
+      ],
+      "family": "FMC_SYM_P_BoosterPumpSet",
+      "type": "Standard",
+      "label": "Booster pump set",
+      "diagrams": [
+        "p_water"
+      ]
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "family": "FMC_SYM_P_NonReturnValve",
+      "type": "Standard",
+      "label": "Non-return valve",
+      "diagrams": [
+        "p_water"
+      ],
+      "match": "check|non.?return|\\bnrv\\b"
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "family": "FMC_SYM_P_GateValve",
+      "type": "Standard",
+      "label": "Gate valve",
+      "diagrams": [
+        "p_water"
+      ],
+      "match": "gate|sluice"
+    },
+    {
+      "kinds": [
+        "meter"
+      ],
+      "family": "FMC_SYM_P_WaterMeter",
+      "type": "Standard",
+      "label": "Water meter",
+      "diagrams": [
+        "p_water",
+        "fp_schematic"
+      ]
+    },
+    {
+      "kinds": [
+        "fixture"
+      ],
+      "family": "FMC_SYM_P_WC",
+      "type": "Standard",
+      "label": "WC",
+      "match": "\\bwc\\b|water ?closet|toilet",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "fixture"
+      ],
+      "family": "FMC_SYM_P_WashHandBasin",
+      "type": "Standard",
+      "label": "Wash hand basin",
+      "match": "basin|lavatory|\\bwhb\\b|hand ?wash",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "fixture"
+      ],
+      "family": "FMC_SYM_P_ShowerTray",
+      "type": "Standard",
+      "label": "Shower tray",
+      "match": "shower",
+      "counted": true
+    },
+    {
+      "kinds": [
+        "stack"
+      ],
+      "family": "FMC_SYM_P_SoilAndVentStackPlan",
+      "type": "Standard",
+      "label": "Soil and vent stack",
+      "diagrams": [
+        "p_drainage"
+      ]
+    },
+    {
+      "kinds": [
+        "riser",
+        "stack"
+      ],
+      "diagrams": [
+        "p_water",
+        "p_drainage"
+      ],
+      "drawn": "spine",
+      "label": "Riser or stack"
+    },
+    {
+      "kinds": [
+        "tank"
+      ],
+      "diagrams": [
+        "p_drainage"
+      ],
+      "family": "FMC_DI_P_Schematic",
+      "type": "Tank",
+      "label": "Tank",
+      "generic": true
+    },
+    {
+      "kinds": [
+        "pump"
+      ],
+      "diagrams": [
+        "p_drainage"
+      ],
+      "family": "FMC_DI_P_Schematic",
+      "type": "Pump",
+      "label": "Pump",
+      "generic": true
+    },
+    {
+      "kinds": [
+        "valve"
+      ],
+      "diagrams": [
+        "p_water",
+        "p_drainage",
+        "fp_schematic"
+      ],
+      "family": "FMC_DI_P_Schematic",
+      "type": "Valve",
+      "label": "Valve",
+      "generic": true
+    },
+    {
+      "kinds": [
+        "fixture"
+      ],
+      "diagrams": [
+        "p_water",
+        "p_drainage"
+      ],
+      "family": "FMC_DI_P_Schematic",
+      "type": "Fixture",
+      "label": "Fixture",
+      "generic": true,
+      "counted": true
+    },
+    {
+      "kinds": [
+        "outdoor_unit"
+      ],
+      "family": "FMC_SYM_M_ACOutdoorUnit",
+      "type": "Standard",
+      "label": "Air conditioning outdoor unit"
+    },
+    {
+      "kinds": [
+        "indoor_unit"
+      ],
+      "family": "FMC_SYM_M_ACIndoorUnit",
+      "type": "Standard",
+      "label": "Air conditioning indoor unit"
+    },
+    {
+      "kinds": [
+        "equipment",
+        "other"
+      ],
+      "family": "FMC_SYM_M_RefrigerantBranchJoint",
+      "type": "Standard",
+      "label": "Refrigerant branch joint",
+      "diagrams": [
+        "m_refrigerant"
+      ],
+      "match": "branch|joint|refnet|header"
+    },
+    {
+      "kinds": [
+        "equipment",
+        "other",
+        "fixture"
+      ],
+      "family": "FMC_SYM_M_CondensatePipe",
+      "type": "Standard",
+      "label": "Condensate drain point",
+      "diagrams": [
+        "m_refrigerant"
+      ],
+      "match": "condensate"
+    },
+    {
+      "kinds": [
+        "air_terminal"
+      ],
+      "family": "FMC_SYM_LP_AirTerminationRod",
+      "type": "Standard",
+      "label": "Air termination rod"
+    },
+    {
+      "kinds": [
+        "down_conductor"
+      ],
+      "family": "FMC_SYM_LP_DownConductor",
+      "type": "Standard",
+      "label": "Down conductor"
+    },
+    {
+      "kinds": [
+        "test_joint"
+      ],
+      "family": "FMC_SYM_LP_TestJoint",
+      "type": "Standard",
+      "label": "Test joint"
+    },
+    {
+      "kinds": [
+        "earth_pit"
+      ],
+      "family": "FMC_SYM_LP_EarthElectrodeAndPit",
+      "type": "Standard",
+      "label": "Earth electrode and pit"
+    },
+    {
+      "kinds": [
+        "earth_bar"
+      ],
+      "family": "FMC_SYM_LP_MainEarthingTerminal",
+      "type": "Standard",
+      "label": "Main earthing terminal (MET)",
+      "base": true
+    },
+    {
+      "kinds": [
+        "spd"
+      ],
+      "family": "FMC_SYM_LP_SurgeProtectiveDevice",
+      "type": "Standard",
+      "label": "Surge protective device (SPD)"
+    },
+    {
+      "kinds": [
+        "bond"
+      ],
+      "family": "FMC_SYM_LP_BondToMetalwork",
+      "type": "Standard",
+      "label": "Bond to metalwork"
+    }
+  ],
+  "sizes": {
+    "*": [
+      6,
+      6
+    ],
+    "FMC_DI_E_SLD_Breaker": [
+      4,
+      8
+    ],
+    "FMC_DI_E_SLD_Board": [
+      10,
+      6
+    ],
+    "FMC_DI_P_Schematic": [
+      8,
+      8
+    ],
+    "FMC_DI_P_Schematic:Tank": [
+      12,
+      8
+    ],
+    "FMC_SYM_E_FireAlarmPanel": [
+      10,
+      8
+    ],
+    "FMC_SYM_E_NVR": [
+      10,
+      6
+    ],
+    "FMC_SYM_E_ElectricFenceEnergiser": [
+      10,
+      6
+    ],
+    "FMC_SYM_FP_FirePump": [
+      8,
+      8
+    ],
+    "FMC_SYM_FP_JockeyPump": [
+      8,
+      8
+    ],
+    "FMC_SYM_FP_FireWaterTank": [
+      12,
+      8
+    ],
+    "FMC_SYM_FP_AlarmValveSet": [
+      8,
+      10
+    ],
+    "FMC_SYM_FP_WetDryRiser": [
+      6,
+      10
+    ],
+    "FMC_SYM_P_WaterStorageTank": [
+      12,
+      8
+    ],
+    "FMC_SYM_P_BoosterPumpSet": [
+      10,
+      8
+    ],
+    "FMC_SYM_P_SepticTank": [
+      12,
+      8
+    ],
+    "FMC_SYM_M_ACOutdoorUnit": [
+      10,
+      8
+    ],
+    "FMC_SYM_M_ACIndoorUnit": [
+      10,
+      6
+    ],
+    "FMC_SYM_LP_DownConductor": [
+      4,
+      8
+    ],
+    "FMC_SYM_LP_MainEarthingTerminal": [
+      10,
+      6
+    ]
+  },
+  "box": [
+    10,
+    6
+  ]
+}

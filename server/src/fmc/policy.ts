@@ -74,6 +74,9 @@ export const WRITE_COMMANDS = new Set<string>([
   "operate_element", "delete_element", "color_splash", "tag_walls", "tag_rooms", "send_code_to_revit",
   "fmc_load_test_families", "fmc_material_assign", "fmc_material_purge", "fmc_sheet_create", "fmc_sheet_rename",
   "fmc_link_add", "fmc_link_pin", "fmc_workset_create", "fmc_review_cloud", "fmc_brief_apply", "fmc_fea_write",
+  // Line diagrams (owner, 15 Oct): the tool draws only in new documents, _Staging and _ChainTests; in a live project a
+  // person presses Generate in the pane.
+  "fmc_diagram_draw",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
