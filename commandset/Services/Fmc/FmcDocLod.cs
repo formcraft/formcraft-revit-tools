@@ -283,7 +283,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             View view = ViewFor(doc, op.Value<string>("view") ?? "plan");
             // Already locked: a locked alignment in this view between the plane and the solid.
             bool exists = new FilteredElementCollector(doc, view.Id).OfClass(typeof(Dimension)).Cast<Dimension>()
-                .Any(d => d.IsLocked && d.NumberOfSegments == 0 && d.References.Cast<Reference>().Select(r => r.ElementId).Contains(plane.Id)
+                .Any(d => d.NumberOfSegments == 0 && d.IsLocked && d.References.Cast<Reference>().Select(r => r.ElementId).Contains(plane.Id)
                           && d.References.Cast<Reference>().Select(r => r.ElementId).Contains(form.Id));
             if (exists) return ("skip", "");
             doc.Regenerate();
@@ -301,7 +301,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ?? views.First(v => v.ViewType == ViewType.FloorPlan);
             var ids = planes.Select(p => p.Id).ToList();
             bool exists = new FilteredElementCollector(doc, view.Id).OfClass(typeof(Dimension)).Cast<Dimension>()
-                .Any(d => d.AreSegmentsEqual && ids.All(id => d.References.Cast<Reference>().Any(r => r.ElementId == id)));
+                .Any(d => d.NumberOfSegments > 1 && d.AreSegmentsEqual && ids.All(id => d.References.Cast<Reference>().Any(r => r.ElementId == id)));
             if (exists) return ("skip", "");
             var refs = new ReferenceArray();
             foreach (ReferencePlane p in planes) refs.Append(p.GetReference());

@@ -172,12 +172,21 @@ namespace RevitMCPCommandSet.Services.Fmc
                 set(want);
                 changed.Add(key + "=" + want);
             }
-            Flag("coarse", () => v.IsShownInCoarse, x => v.IsShownInCoarse = x);
-            Flag("medium", () => v.IsShownInMedium, x => v.IsShownInMedium = x);
-            Flag("fine", () => v.IsShownInFine, x => v.IsShownInFine = x);
-            Flag("plan_rcp", () => v.IsShownInTopBottom, x => v.IsShownInTopBottom = x);
-            Flag("front_back", () => v.IsShownInFrontBack, x => v.IsShownInFrontBack = x);
-            Flag("left_right", () => v.IsShownInLeftRight, x => v.IsShownInLeftRight = x);
+            var flags = new (string key, Func<bool> get, Action<bool> set)[]
+            {
+                ("coarse", () => v.IsShownInCoarse, x => v.IsShownInCoarse = x),
+                ("medium", () => v.IsShownInMedium, x => v.IsShownInMedium = x),
+                ("fine", () => v.IsShownInFine, x => v.IsShownInFine = x),
+                ("plan_rcp", () => v.IsShownInTopBottom, x => v.IsShownInTopBottom = x),
+                ("front_back", () => v.IsShownInFrontBack, x => v.IsShownInFrontBack = x),
+                ("left_right", () => v.IsShownInLeftRight, x => v.IsShownInLeftRight = x),
+            };
+            // Turn things on before turning others off: Revit refuses any moment where every detail level is off
+            // ("Cannot make this element invisible in all levels of detail"), even if the next flag would fix it.
+            foreach (var f in flags) if (op[f.key] != null && op.Value<bool>(f.key)) Flag(f.key, f.get, f.set);
+            foreach (var f in flags) if (op[f.key] != null && !op.Value<bool>(f.key)) Flag(f.key, f.get, f.set);
+            bool levelsLeft = v.IsShownInCoarse || v.IsShownInMedium || v.IsShownInFine;
+            if (!levelsLeft) throw new InvalidOperationException("at least one of coarse, medium and fine must stay on (Revit rule)");
             if (changed.Count == 0) return ("skip", "");
             form.SetVisibility(v);
             return ("update", string.Join(", ", changed));

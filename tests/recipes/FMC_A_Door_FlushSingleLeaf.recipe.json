@@ -2,11 +2,24 @@
   "schema": "fmc-recipe/0.1",
   "family": "FMC_A_Door_FlushSingleLeaf",
   "template": "Metric Door.rft",
-  "about": "Reference LOD 400 recipe (Family Authoring Standard): swept frame on the Frame subcategory and locked to Left/Right, leaf locked to four planes with labelled and EQ dimensions, plan swing arc and elevation opening lines per detail level, clearance zone off by default. Run fmc_doc report on Metric Door.rft first: the template's plane names (Left, Right, Center (Front/Back)) must match. Sizes stay pending until the supplier visits.",
+  "about": "Reference LOD 400 recipe (Family Authoring Standard): swept frame on the Frame subcategory and locked to Left/Right, leaf locked to four planes with labelled and EQ dimensions, plan swing arc and elevation opening lines per detail level, clearance zone off by default. Run fmc_doc report on Metric Door.rft first: Metric Door.rft names Left and Right but leaves the wall centre plane unnamed (Revit won't rename a plane to the reserved name Center (Front/Back)), so the recipe draws its own Wall Centre plane. Sizes stay pending until the supplier visits.",
   "ops": [
     {
       "op": "set_category",
       "name": "OST_Doors"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Wall Centre",
+      "from": [
+        -1500,
+        0
+      ],
+      "to": [
+        1500,
+        0
+      ],
+      "is_reference": "CenterFrontBack"
     },
     {
       "op": "add_shared_param",
@@ -191,7 +204,7 @@
       "name": "EQ leaf",
       "planes": [
         "Leaf Face Ext",
-        "Center (Front/Back)",
+        "Wall Centre",
         "Leaf Face Int"
       ]
     },
@@ -363,7 +376,9 @@
       "name": "Clearance zone",
       "coarse": false,
       "medium": false,
-      "fine": false
+      "fine": true,
+      "front_back": false,
+      "left_right": false
     },
     {
       "op": "add_type",
