@@ -24,6 +24,8 @@ namespace RevitMCPCommandSet.Services
         }
         public void Execute(UIApplication app)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(app, "");
             try
             {
                 var doc = app.ActiveUIDocument.Document;
@@ -54,7 +56,7 @@ namespace RevitMCPCommandSet.Services
                 }
                 if (invalidIds.Count > 0)
                 {
-                    TaskDialog.Show("警告", $"以下ID无效或元素不存在：{string.Join(", ", invalidIds)}");
+                    RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Warning", $"These ids are invalid or the elements don't exist: {string.Join(", ", invalidIds)}");
                 }
                 // 如果有可删除的元素，则执行删除
                 if (elementIdsToDelete.Count > 0)
@@ -73,13 +75,13 @@ namespace RevitMCPCommandSet.Services
                 }
                 else
                 {
-                    TaskDialog.Show("错误", "没有有效的元素可以删除");
+                    RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "No valid elements to delete");
                     IsSuccess = false;
                 }
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("错误", "删除元素失败: " + ex.Message);
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Deleting elements failed: " + ex.Message);
                 IsSuccess = false;
             }
             finally

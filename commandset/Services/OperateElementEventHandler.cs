@@ -40,6 +40,8 @@ namespace RevitMCPCommandSet.Services
         }
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
 
             try
@@ -49,7 +51,7 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<string>
                 {
                     Success = true,
-                    Message = $"成功执行操作",
+                    Message = $"Done",
                 };
             }
             catch (Exception ex)
@@ -57,7 +59,7 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<string>
                 {
                     Success = false,
-                    Message = $"操作元素时出错: {ex.Message}",
+                    Message = $"[FMC-TOOL-FAILED] Operating on the elements failed: {ex.Message}",
                 };
             }
             finally
@@ -96,7 +98,7 @@ namespace RevitMCPCommandSet.Services
             // 检查参数有效性
             if (uidoc == null || uidoc.Document == null || setting == null || setting.ElementIds == null ||
                 (setting.ElementIds.Count == 0 && setting.Action.ToLower() != "resetisolate"))
-                throw new Exception("参数无效：文档为空或没有指定要操作的图元");
+                throw new Exception("Invalid parameters: no document, or no elements given");
 
             Document doc = uidoc.Document;
 
@@ -107,7 +109,7 @@ namespace RevitMCPCommandSet.Services
             ElementOperationType action;
             if (!Enum.TryParse(setting.Action, true, out action))
             {
-                throw new Exception($"未支持的操作类型：{setting.Action}");
+                throw new Exception($"Unsupported action: {setting.Action}");
             }
 
             // 根据操作类型执行不同的操作
@@ -143,7 +145,7 @@ namespace RevitMCPCommandSet.Services
                         if (targetView == null)
                         {
                             // 如果没有找到合适的3D视图，抛出异常
-                            throw new Exception("无法找到合适的3D视图用于创建剖切框");
+                            throw new Exception("No 3D view found for the section box");
                         }
 
                         // 激活该3D视图
@@ -186,7 +188,7 @@ namespace RevitMCPCommandSet.Services
 
                     if (boundingBox == null)
                     {
-                        throw new Exception("无法为所选元素创建边界框");
+                        throw new Exception("Couldn't make a bounding box for the selected elements");
                     }
 
                     // 增加边界框尺寸，使其略大于元素
@@ -306,7 +308,7 @@ namespace RevitMCPCommandSet.Services
                     return true;
 
                 default:
-                    throw new Exception($"未支持的操作类型：{setting.Action}");
+                    throw new Exception($"Unsupported action: {setting.Action}");
             }
         }
 
@@ -357,7 +359,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"设置填充图案失败: {ex.Message}");
+                throw new Exception($"Setting the fill pattern failed: {ex.Message}");
             }
 
             // 对每个元素应用覆盖设置

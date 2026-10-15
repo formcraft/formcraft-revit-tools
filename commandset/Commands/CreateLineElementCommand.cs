@@ -32,7 +32,7 @@ namespace RevitMCPCommandSet.Commands
                 // 解析参数
                 data = parameters["data"].ToObject<List<LineElement>>();
                 if (data == null)
-                    throw new ArgumentNullException(nameof(data), "AI传入数据为空");
+                    throw new ArgumentNullException(nameof(data), "No data was sent");
 
                 // 设置线状构件体参数
                 _handler.SetParameters(data);
@@ -44,12 +44,12 @@ namespace RevitMCPCommandSet.Commands
                 }
                 else
                 {
-                    throw new TimeoutException("创建线状构件操作超时");
+                    throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Creating line-based elements timed out");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"创建线状构件失败: {ex.Message}");
+                throw new Exception($"[FMC-TOOL-FAILED] Creating line-based elements failed: {ex.Message}");
             }
         }
     }

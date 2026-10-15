@@ -69,6 +69,8 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             _uiApp = uiapp;
             string viewSwitchMessage = null;
 
@@ -334,7 +336,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("Error", $"Error tagging rooms: {ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Error tagging rooms: {ex.Message}");
                 TaggingResults = new
                 {
                     success = false,

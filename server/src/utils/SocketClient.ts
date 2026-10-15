@@ -1,7 +1,7 @@
 import * as net from "net";
 import fs from "fs";
-import os from "os";
 import path from "path";
+import { appendJobEvent, jobFiles } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
@@ -173,10 +173,13 @@ export class RevitClientConnection {
         const commandString = JSON.stringify(commandObj);
         this.socket.write(commandString);
 
-        // F-022: answer before the client's own 60 s cutoff. The command stays queued in Revit; if it finishes later, its
-        // result goes to the late-results log instead of being dropped silently.
+        // F-022/F-030: answer before the client's own 60 s cutoff. Every call is a job (its id is the request id); one
+        // that passes the answer limit replies "still running" with its job id, keeps waiting in the background, and its
+        // final answer goes to the late-results file with the job id, for fmc_job status / result.
         const soft = softTimeoutMs();
+        const started = new Date().toISOString();
         let settled = false;
+        let stillRunning = false;
         const finish = this.responseCallbacks.get(requestId)!;
         this.responseCallbacks.set(requestId, (data) => {
           if (settled) { logLateResult(command, requestId, data); this.responseCallbacks.delete(requestId); return; }
@@ -187,21 +190,25 @@ export class RevitClientConnection {
           setTimeout(() => {
             if (settled || !this.responseCallbacks.has(requestId)) return;
             settled = true;
-            reject(new Error(
-              `Revit hasn't answered ${command} in ${Math.round(soft / 1000)} s: it is busy, or waiting for its window to wake. ` +
-              `The command is still queued in Revit and may finish; its result will be written to ${lateResultsPath()}. ` +
-              `Check that file (or the staging folder) before running it again.`));
+            stillRunning = true;
+            appendJobEvent({ job: requestId, event: "running", command, port: this.port, started });
+            reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
           }, soft);
         }
 
-        // 设置超时
-        setTimeout(() => {
-          if (this.responseCallbacks.has(requestId)) {
+        // 设置超时: no answer at all. A job that already answered "still running" waits up to FMC_JOB_MAX_MS for its result.
+        const hard = (after: number, extended: boolean) => {
+          const t = setTimeout(() => {
+            if (!this.responseCallbacks.has(requestId)) return;
+            const max = jobMaxMs();
+            if (stillRunning && !extended && max > timeoutMs) { hard(max - timeoutMs, true); return; }
             this.responseCallbacks.delete(requestId);
-            if (!settled) { settled = true; reject(new Error(`Command timed out after ${Math.round(timeoutMs / 1000)} s: ${command}`)); }
-            else logLateResult(command, requestId, JSON.stringify({ error: { message: `no answer after ${Math.round(timeoutMs / 1000)} s` } }));
-          }
-        }, timeoutMs);
+            if (!settled) { settled = true; reject(new Error(`[FMC-BRIDGE-TIMEOUT] Revit didn't answer ${command} in ${Math.round(timeoutMs / 1000)} s (job ${requestId}).`)); }
+            else appendJobEvent({ job: requestId, event: "gave_up", command, after_s: Math.round((Date.now() - Date.parse(started)) / 1000) });
+          }, after);
+          if (extended) t.unref?.();
+        };
+        hard(timeoutMs, false);
       } catch (error) {
         reject(error);
       }
@@ -220,18 +227,38 @@ export function softTimeoutMs(): number {
   return Number.isFinite(v) && v >= 0 ? v : 50000;
 }
 
-export function lateResultsPath(): string {
-  const base = process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming");
-  return path.join(base, "Formcraft", "FMC_LateResults.jsonl");
+/** How long a job that answered "still running" is waited for (ms): FMC_JOB_MAX_MS, default 35 min (send_code's own limit is 30). */
+export function jobMaxMs(): number {
+  const v = Number(process.env.FMC_JOB_MAX_MS);
+  return Number.isFinite(v) && v > 0 ? v : 35 * 60 * 1000;
 }
 
-/** A result that arrived after the tool had already replied: kept, one JSON line each, never dropped. */
+/**
+ * A call that passed the answer limit: still running in Revit, not failed (F-030). Tools show this message; the
+ * job id is what fmc_job status / result / cancel take.
+ */
+export class JobStillRunning extends Error {
+  readonly code = "FMC-JOB-RUNNING";
+  constructor(readonly job: string, readonly command: string, readonly seconds: number) {
+    super(
+      `[FMC-JOB-RUNNING] ${command} is still running in Revit after ${seconds} s (not failed). Job ${job}. ` +
+        `Don't send it again: ask fmc_job status ${job}, then fmc_job result ${job} once it has finished ` +
+        `(fmc_job cancel ${job} asks Revit to stop it at its next check). The answer is also kept in ${lateResultsPath()}.`);
+    this.name = "JobStillRunning";
+  }
+}
+
+export function lateResultsPath(): string {
+  return jobFiles().late;
+}
+
+/** A result that arrived after the tool had already replied: kept with its job id, one JSON line each, never dropped. */
 export function logLateResult(command: string, id: string, data: string) {
   try {
     let result: unknown = data;
     try { result = JSON.parse(data); } catch { /* keep the raw text */ }
     fs.mkdirSync(path.dirname(lateResultsPath()), { recursive: true });
-    fs.appendFileSync(lateResultsPath(), JSON.stringify({ at: new Date().toISOString(), command, id, result }) + "\n");
+    fs.appendFileSync(lateResultsPath(), JSON.stringify({ at: new Date().toISOString(), command, id, job: id, result }) + "\n");
   } catch {
     // logging must never block the work
   }

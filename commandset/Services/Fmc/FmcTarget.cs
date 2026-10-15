@@ -27,6 +27,9 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public static FmcTarget Resolve(UIApplication app, JObject parameters, bool mayOpen)
         {
+            // F-030/F-032: the AI job starts here for every Formcraft handler (default failures handling, the save
+            // reminder kept from blocking, a cancel honoured before any work). See commandset/Bridge/FmcAiJob.cs.
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(app, RevitMCPCommandSet.Bridge.FmcAiJob.JobOf(parameters));
             string key = (parameters?.Value<string>("document") ?? "").Trim();
             Document active = app.ActiveUIDocument?.Document;
             var open = new List<Document>();
