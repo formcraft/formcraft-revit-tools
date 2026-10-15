@@ -19,6 +19,8 @@ or updates items by name and never deletes (TPL-028). They are the reference for
 | 8 | `08_role_copies.cs` | 12 `FMC_<Role>_Template_v2.2.rte` copied from Base | 06_Templates README |
 | 9 | `09_type_legend_schedules.cs` | 21 type legend schedules (one row per type), proposed to the kit | Change request items 38–39 |
 | 10 | `10_legend_views.cs` | 52 legend views: 22 from the Sheet Register, 30 notes legends from `10_Notes` | Sheet_Register, 10_Notes |
+| 11 | `11_panel_schedule_templates.cs` | 4 panel schedule templates (FMC_DB_SPN, FMC_DB_TPN, FMC_MDB_Switchboard, FMC_Data_Panel), font from FMC_Arial_2.5, FMC_Ways header row; prints what to finish by hand in the template editor. Never sets demand factors | Kit PANEL_SCHEDULES (owner, 15 Oct) |
+| 12 | `12_new_discipline_schedules.cs` | 12 schedules for 9 kit rows: A11, A12, A13, E16, E17 (×3, one per category), FP12 (×2: sprinklers, hose reels), M14, LP12, C13 | Kit Schedules (owner, 15 Oct) |
 | — | by hand, once | `LG_Seed_Component`: the first legend component, placed in any project and copied in; W and H dimensions by API (issue #85) | — |
 
 Then run `fmc_template audit`. On 14 Oct the result was Pass with 0 warnings: 36.9 MB after step 8, 37.2 MB after step 10 (109 schedules).
@@ -33,3 +35,6 @@ Known limits (see the kit change request of 14 Oct):
 - Schedule filters are AND only.
 - Keynote path Z: isn't on the pilot PC.
 - Worksets can't live in an `.rte`.
+- Panel schedule templates: circuit-table columns (FMC_Cable_Spec, Frame, phase loads), load-summary totals and text size are
+  finished by hand in Manage › Panel Schedule Templates; step 11 prints the list for each template.
+- A schedule can't take a chosen set of categories, so E17 and FP12 are split per category (kit name kept as the prefix).
