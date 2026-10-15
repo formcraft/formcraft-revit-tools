@@ -8,7 +8,7 @@
  *
  *   node build/fmc/cli.js <command>        JSON arguments on stdin (none for specs and probe)
  *
- *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai   run the tool with the same argument schema and defaults; prints the tool's JSON reply
+ *   fmc_file | fmc_family | fmc_project | fmc_template | fmc_library | fmc_qa | fmc_material | fmc_sheets | fmc_annotate | fmc_issue | fmc_links | fmc_selftest | fmc_workshare | fmc_review | fmc_report | fmc_doc | fmc_revit | fmc_brief | fmc_scripts | fmc_systems | fmc_build | fmc_ai | fmc_recipe   run the tool with the same argument schema and defaults; prints the tool's JSON reply
  *   specs                   the families and the pilot set in FMC_Family_Specs.json, for the pane's family picker
  *   probe                   connects to Revit on port 8080 and reads the open documents (tests the whole chain)
  *   ask                     {question, history?}: asks Claude with the firm's API key; read-only Revit tools (fmc/ask.ts)
@@ -42,6 +42,7 @@ import { FMC_SCRIPTS_SHAPE, runFmcScripts } from "../tools/fmc_scripts.js";
 import { FMC_SYSTEMS_SHAPE, runFmcSystems } from "../tools/fmc_systems.js";
 import { FMC_BUILD_SHAPE, runFmcBuild } from "../tools/fmc_build.js";
 import { FMC_AI_SHAPE, paneAi, runFmcAi } from "../tools/fmc_ai.js";
+import { FMC_RECIPE_SHAPE, paneRelease, runFmcRecipe } from "../tools/fmc_recipe.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
 
@@ -168,6 +169,13 @@ async function main() {
       }
       case "fmc_ai":
         return printReply(await runFmcAi(z.object(FMC_AI_SHAPE).parse(input)));
+      case "fmc_recipe":
+        return printReply(await runFmcRecipe(z.object(FMC_RECIPE_SHAPE).parse(input)));
+      // A person releases a family, or sends it back, in the pane. Never MCP tools.
+      case "family_release": case "family_sendback": {
+        const r = paneRelease(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
+        return print(r, "error" in r);
+      }
       // The pane's AI commands: a person approves, rejects, resumes or sets the policy. Never MCP tools.
       case "ai_approve": case "ai_reject": case "ai_resume": case "ai_config": {
         const r = paneAi(command, input as Record<string, unknown>, process.env.USERNAME || "unknown");
@@ -180,7 +188,7 @@ async function main() {
         return print(askStatus(text, new Date(), process.env, !!readApiKey()), false);
       }
       default:
-        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|specs|probe|ask|ask_status>  (JSON arguments on stdin)\n");
+        process.stderr.write("Usage: node build/fmc/cli.js <fmc_file|fmc_family|fmc_project|fmc_template|fmc_library|fmc_qa|fmc_material|fmc_sheets|fmc_annotate|fmc_issue|fmc_links|fmc_selftest|fmc_workshare|fmc_review|fmc_report|fmc_doc|fmc_revit|fmc_brief|fmc_scripts|fmc_systems|fmc_build|fmc_ai|fmc_recipe|specs|probe|ask|ask_status>  (JSON arguments on stdin)\n");
         process.exit(2);
     }
   } catch (e) {

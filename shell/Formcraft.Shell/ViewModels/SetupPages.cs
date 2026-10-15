@@ -99,6 +99,10 @@ namespace Formcraft.Shell.ViewModels
 
         private readonly IFamilyTools _tools;
         private readonly ILibraryTools _library;
+        private readonly IReleaseTools _release;
+        private readonly MessagesSetting _releaseMessages = new MessagesSetting();
+        private readonly SettingStore _releaseDraft = new SettingStore(new InMemoryUserSettings(), "");
+        private GateResult? _gate;
         private readonly IFilePicker _picker;
         private readonly SettingStore _store;
         private readonly Action<string> _status;
@@ -117,11 +121,16 @@ namespace Formcraft.Shell.ViewModels
         private KeynoteSearch? _keynotes;
         private bool _busy;
 
-        public FamiliesPage(IFamilyTools tools, ILibraryTools library, IFilePicker picker, IUserSettings settings, Action<string> status, Action<DialogViewModel> ask)
+        public FamiliesPage(IFamilyTools tools, ILibraryTools library, IFilePicker picker, IUserSettings settings, Action<string> status, Action<DialogViewModel> ask,
+                            IReleaseTools? release = null)
             : base("Setup › Families", "Every family checked against the kit, families brought in from outside, and families built from the kit. Release stays with the Family Librarian.")
         {
             _tools = tools;
             _library = library;
+            _release = release ?? new MockReleaseTools();
+            GateCommand = new AsyncCommand(RunGate, status);
+            ReleaseCommand = new AsyncCommand(() => Decide(true), status);
+            SendBackCommand = new AsyncCommand(() => Decide(false), status);
             _picker = picker;
             _store = new SettingStore(settings);
             _status = status;
@@ -156,6 +165,11 @@ namespace Formcraft.Shell.ViewModels
             Rebuild();
         }
 
+        public ICommand GateCommand { get; }
+        public ICommand ReleaseCommand { get; }
+        public ICommand SendBackCommand { get; }
+        public GateResult? LastGate => _gate;
+        public SettingStore ReleaseDraft => _releaseDraft;
         public ICommand ScanCommand { get; }
         public ICommand CheckCommand { get; }
         public ICommand BringInCommand { get; }
@@ -177,7 +191,75 @@ namespace Formcraft.Shell.ViewModels
             Groups.Add(ParametersGroup());
             Groups.Add(KeynotesGroup());
             Groups.Add(_builder);
+            Groups.Add(ReleaseGroup());
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "families.considerations", _status)));
+        }
+
+        // ---------- Quality and release (U30, Phase 2) ----------
+
+        private string GateFile => _store.Get("families.release.file") ?? "";
+
+        private SettingsGroup ReleaseGroup()
+        {
+            var items = new List<SettingItem>
+            {
+                new NoteSetting("Gate A on a family in staging, then a person releases it to 04_Families\\<Role> or sends it back. Never automatic.", ChipKind.Info),
+                new TextSetting("Family in staging", GateFile, "…\\04_Families\\_Staging\\A\\FMC_A_Door_SteelFanlight.rfa", store: _store, key: "families.release.file", mono: true),
+                new ButtonsSetting("", new[]
+                {
+                    new SettingButton("Browse", new RelayCommand(() =>
+                    {
+                        var f = _picker.Open("Family in staging", "Family (*.rfa)|*.rfa", System.IO.Path.GetDirectoryName(GateFile) ?? _tools.StagingRoot);
+                        if (f != null) { _store.Set("families.release.file", f); _gate = null; Rebuild(); }
+                    })),
+                    new SettingButton("Run Gate A", GateCommand, primary: true),
+                }),
+            };
+            if (_gate != null)
+            {
+                if (!_gate.Ok) items.Add(new NoteSetting(_gate.Message, ChipKind.Bad));
+                else
+                {
+                    items.Add(new TableSetting("Gate A · " + _gate.Family, new[] { "Check", "Result", "Detail" }, _gate.Lines.Select(l => new TableRow(l, l.Check, l.State, l.Detail))));
+                    items.Add(new NoteSetting(_gate.Passed ? "Gate A passed. Not checked items are the reviewer's to accept." : "Gate A fails: send it back with a note, fix it and build again.",
+                        _gate.Passed ? ChipKind.Good : ChipKind.Bad));
+                    items.Add(new TextSetting("Reviewer", "", "the discipline's Lead or engineer", store: _releaseDraft, key: "reviewer"));
+                    items.Add(new TextSetting("Note", "", "what was checked and why it can go (or what to fix)", store: _releaseDraft, key: "note"));
+                    var buttons = new List<SettingButton> { new SettingButton("Send back", SendBackCommand) };
+                    if (_gate.Passed) buttons.Add(new SettingButton("Release", ReleaseCommand, primary: true));
+                    items.Add(new ButtonsSetting("", buttons));
+                }
+            }
+            items.Add(_releaseMessages);
+            return new SettingsGroup("Quality and release", items.ToArray());
+        }
+
+        private async Task RunGate()
+        {
+            if (GateFile.Length == 0) { _releaseMessages.Show(ChipKind.Warn, "Choose the family in staging first."); return; }
+            _gate = await _release.GateAsync(GateFile);
+            _status(_gate.Message);
+            Rebuild();
+        }
+
+        private Task Decide(bool release)
+        {
+            string reviewer = (_releaseDraft.Get("reviewer") ?? "").Trim(), note = (_releaseDraft.Get("note") ?? "").Trim();
+            if (reviewer.Length == 0 || note.Length == 0) { _releaseMessages.Show(ChipKind.Warn, "A reviewer and a note are needed."); return Task.CompletedTask; }
+            if (!release)
+                return Send(() => _release.SendBackAsync(GateFile, reviewer, note));
+            _ask(new DialogViewModel("Release " + System.IO.Path.GetFileNameWithoutExtension(GateFile) + "?",
+                "It moves from staging to 04_Families\\<Role> and the release log records you, the reviewer and the note. It never overwrites a released family.",
+                "Release", () => Send(() => _release.ReleaseAsync(GateFile, reviewer, note))));
+            return Task.CompletedTask;
+        }
+
+        private async Task Send(Func<Task<ToolResult>> act)
+        {
+            var r = await act();
+            _releaseMessages.Show(r.Messages);
+            _status(r.Messages.FirstOrDefault()?.Text ?? "");
+            if (r.Ok) { _gate = null; Rebuild(); }
         }
 
         // ---------- Compliance scan ----------

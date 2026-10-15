@@ -10,6 +10,10 @@ claude.ai Project "REVIT MCP".
    "Claude in shared models" toggle is on (D1). Only the user sets it.
 2. **Files.** Writes go only to WIP and staging folders, never to `02_Shared`, `03_Published`, `04_Archive`,
    `05_Incoming` or `04_Families\<Role>`. Nothing is deleted: archive moves a file to `_Archive`.
+   One exception (owner's approval, 15 Oct): a person's **Release** in the pane (Setup › Families › Quality and
+   release) moves a family that passed Gate A from staging into `04_Families\<Role>`, with a reviewer, a note and a
+   confirmation, and logs it in `04_Families\FMC_Release_Log.csv`. It is a pane-only command: no MCP tool or AI can
+   release.
 3. **Dry run first.** Every write shows a dry run and waits for a clear yes.
 4. **Names** follow the kit: models `[Project]-[Originator]-[Volume]-[Level]-[Type]-[Role]-[Number].rvt`, library
    families `FMC_[Role]_[CategoryToken]_[Description].rfa`, project families `[Project]_[Role]_…` (D4).
