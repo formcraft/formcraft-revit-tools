@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_Window_AluVent",
  "template": "Metric Window.rft",
- "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). Exterior is -y; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex.",
+ "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). Exterior is -y; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Surround sweeps (Ext face) from FMC_Profile_Surround_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (1200x1500) and don't flex with Width/Height until sweep paths can be locked to planes.",
  "ops": [
   {
    "op": "set_category",
@@ -1721,6 +1721,1390 @@
    "type": "0600x0900_WC-PJ",
    "param": "Height",
    "value": 900
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Trim Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Frame Material"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Clear",
+   "param": "Glass Material"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_InsectMesh_Fibreglass",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Precast_Painted",
+   "param": "Sill Material"
+  },
+  {
+   "op": "set_formula",
+   "name": "Trim Material",
+   "formula": "Sill Material"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Greek",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Greek.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Greek",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Greek",
+   "formula": "FMC_Design_Movement = 1"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Greek Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Greek",
+   "profile_type": "150x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Greek Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Greek Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Greek Ext/Visible",
+   "solid": "Surround Greek Ext",
+   "param": "Show_Greek"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Roman",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Roman.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Roman",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Roman",
+   "formula": "FMC_Design_Movement = 2"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Roman Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Roman",
+   "profile_type": "225x50",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Roman Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Roman Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Roman Ext/Visible",
+   "solid": "Surround Roman Ext",
+   "param": "Show_Roman"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Romanesque",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Romanesque.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Romanesque",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Romanesque",
+   "formula": "FMC_Design_Movement = 3"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Romanesque Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Romanesque",
+   "profile_type": "200x90",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Romanesque Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Romanesque Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Romanesque Ext/Visible",
+   "solid": "Surround Romanesque Ext",
+   "param": "Show_Romanesque"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Gothic",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Gothic.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Gothic",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Gothic",
+   "formula": "FMC_Design_Movement = 4"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Gothic Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Gothic",
+   "profile_type": "155x60",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Gothic Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Gothic Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Gothic Ext/Visible",
+   "solid": "Surround Gothic Ext",
+   "param": "Show_Gothic"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Renaissance",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Renaissance.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Renaissance",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Renaissance",
+   "formula": "FMC_Design_Movement = 5"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Renaissance Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Renaissance",
+   "profile_type": "190x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Renaissance Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Renaissance Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Renaissance Ext/Visible",
+   "solid": "Surround Renaissance Ext",
+   "param": "Show_Renaissance"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Baroque",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Baroque.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Baroque",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Baroque",
+   "formula": "FMC_Design_Movement = 6"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Baroque Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Baroque",
+   "profile_type": "250x100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Baroque Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Baroque Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Baroque Ext/Visible",
+   "solid": "Surround Baroque Ext",
+   "param": "Show_Baroque"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Georgian",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Georgian.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Georgian",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Georgian",
+   "formula": "FMC_Design_Movement = 7"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Georgian Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Georgian",
+   "profile_type": "159x35",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Georgian Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Georgian Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Georgian Ext/Visible",
+   "solid": "Surround Georgian Ext",
+   "param": "Show_Georgian"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_FederalAdam",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_FederalAdam.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_FederalAdam",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_FederalAdam",
+   "formula": "FMC_Design_Movement = 8"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround FederalAdam Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_FederalAdam",
+   "profile_type": "94x30",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround FederalAdam Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround FederalAdam Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround FederalAdam Ext/Visible",
+   "solid": "Surround FederalAdam Ext",
+   "param": "Show_FederalAdam"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_GreekRevival",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_GreekRevival.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_GreekRevival",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_GreekRevival",
+   "formula": "FMC_Design_Movement = 9"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround GreekRevival Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_GreekRevival",
+   "profile_type": "180x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround GreekRevival Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround GreekRevival Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround GreekRevival Ext/Visible",
+   "solid": "Surround GreekRevival Ext",
+   "param": "Show_GreekRevival"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Italianate",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Italianate.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Italianate",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Italianate",
+   "formula": "FMC_Design_Movement = 10"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Italianate Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Italianate",
+   "profile_type": "165x115",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Italianate Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Italianate Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Italianate Ext/Visible",
+   "solid": "Surround Italianate Ext",
+   "param": "Show_Italianate"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Victorian",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Victorian.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Victorian",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Victorian",
+   "formula": "FMC_Design_Movement = 11"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Victorian Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Victorian",
+   "profile_type": "151x36",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Victorian Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Victorian Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Victorian Ext/Visible",
+   "solid": "Surround Victorian Ext",
+   "param": "Show_Victorian"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_ArtsCrafts",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtsCrafts.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_ArtsCrafts",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_ArtsCrafts",
+   "formula": "FMC_Design_Movement = 12"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround ArtsCrafts Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_ArtsCrafts",
+   "profile_type": "150x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround ArtsCrafts Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround ArtsCrafts Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround ArtsCrafts Ext/Visible",
+   "solid": "Surround ArtsCrafts Ext",
+   "param": "Show_ArtsCrafts"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_ArtNouveau",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtNouveau.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_ArtNouveau",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_ArtNouveau",
+   "formula": "FMC_Design_Movement = 13"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround ArtNouveau Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_ArtNouveau",
+   "profile_type": "190x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround ArtNouveau Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround ArtNouveau Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround ArtNouveau Ext/Visible",
+   "solid": "Surround ArtNouveau Ext",
+   "param": "Show_ArtNouveau"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_ArtDeco",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtDeco.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_ArtDeco",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_ArtDeco",
+   "formula": "FMC_Design_Movement = 14"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround ArtDeco Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_ArtDeco",
+   "profile_type": "100x50",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround ArtDeco Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround ArtDeco Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround ArtDeco Ext/Visible",
+   "solid": "Surround ArtDeco Ext",
+   "param": "Show_ArtDeco"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Modernist",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Modernist.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Modernist",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Modernist",
+   "formula": "FMC_Design_Movement = 15"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Modernist Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Modernist",
+   "profile_type": "60x10",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Modernist Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Modernist Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Modernist Ext/Visible",
+   "solid": "Surround Modernist Ext",
+   "param": "Show_Modernist"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Brutalist",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Brutalist.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Brutalist",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Brutalist",
+   "formula": "FMC_Design_Movement = 16"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Brutalist Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Brutalist",
+   "profile_type": "200x100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Brutalist Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Brutalist Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Brutalist Ext/Visible",
+   "solid": "Surround Brutalist Ext",
+   "param": "Show_Brutalist"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Contemporary",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Contemporary.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Contemporary",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Contemporary",
+   "formula": "FMC_Design_Movement = 17"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Contemporary Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Contemporary",
+   "profile_type": "70x15",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Contemporary Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Contemporary Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Contemporary Ext/Visible",
+   "solid": "Surround Contemporary Ext",
+   "param": "Show_Contemporary"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_SwahiliZanzibar",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_SwahiliZanzibar.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_SwahiliZanzibar",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_SwahiliZanzibar",
+   "formula": "FMC_Design_Movement = 18"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround SwahiliZanzibar Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_SwahiliZanzibar",
+   "profile_type": "185x100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround SwahiliZanzibar Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround SwahiliZanzibar Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround SwahiliZanzibar Ext/Visible",
+   "solid": "Surround SwahiliZanzibar Ext",
+   "param": "Show_SwahiliZanzibar"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_Islamic",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Islamic.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_Islamic",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_Islamic",
+   "formula": "FMC_Design_Movement = 19"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround Islamic Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_Islamic",
+   "profile_type": "140x40",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround Islamic Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround Islamic Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround Islamic Ext/Visible",
+   "solid": "Surround Islamic Ext",
+   "param": "Show_Islamic"
+  },
+  {
+   "op": "load_family",
+   "name": "FMC_Profile_Surround_TropicalEastAfrican",
+   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_TropicalEastAfrican.rfa"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show_TropicalEastAfrican",
+   "type": "YesNo",
+   "instance": true,
+   "group": "Graphics"
+  },
+  {
+   "op": "set_formula",
+   "name": "Show_TropicalEastAfrican",
+   "formula": "FMC_Design_Movement = 20"
+  },
+  {
+   "op": "sweep",
+   "name": "Surround TropicalEastAfrican Ext",
+   "path": [
+    [
+     -600.0,
+     800.0
+    ],
+    [
+     -600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     2300.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "path_plane": "front",
+   "at": -130.0,
+   "profile_family": "FMC_Profile_Surround_TropicalEastAfrican",
+   "profile_type": "165x60",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Surround TropicalEastAfrican Ext",
+   "param": "Trim Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Surround TropicalEastAfrican Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Surround TropicalEastAfrican Ext/Visible",
+   "solid": "Surround TropicalEastAfrican Ext",
+   "param": "Show_TropicalEastAfrican"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_Casement-TopHung300/Keynote",
+   "type": "1200x1500_Casement-TopHung300",
+   "param": "Keynote",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_Casement-TopHung300/FMC_Keynote_Code",
+   "type": "1200x1500_Casement-TopHung300",
+   "param": "FMC_Keynote_Code",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x1500_Casement-TopHung300/FMC_Design_Movement",
+   "type": "1200x1500_Casement-TopHung300",
+   "param": "FMC_Design_Movement",
+   "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x1500_Sliding-TopHung300/Keynote",
+   "type": "1500x1500_Sliding-TopHung300",
+   "param": "Keynote",
+   "value": "G.SLD_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x1500_Sliding-TopHung300/FMC_Keynote_Code",
+   "type": "1500x1500_Sliding-TopHung300",
+   "param": "FMC_Keynote_Code",
+   "value": "G.SLD_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x1500_Sliding-TopHung300/FMC_Design_Movement",
+   "type": "1500x1500_Sliding-TopHung300",
+   "param": "FMC_Design_Movement",
+   "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800x1500_Sliding-TopHung300/Keynote",
+   "type": "1800x1500_Sliding-TopHung300",
+   "param": "Keynote",
+   "value": "G.SLD_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800x1500_Sliding-TopHung300/FMC_Keynote_Code",
+   "type": "1800x1500_Sliding-TopHung300",
+   "param": "FMC_Keynote_Code",
+   "value": "G.SLD_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800x1500_Sliding-TopHung300/FMC_Design_Movement",
+   "type": "1800x1500_Sliding-TopHung300",
+   "param": "FMC_Design_Movement",
+   "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1200_Casement-Projected300/Keynote",
+   "type": "0600x1200_Casement-Projected300",
+   "param": "Keynote",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1200_Casement-Projected300/FMC_Keynote_Code",
+   "type": "0600x1200_Casement-Projected300",
+   "param": "FMC_Keynote_Code",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x1200_Casement-Projected300/FMC_Design_Movement",
+   "type": "0600x1200_Casement-Projected300",
+   "param": "FMC_Design_Movement",
+   "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x0900_WC-PJ/Keynote",
+   "type": "0600x0900_WC-PJ",
+   "param": "Keynote",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x0900_WC-PJ/FMC_Keynote_Code",
+   "type": "0600x0900_WC-PJ",
+   "param": "FMC_Keynote_Code",
+   "value": "G.CAS_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x0900_WC-PJ/FMC_Design_Movement",
+   "type": "0600x0900_WC-PJ",
+   "param": "FMC_Design_Movement",
+   "value": 17
   }
  ],
  "values": {
@@ -1763,9 +3147,29 @@
    "source_status": "assumed"
   },
   "Keynote": {
-   "value": "",
-   "source_status": "pending",
-   "source": "G.CAS_00 / G.SLD_00 describe double-glazed units; no single-glazed PJ code: kit change request"
+   "value": "G.CAS_00, G.SLD_00",
+   "source_status": "assumed",
+   "source": "casement and PJ types G.CAS_00, sliding types G.SLD_00; both kit codes say double glazed and this is 5 mm single glazing (kit change request for single-glazed aluminium codes)"
+  },
+  "Materials (kit library)": {
+   "value": "Frame Material = FMC_Metal_Aluminium_PowderCoated; Glass Material = FMC_Glass_Clear; Mesh Material = FMC_Plastic_InsectMesh_Fibreglass; Sill Material = FMC_Concrete_Precast_Painted; Trim Material = FMC_Concrete_Precast_Painted",
+   "source_status": "assumed",
+   "source": "FMC_Materials.json; chosen for the family, the reviewer confirms"
+  },
+  "Design movement default 17 (Contemporary)": {
+   "value": 17,
+   "source_status": "assumed",
+   "source": "canvas boards; FMC_Profile_Sets.json has no default"
+  },
+  "Surround profiles: 20 movements": {
+   "value": "FMC_Profile_Surround_<Token>",
+   "source_status": "assumed",
+   "source": "FMC_Profile_Sets.json (outlines proposed for the designer to approve)"
+  },
+  "Trim position": {
+   "value": "jambs and head at the opening edge",
+   "source_status": "assumed",
+   "source": "exterior wall face at y = -130 (230 wall + 15 plaster), as the sill"
   }
  },
  "checks": {
