@@ -30,6 +30,39 @@ function circuits(board: string, prefix: string, n: number) {
   return { nodes, edges };
 }
 
+/** Building controls: a head end on the ground floor, three DDC controllers (GF, FF, roof plant) and their points. */
+function controlsDiagram() {
+  const pt = (id: string, kind: string, name: string, level: string, ctl: string | null, type: string | null, signal: string | null, family = "", cat = "Mechanical Equipment") =>
+    N(id, kind, name, level, { controller_id: ctl, point_type: type, signal, protocol: null, mark: id }, family, cat);
+  return {
+    kind: "m_controls", system: "BMS",
+    nodes: [
+      N("HE", "controller", "BMS Head End", "L00", { controller_id: null, protocol: "BACnet/IP", mark: "BMS-01" }, "FMC_E_BMSHeadEnd", "Electrical Equipment"),
+      N("DDC1", "controller", "DDC Controller", "L00", { controller_id: "BMS-01", protocol: "BACnet MS/TP", mark: "DDC-01" }, "FMC_E_DDCController", "Electrical Equipment"),
+      N("DDC2", "controller", "DDC Controller", "L01", { controller_id: "BMS-01", protocol: "BACnet MS/TP", mark: "DDC-02" }, "FMC_E_DDCController", "Electrical Equipment"),
+      N("DDC3", "controller", "DDC Controller", "RF", { controller_id: "BMS-01", protocol: null, mark: "DDC-03" }, "FMC_E_DDCController", "Electrical Equipment"),
+      pt("TS1", "sensor", "Room Temperature Sensor", "L00", "DDC-01", "AI", "0-10V", "FMC_M_TempSensor", "Data Devices"),
+      pt("TH1", "sensor", "Room Thermostat", "L00", "DDC-01", "AI", "4-20mA", "FMC_M_Thermostat", "Data Devices"),
+      pt("PIR1", "sensor", "Occupancy PIR Sensor", "L00", "DDC-01", "DI", "Volt-free", "FMC_E_PIR", "Lighting Devices"),
+      pt("DA1", "actuator", "Damper Actuator", "L00", "DDC-01", "AO", "0-10V", "FMC_M_DamperActuator", "Duct Accessories"),
+      pt("TS2", "sensor", "Duct Temperature Sensor", "L01", "DDC-02", "AI", null, "FMC_M_TempSensor", "Duct Accessories"),
+      pt("VA2", "actuator", "Motorised Valve Actuator", "L01", "DDC-02", "AO", "0-10V", "FMC_M_ValveActuator", "Pipe Accessories"),
+      pt("VFD1", "drive", "AHU Fan VFD", "RF", "DDC-03", "AO", "0-10V", "FMC_E_VFD", "Electrical Equipment"),
+      pt("VFD1S", "drive", "AHU Fan VFD Status", "RF", "DDC-03", "DI", "Volt-free", "FMC_E_VFD", "Electrical Equipment"),
+      pt("MS1", "drive", "Pump Motor Starter", "RF", "DDC-03", "DO", "24VAC", "FMC_E_MotorStarter", "Electrical Equipment"),
+      pt("LS1", "sensor", "Tank Level Float Switch", "RF", "DDC-03", "DI", "Volt-free", "FMC_P_FloatSwitch", "Pipe Accessories"),
+      pt("FS1", "sensor", "Filter Pressure Switch", "RF", null, "DI", "Volt-free", "FMC_M_PressureSwitch", "Duct Accessories"),
+      pt("XX1", "sensor", "CO2 Sensor", "L01", "DDC-09", "AI", "0-10V", "FMC_M_CO2Sensor", "Data Devices"),
+    ],
+    edges: [
+      E("HE", "DDC1", "data", { protocol: "BACnet MS/TP" }), E("HE", "DDC2", "data", { protocol: "BACnet MS/TP" }), E("HE", "DDC3", "data", { protocol: null }),
+      E("DDC1", "TS1", "data"), E("DDC1", "TH1", "data"), E("DDC1", "PIR1", "data"), E("DDC1", "DA1", "data"),
+      E("DDC2", "TS2", "data"), E("DDC2", "VA2", "data"),
+      E("DDC3", "VFD1", "data"), E("DDC3", "VFD1S", "data"), E("DDC3", "MS1", "data"), E("DDC3", "LS1", "data"),
+    ],
+  };
+}
+
 export function fixtureScan(): ScanResult {
   const big = circuits("DBX", "X", 30);
   return SCAN_RESULT.parse({
@@ -146,6 +179,7 @@ export function fixtureScan(): ScanResult {
         edges: [E("AT1", "DC1", "conductor"), E("AT2", "DC1", "conductor"), E("AT3", "DC2", "conductor"), E("DC1", "TJ1", "conductor"), E("DC2", "TJ2", "conductor"),
           E("TJ1", "EP1", "conductor"), E("TJ2", "EP2", "conductor"), E("EP1", "MET", "conductor"), E("EP2", "MET", "conductor"), E("MET", "SPD1", "bond"), E("MET", "BD1", "bond")],
       },
+      controlsDiagram(),
     ],
     gaps: [{ kind: "e_sld", element_id: "DB2", message: "Circuit 2 has no rating" }],
   });
@@ -377,4 +411,61 @@ test("fmc_diagram_draw is behind the live-model lock; the tool refuses a real dr
   assert.equal(r.isError, true);
   assert.equal(JSON.parse(r.content[0].text).refused, true);
   assert.ok(FMC_DIAGRAM_DESCRIPTION.includes("_Staging and _ChainTests") && FMC_DIAGRAM_DESCRIPTION.includes("presses Generate in the pane"));
+});
+
+test("controls: head end at the base, DDC controllers on their levels, points counted, gaps listed", () => {
+  const scan = fixtureScan();
+  const plan = layoutScan(scan, DEFAULT_DIAGRAM_KIT, ["m_controls"]);
+  const riser = plan.views.find((v) => v.view.name === "M-Controls-Riser")!, points = plan.views.find((v) => v.view.name === "M-Controls-Points")!;
+  assert.ok(riser && points, "a riser and a points list");
+  assert.deepEqual(riser.collisions, []);
+  assert.deepEqual(points.collisions, []);
+  const items = riser.view.items;
+  const sym = (id: string) => items.find((i) => i.t === "symbol" && i.source_id === id) as { at: number[]; family: string } | undefined;
+  assert.equal(sym("HE")!.family, "FMC_SYM_M_BMSController");
+  for (const id of ["DDC1", "DDC2", "DDC3"]) assert.equal(sym(id)!.family, "FMC_SYM_M_DDCController");
+  // levels top down; the head end under every band
+  assert.ok(sym("DDC3")!.at[1] > sym("DDC2")!.at[1] && sym("DDC2")!.at[1] > sym("DDC1")!.at[1] && sym("DDC1")!.at[1] > sym("HE")!.at[1]);
+  const txt = items.filter((i) => i.t === "text").map((i) => (i as { text: string }).text);
+  // points by type, by kit symbol
+  assert.ok(txt.some((t) => t.includes("Protocol: BACnet MS/TP\nPoints 4: AI 2 · AO 1 · DI 1 · DO 0\nSee M-Controls-Points")), "DDC-01 counts");
+  assert.ok(txt.some((t) => t.includes("Points 4: AI 0 · AO 1 · DI 2 · DO 1")), "DDC-03 counts");
+  assert.ok(txt.some((t) => t === "DDC-03") && txt.some((t) => t.includes("Protocol: TBC")), "no protocol: TBC");
+  assert.ok(txt.some((t) => t.startsWith("BMS-01\nLevel: Ground\nBACnet/IP backbone")), "head end level and backbone");
+  assert.equal(txt.filter((t) => t === "BACnet MS/TP").length, 2, "each link labelled with its protocol");
+  assert.ok(txt.includes("Protocol TBC"), "the DDC-03 link has no protocol");
+  const fams = new Set(items.filter((i) => i.t === "symbol").map((i) => (i as { family: string }).family));
+  for (const f of ["FMC_SYM_M_Sensor", "FMC_SYM_M_Actuator", "FMC_SYM_E_VFD", "FMC_SYM_E_MotorStarter", "FMC_SYM_M_RoomThermostatController", "FMC_SYM_E_OccupancyPIRSensor"])
+    assert.ok(fams.has(f), `${f} used`);
+  assert.ok(txt.includes("×2") , "two VFD points on DDC-03");
+  // gaps: no controller id, an id that matches no controller
+  const notes = txt.find((t) => t.startsWith("Every value comes from the model"))!;
+  assert.ok(notes.includes("Points with no FMC_Controller_ID (1): FS1."));
+  assert.ok(notes.includes('FMC_Controller_ID "DDC-09" matches no controller in the model (1): XX1.'));
+  assert.ok(notes.includes("- DDC-03: protocol TBC"));
+  // the points list: a table per controller, TBC for the missing signal
+  const ptxt = points.view.items.filter((i) => i.t === "text").map((i) => (i as { text: string }).text);
+  assert.ok(ptxt.includes("DDC-02 · BACnet MS/TP · 2 points"));
+  assert.ok(ptxt.includes("Signal\nTBC\n0-10V"), "TS2 has no signal");
+  assert.ok(ptxt.some((t) => t.startsWith("Every value comes from the model") && t.includes("- Duct Temperature Sensor: signal TBC")));
+  assert.ok(points.tbc > 0 && riser.tbc > 0);
+  // deterministic, whatever order the scan lists things in
+  const shuffled = fixtureScan();
+  for (const d of shuffled.diagrams) { d.nodes.reverse(); d.edges.reverse(); }
+  shuffled.levels.reverse();
+  assert.equal(JSON.stringify(layoutScan(shuffled, DEFAULT_DIAGRAM_KIT, ["m_controls"])), JSON.stringify(plan));
+});
+
+test("controls: more points than the kit's maximum list counts only and refer to the schedule", () => {
+  const scan = fixtureScan();
+  const d = scan.diagrams.find((x) => x.kind === "m_controls")!;
+  for (let i = 1; i <= 45; i++) {
+    d.nodes.push(SCAN_RESULT.shape.diagrams.element.shape.nodes.element.parse(N(`P${i}`, "sensor", `Sensor ${i}`, "L01", { controller_id: "DDC-02", point_type: i % 2 ? "AI" : "DI", signal: "0-10V", mark: `S-${i}` })));
+    d.edges.push(SCAN_RESULT.shape.diagrams.element.shape.edges.element.parse(E("DDC2", `P${i}`, "data")));
+  }
+  const plan = layoutScan(scan, DEFAULT_DIAGRAM_KIT, ["m_controls"]);
+  for (const v of plan.views) assert.deepEqual(v.collisions, [], v.view.name);
+  const ptxt = plan.views.find((v) => v.view.name === "M-Controls-Points")!.view.items.filter((i) => i.t === "text").map((i) => (i as { text: string }).text);
+  assert.ok(ptxt.includes("Points 47: AI 24 · AO 1 · DI 22 · DO 0\nMore than 40 points: see M15_Controls_Points"));
+  assert.ok(ptxt.includes("DDC-01 · BACnet MS/TP · 4 points"), "the others still list their points");
 });

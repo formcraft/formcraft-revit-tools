@@ -29,7 +29,7 @@ function reply(body: object, isError = false) {
 export const FMC_DIAGRAM_DESCRIPTION =
   "Formcraft line diagrams from the model (track LD): electrical single-lines (BS 7671, IEC 60617 symbols) and power risers, fire alarm " +
     "zone charts (BS 5839), ELV risers, fire fighting (BS EN 12845), water and drainage schematics, refrigerant and " +
-    "lightning protection schematics. Values come only from the model: a missing value prints TBC and is listed; nothing " +
+    "lightning protection schematics, and the building controls network riser with its points list (m_controls). Values come only from the model: a missing value prints TBC and is listed; nothing " +
     "is sized, rated or computed. scan (read-only) reads the systems and returns per diagram the node and edge counts and " +
     "the gaps. plan (read-only) scans and lays out the views and returns per view its name, item counts, TBC count, " +
     "collisions and warnings; nothing is drawn (save: true writes the draw spec JSON to the reports folder). draw scans, " +
@@ -41,7 +41,7 @@ export const FMC_DIAGRAM_DESCRIPTION =
 export const FMC_DIAGRAM_SHAPE = {
   action: z.enum(["scan", "plan", "draw"]),
   kinds: z.array(z.enum(DIAGRAM_KINDS)).optional().default([])
-    .describe("Diagrams: e_sld, e_power_riser, e_fa_riser, e_elv_riser, fp_schematic, p_water, p_drainage, m_refrigerant, lp_schematic. Empty: all"),
+    .describe("Diagrams: e_sld, e_power_riser, e_fa_riser, e_elv_riser, fp_schematic, p_water, p_drainage, m_refrigerant, lp_schematic, m_controls. Empty: all"),
   kit_folder: z.string().optional().default("")
     .describe("The kit folder, for 03_Master_Data\\FMC_Diagram_Symbols.json (symbols and styles). Empty: the kit beside the family specs"),
   views: z.array(z.string()).optional().default([]).describe("draw: only these views (names from plan). Empty: all"),

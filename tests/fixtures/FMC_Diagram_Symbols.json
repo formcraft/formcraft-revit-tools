@@ -40,8 +40,11 @@
       "p_water": "P-Water-Schematic",
       "p_drainage": "P-Drainage-Schematic",
       "m_refrigerant": "M-Refrigerant-Schematic",
-      "lp_schematic": "LP-Schematic"
-    }
+      "lp_schematic": "LP-Schematic",
+      "m_controls": "M-Controls"
+    },
+    "controls_points_max": 40,
+    "controls_points_schedule": "M15_Controls_Points"
   },
   "breaker_family": "FMC_DI_E_SLD_Breaker",
   "breaker_default": "MCB",
@@ -819,6 +822,122 @@
       "family": "FMC_SYM_LP_BondToMetalwork",
       "type": "Standard",
       "label": "Bond to metalwork"
+    },
+    {
+      "kinds": [
+        "controller",
+        "gateway"
+      ],
+      "family": "FMC_SYM_M_BMSController",
+      "type": "Standard",
+      "label": "BMS head end / supervisory controller",
+      "diagrams": [
+        "m_controls"
+      ],
+      "match": "\\bbms\\b|head ?end|supervis|building ?management"
+    },
+    {
+      "kinds": [
+        "gateway"
+      ],
+      "family": "FMC_SYM_M_Gateway",
+      "type": "Standard",
+      "label": "Protocol gateway",
+      "diagrams": [
+        "m_controls"
+      ]
+    },
+    {
+      "kinds": [
+        "controller"
+      ],
+      "family": "FMC_SYM_E_LightingController",
+      "type": "Standard",
+      "label": "Lighting controller",
+      "diagrams": [
+        "m_controls"
+      ],
+      "match": "lighting|\\bdali\\b"
+    },
+    {
+      "kinds": [
+        "controller"
+      ],
+      "family": "FMC_SYM_M_DDCController",
+      "type": "Standard",
+      "label": "DDC controller",
+      "diagrams": [
+        "m_controls"
+      ]
+    },
+    {
+      "kinds": [
+        "drive"
+      ],
+      "family": "FMC_SYM_E_MotorStarter",
+      "type": "Standard",
+      "label": "Motor starter",
+      "diagrams": [
+        "m_controls"
+      ],
+      "match": "starter|\\bdol\\b"
+    },
+    {
+      "kinds": [
+        "drive"
+      ],
+      "family": "FMC_SYM_E_VFD",
+      "type": "Standard",
+      "label": "Variable frequency drive (VFD)",
+      "diagrams": [
+        "m_controls"
+      ]
+    },
+    {
+      "kinds": [
+        "sensor"
+      ],
+      "family": "FMC_SYM_M_RoomThermostatController",
+      "type": "Standard",
+      "label": "Room thermostat / controller",
+      "diagrams": [
+        "m_controls"
+      ],
+      "match": "thermostat|room ?(controller|sensor)"
+    },
+    {
+      "kinds": [
+        "sensor"
+      ],
+      "family": "FMC_SYM_E_OccupancyPIRSensor",
+      "type": "Standard",
+      "label": "Occupancy (PIR) sensor",
+      "diagrams": [
+        "m_controls"
+      ],
+      "match": "occupancy|\\bpir\\b|presence|motion"
+    },
+    {
+      "kinds": [
+        "sensor"
+      ],
+      "family": "FMC_SYM_M_Sensor",
+      "type": "Standard",
+      "label": "Sensor",
+      "diagrams": [
+        "m_controls"
+      ]
+    },
+    {
+      "kinds": [
+        "actuator"
+      ],
+      "family": "FMC_SYM_M_Actuator",
+      "type": "Standard",
+      "label": "Actuator",
+      "diagrams": [
+        "m_controls"
+      ]
     }
   ],
   "sizes": {
@@ -900,6 +1019,30 @@
     ],
     "FMC_SYM_LP_MainEarthingTerminal": [
       10,
+      6
+    ],
+    "FMC_SYM_M_BMSController": [
+      10,
+      8
+    ],
+    "FMC_SYM_M_DDCController": [
+      10,
+      6
+    ],
+    "FMC_SYM_M_Gateway": [
+      8,
+      6
+    ],
+    "FMC_SYM_E_LightingController": [
+      10,
+      6
+    ],
+    "FMC_SYM_E_VFD": [
+      8,
+      6
+    ],
+    "FMC_SYM_E_MotorStarter": [
+      8,
       6
     ]
   },

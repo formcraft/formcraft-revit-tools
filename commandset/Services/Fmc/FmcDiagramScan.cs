@@ -22,7 +22,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// source to component).
         /// </summary>
         public static readonly string[] Kinds =
-            { "e_sld", "e_power_riser", "e_fa_riser", "e_elv_riser", "fp_schematic", "p_water", "p_drainage", "m_refrigerant", "lp_schematic" };
+            { "e_sld", "e_power_riser", "e_fa_riser", "e_elv_riser", "fp_schematic", "p_water", "p_drainage", "m_refrigerant", "lp_schematic", "m_controls" };
 
         private const double FeetToMm = 304.8;
         private const int MaxGapsPerList = 25;
@@ -109,6 +109,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             var piping = kinds.Where(k => k == "fp_schematic" || k == "p_water" || k == "p_drainage" || k == "m_refrigerant").ToList();
             if (piping.Count > 0) diagrams.AddRange(Piping(c, new HashSet<string>(piping)));
             if (kinds.Contains("lp_schematic")) diagrams.AddRange(Lightning(c));
+            if (kinds.Contains("m_controls")) diagrams.AddRange(Controls(c));
 
             foreach (string k in Kinds.Where(kinds.Contains))
                 if (!diagrams.Any(g => g.Kind == k)) c.Gap(k, null, "Nothing in the model for this diagram yet.");
@@ -775,6 +776,138 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (var pt in parts.Where(x => x.pts.Count == 0))
                     c.Gap(K, pt.el.UniqueId, $"{pt.el.Name} has no location point or line, so it can't be joined.");
             }
+            return new List<Graph> { g };
+        }
+
+        // ---------- M building automation and controls ----------
+
+        private static readonly BuiltInCategory[] ControlsCats =
+        {
+            BuiltInCategory.OST_ElectricalEquipment, BuiltInCategory.OST_DataDevices, BuiltInCategory.OST_MechanicalEquipment,
+            BuiltInCategory.OST_DuctAccessory, BuiltInCategory.OST_PipeAccessory, BuiltInCategory.OST_LightingDevices,
+            BuiltInCategory.OST_ElectricalFixtures, BuiltInCategory.OST_SecurityDevices, BuiltInCategory.OST_SpecialityEquipment,
+        };
+
+        /// <summary>
+        /// Node kind from the category and the family, type and instance names: in Electrical Equipment a gateway, a drive
+        /// (VFD, drive, starter) or a controller (controller, DDC, BMS, head end); elsewhere too an actuator (actuator,
+        /// motorised, solenoid) or a sensor (sensor, detector, thermostat, switch, meter); else a device.
+        /// </summary>
+        private static string ControlsKind(Document doc, Element e)
+        {
+            string w = Words(doc, e);
+            if (CatKey(e) == "OST_ElectricalEquipment")
+            {
+                if (Has(w, "gateway")) return "gateway";
+                if (Has(w, "vfd", "drive", "starter")) return "drive";
+                if (Has(w, "controller", "ddc", "bms", "headend", "head end", "head_end", "head-end")) return "controller";
+            }
+            if (Has(w, "actuator", "motorised", "motorized", "solenoid")) return "actuator";
+            if (Has(w, "sensor", "detector", "thermostat", "switch", "meter")) return "sensor";
+            return "device";
+        }
+
+        private static string Key(string s) => string.IsNullOrWhiteSpace(s) ? null : s.Trim().ToUpperInvariant();
+
+        /// <summary>
+        /// The controls network (m_controls): elements carrying FMC_Controller_ID (with FMC_Point_Type, FMC_Point_Signal,
+        /// FMC_Protocol). A device's FMC_Controller_ID names its controller, matched on the controller's Mark, then its
+        /// Panel Name, then its type name; a controller's FMC_Controller_ID names its supervisor (head end or gateway).
+        /// Edges are "data": controller to device, supervisor to controller. An id that matches no controller is a gap,
+        /// never a guess.
+        /// </summary>
+        private static List<Graph> Controls(Ctx c)
+        {
+            const string K = "m_controls";
+            Document doc = c.Doc;
+            var g = new Graph(K, "Building controls");
+            var found = new List<(Element el, JObject node)>();
+            foreach (Element e in new FilteredElementCollector(doc).WherePasses(new ElementMulticategoryFilter(ControlsCats.ToList()))
+                         .WhereElementIsNotElementType().ToList().OrderBy(x => x.UniqueId, StringComparer.Ordinal))
+            {
+                Parameter cid = Shared(doc, e, "FMC_Controller_ID");
+                if (cid == null) continue; // the kit parameter isn't on this element
+                string kind = ControlsKind(doc, e);
+                JToken id = Text(cid), pointType = Text(Shared(doc, e, "FMC_Point_Type"));
+                bool network = kind == "controller" || kind == "gateway";
+                if (!network && IsNull(id) && IsNull(pointType)) continue; // carries the parameter but takes no part
+                JObject n = NodeOf(c, K, e, kind);
+                string level = LevelOf(doc, e);
+                n["params"] = new JObject
+                {
+                    ["controller_id"] = id,
+                    ["point_type"] = pointType,
+                    ["signal"] = Text(Shared(doc, e, "FMC_Point_Signal")),
+                    ["protocol"] = Text(Shared(doc, e, "FMC_Protocol")),
+                    ["mark"] = Text(e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)),
+                    ["level"] = Str(level == null ? null : (doc.GetElement(level) as Level)?.Name),
+                };
+                g.Node(n);
+                found.Add((e, n));
+            }
+            if (found.Count == 0) return new List<Graph>();
+
+            // Controllers by Mark, then Panel Name, then type name (the first by UniqueId when two share a name).
+            var byMark = new Dictionary<string, List<Element>>();
+            var byPanel = new Dictionary<string, List<Element>>();
+            var byType = new Dictionary<string, List<Element>>();
+            void Add(Dictionary<string, List<Element>> d, string k, Element e)
+            {
+                if (k == null) return;
+                if (!d.TryGetValue(k, out var l)) d[k] = l = new List<Element>();
+                l.Add(e);
+            }
+            foreach (var (el, node) in found)
+            {
+                string kind = node.Value<string>("kind");
+                if (kind != "controller" && kind != "gateway") continue;
+                Add(byMark, Key(el.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString()), el);
+                Add(byPanel, Key(el.get_Parameter(BuiltInParameter.RBS_ELEC_PANEL_NAME)?.AsString()), el);
+                Add(byType, Key(TypeName(doc, el)), el);
+            }
+            Element Find(string id, out int count)
+            {
+                string k = Key(id);
+                count = 0;
+                if (k == null) return null;
+                foreach (var d in new[] { byMark, byPanel, byType })
+                    if (d.TryGetValue(k, out var l)) { count = l.Count; return l[0]; }
+                return null;
+            }
+
+            var noId = new List<(string, string)>();
+            var unknown = new List<(string, string)>();
+            var noProtocol = new List<(string, string)>();
+            foreach (var (el, node) in found)
+            {
+                var prms = (JObject)node["params"];
+                string kind = node.Value<string>("kind");
+                bool network = kind == "controller" || kind == "gateway";
+                string label = IsNull(prms["mark"]) ? el.Name : prms.Value<string>("mark");
+                if (network && IsNull(prms["protocol"])) noProtocol.Add((el.UniqueId, $"Controller {label} has no FMC_Protocol."));
+                if (IsNull(prms["controller_id"]))
+                {
+                    if (!network && !IsNull(prms["point_type"]))
+                        noId.Add((el.UniqueId, $"{label} has a point type ({prms.Value<string>("point_type")}) but no FMC_Controller_ID."));
+                    continue;
+                }
+                string cid = prms.Value<string>("controller_id");
+                Element ctl = Find(cid, out int count);
+                if (ctl == null)
+                {
+                    unknown.Add((el.UniqueId, $"{label}: FMC_Controller_ID \"{cid}\" matches no controller (Mark, Panel Name or type name)."));
+                    continue;
+                }
+                if (ctl.Id == el.Id) continue; // a controller naming itself is no link
+                if (count > 1) c.Gap(K, ctl.UniqueId, $"FMC_Controller_ID \"{cid}\" matches {count} controllers; {label} is linked to the first.");
+                var edge = new JObject();
+                if (network) edge["protocol"] = prms["protocol"];
+                else edge["signal"] = prms["signal"];
+                g.Edge(ctl.UniqueId, el.UniqueId, "data", edge);
+            }
+            GapList(c, K, noId, "points with no FMC_Controller_ID");
+            GapList(c, K, unknown, "controller ids that match no controller");
+            GapList(c, K, noProtocol, "controllers with no FMC_Protocol");
             return new List<Graph> { g };
         }
     }
