@@ -456,6 +456,28 @@ test("controls: head end at the base, DDC controllers on their levels, points co
   assert.equal(JSON.stringify(layoutScan(shuffled, DEFAULT_DIAGRAM_KIT, ["m_controls"])), JSON.stringify(plan));
 });
 
+test("controls: a Data Devices gateway and a Lighting Devices controller are network nodes, laid out without collisions", () => {
+  const scan = fixtureScan();
+  const d = scan.diagrams.find((x) => x.kind === "m_controls")!;
+  const node = SCAN_RESULT.shape.diagrams.element.shape.nodes.element, edge = SCAN_RESULT.shape.diagrams.element.shape.edges.element;
+  d.nodes.push(
+    node.parse(N("GW1", "gateway", "Data Device Gateway", "L01", { controller_id: "BMS-01", point_type: null, signal: null, protocol: "Modbus TCP", mark: "GW-01" }, "FMC_M_DataDevice_Gateway", "Data Devices")),
+    node.parse(N("LCP1", "controller", "Lighting Control Panel", "L01", { controller_id: "BMS-01", point_type: null, signal: null, protocol: "DALI", mark: "LCP-01" }, "FMC_E_EQ_LightingControlPanel", "Lighting Devices")),
+    node.parse(N("LS9", "sensor", "Lux Sensor", "L01", { controller_id: "LCP-01", point_type: "AI", signal: "DALI", protocol: null, mark: "LS9" }, "FMC_E_LuxSensor", "Lighting Devices")),
+  );
+  d.edges.push(edge.parse(E("HE", "GW1", "data", { protocol: "Modbus TCP" })), edge.parse(E("HE", "LCP1", "data", { protocol: "DALI" })), edge.parse(E("LCP1", "LS9", "data")));
+  const parsed = SCAN_RESULT.parse(scan);
+  const kinds = Object.fromEntries(parsed.diagrams.find((x) => x.kind === "m_controls")!.nodes.map((n) => [n.id, n.kind]));
+  assert.equal(kinds.GW1, "gateway");
+  assert.equal(kinds.LCP1, "controller");
+  const plan = layoutScan(parsed, DEFAULT_DIAGRAM_KIT, ["m_controls"]);
+  for (const v of plan.views) assert.deepEqual(v.collisions, [], v.view.name);
+  const riser = plan.views.find((v) => v.view.name === "M-Controls-Riser")!;
+  const sym = (id: string) => riser.view.items.find((i) => i.t === "symbol" && i.source_id === id) as { family: string } | undefined;
+  assert.equal(sym("GW1")?.family, "FMC_SYM_M_Gateway");
+  assert.equal(sym("LCP1")?.family, "FMC_SYM_E_LightingController");
+});
+
 test("controls: more points than the kit's maximum list counts only and refer to the schedule", () => {
   const scan = fixtureScan();
   const d = scan.diagrams.find((x) => x.kind === "m_controls")!;
