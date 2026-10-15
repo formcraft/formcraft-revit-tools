@@ -73,6 +73,31 @@ refrigerant schematics, and the lightning protection schematic.
   extensible storage (schema `FMC_DiagramSource`), so a rerun redraws them and keeps a person's notes (`kept_by_hand`).
   Symbols must already be loaded (Generic Annotations or Detail Items); a missing one is a warning, never a load from disk.
 
+## Server side (LD2–LD4 layout, `server/src/fmc/diagram/`)
+| Module | Does |
+|---|---|
+| `contract.ts` | SCAN_RESULT in, DRAW_SPEC out. Added for LD2 (additive): `SCAN_EDGE.id` (the circuit or pipe id, used as `source_id`), `rotation_deg` on text items, `PARAM_KEYS` (the parameter names the layout reads, with aliases) and `DRAW_CONVENTIONS` (symbol `at` = centre; text `at` = top of the box at its alignment side; rotation counter-clockwise) |
+| `symbols.ts` | Node kind + category/family/name hints → kit symbol (`FMC_DI_E_SLD_*`, `FMC_DI_P_Schematic`, `FMC_SYM_<Role>_<Name>`); breaker type only from what the model says (unknown: MCB, labelled "type TBC"); styles (grid, text types, line styles); symbol sizes for the collision check. A node no rule matches is drawn as a plain box with its name and a warning, never a guessed symbol |
+| `geometry.ts` | Canvas in paper mm on a 5 mm grid, text measuring, the TBC collector, the frame (title, legend of the symbols used, notes listing every TBC value) and `collisions(view)` |
+| `sld.ts` | E single-lines: supply chain, board title block, busbar, ways at 20 mm (feeders 40 mm), breaker and a label block per way, sub-boards below; more than 24 ways continues on `<view>-2` |
+| `riser.ts` | E power riser (`e_power_riser`, added 15 Oct, laid out from the e_sld graph): level bands, the supply and each board on its level (boards on one level side by side) with part type, ways, the feeder serving it (rating · poles · device, cable; TBC when null) and "See E-SLD-…"; feeders run on a track at the foot of the parent's level and rise or drop on the fed board's own column. Final circuits stay on the SLDs |
+| `bands.ts` | Level bands (top level at the top): FA zone chart (columns per zone, panel at the base), ELV (columns per system, head end at the base), FP / water / drainage (a column per riser or stack, plant in flow order, devices counted per level, pipe sizes beside the riser), LP (bands by part, a column per down conductor, MET, SPDs and bonds at the base) |
+| `schematic.ts` | Refrigerant: outdoor-unit trees, refrigerant on FMC_Medium, condensate on the kit's dashed style (FMC_Thin and a note while there is none) |
+| `layout.ts` | `layoutScan(scan, kit, kinds)` → views with TBC counts, collisions, warnings and coverage; `drawSpec`, `planSummary` |
+
+Layouts are pure and deterministic (stable sorts by name and id), so regenerating gives the same items. A view with a
+collision is never drawn: `fmc_diagram draw` refuses it with the list.
+
+**Kit override (rule 7).** The symbol table, styles, sizes and layout numbers are kit data. The code holds the default;
+`<kit>\03_Master_Data\FMC_Diagram_Symbols.json` replaces it when present (same shape: `styles`, `layout`, `sizes` merge key
+by key; `symbols` and `breakers` replace the lists). `tests/fixtures/FMC_Diagram_Symbols.json` is the default, ready to
+copy into the kit. Rules with a bad regular expression or no family are dropped and reported, never fatal.
+
+**Tool `fmc_diagram`.** `scan` (read-only: counts and gaps per diagram), `plan` (read-only: per view name, item counts,
+TBC count, collisions, warnings; `save: true` writes the draw spec JSON to `<reports>\Diagrams`), `draw` (a dry run by
+default; `dry_run: false` needs `confirm: true`). `fmc_diagram_draw` is in `WRITE_COMMANDS`, so on a live project the
+draw is refused and a person presses Generate in the pane.
+
 ## Third-party tools already on the pilot PC
 The ribbon shows the ElectroBIM Single Line and FireBIM Riser add-ins. They may cover SLDs and FP risers today. LD
 reads the same model data, but uses Formcraft's kit, keynotes and QA gates, and covers every discipline from one scan.
