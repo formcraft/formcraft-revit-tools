@@ -40,6 +40,8 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
 
             try
@@ -272,7 +274,7 @@ namespace RevitMCPCommandSet.Services
                     Message = errorDetails,
                     Response = null
                 };
-                TaskDialog.Show("Error", errorDetails);
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", errorDetails);
             }
             finally
             {

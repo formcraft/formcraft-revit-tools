@@ -50,12 +50,12 @@ namespace RevitMCPCommandSet.Commands
                 }
                 else
                 {
-                    throw new TimeoutException("标记墙操作超时");
+                    throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Tagging walls timed out");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"标记墙失败: {ex.Message}");
+                throw new Exception($"[FMC-TOOL-FAILED] Tagging walls failed: {ex.Message}");
             }
         }
     }

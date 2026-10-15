@@ -109,6 +109,21 @@ export function revitLines(f: AddinFacts | null, server: { commit: string; built
   return lines;
 }
 
+/**
+ * F-041 (issue #133): the AI-modeller rulebook. Missing or without its section is a Fail with the fix, so a test run
+ * doesn't find out from fmc_ai that AI-assisted modelling is Off. The fix is a kit change (rule 7), never a value in code.
+ */
+export function aiRulebookLine(r: { book: unknown; file: string; section: string; problems: string[] }, rulebooksDir: string): Line {
+  const name = win.basename(r.file || "");
+  if (r.book) return { area: "Kit", check: "AI-use rulebook", state: "Pass", detail: `Read ${name}${r.section && r.section !== "whole file" ? ` (section ${r.section})` : ""} · ${r.file}` };
+  return {
+    area: "Kit", check: "AI-use rulebook", state: "Fail",
+    detail: `${r.problems.join("; ") || "No AI-modeller rulebook"}. AI-assisted modelling stays Off. Fix: add FMC_Rulebook_AIUse.json ` +
+      `(schema fmc-aiuse/0.1: bands, groups, limits; the proposal is docs/kit-proposals/FMC_Rulebook_AIUse.json) to ${rulebooksDir}, ` +
+      `or the same as an "ai_use" section in FMC_Rulebook_ClaudeUse.json: a kit change request (rule 7).`,
+  };
+}
+
 export function summary(lines: Line[]) {
   const fail = lines.filter((l) => l.state === "Fail").length, warn = lines.filter((l) => l.state === "Warn").length;
   return { result: fail ? "Fix first" : "Ready to test", fail, warn, pass: lines.filter((l) => l.state === "Pass").length };

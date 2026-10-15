@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { GuardConfig, checkWritePath, csvLine, expandEnv } from "./policy.js";
-import { AiModellerConfig, AiRulebook, AiState, batchKey, parseConfig, parseRulebook, projectFolderOf } from "./aiuse.js";
+import { AIUSE_FILES, AiModellerConfig, AiRulebook, AiState, batchKey, parseConfig, pickAiRulebook, projectFolderOf } from "./aiuse.js";
 
 const win = path.win32;
 
@@ -11,11 +11,22 @@ export function formcraftDir(env: NodeJS.ProcessEnv = process.env): string {
   return win.join(env.APPDATA || win.join(os.homedir(), "AppData", "Roaming"), "Formcraft");
 }
 
-export function loadRulebook(cfg: GuardConfig): { book: AiRulebook | null; file: string; problems: string[] } {
-  const file = win.join(expandEnv(cfg.rulebooks_dir), "FMC_Rulebook_AIUse.json");
-  if (!fs.existsSync(file)) return { book: null, file, problems: [`No ${win.basename(file)} in the kit's rulebooks (a kit change request)`] };
-  try { const r = parseRulebook(fs.readFileSync(file, "utf8")); return { book: r.book, file, problems: r.problems }; }
-  catch (e) { return { book: null, file, problems: [e instanceof Error ? e.message : String(e)] }; }
+/**
+ * The AI-modeller rulebook (F-041): FMC_Rulebook_AIUse.json, else the kit's FMC_Rulebook_ClaudeUse.json (see
+ * AIUSE_FILES). `file` is the full path of the file read (or, when none is usable, the first one found); `section` says
+ * where in it the AI-modeller section was.
+ */
+export function loadRulebook(cfg: GuardConfig): { book: AiRulebook | null; file: string; section: string; problems: string[] } {
+  const dir = expandEnv(cfg.rulebooks_dir);
+  const present: Array<{ name: string; raw: string }> = [];
+  for (const name of AIUSE_FILES) {
+    const p = win.join(dir, name);
+    try { if (fs.existsSync(p)) present.push({ name, raw: fs.readFileSync(p, "utf8") }); }
+    catch (e) { return { book: null, file: p, section: "", problems: [`${name}: ${e instanceof Error ? e.message : String(e)}`] }; }
+  }
+  const r = pickAiRulebook(present);
+  return { book: r.book, file: r.file ? win.join(dir, r.file) : win.join(dir, AIUSE_FILES[0]), section: r.section,
+    problems: r.problems.length ? [...r.problems.map((p) => `${p} (a kit change request)`)] : [] };
 }
 
 /** The ai_modeller section of fmc_guard.json, with Stop AI from the pane's switch file too. */

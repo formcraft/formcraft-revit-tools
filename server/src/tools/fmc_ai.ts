@@ -28,7 +28,7 @@ export type FmcAiArgs = z.infer<z.ZodObject<typeof FMC_AI_SHAPE>>;
 
 /** The policy for the document a call works on, one line per group. */
 export function policySummary(config: GuardConfig, active: any) {
-  const { book, file, problems } = loadRulebook(config);
+  const { book, file, section, problems } = loadRulebook(config);
   const ai = loadAiConfig(config);
   const state = loadState();
   const groups = book ? Object.entries(book.groups).map(([id, g]) => {
@@ -42,7 +42,8 @@ export function policySummary(config: GuardConfig, active: any) {
   const p = ai?.projects?.[project] ?? {};
   return {
     on: !!ai && !!book && !ai.stop && (p.on ?? ai.on), stop: ai?.stop ?? false,
-    rulebook: book ? file : null, rulebook_problems: problems,
+    rulebook: book ? file : null, rulebook_read: file ? `${win.basename(file)}${section ? ` (${section})` : " (no AI-modeller section)"}` : null,
+    rulebook_problems: problems,
     guard_section: ai ? "present" : "missing: AI-assisted modelling is Off",
     model: active?.title ?? null, project, role,
     involvement: p.involvement ?? ai?.involvement ?? book?.default_involvement ?? 0,

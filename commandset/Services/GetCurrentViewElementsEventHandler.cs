@@ -162,7 +162,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("error", ex.Message);
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", ex.Message);
             }
             finally
             {

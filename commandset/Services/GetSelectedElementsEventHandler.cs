@@ -60,7 +60,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("Error", "获取选中元素失败: " + ex.Message);
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Getting the selected elements failed: " + ex.Message);
                 ResultElements = new List<Models.Common.ElementInfo>();
             }
             finally

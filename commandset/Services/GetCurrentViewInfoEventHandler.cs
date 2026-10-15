@@ -45,7 +45,7 @@ namespace RevitMCPCommandSet.Services
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("error", "获取信息失败");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Getting the view information failed");
             }
             finally
             {

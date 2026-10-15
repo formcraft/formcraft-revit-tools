@@ -36,12 +36,12 @@ namespace RevitMCPCommandSet.Commands.Access
                 }
                 else
                 {
-                    throw new TimeoutException("获取视图元素超时");
+                    throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Reading the view's elements timed out");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"获取视图元素失败: {ex.Message}");
+                throw new Exception($"[FMC-TOOL-FAILED] Reading the view's elements failed: {ex.Message}");
             }
         }
     }

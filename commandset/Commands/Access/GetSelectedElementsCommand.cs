@@ -42,12 +42,12 @@ namespace RevitMCPCommandSet.Commands.Access
                     }
                     else
                     {
-                        throw new TimeoutException("获取选中元素超时");
+                        throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Reading the selection timed out");
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"获取选中元素失败: {ex.Message}");
+                    throw new Exception($"[FMC-TOOL-FAILED] Reading the selection failed: {ex.Message}");
                 }
             }
         }
