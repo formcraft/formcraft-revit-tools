@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    fmc-robot.exe: the Robot Structural Analysis connector (Track R of docs/PLAN_EXECUTION.md). The MCP server runs it
+    with JSON on stdin and reads JSON on stdout; it talks to Robot through Robot's own COM API. It runs outside Revit,
+    so Revit never waits on Robot. It builds only where Robot is installed (its interop library is needed): CI
+    without Robot skips it, and the server then says the connector isn't installed.
+    The output goes into server\robot (beside server\build, which npm run build cleans), and the stage and update scripts carry it.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>fmc-robot</AssemblyName>
+    <RootNamespace>Formcraft.Robot</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RobotDir Condition="'$(RobotDir)' == ''">C:\Program Files\Autodesk\Robot Structural Analysis Professional 2025\Exe</RobotDir>
+    <OutDir>$(MSBuildThisFileDirectory)..\..\server\robot\</OutDir>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('$(RobotDir)\Interop.RobotOM.dll')">
+    <Reference Include="Interop.RobotOM">
+      <HintPath>$(RobotDir)\Interop.RobotOM.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <Target Name="NoRobot" BeforeTargets="Build" Condition="!Exists('$(RobotDir)\Interop.RobotOM.dll')">
+    <Error Text="Robot Structural Analysis isn't installed here ($(RobotDir)\Interop.RobotOM.dll): fmc-robot builds only on a PC with Robot." />
+  </Target>
+</Project>

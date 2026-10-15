@@ -42,6 +42,7 @@ const cases = [
   ["fmc_library", { action: "parameters" }], ["fmc_library", { action: "keynotes" }],
   ["fmc_project", { action: "plan", project_folder: path.join(work, "Projects", "F26002"), code: "F26002", roles: ["A", "S"] }],
   ["fmc_file", { action: "list_open" }], ["fmc_template", { action: "recipe", template_path: "base.rte", kit_folder: kit }], ["fmc_ai", { action: "status" }], ["fmc_recipe", { action: "check", recipe_file: path.join(repo, "tests", "doc", "FMC_P_MechEq_WaterHeater_Instant.ops.json") }], ["fmc_doc", { action: "list" }], ["ask_status", {}],
+  ["fmc_robot", { action: "status" }], ["fmc_robot", { action: "send", supports: "Fixed", engineer: "E2E", cases: [{ name: "G", nature: "PERMANENT", self_weight: true }] }],
 ];
 
 const port = 8099;

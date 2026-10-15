@@ -50,7 +50,7 @@ export interface AiModellerConfig {
 export const COMMAND_GROUPS: Record<string, string> = {
   tag_walls: "views", tag_rooms: "views", create_dimensions: "views", color_splash: "views",
   fmc_sheet_create: "views", fmc_sheet_rename: "views", fmc_review_cloud: "views",
-  fmc_material_assign: "data",
+  fmc_material_assign: "data", fmc_fea_write: "data",
   create_room: "create_from_brief", fmc_brief_apply: "create_from_brief", create_point_based_element: "create_from_brief",
 };
 

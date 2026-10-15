@@ -138,6 +138,7 @@ namespace Formcraft.Shell.ViewModels
 
         private static string Kva(double va) => (va / 1000).ToString("0.0", CultureInfo.InvariantCulture);
 
+
         private async Task Check(bool save)
         {
             var folder = _project.Request().Folder;
@@ -161,8 +162,8 @@ namespace Formcraft.Shell.ViewModels
             ("1 Enrich: grades, exposure class, member marks (kit fields)", "Check only: lists empty kit fields"),
             ("2 Analytical check: members joined, supports, offsets", "Partly"),
             ("3 Loads: cases and combinations (set by the engineer)", "Engineer"),
-            ("4 Hand-off: the analytical model to the engineer's analysis software", "Planned"),
-            ("5 Results back: sizes and utilisation, differences listed", "Partly: reads FMC_FEA_ results in the model"),
+            ("4 Hand-off: the analytical model to the engineer's analysis software", "Robot: sends members, nodes and the engineer's supports and cases"),
+            ("5 Results back: sizes and utilisation, differences listed", "Partly: Robot's NEd and MEd into FMC_FEA_; sizes stay the engineer's"),
             ("6 Quantities: concrete m³ by grade, steel t, rebar BBS", "Planned"),
             ("7 Document: S sheet set, schedules, BBS", "Planned"),
         };
@@ -174,10 +175,29 @@ namespace Formcraft.Shell.ViewModels
         private readonly Action<string> _status;
         private readonly MessagesSetting _messages = new MessagesSetting();
         private SystemsCheck? _last;
+        private readonly IRobotTools _robot;
+        private readonly Action<DialogViewModel> _ask;
+        private readonly SettingStore _robotDraft = new SettingStore(new InMemoryUserSettings(), "");
+        private readonly MessagesSetting _robotMessages = new MessagesSetting();
+        private RobotResult? _robotStatus;
+        private RobotResult? _robotLast;
+        private RobotForm? _previewed;
+        private bool _resultsReady;
 
-        public StructuralPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status)
+        public static readonly string[] SupportOptions = { "Choose", "Fixed", "Pinned" };
+
+        public StructuralPage(ISystemTools tools, ProjectPage project, IUserSettings settings, Action<string> status,
+                              IRobotTools? robot = null, Action<DialogViewModel>? ask = null)
             : base("Engineer › Structural", "Prepare and check the structural model; the engineer designs and signs.")
         {
+            _robot = robot ?? new MockRobotTools();
+            _ask = ask ?? (_ => { });
+            RobotStatusCommand = new AsyncCommand(RobotStatus, status);
+            RobotPreviewCommand = new AsyncCommand(RobotPreview, status);
+            RobotSendCommand = new AsyncCommand(RobotSend, status);
+            RobotCalculateCommand = new AsyncCommand(RobotCalculate, status);
+            RobotResultsCommand = new AsyncCommand(() => RobotResults(true), status);
+            RobotWriteCommand = new AsyncCommand(RobotWrite, status);
             _tools = tools;
             _project = project;
             _settings = settings;
@@ -191,6 +211,15 @@ namespace Formcraft.Shell.ViewModels
         public ICommand CheckCommand { get; }
         public ICommand SaveCommand { get; }
         public SystemsCheck? Last => _last;
+        public ICommand RobotStatusCommand { get; }
+        public ICommand RobotPreviewCommand { get; }
+        public ICommand RobotSendCommand { get; }
+        public ICommand RobotCalculateCommand { get; }
+        public ICommand RobotResultsCommand { get; }
+        public ICommand RobotWriteCommand { get; }
+        public RobotResult? RobotLast => _robotLast;
+        public SettingStore RobotDraft => _robotDraft;
+        public MessagesSetting RobotMessages => _robotMessages;
 
         public override IEnumerable<FooterAction> Footer => new[]
         {
@@ -227,9 +256,144 @@ namespace Formcraft.Shell.ViewModels
                 _last.Results.Select(r => new TableRow(r, r.Mark, r.Type, r.Utilisation.ToString("0.00", CultureInfo.InvariantCulture), r.Run))));
             results.Add(new NoteSetting("Section changes are the engineer's decision. Formcraft lists the differences; the engineer applies them in Revit. Claude never changes a structural section.", ChipKind.Warn));
             Groups.Add(new SettingsGroup("Results back from analysis", results.ToArray()));
+            Groups.Add(RobotGroup());
             Groups.Add(new SettingsGroup("Hand-offs to Manage",
                 new NoteSetting("S sheets and schedules go to Drawings › Sheets, the design basis and calculation summary join Ready to issue, and quantities and the BBS feed Check › Reports, as each step ships.", ChipKind.Grey)));
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "structural.considerations", _status)));
+        }
+
+        private SettingsGroup RobotGroup()
+        {
+            var items = new List<SettingItem>
+            {
+                new NoteSetting("Sends the analytical columns and beams to Robot Structural Analysis and brings the forces back. The supports, load cases, " +
+                                "loads, combinations, code and sections are the engineer's: nothing is filled in.", ChipKind.Info),
+            };
+            if (_robotStatus == null) items.Add(new ButtonsSetting("", new[] { new SettingButton("Check Robot", RobotStatusCommand) }));
+            else items.Add(new ReadOnlySetting("Robot", _robotStatus.Message + (_robotStatus.Runs.Count > 0 ? " · " + _robotStatus.Runs.Count + " runs" : "")));
+
+            items.Add(new ChoiceSetting(_robotDraft, "supports", "Column-base supports", SupportOptions, hint: "The engineer's choice for every ground-floor column base"));
+            items.Add(new TextSetting("Load cases", "", "G: permanent, self-weight; Q: imposed",
+                "Separate cases with ; · natures: permanent, imposed, wind, snow, temperature, accidental, seismic", store: _robotDraft, key: "cases"));
+            items.Add(new TextSetting("Engineer", "", "the engineer whose run this is", store: _robotDraft, key: "engineer"));
+            var send = new List<SettingButton> { new SettingButton("Preview (dry run)", RobotPreviewCommand, primary: _previewed == null) };
+            if (_previewed != null) send.Add(new SettingButton("Send to Robot", RobotSendCommand, primary: true));
+            items.Add(new ButtonsSetting("", send));
+
+            items.Add(new TextSetting("Run", _robotStatus?.Runs.FirstOrDefault() ?? "", "FEA-yyyymmdd-hhmm", store: _robotDraft, key: "run", mono: true));
+            var back = new List<SettingButton> { new SettingButton("Calculate in Robot", RobotCalculateCommand), new SettingButton("Read results", RobotResultsCommand, primary: !_resultsReady) };
+            if (_resultsReady) back.Add(new SettingButton("Write into the model", RobotWriteCommand, primary: true));
+            items.Add(new ButtonsSetting("", back));
+
+            if (_robotLast != null && _robotLast.Lines.Count > 0)
+                items.Add(_robotLast.Count > 0
+                    ? new TableSetting("Results · " + _robotLast.Run, new[] { "Member", "NEd kN", "MEd kN·m" }, _robotLast.Lines.Select(l => new TableRow(l, l.A, l.B, l.C)))
+                    : new TableSetting("To Robot", new[] { "Item", "Count", "Detail" }, _robotLast.Lines.Select(l => new TableRow(l, l.A, l.B, l.C))));
+            items.Add(new NoteSetting("Writes FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref only, behind the live-model lock. FMC_FEA_Approval_Ref and utilisation are the engineer's.", ChipKind.Warn));
+            items.Add(_robotMessages);
+            return new SettingsGroup("Robot (analysis hand-off)", items.ToArray());
+        }
+
+        /// <summary>"G: permanent, self-weight; Q: imposed" → cases. Natures in plain words map to Robot's.</summary>
+        public static List<RobotCase> ParseCases(string text, List<string> problems)
+        {
+            var natures = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["permanent"] = "PERMANENT", ["dead"] = "PERMANENT", ["imposed"] = "EXPLOATATION", ["live"] = "EXPLOATATION", ["exploatation"] = "EXPLOATATION",
+                ["wind"] = "WIND", ["snow"] = "SNOW", ["temperature"] = "TEMPERATURE", ["accidental"] = "ACCIDENTAL", ["seismic"] = "SEISMIC",
+            };
+            var cases = new List<RobotCase>();
+            int before = problems.Count;
+            foreach (string part in (text ?? "").Split(';').Select(p => p.Trim()).Where(p => p.Length > 0))
+            {
+                int colon = part.IndexOf(':');
+                string name = colon > 0 ? part.Substring(0, colon).Trim() : "";
+                string[] words = (colon > 0 ? part.Substring(colon + 1) : "").Split(',').Select(w => w.Trim()).Where(w => w.Length > 0).ToArray();
+                string? nature = words.Select(w => natures.TryGetValue(w, out var n) ? n : null).FirstOrDefault(n => n != null);
+                if (name.Length == 0 || nature == null) { problems.Add("'" + part + "': write it as Name: nature (permanent, imposed, wind, snow, temperature, accidental or seismic)."); continue; }
+                cases.Add(new RobotCase(name, nature, words.Any(w => w.StartsWith("self", StringComparison.OrdinalIgnoreCase))));
+            }
+            if (cases.Count == 0 && problems.Count == before) problems.Add("Name at least one load case.");
+            return cases;
+        }
+
+        private RobotForm? ReadForm()
+        {
+            var problems = new List<string>();
+            var form = new RobotForm { Supports = _robotDraft.Get("supports") ?? "Choose", Engineer = (_robotDraft.Get("engineer") ?? "").Trim() };
+            if (form.Supports != "Fixed" && form.Supports != "Pinned") problems.Add("Choose the column-base supports.");
+            form.Cases.AddRange(ParseCases(_robotDraft.Get("cases") ?? "", problems));
+            if (form.Engineer.Length == 0) problems.Add("The engineer's name is needed.");
+            if (problems.Count == 0) return form;
+            _robotMessages.Show(ChipKind.Warn, string.Join(" ", problems));
+            return null;
+        }
+
+        private string Run => (_robotDraft.Get("run") ?? _robotStatus?.Runs.FirstOrDefault() ?? "").Trim();
+
+        private async Task RobotStatus()
+        {
+            _robotStatus = await _robot.StatusAsync();
+            _robotMessages.Show(_robotStatus.Ok ? ChipKind.Info : ChipKind.Bad, _robotStatus.Message);
+            Rebuild();
+        }
+
+        private async Task RobotPreview()
+        {
+            var form = ReadForm();
+            if (form == null) return;
+            _resultsReady = false;
+            _robotLast = await _robot.SendAsync(form, true);
+            _previewed = _robotLast.Ok ? form : null;
+            _robotMessages.Show(_robotLast.Ok ? ChipKind.Info : ChipKind.Bad, _robotLast.Message);
+            _status(_robotLast.Message);
+            Rebuild();
+        }
+
+        private Task RobotSend()
+        {
+            var form = ReadForm();
+            if (form == null || _previewed == null) return Task.CompletedTask;
+            _ask(new DialogViewModel("Send to Robot?",
+                "Robot opens with a new model of the analytical columns and beams, " + form.Supports + " supports and " + form.Cases.Count + " load cases. The Revit model doesn't change.",
+                "Send", async () =>
+                {
+                    var r = await _robot.SendAsync(form, false);
+                    _robotLast = r;
+                    _previewed = null;
+                    if (r.Ok && r.Run.Length > 0) _robotDraft.Set("run", r.Run);
+                    _robotMessages.Show(r.Ok ? ChipKind.Good : ChipKind.Bad, r.Message);
+                    _status(r.Message);
+                    Rebuild();
+                }));
+            return Task.CompletedTask;
+        }
+
+        private async Task RobotCalculate()
+        {
+            if (Run.Length == 0) { _robotMessages.Show(ChipKind.Warn, "Name the run first."); return; }
+            var r = await _robot.CalculateAsync(Run);
+            _robotMessages.Show(r.Ok ? ChipKind.Good : ChipKind.Bad, r.Message);
+            _status(r.Message);
+        }
+
+        private async Task RobotResults(bool dryRun)
+        {
+            if (Run.Length == 0) { _robotMessages.Show(ChipKind.Warn, "Name the run first."); return; }
+            _robotLast = await _robot.ResultsAsync(Run, dryRun);
+            _resultsReady = dryRun && _robotLast.Ok && _robotLast.Count > 0;
+            _robotMessages.Show(_robotLast.Ok ? (dryRun ? ChipKind.Info : ChipKind.Good) : ChipKind.Bad, _robotLast.Message);
+            _status(_robotLast.Message);
+            Rebuild();
+        }
+
+        private Task RobotWrite()
+        {
+            if (!_resultsReady || _robotLast == null) return Task.CompletedTask;
+            _ask(new DialogViewModel("Write the results into the model?",
+                _robotLast.Count + " members get FMC_FEA_NEd_kN, FMC_FEA_MEd_kNm and FMC_FEA_Run_Ref " + Run + ", as one Undo. Nothing else changes.",
+                "Write", () => RobotResults(false)));
+            return Task.CompletedTask;
         }
 
         private async Task Check(bool save)

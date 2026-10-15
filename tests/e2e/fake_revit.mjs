@@ -14,6 +14,10 @@ const doc = live
 
 const fixtures = {
   fmc_document_info: { active: doc, documents: [doc] },
+  fmc_analytical_export: { model: doc.title, without_analytical: 1, members: [
+    { id: 501, kind: "column", start: [0, 0, 0], end: [0, 0, 3000], section: "C 300x300", b_mm: 300, h_mm: 300, material_class: "Concrete", concrete_grade: "C30/37", steel_grade: "" },
+    { id: 502, kind: "column", start: [5000, 0, 0], end: [5000, 0, 3000], section: "C 300x300", b_mm: 300, h_mm: 300, material_class: "Concrete", concrete_grade: "C30/37", steel_grade: "" },
+    { id: 503, kind: "beam", start: [0, 0, 3000], end: [5000, 0, 3000], section: "B 230x450", b_mm: 230, h_mm: 450, material_class: "Concrete", concrete_grade: "C30/37", steel_grade: "" }] },
   fmc_selftest_facts: {
     addin: { commit: "test", built: "2026-10-14T00:00:00Z" }, kit_folder: process.env.KIT, documents: [doc],
     commands: ["fmc_document_info"], safe_to_close: true, ribbon: { updates: 3, changes: 1 },
