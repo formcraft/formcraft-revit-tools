@@ -58,6 +58,10 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Fixed – retest (fmc_ui close_revit) |
 | F-022 | High | Background work | Background commands stall (60 s timeouts) while the user works in other apps; queued calls dropped · #95 | Fixed – retest |
 | F-023 | Medium | Background work | `fmc_doc open` of a staged family that is already open in Revit reuses it, and `close` refused ("active document") · #108 | Fixed – retest |
+| F-024 | Medium | Gate A | Gate A can't run the library checks on a staged family that is open in Revit's window · #109 | Open |
+| F-025 | High | Code runner | `send_code_to_revit` ignores `document` and runs on the active document (edited the open door instead of the window) · #110 | Open |
+| F-026 | Medium | Recipes | Labelled dimension left a plane on the wrong side (Head Inner above Head); cause: recipe dimensioned while the template's default size was current. Recipe side fixed here (size first) · #111 | Answered (recipe fixed; engine warning still asked) |
+| F-027 | Low | Recipes | `lock_face` needs exact coordinates; 3-decimal heights missed the plane. Recipe side fixed here (10 decimals) · #112 | Answered (recipe fixed; engine tolerance still asked) |
 ---
 
 ## Test runs

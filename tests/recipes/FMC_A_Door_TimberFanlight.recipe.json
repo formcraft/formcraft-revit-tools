@@ -1,0 +1,2700 @@
+{
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_Door_TimberFanlight",
+  "template": "Metric Door.rft",
+  "about": "LOD 400 timber door frame with transom and fanlight/vent over (Uganda everyday door). Height is the overall frame height; leaf top = Height - Fanlight Height. Type-dependent parts (louvres vs glass, mosquito mesh, raised panels) are switched by Yes/No-driven formulas that collapse the part into the left jamb when off, until the engine has a visibility-parameter op. Exterior is -y; the leaf is flush with the interior face and swings in.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "OST_Doors"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "group": "IdentityData"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Frame_Spec",
+      "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fanlight_Height_mm",
+      "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Vent_Type",
+      "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mosquito_Mesh",
+      "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Glazed_Area_m2",
+      "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Openable_Area_m2",
+      "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "group": "Data"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "group": "Data"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Thickness",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Fanlight Height",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Transom Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Architrave Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Architrave Thickness",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stop Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stop Depth",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Main Leaf Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Split Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Meeting Gap",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hinge Half Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hinge Projection",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Handle Edge Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Rose Size",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Lever Length",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Panel Raise",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Panel Margin",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hide Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hide Width",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Louvre L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Louvre R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Panel L Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Panel R Offset",
+      "type": "Length",
+      "group": "Dimensions"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Vent Louvred",
+      "type": "YesNo",
+      "group": "Constraints"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Panelled",
+      "type": "YesNo",
+      "group": "Constraints"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Glass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Louvre Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Mesh Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Hardware Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Panel",
+      "line_weight_projection": 2,
+      "line_weight_cut": 3
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Glass",
+      "line_weight_projection": 1,
+      "line_weight_cut": 2
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Louvre",
+      "line_weight_projection": 1,
+      "line_weight_cut": 2
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Mesh",
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Hardware",
+      "line_weight_projection": 1,
+      "line_weight_cut": 2
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Plan Swing",
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Elevation Swing",
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Wall Centre",
+      "from": [
+        -2000,
+        0
+      ],
+      "to": [
+        2000,
+        0
+      ],
+      "is_reference": "CenterFrontBack"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame Ext",
+      "from": [
+        -2000,
+        -100
+      ],
+      "to": [
+        2000,
+        -100
+      ],
+      "is_reference": "StrongReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame Int",
+      "from": [
+        -2000,
+        100
+      ],
+      "to": [
+        2000,
+        100
+      ],
+      "is_reference": "StrongReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Face Ext",
+      "from": [
+        -2000,
+        60
+      ],
+      "to": [
+        2000,
+        60
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Stop Face",
+      "from": [
+        -2000,
+        30
+      ],
+      "to": [
+        2000,
+        30
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Arch Ext Face",
+      "from": [
+        -2000,
+        -115
+      ],
+      "to": [
+        2000,
+        -115
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Arch Int Face",
+      "from": [
+        -2000,
+        115
+      ],
+      "to": [
+        2000,
+        115
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Hinge Back",
+      "from": [
+        -2000,
+        120
+      ],
+      "to": [
+        2000,
+        120
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Rose Int",
+      "from": [
+        -2000,
+        108
+      ],
+      "to": [
+        2000,
+        108
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Lever Int",
+      "from": [
+        -2000,
+        126
+      ],
+      "to": [
+        2000,
+        126
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Rose Ext",
+      "from": [
+        -2000,
+        52
+      ],
+      "to": [
+        2000,
+        52
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Lever Ext",
+      "from": [
+        -2000,
+        34
+      ],
+      "to": [
+        2000,
+        34
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Panel Front",
+      "from": [
+        -2000,
+        52
+      ],
+      "to": [
+        2000,
+        52
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Blade Front",
+      "from": [
+        -2000,
+        -45
+      ],
+      "to": [
+        2000,
+        -45
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Blade Back",
+      "from": [
+        -2000,
+        25
+      ],
+      "to": [
+        2000,
+        25
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass Front",
+      "from": [
+        -2000,
+        -2
+      ],
+      "to": [
+        2000,
+        -2
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass Back",
+      "from": [
+        -2000,
+        2
+      ],
+      "to": [
+        2000,
+        2
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh Front",
+      "from": [
+        -2000,
+        80
+      ],
+      "to": [
+        2000,
+        80
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh Back",
+      "from": [
+        -2000,
+        81
+      ],
+      "to": [
+        2000,
+        81
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Left",
+      "from": [
+        -400.0,
+        -1500
+      ],
+      "to": [
+        -400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Right",
+      "from": [
+        400.0,
+        -1500
+      ],
+      "to": [
+        400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Arch L Out",
+      "from": [
+        -510.0,
+        -1500
+      ],
+      "to": [
+        -510.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Arch R Out",
+      "from": [
+        510.0,
+        -1500
+      ],
+      "to": [
+        510.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Split",
+      "from": [
+        397.0,
+        -1500
+      ],
+      "to": [
+        397.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Split Gap",
+      "from": [
+        400.0,
+        -1500
+      ],
+      "to": [
+        400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Stop L",
+      "from": [
+        -385.0,
+        -1500
+      ],
+      "to": [
+        -385.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Stop R",
+      "from": [
+        385.0,
+        -1500
+      ],
+      "to": [
+        385.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Hinge L",
+      "from": [
+        -412.0,
+        -1500
+      ],
+      "to": [
+        -412.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Hinge R",
+      "from": [
+        -388.0,
+        -1500
+      ],
+      "to": [
+        -388.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Rose R",
+      "from": [
+        362.0,
+        -1500
+      ],
+      "to": [
+        362.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Rose L",
+      "from": [
+        312.0,
+        -1500
+      ],
+      "to": [
+        312.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Lever L",
+      "from": [
+        232.0,
+        -1500
+      ],
+      "to": [
+        232.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Louvre L",
+      "from": [
+        -400.0,
+        -1500
+      ],
+      "to": [
+        -400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Louvre R",
+      "from": [
+        400.0,
+        -1500
+      ],
+      "to": [
+        400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass L",
+      "from": [
+        -440.0,
+        -1500
+      ],
+      "to": [
+        -440.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Glass R",
+      "from": [
+        -410.0,
+        -1500
+      ],
+      "to": [
+        -410.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh L",
+      "from": [
+        -400.0,
+        -1500
+      ],
+      "to": [
+        -400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Mesh R",
+      "from": [
+        400.0,
+        -1500
+      ],
+      "to": [
+        400.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Panel L",
+      "from": [
+        -440.0,
+        -1500
+      ],
+      "to": [
+        -440.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Panel R",
+      "from": [
+        -410.0,
+        -1500
+      ],
+      "to": [
+        -410.0,
+        1500
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Floor",
+      "from": [
+        -2000,
+        0
+      ],
+      "to": [
+        2000,
+        0
+      ],
+      "is_reference": "Bottom",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Frame Head",
+      "from": [
+        -2000,
+        2400
+      ],
+      "to": [
+        2000,
+        2400
+      ],
+      "is_reference": "Top",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Head Inner",
+      "from": [
+        -2000,
+        2350
+      ],
+      "to": [
+        2000,
+        2350
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Top",
+      "from": [
+        -2000,
+        2100
+      ],
+      "to": [
+        2000,
+        2100
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Transom Top",
+      "from": [
+        -2000,
+        2150
+      ],
+      "to": [
+        2000,
+        2150
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Arch Top",
+      "from": [
+        -2000,
+        2460
+      ],
+      "to": [
+        2000,
+        2460
+      ],
+      "is_reference": "WeakReference",
+      "view": "Exterior"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width L",
+      "between": [
+        "Left",
+        "Leaf Left"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width R",
+      "between": [
+        "Leaf Right",
+        "Right"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Architrave Width L",
+      "between": [
+        "Arch L Out",
+        "Left"
+      ],
+      "label": "Architrave Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Architrave Width R",
+      "between": [
+        "Right",
+        "Arch R Out"
+      ],
+      "label": "Architrave Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Depth",
+      "between": [
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "label": "Frame Depth",
+      "offset": 600
+    },
+    {
+      "op": "add_eq_dimension",
+      "name": "EQ frame depth",
+      "planes": [
+        "Frame Ext",
+        "Wall Centre",
+        "Frame Int"
+      ],
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Leaf Thickness",
+      "between": [
+        "Leaf Face Ext",
+        "Frame Int"
+      ],
+      "label": "Leaf Thickness",
+      "offset": 500
+    },
+    {
+      "op": "add_dimension",
+      "name": "Stop Depth",
+      "between": [
+        "Stop Face",
+        "Leaf Face Ext"
+      ],
+      "label": "Stop Depth",
+      "offset": 500
+    },
+    {
+      "op": "add_dimension",
+      "name": "Architrave Thickness Ext",
+      "between": [
+        "Arch Ext Face",
+        "Frame Ext"
+      ],
+      "label": "Architrave Thickness",
+      "offset": 800
+    },
+    {
+      "op": "add_dimension",
+      "name": "Architrave Thickness Int",
+      "between": [
+        "Frame Int",
+        "Arch Int Face"
+      ],
+      "label": "Architrave Thickness",
+      "offset": 800
+    },
+    {
+      "op": "add_dimension",
+      "name": "Hinge Projection",
+      "between": [
+        "Frame Int",
+        "Hinge Back"
+      ],
+      "label": "Hinge Projection",
+      "offset": -700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Leaf Split Offset",
+      "between": [
+        "Left",
+        "Leaf Split"
+      ],
+      "label": "Leaf Split Offset",
+      "offset": -400
+    },
+    {
+      "op": "add_dimension",
+      "name": "Meeting Gap",
+      "between": [
+        "Leaf Split",
+        "Split Gap"
+      ],
+      "label": "Meeting Gap",
+      "offset": -450
+    },
+    {
+      "op": "add_dimension",
+      "name": "Stop Width L",
+      "between": [
+        "Leaf Left",
+        "Stop L"
+      ],
+      "label": "Stop Width",
+      "offset": -500
+    },
+    {
+      "op": "add_dimension",
+      "name": "Stop Width R",
+      "between": [
+        "Stop R",
+        "Leaf Right"
+      ],
+      "label": "Stop Width",
+      "offset": -500
+    },
+    {
+      "op": "add_dimension",
+      "name": "Hinge Half L",
+      "between": [
+        "Hinge L",
+        "Leaf Left"
+      ],
+      "label": "Hinge Half Width",
+      "offset": -550
+    },
+    {
+      "op": "add_dimension",
+      "name": "Hinge Half R",
+      "between": [
+        "Leaf Left",
+        "Hinge R"
+      ],
+      "label": "Hinge Half Width",
+      "offset": -550
+    },
+    {
+      "op": "add_dimension",
+      "name": "Handle Edge Offset",
+      "between": [
+        "Rose R",
+        "Leaf Split"
+      ],
+      "label": "Handle Edge Offset",
+      "offset": -600
+    },
+    {
+      "op": "add_dimension",
+      "name": "Rose Size",
+      "between": [
+        "Rose L",
+        "Rose R"
+      ],
+      "label": "Rose Size",
+      "offset": -650
+    },
+    {
+      "op": "add_dimension",
+      "name": "Lever Length",
+      "between": [
+        "Lever L",
+        "Rose R"
+      ],
+      "label": "Lever Length",
+      "offset": -700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Panel Raise",
+      "between": [
+        "Panel Front",
+        "Leaf Face Ext"
+      ],
+      "label": "Panel Raise",
+      "offset": -800
+    },
+    {
+      "op": "add_dimension",
+      "name": "Louvre L Offset",
+      "between": [
+        "Left",
+        "Louvre L"
+      ],
+      "label": "Louvre L Offset",
+      "offset": -900
+    },
+    {
+      "op": "add_dimension",
+      "name": "Louvre R Offset",
+      "between": [
+        "Left",
+        "Louvre R"
+      ],
+      "label": "Louvre R Offset",
+      "offset": -950
+    },
+    {
+      "op": "add_dimension",
+      "name": "Glass L Offset",
+      "between": [
+        "Left",
+        "Glass L"
+      ],
+      "label": "Glass L Offset",
+      "offset": -900
+    },
+    {
+      "op": "add_dimension",
+      "name": "Glass R Offset",
+      "between": [
+        "Left",
+        "Glass R"
+      ],
+      "label": "Glass R Offset",
+      "offset": -950
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mesh L Offset",
+      "between": [
+        "Left",
+        "Mesh L"
+      ],
+      "label": "Mesh L Offset",
+      "offset": -900
+    },
+    {
+      "op": "add_dimension",
+      "name": "Mesh R Offset",
+      "between": [
+        "Left",
+        "Mesh R"
+      ],
+      "label": "Mesh R Offset",
+      "offset": -950
+    },
+    {
+      "op": "add_dimension",
+      "name": "Panel L Offset",
+      "between": [
+        "Left",
+        "Panel L"
+      ],
+      "label": "Panel L Offset",
+      "offset": -900
+    },
+    {
+      "op": "add_dimension",
+      "name": "Panel R Offset",
+      "between": [
+        "Left",
+        "Panel R"
+      ],
+      "label": "Panel R Offset",
+      "offset": -950
+    },
+    {
+      "op": "add_dimension",
+      "name": "Height",
+      "between": [
+        "Floor",
+        "Frame Head"
+      ],
+      "label": "Height",
+      "view": "Exterior",
+      "offset": -700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Fanlight Height",
+      "between": [
+        "Leaf Top",
+        "Frame Head"
+      ],
+      "label": "Fanlight Height",
+      "view": "Exterior",
+      "offset": -600
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width Head",
+      "between": [
+        "Head Inner",
+        "Frame Head"
+      ],
+      "label": "Frame Width",
+      "view": "Exterior",
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Transom Depth",
+      "between": [
+        "Leaf Top",
+        "Transom Top"
+      ],
+      "label": "Transom Depth",
+      "view": "Exterior",
+      "offset": 700
+    },
+    {
+      "op": "add_dimension",
+      "name": "Architrave Width Head",
+      "between": [
+        "Frame Head",
+        "Arch Top"
+      ],
+      "label": "Architrave Width",
+      "view": "Exterior",
+      "offset": 800
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2400_Flush-Vent300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Width",
+      "value": 900
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Height",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Height",
+      "value": 2400
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Fanlight Height",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Fanlight Height",
+      "value": 300
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/FMC_Fanlight_Height_mm",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "FMC_Fanlight_Height_mm",
+      "value": 300
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Main Leaf Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Main Leaf Width",
+      "value": 797
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Vent Louvred",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Vent Louvred",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Leaf Panelled",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Leaf Panelled",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/FMC_Mosquito_Mesh",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "FMC_Mosquito_Mesh",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/FMC_Vent_Type",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "FMC_Vent_Type",
+      "value": "Louvre"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/FMC_Frame_Spec",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Flush 40 mm"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Frame Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Frame Width",
+      "value": 50
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Frame Depth",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Frame Depth",
+      "value": 200
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Leaf Thickness",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Leaf Thickness",
+      "value": 40
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Transom Depth",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Transom Depth",
+      "value": 50
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Architrave Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Architrave Width",
+      "value": 60
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Architrave Thickness",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Architrave Thickness",
+      "value": 15
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Stop Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Stop Width",
+      "value": 15
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Stop Depth",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Stop Depth",
+      "value": 30
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Meeting Gap",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Meeting Gap",
+      "value": 3
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Hinge Half Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Hinge Half Width",
+      "value": 12
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Hinge Projection",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Hinge Projection",
+      "value": 20
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Handle Edge Offset",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Handle Edge Offset",
+      "value": 35
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Rose Size",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Rose Size",
+      "value": 50
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Lever Length",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Lever Length",
+      "value": 130
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Panel Raise",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Panel Raise",
+      "value": 8
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Panel Margin",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Panel Margin",
+      "value": 100
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Hide Offset",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Hide Offset",
+      "value": 10
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Hide Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Hide Width",
+      "value": 30
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/FMC_Geometry_Stage",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/IfcExportAs",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "IfcExportAs",
+      "value": "IfcDoor"
+    },
+    {
+      "op": "set_formula",
+      "name": "Leaf Split Offset",
+      "formula": "Frame Width + Main Leaf Width"
+    },
+    {
+      "op": "set_formula",
+      "name": "Louvre L Offset",
+      "formula": "if(Vent Louvred, Frame Width, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Louvre R Offset",
+      "formula": "if(Vent Louvred, Width - Frame Width, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Glass L Offset",
+      "formula": "if(Vent Louvred, Hide Offset, Frame Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Glass R Offset",
+      "formula": "if(Vent Louvred, Hide Offset + Hide Width, Width - Frame Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Mesh L Offset",
+      "formula": "if(FMC_Mosquito_Mesh, Frame Width, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Mesh R Offset",
+      "formula": "if(FMC_Mosquito_Mesh, Width - Frame Width, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Panel L Offset",
+      "formula": "if(Leaf Panelled, Frame Width + Panel Margin, Hide Offset)"
+    },
+    {
+      "op": "set_formula",
+      "name": "Panel R Offset",
+      "formula": "if(Leaf Panelled, Frame Width + Main Leaf Width - Panel Margin, Hide Offset + Hide Width)"
+    },
+    {
+      "op": "set_formula",
+      "name": "FMC_Glazed_Area_m2",
+      "formula": "(Width - 2 * Frame Width) * (Fanlight Height - Transom Depth - Frame Width) * if(Vent Louvred, 0, 1)"
+    },
+    {
+      "op": "set_formula",
+      "name": "FMC_Openable_Area_m2",
+      "formula": "(Width - 2 * Frame Width) * (Height - Fanlight Height)"
+    },
+    {
+      "op": "extrusion",
+      "name": "Jamb L",
+      "rect": [
+        "Left",
+        "Leaf Left",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 0,
+      "end": 2400,
+      "end_plane": "Frame Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Jamb L",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Jamb L",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Jamb R",
+      "rect": [
+        "Leaf Right",
+        "Right",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 0,
+      "end": 2400,
+      "end_plane": "Frame Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Jamb R",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Jamb R",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Head",
+      "rect": [
+        "Leaf Left",
+        "Leaf Right",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 2350,
+      "end": 2400,
+      "end_plane": "Frame Head"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Transom",
+      "rect": [
+        "Leaf Left",
+        "Leaf Right",
+        "Frame Ext",
+        "Frame Int"
+      ],
+      "start": 2100,
+      "end": 2150,
+      "end_plane": "Transom Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Transom",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Transom",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop L",
+      "rect": [
+        "Leaf Left",
+        "Stop L",
+        "Stop Face",
+        "Leaf Face Ext"
+      ],
+      "start": 0,
+      "end": 2100,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop L",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop L",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop R",
+      "rect": [
+        "Stop R",
+        "Leaf Right",
+        "Stop Face",
+        "Leaf Face Ext"
+      ],
+      "start": 0,
+      "end": 2100,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop R",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop R",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop Head",
+      "rect": [
+        "Leaf Left",
+        "Leaf Right",
+        "Stop Face",
+        "Leaf Face Ext"
+      ],
+      "start": 2085,
+      "end": 2100,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Ext L",
+      "rect": [
+        "Arch L Out",
+        "Left",
+        "Arch Ext Face",
+        "Frame Ext"
+      ],
+      "start": 0,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Ext L",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Ext L",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Ext R",
+      "rect": [
+        "Right",
+        "Arch R Out",
+        "Arch Ext Face",
+        "Frame Ext"
+      ],
+      "start": 0,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Ext R",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Ext R",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Ext Head",
+      "rect": [
+        "Arch L Out",
+        "Arch R Out",
+        "Arch Ext Face",
+        "Frame Ext"
+      ],
+      "start": 2400,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Ext Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Ext Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Int L",
+      "rect": [
+        "Arch L Out",
+        "Left",
+        "Frame Int",
+        "Arch Int Face"
+      ],
+      "start": 0,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Int L",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Int L",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Int R",
+      "rect": [
+        "Right",
+        "Arch R Out",
+        "Frame Int",
+        "Arch Int Face"
+      ],
+      "start": 0,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Int R",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Int R",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Int Head",
+      "rect": [
+        "Arch L Out",
+        "Arch R Out",
+        "Frame Int",
+        "Arch Int Face"
+      ],
+      "start": 2400,
+      "end": 2460,
+      "end_plane": "Arch Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Int Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Int Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf",
+      "rect": [
+        "Leaf Left",
+        "Leaf Right",
+        "Leaf Face Ext",
+        "Frame Int"
+      ],
+      "start": 10,
+      "end": 2097
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf",
+      "subcategory": "Panel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf",
+      "param": "Leaf Material"
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Meeting Gap",
+      "rect": [
+        "Leaf Split",
+        "Split Gap",
+        "Leaf Face Ext",
+        "Frame Int"
+      ],
+      "start": 0,
+      "end": 2100,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Lower",
+      "rect": [
+        "Panel L",
+        "Panel R",
+        "Panel Front",
+        "Leaf Face Ext"
+      ],
+      "start": 250,
+      "end": 950
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Lower",
+      "subcategory": "Panel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Lower",
+      "param": "Leaf Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Panel Upper",
+      "rect": [
+        "Panel L",
+        "Panel R",
+        "Panel Front",
+        "Leaf Face Ext"
+      ],
+      "start": 1150,
+      "end": 1950
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Panel Upper",
+      "subcategory": "Panel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Panel Upper",
+      "param": "Leaf Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre 1",
+      "rect": [
+        "Louvre L",
+        "Louvre R",
+        "Blade Front",
+        "Blade Back"
+      ],
+      "start": 2160,
+      "end": 2172
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre 1",
+      "subcategory": "Louvre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre 1",
+      "param": "Louvre Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre 2",
+      "rect": [
+        "Louvre L",
+        "Louvre R",
+        "Blade Front",
+        "Blade Back"
+      ],
+      "start": 2198,
+      "end": 2210
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre 2",
+      "subcategory": "Louvre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre 2",
+      "param": "Louvre Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre 3",
+      "rect": [
+        "Louvre L",
+        "Louvre R",
+        "Blade Front",
+        "Blade Back"
+      ],
+      "start": 2236,
+      "end": 2248
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre 3",
+      "subcategory": "Louvre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre 3",
+      "param": "Louvre Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre 4",
+      "rect": [
+        "Louvre L",
+        "Louvre R",
+        "Blade Front",
+        "Blade Back"
+      ],
+      "start": 2274,
+      "end": 2286
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre 4",
+      "subcategory": "Louvre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre 4",
+      "param": "Louvre Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Louvre 5",
+      "rect": [
+        "Louvre L",
+        "Louvre R",
+        "Blade Front",
+        "Blade Back"
+      ],
+      "start": 2312,
+      "end": 2324
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Louvre 5",
+      "subcategory": "Louvre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Louvre 5",
+      "param": "Louvre Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Fanlight Glass",
+      "rect": [
+        "Glass L",
+        "Glass R",
+        "Glass Front",
+        "Glass Back"
+      ],
+      "start": 2160,
+      "end": 2350,
+      "end_plane": "Head Inner"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Fanlight Glass",
+      "subcategory": "Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Fanlight Glass",
+      "param": "Glass Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Mosquito Mesh",
+      "rect": [
+        "Mesh L",
+        "Mesh R",
+        "Mesh Front",
+        "Mesh Back"
+      ],
+      "start": 2150,
+      "end": 2350,
+      "end_plane": "Head Inner"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Mosquito Mesh",
+      "subcategory": "Mesh"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Mosquito Mesh",
+      "param": "Mesh Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Mosquito Mesh",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Hinge 1",
+      "rect": [
+        "Hinge L",
+        "Hinge R",
+        "Frame Int",
+        "Hinge Back"
+      ],
+      "start": 150,
+      "end": 250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hinge 1",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hinge 1",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Hinge 2",
+      "rect": [
+        "Hinge L",
+        "Hinge R",
+        "Frame Int",
+        "Hinge Back"
+      ],
+      "start": 1000,
+      "end": 1100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hinge 2",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hinge 2",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Hinge 3",
+      "rect": [
+        "Hinge L",
+        "Hinge R",
+        "Frame Int",
+        "Hinge Back"
+      ],
+      "start": 1850,
+      "end": 1950
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Hinge 3",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Hinge 3",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Rose Int",
+      "rect": [
+        "Rose L",
+        "Rose R",
+        "Frame Int",
+        "Rose Int"
+      ],
+      "start": 985,
+      "end": 1065
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rose Int",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rose Int",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Lever Int",
+      "rect": [
+        "Lever L",
+        "Rose R",
+        "Rose Int",
+        "Lever Int"
+      ],
+      "start": 1015,
+      "end": 1035
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lever Int",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lever Int",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Rose Ext",
+      "rect": [
+        "Rose L",
+        "Rose R",
+        "Rose Ext",
+        "Leaf Face Ext"
+      ],
+      "start": 985,
+      "end": 1065
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rose Ext",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Rose Ext",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Lever Ext",
+      "rect": [
+        "Lever L",
+        "Rose R",
+        "Lever Ext",
+        "Rose Ext"
+      ],
+      "start": 1015,
+      "end": 1035
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lever Ext",
+      "subcategory": "Hardware"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lever Ext",
+      "param": "Hardware Material"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Swing arc",
+      "view": "plan",
+      "arc": {
+        "center": [
+          -400.0,
+          100
+        ],
+        "radius": 797,
+        "start_deg": 0,
+        "end_deg": 90
+      },
+      "subcategory": "Plan Swing"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Leaf open",
+      "view": "plan",
+      "points": [
+        [
+          -400.0,
+          100
+        ],
+        [
+          -400.0,
+          897
+        ],
+        [
+          -360.0,
+          897
+        ],
+        [
+          -360.0,
+          100
+        ]
+      ],
+      "subcategory": "Plan Swing"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Opening lines",
+      "view": "front",
+      "points": [
+        [
+          397.0,
+          10
+        ],
+        [
+          -400.0,
+          1050
+        ],
+        [
+          397.0,
+          2097
+        ]
+      ],
+      "subcategory": "Elevation Swing",
+      "coarse": false
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Transom line",
+      "view": "front",
+      "points": [
+        [
+          -400.0,
+          2100
+        ],
+        [
+          400.0,
+          2100
+        ]
+      ],
+      "subcategory": "Elevation Swing"
+    },
+    {
+      "op": "add_type",
+      "name": "0800x2400_Flush-Vent300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0800x2400_Flush-Vent300/Width",
+      "type": "0800x2400_Flush-Vent300",
+      "param": "Width",
+      "value": 800
+    },
+    {
+      "op": "set_type_value",
+      "name": "0800x2400_Flush-Vent300/Main Leaf Width",
+      "type": "0800x2400_Flush-Vent300",
+      "param": "Main Leaf Width",
+      "value": 697
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2400_Panel-Fanlight300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/Width",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "Width",
+      "value": 900
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/Main Leaf Width",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "Main Leaf Width",
+      "value": 797
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/Vent Louvred",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "Vent Louvred",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/Leaf Panelled",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "Leaf Panelled",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/FMC_Mosquito_Mesh",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "FMC_Mosquito_Mesh",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/FMC_Vent_Type",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "FMC_Vent_Type",
+      "value": "Glass fanlight"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Panel-Fanlight300/FMC_Frame_Spec",
+      "type": "0900x2400_Panel-Fanlight300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Panelled 40 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2400_Mahogany-Vent300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Mahogany-Vent300/Vent Louvred",
+      "type": "0900x2400_Mahogany-Vent300",
+      "param": "Vent Louvred",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Mahogany-Vent300/FMC_Mosquito_Mesh",
+      "type": "0900x2400_Mahogany-Vent300",
+      "param": "FMC_Mosquito_Mesh",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Mahogany-Vent300/FMC_Vent_Type",
+      "type": "0900x2400_Mahogany-Vent300",
+      "param": "FMC_Vent_Type",
+      "value": "Louvre"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Mahogany-Vent300/FMC_Frame_Spec",
+      "type": "0900x2400_Mahogany-Vent300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Mahogany panelled 40 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "0700x2400_WC-Louvre300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0700x2400_WC-Louvre300/Width",
+      "type": "0700x2400_WC-Louvre300",
+      "param": "Width",
+      "value": 700
+    },
+    {
+      "op": "set_type_value",
+      "name": "0700x2400_WC-Louvre300/Main Leaf Width",
+      "type": "0700x2400_WC-Louvre300",
+      "param": "Main Leaf Width",
+      "value": 597
+    },
+    {
+      "op": "set_type_value",
+      "name": "0700x2400_WC-Louvre300/Leaf Panelled",
+      "type": "0700x2400_WC-Louvre300",
+      "param": "Leaf Panelled",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "0700x2400_WC-Louvre300/FMC_Frame_Spec",
+      "type": "0700x2400_WC-Louvre300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Flush WC 40 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "1500x2400_Double-Fanlight300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/Width",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "Width",
+      "value": 1500
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/Main Leaf Width",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "Main Leaf Width",
+      "value": 698.5
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/Vent Louvred",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "Vent Louvred",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/FMC_Mosquito_Mesh",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "FMC_Mosquito_Mesh",
+      "value": false
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/FMC_Vent_Type",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "FMC_Vent_Type",
+      "value": "Glass fanlight"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1500x2400_Double-Fanlight300/FMC_Frame_Spec",
+      "type": "1500x2400_Double-Fanlight300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Flush double 40 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "1200x2400_Unequal-Fanlight300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2400_Unequal-Fanlight300/Width",
+      "type": "1200x2400_Unequal-Fanlight300",
+      "param": "Width",
+      "value": 1200
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2400_Unequal-Fanlight300/Main Leaf Width",
+      "type": "1200x2400_Unequal-Fanlight300",
+      "param": "Main Leaf Width",
+      "value": 800
+    },
+    {
+      "op": "set_type_value",
+      "name": "1200x2400_Unequal-Fanlight300/FMC_Frame_Spec",
+      "type": "1200x2400_Unequal-Fanlight300",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 300 mm vent over; leaf: Flush unequal pair 40 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2700_Flush-Vent600"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/Width",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "Width",
+      "value": 900
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/Height",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "Height",
+      "value": 2700
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/Fanlight Height",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "Fanlight Height",
+      "value": 600
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/FMC_Fanlight_Height_mm",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "FMC_Fanlight_Height_mm",
+      "value": 600
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/Main Leaf Width",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "Main Leaf Width",
+      "value": 797
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/Vent Louvred",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "Vent Louvred",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/FMC_Mosquito_Mesh",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "FMC_Mosquito_Mesh",
+      "value": true
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/FMC_Vent_Type",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "FMC_Vent_Type",
+      "value": "Louvre"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2700_Flush-Vent600/FMC_Frame_Spec",
+      "type": "0900x2700_Flush-Vent600",
+      "param": "FMC_Frame_Spec",
+      "value": "Hardwood timber frame 50x200 (8 in), transom rail, 600 mm vent over; leaf: Flush 40 mm"
+    },
+    {
+      "op": "lock_face",
+      "name": "Head/Head Inner",
+      "solid": "Head",
+      "plane": "Head Inner",
+      "view": "front"
+    },
+    {
+      "op": "lock_face",
+      "name": "Transom/Leaf Top",
+      "solid": "Transom",
+      "plane": "Leaf Top",
+      "view": "front"
+    },
+    {
+      "op": "lock_face",
+      "name": "Architrave Ext Head/Frame Head",
+      "solid": "Architrave Ext Head",
+      "plane": "Frame Head",
+      "view": "front"
+    },
+    {
+      "op": "lock_face",
+      "name": "Architrave Int Head/Frame Head",
+      "solid": "Architrave Int Head",
+      "plane": "Frame Head",
+      "view": "front"
+    },
+    {
+      "op": "lock_face",
+      "name": "Mosquito Mesh/Transom Top",
+      "solid": "Mosquito Mesh",
+      "plane": "Transom Top",
+      "view": "front"
+    }
+  ],
+  "values": {
+    "Overall frame sizes 900x2400 (and 800/700/1200/1500 x 2400)": {
+      "value": "900x2400",
+      "source_status": "verified",
+      "source": "VERIFIED-UG: Jiji listings, timber door frames 90x240 cm with 'door frame ventilator'"
+    },
+    "Frame Depth (8 in wall frame)": {
+      "value": 200,
+      "source_status": "verified",
+      "source": "VERIFIED-UG: Jiji, 8\"/10\" frame depths (10 in = 250 is the alternative)"
+    },
+    "Frame Width (face)": {
+      "value": 50,
+      "source_status": "pending",
+      "source": "supplier visit"
+    },
+    "Leaf Thickness": {
+      "value": 40,
+      "source_status": "pending",
+      "source": "supplier visit"
+    },
+    "Leaf height 2100 = Height - Fanlight Height": {
+      "value": 2100,
+      "source_status": "assumed",
+      "source": "owner brief"
+    },
+    "Fanlight Height 300 / 600": {
+      "value": 300,
+      "source_status": "assumed",
+      "source": "register type names"
+    },
+    "2700 frame height (Flush-Vent600)": {
+      "value": 2700,
+      "source_status": "assumed",
+      "source": "register; 2700 is EA for steel doors (IOM BoQ)"
+    },
+    "Transom Depth": {
+      "value": 50,
+      "source_status": "assumed"
+    },
+    "Architrave 60x15": {
+      "value": "60x15",
+      "source_status": "assumed"
+    },
+    "Door stop 15x30": {
+      "value": "15x30",
+      "source_status": "assumed"
+    },
+    "Louvre blades 5 No. 12x70 timber": {
+      "value": "5 x 12x70",
+      "source_status": "assumed"
+    },
+    "Unequal pair main leaf 800": {
+      "value": 800,
+      "source_status": "assumed"
+    },
+    "Hardware (hinges 100 mm, lever on 50 rose)": {
+      "value": "100 mm butt hinges x3, lever 130",
+      "source_status": "assumed"
+    },
+    "Keynote": {
+      "value": "",
+      "source_status": "pending",
+      "source": "FMC_Keynotes.txt has no fanlight doorset code (nearest D.FLU_00 / D.PAN_00 cover the leaf only): kit change request"
+    }
+  },
+  "checks": {
+    "clear_opening_min_mm": 700,
+    "clear_opening_param": "Width"
+  },
+  "lock_notes": "Locks applied live 15 Oct on build 37baad9; Leaf/Leaf Top, Fanlight Glass/Transom Top left out: their faces sit off the plane by a gap or stop (lock them once those planes exist)."
+}
