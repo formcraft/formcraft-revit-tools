@@ -85,4 +85,13 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_doc_close";
         protected override string Action => "close";
     }
+
+    /// <summary>Read-only (F-040): the sessions held and other background family documents, for cleanup after a failed build.</summary>
+    public class FmcDocBackgroundCommand : FmcDocCommandBase
+    {
+        public FmcDocBackgroundCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_doc_background";
+        protected override string Action => "background";
+        protected override int TimeoutMs => 60000;
+    }
 }

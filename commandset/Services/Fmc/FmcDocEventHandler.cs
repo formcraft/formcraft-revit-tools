@@ -47,6 +47,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
+                FmcSharedParams.RestoreIfPending(app.Application);
                 CloseIdle(app);
                 switch (Action)
                 {
@@ -55,11 +56,12 @@ namespace RevitMCPCommandSet.Services.Fmc
                     case "screenshot": Result = Screenshot(Get()); break;
                     case "save": Result = Save(Get()); break;
                     case "close": Result = Close(app); break;
+                    case "background": Result = Background(app); break;
                     case "flex": Result = FmcDocGeometry.Flex(Get().Doc); break;
                     case "apply":
                         var s = Get();
                         Result = FmcDocOps.Apply(s.Doc, Parameters["ops"] as JArray ?? new JArray(), Parameters.Value<bool?>("dry_run") != false,
-                            Parameters.Value<string>("shared_parameter_file") ?? "");
+                            Parameters.Value<string>("shared_parameter_file") ?? "", FmcDocProgress.PathFor(Parameters.Value<string>("session") ?? ""));
                         break;
                     default: Error = $"Unknown fmc_doc action '{Action}'"; break;
                 }
@@ -70,6 +72,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             finally
             {
+                // F-037: whatever happened, Revit points at the person's shared parameter file again
+                try { FmcSharedParams.RestoreIfPending(app.Application); } catch (Exception) { /* reported by the next result */ }
                 _resetEvent.Set();
             }
         }
@@ -92,6 +96,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (s.Borrowed || !s.Doc.IsValidObject) return false;
             Document active = app.ActiveUIDocument?.Document;
             if (active != null && active.Equals(s.Doc)) return false;
+            // Shown in any Revit window: the person's now, even if a session opened it (F-023, F-040)
+            try { if (new UIDocument(s.Doc).GetOpenUIViews().Count > 0) return false; } catch (Exception) { /* no UI: background */ }
             return true;
         }
 
@@ -211,6 +217,40 @@ namespace RevitMCPCommandSet.Services.Fmc
             var options = new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") == true, MaximumBackups = backups };
             s.Doc.SaveAs(path, options);
             return new JObject { ["saved"] = path, ["title"] = s.Doc.Title };
+        }
+
+        /// <summary>
+        /// F-040 (read-only): the sessions this add-in holds, each with whether close may close it (never the person's window,
+        /// F-023), and the other family documents open without a window, which only the person closes.
+        /// </summary>
+        private static JObject Background(UIApplication app)
+        {
+            var sessions = new JArray();
+            var held = new List<Document>();
+            foreach (var kv in Sessions.ToList())
+            {
+                Session s = kv.Value;
+                bool valid = s.Doc.IsValidObject;
+                if (valid) held.Add(s.Doc);
+                bool closable = valid && CanClose(app, s);
+                sessions.Add(new JObject
+                {
+                    ["session"] = kv.Key, ["title"] = valid ? s.Doc.Title : "", ["source"] = s.Source, ["valid"] = valid,
+                    ["opened"] = s.Opened.ToString("s"), ["used"] = s.Used.ToString("s"), ["closable"] = closable,
+                    ["reason"] = !valid ? "already closed" : closable ? "opened by a Formcraft session, not in a Revit window"
+                        : s.Borrowed ? "the person had this file open: it stays (F-023)" : "shown in a Revit window: it stays",
+                });
+            }
+            var other = new JArray();
+            foreach (Document d in app.Application.Documents.Cast<Document>())
+            {
+                if (d.IsLinked || !d.IsFamilyDocument || held.Any(h => h.Equals(d))) continue;
+                int views = 0;
+                try { views = new UIDocument(d).GetOpenUIViews().Count; } catch (Exception) { views = 0; }
+                if (views > 0) continue;
+                other.Add(new JObject { ["title"] = d.Title, ["path"] = d.PathName ?? "", ["note"] = "not opened by a Formcraft session: close it in Revit if it isn't needed" });
+            }
+            return new JObject { ["sessions"] = sessions, ["other_background"] = other, ["shared_parameter_file"] = FmcSharedParams.Status(app.Application) };
         }
 
         private JObject Close(UIApplication app)

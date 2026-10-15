@@ -51,5 +51,29 @@ namespace TouchKit.Core.Tests
             });
             Assert.Equal(new[] { true, false }, on);
         }
+
+        [Fact]
+        public void A_view_dragged_out_into_its_own_window_stays_on_screen_over_the_main_window()
+        {
+            // The floating window sits over the main window's view: same rectangle, different frames.
+            var on = ViewStack.OnScreen(new[]
+            {
+                new StackedView(100, 100, 900, 700, IsActive: true, LastActive: 5, Frame: 1),
+                new StackedView(120, 110, 880, 690, IsActive: false, LastActive: 3, Frame: 2),
+            });
+            Assert.Equal(new[] { true, true }, on);
+        }
+
+        [Fact]
+        public void Tabs_inside_a_floating_window_still_stack()
+        {
+            var on = ViewStack.OnScreen(new[]
+            {
+                new StackedView(100, 100, 900, 700, IsActive: false, LastActive: 4, Frame: 2),
+                new StackedView(100, 100, 900, 700, IsActive: false, LastActive: 2, Frame: 2),
+                new StackedView(0, 0, 1900, 1000, IsActive: true, LastActive: 5, Frame: 1),
+            });
+            Assert.Equal(new[] { true, false, true }, on);
+        }
     }
 }

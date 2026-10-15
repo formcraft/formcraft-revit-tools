@@ -1,0 +1,469 @@
+<style>
+.ft { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+.ft-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+.ft-take { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin: var(--cds-gap-xs) 0 0; max-width: 70ch; }
+.ft-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); gap: var(--cds-gap-md); }
+.ft-kpi { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.ft-kpi .lab { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ft-kpi .val { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.ft-kpi .sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.ft-kpi .bar { height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; display: flex; }
+.ft-kpi .bar i { display: block; height: 100%; }
+.ft-tabs { display: flex; gap: var(--cds-gap-xs); flex-wrap: wrap; border-bottom: 1px solid var(--color-border-line); }
+.ft-tabs button { font: inherit; font-size: var(--cds-font-size-body); background: none; border: 0; border-bottom: 2px solid transparent; color: var(--color-fg-muted); padding: var(--cds-pad-sm) var(--cds-pad-md); cursor: pointer; }
+.ft-tabs button[aria-selected="true"] { color: var(--color-fg); border-bottom-color: var(--color-fg); }
+.ft-tabs button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+.ft-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+.ft-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+.ft-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.ft-card .note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; }
+.ft-wide { grid-column: 1 / -1; }
+.ft-chart { position: relative; min-height: 220px; }
+.ft-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); max-width: 260px; }
+.ft-tip[hidden] { display: none; }
+.ft-tip .k { color: var(--cds-text-secondary); }
+.ft-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ft-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.ft-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.ft-chip { display: inline-flex; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); padding: 2px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); white-space: nowrap; }
+.ft-chip i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.ft-tools { display: flex; gap: var(--cds-gap-sm); flex-wrap: wrap; align-items: center; }
+.ft-tools input { font: inherit; font-size: var(--cds-font-size-body); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; flex: 1 1 12rem; }
+.ft-tools button { font: inherit; font-size: var(--cds-font-size-caption); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--color-border-line); background: none; color: var(--color-fg-muted); cursor: pointer; }
+.ft-tools button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+.ft-tablewrap { max-height: 34rem; overflow: auto; }
+.ft table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); }
+.ft th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.ft td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--cds-chart-grid); vertical-align: top; }
+.ft td.muted { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+@media (max-width: 640px) { .ft .hide-narrow { display: none; } }
+.ft-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); }
+.ft-shot { margin: 0; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; background: var(--color-bg); display: flex; flex-direction: column; }
+.ft-shot img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; }
+.ft-shot figcaption { padding: var(--cds-pad-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ft-shot figcaption b { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); display: block; }
+.ft-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr)); gap: var(--cds-gap-sm); }
+.ft-swatches figure { margin: 0; font-size: 11px; color: var(--color-fg-muted); }
+.ft-swatches img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--cds-radius); display: block; border: 1px solid var(--color-border-line); }
+.ft-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.ft-list li { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--cds-gap-sm); padding: var(--cds-pad-sm) 0; border-bottom: 1px solid var(--cds-chart-grid); }
+.ft-list li:last-child { border-bottom: 0; }
+.ft-list .t { font-size: var(--cds-font-size-body); }
+.ft-list .w { grid-column: 2; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ft-panel[hidden] { display: none; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+[data-dash-source-state=empty] { color: transparent; }
+.ft-fail { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ft-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+</style>
+
+<div class="ft">
+  <header class="ft-head" id="top">
+    <h1>Formcraft build tracker</h1>
+    <p class="ft-take dash-skeleton" id="takeaway" data-source="kpi" data-field="takeaway">—</p>
+  </header>
+
+  <section class="ft-kpis" aria-label="Headline figures">
+    <div class="ft-kpi"><span class="lab">Features built</span><span class="val dash-skeleton" data-source="kpi" data-field="built">—</span><span class="sub"><span data-source="kpi" data-field="total">—</span> tracked in all</span><div class="bar" id="bar-built"></div></div>
+    <div class="ft-kpi"><span class="lab">Tested in Revit</span><span class="val dash-skeleton" data-source="kpi" data-field="tested">—</span><span class="sub">on the pilot PC, Revit 2025.4</span><div class="bar" id="bar-tested"></div></div>
+    <div class="ft-kpi"><span class="lab">Findings to retest</span><span class="val dash-skeleton" data-source="finding_counts" data-field="n" data-where="state=Fixed%2C%20retest%20due">—</span><span class="sub"><span data-source="finding_counts" data-field="n" data-where="state=Open">—</span> open, <span data-source="finding_counts" data-field="n" data-where="state=Closed">—</span> closed</span></div>
+    <div class="ft-kpi"><span class="lab">Kit keynote codes</span><span class="val dash-skeleton" data-source="kit" data-field="count" data-where="item=Keynote%20codes">—</span><span class="sub">was <span data-source="kit" data-field="before" data-where="item=Keynote%20codes">—</span> before r5</span></div>
+    <div class="ft-kpi"><span class="lab">Merged pull requests</span><span class="val dash-skeleton" data-source="kpi" data-field="merges">—</span><span class="sub">14 and 15 Oct</span></div>
+    <div class="ft-kpi"><span class="lab">Waiting on you</span><span class="val dash-skeleton" data-source="kpi" data-field="decisions">—</span><span class="sub">decisions and retests</span></div>
+  </section>
+
+  <nav class="ft-tabs" role="tablist" aria-label="Tracker sections">
+    <button role="tab" id="tab-overview" aria-selected="true" data-panel="overview">Overview</button>
+    <button role="tab" id="tab-features" aria-selected="false" data-panel="features">Features</button>
+    <button role="tab" id="tab-kit" aria-selected="false" data-panel="kit">Kit</button>
+    <button role="tab" id="tab-design" aria-selected="false" data-panel="design">Designs</button>
+    <button role="tab" id="tab-tests" aria-selected="false" data-panel="tests">Tests</button>
+    <button role="tab" id="tab-updates" aria-selected="false" data-panel="updates">Updates</button>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section class="ft-panel" id="overview" role="tabpanel" aria-labelledby="tab-overview">
+    <div class="ft-grid">
+      <div class="ft-card">
+        <h2 id="h-status">Where every feature stands</h2>
+        <p class="note">Share of the tracked features by state. Built means merged and passing CI; a person still has to try it in Revit.</p>
+        <div class="ft-chart" id="donut" data-source="status_counts" style="min-height:260px"></div>
+        <div class="ft-legend" id="donut-legend" data-source="status_counts"></div>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-groups">By part of the plugin</h2>
+        <p class="note">Each bar is one pane group, engine or kit area, split by state.</p>
+        <div class="ft-chart" id="groups" data-source="group_status" style="min-height:300px"></div>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-waiting">Waiting on you</h2>
+        <p class="note">Nothing here moves until you answer or test.</p>
+        <ul class="ft-list" id="decisions" data-source="decisions"></ul>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-review">In review now</h2>
+        <p class="note">Open pull requests and whether their checks passed on the pilot PC.</p>
+        <table id="t-prs" data-source="prs" data-row-key="pr">
+          <thead><tr><th data-field="pr">PR</th><th data-field="title">What</th><th data-field="checks">Checks</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-roadmap">Roadmap phases</h2>
+        <p class="note">Phase progress, counting built and tested features in each phase's sections.</p>
+        <div class="ft-chart" id="phases" data-source="phase_progress" style="min-height:220px"></div>
+      </div>
+      <div class="ft-card ft-wide">
+        <h2 id="h-latest">Latest designs on the canvas</h2>
+        <p class="note">Boards drawn on 15 Oct. The Designs tab has all of them.</p>
+        <div class="ft-gallery" id="gallery-latest"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="ft-panel" id="features" role="tabpanel" aria-labelledby="tab-features" hidden>
+    <div class="ft-card">
+      <h2 id="h-features">Every feature</h2>
+      <p class="note">App sections, the family engine, kit data and designs. Filter by area or state, or search.</p>
+      <div class="ft-tools">
+        <input id="f-search" type="search" placeholder="Search features" aria-label="Search features">
+        <div class="ft-tools" id="f-area" role="group" aria-label="Area"></div>
+      </div>
+      <div class="ft-tools" id="f-state" role="group" aria-label="State"></div>
+      <div class="ft-tablewrap">
+        <table id="t-features" data-source="features" data-row-key="id">
+          <thead><tr><th data-field="feature">Feature</th><th data-field="group">Part</th><th data-field="status">State</th><th data-field="ref" class="hide-narrow">Ref</th><th data-field="note" class="hide-narrow">Note</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- KIT -->
+  <section class="ft-panel" id="kit" role="tabpanel" aria-labelledby="tab-kit" hidden>
+    <div class="ft-grid">
+      <div class="ft-card ft-wide">
+        <h2 id="h-kitgrowth">What the kit holds, before and after 15 Oct</h2>
+        <p class="note">Faint bar: before today's updates. Solid bar: now (kit 2.2 r5). Each row has its own scale.</p>
+        <div class="ft-chart" id="kitbars" data-source="kit" style="min-height:360px"></div>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-textures">Material textures</h2>
+        <p class="note">A few of the 320 seamless maps in 07_Materials (1024 px colour, 512 px bump).</p>
+        <div class="ft-swatches" id="swatches"></div>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-kitupd">Kit update r5, applied 15 Oct</h2>
+        <p class="note">You approved all kit updates. Originals are in _Archive\2026-10-15_kit_update_r5.</p>
+        <ul class="ft-list" id="kitlist" data-source="kit"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGNS -->
+  <section class="ft-panel" id="design" role="tabpanel" aria-labelledby="tab-design" hidden>
+    <div class="ft-card">
+      <h2 id="h-designs">Designed on the canvas, not yet built</h2>
+      <p class="note">Each picture is a board on the Formcraft canvas. The code follows once you approve the plan.</p>
+      <div class="ft-gallery" id="gallery-all"></div>
+    </div>
+  </section>
+
+  <!-- TESTS -->
+  <section class="ft-panel" id="tests" role="tabpanel" aria-labelledby="tab-tests" hidden>
+    <div class="ft-grid">
+      <div class="ft-card">
+        <h2 id="h-findstate">Test findings by state</h2>
+        <p class="note">From the live tests in Revit (GitHub issues labelled test-finding). The tester closes a finding after a passing retest.</p>
+        <div class="ft-chart" id="findbar" data-source="finding_counts" style="min-height:120px"></div>
+      </div>
+      <div class="ft-card">
+        <h2 id="h-findtime">Findings raised and closed</h2>
+        <p class="note">Running totals across the test runs.</p>
+        <div class="ft-chart" id="findline" data-source="findings" style="min-height:200px"></div>
+      </div>
+      <div class="ft-card ft-wide">
+        <h2 id="h-findlist">All findings</h2>
+        <div class="ft-tablewrap">
+          <table id="t-findings" data-source="findings" data-row-key="finding">
+            <thead><tr><th data-field="finding">Finding</th><th data-field="title">What happened</th><th data-field="state">State</th><th data-field="issue" class="hide-narrow">Issue</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPDATES -->
+  <section class="ft-panel" id="updates" role="tabpanel" aria-labelledby="tab-updates" hidden>
+    <div class="ft-grid">
+      <div class="ft-card ft-wide">
+        <h2 id="h-pace">Pace of work</h2>
+        <p class="note">Each dot is a merged pull request, a kit release or a design, placed at the hour it landed (East Africa Time).</p>
+        <div class="ft-chart" id="pace" data-source="timeline" style="min-height:240px"></div>
+        <div class="ft-legend" id="pace-legend" data-source="timeline"></div>
+      </div>
+      <div class="ft-card ft-wide">
+        <h2 id="h-log">Update log</h2>
+        <div class="ft-tablewrap">
+          <table id="t-timeline" data-source="timeline" data-row-key="at">
+            <thead><tr><th data-field="at">When</th><th data-field="kind">Kind</th><th data-field="title">What</th><th data-field="pr" class="hide-narrow">PR</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="images.js"></script>
+<script>
+(function () {
+  const STATES = ["Tested in Revit", "Built, Revit check due", "In progress", "Designed", "Planned", "Waiting on you"];
+  const FSTATES = ["Closed", "Fixed, retest due", "Open", "Needs you"];
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || v;
+  const stateColor = (s) => ({
+    "Tested in Revit": "var(--color-ok)", "Built, Revit check due": dash.colors[0], "In progress": dash.colors[1],
+    "Designed": dash.colors[3], "Planned": "var(--cds-chart-muted)", "Waiting on you": "var(--color-warn)",
+    "Passed": "var(--color-ok)", "Failed": "var(--color-bad)", "Waiting for the pilot PC": "var(--cds-chart-muted)",
+    "Closed": "var(--color-ok)", "Fixed, retest due": dash.colors[0], "Open": "var(--color-bad)", "Needs you": "var(--color-warn)",
+    "Feature": dash.colors[0], "Fix": "var(--color-bad)", "Plan": dash.colors[2], "CI": "var(--cds-chart-muted)", "Test": dash.colors[4], "Kit": "var(--color-ok)", "Design": dash.colors[3]
+  })[s] || "var(--cds-chart-muted)";
+  window.FT = { STATES, FSTATES, stateColor };
+
+  dash.calc("status_counts", { title: "Features by state", description: "Count of tracked features in each state.",
+    inputs: ["features"], fn: (features) => ["Tested in Revit", "Built, Revit check due", "In progress", "Designed", "Planned", "Waiting on you"].map((status) => ({ status, n: features.filter((f) => f.status === status).length })) });
+  dash.calc("group_status", { title: "Features by part and state", description: "Count of features per pane group or area and state.",
+    inputs: ["features"], fn: (features) => { const m = new Map(); features.forEach((f) => { const g = f.area === "App" ? f.group : f.area + " · " + f.group; const k = g + "|" + f.status; m.set(k, (m.get(k) || 0) + 1); }); return [...m].map(([k, n]) => ({ part: k.split("|")[0], status: k.split("|")[1], n })); } });
+  dash.calc("finding_counts", { title: "Findings by state", description: "Count of test findings in each state.",
+    inputs: ["findings"], fn: (findings) => ["Closed", "Fixed, retest due", "Open", "Needs you"].map((state) => ({ state, n: findings.filter((f) => f.state === state).length })) });
+  dash.calc("phase_progress", { title: "Roadmap phase progress", description: "Built or tested share of the features in each roadmap phase's pane groups.",
+    inputs: ["features"], fn: (features) => {
+      const phases = [["0-1 · Shell and core", ["Core"]], ["2-3 · Setup, Drawings, Team, Check, Flow", ["Setup", "Drawings", "Team", "Check", "Flow"]], ["4-5 · Engineer", ["Engineer"]], ["6 · Build", ["Build"]], ["Engine · families", ["Families"]], ["Integrations and Ask", ["Integrations", "Ask"]]];
+      return phases.map(([phase, groups]) => { const fs = features.filter((f) => (f.area === "App" || f.area === "Engine") && groups.includes(f.group)); const done = fs.filter((f) => f.status === "Tested in Revit" || f.status === "Built, Revit check due").length; return { phase, done, total: fs.length, share: fs.length ? done / fs.length : 0 }; });
+    } });
+  dash.calc("kpi", { title: "Headline figures", description: "Totals across features, merges and decisions waiting.",
+    inputs: ["features", "timeline", "decisions", "findings"], fn: (features, timeline, decisions, findings) => {
+      const built = features.filter((f) => f.status === "Tested in Revit" || f.status === "Built, Revit check due").length;
+      const tested = features.filter((f) => f.status === "Tested in Revit").length;
+      const merges = timeline.filter((t) => t.pr !== null && t.pr !== "" && t.pr !== undefined).length;
+      const retest = findings.filter((f) => f.state === "Fixed, retest due").length;
+      return [{ total: features.length, built, tested, merges, decisions: decisions.length,
+        takeaway: built + " of " + features.length + " features are built and " + tested + " are tested in Revit; the next step is a retest session for " + retest + " fixes and your yes on the family sweep engine." }];
+    } });
+
+  // tabs
+  const tabs = [...document.querySelectorAll(".ft-tabs [role=tab]")];
+  const show = (id) => { tabs.forEach((b) => { const on = b.dataset.panel === id; b.setAttribute("aria-selected", on); document.getElementById(b.dataset.panel).hidden = !on; }); dash.setLink(id); window.dispatchEvent(new Event("resize")); };
+  tabs.forEach((b) => b.addEventListener("click", () => show(b.dataset.panel)));
+  window.FT.show = show;
+  const named = location.hash.slice(1);
+  if (named && document.getElementById(named) && tabs.some((b) => b.dataset.panel === named)) show(named);
+})();
+</script>
+<script>
+(function () {
+  const { STATES, FSTATES, stateColor } = window.FT;
+  const fmt = d3.format(",");
+  const tip = (box) => { let t = box.querySelector(".ft-tip"); if (!t) { t = document.createElement("div"); t.className = "ft-tip"; t.hidden = true; box.appendChild(t); } return t; };
+  const place = (t, box, ev) => { const r = box.getBoundingClientRect(); let x = ev.clientX - r.left + 12, y = ev.clientY - r.top + 12; t.hidden = false; const w = t.offsetWidth; if (x + w > r.width) x = Math.max(0, ev.clientX - r.left - w - 12); t.style.left = x + "px"; t.style.top = y + "px"; };
+  const fail = (el, st) => { el.innerHTML = ""; if (st === "error" || st === "connect" || st === "declined") { const d = document.createElement("div"); d.className = "ft-fail"; d.textContent = "Failed to load"; el.appendChild(d); } };
+  const ok = (...ids) => ids.every((i) => dash.data(i).status === "ok");
+  const unskel = () => document.querySelectorAll(".dash-skeleton").forEach((e) => { const s = e.getAttribute("data-source"); if (!s || ["ok", "error", "connect", "declined"].includes(dash.data(s).status)) e.classList.remove("dash-skeleton"); });
+
+  function kpis() {
+    if (!ok("kpi")) return;
+    const k = dash.data("kpi").data[0];
+    document.querySelectorAll('[data-source="kpi"]').forEach((e) => { const f = e.getAttribute("data-field"); e.textContent = f === "takeaway" ? k[f] : fmt(k[f]); });
+    const bar = (id, v, color) => { const el = document.getElementById(id); el.innerHTML = ""; const i = document.createElement("i"); i.style.width = (100 * v / k.total) + "%"; i.style.background = color; el.appendChild(i); };
+    bar("bar-built", k.built, "var(--cds-chart-status-critical, " + dash.colors[0] + ")"); document.querySelector("#bar-built i").style.background = dash.colors[0];
+    bar("bar-tested", k.tested, "var(--color-ok)");
+  }
+  function cells() {
+    document.querySelectorAll('[data-where]').forEach((e) => {
+      const src = e.getAttribute("data-source"); if (src === "kpi") return; const d = dash.data(src); if (d.status !== "ok") return;
+      const [col, val] = e.getAttribute("data-where").split("=").map(decodeURIComponent);
+      const row = d.data.find((r) => String(r[col]) === val); if (row) e.textContent = fmt(Number(row[e.getAttribute("data-field")]));
+    });
+  }
+
+  function donut() {
+    const el = document.getElementById("donut"), lg = document.getElementById("donut-legend");
+    const d = dash.data("status_counts"); if (d.status !== "ok") { fail(el, d.status); lg.innerHTML = ""; return; }
+    const rows = d.data.filter((r) => r.n > 0); const total = d3.sum(rows, (r) => r.n);
+    const W = Math.max(240, el.clientWidth), H = 260, R = Math.min(W, H) / 2 - 6;
+    el.innerHTML = ""; const svg = d3.select(el).append("svg").attr("width", "100%").attr("viewBox", `0 0 ${W} ${H}`);
+    const g = svg.append("g").attr("transform", `translate(${W / 2},${H / 2})`);
+    const arcs = d3.pie().sort(null).value((r) => r.n)(rows); const arc = d3.arc().innerRadius(R * 0.62).outerRadius(R).cornerRadius(3).padAngle(0.012);
+    const t = tip(el);
+    g.selectAll("path").data(arcs).join("path").attr("d", arc).attr("fill", (a) => stateColor(a.data.status))
+      .on("mousemove", (ev, a) => { t.innerHTML = ""; const k = document.createElement("div"); k.className = "k"; k.textContent = a.data.status; const v = document.createElement("div"); v.textContent = fmt(a.data.n) + " features · " + d3.format(".0%")(a.data.n / total); t.append(k, v); place(t, el, ev); })
+      .on("mouseleave", () => { t.hidden = true; });
+    const built = d3.sum(rows.filter((r) => r.status === "Tested in Revit" || r.status === "Built, Revit check due"), (r) => r.n);
+    g.append("text").attr("text-anchor", "middle").attr("dy", "-0.1em").style("font-family", "var(--font-anthropic-serif)").style("font-size", "var(--cds-font-size-title)").attr("fill", "currentColor").text(d3.format(".0%")(built / total));
+    g.append("text").attr("text-anchor", "middle").attr("dy", "1.5em").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)").text("built or tested");
+    lg.innerHTML = ""; rows.forEach((r) => { const s = document.createElement("span"); const i = document.createElement("i"); i.style.background = stateColor(r.status); s.append(i, document.createTextNode(r.status + " · " + r.n)); lg.appendChild(s); });
+  }
+
+  function groups() {
+    const el = document.getElementById("groups"); const d = dash.data("group_status"); if (d.status !== "ok") { fail(el, d.status); return; }
+    const parts = [...new Set(d.data.map((r) => r.part))];
+    const order = ["Core", "Setup", "Drawings", "Team", "Check", "Engineer", "Build", "Ask", "Flow", "Integrations"];
+    parts.sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99) || a.localeCompare(b));
+    const W = Math.max(280, el.clientWidth); el.innerHTML = "";
+    const svg = d3.select(el).append("svg").attr("width", "100%");
+    const probe = svg.append("text").style("font-size", "var(--cds-font-size-caption)");
+    let lw = 0; parts.forEach((p) => { probe.text(p); lw = Math.max(lw, probe.node().getComputedTextLength()); }); probe.remove();
+    const m = { l: lw + 10, r: 28, t: 4, b: 4 }, bh = 18, gap = 8, H = m.t + m.b + parts.length * (bh + gap);
+    svg.attr("viewBox", `0 0 ${W} ${H}`); el.style.minHeight = H + "px";
+    const max = d3.max(parts, (p) => d3.sum(d.data.filter((r) => r.part === p), (r) => r.n));
+    const x = d3.scaleLinear([0, max], [m.l, W - m.r]); const t = tip(el);
+    parts.forEach((p, i) => {
+      const y = m.t + i * (bh + gap); let x0 = 0;
+      svg.append("text").attr("x", m.l - 8).attr("y", y + bh / 2).attr("dy", "0.35em").attr("text-anchor", "end").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)").text(p);
+      const rows = STATES.map((s) => d.data.find((r) => r.part === p && r.status === s)).filter(Boolean);
+      rows.forEach((r) => { svg.append("rect").attr("x", x(x0)).attr("y", y).attr("width", Math.max(0, x(x0 + r.n) - x(x0) - 1.5)).attr("height", bh).attr("rx", 3).attr("fill", stateColor(r.status))
+        .on("mousemove", (ev) => { t.innerHTML = ""; const k = document.createElement("div"); k.className = "k"; k.textContent = p; const v = document.createElement("div"); v.textContent = r.status + ": " + r.n; t.append(k, v); place(t, el, ev); }).on("mouseleave", () => { t.hidden = true; }); x0 += r.n; });
+      svg.append("text").attr("x", x(x0) + 6).attr("y", y + bh / 2).attr("dy", "0.35em").style("font-size", "var(--cds-font-size-caption)").style("font-variant-numeric", "tabular-nums").attr("fill", "var(--color-fg-muted)").text(x0);
+    });
+  }
+
+  function phases() {
+    const el = document.getElementById("phases"); const d = dash.data("phase_progress"); if (d.status !== "ok") { fail(el, d.status); return; }
+    el.innerHTML = ""; const wrap = document.createElement("div"); wrap.style.display = "flex"; wrap.style.flexDirection = "column"; wrap.style.gap = "var(--cds-gap-sm)";
+    d.data.forEach((r) => {
+      const row = document.createElement("div"); row.style.display = "grid"; row.style.gridTemplateColumns = "minmax(0,1fr) auto"; row.style.gap = "4px 8px"; row.style.fontSize = "var(--cds-font-size-caption)";
+      const a = document.createElement("span"); a.textContent = r.phase; const b = document.createElement("span"); b.style.color = "var(--color-fg-muted)"; b.style.fontVariantNumeric = "tabular-nums"; b.textContent = r.done + " of " + r.total;
+      const bar = document.createElement("div"); bar.style.gridColumn = "1 / -1"; bar.style.height = "10px"; bar.style.borderRadius = "5px"; bar.style.background = "var(--cds-chart-grid)"; bar.style.overflow = "hidden";
+      const fill = document.createElement("div"); fill.style.height = "100%"; fill.style.width = (100 * r.share) + "%"; fill.style.borderRadius = "5px"; fill.style.background = r.share >= 1 ? "var(--color-ok)" : dash.colors[0]; bar.appendChild(fill);
+      row.append(a, b, bar); wrap.appendChild(row);
+    });
+    el.appendChild(wrap);
+  }
+
+  function decisions() {
+    const el = document.getElementById("decisions"); const d = dash.data("decisions"); if (d.status !== "ok") { fail(el, d.status); return; }
+    el.innerHTML = ""; d.data.forEach((r) => { const li = document.createElement("li"); const c = document.createElement("span"); c.className = "ft-chip"; const i = document.createElement("i"); i.style.background = "var(--color-warn)"; c.append(i, document.createTextNode(r.area)); const t = document.createElement("span"); t.className = "t"; t.textContent = r.topic; const w = document.createElement("span"); w.className = "w"; w.textContent = r.why; li.append(c, t, w); el.appendChild(li); });
+  }
+
+  // features table with filters
+  const fstate = { area: "All", status: "All", q: "" };
+  function chips(id, values, key) {
+    const box = document.getElementById(id); if (box.childElementCount) { box.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.v === fstate[key])); return; }
+    values.forEach((v) => { const b = document.createElement("button"); b.type = "button"; b.dataset.v = v; b.textContent = v; b.setAttribute("aria-pressed", v === fstate[key]); b.addEventListener("click", () => { fstate[key] = v; featuresTable(); }); box.appendChild(b); });
+  }
+  function chip(state) { const c = document.createElement("span"); c.className = "ft-chip"; const i = document.createElement("i"); i.style.background = stateColor(state); c.append(i, document.createTextNode(state)); return c; }
+  function featuresTable() {
+    const d = dash.data("features"); const tb = document.querySelector("#t-features tbody"); if (d.status !== "ok") { tb.innerHTML = ""; return; }
+    chips("f-area", ["All", "App", "Engine", "Kit", "Design"], "area"); chips("f-state", ["All"].concat(STATES), "status");
+    const q = fstate.q.toLowerCase();
+    const rows = d.data.filter((r) => (fstate.area === "All" || r.area === fstate.area) && (fstate.status === "All" || r.status === fstate.status) && (!q || (r.feature + " " + r.group + " " + r.note + " " + r.ref).toLowerCase().includes(q)));
+    tb.innerHTML = ""; rows.forEach((r) => { const tr = document.createElement("tr"); tr.dataset.key = r.id;
+      const a = document.createElement("td"); a.textContent = r.feature; const g = document.createElement("td"); g.className = "muted"; g.textContent = r.area === "App" ? r.group : r.area + " · " + r.group;
+      const s = document.createElement("td"); s.appendChild(chip(r.status)); const f = document.createElement("td"); f.className = "muted hide-narrow"; f.textContent = r.ref; const n = document.createElement("td"); n.className = "muted hide-narrow"; n.textContent = r.note;
+      tr.append(a, g, s, f, n); tb.appendChild(tr); });
+  }
+  document.getElementById("f-search").addEventListener("input", (e) => { fstate.q = e.target.value; featuresTable(); });
+
+  function kitbars() {
+    const el = document.getElementById("kitbars"); const d = dash.data("kit"); if (d.status !== "ok") { fail(el, d.status); return; }
+    const rows = d.data.map((r) => ({ ...r, count: Number(r.count), before: Number(r.before) }));
+    const W = Math.max(300, el.clientWidth); el.innerHTML = ""; const svg = d3.select(el).append("svg").attr("width", "100%");
+    const probe = svg.append("text").style("font-size", "var(--cds-font-size-caption)"); let lw = 0; rows.forEach((r) => { probe.text(r.item); lw = Math.max(lw, probe.node().getComputedTextLength()); }); probe.remove();
+    const m = { l: lw + 12, r: 120 }, bh = 22, gap = 12, H = rows.length * (bh + gap); svg.attr("viewBox", `0 0 ${W} ${H}`); el.style.minHeight = H + "px";
+    const t = tip(el);
+    rows.forEach((r, i) => {
+      const y = i * (bh + gap), x = d3.scaleLinear([0, Math.max(r.count, r.before)], [m.l, W - m.r]);
+      svg.append("text").attr("x", m.l - 8).attr("y", y + bh / 2).attr("dy", "0.35em").attr("text-anchor", "end").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)").text(r.item);
+      svg.append("rect").attr("x", m.l).attr("y", y).attr("width", Math.max(0, x(r.before) - m.l)).attr("height", bh).attr("rx", 4).attr("fill", dash.colors[0]).attr("opacity", 0.22);
+      svg.append("rect").attr("x", m.l).attr("y", y + 5).attr("width", Math.max(2, x(r.count) - m.l)).attr("height", bh - 10).attr("rx", 4).attr("fill", r.count > r.before ? "var(--color-ok)" : dash.colors[0])
+        .on("mousemove", (ev) => { t.innerHTML = ""; const k = document.createElement("div"); k.className = "k"; k.textContent = r.item; const v = document.createElement("div"); v.textContent = fmt(r.before) + " → " + fmt(r.count) + " " + r.unit; const n = document.createElement("div"); n.textContent = r.note; t.append(k, v, n); place(t, el, ev); }).on("mouseleave", () => { t.hidden = true; });
+      const delta = r.count - r.before;
+      svg.append("text").attr("x", x(Math.max(r.count, r.before)) + 8).attr("y", y + bh / 2).attr("dy", "0.35em").style("font-size", "var(--cds-font-size-caption)").style("font-variant-numeric", "tabular-nums").attr("fill", "currentColor").text(fmt(r.count) + (delta > 0 ? "  +" + fmt(delta) : ""));
+    });
+    const list = document.getElementById("kitlist"); list.innerHTML = "";
+    rows.filter((r) => r.count !== r.before).forEach((r) => { const li = document.createElement("li"); const c = document.createElement("span"); c.className = "ft-chip"; const i = document.createElement("i"); i.style.background = "var(--color-ok)"; c.append(i, document.createTextNode("+" + fmt(r.count - r.before))); const tt = document.createElement("span"); tt.className = "t"; tt.textContent = r.item; const w = document.createElement("span"); w.className = "w"; w.textContent = r.note; li.append(c, tt, w); list.appendChild(li); });
+  }
+
+  function findbar() {
+    const el = document.getElementById("findbar"); const d = dash.data("finding_counts"); if (d.status !== "ok") { fail(el, d.status); return; }
+    const rows = d.data.filter((r) => r.n > 0), total = d3.sum(rows, (r) => r.n);
+    el.innerHTML = ""; const bar = document.createElement("div"); bar.style.display = "flex"; bar.style.height = "28px"; bar.style.borderRadius = "6px"; bar.style.overflow = "hidden"; bar.style.gap = "2px";
+    rows.forEach((r) => { const s = document.createElement("div"); s.style.flex = r.n; s.style.background = stateColor(r.state); s.title = ""; bar.appendChild(s); });
+    const lg = document.createElement("div"); lg.className = "ft-legend"; lg.style.marginTop = "var(--cds-gap-sm)";
+    rows.forEach((r) => { const s = document.createElement("span"); const i = document.createElement("i"); i.style.background = stateColor(r.state); s.append(i, document.createTextNode(r.state + " · " + r.n + " (" + d3.format(".0%")(r.n / total) + ")")); lg.appendChild(s); });
+    el.append(bar, lg);
+  }
+
+  function findline() {
+    const el = document.getElementById("findline"); const d = dash.data("findings"); if (d.status !== "ok") { fail(el, d.status); return; }
+    const ev = []; d.data.forEach((r) => { ev.push([r.raised, 1, 0]); if (r.closed) ev.push([r.closed, 0, 1]); });
+    const days = [...new Set(ev.map((e) => e[0]))].sort(); let a = 0, c = 0;
+    const pts = days.map((day) => { ev.filter((e) => e[0] === day).forEach((e) => { a += e[1]; c += e[2]; }); return { day: new Date(day), raised: a, closed: c }; });
+    const W = Math.max(260, el.clientWidth), H = 200, m = { l: 28, r: 90, t: 10, b: 24 }; el.innerHTML = "";
+    const svg = d3.select(el).append("svg").attr("width", "100%").attr("viewBox", `0 0 ${W} ${H}`);
+    const x = d3.scaleUtc(d3.extent(pts, (p) => p.day), [m.l, W - m.r]); const y = d3.scaleLinear([0, d3.max(pts, (p) => p.raised)], [H - m.b, m.t]).nice();
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.min(pts.length, 4)).tickFormat(d3.utcFormat("%b %-d"))).attr("font-size", null).attr("font-family", null).call((g) => { g.selectAll("text").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)"); g.selectAll("line,path").attr("stroke", "var(--cds-chart-axis)"); });
+    svg.append("g").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-(W - m.l - m.r))).attr("font-size", null).attr("font-family", null).call((g) => { g.select(".domain").remove(); g.selectAll("line").attr("stroke", "var(--cds-chart-grid)"); g.selectAll("text").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)"); });
+    [["raised", dash.colors[0], "Raised"], ["closed", "var(--color-ok)", "Closed"]].forEach(([k, col, lab], i) => {
+      svg.append("path").datum(pts).attr("fill", "none").attr("stroke", col).attr("stroke-width", 2).attr("stroke-linecap", "round").attr("stroke-linejoin", "round").attr("d", d3.line().x((p) => x(p.day)).y((p) => y(p[k])));
+      const last = pts[pts.length - 1]; svg.append("circle").attr("cx", x(last.day)).attr("cy", y(last[k])).attr("r", 3.5).attr("fill", col);
+      svg.append("text").attr("x", x(last.day) + 8).attr("y", y(last[k]) + (i ? 8 : -2)).style("font-size", "var(--cds-font-size-caption)").attr("fill", "currentColor").text(lab + " " + last[k]);
+    });
+    // table
+    const tb = document.querySelector("#t-findings tbody"); tb.innerHTML = "";
+    d.data.forEach((r) => { const tr = document.createElement("tr"); tr.dataset.key = r.finding; const a = document.createElement("td"); a.textContent = r.finding; a.style.whiteSpace = "nowrap"; const b = document.createElement("td"); b.textContent = r.title; const s = document.createElement("td"); s.appendChild(chip(r.state)); const n = document.createElement("td"); n.className = "muted hide-narrow"; n.textContent = "#" + r.issue; tr.append(a, b, s, n); tb.appendChild(tr); });
+  }
+
+  function pace() {
+    const el = document.getElementById("pace"), lg = document.getElementById("pace-legend"); const d = dash.data("timeline"); if (d.status !== "ok") { fail(el, d.status); lg.innerHTML = ""; return; }
+    const rows = d.data.map((r) => ({ ...r, date: new Date(r.at) }));
+    const W = Math.max(300, el.clientWidth), H = 240, m = { l: 16, r: 16, t: 14, b: 26 }; el.innerHTML = "";
+    const svg = d3.select(el).append("svg").attr("width", "100%").attr("viewBox", `0 0 ${W} ${H}`);
+    const ext = d3.extent(rows, (r) => r.date); const x = d3.scaleUtc([d3.utcHour.offset(ext[0], -1), d3.utcHour.offset(ext[1], 1)], [m.l, W - m.r]);
+    const kinds = ["Feature", "Fix", "Plan", "CI", "Test", "Kit", "Design"];
+    const y = d3.scaleBand(kinds, [m.t, H - m.b]).padding(0.2);
+    const eat = (dt) => new Date(dt.getTime() + 3 * 3600e3);
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.max(3, Math.floor(W / 120))).tickFormat((dt) => d3.utcFormat("%b %-d %H:%M")(eat(dt)))).attr("font-size", null).attr("font-family", null).call((g) => { g.selectAll("text").style("font-size", "var(--cds-font-size-caption)").attr("fill", "var(--color-fg-muted)"); g.selectAll("line,path").attr("stroke", "var(--cds-chart-axis)"); });
+    kinds.forEach((k) => svg.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(k) + y.bandwidth() / 2).attr("y2", y(k) + y.bandwidth() / 2).attr("stroke", "var(--cds-chart-grid)"));
+    const t = tip(el);
+    svg.selectAll("circle.ev").data(rows).join("circle").attr("class", "ev").attr("cx", (r) => x(r.date)).attr("cy", (r) => y(r.kind) + y.bandwidth() / 2).attr("r", 6).attr("fill", (r) => stateColor(r.kind)).attr("fill-opacity", 0.85).attr("stroke", "var(--color-panel)").attr("stroke-width", 1.5)
+      .on("mousemove", (ev, r) => { t.innerHTML = ""; const k = document.createElement("div"); k.className = "k"; k.textContent = d3.utcFormat("%b %-d, %H:%M")(eat(r.date)) + " · " + r.kind + (r.pr ? " · #" + r.pr : ""); const v = document.createElement("div"); v.textContent = r.title; t.append(k, v); place(t, el, ev); }).on("mouseleave", () => { t.hidden = true; });
+    lg.innerHTML = ""; kinds.forEach((k) => { const n = rows.filter((r) => r.kind === k).length; if (!n) return; const s = document.createElement("span"); const i = document.createElement("i"); i.style.background = stateColor(k); i.style.borderRadius = "50%"; s.append(i, document.createTextNode(k + " · " + n)); lg.appendChild(s); });
+    const tb = document.querySelector("#t-timeline tbody"); tb.innerHTML = "";
+    rows.slice().reverse().forEach((r) => { const tr = document.createElement("tr"); tr.dataset.key = r.at; const a = document.createElement("td"); a.className = "muted"; a.style.whiteSpace = "nowrap"; a.textContent = d3.utcFormat("%b %-d, %H:%M")(eat(r.date)); const k = document.createElement("td"); k.appendChild(chip(r.kind)); const w = document.createElement("td"); w.textContent = r.title; const p = document.createElement("td"); p.className = "muted hide-narrow"; p.textContent = r.pr ? "#" + r.pr : ""; tr.append(a, k, w, p); tb.appendChild(tr); });
+  }
+
+  // images (screenshots of canvas boards and texture maps)
+  const IM = window.FMC_IMAGES || {};
+  const BOARDS = [
+    ["ceiling", "Ceiling Design Assistant", "Engineer › Ceilings: room, designs, checks, features, pack"],
+    ["casework", "Casework Assistant", "Engineer › Casework: units, layouts, checks, workshop pack"],
+    ["profiles", "Profile sets", "16 elements × 20 design movements, switched by FMC_Design_Movement"],
+    ["materials", "Material library", "167 Ugandan materials with textures, keynotes and prices"],
+    ["plants", "Plant families", "13 simple forms, 42 Ugandan species, plan and elevation"],
+    ["trees", "Advanced trees", "Complex forms for a later Rhino build"],
+  ];
+  function gallery(id, keys) {
+    const box = document.getElementById(id); if (box.childElementCount) return;
+    BOARDS.filter((b) => keys.includes(b[0]) && IM[b[0]]).forEach(([k, title, note]) => { const f = document.createElement("figure"); f.className = "ft-shot"; f.id = "board-" + id + "-" + k; const img = document.createElement("img"); img.src = IM[k]; img.alt = title + " board"; img.loading = "lazy"; const c = document.createElement("figcaption"); const b = document.createElement("b"); b.textContent = title; c.append(b, document.createTextNode(note)); f.append(img, c); box.appendChild(f); });
+  }
+  function swatches() {
+    const box = document.getElementById("swatches"); if (box.childElementCount || !IM.textures) return;
+    IM.textures.forEach((t) => { const f = document.createElement("figure"); const img = document.createElement("img"); img.src = t.src; img.alt = t.name; const c = document.createElement("figcaption"); c.textContent = t.name.replace(/_/g, " "); f.append(img, c); box.appendChild(f); });
+  }
+
+  function prs() {
+    const d = dash.data("prs"); const tb = document.querySelector("#t-prs tbody"); tb.innerHTML = "";
+    if (d.status !== "ok") return;
+    if (!d.data.length) { const tr = document.createElement("tr"); const td = document.createElement("td"); td.colSpan = 3; td.className = "muted"; td.textContent = "Nothing in review."; tr.appendChild(td); tb.appendChild(tr); return; }
+    d.data.forEach((r) => { const tr = document.createElement("tr"); tr.dataset.key = r.pr; const a = document.createElement("td"); a.className = "muted"; a.textContent = "#" + r.pr; const b = document.createElement("td"); b.textContent = r.title; const c = document.createElement("td"); c.appendChild(chip(r.checks)); tr.append(a, b, c); tb.appendChild(tr); });
+  }
+
+  dash.onData(() => {
+    prs();
+    kpis(); cells(); donut(); groups(); phases(); decisions(); featuresTable(); kitbars(); findbar(); findline(); pace();
+    gallery("gallery-latest", ["ceiling", "casework", "materials"]); gallery("gallery-all", BOARDS.map((b) => b[0])); swatches(); unskel();
+  });
+})();
+</script>

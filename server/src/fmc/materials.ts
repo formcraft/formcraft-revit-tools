@@ -2,10 +2,14 @@
  * Materials (board manage/PaneMaterials, U18). Pure: the database comes from the kit (07_Materials\FMC_Materials.json),
  * the facts from Revit (fmc_material_facts). Projects take materials from the database; they never invent their own.
  */
-export interface MaterialMap { map: string; file: string; size_mm: number | null }
+import path from "node:path";
+
+export interface MaterialMap { map: string; file: string; size_mm: number | null; height_mm?: number | null }
 export interface DbMaterial {
   name: string; class: string; sub: string; keynote: string; cost_code: string; supplier: string;
   graphics: { shaded: string; surface: string; cut: string }; maps: MaterialMap[];
+  /** The kit's description; long, so the database listing leaves it out (fmc_material database). */
+  description?: string;
 }
 export interface MaterialDb { version: string; materials: DbMaterial[]; classes: string[]; problems: string[] }
 
@@ -26,11 +30,48 @@ export function parseMaterialDb(json: any): MaterialDb {
     materials.push({
       name, class: str(m.class), sub: str(m.sub ?? m.subclass), keynote: str(m.keynote), cost_code: str(m.cost_code ?? m.costcode), supplier: str(m.supplier),
       graphics: { shaded: str(g.shaded ?? g.colour ?? g.color), surface: str(g.surface ?? g.surface_pattern), cut: str(g.cut ?? g.cut_pattern) },
-      maps: (Array.isArray(m.maps ?? m.textures) ? (m.maps ?? m.textures) : []).map((x: any) => ({ map: str(x.map ?? x.type), file: str(x.file), size_mm: x.size_mm == null ? null : Number(x.size_mm) })),
+      maps: (Array.isArray(m.maps ?? m.textures) ? (m.maps ?? m.textures) : []).map((x: any) => ({
+        map: str(x.map ?? x.kind ?? x.type), file: str(x.file), size_mm: x.size_mm == null ? null : Number(x.size_mm),
+        height_mm: x.height_mm == null ? null : Number(x.height_mm) })),
+      description: str(m.description),
     });
   }
   const classes = [...new Set(materials.map((m) => m.class).filter(Boolean))].sort();
   return { version: str(json?.version), materials, classes, problems };
+}
+
+/** What Revit needs to make a kit material: the database fields and each texture map's absolute path on this PC. */
+export interface ResolvedMap { map: "albedo" | "bump"; path: string; size_mm: number | null; height_mm: number | null; found: boolean }
+export interface ResolvedMaterial {
+  name: string; class: string; sub: string; keynote: string; cost_code: string; description: string; shaded: string;
+  graphics: DbMaterial["graphics"]; maps: ResolvedMap[];
+}
+
+/**
+ * Turns a database material into what the Revit handler applies (fmc_doc add_material, fmc_material assign). Texture
+ * files are relative to the database (Textures/<file>.jpg beside FMC_Materials.json). A map whose file isn't on disk
+ * is passed with found: false and a warning, so the material is still made, only without that texture: nothing is
+ * made up. Map kinds other than albedo (or colour, diffuse) and bump are left out with a warning.
+ */
+export function resolveMaterial(m: DbMaterial, materialsFile: string, exists: (p: string) => boolean): { material: ResolvedMaterial; warnings: string[] } {
+  const win = path.win32;
+  const dir = win.dirname(materialsFile);
+  const warnings: string[] = [];
+  const maps: ResolvedMap[] = [];
+  for (const x of m.maps) {
+    const kind = /^(albedo|colou?r|diffuse)$/i.test(x.map) ? "albedo" : /^bump$/i.test(x.map) ? "bump" : null;
+    if (!kind) { warnings.push(`${m.name}: the ${x.map || "unnamed"} map isn't applied (albedo and bump only)`); continue; }
+    if (!x.file) { warnings.push(`${m.name}: the ${kind} map names no file`); continue; }
+    const p = win.isAbsolute(x.file) ? win.normalize(x.file) : win.join(dir, x.file);
+    const found = exists(p);
+    if (!found) warnings.push(`${m.name}: texture ${p} isn't on disk, so the material is made without its ${kind} map`);
+    maps.push({ map: kind, path: p, size_mm: x.size_mm ?? null, height_mm: x.height_mm ?? x.size_mm ?? null, found });
+  }
+  return {
+    material: { name: m.name, class: m.class, sub: m.sub, keynote: m.keynote, cost_code: m.cost_code, description: m.description ?? "",
+      shaded: m.graphics.shaded, graphics: m.graphics, maps },
+    warnings,
+  };
 }
 
 export function searchMaterials(db: MaterialDb, cls: string, query: string, limit = 200): DbMaterial[] {
