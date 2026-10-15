@@ -93,6 +93,8 @@ namespace revit_mcp_plugin.Shell
             application.RegisterDockablePane(PaneId, Title, new PaneProvider(_view));
             application.Idling += OnIdling;
             RibbonBuilder.Create(application, Pane, Settings, Licence);
+            // The AI activity strip: the ribbon's panel title bars take a colour while an AI app works (Settings › General).
+            AiRibbonStrip.Start(key => Settings.Get("settings." + key));
         }
 
         public static void TogglePane(UIApplication app)
@@ -134,6 +136,8 @@ namespace revit_mcp_plugin.Shell
                     FormcraftBrowser.RequestToggleService();
             }
             Connection.Update(SocketService.Instance.IsRunning);
+            // The AI connection is off: no AI call can be running or waiting, so the strip clears.
+            if (!SocketService.Instance.IsRunning) AiActivityTracker.Shared.Reset();
             RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);

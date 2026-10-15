@@ -310,6 +310,11 @@ namespace revit_mcp_plugin.Core
                 // the job's failures and dialogs). A call that runs long is recorded in FMC_Jobs_Revit.jsonl for fmc_job.
                 JObject parameters = request.GetParamsObject() ?? new JObject();
                 if (!string.IsNullOrEmpty(request.Id)) parameters["_fmcJob"] = request.Id;
+                // The AI activity strip (owner, 15 Oct): the server tags each call change, dryrun or read; the ribbon shows
+                // it while the call runs (Shell/AiRibbonStrip.cs). The tag is the strip's only; the command never sees it.
+                string activity = parameters.Value<string>("_fmcActivity");
+                parameters.Remove("_fmcActivity");
+                var aiCall = global::Formcraft.Shell.Services.AiActivityTracker.Shared.Begin(activity);
                 var job = RevitJobLog.Watch(request.Id, request.Method);
                 try
                 {
@@ -317,12 +322,14 @@ namespace revit_mcp_plugin.Core
                     using (RevitWake.Busy())
                         result = command.Execute(parameters, request.Id);
 
+                    aiCall.End(true);
                     job.Done(true);
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
                     return CreateSuccessResponse(request.Id, result);
                 }
                 catch (Exception ex)
                 {
+                    aiCall.End(false);
                     job.Done(false, ex.Message);
                     ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, ex.Message);
                     return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, ex.Message);
