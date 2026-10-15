@@ -101,6 +101,17 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "set_visibility": return FmcDocGeometry.Visibility(doc, op);
                 case "add_connector": return FmcDocMep.AddConnector(doc, op);
                 case "link_connector_param": return FmcDocMep.LinkConnectorParam(doc, op);
+                case "add_subcategory": return FmcDocLod.AddSubcategory(doc, op);
+                case "set_subcategory": return FmcDocLod.SetSubcategory(doc, op);
+                case "sweep": return FmcDocLod.MakeSweep(doc, op, false);
+                case "void_sweep": return FmcDocLod.MakeSweep(doc, op, true);
+                case "revolution": return FmcDocLod.MakeRevolution(doc, op);
+                case "blend": return FmcDocLod.MakeBlend(doc, op);
+                case "symbolic_lines": return FmcDocLod.SymbolicLines(doc, op);
+                case "lock_face": return FmcDocLod.LockFace(doc, op);
+                case "add_eq_dimension": return FmcDocLod.EqDimension(doc, op);
+                case "load_family": return FmcDocLod.LoadFamily(doc, op);
+                case "place_nested": return FmcDocLod.PlaceNested(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }
@@ -154,7 +165,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             string name = op.Value<string>("name");
             var from = (JArray)op["from"]; var to = (JArray)op["to"];
             View view = PlanView(doc, op.Value<string>("view"));
-            XYZ a = new XYZ(Mm(from[0].Value<double>()), Mm(from[1].Value<double>()), 0), b = new XYZ(Mm(to[0].Value<double>()), Mm(to[1].Value<double>()), 0);
+            // In plan, [x, y]; in an elevation or section, [across, up] in that view (Front: [x, z]), so level planes
+            // (sill, head, top of leaf) can be drawn and dimensioned too.
+            bool upright = view.ViewType == ViewType.Elevation || view.ViewType == ViewType.Section;
+            XYZ P(JArray q) => upright
+                ? view.RightDirection * Mm(q[0].Value<double>()) + view.UpDirection * Mm(q[1].Value<double>())
+                : new XYZ(Mm(q[0].Value<double>()), Mm(q[1].Value<double>()), 0);
+            XYZ a = P(from), b = P(to);
             ReferencePlane plane = Plane(doc, name);
             string result = "skip", detail = "";
             if (plane == null)

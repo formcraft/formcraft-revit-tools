@@ -1,0 +1,446 @@
+{
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_Door_FlushSingleLeaf",
+  "template": "Metric Door.rft",
+  "about": "Reference LOD 400 recipe (Family Authoring Standard): swept frame on the Frame subcategory and locked to Left/Right, leaf locked to four planes with labelled and EQ dimensions, plan swing arc and elevation opening lines per detail level, clearance zone off by default. Run fmc_doc report on Metric Door.rft first: the template's plane names (Left, Right, Center (Front/Back)) must match. Sizes stay pending until the supplier visits.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "OST_Doors"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "group": "IdentityData"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Frame_Spec",
+      "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Resistance_Min",
+      "guid": "2f80614a-7f11-5b2a-91a6-a8431863183e"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Ironmongery_Set",
+      "guid": "1f71895f-a957-5735-b684-00aa31d91721"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Width",
+      "type": "Length"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Thickness",
+      "type": "Length"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Gap",
+      "type": "Length"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Leaf Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Panel",
+      "line_weight_projection": 2,
+      "line_weight_cut": 3
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Plan Swing",
+      "line_weight_projection": 1
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Elevation Swing",
+      "line_weight_projection": 1
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance",
+      "line_weight_projection": 1
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Left",
+      "from": [
+        -410,
+        -1000
+      ],
+      "to": [
+        -410,
+        1000
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Right",
+      "from": [
+        410,
+        -1000
+      ],
+      "to": [
+        410,
+        1000
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Face Ext",
+      "from": [
+        -1000,
+        -22.5
+      ],
+      "to": [
+        1000,
+        -22.5
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Face Int",
+      "from": [
+        -1000,
+        22.5
+      ],
+      "to": [
+        1000,
+        22.5
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_ref_plane",
+      "name": "Leaf Top",
+      "view": "Front",
+      "from": [
+        -1000,
+        2060
+      ],
+      "to": [
+        1000,
+        2060
+      ],
+      "is_reference": "WeakReference"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width L",
+      "between": [
+        "Left",
+        "Leaf Left"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Frame Width R",
+      "between": [
+        "Leaf Right",
+        "Right"
+      ],
+      "label": "Frame Width"
+    },
+    {
+      "op": "add_dimension",
+      "name": "Leaf Thickness",
+      "between": [
+        "Leaf Face Ext",
+        "Leaf Face Int"
+      ],
+      "label": "Leaf Thickness"
+    },
+    {
+      "op": "add_eq_dimension",
+      "name": "EQ leaf",
+      "planes": [
+        "Leaf Face Ext",
+        "Center (Front/Back)",
+        "Leaf Face Int"
+      ]
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf",
+      "rect": [
+        "Leaf Left",
+        "Leaf Right",
+        "Leaf Face Ext",
+        "Leaf Face Int"
+      ],
+      "start": 10,
+      "end": 2060,
+      "end_plane": "Leaf Top"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf",
+      "subcategory": "Panel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf",
+      "param": "Leaf Material"
+    },
+    {
+      "op": "sweep",
+      "name": "Frame",
+      "path_plane": "front",
+      "path": [
+        [
+          -430,
+          0
+        ],
+        [
+          -430,
+          2080
+        ],
+        [
+          430,
+          2080
+        ],
+        [
+          430,
+          0
+        ]
+      ],
+      "profile": [
+        [
+          -20,
+          -50
+        ],
+        [
+          20,
+          -50
+        ],
+        [
+          20,
+          50
+        ],
+        [
+          -20,
+          50
+        ]
+      ],
+      "subcategory": "Frame"
+    },
+    {
+      "op": "lock_face",
+      "name": "Frame/Left",
+      "solid": "Frame",
+      "plane": "Left"
+    },
+    {
+      "op": "lock_face",
+      "name": "Frame/Right",
+      "solid": "Frame",
+      "plane": "Right"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame",
+      "param": "Frame Material"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Swing arc",
+      "view": "plan",
+      "arc": {
+        "center": [
+          -410,
+          -22.5
+        ],
+        "radius": 820,
+        "start_deg": 270,
+        "end_deg": 360
+      },
+      "subcategory": "Plan Swing"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Leaf open",
+      "view": "plan",
+      "points": [
+        [
+          -410,
+          -22.5
+        ],
+        [
+          -410,
+          -842.5
+        ]
+      ],
+      "subcategory": "Plan Swing"
+    },
+    {
+      "op": "symbolic_lines",
+      "name": "Opening lines",
+      "view": "front",
+      "points": [
+        [
+          410,
+          10
+        ],
+        [
+          -410,
+          1035
+        ],
+        [
+          410,
+          2060
+        ]
+      ],
+      "subcategory": "Elevation Swing",
+      "coarse": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Clearance zone",
+      "points": [
+        [
+          -450,
+          -22.5
+        ],
+        [
+          450,
+          -22.5
+        ],
+        [
+          450,
+          -1222.5
+        ],
+        [
+          -450,
+          -1222.5
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Clearance zone",
+      "subcategory": "Clearance"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Clearance zone",
+      "coarse": false,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2100"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/Width",
+      "type": "0900x2100",
+      "param": "Width",
+      "value": 900
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/Height",
+      "type": "0900x2100",
+      "param": "Height",
+      "value": 2100
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/Frame Width",
+      "type": "0900x2100",
+      "param": "Frame Width",
+      "value": 40
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/Leaf Thickness",
+      "type": "0900x2100",
+      "param": "Leaf Thickness",
+      "value": 45
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/FMC_Geometry_Stage",
+      "type": "0900x2100",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2100/IfcExportAs",
+      "type": "0900x2100",
+      "param": "IfcExportAs",
+      "value": "IfcDoor"
+    }
+  ],
+  "values": {
+    "Frame Width": {
+      "value": 40,
+      "source_status": "pending",
+      "source": "supplier visit (approved 14 Oct)"
+    },
+    "Frame depth (profile)": {
+      "value": 100,
+      "source_status": "pending",
+      "source": "supplier visit"
+    },
+    "Leaf Thickness": {
+      "value": 45,
+      "source_status": "pending",
+      "source": "supplier visit"
+    },
+    "Leaf gap at floor": {
+      "value": 10,
+      "source_status": "assumed"
+    },
+    "Clearance depth": {
+      "value": 1200,
+      "source_status": "assumed",
+      "source": "to confirm against the building regulations"
+    },
+    "Keynote": {
+      "value": "",
+      "source_status": "pending",
+      "source": "one keynote per type from FMC_Keynotes.txt (FAM-017); fmc_library keynote_request if missing"
+    }
+  }
+}

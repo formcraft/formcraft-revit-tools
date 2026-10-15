@@ -25,6 +25,22 @@ recipe; version 0.1 adds value sources and code checks.
 | `assumed` | A reasonable stand-in | Warn: the reviewer accepts it or sends it back |
 | `pending` | Not known yet | **Fail**: it can't be released |
 
+## LOD 400 ops (Family Authoring Standard 1–3)
+
+| Op | Makes | Standard |
+|---|---|---|
+| `add_subcategory` | An object subcategory with projection and cut line weights, colour and material | 3.3: Frame, Panel, Glass, Opening, Plan Swing, Elevation Swing, Hidden Lines, Clearance |
+| `set_subcategory` | Puts a solid or a line set on a subcategory | 3.3: every element on a named subcategory |
+| `sweep`, `void_sweep` | A swept solid or void along a polyline (plan, front or right), from points or a loaded `FMC_Profile_*` | 3.1: frames, profiles, rebates that cut correctly in section |
+| `revolution`, `blend` | Turned parts (roses, knobs, nozzles) and tapered parts | 2: G4 Fine geometry |
+| `symbolic_lines` | Lines or an arc in plan, front or right, per detail level, on a subcategory | 3.2: swing arcs in plan, opening lines in elevation |
+| `lock_face` | Aligns and locks a solid's face to a named plane | 1.4: faces locked to planes |
+| `add_eq_dimension` | An EQ dimension across three or more planes | 1.4: symmetry |
+| `load_family`, `place_nested` | Loads an `.rfa` from the kit's `04_Families` and places it, with parameters associated | 1.7: nested parts; 3.4: detail kit |
+
+Sizes stay `pending` until the supplier visits give them (section 7); a recipe with a pending value builds, but Gate A
+holds it in staging. Masking regions and freeform shapes stay hand work (FAM-039).
+
 ## The flow
 1. **Check:** `fmc_recipe check`, read-only. It validates the operations against the kit's parameter dictionary and
    shows where the family will be staged and released.

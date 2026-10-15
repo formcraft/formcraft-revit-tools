@@ -56,3 +56,52 @@ test("B1c geometry: a box between four planes, locked, with its material and vis
   const bad = OPS.parse([{ op: "void_extrusion", name: "Cut", start: 500, end: 100 }]);
   assert.equal(splitProblems(opsProblems(bad, dict)).errors.length, 2);
 });
+
+test("LOD 400 pack: subcategories, a profile sweep, a revolution, swing lines, locks, EQ and a nested part", () => {
+  const b = OPS.parse([
+    { op: "add_ref_plane", name: "Left", from: [-450, -1000], to: [-450, 1000] },
+    { op: "add_ref_plane", name: "Right", from: [450, -1000], to: [450, 1000] },
+    { op: "add_family_param", name: "Leaf Width", type: "Length" },
+    { op: "add_subcategory", name: "Frame", line_weight_projection: 2, line_weight_cut: 4 },
+    { op: "add_subcategory", name: "Plan Swing", line_weight_projection: 1, color: [0, 0, 0] },
+    { op: "load_family", name: "FMC_Profile_A_DoorFrame", path: "D:\\Kit\\04_Families\\_Profiles\\FMC_Profile_A_DoorFrame.rfa" },
+    { op: "sweep", name: "Frame", path: [[-450, 0], [-450, 2100], [450, 2100], [450, 0]], path_plane: "front",
+      profile_family: "FMC_Profile_A_DoorFrame", profile_type: "50x100", subcategory: "Frame" },
+    { op: "revolution", name: "Handle rose", profile: [[0, 0], [25, 0], [25, 8], [0, 8]], axis_at: [380, 0] },
+    { op: "symbolic_lines", name: "Swing plan", arc: { center: [-450, 0], radius: 900, start_deg: 0, end_deg: 90 }, subcategory: "Plan Swing", coarse: false },
+    { op: "set_subcategory", name: "Handle rose", subcategory: "Frame" },
+    { op: "lock_face", name: "Frame/Left", solid: "Frame", plane: "Left" },
+    { op: "add_eq_dimension", name: "EQ width", planes: ["Left", "Center (Left/Right)", "Right"] },
+    { op: "load_family", name: "FMC_A_Hardware_Lever", path: "D:\\Kit\\04_Families\\_Staging\\A\\FMC_A_Hardware_Lever.rfa" },
+    { op: "place_nested", name: "Lever", family: "FMC_A_Hardware_Lever", type: "Standard", at: [380, 0, 1000], params: { Width: "Leaf Width" } },
+  ]);
+  const { errors, notes } = splitProblems(opsProblems(b, dict, "D:\\Kit\\04_Families"));
+  assert.deepEqual(errors, []);
+  assert.deepEqual(notes, []);
+  const sweep = b.find((o) => o.op === "sweep") as any;
+  assert.equal(sweep.at, 0);
+  assert.deepEqual((b.find((o) => o.op === "place_nested") as any).at, [380, 0, 1000]);
+});
+
+test("LOD 400 pack: bad input is refused", () => {
+  const b = OPS.parse([
+    { op: "sweep", name: "S", path: [[0, 0], [100, 0]] },
+    { op: "revolution", name: "R", profile: [[-5, 0], [5, 0], [5, 5]], start_deg: 0, end_deg: 0 },
+    { op: "blend", name: "B", base: [[0, 0], [1, 0], [1, 1]], top: [[0, 0], [1, 0], [1, 1]], start: 10, end: 5 },
+    { op: "symbolic_lines", name: "L", subcategory: "Plan Swing" },
+    { op: "add_eq_dimension", name: "E", planes: ["A", "A", "B"] },
+    { op: "load_family", name: "X", path: "C:\\Users\\Someone\\Downloads\\x.rfa" },
+    { op: "lock_face", name: "wrong", solid: "S", plane: "Left" },
+  ]);
+  const { errors } = splitProblems(opsProblems(b, dict, "D:\\Kit\\04_Families"));
+  const all = errors.join(" | ");
+  assert.match(all, /give profile \(points\) or profile_family/);
+  assert.match(all, /start_deg and end_deg are the same/);
+  assert.match(all, /can't cross its axis/);
+  assert.match(all, /end \(5\) must be above start \(10\)/);
+  assert.match(all, /give points or arc/);
+  assert.match(all, /a plane is named twice/);
+  assert.match(all, /isn't inside the kit's families folder/);
+  assert.match(all, /name must be "S\/Left"/);
+  assert.throws(() => OPS.parse([{ op: "add_subcategory", name: "X", line_weight_projection: 17 }]));
+});
