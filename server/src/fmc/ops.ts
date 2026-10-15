@@ -3,7 +3,9 @@
  * Every op names what it makes, so a batch is idempotent: Revit answers create, update or skip per op. Sizes are mm.
  * Shared parameters come only from the kit's dictionary, by GUID (rule 7). Deleting is never an op.
  */
+import path from "node:path";
 import { z } from "zod";
+import { isInside } from "./policy.js";
 import { SpParam } from "./specs.js";
 import { MaterialDb } from "./materials.js";
 
@@ -16,9 +18,23 @@ const VIEWS = ["plan", "front", "right"] as const;
 const visibility = {
   coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional(),
 };
+// A corner of a parametric sweep path: where two named reference planes (or a level, such as Ref. Level) cross in the
+// path plane view. Two names, an array with .length(2), never z.tuple (see point).
+const corner = z.array(z.string().min(1)).length(2).describe("[plane, plane]: where two named reference planes (or a level) cross");
+const segmentOffset = z.union([mm, z.string().min(1)])
+  .describe("mm, or a Length parameter's name (\"-Name\" for the other way): the segment sits this far off the plane it runs along");
 const sweepShape = {
   name: z.string().min(1),
-  path: z.array(point).min(2).describe("the path, a polyline in mm in the path plane"),
+  path: z.array(point).min(2).optional().describe("a fixed polyline in mm in the path plane: it never follows a parameter (use path_planes)"),
+  path_planes: z.array(corner).min(2).optional().describe(
+    "the parametric path: corners in order, each the crossing of two named planes, e.g. [[\"Left\",\"Sill\"],[\"Left\",\"Head\"]," +
+    "[\"Right\",\"Head\"],[\"Right\",\"Sill\"]]. Neighbouring corners share exactly one plane (the segment runs along it); each " +
+    "segment is locked to its plane and each open end to its other plane, so the sweep follows them. A lock Revit can't make fails the op"),
+  path_offsets: z.array(segmentOffset).optional().describe(
+    "path_planes: one per segment (corners - 1). Positive is +x (plan: +x or +y) across a segment that runs along a vertical " +
+    "plane, and up (plan: +y or +x) off one that runs along a horizontal plane; a mm offset is a locked dimension, a parameter a labelled one"),
+  path_host: z.string().min(1).optional().describe(
+    "path_planes: a reference plane parallel to the path plane that hosts the path sketch, so the sweep follows it (e.g. Frame Ext); otherwise the path sits at `at`"),
   path_plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
   at: mm.default(0),
   profile: z.array(point).min(3).optional().describe("a closed profile in mm, local to the start of the path (x across, y up)"),
@@ -103,7 +119,8 @@ export const OP = z.discriminatedUnion("op", [
     .describe("three or more reference planes in order, e.g. Left, Center (Left/Right), Right"),
     view: z.string().optional(), offset: mm.default(600) }),
   z.object({ op: z.literal("load_family"), name: z.string().min(1).describe("the family name once loaded"),
-    path: z.string().min(1).describe("an .rfa in the kit's 04_Families (profiles, detail kit, nested parts)") }),
+    path: z.string().min(1).describe("an .rfa relative to the kit's family staging root (e.g. _Profiles\\FMC_Profile_Architrave_Contemporary.rfa), " +
+      "found there, in 04_Families or a library root on this PC; an absolute path must be inside those roots") }),
   z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
     at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
     params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
@@ -198,6 +215,99 @@ export function profileLoopProblems(start: number[], segments: Array<{ to: numbe
   return p;
 }
 
+// ---- parametric sweep paths -------------------------------------------------------------------------------------------
+
+type SweepOp = Extract<Op, { op: "sweep" | "void_sweep" }>;
+
+/**
+ * path_planes: neighbouring corners share exactly one plane (the one the segment runs along), a corner names two
+ * different planes, path_offsets has one entry per segment, two segments in a row along the same plane keep the same
+ * offset, and a parameter offset is a Length parameter.
+ */
+export function pathPlaneProblems(o: SweepOp, params: Set<string>, paramTypes: Map<string, string>): string[] {
+  const p: string[] = [];
+  const c = o.path_planes ?? [];
+  const label = (k: number) => `[${c[k].join(", ")}]`;
+  c.forEach((pair, k) => { if (pair[0] === pair[1]) p.push(`corner ${k + 1} ${label(k)} names one plane twice`); });
+  const along = runningPlanes(c);
+  along.forEach((pl, k) => {
+    if (pl === null) p.push(`segment ${k + 1} from ${label(k)} to ${label(k + 1)} doesn't run along one plane: neighbouring corners share exactly one plane`);
+  });
+  const offs = o.path_offsets;
+  if (offs) {
+    if (offs.length !== c.length - 1) p.push(`path_offsets has ${offs.length} entries for ${c.length - 1} segments (one per segment)`);
+    offs.forEach((x, k) => {
+      if (typeof x !== "string") return;
+      const name = x.replace(/^-/, "").trim();
+      if (!params.has(name)) p.push(`segment ${k + 1}'s offset parameter "${name}" isn't added earlier in this batch (it may exist in the file: then it's fine)`);
+      else if (paramTypes.has(name) && paramTypes.get(name) !== "Length") p.push(`segment ${k + 1}'s offset "${name}" is ${paramTypes.get(name)}: an offset takes a Length parameter`);
+    });
+    for (let k = 1; k < along.length; k++)
+      if (along[k] !== null && along[k] === along[k - 1] && String(offs[k] ?? 0) !== String(offs[k - 1] ?? 0))
+        p.push(`segments ${k} and ${k + 1} both run along ${along[k]} with different offsets: they can't meet`);
+  }
+  return p;
+}
+
+/** The plane each segment of a path_planes path runs along (the one plane its two corners share), or null. */
+export function runningPlanes(corners: string[][]): Array<string | null> {
+  const out: Array<string | null> = [];
+  for (let k = 0; k + 1 < corners.length; k++) {
+    const shared = corners[k].filter((x) => corners[k + 1].includes(x));
+    out.push(shared.length === 1 ? shared[0] : null);
+  }
+  return out;
+}
+
+const isAbsolutePath = (p: string) => /^[A-Za-z]:\\/.test(p) || p.startsWith("\\");
+const relativeHint = (file: string) => {
+  const parts = file.split("\\").filter(Boolean);
+  const i = parts.findIndex((s) => /^_Profiles$/i.test(s));
+  return i >= 0 ? parts.slice(i).join("\\") : parts[parts.length - 1];
+};
+
+/**
+ * A load_family path as Revit gets it: a relative path is joined to the first root that holds the file (the family
+ * staging root, then 04_Families, then the library roots), or to the staging root when none does (Revit then says
+ * "No file …" naming the full path). An absolute path is passed on as it is.
+ */
+export function resolveFamilyPath(file: string, roots: string[], exists: (f: string) => boolean): { path: string; found: boolean; root: string } {
+  const f = file.replace(/\//g, "\\");
+  if (isAbsolutePath(f) || !roots.length) return { path: f, found: exists(f), root: "" };
+  for (const r of roots) {
+    const full = path.win32.join(r, f);
+    if (exists(full)) return { path: full, found: true, root: r };
+  }
+  return { path: path.win32.join(roots[0], f), found: false, root: roots[0] };
+}
+
+/** Every load_family op with its path resolved; notes for the ones not found on this PC. */
+export function resolveFamilyPaths<T extends { op: string; name: string }>(ops: T[], roots: string[], exists: (f: string) => boolean): { ops: T[]; notes: string[] } {
+  const notes: string[] = [];
+  const out = ops.map((o) => {
+    const given = (o as { path?: unknown }).path;
+    if (o.op !== "load_family" || typeof given !== "string" || !given) return o;
+    const r = resolveFamilyPath(given, roots, exists);
+    if (!r.found) notes.push(`load_family ${o.name}: ${r.path} isn't on this PC${isAbsolutePath(given.replace(/\//g, "\\")) ? "" : ` (looked in ${roots.join(", ")})`}: build the profile first`);
+    return r.path === given ? o : { ...o, path: r.path };
+  });
+  return { ops: out, notes };
+}
+
+/** The family roots a relative load_family path is read against, in order: staging root, 04_Families, library roots. */
+export function familyRoots(stagingRoot: string, libraryRoots: string[] = []): string[] {
+  const s = stagingRoot.replace(/[\\/]+$/, "");
+  const all = [s, path.win32.dirname(s), ...libraryRoots.filter((r) => !r.includes("*")).map((r) => r.replace(/[\\/]+$/, ""))];
+  return [...new Set(all.filter(Boolean))];
+}
+
+export interface OpsCheckOptions {
+  /** The guard's library roots: an absolute load_family path may also sit in one of these. */
+  libraryRoots?: string[];
+  /** The template's own planes (recipe check and build): a path_planes plane that is neither made earlier nor one of these is an error. */
+  templatePlanes?: string[];
+}
+
 const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : /^MATERIAL$/i.test(datatype) ? "Material" : datatype);
 
 /**
@@ -205,7 +315,8 @@ const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : 
  * materials is the kit's material library: null when it isn't readable (add_material is then refused), left out when
  * the caller has no kit (tests), and add_material isn't checked against it.
  */
-export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null): string[] {
+export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null,
+  opts: OpsCheckOptions = {}): string[] {
   const p: string[] = [];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
@@ -289,6 +400,14 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "add_subcategory": subcats.add(o.name); break;
       case "sweep":
       case "void_sweep":
+        if (!o.path && !o.path_planes) p.push(`${at}: give path_planes (corners on named planes) or path (fixed points)`);
+        if (o.path && o.path_planes) p.push(`${at}: give path_planes or path, not both`);
+        if (o.path_planes) for (const x of pathPlaneProblems(o, params, paramTypes)) p.push(`${at}: ${x}`);
+        for (const pl of [...new Set([...(o.path_planes ?? []).flat(), ...(o.path_host ? [o.path_host] : [])])])
+          if (!planes.has(pl) && !(opts.templatePlanes ?? []).includes(pl)) p.push(`${at}: ${opts.templatePlanes
+            ? `reference plane "${pl}" isn't made earlier in this batch or one of the template's planes (${opts.templatePlanes.join(", ")})`
+            : mayExist("reference plane", pl)}`);
+        if (!o.path_planes && (o.path_offsets || o.path_host)) p.push(`${at}: path_offsets and path_host go with path_planes`);
         if (!o.profile && !o.profile_family) p.push(`${at}: give profile (points) or profile_family`);
         if (o.profile_family && !families.has(o.profile_family)) p.push(`${at}: ${mayExist("profile family", o.profile_family)}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
@@ -327,9 +446,12 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "load_family": {
         const file = o.path.replace(/\//g, "\\");
         if (!/\.rfa$/i.test(file)) p.push(`${at}: load_family takes an .rfa`);
-        if (familiesRoot) {
-          const root = familiesRoot.replace(/\//g, "\\").replace(/\\+$/, "").toLowerCase() + "\\";
-          if (!file.toLowerCase().startsWith(root) || file.includes("..")) p.push(`${at}: ${o.path} isn't inside the kit's families folder (${familiesRoot})`);
+        if (file.split("\\").includes("..")) p.push(`${at}: ${o.path} climbs out of its folder (..): name it from the kit's families root`);
+        else if (isAbsolutePath(file)) {
+          const roots = [...(familiesRoot ? [familiesRoot] : []), ...(opts.libraryRoots ?? [])];
+          if (roots.length && !roots.some((r) => isInside(file, r)))
+            p.push(`${at}: ${o.path} isn't inside the kit's families folder (${roots.join(", ")}). Write it relative to the family ` +
+              `staging root, e.g. ${relativeHint(file)}, so it works on any PC`);
         }
         families.add(o.name);
         break;

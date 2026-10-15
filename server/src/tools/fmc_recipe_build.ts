@@ -19,6 +19,10 @@ export interface BuildOptions {
   stepwise: boolean; chunkSize: number; resume: boolean;
   reportsDir: string; sharedParameterFile: string;
   notes: string[]; sources: Record<string, string[]>;
+  /** The ops Revit gets (load_family paths resolved on this PC); the recipe's own ops when left out. */
+  ops?: unknown[];
+  /** Flex's size check: each size parameter at its lowest and highest type value (Gate A: solids follow Width/Height). */
+  follow?: unknown[];
 }
 
 /** What a build needs from the rest of the server: fmc_doc (as parsed JSON with ok), Gate A, the clock and the time budget. */
@@ -55,7 +59,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   const t0 = now();
   const budget = d.budgetMs ?? Infinity;
   const hardMs = d.hardMs ?? 300000;
-  const ops = recipe.ops as unknown[];
+  const ops = (o.ops ?? recipe.ops) as unknown[];
   const n = ops.length;
   const fam = recipe.family;
   const envelope = requestBytes("fmc_doc_apply", applyEnvelope("00000000", o.sharedParameterFile));
@@ -244,7 +248,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     }, isError: false };
   }
   if (budget !== Infinity && now() - t0 > budget - 20000) return progressReply("ops applied", { next_step: "flex, save and Gate A" });
-  const flex = await d.doc({ action: "flex", session: rec.session });
+  const flex = await d.doc({ action: "flex", session: rec.session, ...(o.follow?.length ? { follow: o.follow } : {}) });
   const saved = await d.doc({ action: "save", session: rec.session, path: o.target, overwrite: o.overwrite });
   if (!ok(saved)) return fail({ op: null, text: `save failed: ${errorText(saved)}` });
   fs.writeFileSync(o.target.replace(/\.rfa$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));

@@ -7,7 +7,7 @@ import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { SessionRecord, buildReport, openProblems, saveProblems } from "../fmc/doc.js";
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
-import { OP, opsProblems, splitProblems } from "../fmc/ops.js";
+import { OP, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 import { readDb } from "./fmc_material.js";
@@ -54,9 +54,9 @@ export const FMC_DOC_DESCRIPTION =
     "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
     "sessions Revit holds, which close may close, and other background family documents. Never a project or " +
-    "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
+    "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept); with follow, each size parameter is also moved from its lowest to its highest value and every named solid reports whether it moved with it. apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles on a path locked to named planes (path_planes), revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family by a path relative to the kit's family roots, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
@@ -68,6 +68,8 @@ export const FMC_DOC_SHAPE = {
   session: z.string().optional().default(""),
   path: z.string().optional().default("").describe("save: the target .rfa (inside the write roots, named by the rules)"),
   overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (a person decided)"),
+  follow: z.array(z.object({ param: z.string().min(1), low_mm: z.number(), high_mm: z.number(), stepped: z.boolean().optional() })).optional()
+    .describe("flex: size parameters to move from low to high on one type, reporting which named solids moved with each (Gate A)"),
 };
 
 export type FmcDocArgs = z.infer<z.ZodObject<typeof FMC_DOC_SHAPE>>;
@@ -104,16 +106,20 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (args.action === "apply") {
       if (!args.ops.length) return reply({ refused: true, reasons: ["apply needs ops"] }, true);
-      const bytes = requestBytes("fmc_doc_apply", { ...applyEnvelope(s.id, expandEnv(config.shared_parameter_file)), ops: args.ops });
+      // load_family: a path relative to the kit's family roots is resolved on this PC before Revit sees it
+      const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
+      const resolved = resolveFamilyPaths(args.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
+      const bytes = requestBytes("fmc_doc_apply", { ...applyEnvelope(s.id, expandEnv(config.shared_parameter_file)), ops: resolved.ops });
       if (bytes > BRIDGE_LIMIT_BYTES) return reply({ refused: true, reasons: [`The batch is ${bytes} bytes; the Revit bridge reads ${BRIDGE_LIMIT_BYTES} per call, so Revit would never see it (F-029). Send fewer ops per apply, or build the recipe with fmc_recipe build stepwise: true`] }, true);
       let dictionary = null;
       try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
       const materials = args.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
-      const { errors, notes } = splitProblems(opsProblems(args.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials));
+      const { errors, notes } = splitProblems(opsProblems(args.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials, { libraryRoots }));
       if (errors.length) return reply({ refused: true, reasons: errors }, true);
+      notes.push(...resolved.notes);
       // add_material: the server resolves the material from the kit's library (rule 7) and hands Revit its fields and
       // texture paths; Revit never looks a material up by itself.
-      const ops = args.ops.map((o) => {
+      const ops = resolved.ops.map((o) => {
         if (o.op !== "add_material" || !materials) return o;
         const r = resolveMaterial(materials.materials.find((m) => m.name === o.name)!, expandEnv(config.materials_file), (f) => fs.existsSync(f));
         notes.push(...r.warnings);
@@ -132,7 +138,7 @@ export async function runFmcDoc(args: FmcDocArgs) {
     }
 
     if (args.action === "flex") {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_flex", { session: s.id }, 300000));
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_flex", { session: s.id, ...(args.follow?.length ? { follow: args.follow } : {}) }, 300000));
       return reply({ session: s.id, ...r, next: r?.ok ? "Every type regenerates" : "Fix the constraints the failing types name, then flex again" });
     }
 

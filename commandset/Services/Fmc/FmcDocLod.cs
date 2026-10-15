@@ -33,7 +33,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        private static Plane PlaneOf(string plane, double at)
+        internal static Plane PlaneOf(string plane, double at)
         {
             switch (plane)
             {
@@ -132,16 +132,30 @@ namespace RevitMCPCommandSet.Services.Fmc
         {
             string name = op.Value<string>("name");
             if (FmcDocGeometry.Solid(doc, name) != null) return ("skip", "exists (edit the profile or path by hand, or rename to rebuild)");
+            // The parametric path: corners on named planes, each segment locked (FmcDocSweep)
+            if (op["path_planes"] is JArray) return FmcDocSweep.Make(doc, op, isVoid);
             string plane = op.Value<string>("path_plane") ?? "plan";
             double at = op.Value<double?>("at") ?? 0;
             var path = Points(op["path"]).Select(p => To3D(plane, p, at)).ToList();
-            if (path.Count < 2) throw new InvalidOperationException("a sweep path needs two or more points");
+            if (path.Count < 2) throw new InvalidOperationException("a sweep path needs two or more points (or path_planes)");
             CurveArray pathCurves = Polyline(path, false);
             SketchPlane sketch = SketchPlane.Create(doc, PlaneOf(plane, at));
 
+            SweepProfile profile = ProfileFor(doc, op, path[0], (path[1] - path[0]).Normalize(), out string detail);
+            Autodesk.Revit.DB.Sweep made = doc.FamilyCreate.NewSweep(!isVoid, pathCurves, sketch, profile, 0, ProfilePlaneLocation.Start);
+            FmcDocGeometry.Label(made, name);
+            ApplySubcategory(doc, made, op);
+            return ("create", (isVoid ? "void sweep, " : "sweep, ") + detail + ", path " + path.Count + " points in " + plane);
+        }
+
+        /// <summary>
+        /// The sweep's profile: a loaded FMC_Profile_* family type, or a closed loop of points drawn on the plane across
+        /// the path at its start (x across the path, y up).
+        /// </summary>
+        internal static SweepProfile ProfileFor(Document doc, JObject op, XYZ start, XYZ dir, out string detail)
+        {
             SweepProfile profile;
             string profileFamily = op.Value<string>("profile_family");
-            string detail;
             if (!string.IsNullOrEmpty(profileFamily))
             {
                 string typeName = op.Value<string>("profile_type");
@@ -158,7 +172,6 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (pts.Count < 3) throw new InvalidOperationException("a profile needs three or more points");
                 // Local profile coordinates: x across the path, y up. Revit places a curve-loop profile on the plane
                 // perpendicular to the path at its start, so the loop is drawn in that plane.
-                XYZ start = path[0], dir = (path[1] - path[0]).Normalize();
                 XYZ up = Math.Abs(dir.DotProduct(XYZ.BasisZ)) > 0.99 ? XYZ.BasisY : XYZ.BasisZ;
                 XYZ across = up.CrossProduct(dir).Normalize();
                 up = dir.CrossProduct(across).Normalize();
@@ -168,10 +181,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 profile = doc.Application.Create.NewCurveLoopsProfile(arr);
                 detail = pts.Count + "-point profile";
             }
-            Autodesk.Revit.DB.Sweep made = doc.FamilyCreate.NewSweep(!isVoid, pathCurves, sketch, profile, 0, ProfilePlaneLocation.Start);
-            FmcDocGeometry.Label(made, name);
-            ApplySubcategory(doc, made, op);
-            return ("create", (isVoid ? "void sweep, " : "sweep, ") + detail + ", path " + path.Count + " points in " + plane);
+            return profile;
         }
 
         public static (string, string) MakeRevolution(Document doc, JObject op)
@@ -208,7 +218,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             return ("create", "blend " + bottom.Count + " → " + top.Count + " sides");
         }
 
-        private static void ApplySubcategory(Document doc, GenericForm form, JObject op)
+        internal static void ApplySubcategory(Document doc, GenericForm form, JObject op)
         {
             string sub = op.Value<string>("subcategory");
             if (!string.IsNullOrEmpty(sub)) Assign(form, Subcategory(doc, sub));
@@ -268,7 +278,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(p => p.Name == name)
             ?? throw new InvalidOperationException("No reference plane " + name);
 
-        private static View ViewFor(Document doc, string kind)
+        internal static View ViewFor(Document doc, string kind)
         {
             var views = new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate).ToList();
             if (kind == "front") return views.FirstOrDefault(v => v.Name == "Front") ?? views.First(v => v.ViewType == ViewType.Elevation);

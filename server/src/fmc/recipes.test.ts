@@ -403,3 +403,97 @@ test("F-029: a chunk Revit is still working on is reported with its op, and resu
   assert.equal(done.body.dry_run, true, JSON.stringify(done.body));
   assert.equal(revit.open.size, 0);
 });
+
+// ---------------------------------------------------------------- fully parametric sweeps (path_planes)
+
+const allRecipes = () => fs.readdirSync(path.join(REPO, "tests", "recipes")).filter((f) => f.endsWith(".recipe.json")).map((f) => ({ f, r: recipeFile(f) }));
+
+test("every sweep in tests/recipes is on path_planes (no fixed path), so a trim that doesn't follow Width/Height can't come back", async () => {
+  const { opsProblems, splitProblems } = await import("./ops.js");
+  const { templatePlanes } = await import("./recipebuild.js");
+  let sweeps = 0;
+  for (const { f, r } of allRecipes()) {
+    const ops = r.ops as Array<Record<string, any>>;
+    for (const o of ops.filter((x) => x.op === "sweep" || x.op === "void_sweep")) {
+      sweeps++;
+      assert.ok(Array.isArray(o.path_planes) && o.path_planes.length >= 2, `${f}: ${o.op} "${o.name}" has no path_planes`);
+      assert.equal(o.path, undefined, `${f}: ${o.op} "${o.name}" still has a fixed path`);
+    }
+    // the planes are the template's or made earlier: no error other than the missing dictionary
+    const { errors } = splitProblems(opsProblems(r.ops, null, "Z:\\00_Standards\\04_Families", undefined, { templatePlanes: templatePlanes(r.template).planes }));
+    assert.ok(errors.every((e) => /shared parameter file isn't readable/.test(e)), `${f}: ${errors.filter((e) => !/shared parameter/.test(e)).join(" | ")}`);
+    // load_family paths are relative to the kit's family roots, so the recipe works on any PC (Z:, D:)
+    for (const o of ops.filter((x) => x.op === "load_family")) assert.ok(!/^[A-Za-z]:|^\\/.test(o.path), `${f}: ${o.name} loads from ${o.path}`);
+  }
+  assert.ok(sweeps >= 161, `${sweeps} sweeps`); // flush 40 + its frame, two fanlight doors 40 each, two windows 20 each
+});
+
+test("the opening recipes stay size first (F-026) and the trims sit on the family's own planes", () => {
+  for (const f of ["FMC_A_Door_FlushSingleLeaf", "FMC_A_Door_TimberFanlight", "FMC_A_Door_SteelFanlight", "FMC_A_Window_SteelCasementVent", "FMC_A_Window_AluVent"]) {
+    const r = recipeFile(`${f}.recipe.json`);
+    const ops = r.ops as Array<Record<string, any>>;
+    const firstPlane = ops.findIndex((o) => o.op === "add_ref_plane");
+    const t1 = ops.find((o) => o.op === "add_type")!.name;
+    assert.ok(ops.findIndex((o) => o.op === "add_type" && o.name === t1) < firstPlane, `${f}: type 1 before the planes`);
+    for (const p of ["Width", "Height"])
+      assert.ok(ops.findIndex((o) => o.op === "set_type_value" && o.type === t1 && o.param === p) < firstPlane, `${f}: ${p} before the planes`);
+    const trims = ops.filter((o) => o.op === "sweep" && / (Ext|Int)$/.test(o.name));
+    assert.ok(trims.length >= 20);
+    for (const s of trims) {
+      const used = new Set((s.path_planes as string[][]).flat());
+      assert.ok(used.has("Left") && used.has("Right"), `${f}: ${s.name} on Left and Right`);
+      assert.ok(s.path_host, `${f}: ${s.name} hosted on a face plane`);
+      assert.ok(ops.some((o) => o.op === "add_ref_plane" && o.name === s.path_host), `${f}: ${s.path_host} drawn by the recipe`);
+    }
+  }
+});
+
+test("flex follow: Width, Height and Fanlight Height are exercised; each trim is governed by Width/Height through its planes", async () => {
+  const { expectedFollows, followParams, planeParams } = await import("./recipes.js");
+  const steel = recipeFile("FMC_A_Door_SteelFanlight.recipe.json");
+  const fp = followParams(steel);
+  assert.deepEqual(fp.map((p) => p.param).sort(), ["Fanlight Height", "Height", "Width"]);
+  const w = fp.find((p) => p.param === "Width")!;
+  assert.ok(w.low_mm < w.high_mm && !w.stepped);
+  const pp = planeParams(steel);
+  assert.deepEqual([...pp.get("Frame Head")!], ["Height"]);
+  assert.deepEqual([...pp.get("Leaf Top")!].sort(), ["Fanlight Height", "Height"]);
+  const exp = expectedFollows(steel, fp);
+  assert.deepEqual(exp.get("Architrave Contemporary Ext"), ["Width", "Height"]);
+  // A one-type family is still flexed: Width and Height move 10% up.
+  const flush = recipeFile("FMC_A_Door_FlushSingleLeaf.recipe.json");
+  const ff = followParams(flush);
+  assert.deepEqual(ff.find((p) => p.param === "Width"), { param: "Width", low_mm: 900, high_mm: 990, stepped: true });
+  assert.deepEqual(expectedFollows(flush, ff).get("Frame"), ["Width", "Height"]);
+  const win = recipeFile("FMC_A_Window_AluVent.recipe.json");
+  assert.deepEqual(expectedFollows(win).get("Surround Greek Ext"), ["Width", "Height"]);
+});
+
+test("Gate A: a sweep that doesn't move with its governing parameter fails; every solid says what it follows", () => {
+  const r = parseRecipe(JSON.stringify({ family: "FMC_A_Window_X", template: "Metric Window.rft", ops: [
+    { op: "add_type", name: "A" }, { op: "add_type", name: "B" },
+    { op: "set_type_value", name: "A/Width", type: "A", param: "Width", value: 600 },
+    { op: "set_type_value", name: "B/Width", type: "B", param: "Width", value: 1800 },
+    { op: "set_type_value", name: "A/Height", type: "A", param: "Height", value: 900 },
+    { op: "set_type_value", name: "B/Height", type: "B", param: "Height", value: 1500 },
+    { op: "add_ref_plane", name: "Face", from: [-2000, -130], to: [2000, -130] },
+    { op: "sweep", name: "Trim", path_planes: [["Left", "Sill"], ["Left", "Head"], ["Right", "Head"], ["Right", "Sill"]], path_host: "Face", path_plane: "front", profile: [[0, 0], [10, 0], [10, 10]] },
+    { op: "extrusion", name: "Jamb", rect: ["Left", "Right", "Face", "Center (Front/Back)"], end: 100 },
+  ] })).recipe!;
+  const flex = (moved: Record<string, string[]>) => ({ ok: true, types: [{ type: "A", ok: true }], dimension_sides: { checked: 0, unrecorded: 0 },
+    follow: { params: [{ param: "Width", ok: true, low_mm: 600, high_mm: 1800 }, { param: "Height", ok: true, low_mm: 900, high_mm: 1500 }],
+      elements: Object.entries(moved).map(([name, m]) => ({ name, moved: m, fixed: ["Width", "Height"].filter((p) => !m.includes(p)) })) } });
+  const good = gateA("FMC_A_Window_X", r, { inspect: passInspect, registerCategory: "Windows", flex: flex({ Trim: ["Width", "Height"], Jamb: ["Width"] }) });
+  const line = good.lines.find((l) => l.check === "Solids and sweeps follow the size parameters")!;
+  assert.equal(line.state, "Pass", line.detail);
+  assert.match(line.detail, /follows Width\/Height: 1 \(Trim\)/);
+  assert.deepEqual(good.follows!.map((x) => [x.solid, x.follows, x.state]), [["Trim", "follows Width/Height", "Pass"], ["Jamb", "follows Width", "Pass"]]);
+  const bad = gateA("FMC_A_Window_X", r, { inspect: passInspect, registerCategory: "Windows", flex: flex({ Trim: ["Width"], Jamb: ["Width"] }) });
+  const b = bad.lines.find((l) => l.check === "Solids and sweeps follow the size parameters")!;
+  assert.equal(b.state, "Fail");
+  assert.match(b.detail, /Trim follows Width, but its planes move with Width\/Height/);
+  assert.equal(bad.verdict, "Fail");
+  // An add-in without the follow report: not checked, never passed.
+  const old = gateA("FMC_A_Window_X", r, { inspect: passInspect, registerCategory: "Windows", flex: passFlex });
+  assert.equal(old.lines.find((l) => /follow the size/.test(l.check))!.state, "Not checked");
+});

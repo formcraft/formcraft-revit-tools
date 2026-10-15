@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { OPS, opsProblems, profileLoopProblems, splitProblems } from "./ops.js";
+import { OPS, familyRoots, opsProblems, profileLoopProblems, resolveFamilyPath, resolveFamilyPaths, runningPlanes, splitProblems } from "./ops.js";
 import { SpParam } from "./specs.js";
 import { parseMaterialDb } from "./materials.js";
 
@@ -169,4 +169,71 @@ test("add_material: only materials in the kit's library, and a Material paramete
   assert.match(opsProblems(unknown, dict, undefined, null)[0], /isn't readable/);
   const wrongType = OPS.parse([{ op: "add_family_param", name: "Width", type: "Length" }, { op: "add_material", name: "FMC_Timber_Mvule", param: "Width" }]);
   assert.match(opsProblems(wrongType, dict, undefined, materials).join(), /"Width" is Length: add_material sets a Material parameter/);
+});
+
+// ---- parametric sweep paths (path_planes) and relative family paths ---------------------------------------------------
+
+const opening = [
+  { op: "add_ref_plane", name: "Wall Centre", from: [-2000, 0], to: [2000, 0] },
+  { op: "add_ref_plane", name: "Trim Face Ext", from: [-2000, -130], to: [2000, -130] },
+  { op: "add_family_param", name: "Frame Inset", type: "Length" },
+  { op: "add_family_param", name: "Show_Greek", type: "YesNo" },
+  { op: "load_family", name: "FMC_Profile_Architrave_Greek", path: "_Profiles\\FMC_Profile_Architrave_Greek.rfa" },
+];
+
+test("path_planes: a trim on Left, Right, Head and Sill passes; it needs no fixed path; offsets by mm or a Length parameter", () => {
+  const b = OPS.parse([...opening,
+    { op: "sweep", name: "Surround Greek Ext", path_planes: [["Left", "Sill"], ["Left", "Head"], ["Right", "Head"], ["Right", "Sill"]],
+      path_host: "Trim Face Ext", path_plane: "front", profile_family: "FMC_Profile_Architrave_Greek", profile_type: "110x22" },
+    { op: "sweep", name: "Frame", path_planes: [["Left", "Ref. Level"], ["Left", "Head"], ["Right", "Head"], ["Right", "Ref. Level"]],
+      path_offsets: [20, "-Frame Inset", -20], path_host: "Wall Centre", path_plane: "front", profile: [[-20, -50], [20, -50], [20, 50], [-20, 50]] },
+  ]);
+  const door = ["Left", "Right", "Head", "Sill", "Ref. Level"];
+  assert.deepEqual(opsProblems(b, dict, "D:\\Kit\\04_Families", undefined, { templatePlanes: door }), []);
+  // Without the template's planes (a bare fmc_doc apply), the template planes are notes, never errors.
+  const { errors, notes } = splitProblems(opsProblems(b, dict, "D:\\Kit\\04_Families"));
+  assert.deepEqual(errors, []);
+  assert.ok(notes.length > 0 && notes.every((n) => /reference plane "(Left|Right|Head|Sill)"/.test(n)), notes.join(" | "));
+  assert.deepEqual(runningPlanes([["Left", "Sill"], ["Left", "Head"], ["Right", "Head"], ["Right", "Sill"]]), ["Left", "Head", "Right"]);
+});
+
+test("path_planes: bad corners, offsets and unknown planes are refused (no silent fixed geometry)", () => {
+  const sweep = (o: object) => ({ op: "sweep", name: "S", path_plane: "front", profile_family: "FMC_Profile_Architrave_Greek", ...o });
+  const tpl = { templatePlanes: ["Left", "Right", "Head", "Sill"] };
+  const run = (o: object) => splitProblems(opsProblems(OPS.parse([...opening, sweep(o)]), dict, undefined, undefined, tpl)).errors.join(" | ");
+  assert.match(run({}), /give path_planes \(corners on named planes\) or path/);
+  assert.match(run({ path: [[0, 0], [1, 0]], path_planes: [["Left", "Sill"], ["Left", "Head"]] }), /give path_planes or path, not both/);
+  assert.match(run({ path_planes: [["Left", "Left"], ["Left", "Head"]] }), /corner 1 \[Left, Left\] names one plane twice/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Right", "Head"]] }), /segment 1 from \[Left, Sill\] to \[Right, Head\] doesn't run along one plane/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Left", "Head"], ["Right", "Head"]], path_offsets: [10] }), /path_offsets has 1 entries for 2 segments/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Left", "Head"], ["Right", "Head"]], path_offsets: [10, "Show_Greek"] }),
+    /segment 2's offset "Show_Greek" is YesNo: an offset takes a Length parameter/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Left", "Head"], ["Left", "Sill"]], path_offsets: [10, 20] }), /both run along Left with different offsets/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Left", "Jamb Top"]] }),
+    /reference plane "Jamb Top" isn't made earlier in this batch or one of the template's planes \(Left, Right, Head, Sill\)/);
+  assert.match(run({ path_planes: [["Left", "Sill"], ["Left", "Head"]], path_host: "Nowhere" }), /reference plane "Nowhere" isn't made earlier/);
+  assert.match(run({ path: [[0, 0], [1, 0]], path_host: "Wall Centre" }), /path_offsets and path_host go with path_planes/);
+  // The schema keeps corners to two names (arrays with a length, never a tuple) and a path to two corners or more.
+  assert.throws(() => OPS.parse([sweep({ path_planes: [["Left"], ["Left", "Head"]] })]));
+  assert.throws(() => OPS.parse([sweep({ path_planes: [["Left", "Sill"]] })]));
+});
+
+test("load_family: a path relative to the family roots passes and resolves on this PC; an absolute path outside them names the fix", () => {
+  const ok = OPS.parse([{ op: "load_family", name: "P", path: "_Profiles\\P.rfa" }, { op: "load_family", name: "Q", path: "D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q.rfa" },
+    { op: "load_family", name: "R", path: "E:\\Lib\\_Chain\\R.rfa" }]);
+  assert.deepEqual(opsProblems(ok, dict, "D:\\Kit\\04_Families", undefined, { libraryRoots: ["E:\\Lib"] }), []);
+  const bad = OPS.parse([{ op: "load_family", name: "Z", path: "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Greek.rfa" },
+    { op: "load_family", name: "U", path: "..\\..\\Users\\x.rfa" }]);
+  const e = opsProblems(bad, dict, "D:\\Kit\\04_Families").join(" | ");
+  assert.match(e, /isn't inside the kit's families folder \(D:\\Kit\\04_Families\)\. Write it relative to the family staging root, e\.g\. _Profiles\\FMC_Profile_Architrave_Greek\.rfa/);
+  assert.match(e, /climbs out of its folder/);
+
+  const roots = familyRoots("D:\\Kit\\04_Families\\_Staging\\", ["D:\\Kit\\04_Families\\_ChainTests", "Z:\\Projects\\*\\01_WIP"]);
+  assert.deepEqual(roots, ["D:\\Kit\\04_Families\\_Staging", "D:\\Kit\\04_Families", "D:\\Kit\\04_Families\\_ChainTests"]);
+  const on = new Set(["D:\\Kit\\04_Families\\_Profiles\\P.rfa"]);
+  assert.deepEqual(resolveFamilyPath("_Profiles\\P.rfa", roots, (f) => on.has(f)), { path: "D:\\Kit\\04_Families\\_Profiles\\P.rfa", found: true, root: "D:\\Kit\\04_Families" });
+  assert.equal(resolveFamilyPath("_Profiles/Q.rfa", roots, () => false).path, "D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q.rfa");
+  const r = resolveFamilyPaths(OPS.parse([{ op: "load_family", name: "Q", path: "_Profiles\\Q.rfa" }, { op: "add_type", name: "T" }]), roots, () => false);
+  assert.equal((r.ops[0] as { path?: string }).path, "D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q.rfa");
+  assert.match(r.notes[0], /load_family Q: D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q\.rfa isn't on this PC \(looked in .*\): build the profile first/);
 });

@@ -210,14 +210,16 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// Flex: every type in turn, regenerated; constraint errors per type, and the labelled dimensions whose plane ended
         /// on the other side of its reference in that type (F-026, F-039). Nothing is kept.
         /// </summary>
-        public static JObject Flex(Document doc)
+        public static JObject Flex(Document doc, JArray follow = null)
         {
             FamilyManager fm = doc.FamilyManager;
             var results = new JArray();
             int sidesChecked = 0, sidesUnrecorded = 0;
+            JObject followed = null;
             using (var group = new TransactionGroup(doc, "Formcraft: flex"))
             {
                 group.Start();
+                FamilyType startType = fm.CurrentType;
                 foreach (FamilyType type in fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)).ToList())
                 {
                     var c = new ErrorCollector();
@@ -245,13 +247,102 @@ namespace RevitMCPCommandSet.Services.Fmc
                         results.Add(new JObject { ["type"] = type.Name, ["ok"] = all.Count == 0, ["errors"] = new JArray(all), ["dimension_sides"] = new JArray(wrong) });
                     }
                 }
+                if (follow != null && follow.Count > 0) followed = Follow(doc, follow, startType);
                 group.RollBack();
             }
-            return new JObject
+            var answer = new JObject
             {
                 ["types"] = results, ["ok"] = results.All(r => r.Value<bool>("ok")),
                 ["dimension_sides"] = new JObject { ["checked"] = sidesChecked, ["unrecorded"] = sidesUnrecorded },
             };
+            if (followed != null) answer["follow"] = followed;
+            return answer;
+        }
+
+        /// <summary>
+        /// Gate A's size check: each size parameter (Width, Height, Fanlight Height…) set to its lowest and then its highest
+        /// type value on one type, the rest of that type left as it is, and every named solid's bounding box compared
+        /// between the two. A solid whose box changed moved with the parameter. The type tried first is the one that
+        /// already has the lowest value; a type where either value doesn't regenerate is skipped for the next. Inside
+        /// flex's group, so nothing is kept.
+        /// </summary>
+        private static JObject Follow(Document doc, JArray follow, FamilyType startType)
+        {
+            FamilyManager fm = doc.FamilyManager;
+            var types = fm.Types.Cast<FamilyType>().Where(t => !string.IsNullOrWhiteSpace(t.Name)).ToList();
+            var paramsOut = new JArray();
+            var moved = new Dictionary<string, List<string>>();
+            var still = new Dictionary<string, List<string>>();
+            var noBox = new HashSet<string>();
+            foreach (JObject f in follow.OfType<JObject>())
+            {
+                string name = f.Value<string>("param");
+                double lo = Mm(f.Value<double>("low_mm")), hi = Mm(f.Value<double>("high_mm"));
+                var line = new JObject { ["param"] = name, ["low_mm"] = f["low_mm"], ["high_mm"] = f["high_mm"], ["ok"] = false };
+                paramsOut.Add(line);
+                FamilyParameter p = fm.get_Parameter(name);
+                if (p == null) { line["error"] = "no parameter " + name; continue; }
+                if (p.Definition.GetDataType() != SpecTypeId.Length) { line["error"] = name + " isn't a Length parameter"; continue; }
+                if (!string.IsNullOrEmpty(p.Formula) || p.IsReporting) { line["error"] = name + " is driven (formula or reporting)"; continue; }
+                var order = types.OrderBy(t => t.HasValue(p) && Math.Abs((t.AsDouble(p) ?? 0) - lo) < 1e-9 ? 0 : t == startType ? 1 : 2).ToList();
+                string firstError = "";
+                foreach (FamilyType type in order)
+                {
+                    var a = SetAndRead(doc, type, p, lo, out string e1);
+                    var b = a == null ? null : SetAndRead(doc, type, p, hi, out e1);
+                    if (a == null || b == null) { if (firstError.Length == 0) firstError = type.Name + ": " + e1; continue; }
+                    foreach (var kv in a)
+                    {
+                        if (!moved.ContainsKey(kv.Key)) { moved[kv.Key] = new List<string>(); still[kv.Key] = new List<string>(); }
+                        b.TryGetValue(kv.Key, out BoundingBoxXYZ after);
+                        if (kv.Value == null || after == null) { noBox.Add(kv.Key); continue; }
+                        (FmcDocSweep.Moved(kv.Value, after) ? moved[kv.Key] : still[kv.Key]).Add(name);
+                    }
+                    line["ok"] = true;
+                    line["type"] = type.Name;
+                    break;
+                }
+                if (!line.Value<bool>("ok")) line["error"] = firstError.Length > 0 ? firstError : "no type to flex";
+            }
+            var elements = new JArray();
+            foreach (var n in moved.Keys.OrderBy(k => k))
+            {
+                var e = new JObject { ["name"] = n, ["kind"] = FmcDocSweep.KindOf(doc, n), ["moved"] = new JArray(moved[n]), ["fixed"] = new JArray(still[n]) };
+                if (noBox.Contains(n)) e["no_box"] = true;
+                elements.Add(e);
+            }
+            return new JObject { ["params"] = paramsOut, ["elements"] = elements };
+        }
+
+        /// <summary>The type made current with the parameter at this value, committed (failures roll it back: null).</summary>
+        private static Dictionary<string, BoundingBoxXYZ> SetAndRead(Document doc, FamilyType type, FamilyParameter p, double value, out string error)
+        {
+            error = "";
+            FamilyManager fm = doc.FamilyManager;
+            var c = new ErrorCollector();
+            using (var t = new Transaction(doc, "follow " + p.Definition.Name))
+            {
+                var fho = t.GetFailureHandlingOptions();
+                fho.SetFailuresPreprocessor(c);
+                t.SetFailureHandlingOptions(fho);
+                t.Start();
+                try
+                {
+                    fm.CurrentType = type;
+                    fm.Set(p, value);
+                    doc.Regenerate();
+                }
+                catch (Exception e) { error = e.Message; }
+                if (error.Length > 0) { t.RollBack(); return null; }
+                var status = t.Commit();
+                if (status != TransactionStatus.Committed || c.Errors.Count > 0)
+                {
+                    error = p.Definition.Name + " = " + Math.Round(UnitUtils.ConvertFromInternalUnits(value, UnitTypeId.Millimeters), 1) + " mm: " +
+                        (c.Errors.Count > 0 ? c.Errors[0] : "Revit couldn't regenerate it (" + status + ")");
+                    return null;
+                }
+            }
+            return FmcDocSweep.Boxes(doc);
         }
     }
 }
