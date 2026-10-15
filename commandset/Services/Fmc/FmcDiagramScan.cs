@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Electrical;
@@ -14,8 +15,14 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// </summary>
     public static class FmcDiagramScan
     {
+        /// <summary>
+        /// The diagram kinds (DIAGRAM_KINDS). The parameter keys sent in node and edge params are the first names in the
+        /// contract's PARAM_KEYS (panel_id, part_type, distribution_system, ways, circuit, rating, poles, cable, load_name,
+        /// apparent_load, zone, loop, system, size); edges run upstream to downstream (supply to board, board to load,
+        /// source to component).
+        /// </summary>
         public static readonly string[] Kinds =
-            { "e_sld", "e_fa_riser", "e_elv_riser", "fp_schematic", "p_water", "p_drainage", "m_refrigerant", "lp_schematic" };
+            { "e_sld", "e_power_riser", "e_fa_riser", "e_elv_riser", "fp_schematic", "p_water", "p_drainage", "m_refrigerant", "lp_schematic" };
 
         private const double FeetToMm = 304.8;
         private const int MaxGapsPerList = 25;
@@ -36,7 +43,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             public readonly string System;
             public readonly Dictionary<string, JObject> Nodes = new Dictionary<string, JObject>();
             public readonly List<JObject> Edges = new List<JObject>();
-            private readonly HashSet<string> _edgeKeys = new HashSet<string>();
+            private readonly Dictionary<string, JObject> _edgeByKey = new Dictionary<string, JObject>();
+            private readonly Dictionary<string, int> _certainty = new Dictionary<string, int>();
 
             public Graph(string kind, string system) { Kind = kind; System = system; }
 
@@ -48,13 +56,31 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (!Nodes.ContainsKey(id)) Nodes[id] = n;
             }
 
-            /// <summary>Adds an edge once; an undirected edge (pipes, conductors) counts once for either direction.</summary>
-            public void Edge(string from, string to, string kind, JObject prms, bool undirected = false)
+            /// <summary>
+            /// Adds an edge once, upstream (`from`) to downstream (`to`); `id` is the circuit, system or pipe element it comes
+            /// from (SCAN_EDGE.id). An undirected edge (pipes, conductors) counts once for either direction; when it is found
+            /// again with a surer direction (`certainty`: 2 from the connector's flow, 1 from the part kinds, 0 walk order),
+            /// the surer direction wins.
+            /// </summary>
+            public void Edge(string from, string to, string kind, JObject prms, string id = null, bool undirected = false, int certainty = 2)
             {
                 if (from == to) return;
                 string key = undirected && string.CompareOrdinal(from, to) > 0 ? kind + "|" + to + "|" + from : kind + "|" + from + "|" + to;
-                if (!_edgeKeys.Add(key)) return;
-                Edges.Add(new JObject { ["from"] = from, ["to"] = to, ["kind"] = kind, ["params"] = prms ?? new JObject() });
+                if (_edgeByKey.TryGetValue(key, out JObject old))
+                {
+                    if (undirected && certainty > _certainty[key])
+                    {
+                        old["from"] = from;
+                        old["to"] = to;
+                        _certainty[key] = certainty;
+                    }
+                    if (IsNull(old["id"]) && !string.IsNullOrWhiteSpace(id)) old["id"] = id;
+                    return;
+                }
+                var e = new JObject { ["id"] = Str(id), ["from"] = from, ["to"] = to, ["kind"] = kind, ["params"] = prms ?? new JObject() };
+                Edges.Add(e);
+                _edgeByKey[key] = e;
+                _certainty[key] = certainty;
             }
 
             public JObject ToJson() => new JObject
@@ -72,6 +98,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             foreach (string k in asked)
                 if (!Kinds.Contains(k)) throw new InvalidOperationException($"Unknown diagram kind '{k}'. Kinds: {string.Join(", ", Kinds)}.");
             var kinds = new HashSet<string>(asked.Count > 0 ? asked : Kinds.ToList());
+            // The power riser is laid out on the server from the e_sld graph, so a request for it scans the SLDs.
+            if (kinds.Remove("e_power_riser")) kinds.Add("e_sld");
 
             var c = new Ctx { Doc = doc };
             var diagrams = new List<Graph>();
@@ -298,7 +326,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                         {
                             foreach (FamilyInstance sub in fed)
                             {
-                                g.Edge(b.UniqueId, sub.UniqueId, "feeder", (JObject)prms.DeepClone());
+                                g.Edge(b.UniqueId, sub.UniqueId, "feeder", (JObject)prms.DeepClone(), s.UniqueId);
                                 if (drawn.Add(sub.Id)) queue.Enqueue(sub);
                             }
                             continue;
@@ -313,9 +341,9 @@ namespace RevitMCPCommandSet.Services.Fmc
                             ["category"] = first?.Category?.Name ?? "", ["family"] = first == null ? "" : Family(first),
                             ["type"] = first == null ? "" : TypeName(c.Doc, first),
                             ["level"] = Str(first == null ? null : LevelOf(c.Doc, first)),
-                            ["params"] = new JObject { ["load_count"] = members.Count, ["apparent_load_va"] = prms["apparent_load_va"] },
+                            ["params"] = new JObject { ["load_count"] = members.Count, ["apparent_load"] = prms["apparent_load"] },
                         });
-                        g.Edge(b.UniqueId, loadId, "circuit", prms);
+                        g.Edge(b.UniqueId, loadId, "circuit", prms, s.UniqueId);
                     }
                 }
                 graphs.Add(g);
@@ -353,6 +381,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["ways"] = Number(Shared(c.Doc, b, "FMC_Ways"), null, 0),
                 ["mains"] = mains,
             };
+            if (IsNull(n["params"]["ways"])) n["params"]["ways"] = Number(b.get_Parameter(BuiltInParameter.RBS_ELEC_MAX_POLE_BREAKERS), null, 0);
             if (IsNull(panelId)) c.Gap(K, b.UniqueId, $"Board {BoardName(b)} has no FMC_Panel_ID.");
             return n;
         }
@@ -364,17 +393,17 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (IsNull(cable)) cable = Text(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_WIRE_SIZE_PARAM));
             var prms = new JObject
             {
-                ["circuit_number"] = Text(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_NUMBER)),
-                ["rating"] = Text(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_RATING_PARAM)),
+                ["circuit"] = Text(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_NUMBER)),
+                ["rating"] = Number(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_RATING_PARAM), UnitTypeId.Amperes, 1),
                 ["poles"] = Number(s.get_Parameter(BuiltInParameter.RBS_ELEC_NUMBER_OF_POLES), null, 0),
                 ["cable"] = cable,
                 ["load_name"] = Text(s.get_Parameter(BuiltInParameter.RBS_ELEC_CIRCUIT_NAME)),
-                ["apparent_load_va"] = Number(s.get_Parameter(BuiltInParameter.RBS_ELEC_APPARENT_LOAD), UnitTypeId.VoltAmperes, 0),
+                ["apparent_load"] = Number(s.get_Parameter(BuiltInParameter.RBS_ELEC_APPARENT_LOAD), UnitTypeId.VoltAmperes, 0),
                 ["voltage"] = Number(s.get_Parameter(BuiltInParameter.RBS_ELEC_VOLTAGE), UnitTypeId.Volts, 0),
             };
             string where = $"Circuit {CircuitLabel(s)} on {BoardName(board)}";
             string id = "circuit:" + s.Id;
-            if (IsNull(prms["circuit_number"])) c.Gap(K, id, $"{where} has no circuit number.");
+            if (IsNull(prms["circuit"])) c.Gap(K, id, $"{where} has no circuit number.");
             if (IsNull(prms["rating"])) c.Gap(K, id, $"{where} has no rating.");
             if (IsNull(prms["cable"])) c.Gap(K, id, $"{where} has no cable (FMC_Cable_Spec or wire size).");
             if (IsNull(prms["load_name"])) c.Gap(K, id, $"{where} has no load name.");
@@ -434,7 +463,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (Element e in members.Where(e => e.Id != panel.Id))
                 {
                     if (!g.Has(e.UniqueId)) g.Node(FaNode(e, "device"));
-                    g.Edge(panel.UniqueId, e.UniqueId, "loop", new JObject { ["loop"] = s.Name });
+                    g.Edge(panel.UniqueId, e.UniqueId, "loop", new JObject { ["loop"] = s.Name }, s.UniqueId);
                 }
             }
             if (!g.Nodes.Values.Any(n => n.Value<string>("kind") == "panel")) c.Gap(K, null, "No fire alarm panel (FACP) found.");
@@ -487,7 +516,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (Element e in members.Where(e => e.Id != head.Id))
                 {
                     onSystem.Add(e.Id);
-                    g.Edge(head.UniqueId, e.UniqueId, "data", new JObject { ["system"] = s.Name });
+                    g.Edge(head.UniqueId, e.UniqueId, "data", new JObject { ["system"] = s.Name }, s.UniqueId);
                 }
             }
             int loose = inScope.Count(id => !onSystem.Contains(id) && !(doc.GetElement(id) is FamilyInstance fi && CatKey(fi) == "OST_ElectricalEquipment"));
@@ -539,6 +568,24 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (cls == "Sanitary" || cls == "Vent" || cls == "Storm") kinds.Add("p_drainage");
             if (cls == "Sanitary" && Members(ps.Elements).Any(e => CatKey(e) == "OST_MechanicalEquipment")) kinds.Add("m_refrigerant");
             return kinds;
+        }
+
+        /// <summary>
+        /// Where a part sits in the flow when the connectors don't say (lower is upstream): supply side first (meter, inlet,
+        /// outdoor unit, tank, pump, valves), terminals last; in drainage the fixtures come first and the stacks follow.
+        /// </summary>
+        private static int FlowRank(string diagram, string nodeKind)
+        {
+            if (diagram == "p_drainage") return nodeKind == "fixture" ? 0 : nodeKind == "pump" || nodeKind == "tank" ? 4 : 2;
+            switch (nodeKind)
+            {
+                case "meter": case "inlet": case "outdoor_unit": return 0;
+                case "tank": return 1;
+                case "pump": return 2;
+                case "valve": case "equipment": return 3;
+                case "fixture": case "sprinkler": case "hose_reel": case "hydrant": case "indoor_unit": return 6;
+                default: return 4;
+            }
         }
 
         private static List<Graph> Piping(Ctx c, HashSet<string> wanted)
@@ -598,19 +645,21 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 foreach (Connector con in Connectors(start).Where(x => x.Domain == Domain.DomainPiping && x.IsConnected))
                 {
-                    bool inbound = false;
-                    try { inbound = con.Direction == FlowDirectionType.In; } catch (Exception) { /* no direction */ }
+                    // Upstream to downstream: the connector's flow when Revit has one, else the part kinds (FlowRank).
+                    FlowDirectionType flow = FlowDirectionType.Bidirectional;
+                    try { flow = con.Direction; } catch (Exception) { /* no direction */ }
                     var visited = new HashSet<ElementId> { start.Id };
-                    var stack = new Stack<(Element el, double dia)>();
+                    var stack = new Stack<(Element el, double dia, string pipe)>();
                     foreach (Connector r in con.AllRefs)
-                        if (r.Owner != null && r.Owner.Id != start.Id && r.ConnectorType != ConnectorType.Logical) stack.Push((r.Owner, 0));
+                        if (r.Owner != null && r.Owner.Id != start.Id && r.ConnectorType != ConnectorType.Logical) stack.Push((r.Owner, 0, null));
                     while (stack.Count > 0)
                     {
                         if (++steps > MaxSteps) { capped = true; break; }
-                        var (el, dia) = stack.Pop();
+                        var (el, dia, pipe) = stack.Pop();
                         if (!visited.Add(el.Id)) continue;
                         if (el is MEPCurve)
                         {
+                            if (pipe == null) pipe = el.UniqueId;
                             Parameter d = el.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM);
                             if (d != null && d.StorageType == StorageType.Double) dia = Math.Max(dia, d.AsDouble());
                         }
@@ -619,18 +668,27 @@ namespace RevitMCPCommandSet.Services.Fmc
                             if (!g.Has(other.UniqueId)) g.Node(PNode(other));
                             var prms = new JObject
                             {
-                                ["size_mm"] = dia > 0 ? new JValue(Math.Round(dia * FeetToMm)) : JValue.CreateNull(),
+                                ["size"] = dia > 0 ? new JValue(Math.Round(dia * FeetToMm).ToString(CultureInfo.InvariantCulture) + " mm") : JValue.CreateNull(),
                                 ["system"] = ps.Name ?? "",
                             };
-                            if (inbound) g.Edge(other.UniqueId, start.UniqueId, edgeKind, prms, undirected: true);
-                            else g.Edge(start.UniqueId, other.UniqueId, edgeKind, prms, undirected: true);
+                            if (flow == FlowDirectionType.In)
+                                g.Edge(other.UniqueId, start.UniqueId, edgeKind, prms, pipe, undirected: true, certainty: 2);
+                            else if (flow == FlowDirectionType.Out)
+                                g.Edge(start.UniqueId, other.UniqueId, edgeKind, prms, pipe, undirected: true, certainty: 2);
+                            else
+                            {
+                                int rs = FlowRank(kind, g.Nodes[start.UniqueId].Value<string>("kind"));
+                                int ro = FlowRank(kind, g.Nodes[other.UniqueId].Value<string>("kind"));
+                                if (ro < rs) g.Edge(other.UniqueId, start.UniqueId, edgeKind, prms, pipe, undirected: true, certainty: 1);
+                                else g.Edge(start.UniqueId, other.UniqueId, edgeKind, prms, pipe, undirected: true, certainty: rs < ro ? 1 : 0);
+                            }
                             continue;
                         }
                         else if (!(el is FamilyInstance)) continue;
                         foreach (Connector x in Connectors(el).Where(x => x.IsConnected))
                             foreach (Connector r in x.AllRefs)
                                 if (r.Owner != null && r.Owner.Id != el.Id && r.ConnectorType != ConnectorType.Logical && !visited.Contains(r.Owner.Id))
-                                    stack.Push((r.Owner, dia));
+                                    stack.Push((r.Owner, dia, pipe));
                     }
                     if (capped) break;
                 }
@@ -653,6 +711,19 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (part.StartsWith("earth", StringComparison.Ordinal)) return "earth_pit";
             if (part.StartsWith("bond", StringComparison.Ordinal)) return "bond";
             return "other";
+        }
+
+        private static int LpRank(string nodeKind)
+        {
+            switch (nodeKind)
+            {
+                case "air_terminal": return 0;
+                case "down_conductor": return 1;
+                case "test_joint": return 2;
+                case "earth_bar": return 4;
+                case "earth_pit": return 5;
+                default: return 3; // spd, bond, other
+            }
         }
 
         private static List<XYZ> Ends(Element e)
@@ -694,7 +765,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 for (int i = 0; i < parts.Count; i++)
                     for (int j = i + 1; j < parts.Count; j++)
                         if (parts[i].pts.Any(a => parts[j].pts.Any(b => a.DistanceTo(b) <= tol)))
-                            g.Edge(parts[i].el.UniqueId, parts[j].el.UniqueId, "conductor", new JObject(), undirected: true);
+                        {
+                            // Air termination to earth: the part nearer the air terminals is upstream.
+                            string ui = parts[i].el.UniqueId, uj = parts[j].el.UniqueId;
+                            int ri = LpRank(g.Nodes[ui].Value<string>("kind")), rj = LpRank(g.Nodes[uj].Value<string>("kind"));
+                            if (rj < ri) g.Edge(uj, ui, "conductor", new JObject(), null, undirected: true, certainty: 1);
+                            else g.Edge(ui, uj, "conductor", new JObject(), null, undirected: true, certainty: ri < rj ? 1 : 0);
+                        }
                 foreach (var pt in parts.Where(x => x.pts.Count == 0))
                     c.Gap(K, pt.el.UniqueId, $"{pt.el.Name} has no location point or line, so it can't be joined.");
             }

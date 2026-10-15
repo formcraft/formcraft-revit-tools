@@ -288,7 +288,16 @@ namespace RevitMCPCommandSet.Services.Fmc
                                 case "right": opts.HorizontalAlignment = HorizontalTextAlignment.Right; break;
                                 default: opts.HorizontalAlignment = HorizontalTextAlignment.Left; break;
                             }
-                            TextNote note = TextNote.Create(doc, view.Id, At(item["at"]), text, opts);
+                            // DRAW_CONVENTIONS: `at` is the top of the text box at its alignment side, and rotation_deg
+                            // turns the note counter-clockwise about that point (Revit's rotation is counter-clockwise too).
+                            opts.VerticalAlignment = VerticalTextAlignment.Top;
+                            double textDeg = item.Value<double?>("rotation_deg") ?? 0;
+                            if (Math.Abs(textDeg) > 1e-9)
+                            {
+                                opts.Rotation = textDeg * Math.PI / 180;
+                                opts.KeepRotatedTextReadable = false;
+                            }
+                            TextNote note = TextNote.Create(doc, view.Id, At(item["at"]), text.Replace("\r\n", "\n").Replace("\n", "\r"), opts);
                             MarkSource(note, key);
                             texts++;
                             break;

@@ -67,11 +67,15 @@ refrigerant schematics, and the lightning protection schematic.
   nodes use the UniqueId, circuits `circuit:<id>`, the synthetic supply `supply:<board name>`. SLDs are one diagram
   per top-level supply tree (feeders are circuits whose loads include a board); piping schematics are one diagram per
   piping system, with edges found by following connectors through pipes and fittings to the next component; the LP
-  schematic joins parts whose points or line ends lie within 100 mm.
+  schematic joins parts whose points or line ends lie within 100 mm. Params use the first names in `PARAM_KEYS`
+  (`circuit`, `rating` in A, `apparent_load` in VA, `size` as "50 mm"…); each edge carries `id` (the circuit, system or
+  first pipe's UniqueId) and runs upstream to downstream: from the connector's flow when Revit has one, else by part kind
+  (supply side first, terminals last; LP air terminal to earth). A request for `e_power_riser` scans the SLDs.
 - `fmc_diagram_draw` (DRAW_SPEC + optional `document`, documents already open): `FmcDiagramDraw.cs`. One transaction
   group, rolled back on a dry run; never saves. Tool-drawn items carry the key `view|source_id or index|t` in
   extensible storage (schema `FMC_DiagramSource`), so a rerun redraws them and keeps a person's notes (`kept_by_hand`).
   Symbols must already be loaded (Generic Annotations or Detail Items); a missing one is a warning, never a load from disk.
+  Texts are placed top-aligned at `at` and turned by `rotation_deg` (TextNoteOptions.Rotation, counter-clockwise).
 
 ## Server side (LD2–LD4 layout, `server/src/fmc/diagram/`)
 | Module | Does |
