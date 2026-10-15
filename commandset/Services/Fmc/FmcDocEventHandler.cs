@@ -22,6 +22,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             public string Source = "";
             public DateTime Opened;
             public DateTime Used;
+            /// <summary>The file was already open in Revit (the person's window or another tool): never close it (F-023).</summary>
+            public bool Borrowed;
         }
 
         private static readonly Dictionary<string, Session> Sessions = new Dictionary<string, Session>();
@@ -45,14 +47,14 @@ namespace RevitMCPCommandSet.Services.Fmc
             Error = "";
             try
             {
-                CloseIdle();
+                CloseIdle(app);
                 switch (Action)
                 {
                     case "open": Result = Open(app); break;
                     case "report": Result = Report(Get()); break;
                     case "screenshot": Result = Screenshot(Get()); break;
                     case "save": Result = Save(Get()); break;
-                    case "close": Result = Close(); break;
+                    case "close": Result = Close(app); break;
                     case "flex": Result = FmcDocGeometry.Flex(Get().Doc); break;
                     case "apply":
                         var s = Get();
@@ -74,13 +76,23 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public string GetName() => "FMC doc";
 
-        private static void CloseIdle()
+        private static void CloseIdle(UIApplication app)
         {
             foreach (var id in Sessions.Where(s => DateTime.Now - s.Value.Used > Idle).Select(s => s.Key).ToList())
             {
-                try { Sessions[id].Doc.Close(false); } catch (Exception) { /* already gone */ }
+                Session s = Sessions[id];
+                try { if (CanClose(app, s)) s.Doc.Close(false); } catch (Exception) { /* already gone */ }
                 Sessions.Remove(id);
             }
+        }
+
+        /// <summary>Only background documents this tool opened itself are closed; never the person's window (F-023).</summary>
+        private static bool CanClose(UIApplication app, Session s)
+        {
+            if (s.Borrowed || !s.Doc.IsValidObject) return false;
+            Document active = app.ActiveUIDocument?.Document;
+            if (active != null && active.Equals(s.Doc)) return false;
+            return true;
         }
 
         private Session Get()
@@ -100,6 +112,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string template = Parameters.Value<string>("template") ?? "";
             string file = Parameters.Value<string>("file") ?? "";
             Document doc;
+            bool borrowed = false;
             if (template.Length > 0)
             {
                 if (!File.Exists(template)) throw new FileNotFoundException("Template not found: " + template);
@@ -108,18 +121,23 @@ namespace RevitMCPCommandSet.Services.Fmc
             else if (file.Length > 0)
             {
                 if (!File.Exists(file)) throw new FileNotFoundException("File not found: " + file);
-                doc = app.Application.OpenDocumentFile(file);
+                // Already open (in the person's window, or a session that wasn't closed): use it, never close it (F-023).
+                Document already = app.Application.Documents.Cast<Document>().FirstOrDefault(d =>
+                    !d.IsLinked && string.Equals(d.PathName, file, StringComparison.OrdinalIgnoreCase));
+                borrowed = already != null;
+                doc = already ?? app.Application.OpenDocumentFile(file);
                 if (!doc.IsFamilyDocument || doc.IsWorkshared)
                 {
-                    doc.Close(false);
+                    if (!borrowed) doc.Close(false);
                     throw new InvalidOperationException("fmc_doc opens family files only (project templates come in B5).");
                 }
             }
             else throw new InvalidOperationException("open needs a template (.rft) or a staging file (.rfa).");
             string id = Guid.NewGuid().ToString("N").Substring(0, 8);
-            Sessions[id] = new Session { Doc = doc, Source = template.Length > 0 ? template : file, Opened = DateTime.Now, Used = DateTime.Now };
+            Sessions[id] = new Session { Doc = doc, Source = template.Length > 0 ? template : file, Opened = DateTime.Now, Used = DateTime.Now, Borrowed = borrowed };
             var r = Report(Sessions[id]);
             r["session"] = id;
+            if (borrowed) r["already_open"] = "This file was already open in Revit; the session uses it and close will leave it open.";
             return r;
         }
 
@@ -195,12 +213,20 @@ namespace RevitMCPCommandSet.Services.Fmc
             return new JObject { ["saved"] = path, ["title"] = s.Doc.Title };
         }
 
-        private JObject Close()
+        private JObject Close(UIApplication app)
         {
             string id = Parameters.Value<string>("session") ?? "";
             if (!Sessions.TryGetValue(id, out Session s)) return new JObject { ["closed"] = false, ["reason"] = "No such session" };
-            try { if (s.Doc.IsValidObject) s.Doc.Close(false); } finally { Sessions.Remove(id); }
-            return new JObject { ["closed"] = true, ["unsaved_changes_discarded"] = true };
+            try
+            {
+                if (!s.Doc.IsValidObject) return new JObject { ["closed"] = true, ["reason"] = "already closed" };
+                if (!CanClose(app, s))
+                    return new JObject { ["closed"] = false, ["left_open"] = true,
+                        ["reason"] = "Open in a Revit window, so it stays for the person to close (F-023). The session is released." };
+                s.Doc.Close(false);
+                return new JObject { ["closed"] = true, ["unsaved_changes_discarded"] = true };
+            }
+            finally { Sessions.Remove(id); }
         }
     }
 }

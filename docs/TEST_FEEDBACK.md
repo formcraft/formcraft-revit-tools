@@ -57,6 +57,7 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 | F-020 | Medium | Test loop | Sign-in bypass for the tester on the pilot PC (user's request) · #56 | Fixed – retest |
 | F-021 | Low | Test loop | Clicks at Revit's top edge (tabs, window buttons) lost during tests; not a plugin bug · #59 | Fixed – retest (fmc_ui close_revit) |
 | F-022 | High | Background work | Background commands stall (60 s timeouts) while the user works in other apps; queued calls dropped · #95 | Fixed – retest |
+| F-023 | Medium | Background work | `fmc_doc open` of a staged family that is already open in Revit reuses it, and `close` refused ("active document") · #108 | Fixed – retest |
 ---
 
 ## Test runs
