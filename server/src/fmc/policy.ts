@@ -124,6 +124,29 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_diagram_drawn",
 ]);
 
+/**
+ * What an AI call does, for the AI activity strip on Revit's ribbon (owner, 15 Oct). Sent with every call as
+ * _fmcActivity; the add-in removes it before the command runs (plugin/Core/SocketService.cs).
+ * "dryrun": the call asks for a dry run (dry_run true). "change": a model-changing command, or any call that turns a dry
+ * run off (dry_run false). "read": everything else. "person": a person's own click in the pane (callActivity).
+ */
+export type AiActivity = "change" | "dryrun" | "read" | "person";
+
+export function activityOf(command: string, params: unknown): AiActivity {
+  const dryRun = params && typeof params === "object" && !Array.isArray(params) ? (params as Record<string, unknown>).dry_run : undefined;
+  if (dryRun === true) return "dryrun";
+  if (dryRun === false || WRITE_COMMANDS.has(command)) return "change";
+  return "read";
+}
+
+/**
+ * The tag a call carries. The pane runs this server's CLI for a person's own clicks (plugin/Fmc/ServerCli.cs sets
+ * FMC_CALLER=pane), and those are "person": the strip shows AI work only. Ask Claude runs without it, so it shows.
+ */
+export function callActivity(command: string, params: unknown, env: NodeJS.ProcessEnv = process.env): AiActivity {
+  return env.FMC_CALLER === "pane" ? "person" : activityOf(command, params);
+}
+
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
 export const PANE_COMMANDS = new Set<string>(["fmc_ui"]);
 
