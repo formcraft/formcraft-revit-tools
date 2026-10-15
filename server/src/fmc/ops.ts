@@ -10,6 +10,21 @@ const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
 // ("items must be object,boolean"), and the whole tool drops out of the client. schemas.test.ts checks every tool.
 const point = z.array(mm).length(2).describe("[x, y] in mm");
+const point3 = z.array(mm).length(3).describe("[x, y, z] in mm");
+const VIEWS = ["plan", "front", "right"] as const;
+const visibility = {
+  coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional(),
+};
+const sweepShape = {
+  name: z.string().min(1),
+  path: z.array(point).min(2).describe("the path, a polyline in mm in the path plane"),
+  path_plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
+  at: mm.default(0),
+  profile: z.array(point).min(3).optional().describe("a closed profile in mm, local to the start of the path (x across, y up)"),
+  profile_family: z.string().optional().describe("or a loaded profile family (FMC_Profile_*), loaded earlier with load_family"),
+  profile_type: z.string().optional(),
+  subcategory: z.string().optional(),
+};
 
 export const DATA_TYPES = ["Length", "Number", "Integer", "YesNo", "Text", "Material", "Area", "Volume", "Angle",
   "Voltage", "ApparentPower", "NumberOfPoles", "PipeSize", "Flow", "LoadClassification"] as const;
@@ -25,7 +40,7 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
     always_vertical: z.boolean().optional(), shared: z.boolean().optional(), room_calculation_point: z.boolean().optional() }),
   z.object({ op: z.literal("add_ref_plane"), name: z.string().min(1), from: point, to: point,
-    view: z.string().optional().describe("the plan or elevation view to draw in (default: Ref. Level)"),
+    view: z.string().optional().describe("the view to draw in (default: Ref. Level). In plan, from/to are [x, y]; in an elevation (e.g. Front), [across, up], so level planes such as Head or Sill can be drawn"),
     is_reference: z.enum(REFERENCES).optional() }),
   z.object({ op: z.literal("add_family_param"), name: z.string().min(1), type: z.enum(DATA_TYPES), instance: z.boolean().default(false),
     group: z.enum(GROUPS).default("Dimensions") }),
@@ -57,16 +72,50 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("link_connector_param"), name: z.string().min(1).describe("<connector>/<connector parameter>"),
     connector: z.string().min(1), connector_param: z.enum(CONNECTOR_PARAMS), param: z.string().min(1) }),
   z.object({ op: z.literal("set_visibility"), name: z.string().min(1).describe("the solid"), coarse: z.boolean().optional(), medium: z.boolean().optional(),
-    fine: z.boolean().optional(), plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() }),
+    fine: z.boolean().optional(), plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() }),  // LOD 400 pack (Family Authoring Standard 1-3): object subcategories, swept/revolved/blended solids, symbolic lines,
+  // face locks, equal dimensions, nested families.
+  z.object({ op: z.literal("add_subcategory"), name: z.string().min(1).describe("e.g. Frame, Panel, Glass, Plan Swing, Elevation Swing, Clearance"),
+    line_weight_projection: z.number().int().min(1).max(16).optional(), line_weight_cut: z.number().int().min(1).max(16).optional(),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b]"),
+    material: z.string().optional().describe("an FMC_ material already in the family") }),
+  z.object({ op: z.literal("set_subcategory"), name: z.string().min(1).describe("the solid or line set, by op name"),
+    subcategory: z.string().min(1) }),
+  z.object({ op: z.literal("sweep"), ...sweepShape }),
+  z.object({ op: z.literal("void_sweep"), ...sweepShape }),
+  z.object({ op: z.literal("revolution"), name: z.string().min(1),
+    profile: z.array(point).min(3).describe("closed profile as [r, z] in mm: distance from the axis, height"),
+    axis_at: point.default([0, 0]).describe("the vertical axis in plan, mm"),
+    start_deg: z.number().default(0), end_deg: z.number().default(360), subcategory: z.string().optional() }),
+  z.object({ op: z.literal("blend"), name: z.string().min(1),
+    base: z.array(point).min(3).describe("closed base outline in plan, mm"), top: z.array(point).min(3).describe("closed top outline in plan, mm"),
+    start: mm.default(0), end: mm.default(1000), subcategory: z.string().optional() }),
+  z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
+    view: z.enum(VIEWS).default("plan").describe("plan lines show in plan views; front in front/back elevations; right in side elevations"),
+    at: mm.default(0),
+    points: z.array(point).min(2).optional().describe("a polyline in the view's plane, mm"),
+    arc: z.object({ center: point, radius: mm.positive(), start_deg: z.number(), end_deg: z.number() }).optional()
+      .describe("or an arc, e.g. a door swing"),
+    subcategory: z.string().min(1).describe("Plan Swing, Elevation Swing, Hidden Lines…"), ...visibility }),
+  z.object({ op: z.literal("lock_face"), name: z.string().min(1).describe("<solid>/<plane>"), solid: z.string().min(1), plane: z.string().min(1),
+    view: z.enum(VIEWS).default("plan").describe("plan for vertical planes, front for level planes") }),
+  z.object({ op: z.literal("add_eq_dimension"), name: z.string().min(1), planes: z.array(z.string().min(1)).min(3)
+    .describe("three or more reference planes in order, e.g. Left, Center (Left/Right), Right"),
+    view: z.string().optional(), offset: mm.default(600) }),
+  z.object({ op: z.literal("load_family"), name: z.string().min(1).describe("the family name once loaded"),
+    path: z.string().min(1).describe("an .rfa in the kit's 04_Families (profiles, detail kit, nested parts)") }),
+  z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
+    at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
+    params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
 
 /** Checks the batch as a whole: unique names per op kind, shared parameters from the dictionary, references made earlier. */
-export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null): string[] {
+export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string): string[] {
   const p: string[] = [];
   const seen = new Set<string>();
-  const solids = new Set<string>(), connectors = new Set<string>();
+  const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>();
+  const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
@@ -117,6 +166,58 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null):
         break;
       case "set_type_value":
         if (o.name !== `${o.type}/${o.param}`) p.push(`${at}: name must be "${o.type}/${o.param}"`);
+        break;
+      case "add_subcategory": subcats.add(o.name); break;
+      case "sweep":
+      case "void_sweep":
+        if (!o.profile && !o.profile_family) p.push(`${at}: give profile (points) or profile_family`);
+        if (o.profile_family && !families.has(o.profile_family)) p.push(`${at}: ${mayExist("profile family", o.profile_family)}`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        solids.add(o.name);
+        break;
+      case "revolution":
+        if (o.end_deg === o.start_deg) p.push(`${at}: start_deg and end_deg are the same`);
+        if (o.profile.some((pt) => pt[0] < 0)) p.push(`${at}: a revolution profile can't cross its axis (r must be 0 or more)`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        solids.add(o.name);
+        break;
+      case "blend":
+        if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        solids.add(o.name);
+        break;
+      case "symbolic_lines":
+        if (!o.points && !o.arc) p.push(`${at}: give points or arc`);
+        if (o.arc && o.arc.start_deg === o.arc.end_deg) p.push(`${at}: the arc's start and end angles are the same`);
+        if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        lines.add(o.name);
+        break;
+      case "set_subcategory":
+        if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
+        if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        break;
+      case "lock_face":
+        if (o.name !== `${o.solid}/${o.plane}`) p.push(`${at}: name must be "${o.solid}/${o.plane}"`);
+        if (!solids.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
+        if (!planes.has(o.plane)) p.push(`${at}: ${mayExist("reference plane", o.plane)}`);
+        break;
+      case "add_eq_dimension":
+        if (new Set(o.planes).size !== o.planes.length) p.push(`${at}: a plane is named twice`);
+        for (const pl of o.planes) if (!planes.has(pl)) p.push(`${at}: ${mayExist("reference plane", pl)}`);
+        break;
+      case "load_family": {
+        const file = o.path.replace(/\//g, "\\");
+        if (!/\.rfa$/i.test(file)) p.push(`${at}: load_family takes an .rfa`);
+        if (familiesRoot) {
+          const root = familiesRoot.replace(/\//g, "\\").replace(/\\+$/, "").toLowerCase() + "\\";
+          if (!file.toLowerCase().startsWith(root) || file.includes("..")) p.push(`${at}: ${o.path} isn't inside the kit's families folder (${familiesRoot})`);
+        }
+        families.add(o.name);
+        break;
+      }
+      case "place_nested":
+        if (!families.has(o.family)) p.push(`${at}: ${mayExist("family", o.family)}`);
+        for (const hp of Object.values(o.params)) if (!params.has(hp)) p.push(`${at}: ${mayExist("parameter", hp)}`);
         break;
       case "add_dimension":
         for (const pl of o.between) if (!planes.has(pl)) p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);

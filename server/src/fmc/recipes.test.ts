@@ -103,3 +103,15 @@ test("release is the pane's: it needs a reviewer, a note and a passed gate, neve
     if (old === undefined) delete process.env.FMC_GUARD_CONFIG; else process.env.FMC_GUARD_CONFIG = old;
   }
 });
+
+test("the reference LOD 400 door recipe parses and its ops pass the batch checks", async () => {
+  const { OPS, opsProblems, splitProblems } = await import("./ops.js");
+  const raw = fs.readFileSync(path.join(REPO, "tests", "recipes", "FMC_A_Door_FlushSingleLeaf.recipe.json"), "utf8");
+  const { recipe, problems } = parseRecipe(raw);
+  assert.deepEqual(problems, []);
+  OPS.parse(recipe!.ops);
+  const { errors } = splitProblems(opsProblems(recipe!.ops, null));
+  // With no dictionary, only the shared parameters are flagged; every other op is well formed.
+  assert.ok(errors.every((e) => /shared parameter file isn't readable/.test(e)), errors.join(" | "));
+  assert.ok(Object.values(recipe!.values).some((v) => v.source_status === "pending"));
+});
