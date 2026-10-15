@@ -10,3 +10,4 @@
 | D6 | Licence service behind sign-in, seats and trials (a licensing service, or Autodesk App Store entitlement if sold there) | Open: shell uses a mock until decided |
 | D7 | Payment provider for the account website (card, mobile money, bank transfer) | Open |
 | D8 | Delivery gate names (DG1–DG3 proposed) so they don't clash with geometry stages G1–G5 | Open |
+| D9 | Theme or design movement: `FMC_Design_Movement` (Integer 1–20, global parameter *Design Movement*) is the one style switch; `FMC_Theme` is retired (deprecated in the kit, kept in the file) | Decided (owner, 15 Oct) |

@@ -81,6 +81,12 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
 × 20 movements = 320 profile families `FMC_Profile_<Element>_<MovementToken>`, planned in the kit's
 `03_Master_Data/FMC_Profile_Sets.json` (movement 1 Greek … 17 Contemporary … 20 Tropical / East African).
 
+**Theme is retired** (owner, 15 Oct): `FMC_Design_Movement` is the one style switch. The text parameter `FMC_Theme`
+stays in the shared parameter file as deprecated (not bound, not used), and `FMC_Design_Movement` takes over its
+Project Information binding. The single theme-typed profiles (`FMC_Profile_Crown`, `Cornice`, `Architrave`, …) are kept
+in the Family Register marked superseded; build the per-movement `FMC_Profile_<Element>_<Token>` families instead. The
+20 old theme names are the 20 movements, in the same order.
+
 - **Profile recipes** live in the kit, one per profile: `03_Master_Data/Recipes/Families/_Profiles/*.recipe.json`, written by
   `_build/build_profile_recipes.py`. `Metric Profile.rft`, category Profiles, one type named by size (height × projection,
   mm), the element's keynote (A.ORN, J.TRM, I.MLD, R.FAS; one code for all 20 movements) and the outline as one closed
