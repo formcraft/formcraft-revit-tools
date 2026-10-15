@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Formcraft in Navisworks Manage 2025 (track N): a pane docked in Navisworks and a local bridge the MCP server talks to.
+    Built against the installed Navisworks (its API and its own Newtonsoft.Json are never copied). It isn't in the
+    solution, so CI doesn't need Navisworks. Installed per user, no admin rights:
+      %APPDATA%\Autodesk Navisworks Manage 2025\Plugins\Formcraft.Navis\Formcraft.Navis.dll
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>Formcraft.Navis</AssemblyName>
+    <RootNamespace>Formcraft.Navis</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <NavisDir Condition="'$(NavisDir)' == ''">C:\Program Files\Autodesk\Navisworks Manage 2025</NavisDir>
+    <OutDir>$(MSBuildThisFileDirectory)bin\$(Configuration)\Formcraft.Navis\</OutDir>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('$(NavisDir)\Autodesk.Navisworks.Api.dll')">
+    <Reference Include="Autodesk.Navisworks.Api"><HintPath>$(NavisDir)\Autodesk.Navisworks.Api.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Autodesk.Navisworks.Clash"><HintPath>$(NavisDir)\Autodesk.Navisworks.Clash.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(NavisDir)\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <Target Name="NoNavisworks" BeforeTargets="ResolveAssemblyReferences" Condition="!Exists('$(NavisDir)\Autodesk.Navisworks.Api.dll')">
+    <Error Text="Navisworks Manage 2025 isn't at $(NavisDir): build this on a PC with Navisworks, or pass -p:NavisDir=..." />
+  </Target>
+</Project>

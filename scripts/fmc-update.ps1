@@ -29,6 +29,25 @@ New-Item -ItemType Directory -Force $state, $root | Out-Null
 
 function Log([string]$m) { Add-Content -Path $log -Value ('{0:yyyy-MM-dd HH:mm:ss}  {1}' -f (Get-Date), $m) -Encoding UTF8 }
 function RevitRunning { [bool](Get-Process -Name 'Revit' -ErrorAction SilentlyContinue) }
+function NavisRunning { [bool](Get-Process -Name 'Roamer' -ErrorAction SilentlyContinue) }
+
+# The Formcraft add-in for Navisworks Manage 2025, per user (no admin rights). Navisworks locks it while open.
+$navisNext    = Join-Path $root 'navis-next'
+$navisPlugins = Join-Path $env:APPDATA 'Autodesk Navisworks Manage 2025\Plugins'
+
+function InstallNavis {
+    $stamp = Get-Date -Format 'yyyy-MM-dd_HHmm'
+    $target = Join-Path $navisPlugins 'Formcraft.Navis'
+    if (Test-Path $target) {
+        $backup = Join-Path $backups ("{0}_navis" -f $stamp)
+        New-Item -ItemType Directory -Force $backup | Out-Null
+        Copy-Item $target $backup -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force $navisPlugins | Out-Null
+    if (Test-Path $target) { Remove-Item $target -Recurse -Force }
+    Move-Item $navisNext $target
+    Log "Installed the Navisworks add-in into $target"
+}
 
 function Install {
     $info  = Get-Content $ready -Raw | ConvertFrom-Json
@@ -57,6 +76,12 @@ function Install {
         $serverDone = $true
     }
 
+    # The Navisworks add-in waits in Staging\navis-next and goes in when Navisworks is closed (InstallNavis).
+    if (Test-Path (Join-Path $next 'navis\Formcraft.Navis')) {
+        if (Test-Path $navisNext) { Remove-Item $navisNext -Recurse -Force }
+        Copy-Item (Join-Path $next 'navis\Formcraft.Navis') $navisNext -Recurse
+    }
+
     $record = [ordered]@{
         commit       = $info.commit
         staged_at    = $info.staged_at
@@ -83,6 +108,9 @@ try {
             if (-not (RevitRunning)) {
                 try { Install } catch { Log ("Install failed: {0}" -f $_.Exception.Message) }
             }
+        }
+        if ((Test-Path $navisNext) -and -not (NavisRunning)) {
+            try { InstallNavis } catch { Log ("Navisworks add-in install failed: {0}" -f $_.Exception.Message) }
         }
         if ($Once) { break }
         Start-Sleep -Seconds $PollSeconds
