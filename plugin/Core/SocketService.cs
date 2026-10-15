@@ -209,7 +209,9 @@ namespace revit_mcp_plugin.Core
 
             try
             {
-                byte[] buffer = new byte[8192];
+                byte[] buffer = new byte[65536];
+                // F-031: a request may arrive in many reads (a 10 KB script is more than one 8 KB read); answer each whole one.
+                var frames = new JsonFrameReader();
 
                 while (_isRunning && tcpClient.Connected)
                 {
@@ -235,15 +237,29 @@ namespace revit_mcp_plugin.Core
                         break;
                     }
 
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    System.Diagnostics.Trace.WriteLine($"收到消息: {message}\nReceived message: {message}");
+                    System.Collections.Generic.List<string> messages;
+                    try
+                    {
+                        messages = frames.Feed(buffer, bytesRead);
+                    }
+                    catch (InvalidDataException ex)
+                    {
+                        byte[] refusal = Encoding.UTF8.GetBytes(CreateErrorResponse(null, JsonRPCErrorCodes.InvalidRequest, ex.Message));
+                        stream.Write(refusal, 0, refusal.Length);
+                        break;
+                    }
 
-                    string response = ProcessJsonRPCRequest(message);
+                    foreach (string message in messages)
+                    {
+                        System.Diagnostics.Trace.WriteLine($"Received message: {message.Length} characters");
 
-                    // 发送响应
-                    // Send response.
-                    byte[] responseData = Encoding.UTF8.GetBytes(response);
-                    stream.Write(responseData, 0, responseData.Length);
+                        string response = ProcessJsonRPCRequest(message);
+
+                        // 发送响应
+                        // Send response.
+                        byte[] responseData = Encoding.UTF8.GetBytes(response);
+                        stream.Write(responseData, 0, responseData.Length);
+                    }
                 }
             }
             catch(Exception)
@@ -290,17 +306,24 @@ namespace revit_mcp_plugin.Core
                 // 执行命令
                 // Execute command.
                 var watch = System.Diagnostics.Stopwatch.StartNew();
+                // F-030: every call is a job; its id is the request id, passed to the command set as _fmcJob (cancel checks,
+                // the job's failures and dialogs). A call that runs long is recorded in FMC_Jobs_Revit.jsonl for fmc_job.
+                JObject parameters = request.GetParamsObject() ?? new JObject();
+                if (!string.IsNullOrEmpty(request.Id)) parameters["_fmcJob"] = request.Id;
+                var job = RevitJobLog.Watch(request.Id, request.Method);
                 try
                 {
                     object result;
                     using (RevitWake.Busy())
-                        result = command.Execute(request.GetParamsObject(), request.Id);
+                        result = command.Execute(parameters, request.Id);
 
+                    job.Done(true);
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
                     return CreateSuccessResponse(request.Id, result);
                 }
                 catch (Exception ex)
                 {
+                    job.Done(false, ex.Message);
                     ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, ex.Message);
                     return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, ex.Message);
                 }

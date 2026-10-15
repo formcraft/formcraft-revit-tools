@@ -37,7 +37,7 @@ namespace RevitMCPCommandSet.Commands
                 // 解析参数
                 data = parameters["data"].ToObject<OperationSetting>();
                 if (data == null)
-                    throw new ArgumentNullException(nameof(data), "AI传入数据为空");
+                    throw new ArgumentNullException(nameof(data), "No data was sent");
 
                 // 设置点状构件体参数
                 _handler.SetParameters(data);
@@ -49,12 +49,12 @@ namespace RevitMCPCommandSet.Commands
                 }
                 else
                 {
-                    throw new TimeoutException("操作元素超时");
+                    throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Operating on the elements timed out");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"操作元素失败: {ex.Message}");
+                throw new Exception($"[FMC-TOOL-FAILED] Operating on the elements failed: {ex.Message}");
             }
         }
     }

@@ -422,7 +422,7 @@ namespace RevitMCPCommandSet.Utils
 
                 if (view3D == null)
                 {
-                    TaskDialog.Show("错误", "无法创建或获取3D视图");
+                    RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Couldn't create or find a 3D view");
                     return null;
                 }
 
@@ -481,7 +481,7 @@ namespace RevitMCPCommandSet.Utils
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("错误", $"获取最近面时发生错误：{ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Error finding the nearest face: {ex.Message}");
                 return null;
             }
         }
@@ -539,7 +539,7 @@ namespace RevitMCPCommandSet.Utils
 
                 if (view3D == null)
                 {
-                    TaskDialog.Show("错误", "无法创建或获取3D视图");
+                    RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "Couldn't create or find a 3D view");
                     return null;
                 }
 
@@ -604,7 +604,7 @@ namespace RevitMCPCommandSet.Utils
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("错误", $"获取最近宿主元素时发生错误：{ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Error finding the nearest host element: {ex.Message}");
                 return null;
             }
         }
@@ -698,7 +698,7 @@ namespace RevitMCPCommandSet.Utils
 
             if (solidFill == null)
             {
-                TaskDialog.Show("错误", "未找到实心填充图案");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", "No solid fill pattern found");
                 return;
             }
 

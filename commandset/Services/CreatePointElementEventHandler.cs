@@ -36,6 +36,8 @@ namespace RevitMCPCommandSet.Services
         }
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
 
             try
@@ -232,9 +234,9 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<List<long>>
                 {
                     Success = false,
-                    Message = $"创建点状构件时出错: {ex.Message}",
+                    Message = $"[FMC-TOOL-FAILED] Creating point-based elements failed: {ex.Message}",
                 };
-                TaskDialog.Show("错误", $"创建点状构件时出错: {ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Creating point-based elements failed: {ex.Message}");
             }
             finally
             {

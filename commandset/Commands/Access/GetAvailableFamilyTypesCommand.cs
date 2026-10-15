@@ -40,12 +40,12 @@ namespace RevitMCPCommandSet.Commands.Access
                     }
                     else
                     {
-                        throw new TimeoutException("获取可用族类型超时");
+                        throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Reading the family types timed out");
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"获取可用族类型失败: {ex.Message}");
+                    throw new Exception($"[FMC-TOOL-FAILED] Reading the family types failed: {ex.Message}");
                 }
             }
         }

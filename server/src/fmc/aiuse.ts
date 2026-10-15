@@ -91,6 +91,39 @@ export function parseRulebook(raw: string): { book: AiRulebook | null; problems:
   return { book: problems.length ? null : book, problems };
 }
 
+/**
+ * F-041 (issue #133): the rulebook files looked for, in order. The kit r5 ships FMC_Rulebook_ClaudeUse.json (the AI
+ * rules AI-001…); the AI-modeller section (schema fmc-aiuse/0.1: bands, groups, limits) is read from
+ * FMC_Rulebook_AIUse.json, or from ClaudeUse when that file is in the fmc-aiuse schema or carries it as `ai_use`.
+ * Nothing is filled in from code (rule 7): a file without the section leaves AI-assisted modelling Off and says so.
+ */
+export const AIUSE_FILES = ["FMC_Rulebook_AIUse.json", "FMC_Rulebook_ClaudeUse.json"];
+
+export interface PickedRulebook { book: AiRulebook | null; file: string; section: string; problems: string[] }
+
+/** The first present file (AIUSE_FILES order) with a valid AI-modeller section; otherwise why none is usable. */
+export function pickAiRulebook(present: Array<{ name: string; raw: string }>): PickedRulebook {
+  const problems: string[] = [];
+  const ordered = AIUSE_FILES.map((n) => present.find((p) => p.name.toLowerCase() === n.toLowerCase())).filter((p): p is { name: string; raw: string } => !!p);
+  if (!ordered.length) {
+    return { book: null, file: "", section: "", problems: [`Neither ${AIUSE_FILES.join(" nor ")} is in the kit's rulebooks`] };
+  }
+  for (const f of ordered) {
+    let o: any;
+    try { o = JSON.parse(f.raw.replace(/^﻿/, "")); } catch (e) { problems.push(`${f.name}: not JSON (${e instanceof Error ? e.message : e})`); continue; }
+    const isAiUse = (x: any) => !!x && typeof x === "object" && /^fmc-aiuse\//.test(String(x.schema ?? ""));
+    const [section, raw] = isAiUse(o) ? ["whole file", f.raw] : isAiUse(o?.ai_use) ? ["ai_use", JSON.stringify(o.ai_use)] : ["", ""];
+    if (!section) {
+      problems.push(`${f.name} has no AI-modeller section (schema "fmc-aiuse/0.1" with bands, groups and limits, as the whole file or as "ai_use")`);
+      continue;
+    }
+    const r = parseRulebook(raw);
+    if (r.book) return { book: r.book, file: f.name, section, problems: [] };
+    problems.push(...r.problems.map((p) => `${f.name}: ${p}`));
+  }
+  return { book: null, file: ordered[0].name, section: "", problems };
+}
+
 export function parseConfig(raw: unknown): AiModellerConfig | null {
   const o = raw as any;
   if (!o || typeof o !== "object" || typeof o.on !== "boolean") return null;
@@ -137,7 +170,7 @@ export interface AiVerdict {
 export function aiVerdict(ask: AiAsk, cfg: GuardConfig, book: AiRulebook | null, ai: AiModellerConfig | null, state: AiState): AiVerdict {
   const no = (r: string, extra: Partial<AiVerdict> = {}): AiVerdict => ({ ok: false, reasons: [r], ...extra });
   if (!ai) return no("AI-assisted modelling is off: fmc_guard.json has no valid ai_modeller section");
-  if (!book) return no("AI-assisted modelling is off: the kit has no valid FMC_Rulebook_AIUse (a kit change request)");
+  if (!book) return no("AI-assisted modelling is off: the kit has no valid FMC_Rulebook_AIUse, and FMC_Rulebook_ClaudeUse has no AI-modeller section (a kit change request; fmc_selftest says which file it read)");
   if (ai.stop) return no("Stop AI is on: every AI change is refused until it is switched off");
   if (NEVER[ask.command]) return no(`AI never runs ${ask.command} on a project model: ${NEVER[ask.command]}`);
   const group = COMMAND_GROUPS[ask.command];

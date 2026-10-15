@@ -49,6 +49,12 @@ export async function aiGate(command: string, params: any, active: (DocInfo & { 
         logBatch(cfg, { ...row, result: "done", detail: v.band ?? "" });
         return r;
       } catch (e) {
+        // F-030: a batch still running past the answer limit has not failed; count it, log it with its job id.
+        if ((e as { code?: string })?.code === "FMC-JOB-RUNNING") {
+          if (book) saveState(recordBatch(loadState(env), active.path, elements, false, book), env);
+          logBatch(cfg, { ...row, result: "running", detail: `job ${(e as { job?: string }).job ?? ""}` });
+          throw e;
+        }
         if (book) saveState(recordBatch(loadState(env), active.path, elements, true, book), env);
         logBatch(cfg, { ...row, result: "failed", detail: e instanceof Error ? e.message : String(e) });
         throw e;

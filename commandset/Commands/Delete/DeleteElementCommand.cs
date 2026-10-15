@@ -27,7 +27,7 @@ namespace RevitMCPCommandSet.Commands.Delete
                     var elementIds = parameters?["elementIds"]?.ToObject<string[]>();
                     if (elementIds == null || elementIds.Length == 0)
                     {
-                        throw new ArgumentException("元素ID列表不能为空");
+                        throw new ArgumentException("Give at least one element id");
                     }
 
                     // 设置要删除的元素ID数组
@@ -42,17 +42,17 @@ namespace RevitMCPCommandSet.Commands.Delete
                         }
                         else
                         {
-                            throw new Exception("删除元素失败");
+                            throw new Exception("[FMC-TOOL-FAILED] Deleting the elements failed");
                         }
                     }
                     else
                     {
-                        throw new TimeoutException("删除元素操作超时");
+                        throw new TimeoutException("[FMC-BRIDGE-TIMEOUT] Deleting the elements timed out");
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"删除元素失败: {ex.Message}");
+                    throw new Exception($"[FMC-TOOL-FAILED] Deleting the elements failed: {ex.Message}");
                 }
             }
         }

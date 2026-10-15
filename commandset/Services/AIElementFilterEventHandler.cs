@@ -57,7 +57,7 @@ namespace RevitMCPCommandSet.Services
                 // 获取指定条件元素的Id
                 var elementList = GetFilteredElements(doc, FilterSetting);
                 if (elementList == null || !elementList.Any())
-                    throw new Exception("未在项目中找到指定元素，请检查过滤器设置是否正确");
+                    throw new Exception("No elements match the filter: check the filter settings");
                 // 过滤器最大个数限制
                 string message = "";
                 if (FilterSetting.MaxElements > 0)
@@ -65,7 +65,7 @@ namespace RevitMCPCommandSet.Services
                     if (elementList.Count > FilterSetting.MaxElements)
                     {
                         elementList = elementList.Take(FilterSetting.MaxElements).ToList();
-                        message = $"。此外，符合过滤条件的共有 {elementList.Count} 个元素，仅显示前 {FilterSetting.MaxElements} 个";
+                        message = $". {elementList.Count} elements match; only the first {FilterSetting.MaxElements} are returned";
                     }
                 }
 
@@ -75,7 +75,7 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<List<object>>
                 {
                     Success = true,
-                    Message = $"成功获取{elementInfoList.Count}个元素信息，具体信息储存在Response属性中"+ message,
+                    Message = $"Read {elementInfoList.Count} elements; the details are in Response"+ message,
                     Response = elementInfoList,
                 };
             }
@@ -84,7 +84,7 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<List<object>>
                 {
                     Success = false,
-                    Message = $"获取元素信息时出错: {ex.Message}",
+                    Message = $"[FMC-TOOL-FAILED] Reading the elements failed: {ex.Message}",
                 };
             }
             finally
@@ -199,7 +199,7 @@ namespace RevitMCPCommandSet.Services
                 BuiltInCategory category;
                 if (!Enum.TryParse(settings.FilterCategory, true, out category))
                 {
-                    throw new ArgumentException($"无法将 '{settings.FilterCategory}' 转换为有效的Revit类别。");
+                    throw new ArgumentException($"'{settings.FilterCategory}' is not a Revit category.");
                 }
                 ElementCategoryFilter categoryFilter = new ElementCategoryFilter(category);
                 filters.Add(categoryFilter);

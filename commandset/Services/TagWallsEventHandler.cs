@@ -35,6 +35,8 @@ namespace RevitMCPCommandSet.Services
 
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
 
             try
@@ -63,7 +65,7 @@ namespace RevitMCPCommandSet.Services
                         TaggingResults = new
                         {
                             success = false,
-                            message = "没有找到墙标记族类型"
+                            message = "No wall tag family type found"
                         };
                         tran.RollBack();
                         return;
@@ -182,11 +184,11 @@ try
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("错误", $"标记墙体时出错: {ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Tagging walls failed: {ex.Message}");
                 TaggingResults = new
                 {
                     success = false,
-                    message = $"发生错误: {ex.Message}"
+                    message = $"[FMC-TOOL-FAILED] Tagging walls failed: {ex.Message}"
                 };
             }
             finally

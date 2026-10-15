@@ -39,6 +39,8 @@ namespace RevitMCPCommandSet.Services
         }
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
 
             try
@@ -251,9 +253,9 @@ namespace RevitMCPCommandSet.Services
                 Result = new AIResult<List<long>>
                 {
                     Success = false,
-                    Message = $"创建线状构件时出错: {ex.Message}",
+                    Message = $"[FMC-TOOL-FAILED] Creating line-based elements failed: {ex.Message}",
                 };
-                TaskDialog.Show("错误", $"创建线状构件时出错: {ex.Message}");
+                RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Creating line-based elements failed: {ex.Message}");
             }
             finally
             {
@@ -312,7 +314,7 @@ namespace RevitMCPCommandSet.Services
             }
 
             if (baseWallType == null)
-                throw new InvalidOperationException("未找到可用的基础墙类型");
+                throw new InvalidOperationException("No basic wall type is available");
 
             // 复制墙体类型
             WallType newWallType = null;
@@ -369,7 +371,7 @@ namespace RevitMCPCommandSet.Services
                                     .FirstOrDefault(d => d.Shape == ConnectorProfileType.Rectangular);
 
             if (baseDuctType == null)
-                throw new InvalidOperationException("未找到可用的基础矩形风管类型");
+                throw new InvalidOperationException("No rectangular duct type is available");
 
             // 复制风管类型
             DuctType newDuctType = baseDuctType.Duplicate(typeName) as DuctType;

@@ -42,6 +42,8 @@ namespace RevitMCPCommandSet.Services.Architecture
 
         public void Execute(UIApplication uiapp)
         {
+            // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
+            RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             _uiApp = uiapp;
 
             try

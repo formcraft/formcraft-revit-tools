@@ -60,7 +60,8 @@ Restart Claude Desktop. When you see the hammer icon, the MCP server is connecte
 | `store_project_data` | Store project metadata in local database |
 | `store_room_data` | Store room metadata in local database |
 | `query_stored_data` | Query stored project and room data |
-| `send_code_to_revit` | Send C# code to Revit to execute |
+| `send_code_to_revit` | Send C# code to Revit to execute (optional `usings`, helper types, error codes, compile and run times; see docs/BRIDGE.md) |
+| `fmc_job` | Follow a long call: list, status, result, cancel (a call still running after about 50 s answers with a job id; docs/BRIDGE.md) |
 | `say_hello` | Display a greeting dialog in Revit (connection test) |
 
 ## Development
