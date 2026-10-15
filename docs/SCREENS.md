@@ -6,7 +6,7 @@ Every screen is drawn and clickable on the central canvas, page "Formcraft Revit
 | Column | Screens |
 |---|---|
 | Manage | Settings › Manage (PaneSettingsManage), Materials (PaneMaterials), Project (PaneProject), Revision on the drawing (ReviewOnSheet), Sheet prints (SheetPrints), ribbon (R_Manage). Templates, Families, Issue, Review, Workshare, Links, QA, Rules, Reports are on the Manage page |
-| Flow | Settings › Flow, Touch (PaneFlowTouch), Sheets, Annotate, Flow on the view (UI_Overlays), Gestures (Flow_Gestures), ribbon (R_Flow) |
+| Flow | Settings › Flow, Touch (PaneFlowTouch), Sheets, Annotate, Flow on the view (UI_Overlays), Gestures (Flow_Gestures), ribbon (R_Flow). View range has no board yet: a Revit task dialog (Drag a rectangle, Click corners, Change this view's range), then a dialog over the pane (FmcDialog with Settings rows, `FlowViewRangeDialog`): Area, what Apply makes (an amber note for the fallback view), Starts from, Top level and offset, Cut plane offset, Bottom level and offset (not on ceiling plans), View depth level and offset; Cancel and Apply |
 | Model | Settings › Model, Start from brief (PaneModelBrief), Systems, Structural, ribbon (R_Model), Scripts and automation (PaneScripts, under Check › Scripts with a +Model tag), automation flow (M_Automation) |
 | Engineer | Casework (CW_Pane, CW_Overview, CW_Outputs) and Ceilings (CL_Pane, CL_Overview, CL_Pack), +Model: each step is mapped below |
 | Build | Settings › Build, Build pane, web workspace (B_Web), workspace window (B_Workspace), Revit views (B_RevitViews), ribbon (R_Build) |

@@ -17,6 +17,7 @@ Every behaviour choice is a user setting with a default **(decided)**, defined o
 | **Tag Tidy** | Align, stack and clean up tags and leaders in views | No (touch-friendly) |
 | **Tag Assist** | Smart tag placement: multi-tag floors, wall tags every X m, rule sets | No |
 | **Section Box Tool** | Level-aware section box from a dragged area, optional new 3D view | No (touch-friendly) |
+| **View range** | Its own view range for an area of a plan, dragged or clicked | No (touch-friendly) |
 | Review Mode | Radial menu, info cards, pen markups | Later |
 
 Build order (proposed): Sheet Layout → Tag Tidy → Section Box Tool, in parallel with the touch probe results.
@@ -195,6 +196,30 @@ Level-aware section box from an area dragged in a plan, with mouse or finger.
 | Target view (if updating) | Last used 3D view |
 
 **Notes:** Rotated plans and project vs true north are handled through the plan view's orientation, so the box matches what you dragged. Dragging uses Revit's own box pick for mouse; touch uses TouchKit's gesture layer. Live preview in a tiled 3D view while dragging is a stretch goal.
+
+---
+
+## 4. View range for an area (built, Revit check due)
+
+Like the section box, but for a plan's view range: part of a plan gets its own top, cut plane, bottom and view depth.
+
+**How to use it.** Open a floor, ceiling or structural plan and press **View range** in the pane's quick tools (or put
+it on a Flow ribbon button in Settings › Flow). Pick **Drag a rectangle** and drag across the area, or **Click
+corners** and click each corner, then click the first corner again (or press Esc) to close the shape. The Formcraft
+pane opens a small dialog with the view's own range filled in: the level and offset (mm) of the top, cut plane, bottom
+and view depth (a ceiling plan has no bottom). Change what you need and press **Apply**; Cancel or Esc leaves nothing.
+Apply is one Undo and changes views only, never model geometry. With touch, pick Click corners and long-press each
+corner; one-finger drag keeps panning, as with the section box.
+
+**What Apply makes.** Revit 2025's API can't make a plan region, so Formcraft makes a view of its own:
+`FMC_VR_<plan>_<n>`, a copy of the plan cropped to the area, with the new range, and opens it. The plan itself is not
+changed. If the plan's view template sets the view range, the new view takes the template's settings and is detached
+from it. In a `FMC_VR_` view, the tool also offers **Change this view's range**. Clicking inside an existing plan region
+selects it: its range is set in Properties › View Range › Edit (the API can't). When a Revit version adds plan regions
+to the API, the tool finds it and makes real plan regions instead.
+
+**Presets.** None yet: the kit has no view-range presets, so the dialog starts from the view's own range. Presets
+(a higher cut for high windows, the stair above, a mezzanine) are a kit change request; the plugin never makes them up.
 
 ---
 
