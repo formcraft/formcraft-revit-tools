@@ -14,10 +14,12 @@ concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Windows PowerShell 5.1 is on every Windows PC; PowerShell 7 (pwsh) isn't on the pilot PC
+# Windows PowerShell 5.1 is on every Windows PC; PowerShell 7 (pwsh) isn't on the pilot PC. Execution policy Bypass for
+# the step scripts only: a runner started by double-clicking run.cmd gets the machine's Restricted policy, and every step
+# then fails in under a second before running anything (17 Oct)
 defaults:
   run:
-    shell: powershell
+    shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
 
 # On the self-hosted runner MSBuild's worker processes would outlive a job and keep files locked for the next one
 # (CS2012 on TouchKit.Core.dll, 14 Oct), so every build starts its own workers and ends them
