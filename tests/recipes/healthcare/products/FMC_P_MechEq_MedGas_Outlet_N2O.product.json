@@ -1,0 +1,244 @@
+{
+ "family": "FMC_P_MechEq_MedGas_Outlet_N2O",
+ "category": "Mechanical Equipment",
+ "desc": "Nitrous oxide / Entonox terminal unit, BS 5682 probe, wall mounted, flush back box, French blue identification",
+ "ifc": "IfcFlowTerminal",
+ "keynote": "P.MGO_03",
+ "types": [
+  {
+   "name": "BS5682_N2O"
+  },
+  {
+   "name": "BS5682_Entonox"
+  }
+ ],
+ "materials": {
+  "painted_steel": "FMC_Metal_SteelLTZ_Painted",
+  "white": "FMC_Plastic_ABS_White",
+  "french_blue": "FMC_Plastic_ABS_Blue",
+  "chrome": "FMC_Metal_Chrome_Polished"
+ },
+ "reference": {
+  "query": "medical gas outlet n2o mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=medical+gas+outlet+n2o+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -45,
+    0,
+    5,
+    45,
+    55,
+    95
+   ],
+   "mat": "painted_steel"
+  },
+  {
+   "n": "Fascia",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -10,
+    0,
+    50,
+    0,
+    100
+   ],
+   "mat": "white",
+   "r": 8
+  },
+  {
+   "n": "Fascia Face",
+   "shape": "fbox",
+   "at": [
+    -47,
+    -12,
+    3,
+    47,
+    -10,
+    97
+   ],
+   "mat": "white",
+   "r": 7,
+   "lod": "f"
+  },
+  {
+   "n": "Gas Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     19,
+     -12
+    ],
+    [
+     27,
+     -12
+    ],
+    [
+     27,
+     -16
+    ],
+    [
+     19,
+     -16
+    ]
+   ],
+   "mat": "french_blue"
+  },
+  {
+   "n": "Socket Collar",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     0,
+     -10
+    ],
+    [
+     19,
+     -10
+    ],
+    [
+     19,
+     -24
+    ],
+    [
+     15,
+     -26
+    ],
+    [
+     6,
+     -26
+    ],
+    [
+     6,
+     -22
+    ],
+    [
+     0,
+     -22
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Release Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     14,
+     -24
+    ],
+    [
+     17,
+     -24
+    ],
+    [
+     17,
+     -28
+    ],
+    [
+     14,
+     -28
+    ]
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Label Strip",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -12.6,
+    14,
+    30,
+    -12,
+    26
+   ],
+   "mat": "french_blue",
+   "r": 2,
+   "lod": "f"
+  },
+  {
+   "n": "Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -40,
+    90
+   ],
+   "r": 2.5,
+   "y": [
+    -12.8,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     80,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "N2O",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Back Box",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Probe to BS 5682": {
+   "value": "BS 5682",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Fascia 100 x 100 mm": {
+   "value": "100x100",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Identification French blue (Entonox blue/white)": {
+   "value": "French blue",
+   "source_status": "assumed",
+   "source": "BS 1710 / BS 381C 166, HTM 02-01"
+  },
+  "Mounting height 1400 mm": {
+   "value": 1400,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Terminal unit modelled as a generic product: square fascia, French blue identification ring and label, chrome collar and release ring, screws, steel back box. Entonox type shares geometry (blue/white label).",
+ "template": "Metric Mechanical Equipment.rft",
+ "type_values": {
+  "Default Elevation": 1400
+ }
+}

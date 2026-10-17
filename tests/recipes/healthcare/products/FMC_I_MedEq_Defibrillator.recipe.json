@@ -1,0 +1,2342 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_MedEq_Defibrillator",
+ "template": "Metric Generic Model.rft",
+ "about": "AED modelled as a generic product: wall bracket with ledge and side hooks, body, face panel, carry handle, status display, shock and on/off buttons, pads pictogram and socket, ready LED, speaker slots, AED sign with heart and bolt. Wall mounted: back at y = 0. Reference: query: defibrillator medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=defibrillator+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Medical Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "350x300_AED"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Cost_Unit",
+   "type": "350x300_AED",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Geometry_Stage",
+   "type": "350x300_AED",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/IfcExportAs",
+   "type": "350x300_AED",
+   "param": "IfcExportAs",
+   "value": "IfcMedicalDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/Description",
+   "type": "350x300_AED",
+   "param": "Description",
+   "value": "Automated external defibrillator (AED) on wall bracket, 350 x 300, yellow body with dark face, shock and on/off buttons, carry handle, ISO 7010 AED sign above"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/Keynote",
+   "type": "350x300_AED",
+   "param": "Keynote",
+   "value": "Z.MEQ_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Keynote_Code",
+   "type": "350x300_AED",
+   "param": "FMC_Keynote_Code",
+   "value": "Z.MEQ_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Code_Description",
+   "type": "350x300_AED",
+   "param": "FMC_Code_Description",
+   "value": "Defibrillator: AED on wall bracket"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Code_Group",
+   "type": "350x300_AED",
+   "param": "FMC_Code_Group",
+   "value": "Z.MEQ"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/FMC_Role_Code",
+   "type": "350x300_AED",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "350x300_AED/Default Elevation",
+   "type": "350x300_AED",
+   "param": "Default Elevation",
+   "value": 900
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "color": [
+    27,
+    36,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_PV_Module",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    181,
+    18,
+    27
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_FireHoseReel_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Sign",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Sign Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Sign Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -175.0,
+     -129
+    ],
+    [
+     175.0,
+     -129
+    ],
+    [
+     175.0,
+     0
+    ],
+    [
+     -175.0,
+     0
+    ]
+   ],
+   "start": 0.0,
+   "end": 490.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket",
+   "points": [
+    [
+     160.0,
+     0.0
+    ],
+    [
+     165.74,
+     1.14
+    ],
+    [
+     170.61,
+     4.39
+    ],
+    [
+     173.86,
+     9.26
+    ],
+    [
+     175.0,
+     15.0
+    ],
+    [
+     175.0,
+     285.0
+    ],
+    [
+     173.86,
+     290.74
+    ],
+    [
+     170.61,
+     295.61
+    ],
+    [
+     165.74,
+     298.86
+    ],
+    [
+     160.0,
+     300.0
+    ],
+    [
+     -160.0,
+     300.0
+    ],
+    [
+     -165.74,
+     298.86
+    ],
+    [
+     -170.61,
+     295.61
+    ],
+    [
+     -173.86,
+     290.74
+    ],
+    [
+     -175.0,
+     285.0
+    ],
+    [
+     -175.0,
+     15.0
+    ],
+    [
+     -173.86,
+     9.26
+    ],
+    [
+     -170.61,
+     4.39
+    ],
+    [
+     -165.74,
+     1.14
+    ],
+    [
+     -160.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Ledge",
+   "points": [
+    [
+     150.0,
+     -125.0
+    ],
+    [
+     153.83,
+     -124.24
+    ],
+    [
+     157.07,
+     -122.07
+    ],
+    [
+     159.24,
+     -118.83
+    ],
+    [
+     160.0,
+     -115.0
+    ],
+    [
+     160.0,
+     -30.0
+    ],
+    [
+     159.24,
+     -26.17
+    ],
+    [
+     157.07,
+     -22.93
+    ],
+    [
+     153.83,
+     -20.76
+    ],
+    [
+     150.0,
+     -20.0
+    ],
+    [
+     -150.0,
+     -20.0
+    ],
+    [
+     -153.83,
+     -20.76
+    ],
+    [
+     -157.07,
+     -22.93
+    ],
+    [
+     -159.24,
+     -26.17
+    ],
+    [
+     -160.0,
+     -30.0
+    ],
+    [
+     -160.0,
+     -115.0
+    ],
+    [
+     -159.24,
+     -118.83
+    ],
+    [
+     -157.07,
+     -122.07
+    ],
+    [
+     -153.83,
+     -124.24
+    ],
+    [
+     -150.0,
+     -125.0
+    ]
+   ],
+   "start": 0,
+   "end": 22
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Ledge",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Ledge",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Ledge",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Side Hook 1",
+   "points": [
+    [
+     -165,
+     -125
+    ],
+    [
+     -152,
+     -125
+    ],
+    [
+     -152,
+     -20
+    ],
+    [
+     -165,
+     -20
+    ]
+   ],
+   "start": 22,
+   "end": 90
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Side Hook 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Side Hook 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Side Hook 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Side Hook 2",
+   "points": [
+    [
+     152,
+     -125
+    ],
+    [
+     165,
+     -125
+    ],
+    [
+     165,
+     -20
+    ],
+    [
+     152,
+     -20
+    ]
+   ],
+   "start": 22,
+   "end": 90
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Side Hook 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Side Hook 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Side Hook 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AED Body",
+   "points": [
+    [
+     105.0,
+     22.0
+    ],
+    [
+     120.31,
+     25.04
+    ],
+    [
+     133.28,
+     33.72
+    ],
+    [
+     141.96,
+     46.69
+    ],
+    [
+     145.0,
+     62.0
+    ],
+    [
+     145.0,
+     230.0
+    ],
+    [
+     141.96,
+     245.31
+    ],
+    [
+     133.28,
+     258.28
+    ],
+    [
+     120.31,
+     266.96
+    ],
+    [
+     105.0,
+     270.0
+    ],
+    [
+     -105.0,
+     270.0
+    ],
+    [
+     -120.31,
+     266.96
+    ],
+    [
+     -133.28,
+     258.28
+    ],
+    [
+     -141.96,
+     245.31
+    ],
+    [
+     -145.0,
+     230.0
+    ],
+    [
+     -145.0,
+     62.0
+    ],
+    [
+     -141.96,
+     46.69
+    ],
+    [
+     -133.28,
+     33.72
+    ],
+    [
+     -120.31,
+     25.04
+    ],
+    [
+     -105.0,
+     22.0
+    ]
+   ],
+   "start": 20,
+   "end": 115,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AED Body",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AED Body",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AED Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Face Panel",
+   "points": [
+    [
+     98.0,
+     40.0
+    ],
+    [
+     109.48,
+     42.28
+    ],
+    [
+     119.21,
+     48.79
+    ],
+    [
+     125.72,
+     58.52
+    ],
+    [
+     128.0,
+     70.0
+    ],
+    [
+     128.0,
+     222.0
+    ],
+    [
+     125.72,
+     233.48
+    ],
+    [
+     119.21,
+     243.21
+    ],
+    [
+     109.48,
+     249.72
+    ],
+    [
+     98.0,
+     252.0
+    ],
+    [
+     -98.0,
+     252.0
+    ],
+    [
+     -109.48,
+     249.72
+    ],
+    [
+     -119.21,
+     243.21
+    ],
+    [
+     -125.72,
+     233.48
+    ],
+    [
+     -128.0,
+     222.0
+    ],
+    [
+     -128.0,
+     70.0
+    ],
+    [
+     -125.72,
+     58.52
+    ],
+    [
+     -119.21,
+     48.79
+    ],
+    [
+     -109.48,
+     42.28
+    ],
+    [
+     -98.0,
+     40.0
+    ]
+   ],
+   "start": 115,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Face Panel",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Face Panel",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Face Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Post 1",
+   "points": [
+    [
+     -70,
+     -85
+    ],
+    [
+     -52,
+     -85
+    ],
+    [
+     -52,
+     -55
+    ],
+    [
+     -70,
+     -55
+    ]
+   ],
+   "start": 270,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Post 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Post 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Post 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Post 2",
+   "points": [
+    [
+     52,
+     -85
+    ],
+    [
+     70,
+     -85
+    ],
+    [
+     70,
+     -55
+    ],
+    [
+     52,
+     -55
+    ]
+   ],
+   "start": 270,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Post 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Post 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Post 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Bar",
+   "points": [
+    [
+     64.0,
+     -85.0
+    ],
+    [
+     66.3,
+     -84.54
+    ],
+    [
+     68.24,
+     -83.24
+    ],
+    [
+     69.54,
+     -81.3
+    ],
+    [
+     70.0,
+     -79.0
+    ],
+    [
+     70.0,
+     -61.0
+    ],
+    [
+     69.54,
+     -58.7
+    ],
+    [
+     68.24,
+     -56.76
+    ],
+    [
+     66.3,
+     -55.46
+    ],
+    [
+     64.0,
+     -55.0
+    ],
+    [
+     -64.0,
+     -55.0
+    ],
+    [
+     -66.3,
+     -55.46
+    ],
+    [
+     -68.24,
+     -56.76
+    ],
+    [
+     -69.54,
+     -58.7
+    ],
+    [
+     -70.0,
+     -61.0
+    ],
+    [
+     -70.0,
+     -79.0
+    ],
+    [
+     -69.54,
+     -81.3
+    ],
+    [
+     -68.24,
+     -83.24
+    ],
+    [
+     -66.3,
+     -84.54
+    ],
+    [
+     -64.0,
+     -85.0
+    ]
+   ],
+   "start": 295,
+   "end": 312
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Bar",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Bar",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Bar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status Display",
+   "points": [
+    [
+     37.0,
+     175.0
+    ],
+    [
+     38.15,
+     175.23
+    ],
+    [
+     39.12,
+     175.88
+    ],
+    [
+     39.77,
+     176.85
+    ],
+    [
+     40.0,
+     178.0
+    ],
+    [
+     40.0,
+     227.0
+    ],
+    [
+     39.77,
+     228.15
+    ],
+    [
+     39.12,
+     229.12
+    ],
+    [
+     38.15,
+     229.77
+    ],
+    [
+     37.0,
+     230.0
+    ],
+    [
+     -97.0,
+     230.0
+    ],
+    [
+     -98.15,
+     229.77
+    ],
+    [
+     -99.12,
+     229.12
+    ],
+    [
+     -99.77,
+     228.15
+    ],
+    [
+     -100.0,
+     227.0
+    ],
+    [
+     -100.0,
+     178.0
+    ],
+    [
+     -99.77,
+     176.85
+    ],
+    [
+     -99.12,
+     175.88
+    ],
+    [
+     -98.15,
+     175.23
+    ],
+    [
+     -97.0,
+     175.0
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status Display",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status Display",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status Display",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Shock Button",
+   "profile": [
+    [
+     0,
+     118
+    ],
+    [
+     30,
+     118
+    ],
+    [
+     27,
+     127
+    ],
+    [
+     0,
+     129
+    ]
+   ],
+   "axis_at": [
+    65,
+    105
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shock Button",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shock Button",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "On Off Button",
+   "profile": [
+    [
+     0,
+     118
+    ],
+    [
+     20,
+     118
+    ],
+    [
+     18,
+     125
+    ],
+    [
+     0,
+     126
+    ]
+   ],
+   "axis_at": [
+    -75,
+    105
+   ],
+   "axis": "y",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "On Off Button",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "On Off Button",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pads Pictogram",
+   "points": [
+    [
+     24.0,
+     60.0
+    ],
+    [
+     26.3,
+     60.46
+    ],
+    [
+     28.24,
+     61.76
+    ],
+    [
+     29.54,
+     63.7
+    ],
+    [
+     30.0,
+     66.0
+    ],
+    [
+     30.0,
+     144.0
+    ],
+    [
+     29.54,
+     146.3
+    ],
+    [
+     28.24,
+     148.24
+    ],
+    [
+     26.3,
+     149.54
+    ],
+    [
+     24.0,
+     150.0
+    ],
+    [
+     -24.0,
+     150.0
+    ],
+    [
+     -26.3,
+     149.54
+    ],
+    [
+     -28.24,
+     148.24
+    ],
+    [
+     -29.54,
+     146.3
+    ],
+    [
+     -30.0,
+     144.0
+    ],
+    [
+     -30.0,
+     66.0
+    ],
+    [
+     -29.54,
+     63.7
+    ],
+    [
+     -28.24,
+     61.76
+    ],
+    [
+     -26.3,
+     60.46
+    ],
+    [
+     -24.0,
+     60.0
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pads Pictogram",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pads Pictogram",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pads Pictogram",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pads Socket",
+   "points": [
+    [
+     109.0,
+     222.0
+    ],
+    [
+     108.52,
+     225.62
+    ],
+    [
+     107.12,
+     229.0
+    ],
+    [
+     104.9,
+     231.9
+    ],
+    [
+     102.0,
+     234.12
+    ],
+    [
+     98.62,
+     235.52
+    ],
+    [
+     95.0,
+     236.0
+    ],
+    [
+     91.38,
+     235.52
+    ],
+    [
+     88.0,
+     234.12
+    ],
+    [
+     85.1,
+     231.9
+    ],
+    [
+     82.88,
+     229.0
+    ],
+    [
+     81.48,
+     225.62
+    ],
+    [
+     81.0,
+     222.0
+    ],
+    [
+     81.48,
+     218.38
+    ],
+    [
+     82.88,
+     215.0
+    ],
+    [
+     85.1,
+     212.1
+    ],
+    [
+     88.0,
+     209.88
+    ],
+    [
+     91.38,
+     208.48
+    ],
+    [
+     95.0,
+     208.0
+    ],
+    [
+     98.62,
+     208.48
+    ],
+    [
+     102.0,
+     209.88
+    ],
+    [
+     104.9,
+     212.1
+    ],
+    [
+     107.12,
+     215.0
+    ],
+    [
+     108.52,
+     218.38
+    ]
+   ],
+   "start": 118,
+   "end": 124,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pads Socket",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pads Socket",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pads Socket",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ready LED",
+   "points": [
+    [
+     70.0,
+     222.0
+    ],
+    [
+     69.83,
+     223.29
+    ],
+    [
+     69.33,
+     224.5
+    ],
+    [
+     68.54,
+     225.54
+    ],
+    [
+     67.5,
+     226.33
+    ],
+    [
+     66.29,
+     226.83
+    ],
+    [
+     65.0,
+     227.0
+    ],
+    [
+     63.71,
+     226.83
+    ],
+    [
+     62.5,
+     226.33
+    ],
+    [
+     61.46,
+     225.54
+    ],
+    [
+     60.67,
+     224.5
+    ],
+    [
+     60.17,
+     223.29
+    ],
+    [
+     60.0,
+     222.0
+    ],
+    [
+     60.17,
+     220.71
+    ],
+    [
+     60.67,
+     219.5
+    ],
+    [
+     61.46,
+     218.46
+    ],
+    [
+     62.5,
+     217.67
+    ],
+    [
+     63.71,
+     217.17
+    ],
+    [
+     65.0,
+     217.0
+    ],
+    [
+     66.29,
+     217.17
+    ],
+    [
+     67.5,
+     217.67
+    ],
+    [
+     68.54,
+     218.46
+    ],
+    [
+     69.33,
+     219.5
+    ],
+    [
+     69.83,
+     220.71
+    ]
+   ],
+   "start": 118,
+   "end": 121,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ready LED",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ready LED",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ready LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Speaker Slot 1",
+   "points": [
+    [
+     -115,
+     58
+    ],
+    [
+     -50,
+     58
+    ],
+    [
+     -50,
+     62
+    ],
+    [
+     -115,
+     62
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Speaker Slot 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Speaker Slot 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Speaker Slot 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Speaker Slot 2",
+   "points": [
+    [
+     -115,
+     68
+    ],
+    [
+     -50,
+     68
+    ],
+    [
+     -50,
+     72
+    ],
+    [
+     -115,
+     72
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Speaker Slot 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Speaker Slot 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Speaker Slot 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Speaker Slot 3",
+   "points": [
+    [
+     -115,
+     78
+    ],
+    [
+     -50,
+     78
+    ],
+    [
+     -50,
+     82
+    ],
+    [
+     -115,
+     82
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Speaker Slot 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Speaker Slot 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Speaker Slot 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Speaker Slot 4",
+   "points": [
+    [
+     -115,
+     88
+    ],
+    [
+     -50,
+     88
+    ],
+    [
+     -50,
+     92
+    ],
+    [
+     -115,
+     92
+    ]
+   ],
+   "start": 118,
+   "end": 119,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Speaker Slot 4",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Speaker Slot 4",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Speaker Slot 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AED Sign",
+   "points": [
+    [
+     140.0,
+     340.0
+    ],
+    [
+     143.83,
+     340.76
+    ],
+    [
+     147.07,
+     342.93
+    ],
+    [
+     149.24,
+     346.17
+    ],
+    [
+     150.0,
+     350.0
+    ],
+    [
+     150.0,
+     480.0
+    ],
+    [
+     149.24,
+     483.83
+    ],
+    [
+     147.07,
+     487.07
+    ],
+    [
+     143.83,
+     489.24
+    ],
+    [
+     140.0,
+     490.0
+    ],
+    [
+     -140.0,
+     490.0
+    ],
+    [
+     -143.83,
+     489.24
+    ],
+    [
+     -147.07,
+     487.07
+    ],
+    [
+     -149.24,
+     483.83
+    ],
+    [
+     -150.0,
+     480.0
+    ],
+    [
+     -150.0,
+     350.0
+    ],
+    [
+     -149.24,
+     346.17
+    ],
+    [
+     -147.07,
+     342.93
+    ],
+    [
+     -143.83,
+     340.76
+    ],
+    [
+     -140.0,
+     340.0
+    ]
+   ],
+   "start": 0,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AED Sign",
+   "subcategory": "Sign"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AED Sign",
+   "param": "Sign Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AED Sign",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sign Heart",
+   "points": [
+    [
+     22.0,
+     375.0
+    ],
+    [
+     29.65,
+     376.52
+    ],
+    [
+     36.14,
+     380.86
+    ],
+    [
+     40.48,
+     387.35
+    ],
+    [
+     42.0,
+     395.0
+    ],
+    [
+     42.0,
+     435.0
+    ],
+    [
+     40.48,
+     442.65
+    ],
+    [
+     36.14,
+     449.14
+    ],
+    [
+     29.65,
+     453.48
+    ],
+    [
+     22.0,
+     455.0
+    ],
+    [
+     -22.0,
+     455.0
+    ],
+    [
+     -29.65,
+     453.48
+    ],
+    [
+     -36.14,
+     449.14
+    ],
+    [
+     -40.48,
+     442.65
+    ],
+    [
+     -42.0,
+     435.0
+    ],
+    [
+     -42.0,
+     395.0
+    ],
+    [
+     -40.48,
+     387.35
+    ],
+    [
+     -36.14,
+     380.86
+    ],
+    [
+     -29.65,
+     376.52
+    ],
+    [
+     -22.0,
+     375.0
+    ]
+   ],
+   "start": 5,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sign Heart",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sign Heart",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sign Heart",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sign Bolt",
+   "points": [
+    [
+     -6,
+     445
+    ],
+    [
+     12,
+     418
+    ],
+    [
+     0,
+     415
+    ],
+    [
+     10,
+     385
+    ],
+    [
+     -12,
+     412
+    ],
+    [
+     0,
+     415
+    ]
+   ],
+   "start": 6,
+   "end": 7,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sign Bolt",
+   "subcategory": "Sign"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sign Bolt",
+   "param": "Sign Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sign Bolt",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Defibrillator.png"
+  }
+ ],
+ "values": {
+  "Bracket 350 x 300 mm": {
+   "value": "350x300",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "AED 290 x 250 x 95 mm": {
+   "value": "290x250x95",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Handle height 1200 mm AFL": {
+   "value": 1200,
+   "source_status": "assumed",
+   "source": "Resuscitation Council UK AED siting"
+  },
+  "Battery powered, no mains": {
+   "value": "battery",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

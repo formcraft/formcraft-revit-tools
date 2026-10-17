@@ -1,0 +1,392 @@
+{
+ "family": "FMC_I_MedEq_CT_Scanner",
+ "category": "Medical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "CT scanner, 64-slice class, 700 mm bore gantry 2000 x 880 x 1720 with patient table 2500 long (vendor envelope)",
+ "ifc": "IfcMedicalDevice",
+ "keynote": "Z.IMG_03",
+ "types": [
+  {
+   "name": "700Bore_64Slice"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledb": "FMC_Plastic_LED_Blue",
+  "mattress": "FMC_Fabric_Mattress_PU_Blue",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "screen": "FMC_Glass_PV_Module",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "ct scanner medical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=ct+scanner+medical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Gantry Plinth",
+   "shape": "box",
+   "at": [
+    -800,
+    -420,
+    0,
+    800,
+    420,
+    260
+   ],
+   "r": 60,
+   "mat": "white"
+  },
+  {
+   "n": "Gantry Side",
+   "shape": "box",
+   "at": [
+    -1000,
+    -440,
+    0,
+    -680,
+    440,
+    1500
+   ],
+   "r": 80,
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1680,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Gantry Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    1050
+   ],
+   "profile": [
+    [
+     350,
+     -420
+    ],
+    [
+     385,
+     -450
+    ],
+    [
+     860,
+     -450
+    ],
+    [
+     900,
+     -410
+    ],
+    [
+     900,
+     410
+    ],
+    [
+     860,
+     450
+    ],
+    [
+     385,
+     450
+    ],
+    [
+     350,
+     420
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Bore Liner",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    1050
+   ],
+   "profile": [
+    [
+     349,
+     -421
+    ],
+    [
+     356,
+     -421
+    ],
+    [
+     356,
+     421
+    ],
+    [
+     349,
+     421
+    ]
+   ],
+   "mat": "mgrey"
+  },
+  {
+   "n": "Bore LED Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    1050
+   ],
+   "profile": [
+    [
+     388,
+     -452
+    ],
+    [
+     405,
+     -452
+    ],
+    [
+     405,
+     -450
+    ],
+    [
+     388,
+     -450
+    ]
+   ],
+   "mat": "ledb",
+   "lod": "f"
+  },
+  {
+   "n": "Gantry Display",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -455,
+    1580,
+    150,
+    -450,
+    1720
+   ],
+   "r": 8,
+   "mat": "screen"
+  },
+  {
+   "n": "Gantry Control Panel",
+   "shape": "fbox",
+   "at": [
+    -880,
+    -446,
+    900,
+    -720,
+    -440,
+    1150
+   ],
+   "r": 10,
+   "mat": "mgrey",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1600,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Gantry Control Key",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -800,
+    1080
+   ],
+   "r": 12,
+   "y": [
+    -450,
+    -446
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     -60
+    ]
+   }
+  },
+  {
+   "n": "Table Floor Plate",
+   "shape": "box",
+   "at": [
+    -300,
+    -2500,
+    0,
+    300,
+    -800,
+    60
+   ],
+   "r": 30,
+   "mat": "mgrey"
+  },
+  {
+   "n": "Table Pedestal",
+   "shape": "box",
+   "at": [
+    -220,
+    -2300,
+    60,
+    220,
+    -1000,
+    650
+   ],
+   "r": 50,
+   "mat": "white"
+  },
+  {
+   "n": "Table Carrier",
+   "shape": "box",
+   "at": [
+    -260,
+    -2450,
+    650,
+    260,
+    -700,
+    820
+   ],
+   "r": 40,
+   "mat": "white"
+  },
+  {
+   "n": "Cradle",
+   "shape": "box",
+   "at": [
+    -230,
+    -2500,
+    820,
+    230,
+    200,
+    860
+   ],
+   "r": 30,
+   "mat": "black"
+  },
+  {
+   "n": "Patient Pad",
+   "shape": "box",
+   "at": [
+    -210,
+    -2480,
+    860,
+    210,
+    150,
+    900
+   ],
+   "r": 30,
+   "mat": "mattress"
+  },
+  {
+   "n": "Head Holder",
+   "shape": "box",
+   "at": [
+    -150,
+    150,
+    860,
+    150,
+    260,
+    960
+   ],
+   "r": 40,
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Table Control Panel",
+   "shape": "box",
+   "at": [
+    -270,
+    -1000,
+    700,
+    -262,
+    -820,
+    790
+   ],
+   "mat": "mgrey",
+   "lod": "f"
+  },
+  {
+   "n": "Foot Pedal",
+   "shape": "box",
+   "at": [
+    -360,
+    -1600,
+    0,
+    -260,
+    -1450,
+    50
+   ],
+   "r": 10,
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     620,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "values": {
+  "Bore 700 mm": {
+   "value": 700,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Gantry 2000 x 880 mm": {
+   "value": "2000x880",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Table travel 2000 mm": {
+   "value": 2000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Supply 415 V 3-phase, 100 kVA": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical 64-slice CT, vendor to confirm"
+  }
+ },
+ "about": "CT modelled as a generic product inside the vendor envelope: plinth, side housings, gantry ring with bore liner and LED ring, display and control panels, patient table with floor plate, pedestal, carrier, cradle, pad, head holder, control panel and foot pedals. Service and shielding by MEP and A. Water and gases via the nested service point (FMC_P_MechEq_ServicePoint); Medical Equipment cannot hold pipe connectors.",
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Gantry Plinth",
+   "side": "back"
+  },
+  {
+   "n": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "part": "Gantry Plinth",
+   "side": "back"
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 100000,
+  "Number of Poles": 3
+ }
+}

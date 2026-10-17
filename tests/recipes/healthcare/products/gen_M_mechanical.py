@@ -132,9 +132,9 @@ def split_wall():
         RT("Body", body, [-490, 490], 'white'),
         RT("End Cap Left", body, [-500, -490], 'mgrey', 'f'), RT("End Cap Right", body, [490, 500], 'mgrey', 'f'),
         F("Front Panel", [-492, -246, 110, 492, -236, 302], 'white', 14),
-        RT("Outlet Throat", s([(-212, 75), (-85, 25), (-88, 16), (-214, 64)]), [-450, 450], 'black'),
-        RT("Louvre Flap", s([(-222, 60), (-120, 16), (-118, 9), (-224, 52)]), [-455, 455], 'white'),
-        rep(B("Vane", [-412, -175, 26, -408, -110, 54], 'mgrey', 0, 'f'), 8, [117, 0, 0]),
+        RT("Outlet Throat", s([(-212, 75), (-85, 25), (-86, 19), (-213, 69)]), [-450, 450], 'black'),
+        RT("Louvre Flap", s([(-218, 70), (-150, 42), (-148, 36), (-220, 64)]), [-455, 455], 'white'),
+        rep(B("Vane", [-412, -170, 30, -408, -110, 50], 'mgrey', 0, 'f'), 8, [117, 0, 0]),
         rep(B("Intake Slot", [-450, -175, 315, -440, -30, 318], 'mgrey', 0, 'f'), 16, [60, 0, 0]),
         F("Display Window", [290, -248, 140, 430, -246, 172], 'black', 6, 'f'),
         CY("LED Run", [330, 156], 4, [-249, -248], 'ledg', 'f'), CY("LED Timer", [360, 156], 4, [-249, -248], 'ledb', 'f'),
@@ -193,7 +193,7 @@ def cassette(fam, pan, bod, h, types, desc, vals, about, va, compact=False):
               CX("Drain Socket", [B2 - 220, 170], 16, [B2, B2 + 50], 'grey'),
               CX("Liquid Line", [-B2 + 160, 140], 6, [B2, B2 + 50], 'copper'), CX("Gas Line", [-B2 + 200, 140], 9.5, [B2, B2 + 50], 'copper')]
     if compact:
-        parts.append(B("EEV Kit Box", [B2 + 50, -B2 + 40, 40, B2 + 180, -B2 + 260, 200], 'galv'))
+        parts.append(B("EEV Kit Box", [B2, -B2 + 40, 40, B2 + 120, -B2 + 200, 180], 'galv'))
     make(fam, desc, "IfcUnitaryEquipment", types, parts, [E("Electrical Box", "front"), SAN("Drain Socket", "right")], vals, about,
          dict(elec(240, va), **{"Default Elevation": 2700}))
 
@@ -373,7 +373,7 @@ def inline_fan():
              CZ("Hanger Rod Left", [-117, 0], 5, [-30, 0], 'gi', 'f'), CZ("Hanger Rod Right", [117, 0], 5, [-30, 0], 'gi', 'f'),
              B("Terminal Box", [-55, -205, zc - 50, 55, -158, zc + 50], 'grey', 6),
              CZ("Cable Gland", [0, -182], 9, [zc - 70, zc - 50], 'black', 'f'),
-             FR("Airflow Arrow", [(-60, zc + 120), (30, zc + 120), (30, zc + 135), (60, zc + 110), (30, zc + 85), (30, zc + 100), (-60, zc + 100)], [-170, -155], 'yellow', 'f')]
+             PR("Airflow Arrow", [(-60, -10), (30, -10), (30, -25), (60, 0), (30, 25), (30, 10), (-60, 10)], [zc + 158, zc + 164], 'yellow', 'f')]
     types = [{"name": f"{d}_Inline", "values": {"Apparent Load": va}} for d, va in ((100, 25), (150, 60), (200, 120))]
     make("FMC_M_MechEq_ExtractFan_Inline", "In-line mixed-flow extract fan 100 to 200 mm, round galvanised casing with ribs, spigots and seals, mounting straps, terminal box",
          "IfcFan", types, parts,
@@ -415,7 +415,7 @@ def wall_fan():
              CY("Wall Sleeve", [0, 170], 128, [0, 230], 'white'),
              CY("Backdraught Shutter", [0, 170], 128, [230, 236], 'mgrey', 'f'),
              F("External Cowl", [-150, 236, 20, 150, 266, 320], 'grey', 12, 'f'),
-             CZ("Pull Cord", [150, -15], 1.5, [-420, 0], 'white', 'f'), CZ("Cord Toggle", [150, -15], 7, [-440, -420], 'white', 'f')]
+             CZ("Pull Cord", [150, -15], 1.5, [-220, 0], 'white', 'f'), CZ("Cord Toggle", [150, -15], 7, [-240, -220], 'white', 'f')]
     types = [{"name": "150_Wall", "values": {"Apparent Load": 30}}, {"name": "250_Wall", "values": {"Apparent Load": 60}}]
     make("FMC_M_MechEq_ExtractFan_Wall", "Wall extract fan 150 to 250 mm, through-wall, white louvred fascia, sleeve, back-draught shutter and external cowl, pull-cord switch",
          "IfcFan", types, parts, [E("Wall Sleeve", "back")],
@@ -585,8 +585,8 @@ def cold_condenser():
              CZ("Suction Line", [-200, -50], 11, [400, 520], 'copper'), CX("Suction Riser", [-50, 520], 11, [-200, 0], 'copper'),
              CZ("Discharge Line", [-120, 40], 8, [200, 460], 'copper'), CX("Discharge Riser", [40, 460], 8, [-120, 0], 'copper'),
              rep(CY("Service Valve", [-440, 120], 12, [-330, -300], 'brass', 'f'), 2, [90, 0, 0]),
-             B("Electrical Box", [-200, -300, 430, -20, -220, 650], 'grey', 4),
-             F("HP LP Switch", [-180, -310, 360, -110, -300, 410], 'black', 0, 'f')]
+             B("Electrical Box", [-80, -260, 430, 0, -60, 650], 'grey', 4),
+             B("HP LP Switch", [-40, -40, 450, 0, 40, 520], 'black', 0, 'f')]
     parts += fan_front("Fan", 250, 380, 205, -300, 4)
     parts = [p for p in parts if p['n'] != 'Fan Guard Mid']
     types = [{"name": "2kW_CondUnit", "values": {"Apparent Load": 1500, "Voltage": 240, "Number of Poles": 1}},
@@ -719,7 +719,7 @@ def air_curtain():
              RT("End Cap Left", prof, [-750, -740], 'mgrey'), RT("End Cap Right", prof, [740, 750], 'mgrey'),
              B("Discharge Slot", [-700, -190, -4, 700, -110, 0], 'black'),
              rep(B("Discharge Vane", [-690, -186, -14, -686, -114, -4], 'mgrey', 0, 'f'), 16, [91.7, 0, 0]),
-             F("Intake Grille", [-700, -253, 55, 700, -251, 185], 'black', 6),
+             F("Intake Grille", [-700, -253, 55, 700, -236, 185], 'black', 6),
              rep(F("Intake Slat", [-700, -258, 62, 700, -253, 70], 'white', 0, 'f'), 8, [0, 0, 15.5]),
              F("Control Panel", [520, -254, 192, 700, -250, 214], 'mgrey', 4, 'f'),
              CY("Run LED", [680, 203], 3, [-256, -254], 'ledg', 'f'),
@@ -810,9 +810,9 @@ def diffuser_linear():
              B("Slot Throat", [-750, -55, -6, 750, 55, -1], 'black'),
              rep(B("Pattern Controller Front", [-735, -50, -13, -705, -14, -6], 'mgrey', 0, 'f'), 12, [125, 0, 0]),
              rep(B("Pattern Controller Rear", [-735, 14, -13, -705, 50, -6], 'mgrey', 0, 'f'), 12, [125, 0, 0]),
-             B("Plenum Box", [-740, -110, 0, 740, 110, 250], 'galv'),
-             CZ("Spigot", [0, 0], 100, [250, 350], 'galv'), T("Spigot Bead", 'z', [0, 0], ring(99, 105, 290, 300), 'galv', 'f'),
-             rep(B("Hanger Lug", [-600, -125, 200, -560, -110, 240], 'galv', 0, 'f'), 2, [1160, 0, 0])]
+             T("Plenum Box", 'x', [0, 0], [[0, -740], [1, -740], [1, 740], [0, 740]], 'galv'),
+             CZ("Spigot", [0, 0], 80, [250, 350], 'galv'), T("Spigot Bead", 'z', [0, 0], ring(79, 85, 290, 300), 'galv', 'f'),
+             rep(B("Hanger Lug", [-600, -85, 200, -560, -70, 240], 'galv', 0, 'f'), 2, [1160, 0, 0])]
     make("FMC_M_AirTerminal_Diffuser_Linear_Slot", "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot",
          "IfcAirTerminal", ["1200_2Slot", "1500_2Slot"], parts, [DUCT("Supply", "SupplyAir", "Spigot", "top", "In", d=200)],
          {"Length 1200 / 1500 mm, face 150 mm": A("1200/1500x150"), "Slot 20 mm x 2": A("2x20"), "Spigot 200 mm": A(200)},
@@ -880,7 +880,7 @@ def grille_lowlevel():
 def grille_transfer():
     parts = (frame4("Frame Front", -245, 245, -20, 170, -32, -22, 20, 'alu') + frame4("Frame Rear", -245, 245, -20, 170, 22, 32, 20, 'alu') +
              frame4("Sleeve", -225, 225, 0, 150, -22, 22, 3, 'alu', 'f') +
-             [rep(RT("Chevron Blade", [(-22, 2), (0, 14), (22, 2), (22, 8), (0, 20), (-22, 8)], [-222, 222], 'black'), 8, [0, 0, 18]),
+             [rep(RT("Chevron Blade", [(-22, 2), (0, 14), (22, 2), (22, 7), (0, 19), (-22, 7)], [-222, 222], 'dark'), 8, [0, 0, 18]),
               rep(CY("Screw Front", [-235, 75], 4, [-33, -32], 'chrome', 'f'), 2, [470, 0, 0]),
               rep(CY("Screw Rear", [-235, 75], 4, [32, 33], 'chrome', 'f'), 2, [470, 0, 0])])
     make("FMC_M_AirTerminal_Grille_Transfer_Door", "Door transfer grille 450 x 150, vision-proof chevron blades, two-part anodised aluminium frame both faces of the leaf, for pressure-regime air transfer",
@@ -1124,7 +1124,7 @@ if __name__ == '__main__':
         json.dump(prod, open(os.path.join(HERE, f + '.product.json'), 'w'), indent=1)
         r = fp.compile_product(prod)
         json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
-        ceiling = any(k in f for k in ('Cassette', 'Diffuser', 'HEPA_Terminal', 'CeilingFan', 'Evaporator', 'Ducted_FCU', 'ERV', 'Inline'))
+        ceiling = any(k in f for k in ('Hood', 'Cassette', 'Diffuser', 'HEPA_Terminal', 'CeilingFan', 'Evaporator', 'Ducted_FCU', 'ERV', 'Inline'))
         views = (('3D', -35, 22), ('Below', -35, -40), ('Front', 0, 0), ('Side', 90, 0)) if ceiling else (('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9))
         fp.render(prod, os.path.join(HERE, f + '.preview.png'), views=views)
         fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)

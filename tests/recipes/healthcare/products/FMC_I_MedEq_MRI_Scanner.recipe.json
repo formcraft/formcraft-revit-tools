@@ -1,0 +1,2500 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_MedEq_MRI_Scanner",
+ "template": "Metric Generic Model.rft",
+ "about": "MRI modelled as a generic product inside the vendor envelope: plinth, magnet cover with front and rear flares, bore liner, LED ring, front control panels with displays, cold head housing, table with floor plate, pedestal, carrier, cradle, pad, head coil and handle. 5 gauss line on Clearance Radiation (non-plotting). Chilled water via the service point. Water and gases via the nested service point (FMC_P_MechEq_ServicePoint); Medical Equipment cannot hold pipe connectors. Reference: query: mri scanner medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=mri+scanner+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Medical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "1.5T_Closed"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Cost_Unit",
+   "type": "1.5T_Closed",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Geometry_Stage",
+   "type": "1.5T_Closed",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/IfcExportAs",
+   "type": "1.5T_Closed",
+   "param": "IfcExportAs",
+   "value": "IfcMedicalDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/Description",
+   "type": "1.5T_Closed",
+   "param": "Description",
+   "value": "MRI scanner, 1.5 T closed bore (60 cm), magnet 2160 x 1700 x 2560 with detachable patient table (vendor envelope), 5 gauss line zone"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/Keynote",
+   "type": "1.5T_Closed",
+   "param": "Keynote",
+   "value": "Z.IMG_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Keynote_Code",
+   "type": "1.5T_Closed",
+   "param": "FMC_Keynote_Code",
+   "value": "Z.IMG_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Code_Description",
+   "type": "1.5T_Closed",
+   "param": "FMC_Code_Description",
+   "value": "MRI Scanner: Vendor envelope"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Code_Group",
+   "type": "1.5T_Closed",
+   "param": "FMC_Code_Group",
+   "value": "Z.IMG"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/FMC_Role_Code",
+   "type": "1.5T_Closed",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/Voltage",
+   "type": "1.5T_Closed",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/Apparent Load",
+   "type": "1.5T_Closed",
+   "param": "Apparent Load",
+   "value": 90000
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5T_Closed/Number of Poles",
+   "type": "1.5T_Closed",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledb",
+   "color": [
+    58,
+    141,
+    255
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledb Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Blue",
+   "param": "Ledb Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "color": [
+    27,
+    36,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_PV_Module",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mattress",
+   "color": [
+    91,
+    141,
+    184
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mattress Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Mattress_PU_Blue",
+   "param": "Mattress Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Radiation",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1080,
+     -2700.0
+    ],
+    [
+     1080,
+     -2700.0
+    ],
+    [
+     1080,
+     851
+    ],
+    [
+     -1080,
+     851
+    ]
+   ],
+   "start": 0,
+   "end": 2560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Magnet Plinth",
+   "points": [
+    [
+     800.0,
+     -800.0
+    ],
+    [
+     838.27,
+     -792.39
+    ],
+    [
+     870.71,
+     -770.71
+    ],
+    [
+     892.39,
+     -738.27
+    ],
+    [
+     900.0,
+     -700.0
+    ],
+    [
+     900.0,
+     700.0
+    ],
+    [
+     892.39,
+     738.27
+    ],
+    [
+     870.71,
+     770.71
+    ],
+    [
+     838.27,
+     792.39
+    ],
+    [
+     800.0,
+     800.0
+    ],
+    [
+     -800.0,
+     800.0
+    ],
+    [
+     -838.27,
+     792.39
+    ],
+    [
+     -870.71,
+     770.71
+    ],
+    [
+     -892.39,
+     738.27
+    ],
+    [
+     -900.0,
+     700.0
+    ],
+    [
+     -900.0,
+     -700.0
+    ],
+    [
+     -892.39,
+     -738.27
+    ],
+    [
+     -870.71,
+     -770.71
+    ],
+    [
+     -838.27,
+     -792.39
+    ],
+    [
+     -800.0,
+     -800.0
+    ]
+   ],
+   "start": 0,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Magnet Plinth",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Magnet Plinth",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Magnet Plinth",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Magnet Cover",
+   "profile": [
+    [
+     300,
+     800
+    ],
+    [
+     1000,
+     800
+    ],
+    [
+     1080,
+     720
+    ],
+    [
+     1080,
+     -720
+    ],
+    [
+     1000,
+     -800
+    ],
+    [
+     300,
+     -800
+    ]
+   ],
+   "axis_at": [
+    0,
+    1100
+   ],
+   "axis": "y",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Magnet Cover",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Magnet Cover",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Front Flare",
+   "profile": [
+    [
+     300,
+     850
+    ],
+    [
+     420,
+     850
+    ],
+    [
+     620,
+     800
+    ],
+    [
+     300,
+     800
+    ]
+   ],
+   "axis_at": [
+    0,
+    1100
+   ],
+   "axis": "y",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Flare",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Flare",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rear Flare",
+   "profile": [
+    [
+     300,
+     -800
+    ],
+    [
+     620,
+     -800
+    ],
+    [
+     420,
+     -850
+    ],
+    [
+     300,
+     -850
+    ]
+   ],
+   "axis_at": [
+    0,
+    1100
+   ],
+   "axis": "y",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rear Flare",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rear Flare",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bore Liner",
+   "profile": [
+    [
+     298,
+     851
+    ],
+    [
+     304,
+     851
+    ],
+    [
+     304,
+     -851
+    ],
+    [
+     298,
+     -851
+    ]
+   ],
+   "axis_at": [
+    0,
+    1100
+   ],
+   "axis": "y",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bore Liner",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bore Liner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bore LED Ring",
+   "profile": [
+    [
+     425,
+     852
+    ],
+    [
+     445,
+     852
+    ],
+    [
+     445,
+     850
+    ],
+    [
+     425,
+     850
+    ]
+   ],
+   "axis_at": [
+    0,
+    1100
+   ],
+   "axis": "y",
+   "subcategory": "Ledb"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bore LED Ring",
+   "param": "Ledb Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bore LED Ring",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Control Panel 1",
+   "points": [
+    [
+     -572.0,
+     950.0
+    ],
+    [
+     -567.41,
+     950.91
+    ],
+    [
+     -563.51,
+     953.51
+    ],
+    [
+     -560.91,
+     957.41
+    ],
+    [
+     -560.0,
+     962.0
+    ],
+    [
+     -560.0,
+     1238.0
+    ],
+    [
+     -560.91,
+     1242.59
+    ],
+    [
+     -563.51,
+     1246.49
+    ],
+    [
+     -567.41,
+     1249.09
+    ],
+    [
+     -572.0,
+     1250.0
+    ],
+    [
+     -748.0,
+     1250.0
+    ],
+    [
+     -752.59,
+     1249.09
+    ],
+    [
+     -756.49,
+     1246.49
+    ],
+    [
+     -759.09,
+     1242.59
+    ],
+    [
+     -760.0,
+     1238.0
+    ],
+    [
+     -760.0,
+     962.0
+    ],
+    [
+     -759.09,
+     957.41
+    ],
+    [
+     -756.49,
+     953.51
+    ],
+    [
+     -752.59,
+     950.91
+    ],
+    [
+     -748.0,
+     950.0
+    ]
+   ],
+   "start": 800,
+   "end": 806,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Control Panel 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Control Panel 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Control Panel 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Control Panel 2",
+   "points": [
+    [
+     748.0,
+     950.0
+    ],
+    [
+     752.59,
+     950.91
+    ],
+    [
+     756.49,
+     953.51
+    ],
+    [
+     759.09,
+     957.41
+    ],
+    [
+     760.0,
+     962.0
+    ],
+    [
+     760.0,
+     1238.0
+    ],
+    [
+     759.09,
+     1242.59
+    ],
+    [
+     756.49,
+     1246.49
+    ],
+    [
+     752.59,
+     1249.09
+    ],
+    [
+     748.0,
+     1250.0
+    ],
+    [
+     572.0,
+     1250.0
+    ],
+    [
+     567.41,
+     1249.09
+    ],
+    [
+     563.51,
+     1246.49
+    ],
+    [
+     560.91,
+     1242.59
+    ],
+    [
+     560.0,
+     1238.0
+    ],
+    [
+     560.0,
+     962.0
+    ],
+    [
+     560.91,
+     957.41
+    ],
+    [
+     563.51,
+     953.51
+    ],
+    [
+     567.41,
+     950.91
+    ],
+    [
+     572.0,
+     950.0
+    ]
+   ],
+   "start": 800,
+   "end": 806,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Control Panel 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Control Panel 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Control Panel 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Panel Display 1",
+   "points": [
+    [
+     -584.0,
+     1150.0
+    ],
+    [
+     -582.47,
+     1150.3
+    ],
+    [
+     -581.17,
+     1151.17
+    ],
+    [
+     -580.3,
+     1152.47
+    ],
+    [
+     -580.0,
+     1154.0
+    ],
+    [
+     -580.0,
+     1231.0
+    ],
+    [
+     -580.3,
+     1232.53
+    ],
+    [
+     -581.17,
+     1233.83
+    ],
+    [
+     -582.47,
+     1234.7
+    ],
+    [
+     -584.0,
+     1235.0
+    ],
+    [
+     -736.0,
+     1235.0
+    ],
+    [
+     -737.53,
+     1234.7
+    ],
+    [
+     -738.83,
+     1233.83
+    ],
+    [
+     -739.7,
+     1232.53
+    ],
+    [
+     -740.0,
+     1231.0
+    ],
+    [
+     -740.0,
+     1154.0
+    ],
+    [
+     -739.7,
+     1152.47
+    ],
+    [
+     -738.83,
+     1151.17
+    ],
+    [
+     -737.53,
+     1150.3
+    ],
+    [
+     -736.0,
+     1150.0
+    ]
+   ],
+   "start": 806,
+   "end": 808,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Panel Display 1",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Panel Display 1",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Panel Display 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Panel Display 2",
+   "points": [
+    [
+     736.0,
+     1150.0
+    ],
+    [
+     737.53,
+     1150.3
+    ],
+    [
+     738.83,
+     1151.17
+    ],
+    [
+     739.7,
+     1152.47
+    ],
+    [
+     740.0,
+     1154.0
+    ],
+    [
+     740.0,
+     1231.0
+    ],
+    [
+     739.7,
+     1232.53
+    ],
+    [
+     738.83,
+     1233.83
+    ],
+    [
+     737.53,
+     1234.7
+    ],
+    [
+     736.0,
+     1235.0
+    ],
+    [
+     584.0,
+     1235.0
+    ],
+    [
+     582.47,
+     1234.7
+    ],
+    [
+     581.17,
+     1233.83
+    ],
+    [
+     580.3,
+     1232.53
+    ],
+    [
+     580.0,
+     1231.0
+    ],
+    [
+     580.0,
+     1154.0
+    ],
+    [
+     580.3,
+     1152.47
+    ],
+    [
+     581.17,
+     1151.17
+    ],
+    [
+     582.47,
+     1150.3
+    ],
+    [
+     584.0,
+     1150.0
+    ]
+   ],
+   "start": 806,
+   "end": 808,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Panel Display 2",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Panel Display 2",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Panel Display 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cold Head Housing",
+   "points": [
+    [
+     160.0,
+     250.0
+    ],
+    [
+     182.96,
+     254.57
+    ],
+    [
+     202.43,
+     267.57
+    ],
+    [
+     215.43,
+     287.04
+    ],
+    [
+     220.0,
+     310.0
+    ],
+    [
+     220.0,
+     640.0
+    ],
+    [
+     215.43,
+     662.96
+    ],
+    [
+     202.43,
+     682.43
+    ],
+    [
+     182.96,
+     695.43
+    ],
+    [
+     160.0,
+     700.0
+    ],
+    [
+     -160.0,
+     700.0
+    ],
+    [
+     -182.96,
+     695.43
+    ],
+    [
+     -202.43,
+     682.43
+    ],
+    [
+     -215.43,
+     662.96
+    ],
+    [
+     -220.0,
+     640.0
+    ],
+    [
+     -220.0,
+     310.0
+    ],
+    [
+     -215.43,
+     287.04
+    ],
+    [
+     -202.43,
+     267.57
+    ],
+    [
+     -182.96,
+     254.57
+    ],
+    [
+     -160.0,
+     250.0
+    ]
+   ],
+   "start": 2100,
+   "end": 2450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cold Head Housing",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cold Head Housing",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cold Head Housing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cold Head",
+   "points": [
+    [
+     90.0,
+     480.0
+    ],
+    [
+     86.93,
+     503.29
+    ],
+    [
+     77.94,
+     525.0
+    ],
+    [
+     63.64,
+     543.64
+    ],
+    [
+     45.0,
+     557.94
+    ],
+    [
+     23.29,
+     566.93
+    ],
+    [
+     0.0,
+     570.0
+    ],
+    [
+     -23.29,
+     566.93
+    ],
+    [
+     -45.0,
+     557.94
+    ],
+    [
+     -63.64,
+     543.64
+    ],
+    [
+     -77.94,
+     525.0
+    ],
+    [
+     -86.93,
+     503.29
+    ],
+    [
+     -90.0,
+     480.0
+    ],
+    [
+     -86.93,
+     456.71
+    ],
+    [
+     -77.94,
+     435.0
+    ],
+    [
+     -63.64,
+     416.36
+    ],
+    [
+     -45.0,
+     402.06
+    ],
+    [
+     -23.29,
+     393.07
+    ],
+    [
+     -0.0,
+     390.0
+    ],
+    [
+     23.29,
+     393.07
+    ],
+    [
+     45.0,
+     402.06
+    ],
+    [
+     63.64,
+     416.36
+    ],
+    [
+     77.94,
+     435.0
+    ],
+    [
+     86.93,
+     456.71
+    ]
+   ],
+   "start": 2450,
+   "end": 2560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cold Head",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cold Head",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cold Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Table Floor Plate",
+   "points": [
+    [
+     290.0,
+     -2700.0
+    ],
+    [
+     301.48,
+     -2697.72
+    ],
+    [
+     311.21,
+     -2691.21
+    ],
+    [
+     317.72,
+     -2681.48
+    ],
+    [
+     320.0,
+     -2670.0
+    ],
+    [
+     320.0,
+     -930.0
+    ],
+    [
+     317.72,
+     -918.52
+    ],
+    [
+     311.21,
+     -908.79
+    ],
+    [
+     301.48,
+     -902.28
+    ],
+    [
+     290.0,
+     -900.0
+    ],
+    [
+     -290.0,
+     -900.0
+    ],
+    [
+     -301.48,
+     -902.28
+    ],
+    [
+     -311.21,
+     -908.79
+    ],
+    [
+     -317.72,
+     -918.52
+    ],
+    [
+     -320.0,
+     -930.0
+    ],
+    [
+     -320.0,
+     -2670.0
+    ],
+    [
+     -317.72,
+     -2681.48
+    ],
+    [
+     -311.21,
+     -2691.21
+    ],
+    [
+     -301.48,
+     -2697.72
+    ],
+    [
+     -290.0,
+     -2700.0
+    ]
+   ],
+   "start": 0,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Table Floor Plate",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Table Floor Plate",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Table Floor Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Table Pedestal",
+   "points": [
+    [
+     180.0,
+     -2500.0
+    ],
+    [
+     199.13,
+     -2496.19
+    ],
+    [
+     215.36,
+     -2485.36
+    ],
+    [
+     226.19,
+     -2469.13
+    ],
+    [
+     230.0,
+     -2450.0
+    ],
+    [
+     230.0,
+     -1100.0
+    ],
+    [
+     226.19,
+     -1080.87
+    ],
+    [
+     215.36,
+     -1064.64
+    ],
+    [
+     199.13,
+     -1053.81
+    ],
+    [
+     180.0,
+     -1050.0
+    ],
+    [
+     -180.0,
+     -1050.0
+    ],
+    [
+     -199.13,
+     -1053.81
+    ],
+    [
+     -215.36,
+     -1064.64
+    ],
+    [
+     -226.19,
+     -1080.87
+    ],
+    [
+     -230.0,
+     -1100.0
+    ],
+    [
+     -230.0,
+     -2450.0
+    ],
+    [
+     -226.19,
+     -2469.13
+    ],
+    [
+     -215.36,
+     -2485.36
+    ],
+    [
+     -199.13,
+     -2496.19
+    ],
+    [
+     -180.0,
+     -2500.0
+    ]
+   ],
+   "start": 60,
+   "end": 700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Table Pedestal",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Table Pedestal",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Table Pedestal",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Table Carrier",
+   "points": [
+    [
+     220.0,
+     -2650.0
+    ],
+    [
+     235.31,
+     -2646.96
+    ],
+    [
+     248.28,
+     -2638.28
+    ],
+    [
+     256.96,
+     -2625.31
+    ],
+    [
+     260.0,
+     -2610.0
+    ],
+    [
+     260.0,
+     -890.0
+    ],
+    [
+     256.96,
+     -874.69
+    ],
+    [
+     248.28,
+     -861.72
+    ],
+    [
+     235.31,
+     -853.04
+    ],
+    [
+     220.0,
+     -850.0
+    ],
+    [
+     -220.0,
+     -850.0
+    ],
+    [
+     -235.31,
+     -853.04
+    ],
+    [
+     -248.28,
+     -861.72
+    ],
+    [
+     -256.96,
+     -874.69
+    ],
+    [
+     -260.0,
+     -890.0
+    ],
+    [
+     -260.0,
+     -2610.0
+    ],
+    [
+     -256.96,
+     -2625.31
+    ],
+    [
+     -248.28,
+     -2638.28
+    ],
+    [
+     -235.31,
+     -2646.96
+    ],
+    [
+     -220.0,
+     -2650.0
+    ]
+   ],
+   "start": 700,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Table Carrier",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Table Carrier",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Table Carrier",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cradle",
+   "points": [
+    [
+     170.0,
+     -2700.0
+    ],
+    [
+     181.48,
+     -2697.72
+    ],
+    [
+     191.21,
+     -2691.21
+    ],
+    [
+     197.72,
+     -2681.48
+    ],
+    [
+     200.0,
+     -2670.0
+    ],
+    [
+     200.0,
+     270.0
+    ],
+    [
+     197.72,
+     281.48
+    ],
+    [
+     191.21,
+     291.21
+    ],
+    [
+     181.48,
+     297.72
+    ],
+    [
+     170.0,
+     300.0
+    ],
+    [
+     -170.0,
+     300.0
+    ],
+    [
+     -181.48,
+     297.72
+    ],
+    [
+     -191.21,
+     291.21
+    ],
+    [
+     -197.72,
+     281.48
+    ],
+    [
+     -200.0,
+     270.0
+    ],
+    [
+     -200.0,
+     -2670.0
+    ],
+    [
+     -197.72,
+     -2681.48
+    ],
+    [
+     -191.21,
+     -2691.21
+    ],
+    [
+     -181.48,
+     -2697.72
+    ],
+    [
+     -170.0,
+     -2700.0
+    ]
+   ],
+   "start": 860,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cradle",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cradle",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cradle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patient Pad",
+   "points": [
+    [
+     160.0,
+     -2680.0
+    ],
+    [
+     171.48,
+     -2677.72
+    ],
+    [
+     181.21,
+     -2671.21
+    ],
+    [
+     187.72,
+     -2661.48
+    ],
+    [
+     190.0,
+     -2650.0
+    ],
+    [
+     190.0,
+     170.0
+    ],
+    [
+     187.72,
+     181.48
+    ],
+    [
+     181.21,
+     191.21
+    ],
+    [
+     171.48,
+     197.72
+    ],
+    [
+     160.0,
+     200.0
+    ],
+    [
+     -160.0,
+     200.0
+    ],
+    [
+     -171.48,
+     197.72
+    ],
+    [
+     -181.21,
+     191.21
+    ],
+    [
+     -187.72,
+     181.48
+    ],
+    [
+     -190.0,
+     170.0
+    ],
+    [
+     -190.0,
+     -2650.0
+    ],
+    [
+     -187.72,
+     -2661.48
+    ],
+    [
+     -181.21,
+     -2671.21
+    ],
+    [
+     -171.48,
+     -2677.72
+    ],
+    [
+     -160.0,
+     -2680.0
+    ]
+   ],
+   "start": 900,
+   "end": 935
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patient Pad",
+   "subcategory": "Mattress"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patient Pad",
+   "param": "Mattress Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patient Pad",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Head Coil",
+   "profile": [
+    [
+     115,
+     900
+    ],
+    [
+     150,
+     900
+    ],
+    [
+     150,
+     650
+    ],
+    [
+     115,
+     650
+    ]
+   ],
+   "axis_at": [
+    0,
+    1030
+   ],
+   "axis": "y",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Coil",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Coil",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Coil Base",
+   "points": [
+    [
+     -150,
+     -900
+    ],
+    [
+     150,
+     -900
+    ],
+    [
+     150,
+     -650
+    ],
+    [
+     -150,
+     -650
+    ]
+   ],
+   "start": 935,
+   "end": 970
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Coil Base",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Coil Base",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Coil Base",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Table Handle",
+   "points": [
+    [
+     -270,
+     -2700
+    ],
+    [
+     -262,
+     -2700
+    ],
+    [
+     -262,
+     -2450
+    ],
+    [
+     -270,
+     -2450
+    ]
+   ],
+   "start": 760,
+   "end": 800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Table Handle",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Table Handle",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Table Handle",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "5 Gauss Line",
+   "points": [
+    [
+     2500.0,
+     0.0
+    ],
+    [
+     2462.0,
+     694.6
+    ],
+    [
+     2349.2,
+     1368.1
+    ],
+    [
+     2165.1,
+     2000.0
+    ],
+    [
+     1915.1,
+     2571.2
+    ],
+    [
+     1607.0,
+     3064.2
+    ],
+    [
+     1250.0,
+     3464.1
+    ],
+    [
+     855.1,
+     3758.8
+    ],
+    [
+     434.1,
+     3939.2
+    ],
+    [
+     0.0,
+     4000.0
+    ],
+    [
+     -434.1,
+     3939.2
+    ],
+    [
+     -855.1,
+     3758.8
+    ],
+    [
+     -1250.0,
+     3464.1
+    ],
+    [
+     -1607.0,
+     3064.2
+    ],
+    [
+     -1915.1,
+     2571.2
+    ],
+    [
+     -2165.1,
+     2000.0
+    ],
+    [
+     -2349.2,
+     1368.1
+    ],
+    [
+     -2462.0,
+     694.6
+    ],
+    [
+     -2500.0,
+     0.0
+    ],
+    [
+     -2462.0,
+     -694.6
+    ],
+    [
+     -2349.2,
+     -1368.1
+    ],
+    [
+     -2165.1,
+     -2000.0
+    ],
+    [
+     -1915.1,
+     -2571.2
+    ],
+    [
+     -1607.0,
+     -3064.2
+    ],
+    [
+     -1250.0,
+     -3464.1
+    ],
+    [
+     -855.1,
+     -3758.8
+    ],
+    [
+     -434.1,
+     -3939.2
+    ],
+    [
+     -0.0,
+     -4000.0
+    ],
+    [
+     434.1,
+     -3939.2
+    ],
+    [
+     855.1,
+     -3758.8
+    ],
+    [
+     1250.0,
+     -3464.1
+    ],
+    [
+     1607.0,
+     -3064.2
+    ],
+    [
+     1915.1,
+     -2571.2
+    ],
+    [
+     2165.1,
+     -2000.0
+    ],
+    [
+     2349.2,
+     -1368.1
+    ],
+    [
+     2462.0,
+     -694.6
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "5 Gauss Line",
+   "subcategory": "Clearance Radiation"
+  },
+  {
+   "op": "set_visibility",
+   "name": "5 Gauss Line",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Magnet Plinth",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "solid": "Magnet Plinth",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Data/Voltage",
+   "connector": "Data",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Data/Number of Poles",
+   "connector": "Data",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Data/Apparent Load",
+   "connector": "Data",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_MRI_Scanner.png"
+  }
+ ],
+ "values": {
+  "Field 1.5 T": {
+   "value": 1.5,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Bore 600 mm": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Magnet 2160 x 1700 mm": {
+   "value": "2160x1700",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "5 gauss line 2.5 x 4.0 m from isocentre": {
+   "value": "2.5x4.0",
+   "source_status": "assumed",
+   "source": "typical shielded 1.5 T, vendor to confirm"
+  },
+  "Supply 415 V 3-phase, 90 kVA": {
+   "value": 90,
+   "source_status": "assumed",
+   "source": "typical incl. gradient amplifiers"
+  }
+ }
+}
