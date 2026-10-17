@@ -1341,7 +1341,7 @@ pendant('FMC_P_MechEq_MedGas_Pendant_ICU',
         [{"name": "900_SingleArm"}, {"name": "1600_DoubleArm"}], ['O2', 'O2', 'VAC', 'VAC', 'MA4', 'MA4'], 1, 2, 1250,
         [lambda xh, zt: C("Infusion Pole", 'z', (xh + 200, -150), 12, (zt - 1100, zt + 120), 'chrome'),
          lambda xh, zt: C("Status LED", 'y', (xh + 120, zt + 60), 8, (-213, -210), 'led_green', 'f')],
-        {"Arm reach 900 mm, rotation 330 degrees": A("900/330"), "Head 320 x 420 x 1250 mm": A("320x420x1250"), "Ceiling fixing to Unistrut, about 300 kg load": A(300, "HTM 02-01 / manufacturer fixing")},
+        {"Arm reach 900 mm, rotation 330 degrees": A("900/330"), "Head 320 x 420 x 1250 mm": A("320x420x1250"), "Ceiling fixing to Unistrut, about 300 kg load": A(300, "HTM 02-01 / supplier fixing detail")},
         "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Single arm drawn; double arm shares it.")
 pendant('FMC_P_MechEq_MedGas_Pendant_Theatre',
         "Theatre anaesthesia pendant, double articulated arm, service head with O2, N2O, medical air, surgical air, vacuum and AGSS terminals, sockets, three shelves, drawer and monitor arm",

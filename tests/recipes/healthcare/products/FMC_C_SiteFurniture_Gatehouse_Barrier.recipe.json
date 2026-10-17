@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_SiteFurniture_Gatehouse_Barrier",
  "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0: foundation, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing. Reference: query: site furniture gatehouse barrier site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+gatehouse+barrier+site+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0 (foundation by the civil engineer): base plate with anchor nuts, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing. Reference: query: site furniture gatehouse barrier site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+gatehouse+barrier+site+hospital; basis: generic product; brand, model and supplier open for review",
  "ops": [
   {
    "op": "set_category",
@@ -439,24 +439,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "C20",
+   "name": "Galv",
    "color": [
-    184,
-    182,
-    174
+    167,
+    172,
+    175
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "C20 Material",
+   "name": "Galv Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Concrete_C20",
-   "param": "C20 Material"
+   "name": "FMC_Metal_ColdFormed_Galvanised",
+   "param": "Galv Material"
   },
   {
    "op": "add_subcategory",
@@ -607,27 +607,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -641,7 +620,7 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -300,
+     -200,
      -640.0
     ],
     [
@@ -653,11 +632,11 @@
      640.0
     ],
     [
-     -300,
+     -200,
      640.0
     ]
    ],
-   "start": -600,
+   "start": 0,
    "end": 1060
   },
   {
@@ -674,43 +653,239 @@
   },
   {
    "op": "extrusion",
-   "name": "Foundation",
+   "name": "Base Plate",
    "points": [
     [
-     -300,
-     -300
+     -200,
+     -225
     ],
     [
-     300,
-     -300
+     200,
+     -225
     ],
     [
-     300,
-     300
+     200,
+     225
     ],
     [
-     -300,
-     300
+     -200,
+     225
     ]
    ],
-   "start": -600,
-   "end": 0
+   "start": 0,
+   "end": 12
   },
   {
    "op": "set_subcategory",
-   "name": "Foundation",
-   "subcategory": "C20"
+   "name": "Base Plate",
+   "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Foundation",
-   "param": "C20 Material"
+   "name": "Base Plate",
+   "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foundation",
+   "name": "Base Plate",
    "coarse": false,
    "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Nut 1",
+   "points": [
+    [
+     -158.0,
+     -195.0
+    ],
+    [
+     -164.0,
+     -184.61
+    ],
+    [
+     -176.0,
+     -184.61
+    ],
+    [
+     -182.0,
+     -195.0
+    ],
+    [
+     -176.0,
+     -205.39
+    ],
+    [
+     -164.0,
+     -205.39
+    ]
+   ],
+   "start": 12,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Nut 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Nut 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Nut 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Nut 2",
+   "points": [
+    [
+     182.0,
+     -195.0
+    ],
+    [
+     176.0,
+     -184.61
+    ],
+    [
+     164.0,
+     -184.61
+    ],
+    [
+     158.0,
+     -195.0
+    ],
+    [
+     164.0,
+     -205.39
+    ],
+    [
+     176.0,
+     -205.39
+    ]
+   ],
+   "start": 12,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Nut 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Nut 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Nut 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Nut Back 1",
+   "points": [
+    [
+     -158.0,
+     195.0
+    ],
+    [
+     -164.0,
+     205.39
+    ],
+    [
+     -176.0,
+     205.39
+    ],
+    [
+     -182.0,
+     195.0
+    ],
+    [
+     -176.0,
+     184.61
+    ],
+    [
+     -164.0,
+     184.61
+    ]
+   ],
+   "start": 12,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Nut Back 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Nut Back 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Nut Back 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Nut Back 2",
+   "points": [
+    [
+     182.0,
+     195.0
+    ],
+    [
+     176.0,
+     205.39
+    ],
+    [
+     164.0,
+     205.39
+    ],
+    [
+     158.0,
+     195.0
+    ],
+    [
+     164.0,
+     184.61
+    ],
+    [
+     176.0,
+     184.61
+    ]
+   ],
+   "start": 12,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Nut Back 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Nut Back 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Nut Back 2",
+   "coarse": false,
+   "medium": false,
    "fine": true
   },
   {
@@ -798,7 +973,7 @@
      -175.0
     ]
    ],
-   "start": 0,
+   "start": 12,
    "end": 1000
   },
   {

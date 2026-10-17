@@ -11,7 +11,6 @@
   }
  ],
  "materials": {
-  "c20": "FMC_Concrete_C20",
   "galv": "FMC_Metal_ColdFormed_Galvanised",
   "yellow": "FMC_Plastic_ABS_Yellow",
   "red": "FMC_Metal_SprinklerPipe_RedPainted",
@@ -23,17 +22,67 @@
  },
  "parts": [
   {
-   "n": "Foundation",
+   "n": "Base Plate",
    "shape": "box",
    "at": [
-    -300,
-    -300,
-    -600,
-    300,
-    300,
-    0
+    -200,
+    -225,
+    0,
+    200,
+    225,
+    12
    ],
-   "mat": "c20"
+   "mat": "galv"
+  },
+  {
+   "n": "Anchor Nut",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -170,
+    -195
+   ],
+   "r": 12,
+   "z": [
+    12,
+    30
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     340,
+     0,
+     0
+    ]
+   },
+   "seg": 6
+  },
+  {
+   "n": "Anchor Nut Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -170,
+    195
+   ],
+   "r": 12,
+   "z": [
+    12,
+    30
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     340,
+     0,
+     0
+    ]
+   },
+   "seg": 6
   },
   {
    "n": "Housing",
@@ -41,7 +90,7 @@
    "at": [
     -150,
     -175,
-    0,
+    12,
     150,
     175,
     1000
@@ -327,7 +376,7 @@
    "source": "typical; vendor to confirm"
   }
  },
- "about": "Ground at z = 0: foundation, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing.",
+ "about": "Ground at z = 0 (foundation by the civil engineer): base plate with anchor nuts, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing.",
  "type_values": {
   "Voltage": 240,
   "Apparent Load": 300

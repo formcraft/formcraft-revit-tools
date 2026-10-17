@@ -18,7 +18,7 @@ MATS = {
     "chrome": "FMC_Metal_Chrome_Polished", "alu": "FMC_Metal_Aluminium_Anodised_Silver",
     "mattress": "FMC_Fabric_Mattress_PU_Blue", "vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue", "rubber": "FMC_Rubber_Black",
     "castor": "FMC_Plastic_Nylon_CastorGrey", "clear": "FMC_Plastic_Polycarbonate_Clear",
-    "screen": "FMC_Glass_PV_Module",            # nearest dark glass; kit request FMC_Glass_Display_Black
+    "screen": "FMC_Plastic_ABS_Black",           # opaque stand-in; kit request FMC_Glass_Display_Black
     "red": "FMC_Plastic_FireHoseReel_Red",      # nearest red plastic; kit request FMC_Plastic_ABS_Red
     "sign": "FMC_Plastic_LED_Green",            # nearest safety green; kit request FMC_Plastic_Sign_SafetyGreen
     "ledg": "FMC_Plastic_LED_Green", "ledb": "FMC_Plastic_LED_Blue", "ledr": "FMC_Plastic_LED_Red",
@@ -26,7 +26,7 @@ MATS = {
     "china": "FMC_Ceramic_VitreousChina_White", "mirror": "FMC_Glass_Mirror",
 }
 MATERIALS_NEEDED = [
-    {"name": "FMC_Glass_Display_Black", "colour": "#11161D", "why": "screens of monitors, ventilators, scanners and bed panels; FMC_Glass_PV_Module used meanwhile"},
+    {"name": "FMC_Glass_Display_Black", "colour": "#11161D", "why": "screens of monitors, ventilators, scanners and bed panels; FMC_Plastic_ABS_Black used meanwhile"},
     {"name": "FMC_Plastic_ABS_Red", "colour": "#C8202B", "why": "resuscitation trolley drawers, brake pedals, CPR release, shock button; FMC_Plastic_FireHoseReel_Red used meanwhile"},
     {"name": "FMC_Plastic_Sign_SafetyGreen", "colour": "#00873D", "why": "AED location sign (ISO 7010 E010); FMC_Plastic_LED_Green used meanwhile"},
 ]
