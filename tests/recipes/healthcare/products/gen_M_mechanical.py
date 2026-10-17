@@ -810,12 +810,12 @@ def diffuser_linear():
              B("Slot Throat", [-750, -55, -6, 750, 55, -1], 'black'),
              rep(B("Pattern Controller Front", [-735, -50, -13, -705, -14, -6], 'mgrey', 0, 'f'), 12, [125, 0, 0]),
              rep(B("Pattern Controller Rear", [-735, 14, -13, -705, 50, -6], 'mgrey', 0, 'f'), 12, [125, 0, 0]),
-             T("Plenum Box", 'x', [0, 0], [[0, -740], [1, -740], [1, 740], [0, 740]], 'galv'),
-             CZ("Spigot", [0, 0], 80, [250, 350], 'galv'), T("Spigot Bead", 'z', [0, 0], ring(79, 85, 290, 300), 'galv', 'f'),
+             RT("Plenum Box", [(-60, 0), (60, 0), (75, 60), (75, 250), (-75, 250), (-75, 60)], [-740, 740], 'galv'),
+             CZ("Spigot", [0, 0], 62.5, [250, 350], 'galv'), T("Spigot Bead", 'z', [0, 0], ring(62, 68, 290, 300), 'galv', 'f'),
              rep(B("Hanger Lug", [-600, -85, 200, -560, -70, 240], 'galv', 0, 'f'), 2, [1160, 0, 0])]
     make("FMC_M_AirTerminal_Diffuser_Linear_Slot", "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot",
-         "IfcAirTerminal", ["1200_2Slot", "1500_2Slot"], parts, [DUCT("Supply", "SupplyAir", "Spigot", "top", "In", d=200)],
-         {"Length 1200 / 1500 mm, face 150 mm": A("1200/1500x150"), "Slot 20 mm x 2": A("2x20"), "Spigot 200 mm": A(200)},
+         "IfcAirTerminal", ["1200_2Slot", "1500_2Slot"], parts, [DUCT("Supply", "SupplyAir", "Spigot", "top", "In", d=125)],
+         {"Length 1200 / 1500 mm, face 150 mm": A("1200/1500x150"), "Slot 20 mm x 2": A("2x20"), "Spigot 125 mm": A(125)},
          "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs.",
          {"Default Elevation": 2700})
 

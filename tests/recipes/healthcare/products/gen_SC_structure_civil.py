@@ -120,8 +120,78 @@ def ladder(name, x, y0, y1, z0, z1, axis='y', n=None, mat='galv', standoff=None)
                 CX(f"{name} Rung", [x, z0 + 300], 12, y0, y1, mat, rep=(n, 0, 0, 300), seg=12)]
     return out
 
+
+# ---------------------------------------------------------------- concave outlines
+# fmc_parts draws a cap as a fan from the vertex mean, so an outline that is not star-shaped about that point
+# (I, Z, C, L, U sections) previews wrongly. Such outlines are split here into rectangles (axis-aligned outlines)
+# or convex pieces (others); in Revit the pieces are separate extrusions of the same material.
+def _area(P): return sum(P[i][0] * P[(i + 1) % len(P)][1] - P[(i + 1) % len(P)][0] * P[i][1] for i in range(len(P))) / 2
+def _cross(o, a, b): return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+def fan_ok(P):
+    if _area(P) < 0: P = P[::-1]
+    c = (sum(q[0] for q in P) / len(P), sum(q[1] for q in P) / len(P))
+    return all(_cross(P[i], P[(i + 1) % len(P)], c) > 1e-6 for i in range(len(P)))
+def _rects(P):
+    vs = sorted({q[1] for q in P}); act, out = {}, []
+    for v0, v1 in zip(vs, vs[1:]):
+        vm = (v0 + v1) / 2; us = []
+        for i in range(len(P)):
+            a, b = P[i], P[(i + 1) % len(P)]
+            if (a[1] - vm) * (b[1] - vm) < 0: us.append(a[0] + (vm - a[1]) * (b[0] - a[0]) / (b[1] - a[1]))
+        us.sort(); S = {(round(us[k], 3), round(us[k + 1], 3)) for k in range(0, len(us), 2)}
+        for iv in list(act):
+            if iv not in S: out.append((iv[0], act.pop(iv), iv[1], v0))
+        for iv in S:
+            if iv not in act: act[iv] = v0
+    for iv, st in act.items(): out.append((iv[0], st, iv[1], vs[-1]))
+    return [[[u0, w0], [u1, w0], [u1, w1], [u0, w1]] for u0, w0, u1, w1 in out]
+def _convex(Q): return all(_cross(Q[i], Q[(i + 1) % len(Q)], Q[(i + 2) % len(Q)]) >= -1e-6 for i in range(len(Q)))
+def _pieces(P):
+    if _area(P) < 0: P = P[::-1]
+    idx = list(range(len(P))); tris = []
+    def inside(p, a, b, c): return _cross(a, b, p) > 1e-9 and _cross(b, c, p) > 1e-9 and _cross(c, a, p) > 1e-9
+    guard = 0
+    while len(idx) > 3 and guard < 10000:
+        guard += 1
+        for k in range(len(idx)):
+            i0, i1, i2 = idx[k - 1], idx[k], idx[(k + 1) % len(idx)]
+            cr = _cross(P[i0], P[i1], P[i2])
+            if abs(cr) < 1e-9: idx.pop(k); break
+            if cr > 0 and not any(inside(P[j], P[i0], P[i1], P[i2]) for j in idx if j not in (i0, i1, i2)):
+                tris.append([i0, i1, i2]); idx.pop(k); break
+    if len(idx) == 3: tris.append(idx[:])
+    polys = tris; merged = True
+    while merged:
+        merged = False
+        for a in range(len(polys)):
+            for b in range(len(polys)):
+                if a == b: continue
+                A, Bp = polys[a], polys[b]
+                for i in range(len(A)):
+                    u, v = A[i], A[(i + 1) % len(A)]
+                    if u in Bp and Bp[(Bp.index(u) - 1) % len(Bp)] == v:
+                        ia, ib = (i + 1) % len(A), Bp.index(u)
+                        M = [A[(ia + k) % len(A)] for k in range(len(A) - 1)] + [Bp[(ib + k) % len(Bp)] for k in range(len(Bp) - 1)]
+                        if _convex([P[j] for j in M]):
+                            polys[a] = M; polys.pop(b); merged = True
+                        break
+                if merged: break
+            if merged: break
+    return [[P[j] for j in Q] for Q in polys]
+def split_concave(parts):
+    out = []
+    for p in parts:
+        if p['shape'] not in ('prism', 'front', 'right') or fan_ok(p['pts']): out.append(p); continue
+        P = p['pts']; ortho = all(P[i][0] == P[(i + 1) % len(P)][0] or P[i][1] == P[(i + 1) % len(P)][1] for i in range(len(P)))
+        for k, Q in enumerate(_rects(P) if ortho else _pieces(P)):
+            q = dict(p); q['pts'] = [[round(a, 2), round(b, 2)] for a, b in Q]
+            if k: q['n'] = f"{p['n']} Part {k + 1}"
+            out.append(q)
+    return out
+
 def prod(fam, desc, ifc, types, parts, values, about, conns=None, clear=None, tv=None, template=None, mats=None):
     rec = RECS[fam]
+    parts = split_concave(parts)
     cat = CAT_MAP.get(fam, rec['category'])
     if cat == 'Mechanical Equipment': template = template or 'Metric Mechanical Equipment.rft'
     used = {p.get('mat') for p in parts if p.get('mat')}

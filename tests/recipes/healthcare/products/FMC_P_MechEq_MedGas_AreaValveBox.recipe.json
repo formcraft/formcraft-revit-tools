@@ -1,0 +1,2836 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_MechEq_MedGas_AreaValveBox",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "AVSU modelled as a generic product: box, cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it. Reference: query: medical gas area valve box mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+area+valve+box+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "2Gas_AVSU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Cost_Unit",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Geometry_Stage",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/IfcExportAs",
+   "type": "2Gas_AVSU",
+   "param": "IfcExportAs",
+   "value": "IfcValve"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Description",
+   "type": "2Gas_AVSU",
+   "param": "Description",
+   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Keynote",
+   "type": "2Gas_AVSU",
+   "param": "Keynote",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Keynote_Code",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Keynote_Code",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Code_Description",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Code_Description",
+   "value": "MedGas AreaValveBox: Zone valve box"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Code_Group",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Code_Group",
+   "value": "P.MGV"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/FMC_Role_Code",
+   "type": "2Gas_AVSU",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Default Elevation",
+   "type": "2Gas_AVSU",
+   "param": "Default Elevation",
+   "value": 1500
+  },
+  {
+   "op": "add_type",
+   "name": "3Gas_AVSU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Cost_Unit",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Geometry_Stage",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/IfcExportAs",
+   "type": "3Gas_AVSU",
+   "param": "IfcExportAs",
+   "value": "IfcValve"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Description",
+   "type": "3Gas_AVSU",
+   "param": "Description",
+   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Keynote",
+   "type": "3Gas_AVSU",
+   "param": "Keynote",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Keynote_Code",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Keynote_Code",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Code_Description",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Code_Description",
+   "value": "MedGas AreaValveBox: Zone valve box"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Code_Group",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Code_Group",
+   "value": "P.MGV"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/FMC_Role_Code",
+   "type": "3Gas_AVSU",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Default Elevation",
+   "type": "3Gas_AVSU",
+   "param": "Default Elevation",
+   "value": 1500
+  },
+  {
+   "op": "add_type",
+   "name": "4Gas_AVSU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Cost_Unit",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Geometry_Stage",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/IfcExportAs",
+   "type": "4Gas_AVSU",
+   "param": "IfcExportAs",
+   "value": "IfcValve"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Description",
+   "type": "4Gas_AVSU",
+   "param": "Description",
+   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Keynote",
+   "type": "4Gas_AVSU",
+   "param": "Keynote",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Keynote_Code",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Keynote_Code",
+   "value": "P.MGV_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Code_Description",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Code_Description",
+   "value": "MedGas AreaValveBox: Zone valve box"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Code_Group",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Code_Group",
+   "value": "P.MGV"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/FMC_Role_Code",
+   "type": "4Gas_AVSU",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Default Elevation",
+   "type": "4Gas_AVSU",
+   "param": "Default Elevation",
+   "value": 1500
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epoxy White",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epoxy White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Polycarbonate",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Polycarbonate Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Copper_Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -235,
+     -132
+    ],
+    [
+     235,
+     -132
+    ],
+    [
+     235,
+     0
+    ],
+    [
+     -235,
+     0
+    ]
+   ],
+   "start": -60,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Box",
+   "points": [
+    [
+     -225,
+     -110
+    ],
+    [
+     225,
+     -110
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Top",
+   "points": [
+    [
+     -235,
+     290
+    ],
+    [
+     235,
+     290
+    ],
+    [
+     235,
+     330
+    ],
+    [
+     -235,
+     330
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Top",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Top",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Top",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Bottom",
+   "points": [
+    [
+     -235,
+     -10
+    ],
+    [
+     235,
+     -10
+    ],
+    [
+     235,
+     30
+    ],
+    [
+     -235,
+     30
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Bottom",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Bottom",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Bottom",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Left",
+   "points": [
+    [
+     -235,
+     30
+    ],
+    [
+     -205,
+     30
+    ],
+    [
+     -205,
+     290
+    ],
+    [
+     -235,
+     290
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Left",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Left",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Right",
+   "points": [
+    [
+     205,
+     30
+    ],
+    [
+     235,
+     30
+    ],
+    [
+     235,
+     290
+    ],
+    [
+     205,
+     290
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Right",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Right",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Glazing",
+   "points": [
+    [
+     -205,
+     30
+    ],
+    [
+     205,
+     30
+    ],
+    [
+     205,
+     290
+    ],
+    [
+     -205,
+     290
+    ]
+   ],
+   "start": 114,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Glazing",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Glazing",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Glazing",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock",
+   "points": [
+    [
+     195,
+     140
+    ],
+    [
+     225,
+     140
+    ],
+    [
+     225,
+     180
+    ],
+    [
+     195,
+     180
+    ]
+   ],
+   "start": 122,
+   "end": 132,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Warning Label",
+   "points": [
+    [
+     -200,
+     296
+    ],
+    [
+     200,
+     296
+    ],
+    [
+     200,
+     324
+    ],
+    [
+     -200,
+     324
+    ]
+   ],
+   "start": 122,
+   "end": 124,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Warning Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Warning Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Warning Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 Pipe",
+   "points": [
+    [
+     -119.0,
+     -55.0
+    ],
+    [
+     -119.37,
+     -52.15
+    ],
+    [
+     -120.47,
+     -49.5
+    ],
+    [
+     -122.22,
+     -47.22
+    ],
+    [
+     -124.5,
+     -45.47
+    ],
+    [
+     -127.15,
+     -44.37
+    ],
+    [
+     -130.0,
+     -44.0
+    ],
+    [
+     -132.85,
+     -44.37
+    ],
+    [
+     -135.5,
+     -45.47
+    ],
+    [
+     -137.78,
+     -47.22
+    ],
+    [
+     -139.53,
+     -49.5
+    ],
+    [
+     -140.63,
+     -52.15
+    ],
+    [
+     -141.0,
+     -55.0
+    ],
+    [
+     -140.63,
+     -57.85
+    ],
+    [
+     -139.53,
+     -60.5
+    ],
+    [
+     -137.78,
+     -62.78
+    ],
+    [
+     -135.5,
+     -64.53
+    ],
+    [
+     -132.85,
+     -65.63
+    ],
+    [
+     -130.0,
+     -66.0
+    ],
+    [
+     -127.15,
+     -65.63
+    ],
+    [
+     -124.5,
+     -64.53
+    ],
+    [
+     -122.22,
+     -62.78
+    ],
+    [
+     -120.47,
+     -60.5
+    ],
+    [
+     -119.37,
+     -57.85
+    ]
+   ],
+   "start": -60,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 Pipe",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 Valve",
+   "points": [
+    [
+     -108.0,
+     -55.0
+    ],
+    [
+     -108.75,
+     -49.31
+    ],
+    [
+     -110.95,
+     -44.0
+    ],
+    [
+     -114.44,
+     -39.44
+    ],
+    [
+     -119.0,
+     -35.95
+    ],
+    [
+     -124.31,
+     -33.75
+    ],
+    [
+     -130.0,
+     -33.0
+    ],
+    [
+     -135.69,
+     -33.75
+    ],
+    [
+     -141.0,
+     -35.95
+    ],
+    [
+     -145.56,
+     -39.44
+    ],
+    [
+     -149.05,
+     -44.0
+    ],
+    [
+     -151.25,
+     -49.31
+    ],
+    [
+     -152.0,
+     -55.0
+    ],
+    [
+     -151.25,
+     -60.69
+    ],
+    [
+     -149.05,
+     -66.0
+    ],
+    [
+     -145.56,
+     -70.56
+    ],
+    [
+     -141.0,
+     -74.05
+    ],
+    [
+     -135.69,
+     -76.25
+    ],
+    [
+     -130.0,
+     -77.0
+    ],
+    [
+     -124.31,
+     -76.25
+    ],
+    [
+     -119.0,
+     -74.05
+    ],
+    [
+     -114.44,
+     -70.56
+    ],
+    [
+     -110.95,
+     -66.0
+    ],
+    [
+     -108.75,
+     -60.69
+    ]
+   ],
+   "start": 130,
+   "end": 190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 Lever",
+   "points": [
+    [
+     -124.0,
+     -110.0
+    ],
+    [
+     -122.47,
+     -109.7
+    ],
+    [
+     -121.17,
+     -108.83
+    ],
+    [
+     -120.3,
+     -107.53
+    ],
+    [
+     -120.0,
+     -106.0
+    ],
+    [
+     -120.0,
+     -59.0
+    ],
+    [
+     -120.3,
+     -57.47
+    ],
+    [
+     -121.17,
+     -56.17
+    ],
+    [
+     -122.47,
+     -55.3
+    ],
+    [
+     -124.0,
+     -55.0
+    ],
+    [
+     -136.0,
+     -55.0
+    ],
+    [
+     -137.53,
+     -55.3
+    ],
+    [
+     -138.83,
+     -56.17
+    ],
+    [
+     -139.7,
+     -57.47
+    ],
+    [
+     -140.0,
+     -59.0
+    ],
+    [
+     -140.0,
+     -106.0
+    ],
+    [
+     -139.7,
+     -107.53
+    ],
+    [
+     -138.83,
+     -108.83
+    ],
+    [
+     -137.53,
+     -109.7
+    ],
+    [
+     -136.0,
+     -110.0
+    ]
+   ],
+   "start": 150,
+   "end": 170
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 Lever",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Lever",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Lever",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 Emergency Inlet",
+   "points": [
+    [
+     -118.0,
+     90.0
+    ],
+    [
+     -118.41,
+     93.11
+    ],
+    [
+     -119.61,
+     96.0
+    ],
+    [
+     -121.51,
+     98.49
+    ],
+    [
+     -124.0,
+     100.39
+    ],
+    [
+     -126.89,
+     101.59
+    ],
+    [
+     -130.0,
+     102.0
+    ],
+    [
+     -133.11,
+     101.59
+    ],
+    [
+     -136.0,
+     100.39
+    ],
+    [
+     -138.49,
+     98.49
+    ],
+    [
+     -140.39,
+     96.0
+    ],
+    [
+     -141.59,
+     93.11
+    ],
+    [
+     -142.0,
+     90.0
+    ],
+    [
+     -141.59,
+     86.89
+    ],
+    [
+     -140.39,
+     84.0
+    ],
+    [
+     -138.49,
+     81.51
+    ],
+    [
+     -136.0,
+     79.61
+    ],
+    [
+     -133.11,
+     78.41
+    ],
+    [
+     -130.0,
+     78.0
+    ],
+    [
+     -126.89,
+     78.41
+    ],
+    [
+     -124.0,
+     79.61
+    ],
+    [
+     -121.51,
+     81.51
+    ],
+    [
+     -119.61,
+     84.0
+    ],
+    [
+     -118.41,
+     86.89
+    ]
+   ],
+   "start": 55,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 Emergency Inlet",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Emergency Inlet",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Emergency Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 Label",
+   "points": [
+    [
+     -180,
+     240
+    ],
+    [
+     -80,
+     240
+    ],
+    [
+     -80,
+     270
+    ],
+    [
+     -180,
+     270
+    ]
+   ],
+   "start": 110,
+   "end": 112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 Label",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Label",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "O2 Band",
+   "profile": [
+    [
+     11,
+     330
+    ],
+    [
+     13,
+     330
+    ],
+    [
+     13,
+     350
+    ],
+    [
+     11,
+     350
+    ]
+   ],
+   "axis_at": [
+    -130,
+    -55
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 Band",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC Pipe",
+   "points": [
+    [
+     11.0,
+     -55.0
+    ],
+    [
+     10.63,
+     -52.15
+    ],
+    [
+     9.53,
+     -49.5
+    ],
+    [
+     7.78,
+     -47.22
+    ],
+    [
+     5.5,
+     -45.47
+    ],
+    [
+     2.85,
+     -44.37
+    ],
+    [
+     0.0,
+     -44.0
+    ],
+    [
+     -2.85,
+     -44.37
+    ],
+    [
+     -5.5,
+     -45.47
+    ],
+    [
+     -7.78,
+     -47.22
+    ],
+    [
+     -9.53,
+     -49.5
+    ],
+    [
+     -10.63,
+     -52.15
+    ],
+    [
+     -11.0,
+     -55.0
+    ],
+    [
+     -10.63,
+     -57.85
+    ],
+    [
+     -9.53,
+     -60.5
+    ],
+    [
+     -7.78,
+     -62.78
+    ],
+    [
+     -5.5,
+     -64.53
+    ],
+    [
+     -2.85,
+     -65.63
+    ],
+    [
+     -0.0,
+     -66.0
+    ],
+    [
+     2.85,
+     -65.63
+    ],
+    [
+     5.5,
+     -64.53
+    ],
+    [
+     7.78,
+     -62.78
+    ],
+    [
+     9.53,
+     -60.5
+    ],
+    [
+     10.63,
+     -57.85
+    ]
+   ],
+   "start": -60,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC Pipe",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC Valve",
+   "points": [
+    [
+     22.0,
+     -55.0
+    ],
+    [
+     21.25,
+     -49.31
+    ],
+    [
+     19.05,
+     -44.0
+    ],
+    [
+     15.56,
+     -39.44
+    ],
+    [
+     11.0,
+     -35.95
+    ],
+    [
+     5.69,
+     -33.75
+    ],
+    [
+     0.0,
+     -33.0
+    ],
+    [
+     -5.69,
+     -33.75
+    ],
+    [
+     -11.0,
+     -35.95
+    ],
+    [
+     -15.56,
+     -39.44
+    ],
+    [
+     -19.05,
+     -44.0
+    ],
+    [
+     -21.25,
+     -49.31
+    ],
+    [
+     -22.0,
+     -55.0
+    ],
+    [
+     -21.25,
+     -60.69
+    ],
+    [
+     -19.05,
+     -66.0
+    ],
+    [
+     -15.56,
+     -70.56
+    ],
+    [
+     -11.0,
+     -74.05
+    ],
+    [
+     -5.69,
+     -76.25
+    ],
+    [
+     -0.0,
+     -77.0
+    ],
+    [
+     5.69,
+     -76.25
+    ],
+    [
+     11.0,
+     -74.05
+    ],
+    [
+     15.56,
+     -70.56
+    ],
+    [
+     19.05,
+     -66.0
+    ],
+    [
+     21.25,
+     -60.69
+    ]
+   ],
+   "start": 130,
+   "end": 190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC Lever",
+   "points": [
+    [
+     6.0,
+     -110.0
+    ],
+    [
+     7.53,
+     -109.7
+    ],
+    [
+     8.83,
+     -108.83
+    ],
+    [
+     9.7,
+     -107.53
+    ],
+    [
+     10.0,
+     -106.0
+    ],
+    [
+     10.0,
+     -59.0
+    ],
+    [
+     9.7,
+     -57.47
+    ],
+    [
+     8.83,
+     -56.17
+    ],
+    [
+     7.53,
+     -55.3
+    ],
+    [
+     6.0,
+     -55.0
+    ],
+    [
+     -6.0,
+     -55.0
+    ],
+    [
+     -7.53,
+     -55.3
+    ],
+    [
+     -8.83,
+     -56.17
+    ],
+    [
+     -9.7,
+     -57.47
+    ],
+    [
+     -10.0,
+     -59.0
+    ],
+    [
+     -10.0,
+     -106.0
+    ],
+    [
+     -9.7,
+     -107.53
+    ],
+    [
+     -8.83,
+     -108.83
+    ],
+    [
+     -7.53,
+     -109.7
+    ],
+    [
+     -6.0,
+     -110.0
+    ]
+   ],
+   "start": 150,
+   "end": 170
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC Lever",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Lever",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Lever",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC Emergency Inlet",
+   "points": [
+    [
+     12.0,
+     90.0
+    ],
+    [
+     11.59,
+     93.11
+    ],
+    [
+     10.39,
+     96.0
+    ],
+    [
+     8.49,
+     98.49
+    ],
+    [
+     6.0,
+     100.39
+    ],
+    [
+     3.11,
+     101.59
+    ],
+    [
+     0.0,
+     102.0
+    ],
+    [
+     -3.11,
+     101.59
+    ],
+    [
+     -6.0,
+     100.39
+    ],
+    [
+     -8.49,
+     98.49
+    ],
+    [
+     -10.39,
+     96.0
+    ],
+    [
+     -11.59,
+     93.11
+    ],
+    [
+     -12.0,
+     90.0
+    ],
+    [
+     -11.59,
+     86.89
+    ],
+    [
+     -10.39,
+     84.0
+    ],
+    [
+     -8.49,
+     81.51
+    ],
+    [
+     -6.0,
+     79.61
+    ],
+    [
+     -3.11,
+     78.41
+    ],
+    [
+     -0.0,
+     78.0
+    ],
+    [
+     3.11,
+     78.41
+    ],
+    [
+     6.0,
+     79.61
+    ],
+    [
+     8.49,
+     81.51
+    ],
+    [
+     10.39,
+     84.0
+    ],
+    [
+     11.59,
+     86.89
+    ]
+   ],
+   "start": 55,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC Emergency Inlet",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Emergency Inlet",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Emergency Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC Label",
+   "points": [
+    [
+     -50,
+     240
+    ],
+    [
+     50,
+     240
+    ],
+    [
+     50,
+     270
+    ],
+    [
+     -50,
+     270
+    ]
+   ],
+   "start": 110,
+   "end": 112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "VAC Band",
+   "profile": [
+    [
+     11,
+     330
+    ],
+    [
+     13,
+     330
+    ],
+    [
+     13,
+     350
+    ],
+    [
+     11,
+     350
+    ]
+   ],
+   "axis_at": [
+    0,
+    -55
+   ],
+   "axis": "z",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC Band",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 Pipe",
+   "points": [
+    [
+     141.0,
+     -55.0
+    ],
+    [
+     140.63,
+     -52.15
+    ],
+    [
+     139.53,
+     -49.5
+    ],
+    [
+     137.78,
+     -47.22
+    ],
+    [
+     135.5,
+     -45.47
+    ],
+    [
+     132.85,
+     -44.37
+    ],
+    [
+     130.0,
+     -44.0
+    ],
+    [
+     127.15,
+     -44.37
+    ],
+    [
+     124.5,
+     -45.47
+    ],
+    [
+     122.22,
+     -47.22
+    ],
+    [
+     120.47,
+     -49.5
+    ],
+    [
+     119.37,
+     -52.15
+    ],
+    [
+     119.0,
+     -55.0
+    ],
+    [
+     119.37,
+     -57.85
+    ],
+    [
+     120.47,
+     -60.5
+    ],
+    [
+     122.22,
+     -62.78
+    ],
+    [
+     124.5,
+     -64.53
+    ],
+    [
+     127.15,
+     -65.63
+    ],
+    [
+     130.0,
+     -66.0
+    ],
+    [
+     132.85,
+     -65.63
+    ],
+    [
+     135.5,
+     -64.53
+    ],
+    [
+     137.78,
+     -62.78
+    ],
+    [
+     139.53,
+     -60.5
+    ],
+    [
+     140.63,
+     -57.85
+    ]
+   ],
+   "start": -60,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 Pipe",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 Valve",
+   "points": [
+    [
+     152.0,
+     -55.0
+    ],
+    [
+     151.25,
+     -49.31
+    ],
+    [
+     149.05,
+     -44.0
+    ],
+    [
+     145.56,
+     -39.44
+    ],
+    [
+     141.0,
+     -35.95
+    ],
+    [
+     135.69,
+     -33.75
+    ],
+    [
+     130.0,
+     -33.0
+    ],
+    [
+     124.31,
+     -33.75
+    ],
+    [
+     119.0,
+     -35.95
+    ],
+    [
+     114.44,
+     -39.44
+    ],
+    [
+     110.95,
+     -44.0
+    ],
+    [
+     108.75,
+     -49.31
+    ],
+    [
+     108.0,
+     -55.0
+    ],
+    [
+     108.75,
+     -60.69
+    ],
+    [
+     110.95,
+     -66.0
+    ],
+    [
+     114.44,
+     -70.56
+    ],
+    [
+     119.0,
+     -74.05
+    ],
+    [
+     124.31,
+     -76.25
+    ],
+    [
+     130.0,
+     -77.0
+    ],
+    [
+     135.69,
+     -76.25
+    ],
+    [
+     141.0,
+     -74.05
+    ],
+    [
+     145.56,
+     -70.56
+    ],
+    [
+     149.05,
+     -66.0
+    ],
+    [
+     151.25,
+     -60.69
+    ]
+   ],
+   "start": 130,
+   "end": 190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 Lever",
+   "points": [
+    [
+     136.0,
+     -110.0
+    ],
+    [
+     137.53,
+     -109.7
+    ],
+    [
+     138.83,
+     -108.83
+    ],
+    [
+     139.7,
+     -107.53
+    ],
+    [
+     140.0,
+     -106.0
+    ],
+    [
+     140.0,
+     -59.0
+    ],
+    [
+     139.7,
+     -57.47
+    ],
+    [
+     138.83,
+     -56.17
+    ],
+    [
+     137.53,
+     -55.3
+    ],
+    [
+     136.0,
+     -55.0
+    ],
+    [
+     124.0,
+     -55.0
+    ],
+    [
+     122.47,
+     -55.3
+    ],
+    [
+     121.17,
+     -56.17
+    ],
+    [
+     120.3,
+     -57.47
+    ],
+    [
+     120.0,
+     -59.0
+    ],
+    [
+     120.0,
+     -106.0
+    ],
+    [
+     120.3,
+     -107.53
+    ],
+    [
+     121.17,
+     -108.83
+    ],
+    [
+     122.47,
+     -109.7
+    ],
+    [
+     124.0,
+     -110.0
+    ]
+   ],
+   "start": 150,
+   "end": 170
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 Lever",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Lever",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Lever",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 Emergency Inlet",
+   "points": [
+    [
+     142.0,
+     90.0
+    ],
+    [
+     141.59,
+     93.11
+    ],
+    [
+     140.39,
+     96.0
+    ],
+    [
+     138.49,
+     98.49
+    ],
+    [
+     136.0,
+     100.39
+    ],
+    [
+     133.11,
+     101.59
+    ],
+    [
+     130.0,
+     102.0
+    ],
+    [
+     126.89,
+     101.59
+    ],
+    [
+     124.0,
+     100.39
+    ],
+    [
+     121.51,
+     98.49
+    ],
+    [
+     119.61,
+     96.0
+    ],
+    [
+     118.41,
+     93.11
+    ],
+    [
+     118.0,
+     90.0
+    ],
+    [
+     118.41,
+     86.89
+    ],
+    [
+     119.61,
+     84.0
+    ],
+    [
+     121.51,
+     81.51
+    ],
+    [
+     124.0,
+     79.61
+    ],
+    [
+     126.89,
+     78.41
+    ],
+    [
+     130.0,
+     78.0
+    ],
+    [
+     133.11,
+     78.41
+    ],
+    [
+     136.0,
+     79.61
+    ],
+    [
+     138.49,
+     81.51
+    ],
+    [
+     140.39,
+     84.0
+    ],
+    [
+     141.59,
+     86.89
+    ]
+   ],
+   "start": 55,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 Emergency Inlet",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Emergency Inlet",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Emergency Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 Label",
+   "points": [
+    [
+     80,
+     240
+    ],
+    [
+     180,
+     240
+    ],
+    [
+     180,
+     270
+    ],
+    [
+     80,
+     270
+    ]
+   ],
+   "start": 110,
+   "end": 112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 Label",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Label",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "MA4 Band",
+   "profile": [
+    [
+     11,
+     330
+    ],
+    [
+     13,
+     330
+    ],
+    [
+     13,
+     350
+    ],
+    [
+     11,
+     350
+    ]
+   ],
+   "axis_at": [
+    130,
+    -55
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 Band",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "O2",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "O2 Pipe",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "VAC",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "VAC Pipe",
+   "side": "top",
+   "diameter": 15,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "MA4",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "MA4 Pipe",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_MechEq_MedGas_AreaValveBox.png"
+  }
+ ],
+ "values": {
+  "Box 450 x 330 x 120 mm": {
+   "value": "450x330x120",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounted at 1500 mm": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "HTM 02-01 AVSU at an accessible height"
+  },
+  "Valves 22 mm with NIST emergency inlets": {
+   "value": 22,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}
