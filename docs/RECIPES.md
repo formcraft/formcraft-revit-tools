@@ -102,6 +102,10 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
   until a sweep path can be locked to reference planes.
 
 ## The flow
+0. **From chat, inline (F-057):** `fmc_recipe check` and `build` take the recipe itself as `recipe` (a JSON object)
+   instead of `recipe_file`. The server keeps it in `<reports>\Recipes\<family>.recipe.json` and uses it like a file;
+   a real build saves it beside the staged family as always, so Gate A finds it. Healthcare pack recipes start in
+   `tests/recipes/healthcare/`.
 1. **Check:** `fmc_recipe check`, read-only. It validates the operations against the kit's parameter dictionary and
    shows where the family will be staged and released.
 2. **Build:** `fmc_recipe build`, a dry run first. It opens the template in the background, applies the operations,

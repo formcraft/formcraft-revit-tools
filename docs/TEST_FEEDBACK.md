@@ -80,6 +80,20 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 
 ## Test runs
 
+### Run 10 · 2026-10-17 · pilot PC · Revit 2025.4 · build `e5b4188` · family editor, healthcare pilot
+
+**`fmc_selftest`: Fix first** (1 fail: no AI-use rulebook, which blocks AI modelling only; 2 warn: annotation standard
+file not on Z:, no .rte in 06_Templates; 21 pass). Background only: the user kept the screen. Built
+`FMC_P_MechEq_MedGas_Outlet_O2` step by step with `fmc_doc` (27 ops, dry run = real run, 0 warnings), flexed, saved to
+`_Staging\P`, Gate A run. The recipe is now `tests/recipes/healthcare/FMC_P_MechEq_MedGas_Outlet_O2.recipe.json`.
+
+| Id | Result | State |
+|---|---|---|
+| New F-055 #160 | Screenshots don't zoom to the family: a 90 x 120 mm outlet is a few pixels at the level line | Fixed – retest (this push) |
+| New F-056 #161 | `report` gives counts only: no solid boxes, no connector system, size, origin or facing | Fixed – retest (this push) |
+| New F-057 #162 | A family saved with `fmc_doc` has no recipe, so Gate A skips code checks; no way to send a recipe from chat | Fixed – retest (this push) |
+| New F-058 #163 | Gate A Fail for the right reason only (no keynote: kit gap QH2); name, size, type names, flex Pass; the rest Not checked, said so | Open (pass record; closes when the keynote exists) |
+
 ### Run 9 · 2026-10-15 · pilot PC · Revit 2025.4 · field review of the Ogala Residence LOD 400 build
 
 A whole ground floor, its families and site were taken to LOD 400 in one session; the review was written from the AI's

@@ -168,40 +168,17 @@ namespace RevitMCPCommandSet.Services.Fmc
             r["dimensions"] = new FilteredElementCollector(doc).OfClass(typeof(Dimension)).GetElementCount();
             r["warnings"] = doc.GetWarnings().Count;
             r["views"] = new JArray(new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate && v.CanBePrinted).Select(v => v.Name));
+            try { FmcDocInspect.AddDetail(doc, r); } catch (Exception e) { r["detail_error"] = e.Message; }  // F-056
             return r;
         }
 
-        /// <summary>A PNG of the family's 3D view (and front elevation when there is one), into the folder the server gave.</summary>
+        /// <summary>PNGs cropped to the family's geometry, per detail level and style (F-055); view changes are rolled back.</summary>
         private JObject Screenshot(Session s)
         {
-            Document doc = s.Doc;
             string folder = Parameters.Value<string>("folder") ?? "";
             if (folder.Length == 0) throw new InvalidOperationException("screenshot needs a folder");
-            Directory.CreateDirectory(folder);
-            var views = new FilteredElementCollector(doc).OfClass(typeof(View)).Cast<View>().Where(v => !v.IsTemplate && v.CanBePrinted).ToList();
-            var pick = new List<View>();
-            var v3 = views.OfType<View3D>().FirstOrDefault();
-            if (v3 != null) pick.Add(v3);
-            var front = views.FirstOrDefault(v => v.ViewType == ViewType.Elevation && v.Name.IndexOf("Front", StringComparison.OrdinalIgnoreCase) >= 0);
-            if (front != null) pick.Add(front);
-            if (pick.Count == 0 && views.Count > 0) pick.Add(views[0]);
-            if (pick.Count == 0) throw new InvalidOperationException("The document has no view to capture.");
-            var files = new JArray();
-            foreach (View v in pick)
-            {
-                string stem = Path.Combine(folder, Safe(doc.Title) + "_" + Safe(v.Name) + "_" + DateTime.Now.ToString("HHmmss"));
-                var options = new ImageExportOptions
-                {
-                    ExportRange = ExportRange.SetOfViews, FilePath = stem, HLRandWFViewsFileType = ImageFileType.PNG,
-                    ShadowViewsFileType = ImageFileType.PNG, ImageResolution = ImageResolution.DPI_150, ZoomType = ZoomFitType.FitToPage,
-                    PixelSize = 1200, FitDirection = FitDirectionType.Horizontal,
-                };
-                options.SetViewsAndSheets(new List<ElementId> { v.Id });
-                doc.ExportImage(options);
-                string made = Directory.GetFiles(folder, Path.GetFileName(stem) + "*.png").FirstOrDefault() ?? "";
-                if (made.Length > 0) files.Add(made);
-            }
-            return new JObject { ["files"] = files };
+            var views = (Parameters["views"] as JArray)?.Select(t => t.ToString()).ToList() ?? new List<string>();
+            return FmcDocInspect.Screenshot(s.Doc, folder, s.Doc.Title, Parameters.Value<string>("detail_level") ?? "fine", Parameters.Value<string>("style") ?? "shaded", views);
         }
 
         private static string Safe(string s) => string.Concat((s ?? "").Select(c => Path.GetInvalidFileNameChars().Contains(c) || c == ' ' ? '_' : c));

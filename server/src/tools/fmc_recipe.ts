@@ -55,6 +55,7 @@ export const FMC_RECIPE_DESCRIPTION =
 export const FMC_RECIPE_SHAPE = {
   action: z.enum(["check", "build", "gate", "cleanup"]),
   recipe_file: z.string().optional().default("").describe("check, build: the recipe (.json)"),
+  recipe: z.record(z.string(), z.any()).optional().describe("check, build: the recipe itself, inline, instead of recipe_file (F-057). It is kept in <reports>\\Recipes\\<family>.recipe.json, and a real build saves it beside the staged family as always"),
   file: z.string().optional().default("").describe("gate: the staged family (.rfa); its recipe is read from <name>.recipe.json beside it"),
   dry_run: z.boolean().optional().default(true),
   overwrite: z.boolean().optional().default(false).describe("build: replace the staged family (a person decided)"),
@@ -125,7 +126,17 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
       return reply(r.body, r.isError);
     }
 
-    const { recipe, problems } = readRecipe(args.recipe_file.trim());
+    // F-057: a recipe sent inline (from a chat with no folder on this PC) is kept in the reports folder and used like a file
+    let recipeFile = args.recipe_file.trim();
+    if (args.recipe && Object.keys(args.recipe).length) {
+      const fam = String((args.recipe as Record<string, unknown>).family ?? "");
+      if (!/^FMC_[A-Za-z0-9]+_[A-Za-z0-9]+_[A-Za-z0-9_]+$/.test(fam)) return reply({ refused: true, reasons: [`The inline recipe's family "${fam}" doesn't follow FMC_<Role>_<Token>_<Description>`] }, true);
+      const dir = win.join(expandEnv(config.reports_dir), "Recipes");
+      fs.mkdirSync(dir, { recursive: true });
+      recipeFile = win.join(dir, `${fam}.recipe.json`);
+      fs.writeFileSync(recipeFile, JSON.stringify(args.recipe, null, 2));
+    }
+    const { recipe, problems } = readRecipe(recipeFile);
     if (!recipe) return reply({ refused: true, reasons: problems }, true);
     let dictionary = null;
     try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
@@ -156,7 +167,7 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     if (fs.existsSync(target) && !args.overwrite) return reply({ refused: true, reasons: [`${target} exists: a person decides to overwrite (overwrite: true)`] }, true);
     const soft = softTimeoutMs();
     const r = await buildRecipe(recipe, {
-      recipeFile: args.recipe_file.trim(), template, target, dry, overwrite: args.overwrite, stepwise: args.stepwise, chunkSize: args.chunk_size,
+      recipeFile, template, target, dry, overwrite: args.overwrite, stepwise: args.stepwise, chunkSize: args.chunk_size,
       resume: args.resume, reportsDir: expandEnv(config.reports_dir), sharedParameterFile: expandEnv(config.shared_parameter_file),
       notes: shown.notes, sources,
     }, { doc: docCall, gate: (file, flex) => runGate(file, config, flex), budgetMs: soft > 0 ? Math.max(soft - 15000, 10000) : Infinity });
