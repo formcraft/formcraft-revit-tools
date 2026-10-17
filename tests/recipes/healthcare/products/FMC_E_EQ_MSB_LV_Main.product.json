@@ -1,0 +1,607 @@
+{
+ "family": "FMC_E_EQ_MSB_LV_Main",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Main LV switchboard, form 4, floor standing, 4 sections (ACB incomer, 2 MCCB outgoing, essential section), 3200 x 800 x 2200",
+ "ifc": "IfcElectricDistributionBoard",
+ "keynote": "E.DBD_04",
+ "types": [
+  {
+   "name": "1600A_Form4",
+   "values": {
+    "Apparent Load": 1150000
+   }
+  },
+  {
+   "name": "2500A_Form4",
+   "values": {
+    "Apparent Load": 1797000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 1150000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "black": "FMC_Plastic_ABS_Black",
+  "redsteel": "FMC_Metal_SprinklerPipe_RedPainted",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "green": "FMC_Plastic_LED_Green",
+  "red": "FMC_Plastic_LED_Red",
+  "screen": "FMC_Plastic_ABS_Black",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "ledblue": "FMC_Plastic_LED_Blue"
+ },
+ "reference": {
+  "query": "msb lv main electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=msb+lv+main+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -1600,
+    -800,
+    0,
+    1600,
+    0,
+    100
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -1600,
+    -790,
+    100,
+    1600,
+    0,
+    2200
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Top Cover",
+   "shape": "box",
+   "at": [
+    -1610,
+    -800,
+    2200,
+    1610,
+    10,
+    2230
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Lifting Eye",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    -400,
+    2262
+   ],
+   "profile": [
+    [
+     18,
+     -1405
+    ],
+    [
+     30,
+     -1405
+    ],
+    [
+     30,
+     -1395
+    ],
+    [
+     18,
+     -1395
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     930,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Incomer Door",
+   "shape": "fbox",
+   "at": [
+    -1595,
+    -800,
+    110,
+    -805,
+    -790,
+    2190
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Compartment Door A",
+   "shape": "fbox",
+   "at": [
+    -795,
+    -800,
+    115,
+    -5,
+    -790,
+    405
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 3,
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   }
+  },
+  {
+   "n": "Compartment Door B",
+   "shape": "fbox",
+   "at": [
+    5,
+    -800,
+    115,
+    795,
+    -790,
+    405
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 3,
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   }
+  },
+  {
+   "n": "MCCB Handle A",
+   "shape": "fbox",
+   "at": [
+    -430,
+    -818,
+    230,
+    -370,
+    -800,
+    290
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 6,
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   }
+  },
+  {
+   "n": "MCCB Handle B",
+   "shape": "fbox",
+   "at": [
+    370,
+    -818,
+    230,
+    430,
+    -800,
+    290
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 6,
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   }
+  },
+  {
+   "n": "Busbar Cover",
+   "shape": "fbox",
+   "at": [
+    -795,
+    -800,
+    1915,
+    795,
+    -790,
+    2190
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Essential Door",
+   "shape": "fbox",
+   "at": [
+    805,
+    -800,
+    110,
+    1595,
+    -790,
+    2190
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Essential Band",
+   "shape": "fbox",
+   "at": [
+    815,
+    -801,
+    2090,
+    1585,
+    -800,
+    2160
+   ],
+   "mat": "redsteel",
+   "lod": "f"
+  },
+  {
+   "n": "ACB Escutcheon",
+   "shape": "fbox",
+   "at": [
+    -1460,
+    -802,
+    880,
+    -940,
+    -800,
+    1320
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "ACB Fascia",
+   "shape": "fbox",
+   "at": [
+    -1440,
+    -812,
+    900,
+    -960,
+    -802,
+    1300
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "ACB Charging Handle",
+   "shape": "fbox",
+   "at": [
+    -1240,
+    -840,
+    960,
+    -1160,
+    -812,
+    1100
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "ACB On Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1360,
+    1220
+   ],
+   "r": 16,
+   "y": [
+    -820,
+    -812
+   ],
+   "mat": "green",
+   "lod": "f"
+  },
+  {
+   "n": "ACB Off Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1040,
+    1220
+   ],
+   "r": 16,
+   "y": [
+    -820,
+    -812
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Multifunction Meter",
+   "shape": "fbox",
+   "at": [
+    -1320,
+    -806,
+    1560,
+    -1080,
+    -800,
+    1760
+   ],
+   "mat": "screen",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Lamp L1",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1300,
+    1850
+   ],
+   "r": 14,
+   "y": [
+    -815,
+    -800
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Lamp L2",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1200,
+    1850
+   ],
+   "r": 14,
+   "y": [
+    -815,
+    -800
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Lamp L3",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1100,
+    1850
+   ],
+   "r": 14,
+   "y": [
+    -815,
+    -800
+   ],
+   "mat": "ledblue",
+   "lod": "f"
+  },
+  {
+   "n": "Door Handle",
+   "shape": "fbox",
+   "at": [
+    -875,
+    -820,
+    1000,
+    -855,
+    -800,
+    1160
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 6,
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Vent Grille",
+   "shape": "fbox",
+   "at": [
+    -1500,
+    -801,
+    180,
+    -900,
+    -800,
+    330
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "r": 3,
+   "repeat": {
+    "n": 4,
+    "d": [
+     800,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Mimic Bus",
+   "shape": "fbox",
+   "at": [
+    -1500,
+    -802,
+    2030,
+    1500,
+    -800,
+    2042
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Mimic Drop",
+   "shape": "fbox",
+   "at": [
+    -1206,
+    -802,
+    1900,
+    -1194,
+    -800,
+    2030
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     800,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Section Label",
+   "shape": "fbox",
+   "at": [
+    -1300,
+    -802,
+    1970,
+    -1100,
+    -800,
+    2010
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     800,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Essential Meter",
+   "shape": "fbox",
+   "at": [
+    1080,
+    -806,
+    1560,
+    1320,
+    -800,
+    1760
+   ],
+   "mat": "screen",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Essential Lamp",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1130,
+    1850
+   ],
+   "r": 14,
+   "y": [
+    -815,
+    -800
+   ],
+   "mat": "green",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     140,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Body",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Board 3200 x 800 x 2200 mm": {
+   "value": "3200x800x2200",
+   "source_status": "assumed",
+   "source": "typical 4-section form 4 board, supplier GA to confirm"
+  },
+  "Incomer 1600 A / 2500 A ACB": {
+   "value": "1600A/2500A",
+   "source_status": "assumed",
+   "source": "type name; engineer sizes the incomer"
+  },
+  "Plinth 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Front working space 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "BS 7671 / switchroom practice"
+  }
+ },
+ "about": "Main switchboard: plinth, body, top cover, lifting eyes, ACB incomer door with ACB fascia, charging handle, on/off buttons, multifunction meter and phase lamps; two outgoing sections of six MCCB compartments with rotary handles; essential section with red identification band, meter and lamps; mimic bus, vent grilles, door handles. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open.",
+ "clearances": [
+  {
+   "n": "Working Space",
+   "shape": "box",
+   "at": [
+    -1600,
+    -1800,
+    0,
+    1600,
+    -800,
+    2200
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}
