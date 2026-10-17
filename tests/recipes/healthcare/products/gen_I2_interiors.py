@@ -540,33 +540,49 @@ product(fam, "Bariatric waiting chair 700 wide, rated 250 kg+, seat 500 high, re
 
 # 14 Modular lounge seating straight / curved
 fam = "FMC_I_Furniture_Seating_Modular_Lounge"
-P = [BX("Plinth", [-880, -330, 20, 880, 330, 120], 'plinthm', r=10), BX("Base", [-900, -350, 120, 900, 350, 300], 'fab2', r=20),
+def sector(ri, ro, a0, a1, C=(0, -1942), n=6):
+    pts = [[C[0] + ro * math.cos(math.radians(a0 + (a1 - a0) * k / n)), C[1] + ro * math.sin(math.radians(a0 + (a1 - a0) * k / n))] for k in range(n + 1)]
+    pts += [[C[0] + ri * math.cos(math.radians(a1 - (a1 - a0) * k / n)), C[1] + ri * math.sin(math.radians(a1 - (a1 - a0) * k / n))] for k in range(n + 1)]
+    return pts
+def lounge_curved(_):
+    """Concave 45 degree module: outer (back) radius 2292 gives an 1800 outer arc; seats face the arc centre at (0, -1942)."""
+    ro, ri = 2292, 1592; P = [PR("Plinth", sector(ri + 20, ro - 20, 68.5, 111.5), [0, 120], 'plinthm'), PR("Base", sector(ri, ro, 67.5, 112.5), [120, 300], 'fab2'),
+                              PR("Back Shell", sector(ro - 20, ro, 67.5, 112.5, n=9), [120, 830], 'fab2')]
+    for k in range(3):
+        a0 = 67.5 + 15 * k
+        P += [PR(f"Seat Cushion {k + 1}", sector(ri - 10, ro - 140, a0 + 0.25, a0 + 14.75, n=3), [300, 440], 'fab'),
+              PR(f"Back Cushion {k + 1}", sector(ro - 150, ro - 20, a0 + 0.25, a0 + 14.75, n=3), [300, 800], 'fab')]
+    return P
+def lounge_straight(_):
+    return [BX("Plinth", [-880, -330, 20, 880, 330, 120], 'plinthm', r=10), BX("Base", [-900, -350, 120, 900, 350, 300], 'fab2', r=20),
      BX("Seat Cushion", [-890, -360, 300, -300, 220, 440], 'fab', r=40, rep=(3, 593.3, 0, 0)),
      RT("Back Cushion", [[200, 300], [350, 300], [350, 820], [250, 800]], [-890, -300], 'fab', rep=(3, 593.3, 0, 0)),
      BX("Back Shell", [-900, 340, 120, 900, 360, 830], 'fab2', r=10),
      BX("Seam", [-302, -362, 300, -298, 220, 440], 'plinthm', lod='f', rep=(2, 593.3, 0, 0)),
-     CZ("Foot", [-850, -300], 18, [0, 20], 'plinthm', lod='f', rep=(2, 1700, 0, 0)), CZ("Foot Back", [-850, 300], 18, [0, 20], 'plinthm', lod='f', rep=(2, 1700, 0, 0)),
-     BX("Power Module", [-60, -366, 200, 60, -350, 260], 'black', r=6, lod='f'), FB("USB Port", [-40, -368, 220, 40, -366, 240], 'grey', lod='f')]
+     CZ("Foot", [-850, -300], 18, [0, 20], 'plinthm', lod='f', rep=(2, 1700, 0, 0)), CZ("Foot Back", [-850, 300], 18, [0, 20], 'plinthm', lod='f', rep=(2, 1700, 0, 0))]
+P = typed(lounge_straight, {"1800_Straight": ("Straight", 0)}) + typed(lounge_curved, {"1800_Curved": ("Curved", 0)})
+P += [BX("Power Module", [-60, -366, 200, 60, -350, 260], 'black', r=6, lod='f'), FB("USB Port", [-40, -368, 220, 40, -366, 240], 'grey', lod='f')]
 product(fam, "Modular reception lounge seating, 3-seat module 1800 wide, wipe-clean upholstered seat and back cushions on a plinth base",
         "IfcFurniture", [{"name": "1800_Straight", "desc": "Modular lounge seating, straight 3-seat module 1800 x 700"}, {"name": "1800_Curved", "desc": "Modular lounge seating, curved 3-seat module, 45 degree arc, outer length 1800"}],
-        {"fab": "FMC_Fabric_Vinyl_Upholstery_Blue", "fab2": "FMC_Fabric_Mattress_PU_Blue", "plinthm": "FMC_Metal_Aluminium_PowderCoated", "black": "FMC_Plastic_ABS_Black", "grey": "FMC_Plastic_ABS_Grey"}, P,
+        {"fab": "FMC_Fabric_Upholstery_WipeClean_Grey", "fab2": "FMC_Fabric_Vinyl_Upholstery_Blue", "plinthm": "FMC_Metal_Aluminium_PowderCoated", "black": "FMC_Plastic_ABS_Black", "grey": "FMC_Plastic_ABS_Grey"}, P,
         {"Module 1800 x 700 mm, 3 seats": A("1800x700", "typical modular lounge module"), "Seat height 440 mm, back 830 mm": A("440/830", "typical soft seating")},
         "Lounge module modelled as a generic product: powder-coated plinth and feet, upholstered base, 3 seat cushions and inclined back cushions with seams, back shell, "
         "front power and USB module.", drawn="1800_Straight")
 
 # 15 Anti-ligature bench 1200/1800, rotomoulded, fixed
 fam = "FMC_I_Furniture_Seating_AntiLigature"
-L = 1200
 prof = rounded_profile([[-260, 0], [260, 0], [260, 380], [330, 820], [230, 830], [170, 460], [-280, 460]], 45, 4)
-P = [RT("Body", prof, [-L / 2 + 40, L / 2 - 40], 'pe'),
+def antilig(L):
+    return [RT("Body", prof, [-L / 2 + 40, L / 2 - 40], 'pe'),
      RT("End Cap Left", rounded_profile([[-250, 10], [250, 10], [250, 380], [310, 800], [240, 810], [180, 450], [-270, 450]], 45, 4), [-L / 2, -L / 2 + 40], 'pe'),
      RT("End Cap Right", rounded_profile([[-250, 10], [250, 10], [250, 380], [310, 800], [240, 810], [180, 450], [-270, 450]], 45, 4), [L / 2 - 40, L / 2], 'pe'),
      CZ("Ballast Fill Cap", [0, -180], 25, [460, 464], 'pe2', lod='f'),
      FB("Fixing Cover", [-L / 2 + 120, -262, 60, -L / 2 + 180, -260, 120], 'pe2', r=25, lod='f', rep=(2, L - 300, 0, 0)),
      BX("Floor Fixing Plate", [-L / 2 + 60, -240, -0.1, L / 2 - 60, 240, 2], 'ss', lod='f')]
+P = typed(antilig, {"1200_Fixed": ("1200", 1200), "1800_Fixed": ("1800", 1800)})
 product(fam, "Anti-ligature fixed bench, one-piece rotomoulded polyethylene, ballast filled, no gaps or ligature points, concealed floor fixings",
         "IfcFurniture", [{"name": "1200_Fixed", "desc": "Anti-ligature rotomoulded bench 1200, fixed"}, {"name": "1800_Fixed", "desc": "Anti-ligature rotomoulded bench 1800, fixed"}],
-        {"pe": "FMC_Plastic_ABS_Blue", "pe2": "FMC_Plastic_ABS_Grey", "ss": "FMC_Metal_StainlessSteel_Brushed"}, P,
+        {"pe": "FMC_Plastic_Polyethylene_Rotomoulded_Blue", "pe2": "FMC_Plastic_ABS_Grey", "ss": "FMC_Metal_StainlessSteel_Brushed"}, P,
         {"Length 1200 / 1800 mm": A("1200/1800", "record types"), "Seat height 460 mm, back 830 mm": A("460/830", "typical anti-ligature bench"),
          "Weight 90 kg filled": A(90, "typical ballast-filled rotomoulded bench")},
         "Anti-ligature bench modelled as a generic product: one-piece rounded rotomoulded body with integral back, rounded end caps, dished seat, ballast fill cap, "
@@ -658,7 +674,7 @@ for i, (x, y) in enumerate(hx):
 P.append(PR("Mid Rail Centre", rot_rect(0, 0, pw - 40, 20, 0), [1000, 1020], 'frame'))
 product(fam, "Mobile privacy screen, 3 hinged panels of wipe-clean antimicrobial curtain in powder-coated tubular frames, 4 posts on castors, folds flat",
         "IfcFurniture", ["2280x1800_3Panel"],
-        {"fabric": "FMC_Fabric_Mattress_PU_Blue", "frame": "FMC_Metal_Steel_EpoxyCoated_White", "black": "FMC_Plastic_ABS_Black", "castor": "FMC_Plastic_Nylon_CastorGrey"}, P,
+        {"fabric": "FMC_Fabric_Curtain_Antimicrobial_LightBlue", "frame": "FMC_Metal_Steel_EpoxyCoated_White", "black": "FMC_Plastic_ABS_Black", "castor": "FMC_Plastic_Nylon_CastorGrey"}, P,
         {"3 panels of 760 mm, height 1820 mm": A("3x760x1820", "typical folding ward screen"), "Curtain antimicrobial PVC-coated, wipe clean": A("PVC", "HBN 00-09 infection control")},
         "Screen modelled as a generic product: 3 curtain panels (outer panels folded 30 degrees) in top and bottom rails, mid rail, 4 posts with caps, hinges and grips, "
         "post feet with 2 castors each.")
@@ -690,18 +706,20 @@ product(fam, "Mobile records shelving carriage 1800 x 900, double-sided, 6 shelf
 
 # 21 Family room sofa 2/3 seat
 fam = "FMC_I_Furniture_Sofa_Family_Room"
-W = 1500; x0 = -W / 2
-P = [BX("Base Frame", [x0 + 140, -380, 130, -x0 - 140, 360, 420], 'fab2', r=20),
-     BX("Seat Cushion", [x0 + 150, -420, 420, x0 + 150 + (W - 300) / 2 - 5, 220, 520], 'fab', r=40, rep=(2, (W - 300) / 2 + 5, 0, 0)),
-     RT("Back Cushion", [[180, 420], [360, 420], [380, 830], [250, 840]], [x0 + 150, x0 + 150 + (W - 300) / 2 - 5], 'fab', rep=(2, (W - 300) / 2 + 5, 0, 0)),
+def sofa(ns):
+    W = 300 + 600 * ns; x0 = -W / 2; cw = (W - 300) / ns
+    return [BX("Base Frame", [x0 + 140, -380, 130, -x0 - 140, 360, 420], 'fab2', r=20),
+     BX("Seat Cushion", [x0 + 150, -420, 420, x0 + 150 + cw - 5, 220, 520], 'fab', r=40, rep=(ns, cw, 0, 0)),
+     RT("Back Cushion", [[180, 420], [360, 420], [380, 830], [250, 840]], [x0 + 150, x0 + 150 + cw - 5], 'fab', rep=(ns, cw, 0, 0)),
      BX("Back", [x0 + 140, 300, 130, -x0 - 140, 400, 820], 'fab2', r=20),
      BX("Arm", [x0, -420, 130, x0 + 140, 400, 640], 'fab2', r=40), BX("Arm Right", [-x0 - 140, -420, 130, -x0, 400, 640], 'fab2', r=40),
      FB("Arm Front Panel", [x0 + 10, -424, 140, x0 + 130, -420, 630], 'wood', r=30, lod='f'), FB("Arm Front Panel Right", [-x0 - 130, -424, 140, -x0 - 10, -420, 630], 'wood', r=30, lod='f'),
      BX("Leg", [x0 + 20, -400, 0, x0 + 70, -350, 130], 'wood', r=10, rep=(2, W - 90, 0, 0)), BX("Leg Back", [x0 + 20, 330, 0, x0 + 70, 380, 130], 'wood', r=10, rep=(2, W - 90, 0, 0)),
      BX("Scatter Cushion", [x0 + 170, 140, 500, x0 + 450, 260, 760], 'fab3', r=40, lod='f')]
+P = typed(sofa, {"1500_2Seat": ("2S", 2), "2100_3Seat": ("3S", 3)})
 product(fam, "Family room sofa, wipe-clean upholstery, seat and back cushions, padded arms with timber front panels, timber legs",
         "IfcFurniture", [{"name": "1500_2Seat", "desc": "Family room sofa, 2 seats, 1500 x 820"}, {"name": "2100_3Seat", "desc": "Family room sofa, 3 seats, 2100 x 820"}],
-        {"fab": "FMC_Fabric_Vinyl_Upholstery_Blue", "fab2": "FMC_Fabric_Mattress_PU_Blue", "fab3": "FMC_Fabric_Kitenge_Print", "wood": "FMC_Timber_Mvule"}, P,
+        {"fab": "FMC_Fabric_Upholstery_WipeClean_Grey", "fab2": "FMC_Fabric_Upholstery_WipeClean_Grey", "fab3": "FMC_Fabric_Kitenge_Print", "wood": "FMC_Timber_Mvule"}, P,
         {"Width 1500 / 2100 mm, depth 820 mm": A("1500/2100x820", "typical 2 and 3 seat sofa"), "Seat height 450 mm": A(450, "typical healthcare lounge seating, HBN 00-04 (easy rise)")},
         "Sofa modelled as a generic product: upholstered base, 2 seat and inclined back cushions, back, padded arms with timber front panels, 4 timber legs, Kitenge scatter cushion (Fine).",
         drawn="1500_2Seat")
@@ -740,17 +758,28 @@ P += [BX("Accessible Top", [-1800, -900, 730, -900, 0, 760], 'ledge', r=10),
       FB("Hearing Loop Sign", [-860, -803, 900, -760, -800, 980], 'white', r=6, lod='f'),
       FB("Fascia Feature Band", [-900, -803, 820, 1800, -800, 860], 'blue', lod='f'),
       RT("Return Feature Band", [[-760, 820], [1600, 820], [1600, 860], [-760, 860]], [1800, 1803], 'blue', lod='f')]
-# short leg (return) along +y at the right end
-P += [BX("Return Fascia", [1760, -760, 100, 1800, 1600, 1080], 'front', r=4), BX("Return Ledge", [1720, -560, 1080, 1880, 1600, 1110], 'ledge', r=10),
-      BX("Return Plinth", [1100, -100, 0, 1740, 1550, 100], 'plinth'), BX("Return Worktop", [1000, -760, 710, 1760, 1600, 740], 'top', r=6),
-      BX("Return Base Unit", [1100, 200, 100, 1740, 1550, 710], 'carc'),
-      FB("Return Door", [1100, 200, 103, 1740, 1550, 707], 'front2', r=3)]
-P[-1] = RT("Return Door", [[203, 105], [1547, 105], [1547, 705], [203, 705]], [1080, 1100], 'front2')
-P += [RT("Return Door Joint", [[870, 110], [880, 110], [880, 700], [870, 700]], [1078, 1080], 'plinth', lod='f'),
-      CZ("Return Door Handle", [1072, 830], 5, [520, 680], 'hdl', lod='f', rep=(2, 0, 100, 0)),
-      BX("End Panel", [-1800, -800, 0, -1770, -100, 760], 'carc')]
+def only(parts, types):
+    for q in parts: q['only'] = list(types)
+    return parts
+def nurse_return(sg, pre):
+    """Return leg along +y at the right (sg = 1) or left (sg = -1) end; ledge on the public (outer) side."""
+    def mx(at): return [min(sg * at[0], sg * at[3]), at[1], at[2], max(sg * at[0], sg * at[3]), at[4], at[5]]
+    def mxr(x): return sorted([sg * x[0], sg * x[1]])
+    return [BX(pre + "Return Fascia", mx([1760, -760, 100, 1800, 1600, 1080]), 'front', r=4), BX(pre + "Return Ledge", mx([1720, -560, 1080, 1880, 1600, 1110]), 'ledge', r=10),
+            BX(pre + "Return Plinth", mx([1100, -100, 0, 1740, 1550, 100]), 'plinth'),
+            BX(pre + "Return Worktop", mx([1000, -760, 710, 1760, 1600, 740]) if sg > 0 else mx([1000, 0, 710, 1760, 1600, 740]), 'top', r=6),
+            BX(pre + "Return Base Unit", mx([1100, 200, 100, 1740, 1550, 710]), 'carc'),
+            RT(pre + "Return Door", [[203, 105], [1547, 105], [1547, 705], [203, 705]], mxr([1080, 1100]), 'front2'),
+            RT(pre + "Return Door Joint", [[870, 110], [880, 110], [880, 700], [870, 700]], mxr([1078, 1080]), 'plinth', lod='f'),
+            CZ(pre + "Return Door Handle", [sg * 1072, 830], 5, [520, 680], 'hdl', lod='f', rep=(2, 0, 100, 0)),
+            RT(pre + "Return Feature Band", [[-760, 820], [1600, 820], [1600, 860], [-760, 860]], mxr([1800, 1803]), 'blue', lod='f')]
+P = [q for q in P if q['n'] != "Return Feature Band"]
+P += only(nurse_return(1, ""), ["3600x2400_L", "3600x2400_U"]) + only(nurse_return(-1, "Left "), ["3600x2400_U"])
+P += only([BX("End Panel", [-1800, -800, 0, -1770, -100, 760], 'carc')], ["3600x2400_L", "3600_Straight"])
+P += only([BX("Worktop Extension", [1000, -760, 710, 1770, 0, 740], 'top', r=6), BX("End Panel Right", [1770, -800, 0, 1800, 0, 1080], 'carc'),
+           BX("Straight Base Unit", [1100, -620, 100, 1740, -100, 710], 'carc'), FB("Straight Door", [1100, -100, 105, 1740, -80, 705], 'front2', r=3)], ["3600_Straight"])
 product(fam, "Ward nurse station counter, L-shaped 3600 x 2400 (L, U and straight types), staff worktop 740, raised public transaction ledge 1100 with LED strip, "
-        "lowered 760 accessible section with knee space, pedestal, return base unit, cable tray, grommets and power/data module",
+        "lowered 760 accessible section with knee space, pedestal, return base units (L, U) or end base unit (straight), cable tray, grommets and power/data module",
         "IfcFurniture", [{"name": "3600x2400_L", "desc": "Nurse station counter, L-shaped 3600 x 2400"}, {"name": "3600x2400_U", "desc": "Nurse station counter, U-shaped 3600 x 2400 x 2400"},
                          {"name": "3600_Straight", "desc": "Nurse station counter, straight 3600"}],
         {"front": "FMC_Plastic_Laminate_HPL", "front2": "FMC_Board_Melamine_White", "ledge": "FMC_Stone_Quartz_Engineered_White", "top": "FMC_Plastic_Laminate_HPL",
@@ -759,18 +788,19 @@ product(fam, "Ward nurse station counter, L-shaped 3600 x 2400 (L, U and straigh
         {"Staff worktop 740 mm, transaction ledge 1100 mm": A("740/1100", "HBN 04-01 / typical nurse base"), "Accessible section 900 wide at 760 mm with knee space": A("900@760", "BS 8300-2 / Approved Document M"),
          "Supply 240 V, 2000 VA (4 PCs, printer)": A(2000, "typical nurse base")},
         "Nurse station modelled as a generic product: HPL public fascia with joints and quartz transaction ledge with LED strip, lowered accessible section with knee space and hearing loop sign, "
-        "staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff, return leg with ledge, worktop and base unit with doors, stainless plinths, end panel.",
+        "staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff; L adds a right return leg (fascia, ledge, worktop, base unit with doors), U adds both returns, straight closes with an end panel and a base unit; stainless plinths.",
         connectors=[E("Power Data Module", 'bottom'), ELV("Power Data Module", 'back')], type_values={"Voltage": 240, "Apparent Load": 2000}, drawn="3600x2400_L")
 
 # 24 Reception counter accessible 2400/3600, with protective screen
 fam = "FMC_I_Casework_Reception_Counter_Accessible"
-P = [BX("Raised Fascia", [-300, -800, 100, 1200, -760, 1080], 'front', r=4), BX("Raised Ledge", [-300, -900, 1080, 1200, -560, 1110], 'ledge', r=10),
-     BX("Lowered Top", [-1200, -900, 730, -300, 0, 760], 'ledge', r=10),
-     BX("Plinth", [-300, -740, 0, 1200, -100, 100], 'plinth'), BX("Staff Worktop", [-300, -760, 710, 1200, 0, 740], 'top', r=6),
-     BX("End Panel", [-1200, -800, 0, -1170, 0, 730], 'carc'), BX("End Panel Right", [1170, -760, 0, 1200, 0, 1080], 'carc'),
+def raised(R):
+    return [BX("Raised Fascia", [-300, -800, 100, R, -760, 1080], 'front', r=4), BX("Raised Ledge", [-300, -900, 1080, R, -560, 1110], 'ledge', r=10),
+     BX("Plinth", [-300, -740, 0, R, -100, 100], 'plinth'), BX("Staff Worktop", [-300, -760, 710, R, 0, 740], 'top', r=6),
+     BX("End Panel Right", [R - 30, -760, 0, R, 0, 1080], 'carc'), FB("Fascia Feature Band", [-300, -803, 860, R, -800, 920], 'blue', lod='f'),
+     BX("Screen Glass", [-280, -720, 1110, R - 20, -708, 1650], 'glass'), BX("Screen Post", [-300, -730, 1110, -280, -698, 1660], 'alu', rep=(2, R + 280, 0, 0))]
+P = typed(raised, {"2400_Accessible": ("2400", 1200), "3600_Accessible": ("3600", 2400)})
+P += [BX("Lowered Top", [-1200, -900, 730, -300, 0, 760], 'ledge', r=10), BX("End Panel", [-1200, -800, 0, -1170, 0, 730], 'carc'),
      BX("Knee Space Back", [-1170, -120, 100, -300, -100, 730], 'carc'),
-     FB("Fascia Feature Band", [-300, -803, 860, 1200, -800, 920], 'blue', lod='f'),
-     BX("Screen Glass", [-280, -720, 1110, 1180, -708, 1650], 'glass'), BX("Screen Post", [-300, -730, 1110, -280, -698, 1660], 'alu', rep=(2, 1480, 0, 0)),
      BX("Screen Pass Slot", [300, -722, 1110, 700, -706, 1200], 'black', lod='f'),
      FB("Speech Grille", [420, -722, 1400, 580, -720, 1460], 'alu', r=20, lod='f'),
      BX("Pedestal", [600, -720, 100, 1100, -100, 710], 'carc', r=4), FB("Pedestal Drawer", [605, -100, 520, 1095, -80, 700], 'front2', r=3, rep=(3, 0, 0, -205)),
@@ -891,7 +921,7 @@ product(fam, "Pharmacy dispensing counter 2400, drawer packs (6 + 6 + 3 drawers)
 
 # 30 Lab wall bench 1500/1800/3000 with service spine, sink
 fam = "FMC_I_Casework_Lab_Bench_Wall"
-M_LAB = {"carc": "FMC_Board_Melamine_White", "front": "FMC_Plastic_Laminate_HPL", "top": "FMC_Stone_Granite_Black_Polished", "plinth": "FMC_Plastic_ABS_Grey",
+M_LAB = {"carc": "FMC_Board_Melamine_White", "front": "FMC_Plastic_Laminate_HPL", "top": "FMC_Plastic_EpoxyResin_Black", "plinth": "FMC_Plastic_ABS_Grey",
          "hdl": "FMC_Metal_StainlessSteel_Brushed", "spine": "FMC_Metal_Steel_EpoxyCoated_White", "white": "FMC_Plastic_ABS_White", "chrome": "FMC_Metal_Chrome_Polished",
          "sink": "FMC_Plastic_ABS_Grey", "red": "FMC_Plastic_LED_Red", "blue": "FMC_Plastic_ABS_Blue", "yellow": "FMC_Plastic_ABS_Yellow", "glass": "FMC_Glass_Clear"}
 L = 1800; x0 = -L / 2
@@ -979,7 +1009,7 @@ product(fam, "Ducted fume cupboard 1200 / 1500 / 1800, epoxy work surface with s
         "services on the side posts, 250 mm extract spigot, ventilated solvent store base",
         "IfcFurniture", [{"name": "1200_Ducted", "desc": "Ducted fume cupboard 1200"}, {"name": "1500_Ducted", "desc": "Ducted fume cupboard 1500"}, {"name": "1800_Ducted", "desc": "Ducted fume cupboard 1800"}],
         {"carc": "FMC_Board_Melamine_White", "front": "FMC_Metal_Steel_EpoxyCoated_White", "hdl": "FMC_Metal_StainlessSteel_Brushed", "plinth": "FMC_Plastic_ABS_Grey",
-         "top": "FMC_Stone_Granite_Black_Polished", "body": "FMC_Metal_Steel_EpoxyCoated_White", "liner": "FMC_Board_FibreCement_Painted", "ss": "FMC_Metal_StainlessSteel_Brushed",
+         "top": "FMC_Plastic_EpoxyResin_Black", "body": "FMC_Metal_Steel_EpoxyCoated_White", "liner": "FMC_Board_FibreCement_Painted", "ss": "FMC_Metal_StainlessSteel_Brushed",
          "frame": "FMC_Metal_Aluminium_PowderCoated", "glass": "FMC_Glass_Laminated", "black": "FMC_Plastic_ABS_Black", "green": "FMC_Plastic_LED_Green", "red": "FMC_Plastic_LED_Red",
          "grey": "FMC_Plastic_ABS_Grey", "blue": "FMC_Plastic_ABS_Blue", "white": "FMC_Plastic_ABS_White", "duct": "FMC_Metal_Duct_Galvanised", "yellow": "FMC_Plastic_ABS_Yellow"}, P,
         {"Width 1200 / 1500 / 1800 mm, depth 900, height 2350 + spigot": A("W x 900 x 2350", "record types; BS EN 14175"), "Face velocity 0.5 m/s at 500 mm sash": A(0.5, "BS EN 14175 / typical"),

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Casework_NurseStation_Counter",
  "template": "Metric Generic Model.rft",
- "about": "Nurse station modelled as a generic product: HPL public fascia with joints and quartz transaction ledge with LED strip, lowered accessible section with knee space and hearing loop sign, staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff, return leg with ledge, worktop and base unit with doors, stainless plinths, end panel. Geometry is drawn at the 3600x2400_L type; the other types share it until a parametric pass. Reference: query: casework nurse station counter casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+nurse+station+counter+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Nurse station modelled as a generic product: HPL public fascia with joints and quartz transaction ledge with LED strip, lowered accessible section with knee space and hearing loop sign, staff worktop with grommets, cable tray and a power/data module, 3-drawer pedestal facing the staff; L adds a right return leg (fascia, ledge, worktop, base unit with doors), U adds both returns, straight closes with an end panel and a base unit; stainless plinths. Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: casework nurse station counter casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+nurse+station+counter+casework+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.southwestsolutions.com/divisions/healthcare/healthcare-casework/hospital-nurse-stations/; photo_title: Hospital Nurse Stations (Southwest Solutions Group); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -347,6 +347,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "3600x2400_L/URL",
+   "type": "3600x2400_L",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/divisions/healthcare/healthcare-casework/hospital-nurse-stations/"
+  },
+  {
+   "op": "set_type_value",
    "name": "3600x2400_L/Voltage",
    "type": "3600x2400_L",
    "param": "Voltage",
@@ -428,6 +435,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "3600x2400_U/URL",
+   "type": "3600x2400_U",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/divisions/healthcare/healthcare-casework/hospital-nurse-stations/"
+  },
+  {
+   "op": "set_type_value",
    "name": "3600x2400_U/Voltage",
    "type": "3600x2400_U",
    "param": "Voltage",
@@ -506,6 +520,13 @@
    "type": "3600_Straight",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600_Straight/URL",
+   "type": "3600_Straight",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/divisions/healthcare/healthcare-casework/hospital-nurse-stations/"
   },
   {
    "op": "set_type_value",
@@ -809,7 +830,7 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1800.0,
+     -1880.0,
      -900.0
     ],
     [
@@ -818,11 +839,11 @@
     ],
     [
      1880.0,
-     1600
+     1600.0
     ],
     [
-     -1800.0,
-     1600
+     -1880.0,
+     1600.0
     ]
    ],
    "start": 0,
@@ -3242,48 +3263,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Return Feature Band",
-   "points": [
-    [
-     -760,
-     820
-    ],
-    [
-     1600,
-     820
-    ],
-    [
-     1600,
-     860
-    ],
-    [
-     -760,
-     860
-    ]
-   ],
-   "start": 1800,
-   "end": 1803,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Feature Band",
-   "subcategory": "Blue"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Feature Band",
-   "param": "Blue Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Feature Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Return Fascia",
    "points": [
     [
@@ -4007,6 +3986,813 @@
   },
   {
    "op": "extrusion",
+   "name": "Return Feature Band",
+   "points": [
+    [
+     -760,
+     820
+    ],
+    [
+     1600,
+     820
+    ],
+    [
+     1600,
+     860
+    ],
+    [
+     -760,
+     860
+    ]
+   ],
+   "start": 1800,
+   "end": 1803,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Return Feature Band",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Return Feature Band",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Return Feature Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Fascia",
+   "points": [
+    [
+     -1764.0,
+     -760.0
+    ],
+    [
+     -1762.47,
+     -759.7
+    ],
+    [
+     -1761.17,
+     -758.83
+    ],
+    [
+     -1760.3,
+     -757.53
+    ],
+    [
+     -1760.0,
+     -756.0
+    ],
+    [
+     -1760.0,
+     1596.0
+    ],
+    [
+     -1760.3,
+     1597.53
+    ],
+    [
+     -1761.17,
+     1598.83
+    ],
+    [
+     -1762.47,
+     1599.7
+    ],
+    [
+     -1764.0,
+     1600.0
+    ],
+    [
+     -1796.0,
+     1600.0
+    ],
+    [
+     -1797.53,
+     1599.7
+    ],
+    [
+     -1798.83,
+     1598.83
+    ],
+    [
+     -1799.7,
+     1597.53
+    ],
+    [
+     -1800.0,
+     1596.0
+    ],
+    [
+     -1800.0,
+     -756.0
+    ],
+    [
+     -1799.7,
+     -757.53
+    ],
+    [
+     -1798.83,
+     -758.83
+    ],
+    [
+     -1797.53,
+     -759.7
+    ],
+    [
+     -1796.0,
+     -760.0
+    ]
+   ],
+   "start": 100,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Fascia",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Fascia",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Ledge",
+   "points": [
+    [
+     -1730.0,
+     -560.0
+    ],
+    [
+     -1726.17,
+     -559.24
+    ],
+    [
+     -1722.93,
+     -557.07
+    ],
+    [
+     -1720.76,
+     -553.83
+    ],
+    [
+     -1720.0,
+     -550.0
+    ],
+    [
+     -1720.0,
+     1590.0
+    ],
+    [
+     -1720.76,
+     1593.83
+    ],
+    [
+     -1722.93,
+     1597.07
+    ],
+    [
+     -1726.17,
+     1599.24
+    ],
+    [
+     -1730.0,
+     1600.0
+    ],
+    [
+     -1870.0,
+     1600.0
+    ],
+    [
+     -1873.83,
+     1599.24
+    ],
+    [
+     -1877.07,
+     1597.07
+    ],
+    [
+     -1879.24,
+     1593.83
+    ],
+    [
+     -1880.0,
+     1590.0
+    ],
+    [
+     -1880.0,
+     -550.0
+    ],
+    [
+     -1879.24,
+     -553.83
+    ],
+    [
+     -1877.07,
+     -557.07
+    ],
+    [
+     -1873.83,
+     -559.24
+    ],
+    [
+     -1870.0,
+     -560.0
+    ]
+   ],
+   "start": 1080,
+   "end": 1110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Ledge",
+   "subcategory": "Ledge"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Ledge",
+   "param": "Ledge Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Ledge",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Plinth",
+   "points": [
+    [
+     -1740,
+     -100
+    ],
+    [
+     -1100,
+     -100
+    ],
+    [
+     -1100,
+     1550
+    ],
+    [
+     -1740,
+     1550
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Plinth",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Plinth",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Plinth",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Worktop",
+   "points": [
+    [
+     -1006.0,
+     0.0
+    ],
+    [
+     -1003.7,
+     0.46
+    ],
+    [
+     -1001.76,
+     1.76
+    ],
+    [
+     -1000.46,
+     3.7
+    ],
+    [
+     -1000.0,
+     6.0
+    ],
+    [
+     -1000.0,
+     1594.0
+    ],
+    [
+     -1000.46,
+     1596.3
+    ],
+    [
+     -1001.76,
+     1598.24
+    ],
+    [
+     -1003.7,
+     1599.54
+    ],
+    [
+     -1006.0,
+     1600.0
+    ],
+    [
+     -1754.0,
+     1600.0
+    ],
+    [
+     -1756.3,
+     1599.54
+    ],
+    [
+     -1758.24,
+     1598.24
+    ],
+    [
+     -1759.54,
+     1596.3
+    ],
+    [
+     -1760.0,
+     1594.0
+    ],
+    [
+     -1760.0,
+     6.0
+    ],
+    [
+     -1759.54,
+     3.7
+    ],
+    [
+     -1758.24,
+     1.76
+    ],
+    [
+     -1756.3,
+     0.46
+    ],
+    [
+     -1754.0,
+     0.0
+    ]
+   ],
+   "start": 710,
+   "end": 740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Worktop",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Worktop",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Worktop",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Base Unit",
+   "points": [
+    [
+     -1740,
+     200
+    ],
+    [
+     -1100,
+     200
+    ],
+    [
+     -1100,
+     1550
+    ],
+    [
+     -1740,
+     1550
+    ]
+   ],
+   "start": 100,
+   "end": 710
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Base Unit",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Base Unit",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Base Unit",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Door",
+   "points": [
+    [
+     203,
+     105
+    ],
+    [
+     1547,
+     105
+    ],
+    [
+     1547,
+     705
+    ],
+    [
+     203,
+     705
+    ]
+   ],
+   "start": -1100,
+   "end": -1080,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Door",
+   "subcategory": "Front2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Door",
+   "param": "Front2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Door",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Door Joint",
+   "points": [
+    [
+     870,
+     110
+    ],
+    [
+     880,
+     110
+    ],
+    [
+     880,
+     700
+    ],
+    [
+     870,
+     700
+    ]
+   ],
+   "start": -1080,
+   "end": -1078,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Door Joint",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Door Joint",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Door Joint",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Door Handle 1",
+   "points": [
+    [
+     -1067.0,
+     830.0
+    ],
+    [
+     -1067.17,
+     831.29
+    ],
+    [
+     -1067.67,
+     832.5
+    ],
+    [
+     -1068.46,
+     833.54
+    ],
+    [
+     -1069.5,
+     834.33
+    ],
+    [
+     -1070.71,
+     834.83
+    ],
+    [
+     -1072.0,
+     835.0
+    ],
+    [
+     -1073.29,
+     834.83
+    ],
+    [
+     -1074.5,
+     834.33
+    ],
+    [
+     -1075.54,
+     833.54
+    ],
+    [
+     -1076.33,
+     832.5
+    ],
+    [
+     -1076.83,
+     831.29
+    ],
+    [
+     -1077.0,
+     830.0
+    ],
+    [
+     -1076.83,
+     828.71
+    ],
+    [
+     -1076.33,
+     827.5
+    ],
+    [
+     -1075.54,
+     826.46
+    ],
+    [
+     -1074.5,
+     825.67
+    ],
+    [
+     -1073.29,
+     825.17
+    ],
+    [
+     -1072.0,
+     825.0
+    ],
+    [
+     -1070.71,
+     825.17
+    ],
+    [
+     -1069.5,
+     825.67
+    ],
+    [
+     -1068.46,
+     826.46
+    ],
+    [
+     -1067.67,
+     827.5
+    ],
+    [
+     -1067.17,
+     828.71
+    ]
+   ],
+   "start": 520,
+   "end": 680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Door Handle 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Door Handle 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Door Handle 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Door Handle 2",
+   "points": [
+    [
+     -1067.0,
+     930.0
+    ],
+    [
+     -1067.17,
+     931.29
+    ],
+    [
+     -1067.67,
+     932.5
+    ],
+    [
+     -1068.46,
+     933.54
+    ],
+    [
+     -1069.5,
+     934.33
+    ],
+    [
+     -1070.71,
+     934.83
+    ],
+    [
+     -1072.0,
+     935.0
+    ],
+    [
+     -1073.29,
+     934.83
+    ],
+    [
+     -1074.5,
+     934.33
+    ],
+    [
+     -1075.54,
+     933.54
+    ],
+    [
+     -1076.33,
+     932.5
+    ],
+    [
+     -1076.83,
+     931.29
+    ],
+    [
+     -1077.0,
+     930.0
+    ],
+    [
+     -1076.83,
+     928.71
+    ],
+    [
+     -1076.33,
+     927.5
+    ],
+    [
+     -1075.54,
+     926.46
+    ],
+    [
+     -1074.5,
+     925.67
+    ],
+    [
+     -1073.29,
+     925.17
+    ],
+    [
+     -1072.0,
+     925.0
+    ],
+    [
+     -1070.71,
+     925.17
+    ],
+    [
+     -1069.5,
+     925.67
+    ],
+    [
+     -1068.46,
+     926.46
+    ],
+    [
+     -1067.67,
+     927.5
+    ],
+    [
+     -1067.17,
+     928.71
+    ]
+   ],
+   "start": 520,
+   "end": 680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Door Handle 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Door Handle 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Door Handle 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Return Feature Band",
+   "points": [
+    [
+     -760,
+     820
+    ],
+    [
+     1600,
+     820
+    ],
+    [
+     1600,
+     860
+    ],
+    [
+     -760,
+     860
+    ]
+   ],
+   "start": -1803,
+   "end": -1800,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Return Feature Band",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Return Feature Band",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Return Feature Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
    "name": "End Panel",
    "points": [
     [
@@ -4045,6 +4831,557 @@
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Extension",
+   "points": [
+    [
+     1764.0,
+     -760.0
+    ],
+    [
+     1766.3,
+     -759.54
+    ],
+    [
+     1768.24,
+     -758.24
+    ],
+    [
+     1769.54,
+     -756.3
+    ],
+    [
+     1770.0,
+     -754.0
+    ],
+    [
+     1770.0,
+     -6.0
+    ],
+    [
+     1769.54,
+     -3.7
+    ],
+    [
+     1768.24,
+     -1.76
+    ],
+    [
+     1766.3,
+     -0.46
+    ],
+    [
+     1764.0,
+     0.0
+    ],
+    [
+     1006.0,
+     0.0
+    ],
+    [
+     1003.7,
+     -0.46
+    ],
+    [
+     1001.76,
+     -1.76
+    ],
+    [
+     1000.46,
+     -3.7
+    ],
+    [
+     1000.0,
+     -6.0
+    ],
+    [
+     1000.0,
+     -754.0
+    ],
+    [
+     1000.46,
+     -756.3
+    ],
+    [
+     1001.76,
+     -758.24
+    ],
+    [
+     1003.7,
+     -759.54
+    ],
+    [
+     1006.0,
+     -760.0
+    ]
+   ],
+   "start": 710,
+   "end": 740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Extension",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Extension",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Extension",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Panel Right",
+   "points": [
+    [
+     1770,
+     -800
+    ],
+    [
+     1800,
+     -800
+    ],
+    [
+     1800,
+     0
+    ],
+    [
+     1770,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Panel Right",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Panel Right",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Panel Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Straight Base Unit",
+   "points": [
+    [
+     1100,
+     -620
+    ],
+    [
+     1740,
+     -620
+    ],
+    [
+     1740,
+     -100
+    ],
+    [
+     1100,
+     -100
+    ]
+   ],
+   "start": 100,
+   "end": 710
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Straight Base Unit",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Straight Base Unit",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Straight Base Unit",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Straight Door",
+   "points": [
+    [
+     1737.0,
+     105.0
+    ],
+    [
+     1738.15,
+     105.23
+    ],
+    [
+     1739.12,
+     105.88
+    ],
+    [
+     1739.77,
+     106.85
+    ],
+    [
+     1740.0,
+     108.0
+    ],
+    [
+     1740.0,
+     702.0
+    ],
+    [
+     1739.77,
+     703.15
+    ],
+    [
+     1739.12,
+     704.12
+    ],
+    [
+     1738.15,
+     704.77
+    ],
+    [
+     1737.0,
+     705.0
+    ],
+    [
+     1103.0,
+     705.0
+    ],
+    [
+     1101.85,
+     704.77
+    ],
+    [
+     1100.88,
+     704.12
+    ],
+    [
+     1100.23,
+     703.15
+    ],
+    [
+     1100.0,
+     702.0
+    ],
+    [
+     1100.0,
+     108.0
+    ],
+    [
+     1100.23,
+     106.85
+    ],
+    [
+     1100.88,
+     105.88
+    ],
+    [
+     1101.85,
+     105.23
+    ],
+    [
+     1103.0,
+     105.0
+    ]
+   ],
+   "start": 80,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Straight Door",
+   "subcategory": "Front2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Straight Door",
+   "param": "Front2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Straight Door",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3600x2400_L or 3600x2400_U",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_L/Show 3600x2400_L or 3600x2400_U",
+   "type": "3600x2400_L",
+   "param": "Show 3600x2400_L or 3600x2400_U",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_U/Show 3600x2400_L or 3600x2400_U",
+   "type": "3600x2400_U",
+   "param": "Show 3600x2400_L or 3600x2400_U",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600_Straight/Show 3600x2400_L or 3600x2400_U",
+   "type": "3600_Straight",
+   "param": "Show 3600x2400_L or 3600x2400_U",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Fascia/Visible",
+   "solid": "Return Fascia",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Ledge/Visible",
+   "solid": "Return Ledge",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Plinth/Visible",
+   "solid": "Return Plinth",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Worktop/Visible",
+   "solid": "Return Worktop",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Base Unit/Visible",
+   "solid": "Return Base Unit",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Door/Visible",
+   "solid": "Return Door",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Door Joint/Visible",
+   "solid": "Return Door Joint",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Door Handle 1/Visible",
+   "solid": "Return Door Handle 1",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Door Handle 2/Visible",
+   "solid": "Return Door Handle 2",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Return Feature Band/Visible",
+   "solid": "Return Feature Band",
+   "param": "Show 3600x2400_L or 3600x2400_U"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3600x2400_U",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_L/Show 3600x2400_U",
+   "type": "3600x2400_L",
+   "param": "Show 3600x2400_U",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_U/Show 3600x2400_U",
+   "type": "3600x2400_U",
+   "param": "Show 3600x2400_U",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600_Straight/Show 3600x2400_U",
+   "type": "3600_Straight",
+   "param": "Show 3600x2400_U",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Fascia/Visible",
+   "solid": "Left Return Fascia",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Ledge/Visible",
+   "solid": "Left Return Ledge",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Plinth/Visible",
+   "solid": "Left Return Plinth",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Worktop/Visible",
+   "solid": "Left Return Worktop",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Base Unit/Visible",
+   "solid": "Left Return Base Unit",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Door/Visible",
+   "solid": "Left Return Door",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Door Joint/Visible",
+   "solid": "Left Return Door Joint",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Door Handle 1/Visible",
+   "solid": "Left Return Door Handle 1",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Door Handle 2/Visible",
+   "solid": "Left Return Door Handle 2",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Return Feature Band/Visible",
+   "solid": "Left Return Feature Band",
+   "param": "Show 3600x2400_U"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3600x2400_L or 3600_Straight",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_L/Show 3600x2400_L or 3600_Straight",
+   "type": "3600x2400_L",
+   "param": "Show 3600x2400_L or 3600_Straight",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_U/Show 3600x2400_L or 3600_Straight",
+   "type": "3600x2400_U",
+   "param": "Show 3600x2400_L or 3600_Straight",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600_Straight/Show 3600x2400_L or 3600_Straight",
+   "type": "3600_Straight",
+   "param": "Show 3600x2400_L or 3600_Straight",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Panel/Visible",
+   "solid": "End Panel",
+   "param": "Show 3600x2400_L or 3600_Straight"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3600_Straight",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_L/Show 3600_Straight",
+   "type": "3600x2400_L",
+   "param": "Show 3600_Straight",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600x2400_U/Show 3600_Straight",
+   "type": "3600x2400_U",
+   "param": "Show 3600_Straight",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3600_Straight/Show 3600_Straight",
+   "type": "3600_Straight",
+   "param": "Show 3600_Straight",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Extension/Visible",
+   "solid": "Worktop Extension",
+   "param": "Show 3600_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Panel Right/Visible",
+   "solid": "End Panel Right",
+   "param": "Show 3600_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Straight Base Unit/Visible",
+   "solid": "Straight Base Unit",
+   "param": "Show 3600_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Straight Door/Visible",
+   "solid": "Straight Door",
+   "param": "Show 3600_Straight"
   },
   {
    "op": "add_connector",

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Furniture_Seating_Modular_Lounge",
  "template": "Metric Generic Model.rft",
- "about": "Lounge module modelled as a generic product: powder-coated plinth and feet, upholstered base, 3 seat cushions and inclined back cushions with seams, back shell, front power and USB module. Geometry is drawn at the 1800_Straight type; the other types share it until a parametric pass. Reference: query: furniture seating modular lounge furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+seating+modular+lounge+furniture+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Lounge module modelled as a generic product: powder-coated plinth and feet, upholstered base, 3 seat cushions and inclined back cushions with seams, back shell, front power and USB module. Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: furniture seating modular lounge furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+seating+modular+lounge+furniture+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.hermanmiller.com/products/healthcare/healthcare-lounge-seating/nemschoff-steps-lounge-system/; photo_title: Nemschoff Steps Lounge System (Herman Miller); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -310,6 +310,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "1800_Straight/URL",
+   "type": "1800_Straight",
+   "param": "URL",
+   "value": "https://www.hermanmiller.com/products/healthcare/healthcare-lounge-seating/nemschoff-steps-lounge-system/"
+  },
+  {
    "op": "add_type",
    "name": "1800_Curved"
   },
@@ -377,6 +384,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "1800_Curved/URL",
+   "type": "1800_Curved",
+   "param": "URL",
+   "value": "https://www.hermanmiller.com/products/healthcare/healthcare-lounge-seating/nemschoff-steps-lounge-system/"
+  },
+  {
    "op": "add_subcategory",
    "name": "Plinthm",
    "color": [
@@ -401,9 +415,9 @@
    "op": "add_subcategory",
    "name": "Fab2",
    "color": [
-    91,
-    141,
-    184
+    58,
+    110,
+    165
    ],
    "line_weight_projection": 1
   },
@@ -415,16 +429,16 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Mattress_PU_Blue",
+   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
    "param": "Fab2 Material"
   },
   {
    "op": "add_subcategory",
    "name": "Fab",
    "color": [
-    58,
-    110,
-    165
+    122,
+    128,
+    135
    ],
    "line_weight_projection": 1
   },
@@ -436,7 +450,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "name": "FMC_Fabric_Upholstery_WipeClean_Grey",
    "param": "Fab Material"
   },
   {
@@ -497,11 +511,11 @@
    "points": [
     [
      -900.0,
-     -368
+     -477.8
     ],
     [
      900.0,
-     -368
+     -477.8
     ],
     [
      900.0,
@@ -529,7 +543,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Plinth",
+   "name": "Plinth Straight",
    "points": [
     [
      870.0,
@@ -617,24 +631,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth",
+   "name": "Plinth Straight",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth",
+   "name": "Plinth Straight",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth",
+   "name": "Plinth Straight",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base",
+   "name": "Base Straight",
    "points": [
     [
      880.0,
@@ -722,24 +736,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base",
+   "name": "Base Straight",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Base",
+   "name": "Base Straight",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base",
+   "name": "Base Straight",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion Straight 1",
    "points": [
     [
      -340.0,
@@ -827,24 +841,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion Straight 1",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion Straight 1",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion Straight 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion Straight 2",
    "points": [
     [
      253.3,
@@ -932,24 +946,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion Straight 2",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion Straight 2",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion Straight 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Cushion 3",
+   "name": "Seat Cushion Straight 3",
    "points": [
     [
      846.6,
@@ -1037,24 +1051,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Cushion 3",
+   "name": "Seat Cushion Straight 3",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Cushion 3",
+   "name": "Seat Cushion Straight 3",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Cushion 3",
+   "name": "Seat Cushion Straight 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion Straight 1",
    "points": [
     [
      200,
@@ -1079,24 +1093,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion Straight 1",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion Straight 1",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion Straight 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion Straight 2",
    "points": [
     [
      200,
@@ -1121,24 +1135,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion Straight 2",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion Straight 2",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion Straight 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Cushion 3",
+   "name": "Back Cushion Straight 3",
    "points": [
     [
      200,
@@ -1163,24 +1177,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Cushion 3",
+   "name": "Back Cushion Straight 3",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Back Cushion 3",
+   "name": "Back Cushion Straight 3",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Cushion 3",
+   "name": "Back Cushion Straight 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Shell",
+   "name": "Back Shell Straight",
    "points": [
     [
      890.01,
@@ -1268,24 +1282,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Shell",
+   "name": "Back Shell Straight",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Back Shell",
+   "name": "Back Shell Straight",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Shell",
+   "name": "Back Shell Straight",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seam 1",
+   "name": "Seam Straight 1",
    "points": [
     [
      -302.0,
@@ -1309,24 +1323,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seam 1",
+   "name": "Seam Straight 1",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Seam 1",
+   "name": "Seam Straight 1",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seam 1",
+   "name": "Seam Straight 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seam 2",
+   "name": "Seam Straight 2",
    "points": [
     [
      291.29999999999995,
@@ -1350,24 +1364,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seam 2",
+   "name": "Seam Straight 2",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Seam 2",
+   "name": "Seam Straight 2",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seam 2",
+   "name": "Seam Straight 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot 1",
+   "name": "Foot Straight 1",
    "points": [
     [
      -832.0,
@@ -1471,24 +1485,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot 1",
+   "name": "Foot Straight 1",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Foot 1",
+   "name": "Foot Straight 1",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot 1",
+   "name": "Foot Straight 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot 2",
+   "name": "Foot Straight 2",
    "points": [
     [
      868.0,
@@ -1592,24 +1606,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot 2",
+   "name": "Foot Straight 2",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Foot 2",
+   "name": "Foot Straight 2",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot 2",
+   "name": "Foot Straight 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Back 1",
+   "name": "Foot Back Straight 1",
    "points": [
     [
      -832.0,
@@ -1713,24 +1727,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Back 1",
+   "name": "Foot Back Straight 1",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Back 1",
+   "name": "Foot Back Straight 1",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Back 1",
+   "name": "Foot Back Straight 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Back 2",
+   "name": "Foot Back Straight 2",
    "points": [
     [
      868.0,
@@ -1834,19 +1848,628 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Back 2",
+   "name": "Foot Back Straight 2",
    "subcategory": "Plinthm"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Back 2",
+   "name": "Foot Back Straight 2",
    "param": "Plinthm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Back 2",
+   "name": "Foot Back Straight 2",
    "coarse": false,
    "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Curved",
+   "points": [
+    [
+     832.69,
+     171.91
+    ],
+    [
+     562.46,
+     259.28
+    ],
+    [
+     283.45,
+     312.25
+    ],
+    [
+     0.0,
+     330.0
+    ],
+    [
+     -283.45,
+     312.25
+    ],
+    [
+     -562.46,
+     259.28
+    ],
+    [
+     -832.69,
+     171.91
+    ],
+    [
+     -590.8,
+     -442.17
+    ],
+    [
+     -399.07,
+     -380.18
+    ],
+    [
+     -201.11,
+     -342.59
+    ],
+    [
+     0.0,
+     -330.0
+    ],
+    [
+     201.11,
+     -342.59
+    ],
+    [
+     399.07,
+     -380.18
+    ],
+    [
+     590.8,
+     -442.17
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Curved",
+   "subcategory": "Plinthm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Curved",
+   "param": "Plinthm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Curved",
+   "points": [
+    [
+     877.11,
+     175.53
+    ],
+    [
+     593.21,
+     271.9
+    ],
+    [
+     299.17,
+     330.39
+    ],
+    [
+     0.0,
+     350.0
+    ],
+    [
+     -299.17,
+     330.39
+    ],
+    [
+     -593.21,
+     271.9
+    ],
+    [
+     -877.11,
+     175.53
+    ],
+    [
+     -609.23,
+     -471.18
+    ],
+    [
+     -412.04,
+     -404.25
+    ],
+    [
+     -207.8,
+     -363.62
+    ],
+    [
+     0.0,
+     -350.0
+    ],
+    [
+     207.8,
+     -363.62
+    ],
+    [
+     412.04,
+     -404.25
+    ],
+    [
+     609.23,
+     -471.18
+    ]
+   ],
+   "start": 120,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Curved",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Curved",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Shell Curved",
+   "points": [
+    [
+     877.11,
+     175.53
+    ],
+    [
+     689.22,
+     243.92
+    ],
+    [
+     496.08,
+     295.67
+    ],
+    [
+     299.17,
+     330.39
+    ],
+    [
+     99.98,
+     347.82
+    ],
+    [
+     -99.98,
+     347.82
+    ],
+    [
+     -299.17,
+     330.39
+    ],
+    [
+     -496.08,
+     295.67
+    ],
+    [
+     -689.22,
+     243.92
+    ],
+    [
+     -877.11,
+     175.53
+    ],
+    [
+     -869.46,
+     157.05
+    ],
+    [
+     -683.2,
+     224.84
+    ],
+    [
+     -491.75,
+     276.14
+    ],
+    [
+     -296.56,
+     310.56
+    ],
+    [
+     -99.1,
+     327.84
+    ],
+    [
+     99.1,
+     327.84
+    ],
+    [
+     296.56,
+     310.56
+    ],
+    [
+     491.75,
+     276.14
+    ],
+    [
+     683.2,
+     224.84
+    ],
+    [
+     869.46,
+     157.05
+    ]
+   ],
+   "start": 120,
+   "end": 830
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Shell Curved",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Shell Curved",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Shell Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 1 Curved",
+   "points": [
+    [
+     814.85,
+     49.76
+    ],
+    [
+     644.13,
+     111.34
+    ],
+    [
+     468.83,
+     158.31
+    ],
+    [
+     290.2,
+     190.34
+    ],
+    [
+     213.33,
+     -374.45
+    ],
+    [
+     344.65,
+     -398.0
+    ],
+    [
+     473.52,
+     -432.53
+    ],
+    [
+     599.02,
+     -477.79
+    ]
+   ],
+   "start": 300,
+   "end": 440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 1 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 1 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 1 Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 1 Curved",
+   "points": [
+    [
+     860.29,
+     160.83
+    ],
+    [
+     680.05,
+     225.84
+    ],
+    [
+     494.98,
+     275.43
+    ],
+    [
+     306.38,
+     309.25
+    ],
+    [
+     288.85,
+     180.43
+    ],
+    [
+     466.65,
+     148.55
+    ],
+    [
+     641.14,
+     101.8
+    ],
+    [
+     811.07,
+     40.51
+    ]
+   ],
+   "start": 300,
+   "end": 800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 1 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 1 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 1 Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 2 Curved",
+   "points": [
+    [
+     271.58,
+     192.79
+    ],
+    [
+     90.74,
+     208.09
+    ],
+    [
+     -90.74,
+     208.09
+    ],
+    [
+     -271.58,
+     192.79
+    ],
+    [
+     -199.65,
+     -372.65
+    ],
+    [
+     -66.71,
+     -361.41
+    ],
+    [
+     66.71,
+     -361.41
+    ],
+    [
+     199.65,
+     -372.65
+    ]
+   ],
+   "start": 300,
+   "end": 440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 2 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 2 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 2 Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 2 Curved",
+   "points": [
+    [
+     286.72,
+     311.84
+    ],
+    [
+     95.8,
+     327.98
+    ],
+    [
+     -95.8,
+     327.98
+    ],
+    [
+     -286.72,
+     311.84
+    ],
+    [
+     -270.32,
+     182.87
+    ],
+    [
+     -90.32,
+     198.09
+    ],
+    [
+     90.32,
+     198.09
+    ],
+    [
+     270.32,
+     182.87
+    ]
+   ],
+   "start": 300,
+   "end": 800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 2 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 2 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 2 Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 3 Curved",
+   "points": [
+    [
+     -290.2,
+     190.34
+    ],
+    [
+     -468.83,
+     158.31
+    ],
+    [
+     -644.13,
+     111.34
+    ],
+    [
+     -814.85,
+     49.76
+    ],
+    [
+     -599.02,
+     -477.79
+    ],
+    [
+     -473.52,
+     -432.53
+    ],
+    [
+     -344.65,
+     -398.0
+    ],
+    [
+     -213.33,
+     -374.45
+    ]
+   ],
+   "start": 300,
+   "end": 440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 3 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 3 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 3 Curved",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 3 Curved",
+   "points": [
+    [
+     -306.38,
+     309.25
+    ],
+    [
+     -494.98,
+     275.43
+    ],
+    [
+     -680.05,
+     225.84
+    ],
+    [
+     -860.29,
+     160.83
+    ],
+    [
+     -811.07,
+     40.51
+    ],
+    [
+     -641.14,
+     101.8
+    ],
+    [
+     -466.65,
+     148.55
+    ],
+    [
+     -288.85,
+     180.43
+    ]
+   ],
+   "start": 300,
+   "end": 800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 3 Curved",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 3 Curved",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 3 Curved",
+   "coarse": false,
+   "medium": true,
    "fine": true
   },
   {
@@ -1995,6 +2618,190 @@
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1800_Straight",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Straight/Show 1800_Straight",
+   "type": "1800_Straight",
+   "param": "Show 1800_Straight",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Curved/Show 1800_Straight",
+   "type": "1800_Curved",
+   "param": "Show 1800_Straight",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Straight/Visible",
+   "solid": "Plinth Straight",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Straight/Visible",
+   "solid": "Base Straight",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion Straight 1/Visible",
+   "solid": "Seat Cushion Straight 1",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion Straight 2/Visible",
+   "solid": "Seat Cushion Straight 2",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion Straight 3/Visible",
+   "solid": "Seat Cushion Straight 3",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion Straight 1/Visible",
+   "solid": "Back Cushion Straight 1",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion Straight 2/Visible",
+   "solid": "Back Cushion Straight 2",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion Straight 3/Visible",
+   "solid": "Back Cushion Straight 3",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Shell Straight/Visible",
+   "solid": "Back Shell Straight",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seam Straight 1/Visible",
+   "solid": "Seam Straight 1",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seam Straight 2/Visible",
+   "solid": "Seam Straight 2",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Straight 1/Visible",
+   "solid": "Foot Straight 1",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Straight 2/Visible",
+   "solid": "Foot Straight 2",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back Straight 1/Visible",
+   "solid": "Foot Back Straight 1",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back Straight 2/Visible",
+   "solid": "Foot Back Straight 2",
+   "param": "Show 1800_Straight"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1800_Curved",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Straight/Show 1800_Curved",
+   "type": "1800_Straight",
+   "param": "Show 1800_Curved",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Curved/Show 1800_Curved",
+   "type": "1800_Curved",
+   "param": "Show 1800_Curved",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Curved/Visible",
+   "solid": "Plinth Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Curved/Visible",
+   "solid": "Base Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Shell Curved/Visible",
+   "solid": "Back Shell Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 1 Curved/Visible",
+   "solid": "Seat Cushion 1 Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 1 Curved/Visible",
+   "solid": "Back Cushion 1 Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 2 Curved/Visible",
+   "solid": "Seat Cushion 2 Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 2 Curved/Visible",
+   "solid": "Back Cushion 2 Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 3 Curved/Visible",
+   "solid": "Seat Cushion 3 Curved",
+   "param": "Show 1800_Curved"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 3 Curved/Visible",
+   "solid": "Back Cushion 3 Curved",
+   "param": "Show 1800_Curved"
   },
   {
    "op": "set_type_image",

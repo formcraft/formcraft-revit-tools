@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Furniture_Seating_Corridor_Bench",
  "template": "Metric Generic Model.rft",
- "about": "Bench modelled as a generic product: upholstered vinyl seat pad with piping on a ply board, seat rails, tapered sled leg frames with cross bars and glides. Geometry is drawn at the 1200_Backless type; the other types share it until a parametric pass. Reference: query: furniture seating corridor bench furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+seating+corridor+bench+furniture+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Bench modelled as a generic product: upholstered vinyl seat pad with piping on a ply board, seat rails, tapered sled leg frames with cross bars and glides. Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: furniture seating corridor bench furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+seating+corridor+bench+furniture+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms; photo_title: Kentra Beam Seating for Waiting Rooms; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -310,6 +310,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "1200_Backless/URL",
+   "type": "1200_Backless",
+   "param": "URL",
+   "value": "https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms"
+  },
+  {
    "op": "add_type",
    "name": "1800_Backless"
   },
@@ -375,6 +382,13 @@
    "type": "1800_Backless",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Backless/URL",
+   "type": "1800_Backless",
+   "param": "URL",
+   "value": "https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms"
   },
   {
    "op": "add_subcategory",
@@ -496,19 +510,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -600.0,
+     -900.0,
      -224
     ],
     [
-     600.0,
+     900.0,
      -224
     ],
     [
-     600.0,
+     900.0,
      224
     ],
     [
-     -600.0,
+     -900.0,
      224
     ]
    ],
@@ -529,7 +543,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Seat Pad",
+   "name": "Seat Pad 1200",
    "points": [
     [
      560.0,
@@ -617,24 +631,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Pad",
+   "name": "Seat Pad 1200",
    "subcategory": "Vinyl"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Pad",
+   "name": "Seat Pad 1200",
    "param": "Vinyl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Pad",
+   "name": "Seat Pad 1200",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Board",
+   "name": "Seat Board 1200",
    "points": [
     [
      -585.0,
@@ -658,24 +672,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Board",
+   "name": "Seat Board 1200",
    "subcategory": "Board"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Board",
+   "name": "Seat Board 1200",
    "param": "Board Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Board",
+   "name": "Seat Board 1200",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Rail 1",
+   "name": "Seat Rail 1200 1",
    "points": [
     [
      554.0,
@@ -763,24 +777,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Rail 1",
+   "name": "Seat Rail 1200 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Rail 1",
+   "name": "Seat Rail 1200 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Rail 1",
+   "name": "Seat Rail 1200 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Rail 2",
+   "name": "Seat Rail 1200 2",
    "points": [
     [
      554.0,
@@ -868,24 +882,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Rail 2",
+   "name": "Seat Rail 1200 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Rail 2",
+   "name": "Seat Rail 1200 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Rail 2",
+   "name": "Seat Rail 1200 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Frame 1",
+   "name": "Leg Frame 1200 1",
    "points": [
     [
      -540.0,
@@ -910,24 +924,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Frame 1",
+   "name": "Leg Frame 1200 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Frame 1",
+   "name": "Leg Frame 1200 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Frame 1",
+   "name": "Leg Frame 1200 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Frame 2",
+   "name": "Leg Frame 1200 2",
    "points": [
     [
      -540.0,
@@ -952,24 +966,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Frame 2",
+   "name": "Leg Frame 1200 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Frame 2",
+   "name": "Leg Frame 1200 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Frame 2",
+   "name": "Leg Frame 1200 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Frame Right 1",
+   "name": "Leg Frame Right 1200 1",
    "points": [
     [
      480.0,
@@ -994,24 +1008,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Frame Right 1",
+   "name": "Leg Frame Right 1200 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Frame Right 1",
+   "name": "Leg Frame Right 1200 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Frame Right 1",
+   "name": "Leg Frame Right 1200 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Frame Right 2",
+   "name": "Leg Frame Right 1200 2",
    "points": [
     [
      480.0,
@@ -1036,24 +1050,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Frame Right 2",
+   "name": "Leg Frame Right 1200 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Frame Right 2",
+   "name": "Leg Frame Right 1200 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Frame Right 2",
+   "name": "Leg Frame Right 1200 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Cross Bar 1",
+   "name": "Leg Cross Bar 1200 1",
    "points": [
     [
      -520.0,
@@ -1077,24 +1091,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Cross Bar 1",
+   "name": "Leg Cross Bar 1200 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Cross Bar 1",
+   "name": "Leg Cross Bar 1200 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Cross Bar 1",
+   "name": "Leg Cross Bar 1200 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Cross Bar 2",
+   "name": "Leg Cross Bar 1200 2",
    "points": [
     [
      480.0,
@@ -1118,24 +1132,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Cross Bar 2",
+   "name": "Leg Cross Bar 1200 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Cross Bar 2",
+   "name": "Leg Cross Bar 1200 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Cross Bar 2",
+   "name": "Leg Cross Bar 1200 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glide 1",
+   "name": "Glide 1200 1",
    "points": [
     [
      -494.0,
@@ -1239,24 +1253,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glide 1",
+   "name": "Glide 1200 1",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Glide 1",
+   "name": "Glide 1200 1",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glide 1",
+   "name": "Glide 1200 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glide 2",
+   "name": "Glide 1200 2",
    "points": [
     [
      526.0,
@@ -1360,24 +1374,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glide 2",
+   "name": "Glide 1200 2",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Glide 2",
+   "name": "Glide 1200 2",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glide 2",
+   "name": "Glide 1200 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glide Back 1",
+   "name": "Glide Back 1200 1",
    "points": [
     [
      -494.0,
@@ -1481,24 +1495,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glide Back 1",
+   "name": "Glide Back 1200 1",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Glide Back 1",
+   "name": "Glide Back 1200 1",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glide Back 1",
+   "name": "Glide Back 1200 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glide Back 2",
+   "name": "Glide Back 1200 2",
    "points": [
     [
      526.0,
@@ -1602,24 +1616,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glide Back 2",
+   "name": "Glide Back 1200 2",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Glide Back 2",
+   "name": "Glide Back 1200 2",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glide Back 2",
+   "name": "Glide Back 1200 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Piping Front",
+   "name": "Piping Front 1200",
    "points": [
     [
      -580.0,
@@ -1644,24 +1658,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Piping Front",
+   "name": "Piping Front 1200",
    "subcategory": "Arm"
   },
   {
    "op": "set_material_param",
-   "name": "Piping Front",
+   "name": "Piping Front 1200",
    "param": "Arm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Piping Front",
+   "name": "Piping Front 1200",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Piping Back",
+   "name": "Piping Back 1200",
    "points": [
     [
      -580.0,
@@ -1686,20 +1700,1426 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Piping Back",
+   "name": "Piping Back 1200",
    "subcategory": "Arm"
   },
   {
    "op": "set_material_param",
-   "name": "Piping Back",
+   "name": "Piping Back 1200",
    "param": "Arm Material"
   },
   {
    "op": "set_visibility",
-   "name": "Piping Back",
+   "name": "Piping Back 1200",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Pad 1800",
+   "points": [
+    [
+     860.0,
+     -220.0
+    ],
+    [
+     875.31,
+     -216.96
+    ],
+    [
+     888.28,
+     -208.28
+    ],
+    [
+     896.96,
+     -195.31
+    ],
+    [
+     900.0,
+     -180.0
+    ],
+    [
+     900.0,
+     180.0
+    ],
+    [
+     896.96,
+     195.31
+    ],
+    [
+     888.28,
+     208.28
+    ],
+    [
+     875.31,
+     216.96
+    ],
+    [
+     860.0,
+     220.0
+    ],
+    [
+     -860.0,
+     220.0
+    ],
+    [
+     -875.31,
+     216.96
+    ],
+    [
+     -888.28,
+     208.28
+    ],
+    [
+     -896.96,
+     195.31
+    ],
+    [
+     -900.0,
+     180.0
+    ],
+    [
+     -900.0,
+     -180.0
+    ],
+    [
+     -896.96,
+     -195.31
+    ],
+    [
+     -888.28,
+     -208.28
+    ],
+    [
+     -875.31,
+     -216.96
+    ],
+    [
+     -860.0,
+     -220.0
+    ]
+   ],
+   "start": 400,
+   "end": 460
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Pad 1800",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Pad 1800",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Pad 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Board 1800",
+   "points": [
+    [
+     -885.0,
+     -205
+    ],
+    [
+     885.0,
+     -205
+    ],
+    [
+     885.0,
+     205
+    ],
+    [
+     -885.0,
+     205
+    ]
+   ],
+   "start": 380,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Board 1800",
+   "subcategory": "Board"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Board 1800",
+   "param": "Board Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Board 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Rail 1800 1",
+   "points": [
+    [
+     854.0,
+     -190.0
+    ],
+    [
+     856.3,
+     -189.54
+    ],
+    [
+     858.24,
+     -188.24
+    ],
+    [
+     859.54,
+     -186.3
+    ],
+    [
+     860.0,
+     -184.0
+    ],
+    [
+     860.0,
+     -156.0
+    ],
+    [
+     859.54,
+     -153.7
+    ],
+    [
+     858.24,
+     -151.76
+    ],
+    [
+     856.3,
+     -150.46
+    ],
+    [
+     854.0,
+     -150.0
+    ],
+    [
+     -854.0,
+     -150.0
+    ],
+    [
+     -856.3,
+     -150.46
+    ],
+    [
+     -858.24,
+     -151.76
+    ],
+    [
+     -859.54,
+     -153.7
+    ],
+    [
+     -860.0,
+     -156.0
+    ],
+    [
+     -860.0,
+     -184.0
+    ],
+    [
+     -859.54,
+     -186.3
+    ],
+    [
+     -858.24,
+     -188.24
+    ],
+    [
+     -856.3,
+     -189.54
+    ],
+    [
+     -854.0,
+     -190.0
+    ]
+   ],
+   "start": 340,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Rail 1800 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Rail 1800 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Rail 1800 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Rail 1800 2",
+   "points": [
+    [
+     854.0,
+     150.0
+    ],
+    [
+     856.3,
+     150.46
+    ],
+    [
+     858.24,
+     151.76
+    ],
+    [
+     859.54,
+     153.7
+    ],
+    [
+     860.0,
+     156.0
+    ],
+    [
+     860.0,
+     184.0
+    ],
+    [
+     859.54,
+     186.3
+    ],
+    [
+     858.24,
+     188.24
+    ],
+    [
+     856.3,
+     189.54
+    ],
+    [
+     854.0,
+     190.0
+    ],
+    [
+     -854.0,
+     190.0
+    ],
+    [
+     -856.3,
+     189.54
+    ],
+    [
+     -858.24,
+     188.24
+    ],
+    [
+     -859.54,
+     186.3
+    ],
+    [
+     -860.0,
+     184.0
+    ],
+    [
+     -860.0,
+     156.0
+    ],
+    [
+     -859.54,
+     153.7
+    ],
+    [
+     -858.24,
+     151.76
+    ],
+    [
+     -856.3,
+     150.46
+    ],
+    [
+     -854.0,
+     150.0
+    ]
+   ],
+   "start": 340,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Rail 1800 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Rail 1800 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Rail 1800 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Frame 1800 1",
+   "points": [
+    [
+     -840.0,
+     0
+    ],
+    [
+     -780.0,
+     0
+    ],
+    [
+     -760.0,
+     380
+    ],
+    [
+     -820.0,
+     380
+    ]
+   ],
+   "start": 150,
+   "end": 190,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Frame 1800 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Frame 1800 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Frame 1800 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Frame 1800 2",
+   "points": [
+    [
+     -840.0,
+     0
+    ],
+    [
+     -780.0,
+     0
+    ],
+    [
+     -760.0,
+     380
+    ],
+    [
+     -820.0,
+     380
+    ]
+   ],
+   "start": -190,
+   "end": -150,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Frame 1800 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Frame 1800 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Frame 1800 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Frame Right 1800 1",
+   "points": [
+    [
+     780.0,
+     0
+    ],
+    [
+     840.0,
+     0
+    ],
+    [
+     820.0,
+     380
+    ],
+    [
+     760.0,
+     380
+    ]
+   ],
+   "start": 150,
+   "end": 190,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Frame Right 1800 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Frame Right 1800 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Frame Right 1800 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Frame Right 1800 2",
+   "points": [
+    [
+     780.0,
+     0
+    ],
+    [
+     840.0,
+     0
+    ],
+    [
+     820.0,
+     380
+    ],
+    [
+     760.0,
+     380
+    ]
+   ],
+   "start": -190,
+   "end": -150,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Frame Right 1800 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Frame Right 1800 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Frame Right 1800 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Cross Bar 1800 1",
+   "points": [
+    [
+     -820.0,
+     -190
+    ],
+    [
+     -780.0,
+     -190
+    ],
+    [
+     -780.0,
+     190
+    ],
+    [
+     -820.0,
+     190
+    ]
+   ],
+   "start": 120,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Cross Bar 1800 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Cross Bar 1800 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Cross Bar 1800 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Cross Bar 1800 2",
+   "points": [
+    [
+     780.0,
+     -190
+    ],
+    [
+     820.0,
+     -190
+    ],
+    [
+     820.0,
+     190
+    ],
+    [
+     780.0,
+     190
+    ]
+   ],
+   "start": 120,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Cross Bar 1800 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Cross Bar 1800 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Cross Bar 1800 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide 1800 1",
+   "points": [
+    [
+     -794.0,
+     -170.0
+    ],
+    [
+     -794.55,
+     -165.86
+    ],
+    [
+     -796.14,
+     -162.0
+    ],
+    [
+     -798.69,
+     -158.69
+    ],
+    [
+     -802.0,
+     -156.14
+    ],
+    [
+     -805.86,
+     -154.55
+    ],
+    [
+     -810.0,
+     -154.0
+    ],
+    [
+     -814.14,
+     -154.55
+    ],
+    [
+     -818.0,
+     -156.14
+    ],
+    [
+     -821.31,
+     -158.69
+    ],
+    [
+     -823.86,
+     -162.0
+    ],
+    [
+     -825.45,
+     -165.86
+    ],
+    [
+     -826.0,
+     -170.0
+    ],
+    [
+     -825.45,
+     -174.14
+    ],
+    [
+     -823.86,
+     -178.0
+    ],
+    [
+     -821.31,
+     -181.31
+    ],
+    [
+     -818.0,
+     -183.86
+    ],
+    [
+     -814.14,
+     -185.45
+    ],
+    [
+     -810.0,
+     -186.0
+    ],
+    [
+     -805.86,
+     -185.45
+    ],
+    [
+     -802.0,
+     -183.86
+    ],
+    [
+     -798.69,
+     -181.31
+    ],
+    [
+     -796.14,
+     -178.0
+    ],
+    [
+     -794.55,
+     -174.14
+    ]
+   ],
+   "start": -0.1,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide 1800 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide 1800 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide 1800 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide 1800 2",
+   "points": [
+    [
+     826.0,
+     -170.0
+    ],
+    [
+     825.45,
+     -165.86
+    ],
+    [
+     823.86,
+     -162.0
+    ],
+    [
+     821.31,
+     -158.69
+    ],
+    [
+     818.0,
+     -156.14
+    ],
+    [
+     814.14,
+     -154.55
+    ],
+    [
+     810.0,
+     -154.0
+    ],
+    [
+     805.86,
+     -154.55
+    ],
+    [
+     802.0,
+     -156.14
+    ],
+    [
+     798.69,
+     -158.69
+    ],
+    [
+     796.14,
+     -162.0
+    ],
+    [
+     794.55,
+     -165.86
+    ],
+    [
+     794.0,
+     -170.0
+    ],
+    [
+     794.55,
+     -174.14
+    ],
+    [
+     796.14,
+     -178.0
+    ],
+    [
+     798.69,
+     -181.31
+    ],
+    [
+     802.0,
+     -183.86
+    ],
+    [
+     805.86,
+     -185.45
+    ],
+    [
+     810.0,
+     -186.0
+    ],
+    [
+     814.14,
+     -185.45
+    ],
+    [
+     818.0,
+     -183.86
+    ],
+    [
+     821.31,
+     -181.31
+    ],
+    [
+     823.86,
+     -178.0
+    ],
+    [
+     825.45,
+     -174.14
+    ]
+   ],
+   "start": -0.1,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide 1800 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide 1800 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide 1800 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide Back 1800 1",
+   "points": [
+    [
+     -794.0,
+     170.0
+    ],
+    [
+     -794.55,
+     174.14
+    ],
+    [
+     -796.14,
+     178.0
+    ],
+    [
+     -798.69,
+     181.31
+    ],
+    [
+     -802.0,
+     183.86
+    ],
+    [
+     -805.86,
+     185.45
+    ],
+    [
+     -810.0,
+     186.0
+    ],
+    [
+     -814.14,
+     185.45
+    ],
+    [
+     -818.0,
+     183.86
+    ],
+    [
+     -821.31,
+     181.31
+    ],
+    [
+     -823.86,
+     178.0
+    ],
+    [
+     -825.45,
+     174.14
+    ],
+    [
+     -826.0,
+     170.0
+    ],
+    [
+     -825.45,
+     165.86
+    ],
+    [
+     -823.86,
+     162.0
+    ],
+    [
+     -821.31,
+     158.69
+    ],
+    [
+     -818.0,
+     156.14
+    ],
+    [
+     -814.14,
+     154.55
+    ],
+    [
+     -810.0,
+     154.0
+    ],
+    [
+     -805.86,
+     154.55
+    ],
+    [
+     -802.0,
+     156.14
+    ],
+    [
+     -798.69,
+     158.69
+    ],
+    [
+     -796.14,
+     162.0
+    ],
+    [
+     -794.55,
+     165.86
+    ]
+   ],
+   "start": -0.1,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide Back 1800 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide Back 1800 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide Back 1800 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide Back 1800 2",
+   "points": [
+    [
+     826.0,
+     170.0
+    ],
+    [
+     825.45,
+     174.14
+    ],
+    [
+     823.86,
+     178.0
+    ],
+    [
+     821.31,
+     181.31
+    ],
+    [
+     818.0,
+     183.86
+    ],
+    [
+     814.14,
+     185.45
+    ],
+    [
+     810.0,
+     186.0
+    ],
+    [
+     805.86,
+     185.45
+    ],
+    [
+     802.0,
+     183.86
+    ],
+    [
+     798.69,
+     181.31
+    ],
+    [
+     796.14,
+     178.0
+    ],
+    [
+     794.55,
+     174.14
+    ],
+    [
+     794.0,
+     170.0
+    ],
+    [
+     794.55,
+     165.86
+    ],
+    [
+     796.14,
+     162.0
+    ],
+    [
+     798.69,
+     158.69
+    ],
+    [
+     802.0,
+     156.14
+    ],
+    [
+     805.86,
+     154.55
+    ],
+    [
+     810.0,
+     154.0
+    ],
+    [
+     814.14,
+     154.55
+    ],
+    [
+     818.0,
+     156.14
+    ],
+    [
+     821.31,
+     158.69
+    ],
+    [
+     823.86,
+     162.0
+    ],
+    [
+     825.45,
+     165.86
+    ]
+   ],
+   "start": -0.1,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide Back 1800 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide Back 1800 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide Back 1800 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Piping Front 1800",
+   "points": [
+    [
+     -880.0,
+     425
+    ],
+    [
+     880.0,
+     425
+    ],
+    [
+     880.0,
+     435
+    ],
+    [
+     -880.0,
+     435
+    ]
+   ],
+   "start": 220,
+   "end": 224,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Piping Front 1800",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Piping Front 1800",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Piping Front 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Piping Back 1800",
+   "points": [
+    [
+     -880.0,
+     425
+    ],
+    [
+     880.0,
+     425
+    ],
+    [
+     880.0,
+     435
+    ],
+    [
+     -880.0,
+     435
+    ]
+   ],
+   "start": -224,
+   "end": -220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Piping Back 1800",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Piping Back 1800",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Piping Back 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Backless",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Backless/Show 1200_Backless",
+   "type": "1200_Backless",
+   "param": "Show 1200_Backless",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Backless/Show 1200_Backless",
+   "type": "1800_Backless",
+   "param": "Show 1200_Backless",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Pad 1200/Visible",
+   "solid": "Seat Pad 1200",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Board 1200/Visible",
+   "solid": "Seat Board 1200",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Rail 1200 1/Visible",
+   "solid": "Seat Rail 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Rail 1200 2/Visible",
+   "solid": "Seat Rail 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame 1200 1/Visible",
+   "solid": "Leg Frame 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame 1200 2/Visible",
+   "solid": "Leg Frame 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame Right 1200 1/Visible",
+   "solid": "Leg Frame Right 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame Right 1200 2/Visible",
+   "solid": "Leg Frame Right 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Cross Bar 1200 1/Visible",
+   "solid": "Leg Cross Bar 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Cross Bar 1200 2/Visible",
+   "solid": "Leg Cross Bar 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide 1200 1/Visible",
+   "solid": "Glide 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide 1200 2/Visible",
+   "solid": "Glide 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide Back 1200 1/Visible",
+   "solid": "Glide Back 1200 1",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide Back 1200 2/Visible",
+   "solid": "Glide Back 1200 2",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Piping Front 1200/Visible",
+   "solid": "Piping Front 1200",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Piping Back 1200/Visible",
+   "solid": "Piping Back 1200",
+   "param": "Show 1200_Backless"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1800_Backless",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Backless/Show 1800_Backless",
+   "type": "1200_Backless",
+   "param": "Show 1800_Backless",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Backless/Show 1800_Backless",
+   "type": "1800_Backless",
+   "param": "Show 1800_Backless",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Pad 1800/Visible",
+   "solid": "Seat Pad 1800",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Board 1800/Visible",
+   "solid": "Seat Board 1800",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Rail 1800 1/Visible",
+   "solid": "Seat Rail 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Rail 1800 2/Visible",
+   "solid": "Seat Rail 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame 1800 1/Visible",
+   "solid": "Leg Frame 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame 1800 2/Visible",
+   "solid": "Leg Frame 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame Right 1800 1/Visible",
+   "solid": "Leg Frame Right 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Frame Right 1800 2/Visible",
+   "solid": "Leg Frame Right 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Cross Bar 1800 1/Visible",
+   "solid": "Leg Cross Bar 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Cross Bar 1800 2/Visible",
+   "solid": "Leg Cross Bar 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide 1800 1/Visible",
+   "solid": "Glide 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide 1800 2/Visible",
+   "solid": "Glide 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide Back 1800 1/Visible",
+   "solid": "Glide Back 1800 1",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glide Back 1800 2/Visible",
+   "solid": "Glide Back 1800 2",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Piping Front 1800/Visible",
+   "solid": "Piping Front 1800",
+   "param": "Show 1800_Backless"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Piping Back 1800/Visible",
+   "solid": "Piping Back 1800",
+   "param": "Show 1800_Backless"
   },
   {
    "op": "set_type_image",
