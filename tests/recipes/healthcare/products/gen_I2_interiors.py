@@ -213,6 +213,10 @@ def typed(fn, spec):
             q = dict(q); q['n'] = f"{q['n']} {tag}"; q['only'] = [tn]; out.append(q)
     return out
 
+def only(parts, types):
+    for q in parts: q['only'] = list(types)
+    return parts
+
 # ---------------------------------------------------------------- product builder
 OUT = []
 def product(fam, desc, ifc, types, materials, parts, values, about, connectors=(), clearances=(), type_values=None, template=None, drawn=None):
@@ -472,22 +476,26 @@ product(fam, "Bedside locker 500 x 450 x 850, drawer over cupboard, raised-lip w
 # 11 Waiting beam seating 3/4/5 seats, pitch 640
 fam = "FMC_I_Furniture_Seating_Waiting_Beam"
 pitch = 640
-def beam_seating(n):
-    L = n * pitch; x0 = -L / 2
-    return [BX("Beam", [x0 - 40, -60, 380, -x0 + 40, 20, 440], 'frame', r=8),
-     BX("Leg", [x0 + 180, -40, 40, x0 + 240, 0, 380], 'frame', r=8, rep=(2, L - 420, 0, 0)),
-     BX("Leg Foot", [x0 + 160, -320, 0, x0 + 260, 280, 40], 'frame', r=12, rep=(2, L - 420, 0, 0)),
-     CZ("Glide", [x0 + 210, -290], 18, [-0.1, 4], 'rubber', lod='f', rep=(2, L - 420, 0, 0)),
-     CZ("Glide Back", [x0 + 210, 250], 18, [-0.1, 4], 'rubber', lod='f', rep=(2, L - 420, 0, 0)),
-     BX("Seat Bracket", [x0 + pitch / 2 - 30, -300, 440, x0 + pitch / 2 + 30, 260, 455], 'frame', rep=(n, pitch, 0, 0)),
-     RT("Seat Shell", [[-330, 455], [260, 455], [260, 470], [-330, 470], [-340, 465]], [x0 + 30, x0 + pitch - 30], 'shell', rep=(n, pitch, 0, 0)),
-     BX("Seat Pad", [x0 + 45, -320, 470, x0 + pitch - 45, 250, 510], 'vinyl', r=40, rep=(n, pitch, 0, 0)),
-     BX("Back Strut", [x0 + pitch / 2 - 25, 230, 455, x0 + pitch / 2 + 25, 260, 560], 'frame', rep=(n, pitch, 0, 0)),
-     RT("Back Shell", [[250, 540], [290, 540], [340, 900], [300, 900]], [x0 + 30, x0 + pitch - 30], 'shell', rep=(n, pitch, 0, 0)),
-     RT("Back Pad", [[215, 600], [250, 560], [300, 880], [265, 890]], [x0 + 50, x0 + pitch - 50], 'vinyl', rep=(n, pitch, 0, 0)),
-     BX("Arm Post", [x0 - 15, -260, 455, x0 + 15, -220, 640], 'frame', rep=(n + 1, pitch, 0, 0)),
-     BX("Arm Pad", [x0 - 25, -300, 640, x0 + 25, 120, 670], 'arm', r=20, rep=(n + 1, pitch, 0, 0))]
-P = typed(beam_seating, {f"{k * pitch}_{k}Seat": (f"{k}S", k) for k in (3, 4, 5)})
+T3, T4, T5 = "1920_3Seat", "2560_4Seat", "3200_5Seat"
+def bs_seat(i):   # seat i (0-based), origin at the left end of the beam
+    x0 = i * pitch
+    return [BX(f"Seat Bracket {i + 1}", [x0 + pitch / 2 - 30, -300, 440, x0 + pitch / 2 + 30, 260, 455], 'frame'),
+            RT(f"Seat Shell {i + 1}", [[-330, 455], [260, 455], [260, 470], [-330, 470], [-340, 465]], [x0 + 30, x0 + pitch - 30], 'shell'),
+            BX(f"Seat Pad {i + 1}", [x0 + 45, -320, 470, x0 + pitch - 45, 250, 510], 'vinyl', r=40),
+            BX(f"Back Strut {i + 1}", [x0 + pitch / 2 - 25, 230, 455, x0 + pitch / 2 + 25, 260, 560], 'frame'),
+            RT(f"Back Shell {i + 1}", [[250, 540], [290, 540], [340, 900], [300, 900]], [x0 + 30, x0 + pitch - 30], 'shell'),
+            RT(f"Back Pad {i + 1}", [[215, 600], [250, 560], [300, 880], [265, 890]], [x0 + 50, x0 + pitch - 50], 'vinyl')]
+def bs_arm(i):
+    x0 = i * pitch
+    return [BX(f"Arm Post {i + 1}", [x0 - 15, -260, 455, x0 + 15, -220, 640], 'frame'), BX(f"Arm Pad {i + 1}", [x0 - 25, -300, 640, x0 + 25, 120, 670], 'arm', r=20)]
+def bs_leg(x, tag):
+    return [BX(f"Leg {tag}", [x - 30, -40, 40, x + 30, 0, 380], 'frame', r=8), BX(f"Leg Foot {tag}", [x - 50, -320, 0, x + 50, 280, 40], 'frame', r=12),
+            CZ(f"Glide {tag}", [x, -290], 18, [-0.1, 4], 'rubber', lod='f'), CZ(f"Glide Back {tag}", [x, 250], 18, [-0.1, 4], 'rubber', lod='f')]
+P = bs_leg(210, "Left") + sum((bs_seat(i) for i in range(3)), []) + sum((bs_arm(i) for i in range(4)), [])
+P += only(bs_seat(3) + bs_arm(4), [T4, T5]) + only(bs_seat(4) + bs_arm(5), [T5])
+for n, t in ((3, T3), (4, T4), (5, T5)):
+    L = n * pitch
+    P += only([BX(f"Beam {n}S", [-40, -60, 380, L + 40, 20, 440], 'frame', r=8)] + bs_leg(L - 210, f"Right {n}S"), [t])
 types = [{"name": f"{k * pitch}_{k}Seat", "desc": f"Beam seating, {k} seats at {pitch} mm pitch, antimicrobial vinyl pads, steel beam on 2 T-legs"} for k in (3, 4, 5)]
 product(fam, "Waiting-area beam seating, seats at 640 mm pitch with arms between, antimicrobial vinyl seat and back pads on moulded shells, steel beam on 2 T-legs",
         "IfcFurniture", types,
@@ -495,7 +503,7 @@ product(fam, "Waiting-area beam seating, seats at 640 mm pitch with arms between
         {"Seat pitch 640 mm": A(640, "typical beam seating"), "Seat height 470 mm, overall height 900 mm": A("470/900", "typical beam seating; BS EN 16139"),
          "Length 1920 / 2560 / 3200 mm": A("1920/2560/3200", "seats x pitch")},
         "Beam seating modelled as a generic product: powder-coated beam on 2 T-legs with glides, seat brackets, moulded seat and back shells, vinyl seat and back pads, "
-        "arm posts with pads between seats.", drawn="1920_3Seat")
+        "arm posts with pads between seats. Origin at the left end of the beam; seats 1-3 are shared, seats 4 and 5, the beam and the right leg are per type.", drawn="1920_3Seat")
 
 # 12 Corridor bench, backless 1200/1800
 fam = "FMC_I_Furniture_Seating_Corridor_Bench"
@@ -758,9 +766,6 @@ P += [BX("Accessible Top", [-1800, -900, 730, -900, 0, 760], 'ledge', r=10),
       FB("Hearing Loop Sign", [-860, -803, 900, -760, -800, 980], 'white', r=6, lod='f'),
       FB("Fascia Feature Band", [-900, -803, 820, 1800, -800, 860], 'blue', lod='f'),
       RT("Return Feature Band", [[-760, 820], [1600, 820], [1600, 860], [-760, 860]], [1800, 1803], 'blue', lod='f')]
-def only(parts, types):
-    for q in parts: q['only'] = list(types)
-    return parts
 def nurse_return(sg, pre):
     """Return leg along +y at the right (sg = 1) or left (sg = -1) end; ledge on the public (outer) side."""
     def mx(at): return [min(sg * at[0], sg * at[3]), at[1], at[2], max(sg * at[0], sg * at[3]), at[4], at[5]]
