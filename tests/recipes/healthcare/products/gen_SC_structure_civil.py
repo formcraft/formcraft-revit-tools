@@ -278,7 +278,8 @@ def rc_beam():
 
 def rc_lbeam():
     L = 4000
-    parts = [RT("Beam", [[-115, -580], [-95, -600], [95, -600], [115, -580], [115, -150], [700, -150], [700, 0], [-115, 0]], -L / 2, L / 2, 'conc'),
+    parts = [RT("Beam Web", [[-115, -580], [-95, -600], [95, -600], [115, -580], [115, 0], [-115, 0]], -L / 2, L / 2, 'conc'),
+             RT("Beam Flange", [[115, -150], [700, -150], [700, 0], [115, 0]], -L / 2, L / 2, 'conc'),
              RT("Drip Nib", [[-115, -600], [-95, -600], [-95, -615], [-115, -615]], -L / 2, L / 2, 'conc', lod='f'),
              CY("Tie Hole Plug", [-1500, -375], 12, -116, -110, 'mortar', lod='f', rep=(4, 1000, 0, 0), seg=12)]
     prod('FMC_S_StrFraming_RC_LBeam_Edge', 'Reinforced concrete edge L-beam: downstand at the slab edge with the integral slab flange, drip nib on the outer soffit', 'IfcBeam',
@@ -377,16 +378,25 @@ def pad_footing():
          "Pad footing with top at z = 0 (the column base): pad, blinding, grid setting-out marks (Fine). Depth and reinforcement by the engineer.")
 
 def pile_cap():
-    s = 1350
-    parts = [PR("Cap", crect(-1050, -1050, 1050, 1050, 25), -900, 0, 'conc'), B("Blinding", [-1100, -1100, -975, 1100, 1100, -900], 'blind')]
-    for i, (x, y) in enumerate(((-s / 2, -s / 2), (s / 2, -s / 2), (-s / 2, s / 2), (s / 2, s / 2))):
-        parts.append(CZ(f"Pile {i + 1}", [x, y], 225, -2900, -825, 'conc', seg=32))
-        parts.append(T(f"Pile Cut-off Ring {i + 1}", 'z', [x, y], ring(225, 226, -1000, -975), 'mortar', lod='f', seg=32))
+    s, h3 = 1350, 1350 * math.sqrt(3) / 2
+    tri = [[-1050, -h3 / 3 - 375], [1050, -h3 / 3 - 375], [1050, -h3 / 3 + 150], [350, 2 * h3 / 3 + 375], [-350, 2 * h3 / 3 + 375], [-1050, -h3 / 3 + 150]]
+    layouts = {"2-Pile_RC": ([(-s / 2, 0), (s / 2, 0)], crect(-1050, -375, 1050, 375, 25), [-1100, -425, 1100, 425]),
+               "3-Pile_RC": ([(-s / 2, -h3 / 3), (s / 2, -h3 / 3), (0, 2 * h3 / 3)], tri, None),
+               "4-Pile_RC": ([(-s / 2, -s / 2), (s / 2, -s / 2), (-s / 2, s / 2), (s / 2, s / 2)], crect(-1050, -1050, 1050, 1050, 25), [-1100, -1100, 1100, 1100])}
+    parts = []
+    for tn, (piles, cap, bl) in layouts.items():
+        k = tn.split('-')[0]
+        parts.append(dict(PR(f"Cap {k}P", cap, -900, 0, 'conc'), only=[tn]))
+        bpts = [[x * 1.05, y * 1.05] for x, y in cap] if bl is None else [[bl[0], bl[1]], [bl[2], bl[1]], [bl[2], bl[3]], [bl[0], bl[3]]]
+        parts.append(dict(PR(f"Blinding {k}P", bpts, -975, -900, 'blind'), only=[tn]))
+        for i, (x, y) in enumerate(piles):
+            parts.append(dict(CZ(f"Pile {k}P {i + 1}", [round(x, 1), round(y, 1)], 225, -2900, -825, 'conc', seg=32), only=[tn]))
+            parts.append(dict(T(f"Pile Cut-off Ring {k}P {i + 1}", 'z', [round(x, 1), round(y, 1)], ring(225, 226, -1000, -975), 'mortar', lod='f', seg=32), only=[tn]))
     prod('FMC_S_StrFoundation_PileCap', 'Reinforced concrete pile cap with chamfered corners on blinding, with bored pile stubs', 'IfcFooting',
          [{"name": "2-Pile_RC", "desc": "2-pile cap"}, {"name": "3-Pile_RC", "desc": "3-pile cap"}, {"name": "4-Pile_RC", "desc": "4-pile cap"}], parts,
          {"4-pile cap 2100 x 2100 x 900 (geometry)": A("2100x2100x900", ENG), "Piles 450 dia at 3D = 1350 mm": A("450 at 1350", ENG + "; spacing 3 x diameter"),
           "Edge 150 mm beyond pile face": A(150, "typical practice"), "Pile embedment 75 mm": A(75, "typical practice")},
-         "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Geometry shows the 4-pile type; 2- and 3-pile layouts per the engineer.")
+         "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Each type carries its own cap and piles (Show <type> parameters): 2-pile rectangular, 3-pile triangular with cut corners, 4-pile square.")
 
 def bored_pile():
     r, Lp = 225, 6000
@@ -829,18 +839,20 @@ def kerb():
     S = [[-62.5, -130], [62.5, -130], [62.5, 125], [-12.5, 125], [-62.5, 25]]
     D = [[-62.5, -130], [62.5, -130], [62.5, 20], [-37.5, 20], [-62.5, -5]]
     parts = [RT("Straight Kerb", S, -1830, -920, 'kerb', rep=(2, 915, 0, 0)),
-             FR("Transition Kerb", [[0, -130], [910, -130], [910, 20], [0, 125]], -62.5, 62.5, 'kerb'),
-             RT("Dropped Kerb", D, 915, 1825, 'kerb'),
+             dict(RT("Straight Kerb Run", S, 0, 910, 'kerb', rep=(2, 915, 0, 0)), only=["125x255_Straight"]),
+             dict(FR("Transition Kerb", [[0, -130], [910, -130], [910, 20], [0, 125]], -62.5, 62.5, 'kerb'), only=["125x255_Dropped"]),
+             dict(RT("Dropped Kerb", D, 915, 1825, 'kerb'), only=["125x255_Dropped"]),
              B("Concrete Bed", [-1830, -150, -280, 1825, 212.5, -130], 'blind'),
              RT("Concrete Haunch", [[62.5, -130], [212.5, -130], [62.5, 20]], -1830, 1825, 'blind'),
              RT("Joint Mortar", [[-62.5, -130], [62.5, -130], [62.5, 125], [-62.5, 125]], -920, -915, 'mortar', lod='f'),
              RT("Joint Mortar 2", [[-62.5, -130], [62.5, -130], [62.5, 125], [-62.5, 125]], -5, 0, 'mortar', lod='f'),
-             RT("Joint Mortar 3", [[-62.5, -130], [62.5, -130], [62.5, 20], [-62.5, 20]], 910, 915, 'mortar', lod='f')]
+             dict(RT("Joint Mortar 3", [[-62.5, -130], [62.5, -130], [62.5, 20], [-62.5, 20]], 910, 915, 'mortar', lod='f'), only=["125x255_Dropped"]),
+             dict(RT("Joint Mortar 4", [[-62.5, -130], [62.5, -130], [62.5, 125], [-62.5, 125]], 910, 915, 'mortar', lod='f'), only=["125x255_Straight"])]
     prod('FMC_C_SiteFurniture_Kerb_Precast', 'Precast concrete half-battered kerb on a concrete bed and haunch, with transition and dropped kerb for crossings', 'IfcBuildingElementProxy',
          [{"name": "125x255_Straight", "desc": "half-battered kerb 125 x 255, 125 upstand"}, {"name": "125x255_Dropped", "desc": "dropped kerb, 25 upstand, with transitions"}], parts,
          {"Kerb 125 x 255 x 915 mm, HB2 profile": A("125x255x915", "typical BS EN 1340 HB2"), "Upstand 125 mm, dropped 25 mm": A("125 / 25", "typical; accessible crossing max 6 mm in some codes, designer to confirm"),
           "Bed 150 mm C15 with haunch": A(150, "typical")},
-         "Road at z = 0, run along x: two straight kerbs, a transition kerb and a dropped kerb with mortar joints (Fine), concrete bed and back haunch. Tactile paving is the footway's family.")
+         "Road at z = 0, run along x: the Straight type shows four straight kerbs, the Dropped type two straight, a transition and a dropped kerb (Show <type> parameters), mortar joints (Fine), concrete bed and back haunch. Tactile paving is the footway's family.")
 
 def speed_hump():
     pts = [[round(-1850 + 3700 * k / 24, 1), round(75 * (1 - math.cos(2 * math.pi * k / 24)) / 2, 2)] for k in range(25)]
@@ -1013,6 +1025,7 @@ if __name__ == '__main__':
     for f in BUILD: f()
     assert {p['family'] for p in P} == set(RECS), set(RECS) - {p['family'] for p in P}
     json.dump(NEEDED, open(os.path.join(HERE, 'batches', 'SC_structure_civil.materials_needed.json'), 'w'), indent=1)
+    _hangs, CEILING = fp.hangs, {'FMC_S_StrFraming_Steel_Unistrut_PendantSupport'}
     out = []
     for prod in P:
         if only and not any(s in prod['family'] for s in only): continue
@@ -1021,6 +1034,10 @@ if __name__ == '__main__':
         json.dump(prod, open(os.path.join(HERE, prod['family'] + '.product.json'), 'w'), indent=1)
         r = fp.compile_product(prod)
         json.dump(r, open(os.path.join(HERE, prod['family'] + '.recipe.json'), 'w'), indent=1)
+        # fmc_parts views anything at or below z = 0 from below (a ceiling product); below-ground items (top at ground,
+        # z = 0) and beams (top of steel at z = 0) are seen from above here. Only the pendant frame truly hangs.
+        fp.hangs = (lambda T, f=prod['family']: _hangs(T) if f in CEILING else False)
+        if prod['family'] == 'FMC_S_StrFoundation_PileCap': prod['_render_type'] = '4-Pile_RC'
         fp.render(prod, os.path.join(HERE, prod['family'] + '.preview.png'))
         fp.render_type_image(prod, os.path.join(HERE, prod['family'] + '.png'), size=600)
         out.append((prod['family'], n, len(r['ops'])))

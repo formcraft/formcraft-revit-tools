@@ -1048,6 +1048,8 @@ def check(prod):
     for k, v in prod['materials'].items(): assert v in KIT, v
     assert 2 <= len(prod['values']) <= 5, prod['family']
     for p in parts: assert p['mat'] in prod['materials'], (prod['family'], p['n'])
+    for c in prod.get('connectors', []): assert c['part'] in names, (prod['family'], c['part'])
+    assert prod['keynote'] and prod['desc'] and prod['about']
     return len(parts)
 
 KIT = set(open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read().split())

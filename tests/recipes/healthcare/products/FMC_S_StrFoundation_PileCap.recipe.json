@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFoundation_PileCap",
  "template": "Metric Generic Model.rft",
- "about": "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Geometry shows the 4-pile type; 2- and 3-pile layouts per the engineer. Reference: query: str foundation pile cap structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+pile+cap+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Each type carries its own cap and piles (Show <type> parameters): 2-pile rectangular, 3-pile triangular with cut corners, 4-pile square. Reference: query: str foundation pile cap structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+pile+cap+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review",
  "ops": [
   {
    "op": "set_category",
@@ -569,20 +569,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1100,
+     -1102.5,
      -1100
     ],
     [
-     1100,
+     1102.5,
      -1100
     ],
     [
-     1100,
-     1100
+     1102.5,
+     1212.1
     ],
     [
-     -1100,
-     1100
+     -1102.5,
+     1212.1
     ]
    ],
    "start": -2900,
@@ -602,7 +602,1168 @@
   },
   {
    "op": "extrusion",
-   "name": "Cap",
+   "name": "Cap 2P",
+   "points": [
+    [
+     -1025,
+     -375
+    ],
+    [
+     1025,
+     -375
+    ],
+    [
+     1050,
+     -350
+    ],
+    [
+     1050,
+     350
+    ],
+    [
+     1025,
+     375
+    ],
+    [
+     -1025,
+     375
+    ],
+    [
+     -1050,
+     350
+    ],
+    [
+     -1050,
+     -350
+    ]
+   ],
+   "start": -900,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cap 2P",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap 2P",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap 2P",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding 2P",
+   "points": [
+    [
+     -1100,
+     -425
+    ],
+    [
+     1100,
+     -425
+    ],
+    [
+     1100,
+     425
+    ],
+    [
+     -1100,
+     425
+    ]
+   ],
+   "start": -975,
+   "end": -900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding 2P",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding 2P",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding 2P",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pile 2P 1",
+   "points": [
+    [
+     -450.0,
+     0.0
+    ],
+    [
+     -454.32,
+     43.9
+    ],
+    [
+     -467.13,
+     86.1
+    ],
+    [
+     -487.92,
+     125.0
+    ],
+    [
+     -515.9,
+     159.1
+    ],
+    [
+     -550.0,
+     187.08
+    ],
+    [
+     -588.9,
+     207.87
+    ],
+    [
+     -631.1,
+     220.68
+    ],
+    [
+     -675.0,
+     225.0
+    ],
+    [
+     -718.9,
+     220.68
+    ],
+    [
+     -761.1,
+     207.87
+    ],
+    [
+     -800.0,
+     187.08
+    ],
+    [
+     -834.1,
+     159.1
+    ],
+    [
+     -862.08,
+     125.0
+    ],
+    [
+     -882.87,
+     86.1
+    ],
+    [
+     -895.68,
+     43.9
+    ],
+    [
+     -900.0,
+     0.0
+    ],
+    [
+     -895.68,
+     -43.9
+    ],
+    [
+     -882.87,
+     -86.1
+    ],
+    [
+     -862.08,
+     -125.0
+    ],
+    [
+     -834.1,
+     -159.1
+    ],
+    [
+     -800.0,
+     -187.08
+    ],
+    [
+     -761.1,
+     -207.87
+    ],
+    [
+     -718.9,
+     -220.68
+    ],
+    [
+     -675.0,
+     -225.0
+    ],
+    [
+     -631.1,
+     -220.68
+    ],
+    [
+     -588.9,
+     -207.87
+    ],
+    [
+     -550.0,
+     -187.08
+    ],
+    [
+     -515.9,
+     -159.1
+    ],
+    [
+     -487.92,
+     -125.0
+    ],
+    [
+     -467.13,
+     -86.1
+    ],
+    [
+     -454.32,
+     -43.9
+    ]
+   ],
+   "start": -2900,
+   "end": -825
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pile 2P 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile 2P 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile 2P 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pile Cut-off Ring 2P 1",
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "axis_at": [
+    -675.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile Cut-off Ring 2P 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile Cut-off Ring 2P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pile 2P 2",
+   "points": [
+    [
+     900.0,
+     0.0
+    ],
+    [
+     895.68,
+     43.9
+    ],
+    [
+     882.87,
+     86.1
+    ],
+    [
+     862.08,
+     125.0
+    ],
+    [
+     834.1,
+     159.1
+    ],
+    [
+     800.0,
+     187.08
+    ],
+    [
+     761.1,
+     207.87
+    ],
+    [
+     718.9,
+     220.68
+    ],
+    [
+     675.0,
+     225.0
+    ],
+    [
+     631.1,
+     220.68
+    ],
+    [
+     588.9,
+     207.87
+    ],
+    [
+     550.0,
+     187.08
+    ],
+    [
+     515.9,
+     159.1
+    ],
+    [
+     487.92,
+     125.0
+    ],
+    [
+     467.13,
+     86.1
+    ],
+    [
+     454.32,
+     43.9
+    ],
+    [
+     450.0,
+     0.0
+    ],
+    [
+     454.32,
+     -43.9
+    ],
+    [
+     467.13,
+     -86.1
+    ],
+    [
+     487.92,
+     -125.0
+    ],
+    [
+     515.9,
+     -159.1
+    ],
+    [
+     550.0,
+     -187.08
+    ],
+    [
+     588.9,
+     -207.87
+    ],
+    [
+     631.1,
+     -220.68
+    ],
+    [
+     675.0,
+     -225.0
+    ],
+    [
+     718.9,
+     -220.68
+    ],
+    [
+     761.1,
+     -207.87
+    ],
+    [
+     800.0,
+     -187.08
+    ],
+    [
+     834.1,
+     -159.1
+    ],
+    [
+     862.08,
+     -125.0
+    ],
+    [
+     882.87,
+     -86.1
+    ],
+    [
+     895.68,
+     -43.9
+    ]
+   ],
+   "start": -2900,
+   "end": -825
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pile 2P 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile 2P 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile 2P 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pile Cut-off Ring 2P 2",
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "axis_at": [
+    675.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile Cut-off Ring 2P 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile Cut-off Ring 2P 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cap 3P",
+   "points": [
+    [
+     -1050,
+     -764.71
+    ],
+    [
+     1050,
+     -764.71
+    ],
+    [
+     1050,
+     -239.71
+    ],
+    [
+     350,
+     1154.42
+    ],
+    [
+     -350,
+     1154.42
+    ],
+    [
+     -1050,
+     -239.71
+    ]
+   ],
+   "start": -900,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cap 3P",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap 3P",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap 3P",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding 3P",
+   "points": [
+    [
+     -1102.5,
+     -802.95
+    ],
+    [
+     1102.5,
+     -802.95
+    ],
+    [
+     1102.5,
+     -251.7
+    ],
+    [
+     367.5,
+     1212.14
+    ],
+    [
+     -367.5,
+     1212.14
+    ],
+    [
+     -1102.5,
+     -251.7
+    ]
+   ],
+   "start": -975,
+   "end": -900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding 3P",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding 3P",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding 3P",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pile 3P 1",
+   "points": [
+    [
+     -450.0,
+     -389.7
+    ],
+    [
+     -454.32,
+     -345.8
+    ],
+    [
+     -467.13,
+     -303.6
+    ],
+    [
+     -487.92,
+     -264.7
+    ],
+    [
+     -515.9,
+     -230.6
+    ],
+    [
+     -550.0,
+     -202.62
+    ],
+    [
+     -588.9,
+     -181.83
+    ],
+    [
+     -631.1,
+     -169.02
+    ],
+    [
+     -675.0,
+     -164.7
+    ],
+    [
+     -718.9,
+     -169.02
+    ],
+    [
+     -761.1,
+     -181.83
+    ],
+    [
+     -800.0,
+     -202.62
+    ],
+    [
+     -834.1,
+     -230.6
+    ],
+    [
+     -862.08,
+     -264.7
+    ],
+    [
+     -882.87,
+     -303.6
+    ],
+    [
+     -895.68,
+     -345.8
+    ],
+    [
+     -900.0,
+     -389.7
+    ],
+    [
+     -895.68,
+     -433.6
+    ],
+    [
+     -882.87,
+     -475.8
+    ],
+    [
+     -862.08,
+     -514.7
+    ],
+    [
+     -834.1,
+     -548.8
+    ],
+    [
+     -800.0,
+     -576.78
+    ],
+    [
+     -761.1,
+     -597.57
+    ],
+    [
+     -718.9,
+     -610.38
+    ],
+    [
+     -675.0,
+     -614.7
+    ],
+    [
+     -631.1,
+     -610.38
+    ],
+    [
+     -588.9,
+     -597.57
+    ],
+    [
+     -550.0,
+     -576.78
+    ],
+    [
+     -515.9,
+     -548.8
+    ],
+    [
+     -487.92,
+     -514.7
+    ],
+    [
+     -467.13,
+     -475.8
+    ],
+    [
+     -454.32,
+     -433.6
+    ]
+   ],
+   "start": -2900,
+   "end": -825
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pile 3P 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile 3P 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile 3P 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pile Cut-off Ring 3P 1",
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "axis_at": [
+    -675.0,
+    -389.7
+   ],
+   "axis": "z",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile Cut-off Ring 3P 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile Cut-off Ring 3P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pile 3P 2",
+   "points": [
+    [
+     900.0,
+     -389.7
+    ],
+    [
+     895.68,
+     -345.8
+    ],
+    [
+     882.87,
+     -303.6
+    ],
+    [
+     862.08,
+     -264.7
+    ],
+    [
+     834.1,
+     -230.6
+    ],
+    [
+     800.0,
+     -202.62
+    ],
+    [
+     761.1,
+     -181.83
+    ],
+    [
+     718.9,
+     -169.02
+    ],
+    [
+     675.0,
+     -164.7
+    ],
+    [
+     631.1,
+     -169.02
+    ],
+    [
+     588.9,
+     -181.83
+    ],
+    [
+     550.0,
+     -202.62
+    ],
+    [
+     515.9,
+     -230.6
+    ],
+    [
+     487.92,
+     -264.7
+    ],
+    [
+     467.13,
+     -303.6
+    ],
+    [
+     454.32,
+     -345.8
+    ],
+    [
+     450.0,
+     -389.7
+    ],
+    [
+     454.32,
+     -433.6
+    ],
+    [
+     467.13,
+     -475.8
+    ],
+    [
+     487.92,
+     -514.7
+    ],
+    [
+     515.9,
+     -548.8
+    ],
+    [
+     550.0,
+     -576.78
+    ],
+    [
+     588.9,
+     -597.57
+    ],
+    [
+     631.1,
+     -610.38
+    ],
+    [
+     675.0,
+     -614.7
+    ],
+    [
+     718.9,
+     -610.38
+    ],
+    [
+     761.1,
+     -597.57
+    ],
+    [
+     800.0,
+     -576.78
+    ],
+    [
+     834.1,
+     -548.8
+    ],
+    [
+     862.08,
+     -514.7
+    ],
+    [
+     882.87,
+     -475.8
+    ],
+    [
+     895.68,
+     -433.6
+    ]
+   ],
+   "start": -2900,
+   "end": -825
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pile 3P 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile 3P 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile 3P 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pile Cut-off Ring 3P 2",
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "axis_at": [
+    675.0,
+    -389.7
+   ],
+   "axis": "z",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile Cut-off Ring 3P 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile Cut-off Ring 3P 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pile 3P 3",
+   "points": [
+    [
+     225.0,
+     779.4
+    ],
+    [
+     220.68,
+     823.3
+    ],
+    [
+     207.87,
+     865.5
+    ],
+    [
+     187.08,
+     904.4
+    ],
+    [
+     159.1,
+     938.5
+    ],
+    [
+     125.0,
+     966.48
+    ],
+    [
+     86.1,
+     987.27
+    ],
+    [
+     43.9,
+     1000.08
+    ],
+    [
+     0.0,
+     1004.4
+    ],
+    [
+     -43.9,
+     1000.08
+    ],
+    [
+     -86.1,
+     987.27
+    ],
+    [
+     -125.0,
+     966.48
+    ],
+    [
+     -159.1,
+     938.5
+    ],
+    [
+     -187.08,
+     904.4
+    ],
+    [
+     -207.87,
+     865.5
+    ],
+    [
+     -220.68,
+     823.3
+    ],
+    [
+     -225.0,
+     779.4
+    ],
+    [
+     -220.68,
+     735.5
+    ],
+    [
+     -207.87,
+     693.3
+    ],
+    [
+     -187.08,
+     654.4
+    ],
+    [
+     -159.1,
+     620.3
+    ],
+    [
+     -125.0,
+     592.32
+    ],
+    [
+     -86.1,
+     571.53
+    ],
+    [
+     -43.9,
+     558.72
+    ],
+    [
+     -0.0,
+     554.4
+    ],
+    [
+     43.9,
+     558.72
+    ],
+    [
+     86.1,
+     571.53
+    ],
+    [
+     125.0,
+     592.32
+    ],
+    [
+     159.1,
+     620.3
+    ],
+    [
+     187.08,
+     654.4
+    ],
+    [
+     207.87,
+     693.3
+    ],
+    [
+     220.68,
+     735.5
+    ]
+   ],
+   "start": -2900,
+   "end": -825
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pile 3P 3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile 3P 3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile 3P 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pile Cut-off Ring 3P 3",
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "axis_at": [
+    0,
+    779.4
+   ],
+   "axis": "z",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pile Cut-off Ring 3P 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pile Cut-off Ring 3P 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cap 4P",
    "points": [
     [
      -1025,
@@ -642,24 +1803,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cap",
+   "name": "Cap 4P",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Cap",
+   "name": "Cap 4P",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cap",
+   "name": "Cap 4P",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blinding",
+   "name": "Blinding 4P",
    "points": [
     [
      -1100,
@@ -683,24 +1844,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding",
+   "name": "Blinding 4P",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding",
+   "name": "Blinding 4P",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding",
+   "name": "Blinding 4P",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pile 1",
+   "name": "Pile 4P 1",
    "points": [
     [
      -450.0,
@@ -836,24 +1997,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pile 1",
+   "name": "Pile 4P 1",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pile 1",
+   "name": "Pile 4P 1",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile 1",
+   "name": "Pile 4P 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pile Cut-off Ring 1",
+   "name": "Pile Cut-off Ring 4P 1",
    "profile": [
     [
      225,
@@ -881,19 +2042,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pile Cut-off Ring 1",
+   "name": "Pile Cut-off Ring 4P 1",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile Cut-off Ring 1",
+   "name": "Pile Cut-off Ring 4P 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pile 2",
+   "name": "Pile 4P 2",
    "points": [
     [
      900.0,
@@ -1029,24 +2190,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pile 2",
+   "name": "Pile 4P 2",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pile 2",
+   "name": "Pile 4P 2",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile 2",
+   "name": "Pile 4P 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pile Cut-off Ring 2",
+   "name": "Pile Cut-off Ring 4P 2",
    "profile": [
     [
      225,
@@ -1074,19 +2235,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pile Cut-off Ring 2",
+   "name": "Pile Cut-off Ring 4P 2",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile Cut-off Ring 2",
+   "name": "Pile Cut-off Ring 4P 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pile 3",
+   "name": "Pile 4P 3",
    "points": [
     [
      -450.0,
@@ -1222,24 +2383,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pile 3",
+   "name": "Pile 4P 3",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pile 3",
+   "name": "Pile 4P 3",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile 3",
+   "name": "Pile 4P 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pile Cut-off Ring 3",
+   "name": "Pile Cut-off Ring 4P 3",
    "profile": [
     [
      225,
@@ -1267,19 +2428,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pile Cut-off Ring 3",
+   "name": "Pile Cut-off Ring 4P 3",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile Cut-off Ring 3",
+   "name": "Pile Cut-off Ring 4P 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pile 4",
+   "name": "Pile 4P 4",
    "points": [
     [
      900.0,
@@ -1415,24 +2576,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pile 4",
+   "name": "Pile 4P 4",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pile 4",
+   "name": "Pile 4P 4",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile 4",
+   "name": "Pile 4P 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pile Cut-off Ring 4",
+   "name": "Pile Cut-off Ring 4P 4",
    "profile": [
     [
      225,
@@ -1460,15 +2621,240 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pile Cut-off Ring 4",
+   "name": "Pile Cut-off Ring 4P 4",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pile Cut-off Ring 4",
+   "name": "Pile Cut-off Ring 4P 4",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2-Pile_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-Pile_RC/Show 2-Pile_RC",
+   "type": "2-Pile_RC",
+   "param": "Show 2-Pile_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Pile_RC/Show 2-Pile_RC",
+   "type": "3-Pile_RC",
+   "param": "Show 2-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-Pile_RC/Show 2-Pile_RC",
+   "type": "4-Pile_RC",
+   "param": "Show 2-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cap 2P/Visible",
+   "solid": "Cap 2P",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding 2P/Visible",
+   "solid": "Blinding 2P",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 2P 1/Visible",
+   "solid": "Pile 2P 1",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 2P 1/Visible",
+   "solid": "Pile Cut-off Ring 2P 1",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 2P 2/Visible",
+   "solid": "Pile 2P 2",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 2P 2/Visible",
+   "solid": "Pile Cut-off Ring 2P 2",
+   "param": "Show 2-Pile_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3-Pile_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-Pile_RC/Show 3-Pile_RC",
+   "type": "2-Pile_RC",
+   "param": "Show 3-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Pile_RC/Show 3-Pile_RC",
+   "type": "3-Pile_RC",
+   "param": "Show 3-Pile_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-Pile_RC/Show 3-Pile_RC",
+   "type": "4-Pile_RC",
+   "param": "Show 3-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cap 3P/Visible",
+   "solid": "Cap 3P",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding 3P/Visible",
+   "solid": "Blinding 3P",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 3P 1/Visible",
+   "solid": "Pile 3P 1",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 3P 1/Visible",
+   "solid": "Pile Cut-off Ring 3P 1",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 3P 2/Visible",
+   "solid": "Pile 3P 2",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 3P 2/Visible",
+   "solid": "Pile Cut-off Ring 3P 2",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 3P 3/Visible",
+   "solid": "Pile 3P 3",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 3P 3/Visible",
+   "solid": "Pile Cut-off Ring 3P 3",
+   "param": "Show 3-Pile_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 4-Pile_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-Pile_RC/Show 4-Pile_RC",
+   "type": "2-Pile_RC",
+   "param": "Show 4-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Pile_RC/Show 4-Pile_RC",
+   "type": "3-Pile_RC",
+   "param": "Show 4-Pile_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-Pile_RC/Show 4-Pile_RC",
+   "type": "4-Pile_RC",
+   "param": "Show 4-Pile_RC",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cap 4P/Visible",
+   "solid": "Cap 4P",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding 4P/Visible",
+   "solid": "Blinding 4P",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 4P 1/Visible",
+   "solid": "Pile 4P 1",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 4P 1/Visible",
+   "solid": "Pile Cut-off Ring 4P 1",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 4P 2/Visible",
+   "solid": "Pile 4P 2",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 4P 2/Visible",
+   "solid": "Pile Cut-off Ring 4P 2",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 4P 3/Visible",
+   "solid": "Pile 4P 3",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 4P 3/Visible",
+   "solid": "Pile Cut-off Ring 4P 3",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile 4P 4/Visible",
+   "solid": "Pile 4P 4",
+   "param": "Show 4-Pile_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pile Cut-off Ring 4P 4/Visible",
+   "solid": "Pile Cut-off Ring 4P 4",
+   "param": "Show 4-Pile_RC"
   },
   {
    "op": "set_type_image",
