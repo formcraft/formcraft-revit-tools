@@ -1,0 +1,301 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_AirTerminal_Diffuser_LaminarFlow_Theatre",
+ "template": "Metric Generic Model.rft",
+ "about": "Wave 1: UCV canopy; rectangular supply-air duct connector; clean-zone outline at table height (HTM 03-01 basis).",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Air Terminals"
+  },
+  {
+   "op": "add_type",
+   "name": "2400x2400_UCV"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/Keynote",
+   "type": "2400x2400_UCV",
+   "param": "Keynote",
+   "value": "H.ATD_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/FMC_Keynote_Code",
+   "type": "2400x2400_UCV",
+   "param": "FMC_Keynote_Code",
+   "value": "H.ATD_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/FMC_Cost_Unit",
+   "type": "2400x2400_UCV",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/FMC_Geometry_Stage",
+   "type": "2400x2400_UCV",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/IfcExportAs",
+   "type": "2400x2400_UCV",
+   "param": "IfcExportAs",
+   "value": "IfcAirTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/Description",
+   "type": "2400x2400_UCV",
+   "param": "Description",
+   "value": "Ultra-clean ventilation canopy over the operating zone, HEPA, 2400 x 2400 mm"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Plenum",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Diffuser Face",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Operation",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1200,
+     -1200
+    ],
+    [
+     1200,
+     -1200
+    ],
+    [
+     1200,
+     1200
+    ],
+    [
+     -1200,
+     1200
+    ]
+   ],
+   "start": -350,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Plenum",
+   "points": [
+    [
+     -1200,
+     -1200
+    ],
+    [
+     1200,
+     -1200
+    ],
+    [
+     1200,
+     1200
+    ],
+    [
+     -1200,
+     1200
+    ]
+   ],
+   "start": -330,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plenum",
+   "subcategory": "Plenum"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plenum",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diffuser Face",
+   "points": [
+    [
+     -1150,
+     -1150
+    ],
+    [
+     1150,
+     -1150
+    ],
+    [
+     1150,
+     1150
+    ],
+    [
+     -1150,
+     1150
+    ]
+   ],
+   "start": -350,
+   "end": -330
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diffuser Face",
+   "subcategory": "Diffuser Face"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diffuser Face",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spigot",
+   "points": [
+    [
+     -300,
+     -200
+    ],
+    [
+     300,
+     -200
+    ],
+    [
+     300,
+     200
+    ],
+    [
+     -300,
+     200
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spigot",
+   "subcategory": "Plenum"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Clean Zone",
+   "points": [
+    [
+     -1200,
+     -1200
+    ],
+    [
+     1200,
+     -1200
+    ],
+    [
+     1200,
+     1200
+    ],
+    [
+     -1200,
+     1200
+    ]
+   ],
+   "start": -2350,
+   "end": -2340
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Clean Zone",
+   "subcategory": "Clearance Operation"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Clean Zone",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Spigot",
+   "side": "top",
+   "width": 600,
+   "height": 400,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Canopy 2400 x 2400 mm": {
+   "value": "2400 x 2400",
+   "source_status": "assumed",
+   "source": "HTM 03-01 UCV practice"
+  },
+  "Spigot 600 x 400 mm": {
+   "value": "600 x 400",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}
