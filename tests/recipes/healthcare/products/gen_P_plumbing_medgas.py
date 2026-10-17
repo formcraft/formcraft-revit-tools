@@ -582,14 +582,12 @@ parts = [C("Valve Bar", 'x', (-55, 1000), 30, (-160, 160), 'chrome'),
          R(C("Grab Rail Flange", 'y', (420, 870), 25, (-65, 0), 'white', 'f'), 2, (0, 0, 610)),
          B("Linear Drain", (-950, -160, -40, 950, -60, 0), 'stainless'),
          R(B("Drain Slot", (-930, -140, -1, -920, -80, 0.5), 'black', lod='f'), 25, (76, 0, 0)),
-         C("Drain Outlet", 'z', (700, -110), 25, (-120, -40), 'grey'),
-         B("Curtain Track", (-1100, -1210, 2080, 450, -1190, 2100), 'aluminium', lod='f'),
-         B("Curtain Track Return", (430, -1210, 2080, 450, 0, 2100), 'aluminium', lod='f')]
+         C("Drain Outlet", 'z', (700, -110), 25, (-120, -40), 'grey')]
 add(f, "Accessible thermostatic shower set: exposed TMV3 bar valve with long flow lever, riser rail and handset, fold-down seat with legs, grab rail, level-access linear drain",
     "IfcSanitaryTerminal", ["TMV3_Wall"], parts,
     [CW("Wall Union R"), HW("Wall Union L"), SAN("Drain Outlet", 'bottom', d=50)],
     {"Valve at 1000 mm, rail to 2050 mm": A("1000/2050", "BS 8300-2 shower controls 750-1000 mm"), "Seat 480 mm high": A(480, "BS 8300-2"), "Area 1500 x 1200 mm level access": A("1500x1200", "HBN 00-02")},
-    "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs, grab rail, linear drain with slots and outlet, curtain track; level-access area as clearance.",
+    "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs, grab rail, linear drain with slots and outlet; level-access area as clearance.",
     clearances=[{"n": "Shower Area", "shape": "box", "at": [-1100, -1200, 0, 450, -60, 10], "sub": "Clearance Accessibility"}])
 
 # 16 Emergency shower and eyewash combination
@@ -1235,10 +1233,10 @@ for fam, tname, desc, labels, conns in (
          [CW('Point', 'back'), HW('Point', 'left'), SAN('Point', 'bottom', d=40)])):
     parts = [B("Point", (-30, -30, 0, 30, 30, 60), 'medical_grey')]
     for n, m, side in labels:   # identification tags on the connector faces, inside the 60 mm cube outline
-        if side == 'back': parts.append(F(f"{n} Tag", (-20, 29, 40, 20, 30, 52), m, lod='f'))
-        if side == 'left': parts.append(B(f"{n} Tag", (-30, -20, 40, -29, 20, 52), m, lod='f'))
-        if side == 'right': parts.append(B(f"{n} Tag", (29, -20, 40, 30, 20, 52), m, lod='f'))
-        if side == 'bottom': parts.append(F(f"{n} Tag", (-20, -30, 4, 20, -29, 16), m, lod='f'))
+        if side == 'back': parts.append(F(f"{n} Tag", (-20, 30, 40, 20, 31, 52), m, lod='f'))
+        if side == 'left': parts.append(B(f"{n} Tag", (-31, -20, 40, -30, 20, 52), m, lod='f'))
+        if side == 'right': parts.append(B(f"{n} Tag", (30, -20, 40, 31, 20, 52), m, lod='f'))
+        if side == 'bottom': parts.append(F(f"{n} Tag", (-20, -31, 4, 20, -30, 16), m, lod='f'))
     add(fam, desc, "IfcFlowTerminal", [tname], parts, conns,
         {"Point 60 mm cube": A(60, 'symbolic connection point'), "Connectors " + ', '.join(c['n'] for c in conns): A(len(conns), "Revit QE4: pipes refuse Medical Equipment hosts")},
         "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position; a 60 mm cube with BS 1710 / water identification tags (Fine only).",
@@ -1358,7 +1356,9 @@ pendant('FMC_P_MechEq_MedGas_Pendant_Theatre',
 
 # Area valve service unit (AVSU), 3-gas drawn
 f = 'FMC_P_MechEq_MedGas_AreaValveBox'
-parts = [B("Box", (-225, -110, 0, 225, 0, 320), 'epoxy_white'),
+parts = [B("Box Back", (-225, -15, 0, 225, 0, 320), 'epoxy_white'),
+         B("Box Top", (-225, -110, 300, 225, -15, 320), 'epoxy_white'), B("Box Bottom", (-225, -110, 0, 225, -15, 20), 'epoxy_white'),
+         B("Box Left", (-225, -110, 20, -205, -15, 300), 'epoxy_white'), B("Box Right", (205, -110, 20, 225, -15, 300), 'epoxy_white'),
          F("Frame Top", (-235, -122, 290, 235, -110, 330), 'epoxy_white'), F("Frame Bottom", (-235, -122, -10, 235, -110, 30), 'epoxy_white'),
          F("Frame Left", (-235, -122, 30, -205, -110, 290), 'epoxy_white'), F("Frame Right", (205, -122, 30, 235, -110, 290), 'epoxy_white'),
          F("Cover Glazing", (-205, -118, 30, 205, -114, 290), 'polycarbonate', lod='m'),
@@ -1376,7 +1376,7 @@ add(f, "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm 
     "IfcValve", ["2Gas_AVSU", "3Gas_AVSU", "4Gas_AVSU"], parts,
     [MG('O2', 'O2 Pipe', 'top'), MG('VAC', 'VAC Pipe', 'top', 'Out'), MG('MA4', 'MA4 Pipe', 'top')],
     {"Box 450 x 330 x 120 mm": A("450x330x120"), "Mounted at 1500 mm": A(1500, "HTM 02-01 AVSU at an accessible height"), "Valves 22 mm with NIST emergency inlets": A(22)},
-    "AVSU modelled as a generic product: box, cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it.",
+    "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it.",
     type_values={"Default Elevation": 1500})
 
 f = 'FMC_P_MechEq_MedGas_AlarmPanel_Area'
@@ -1431,10 +1431,9 @@ parts += [R(B("Leg Front", (-560, -560, 150, -480, -480, 900), 'painted_steel'),
           R(C("Safety Valve", 'z', (-200, -770), 15, (1500, 1620), 'brass'), 2, (400, 0, 0)),
           C("Top Vent", 'z', (0, 0), 25, (3600, 3800), 'stainless'),
           C("Liquid Line", 'x', (-770, 1100), 18, (300, 1600), 'stainless'),
-          R(B("Vaporiser Fin A", (1450, -160, 300, 1750, 160, 3000), 'aluminium'), 3, (420, 0, 0)),
-          R(B("Vaporiser Fin B", (1585, -15, 300, 1615, 15, 3000), 'aluminium'), 3, (420, 0, 0)),
-          R(B("Vaporiser Fin C", (1450, -15, 300, 1750, 15, 3000), 'aluminium'), 3, (420, 0, 0)),
-          R(B("Vaporiser Fin D", (1585, -160, 300, 1615, 160, 3000), 'aluminium'), 3, (420, 0, 0)),
+          R(B("Vaporiser Fin A", (1450, -10, 300, 1750, 10, 3000), 'aluminium'), 3, (420, 0, 0)),
+          R(B("Vaporiser Fin B", (1590, -150, 300, 1610, 150, 3000), 'aluminium'), 3, (420, 0, 0)),
+          R(C("Vaporiser Core", 'z', (1600, 0), 35, (300, 3000), 'aluminium'), 3, (420, 0, 0)),
           B("Vaporiser Header Bottom", (1450, -40, 220, 2590, 40, 300), 'stainless'),
           B("Vaporiser Header Top", (1450, -40, 3000, 2590, 40, 3080), 'stainless'),
           C("Supply Pipe", 'x', (0, 2600), 18, (2590, 2900), 'copper'),

@@ -96,6 +96,12 @@ def ctop(r): return 2 * r + 34
 def castors4(x0, x1, y0, y1, r, pedal=True, hub=False, pre="Castor"):
     return (castor(f"{pre} Front", x0, y0, r, rep=(2, x1 - x0, 0, 0), pedal=pedal, hub=hub) +
             castor(f"{pre} Back", x0, y1, r, rep=(2, x1 - x0, 0, 0), pedal=pedal, hub=hub))
+def basket(n, x0, y0, z0, x1, y1, z1, m="chrome"):
+    """Open wire basket: floor and four thin walls."""
+    return [box(f"{n} Floor", x0, y0, z0, x1, y1, z0 + 6, m),
+            fbox(f"{n} Wall", x0, y0, z0, x1, y0 + 5, z1, m, rep=(2, 0, y1 - y0 - 5, 0)),
+            right(f"{n} End", rr(y0 + 5, z0, y1 - 5, z1), x0, x0 + 5, m, rep=(2, x1 - x0 - 5, 0, 0)),
+            fbox(f"{n} Wire", x0 + 30, y0 - 1, z0 + 20, x1 - 30, y0, z0 + 24, "grey", lod="f", rep=(3, 0, 0, (z1 - z0 - 40) / 2))]
 def screen(n, x0, x1, y, z0, z1, depth=30, bez=12, body="dark", traces=False):
     """Display facing -y with its face at y - depth."""
     out = [fbox(f"{n} Bezel", x0, y - depth, z0, x1, y, z1, body, r=8),
@@ -391,7 +397,7 @@ product(f, "1100x700_Closed", "Closed neonatal incubator on mobile cabinet stand
 def warmer():
     L, W = 1000, 800; hx, hy = L / 2, W / 2; r = 50; top = ctop(r)
     P_ = castors4(-hx + 90, hx - 90, -hy + 80, hy - 80, r)
-    P_ += [box("Base Frame", -hx + 50, -hy + 40, top - 4, hx - 50, hy - 40, top + 40, "frame", r=25),
+    P_ += [box("Base Frame", -hx - 90, -hy + 40, top - 4, hx - 50, hy - 40, top + 40, "frame", r=25),
            box("Stand Cabinet", -400, -260, top + 40, 420, 260, 760, "mgrey", r=30),
            fbox("Drawer", -380, -267, 520, 400, -260, 740, "white", r=10, rep=(2, 0, 0, -240)),
            fbox("Drawer Handle", -110, -280, 700, 130, -267, 718, "grey", r=6, rep=(2, 0, 0, -240)),
@@ -1013,7 +1019,7 @@ def ventilator():
     P_ += [box("Base Leg X", -235, -25, top - 4, 235, 25, top + 26, "mgrey", r=10),
            box("Base Leg Y", -25, -235, top - 4, 25, 235, top + 26, "mgrey", r=10),
            box("Column", -40, -40, top + 26, 40, 40, 900, "mgrey", r=15),
-           box("Basket", -150, -180, 600, 150, -45, 700, "grey", r=10),
+           *basket("Basket", -150, -190, 600, 150, -45, 700), box("Basket Bracket", -30, -50, 640, 30, -40, 690, "grey"),
            box("Body", -200, -150, 900, 200, 180, 1250, "white", r=30),
            box("Screen Hinge", -60, -140, 1250, 60, -95, 1268, "grey"),
            box("Screen Unit", -200, -160, 1268, 200, -105, 1570, "mgrey", r=20),
@@ -1088,7 +1094,7 @@ def monitor():
     P_ = five_leg_base(280, r, top)
     P_ += [cyl("Pole", "z", [0, 0], 16, [top + 50, 1050], "alu"),
            box("Basket Bracket", -30, -40, 820, 30, 0, 860, "grey"),
-           box("Basket", -140, -190, 800, 140, -40, 900, "mgrey", r=12),
+           *basket("Basket", -140, -200, 800, 140, -40, 900),
            box("Mount Plate", -60, -30, 1050, 60, 30, 1100, "grey"),
            box("Monitor Body", -200, -60, 1100, 200, 60, 1400, "white", r=25),
            fbox("Display", -180, -62, 1118, 115, -60, 1382, "screen", r=4)]
@@ -1154,7 +1160,7 @@ def ultrasound():
            cyl("Rotary Encoder", "z", [80, -60], 13, [890, 905], "grey", "f", rep=(4, 40, 0, 0)),
            box("Key Row", 80, -260, 890, 110, -230, 896, "white", lod="f", rep=(4, 40, 0, 0)),
            right("Touch Panel", incl(60, 890, 60, 240, 0, 25, 1), -200, 200, "mgrey"),
-           right("Touch Display", incl(70, 890, 60, 220, 25, 27, 1), -180, 180, "screen", lod="f"),
+           right("Touch Display", incl(60, 890, 60, 225, 25, 27, 1), -180, 180, "screen", lod="f"),
            cyl("Monitor Post", "z", [0, 270], 25, [880, 1150], "grey"),
            box("Monitor Arm", -30, 230, 1130, 30, 290, 1160, "grey")]
     P_ += screen("Monitor", -270, 270, 260, 1150, 1500, depth=50, bez=15, body="dark")

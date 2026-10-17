@@ -563,7 +563,7 @@ def rad_sleeve():
     parts = [T("Sleeve Tube", 'y', [0, 0], ring(r, r + 4, -140, 140), 'gi', seg=32), T("Lead Lining", 'y', [0, 0], ring(r + 4, r + 7, -115, 115), 'lead', seg=32),
              T("Lead Collar Front", 'y', [0, 0], ring(r + 4, r + 60, -118, -115), 'lead', seg=32), T("Lead Collar Back", 'y', [0, 0], ring(r + 4, r + 60, 115, 118), 'lead', seg=32),
              T("Sealant Ring Front", 'y', [0, 0], ring(r + 4, r + 12, -124, -118), 'black', lod='f', seg=32), T("Sealant Ring Back", 'y', [0, 0], ring(r + 4, r + 12, 118, 124), 'black', lod='f', seg=32),
-             FB("Radiation Label", [-30, -119.5, r + 64, 30, -118, r + 94], 'yellow', lod='f')]
+             FB("Radiation Label", [-25, -119.5, r + 22, 25, -118, r + 52], 'yellow', lod='f')]
     prod('FMC_S_GenericModel_Opening_RadiationShielded_Sleeve', 'Lead-lined through-wall sleeve for a shielded room: steel sleeve, lead lining and lapping collars on both faces, sealant and warning label', 'IfcBuildingElementProxy',
          [{"name": "100dia_Lead", "desc": "100 mm bore sleeve"}, {"name": "150dia_Lead", "desc": "150 mm bore sleeve"}], parts,
          {"Bore 100 mm (geometry)": A(100, "service size"), "Lead code and lap from the RPA shielding report": A("RPA report", "radiation protection adviser; not decided here"),
@@ -730,7 +730,8 @@ def grease_trap():
               B("Opening 2", [250, -225, -151, 650, 225, -6], 'conc', void=True)]
     parts += cover("Cover Inlet", -350, 0, 600, 450, 1, ribs=3) + cover("Cover Outlet", 450, 0, 400, 450, 1, ribs=3)
     parts += [CX("Inlet Pipe", [0, -400], 55, -1150, -840, 'upvc'), CX("Outlet Pipe", [0, -450], 55, 840, 1150, 'upvc'),
-              CZ("Inlet Tee", [-650, 0], 55, -800, -350, 'upvc', lod='f', seg=16), CZ("Outlet Tee", [650, 0], 55, -900, -350, 'upvc', lod='f', seg=16)]
+              CZ("Inlet Tee", [-650, 0], 55, -800, -350, 'upvc', lod='f', seg=16), CZ("Outlet Tee", [650, 0], 55, -900, -350, 'upvc', lod='f', seg=16),
+              CZ("Vent Pipe", [780, 480], 28, 0, 1800, 'upvc', seg=12), T("Vent Cowl", 'z', [780, 480], [[0, 1790], [28, 1790], [60, 1840], [0, 1870]], 'upvc', seg=12)]
     prod('FMC_C_Structure_GreaseTrap_External', 'External kitchen grease trap: two-compartment precast/RC chamber with baffle, inlet and outlet tees, two access covers', 'IfcInterceptor',
          [{"name": "1000L_Precast", "desc": "about 1000 L liquid"}, {"name": "2000L_Precast", "desc": "about 2000 L liquid"}], parts,
          {"Internal 1400 x 800 x 1000 mm (1000 L geometry)": A("1400x800x1000", "sizing from kitchen flow by the engineer"), "Two compartments 2:1": A("2:1", "typical"),
@@ -790,9 +791,12 @@ def pipe_culvert():
     hr = [[-x, z] for x, z in reversed(hl)]
     parts = [T("Pipe", 'y', [0, zc], ring(300, ro, -2000, -1000), 'ogee', rep=(4, 0, 1000, 0), seg=40),
              T("Ogee Joint", 'y', [0, zc], ring(ro, ro + 25, -1050, -950), 'ogee', lod='f', rep=(3, 0, 1000, 0), seg=40),
-             FR("Bed and Haunch", haunch, -2000, 2000, 'c20'),
-             FR("Headwall Inlet Left", hl, -2250, -2000, 'c20'), FR("Headwall Inlet Right", hr, -2250, -2000, 'c20'),
-             FR("Headwall Outlet Left", hl, 2000, 2250, 'c20'), FR("Headwall Outlet Right", hr, 2000, 2250, 'c20'),
+             B("Concrete Bed", [-525, -2000, 0, 525, 2000, 150], 'c20'),
+             FR("Haunch Left", [[-525, 150], [-215, 150], [-525, 470]], -2000, 2000, 'c20'),
+             FR("Haunch Right", [[525, 150], [525, 470], [215, 150]], -2000, 2000, 'c20'),
+             B("Headwall Inlet", [-1100, -2250, 0, 1100, -2000, 1300], 'c20'), B("Headwall Outlet", [-1100, 2000, 0, 1100, 2250, 1300], 'c20'),
+             CY("Pipe Opening Inlet", [0, zc], ro, -2251, -1999, 'c20', void=True), CY("Pipe Opening Outlet", [0, zc], ro, 1999, 2251, 'c20', void=True),
+             T("Pipe Inlet End", 'y', [0, zc], ring(300, ro, -2280, -2000), 'ogee', seg=40), T("Pipe Outlet End", 'y', [0, zc], ring(300, ro, 2000, 2280), 'ogee', seg=40),
              PR("Wingwall Inlet Left", [[-1100, -2250], [-850, -2250], [-1550, -2950], [-1800, -2950]], 0, 1000, 'c20'),
              PR("Wingwall Inlet Right", [[850, -2250], [1100, -2250], [1800, -2950], [1550, -2950]], 0, 1000, 'c20'),
              PR("Wingwall Outlet Left", [[-1100, 2250], [-1800, 2950], [-1550, 2950], [-850, 2250]], 0, 1000, 'c20'),
@@ -822,7 +826,7 @@ def u_channel():
          "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and 20 bars.")
 
 def kerb():
-    S = [[-62.5, -130], [62.5, -130], [62.5, 125], [-37.5, 125], [-62.5, 100]]
+    S = [[-62.5, -130], [62.5, -130], [62.5, 125], [-12.5, 125], [-62.5, 25]]
     D = [[-62.5, -130], [62.5, -130], [62.5, 20], [-37.5, 20], [-62.5, -5]]
     parts = [RT("Straight Kerb", S, -1830, -920, 'kerb', rep=(2, 915, 0, 0)),
              FR("Transition Kerb", [[0, -130], [910, -130], [910, 20], [0, 125]], -62.5, 62.5, 'kerb'),
@@ -840,7 +844,7 @@ def kerb():
 
 def speed_hump():
     pts = [[round(-1850 + 3700 * k / 24, 1), round(75 * (1 - math.cos(2 * math.pi * k / 24)) / 2, 2)] for k in range(25)]
-    skin = pts + [[y, z + 3] for y, z in reversed(pts)]
+    skin = [[y, (z + 3) if 0 < k < 24 else 0] for k, (y, z) in enumerate(pts)]
     tri = lambda h: [[-h * 0.58, 0], [h * 0.58, 0], [0, h]]
     parts = [RT("Hump", pts, -2800, 2800, 'asphalt'),
              RT("Marking Stripe", skin, -2700, -2400, 'yellow', rep=(8, 700, 0, 0)),
@@ -934,7 +938,9 @@ def incinerator():
          conns=[power("Control Panel", "front")], tv={"Voltage": 240, "Apparent Load": 2500})
 
 def boom_barrier():
-    parts = [B("Foundation", [-300, -300, -600, 300, 300, 0], 'c20'), B("Housing", [-150, -175, 0, 150, 175, 1000], 'epoxy', r=20),
+    parts = [B("Base Plate", [-200, -225, 0, 200, 225, 12], 'galv'),
+             CZ("Anchor Nut", [-170, -195], 12, 12, 30, 'galv', lod='f', rep=(2, 340, 0, 0), seg=6), CZ("Anchor Nut Back", [-170, 195], 12, 12, 30, 'galv', lod='f', rep=(2, 340, 0, 0), seg=6),
+             B("Housing", [-150, -175, 12, 150, 175, 1000], 'epoxy', r=20),
              B("Housing Top", [-160, -185, 1000, 160, 185, 1040], 'epoxy', r=24), FB("Housing Door", [-120, -178, 100, 120, -175, 900], 'epoxy', r=10, lod='f'),
              CY("Door Lock", [80, 800], 10, -182, -178, 'ss', lod='f', seg=12),
              FB("Reflective Band", [-150, -177, 600, 150, -175, 640], 'yellow', lod='f'),
@@ -951,7 +957,7 @@ def boom_barrier():
          ["3000_Boom"], parts,
          {"Boom 3000 mm, pivot at 960 mm": A("3000 / 960", "typical boom barrier"), "Housing 300 x 350 x 1040 mm": A("300x350x1040", "typical"),
           "Supply 240 V, 300 VA": A("240V 300VA", "typical motor/controller; vendor to confirm"), "Opening time 1.5 to 3 s": A("1.5-3 s", "typical; vendor to confirm")},
-         "Ground at z = 0: foundation, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing.",
+         "Ground at z = 0 (foundation by the civil engineer): base plate with anchor nuts, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing.",
          conns=[power("Housing", "back")], tv={"Voltage": 240, "Apparent Load": 300})
 
 def helipad():

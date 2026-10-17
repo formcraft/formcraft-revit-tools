@@ -188,6 +188,17 @@ def compile_product(prod, kn_lookup=None):
         ops += solid_ops(p, g, sub, (title(p['mat']) + ' Material') if p.get('mat') and (mats[p['mat']] in kit or not kit) else None, p.get('lod', 'mf'))
     for c in prod.get('clearances', []):
         g = norm(c); ops += solid_ops(c, g, c['sub'], None, 'cmf')
+    # per-type geometry (17 Oct): a part with "only": [type, ...] shows only in those types, through a Yes/No type
+    # parameter "Show <types>" set per type, so one family carries the L, U and straight versions, or each size
+    groups = {}
+    for p in parts:
+        if p.get('only'): groups.setdefault(tuple(p['only']), []).append(p['n'])
+    tnames = [t['name'] for t in prod['types']]
+    for only, names in groups.items():
+        prm = "Show " + " or ".join(only)
+        ops.append({"op": "add_family_param", "name": prm, "type": "YesNo", "group": "Graphics"})
+        for tn in tnames: ops.append({"op": "set_type_value", "name": f"{tn}/{prm}", "type": tn, "param": prm, "value": tn in only})
+        for n in names: ops.append({"op": "set_visible_param", "name": f"{n}/Visible", "solid": n, "param": prm})
     for c in prod.get('connectors', []):
         o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": c['system'], "solid": c['part'], "side": c.get('side', 'back')}
         for k in ('diameter', 'width', 'height', 'flow'):
@@ -263,7 +274,9 @@ def _tris(prod, lod):
     import numpy as np
     kit = kit_materials(); mats = prod.get('materials', {})
     T, C, I = [], [], []
-    parts = [p for p in expand(prod['parts']) if not p.get('void') and lod in p.get('lod', 'mf')]
+    first = prod['types'][0]['name'] if prod.get('types') else None
+    show_t = prod.get('_render_type') or first
+    parts = [p for p in expand(prod['parts']) if not p.get('void') and lod in p.get('lod', 'mf') and (not p.get('only') or show_t in p['only'])]
     for i, p in enumerate(parts):
         mname = mats.get(p.get('mat'), '')
         rgb = np.array(hexrgb(kit.get(mname, {}).get('graphics', {}).get('shaded'))) / 255.0
@@ -335,10 +348,15 @@ def _view(T, C, I, az, el, W, H, persp=False):
         gl[y0:y1 + 1, x0:x1 + 1] |= upd
     return img
 
+def hangs(T):
+    """A ceiling product: everything at or below the ceiling line z = 0, so it is seen from below."""
+    return len(T) and T[:, :, 2].max() <= 30 and T[:, :, 2].min() < -10
+
 def render(prod, path, lod='f', views=(('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9)), W=520, H=420):
     import numpy as np
     from PIL import Image, ImageDraw
     T, C, I, n = _tris(prod, lod)
+    if hangs(T): views = tuple((t, a, -25 if t == '3D' else e) for t, a, e in views)
     tiles = []
     for title, az, el in views:
         im = Image.fromarray((_view(T, C, I, az, el, W, H) * 255).astype('uint8'))
@@ -353,7 +371,7 @@ def render_type_image(prod, path, lod='f', size=800):
     """The Type Image: one 3D view, rendered at twice the size and scaled down for clean edges, on white."""
     from PIL import Image
     T, C, I, n = _tris(prod, lod)
-    im = Image.fromarray((_view(T, C, I, -35, 22, size * 2, size * 2) * 255).astype('uint8'))
+    im = Image.fromarray((_view(T, C, I, -35, -25 if hangs(T) else 22, size * 2, size * 2) * 255).astype('uint8'))
     im.resize((size, size), Image.LANCZOS).save(path); return path
 
 if __name__ == '__main__':

@@ -67,29 +67,26 @@ def ring(n, x0, x1, z0, z1, w, y, mat, lod='mf', wz=None):
     return [box(f"{n} Stile", [x0, y[0], z0, x0 + w, y[1], z1], mat, lod, rep=(2, [x1 - x0 - w, 0, 0])),
             box(f"{n} Rail", [x0 + w, y[0], z0, x1 - w, y[1], z0 + wz], mat, lod, rep=(2, [0, 0, z1 - z0 - wz]))]
 
-# holes for leaves / linings built as notched polygons (no voids, so the preview shows the glass)
-def _arc(cx, cz, r, a0, a1, n=8): return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * k / n)), cz + r * math.sin(math.radians(a0 + (a1 - a0) * k / n))) for k in range(n + 1)]
-def hrect(a, b, c, d): return dict(zs=d, low=[(b, d), (b, c), (a, c), (a, d)], up=[])
-def hrr(a, b, c, d, r): zs = d - r; return dict(zs=zs, low=[(b, zs)] + _arc(b - r, c + r, r, 0, -90, 4) + _arc(a + r, c + r, r, -90, -180, 4) + [(a, zs)], up=_arc(a + r, d - r, r, 180, 90, 4) + _arc(b - r, d - r, r, 90, 0, 4))
-def hcirc(cx, cz, R): return dict(zs=cz, low=_arc(cx, cz, R, 0, -180, 12), up=_arc(cx, cz, R, 180, 0, 12))
-def pieces(x0, x1, z0, z1, holes):
-    polys, zp, upp = [], z0, []
-    for h in sorted(holes, key=lambda h: h['zs']):
-        polys.append([(x0, zp)] + upp + [(x1, zp), (x1, h['zs'])] + h['low'] + [(x0, h['zs'])]); zp, upp = h['zs'], h['up']
-    polys.append([(x0, zp)] + upp + [(x1, zp), (x1, z1), (x0, z1)])
-    out = []
-    for P in polys:
-        q = []
-        for pt in P:
-            pt = (R1(pt[0]), R1(pt[1]))
-            if not q or q[-1] != pt: q.append(pt)
-        if q[0] == q[-1]: q.pop()
-        out.append(q)
-    return out
+# Holes in leaves and linings: the panel is split into convex rectangles around each opening (bands above and below,
+# strips beside). No voids, so the preview shows the glass; the preview fans caps from the centroid, so no concave outlines.
+def hrect(a, b, c, d): return (a, b, c, d)
 def panel(n, x0, x1, z0, z1, y, mat, holes=(), lod='mf'):
-    P = pieces(x0, x1, z0, z1, list(holes))
-    names = [n] if len(P) == 1 else ([f"{n} Lower", f"{n} Upper"] if len(P) == 2 else [f"{n} Part {i + 1}" for i in range(len(P))])
-    return [front(nm, pts, y, mat, lod) for nm, pts in zip(names, P)]
+    out, zp = [], z0
+    def add(nm, a, b, c, d):
+        if b - a > 0.5 and d - c > 0.5: out.append(fbox(nm, [a, y[0], c, b, y[1], d], mat, lod))
+    hs = sorted(holes, key=lambda h: h[2])
+    for i, (a, b, c, d) in enumerate(hs):
+        sfx = f" {i + 1}" if len(hs) > 1 else ""
+        add(f"{n} Below{sfx}" if i == 0 else f"{n} Between{sfx}", x0, x1, zp, c)
+        add(f"{n} Left Of Opening{sfx}", x0, a, c, d); add(f"{n} Right Of Opening{sfx}", b, x1, c, d); zp = d
+    add(f"{n} Above" if hs else n, x0, x1, zp, z1)
+    return out
+
+def pull_parts(n, x, z0, z1, yf, side=-1, mat='stainless', proj=70):
+    """Vertical D pull: 25 mm bar on two standoffs, on the face at yf, projecting toward side (-1 = -y)."""
+    yb = yf + side * (proj - 12)
+    return [cylz(f"{n} Bar", x, yb, 12.5, [z0, z1], mat, 'f'),
+            cyly(f"{n} Standoff", x, z0 + 40, 10, sorted([yf, yb]), mat, 'f', rep=(2, [0, 0, z1 - z0 - 80]), seg=12)]
 
 # ------------------------------------------------------------------ door builder (hinged)
 class Door:
@@ -129,10 +126,11 @@ class Door:
               box(f"{n} Bead Rail", [a + bw, y[0], c, b - bw, y[1], c + bw], bead, rep=(2, [0, 0, d - c - bw])))
         return hrect(a, b, c, d)
     def porthole(s, n, cx, cz, R, glass='glass', ringm='stainless'):
-        t = s.t
-        s.add(cyly(f"{n} Glass", cx, cz, R, [-4, 4], glass, seg=40),
-              turny(f"{n} Ring", cx, cz, [[R - 22, -t / 2 - 5], [R + 14, -t / 2 - 5], [R + 14, -t / 2], [R, -t / 2], [R, t / 2], [R + 14, t / 2], [R + 14, t / 2 + 5], [R - 22, t / 2 + 5]], ringm))
-        return hcirc(cx, cz, R)
+        """Round vision: square cut-out in the leaf, glass disc, ring with face flanges wide enough to cover the cut-out corners."""
+        t = s.t; Rf = R * 1.42 + 6
+        s.add(cyly(f"{n} Glass", cx, cz, R - 8, [-4, 4], glass, seg=40),
+              turny(f"{n} Ring", cx, cz, [[R - 24, -t / 2 - 6], [Rf, -t / 2 - 3], [Rf, -t / 2], [R, -t / 2], [R, t / 2], [Rf, t / 2], [Rf, t / 2 + 3], [R - 24, t / 2 + 6]], ringm))
+        return hrect(cx - R, cx + R, cz - R, cz + R)
     def lever(s, x, z=1000, dirn=-1, mat='stainless', esc=True, n="Lever"):
         t = s.t; xe = x + dirn * 125
         s.add(cyly(f"{n} Rose", x, z, 26, [-t / 2 - 9, -t / 2], mat, 'f', rep=(2, [0, t + 9, 0])),
@@ -158,10 +156,8 @@ class Door:
         t = s.t; y = [t / 2, t / 2 + 2] if side > 0 else [-t / 2 - 2, -t / 2]
         return s.add(fbox(n, [x0, y[0], z0, x1, y[1], z1], mat, 'f', r=6))
     def pull(s, x, z0=900, z1=1300, n="Pull Handle", side=-1, mat='stainless', proj=70):
-        t = s.t; yf = -t / 2 if side < 0 else t / 2; g = side
-        pts = [(yf, z0), (yf + g * proj, z0), (yf + g * proj, z1), (yf, z1), (yf, z1 - 25), (yf + g * (proj - 25), z1 - 25), (yf + g * (proj - 25), z0 + 25), (yf, z0 + 25)]
-        if g > 0: pts = pts[::-1]
-        return s.add(right(n, pts, [x - 12, x + 12], mat, 'f'))
+        yf = -s.t / 2 if side < 0 else s.t / 2
+        return s.add(pull_parts(n, x, z0, z1, yf, side, mat, proj))
     def sign(s, cx, cz, n="Fire Door Sign", mat='sign_blue', r=50, both=True):
         t = s.t
         return s.add(cyly(n, cx, cz, r, [-t / 2 - 1.5, -t / 2], mat, 'f', rep=(2, [0, t + 1.5, 0]) if both else None, seg=32))
@@ -319,9 +315,7 @@ def slide_leaf(W, H, yb, yf, ov=60, kind='solid', vision=(400, 1150, 1750), mat=
     else: p += panel("Leaf", x0 + 25, x1 - 25, z0 + 25, z1 - 25, [yf + 2, yb - 2], mat, holes)
     return p
 
-def bar_pull(x, z0, z1, yf, n="Pull Handle", mat='stainless', proj=65):
-    pts = [(yf, z0), (yf, z0 + 25), (yf - proj + 25, z0 + 25), (yf - proj + 25, z1 - 25), (yf, z1 - 25), (yf, z1), (yf - proj, z1), (yf - proj, z0)]
-    return right(n, pts, [x - 13, x + 13], mat, 'f')
+def bar_pull(x, z0, z1, yf, n="Pull Handle", mat='stainless', proj=65): return pull_parts(n, x, z0, z1, yf, -1, mat, proj)
 
 def e_conn(part, load): return [{"n": "Power", "domain": "electrical", "system": "PowerBalanced", "part": part, "side": "top"}], {"Voltage": 240, "Apparent Load": load}
 
@@ -330,7 +324,8 @@ def HC005():
     W, H = 1500, 2100; p, yb, yf = slide_base(W, H)
     p += slide_leaf(W, H, yb, yf)
     p += ring("Leaf Gasket", -W / 2 - 50, W / 2 + 50, 20, H + 50, 10, [yb, yb + 5], 'seal', 'f')
-    p += [bar_pull(-W / 2 - 15, 850, 1450, yf),
+    p += bar_pull(-W / 2 - 15, 850, 1450, yf)
+    p += [
           fbox("Kick Plate", [-W / 2 - 35, yf - 1.5, 35, W / 2 + 35, yf, 400], 'stainless', 'f', r=3),
           fbox("Foot Sensor", [-W / 2 - 300, -125, 120, -W / 2 - 140, -70, 290], 'stainless', 'f', r=10),
           fbox("Foot Sensor Window", [-W / 2 - 280, -127, 160, -W / 2 - 160, -125, 250], 'black', 'f', r=6),
@@ -363,7 +358,7 @@ def HC006():
           box("Leaf Bottom Rail", [la + 55, -40, 10, lb - 55, -8, 110], 'powder_coat', rep=(2, [-(la + lb), 0, 0])),
           box("Leaf Top Rail", [la + 55, -40, H - hh - 60, lb - 55, -8, H - hh - 10], 'powder_coat', rep=(2, [-(la + lb), 0, 0])),
           fbox("Leaf Glass", [la + 55, -28, 110, lb - 55, -20, H - hh - 60], 'glass', rep=(2, [-(la + lb), 0, 0])),
-          fbox("Manifestation Band", [-W / 2 + fw, -41, 900, W / 2 - fw, -40, 1000], 'frosted', 'f', rep=(2, [0, 0, 550])),
+          fbox("Manifestation Band", [-W / 2 + fw, -41, 920, W / 2 - fw, -40, 970], 'frosted', 'f', rep=(2, [0, 0, 550])),
           box("Meeting Seal", [-4, -40, 10, 4, -8, H - hh - 10], 'seal', 'f'),
           fbox("Radar Sensor", [-110, -128, H - hh - 50, 110, -110, H - hh + 10], 'black', 'f', r=12, rep=(2, [0, 238, 0])),
           fbox("Key Switch", [W / 2 - fw - 160, -112, H - 120, W / 2 - fw - 100, -110, H - 60], 'stainless', 'f', r=6),
@@ -380,7 +375,8 @@ def HC007():
     W, H = 1200, 2100; p, yb, yf = slide_base(W, H, leaf_t=50)
     p += slide_leaf(W, H, yb, yf, kind='glazed', mat='laminate', edge='aluminium')
     p += ring("Leaf Gasket", -W / 2 - 50, W / 2 + 50, 20, H + 50, 10, [yb, yb + 5], 'seal', 'f')
-    p += [bar_pull(-W / 2 - 18, 850, 1450, yf),
+    p += bar_pull(-W / 2 - 18, 850, 1450, yf)
+    p += [
           cyly("Wave Sensor Plate", -W / 2 - 200, 1050, 42, [-95, -70], 'stainless', 'f'),
           cyly("Wave Sensor Lens", -W / 2 - 200, 1050, 24, [-101, -95], 'led_green', 'f'),
           fbox("Interlock Status Panel", [-90, yf - 42, H + 60 + 80, 90, yf - 40, H + 60 + 160], 'black', 'f', r=8),
@@ -415,7 +411,8 @@ def HC009():
     W, H = 1500, 2100; p, yb, yf = slide_base(W, H, leaf_t=70)
     p += slide_leaf(W, H, yb, yf, vision=(300, 1300, 1700), glass='lead_glass',
                     layers=[("Skin Room", 'laminate', [yf + 2, yf + 33]), ("Lead Lining", 'lead', [yf + 33, yf + 37]), ("Skin Wall", 'laminate', [yf + 37, yb - 2])])
-    p += [bar_pull(-W / 2 - 15, 800, 1500, yf),
+    p += bar_pull(-W / 2 - 15, 800, 1500, yf)
+    p += [
           fbox("Kick Plate", [-W / 2 - 35, yf - 1.5, 35, W / 2 + 35, yf, 400], 'stainless', 'f', r=3),
           fbox("Warning Light Housing", [-200, yf - 42, H + 60 + 245, 200, -70, H + 60 + 390], 'white', r=10),
           fbox("Warning Light Lens", [-180, yf - 45, H + 60 + 260, 180, yf - 42, H + 60 + 375], 'led_red', 'f', r=8),
@@ -499,9 +496,9 @@ def HC015():
     W, H = 926, 2100; d = Door(W, H, 54).frame('frame', coved=True, arch=False)
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2; t = d.t
     a, b, c, dd = cx - 175, cx + 175, 1000, 1600
-    d.leaf("Leaf", x0, x1, [hrr(a, b, c, dd, 40)], mat='panel', lip=None)
-    d.add(fbox("Flush Glazing Room", [a, -t / 2, c, b, -t / 2 + 6, dd], 'glass', r=40), fbox("Flush Glazing Corridor", [a, t / 2 - 6, c, b, t / 2, dd], 'glass', r=40),
-          fbox("Glazing Spacer", [a + 6, -t / 2 + 6, c + 6, b - 6, t / 2 - 6, dd - 6], 'grey', 'f', r=36))
+    d.leaf("Leaf", x0, x1, [hrect(a, b, c, dd)], mat='panel', lip=None)
+    d.add(fbox("Flush Glazing Room", [a, -t / 2, c, b, -t / 2 + 6, dd], 'glass'), fbox("Flush Glazing Corridor", [a, t / 2 - 6, c, b, t / 2, dd], 'glass'))
+    d.add(*ring("Glazing Spacer", a, b, c, dd, 10, [-t / 2 + 6, t / 2 - 6], 'grey', 'f'))
     d.add(fbox("Cleanroom Pull", [x1 - 95, -t / 2 - 2, 850, x1 - 45, -t / 2, 1250], 'stainless', 'f', r=25),
           fbox("Cleanroom Pull Grip", [x1 - 85, -t / 2 - 40, 900, x1 - 55, -t / 2 - 2, 1200], 'stainless', 'f', r=15),
           fbox("Push Plate", [x1 - 115, t / 2, 1050, x1 - 40, t / 2 + 2, 1400], 'stainless', 'f', r=10))
@@ -554,8 +551,7 @@ def HC017():
         c = (a + b) / 2; d.leaf(f"{side} Leaf", a, b, [d.vision(f"{side} Vision", c - 90, c + 90, 1200, 1600, 'glass', 'stainless')], mat='stainless', lip='stainless', lw=4)
         d.add(fbox(f"{side} Protection Plate", [a + 15, -d.t / 2 - 1.5, 10, b - 15, -d.t / 2, 1000], 'laminate', 'f', r=3, rep=(2, [0, d.t + 1.5, 0])))
     d.add(cylx("Buffer Rail", -d.t / 2 - 45, 900, 16, [L0 + 40, R1_ - 40], 'stainless', 'f', rep=(2, [0, d.t + 90, 0])),
-          cyly("Buffer Rail Stand", L0 + 60, 900, 10, [-d.t / 2 - 45, -d.t / 2], 'stainless', 'f', rep=(2, [R1_ - L0 - 120, 0, 0])),
-          cyly("Buffer Rail Stand Back", L0 + 60, 900, 10, [d.t / 2, d.t / 2 + 45], 'stainless', 'f', rep=(2, [R1_ - L0 - 120, 0, 0])))
+          cyly("Buffer Rail Through Stand", L0 + 60, 900, 10, [-d.t / 2 - 45, d.t / 2 + 45], 'stainless', 'f', rep=(2, [R1_ - L0 - 120, 0, 0])))
     d.lever(L1 - 68, dirn=-1).hinges(L0 - 1.5, 3, "Left Hinge").hinges(R1_ + 1.5, 3, "Right Hinge")
     d.closer(-d.xi, 1, "Left Closer").closer(d.xi, -1, "Right Closer")
     d.add(box("Flush Bolt", [R0, -9, d.Hl - 200, R0 + 1.5, 9, d.Hl - 20], 'stainless', 'f', rep=(2, [0, 0, -(d.Hl - 200 - d.z0 - 20)])))
@@ -569,7 +565,8 @@ def HC017():
 def HC018():
     d, x0, x1 = single_basic(1000, 2100, vision=False, push=False)
     t = d.t; yr = t / 2
-    d.add(prism("Horizontal Pull Rail", [(x0 + 80, yr), (x1 - 160, yr), (x1 - 160, yr + 60), (x1 - 185, yr + 60), (x1 - 185, yr + 25), (x0 + 105, yr + 25), (x0 + 105, yr + 60), (x0 + 80, yr + 60)], [880, 905], 'stainless', 'f'),
+    d.add(cylx("Horizontal Pull Rail", yr + 50, 900, 12.5, [x0 + 80, x1 - 160], 'stainless', 'f'),
+          cyly("Pull Rail Standoff", x0 + 100, 900, 10, [yr, yr + 50], 'stainless', 'f', rep=(2, [x1 - x0 - 280, 0, 0]), seg=12),
           cyly("Emergency Release Indicator", x1 - 68, 1130, 22, [-t / 2 - 6, -t / 2], 'stainless', 'f'),
           fbox("Indicator Window", [x1 - 80, -t / 2 - 7, 1124, x1 - 56, -t / 2 - 6, 1136], 'led_red', 'f'),
           cyly("Thumbturn Rose", x1 - 68, 1130, 24, [t / 2, t / 2 + 6], 'stainless', 'f'),
@@ -642,20 +639,17 @@ def HC021():
 def HC022():
     W, H, t = 1200, 2100, 45; d = Door(W, H, t, face=50)
     xi, d2 = d.xi, d.d2
-    jamb = [(-W / 2, -d2), (-xi, -d2), (-xi, t / 2), (-xi + 15, t / 2), (-xi + 15, d2), (-W / 2, d2)]
-    d.add(prism("Frame Jamb", jamb, [0, H], 'steel'))
-    d.add(prism("Frame Jamb Right", [(-x, y) for x, y in jamb][::-1], [0, H], 'steel'),
-          right("Frame Head", [(-d2, d.Hs), (t / 2, d.Hs), (t / 2, d.Hs - 15), (d2, d.Hs - 15), (d2, H), (-d2, H)], [-W / 2, W / 2], 'steel'))
+    d.frame('steel', arch=False)
     L0, L1, R0, R1_ = -xi + 3, -1.5, 1.5, xi - 3
     for side, a, b in (("Left", L0, L1), ("Right", R0, R1_)):
         la, lb = a + 80, b - 80
         holes = [hrect(la, lb, 200, 700), hrect(la, lb, 1500, 1900)]
         d.leaf(f"{side} Leaf", a, b, holes, mat='steel', lip=None)
         for nm, z0, z1 in (("Low", 200, 700), ("High", 1500, 1900)):
-            n = int((z1 - z0) / 55)
-            d.add(right(f"{side} Louvre {nm}", [(-t / 2 + 2, z0 + 8), (-t / 2 + 6, z0 + 4), (t / 2 - 2, z0 + 40), (t / 2 - 6, z0 + 44)], [la, lb], 'steel', rep=(n, [0, 0, (z1 - z0 - 10) / n])))
+            n = int((z1 - z0) / 65)
+            d.add(right(f"{side} Louvre {nm}", [(-t / 2 + 2, z0 + 8), (-t / 2 + 6, z0 + 4), (t / 2 - 2, z0 + 46), (t / 2 - 6, z0 + 50)], [la, lb], 'steel', rep=(n, [0, 0, (z1 - z0 - 10) / n])))
     d.hinges(L0 - 1.5, 3, "Left Hinge", r=9, mat='steel').hinges(R1_ + 1.5, 3, "Right Hinge", r=9, mat='steel')
-    d.lever(L1 - 68, dirn=-1, mat='chrome')
+    d.lever(L1 - 68, dirn=-1, mat='chrome', esc=False)
     d.add(box("Flush Bolt", [R0, -9, d.Hl - 200, R0 + 1.5, 9, d.Hl - 20], 'chrome', 'f', rep=(2, [0, 0, -(d.Hl - 200 - d.z0 - 20)])),
           fbox("Plant Room Sign", [R0 + 120, -t / 2 - 1.5, 1050, R1_ - 120, -t / 2, 1350], 'sign_yellow', 'f', r=4))
     return make("FMC_A_Door_Louvred_Steel_Plant", "Louvred-Pair", "Steel louvred pair for plant, generator and medical-gas rooms: pressed-steel rebated frame, painted steel leaves with low and high louvre panels, heavy hinges, lever lock, flush bolts, warning sign",
@@ -852,12 +846,11 @@ def HC030():
 @reg
 def HC031():
     W, H, S = 1200, 900, 1000; p = []; d2 = 100; r = 60
-    p += panel("Flush Frame", -W / 2, W / 2, S, S + H, [-d2, d2], 'stainless', [hrr(-W / 2 + 50, W / 2 - 50, S + 50, S + H - 50, r)])
+    p += panel("Flush Frame", -W / 2, W / 2, S, S + H, [-d2, d2], 'stainless', [hrect(-W / 2 + 50, W / 2 - 50, S + 50, S + H - 50)])
     a, b, c, d = -W / 2 + 50, W / 2 - 50, S + 50, S + H - 50
-    p += [fbox("Glass Theatre Side", [a, -d2, c, b, -d2 + 8, d], 'glass', r=r), fbox("Glass Corridor Side", [a, d2 - 8, c, b, d2, d], 'glass', r=r),
-          fbox("Cavity Spacer", [a + 8, -d2 + 8, c + 8, b - 8, d2 - 8, d - 8], 'grey', 'f', r=r - 8),
-          fbox("Silicone Joint", [a - 3, -d2 - 0.5, c - 3, b + 3, -d2, d + 3], 'seal', 'f', r=r + 3),
-          fbox("Silicone Joint Corridor", [a - 3, d2, c - 3, b + 3, d2 + 0.5, d + 3], 'seal', 'f', r=r + 3),
+    p += ring("Cavity Spacer", a, b, c, d, 12, [-d2 + 8, d2 - 8], 'grey', 'f')
+    p += [fbox("Glass Theatre Side", [a, -d2, c, b, -d2 + 8, d], 'glass'), fbox("Glass Corridor Side", [a, d2 - 8, c, b, d2, d], 'glass'),
+
           fbox("Desiccant Breather", [b - 80, -d2 + 9, c + 2, b - 40, -d2 + 20, c + 10], 'grey', 'f')]
     return make("FMC_A_Window_Observation_Theatre_Fixed", "FlushFixed", "Flush-glazed fixed theatre observation window: glass flush with both wall faces, stainless lining with rounded corners, sealed cavity, silicone joints, no ledges",
                 p, {"Opening 1200 x 900 mm, sill 1000": A("1200x900", "type 1; HBN 26 operating department"), "Flush both faces, R60 corners": A("flush", "cleanable, no ledges, HTM 03-01 / HBN 26"),
@@ -870,7 +863,7 @@ def HC032():
     W, H, S = 900, 600, 1000; p = []; d2 = 100; f = 60
     p += panel("Lead Lined Frame", -W / 2, W / 2, S, S + H, [-d2, d2], 'steel', [hrect(-W / 2 + f, W / 2 - f, S + f, S + H - f)])
     for side, y in (("Control", [-d2 - 12, -d2]), ("Room", [d2, d2 + 12])):
-        p += panel(f"Face Frame {side}", -W / 2 - 40, W / 2 + 40, S - 40, S + H + 40, y, 'steel', [hrr(-W / 2 + f + 20, W / 2 - f - 20, S + f + 20, S + H - f - 20, 12)])
+        p += panel(f"Face Frame {side}", -W / 2 - 40, W / 2 + 40, S - 40, S + H + 40, y, 'steel', [hrect(-W / 2 + f + 20, W / 2 - f - 20, S + f + 20, S + H - f - 20)])
     p += [fbox("Lead Glass", [-W / 2 + f, -10, S + f, W / 2 - f, 10, S + H - f], 'lead_glass'),
           box("Glass Setting Block", [-W / 2 + f, -12, S + f, W / 2 - f, 12, S + f + 8], 'seal', 'f'),
           box("Lead Lining Return", [-W / 2 - 1, -d2, S - 1, -W / 2, d2, S + H + 1], 'lead', 'f', rep=(2, [W + 1, 0, 0])),
@@ -950,7 +943,8 @@ def HC036():
           box("Bead Rail", [a + 16, -22, c, b - 16, 22, c + 16], 'frame', rep=(2, [0, 0, d - c - 16])),
           turny("Speech Grille", 0, c + 250, [[0, -12], [70, -12], [70, 12], [0, 12]], 'stainless', seg=40),
           turny("Speech Grille Ring", 0, c + 250, [[70, -14], [80, -14], [80, 14], [70, 14]], 'chrome', 'f', seg=40),
-          right("Deal Tray", [(-d2 - 200, S + f + 60), (-d2 - 200, S + f), (d2 + 200, S + f), (d2 + 200, S + f + 60), (d2 + 185, S + f + 60), (d2 + 185, S + f + 15), (-d2 - 185, S + f + 15), (-d2 - 185, S + f + 60)], [-200, 200], 'stainless'),
+          box("Deal Tray", [-200, -d2 - 200, S + f, 200, d2 + 200, S + f + 15], 'stainless'),
+          box("Deal Tray Lip", [-200, -d2 - 200, S + f + 15, 200, -d2 - 185, S + f + 60], 'stainless', rep=(2, [0, 2 * d2 + 385, 0])),
           box("Counter Shelf", [-W / 2 - 60, -d2 - 300, S + f + 30, -200, -d2, S + f + 60], 'laminate', r=6),
           box("Counter Shelf Right", [200, -d2 - 300, S + f + 30, W / 2 + 60, -d2, S + f + 60], 'laminate', r=6),
           box("Staff Shelf", [-W / 2 - 60, d2, S + f + 30, -200, d2 + 300, S + f + 60], 'laminate', r=6),
