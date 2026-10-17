@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_Door_LeadLined_Xray",
  "template": "Metric Door.rft",
- "about": "Lead-lined doorset modelled as a product: frame with stops and architraves, leaf as two HPL skins with a lead lining layer (visible on the leaf top and bottom), lipping, lead-glass vision with wide stainless bead, lever and escutcheons, four heavy hinges, heavy closer, kick plates, seals, illuminated warning light on the corridor face (+y) and radiation sign. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door lead lined xray doors hospital; images: https://www.google.com/search?tbm=isch&q=door+lead+lined+xray+doors+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Lead-lined doorset modelled as a product: frame with stops and architraves, leaf as two HPL skins with a lead lining layer (visible on the leaf top and bottom), lipping, lead-glass vision with wide stainless bead, lever and escutcheons, four heavy hinges, heavy closer, kick plates, seals, illuminated warning light on the corridor face (+y) and radiation sign. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door lead lined xray doors hospital; images: https://www.google.com/search?tbm=isch&q=door+lead+lined+xray+doors+hospital; basis: generic product; brand, model and supplier open for review; photo: https://manusa.com/en/products/doors-x-ray-rooms; photo_title: Lead lined doors for X-ray rooms; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -356,7 +356,7 @@
    "name": "1026x2100_Pb2/Description",
    "type": "1026x2100_Pb2",
    "param": "Description",
-   "value": "Lead-lined X-ray room doorset: 54 mm leaf with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign"
+   "value": "Lead-lined X-ray room doorset (single 1026, leaf-and-half 1500): 54 mm leaves with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign"
   },
   {
    "op": "set_type_value",
@@ -392,6 +392,13 @@
    "type": "1026x2100_Pb2",
    "param": "FMC_Role_Code",
    "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1026x2100_Pb2/URL",
+   "type": "1026x2100_Pb2",
+   "param": "URL",
+   "value": "https://manusa.com/en/products/doors-x-ray-rooms"
   },
   {
    "op": "set_type_value",
@@ -437,7 +444,7 @@
    "name": "1500x2100_Pb2/Description",
    "type": "1500x2100_Pb2",
    "param": "Description",
-   "value": "Lead-lined X-ray room doorset: 54 mm leaf with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign"
+   "value": "Lead-lined X-ray room doorset (single 1026, leaf-and-half 1500): 54 mm leaves with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign"
   },
   {
    "op": "set_type_value",
@@ -476,6 +483,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1500x2100_Pb2/URL",
+   "type": "1500x2100_Pb2",
+   "param": "URL",
+   "value": "https://manusa.com/en/products/doors-x-ray-rooms"
+  },
+  {
+   "op": "set_type_value",
    "name": "1500x2100_Pb2/Width",
    "type": "1500x2100_Pb2",
    "param": "Width",
@@ -487,6 +501,48 @@
    "type": "1500x2100_Pb2",
    "param": "Height",
    "value": 2100.0
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Led Red Material"
   },
   {
    "op": "add_subcategory",
@@ -513,9 +569,9 @@
    "op": "add_subcategory",
    "name": "Lead Glass",
    "color": [
-    195,
-    220,
-    228
+    207,
+    203,
+    166
    ],
    "line_weight_projection": 1
   },
@@ -527,7 +583,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Glass_Laminated",
+   "name": "FMC_Glass_Lead_Xray",
    "param": "Lead Glass Material"
   },
   {
@@ -597,9 +653,9 @@
    "op": "add_subcategory",
    "name": "Lead",
    "color": [
-    158,
-    164,
-    170
+    122,
+    126,
+    131
    ],
    "line_weight_projection": 1
   },
@@ -611,7 +667,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "name": "FMC_Metal_Lead_Sheet",
    "param": "Lead Material"
   },
   {
@@ -658,48 +714,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Sign Yellow",
    "color": [
     242,
@@ -734,19 +748,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -551.0,
+     -788.0,
      -87.0
     ],
     [
-     551.0,
+     788.0,
      -87.0
     ],
     [
-     551.0,
+     788.0,
      153
     ],
     [
-     -551.0,
+     -788.0,
      153
     ]
    ],
@@ -764,3833 +778,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Jamb 1",
-   "points": [
-    [
-     -476.0,
-     -70.0
-    ],
-    [
-     -474.5,
-     -69.6
-    ],
-    [
-     -473.4,
-     -68.5
-    ],
-    [
-     -473.0,
-     -67.0
-    ],
-    [
-     -473.0,
-     67.0
-    ],
-    [
-     -473.4,
-     68.5
-    ],
-    [
-     -474.5,
-     69.6
-    ],
-    [
-     -476.0,
-     70.0
-    ],
-    [
-     -510.0,
-     70.0
-    ],
-    [
-     -511.5,
-     69.6
-    ],
-    [
-     -512.6,
-     68.5
-    ],
-    [
-     -513.0,
-     67.0
-    ],
-    [
-     -513.0,
-     -67.0
-    ],
-    [
-     -512.6,
-     -68.5
-    ],
-    [
-     -511.5,
-     -69.6
-    ],
-    [
-     -510.0,
-     -70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Jamb 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Jamb 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Jamb 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Jamb 2",
-   "points": [
-    [
-     510.0,
-     -70.0
-    ],
-    [
-     511.5,
-     -69.6
-    ],
-    [
-     512.6,
-     -68.5
-    ],
-    [
-     513.0,
-     -67.0
-    ],
-    [
-     513.0,
-     67.0
-    ],
-    [
-     512.6,
-     68.5
-    ],
-    [
-     511.5,
-     69.6
-    ],
-    [
-     510.0,
-     70.0
-    ],
-    [
-     476.0,
-     70.0
-    ],
-    [
-     474.5,
-     69.6
-    ],
-    [
-     473.4,
-     68.5
-    ],
-    [
-     473.0,
-     67.0
-    ],
-    [
-     473.0,
-     -67.0
-    ],
-    [
-     473.4,
-     -68.5
-    ],
-    [
-     474.5,
-     -69.6
-    ],
-    [
-     476.0,
-     -70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Jamb 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Jamb 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Jamb 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Head",
-   "points": [
-    [
-     67.0,
-     2060.0
-    ],
-    [
-     68.5,
-     2060.4
-    ],
-    [
-     69.6,
-     2061.5
-    ],
-    [
-     70.0,
-     2063.0
-    ],
-    [
-     70.0,
-     2097.0
-    ],
-    [
-     69.6,
-     2098.5
-    ],
-    [
-     68.5,
-     2099.6
-    ],
-    [
-     67.0,
-     2100.0
-    ],
-    [
-     -67.0,
-     2100.0
-    ],
-    [
-     -68.5,
-     2099.6
-    ],
-    [
-     -69.6,
-     2098.5
-    ],
-    [
-     -70.0,
-     2097.0
-    ],
-    [
-     -70.0,
-     2063.0
-    ],
-    [
-     -69.6,
-     2061.5
-    ],
-    [
-     -68.5,
-     2060.4
-    ],
-    [
-     -67.0,
-     2060.0
-    ]
-   ],
-   "start": -513.0,
-   "end": 513.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Head",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Head",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Jamb 1",
-   "points": [
-    [
-     -460.0,
-     27.0
-    ],
-    [
-     -459.23,
-     27.15
-    ],
-    [
-     -458.59,
-     27.59
-    ],
-    [
-     -458.15,
-     28.23
-    ],
-    [
-     -458.0,
-     29.0
-    ],
-    [
-     -458.0,
-     62.0
-    ],
-    [
-     -458.15,
-     62.77
-    ],
-    [
-     -458.59,
-     63.41
-    ],
-    [
-     -459.23,
-     63.85
-    ],
-    [
-     -460.0,
-     64.0
-    ],
-    [
-     -471.0,
-     64.0
-    ],
-    [
-     -471.77,
-     63.85
-    ],
-    [
-     -472.41,
-     63.41
-    ],
-    [
-     -472.85,
-     62.77
-    ],
-    [
-     -473.0,
-     62.0
-    ],
-    [
-     -473.0,
-     29.0
-    ],
-    [
-     -472.85,
-     28.23
-    ],
-    [
-     -472.41,
-     27.59
-    ],
-    [
-     -471.77,
-     27.15
-    ],
-    [
-     -471.0,
-     27.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Jamb 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Jamb 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Jamb 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Jamb 2",
-   "points": [
-    [
-     471.0,
-     27.0
-    ],
-    [
-     471.77,
-     27.15
-    ],
-    [
-     472.41,
-     27.59
-    ],
-    [
-     472.85,
-     28.23
-    ],
-    [
-     473.0,
-     29.0
-    ],
-    [
-     473.0,
-     62.0
-    ],
-    [
-     472.85,
-     62.77
-    ],
-    [
-     472.41,
-     63.41
-    ],
-    [
-     471.77,
-     63.85
-    ],
-    [
-     471.0,
-     64.0
-    ],
-    [
-     460.0,
-     64.0
-    ],
-    [
-     459.23,
-     63.85
-    ],
-    [
-     458.59,
-     63.41
-    ],
-    [
-     458.15,
-     62.77
-    ],
-    [
-     458.0,
-     62.0
-    ],
-    [
-     458.0,
-     29.0
-    ],
-    [
-     458.15,
-     28.23
-    ],
-    [
-     458.59,
-     27.59
-    ],
-    [
-     459.23,
-     27.15
-    ],
-    [
-     460.0,
-     27.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Jamb 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Jamb 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Jamb 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Head",
-   "points": [
-    [
-     -458.0,
-     27.0
-    ],
-    [
-     458.0,
-     27.0
-    ],
-    [
-     458.0,
-     64
-    ],
-    [
-     -458.0,
-     64
-    ]
-   ],
-   "start": 2045,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Head",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Head",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Front 1",
-   "points": [
-    [
-     -486.0,
-     -82.0
-    ],
-    [
-     -483.5,
-     -81.3
-    ],
-    [
-     -481.7,
-     -79.5
-    ],
-    [
-     -481.0,
-     -77.0
-    ],
-    [
-     -481.0,
-     -75.0
-    ],
-    [
-     -481.7,
-     -72.5
-    ],
-    [
-     -483.5,
-     -70.7
-    ],
-    [
-     -486.0,
-     -70.0
-    ],
-    [
-     -546.0,
-     -70.0
-    ],
-    [
-     -548.5,
-     -70.7
-    ],
-    [
-     -550.3,
-     -72.5
-    ],
-    [
-     -551.0,
-     -75.0
-    ],
-    [
-     -551.0,
-     -77.0
-    ],
-    [
-     -550.3,
-     -79.5
-    ],
-    [
-     -548.5,
-     -81.3
-    ],
-    [
-     -546.0,
-     -82.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Front 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Front 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Front 2",
-   "points": [
-    [
-     546.0,
-     -82.0
-    ],
-    [
-     548.5,
-     -81.3
-    ],
-    [
-     550.3,
-     -79.5
-    ],
-    [
-     551.0,
-     -77.0
-    ],
-    [
-     551.0,
-     -75.0
-    ],
-    [
-     550.3,
-     -72.5
-    ],
-    [
-     548.5,
-     -70.7
-    ],
-    [
-     546.0,
-     -70.0
-    ],
-    [
-     486.0,
-     -70.0
-    ],
-    [
-     483.5,
-     -70.7
-    ],
-    [
-     481.70000000000005,
-     -72.5
-    ],
-    [
-     481.0,
-     -75.0
-    ],
-    [
-     481.0,
-     -77.0
-    ],
-    [
-     481.70000000000005,
-     -79.5
-    ],
-    [
-     483.5,
-     -81.3
-    ],
-    [
-     486.0,
-     -82.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Front 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Front 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Back 1",
-   "points": [
-    [
-     -486.0,
-     70.0
-    ],
-    [
-     -483.5,
-     70.7
-    ],
-    [
-     -481.7,
-     72.5
-    ],
-    [
-     -481.0,
-     75.0
-    ],
-    [
-     -481.0,
-     77.0
-    ],
-    [
-     -481.7,
-     79.5
-    ],
-    [
-     -483.5,
-     81.3
-    ],
-    [
-     -486.0,
-     82.0
-    ],
-    [
-     -546.0,
-     82.0
-    ],
-    [
-     -548.5,
-     81.3
-    ],
-    [
-     -550.3,
-     79.5
-    ],
-    [
-     -551.0,
-     77.0
-    ],
-    [
-     -551.0,
-     75.0
-    ],
-    [
-     -550.3,
-     72.5
-    ],
-    [
-     -548.5,
-     70.7
-    ],
-    [
-     -546.0,
-     70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Back 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Back 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Back 2",
-   "points": [
-    [
-     546.0,
-     70.0
-    ],
-    [
-     548.5,
-     70.7
-    ],
-    [
-     550.3,
-     72.5
-    ],
-    [
-     551.0,
-     75.0
-    ],
-    [
-     551.0,
-     77.0
-    ],
-    [
-     550.3,
-     79.5
-    ],
-    [
-     548.5,
-     81.3
-    ],
-    [
-     546.0,
-     82.0
-    ],
-    [
-     486.0,
-     82.0
-    ],
-    [
-     483.5,
-     81.3
-    ],
-    [
-     481.70000000000005,
-     79.5
-    ],
-    [
-     481.0,
-     77.0
-    ],
-    [
-     481.0,
-     75.0
-    ],
-    [
-     481.70000000000005,
-     72.5
-    ],
-    [
-     483.5,
-     70.7
-    ],
-    [
-     486.0,
-     70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Back 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Back 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Head 1",
-   "points": [
-    [
-     -75.0,
-     2068.0
-    ],
-    [
-     -72.5,
-     2068.7
-    ],
-    [
-     -70.7,
-     2070.5
-    ],
-    [
-     -70.0,
-     2073.0
-    ],
-    [
-     -70.0,
-     2133.0
-    ],
-    [
-     -70.7,
-     2135.5
-    ],
-    [
-     -72.5,
-     2137.3
-    ],
-    [
-     -75.0,
-     2138.0
-    ],
-    [
-     -77.0,
-     2138.0
-    ],
-    [
-     -79.5,
-     2137.3
-    ],
-    [
-     -81.3,
-     2135.5
-    ],
-    [
-     -82.0,
-     2133.0
-    ],
-    [
-     -82.0,
-     2073.0
-    ],
-    [
-     -81.3,
-     2070.5
-    ],
-    [
-     -79.5,
-     2068.7
-    ],
-    [
-     -77.0,
-     2068.0
-    ]
-   ],
-   "start": -551.0,
-   "end": 551.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Head 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Head 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Head 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Head 2",
-   "points": [
-    [
-     77.0,
-     2068.0
-    ],
-    [
-     79.5,
-     2068.7
-    ],
-    [
-     81.3,
-     2070.5
-    ],
-    [
-     82.0,
-     2073.0
-    ],
-    [
-     82.0,
-     2133.0
-    ],
-    [
-     81.3,
-     2135.5
-    ],
-    [
-     79.5,
-     2137.3
-    ],
-    [
-     77.0,
-     2138.0
-    ],
-    [
-     75.0,
-     2138.0
-    ],
-    [
-     72.5,
-     2137.3
-    ],
-    [
-     70.7,
-     2135.5
-    ],
-    [
-     70.0,
-     2133.0
-    ],
-    [
-     70.0,
-     2073.0
-    ],
-    [
-     70.7,
-     2070.5
-    ],
-    [
-     72.5,
-     2068.7
-    ],
-    [
-     75.0,
-     2068.0
-    ]
-   ],
-   "start": -551.0,
-   "end": 551.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Head 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Head 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Head 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lead Glass Vision Glass",
-   "points": [
-    [
-     -110.0,
-     1250
-    ],
-    [
-     110.0,
-     1250
-    ],
-    [
-     110.0,
-     1600
-    ],
-    [
-     -110.0,
-     1600
-    ]
-   ],
-   "start": -8,
-   "end": 8,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lead Glass Vision Glass",
-   "subcategory": "Lead Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Glass Vision Glass",
-   "param": "Lead Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Glass Vision Glass",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lead Glass Vision Bead Side 1",
-   "points": [
-    [
-     -83.0,
-     -35.0
-    ],
-    [
-     -81.5,
-     -34.6
-    ],
-    [
-     -80.4,
-     -33.5
-    ],
-    [
-     -80.0,
-     -32.0
-    ],
-    [
-     -80.0,
-     32.0
-    ],
-    [
-     -80.4,
-     33.5
-    ],
-    [
-     -81.5,
-     34.6
-    ],
-    [
-     -83.0,
-     35.0
-    ],
-    [
-     -107.0,
-     35.0
-    ],
-    [
-     -108.5,
-     34.6
-    ],
-    [
-     -109.6,
-     33.5
-    ],
-    [
-     -110.0,
-     32.0
-    ],
-    [
-     -110.0,
-     -32.0
-    ],
-    [
-     -109.6,
-     -33.5
-    ],
-    [
-     -108.5,
-     -34.6
-    ],
-    [
-     -107.0,
-     -35.0
-    ]
-   ],
-   "start": 1250,
-   "end": 1600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lead Glass Vision Bead Side 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Glass Vision Bead Side 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Glass Vision Bead Side 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lead Glass Vision Bead Side 2",
-   "points": [
-    [
-     107.0,
-     -35.0
-    ],
-    [
-     108.5,
-     -34.6
-    ],
-    [
-     109.6,
-     -33.5
-    ],
-    [
-     110.0,
-     -32.0
-    ],
-    [
-     110.0,
-     32.0
-    ],
-    [
-     109.6,
-     33.5
-    ],
-    [
-     108.5,
-     34.6
-    ],
-    [
-     107.0,
-     35.0
-    ],
-    [
-     83.0,
-     35.0
-    ],
-    [
-     81.5,
-     34.6
-    ],
-    [
-     80.4,
-     33.5
-    ],
-    [
-     80.0,
-     32.0
-    ],
-    [
-     80.0,
-     -32.0
-    ],
-    [
-     80.4,
-     -33.5
-    ],
-    [
-     81.5,
-     -34.6
-    ],
-    [
-     83.0,
-     -35.0
-    ]
-   ],
-   "start": 1250,
-   "end": 1600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lead Glass Vision Bead Side 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Glass Vision Bead Side 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Glass Vision Bead Side 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lead Glass Vision Bead Rail 1",
-   "points": [
-    [
-     -80.0,
-     -35.0
-    ],
-    [
-     80.0,
-     -35.0
-    ],
-    [
-     80.0,
-     35.0
-    ],
-    [
-     -80.0,
-     35.0
-    ]
-   ],
-   "start": 1250,
-   "end": 1280
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lead Glass Vision Bead Rail 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Glass Vision Bead Rail 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Glass Vision Bead Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lead Glass Vision Bead Rail 2",
-   "points": [
-    [
-     -80.0,
-     -35.0
-    ],
-    [
-     80.0,
-     -35.0
-    ],
-    [
-     80.0,
-     35.0
-    ],
-    [
-     -80.0,
-     35.0
-    ]
-   ],
-   "start": 1570,
-   "end": 1600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lead Glass Vision Bead Rail 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lead Glass Vision Bead Rail 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lead Glass Vision Bead Rail 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lipping 1",
-   "points": [
-    [
-     -470.0,
-     -27.0
-    ],
-    [
-     -462.0,
-     -27.0
-    ],
-    [
-     -462.0,
-     27.0
-    ],
-    [
-     -470.0,
-     27.0
-    ]
-   ],
-   "start": 8,
-   "end": 2057
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lipping 1",
-   "subcategory": "Lipping"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lipping 1",
-   "param": "Lipping Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lipping 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lipping 2",
-   "points": [
-    [
-     462.0,
-     -27.0
-    ],
-    [
-     470.0,
-     -27.0
-    ],
-    [
-     470.0,
-     27.0
-    ],
-    [
-     462.0,
-     27.0
-    ]
-   ],
-   "start": 8,
-   "end": 2057
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lipping 2",
-   "subcategory": "Lipping"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lipping 2",
-   "param": "Lipping Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lipping 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Room Below",
-   "points": [
-    [
-     -462.0,
-     8
-    ],
-    [
-     462.0,
-     8
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     -462.0,
-     1250
-    ]
-   ],
-   "start": 2,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Room Below",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Room Below",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Room Below",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Room Left Of Opening",
-   "points": [
-    [
-     -462.0,
-     1250
-    ],
-    [
-     -110.0,
-     1250
-    ],
-    [
-     -110.0,
-     1600
-    ],
-    [
-     -462.0,
-     1600
-    ]
-   ],
-   "start": 2,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Room Left Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Room Left Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Room Left Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Room Right Of Opening",
-   "points": [
-    [
-     110.0,
-     1250
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     110.0,
-     1600
-    ]
-   ],
-   "start": 2,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Room Right Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Room Right Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Room Right Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Room Above",
-   "points": [
-    [
-     -462.0,
-     1600
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     462.0,
-     2057
-    ],
-    [
-     -462.0,
-     2057
-    ]
-   ],
-   "start": 2,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Room Above",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Room Above",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Room Above",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lead Lining Below",
-   "points": [
-    [
-     -462.0,
-     8
-    ],
-    [
-     462.0,
-     8
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     -462.0,
-     1250
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lead Lining Below",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lead Lining Below",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lead Lining Below",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lead Lining Left Of Opening",
-   "points": [
-    [
-     -462.0,
-     1250
-    ],
-    [
-     -110.0,
-     1250
-    ],
-    [
-     -110.0,
-     1600
-    ],
-    [
-     -462.0,
-     1600
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lead Lining Left Of Opening",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lead Lining Left Of Opening",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lead Lining Left Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lead Lining Right Of Opening",
-   "points": [
-    [
-     110.0,
-     1250
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     110.0,
-     1600
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lead Lining Right Of Opening",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lead Lining Right Of Opening",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lead Lining Right Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lead Lining Above",
-   "points": [
-    [
-     -462.0,
-     1600
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     462.0,
-     2057
-    ],
-    [
-     -462.0,
-     2057
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lead Lining Above",
-   "subcategory": "Lead"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lead Lining Above",
-   "param": "Lead Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lead Lining Above",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Corridor Below",
-   "points": [
-    [
-     -462.0,
-     8
-    ],
-    [
-     462.0,
-     8
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     -462.0,
-     1250
-    ]
-   ],
-   "start": -27.0,
-   "end": -2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Corridor Below",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Corridor Below",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Corridor Below",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Corridor Left Of Opening",
-   "points": [
-    [
-     -462.0,
-     1250
-    ],
-    [
-     -110.0,
-     1250
-    ],
-    [
-     -110.0,
-     1600
-    ],
-    [
-     -462.0,
-     1600
-    ]
-   ],
-   "start": -27.0,
-   "end": -2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Corridor Left Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Corridor Left Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Corridor Left Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Corridor Right Of Opening",
-   "points": [
-    [
-     110.0,
-     1250
-    ],
-    [
-     462.0,
-     1250
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     110.0,
-     1600
-    ]
-   ],
-   "start": -27.0,
-   "end": -2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Corridor Right Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Corridor Right Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Corridor Right Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Skin Corridor Above",
-   "points": [
-    [
-     -462.0,
-     1600
-    ],
-    [
-     462.0,
-     1600
-    ],
-    [
-     462.0,
-     2057
-    ],
-    [
-     -462.0,
-     2057
-    ]
-   ],
-   "start": -27.0,
-   "end": -2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Skin Corridor Above",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Skin Corridor Above",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Skin Corridor Above",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Rose 1",
-   "points": [
-    [
-     428.0,
-     1000.0
-    ],
-    [
-     427.11,
-     1006.73
-    ],
-    [
-     424.52,
-     1013.0
-    ],
-    [
-     420.38,
-     1018.38
-    ],
-    [
-     415.0,
-     1022.52
-    ],
-    [
-     408.73,
-     1025.11
-    ],
-    [
-     402.0,
-     1026.0
-    ],
-    [
-     395.27,
-     1025.11
-    ],
-    [
-     389.0,
-     1022.52
-    ],
-    [
-     383.62,
-     1018.38
-    ],
-    [
-     379.48,
-     1013.0
-    ],
-    [
-     376.89,
-     1006.73
-    ],
-    [
-     376.0,
-     1000.0
-    ],
-    [
-     376.89,
-     993.27
-    ],
-    [
-     379.48,
-     987.0
-    ],
-    [
-     383.62,
-     981.62
-    ],
-    [
-     389.0,
-     977.48
-    ],
-    [
-     395.27,
-     974.89
-    ],
-    [
-     402.0,
-     974.0
-    ],
-    [
-     408.73,
-     974.89
-    ],
-    [
-     415.0,
-     977.48
-    ],
-    [
-     420.38,
-     981.62
-    ],
-    [
-     424.52,
-     987.0
-    ],
-    [
-     427.11,
-     993.27
-    ]
-   ],
-   "start": 27.0,
-   "end": 36.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Rose 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Rose 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Rose 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Rose 2",
-   "points": [
-    [
-     428.0,
-     1000.0
-    ],
-    [
-     427.11,
-     1006.73
-    ],
-    [
-     424.52,
-     1013.0
-    ],
-    [
-     420.38,
-     1018.38
-    ],
-    [
-     415.0,
-     1022.52
-    ],
-    [
-     408.73,
-     1025.11
-    ],
-    [
-     402.0,
-     1026.0
-    ],
-    [
-     395.27,
-     1025.11
-    ],
-    [
-     389.0,
-     1022.52
-    ],
-    [
-     383.62,
-     1018.38
-    ],
-    [
-     379.48,
-     1013.0
-    ],
-    [
-     376.89,
-     1006.73
-    ],
-    [
-     376.0,
-     1000.0
-    ],
-    [
-     376.89,
-     993.27
-    ],
-    [
-     379.48,
-     987.0
-    ],
-    [
-     383.62,
-     981.62
-    ],
-    [
-     389.0,
-     977.48
-    ],
-    [
-     395.27,
-     974.89
-    ],
-    [
-     402.0,
-     974.0
-    ],
-    [
-     408.73,
-     974.89
-    ],
-    [
-     415.0,
-     977.48
-    ],
-    [
-     420.38,
-     981.62
-    ],
-    [
-     424.52,
-     987.0
-    ],
-    [
-     427.11,
-     993.27
-    ]
-   ],
-   "start": -36.0,
-   "end": -27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Rose 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Rose 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Rose 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Neck 1",
-   "points": [
-    [
-     411.0,
-     1000.0
-    ],
-    [
-     409.79,
-     1004.5
-    ],
-    [
-     406.5,
-     1007.79
-    ],
-    [
-     402.0,
-     1009.0
-    ],
-    [
-     397.5,
-     1007.79
-    ],
-    [
-     394.21,
-     1004.5
-    ],
-    [
-     393.0,
-     1000.0
-    ],
-    [
-     394.21,
-     995.5
-    ],
-    [
-     397.5,
-     992.21
-    ],
-    [
-     402.0,
-     991.0
-    ],
-    [
-     406.5,
-     992.21
-    ],
-    [
-     409.79,
-     995.5
-    ]
-   ],
-   "start": 36.0,
-   "end": 85.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Neck 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Neck 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Neck 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Neck 2",
-   "points": [
-    [
-     411.0,
-     1000.0
-    ],
-    [
-     409.79,
-     1004.5
-    ],
-    [
-     406.5,
-     1007.79
-    ],
-    [
-     402.0,
-     1009.0
-    ],
-    [
-     397.5,
-     1007.79
-    ],
-    [
-     394.21,
-     1004.5
-    ],
-    [
-     393.0,
-     1000.0
-    ],
-    [
-     394.21,
-     995.5
-    ],
-    [
-     397.5,
-     992.21
-    ],
-    [
-     402.0,
-     991.0
-    ],
-    [
-     406.5,
-     992.21
-    ],
-    [
-     409.79,
-     995.5
-    ]
-   ],
-   "start": -85.0,
-   "end": -36.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Neck 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Neck 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Neck 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Arm 1",
-   "points": [
-    [
-     -67.0,
-     1000.0
-    ],
-    [
-     -67.76,
-     1003.83
-    ],
-    [
-     -69.93,
-     1007.07
-    ],
-    [
-     -73.17,
-     1009.24
-    ],
-    [
-     -77.0,
-     1010.0
-    ],
-    [
-     -80.83,
-     1009.24
-    ],
-    [
-     -84.07,
-     1007.07
-    ],
-    [
-     -86.24,
-     1003.83
-    ],
-    [
-     -87.0,
-     1000.0
-    ],
-    [
-     -86.24,
-     996.17
-    ],
-    [
-     -84.07,
-     992.93
-    ],
-    [
-     -80.83,
-     990.76
-    ],
-    [
-     -77.0,
-     990.0
-    ],
-    [
-     -73.17,
-     990.76
-    ],
-    [
-     -69.93,
-     992.93
-    ],
-    [
-     -67.76,
-     996.17
-    ]
-   ],
-   "start": 277.0,
-   "end": 402.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Arm 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Arm 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Arm 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Arm 2",
-   "points": [
-    [
-     87.0,
-     1000.0
-    ],
-    [
-     86.24,
-     1003.83
-    ],
-    [
-     84.07,
-     1007.07
-    ],
-    [
-     80.83,
-     1009.24
-    ],
-    [
-     77.0,
-     1010.0
-    ],
-    [
-     73.17,
-     1009.24
-    ],
-    [
-     69.93,
-     1007.07
-    ],
-    [
-     67.76,
-     1003.83
-    ],
-    [
-     67.0,
-     1000.0
-    ],
-    [
-     67.76,
-     996.17
-    ],
-    [
-     69.93,
-     992.93
-    ],
-    [
-     73.17,
-     990.76
-    ],
-    [
-     77.0,
-     990.0
-    ],
-    [
-     80.83,
-     990.76
-    ],
-    [
-     84.07,
-     992.93
-    ],
-    [
-     86.24,
-     996.17
-    ]
-   ],
-   "start": 277.0,
-   "end": 402.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Arm 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Arm 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Arm 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Return 1",
-   "points": [
-    [
-     287.0,
-     1000.0
-    ],
-    [
-     285.66,
-     1005.0
-    ],
-    [
-     282.0,
-     1008.66
-    ],
-    [
-     277.0,
-     1010.0
-    ],
-    [
-     272.0,
-     1008.66
-    ],
-    [
-     268.34,
-     1005.0
-    ],
-    [
-     267.0,
-     1000.0
-    ],
-    [
-     268.34,
-     995.0
-    ],
-    [
-     272.0,
-     991.34
-    ],
-    [
-     277.0,
-     990.0
-    ],
-    [
-     282.0,
-     991.34
-    ],
-    [
-     285.66,
-     995.0
-    ]
-   ],
-   "start": 45.0,
-   "end": 85.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Return 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Return 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Return 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Return 2",
-   "points": [
-    [
-     287.0,
-     1000.0
-    ],
-    [
-     285.66,
-     1005.0
-    ],
-    [
-     282.0,
-     1008.66
-    ],
-    [
-     277.0,
-     1010.0
-    ],
-    [
-     272.0,
-     1008.66
-    ],
-    [
-     268.34,
-     1005.0
-    ],
-    [
-     267.0,
-     1000.0
-    ],
-    [
-     268.34,
-     995.0
-    ],
-    [
-     272.0,
-     991.34
-    ],
-    [
-     277.0,
-     990.0
-    ],
-    [
-     282.0,
-     991.34
-    ],
-    [
-     285.66,
-     995.0
-    ]
-   ],
-   "start": -85.0,
-   "end": -45.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Return 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Return 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Return 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Escutcheon 1",
-   "points": [
-    [
-     421.0,
-     928.0
-    ],
-    [
-     420.35,
-     932.92
-    ],
-    [
-     418.45,
-     937.5
-    ],
-    [
-     415.44,
-     941.44
-    ],
-    [
-     411.5,
-     944.45
-    ],
-    [
-     406.92,
-     946.35
-    ],
-    [
-     402.0,
-     947.0
-    ],
-    [
-     397.08,
-     946.35
-    ],
-    [
-     392.5,
-     944.45
-    ],
-    [
-     388.56,
-     941.44
-    ],
-    [
-     385.55,
-     937.5
-    ],
-    [
-     383.65,
-     932.92
-    ],
-    [
-     383.0,
-     928.0
-    ],
-    [
-     383.65,
-     923.08
-    ],
-    [
-     385.55,
-     918.5
-    ],
-    [
-     388.56,
-     914.56
-    ],
-    [
-     392.5,
-     911.55
-    ],
-    [
-     397.08,
-     909.65
-    ],
-    [
-     402.0,
-     909.0
-    ],
-    [
-     406.92,
-     909.65
-    ],
-    [
-     411.5,
-     911.55
-    ],
-    [
-     415.44,
-     914.56
-    ],
-    [
-     418.45,
-     918.5
-    ],
-    [
-     420.35,
-     923.08
-    ]
-   ],
-   "start": 27.0,
-   "end": 31.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Escutcheon 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Escutcheon 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Escutcheon 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lever Escutcheon 2",
-   "points": [
-    [
-     421.0,
-     928.0
-    ],
-    [
-     420.35,
-     932.92
-    ],
-    [
-     418.45,
-     937.5
-    ],
-    [
-     415.44,
-     941.44
-    ],
-    [
-     411.5,
-     944.45
-    ],
-    [
-     406.92,
-     946.35
-    ],
-    [
-     402.0,
-     947.0
-    ],
-    [
-     397.08,
-     946.35
-    ],
-    [
-     392.5,
-     944.45
-    ],
-    [
-     388.56,
-     941.44
-    ],
-    [
-     385.55,
-     937.5
-    ],
-    [
-     383.65,
-     932.92
-    ],
-    [
-     383.0,
-     928.0
-    ],
-    [
-     383.65,
-     923.08
-    ],
-    [
-     385.55,
-     918.5
-    ],
-    [
-     388.56,
-     914.56
-    ],
-    [
-     392.5,
-     911.55
-    ],
-    [
-     397.08,
-     909.65
-    ],
-    [
-     402.0,
-     909.0
-    ],
-    [
-     406.92,
-     909.65
-    ],
-    [
-     411.5,
-     911.55
-    ],
-    [
-     415.44,
-     914.56
-    ],
-    [
-     418.45,
-     918.5
-    ],
-    [
-     420.35,
-     923.08
-    ]
-   ],
-   "start": -31.0,
-   "end": -27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lever Escutcheon 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lever Escutcheon 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lever Escutcheon 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lock Forend",
-   "points": [
-    [
-     469.5,
-     -12
-    ],
-    [
-     471.5,
-     -12
-    ],
-    [
-     471.5,
-     12
-    ],
-    [
-     469.5,
-     12
-    ]
-   ],
-   "start": 882,
-   "end": 1118
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lock Forend",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lock Forend",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lock Forend",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 1",
-   "points": [
-    [
-     -463.5,
-     -27.0
-    ],
-    [
-     -464.11,
-     -23.94
-    ],
-    [
-     -465.84,
-     -21.34
-    ],
-    [
-     -468.44,
-     -19.61
-    ],
-    [
-     -471.5,
-     -19.0
-    ],
-    [
-     -474.56,
-     -19.61
-    ],
-    [
-     -477.16,
-     -21.34
-    ],
-    [
-     -478.89,
-     -23.94
-    ],
-    [
-     -479.5,
-     -27.0
-    ],
-    [
-     -478.89,
-     -30.06
-    ],
-    [
-     -477.16,
-     -32.66
-    ],
-    [
-     -474.56,
-     -34.39
-    ],
-    [
-     -471.5,
-     -35.0
-    ],
-    [
-     -468.44,
-     -34.39
-    ],
-    [
-     -465.84,
-     -32.66
-    ],
-    [
-     -464.11,
-     -30.06
-    ]
-   ],
-   "start": 250.0,
-   "end": 350.0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 2",
-   "points": [
-    [
-     -463.5,
-     -27.0
-    ],
-    [
-     -464.11,
-     -23.94
-    ],
-    [
-     -465.84,
-     -21.34
-    ],
-    [
-     -468.44,
-     -19.61
-    ],
-    [
-     -471.5,
-     -19.0
-    ],
-    [
-     -474.56,
-     -19.61
-    ],
-    [
-     -477.16,
-     -21.34
-    ],
-    [
-     -478.89,
-     -23.94
-    ],
-    [
-     -479.5,
-     -27.0
-    ],
-    [
-     -478.89,
-     -30.06
-    ],
-    [
-     -477.16,
-     -32.66
-    ],
-    [
-     -474.56,
-     -34.39
-    ],
-    [
-     -471.5,
-     -35.0
-    ],
-    [
-     -468.44,
-     -34.39
-    ],
-    [
-     -465.84,
-     -32.66
-    ],
-    [
-     -464.11,
-     -30.06
-    ]
-   ],
-   "start": 735.7,
-   "end": 835.7
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 3",
-   "points": [
-    [
-     -463.5,
-     -27.0
-    ],
-    [
-     -464.11,
-     -23.94
-    ],
-    [
-     -465.84,
-     -21.34
-    ],
-    [
-     -468.44,
-     -19.61
-    ],
-    [
-     -471.5,
-     -19.0
-    ],
-    [
-     -474.56,
-     -19.61
-    ],
-    [
-     -477.16,
-     -21.34
-    ],
-    [
-     -478.89,
-     -23.94
-    ],
-    [
-     -479.5,
-     -27.0
-    ],
-    [
-     -478.89,
-     -30.06
-    ],
-    [
-     -477.16,
-     -32.66
-    ],
-    [
-     -474.56,
-     -34.39
-    ],
-    [
-     -471.5,
-     -35.0
-    ],
-    [
-     -468.44,
-     -34.39
-    ],
-    [
-     -465.84,
-     -32.66
-    ],
-    [
-     -464.11,
-     -30.06
-    ]
-   ],
-   "start": 1221.4,
-   "end": 1321.4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 3",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 3",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 4",
-   "points": [
-    [
-     -463.5,
-     -27.0
-    ],
-    [
-     -464.11,
-     -23.94
-    ],
-    [
-     -465.84,
-     -21.34
-    ],
-    [
-     -468.44,
-     -19.61
-    ],
-    [
-     -471.5,
-     -19.0
-    ],
-    [
-     -474.56,
-     -19.61
-    ],
-    [
-     -477.16,
-     -21.34
-    ],
-    [
-     -478.89,
-     -23.94
-    ],
-    [
-     -479.5,
-     -27.0
-    ],
-    [
-     -478.89,
-     -30.06
-    ],
-    [
-     -477.16,
-     -32.66
-    ],
-    [
-     -474.56,
-     -34.39
-    ],
-    [
-     -471.5,
-     -35.0
-    ],
-    [
-     -468.44,
-     -34.39
-    ],
-    [
-     -465.84,
-     -32.66
-    ],
-    [
-     -464.11,
-     -30.06
-    ]
-   ],
-   "start": 1707.1,
-   "end": 1807.1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 4",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 4",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Closer Body",
-   "points": [
-    [
-     -143.0,
-     1942.0
-    ],
-    [
-     -139.17,
-     1942.76
-    ],
-    [
-     -135.93,
-     1944.93
-    ],
-    [
-     -133.76,
-     1948.17
-    ],
-    [
-     -133.0,
-     1952.0
-    ],
-    [
-     -133.0,
-     2007.0
-    ],
-    [
-     -133.76,
-     2010.83
-    ],
-    [
-     -135.93,
-     2014.07
-    ],
-    [
-     -139.17,
-     2016.24
-    ],
-    [
-     -143.0,
-     2017.0
-    ],
-    [
-     -403.0,
-     2017.0
-    ],
-    [
-     -406.83,
-     2016.24
-    ],
-    [
-     -410.07,
-     2014.07
-    ],
-    [
-     -412.24,
-     2010.83
-    ],
-    [
-     -413.0,
-     2007.0
-    ],
-    [
-     -413.0,
-     1952.0
-    ],
-    [
-     -412.24,
-     1948.17
-    ],
-    [
-     -410.07,
-     1944.93
-    ],
-    [
-     -406.83,
-     1942.76
-    ],
-    [
-     -403.0,
-     1942.0
-    ]
-   ],
-   "start": 27.0,
-   "end": 77.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Closer Body",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Closer Body",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Closer Body",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Closer Arm",
-   "points": [
-    [
-     -183.0,
-     -73.0
-    ],
-    [
-     7.0,
-     -73.0
-    ],
-    [
-     7.0,
-     -61.0
-    ],
-    [
-     -183.0,
-     -61.0
-    ]
-   ],
-   "start": 2035,
-   "end": 2045
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Closer Arm",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Closer Arm",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Closer Arm",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Closer Shoe",
-   "points": [
-    [
-     -23.0,
-     -79.0
-    ],
-    [
-     32.0,
-     -79.0
-    ],
-    [
-     32.0,
-     -55.0
-    ],
-    [
-     -23.0,
-     -55.0
-    ]
-   ],
-   "start": 2043,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Closer Shoe",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Closer Shoe",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Closer Shoe",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kick Plate 1",
-   "points": [
-    [
-     452.0,
-     10.0
-    ],
-    [
-     453.15,
-     10.23
-    ],
-    [
-     454.12,
-     10.88
-    ],
-    [
-     454.77,
-     11.85
-    ],
-    [
-     455.0,
-     13.0
-    ],
-    [
-     455.0,
-     297.0
-    ],
-    [
-     454.77,
-     298.15
-    ],
-    [
-     454.12,
-     299.12
-    ],
-    [
-     453.15,
-     299.77
-    ],
-    [
-     452.0,
-     300.0
-    ],
-    [
-     -452.0,
-     300.0
-    ],
-    [
-     -453.15,
-     299.77
-    ],
-    [
-     -454.12,
-     299.12
-    ],
-    [
-     -454.77,
-     298.15
-    ],
-    [
-     -455.0,
-     297.0
-    ],
-    [
-     -455.0,
-     13.0
-    ],
-    [
-     -454.77,
-     11.85
-    ],
-    [
-     -454.12,
-     10.88
-    ],
-    [
-     -453.15,
-     10.23
-    ],
-    [
-     -452.0,
-     10.0
-    ]
-   ],
-   "start": 27.0,
-   "end": 28.5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kick Plate 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kick Plate 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kick Plate 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kick Plate 2",
-   "points": [
-    [
-     452.0,
-     10.0
-    ],
-    [
-     453.15,
-     10.23
-    ],
-    [
-     454.12,
-     10.88
-    ],
-    [
-     454.77,
-     11.85
-    ],
-    [
-     455.0,
-     13.0
-    ],
-    [
-     455.0,
-     297.0
-    ],
-    [
-     454.77,
-     298.15
-    ],
-    [
-     454.12,
-     299.12
-    ],
-    [
-     453.15,
-     299.77
-    ],
-    [
-     452.0,
-     300.0
-    ],
-    [
-     -452.0,
-     300.0
-    ],
-    [
-     -453.15,
-     299.77
-    ],
-    [
-     -454.12,
-     299.12
-    ],
-    [
-     -454.77,
-     298.15
-    ],
-    [
-     -455.0,
-     297.0
-    ],
-    [
-     -455.0,
-     13.0
-    ],
-    [
-     -454.77,
-     11.85
-    ],
-    [
-     -454.12,
-     10.88
-    ],
-    [
-     -453.15,
-     10.23
-    ],
-    [
-     -452.0,
-     10.0
-    ]
-   ],
-   "start": -28.5,
-   "end": -27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kick Plate 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kick Plate 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kick Plate 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Jamb 1",
-   "points": [
-    [
-     -473.0,
-     -21.0
-    ],
-    [
-     -471.0,
-     -21.0
-    ],
-    [
-     -471.0,
-     -11.0
-    ],
-    [
-     -473.0,
-     -11.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Jamb 1",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Jamb 1",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Jamb 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Jamb 2",
-   "points": [
-    [
-     471.0,
-     -21.0
-    ],
-    [
-     473.0,
-     -21.0
-    ],
-    [
-     473.0,
-     -11.0
-    ],
-    [
-     471.0,
-     -11.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Jamb 2",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Jamb 2",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Jamb 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Head",
-   "points": [
-    [
-     -473.0,
-     -21.0
-    ],
-    [
-     473.0,
-     -21.0
-    ],
-    [
-     473.0,
-     -11.0
-    ],
-    [
-     -473.0,
-     -11.0
-    ]
-   ],
-   "start": 2058,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Head",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Head",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Head",
-   "coarse": false,
-   "medium": false,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -4806,7 +993,3834 @@
   },
   {
    "op": "extrusion",
-   "name": "Radiation Sign",
+   "name": "Frame Jamb 1026x2100 1",
+   "points": [
+    [
+     -476.0,
+     -70.0
+    ],
+    [
+     -474.5,
+     -69.6
+    ],
+    [
+     -473.4,
+     -68.5
+    ],
+    [
+     -473.0,
+     -67.0
+    ],
+    [
+     -473.0,
+     67.0
+    ],
+    [
+     -473.4,
+     68.5
+    ],
+    [
+     -474.5,
+     69.6
+    ],
+    [
+     -476.0,
+     70.0
+    ],
+    [
+     -510.0,
+     70.0
+    ],
+    [
+     -511.5,
+     69.6
+    ],
+    [
+     -512.6,
+     68.5
+    ],
+    [
+     -513.0,
+     67.0
+    ],
+    [
+     -513.0,
+     -67.0
+    ],
+    [
+     -512.6,
+     -68.5
+    ],
+    [
+     -511.5,
+     -69.6
+    ],
+    [
+     -510.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1026x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1026x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1026x2100 2",
+   "points": [
+    [
+     510.0,
+     -70.0
+    ],
+    [
+     511.5,
+     -69.6
+    ],
+    [
+     512.6,
+     -68.5
+    ],
+    [
+     513.0,
+     -67.0
+    ],
+    [
+     513.0,
+     67.0
+    ],
+    [
+     512.6,
+     68.5
+    ],
+    [
+     511.5,
+     69.6
+    ],
+    [
+     510.0,
+     70.0
+    ],
+    [
+     476.0,
+     70.0
+    ],
+    [
+     474.5,
+     69.6
+    ],
+    [
+     473.4,
+     68.5
+    ],
+    [
+     473.0,
+     67.0
+    ],
+    [
+     473.0,
+     -67.0
+    ],
+    [
+     473.4,
+     -68.5
+    ],
+    [
+     474.5,
+     -69.6
+    ],
+    [
+     476.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1026x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1026x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head 1026x2100",
+   "points": [
+    [
+     67.0,
+     2060.0
+    ],
+    [
+     68.5,
+     2060.4
+    ],
+    [
+     69.6,
+     2061.5
+    ],
+    [
+     70.0,
+     2063.0
+    ],
+    [
+     70.0,
+     2097.0
+    ],
+    [
+     69.6,
+     2098.5
+    ],
+    [
+     68.5,
+     2099.6
+    ],
+    [
+     67.0,
+     2100.0
+    ],
+    [
+     -67.0,
+     2100.0
+    ],
+    [
+     -68.5,
+     2099.6
+    ],
+    [
+     -69.6,
+     2098.5
+    ],
+    [
+     -70.0,
+     2097.0
+    ],
+    [
+     -70.0,
+     2063.0
+    ],
+    [
+     -69.6,
+     2061.5
+    ],
+    [
+     -68.5,
+     2060.4
+    ],
+    [
+     -67.0,
+     2060.0
+    ]
+   ],
+   "start": -513.0,
+   "end": 513.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head 1026x2100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head 1026x2100",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 1026x2100 1",
+   "points": [
+    [
+     -460.0,
+     27.0
+    ],
+    [
+     -459.23,
+     27.15
+    ],
+    [
+     -458.59,
+     27.59
+    ],
+    [
+     -458.15,
+     28.23
+    ],
+    [
+     -458.0,
+     29.0
+    ],
+    [
+     -458.0,
+     62.0
+    ],
+    [
+     -458.15,
+     62.77
+    ],
+    [
+     -458.59,
+     63.41
+    ],
+    [
+     -459.23,
+     63.85
+    ],
+    [
+     -460.0,
+     64.0
+    ],
+    [
+     -471.0,
+     64.0
+    ],
+    [
+     -471.77,
+     63.85
+    ],
+    [
+     -472.41,
+     63.41
+    ],
+    [
+     -472.85,
+     62.77
+    ],
+    [
+     -473.0,
+     62.0
+    ],
+    [
+     -473.0,
+     29.0
+    ],
+    [
+     -472.85,
+     28.23
+    ],
+    [
+     -472.41,
+     27.59
+    ],
+    [
+     -471.77,
+     27.15
+    ],
+    [
+     -471.0,
+     27.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 1026x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 1026x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 1026x2100 2",
+   "points": [
+    [
+     471.0,
+     27.0
+    ],
+    [
+     471.77,
+     27.15
+    ],
+    [
+     472.41,
+     27.59
+    ],
+    [
+     472.85,
+     28.23
+    ],
+    [
+     473.0,
+     29.0
+    ],
+    [
+     473.0,
+     62.0
+    ],
+    [
+     472.85,
+     62.77
+    ],
+    [
+     472.41,
+     63.41
+    ],
+    [
+     471.77,
+     63.85
+    ],
+    [
+     471.0,
+     64.0
+    ],
+    [
+     460.0,
+     64.0
+    ],
+    [
+     459.23,
+     63.85
+    ],
+    [
+     458.59,
+     63.41
+    ],
+    [
+     458.15,
+     62.77
+    ],
+    [
+     458.0,
+     62.0
+    ],
+    [
+     458.0,
+     29.0
+    ],
+    [
+     458.15,
+     28.23
+    ],
+    [
+     458.59,
+     27.59
+    ],
+    [
+     459.23,
+     27.15
+    ],
+    [
+     460.0,
+     27.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 1026x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 1026x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Head 1026x2100",
+   "points": [
+    [
+     -458.0,
+     27.0
+    ],
+    [
+     458.0,
+     27.0
+    ],
+    [
+     458.0,
+     64
+    ],
+    [
+     -458.0,
+     64
+    ]
+   ],
+   "start": 2045.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Head 1026x2100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Head 1026x2100",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Head 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1026x2100 1",
+   "points": [
+    [
+     -486.0,
+     -82.0
+    ],
+    [
+     -483.5,
+     -81.3
+    ],
+    [
+     -481.7,
+     -79.5
+    ],
+    [
+     -481.0,
+     -77.0
+    ],
+    [
+     -481.0,
+     -75.0
+    ],
+    [
+     -481.7,
+     -72.5
+    ],
+    [
+     -483.5,
+     -70.7
+    ],
+    [
+     -486.0,
+     -70.0
+    ],
+    [
+     -546.0,
+     -70.0
+    ],
+    [
+     -548.5,
+     -70.7
+    ],
+    [
+     -550.3,
+     -72.5
+    ],
+    [
+     -551.0,
+     -75.0
+    ],
+    [
+     -551.0,
+     -77.0
+    ],
+    [
+     -550.3,
+     -79.5
+    ],
+    [
+     -548.5,
+     -81.3
+    ],
+    [
+     -546.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1026x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1026x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1026x2100 2",
+   "points": [
+    [
+     546.0,
+     -82.0
+    ],
+    [
+     548.5,
+     -81.3
+    ],
+    [
+     550.3,
+     -79.5
+    ],
+    [
+     551.0,
+     -77.0
+    ],
+    [
+     551.0,
+     -75.0
+    ],
+    [
+     550.3,
+     -72.5
+    ],
+    [
+     548.5,
+     -70.7
+    ],
+    [
+     546.0,
+     -70.0
+    ],
+    [
+     486.0,
+     -70.0
+    ],
+    [
+     483.5,
+     -70.7
+    ],
+    [
+     481.70000000000005,
+     -72.5
+    ],
+    [
+     481.0,
+     -75.0
+    ],
+    [
+     481.0,
+     -77.0
+    ],
+    [
+     481.70000000000005,
+     -79.5
+    ],
+    [
+     483.5,
+     -81.3
+    ],
+    [
+     486.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1026x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1026x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1026x2100 1",
+   "points": [
+    [
+     -486.0,
+     70.0
+    ],
+    [
+     -483.5,
+     70.7
+    ],
+    [
+     -481.7,
+     72.5
+    ],
+    [
+     -481.0,
+     75.0
+    ],
+    [
+     -481.0,
+     77.0
+    ],
+    [
+     -481.7,
+     79.5
+    ],
+    [
+     -483.5,
+     81.3
+    ],
+    [
+     -486.0,
+     82.0
+    ],
+    [
+     -546.0,
+     82.0
+    ],
+    [
+     -548.5,
+     81.3
+    ],
+    [
+     -550.3,
+     79.5
+    ],
+    [
+     -551.0,
+     77.0
+    ],
+    [
+     -551.0,
+     75.0
+    ],
+    [
+     -550.3,
+     72.5
+    ],
+    [
+     -548.5,
+     70.7
+    ],
+    [
+     -546.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1026x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1026x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1026x2100 2",
+   "points": [
+    [
+     546.0,
+     70.0
+    ],
+    [
+     548.5,
+     70.7
+    ],
+    [
+     550.3,
+     72.5
+    ],
+    [
+     551.0,
+     75.0
+    ],
+    [
+     551.0,
+     77.0
+    ],
+    [
+     550.3,
+     79.5
+    ],
+    [
+     548.5,
+     81.3
+    ],
+    [
+     546.0,
+     82.0
+    ],
+    [
+     486.0,
+     82.0
+    ],
+    [
+     483.5,
+     81.3
+    ],
+    [
+     481.70000000000005,
+     79.5
+    ],
+    [
+     481.0,
+     77.0
+    ],
+    [
+     481.0,
+     75.0
+    ],
+    [
+     481.70000000000005,
+     72.5
+    ],
+    [
+     483.5,
+     70.7
+    ],
+    [
+     486.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1026x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1026x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1026x2100 1",
+   "points": [
+    [
+     -75.0,
+     2068.0
+    ],
+    [
+     -72.5,
+     2068.7
+    ],
+    [
+     -70.7,
+     2070.5
+    ],
+    [
+     -70.0,
+     2073.0
+    ],
+    [
+     -70.0,
+     2133.0
+    ],
+    [
+     -70.7,
+     2135.5
+    ],
+    [
+     -72.5,
+     2137.3
+    ],
+    [
+     -75.0,
+     2138.0
+    ],
+    [
+     -77.0,
+     2138.0
+    ],
+    [
+     -79.5,
+     2137.3
+    ],
+    [
+     -81.3,
+     2135.5
+    ],
+    [
+     -82.0,
+     2133.0
+    ],
+    [
+     -82.0,
+     2073.0
+    ],
+    [
+     -81.3,
+     2070.5
+    ],
+    [
+     -79.5,
+     2068.7
+    ],
+    [
+     -77.0,
+     2068.0
+    ]
+   ],
+   "start": -551.0,
+   "end": 551.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1026x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1026x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1026x2100 2",
+   "points": [
+    [
+     77.0,
+     2068.0
+    ],
+    [
+     79.5,
+     2068.7
+    ],
+    [
+     81.3,
+     2070.5
+    ],
+    [
+     82.0,
+     2073.0
+    ],
+    [
+     82.0,
+     2133.0
+    ],
+    [
+     81.3,
+     2135.5
+    ],
+    [
+     79.5,
+     2137.3
+    ],
+    [
+     77.0,
+     2138.0
+    ],
+    [
+     75.0,
+     2138.0
+    ],
+    [
+     72.5,
+     2137.3
+    ],
+    [
+     70.7,
+     2135.5
+    ],
+    [
+     70.0,
+     2133.0
+    ],
+    [
+     70.0,
+     2073.0
+    ],
+    [
+     70.7,
+     2070.5
+    ],
+    [
+     72.5,
+     2068.7
+    ],
+    [
+     75.0,
+     2068.0
+    ]
+   ],
+   "start": -551.0,
+   "end": 551.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1026x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1026x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Glass 1026x2100",
+   "points": [
+    [
+     -110.0,
+     1250
+    ],
+    [
+     110.0,
+     1250
+    ],
+    [
+     110.0,
+     1600
+    ],
+    [
+     -110.0,
+     1600
+    ]
+   ],
+   "start": -8,
+   "end": 8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Glass 1026x2100",
+   "subcategory": "Lead Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Glass 1026x2100",
+   "param": "Lead Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Glass 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Side 1026x2100 1",
+   "points": [
+    [
+     -83.0,
+     -35.0
+    ],
+    [
+     -81.5,
+     -34.6
+    ],
+    [
+     -80.4,
+     -33.5
+    ],
+    [
+     -80.0,
+     -32.0
+    ],
+    [
+     -80.0,
+     32.0
+    ],
+    [
+     -80.4,
+     33.5
+    ],
+    [
+     -81.5,
+     34.6
+    ],
+    [
+     -83.0,
+     35.0
+    ],
+    [
+     -107.0,
+     35.0
+    ],
+    [
+     -108.5,
+     34.6
+    ],
+    [
+     -109.6,
+     33.5
+    ],
+    [
+     -110.0,
+     32.0
+    ],
+    [
+     -110.0,
+     -32.0
+    ],
+    [
+     -109.6,
+     -33.5
+    ],
+    [
+     -108.5,
+     -34.6
+    ],
+    [
+     -107.0,
+     -35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Side 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Side 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Side 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Side 1026x2100 2",
+   "points": [
+    [
+     107.0,
+     -35.0
+    ],
+    [
+     108.5,
+     -34.6
+    ],
+    [
+     109.6,
+     -33.5
+    ],
+    [
+     110.0,
+     -32.0
+    ],
+    [
+     110.0,
+     32.0
+    ],
+    [
+     109.6,
+     33.5
+    ],
+    [
+     108.5,
+     34.6
+    ],
+    [
+     107.0,
+     35.0
+    ],
+    [
+     83.0,
+     35.0
+    ],
+    [
+     81.5,
+     34.6
+    ],
+    [
+     80.4,
+     33.5
+    ],
+    [
+     80.0,
+     32.0
+    ],
+    [
+     80.0,
+     -32.0
+    ],
+    [
+     80.4,
+     -33.5
+    ],
+    [
+     81.5,
+     -34.6
+    ],
+    [
+     83.0,
+     -35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Side 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Side 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Side 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 1",
+   "points": [
+    [
+     -80.0,
+     -35.0
+    ],
+    [
+     80.0,
+     -35.0
+    ],
+    [
+     80.0,
+     35.0
+    ],
+    [
+     -80.0,
+     35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 2",
+   "points": [
+    [
+     -80.0,
+     -35.0
+    ],
+    [
+     80.0,
+     -35.0
+    ],
+    [
+     80.0,
+     35.0
+    ],
+    [
+     -80.0,
+     35.0
+    ]
+   ],
+   "start": 1570,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 1026x2100 1",
+   "points": [
+    [
+     -470.0,
+     -27.0
+    ],
+    [
+     -462.0,
+     -27.0
+    ],
+    [
+     -462.0,
+     27.0
+    ],
+    [
+     -470.0,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 1026x2100 1",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 1026x2100 1",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 1026x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 1026x2100 2",
+   "points": [
+    [
+     462.0,
+     -27.0
+    ],
+    [
+     470.0,
+     -27.0
+    ],
+    [
+     470.0,
+     27.0
+    ],
+    [
+     462.0,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 1026x2100 2",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 1026x2100 2",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 1026x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Below 1026x2100",
+   "points": [
+    [
+     -462.0,
+     8
+    ],
+    [
+     462.0,
+     8
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     -462.0,
+     1250
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Below 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Below 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Below 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Left Of Opening 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1250
+    ],
+    [
+     -110.0,
+     1250
+    ],
+    [
+     -110.0,
+     1600
+    ],
+    [
+     -462.0,
+     1600
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Left Of Opening 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Left Of Opening 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Left Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Right Of Opening 1026x2100",
+   "points": [
+    [
+     110.0,
+     1250
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     110.0,
+     1600
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Right Of Opening 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Right Of Opening 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Right Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Above 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1600
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     462.0,
+     2057.0
+    ],
+    [
+     -462.0,
+     2057.0
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Above 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Above 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Above 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Below 1026x2100",
+   "points": [
+    [
+     -462.0,
+     8
+    ],
+    [
+     462.0,
+     8
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     -462.0,
+     1250
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Below 1026x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Below 1026x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Below 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Left Of Opening 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1250
+    ],
+    [
+     -110.0,
+     1250
+    ],
+    [
+     -110.0,
+     1600
+    ],
+    [
+     -462.0,
+     1600
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Left Of Opening 1026x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Left Of Opening 1026x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Left Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Right Of Opening 1026x2100",
+   "points": [
+    [
+     110.0,
+     1250
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     110.0,
+     1600
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Right Of Opening 1026x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Right Of Opening 1026x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Right Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Above 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1600
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     462.0,
+     2057.0
+    ],
+    [
+     -462.0,
+     2057.0
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Above 1026x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Above 1026x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Above 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Below 1026x2100",
+   "points": [
+    [
+     -462.0,
+     8
+    ],
+    [
+     462.0,
+     8
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     -462.0,
+     1250
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Below 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Below 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Below 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Left Of Opening 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1250
+    ],
+    [
+     -110.0,
+     1250
+    ],
+    [
+     -110.0,
+     1600
+    ],
+    [
+     -462.0,
+     1600
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Left Of Opening 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Left Of Opening 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Left Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Right Of Opening 1026x2100",
+   "points": [
+    [
+     110.0,
+     1250
+    ],
+    [
+     462.0,
+     1250
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     110.0,
+     1600
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Right Of Opening 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Right Of Opening 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Right Of Opening 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Above 1026x2100",
+   "points": [
+    [
+     -462.0,
+     1600
+    ],
+    [
+     462.0,
+     1600
+    ],
+    [
+     462.0,
+     2057.0
+    ],
+    [
+     -462.0,
+     2057.0
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Above 1026x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Above 1026x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Above 1026x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Rose 1026x2100 1",
+   "points": [
+    [
+     428.0,
+     1000.0
+    ],
+    [
+     427.11,
+     1006.73
+    ],
+    [
+     424.52,
+     1013.0
+    ],
+    [
+     420.38,
+     1018.38
+    ],
+    [
+     415.0,
+     1022.52
+    ],
+    [
+     408.73,
+     1025.11
+    ],
+    [
+     402.0,
+     1026.0
+    ],
+    [
+     395.27,
+     1025.11
+    ],
+    [
+     389.0,
+     1022.52
+    ],
+    [
+     383.62,
+     1018.38
+    ],
+    [
+     379.48,
+     1013.0
+    ],
+    [
+     376.89,
+     1006.73
+    ],
+    [
+     376.0,
+     1000.0
+    ],
+    [
+     376.89,
+     993.27
+    ],
+    [
+     379.48,
+     987.0
+    ],
+    [
+     383.62,
+     981.62
+    ],
+    [
+     389.0,
+     977.48
+    ],
+    [
+     395.27,
+     974.89
+    ],
+    [
+     402.0,
+     974.0
+    ],
+    [
+     408.73,
+     974.89
+    ],
+    [
+     415.0,
+     977.48
+    ],
+    [
+     420.38,
+     981.62
+    ],
+    [
+     424.52,
+     987.0
+    ],
+    [
+     427.11,
+     993.27
+    ]
+   ],
+   "start": 27.0,
+   "end": 36.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Rose 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Rose 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Rose 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Rose 1026x2100 2",
+   "points": [
+    [
+     428.0,
+     1000.0
+    ],
+    [
+     427.11,
+     1006.73
+    ],
+    [
+     424.52,
+     1013.0
+    ],
+    [
+     420.38,
+     1018.38
+    ],
+    [
+     415.0,
+     1022.52
+    ],
+    [
+     408.73,
+     1025.11
+    ],
+    [
+     402.0,
+     1026.0
+    ],
+    [
+     395.27,
+     1025.11
+    ],
+    [
+     389.0,
+     1022.52
+    ],
+    [
+     383.62,
+     1018.38
+    ],
+    [
+     379.48,
+     1013.0
+    ],
+    [
+     376.89,
+     1006.73
+    ],
+    [
+     376.0,
+     1000.0
+    ],
+    [
+     376.89,
+     993.27
+    ],
+    [
+     379.48,
+     987.0
+    ],
+    [
+     383.62,
+     981.62
+    ],
+    [
+     389.0,
+     977.48
+    ],
+    [
+     395.27,
+     974.89
+    ],
+    [
+     402.0,
+     974.0
+    ],
+    [
+     408.73,
+     974.89
+    ],
+    [
+     415.0,
+     977.48
+    ],
+    [
+     420.38,
+     981.62
+    ],
+    [
+     424.52,
+     987.0
+    ],
+    [
+     427.11,
+     993.27
+    ]
+   ],
+   "start": -36.0,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Rose 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Rose 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Rose 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Neck 1026x2100 1",
+   "points": [
+    [
+     411.0,
+     1000.0
+    ],
+    [
+     409.79,
+     1004.5
+    ],
+    [
+     406.5,
+     1007.79
+    ],
+    [
+     402.0,
+     1009.0
+    ],
+    [
+     397.5,
+     1007.79
+    ],
+    [
+     394.21,
+     1004.5
+    ],
+    [
+     393.0,
+     1000.0
+    ],
+    [
+     394.21,
+     995.5
+    ],
+    [
+     397.5,
+     992.21
+    ],
+    [
+     402.0,
+     991.0
+    ],
+    [
+     406.5,
+     992.21
+    ],
+    [
+     409.79,
+     995.5
+    ]
+   ],
+   "start": 36.0,
+   "end": 85.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Neck 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Neck 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Neck 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Neck 1026x2100 2",
+   "points": [
+    [
+     411.0,
+     1000.0
+    ],
+    [
+     409.79,
+     1004.5
+    ],
+    [
+     406.5,
+     1007.79
+    ],
+    [
+     402.0,
+     1009.0
+    ],
+    [
+     397.5,
+     1007.79
+    ],
+    [
+     394.21,
+     1004.5
+    ],
+    [
+     393.0,
+     1000.0
+    ],
+    [
+     394.21,
+     995.5
+    ],
+    [
+     397.5,
+     992.21
+    ],
+    [
+     402.0,
+     991.0
+    ],
+    [
+     406.5,
+     992.21
+    ],
+    [
+     409.79,
+     995.5
+    ]
+   ],
+   "start": -85.0,
+   "end": -36.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Neck 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Neck 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Neck 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Arm 1026x2100 1",
+   "points": [
+    [
+     -67.0,
+     1000.0
+    ],
+    [
+     -67.76,
+     1003.83
+    ],
+    [
+     -69.93,
+     1007.07
+    ],
+    [
+     -73.17,
+     1009.24
+    ],
+    [
+     -77.0,
+     1010.0
+    ],
+    [
+     -80.83,
+     1009.24
+    ],
+    [
+     -84.07,
+     1007.07
+    ],
+    [
+     -86.24,
+     1003.83
+    ],
+    [
+     -87.0,
+     1000.0
+    ],
+    [
+     -86.24,
+     996.17
+    ],
+    [
+     -84.07,
+     992.93
+    ],
+    [
+     -80.83,
+     990.76
+    ],
+    [
+     -77.0,
+     990.0
+    ],
+    [
+     -73.17,
+     990.76
+    ],
+    [
+     -69.93,
+     992.93
+    ],
+    [
+     -67.76,
+     996.17
+    ]
+   ],
+   "start": 277.0,
+   "end": 402.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Arm 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Arm 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Arm 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Arm 1026x2100 2",
+   "points": [
+    [
+     87.0,
+     1000.0
+    ],
+    [
+     86.24,
+     1003.83
+    ],
+    [
+     84.07,
+     1007.07
+    ],
+    [
+     80.83,
+     1009.24
+    ],
+    [
+     77.0,
+     1010.0
+    ],
+    [
+     73.17,
+     1009.24
+    ],
+    [
+     69.93,
+     1007.07
+    ],
+    [
+     67.76,
+     1003.83
+    ],
+    [
+     67.0,
+     1000.0
+    ],
+    [
+     67.76,
+     996.17
+    ],
+    [
+     69.93,
+     992.93
+    ],
+    [
+     73.17,
+     990.76
+    ],
+    [
+     77.0,
+     990.0
+    ],
+    [
+     80.83,
+     990.76
+    ],
+    [
+     84.07,
+     992.93
+    ],
+    [
+     86.24,
+     996.17
+    ]
+   ],
+   "start": 277.0,
+   "end": 402.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Arm 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Arm 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Arm 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Return 1026x2100 1",
+   "points": [
+    [
+     287.0,
+     1000.0
+    ],
+    [
+     285.66,
+     1005.0
+    ],
+    [
+     282.0,
+     1008.66
+    ],
+    [
+     277.0,
+     1010.0
+    ],
+    [
+     272.0,
+     1008.66
+    ],
+    [
+     268.34,
+     1005.0
+    ],
+    [
+     267.0,
+     1000.0
+    ],
+    [
+     268.34,
+     995.0
+    ],
+    [
+     272.0,
+     991.34
+    ],
+    [
+     277.0,
+     990.0
+    ],
+    [
+     282.0,
+     991.34
+    ],
+    [
+     285.66,
+     995.0
+    ]
+   ],
+   "start": 45.0,
+   "end": 85.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Return 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Return 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Return 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Return 1026x2100 2",
+   "points": [
+    [
+     287.0,
+     1000.0
+    ],
+    [
+     285.66,
+     1005.0
+    ],
+    [
+     282.0,
+     1008.66
+    ],
+    [
+     277.0,
+     1010.0
+    ],
+    [
+     272.0,
+     1008.66
+    ],
+    [
+     268.34,
+     1005.0
+    ],
+    [
+     267.0,
+     1000.0
+    ],
+    [
+     268.34,
+     995.0
+    ],
+    [
+     272.0,
+     991.34
+    ],
+    [
+     277.0,
+     990.0
+    ],
+    [
+     282.0,
+     991.34
+    ],
+    [
+     285.66,
+     995.0
+    ]
+   ],
+   "start": -85.0,
+   "end": -45.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Return 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Return 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Return 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Escutcheon 1026x2100 1",
+   "points": [
+    [
+     421.0,
+     928.0
+    ],
+    [
+     420.35,
+     932.92
+    ],
+    [
+     418.45,
+     937.5
+    ],
+    [
+     415.44,
+     941.44
+    ],
+    [
+     411.5,
+     944.45
+    ],
+    [
+     406.92,
+     946.35
+    ],
+    [
+     402.0,
+     947.0
+    ],
+    [
+     397.08,
+     946.35
+    ],
+    [
+     392.5,
+     944.45
+    ],
+    [
+     388.56,
+     941.44
+    ],
+    [
+     385.55,
+     937.5
+    ],
+    [
+     383.65,
+     932.92
+    ],
+    [
+     383.0,
+     928.0
+    ],
+    [
+     383.65,
+     923.08
+    ],
+    [
+     385.55,
+     918.5
+    ],
+    [
+     388.56,
+     914.56
+    ],
+    [
+     392.5,
+     911.55
+    ],
+    [
+     397.08,
+     909.65
+    ],
+    [
+     402.0,
+     909.0
+    ],
+    [
+     406.92,
+     909.65
+    ],
+    [
+     411.5,
+     911.55
+    ],
+    [
+     415.44,
+     914.56
+    ],
+    [
+     418.45,
+     918.5
+    ],
+    [
+     420.35,
+     923.08
+    ]
+   ],
+   "start": 27.0,
+   "end": 31.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Escutcheon 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Escutcheon 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Escutcheon 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Escutcheon 1026x2100 2",
+   "points": [
+    [
+     421.0,
+     928.0
+    ],
+    [
+     420.35,
+     932.92
+    ],
+    [
+     418.45,
+     937.5
+    ],
+    [
+     415.44,
+     941.44
+    ],
+    [
+     411.5,
+     944.45
+    ],
+    [
+     406.92,
+     946.35
+    ],
+    [
+     402.0,
+     947.0
+    ],
+    [
+     397.08,
+     946.35
+    ],
+    [
+     392.5,
+     944.45
+    ],
+    [
+     388.56,
+     941.44
+    ],
+    [
+     385.55,
+     937.5
+    ],
+    [
+     383.65,
+     932.92
+    ],
+    [
+     383.0,
+     928.0
+    ],
+    [
+     383.65,
+     923.08
+    ],
+    [
+     385.55,
+     918.5
+    ],
+    [
+     388.56,
+     914.56
+    ],
+    [
+     392.5,
+     911.55
+    ],
+    [
+     397.08,
+     909.65
+    ],
+    [
+     402.0,
+     909.0
+    ],
+    [
+     406.92,
+     909.65
+    ],
+    [
+     411.5,
+     911.55
+    ],
+    [
+     415.44,
+     914.56
+    ],
+    [
+     418.45,
+     918.5
+    ],
+    [
+     420.35,
+     923.08
+    ]
+   ],
+   "start": -31.0,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Escutcheon 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Escutcheon 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Escutcheon 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Forend 1026x2100",
+   "points": [
+    [
+     469.5,
+     -12
+    ],
+    [
+     471.5,
+     -12
+    ],
+    [
+     471.5,
+     12
+    ],
+    [
+     469.5,
+     12
+    ]
+   ],
+   "start": 882,
+   "end": 1118
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Forend 1026x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Forend 1026x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Forend 1026x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1026x2100 1",
+   "points": [
+    [
+     -463.5,
+     -27.0
+    ],
+    [
+     -464.11,
+     -23.94
+    ],
+    [
+     -465.84,
+     -21.34
+    ],
+    [
+     -468.44,
+     -19.61
+    ],
+    [
+     -471.5,
+     -19.0
+    ],
+    [
+     -474.56,
+     -19.61
+    ],
+    [
+     -477.16,
+     -21.34
+    ],
+    [
+     -478.89,
+     -23.94
+    ],
+    [
+     -479.5,
+     -27.0
+    ],
+    [
+     -478.89,
+     -30.06
+    ],
+    [
+     -477.16,
+     -32.66
+    ],
+    [
+     -474.56,
+     -34.39
+    ],
+    [
+     -471.5,
+     -35.0
+    ],
+    [
+     -468.44,
+     -34.39
+    ],
+    [
+     -465.84,
+     -32.66
+    ],
+    [
+     -464.11,
+     -30.06
+    ]
+   ],
+   "start": 250.0,
+   "end": 350.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1026x2100 2",
+   "points": [
+    [
+     -463.5,
+     -27.0
+    ],
+    [
+     -464.11,
+     -23.94
+    ],
+    [
+     -465.84,
+     -21.34
+    ],
+    [
+     -468.44,
+     -19.61
+    ],
+    [
+     -471.5,
+     -19.0
+    ],
+    [
+     -474.56,
+     -19.61
+    ],
+    [
+     -477.16,
+     -21.34
+    ],
+    [
+     -478.89,
+     -23.94
+    ],
+    [
+     -479.5,
+     -27.0
+    ],
+    [
+     -478.89,
+     -30.06
+    ],
+    [
+     -477.16,
+     -32.66
+    ],
+    [
+     -474.56,
+     -34.39
+    ],
+    [
+     -471.5,
+     -35.0
+    ],
+    [
+     -468.44,
+     -34.39
+    ],
+    [
+     -465.84,
+     -32.66
+    ],
+    [
+     -464.11,
+     -30.06
+    ]
+   ],
+   "start": 735.7,
+   "end": 835.7
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1026x2100 3",
+   "points": [
+    [
+     -463.5,
+     -27.0
+    ],
+    [
+     -464.11,
+     -23.94
+    ],
+    [
+     -465.84,
+     -21.34
+    ],
+    [
+     -468.44,
+     -19.61
+    ],
+    [
+     -471.5,
+     -19.0
+    ],
+    [
+     -474.56,
+     -19.61
+    ],
+    [
+     -477.16,
+     -21.34
+    ],
+    [
+     -478.89,
+     -23.94
+    ],
+    [
+     -479.5,
+     -27.0
+    ],
+    [
+     -478.89,
+     -30.06
+    ],
+    [
+     -477.16,
+     -32.66
+    ],
+    [
+     -474.56,
+     -34.39
+    ],
+    [
+     -471.5,
+     -35.0
+    ],
+    [
+     -468.44,
+     -34.39
+    ],
+    [
+     -465.84,
+     -32.66
+    ],
+    [
+     -464.11,
+     -30.06
+    ]
+   ],
+   "start": 1221.4,
+   "end": 1321.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1026x2100 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1026x2100 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1026x2100 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1026x2100 4",
+   "points": [
+    [
+     -463.5,
+     -27.0
+    ],
+    [
+     -464.11,
+     -23.94
+    ],
+    [
+     -465.84,
+     -21.34
+    ],
+    [
+     -468.44,
+     -19.61
+    ],
+    [
+     -471.5,
+     -19.0
+    ],
+    [
+     -474.56,
+     -19.61
+    ],
+    [
+     -477.16,
+     -21.34
+    ],
+    [
+     -478.89,
+     -23.94
+    ],
+    [
+     -479.5,
+     -27.0
+    ],
+    [
+     -478.89,
+     -30.06
+    ],
+    [
+     -477.16,
+     -32.66
+    ],
+    [
+     -474.56,
+     -34.39
+    ],
+    [
+     -471.5,
+     -35.0
+    ],
+    [
+     -468.44,
+     -34.39
+    ],
+    [
+     -465.84,
+     -32.66
+    ],
+    [
+     -464.11,
+     -30.06
+    ]
+   ],
+   "start": 1707.1,
+   "end": 1807.1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1026x2100 4",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1026x2100 4",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1026x2100 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Body 1026x2100",
+   "points": [
+    [
+     -143.0,
+     1942.0
+    ],
+    [
+     -139.17,
+     1942.76
+    ],
+    [
+     -135.93,
+     1944.93
+    ],
+    [
+     -133.76,
+     1948.17
+    ],
+    [
+     -133.0,
+     1952.0
+    ],
+    [
+     -133.0,
+     2007.0
+    ],
+    [
+     -133.76,
+     2010.83
+    ],
+    [
+     -135.93,
+     2014.07
+    ],
+    [
+     -139.17,
+     2016.24
+    ],
+    [
+     -143.0,
+     2017.0
+    ],
+    [
+     -403.0,
+     2017.0
+    ],
+    [
+     -406.83,
+     2016.24
+    ],
+    [
+     -410.07,
+     2014.07
+    ],
+    [
+     -412.24,
+     2010.83
+    ],
+    [
+     -413.0,
+     2007.0
+    ],
+    [
+     -413.0,
+     1952.0
+    ],
+    [
+     -412.24,
+     1948.17
+    ],
+    [
+     -410.07,
+     1944.93
+    ],
+    [
+     -406.83,
+     1942.76
+    ],
+    [
+     -403.0,
+     1942.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 77.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Body 1026x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Body 1026x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Body 1026x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Arm 1026x2100",
+   "points": [
+    [
+     -183.0,
+     -73.0
+    ],
+    [
+     7.0,
+     -73.0
+    ],
+    [
+     7.0,
+     -61.0
+    ],
+    [
+     -183.0,
+     -61.0
+    ]
+   ],
+   "start": 2035.0,
+   "end": 2045.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Arm 1026x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Arm 1026x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Arm 1026x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Shoe 1026x2100",
+   "points": [
+    [
+     -23.0,
+     -79.0
+    ],
+    [
+     32.0,
+     -79.0
+    ],
+    [
+     32.0,
+     -55.0
+    ],
+    [
+     -23.0,
+     -55.0
+    ]
+   ],
+   "start": 2043.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Shoe 1026x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Shoe 1026x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Shoe 1026x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kick Plate 1026x2100 1",
+   "points": [
+    [
+     452.0,
+     10.0
+    ],
+    [
+     453.15,
+     10.23
+    ],
+    [
+     454.12,
+     10.88
+    ],
+    [
+     454.77,
+     11.85
+    ],
+    [
+     455.0,
+     13.0
+    ],
+    [
+     455.0,
+     297.0
+    ],
+    [
+     454.77,
+     298.15
+    ],
+    [
+     454.12,
+     299.12
+    ],
+    [
+     453.15,
+     299.77
+    ],
+    [
+     452.0,
+     300.0
+    ],
+    [
+     -452.0,
+     300.0
+    ],
+    [
+     -453.15,
+     299.77
+    ],
+    [
+     -454.12,
+     299.12
+    ],
+    [
+     -454.77,
+     298.15
+    ],
+    [
+     -455.0,
+     297.0
+    ],
+    [
+     -455.0,
+     13.0
+    ],
+    [
+     -454.77,
+     11.85
+    ],
+    [
+     -454.12,
+     10.88
+    ],
+    [
+     -453.15,
+     10.23
+    ],
+    [
+     -452.0,
+     10.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 28.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kick Plate 1026x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kick Plate 1026x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kick Plate 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kick Plate 1026x2100 2",
+   "points": [
+    [
+     452.0,
+     10.0
+    ],
+    [
+     453.15,
+     10.23
+    ],
+    [
+     454.12,
+     10.88
+    ],
+    [
+     454.77,
+     11.85
+    ],
+    [
+     455.0,
+     13.0
+    ],
+    [
+     455.0,
+     297.0
+    ],
+    [
+     454.77,
+     298.15
+    ],
+    [
+     454.12,
+     299.12
+    ],
+    [
+     453.15,
+     299.77
+    ],
+    [
+     452.0,
+     300.0
+    ],
+    [
+     -452.0,
+     300.0
+    ],
+    [
+     -453.15,
+     299.77
+    ],
+    [
+     -454.12,
+     299.12
+    ],
+    [
+     -454.77,
+     298.15
+    ],
+    [
+     -455.0,
+     297.0
+    ],
+    [
+     -455.0,
+     13.0
+    ],
+    [
+     -454.77,
+     11.85
+    ],
+    [
+     -454.12,
+     10.88
+    ],
+    [
+     -453.15,
+     10.23
+    ],
+    [
+     -452.0,
+     10.0
+    ]
+   ],
+   "start": -28.5,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kick Plate 1026x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kick Plate 1026x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kick Plate 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Jamb 1026x2100 1",
+   "points": [
+    [
+     -473.0,
+     -21.0
+    ],
+    [
+     -471.0,
+     -21.0
+    ],
+    [
+     -471.0,
+     -11.0
+    ],
+    [
+     -473.0,
+     -11.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Jamb 1026x2100 1",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Jamb 1026x2100 1",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Jamb 1026x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Jamb 1026x2100 2",
+   "points": [
+    [
+     471.0,
+     -21.0
+    ],
+    [
+     473.0,
+     -21.0
+    ],
+    [
+     473.0,
+     -11.0
+    ],
+    [
+     471.0,
+     -11.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Jamb 1026x2100 2",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Jamb 1026x2100 2",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Jamb 1026x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Head 1026x2100",
+   "points": [
+    [
+     -473.0,
+     -21.0
+    ],
+    [
+     473.0,
+     -21.0
+    ],
+    [
+     473.0,
+     -11.0
+    ],
+    [
+     -473.0,
+     -11.0
+    ]
+   ],
+   "start": 2058.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Head 1026x2100",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Head 1026x2100",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Head 1026x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiation Sign 1026x2100",
    "points": [
     [
      71.0,
@@ -4895,20 +4909,5444 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Radiation Sign",
+   "name": "Radiation Sign 1026x2100",
    "subcategory": "Sign Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Radiation Sign",
+   "name": "Radiation Sign 1026x2100",
    "param": "Sign Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Radiation Sign",
+   "name": "Radiation Sign 1026x2100",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1500x2100 1",
+   "points": [
+    [
+     -713.0,
+     -70.0
+    ],
+    [
+     -711.5,
+     -69.6
+    ],
+    [
+     -710.4,
+     -68.5
+    ],
+    [
+     -710.0,
+     -67.0
+    ],
+    [
+     -710.0,
+     67.0
+    ],
+    [
+     -710.4,
+     68.5
+    ],
+    [
+     -711.5,
+     69.6
+    ],
+    [
+     -713.0,
+     70.0
+    ],
+    [
+     -747.0,
+     70.0
+    ],
+    [
+     -748.5,
+     69.6
+    ],
+    [
+     -749.6,
+     68.5
+    ],
+    [
+     -750.0,
+     67.0
+    ],
+    [
+     -750.0,
+     -67.0
+    ],
+    [
+     -749.6,
+     -68.5
+    ],
+    [
+     -748.5,
+     -69.6
+    ],
+    [
+     -747.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1500x2100 2",
+   "points": [
+    [
+     747.0,
+     -70.0
+    ],
+    [
+     748.5,
+     -69.6
+    ],
+    [
+     749.6,
+     -68.5
+    ],
+    [
+     750.0,
+     -67.0
+    ],
+    [
+     750.0,
+     67.0
+    ],
+    [
+     749.6,
+     68.5
+    ],
+    [
+     748.5,
+     69.6
+    ],
+    [
+     747.0,
+     70.0
+    ],
+    [
+     713.0,
+     70.0
+    ],
+    [
+     711.5,
+     69.6
+    ],
+    [
+     710.4,
+     68.5
+    ],
+    [
+     710.0,
+     67.0
+    ],
+    [
+     710.0,
+     -67.0
+    ],
+    [
+     710.4,
+     -68.5
+    ],
+    [
+     711.5,
+     -69.6
+    ],
+    [
+     713.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head 1500x2100",
+   "points": [
+    [
+     67.0,
+     2060.0
+    ],
+    [
+     68.5,
+     2060.4
+    ],
+    [
+     69.6,
+     2061.5
+    ],
+    [
+     70.0,
+     2063.0
+    ],
+    [
+     70.0,
+     2097.0
+    ],
+    [
+     69.6,
+     2098.5
+    ],
+    [
+     68.5,
+     2099.6
+    ],
+    [
+     67.0,
+     2100.0
+    ],
+    [
+     -67.0,
+     2100.0
+    ],
+    [
+     -68.5,
+     2099.6
+    ],
+    [
+     -69.6,
+     2098.5
+    ],
+    [
+     -70.0,
+     2097.0
+    ],
+    [
+     -70.0,
+     2063.0
+    ],
+    [
+     -69.6,
+     2061.5
+    ],
+    [
+     -68.5,
+     2060.4
+    ],
+    [
+     -67.0,
+     2060.0
+    ]
+   ],
+   "start": -750.0,
+   "end": 750.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head 1500x2100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head 1500x2100",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 1500x2100 1",
+   "points": [
+    [
+     -697.0,
+     27.0
+    ],
+    [
+     -696.23,
+     27.15
+    ],
+    [
+     -695.59,
+     27.59
+    ],
+    [
+     -695.15,
+     28.23
+    ],
+    [
+     -695.0,
+     29.0
+    ],
+    [
+     -695.0,
+     62.0
+    ],
+    [
+     -695.15,
+     62.77
+    ],
+    [
+     -695.59,
+     63.41
+    ],
+    [
+     -696.23,
+     63.85
+    ],
+    [
+     -697.0,
+     64.0
+    ],
+    [
+     -708.0,
+     64.0
+    ],
+    [
+     -708.77,
+     63.85
+    ],
+    [
+     -709.41,
+     63.41
+    ],
+    [
+     -709.85,
+     62.77
+    ],
+    [
+     -710.0,
+     62.0
+    ],
+    [
+     -710.0,
+     29.0
+    ],
+    [
+     -709.85,
+     28.23
+    ],
+    [
+     -709.41,
+     27.59
+    ],
+    [
+     -708.77,
+     27.15
+    ],
+    [
+     -708.0,
+     27.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 1500x2100 2",
+   "points": [
+    [
+     708.0,
+     27.0
+    ],
+    [
+     708.77,
+     27.15
+    ],
+    [
+     709.41,
+     27.59
+    ],
+    [
+     709.85,
+     28.23
+    ],
+    [
+     710.0,
+     29.0
+    ],
+    [
+     710.0,
+     62.0
+    ],
+    [
+     709.85,
+     62.77
+    ],
+    [
+     709.41,
+     63.41
+    ],
+    [
+     708.77,
+     63.85
+    ],
+    [
+     708.0,
+     64.0
+    ],
+    [
+     697.0,
+     64.0
+    ],
+    [
+     696.23,
+     63.85
+    ],
+    [
+     695.59,
+     63.41
+    ],
+    [
+     695.15,
+     62.77
+    ],
+    [
+     695.0,
+     62.0
+    ],
+    [
+     695.0,
+     29.0
+    ],
+    [
+     695.15,
+     28.23
+    ],
+    [
+     695.59,
+     27.59
+    ],
+    [
+     696.23,
+     27.15
+    ],
+    [
+     697.0,
+     27.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Head 1500x2100",
+   "points": [
+    [
+     -695.0,
+     27.0
+    ],
+    [
+     695.0,
+     27.0
+    ],
+    [
+     695.0,
+     64
+    ],
+    [
+     -695.0,
+     64
+    ]
+   ],
+   "start": 2045.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Head 1500x2100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Head 1500x2100",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Head 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "points": [
+    [
+     -723.0,
+     -82.0
+    ],
+    [
+     -720.5,
+     -81.3
+    ],
+    [
+     -718.7,
+     -79.5
+    ],
+    [
+     -718.0,
+     -77.0
+    ],
+    [
+     -718.0,
+     -75.0
+    ],
+    [
+     -718.7,
+     -72.5
+    ],
+    [
+     -720.5,
+     -70.7
+    ],
+    [
+     -723.0,
+     -70.0
+    ],
+    [
+     -783.0,
+     -70.0
+    ],
+    [
+     -785.5,
+     -70.7
+    ],
+    [
+     -787.3,
+     -72.5
+    ],
+    [
+     -788.0,
+     -75.0
+    ],
+    [
+     -788.0,
+     -77.0
+    ],
+    [
+     -787.3,
+     -79.5
+    ],
+    [
+     -785.5,
+     -81.3
+    ],
+    [
+     -783.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "points": [
+    [
+     783.0,
+     -82.0
+    ],
+    [
+     785.5,
+     -81.3
+    ],
+    [
+     787.3,
+     -79.5
+    ],
+    [
+     788.0,
+     -77.0
+    ],
+    [
+     788.0,
+     -75.0
+    ],
+    [
+     787.3,
+     -72.5
+    ],
+    [
+     785.5,
+     -70.7
+    ],
+    [
+     783.0,
+     -70.0
+    ],
+    [
+     723.0,
+     -70.0
+    ],
+    [
+     720.5,
+     -70.7
+    ],
+    [
+     718.7,
+     -72.5
+    ],
+    [
+     718.0,
+     -75.0
+    ],
+    [
+     718.0,
+     -77.0
+    ],
+    [
+     718.7,
+     -79.5
+    ],
+    [
+     720.5,
+     -81.3
+    ],
+    [
+     723.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "points": [
+    [
+     -723.0,
+     70.0
+    ],
+    [
+     -720.5,
+     70.7
+    ],
+    [
+     -718.7,
+     72.5
+    ],
+    [
+     -718.0,
+     75.0
+    ],
+    [
+     -718.0,
+     77.0
+    ],
+    [
+     -718.7,
+     79.5
+    ],
+    [
+     -720.5,
+     81.3
+    ],
+    [
+     -723.0,
+     82.0
+    ],
+    [
+     -783.0,
+     82.0
+    ],
+    [
+     -785.5,
+     81.3
+    ],
+    [
+     -787.3,
+     79.5
+    ],
+    [
+     -788.0,
+     77.0
+    ],
+    [
+     -788.0,
+     75.0
+    ],
+    [
+     -787.3,
+     72.5
+    ],
+    [
+     -785.5,
+     70.7
+    ],
+    [
+     -783.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "points": [
+    [
+     783.0,
+     70.0
+    ],
+    [
+     785.5,
+     70.7
+    ],
+    [
+     787.3,
+     72.5
+    ],
+    [
+     788.0,
+     75.0
+    ],
+    [
+     788.0,
+     77.0
+    ],
+    [
+     787.3,
+     79.5
+    ],
+    [
+     785.5,
+     81.3
+    ],
+    [
+     783.0,
+     82.0
+    ],
+    [
+     723.0,
+     82.0
+    ],
+    [
+     720.5,
+     81.3
+    ],
+    [
+     718.7,
+     79.5
+    ],
+    [
+     718.0,
+     77.0
+    ],
+    [
+     718.0,
+     75.0
+    ],
+    [
+     718.7,
+     72.5
+    ],
+    [
+     720.5,
+     70.7
+    ],
+    [
+     723.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1500x2100 1",
+   "points": [
+    [
+     -75.0,
+     2068.0
+    ],
+    [
+     -72.5,
+     2068.7
+    ],
+    [
+     -70.7,
+     2070.5
+    ],
+    [
+     -70.0,
+     2073.0
+    ],
+    [
+     -70.0,
+     2133.0
+    ],
+    [
+     -70.7,
+     2135.5
+    ],
+    [
+     -72.5,
+     2137.3
+    ],
+    [
+     -75.0,
+     2138.0
+    ],
+    [
+     -77.0,
+     2138.0
+    ],
+    [
+     -79.5,
+     2137.3
+    ],
+    [
+     -81.3,
+     2135.5
+    ],
+    [
+     -82.0,
+     2133.0
+    ],
+    [
+     -82.0,
+     2073.0
+    ],
+    [
+     -81.3,
+     2070.5
+    ],
+    [
+     -79.5,
+     2068.7
+    ],
+    [
+     -77.0,
+     2068.0
+    ]
+   ],
+   "start": -788.0,
+   "end": 788.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1500x2100 2",
+   "points": [
+    [
+     77.0,
+     2068.0
+    ],
+    [
+     79.5,
+     2068.7
+    ],
+    [
+     81.3,
+     2070.5
+    ],
+    [
+     82.0,
+     2073.0
+    ],
+    [
+     82.0,
+     2133.0
+    ],
+    [
+     81.3,
+     2135.5
+    ],
+    [
+     79.5,
+     2137.3
+    ],
+    [
+     77.0,
+     2138.0
+    ],
+    [
+     75.0,
+     2138.0
+    ],
+    [
+     72.5,
+     2137.3
+    ],
+    [
+     70.7,
+     2135.5
+    ],
+    [
+     70.0,
+     2133.0
+    ],
+    [
+     70.0,
+     2073.0
+    ],
+    [
+     70.7,
+     2070.5
+    ],
+    [
+     72.5,
+     2068.7
+    ],
+    [
+     75.0,
+     2068.0
+    ]
+   ],
+   "start": -788.0,
+   "end": 788.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Leaf Lipping 1500x2100 1",
+   "points": [
+    [
+     227.7,
+     -27.0
+    ],
+    [
+     235.7,
+     -27.0
+    ],
+    [
+     235.7,
+     27.0
+    ],
+    [
+     227.7,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Leaf Lipping 1500x2100 1",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Leaf Lipping 1500x2100 1",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Leaf Lipping 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Leaf Lipping 1500x2100 2",
+   "points": [
+    [
+     699.0,
+     -27.0
+    ],
+    [
+     707.0,
+     -27.0
+    ],
+    [
+     707.0,
+     27.0
+    ],
+    [
+     699.0,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Leaf Lipping 1500x2100 2",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Leaf Lipping 1500x2100 2",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Leaf Lipping 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Leaf Skin Room 1500x2100",
+   "points": [
+    [
+     235.7,
+     8
+    ],
+    [
+     699.0,
+     8
+    ],
+    [
+     699.0,
+     2057.0
+    ],
+    [
+     235.7,
+     2057.0
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Leaf Skin Room 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Leaf Skin Room 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Leaf Skin Room 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Leaf Lead Lining 1500x2100",
+   "points": [
+    [
+     235.7,
+     8
+    ],
+    [
+     699.0,
+     8
+    ],
+    [
+     699.0,
+     2057.0
+    ],
+    [
+     235.7,
+     2057.0
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Leaf Lead Lining 1500x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Leaf Lead Lining 1500x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Leaf Lead Lining 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Leaf Skin Corridor 1500x2100",
+   "points": [
+    [
+     235.7,
+     8
+    ],
+    [
+     699.0,
+     8
+    ],
+    [
+     699.0,
+     2057.0
+    ],
+    [
+     235.7,
+     2057.0
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Leaf Skin Corridor 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Leaf Skin Corridor 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Leaf Skin Corridor 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Hinge 1500x2100 1",
+   "points": [
+    [
+     716.5,
+     -27.0
+    ],
+    [
+     715.89,
+     -23.94
+    ],
+    [
+     714.16,
+     -21.34
+    ],
+    [
+     711.56,
+     -19.61
+    ],
+    [
+     708.5,
+     -19.0
+    ],
+    [
+     705.44,
+     -19.61
+    ],
+    [
+     702.84,
+     -21.34
+    ],
+    [
+     701.11,
+     -23.94
+    ],
+    [
+     700.5,
+     -27.0
+    ],
+    [
+     701.11,
+     -30.06
+    ],
+    [
+     702.84,
+     -32.66
+    ],
+    [
+     705.44,
+     -34.39
+    ],
+    [
+     708.5,
+     -35.0
+    ],
+    [
+     711.56,
+     -34.39
+    ],
+    [
+     714.16,
+     -32.66
+    ],
+    [
+     715.89,
+     -30.06
+    ]
+   ],
+   "start": 250.0,
+   "end": 350.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Hinge 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Hinge 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Hinge 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Hinge 1500x2100 2",
+   "points": [
+    [
+     716.5,
+     -27.0
+    ],
+    [
+     715.89,
+     -23.94
+    ],
+    [
+     714.16,
+     -21.34
+    ],
+    [
+     711.56,
+     -19.61
+    ],
+    [
+     708.5,
+     -19.0
+    ],
+    [
+     705.44,
+     -19.61
+    ],
+    [
+     702.84,
+     -21.34
+    ],
+    [
+     701.11,
+     -23.94
+    ],
+    [
+     700.5,
+     -27.0
+    ],
+    [
+     701.11,
+     -30.06
+    ],
+    [
+     702.84,
+     -32.66
+    ],
+    [
+     705.44,
+     -34.39
+    ],
+    [
+     708.5,
+     -35.0
+    ],
+    [
+     711.56,
+     -34.39
+    ],
+    [
+     714.16,
+     -32.66
+    ],
+    [
+     715.89,
+     -30.06
+    ]
+   ],
+   "start": 978.5,
+   "end": 1078.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Hinge 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Hinge 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Hinge 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Hinge 1500x2100 3",
+   "points": [
+    [
+     716.5,
+     -27.0
+    ],
+    [
+     715.89,
+     -23.94
+    ],
+    [
+     714.16,
+     -21.34
+    ],
+    [
+     711.56,
+     -19.61
+    ],
+    [
+     708.5,
+     -19.0
+    ],
+    [
+     705.44,
+     -19.61
+    ],
+    [
+     702.84,
+     -21.34
+    ],
+    [
+     701.11,
+     -23.94
+    ],
+    [
+     700.5,
+     -27.0
+    ],
+    [
+     701.11,
+     -30.06
+    ],
+    [
+     702.84,
+     -32.66
+    ],
+    [
+     705.44,
+     -34.39
+    ],
+    [
+     708.5,
+     -35.0
+    ],
+    [
+     711.56,
+     -34.39
+    ],
+    [
+     714.16,
+     -32.66
+    ],
+    [
+     715.89,
+     -30.06
+    ]
+   ],
+   "start": 1707.0,
+   "end": 1807.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Hinge 1500x2100 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Hinge 1500x2100 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Hinge 1500x2100 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Closer Body 1500x2100",
+   "points": [
+    [
+     640.0,
+     1942.0
+    ],
+    [
+     643.83,
+     1942.76
+    ],
+    [
+     647.07,
+     1944.93
+    ],
+    [
+     649.24,
+     1948.17
+    ],
+    [
+     650.0,
+     1952.0
+    ],
+    [
+     650.0,
+     2007.0
+    ],
+    [
+     649.24,
+     2010.83
+    ],
+    [
+     647.07,
+     2014.07
+    ],
+    [
+     643.83,
+     2016.24
+    ],
+    [
+     640.0,
+     2017.0
+    ],
+    [
+     380.0,
+     2017.0
+    ],
+    [
+     376.17,
+     2016.24
+    ],
+    [
+     372.93,
+     2014.07
+    ],
+    [
+     370.76,
+     2010.83
+    ],
+    [
+     370.0,
+     2007.0
+    ],
+    [
+     370.0,
+     1952.0
+    ],
+    [
+     370.76,
+     1948.17
+    ],
+    [
+     372.93,
+     1944.93
+    ],
+    [
+     376.17,
+     1942.76
+    ],
+    [
+     380.0,
+     1942.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 77.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Closer Body 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Closer Body 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Closer Body 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Closer Arm 1500x2100",
+   "points": [
+    [
+     230.0,
+     -73.0
+    ],
+    [
+     420.0,
+     -73.0
+    ],
+    [
+     420.0,
+     -61.0
+    ],
+    [
+     230.0,
+     -61.0
+    ]
+   ],
+   "start": 2035.0,
+   "end": 2045.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Closer Arm 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Closer Arm 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Closer Arm 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Closer Shoe 1500x2100",
+   "points": [
+    [
+     205.0,
+     -79.0
+    ],
+    [
+     260.0,
+     -79.0
+    ],
+    [
+     260.0,
+     -55.0
+    ],
+    [
+     205.0,
+     -55.0
+    ]
+   ],
+   "start": 2043.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Closer Shoe 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Closer Shoe 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Closer Shoe 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Kick Plate 1500x2100 1",
+   "points": [
+    [
+     689.0,
+     10.0
+    ],
+    [
+     690.15,
+     10.23
+    ],
+    [
+     691.12,
+     10.88
+    ],
+    [
+     691.77,
+     11.85
+    ],
+    [
+     692.0,
+     13.0
+    ],
+    [
+     692.0,
+     297.0
+    ],
+    [
+     691.77,
+     298.15
+    ],
+    [
+     691.12,
+     299.12
+    ],
+    [
+     690.15,
+     299.77
+    ],
+    [
+     689.0,
+     300.0
+    ],
+    [
+     245.7,
+     300.0
+    ],
+    [
+     244.55,
+     299.77
+    ],
+    [
+     243.58,
+     299.12
+    ],
+    [
+     242.93,
+     298.15
+    ],
+    [
+     242.7,
+     297.0
+    ],
+    [
+     242.7,
+     13.0
+    ],
+    [
+     242.93,
+     11.85
+    ],
+    [
+     243.58,
+     10.88
+    ],
+    [
+     244.55,
+     10.23
+    ],
+    [
+     245.7,
+     10.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 28.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Kick Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Kick Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Kick Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slave Kick Plate 1500x2100 2",
+   "points": [
+    [
+     689.0,
+     10.0
+    ],
+    [
+     690.15,
+     10.23
+    ],
+    [
+     691.12,
+     10.88
+    ],
+    [
+     691.77,
+     11.85
+    ],
+    [
+     692.0,
+     13.0
+    ],
+    [
+     692.0,
+     297.0
+    ],
+    [
+     691.77,
+     298.15
+    ],
+    [
+     691.12,
+     299.12
+    ],
+    [
+     690.15,
+     299.77
+    ],
+    [
+     689.0,
+     300.0
+    ],
+    [
+     245.7,
+     300.0
+    ],
+    [
+     244.55,
+     299.77
+    ],
+    [
+     243.58,
+     299.12
+    ],
+    [
+     242.93,
+     298.15
+    ],
+    [
+     242.7,
+     297.0
+    ],
+    [
+     242.7,
+     13.0
+    ],
+    [
+     242.93,
+     11.85
+    ],
+    [
+     243.58,
+     10.88
+    ],
+    [
+     244.55,
+     10.23
+    ],
+    [
+     245.7,
+     10.0
+    ]
+   ],
+   "start": -28.5,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slave Kick Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slave Kick Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slave Kick Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Bolt 1500x2100 1",
+   "points": [
+    [
+     226.2,
+     -9
+    ],
+    [
+     227.7,
+     -9
+    ],
+    [
+     227.7,
+     9
+    ],
+    [
+     226.2,
+     9
+    ]
+   ],
+   "start": 1857.0,
+   "end": 2037.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flush Bolt 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flush Bolt 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flush Bolt 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Bolt 1500x2100 2",
+   "points": [
+    [
+     226.2,
+     -9
+    ],
+    [
+     227.7,
+     -9
+    ],
+    [
+     227.7,
+     9
+    ],
+    [
+     226.2,
+     9
+    ]
+   ],
+   "start": 28.0,
+   "end": 208.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flush Bolt 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flush Bolt 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flush Bolt 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Glass 1500x2100",
+   "points": [
+    [
+     -351.1,
+     1250
+    ],
+    [
+     -131.1,
+     1250
+    ],
+    [
+     -131.1,
+     1600
+    ],
+    [
+     -351.1,
+     1600
+    ]
+   ],
+   "start": -8,
+   "end": 8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Glass 1500x2100",
+   "subcategory": "Lead Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Glass 1500x2100",
+   "param": "Lead Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Glass 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Side 1500x2100 1",
+   "points": [
+    [
+     -324.1,
+     -35.0
+    ],
+    [
+     -322.6,
+     -34.6
+    ],
+    [
+     -321.5,
+     -33.5
+    ],
+    [
+     -321.1,
+     -32.0
+    ],
+    [
+     -321.1,
+     32.0
+    ],
+    [
+     -321.5,
+     33.5
+    ],
+    [
+     -322.6,
+     34.6
+    ],
+    [
+     -324.1,
+     35.0
+    ],
+    [
+     -348.1,
+     35.0
+    ],
+    [
+     -349.6,
+     34.6
+    ],
+    [
+     -350.7,
+     33.5
+    ],
+    [
+     -351.1,
+     32.0
+    ],
+    [
+     -351.1,
+     -32.0
+    ],
+    [
+     -350.7,
+     -33.5
+    ],
+    [
+     -349.6,
+     -34.6
+    ],
+    [
+     -348.1,
+     -35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Side 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Side 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Side 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Side 1500x2100 2",
+   "points": [
+    [
+     -134.10000000000002,
+     -35.0
+    ],
+    [
+     -132.60000000000002,
+     -34.6
+    ],
+    [
+     -131.5,
+     -33.5
+    ],
+    [
+     -131.10000000000002,
+     -32.0
+    ],
+    [
+     -131.10000000000002,
+     32.0
+    ],
+    [
+     -131.5,
+     33.5
+    ],
+    [
+     -132.60000000000002,
+     34.6
+    ],
+    [
+     -134.10000000000002,
+     35.0
+    ],
+    [
+     -158.10000000000002,
+     35.0
+    ],
+    [
+     -159.60000000000002,
+     34.6
+    ],
+    [
+     -160.7,
+     33.5
+    ],
+    [
+     -161.10000000000002,
+     32.0
+    ],
+    [
+     -161.10000000000002,
+     -32.0
+    ],
+    [
+     -160.7,
+     -33.5
+    ],
+    [
+     -159.60000000000002,
+     -34.6
+    ],
+    [
+     -158.10000000000002,
+     -35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Side 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Side 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Side 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 1",
+   "points": [
+    [
+     -321.1,
+     -35.0
+    ],
+    [
+     -161.1,
+     -35.0
+    ],
+    [
+     -161.1,
+     35.0
+    ],
+    [
+     -321.1,
+     35.0
+    ]
+   ],
+   "start": 1250,
+   "end": 1280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 2",
+   "points": [
+    [
+     -321.1,
+     -35.0
+    ],
+    [
+     -161.1,
+     -35.0
+    ],
+    [
+     -161.1,
+     35.0
+    ],
+    [
+     -321.1,
+     35.0
+    ]
+   ],
+   "start": 1570,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 1500x2100 1",
+   "points": [
+    [
+     -707.0,
+     -27.0
+    ],
+    [
+     -699.0,
+     -27.0
+    ],
+    [
+     -699.0,
+     27.0
+    ],
+    [
+     -707.0,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 1500x2100 1",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 1500x2100 1",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 1500x2100 2",
+   "points": [
+    [
+     216.70000000000005,
+     -27.0
+    ],
+    [
+     224.70000000000005,
+     -27.0
+    ],
+    [
+     224.70000000000005,
+     27.0
+    ],
+    [
+     216.70000000000005,
+     27.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 1500x2100 2",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 1500x2100 2",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Below 1500x2100",
+   "points": [
+    [
+     -699.0,
+     8
+    ],
+    [
+     216.7,
+     8
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     -699.0,
+     1250
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Below 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Below 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Below 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Left Of Opening 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1250
+    ],
+    [
+     -351.1,
+     1250
+    ],
+    [
+     -351.1,
+     1600
+    ],
+    [
+     -699.0,
+     1600
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Left Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Left Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Left Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Right Of Opening 1500x2100",
+   "points": [
+    [
+     -131.1,
+     1250
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     -131.1,
+     1600
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Right Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Right Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Right Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Above 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1600
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     216.7,
+     2057.0
+    ],
+    [
+     -699.0,
+     2057.0
+    ]
+   ],
+   "start": 2,
+   "end": 27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Above 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Above 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Above 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Below 1500x2100",
+   "points": [
+    [
+     -699.0,
+     8
+    ],
+    [
+     216.7,
+     8
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     -699.0,
+     1250
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Below 1500x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Below 1500x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Below 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Left Of Opening 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1250
+    ],
+    [
+     -351.1,
+     1250
+    ],
+    [
+     -351.1,
+     1600
+    ],
+    [
+     -699.0,
+     1600
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Left Of Opening 1500x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Left Of Opening 1500x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Left Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Right Of Opening 1500x2100",
+   "points": [
+    [
+     -131.1,
+     1250
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     -131.1,
+     1600
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Right Of Opening 1500x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Right Of Opening 1500x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Right Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Above 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1600
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     216.7,
+     2057.0
+    ],
+    [
+     -699.0,
+     2057.0
+    ]
+   ],
+   "start": -2,
+   "end": 2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Above 1500x2100",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Above 1500x2100",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Above 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Below 1500x2100",
+   "points": [
+    [
+     -699.0,
+     8
+    ],
+    [
+     216.7,
+     8
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     -699.0,
+     1250
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Below 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Below 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Below 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Left Of Opening 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1250
+    ],
+    [
+     -351.1,
+     1250
+    ],
+    [
+     -351.1,
+     1600
+    ],
+    [
+     -699.0,
+     1600
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Left Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Left Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Left Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Right Of Opening 1500x2100",
+   "points": [
+    [
+     -131.1,
+     1250
+    ],
+    [
+     216.7,
+     1250
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     -131.1,
+     1600
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Right Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Right Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Right Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Corridor Above 1500x2100",
+   "points": [
+    [
+     -699.0,
+     1600
+    ],
+    [
+     216.7,
+     1600
+    ],
+    [
+     216.7,
+     2057.0
+    ],
+    [
+     -699.0,
+     2057.0
+    ]
+   ],
+   "start": -27.0,
+   "end": -2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Corridor Above 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Corridor Above 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Corridor Above 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Rose 1500x2100 1",
+   "points": [
+    [
+     182.7,
+     1000.0
+    ],
+    [
+     181.81,
+     1006.73
+    ],
+    [
+     179.22,
+     1013.0
+    ],
+    [
+     175.08,
+     1018.38
+    ],
+    [
+     169.7,
+     1022.52
+    ],
+    [
+     163.43,
+     1025.11
+    ],
+    [
+     156.7,
+     1026.0
+    ],
+    [
+     149.97,
+     1025.11
+    ],
+    [
+     143.7,
+     1022.52
+    ],
+    [
+     138.32,
+     1018.38
+    ],
+    [
+     134.18,
+     1013.0
+    ],
+    [
+     131.59,
+     1006.73
+    ],
+    [
+     130.7,
+     1000.0
+    ],
+    [
+     131.59,
+     993.27
+    ],
+    [
+     134.18,
+     987.0
+    ],
+    [
+     138.32,
+     981.62
+    ],
+    [
+     143.7,
+     977.48
+    ],
+    [
+     149.97,
+     974.89
+    ],
+    [
+     156.7,
+     974.0
+    ],
+    [
+     163.43,
+     974.89
+    ],
+    [
+     169.7,
+     977.48
+    ],
+    [
+     175.08,
+     981.62
+    ],
+    [
+     179.22,
+     987.0
+    ],
+    [
+     181.81,
+     993.27
+    ]
+   ],
+   "start": 27.0,
+   "end": 36.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Rose 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Rose 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Rose 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Rose 1500x2100 2",
+   "points": [
+    [
+     182.7,
+     1000.0
+    ],
+    [
+     181.81,
+     1006.73
+    ],
+    [
+     179.22,
+     1013.0
+    ],
+    [
+     175.08,
+     1018.38
+    ],
+    [
+     169.7,
+     1022.52
+    ],
+    [
+     163.43,
+     1025.11
+    ],
+    [
+     156.7,
+     1026.0
+    ],
+    [
+     149.97,
+     1025.11
+    ],
+    [
+     143.7,
+     1022.52
+    ],
+    [
+     138.32,
+     1018.38
+    ],
+    [
+     134.18,
+     1013.0
+    ],
+    [
+     131.59,
+     1006.73
+    ],
+    [
+     130.7,
+     1000.0
+    ],
+    [
+     131.59,
+     993.27
+    ],
+    [
+     134.18,
+     987.0
+    ],
+    [
+     138.32,
+     981.62
+    ],
+    [
+     143.7,
+     977.48
+    ],
+    [
+     149.97,
+     974.89
+    ],
+    [
+     156.7,
+     974.0
+    ],
+    [
+     163.43,
+     974.89
+    ],
+    [
+     169.7,
+     977.48
+    ],
+    [
+     175.08,
+     981.62
+    ],
+    [
+     179.22,
+     987.0
+    ],
+    [
+     181.81,
+     993.27
+    ]
+   ],
+   "start": -36.0,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Rose 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Rose 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Rose 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Neck 1500x2100 1",
+   "points": [
+    [
+     165.7,
+     1000.0
+    ],
+    [
+     164.49,
+     1004.5
+    ],
+    [
+     161.2,
+     1007.79
+    ],
+    [
+     156.7,
+     1009.0
+    ],
+    [
+     152.2,
+     1007.79
+    ],
+    [
+     148.91,
+     1004.5
+    ],
+    [
+     147.7,
+     1000.0
+    ],
+    [
+     148.91,
+     995.5
+    ],
+    [
+     152.2,
+     992.21
+    ],
+    [
+     156.7,
+     991.0
+    ],
+    [
+     161.2,
+     992.21
+    ],
+    [
+     164.49,
+     995.5
+    ]
+   ],
+   "start": 36.0,
+   "end": 85.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Neck 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Neck 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Neck 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Neck 1500x2100 2",
+   "points": [
+    [
+     165.7,
+     1000.0
+    ],
+    [
+     164.49,
+     1004.5
+    ],
+    [
+     161.2,
+     1007.79
+    ],
+    [
+     156.7,
+     1009.0
+    ],
+    [
+     152.2,
+     1007.79
+    ],
+    [
+     148.91,
+     1004.5
+    ],
+    [
+     147.7,
+     1000.0
+    ],
+    [
+     148.91,
+     995.5
+    ],
+    [
+     152.2,
+     992.21
+    ],
+    [
+     156.7,
+     991.0
+    ],
+    [
+     161.2,
+     992.21
+    ],
+    [
+     164.49,
+     995.5
+    ]
+   ],
+   "start": -85.0,
+   "end": -36.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Neck 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Neck 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Neck 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Arm 1500x2100 1",
+   "points": [
+    [
+     -67.0,
+     1000.0
+    ],
+    [
+     -67.76,
+     1003.83
+    ],
+    [
+     -69.93,
+     1007.07
+    ],
+    [
+     -73.17,
+     1009.24
+    ],
+    [
+     -77.0,
+     1010.0
+    ],
+    [
+     -80.83,
+     1009.24
+    ],
+    [
+     -84.07,
+     1007.07
+    ],
+    [
+     -86.24,
+     1003.83
+    ],
+    [
+     -87.0,
+     1000.0
+    ],
+    [
+     -86.24,
+     996.17
+    ],
+    [
+     -84.07,
+     992.93
+    ],
+    [
+     -80.83,
+     990.76
+    ],
+    [
+     -77.0,
+     990.0
+    ],
+    [
+     -73.17,
+     990.76
+    ],
+    [
+     -69.93,
+     992.93
+    ],
+    [
+     -67.76,
+     996.17
+    ]
+   ],
+   "start": 31.7,
+   "end": 156.7,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Arm 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Arm 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Arm 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Arm 1500x2100 2",
+   "points": [
+    [
+     87.0,
+     1000.0
+    ],
+    [
+     86.24,
+     1003.83
+    ],
+    [
+     84.07,
+     1007.07
+    ],
+    [
+     80.83,
+     1009.24
+    ],
+    [
+     77.0,
+     1010.0
+    ],
+    [
+     73.17,
+     1009.24
+    ],
+    [
+     69.93,
+     1007.07
+    ],
+    [
+     67.76,
+     1003.83
+    ],
+    [
+     67.0,
+     1000.0
+    ],
+    [
+     67.76,
+     996.17
+    ],
+    [
+     69.93,
+     992.93
+    ],
+    [
+     73.17,
+     990.76
+    ],
+    [
+     77.0,
+     990.0
+    ],
+    [
+     80.83,
+     990.76
+    ],
+    [
+     84.07,
+     992.93
+    ],
+    [
+     86.24,
+     996.17
+    ]
+   ],
+   "start": 31.7,
+   "end": 156.7,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Arm 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Arm 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Arm 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Return 1500x2100 1",
+   "points": [
+    [
+     41.7,
+     1000.0
+    ],
+    [
+     40.36,
+     1005.0
+    ],
+    [
+     36.7,
+     1008.66
+    ],
+    [
+     31.7,
+     1010.0
+    ],
+    [
+     26.7,
+     1008.66
+    ],
+    [
+     23.04,
+     1005.0
+    ],
+    [
+     21.7,
+     1000.0
+    ],
+    [
+     23.04,
+     995.0
+    ],
+    [
+     26.7,
+     991.34
+    ],
+    [
+     31.7,
+     990.0
+    ],
+    [
+     36.7,
+     991.34
+    ],
+    [
+     40.36,
+     995.0
+    ]
+   ],
+   "start": 45.0,
+   "end": 85.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Return 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Return 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Return 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lever Return 1500x2100 2",
+   "points": [
+    [
+     41.7,
+     1000.0
+    ],
+    [
+     40.36,
+     1005.0
+    ],
+    [
+     36.7,
+     1008.66
+    ],
+    [
+     31.7,
+     1010.0
+    ],
+    [
+     26.7,
+     1008.66
+    ],
+    [
+     23.04,
+     1005.0
+    ],
+    [
+     21.7,
+     1000.0
+    ],
+    [
+     23.04,
+     995.0
+    ],
+    [
+     26.7,
+     991.34
+    ],
+    [
+     31.7,
+     990.0
+    ],
+    [
+     36.7,
+     991.34
+    ],
+    [
+     40.36,
+     995.0
+    ]
+   ],
+   "start": -85.0,
+   "end": -45.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lever Return 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lever Return 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lever Return 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Forend 1500x2100",
+   "points": [
+    [
+     224.2,
+     -12
+    ],
+    [
+     226.2,
+     -12
+    ],
+    [
+     226.2,
+     12
+    ],
+    [
+     224.2,
+     12
+    ]
+   ],
+   "start": 882,
+   "end": 1118
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Forend 1500x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Forend 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Forend 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1500x2100 1",
+   "points": [
+    [
+     -700.5,
+     -27.0
+    ],
+    [
+     -701.11,
+     -23.94
+    ],
+    [
+     -702.84,
+     -21.34
+    ],
+    [
+     -705.44,
+     -19.61
+    ],
+    [
+     -708.5,
+     -19.0
+    ],
+    [
+     -711.56,
+     -19.61
+    ],
+    [
+     -714.16,
+     -21.34
+    ],
+    [
+     -715.89,
+     -23.94
+    ],
+    [
+     -716.5,
+     -27.0
+    ],
+    [
+     -715.89,
+     -30.06
+    ],
+    [
+     -714.16,
+     -32.66
+    ],
+    [
+     -711.56,
+     -34.39
+    ],
+    [
+     -708.5,
+     -35.0
+    ],
+    [
+     -705.44,
+     -34.39
+    ],
+    [
+     -702.84,
+     -32.66
+    ],
+    [
+     -701.11,
+     -30.06
+    ]
+   ],
+   "start": 250.0,
+   "end": 350.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1500x2100 2",
+   "points": [
+    [
+     -700.5,
+     -27.0
+    ],
+    [
+     -701.11,
+     -23.94
+    ],
+    [
+     -702.84,
+     -21.34
+    ],
+    [
+     -705.44,
+     -19.61
+    ],
+    [
+     -708.5,
+     -19.0
+    ],
+    [
+     -711.56,
+     -19.61
+    ],
+    [
+     -714.16,
+     -21.34
+    ],
+    [
+     -715.89,
+     -23.94
+    ],
+    [
+     -716.5,
+     -27.0
+    ],
+    [
+     -715.89,
+     -30.06
+    ],
+    [
+     -714.16,
+     -32.66
+    ],
+    [
+     -711.56,
+     -34.39
+    ],
+    [
+     -708.5,
+     -35.0
+    ],
+    [
+     -705.44,
+     -34.39
+    ],
+    [
+     -702.84,
+     -32.66
+    ],
+    [
+     -701.11,
+     -30.06
+    ]
+   ],
+   "start": 735.7,
+   "end": 835.7
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1500x2100 3",
+   "points": [
+    [
+     -700.5,
+     -27.0
+    ],
+    [
+     -701.11,
+     -23.94
+    ],
+    [
+     -702.84,
+     -21.34
+    ],
+    [
+     -705.44,
+     -19.61
+    ],
+    [
+     -708.5,
+     -19.0
+    ],
+    [
+     -711.56,
+     -19.61
+    ],
+    [
+     -714.16,
+     -21.34
+    ],
+    [
+     -715.89,
+     -23.94
+    ],
+    [
+     -716.5,
+     -27.0
+    ],
+    [
+     -715.89,
+     -30.06
+    ],
+    [
+     -714.16,
+     -32.66
+    ],
+    [
+     -711.56,
+     -34.39
+    ],
+    [
+     -708.5,
+     -35.0
+    ],
+    [
+     -705.44,
+     -34.39
+    ],
+    [
+     -702.84,
+     -32.66
+    ],
+    [
+     -701.11,
+     -30.06
+    ]
+   ],
+   "start": 1221.4,
+   "end": 1321.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1500x2100 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1500x2100 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1500x2100 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1500x2100 4",
+   "points": [
+    [
+     -700.5,
+     -27.0
+    ],
+    [
+     -701.11,
+     -23.94
+    ],
+    [
+     -702.84,
+     -21.34
+    ],
+    [
+     -705.44,
+     -19.61
+    ],
+    [
+     -708.5,
+     -19.0
+    ],
+    [
+     -711.56,
+     -19.61
+    ],
+    [
+     -714.16,
+     -21.34
+    ],
+    [
+     -715.89,
+     -23.94
+    ],
+    [
+     -716.5,
+     -27.0
+    ],
+    [
+     -715.89,
+     -30.06
+    ],
+    [
+     -714.16,
+     -32.66
+    ],
+    [
+     -711.56,
+     -34.39
+    ],
+    [
+     -708.5,
+     -35.0
+    ],
+    [
+     -705.44,
+     -34.39
+    ],
+    [
+     -702.84,
+     -32.66
+    ],
+    [
+     -701.11,
+     -30.06
+    ]
+   ],
+   "start": 1707.1,
+   "end": 1807.1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1500x2100 4",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1500x2100 4",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1500x2100 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Body 1500x2100",
+   "points": [
+    [
+     -380.0,
+     1942.0
+    ],
+    [
+     -376.17,
+     1942.76
+    ],
+    [
+     -372.93,
+     1944.93
+    ],
+    [
+     -370.76,
+     1948.17
+    ],
+    [
+     -370.0,
+     1952.0
+    ],
+    [
+     -370.0,
+     2007.0
+    ],
+    [
+     -370.76,
+     2010.83
+    ],
+    [
+     -372.93,
+     2014.07
+    ],
+    [
+     -376.17,
+     2016.24
+    ],
+    [
+     -380.0,
+     2017.0
+    ],
+    [
+     -640.0,
+     2017.0
+    ],
+    [
+     -643.83,
+     2016.24
+    ],
+    [
+     -647.07,
+     2014.07
+    ],
+    [
+     -649.24,
+     2010.83
+    ],
+    [
+     -650.0,
+     2007.0
+    ],
+    [
+     -650.0,
+     1952.0
+    ],
+    [
+     -649.24,
+     1948.17
+    ],
+    [
+     -647.07,
+     1944.93
+    ],
+    [
+     -643.83,
+     1942.76
+    ],
+    [
+     -640.0,
+     1942.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 77.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Body 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Body 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Body 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Arm 1500x2100",
+   "points": [
+    [
+     -420.0,
+     -73.0
+    ],
+    [
+     -230.0,
+     -73.0
+    ],
+    [
+     -230.0,
+     -61.0
+    ],
+    [
+     -420.0,
+     -61.0
+    ]
+   ],
+   "start": 2035.0,
+   "end": 2045.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Arm 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Arm 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Arm 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Closer Shoe 1500x2100",
+   "points": [
+    [
+     -260.0,
+     -79.0
+    ],
+    [
+     -205.0,
+     -79.0
+    ],
+    [
+     -205.0,
+     -55.0
+    ],
+    [
+     -260.0,
+     -55.0
+    ]
+   ],
+   "start": 2043.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Closer Shoe 1500x2100",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Closer Shoe 1500x2100",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Closer Shoe 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kick Plate 1500x2100 1",
+   "points": [
+    [
+     206.7,
+     10.0
+    ],
+    [
+     207.85,
+     10.23
+    ],
+    [
+     208.82,
+     10.88
+    ],
+    [
+     209.47,
+     11.85
+    ],
+    [
+     209.7,
+     13.0
+    ],
+    [
+     209.7,
+     297.0
+    ],
+    [
+     209.47,
+     298.15
+    ],
+    [
+     208.82,
+     299.12
+    ],
+    [
+     207.85,
+     299.77
+    ],
+    [
+     206.7,
+     300.0
+    ],
+    [
+     -689.0,
+     300.0
+    ],
+    [
+     -690.15,
+     299.77
+    ],
+    [
+     -691.12,
+     299.12
+    ],
+    [
+     -691.77,
+     298.15
+    ],
+    [
+     -692.0,
+     297.0
+    ],
+    [
+     -692.0,
+     13.0
+    ],
+    [
+     -691.77,
+     11.85
+    ],
+    [
+     -691.12,
+     10.88
+    ],
+    [
+     -690.15,
+     10.23
+    ],
+    [
+     -689.0,
+     10.0
+    ]
+   ],
+   "start": 27.0,
+   "end": 28.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kick Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kick Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kick Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kick Plate 1500x2100 2",
+   "points": [
+    [
+     206.7,
+     10.0
+    ],
+    [
+     207.85,
+     10.23
+    ],
+    [
+     208.82,
+     10.88
+    ],
+    [
+     209.47,
+     11.85
+    ],
+    [
+     209.7,
+     13.0
+    ],
+    [
+     209.7,
+     297.0
+    ],
+    [
+     209.47,
+     298.15
+    ],
+    [
+     208.82,
+     299.12
+    ],
+    [
+     207.85,
+     299.77
+    ],
+    [
+     206.7,
+     300.0
+    ],
+    [
+     -689.0,
+     300.0
+    ],
+    [
+     -690.15,
+     299.77
+    ],
+    [
+     -691.12,
+     299.12
+    ],
+    [
+     -691.77,
+     298.15
+    ],
+    [
+     -692.0,
+     297.0
+    ],
+    [
+     -692.0,
+     13.0
+    ],
+    [
+     -691.77,
+     11.85
+    ],
+    [
+     -691.12,
+     10.88
+    ],
+    [
+     -690.15,
+     10.23
+    ],
+    [
+     -689.0,
+     10.0
+    ]
+   ],
+   "start": -28.5,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kick Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kick Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kick Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Jamb 1500x2100 1",
+   "points": [
+    [
+     -710.0,
+     -21.0
+    ],
+    [
+     -708.0,
+     -21.0
+    ],
+    [
+     -708.0,
+     -11.0
+    ],
+    [
+     -710.0,
+     -11.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Jamb 1500x2100 1",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Jamb 1500x2100 1",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Jamb 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Jamb 1500x2100 2",
+   "points": [
+    [
+     708.0,
+     -21.0
+    ],
+    [
+     710.0,
+     -21.0
+    ],
+    [
+     710.0,
+     -11.0
+    ],
+    [
+     708.0,
+     -11.0
+    ]
+   ],
+   "start": 0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Jamb 1500x2100 2",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Jamb 1500x2100 2",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Jamb 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Seal Head 1500x2100",
+   "points": [
+    [
+     -710.0,
+     -21.0
+    ],
+    [
+     710.0,
+     -21.0
+    ],
+    [
+     710.0,
+     -11.0
+    ],
+    [
+     -710.0,
+     -11.0
+    ]
+   ],
+   "start": 2058.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Seal Head 1500x2100",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Seal Head 1500x2100",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Seal Head 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiation Sign 1500x2100",
+   "points": [
+    [
+     -170.1,
+     1700.0
+    ],
+    [
+     -168.57,
+     1700.3
+    ],
+    [
+     -167.27,
+     1701.17
+    ],
+    [
+     -166.4,
+     1702.47
+    ],
+    [
+     -166.1,
+     1704.0
+    ],
+    [
+     -166.1,
+     1846.0
+    ],
+    [
+     -166.4,
+     1847.53
+    ],
+    [
+     -167.27,
+     1848.83
+    ],
+    [
+     -168.57,
+     1849.7
+    ],
+    [
+     -170.1,
+     1850.0
+    ],
+    [
+     -312.1,
+     1850.0
+    ],
+    [
+     -313.63,
+     1849.7
+    ],
+    [
+     -314.93,
+     1848.83
+    ],
+    [
+     -315.8,
+     1847.53
+    ],
+    [
+     -316.1,
+     1846.0
+    ],
+    [
+     -316.1,
+     1704.0
+    ],
+    [
+     -315.8,
+     1702.47
+    ],
+    [
+     -314.93,
+     1701.17
+    ],
+    [
+     -313.63,
+     1700.3
+    ],
+    [
+     -312.1,
+     1700.0
+    ]
+   ],
+   "start": -28.5,
+   "end": -27.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiation Sign 1500x2100",
+   "subcategory": "Sign Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiation Sign 1500x2100",
+   "param": "Sign Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiation Sign 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1026x2100_Pb2",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1026x2100_Pb2/Show 1026x2100_Pb2",
+   "type": "1026x2100_Pb2",
+   "param": "Show 1026x2100_Pb2",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2/Show 1026x2100_Pb2",
+   "type": "1500x2100_Pb2",
+   "param": "Show 1026x2100_Pb2",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1026x2100 1/Visible",
+   "solid": "Frame Jamb 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1026x2100 2/Visible",
+   "solid": "Frame Jamb 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Head 1026x2100/Visible",
+   "solid": "Frame Head 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Jamb 1026x2100 1/Visible",
+   "solid": "Stop Jamb 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Jamb 1026x2100 2/Visible",
+   "solid": "Stop Jamb 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Head 1026x2100/Visible",
+   "solid": "Stop Head 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1026x2100 1/Visible",
+   "solid": "Architrave Jamb Front 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1026x2100 2/Visible",
+   "solid": "Architrave Jamb Front 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1026x2100 1/Visible",
+   "solid": "Architrave Jamb Back 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1026x2100 2/Visible",
+   "solid": "Architrave Jamb Back 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1026x2100 1/Visible",
+   "solid": "Architrave Head 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1026x2100 2/Visible",
+   "solid": "Architrave Head 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Glass 1026x2100/Visible",
+   "solid": "Lead Glass Vision Glass 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Side 1026x2100 1/Visible",
+   "solid": "Lead Glass Vision Bead Side 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Side 1026x2100 2/Visible",
+   "solid": "Lead Glass Vision Bead Side 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 1/Visible",
+   "solid": "Lead Glass Vision Bead Rail 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Rail 1026x2100 2/Visible",
+   "solid": "Lead Glass Vision Bead Rail 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lipping 1026x2100 1/Visible",
+   "solid": "Leaf Lipping 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lipping 1026x2100 2/Visible",
+   "solid": "Leaf Lipping 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Below 1026x2100/Visible",
+   "solid": "Leaf Skin Room Below 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Left Of Opening 1026x2100/Visible",
+   "solid": "Leaf Skin Room Left Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Right Of Opening 1026x2100/Visible",
+   "solid": "Leaf Skin Room Right Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Above 1026x2100/Visible",
+   "solid": "Leaf Skin Room Above 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Below 1026x2100/Visible",
+   "solid": "Leaf Lead Lining Below 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Left Of Opening 1026x2100/Visible",
+   "solid": "Leaf Lead Lining Left Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Right Of Opening 1026x2100/Visible",
+   "solid": "Leaf Lead Lining Right Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Above 1026x2100/Visible",
+   "solid": "Leaf Lead Lining Above 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Below 1026x2100/Visible",
+   "solid": "Leaf Skin Corridor Below 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Left Of Opening 1026x2100/Visible",
+   "solid": "Leaf Skin Corridor Left Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Right Of Opening 1026x2100/Visible",
+   "solid": "Leaf Skin Corridor Right Of Opening 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Above 1026x2100/Visible",
+   "solid": "Leaf Skin Corridor Above 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Rose 1026x2100 1/Visible",
+   "solid": "Lever Rose 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Rose 1026x2100 2/Visible",
+   "solid": "Lever Rose 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Neck 1026x2100 1/Visible",
+   "solid": "Lever Neck 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Neck 1026x2100 2/Visible",
+   "solid": "Lever Neck 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Arm 1026x2100 1/Visible",
+   "solid": "Lever Arm 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Arm 1026x2100 2/Visible",
+   "solid": "Lever Arm 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Return 1026x2100 1/Visible",
+   "solid": "Lever Return 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Return 1026x2100 2/Visible",
+   "solid": "Lever Return 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Escutcheon 1026x2100 1/Visible",
+   "solid": "Lever Escutcheon 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Escutcheon 1026x2100 2/Visible",
+   "solid": "Lever Escutcheon 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Forend 1026x2100/Visible",
+   "solid": "Lock Forend 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1026x2100 1/Visible",
+   "solid": "Hinge 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1026x2100 2/Visible",
+   "solid": "Hinge 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1026x2100 3/Visible",
+   "solid": "Hinge 1026x2100 3",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1026x2100 4/Visible",
+   "solid": "Hinge 1026x2100 4",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Body 1026x2100/Visible",
+   "solid": "Closer Body 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Arm 1026x2100/Visible",
+   "solid": "Closer Arm 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Shoe 1026x2100/Visible",
+   "solid": "Closer Shoe 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kick Plate 1026x2100 1/Visible",
+   "solid": "Kick Plate 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kick Plate 1026x2100 2/Visible",
+   "solid": "Kick Plate 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Jamb 1026x2100 1/Visible",
+   "solid": "Perimeter Seal Jamb 1026x2100 1",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Jamb 1026x2100 2/Visible",
+   "solid": "Perimeter Seal Jamb 1026x2100 2",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Head 1026x2100/Visible",
+   "solid": "Perimeter Seal Head 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiation Sign 1026x2100/Visible",
+   "solid": "Radiation Sign 1026x2100",
+   "param": "Show 1026x2100_Pb2"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500x2100_Pb2",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1026x2100_Pb2/Show 1500x2100_Pb2",
+   "type": "1026x2100_Pb2",
+   "param": "Show 1500x2100_Pb2",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2/Show 1500x2100_Pb2",
+   "type": "1500x2100_Pb2",
+   "param": "Show 1500x2100_Pb2",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1500x2100 1/Visible",
+   "solid": "Frame Jamb 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1500x2100 2/Visible",
+   "solid": "Frame Jamb 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Head 1500x2100/Visible",
+   "solid": "Frame Head 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Jamb 1500x2100 1/Visible",
+   "solid": "Stop Jamb 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Jamb 1500x2100 2/Visible",
+   "solid": "Stop Jamb 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stop Head 1500x2100/Visible",
+   "solid": "Stop Head 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1500x2100 1/Visible",
+   "solid": "Architrave Jamb Front 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1500x2100 2/Visible",
+   "solid": "Architrave Jamb Front 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1500x2100 1/Visible",
+   "solid": "Architrave Jamb Back 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1500x2100 2/Visible",
+   "solid": "Architrave Jamb Back 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1500x2100 1/Visible",
+   "solid": "Architrave Head 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1500x2100 2/Visible",
+   "solid": "Architrave Head 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Leaf Lipping 1500x2100 1/Visible",
+   "solid": "Slave Leaf Lipping 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Leaf Lipping 1500x2100 2/Visible",
+   "solid": "Slave Leaf Lipping 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Leaf Skin Room 1500x2100/Visible",
+   "solid": "Slave Leaf Skin Room 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Leaf Lead Lining 1500x2100/Visible",
+   "solid": "Slave Leaf Lead Lining 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Leaf Skin Corridor 1500x2100/Visible",
+   "solid": "Slave Leaf Skin Corridor 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Hinge 1500x2100 1/Visible",
+   "solid": "Slave Hinge 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Hinge 1500x2100 2/Visible",
+   "solid": "Slave Hinge 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Hinge 1500x2100 3/Visible",
+   "solid": "Slave Hinge 1500x2100 3",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Closer Body 1500x2100/Visible",
+   "solid": "Slave Closer Body 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Closer Arm 1500x2100/Visible",
+   "solid": "Slave Closer Arm 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Closer Shoe 1500x2100/Visible",
+   "solid": "Slave Closer Shoe 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Kick Plate 1500x2100 1/Visible",
+   "solid": "Slave Kick Plate 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slave Kick Plate 1500x2100 2/Visible",
+   "solid": "Slave Kick Plate 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flush Bolt 1500x2100 1/Visible",
+   "solid": "Flush Bolt 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flush Bolt 1500x2100 2/Visible",
+   "solid": "Flush Bolt 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Glass 1500x2100/Visible",
+   "solid": "Lead Glass Vision Glass 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Side 1500x2100 1/Visible",
+   "solid": "Lead Glass Vision Bead Side 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Side 1500x2100 2/Visible",
+   "solid": "Lead Glass Vision Bead Side 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 1/Visible",
+   "solid": "Lead Glass Vision Bead Rail 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Glass Vision Bead Rail 1500x2100 2/Visible",
+   "solid": "Lead Glass Vision Bead Rail 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lipping 1500x2100 1/Visible",
+   "solid": "Leaf Lipping 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lipping 1500x2100 2/Visible",
+   "solid": "Leaf Lipping 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Below 1500x2100/Visible",
+   "solid": "Leaf Skin Room Below 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Left Of Opening 1500x2100/Visible",
+   "solid": "Leaf Skin Room Left Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Right Of Opening 1500x2100/Visible",
+   "solid": "Leaf Skin Room Right Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Room Above 1500x2100/Visible",
+   "solid": "Leaf Skin Room Above 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Below 1500x2100/Visible",
+   "solid": "Leaf Lead Lining Below 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Left Of Opening 1500x2100/Visible",
+   "solid": "Leaf Lead Lining Left Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Right Of Opening 1500x2100/Visible",
+   "solid": "Leaf Lead Lining Right Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Lead Lining Above 1500x2100/Visible",
+   "solid": "Leaf Lead Lining Above 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Below 1500x2100/Visible",
+   "solid": "Leaf Skin Corridor Below 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Left Of Opening 1500x2100/Visible",
+   "solid": "Leaf Skin Corridor Left Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Right Of Opening 1500x2100/Visible",
+   "solid": "Leaf Skin Corridor Right Of Opening 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leaf Skin Corridor Above 1500x2100/Visible",
+   "solid": "Leaf Skin Corridor Above 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Rose 1500x2100 1/Visible",
+   "solid": "Lever Rose 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Rose 1500x2100 2/Visible",
+   "solid": "Lever Rose 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Neck 1500x2100 1/Visible",
+   "solid": "Lever Neck 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Neck 1500x2100 2/Visible",
+   "solid": "Lever Neck 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Arm 1500x2100 1/Visible",
+   "solid": "Lever Arm 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Arm 1500x2100 2/Visible",
+   "solid": "Lever Arm 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Return 1500x2100 1/Visible",
+   "solid": "Lever Return 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lever Return 1500x2100 2/Visible",
+   "solid": "Lever Return 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Forend 1500x2100/Visible",
+   "solid": "Lock Forend 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1500x2100 1/Visible",
+   "solid": "Hinge 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1500x2100 2/Visible",
+   "solid": "Hinge 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1500x2100 3/Visible",
+   "solid": "Hinge 1500x2100 3",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1500x2100 4/Visible",
+   "solid": "Hinge 1500x2100 4",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Body 1500x2100/Visible",
+   "solid": "Closer Body 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Arm 1500x2100/Visible",
+   "solid": "Closer Arm 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Closer Shoe 1500x2100/Visible",
+   "solid": "Closer Shoe 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kick Plate 1500x2100 1/Visible",
+   "solid": "Kick Plate 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kick Plate 1500x2100 2/Visible",
+   "solid": "Kick Plate 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Jamb 1500x2100 1/Visible",
+   "solid": "Perimeter Seal Jamb 1500x2100 1",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Jamb 1500x2100 2/Visible",
+   "solid": "Perimeter Seal Jamb 1500x2100 2",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Seal Head 1500x2100/Visible",
+   "solid": "Perimeter Seal Head 1500x2100",
+   "param": "Show 1500x2100_Pb2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiation Sign 1500x2100/Visible",
+   "solid": "Radiation Sign 1500x2100",
+   "param": "Show 1500x2100_Pb2"
   },
   {
    "op": "set_type_image",

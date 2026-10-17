@@ -205,6 +205,14 @@ def upright_fridge(W, D, H, base_h, panel_h, interior, feet, mats, extras=()):
                 CZ("Foot Back", [xs[0], ys[1]], 20, [0, feet[0]], 'black', rep=(2, xs[1] - xs[0], 0, 0), seg=16)]
     return P + list(extras)
 
+def typed(fn, spec):
+    """Per-type geometry (second pass): spec = {type name: (tag, arg)}; parts from fn(arg) get ' <tag>' on their name and only = [type]."""
+    out = []
+    for tn, (tag, arg) in spec.items():
+        for q in fn(arg):
+            q = dict(q); q['n'] = f"{q['n']} {tag}"; q['only'] = [tn]; out.append(q)
+    return out
+
 # ---------------------------------------------------------------- product builder
 OUT = []
 def product(fam, desc, ifc, types, materials, parts, values, about, connectors=(), clearances=(), type_values=None, template=None, drawn=None):
@@ -216,7 +224,8 @@ def product(fam, desc, ifc, types, materials, parts, values, about, connectors=(
     if type_values: p['type_values'] = type_values
     if connectors: p['connectors'] = list(connectors)
     if clearances: p['clearances'] = list(clearances)
-    if drawn and len(p['types']) > 1: p['about'] += f" Geometry is drawn at the {drawn} type; the other types share it until a parametric pass."
+    if any(q.get('only') for q in parts): p['about'] += " Each type has its own geometry (parts carry 'only' for their type); shared parts have none."
+    elif drawn and len(p['types']) > 1: p['about'] += f" Geometry is drawn at the {drawn} type; the other types share it until a parametric pass."
     OUT.append(p)
     return p
 
@@ -462,8 +471,10 @@ product(fam, "Bedside locker 500 x 450 x 850, drawer over cupboard, raised-lip w
 
 # 11 Waiting beam seating 3/4/5 seats, pitch 640
 fam = "FMC_I_Furniture_Seating_Waiting_Beam"
-n = 3; pitch = 640; L = n * pitch; x0 = -L / 2
-P = [BX("Beam", [x0 - 40, -60, 380, -x0 + 40, 20, 440], 'frame', r=8),
+pitch = 640
+def beam_seating(n):
+    L = n * pitch; x0 = -L / 2
+    return [BX("Beam", [x0 - 40, -60, 380, -x0 + 40, 20, 440], 'frame', r=8),
      BX("Leg", [x0 + 180, -40, 40, x0 + 240, 0, 380], 'frame', r=8, rep=(2, L - 420, 0, 0)),
      BX("Leg Foot", [x0 + 160, -320, 0, x0 + 260, 280, 40], 'frame', r=12, rep=(2, L - 420, 0, 0)),
      CZ("Glide", [x0 + 210, -290], 18, [-0.1, 4], 'rubber', lod='f', rep=(2, L - 420, 0, 0)),
@@ -476,6 +487,7 @@ P = [BX("Beam", [x0 - 40, -60, 380, -x0 + 40, 20, 440], 'frame', r=8),
      RT("Back Pad", [[215, 600], [250, 560], [300, 880], [265, 890]], [x0 + 50, x0 + pitch - 50], 'vinyl', rep=(n, pitch, 0, 0)),
      BX("Arm Post", [x0 - 15, -260, 455, x0 + 15, -220, 640], 'frame', rep=(n + 1, pitch, 0, 0)),
      BX("Arm Pad", [x0 - 25, -300, 640, x0 + 25, 120, 670], 'arm', r=20, rep=(n + 1, pitch, 0, 0))]
+P = typed(beam_seating, {f"{k * pitch}_{k}Seat": (f"{k}S", k) for k in (3, 4, 5)})
 types = [{"name": f"{k * pitch}_{k}Seat", "desc": f"Beam seating, {k} seats at {pitch} mm pitch, antimicrobial vinyl pads, steel beam on 2 T-legs"} for k in (3, 4, 5)]
 product(fam, "Waiting-area beam seating, seats at 640 mm pitch with arms between, antimicrobial vinyl seat and back pads on moulded shells, steel beam on 2 T-legs",
         "IfcFurniture", types,
@@ -487,14 +499,16 @@ product(fam, "Waiting-area beam seating, seats at 640 mm pitch with arms between
 
 # 12 Corridor bench, backless 1200/1800
 fam = "FMC_I_Furniture_Seating_Corridor_Bench"
-L = 1200; x0 = -L / 2
-P = [BX("Seat Pad", [x0, -220, 400, -x0, 220, 460], 'vinyl', r=40), BX("Seat Board", [x0 + 15, -205, 380, -x0 - 15, 205, 400], 'board'),
+def corridor_bench(L):
+    x0 = -L / 2
+    return [BX("Seat Pad", [x0, -220, 400, -x0, 220, 460], 'vinyl', r=40), BX("Seat Board", [x0 + 15, -205, 380, -x0 - 15, 205, 400], 'board'),
      BX("Seat Rail", [x0 + 40, -190, 340, -x0 - 40, -150, 380], 'frame', r=6, rep=(2, 0, 340, 0)),
      FR("Leg Frame", [[x0 + 60, 0], [x0 + 120, 0], [x0 + 140, 380], [x0 + 80, 380]], [-190, -150], 'frame', rep=(2, 0, 340, 0)),
      FR("Leg Frame Right", [[-x0 - 120, 0], [-x0 - 60, 0], [-x0 - 80, 380], [-x0 - 140, 380]], [-190, -150], 'frame', rep=(2, 0, 340, 0)),
      BX("Leg Cross Bar", [x0 + 80, -190, 120, x0 + 120, 190, 150], 'frame', rep=(2, L - 200, 0, 0)),
      CZ("Glide", [x0 + 90, -170], 16, [-0.1, 6], 'rubber', lod='f', rep=(2, L - 180, 0, 0)), CZ("Glide Back", [x0 + 90, 170], 16, [-0.1, 6], 'rubber', lod='f', rep=(2, L - 180, 0, 0)),
      FB("Piping Front", [x0 + 20, -224, 425, -x0 - 20, -220, 435], 'arm', lod='f'), FB("Piping Back", [x0 + 20, 220, 425, -x0 - 20, 224, 435], 'arm', lod='f')]
+P = typed(corridor_bench, {"1200_Backless": ("1200", 1200), "1800_Backless": ("1800", 1800)})
 product(fam, "Backless corridor bench, antimicrobial vinyl seat pad on a ply seat board, steel sled frames with cross bars and glides",
         "IfcFurniture", [{"name": "1200_Backless", "desc": "Backless corridor bench 1200 x 440, antimicrobial vinyl, steel frame"}, {"name": "1800_Backless", "desc": "Backless corridor bench 1800 x 440, antimicrobial vinyl, steel frame"}],
         {"vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue", "board": "FMC_Board_Plywood_Marine18", "frame": "FMC_Metal_Aluminium_PowderCoated", "rubber": "FMC_Rubber_Black", "arm": "FMC_Plastic_ABS_Black"}, P,

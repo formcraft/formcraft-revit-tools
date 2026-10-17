@@ -397,12 +397,12 @@ def HC008():
     x0, x1 = -d.xi + 3, d.xi - 3
     if W > 1200:                                  # 1500 type: leaf-and-half (master 2/3 with the vision, lead-lined slave)
         xm = x0 + (x1 - x0) * 0.66; x1, s0 = xm - 1.5, xm + 1.5
-        d.leaf("Slave Leaf", s0, d.xi - 3, (), layers=LAY).hinges(d.xi - 1.5, 4, "Slave Hinge", r=8).closer(d.xi, -1, "Slave Closer", big=True).kick(s0, d.xi - 3, 300, "Slave Kick Plate")
+        d.leaf("Slave Leaf", s0, d.xi - 3, (), layers=LAY).hinges(d.xi - 1.5, 3, "Slave Hinge", r=8).closer(d.xi, -1, "Slave Closer", big=True).kick(s0, d.xi - 3, 300, "Slave Kick Plate")
         d.add(box("Flush Bolt", [s0 - 1.5, -9, d.Hl - 200, s0, 9, d.Hl - 20], 'stainless', 'f', rep=(2, [0, 0, -(d.Hl - 200 - d.z0 - 20)])))
     cx = (x0 + x1) / 2
     vh = d.vision("Lead Glass Vision", cx - 110, cx + 110, 1250, 1600, 'lead_glass', 'stainless', bw=30, proud=8, gl=8)
     d.leaf("Leaf", x0, x1, [vh], layers=LAY)
-    d.lever(x1 - 68).forend(x1).hinges(-d.xi + 1.5, 4, r=8).closer(-d.xi, big=True).kick(x0, x1).seals()
+    d.lever(x1 - 68, esc=W <= 1200).forend(x1).hinges(-d.xi + 1.5, 4, r=8).closer(-d.xi, big=True).kick(x0, x1).seals()
     zt = d.Hs + 8 + 70
     d.add(fbox("Warning Light Housing", [-200, d.d2, zt + 40, 200, d.d2 + 80, zt + 190], 'white', r=10),
           fbox("Warning Light Lens", [-180, d.d2 + 80, zt + 55, 180, d.d2 + 83, zt + 175], 'led_red', 'f', r=8),
