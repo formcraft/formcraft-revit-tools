@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_CurtainTrack_Bed_Cubicle",
  "template": "Metric Generic Model.rft",
- "about": "Curtain track modelled as a generic product hanging below the ceiling (z = 0): three straight runs with 300 radius bends, ceiling fixings, end stops, gliders, two pleated curtain stacks drawn back to the bedhead wall (y = 0) with mesh tops. Geometry is the 2400 x 2600 type. Reference: query: curtain track bed cubicle specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=curtain+track+bed+cubicle+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Curtain track modelled as a generic product hanging below the ceiling (z = 0): three straight runs with 300 radius bends, ceiling fixings, end stops, gliders, two pleated curtain stacks drawn back to the bedhead wall (y = 0) with mesh tops. Each size is its own set of parts (Show parameters). Reference: query: curtain track bed cubicle specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=curtain+track+bed+cubicle+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.pocketnurse.com/default/cubicle-curtain-straight-ceiling-track-system-8-multiple-color-options; photo_title: HC Interiors Cubicle Curtain Straight Ceiling Track System; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -85,6 +391,34 @@
    "value": "I.TRK_00"
   },
   {
+   "op": "set_type_value",
+   "name": "2400x2600_U/FMC_Code_Description",
+   "type": "2400x2600_U",
+   "param": "FMC_Code_Description",
+   "value": "CurtainTrack Bed Cubicle: Ceiling-hosted cubicle curtain track"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2600_U/FMC_Code_Group",
+   "type": "2400x2600_U",
+   "param": "FMC_Code_Group",
+   "value": "I.TRK"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2600_U/FMC_Role_Code",
+   "type": "2400x2600_U",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2600_U/URL",
+   "type": "2400x2600_U",
+   "param": "URL",
+   "value": "https://www.pocketnurse.com/default/cubicle-curtain-straight-ceiling-track-system-8-multiple-color-options"
+  },
+  {
    "op": "add_type",
    "name": "3000x3000_U"
   },
@@ -129,6 +463,34 @@
    "type": "3000x3000_U",
    "param": "FMC_Keynote_Code",
    "value": "I.TRK_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/FMC_Code_Description",
+   "type": "3000x3000_U",
+   "param": "FMC_Code_Description",
+   "value": "CurtainTrack Bed Cubicle: Ceiling-hosted cubicle curtain track"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/FMC_Code_Group",
+   "type": "3000x3000_U",
+   "param": "FMC_Code_Group",
+   "value": "I.TRK"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/FMC_Role_Code",
+   "type": "3000x3000_U",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/URL",
+   "type": "3000x3000_U",
+   "param": "URL",
+   "value": "https://www.pocketnurse.com/default/cubicle-curtain-straight-ceiling-track-system-8-multiple-color-options"
   },
   {
    "op": "add_subcategory",
@@ -176,9 +538,9 @@
    "op": "add_subcategory",
    "name": "Curtain",
    "color": [
-    58,
-    110,
-    165
+    127,
+    167,
+    207
    ],
    "line_weight_projection": 1
   },
@@ -190,7 +552,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "name": "FMC_Fabric_Curtain_Disposable_Blue",
    "param": "Curtain Material"
   },
   {
@@ -208,19 +570,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1222.0,
-     -2622.0
+     -1522.0,
+     -3022.0
     ],
     [
-     1222.0,
-     -2622.0
+     1522.0,
+     -3022.0
     ],
     [
-     1222.0,
+     1522.0,
      -300
     ],
     [
-     -1222.0,
+     -1522.0,
      -300
     ]
    ],
@@ -241,7 +603,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Track Left",
+   "name": "Track Left 2400",
    "points": [
     [
      -1215,
@@ -265,24 +627,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Track Left",
+   "name": "Track Left 2400",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Track Left",
+   "name": "Track Left 2400",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Track Left",
+   "name": "Track Left 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Track Front",
+   "name": "Track Front 2400",
    "points": [
     [
      -900,
@@ -306,24 +668,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Track Front",
+   "name": "Track Front 2400",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Track Front",
+   "name": "Track Front 2400",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Track Front",
+   "name": "Track Front 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Track Right",
+   "name": "Track Right 2400",
    "points": [
     [
      1185,
@@ -347,24 +709,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Track Right",
+   "name": "Track Right 2400",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Track Right",
+   "name": "Track Right 2400",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Track Right",
+   "name": "Track Right 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bend Left",
+   "name": "Bend Left 2400",
    "points": [
     [
      -1215.0,
@@ -444,24 +806,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bend Left",
+   "name": "Bend Left 2400",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Bend Left",
+   "name": "Bend Left 2400",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bend Left",
+   "name": "Bend Left 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bend Right",
+   "name": "Bend Right 2400",
    "points": [
     [
      900.0,
@@ -541,24 +903,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bend Right",
+   "name": "Bend Right 2400",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Bend Right",
+   "name": "Bend Right 2400",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bend Right",
+   "name": "Bend Right 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Left 1",
+   "name": "Ceiling Fixing Left 2400 1",
    "points": [
     [
      -1178.0,
@@ -662,120 +1024,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Left 1",
+   "name": "Ceiling Fixing Left 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Left 1",
+   "name": "Ceiling Fixing Left 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Left 1",
+   "name": "Ceiling Fixing Left 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Left 2",
+   "name": "Ceiling Fixing Left 2400 2",
    "points": [
     [
      -1178.0,
-     -1100.0
+     -1300.0
     ],
     [
      -1178.75,
-     -1094.31
+     -1294.31
     ],
     [
      -1180.95,
-     -1089.0
+     -1289.0
     ],
     [
      -1184.44,
-     -1084.44
+     -1284.44
     ],
     [
      -1189.0,
-     -1080.95
+     -1280.95
     ],
     [
      -1194.31,
-     -1078.75
+     -1278.75
     ],
     [
      -1200.0,
-     -1078.0
+     -1278.0
     ],
     [
      -1205.69,
-     -1078.75
+     -1278.75
     ],
     [
      -1211.0,
-     -1080.95
+     -1280.95
     ],
     [
      -1215.56,
-     -1084.44
+     -1284.44
     ],
     [
      -1219.05,
-     -1089.0
+     -1289.0
     ],
     [
      -1221.25,
-     -1094.31
+     -1294.31
     ],
     [
      -1222.0,
-     -1100.0
+     -1300.0
     ],
     [
      -1221.25,
-     -1105.69
+     -1305.69
     ],
     [
      -1219.05,
-     -1111.0
+     -1311.0
     ],
     [
      -1215.56,
-     -1115.56
+     -1315.56
     ],
     [
      -1211.0,
-     -1119.05
+     -1319.05
     ],
     [
      -1205.69,
-     -1121.25
+     -1321.25
     ],
     [
      -1200.0,
-     -1122.0
+     -1322.0
     ],
     [
      -1194.31,
-     -1121.25
+     -1321.25
     ],
     [
      -1189.0,
-     -1119.05
+     -1319.05
     ],
     [
      -1184.44,
-     -1115.56
+     -1315.56
     ],
     [
      -1180.95,
-     -1111.0
+     -1311.0
     ],
     [
      -1178.75,
-     -1105.69
+     -1305.69
     ]
    ],
    "start": -6,
@@ -783,120 +1145,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Left 2",
+   "name": "Ceiling Fixing Left 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Left 2",
+   "name": "Ceiling Fixing Left 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Left 2",
+   "name": "Ceiling Fixing Left 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Left 3",
+   "name": "Ceiling Fixing Left 2400 3",
    "points": [
     [
      -1178.0,
-     -1600.0
+     -2000.0
     ],
     [
      -1178.75,
-     -1594.31
+     -1994.31
     ],
     [
      -1180.95,
-     -1589.0
+     -1989.0
     ],
     [
      -1184.44,
-     -1584.44
+     -1984.44
     ],
     [
      -1189.0,
-     -1580.95
+     -1980.95
     ],
     [
      -1194.31,
-     -1578.75
+     -1978.75
     ],
     [
      -1200.0,
-     -1578.0
+     -1978.0
     ],
     [
      -1205.69,
-     -1578.75
+     -1978.75
     ],
     [
      -1211.0,
-     -1580.95
+     -1980.95
     ],
     [
      -1215.56,
-     -1584.44
+     -1984.44
     ],
     [
      -1219.05,
-     -1589.0
+     -1989.0
     ],
     [
      -1221.25,
-     -1594.31
+     -1994.31
     ],
     [
      -1222.0,
-     -1600.0
+     -2000.0
     ],
     [
      -1221.25,
-     -1605.69
+     -2005.69
     ],
     [
      -1219.05,
-     -1611.0
+     -2011.0
     ],
     [
      -1215.56,
-     -1615.56
+     -2015.56
     ],
     [
      -1211.0,
-     -1619.05
+     -2019.05
     ],
     [
      -1205.69,
-     -1621.25
+     -2021.25
     ],
     [
      -1200.0,
-     -1622.0
+     -2022.0
     ],
     [
      -1194.31,
-     -1621.25
+     -2021.25
     ],
     [
      -1189.0,
-     -1619.05
+     -2019.05
     ],
     [
      -1184.44,
-     -1615.56
+     -2015.56
     ],
     [
      -1180.95,
-     -1611.0
+     -2011.0
     ],
     [
      -1178.75,
-     -1605.69
+     -2005.69
     ]
    ],
    "start": -6,
@@ -904,145 +1266,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Left 3",
+   "name": "Ceiling Fixing Left 2400 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Left 3",
+   "name": "Ceiling Fixing Left 2400 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Left 3",
+   "name": "Ceiling Fixing Left 2400 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Left 4",
-   "points": [
-    [
-     -1178.0,
-     -2100.0
-    ],
-    [
-     -1178.75,
-     -2094.31
-    ],
-    [
-     -1180.95,
-     -2089.0
-    ],
-    [
-     -1184.44,
-     -2084.44
-    ],
-    [
-     -1189.0,
-     -2080.95
-    ],
-    [
-     -1194.31,
-     -2078.75
-    ],
-    [
-     -1200.0,
-     -2078.0
-    ],
-    [
-     -1205.69,
-     -2078.75
-    ],
-    [
-     -1211.0,
-     -2080.95
-    ],
-    [
-     -1215.56,
-     -2084.44
-    ],
-    [
-     -1219.05,
-     -2089.0
-    ],
-    [
-     -1221.25,
-     -2094.31
-    ],
-    [
-     -1222.0,
-     -2100.0
-    ],
-    [
-     -1221.25,
-     -2105.69
-    ],
-    [
-     -1219.05,
-     -2111.0
-    ],
-    [
-     -1215.56,
-     -2115.56
-    ],
-    [
-     -1211.0,
-     -2119.05
-    ],
-    [
-     -1205.69,
-     -2121.25
-    ],
-    [
-     -1200.0,
-     -2122.0
-    ],
-    [
-     -1194.31,
-     -2121.25
-    ],
-    [
-     -1189.0,
-     -2119.05
-    ],
-    [
-     -1184.44,
-     -2115.56
-    ],
-    [
-     -1180.95,
-     -2111.0
-    ],
-    [
-     -1178.75,
-     -2105.69
-    ]
-   ],
-   "start": -6,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ceiling Fixing Left 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ceiling Fixing Left 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ceiling Fixing Left 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ceiling Fixing Front 1",
+   "name": "Ceiling Fixing Front 2400 1",
    "points": [
     [
      -578.0,
@@ -1146,24 +1387,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Front 1",
+   "name": "Ceiling Fixing Front 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Front 1",
+   "name": "Ceiling Fixing Front 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Front 1",
+   "name": "Ceiling Fixing Front 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Front 2",
+   "name": "Ceiling Fixing Front 2400 2",
    "points": [
     [
      22.0,
@@ -1267,24 +1508,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Front 2",
+   "name": "Ceiling Fixing Front 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Front 2",
+   "name": "Ceiling Fixing Front 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Front 2",
+   "name": "Ceiling Fixing Front 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Front 3",
+   "name": "Ceiling Fixing Front 2400 3",
    "points": [
     [
      622.0,
@@ -1388,24 +1629,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Front 3",
+   "name": "Ceiling Fixing Front 2400 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Front 3",
+   "name": "Ceiling Fixing Front 2400 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Front 3",
+   "name": "Ceiling Fixing Front 2400 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Right 1",
+   "name": "Ceiling Fixing Right 2400 1",
    "points": [
     [
      1222.0,
@@ -1509,120 +1750,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Right 1",
+   "name": "Ceiling Fixing Right 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Right 1",
+   "name": "Ceiling Fixing Right 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Right 1",
+   "name": "Ceiling Fixing Right 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Right 2",
+   "name": "Ceiling Fixing Right 2400 2",
    "points": [
     [
      1222.0,
-     -1100.0
+     -1300.0
     ],
     [
      1221.25,
-     -1094.31
+     -1294.31
     ],
     [
      1219.05,
-     -1089.0
+     -1289.0
     ],
     [
      1215.56,
-     -1084.44
+     -1284.44
     ],
     [
      1211.0,
-     -1080.95
+     -1280.95
     ],
     [
      1205.69,
-     -1078.75
+     -1278.75
     ],
     [
      1200.0,
-     -1078.0
+     -1278.0
     ],
     [
      1194.31,
-     -1078.75
+     -1278.75
     ],
     [
      1189.0,
-     -1080.95
+     -1280.95
     ],
     [
      1184.44,
-     -1084.44
+     -1284.44
     ],
     [
      1180.95,
-     -1089.0
+     -1289.0
     ],
     [
      1178.75,
-     -1094.31
+     -1294.31
     ],
     [
      1178.0,
-     -1100.0
+     -1300.0
     ],
     [
      1178.75,
-     -1105.69
+     -1305.69
     ],
     [
      1180.95,
-     -1111.0
+     -1311.0
     ],
     [
      1184.44,
-     -1115.56
+     -1315.56
     ],
     [
      1189.0,
-     -1119.05
+     -1319.05
     ],
     [
      1194.31,
-     -1121.25
+     -1321.25
     ],
     [
      1200.0,
-     -1122.0
+     -1322.0
     ],
     [
      1205.69,
-     -1121.25
+     -1321.25
     ],
     [
      1211.0,
-     -1119.05
+     -1319.05
     ],
     [
      1215.56,
-     -1115.56
+     -1315.56
     ],
     [
      1219.05,
-     -1111.0
+     -1311.0
     ],
     [
      1221.25,
-     -1105.69
+     -1305.69
     ]
    ],
    "start": -6,
@@ -1630,120 +1871,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Right 2",
+   "name": "Ceiling Fixing Right 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Right 2",
+   "name": "Ceiling Fixing Right 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Right 2",
+   "name": "Ceiling Fixing Right 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Right 3",
+   "name": "Ceiling Fixing Right 2400 3",
    "points": [
     [
      1222.0,
-     -1600.0
+     -2000.0
     ],
     [
      1221.25,
-     -1594.31
+     -1994.31
     ],
     [
      1219.05,
-     -1589.0
+     -1989.0
     ],
     [
      1215.56,
-     -1584.44
+     -1984.44
     ],
     [
      1211.0,
-     -1580.95
+     -1980.95
     ],
     [
      1205.69,
-     -1578.75
+     -1978.75
     ],
     [
      1200.0,
-     -1578.0
+     -1978.0
     ],
     [
      1194.31,
-     -1578.75
+     -1978.75
     ],
     [
      1189.0,
-     -1580.95
+     -1980.95
     ],
     [
      1184.44,
-     -1584.44
+     -1984.44
     ],
     [
      1180.95,
-     -1589.0
+     -1989.0
     ],
     [
      1178.75,
-     -1594.31
+     -1994.31
     ],
     [
      1178.0,
-     -1600.0
+     -2000.0
     ],
     [
      1178.75,
-     -1605.69
+     -2005.69
     ],
     [
      1180.95,
-     -1611.0
+     -2011.0
     ],
     [
      1184.44,
-     -1615.56
+     -2015.56
     ],
     [
      1189.0,
-     -1619.05
+     -2019.05
     ],
     [
      1194.31,
-     -1621.25
+     -2021.25
     ],
     [
      1200.0,
-     -1622.0
+     -2022.0
     ],
     [
      1205.69,
-     -1621.25
+     -2021.25
     ],
     [
      1211.0,
-     -1619.05
+     -2019.05
     ],
     [
      1215.56,
-     -1615.56
+     -2015.56
     ],
     [
      1219.05,
-     -1611.0
+     -2011.0
     ],
     [
      1221.25,
-     -1605.69
+     -2005.69
     ]
    ],
    "start": -6,
@@ -1751,145 +1992,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ceiling Fixing Right 3",
+   "name": "Ceiling Fixing Right 2400 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Ceiling Fixing Right 3",
+   "name": "Ceiling Fixing Right 2400 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ceiling Fixing Right 3",
+   "name": "Ceiling Fixing Right 2400 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ceiling Fixing Right 4",
-   "points": [
-    [
-     1222.0,
-     -2100.0
-    ],
-    [
-     1221.25,
-     -2094.31
-    ],
-    [
-     1219.05,
-     -2089.0
-    ],
-    [
-     1215.56,
-     -2084.44
-    ],
-    [
-     1211.0,
-     -2080.95
-    ],
-    [
-     1205.69,
-     -2078.75
-    ],
-    [
-     1200.0,
-     -2078.0
-    ],
-    [
-     1194.31,
-     -2078.75
-    ],
-    [
-     1189.0,
-     -2080.95
-    ],
-    [
-     1184.44,
-     -2084.44
-    ],
-    [
-     1180.95,
-     -2089.0
-    ],
-    [
-     1178.75,
-     -2094.31
-    ],
-    [
-     1178.0,
-     -2100.0
-    ],
-    [
-     1178.75,
-     -2105.69
-    ],
-    [
-     1180.95,
-     -2111.0
-    ],
-    [
-     1184.44,
-     -2115.56
-    ],
-    [
-     1189.0,
-     -2119.05
-    ],
-    [
-     1194.31,
-     -2121.25
-    ],
-    [
-     1200.0,
-     -2122.0
-    ],
-    [
-     1205.69,
-     -2121.25
-    ],
-    [
-     1211.0,
-     -2119.05
-    ],
-    [
-     1215.56,
-     -2115.56
-    ],
-    [
-     1219.05,
-     -2111.0
-    ],
-    [
-     1221.25,
-     -2105.69
-    ]
-   ],
-   "start": -6,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ceiling Fixing Right 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ceiling Fixing Right 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ceiling Fixing Right 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Stop 1",
+   "name": "End Stop 2400 1",
    "points": [
     [
      -1218,
@@ -1913,24 +2033,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Stop 1",
+   "name": "End Stop 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "End Stop 1",
+   "name": "End Stop 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Stop 1",
+   "name": "End Stop 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "End Stop 2",
+   "name": "End Stop 2400 2",
    "points": [
     [
      1182,
@@ -1954,24 +2074,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Stop 2",
+   "name": "End Stop 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "End Stop 2",
+   "name": "End Stop 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Stop 2",
+   "name": "End Stop 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Curtain Stack Left",
+   "name": "Curtain Stack Left 2400",
    "points": [
     [
      -1214,
@@ -2195,24 +2315,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Curtain Stack Left",
+   "name": "Curtain Stack Left 2400",
    "subcategory": "Curtain"
   },
   {
    "op": "set_material_param",
-   "name": "Curtain Stack Left",
+   "name": "Curtain Stack Left 2400",
    "param": "Curtain Material"
   },
   {
    "op": "set_visibility",
-   "name": "Curtain Stack Left",
+   "name": "Curtain Stack Left 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mesh Top Left",
+   "name": "Mesh Top Left 2400",
    "points": [
     [
      -1214,
@@ -2436,24 +2556,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mesh Top Left",
+   "name": "Mesh Top Left 2400",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Mesh Top Left",
+   "name": "Mesh Top Left 2400",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mesh Top Left",
+   "name": "Mesh Top Left 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Curtain Stack Right",
+   "name": "Curtain Stack Right 2400",
    "points": [
     [
      1186,
@@ -2677,24 +2797,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Curtain Stack Right",
+   "name": "Curtain Stack Right 2400",
    "subcategory": "Curtain"
   },
   {
    "op": "set_material_param",
-   "name": "Curtain Stack Right",
+   "name": "Curtain Stack Right 2400",
    "param": "Curtain Material"
   },
   {
    "op": "set_visibility",
-   "name": "Curtain Stack Right",
+   "name": "Curtain Stack Right 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mesh Top Right",
+   "name": "Mesh Top Right 2400",
    "points": [
     [
      1186,
@@ -2918,24 +3038,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mesh Top Right",
+   "name": "Mesh Top Right 2400",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Mesh Top Right",
+   "name": "Mesh Top Right 2400",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mesh Top Right",
+   "name": "Mesh Top Right 2400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 1",
+   "name": "Glider Left 2400 1",
    "points": [
     [
      -1192.0,
@@ -3039,241 +3159,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 1",
+   "name": "Glider Left 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 1",
+   "name": "Glider Left 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 1",
+   "name": "Glider Left 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 2",
+   "name": "Glider Left 2400 2",
    "points": [
     [
      -1192.0,
-     -1276.0
-    ],
-    [
-     -1192.27,
-     -1273.93
-    ],
-    [
-     -1193.07,
-     -1272.0
-    ],
-    [
-     -1194.34,
-     -1270.34
-    ],
-    [
-     -1196.0,
-     -1269.07
-    ],
-    [
-     -1197.93,
-     -1268.27
-    ],
-    [
-     -1200.0,
-     -1268.0
-    ],
-    [
-     -1202.07,
-     -1268.27
-    ],
-    [
-     -1204.0,
-     -1269.07
-    ],
-    [
-     -1205.66,
-     -1270.34
-    ],
-    [
-     -1206.93,
-     -1272.0
-    ],
-    [
-     -1207.73,
-     -1273.93
-    ],
-    [
-     -1208.0,
-     -1276.0
-    ],
-    [
-     -1207.73,
-     -1278.07
-    ],
-    [
-     -1206.93,
-     -1280.0
-    ],
-    [
-     -1205.66,
-     -1281.66
-    ],
-    [
-     -1204.0,
-     -1282.93
-    ],
-    [
-     -1202.07,
-     -1283.73
-    ],
-    [
-     -1200.0,
-     -1284.0
-    ],
-    [
-     -1197.93,
-     -1283.73
-    ],
-    [
-     -1196.0,
-     -1282.93
-    ],
-    [
-     -1194.34,
-     -1281.66
-    ],
-    [
-     -1193.07,
-     -1280.0
-    ],
-    [
-     -1192.27,
-     -1278.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Left 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Left 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Left 3",
-   "points": [
-    [
-     -1192.0,
-     -1172.0
-    ],
-    [
-     -1192.27,
-     -1169.93
-    ],
-    [
-     -1193.07,
-     -1168.0
-    ],
-    [
-     -1194.34,
-     -1166.34
-    ],
-    [
-     -1196.0,
-     -1165.07
-    ],
-    [
-     -1197.93,
-     -1164.27
-    ],
-    [
-     -1200.0,
-     -1164.0
-    ],
-    [
-     -1202.07,
-     -1164.27
-    ],
-    [
-     -1204.0,
-     -1165.07
-    ],
-    [
-     -1205.66,
-     -1166.34
-    ],
-    [
-     -1206.93,
-     -1168.0
-    ],
-    [
-     -1207.73,
-     -1169.93
-    ],
-    [
-     -1208.0,
-     -1172.0
-    ],
-    [
-     -1207.73,
-     -1174.07
-    ],
-    [
-     -1206.93,
-     -1176.0
-    ],
-    [
-     -1205.66,
-     -1177.66
-    ],
-    [
-     -1204.0,
-     -1178.93
-    ],
-    [
-     -1202.07,
-     -1179.73
-    ],
-    [
-     -1200.0,
      -1180.0
     ],
     [
-     -1197.93,
-     -1179.73
-    ],
-    [
-     -1196.0,
-     -1178.93
-    ],
-    [
-     -1194.34,
-     -1177.66
+     -1192.27,
+     -1177.93
     ],
     [
      -1193.07,
      -1176.0
     ],
     [
+     -1194.34,
+     -1174.34
+    ],
+    [
+     -1196.0,
+     -1173.07
+    ],
+    [
+     -1197.93,
+     -1172.27
+    ],
+    [
+     -1200.0,
+     -1172.0
+    ],
+    [
+     -1202.07,
+     -1172.27
+    ],
+    [
+     -1204.0,
+     -1173.07
+    ],
+    [
+     -1205.66,
+     -1174.34
+    ],
+    [
+     -1206.93,
+     -1176.0
+    ],
+    [
+     -1207.73,
+     -1177.93
+    ],
+    [
+     -1208.0,
+     -1180.0
+    ],
+    [
+     -1207.73,
+     -1182.07
+    ],
+    [
+     -1206.93,
+     -1184.0
+    ],
+    [
+     -1205.66,
+     -1185.66
+    ],
+    [
+     -1204.0,
+     -1186.93
+    ],
+    [
+     -1202.07,
+     -1187.73
+    ],
+    [
+     -1200.0,
+     -1188.0
+    ],
+    [
+     -1197.93,
+     -1187.73
+    ],
+    [
+     -1196.0,
+     -1186.93
+    ],
+    [
+     -1194.34,
+     -1185.66
+    ],
+    [
+     -1193.07,
+     -1184.0
+    ],
+    [
      -1192.27,
-     -1174.07
+     -1182.07
     ]
    ],
    "start": -40,
@@ -3281,362 +3280,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 3",
+   "name": "Glider Left 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 3",
+   "name": "Glider Left 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 3",
+   "name": "Glider Left 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 4",
+   "name": "Glider Left 2400 3",
    "points": [
     [
      -1192.0,
-     -1068.0
+     -980.0
     ],
     [
      -1192.27,
-     -1065.93
+     -977.93
     ],
     [
      -1193.07,
-     -1064.0
+     -976.0
     ],
     [
      -1194.34,
-     -1062.34
+     -974.34
     ],
     [
      -1196.0,
-     -1061.07
+     -973.07
     ],
     [
      -1197.93,
-     -1060.27
-    ],
-    [
-     -1200.0,
-     -1060.0
-    ],
-    [
-     -1202.07,
-     -1060.27
-    ],
-    [
-     -1204.0,
-     -1061.07
-    ],
-    [
-     -1205.66,
-     -1062.34
-    ],
-    [
-     -1206.93,
-     -1064.0
-    ],
-    [
-     -1207.73,
-     -1065.93
-    ],
-    [
-     -1208.0,
-     -1068.0
-    ],
-    [
-     -1207.73,
-     -1070.07
-    ],
-    [
-     -1206.93,
-     -1072.0
-    ],
-    [
-     -1205.66,
-     -1073.66
-    ],
-    [
-     -1204.0,
-     -1074.93
-    ],
-    [
-     -1202.07,
-     -1075.73
-    ],
-    [
-     -1200.0,
-     -1076.0
-    ],
-    [
-     -1197.93,
-     -1075.73
-    ],
-    [
-     -1196.0,
-     -1074.93
-    ],
-    [
-     -1194.34,
-     -1073.66
-    ],
-    [
-     -1193.07,
-     -1072.0
-    ],
-    [
-     -1192.27,
-     -1070.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Left 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Left 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Left 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Left 5",
-   "points": [
-    [
-     -1192.0,
-     -964.0
-    ],
-    [
-     -1192.27,
-     -961.93
-    ],
-    [
-     -1193.07,
-     -960.0
-    ],
-    [
-     -1194.34,
-     -958.34
-    ],
-    [
-     -1196.0,
-     -957.07
-    ],
-    [
-     -1197.93,
-     -956.27
-    ],
-    [
-     -1200.0,
-     -956.0
-    ],
-    [
-     -1202.07,
-     -956.27
-    ],
-    [
-     -1204.0,
-     -957.07
-    ],
-    [
-     -1205.66,
-     -958.34
-    ],
-    [
-     -1206.93,
-     -960.0
-    ],
-    [
-     -1207.73,
-     -961.93
-    ],
-    [
-     -1208.0,
-     -964.0
-    ],
-    [
-     -1207.73,
-     -966.07
-    ],
-    [
-     -1206.93,
-     -968.0
-    ],
-    [
-     -1205.66,
-     -969.66
-    ],
-    [
-     -1204.0,
-     -970.93
-    ],
-    [
-     -1202.07,
-     -971.73
+     -972.27
     ],
     [
      -1200.0,
      -972.0
     ],
     [
-     -1197.93,
-     -971.73
-    ],
-    [
-     -1196.0,
-     -970.93
-    ],
-    [
-     -1194.34,
-     -969.66
-    ],
-    [
-     -1193.07,
-     -968.0
-    ],
-    [
-     -1192.27,
-     -966.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Left 5",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Left 5",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Left 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Left 6",
-   "points": [
-    [
-     -1192.0,
-     -860.0
-    ],
-    [
-     -1192.27,
-     -857.93
-    ],
-    [
-     -1193.07,
-     -856.0
-    ],
-    [
-     -1194.34,
-     -854.34
-    ],
-    [
-     -1196.0,
-     -853.07
-    ],
-    [
-     -1197.93,
-     -852.27
-    ],
-    [
-     -1200.0,
-     -852.0
-    ],
-    [
      -1202.07,
-     -852.27
+     -972.27
     ],
     [
      -1204.0,
-     -853.07
+     -973.07
     ],
     [
      -1205.66,
-     -854.34
+     -974.34
     ],
     [
      -1206.93,
-     -856.0
+     -976.0
     ],
     [
      -1207.73,
-     -857.93
+     -977.93
     ],
     [
      -1208.0,
-     -860.0
+     -980.0
     ],
     [
      -1207.73,
-     -862.07
+     -982.07
     ],
     [
      -1206.93,
-     -864.0
+     -984.0
     ],
     [
      -1205.66,
-     -865.66
+     -985.66
     ],
     [
      -1204.0,
-     -866.93
+     -986.93
     ],
     [
      -1202.07,
-     -867.73
+     -987.73
     ],
     [
      -1200.0,
-     -868.0
+     -988.0
     ],
     [
      -1197.93,
-     -867.73
+     -987.73
     ],
     [
      -1196.0,
-     -866.93
+     -986.93
     ],
     [
      -1194.34,
-     -865.66
+     -985.66
     ],
     [
      -1193.07,
-     -864.0
+     -984.0
     ],
     [
      -1192.27,
-     -862.07
+     -982.07
     ]
    ],
    "start": -40,
@@ -3644,120 +3401,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 6",
+   "name": "Glider Left 2400 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 6",
+   "name": "Glider Left 2400 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 6",
+   "name": "Glider Left 2400 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 7",
+   "name": "Glider Left 2400 4",
    "points": [
     [
      -1192.0,
-     -756.0
+     -780.0
     ],
     [
      -1192.27,
-     -753.93
+     -777.93
     ],
     [
      -1193.07,
-     -752.0
+     -776.0
     ],
     [
      -1194.34,
-     -750.34
+     -774.34
     ],
     [
      -1196.0,
-     -749.07
+     -773.07
     ],
     [
      -1197.93,
-     -748.27
+     -772.27
     ],
     [
      -1200.0,
-     -748.0
+     -772.0
     ],
     [
      -1202.07,
-     -748.27
+     -772.27
     ],
     [
      -1204.0,
-     -749.07
+     -773.07
     ],
     [
      -1205.66,
-     -750.34
+     -774.34
     ],
     [
      -1206.93,
-     -752.0
+     -776.0
     ],
     [
      -1207.73,
-     -753.93
+     -777.93
     ],
     [
      -1208.0,
-     -756.0
+     -780.0
     ],
     [
      -1207.73,
-     -758.07
+     -782.07
     ],
     [
      -1206.93,
-     -760.0
+     -784.0
     ],
     [
      -1205.66,
-     -761.66
+     -785.66
     ],
     [
      -1204.0,
-     -762.93
+     -786.93
     ],
     [
      -1202.07,
-     -763.73
+     -787.73
     ],
     [
      -1200.0,
-     -764.0
+     -788.0
     ],
     [
      -1197.93,
-     -763.73
+     -787.73
     ],
     [
      -1196.0,
-     -762.93
+     -786.93
     ],
     [
      -1194.34,
-     -761.66
+     -785.66
     ],
     [
      -1193.07,
-     -760.0
+     -784.0
     ],
     [
      -1192.27,
-     -758.07
+     -782.07
     ]
    ],
    "start": -40,
@@ -3765,120 +3522,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 7",
+   "name": "Glider Left 2400 4",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 7",
+   "name": "Glider Left 2400 4",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 7",
+   "name": "Glider Left 2400 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 8",
+   "name": "Glider Left 2400 5",
    "points": [
     [
      -1192.0,
-     -652.0
+     -580.0
     ],
     [
      -1192.27,
-     -649.93
+     -577.93
     ],
     [
      -1193.07,
-     -648.0
+     -576.0
     ],
     [
      -1194.34,
-     -646.34
+     -574.34
     ],
     [
      -1196.0,
-     -645.07
+     -573.07
     ],
     [
      -1197.93,
-     -644.27
+     -572.27
     ],
     [
      -1200.0,
-     -644.0
+     -572.0
     ],
     [
      -1202.07,
-     -644.27
+     -572.27
     ],
     [
      -1204.0,
-     -645.07
+     -573.07
     ],
     [
      -1205.66,
-     -646.34
+     -574.34
     ],
     [
      -1206.93,
-     -648.0
+     -576.0
     ],
     [
      -1207.73,
-     -649.93
+     -577.93
     ],
     [
      -1208.0,
-     -652.0
+     -580.0
     ],
     [
      -1207.73,
-     -654.07
+     -582.07
     ],
     [
      -1206.93,
-     -656.0
+     -584.0
     ],
     [
      -1205.66,
-     -657.66
+     -585.66
     ],
     [
      -1204.0,
-     -658.93
+     -586.93
     ],
     [
      -1202.07,
-     -659.73
+     -587.73
     ],
     [
      -1200.0,
-     -660.0
+     -588.0
     ],
     [
      -1197.93,
-     -659.73
+     -587.73
     ],
     [
      -1196.0,
-     -658.93
+     -586.93
     ],
     [
      -1194.34,
-     -657.66
+     -585.66
     ],
     [
      -1193.07,
-     -656.0
+     -584.0
     ],
     [
      -1192.27,
-     -654.07
+     -582.07
     ]
    ],
    "start": -40,
@@ -3886,120 +3643,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 8",
+   "name": "Glider Left 2400 5",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 8",
+   "name": "Glider Left 2400 5",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 8",
+   "name": "Glider Left 2400 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 9",
+   "name": "Glider Left 2400 6",
    "points": [
     [
      -1192.0,
-     -548.0
+     -380.0
     ],
     [
      -1192.27,
-     -545.93
+     -377.93
     ],
     [
      -1193.07,
-     -544.0
+     -376.0
     ],
     [
      -1194.34,
-     -542.34
+     -374.34
     ],
     [
      -1196.0,
-     -541.07
+     -373.07
     ],
     [
      -1197.93,
-     -540.27
+     -372.27
     ],
     [
      -1200.0,
-     -540.0
+     -372.0
     ],
     [
      -1202.07,
-     -540.27
+     -372.27
     ],
     [
      -1204.0,
-     -541.07
+     -373.07
     ],
     [
      -1205.66,
-     -542.34
+     -374.34
     ],
     [
      -1206.93,
-     -544.0
+     -376.0
     ],
     [
      -1207.73,
-     -545.93
+     -377.93
     ],
     [
      -1208.0,
-     -548.0
+     -380.0
     ],
     [
      -1207.73,
-     -550.07
+     -382.07
     ],
     [
      -1206.93,
-     -552.0
+     -384.0
     ],
     [
      -1205.66,
-     -553.66
+     -385.66
     ],
     [
      -1204.0,
-     -554.93
+     -386.93
     ],
     [
      -1202.07,
-     -555.73
+     -387.73
     ],
     [
      -1200.0,
-     -556.0
+     -388.0
     ],
     [
      -1197.93,
-     -555.73
+     -387.73
     ],
     [
      -1196.0,
-     -554.93
+     -386.93
     ],
     [
      -1194.34,
-     -553.66
+     -385.66
     ],
     [
      -1193.07,
-     -552.0
+     -384.0
     ],
     [
      -1192.27,
-     -550.07
+     -382.07
     ]
    ],
    "start": -40,
@@ -4007,145 +3764,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Left 9",
+   "name": "Glider Left 2400 6",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Left 9",
+   "name": "Glider Left 2400 6",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Left 9",
+   "name": "Glider Left 2400 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Left 10",
-   "points": [
-    [
-     -1192.0,
-     -444.0
-    ],
-    [
-     -1192.27,
-     -441.93
-    ],
-    [
-     -1193.07,
-     -440.0
-    ],
-    [
-     -1194.34,
-     -438.34
-    ],
-    [
-     -1196.0,
-     -437.07
-    ],
-    [
-     -1197.93,
-     -436.27
-    ],
-    [
-     -1200.0,
-     -436.0
-    ],
-    [
-     -1202.07,
-     -436.27
-    ],
-    [
-     -1204.0,
-     -437.07
-    ],
-    [
-     -1205.66,
-     -438.34
-    ],
-    [
-     -1206.93,
-     -440.0
-    ],
-    [
-     -1207.73,
-     -441.93
-    ],
-    [
-     -1208.0,
-     -444.0
-    ],
-    [
-     -1207.73,
-     -446.07
-    ],
-    [
-     -1206.93,
-     -448.0
-    ],
-    [
-     -1205.66,
-     -449.66
-    ],
-    [
-     -1204.0,
-     -450.93
-    ],
-    [
-     -1202.07,
-     -451.73
-    ],
-    [
-     -1200.0,
-     -452.0
-    ],
-    [
-     -1197.93,
-     -451.73
-    ],
-    [
-     -1196.0,
-     -450.93
-    ],
-    [
-     -1194.34,
-     -449.66
-    ],
-    [
-     -1193.07,
-     -448.0
-    ],
-    [
-     -1192.27,
-     -446.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Left 10",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Left 10",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Left 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Right 1",
+   "name": "Glider Right 2400 1",
    "points": [
     [
      1208.0,
@@ -4249,241 +3885,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 1",
+   "name": "Glider Right 2400 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 1",
+   "name": "Glider Right 2400 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 1",
+   "name": "Glider Right 2400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 2",
+   "name": "Glider Right 2400 2",
    "points": [
     [
      1208.0,
-     -1276.0
-    ],
-    [
-     1207.73,
-     -1273.93
-    ],
-    [
-     1206.93,
-     -1272.0
-    ],
-    [
-     1205.66,
-     -1270.34
-    ],
-    [
-     1204.0,
-     -1269.07
-    ],
-    [
-     1202.07,
-     -1268.27
-    ],
-    [
-     1200.0,
-     -1268.0
-    ],
-    [
-     1197.93,
-     -1268.27
-    ],
-    [
-     1196.0,
-     -1269.07
-    ],
-    [
-     1194.34,
-     -1270.34
-    ],
-    [
-     1193.07,
-     -1272.0
-    ],
-    [
-     1192.27,
-     -1273.93
-    ],
-    [
-     1192.0,
-     -1276.0
-    ],
-    [
-     1192.27,
-     -1278.07
-    ],
-    [
-     1193.07,
-     -1280.0
-    ],
-    [
-     1194.34,
-     -1281.66
-    ],
-    [
-     1196.0,
-     -1282.93
-    ],
-    [
-     1197.93,
-     -1283.73
-    ],
-    [
-     1200.0,
-     -1284.0
-    ],
-    [
-     1202.07,
-     -1283.73
-    ],
-    [
-     1204.0,
-     -1282.93
-    ],
-    [
-     1205.66,
-     -1281.66
-    ],
-    [
-     1206.93,
-     -1280.0
-    ],
-    [
-     1207.73,
-     -1278.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Right 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Right 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Right 3",
-   "points": [
-    [
-     1208.0,
-     -1172.0
-    ],
-    [
-     1207.73,
-     -1169.93
-    ],
-    [
-     1206.93,
-     -1168.0
-    ],
-    [
-     1205.66,
-     -1166.34
-    ],
-    [
-     1204.0,
-     -1165.07
-    ],
-    [
-     1202.07,
-     -1164.27
-    ],
-    [
-     1200.0,
-     -1164.0
-    ],
-    [
-     1197.93,
-     -1164.27
-    ],
-    [
-     1196.0,
-     -1165.07
-    ],
-    [
-     1194.34,
-     -1166.34
-    ],
-    [
-     1193.07,
-     -1168.0
-    ],
-    [
-     1192.27,
-     -1169.93
-    ],
-    [
-     1192.0,
-     -1172.0
-    ],
-    [
-     1192.27,
-     -1174.07
-    ],
-    [
-     1193.07,
-     -1176.0
-    ],
-    [
-     1194.34,
-     -1177.66
-    ],
-    [
-     1196.0,
-     -1178.93
-    ],
-    [
-     1197.93,
-     -1179.73
-    ],
-    [
-     1200.0,
      -1180.0
     ],
     [
-     1202.07,
-     -1179.73
-    ],
-    [
-     1204.0,
-     -1178.93
-    ],
-    [
-     1205.66,
-     -1177.66
+     1207.73,
+     -1177.93
     ],
     [
      1206.93,
      -1176.0
     ],
     [
+     1205.66,
+     -1174.34
+    ],
+    [
+     1204.0,
+     -1173.07
+    ],
+    [
+     1202.07,
+     -1172.27
+    ],
+    [
+     1200.0,
+     -1172.0
+    ],
+    [
+     1197.93,
+     -1172.27
+    ],
+    [
+     1196.0,
+     -1173.07
+    ],
+    [
+     1194.34,
+     -1174.34
+    ],
+    [
+     1193.07,
+     -1176.0
+    ],
+    [
+     1192.27,
+     -1177.93
+    ],
+    [
+     1192.0,
+     -1180.0
+    ],
+    [
+     1192.27,
+     -1182.07
+    ],
+    [
+     1193.07,
+     -1184.0
+    ],
+    [
+     1194.34,
+     -1185.66
+    ],
+    [
+     1196.0,
+     -1186.93
+    ],
+    [
+     1197.93,
+     -1187.73
+    ],
+    [
+     1200.0,
+     -1188.0
+    ],
+    [
+     1202.07,
+     -1187.73
+    ],
+    [
+     1204.0,
+     -1186.93
+    ],
+    [
+     1205.66,
+     -1185.66
+    ],
+    [
+     1206.93,
+     -1184.0
+    ],
+    [
      1207.73,
-     -1174.07
+     -1182.07
     ]
    ],
    "start": -40,
@@ -4491,241 +4006,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 3",
+   "name": "Glider Right 2400 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 3",
+   "name": "Glider Right 2400 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 3",
+   "name": "Glider Right 2400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 4",
+   "name": "Glider Right 2400 3",
    "points": [
     [
      1208.0,
-     -1068.0
+     -980.0
     ],
     [
      1207.73,
-     -1065.93
+     -977.93
     ],
     [
      1206.93,
-     -1064.0
+     -976.0
     ],
     [
      1205.66,
-     -1062.34
+     -974.34
     ],
     [
      1204.0,
-     -1061.07
+     -973.07
     ],
     [
      1202.07,
-     -1060.27
-    ],
-    [
-     1200.0,
-     -1060.0
-    ],
-    [
-     1197.93,
-     -1060.27
-    ],
-    [
-     1196.0,
-     -1061.07
-    ],
-    [
-     1194.34,
-     -1062.34
-    ],
-    [
-     1193.07,
-     -1064.0
-    ],
-    [
-     1192.27,
-     -1065.93
-    ],
-    [
-     1192.0,
-     -1068.0
-    ],
-    [
-     1192.27,
-     -1070.07
-    ],
-    [
-     1193.07,
-     -1072.0
-    ],
-    [
-     1194.34,
-     -1073.66
-    ],
-    [
-     1196.0,
-     -1074.93
-    ],
-    [
-     1197.93,
-     -1075.73
-    ],
-    [
-     1200.0,
-     -1076.0
-    ],
-    [
-     1202.07,
-     -1075.73
-    ],
-    [
-     1204.0,
-     -1074.93
-    ],
-    [
-     1205.66,
-     -1073.66
-    ],
-    [
-     1206.93,
-     -1072.0
-    ],
-    [
-     1207.73,
-     -1070.07
-    ]
-   ],
-   "start": -40,
-   "end": -20
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Glider Right 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Glider Right 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Glider Right 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Glider Right 5",
-   "points": [
-    [
-     1208.0,
-     -964.0
-    ],
-    [
-     1207.73,
-     -961.93
-    ],
-    [
-     1206.93,
-     -960.0
-    ],
-    [
-     1205.66,
-     -958.34
-    ],
-    [
-     1204.0,
-     -957.07
-    ],
-    [
-     1202.07,
-     -956.27
-    ],
-    [
-     1200.0,
-     -956.0
-    ],
-    [
-     1197.93,
-     -956.27
-    ],
-    [
-     1196.0,
-     -957.07
-    ],
-    [
-     1194.34,
-     -958.34
-    ],
-    [
-     1193.07,
-     -960.0
-    ],
-    [
-     1192.27,
-     -961.93
-    ],
-    [
-     1192.0,
-     -964.0
-    ],
-    [
-     1192.27,
-     -966.07
-    ],
-    [
-     1193.07,
-     -968.0
-    ],
-    [
-     1194.34,
-     -969.66
-    ],
-    [
-     1196.0,
-     -970.93
-    ],
-    [
-     1197.93,
-     -971.73
+     -972.27
     ],
     [
      1200.0,
      -972.0
     ],
     [
+     1197.93,
+     -972.27
+    ],
+    [
+     1196.0,
+     -973.07
+    ],
+    [
+     1194.34,
+     -974.34
+    ],
+    [
+     1193.07,
+     -976.0
+    ],
+    [
+     1192.27,
+     -977.93
+    ],
+    [
+     1192.0,
+     -980.0
+    ],
+    [
+     1192.27,
+     -982.07
+    ],
+    [
+     1193.07,
+     -984.0
+    ],
+    [
+     1194.34,
+     -985.66
+    ],
+    [
+     1196.0,
+     -986.93
+    ],
+    [
+     1197.93,
+     -987.73
+    ],
+    [
+     1200.0,
+     -988.0
+    ],
+    [
      1202.07,
-     -971.73
+     -987.73
     ],
     [
      1204.0,
-     -970.93
+     -986.93
     ],
     [
      1205.66,
-     -969.66
+     -985.66
     ],
     [
      1206.93,
-     -968.0
+     -984.0
     ],
     [
      1207.73,
-     -966.07
+     -982.07
     ]
    ],
    "start": -40,
@@ -4733,120 +4127,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 5",
+   "name": "Glider Right 2400 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 5",
+   "name": "Glider Right 2400 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 5",
+   "name": "Glider Right 2400 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 6",
+   "name": "Glider Right 2400 4",
    "points": [
     [
      1208.0,
-     -860.0
+     -780.0
     ],
     [
      1207.73,
-     -857.93
+     -777.93
     ],
     [
      1206.93,
-     -856.0
+     -776.0
     ],
     [
      1205.66,
-     -854.34
+     -774.34
     ],
     [
      1204.0,
-     -853.07
+     -773.07
     ],
     [
      1202.07,
-     -852.27
+     -772.27
     ],
     [
      1200.0,
-     -852.0
+     -772.0
     ],
     [
      1197.93,
-     -852.27
+     -772.27
     ],
     [
      1196.0,
-     -853.07
+     -773.07
     ],
     [
      1194.34,
-     -854.34
+     -774.34
     ],
     [
      1193.07,
-     -856.0
+     -776.0
     ],
     [
      1192.27,
-     -857.93
+     -777.93
     ],
     [
      1192.0,
-     -860.0
+     -780.0
     ],
     [
      1192.27,
-     -862.07
+     -782.07
     ],
     [
      1193.07,
-     -864.0
+     -784.0
     ],
     [
      1194.34,
-     -865.66
+     -785.66
     ],
     [
      1196.0,
-     -866.93
+     -786.93
     ],
     [
      1197.93,
-     -867.73
+     -787.73
     ],
     [
      1200.0,
-     -868.0
+     -788.0
     ],
     [
      1202.07,
-     -867.73
+     -787.73
     ],
     [
      1204.0,
-     -866.93
+     -786.93
     ],
     [
      1205.66,
-     -865.66
+     -785.66
     ],
     [
      1206.93,
-     -864.0
+     -784.0
     ],
     [
      1207.73,
-     -862.07
+     -782.07
     ]
    ],
    "start": -40,
@@ -4854,120 +4248,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 6",
+   "name": "Glider Right 2400 4",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 6",
+   "name": "Glider Right 2400 4",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 6",
+   "name": "Glider Right 2400 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 7",
+   "name": "Glider Right 2400 5",
    "points": [
     [
      1208.0,
-     -756.0
+     -580.0
     ],
     [
      1207.73,
-     -753.93
+     -577.93
     ],
     [
      1206.93,
-     -752.0
+     -576.0
     ],
     [
      1205.66,
-     -750.34
+     -574.34
     ],
     [
      1204.0,
-     -749.07
+     -573.07
     ],
     [
      1202.07,
-     -748.27
+     -572.27
     ],
     [
      1200.0,
-     -748.0
+     -572.0
     ],
     [
      1197.93,
-     -748.27
+     -572.27
     ],
     [
      1196.0,
-     -749.07
+     -573.07
     ],
     [
      1194.34,
-     -750.34
+     -574.34
     ],
     [
      1193.07,
-     -752.0
+     -576.0
     ],
     [
      1192.27,
-     -753.93
+     -577.93
     ],
     [
      1192.0,
-     -756.0
+     -580.0
     ],
     [
      1192.27,
-     -758.07
+     -582.07
     ],
     [
      1193.07,
-     -760.0
+     -584.0
     ],
     [
      1194.34,
-     -761.66
+     -585.66
     ],
     [
      1196.0,
-     -762.93
+     -586.93
     ],
     [
      1197.93,
-     -763.73
+     -587.73
     ],
     [
      1200.0,
-     -764.0
+     -588.0
     ],
     [
      1202.07,
-     -763.73
+     -587.73
     ],
     [
      1204.0,
-     -762.93
+     -586.93
     ],
     [
      1205.66,
-     -761.66
+     -585.66
     ],
     [
      1206.93,
-     -760.0
+     -584.0
     ],
     [
      1207.73,
-     -758.07
+     -582.07
     ]
    ],
    "start": -40,
@@ -4975,120 +4369,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 7",
+   "name": "Glider Right 2400 5",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 7",
+   "name": "Glider Right 2400 5",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 7",
+   "name": "Glider Right 2400 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 8",
+   "name": "Glider Right 2400 6",
    "points": [
     [
      1208.0,
-     -652.0
+     -380.0
     ],
     [
      1207.73,
-     -649.93
+     -377.93
     ],
     [
      1206.93,
-     -648.0
+     -376.0
     ],
     [
      1205.66,
-     -646.34
+     -374.34
     ],
     [
      1204.0,
-     -645.07
+     -373.07
     ],
     [
      1202.07,
-     -644.27
+     -372.27
     ],
     [
      1200.0,
-     -644.0
+     -372.0
     ],
     [
      1197.93,
-     -644.27
+     -372.27
     ],
     [
      1196.0,
-     -645.07
+     -373.07
     ],
     [
      1194.34,
-     -646.34
+     -374.34
     ],
     [
      1193.07,
-     -648.0
+     -376.0
     ],
     [
      1192.27,
-     -649.93
+     -377.93
     ],
     [
      1192.0,
-     -652.0
+     -380.0
     ],
     [
      1192.27,
-     -654.07
+     -382.07
     ],
     [
      1193.07,
-     -656.0
+     -384.0
     ],
     [
      1194.34,
-     -657.66
+     -385.66
     ],
     [
      1196.0,
-     -658.93
+     -386.93
     ],
     [
      1197.93,
-     -659.73
+     -387.73
     ],
     [
      1200.0,
-     -660.0
+     -388.0
     ],
     [
      1202.07,
-     -659.73
+     -387.73
     ],
     [
      1204.0,
-     -658.93
+     -386.93
     ],
     [
      1205.66,
-     -657.66
+     -385.66
     ],
     [
      1206.93,
-     -656.0
+     -384.0
     ],
     [
      1207.73,
-     -654.07
+     -382.07
     ]
    ],
    "start": -40,
@@ -5096,241 +4490,2572 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 8",
+   "name": "Glider Right 2400 6",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 8",
+   "name": "Glider Right 2400 6",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 8",
+   "name": "Glider Right 2400 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 9",
+   "name": "Track Left 3000",
    "points": [
     [
-     1208.0,
-     -548.0
+     -1515,
+     -2700
     ],
     [
-     1207.73,
-     -545.93
+     -1485,
+     -2700
     ],
     [
-     1206.93,
-     -544.0
+     -1485,
+     -300
     ],
     [
-     1205.66,
-     -542.34
-    ],
-    [
-     1204.0,
-     -541.07
-    ],
-    [
-     1202.07,
-     -540.27
-    ],
-    [
-     1200.0,
-     -540.0
-    ],
-    [
-     1197.93,
-     -540.27
-    ],
-    [
-     1196.0,
-     -541.07
-    ],
-    [
-     1194.34,
-     -542.34
-    ],
-    [
-     1193.07,
-     -544.0
-    ],
-    [
-     1192.27,
-     -545.93
-    ],
-    [
-     1192.0,
-     -548.0
-    ],
-    [
-     1192.27,
-     -550.07
-    ],
-    [
-     1193.07,
-     -552.0
-    ],
-    [
-     1194.34,
-     -553.66
-    ],
-    [
-     1196.0,
-     -554.93
-    ],
-    [
-     1197.93,
-     -555.73
-    ],
-    [
-     1200.0,
-     -556.0
-    ],
-    [
-     1202.07,
-     -555.73
-    ],
-    [
-     1204.0,
-     -554.93
-    ],
-    [
-     1205.66,
-     -553.66
-    ],
-    [
-     1206.93,
-     -552.0
-    ],
-    [
-     1207.73,
-     -550.07
+     -1515,
+     -300
     ]
    ],
-   "start": -40,
-   "end": -20
+   "start": -28,
+   "end": 0
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 9",
+   "name": "Track Left 3000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Left 3000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Left 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Track Front 3000",
+   "points": [
+    [
+     -1200,
+     -3015
+    ],
+    [
+     1200,
+     -3015
+    ],
+    [
+     1200,
+     -2985
+    ],
+    [
+     -1200,
+     -2985
+    ]
+   ],
+   "start": -28,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Track Front 3000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Front 3000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Front 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Track Right 3000",
+   "points": [
+    [
+     1485,
+     -2700
+    ],
+    [
+     1515,
+     -2700
+    ],
+    [
+     1515,
+     -300
+    ],
+    [
+     1485,
+     -300
+    ]
+   ],
+   "start": -28,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Track Right 3000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Right 3000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Right 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bend Left 3000",
+   "points": [
+    [
+     -1515.0,
+     -2700.0
+    ],
+    [
+     -1508.95,
+     -2761.45
+    ],
+    [
+     -1491.02,
+     -2820.55
+    ],
+    [
+     -1461.91,
+     -2875.0
+    ],
+    [
+     -1422.74,
+     -2922.74
+    ],
+    [
+     -1375.0,
+     -2961.91
+    ],
+    [
+     -1320.55,
+     -2991.02
+    ],
+    [
+     -1261.45,
+     -3008.95
+    ],
+    [
+     -1200.0,
+     -3015.0
+    ],
+    [
+     -1200.0,
+     -2985.0
+    ],
+    [
+     -1255.6,
+     -2979.52
+    ],
+    [
+     -1309.06,
+     -2963.31
+    ],
+    [
+     -1358.34,
+     -2936.97
+    ],
+    [
+     -1401.53,
+     -2901.53
+    ],
+    [
+     -1436.97,
+     -2858.34
+    ],
+    [
+     -1463.31,
+     -2809.06
+    ],
+    [
+     -1479.52,
+     -2755.6
+    ],
+    [
+     -1485.0,
+     -2700.0
+    ]
+   ],
+   "start": -28,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bend Left 3000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bend Left 3000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bend Left 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bend Right 3000",
+   "points": [
+    [
+     1200.0,
+     -3015.0
+    ],
+    [
+     1261.45,
+     -3008.95
+    ],
+    [
+     1320.55,
+     -2991.02
+    ],
+    [
+     1375.0,
+     -2961.91
+    ],
+    [
+     1422.74,
+     -2922.74
+    ],
+    [
+     1461.91,
+     -2875.0
+    ],
+    [
+     1491.02,
+     -2820.55
+    ],
+    [
+     1508.95,
+     -2761.45
+    ],
+    [
+     1515.0,
+     -2700.0
+    ],
+    [
+     1485.0,
+     -2700.0
+    ],
+    [
+     1479.52,
+     -2755.6
+    ],
+    [
+     1463.31,
+     -2809.06
+    ],
+    [
+     1436.97,
+     -2858.34
+    ],
+    [
+     1401.53,
+     -2901.53
+    ],
+    [
+     1358.34,
+     -2936.97
+    ],
+    [
+     1309.06,
+     -2963.31
+    ],
+    [
+     1255.6,
+     -2979.52
+    ],
+    [
+     1200.0,
+     -2985.0
+    ]
+   ],
+   "start": -28,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bend Right 3000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bend Right 3000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bend Right 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Left 3000 1",
+   "points": [
+    [
+     -1478.0,
+     -600.0
+    ],
+    [
+     -1478.75,
+     -594.31
+    ],
+    [
+     -1480.95,
+     -589.0
+    ],
+    [
+     -1484.44,
+     -584.44
+    ],
+    [
+     -1489.0,
+     -580.95
+    ],
+    [
+     -1494.31,
+     -578.75
+    ],
+    [
+     -1500.0,
+     -578.0
+    ],
+    [
+     -1505.69,
+     -578.75
+    ],
+    [
+     -1511.0,
+     -580.95
+    ],
+    [
+     -1515.56,
+     -584.44
+    ],
+    [
+     -1519.05,
+     -589.0
+    ],
+    [
+     -1521.25,
+     -594.31
+    ],
+    [
+     -1522.0,
+     -600.0
+    ],
+    [
+     -1521.25,
+     -605.69
+    ],
+    [
+     -1519.05,
+     -611.0
+    ],
+    [
+     -1515.56,
+     -615.56
+    ],
+    [
+     -1511.0,
+     -619.05
+    ],
+    [
+     -1505.69,
+     -621.25
+    ],
+    [
+     -1500.0,
+     -622.0
+    ],
+    [
+     -1494.31,
+     -621.25
+    ],
+    [
+     -1489.0,
+     -619.05
+    ],
+    [
+     -1484.44,
+     -615.56
+    ],
+    [
+     -1480.95,
+     -611.0
+    ],
+    [
+     -1478.75,
+     -605.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Left 3000 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 9",
+   "name": "Ceiling Fixing Left 3000 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 9",
+   "name": "Ceiling Fixing Left 3000 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Glider Right 10",
+   "name": "Ceiling Fixing Left 3000 2",
    "points": [
     [
-     1208.0,
-     -444.0
+     -1478.0,
+     -1300.0
     ],
     [
-     1207.73,
-     -441.93
+     -1478.75,
+     -1294.31
     ],
     [
-     1206.93,
-     -440.0
+     -1480.95,
+     -1289.0
     ],
     [
-     1205.66,
-     -438.34
+     -1484.44,
+     -1284.44
     ],
     [
-     1204.0,
-     -437.07
+     -1489.0,
+     -1280.95
     ],
     [
-     1202.07,
-     -436.27
+     -1494.31,
+     -1278.75
     ],
     [
-     1200.0,
-     -436.0
+     -1500.0,
+     -1278.0
     ],
     [
-     1197.93,
-     -436.27
+     -1505.69,
+     -1278.75
     ],
     [
-     1196.0,
-     -437.07
+     -1511.0,
+     -1280.95
     ],
     [
-     1194.34,
-     -438.34
+     -1515.56,
+     -1284.44
     ],
     [
-     1193.07,
-     -440.0
+     -1519.05,
+     -1289.0
     ],
     [
-     1192.27,
-     -441.93
+     -1521.25,
+     -1294.31
     ],
     [
-     1192.0,
-     -444.0
+     -1522.0,
+     -1300.0
     ],
     [
-     1192.27,
-     -446.07
+     -1521.25,
+     -1305.69
     ],
     [
-     1193.07,
-     -448.0
+     -1519.05,
+     -1311.0
     ],
     [
-     1194.34,
-     -449.66
+     -1515.56,
+     -1315.56
     ],
     [
-     1196.0,
-     -450.93
+     -1511.0,
+     -1319.05
     ],
     [
-     1197.93,
-     -451.73
+     -1505.69,
+     -1321.25
     ],
     [
-     1200.0,
-     -452.0
+     -1500.0,
+     -1322.0
     ],
     [
-     1202.07,
-     -451.73
+     -1494.31,
+     -1321.25
     ],
     [
-     1204.0,
-     -450.93
+     -1489.0,
+     -1319.05
     ],
     [
-     1205.66,
-     -449.66
+     -1484.44,
+     -1315.56
     ],
     [
-     1206.93,
-     -448.0
+     -1480.95,
+     -1311.0
     ],
     [
-     1207.73,
-     -446.07
+     -1478.75,
+     -1305.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Left 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Left 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Left 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Left 3000 3",
+   "points": [
+    [
+     -1478.0,
+     -2000.0
+    ],
+    [
+     -1478.75,
+     -1994.31
+    ],
+    [
+     -1480.95,
+     -1989.0
+    ],
+    [
+     -1484.44,
+     -1984.44
+    ],
+    [
+     -1489.0,
+     -1980.95
+    ],
+    [
+     -1494.31,
+     -1978.75
+    ],
+    [
+     -1500.0,
+     -1978.0
+    ],
+    [
+     -1505.69,
+     -1978.75
+    ],
+    [
+     -1511.0,
+     -1980.95
+    ],
+    [
+     -1515.56,
+     -1984.44
+    ],
+    [
+     -1519.05,
+     -1989.0
+    ],
+    [
+     -1521.25,
+     -1994.31
+    ],
+    [
+     -1522.0,
+     -2000.0
+    ],
+    [
+     -1521.25,
+     -2005.69
+    ],
+    [
+     -1519.05,
+     -2011.0
+    ],
+    [
+     -1515.56,
+     -2015.56
+    ],
+    [
+     -1511.0,
+     -2019.05
+    ],
+    [
+     -1505.69,
+     -2021.25
+    ],
+    [
+     -1500.0,
+     -2022.0
+    ],
+    [
+     -1494.31,
+     -2021.25
+    ],
+    [
+     -1489.0,
+     -2019.05
+    ],
+    [
+     -1484.44,
+     -2015.56
+    ],
+    [
+     -1480.95,
+     -2011.0
+    ],
+    [
+     -1478.75,
+     -2005.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Left 3000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Left 3000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Left 3000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Front 3000 1",
+   "points": [
+    [
+     -578.0,
+     -3000.0
+    ],
+    [
+     -578.75,
+     -2994.31
+    ],
+    [
+     -580.95,
+     -2989.0
+    ],
+    [
+     -584.44,
+     -2984.44
+    ],
+    [
+     -589.0,
+     -2980.95
+    ],
+    [
+     -594.31,
+     -2978.75
+    ],
+    [
+     -600.0,
+     -2978.0
+    ],
+    [
+     -605.69,
+     -2978.75
+    ],
+    [
+     -611.0,
+     -2980.95
+    ],
+    [
+     -615.56,
+     -2984.44
+    ],
+    [
+     -619.05,
+     -2989.0
+    ],
+    [
+     -621.25,
+     -2994.31
+    ],
+    [
+     -622.0,
+     -3000.0
+    ],
+    [
+     -621.25,
+     -3005.69
+    ],
+    [
+     -619.05,
+     -3011.0
+    ],
+    [
+     -615.56,
+     -3015.56
+    ],
+    [
+     -611.0,
+     -3019.05
+    ],
+    [
+     -605.69,
+     -3021.25
+    ],
+    [
+     -600.0,
+     -3022.0
+    ],
+    [
+     -594.31,
+     -3021.25
+    ],
+    [
+     -589.0,
+     -3019.05
+    ],
+    [
+     -584.44,
+     -3015.56
+    ],
+    [
+     -580.95,
+     -3011.0
+    ],
+    [
+     -578.75,
+     -3005.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Front 3000 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Front 3000 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Front 3000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Front 3000 2",
+   "points": [
+    [
+     22.0,
+     -3000.0
+    ],
+    [
+     21.25,
+     -2994.31
+    ],
+    [
+     19.05,
+     -2989.0
+    ],
+    [
+     15.56,
+     -2984.44
+    ],
+    [
+     11.0,
+     -2980.95
+    ],
+    [
+     5.69,
+     -2978.75
+    ],
+    [
+     0.0,
+     -2978.0
+    ],
+    [
+     -5.69,
+     -2978.75
+    ],
+    [
+     -11.0,
+     -2980.95
+    ],
+    [
+     -15.56,
+     -2984.44
+    ],
+    [
+     -19.05,
+     -2989.0
+    ],
+    [
+     -21.25,
+     -2994.31
+    ],
+    [
+     -22.0,
+     -3000.0
+    ],
+    [
+     -21.25,
+     -3005.69
+    ],
+    [
+     -19.05,
+     -3011.0
+    ],
+    [
+     -15.56,
+     -3015.56
+    ],
+    [
+     -11.0,
+     -3019.05
+    ],
+    [
+     -5.69,
+     -3021.25
+    ],
+    [
+     -0.0,
+     -3022.0
+    ],
+    [
+     5.69,
+     -3021.25
+    ],
+    [
+     11.0,
+     -3019.05
+    ],
+    [
+     15.56,
+     -3015.56
+    ],
+    [
+     19.05,
+     -3011.0
+    ],
+    [
+     21.25,
+     -3005.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Front 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Front 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Front 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Front 3000 3",
+   "points": [
+    [
+     622.0,
+     -3000.0
+    ],
+    [
+     621.25,
+     -2994.31
+    ],
+    [
+     619.05,
+     -2989.0
+    ],
+    [
+     615.56,
+     -2984.44
+    ],
+    [
+     611.0,
+     -2980.95
+    ],
+    [
+     605.69,
+     -2978.75
+    ],
+    [
+     600.0,
+     -2978.0
+    ],
+    [
+     594.31,
+     -2978.75
+    ],
+    [
+     589.0,
+     -2980.95
+    ],
+    [
+     584.44,
+     -2984.44
+    ],
+    [
+     580.95,
+     -2989.0
+    ],
+    [
+     578.75,
+     -2994.31
+    ],
+    [
+     578.0,
+     -3000.0
+    ],
+    [
+     578.75,
+     -3005.69
+    ],
+    [
+     580.95,
+     -3011.0
+    ],
+    [
+     584.44,
+     -3015.56
+    ],
+    [
+     589.0,
+     -3019.05
+    ],
+    [
+     594.31,
+     -3021.25
+    ],
+    [
+     600.0,
+     -3022.0
+    ],
+    [
+     605.69,
+     -3021.25
+    ],
+    [
+     611.0,
+     -3019.05
+    ],
+    [
+     615.56,
+     -3015.56
+    ],
+    [
+     619.05,
+     -3011.0
+    ],
+    [
+     621.25,
+     -3005.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Front 3000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Front 3000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Front 3000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Right 3000 1",
+   "points": [
+    [
+     1522.0,
+     -600.0
+    ],
+    [
+     1521.25,
+     -594.31
+    ],
+    [
+     1519.05,
+     -589.0
+    ],
+    [
+     1515.56,
+     -584.44
+    ],
+    [
+     1511.0,
+     -580.95
+    ],
+    [
+     1505.69,
+     -578.75
+    ],
+    [
+     1500.0,
+     -578.0
+    ],
+    [
+     1494.31,
+     -578.75
+    ],
+    [
+     1489.0,
+     -580.95
+    ],
+    [
+     1484.44,
+     -584.44
+    ],
+    [
+     1480.95,
+     -589.0
+    ],
+    [
+     1478.75,
+     -594.31
+    ],
+    [
+     1478.0,
+     -600.0
+    ],
+    [
+     1478.75,
+     -605.69
+    ],
+    [
+     1480.95,
+     -611.0
+    ],
+    [
+     1484.44,
+     -615.56
+    ],
+    [
+     1489.0,
+     -619.05
+    ],
+    [
+     1494.31,
+     -621.25
+    ],
+    [
+     1500.0,
+     -622.0
+    ],
+    [
+     1505.69,
+     -621.25
+    ],
+    [
+     1511.0,
+     -619.05
+    ],
+    [
+     1515.56,
+     -615.56
+    ],
+    [
+     1519.05,
+     -611.0
+    ],
+    [
+     1521.25,
+     -605.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Right 3000 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Right 3000 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Right 3000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Right 3000 2",
+   "points": [
+    [
+     1522.0,
+     -1300.0
+    ],
+    [
+     1521.25,
+     -1294.31
+    ],
+    [
+     1519.05,
+     -1289.0
+    ],
+    [
+     1515.56,
+     -1284.44
+    ],
+    [
+     1511.0,
+     -1280.95
+    ],
+    [
+     1505.69,
+     -1278.75
+    ],
+    [
+     1500.0,
+     -1278.0
+    ],
+    [
+     1494.31,
+     -1278.75
+    ],
+    [
+     1489.0,
+     -1280.95
+    ],
+    [
+     1484.44,
+     -1284.44
+    ],
+    [
+     1480.95,
+     -1289.0
+    ],
+    [
+     1478.75,
+     -1294.31
+    ],
+    [
+     1478.0,
+     -1300.0
+    ],
+    [
+     1478.75,
+     -1305.69
+    ],
+    [
+     1480.95,
+     -1311.0
+    ],
+    [
+     1484.44,
+     -1315.56
+    ],
+    [
+     1489.0,
+     -1319.05
+    ],
+    [
+     1494.31,
+     -1321.25
+    ],
+    [
+     1500.0,
+     -1322.0
+    ],
+    [
+     1505.69,
+     -1321.25
+    ],
+    [
+     1511.0,
+     -1319.05
+    ],
+    [
+     1515.56,
+     -1315.56
+    ],
+    [
+     1519.05,
+     -1311.0
+    ],
+    [
+     1521.25,
+     -1305.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Right 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Right 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Right 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ceiling Fixing Right 3000 3",
+   "points": [
+    [
+     1522.0,
+     -2000.0
+    ],
+    [
+     1521.25,
+     -1994.31
+    ],
+    [
+     1519.05,
+     -1989.0
+    ],
+    [
+     1515.56,
+     -1984.44
+    ],
+    [
+     1511.0,
+     -1980.95
+    ],
+    [
+     1505.69,
+     -1978.75
+    ],
+    [
+     1500.0,
+     -1978.0
+    ],
+    [
+     1494.31,
+     -1978.75
+    ],
+    [
+     1489.0,
+     -1980.95
+    ],
+    [
+     1484.44,
+     -1984.44
+    ],
+    [
+     1480.95,
+     -1989.0
+    ],
+    [
+     1478.75,
+     -1994.31
+    ],
+    [
+     1478.0,
+     -2000.0
+    ],
+    [
+     1478.75,
+     -2005.69
+    ],
+    [
+     1480.95,
+     -2011.0
+    ],
+    [
+     1484.44,
+     -2015.56
+    ],
+    [
+     1489.0,
+     -2019.05
+    ],
+    [
+     1494.31,
+     -2021.25
+    ],
+    [
+     1500.0,
+     -2022.0
+    ],
+    [
+     1505.69,
+     -2021.25
+    ],
+    [
+     1511.0,
+     -2019.05
+    ],
+    [
+     1515.56,
+     -2015.56
+    ],
+    [
+     1519.05,
+     -2011.0
+    ],
+    [
+     1521.25,
+     -2005.69
+    ]
+   ],
+   "start": -6,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ceiling Fixing Right 3000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Fixing Right 3000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Fixing Right 3000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Stop 3000 1",
+   "points": [
+    [
+     -1518,
+     -330
+    ],
+    [
+     -1482,
+     -330
+    ],
+    [
+     -1482,
+     -300
+    ],
+    [
+     -1518,
+     -300
+    ]
+   ],
+   "start": -32,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Stop 3000 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Stop 3000 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Stop 3000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Stop 3000 2",
+   "points": [
+    [
+     1482,
+     -330
+    ],
+    [
+     1518,
+     -330
+    ],
+    [
+     1518,
+     -300
+    ],
+    [
+     1482,
+     -300
+    ]
+   ],
+   "start": -32,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Stop 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Stop 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Stop 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Curtain Stack Left 3000",
+   "points": [
+    [
+     -1514,
+     -1400
+    ],
+    [
+     -1486,
+     -1360
+    ],
+    [
+     -1514,
+     -1320
+    ],
+    [
+     -1486,
+     -1280
+    ],
+    [
+     -1514,
+     -1240
+    ],
+    [
+     -1486,
+     -1200
+    ],
+    [
+     -1514,
+     -1160
+    ],
+    [
+     -1486,
+     -1120
+    ],
+    [
+     -1514,
+     -1080
+    ],
+    [
+     -1486,
+     -1040
+    ],
+    [
+     -1514,
+     -1000
+    ],
+    [
+     -1486,
+     -960
+    ],
+    [
+     -1514,
+     -920
+    ],
+    [
+     -1486,
+     -880
+    ],
+    [
+     -1514,
+     -840
+    ],
+    [
+     -1486,
+     -800
+    ],
+    [
+     -1514,
+     -760
+    ],
+    [
+     -1486,
+     -720
+    ],
+    [
+     -1514,
+     -680
+    ],
+    [
+     -1486,
+     -640
+    ],
+    [
+     -1514,
+     -600
+    ],
+    [
+     -1486,
+     -560
+    ],
+    [
+     -1514,
+     -520
+    ],
+    [
+     -1486,
+     -480
+    ],
+    [
+     -1514,
+     -440
+    ],
+    [
+     -1486,
+     -400
+    ],
+    [
+     -1514,
+     -360
+    ],
+    [
+     -1510,
+     -360
+    ],
+    [
+     -1482,
+     -400
+    ],
+    [
+     -1510,
+     -440
+    ],
+    [
+     -1482,
+     -480
+    ],
+    [
+     -1510,
+     -520
+    ],
+    [
+     -1482,
+     -560
+    ],
+    [
+     -1510,
+     -600
+    ],
+    [
+     -1482,
+     -640
+    ],
+    [
+     -1510,
+     -680
+    ],
+    [
+     -1482,
+     -720
+    ],
+    [
+     -1510,
+     -760
+    ],
+    [
+     -1482,
+     -800
+    ],
+    [
+     -1510,
+     -840
+    ],
+    [
+     -1482,
+     -880
+    ],
+    [
+     -1510,
+     -920
+    ],
+    [
+     -1482,
+     -960
+    ],
+    [
+     -1510,
+     -1000
+    ],
+    [
+     -1482,
+     -1040
+    ],
+    [
+     -1510,
+     -1080
+    ],
+    [
+     -1482,
+     -1120
+    ],
+    [
+     -1510,
+     -1160
+    ],
+    [
+     -1482,
+     -1200
+    ],
+    [
+     -1510,
+     -1240
+    ],
+    [
+     -1482,
+     -1280
+    ],
+    [
+     -1510,
+     -1320
+    ],
+    [
+     -1482,
+     -1360
+    ],
+    [
+     -1510,
+     -1400
+    ]
+   ],
+   "start": -2350,
+   "end": -560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Curtain Stack Left 3000",
+   "subcategory": "Curtain"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Curtain Stack Left 3000",
+   "param": "Curtain Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Curtain Stack Left 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Top Left 3000",
+   "points": [
+    [
+     -1514,
+     -1400
+    ],
+    [
+     -1486,
+     -1360
+    ],
+    [
+     -1514,
+     -1320
+    ],
+    [
+     -1486,
+     -1280
+    ],
+    [
+     -1514,
+     -1240
+    ],
+    [
+     -1486,
+     -1200
+    ],
+    [
+     -1514,
+     -1160
+    ],
+    [
+     -1486,
+     -1120
+    ],
+    [
+     -1514,
+     -1080
+    ],
+    [
+     -1486,
+     -1040
+    ],
+    [
+     -1514,
+     -1000
+    ],
+    [
+     -1486,
+     -960
+    ],
+    [
+     -1514,
+     -920
+    ],
+    [
+     -1486,
+     -880
+    ],
+    [
+     -1514,
+     -840
+    ],
+    [
+     -1486,
+     -800
+    ],
+    [
+     -1514,
+     -760
+    ],
+    [
+     -1486,
+     -720
+    ],
+    [
+     -1514,
+     -680
+    ],
+    [
+     -1486,
+     -640
+    ],
+    [
+     -1514,
+     -600
+    ],
+    [
+     -1486,
+     -560
+    ],
+    [
+     -1514,
+     -520
+    ],
+    [
+     -1486,
+     -480
+    ],
+    [
+     -1514,
+     -440
+    ],
+    [
+     -1486,
+     -400
+    ],
+    [
+     -1514,
+     -360
+    ],
+    [
+     -1510,
+     -360
+    ],
+    [
+     -1482,
+     -400
+    ],
+    [
+     -1510,
+     -440
+    ],
+    [
+     -1482,
+     -480
+    ],
+    [
+     -1510,
+     -520
+    ],
+    [
+     -1482,
+     -560
+    ],
+    [
+     -1510,
+     -600
+    ],
+    [
+     -1482,
+     -640
+    ],
+    [
+     -1510,
+     -680
+    ],
+    [
+     -1482,
+     -720
+    ],
+    [
+     -1510,
+     -760
+    ],
+    [
+     -1482,
+     -800
+    ],
+    [
+     -1510,
+     -840
+    ],
+    [
+     -1482,
+     -880
+    ],
+    [
+     -1510,
+     -920
+    ],
+    [
+     -1482,
+     -960
+    ],
+    [
+     -1510,
+     -1000
+    ],
+    [
+     -1482,
+     -1040
+    ],
+    [
+     -1510,
+     -1080
+    ],
+    [
+     -1482,
+     -1120
+    ],
+    [
+     -1510,
+     -1160
+    ],
+    [
+     -1482,
+     -1200
+    ],
+    [
+     -1510,
+     -1240
+    ],
+    [
+     -1482,
+     -1280
+    ],
+    [
+     -1510,
+     -1320
+    ],
+    [
+     -1482,
+     -1360
+    ],
+    [
+     -1510,
+     -1400
+    ]
+   ],
+   "start": -560,
+   "end": -40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Top Left 3000",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Top Left 3000",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Top Left 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Curtain Stack Right 3000",
+   "points": [
+    [
+     1486,
+     -1400
+    ],
+    [
+     1514,
+     -1360
+    ],
+    [
+     1486,
+     -1320
+    ],
+    [
+     1514,
+     -1280
+    ],
+    [
+     1486,
+     -1240
+    ],
+    [
+     1514,
+     -1200
+    ],
+    [
+     1486,
+     -1160
+    ],
+    [
+     1514,
+     -1120
+    ],
+    [
+     1486,
+     -1080
+    ],
+    [
+     1514,
+     -1040
+    ],
+    [
+     1486,
+     -1000
+    ],
+    [
+     1514,
+     -960
+    ],
+    [
+     1486,
+     -920
+    ],
+    [
+     1514,
+     -880
+    ],
+    [
+     1486,
+     -840
+    ],
+    [
+     1514,
+     -800
+    ],
+    [
+     1486,
+     -760
+    ],
+    [
+     1514,
+     -720
+    ],
+    [
+     1486,
+     -680
+    ],
+    [
+     1514,
+     -640
+    ],
+    [
+     1486,
+     -600
+    ],
+    [
+     1514,
+     -560
+    ],
+    [
+     1486,
+     -520
+    ],
+    [
+     1514,
+     -480
+    ],
+    [
+     1486,
+     -440
+    ],
+    [
+     1514,
+     -400
+    ],
+    [
+     1486,
+     -360
+    ],
+    [
+     1490,
+     -360
+    ],
+    [
+     1518,
+     -400
+    ],
+    [
+     1490,
+     -440
+    ],
+    [
+     1518,
+     -480
+    ],
+    [
+     1490,
+     -520
+    ],
+    [
+     1518,
+     -560
+    ],
+    [
+     1490,
+     -600
+    ],
+    [
+     1518,
+     -640
+    ],
+    [
+     1490,
+     -680
+    ],
+    [
+     1518,
+     -720
+    ],
+    [
+     1490,
+     -760
+    ],
+    [
+     1518,
+     -800
+    ],
+    [
+     1490,
+     -840
+    ],
+    [
+     1518,
+     -880
+    ],
+    [
+     1490,
+     -920
+    ],
+    [
+     1518,
+     -960
+    ],
+    [
+     1490,
+     -1000
+    ],
+    [
+     1518,
+     -1040
+    ],
+    [
+     1490,
+     -1080
+    ],
+    [
+     1518,
+     -1120
+    ],
+    [
+     1490,
+     -1160
+    ],
+    [
+     1518,
+     -1200
+    ],
+    [
+     1490,
+     -1240
+    ],
+    [
+     1518,
+     -1280
+    ],
+    [
+     1490,
+     -1320
+    ],
+    [
+     1518,
+     -1360
+    ],
+    [
+     1490,
+     -1400
+    ]
+   ],
+   "start": -2350,
+   "end": -560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Curtain Stack Right 3000",
+   "subcategory": "Curtain"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Curtain Stack Right 3000",
+   "param": "Curtain Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Curtain Stack Right 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Top Right 3000",
+   "points": [
+    [
+     1486,
+     -1400
+    ],
+    [
+     1514,
+     -1360
+    ],
+    [
+     1486,
+     -1320
+    ],
+    [
+     1514,
+     -1280
+    ],
+    [
+     1486,
+     -1240
+    ],
+    [
+     1514,
+     -1200
+    ],
+    [
+     1486,
+     -1160
+    ],
+    [
+     1514,
+     -1120
+    ],
+    [
+     1486,
+     -1080
+    ],
+    [
+     1514,
+     -1040
+    ],
+    [
+     1486,
+     -1000
+    ],
+    [
+     1514,
+     -960
+    ],
+    [
+     1486,
+     -920
+    ],
+    [
+     1514,
+     -880
+    ],
+    [
+     1486,
+     -840
+    ],
+    [
+     1514,
+     -800
+    ],
+    [
+     1486,
+     -760
+    ],
+    [
+     1514,
+     -720
+    ],
+    [
+     1486,
+     -680
+    ],
+    [
+     1514,
+     -640
+    ],
+    [
+     1486,
+     -600
+    ],
+    [
+     1514,
+     -560
+    ],
+    [
+     1486,
+     -520
+    ],
+    [
+     1514,
+     -480
+    ],
+    [
+     1486,
+     -440
+    ],
+    [
+     1514,
+     -400
+    ],
+    [
+     1486,
+     -360
+    ],
+    [
+     1490,
+     -360
+    ],
+    [
+     1518,
+     -400
+    ],
+    [
+     1490,
+     -440
+    ],
+    [
+     1518,
+     -480
+    ],
+    [
+     1490,
+     -520
+    ],
+    [
+     1518,
+     -560
+    ],
+    [
+     1490,
+     -600
+    ],
+    [
+     1518,
+     -640
+    ],
+    [
+     1490,
+     -680
+    ],
+    [
+     1518,
+     -720
+    ],
+    [
+     1490,
+     -760
+    ],
+    [
+     1518,
+     -800
+    ],
+    [
+     1490,
+     -840
+    ],
+    [
+     1518,
+     -880
+    ],
+    [
+     1490,
+     -920
+    ],
+    [
+     1518,
+     -960
+    ],
+    [
+     1490,
+     -1000
+    ],
+    [
+     1518,
+     -1040
+    ],
+    [
+     1490,
+     -1080
+    ],
+    [
+     1518,
+     -1120
+    ],
+    [
+     1490,
+     -1160
+    ],
+    [
+     1518,
+     -1200
+    ],
+    [
+     1490,
+     -1240
+    ],
+    [
+     1518,
+     -1280
+    ],
+    [
+     1490,
+     -1320
+    ],
+    [
+     1518,
+     -1360
+    ],
+    [
+     1490,
+     -1400
+    ]
+   ],
+   "start": -560,
+   "end": -40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Top Right 3000",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Top Right 3000",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Top Right 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 1",
+   "points": [
+    [
+     -1492.0,
+     -1380.0
+    ],
+    [
+     -1492.27,
+     -1377.93
+    ],
+    [
+     -1493.07,
+     -1376.0
+    ],
+    [
+     -1494.34,
+     -1374.34
+    ],
+    [
+     -1496.0,
+     -1373.07
+    ],
+    [
+     -1497.93,
+     -1372.27
+    ],
+    [
+     -1500.0,
+     -1372.0
+    ],
+    [
+     -1502.07,
+     -1372.27
+    ],
+    [
+     -1504.0,
+     -1373.07
+    ],
+    [
+     -1505.66,
+     -1374.34
+    ],
+    [
+     -1506.93,
+     -1376.0
+    ],
+    [
+     -1507.73,
+     -1377.93
+    ],
+    [
+     -1508.0,
+     -1380.0
+    ],
+    [
+     -1507.73,
+     -1382.07
+    ],
+    [
+     -1506.93,
+     -1384.0
+    ],
+    [
+     -1505.66,
+     -1385.66
+    ],
+    [
+     -1504.0,
+     -1386.93
+    ],
+    [
+     -1502.07,
+     -1387.73
+    ],
+    [
+     -1500.0,
+     -1388.0
+    ],
+    [
+     -1497.93,
+     -1387.73
+    ],
+    [
+     -1496.0,
+     -1386.93
+    ],
+    [
+     -1494.34,
+     -1385.66
+    ],
+    [
+     -1493.07,
+     -1384.0
+    ],
+    [
+     -1492.27,
+     -1382.07
     ]
    ],
    "start": -40,
@@ -5338,20 +7063,1775 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Glider Right 10",
+   "name": "Glider Left 3000 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Glider Right 10",
+   "name": "Glider Left 3000 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Glider Right 10",
+   "name": "Glider Left 3000 1",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 2",
+   "points": [
+    [
+     -1492.0,
+     -1180.0
+    ],
+    [
+     -1492.27,
+     -1177.93
+    ],
+    [
+     -1493.07,
+     -1176.0
+    ],
+    [
+     -1494.34,
+     -1174.34
+    ],
+    [
+     -1496.0,
+     -1173.07
+    ],
+    [
+     -1497.93,
+     -1172.27
+    ],
+    [
+     -1500.0,
+     -1172.0
+    ],
+    [
+     -1502.07,
+     -1172.27
+    ],
+    [
+     -1504.0,
+     -1173.07
+    ],
+    [
+     -1505.66,
+     -1174.34
+    ],
+    [
+     -1506.93,
+     -1176.0
+    ],
+    [
+     -1507.73,
+     -1177.93
+    ],
+    [
+     -1508.0,
+     -1180.0
+    ],
+    [
+     -1507.73,
+     -1182.07
+    ],
+    [
+     -1506.93,
+     -1184.0
+    ],
+    [
+     -1505.66,
+     -1185.66
+    ],
+    [
+     -1504.0,
+     -1186.93
+    ],
+    [
+     -1502.07,
+     -1187.73
+    ],
+    [
+     -1500.0,
+     -1188.0
+    ],
+    [
+     -1497.93,
+     -1187.73
+    ],
+    [
+     -1496.0,
+     -1186.93
+    ],
+    [
+     -1494.34,
+     -1185.66
+    ],
+    [
+     -1493.07,
+     -1184.0
+    ],
+    [
+     -1492.27,
+     -1182.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Left 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Left 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Left 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 3",
+   "points": [
+    [
+     -1492.0,
+     -980.0
+    ],
+    [
+     -1492.27,
+     -977.93
+    ],
+    [
+     -1493.07,
+     -976.0
+    ],
+    [
+     -1494.34,
+     -974.34
+    ],
+    [
+     -1496.0,
+     -973.07
+    ],
+    [
+     -1497.93,
+     -972.27
+    ],
+    [
+     -1500.0,
+     -972.0
+    ],
+    [
+     -1502.07,
+     -972.27
+    ],
+    [
+     -1504.0,
+     -973.07
+    ],
+    [
+     -1505.66,
+     -974.34
+    ],
+    [
+     -1506.93,
+     -976.0
+    ],
+    [
+     -1507.73,
+     -977.93
+    ],
+    [
+     -1508.0,
+     -980.0
+    ],
+    [
+     -1507.73,
+     -982.07
+    ],
+    [
+     -1506.93,
+     -984.0
+    ],
+    [
+     -1505.66,
+     -985.66
+    ],
+    [
+     -1504.0,
+     -986.93
+    ],
+    [
+     -1502.07,
+     -987.73
+    ],
+    [
+     -1500.0,
+     -988.0
+    ],
+    [
+     -1497.93,
+     -987.73
+    ],
+    [
+     -1496.0,
+     -986.93
+    ],
+    [
+     -1494.34,
+     -985.66
+    ],
+    [
+     -1493.07,
+     -984.0
+    ],
+    [
+     -1492.27,
+     -982.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Left 3000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Left 3000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Left 3000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 4",
+   "points": [
+    [
+     -1492.0,
+     -780.0
+    ],
+    [
+     -1492.27,
+     -777.93
+    ],
+    [
+     -1493.07,
+     -776.0
+    ],
+    [
+     -1494.34,
+     -774.34
+    ],
+    [
+     -1496.0,
+     -773.07
+    ],
+    [
+     -1497.93,
+     -772.27
+    ],
+    [
+     -1500.0,
+     -772.0
+    ],
+    [
+     -1502.07,
+     -772.27
+    ],
+    [
+     -1504.0,
+     -773.07
+    ],
+    [
+     -1505.66,
+     -774.34
+    ],
+    [
+     -1506.93,
+     -776.0
+    ],
+    [
+     -1507.73,
+     -777.93
+    ],
+    [
+     -1508.0,
+     -780.0
+    ],
+    [
+     -1507.73,
+     -782.07
+    ],
+    [
+     -1506.93,
+     -784.0
+    ],
+    [
+     -1505.66,
+     -785.66
+    ],
+    [
+     -1504.0,
+     -786.93
+    ],
+    [
+     -1502.07,
+     -787.73
+    ],
+    [
+     -1500.0,
+     -788.0
+    ],
+    [
+     -1497.93,
+     -787.73
+    ],
+    [
+     -1496.0,
+     -786.93
+    ],
+    [
+     -1494.34,
+     -785.66
+    ],
+    [
+     -1493.07,
+     -784.0
+    ],
+    [
+     -1492.27,
+     -782.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Left 3000 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Left 3000 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Left 3000 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 5",
+   "points": [
+    [
+     -1492.0,
+     -580.0
+    ],
+    [
+     -1492.27,
+     -577.93
+    ],
+    [
+     -1493.07,
+     -576.0
+    ],
+    [
+     -1494.34,
+     -574.34
+    ],
+    [
+     -1496.0,
+     -573.07
+    ],
+    [
+     -1497.93,
+     -572.27
+    ],
+    [
+     -1500.0,
+     -572.0
+    ],
+    [
+     -1502.07,
+     -572.27
+    ],
+    [
+     -1504.0,
+     -573.07
+    ],
+    [
+     -1505.66,
+     -574.34
+    ],
+    [
+     -1506.93,
+     -576.0
+    ],
+    [
+     -1507.73,
+     -577.93
+    ],
+    [
+     -1508.0,
+     -580.0
+    ],
+    [
+     -1507.73,
+     -582.07
+    ],
+    [
+     -1506.93,
+     -584.0
+    ],
+    [
+     -1505.66,
+     -585.66
+    ],
+    [
+     -1504.0,
+     -586.93
+    ],
+    [
+     -1502.07,
+     -587.73
+    ],
+    [
+     -1500.0,
+     -588.0
+    ],
+    [
+     -1497.93,
+     -587.73
+    ],
+    [
+     -1496.0,
+     -586.93
+    ],
+    [
+     -1494.34,
+     -585.66
+    ],
+    [
+     -1493.07,
+     -584.0
+    ],
+    [
+     -1492.27,
+     -582.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Left 3000 5",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Left 3000 5",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Left 3000 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Left 3000 6",
+   "points": [
+    [
+     -1492.0,
+     -380.0
+    ],
+    [
+     -1492.27,
+     -377.93
+    ],
+    [
+     -1493.07,
+     -376.0
+    ],
+    [
+     -1494.34,
+     -374.34
+    ],
+    [
+     -1496.0,
+     -373.07
+    ],
+    [
+     -1497.93,
+     -372.27
+    ],
+    [
+     -1500.0,
+     -372.0
+    ],
+    [
+     -1502.07,
+     -372.27
+    ],
+    [
+     -1504.0,
+     -373.07
+    ],
+    [
+     -1505.66,
+     -374.34
+    ],
+    [
+     -1506.93,
+     -376.0
+    ],
+    [
+     -1507.73,
+     -377.93
+    ],
+    [
+     -1508.0,
+     -380.0
+    ],
+    [
+     -1507.73,
+     -382.07
+    ],
+    [
+     -1506.93,
+     -384.0
+    ],
+    [
+     -1505.66,
+     -385.66
+    ],
+    [
+     -1504.0,
+     -386.93
+    ],
+    [
+     -1502.07,
+     -387.73
+    ],
+    [
+     -1500.0,
+     -388.0
+    ],
+    [
+     -1497.93,
+     -387.73
+    ],
+    [
+     -1496.0,
+     -386.93
+    ],
+    [
+     -1494.34,
+     -385.66
+    ],
+    [
+     -1493.07,
+     -384.0
+    ],
+    [
+     -1492.27,
+     -382.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Left 3000 6",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Left 3000 6",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Left 3000 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 1",
+   "points": [
+    [
+     1508.0,
+     -1380.0
+    ],
+    [
+     1507.73,
+     -1377.93
+    ],
+    [
+     1506.93,
+     -1376.0
+    ],
+    [
+     1505.66,
+     -1374.34
+    ],
+    [
+     1504.0,
+     -1373.07
+    ],
+    [
+     1502.07,
+     -1372.27
+    ],
+    [
+     1500.0,
+     -1372.0
+    ],
+    [
+     1497.93,
+     -1372.27
+    ],
+    [
+     1496.0,
+     -1373.07
+    ],
+    [
+     1494.34,
+     -1374.34
+    ],
+    [
+     1493.07,
+     -1376.0
+    ],
+    [
+     1492.27,
+     -1377.93
+    ],
+    [
+     1492.0,
+     -1380.0
+    ],
+    [
+     1492.27,
+     -1382.07
+    ],
+    [
+     1493.07,
+     -1384.0
+    ],
+    [
+     1494.34,
+     -1385.66
+    ],
+    [
+     1496.0,
+     -1386.93
+    ],
+    [
+     1497.93,
+     -1387.73
+    ],
+    [
+     1500.0,
+     -1388.0
+    ],
+    [
+     1502.07,
+     -1387.73
+    ],
+    [
+     1504.0,
+     -1386.93
+    ],
+    [
+     1505.66,
+     -1385.66
+    ],
+    [
+     1506.93,
+     -1384.0
+    ],
+    [
+     1507.73,
+     -1382.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 2",
+   "points": [
+    [
+     1508.0,
+     -1180.0
+    ],
+    [
+     1507.73,
+     -1177.93
+    ],
+    [
+     1506.93,
+     -1176.0
+    ],
+    [
+     1505.66,
+     -1174.34
+    ],
+    [
+     1504.0,
+     -1173.07
+    ],
+    [
+     1502.07,
+     -1172.27
+    ],
+    [
+     1500.0,
+     -1172.0
+    ],
+    [
+     1497.93,
+     -1172.27
+    ],
+    [
+     1496.0,
+     -1173.07
+    ],
+    [
+     1494.34,
+     -1174.34
+    ],
+    [
+     1493.07,
+     -1176.0
+    ],
+    [
+     1492.27,
+     -1177.93
+    ],
+    [
+     1492.0,
+     -1180.0
+    ],
+    [
+     1492.27,
+     -1182.07
+    ],
+    [
+     1493.07,
+     -1184.0
+    ],
+    [
+     1494.34,
+     -1185.66
+    ],
+    [
+     1496.0,
+     -1186.93
+    ],
+    [
+     1497.93,
+     -1187.73
+    ],
+    [
+     1500.0,
+     -1188.0
+    ],
+    [
+     1502.07,
+     -1187.73
+    ],
+    [
+     1504.0,
+     -1186.93
+    ],
+    [
+     1505.66,
+     -1185.66
+    ],
+    [
+     1506.93,
+     -1184.0
+    ],
+    [
+     1507.73,
+     -1182.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 3",
+   "points": [
+    [
+     1508.0,
+     -980.0
+    ],
+    [
+     1507.73,
+     -977.93
+    ],
+    [
+     1506.93,
+     -976.0
+    ],
+    [
+     1505.66,
+     -974.34
+    ],
+    [
+     1504.0,
+     -973.07
+    ],
+    [
+     1502.07,
+     -972.27
+    ],
+    [
+     1500.0,
+     -972.0
+    ],
+    [
+     1497.93,
+     -972.27
+    ],
+    [
+     1496.0,
+     -973.07
+    ],
+    [
+     1494.34,
+     -974.34
+    ],
+    [
+     1493.07,
+     -976.0
+    ],
+    [
+     1492.27,
+     -977.93
+    ],
+    [
+     1492.0,
+     -980.0
+    ],
+    [
+     1492.27,
+     -982.07
+    ],
+    [
+     1493.07,
+     -984.0
+    ],
+    [
+     1494.34,
+     -985.66
+    ],
+    [
+     1496.0,
+     -986.93
+    ],
+    [
+     1497.93,
+     -987.73
+    ],
+    [
+     1500.0,
+     -988.0
+    ],
+    [
+     1502.07,
+     -987.73
+    ],
+    [
+     1504.0,
+     -986.93
+    ],
+    [
+     1505.66,
+     -985.66
+    ],
+    [
+     1506.93,
+     -984.0
+    ],
+    [
+     1507.73,
+     -982.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 4",
+   "points": [
+    [
+     1508.0,
+     -780.0
+    ],
+    [
+     1507.73,
+     -777.93
+    ],
+    [
+     1506.93,
+     -776.0
+    ],
+    [
+     1505.66,
+     -774.34
+    ],
+    [
+     1504.0,
+     -773.07
+    ],
+    [
+     1502.07,
+     -772.27
+    ],
+    [
+     1500.0,
+     -772.0
+    ],
+    [
+     1497.93,
+     -772.27
+    ],
+    [
+     1496.0,
+     -773.07
+    ],
+    [
+     1494.34,
+     -774.34
+    ],
+    [
+     1493.07,
+     -776.0
+    ],
+    [
+     1492.27,
+     -777.93
+    ],
+    [
+     1492.0,
+     -780.0
+    ],
+    [
+     1492.27,
+     -782.07
+    ],
+    [
+     1493.07,
+     -784.0
+    ],
+    [
+     1494.34,
+     -785.66
+    ],
+    [
+     1496.0,
+     -786.93
+    ],
+    [
+     1497.93,
+     -787.73
+    ],
+    [
+     1500.0,
+     -788.0
+    ],
+    [
+     1502.07,
+     -787.73
+    ],
+    [
+     1504.0,
+     -786.93
+    ],
+    [
+     1505.66,
+     -785.66
+    ],
+    [
+     1506.93,
+     -784.0
+    ],
+    [
+     1507.73,
+     -782.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 5",
+   "points": [
+    [
+     1508.0,
+     -580.0
+    ],
+    [
+     1507.73,
+     -577.93
+    ],
+    [
+     1506.93,
+     -576.0
+    ],
+    [
+     1505.66,
+     -574.34
+    ],
+    [
+     1504.0,
+     -573.07
+    ],
+    [
+     1502.07,
+     -572.27
+    ],
+    [
+     1500.0,
+     -572.0
+    ],
+    [
+     1497.93,
+     -572.27
+    ],
+    [
+     1496.0,
+     -573.07
+    ],
+    [
+     1494.34,
+     -574.34
+    ],
+    [
+     1493.07,
+     -576.0
+    ],
+    [
+     1492.27,
+     -577.93
+    ],
+    [
+     1492.0,
+     -580.0
+    ],
+    [
+     1492.27,
+     -582.07
+    ],
+    [
+     1493.07,
+     -584.0
+    ],
+    [
+     1494.34,
+     -585.66
+    ],
+    [
+     1496.0,
+     -586.93
+    ],
+    [
+     1497.93,
+     -587.73
+    ],
+    [
+     1500.0,
+     -588.0
+    ],
+    [
+     1502.07,
+     -587.73
+    ],
+    [
+     1504.0,
+     -586.93
+    ],
+    [
+     1505.66,
+     -585.66
+    ],
+    [
+     1506.93,
+     -584.0
+    ],
+    [
+     1507.73,
+     -582.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 5",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 5",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glider Right 3000 6",
+   "points": [
+    [
+     1508.0,
+     -380.0
+    ],
+    [
+     1507.73,
+     -377.93
+    ],
+    [
+     1506.93,
+     -376.0
+    ],
+    [
+     1505.66,
+     -374.34
+    ],
+    [
+     1504.0,
+     -373.07
+    ],
+    [
+     1502.07,
+     -372.27
+    ],
+    [
+     1500.0,
+     -372.0
+    ],
+    [
+     1497.93,
+     -372.27
+    ],
+    [
+     1496.0,
+     -373.07
+    ],
+    [
+     1494.34,
+     -374.34
+    ],
+    [
+     1493.07,
+     -376.0
+    ],
+    [
+     1492.27,
+     -377.93
+    ],
+    [
+     1492.0,
+     -380.0
+    ],
+    [
+     1492.27,
+     -382.07
+    ],
+    [
+     1493.07,
+     -384.0
+    ],
+    [
+     1494.34,
+     -385.66
+    ],
+    [
+     1496.0,
+     -386.93
+    ],
+    [
+     1497.93,
+     -387.73
+    ],
+    [
+     1500.0,
+     -388.0
+    ],
+    [
+     1502.07,
+     -387.73
+    ],
+    [
+     1504.0,
+     -386.93
+    ],
+    [
+     1505.66,
+     -385.66
+    ],
+    [
+     1506.93,
+     -384.0
+    ],
+    [
+     1507.73,
+     -382.07
+    ]
+   ],
+   "start": -40,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glider Right 3000 6",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glider Right 3000 6",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glider Right 3000 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2400x2600_U",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2600_U/Show 2400x2600_U",
+   "type": "2400x2600_U",
+   "param": "Show 2400x2600_U",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/Show 2400x2600_U",
+   "type": "3000x3000_U",
+   "param": "Show 2400x2600_U",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Left 2400/Visible",
+   "solid": "Track Left 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Front 2400/Visible",
+   "solid": "Track Front 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Right 2400/Visible",
+   "solid": "Track Right 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bend Left 2400/Visible",
+   "solid": "Bend Left 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bend Right 2400/Visible",
+   "solid": "Bend Right 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 2400 1/Visible",
+   "solid": "Ceiling Fixing Left 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 2400 2/Visible",
+   "solid": "Ceiling Fixing Left 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 2400 3/Visible",
+   "solid": "Ceiling Fixing Left 2400 3",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 2400 1/Visible",
+   "solid": "Ceiling Fixing Front 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 2400 2/Visible",
+   "solid": "Ceiling Fixing Front 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 2400 3/Visible",
+   "solid": "Ceiling Fixing Front 2400 3",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 2400 1/Visible",
+   "solid": "Ceiling Fixing Right 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 2400 2/Visible",
+   "solid": "Ceiling Fixing Right 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 2400 3/Visible",
+   "solid": "Ceiling Fixing Right 2400 3",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Stop 2400 1/Visible",
+   "solid": "End Stop 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Stop 2400 2/Visible",
+   "solid": "End Stop 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Curtain Stack Left 2400/Visible",
+   "solid": "Curtain Stack Left 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Top Left 2400/Visible",
+   "solid": "Mesh Top Left 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Curtain Stack Right 2400/Visible",
+   "solid": "Curtain Stack Right 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Top Right 2400/Visible",
+   "solid": "Mesh Top Right 2400",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 1/Visible",
+   "solid": "Glider Left 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 2/Visible",
+   "solid": "Glider Left 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 3/Visible",
+   "solid": "Glider Left 2400 3",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 4/Visible",
+   "solid": "Glider Left 2400 4",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 5/Visible",
+   "solid": "Glider Left 2400 5",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 2400 6/Visible",
+   "solid": "Glider Left 2400 6",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 1/Visible",
+   "solid": "Glider Right 2400 1",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 2/Visible",
+   "solid": "Glider Right 2400 2",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 3/Visible",
+   "solid": "Glider Right 2400 3",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 4/Visible",
+   "solid": "Glider Right 2400 4",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 5/Visible",
+   "solid": "Glider Right 2400 5",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 2400 6/Visible",
+   "solid": "Glider Right 2400 6",
+   "param": "Show 2400x2600_U"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3000x3000_U",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2600_U/Show 3000x3000_U",
+   "type": "2400x2600_U",
+   "param": "Show 3000x3000_U",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_U/Show 3000x3000_U",
+   "type": "3000x3000_U",
+   "param": "Show 3000x3000_U",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Left 3000/Visible",
+   "solid": "Track Left 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Front 3000/Visible",
+   "solid": "Track Front 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Track Right 3000/Visible",
+   "solid": "Track Right 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bend Left 3000/Visible",
+   "solid": "Bend Left 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bend Right 3000/Visible",
+   "solid": "Bend Right 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 3000 1/Visible",
+   "solid": "Ceiling Fixing Left 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 3000 2/Visible",
+   "solid": "Ceiling Fixing Left 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Left 3000 3/Visible",
+   "solid": "Ceiling Fixing Left 3000 3",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 3000 1/Visible",
+   "solid": "Ceiling Fixing Front 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 3000 2/Visible",
+   "solid": "Ceiling Fixing Front 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Front 3000 3/Visible",
+   "solid": "Ceiling Fixing Front 3000 3",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 3000 1/Visible",
+   "solid": "Ceiling Fixing Right 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 3000 2/Visible",
+   "solid": "Ceiling Fixing Right 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ceiling Fixing Right 3000 3/Visible",
+   "solid": "Ceiling Fixing Right 3000 3",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Stop 3000 1/Visible",
+   "solid": "End Stop 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Stop 3000 2/Visible",
+   "solid": "End Stop 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Curtain Stack Left 3000/Visible",
+   "solid": "Curtain Stack Left 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Top Left 3000/Visible",
+   "solid": "Mesh Top Left 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Curtain Stack Right 3000/Visible",
+   "solid": "Curtain Stack Right 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Top Right 3000/Visible",
+   "solid": "Mesh Top Right 3000",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 1/Visible",
+   "solid": "Glider Left 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 2/Visible",
+   "solid": "Glider Left 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 3/Visible",
+   "solid": "Glider Left 3000 3",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 4/Visible",
+   "solid": "Glider Left 3000 4",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 5/Visible",
+   "solid": "Glider Left 3000 5",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Left 3000 6/Visible",
+   "solid": "Glider Left 3000 6",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 1/Visible",
+   "solid": "Glider Right 3000 1",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 2/Visible",
+   "solid": "Glider Right 3000 2",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 3/Visible",
+   "solid": "Glider Right 3000 3",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 4/Visible",
+   "solid": "Glider Right 3000 4",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 5/Visible",
+   "solid": "Glider Right 3000 5",
+   "param": "Show 3000x3000_U"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Glider Right 3000 6/Visible",
+   "solid": "Glider Right 3000 6",
+   "param": "Show 3000x3000_U"
   },
   {
    "op": "set_type_image",
@@ -5360,8 +8840,8 @@
   }
  ],
  "values": {
-  "Track U 2400 wide x 2600 deep from the bedhead wall": {
-   "value": "2400x2600",
+  "Track U 2400 x 2600 or 3000 x 3000 from the bedhead wall": {
+   "value": "2400x2600/3000x3000",
    "source_status": "assumed",
    "source": "HBN 04-01 multi-bed bay bed space"
   },

@@ -829,29 +829,34 @@ product(fam, "Accessible reception counter 2400 / 3600, raised 1100 section with
 fam = "FMC_I_Casework_Clinical_BaseUnit_SS"
 M_SS = {"carc": "FMC_Metal_StainlessSteel_Brushed", "front": "FMC_Metal_StainlessSteel_Brushed", "top": "FMC_Metal_StainlessSteel_Brushed",
         "plinth": "FMC_Metal_StainlessSteel_Brushed", "hdl": "FMC_Metal_Chrome_Polished", "cove": "FMC_Rubber_Black", "label": "FMC_Plastic_ABS_White"}
-P = base_run(-450, 450, 600, 900, [(900, [('drawers', 300, 2), ('doors', 560)])], upstand=100)
-P += [RT("Coved Plinth Toe", [[-552, 0], [-548, 0], [-548, 30], [-552, 0]], [-448, 448], 'cove', lod='f'),
-      RT("Worktop Front Roll", [[-620, 860], [-600, 860], [-600, 900], [-620, 900]], [-450, 450], 'top'),
-      RT("Upstand Cove", [[-35, 900], [-15, 900], [-15, 920]], [-450, 450], 'top', lod='f'),
-      BX("Inner Shelf", [-430, -560, 380, 430, -30, 400], 'carc', lod='f'),
-      CZ("Hinge", [-445, -605], 6, [180, 220], 'hdl', lod='f', rep=(2, 890, 0, 0)), CZ("Hinge Top", [-445, -605], 6, [480, 520], 'hdl', lod='f', rep=(2, 890, 0, 0)),
-      FB("Drawer Label", [-60, -603, 815, 60, -600, 835], 'label', lod='f', rep=(2, 0, 0, -148))]
-P = [p for p in P if p['n'] != 'Coved Plinth Toe']
-P.append(RT("Coved Plinth Toe", [[-555, 0], [-548, 0], [-548, 40]], [-448, 448], 'cove', lod='f'))
+SS_LAYOUT = {600: [(600, [('drawer', 150), ('door', 710)])], 900: [(900, [('drawers', 300, 2), ('doors', 560)])],
+             1200: [(600, [('drawers', 300, 2), ('door', 560)]), (600, [('drawers', 300, 2), ('door', 560)])]}
+def ss_base(W):
+    h = W / 2
+    P = base_run(-h, h, 600, 900, SS_LAYOUT[W], upstand=100)
+    return P + [RT("Worktop Front Roll", [[-620, 860], [-600, 860], [-600, 900], [-620, 900]], [-h, h], 'top'),
+                RT("Upstand Cove", [[-35, 900], [-15, 900], [-15, 920]], [-h, h], 'top', lod='f'),
+                BX("Inner Shelf", [-h + 20, -560, 380, h - 20, -30, 400], 'carc', lod='f'),
+                CZ("Hinge", [-h + 5, -605], 6, [180, 220], 'hdl', lod='f', rep=(2, W - 10, 0, 0)),
+                RT("Coved Plinth Toe", [[-555, 0], [-548, 0], [-548, 40]], [-h + 2, h - 2], 'cove', lod='f')]
+P = typed(ss_base, {"600_SS": ("600", 600), "900_SS": ("900", 900), "1200_SS": ("1200", 1200)})
+P += [BX("Spur Box", [-40, -20, 20, 40, 0, 90], 'plinth')]
 product(fam, "Clinical base unit, stainless steel 304, 2 drawers over a pair of doors, rolled-edge worktop with coved upstand, coved plinth, chrome D-pulls",
         "IfcFurniture", [{"name": "600_SS", "desc": "Clinical base unit 600, stainless, drawer over door"}, {"name": "900_SS", "desc": "Clinical base unit 900, stainless, 2 drawers over 2 doors"},
                          {"name": "1200_SS", "desc": "Clinical base unit 1200, stainless, 2 drawer columns over 2 doors"}], M_SS, P,
         {"Height 900 mm, depth 600 mm": A("900x600", "HTM 63 / typical clinical base unit"), "Widths 600 / 900 / 1200 mm": A("600/900/1200", "record types"),
          "Stainless steel 304, 1.2 mm": A("304", "typical clinical casework"), "Supply 240 V, 300 VA (under-counter appliance)": A(300, "assumed spur for an under-counter item")},
         "Base unit modelled as a generic product: stainless carcass, 2 drawers with labels and D-pulls, pair of doors with hinges and pulls, inner shelf, rolled-edge worktop with "
-        "coved upstand, recessed plinth with coved toe.", connectors=[E("Carcass")], type_values={"Voltage": 240, "Apparent Load": 300}, drawn="900_SS")
+        "coved upstand, recessed plinth with coved toe; a spur box behind the plinth carries the power connector.", connectors=[E("Spur Box")], type_values={"Voltage": 240, "Apparent Load": 300}, drawn="900_SS")
 
 # 26 Clinical wall unit, glazed, sloped top
 fam = "FMC_I_Casework_Clinical_WallUnit_Glazed"
-P = wall_unit(-450, 450, 320, 720, 0, 2)
-P += [BX("Shelf", [-430, -280, 240, 430, -20, 258], 'carc', lod='f', rep=(2, 0, 0, 240)), BX("Bottom Light Pelmet", [-450, -320, -30, 450, -290, 0], 'carc'),
-      FB("LED Under Light", [-400, -300, -32, 400, -40, -30], 'led', lod='f')]
-P[-1] = BX("LED Under Light", [-400, -280, -34, 400, -60, -30], 'led', lod='f')
+def wall_glazed(W):
+    h = W / 2
+    return wall_unit(-h, h, 320, 720, 0, 1 if W == 600 else 2) + [
+        BX("Shelf", [-h + 20, -280, 240, h - 20, -20, 258], 'carc', lod='f', rep=(2, 0, 0, 240)), BX("Bottom Light Pelmet", [-h, -320, -30, h, -290, 0], 'carc'),
+        BX("LED Under Light", [-h + 50, -280, -34, h - 50, -60, -30], 'led', lod='f')]
+P = typed(wall_glazed, {"600_Glazed": ("600", 600), "900_Glazed": ("900", 900), "1200_Glazed": ("1200", 1200)})
 product(fam, "Clinical wall unit, glazed pair of doors in aluminium frames, sloped anti-dust top, 2 adjustable shelves, LED under-light pelmet, hung at 1450",
         "IfcFurniture", [{"name": "600_Glazed", "desc": "Clinical wall unit 600, single glazed door"}, {"name": "900_Glazed", "desc": "Clinical wall unit 900, pair of glazed doors"},
                          {"name": "1200_Glazed", "desc": "Clinical wall unit 1200, pair of glazed doors"}],
@@ -880,20 +885,22 @@ product(fam, "Clinical tall store cupboard 600 x 600 x 2100, upper and lower doo
 
 # 28 Pharmacy dispensary shelving bay 900/1200
 fam = "FMC_I_Casework_Pharmacy_Shelving_Dispensary"
-W = 900
-P = [BX("Upright", [-W / 2, -350, 0, -W / 2 + 25, 0, 2100], 'steel', rep=(2, W - 25, 0, 0)), BX("Back Panel", [-W / 2 + 25, -15, 100, W / 2 - 25, 0, 2100], 'back'),
+def dispensary(W):
+    nb = int((W - 80) // 210)
+    return [BX("Upright", [-W / 2, -350, 0, -W / 2 + 25, 0, 2100], 'steel', rep=(2, W - 25, 0, 0)), BX("Back Panel", [-W / 2 + 25, -15, 100, W / 2 - 25, 0, 2100], 'back'),
      BX("Plinth", [-W / 2 + 25, -330, 0, W / 2 - 25, -15, 100], 'steel'), BX("Canopy", [-W / 2, -350, 2100, W / 2, 0, 2130], 'steel'),
      BX("Base Shelf", [-W / 2 + 25, -350, 100, W / 2 - 25, -15, 120], 'shelf'),
      RT("Shelf", [[-300, 380], [-15, 420], [-15, 432], [-300, 392]], [-W / 2 + 25, W / 2 - 25], 'shelf', rep=(7, 0, 0, 240)),
      FB("Shelf Lip", [-W / 2 + 25, -306, 380, W / 2 - 25, -300, 420], 'clear', lod='f', rep=(7, 0, 0, 240)),
      FB("Label Rail", [-W / 2 + 25, -308, 365, W / 2 - 25, -306, 385], 'label', lod='f', rep=(7, 0, 0, 240)),
-     BX("Dispensing Bin", [-W / 2 + 40, -290, 395, -W / 2 + 230, -40, 520], 'bin', lod='f', rep=(4, 210, 0, 0)),
-     BX("Dispensing Bin Row 2", [-W / 2 + 40, -285, 635, -W / 2 + 230, -40, 760], 'bin2', lod='f', rep=(4, 210, 0, 0)),
+     BX("Dispensing Bin", [-W / 2 + 40, -290, 395, -W / 2 + 230, -40, 520], 'bin', lod='f', rep=(nb, 210, 0, 0)),
+     BX("Dispensing Bin Row 2", [-W / 2 + 40, -285, 635, -W / 2 + 230, -40, 760], 'bin2', lod='f', rep=(nb, 210, 0, 0)),
      BX("Drug Boxes Row 3", [-W / 2 + 40, -270, 880, W / 2 - 40, -40, 990], 'box', lod='f'),
      BX("Drug Boxes Row 4", [-W / 2 + 40, -270, 1120, W / 2 - 80, -40, 1230], 'box2', lod='f'),
-     BX("Dispensing Bin Row 5", [-W / 2 + 40, -280, 1355, -W / 2 + 230, -40, 1480], 'bin', lod='f', rep=(4, 210, 0, 0)),
+     BX("Dispensing Bin Row 5", [-W / 2 + 40, -280, 1355, -W / 2 + 230, -40, 1480], 'bin', lod='f', rep=(nb, 210, 0, 0)),
      BX("Drug Boxes Row 6", [-W / 2 + 40, -270, 1600, W / 2 - 160, -40, 1710], 'box', lod='f'),
      FB("Bay Label", [-150, -352, 2105, 150, -350, 2125], 'label', lod='f')]
+P = typed(dispensary, {"900_Dispensary": ("900", 900), "1200_Dispensary": ("1200", 1200)})
 product(fam, "Pharmacy dispensary shelving bay 900 / 1200 wide, 2100 high, 7 adjustable inclined shelves with clear lips and label rails, dispensing bins and stock",
         "IfcFurniture", [{"name": "900_Dispensary", "desc": "Dispensary shelving bay 900, 7 inclined shelves"}, {"name": "1200_Dispensary", "desc": "Dispensary shelving bay 1200, 7 inclined shelves"}],
         {"steel": "FMC_Metal_Steel_EpoxyCoated_White", "back": "FMC_Board_Melamine_White", "shelf": "FMC_Metal_Steel_EpoxyCoated_White", "clear": "FMC_Plastic_Polycarbonate_Clear",
@@ -929,22 +936,25 @@ fam = "FMC_I_Casework_Lab_Bench_Wall"
 M_LAB = {"carc": "FMC_Board_Melamine_White", "front": "FMC_Plastic_Laminate_HPL", "top": "FMC_Plastic_EpoxyResin_Black", "plinth": "FMC_Plastic_ABS_Grey",
          "hdl": "FMC_Metal_StainlessSteel_Brushed", "spine": "FMC_Metal_Steel_EpoxyCoated_White", "white": "FMC_Plastic_ABS_White", "chrome": "FMC_Metal_Chrome_Polished",
          "sink": "FMC_Plastic_ABS_Grey", "red": "FMC_Plastic_LED_Red", "blue": "FMC_Plastic_ABS_Blue", "yellow": "FMC_Plastic_ABS_Yellow", "glass": "FMC_Glass_Clear"}
-L = 1800; x0 = -L / 2
-P = base_run(x0, -x0, 750, 900, [(500, [('drawers', 765, 4)]), (700, [('knee', 765)]), (600, [('doors', 765)])], top='top', upstand=0, yback=-150)
-P = [p for p in P if not p['n'].startswith('Open')]
-P = cut_worktop(P, "Worktop", x0 + 1300, -720, x0 + 1700, -260)
-P += bowl("Sink Bowl", x0 + 1300, -720, x0 + 1700, -260, 700, 900, 'sink', t=12)
-P += [BX("Sink Rim", [x0 + 1290, -730, 900, x0 + 1710, -720, 903], 'sink', lod='f'),
+LAB_COLS = {1500: [(500, [('drawers', 765, 4)]), (400, [('knee', 765)]), (600, [('doors', 765)])],
+            1800: [(500, [('drawers', 765, 4)]), (700, [('knee', 765)]), (600, [('doors', 765)])],
+            3000: [(500, [('drawers', 765, 4)]), (1000, [('knee', 765)]), (500, [('drawers', 765, 4)]), (1000, [('doors', 765)])]}
+def lab_wall(L):
+    x0 = -L / 2; sx = x0 + L - 500; ns = (L - 200) // 600 + 1; ng = L // 600
+    P = base_run(x0, -x0, 750, 900, LAB_COLS[L], top='top', upstand=0, yback=-150)
+    P = cut_worktop(P, "Worktop", sx, -720, sx + 400, -260)
+    P += bowl("Sink Bowl", sx, -720, sx + 400, -260, 700, 900, 'sink', t=12)
+    return P + [BX("Sink Rim", [sx - 10, -730, 900, sx + 410, -720, 903], 'sink', lod='f'),
       BX("Service Spine", [x0, -150, 870, -x0, 0, 1350], 'spine'), BX("Spine Cap", [x0, -150, 1350, -x0, 0, 1370], 'spine'),
-      FB("Twin Socket", [x0 + 100, -152, 1150, x0 + 246, -150, 1236], 'white', r=6, rep=(4, 380, 0, 0)),
-      FB("Socket Switch", [x0 + 120, -153, 1180, x0 + 150, -152, 1210], 'red', lod='f', rep=(4, 380, 0, 0)),
-      CY("Gas Turret", [x0 + 300, 1000], 16, [-200, -150], 'chrome', rep=(3, 450, 0, 0)), CY("Gas Turret Nozzle", [x0 + 300, 1000], 6, [-240, -200], 'chrome', lod='f', rep=(3, 450, 0, 0)),
-      CZ("Gas Turret Handle", [x0 + 300, -190], 12, [1016, 1040], 'yellow', lod='f', rep=(3, 450, 0, 0)),
+      FB("Twin Socket", [x0 + 100, -152, 1150, x0 + 246, -150, 1236], 'white', r=6, rep=(ns, (L - 346) / max(1, ns - 1), 0, 0)),
+      CY("Gas Turret", [x0 + 300, 1000], 16, [-200, -150], 'chrome', rep=(ng, (L - 600) / max(1, ng - 1), 0, 0)),
+      CZ("Gas Turret Handle", [x0 + 300, -190], 12, [1016, 1040], 'yellow', lod='f', rep=(ng, (L - 600) / max(1, ng - 1), 0, 0)),
       BX("Reagent Shelf", [x0, -300, 1600, -x0, 0, 1620], 'glass'), BX("Shelf Bracket", [x0 + 50, -300, 1370, x0 + 70, -20, 1600], 'spine', rep=(2, L - 120, 0, 0)),
-      CZ("Lab Tap Pillar", [x0 + 1500, -200], 16, [902, 1180], 'chrome'), CY("Lab Tap Spout", [x0 + 1500, 1180], 10, [-460, -200], 'chrome'),
-      CZ("Lab Tap Outlet", [x0 + 1500, -450], 10, [1100, 1180], 'chrome'), BX("Tap Wrist Lever", [x0 + 1460, -230, 1120, x0 + 1540, -215, 1130], 'chrome', lod='f', rep=(2, 0, 0, -40)),
-      FB("Isolator", [x0 + 1300, -152, 920, x0 + 1400, -150, 1000], 'red', r=4, lod='f')]
-P[-1] = FB("Data Outlet", [x0 + 1300, -152, 920, x0 + 1400, -150, 1000], 'blue', r=4, lod='f')
+      CZ("Lab Tap Pillar", [sx + 200, -200], 16, [902, 1180], 'chrome'), CY("Lab Tap Spout", [sx + 200, 1180], 10, [-460, -200], 'chrome'),
+      CZ("Lab Tap Outlet", [sx + 200, -450], 10, [1100, 1180], 'chrome'), BX("Tap Wrist Lever", [sx + 160, -230, 1120, sx + 240, -215, 1130], 'chrome', lod='f', rep=(2, 0, 0, -40)),
+      FB("Data Outlet", [sx, -152, 920, sx + 100, -150, 1000], 'blue', r=4, lod='f')]
+P = typed(lab_wall, {"1500_Wall": ("1500", 1500), "1800_Wall": ("1800", 1800), "3000_Wall": ("3000", 3000)})
+P += [BX("Service Entry Box", [-60, -120, 100, 60, -20, 300], 'spine')]
 product(fam, "Laboratory wall bench with service spine: epoxy-resin worktop 900 high, drawer unit, knee space, sink cupboard with resin sink and lab gooseneck tap, "
         "spine with twin sockets, gas turrets and data outlet, glass reagent shelf on brackets",
         "IfcFurniture", [{"name": "1500_Wall", "desc": "Lab wall bench 1500 with service spine"}, {"name": "1800_Wall", "desc": "Lab wall bench 1800 with service spine"},
@@ -952,8 +962,8 @@ product(fam, "Laboratory wall bench with service spine: epoxy-resin worktop 900 
         {"Worktop 900 mm high, 750 deep + 150 spine": A("900/750/150", "HBN 15 / typical lab bench"), "Lengths 1500 / 1800 / 3000 mm": A("1500/1800/3000", "record types"),
          "Supply 240 V, 2000 VA (4 twin sockets)": A(2000, "typical lab bench diversity")},
         "Wall bench modelled as a generic product: epoxy-resin worktop on a 4-drawer unit and a sink cupboard (pair of doors) with knee space between, recessed plinth, service spine with "
-        "4 twin sockets, 3 gas turrets and a data outlet, glass reagent shelf on brackets, resin sink with gooseneck tap and wrist levers.",
-        connectors=[CW("Service Spine"), SAN("Sink Bowl Floor"), E("Spine Cap", 'top')], type_values={"Voltage": 240, "Apparent Load": 2000}, drawn="1800_Wall")
+        "twin sockets, gas turrets and a data outlet, glass reagent shelf on brackets, resin sink with gooseneck tap and wrist levers. Services enter through a shared box in the void under the spine.",
+        connectors=[CW("Service Entry Box", 'top'), SAN("Service Entry Box", 'bottom'), E("Service Entry Box", 'front')], type_values={"Voltage": 240, "Apparent Load": 2000}, drawn="1800_Wall")
 
 # 31 Lab island bench 3000 x 1500, double-sided, centre spine with 2-tier reagent shelf, end sink
 fam = "FMC_I_Casework_Lab_Bench_Island"
@@ -991,10 +1001,11 @@ product(fam, "Laboratory island bench 3000 x 1500, double-sided with a central s
 
 # 32 Fume cupboard 1200/1500/1800, ducted
 fam = "FMC_I_Casework_FumeCupboard"
-W = 1500; x0 = -W / 2
-P = base_run(x0, -x0, 900, 900, [(W / 2, [('door', 765)]), (W / 2, [('door', 765)])], top='top', upstand=0, carcass='carc', front='front', hdl='hdl')
-P = [p for p in P if p['n'] != 'Worktop']
-P += [BX("Work Surface", [x0, -900, 870, -x0, 0, 920], 'top', r=4), RT("Spill Lip", [[-900, 920], [-880, 920], [-880, 935], [-900, 935]], [x0 + 90, -x0 - 90], 'top'),
+def fume(W):
+    x0 = -W / 2
+    P = base_run(x0, -x0, 900, 900, [(W / 2, [('door', 765)]), (W / 2, [('door', 765)])], top='top', upstand=0, carcass='carc', front='front', hdl='hdl')
+    P = [p for p in P if p['n'] != 'Worktop']
+    return P + [BX("Work Surface", [x0, -900, 870, -x0, 0, 920], 'top', r=4), RT("Spill Lip", [[-900, 920], [-880, 920], [-880, 935], [-900, 935]], [x0 + 90, -x0 - 90], 'top'),
       BX("Side Post", [x0, -900, 920, x0 + 90, 0, 2350], 'body', r=6), BX("Side Post Right", [-x0 - 90, -900, 920, -x0, 0, 2350], 'body', r=6),
       BX("Back Baffle", [x0 + 90, -80, 920, -x0 - 90, 0, 2200], 'liner'), BX("Canopy", [x0, -900, 2200, -x0, 0, 2350], 'body', r=6),
       RT("Aerofoil Sill", [[-920, 925], [-880, 925], [-860, 960], [-900, 965]], [x0 + 90, -x0 - 90], 'ss'),
@@ -1007,9 +1018,10 @@ P += [BX("Work Surface", [x0, -900, 870, -x0, 0, 920], 'top', r=4), RT("Spill Li
       FB("Service Tap Plate", [x0 + 10, -903, 1000, x0 + 80, -900, 1500], 'ss', lod='f'),
       CY("Service Tap", [x0 + 45, 1100], 12, [-930, -903], 'blue', lod='f', rep=(3, 0, 0, 120)),
       FB("Socket Plate", [-x0 - 80, -903, 1000, -x0 - 10, -900, 1300], 'white', lod='f'),
-      CZ("Extract Spigot", [0, -450], 125, [2350, 2500], 'duct'), BX("Spigot Collar", [-170, -620, 2350, 170, -280, 2365], 'body', lod='f'),
       FB("Solvent Store Label", [x0 + 100, -923, 760, x0 + 300, -920, 820], 'yellow', lod='f')]
-P = [p for p in P if p['n'] != 'Spigot Collar'] + [BX("Spigot Collar", [-170, -620, 2350, 170, -280, 2365], 'body', lod='f')]
+P = typed(fume, {"1200_Ducted": ("1200", 1200), "1500_Ducted": ("1500", 1500), "1800_Ducted": ("1800", 1800)})
+P += [CZ("Extract Spigot", [0, -450], 125, [2350, 2500], 'duct'), BX("Spigot Collar", [-170, -620, 2350, 170, -280, 2365], 'body', lod='f'),
+      BX("Services Junction Box", [220, -200, 2350, 340, -80, 2410], 'grey')]
 product(fam, "Ducted fume cupboard 1200 / 1500 / 1800, epoxy work surface with spill lip and aerofoil sill, counter-balanced vertical sash, airflow monitor and alarm, "
         "services on the side posts, 250 mm extract spigot, ventilated solvent store base",
         "IfcFurniture", [{"name": "1200_Ducted", "desc": "Ducted fume cupboard 1200"}, {"name": "1500_Ducted", "desc": "Ducted fume cupboard 1500"}, {"name": "1800_Ducted", "desc": "Ducted fume cupboard 1800"}],
@@ -1021,22 +1033,21 @@ product(fam, "Ducted fume cupboard 1200 / 1500 / 1800, epoxy work surface with s
          "Extract spigot 250 mm, about 0.4 m3/s": A(250, "typical 1500 fume cupboard"), "Supply 240 V, 500 VA (lights, monitor, sockets)": A(500, "typical")},
         "Fume cupboard modelled as a generic product: base solvent store with two doors and label, epoxy work surface with spill lip and aerofoil sill, side posts with service taps and socket plate, "
         "back baffle, glazed counter-balanced sash with handle, upper glazing, canopy fascia with airflow monitor, alarm LED and light switch, galvanised extract spigot.",
-        connectors=[{"n": "Extract", "domain": "duct", "system": "ExhaustAir", "part": "Canopy", "side": "top", "diameter": 250, "flow": "Out"}, E("Canopy", 'back')],
+        connectors=[{"n": "Extract", "domain": "duct", "system": "ExhaustAir", "part": "Extract Spigot", "side": "top", "diameter": 250, "flow": "Out"}, E("Services Junction Box", 'top')],
         type_values={"Voltage": 240, "Apparent Load": 500}, drawn="1500_Ducted")
-# connector on the spigot top is cleaner: the spigot is a cylinder whose top face is planar
-OUT[-1]['connectors'][0]['part'] = "Extract Spigot"
 
 # 33 Class II biosafety cabinet 1200/1500 on stand
 fam = "FMC_I_Casework_BiosafetyCabinet_ClassII"
-W = 1200; x0 = -W / 2
-P = [BX("Stand Leg", [x0 + 20, -760, 30, x0 + 70, -710, 730], 'frame', rep=(2, W - 90, 0, 0)), BX("Stand Leg Back", [x0 + 20, -70, 30, x0 + 70, -20, 730], 'frame', rep=(2, W - 90, 0, 0)),
+def bsc(W):
+    x0 = -W / 2; ns = int((W - 200) // 50)
+    P = [BX("Stand Leg", [x0 + 20, -760, 30, x0 + 70, -710, 730], 'frame', rep=(2, W - 90, 0, 0)), BX("Stand Leg Back", [x0 + 20, -70, 30, x0 + 70, -20, 730], 'frame', rep=(2, W - 90, 0, 0)),
      BX("Stand Rail", [x0 + 20, -760, 680, -x0 - 20, -20, 730], 'frame'), BX("Stand Low Rail", [x0 + 20, -760, 150, -x0 - 20, -710, 190], 'frame'),
      CZ("Leveller", [x0 + 45, -735], 20, [0, 30], 'black', rep=(2, W - 90, 0, 0), seg=16), CZ("Leveller Back", [x0 + 45, -45], 20, [0, 30], 'black', rep=(2, W - 90, 0, 0), seg=16),
      BX("Cabinet Base", [x0, -780, 730, -x0, 0, 880], 'body', r=8),
      BX("Side Wall", [x0, -780, 880, x0 + 80, 0, 1900], 'body', r=8), BX("Side Wall Right", [-x0 - 80, -780, 880, -x0, 0, 1900], 'body', r=8),
      BX("Back Wall", [x0 + 80, -80, 880, -x0 - 80, 0, 1900], 'body'), BX("Work Tray", [x0 + 80, -700, 880, -x0 - 80, -80, 900], 'ss'),
      BX("Front Grille", [x0 + 80, -780, 880, -x0 - 80, -700, 905], 'ss'),
-     BX("Grille Slot", [x0 + 100, -770, 905, x0 + 110, -710, 906], 'black', lod='f', rep=(30, 33, 0, 0)),
+     BX("Grille Slot", [x0 + 100, -770, 905, x0 + 110, -710, 906], 'black', lod='f', rep=(ns, 50, 0, 0)),
      RT("Sash", [[-780, 1150], [-760, 1150], [-640, 1750], [-660, 1750]], [x0 + 85, -x0 - 85], 'glass'),
      RT("Sash Frame Bottom", [[-790, 1130], [-750, 1130], [-750, 1160], [-790, 1160]], [x0 + 85, -x0 - 85], 'frame'),
      BX("Head Unit", [x0, -700, 1750, -x0, 0, 2050], 'body', r=8), RT("Head Front", [[-700, 1750], [-640, 1750], [-640, 2050], [-700, 2050]], [x0, -x0], 'body'),
@@ -1046,8 +1057,11 @@ P = [BX("Stand Leg", [x0 + 20, -760, 30, x0 + 70, -710, 730], 'frame', rep=(2, W
      FB("UV Lamp Indicator", [-x0 - 300, -708, 1860, -x0 - 230, -706, 1880], 'blue', lod='f'),
      BX("Exhaust Filter Housing", [x0 + 150, -550, 2050, -x0 - 150, -150, 2150], 'body', r=10), BX("Exhaust Grille", [x0 + 200, -500, 2150, -x0 - 200, -200, 2153], 'ss', lod='f'),
      FB("Side Window", [x0 - 2, -700, 1000, x0, -300, 1600], 'glass', lod='f'), FB("Service Valve", [-x0, -500, 1100, -x0 + 2, -440, 1300], 'blue', lod='f')]
-P[-2] = RT("Side Window", [[-700, 1000], [-300, 1000], [-300, 1600], [-700, 1600]], [x0 - 3, x0], 'glass', lod='f')
-P[-1] = RT("Service Valve", [[-500, 1100], [-440, 1100], [-440, 1300], [-500, 1300]], [-x0, -x0 + 3], 'blue', lod='f')
+    P[-2] = RT("Side Window", [[-700, 1000], [-300, 1000], [-300, 1600], [-700, 1600]], [x0 - 3, x0], 'glass', lod='f')
+    P[-1] = RT("Service Valve", [[-500, 1100], [-440, 1100], [-440, 1300], [-500, 1300]], [-x0, -x0 + 3], 'blue', lod='f')
+    return P
+P = typed(bsc, {"1200_ClassII": ("1200", 1200), "1500_ClassII": ("1500", 1500)})
+P += [BX("Mains Inlet Box", [-100, -140, 2050, 100, -60, 2090], 'grey')]
 product(fam, "Class II microbiological safety cabinet 1200 / 1500 on stand: inclined front sash, perforated front grille, stainless work tray, control panel with airflow display and alarms, top exhaust HEPA housing",
         "IfcFurniture", [{"name": "1200_ClassII", "desc": "Class II biosafety cabinet 1200 on stand"}, {"name": "1500_ClassII", "desc": "Class II biosafety cabinet 1500 on stand"}],
         {"frame": "FMC_Metal_SteelLTZ_Painted", "body": "FMC_Metal_Steel_EpoxyCoated_White", "ss": "FMC_Metal_StainlessSteel_Brushed", "glass": "FMC_Glass_Laminated", "black": "FMC_Plastic_ABS_Black",
@@ -1056,25 +1070,24 @@ product(fam, "Class II microbiological safety cabinet 1200 / 1500 on stand: incl
          "BS EN 12469 Class II": A("EN 12469", "record"), "Supply 240 V, 1200 VA": A(1200, "typical Class II cabinet")},
         "Cabinet modelled as a generic product: painted stand with rails and levellers, cabinet base, side and back walls, stainless work tray, perforated front grille, inclined glass sash with frame, "
         "head unit with control panel, display, keys, alarm and UV indicators, side window and service valve, top exhaust filter housing with grille.",
-        connectors=[E("Head Unit", 'top')], type_values={"Voltage": 240, "Apparent Load": 1200}, drawn="1200_ClassII")
+        connectors=[E("Mains Inlet Box", 'top')], type_values={"Voltage": 240, "Apparent Load": 1200}, drawn="1200_ClassII")
 
 # 34 Sterile store wire shelving 900/1200
 fam = "FMC_I_Casework_SterileStore_Shelving_Wire"
-W = 900; Dp = 450
-P = [CZ("Post", [-W / 2 + 15, -Dp + 15], 13, [30, 1880], 'wire', rep=(2, W - 30, 0, 0), seg=16), CZ("Post Back", [-W / 2 + 15, -15], 13, [30, 1880], 'wire', rep=(2, W - 30, 0, 0), seg=16),
-     CZ("Post Cap", [-W / 2 + 15, -Dp + 15], 14, [1880, 1890], 'black', lod='f', rep=(2, W - 30, 0, 0), seg=16),
-     CZ("Post Cap Back", [-W / 2 + 15, -15], 14, [1880, 1890], 'black', lod='f', rep=(2, W - 30, 0, 0), seg=16)]
-P += castors("Castor", [-W / 2 + 15, W / 2 - 15], [-Dp + 15, -15], 30, wr=13, w=14, fork='wire', wheel='castor')
-P = [p for p in P if 'Castor' not in p['n']]
-P += [CZ("Foot", [-W / 2 + 15, -Dp + 15], 16, [0, 30], 'black', rep=(2, W - 30, 0, 0), seg=16), CZ("Foot Back", [-W / 2 + 15, -15], 16, [0, 30], 'black', rep=(2, W - 30, 0, 0), seg=16)]
-for i, z in enumerate((250, 650, 1050, 1450, 1850)):
-    t = f"Shelf {i + 1}"
-    P += [BX(t + " Rim", [-W / 2 + 2, -Dp + 2, z - 25, W / 2 - 2, -Dp + 8, z], 'wire', rep=(2, 0, Dp - 10, 0)),
-          BX(t + " End Rim", [-W / 2 + 2, -Dp + 8, z - 6, -W / 2 + 8, -8, z], 'wire', rep=(2, W - 10, 0, 0)),
-          BX(t + " Wire", [-W / 2 + 8, -Dp + 60, z - 4, W / 2 - 8, -Dp + 64, z], 'wire', lod='f', rep=(5, 0, 70, 0)),
-          BX(t + " Sleeve", [-W / 2 + 0, -Dp + 0, z - 40, -W / 2 + 30, -Dp + 30, z - 25], 'black', lod='f')]
-P = [p for p in P if 'Sleeve' not in p['n']]
-P += [FB("Shelf Label", [-80, -Dp - 3, 1830, 80, -Dp + 2, 1850], 'label', lod='f', rep=(5, 0, 0, -400)), BX("Sterile Packs", [-380, -400, 254, 380, -60, 420], 'pack', lod='f', rep=(4, 0, 0, 400))]
+Dp = 450
+def wire_bay(W):
+    P = [CZ("Post", [-W / 2 + 15, -Dp + 15], 13, [30, 1880], 'wire', rep=(2, W - 30, 0, 0), seg=16), CZ("Post Back", [-W / 2 + 15, -15], 13, [30, 1880], 'wire', rep=(2, W - 30, 0, 0), seg=16),
+         CZ("Post Cap", [-W / 2 + 15, -Dp + 15], 14, [1880, 1890], 'black', lod='f', rep=(2, W - 30, 0, 0), seg=16),
+         CZ("Post Cap Back", [-W / 2 + 15, -15], 14, [1880, 1890], 'black', lod='f', rep=(2, W - 30, 0, 0), seg=16),
+         CZ("Foot", [-W / 2 + 15, -Dp + 15], 16, [0, 30], 'black', rep=(2, W - 30, 0, 0), seg=16), CZ("Foot Back", [-W / 2 + 15, -15], 16, [0, 30], 'black', rep=(2, W - 30, 0, 0), seg=16)]
+    for i, z in enumerate((250, 650, 1050, 1450, 1850)):
+        t = f"Shelf {i + 1}"
+        P += [BX(t + " Rim", [-W / 2 + 2, -Dp + 2, z - 25, W / 2 - 2, -Dp + 8, z], 'wire', rep=(2, 0, Dp - 10, 0)),
+              BX(t + " End Rim", [-W / 2 + 2, -Dp + 8, z - 6, -W / 2 + 8, -8, z], 'wire', rep=(2, W - 10, 0, 0)),
+              BX(t + " Wire", [-W / 2 + 8, -Dp + 60, z - 4, W / 2 - 8, -Dp + 64, z], 'wire', lod='f', rep=(5, 0, 70, 0))]
+    return P + [FB("Shelf Label", [-80, -Dp - 3, 1830, 80, -Dp + 2, 1850], 'label', lod='f', rep=(5, 0, 0, -400)),
+                BX("Sterile Packs", [-W / 2 + 70, -400, 254, W / 2 - 70, -60, 420], 'pack', lod='f', rep=(4, 0, 0, 400))]
+P = typed(wire_bay, {"900_Wire": ("900", 900), "1200_Wire": ("1200", 1200)})
 product(fam, "Sterile store wire shelving bay 900 / 1200 x 450, 1890 high, 5 open epoxy-coated wire shelves (lowest 250 above floor for cleaning), 4 posts on feet, shelf labels",
         "IfcFurniture", [{"name": "900_Wire", "desc": "Sterile store wire shelving 900 x 450 x 1890, 5 shelves"}, {"name": "1200_Wire", "desc": "Sterile store wire shelving 1200 x 450 x 1890, 5 shelves"}],
         {"wire": "FMC_Metal_Chrome_Polished", "black": "FMC_Plastic_ABS_Black", "castor": "FMC_Plastic_Nylon_CastorGrey", "label": "FMC_Plastic_ABS_White", "pack": "FMC_Plastic_ABS_Blue"}, P,
@@ -1133,24 +1146,28 @@ product(fam, "Sluice room base unit 1200, all stainless steel: one-piece top wit
 
 # 37 Ward pantry kitchen 1800/2400
 fam = "FMC_I_Casework_Kitchen_Ward_Pantry"
-P = base_run(-900, 900, 600, 900, [(600, [('drawer', 160), ('door', 600)]), (600, [('doors', 765)]), (600, [('knee', 765)])], top='top', upstand=100)
-P = [p for p in P if not p['n'].startswith('Open')]
-P = cut_worktop(P, "Worktop", -280, -520, 120, -140)
-P += bowl("Sink Bowl", -280, -520, 120, -140, 720, 900, 'ss')
-P += [BX("Fridge Cabinet", [310, -570, 20, 890, -20, 850], 'white', r=6), FB("Fridge Door", [312, -590, 30, 888, -570, 845], 'white', r=10),
-      FB("Fridge Grip", [320, -600, 600, 340, -590, 820], 'grey', r=6, lod='f'), FB("Fridge Kick Grille", [330, -592, 35, 870, -590, 90], 'grey', lod='f'),
-      FB("Splashback", [-900, -6, 1000, 900, 0, 1450], 'top'),
-      BX("Drainer", [-850, -540, 898, -300, -120, 903], 'ss', r=20),
-      BX("Drainer Groove", [-830, -520, 903, -340, -512, 905], 'grey', lod='f', rep=(5, 0, 75, 0)), CZ("Sink Waste", [-80, -330], 25, [723, 726], 'chrome', lod='f'),
-      CZ("Mixer Body", [-80, -60], 22, [900, 960], 'chrome'), TN("Mixer Swan Neck", 'y', [-80, 1130], [[0, -60], [12, -60], [12, -280], [0, -280]], 'chrome'),
-      CZ("Mixer Riser", [-80, -60], 12, [960, 1130], 'chrome'), CZ("Mixer Outlet", [-80, -280], 12, [1060, 1130], 'chrome'),
-      BX("Mixer Lever", [-80, -75, 975, 80, -60, 985], 'chrome', lod='f'),
-      BX("Boiler Body", [400, -160, 1150, 800, 0, 1650], 'ss', r=20), FB("Boiler Panel", [440, -162, 1450, 760, -160, 1620], 'black', r=6),
-      CY("Boiler Ready LED", [500, 1560], 7, [-165, -162], 'green', lod='f'), CY("Boiler Power LED", [540, 1560], 7, [-165, -162], 'red', lod='f'),
-      BX("Boiler Drip Tray", [470, -230, 1000, 730, 0, 1020], 'ss'), BX("Boiler Tap", [585, -200, 1130, 615, -160, 1150], 'black'),
-      CZ("Boiler Tap Nozzle", [600, -190], 8, [1100, 1130], 'black', lod='f')]
-P += wall_unit(-900, 300, 320, 720, 1450, 2, glazed=False, sloped=False, name="Wall Unit")
-P = [p for p in P if p['n'] != 'Boiler Drip Tray'] + [BX("Boiler Drip Tray", [470, -230, 900, 730, -20, 920], 'ss', lod='f')]
+PANTRY_COLS = {1800: [(600, [('drawer', 160), ('door', 600)]), (600, [('doors', 765)]), (600, [('knee', 765)])],
+               2400: [(600, [('drawer', 160), ('door', 600)]), (600, [('doors', 765)]), (600, [('drawer', 160), ('doors', 600)]), (600, [('knee', 765)])]}
+def pantry(L):
+    x0 = -L / 2; fx = x0 + L - 600; bx = x0 + L - 500; mx = x0 + 820
+    P = base_run(x0, -x0, 600, 900, PANTRY_COLS[L], top='top', upstand=100)
+    P = cut_worktop(P, "Worktop", x0 + 620, -520, x0 + 1020, -140)
+    P += bowl("Sink Bowl", x0 + 620, -520, x0 + 1020, -140, 720, 900, 'ss')
+    P += [BX("Fridge Cabinet", [fx + 10, -570, 20, fx + 590, -20, 850], 'white', r=6), FB("Fridge Door", [fx + 12, -590, 30, fx + 588, -570, 845], 'white', r=10),
+          FB("Fridge Grip", [fx + 20, -600, 600, fx + 40, -590, 820], 'grey', r=6, lod='f'), FB("Fridge Kick Grille", [fx + 30, -592, 35, fx + 570, -590, 90], 'grey', lod='f'),
+          FB("Splashback", [x0, -6, 1000, -x0, 0, 1450], 'top'),
+          BX("Drainer", [x0 + 50, -540, 898, x0 + 600, -120, 903], 'ss', r=20),
+          BX("Drainer Groove", [x0 + 70, -500, 903, x0 + 560, -492, 905], 'grey', lod='f', rep=(4, 0, 90, 0)), CZ("Sink Waste", [mx, -330], 25, [723, 726], 'chrome', lod='f'),
+          CZ("Mixer Body", [mx, -60], 22, [900, 960], 'chrome'), TN("Mixer Swan Neck", 'y', [mx, 1130], [[0, -60], [12, -60], [12, -280], [0, -280]], 'chrome'),
+          CZ("Mixer Riser", [mx, -60], 12, [960, 1130], 'chrome'), CZ("Mixer Outlet", [mx, -280], 12, [1060, 1130], 'chrome'),
+          BX("Mixer Lever", [mx, -75, 975, mx + 160, -60, 985], 'chrome', lod='f'),
+          BX("Boiler Body", [bx, -160, 1150, bx + 400, 0, 1650], 'ss', r=20), FB("Boiler Panel", [bx + 40, -162, 1450, bx + 360, -160, 1620], 'black', r=6),
+          CY("Boiler Ready LED", [bx + 100, 1560], 7, [-165, -162], 'green', lod='f'), CY("Boiler Power LED", [bx + 140, 1560], 7, [-165, -162], 'red', lod='f'),
+          BX("Boiler Tap", [bx + 185, -200, 1130, bx + 215, -160, 1150], 'black'), CZ("Boiler Tap Nozzle", [bx + 200, -190], 8, [1100, 1130], 'black', lod='f'),
+          BX("Boiler Drip Tray", [bx + 70, -230, 900, bx + 330, -20, 920], 'ss', lod='f')]
+    return P + wall_unit(x0, x0 + L - 600, 320, 720, 1450, 2, glazed=False, sloped=False, name="Wall Unit")
+P = typed(pantry, {"1800_Pantry": ("1800", 1800), "2400_Pantry": ("2400", 2400)})
+P += [BX("Service Entry Box", [-60, -20, 20, 60, 0, 90], 'plinth')]
 product(fam, "Ward pantry kitchen run 1800 / 2400: laminate worktop, stainless sink and drainer with swan-neck lever mixer, drawer and cupboard units, under-counter fridge, "
         "wall-mounted instant water boiler, wall cupboards",
         "IfcFurniture", [{"name": "1800_Pantry", "desc": "Ward pantry run 1800 with sink, fridge and boiler point"}, {"name": "2400_Pantry", "desc": "Ward pantry run 2400 with sink, fridge, boiler point and extra cupboard"}],
@@ -1160,16 +1177,11 @@ product(fam, "Ward pantry kitchen run 1800 / 2400: laminate worktop, stainless s
         {"Run 1800 / 2400 mm, worktop 900 mm": A("1800/2400x600x900", "record types; HBN 04-01 ward kitchen"), "Water boiler 10 l, 3 kW": A(3000, "typical wall-mounted instant boiler"),
          "Supply 240 V, 3500 VA (boiler + fridge)": A(3500, "boiler + fridge")},
         "Pantry run modelled as a generic product: drawer-over-cupboard unit, sink unit with pair of doors, open bay with under-counter fridge (door, grip, kick grille), HPL worktop and upstand, "
-        "stainless sink with waste and drainer with grooves, lever mixer with swan neck, wall-mounted water boiler with panel, LEDs, tap and drip tray, 2-leaf wall cupboard.",
-        connectors=[CW("Upstand", 'top'), HW("Upstand", 'back'), SAN("Sink Bowl Floor"), E("Boiler Body", 'top')], type_values={"Voltage": 240, "Apparent Load": 3500}, drawn="1800_Pantry")
+        "stainless sink with waste and drainer with grooves, lever mixer with swan neck, wall-mounted water boiler with panel, LEDs, tap and drip tray, 2-leaf wall cupboard sized to the run. Services enter through a shared box behind the plinth.",
+        connectors=[CW("Service Entry Box", 'top'), HW("Service Entry Box", 'left'), SAN("Service Entry Box", 'right'), E("Service Entry Box", 'front')], type_values={"Voltage": 240, "Apparent Load": 3500}, drawn="1800_Pantry")
 
 # ---------------------------------------------------------------- materials the kit lacks (owner adds)
-NEEDED = [
-    {"name": "FMC_Plastic_EpoxyResin_Worktop_Black", "colour": "#2B2D2F", "why": "Lab benches, island and fume cupboard work surfaces are epoxy resin; drawn with FMC_Stone_Granite_Black_Polished meanwhile."},
-    {"name": "FMC_Fabric_Upholstery_WipeClean_Grey", "colour": "#7A8087", "why": "Non-clinical soft seating (family room sofa, reception lounge) is usually grey or warm wipe-clean fabric; drawn with the blue vinyl and blue PU meanwhile."},
-    {"name": "FMC_Plastic_Polyethylene_Rotomoulded_Blue", "colour": "#3C6E9E", "why": "Anti-ligature bench is rotomoulded PE (matt, different from ABS); drawn with FMC_Plastic_ABS_Blue meanwhile."},
-    {"name": "FMC_Fabric_Curtain_Antimicrobial_LightBlue", "colour": "#A9C7E0", "why": "Privacy screen curtain panels; drawn with FMC_Fabric_Mattress_PU_Blue meanwhile."},
-]
+NEEDED = []   # second pass: the kit now has all four materials asked for in the first pass
 
 # ---------------------------------------------------------------- write
 def count_parts(p): return len(fp.expand(p['parts']))
@@ -1186,14 +1198,15 @@ if __name__ == '__main__':
         for k, v in prod['materials'].items(): assert v in kit, (prod['family'], v)
         for q in prod['parts']: assert q['mat'] in prod['materials'], (prod['family'], q['n'], q['mat'])
         for c in prod.get('connectors', []): assert c['part'] in names, (prod['family'], c)
-        n = count_parts(prod)
+        ex = fp.expand(prod['parts'])
+        n = max(sum(1 for q in ex if not q.get('only') or t['name'] in q['only']) for t in prod['types'])   # parts shown in the busiest type
         f = prod['family']
         json.dump(prod, open(os.path.join(HERE, f + '.product.json'), 'w'), indent=1)
         r = fp.compile_product(prod)
         json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
         fp.render(prod, os.path.join(HERE, f + '.preview.png'))
         fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
-        print(f"{f}: {n} parts, {len(r['ops'])} ops" + ("  OVER 70" if n > 70 else ""), flush=True)
+        print(f"{f}: {n} parts per type max, {len(ex)} in all, {len(r['ops'])} ops" + ("  OVER 70" if n > 70 else ""), flush=True)
         done.add(f)
     json.dump(NEEDED, open(os.path.join(HERE, 'batches', 'I2_interiors.materials_needed.json'), 'w'), indent=1)
     missing = set(RECS) - {p['family'] for p in OUT}

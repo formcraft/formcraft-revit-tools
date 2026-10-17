@@ -27,11 +27,11 @@ MATS = {
     'conc': 'FMC_Concrete_C30', 'c25': 'FMC_Concrete_C25', 'c20': 'FMC_Concrete_C20', 'blind': 'FMC_Concrete_Blinding_C15',
     'pre': 'FMC_Concrete_Manhole_Precast', 'mortar': 'FMC_Masonry_Mortar_1to4', 'rebar': 'FMC_Metal_Rebar_B500_Ribbed',
     'steel': 'FMC_Metal_StructuralSteel_S275', 'galv': 'FMC_Metal_ColdFormed_Galvanised', 'paint': 'FMC_Metal_SteelLTZ_Painted',
-    'ci': 'FMC_Metal_BurglarBar_Steel', 'upvc': 'FMC_Plastic_uPVC_Pipe_DarkGrey', 'black': 'FMC_Plastic_ABS_Black',
-    'yellow': 'FMC_Plastic_ABS_Yellow', 'white': 'FMC_Paint_RoadMarking_White', 'brick': 'FMC_Masonry_BurntClayBrick_Common',
-    'stone': 'FMC_Stone_CrushedStone_20', 'red': 'FMC_Metal_SprinklerPipe_RedPainted', 'blue': 'FMC_Plastic_ABS_Blue',
+    'ci': 'FMC_Metal_DuctileIron_Black', 'upvc': 'FMC_Plastic_uPVC_Pipe_DarkGrey', 'black': 'FMC_Plastic_ABS_Black',
+    'yellow': 'FMC_Paint_RoadMarking_Yellow', 'safety': 'FMC_Paint_Safety_Yellow', 'absyellow': 'FMC_Plastic_ABS_Yellow', 'rmr': 'FMC_Paint_RoadMarking_Red', 'white': 'FMC_Paint_RoadMarking_White', 'brick': 'FMC_Masonry_BurntClayBrick_Common',
+    'stone': 'FMC_Stone_CrushedStone_20', 'red': 'FMC_Metal_SprinklerPipe_RedPainted', 'blue': 'FMC_Paint_RoadMarking_Blue',
     'rubber': 'FMC_Rubber_Black', 'alu': 'FMC_Metal_Aluminium_Anodised_Silver', 'grey': 'FMC_Plastic_ABS_Grey',
-    'lead': 'FMC_Metal_StructuralSteel_S275', 'gi': 'FMC_Metal_GI_Pipe', 'filler': 'FMC_Board_SoftBoard_Ceiling',
+    'lead': 'FMC_Metal_Lead_Sheet', 'gi': 'FMC_Metal_GI_Pipe', 'filler': 'FMC_Board_JointFiller_Fibre',
     'asphalt': 'FMC_Concrete_Asphalt', 'kerb': 'FMC_Concrete_Kerb_Precast', 'ogee': 'FMC_Concrete_Pipe_Ogee',
     'hdpe': 'FMC_Plastic_HDPE_PE100_Black', 'pitch': 'FMC_Stone_Pitching', 'ledg': 'FMC_Plastic_LED_Green', 'ledr': 'FMC_Plastic_LED_Red',
     'abswhite': 'FMC_Plastic_ABS_White', 'epoxy': 'FMC_Metal_Steel_EpoxyCoated_White', 'ss': 'FMC_Metal_StainlessSteel_Brushed',
@@ -211,47 +211,91 @@ def prod(fam, desc, ifc, types, parts, values, about, conns=None, clear=None, tv
 def san(n, part, side, dia, flow): return {"n": n, "domain": "pipe", "system": "Sanitary", "part": part, "side": side, "diameter": dia, "flow": flow}
 def power(part, side): return {"n": "Power", "domain": "electrical", "system": "PowerBalanced", "part": part, "side": side}
 
+# ---------------------------------------------------------------- per-type geometry (second pass)
+CUR = {}
+def S(d):
+    """The value for the type being built (CUR['t']); the first type's value otherwise."""
+    return d.get(CUR.get('t'), next(iter(d.values())))
+def scale_parts(parts, s):
+    out = []
+    for p in parts:
+        q = json.loads(json.dumps(p))
+        for k in ('at', 'c'):
+            if k in q: q[k] = [round(v * s, 2) for v in q[k]]
+        if 'pts' in q: q['pts'] = [[round(a * s, 2), round(b * s, 2)] for a, b in q['pts']]
+        if 'profile' in q: q['profile'] = [[round(a * s, 2), round(b * s, 2)] for a, b in q['profile']]
+        for k in ('x', 'y', 'z'):
+            if k in q: q[k] = [round(v * s, 2) for v in q[k]]
+        if 'r' in q and q['shape'] == 'cyl': q['r'] = round(q['r'] * s, 2)
+        if 'repeat' in q: q['repeat']['d'] = [round(v * s, 2) for v in q['repeat']['d']]
+        out.append(q)
+    return out
+def build_types(fn):
+    """Build the family once per type (CUR['t']); parts identical in every type stay shared, the rest carry
+    "only": [type] and the type's key size in their name (the compiler adds a Show <type> Yes/No per type)."""
+    CUR.clear(); fn(); base = P.pop()
+    types = [t['name'] for t in base['types']]
+    if len(types) == 1 or any(p.get('only') for p in base['parts']): P.append(base); return base
+    builds = []
+    for tn in types:
+        CUR['t'] = tn; fn(); builds.append(P.pop())
+    CUR.clear()
+    keys = [[json.dumps(p, sort_keys=True) for p in b['parts']] for b in builds]
+    common = set(keys[0]).intersection(*map(set, keys[1:]))
+    parts, mats = [p for p, k in zip(builds[0]['parts'], keys[0]) if k in common], {}
+    for tn, b, ks in zip(types, builds, keys):
+        mats.update(b['materials'])
+        for p, k in zip(b['parts'], ks):
+            if k not in common: parts.append(dict(p, n=f"{p['n']} {tn.split('_')[0]}", only=[tn]))
+    names = {p['n'] for p in parts}
+    for c in base.get('connectors', []):     # a connector stays on a shared part when it can, else on type 1's copy
+        if c['part'] not in names: c['part'] = f"{c['part']} {types[0].split('_')[0]}"; base.setdefault('_conn_type1', []).append(c['n'])
+    used = {p['mat'] for p in parts if p.get('mat')}
+    base.update(parts=parts, materials={k: v for k, v in mats.items() if k in used})
+    base['about'] += " Each type has its own geometry where it differs (parts with 'only'); the rest is shared."
+    P.append(base); return base
+
 # ================================================================ STRUCTURAL COLUMNS
 def rc_rect_column():
-    s, h = 300, 3000
+    s, h = S({"300x300_RC": 300, "400x400_RC": 400, "500x500_RC": 500}), 3000
     parts = [PR("Kicker", crect(-s / 2, -s / 2, s / 2, s / 2, 20), 0, 75, 'conc'),
              PR("Shaft", crect(-s / 2, -s / 2, s / 2, s / 2, 20), 75, h, 'conc'),
              CY("Tie Hole Plug Front", [0, 600], 12, -s / 2 - 1, -s / 2 + 5, 'mortar', lod='f', rep=(4, 0, 0, 700), seg=12),
              RT("Tie Hole Plug Side", fp.circle(0, 600, 12, 12), -s / 2 - 1, -s / 2 + 5, 'mortar', lod='f', rep=(4, 0, 0, 700))]
     prod('FMC_S_StrColumn_RC_Rect', 'Reinforced concrete column, square, 20 mm chamfered arrises, 75 mm kicker, fair-faced with plugged tie holes', 'IfcColumn',
          [{"name": "300x300_RC", "desc": "RC column 300 x 300"}, {"name": "400x400_RC", "desc": "RC column 400 x 400"}, {"name": "500x500_RC", "desc": "RC column 500 x 500"}],
-         parts, {"Section 300 x 300 mm (smallest type)": A("300x300", ENG), "Chamfer 20 mm": A(20, "typical formwork fillet"),
+         parts, {"Sections 300, 400 and 500 square (one per type)": A("300/400/500", ENG), "Chamfer 20 mm": A(20, "typical formwork fillet"),
                  "Kicker 75 mm": A(75, "typical construction practice"), "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
-         "RC column modelled as cast: 75 mm kicker, chamfered shaft, plugged formwork tie holes (Fine). Reinforcement is detailed by the engineer, not modelled. Geometry shows the 300 type; 3000 high.")
+         "RC column modelled as cast: 75 mm kicker, chamfered shaft, plugged formwork tie holes (Fine). Reinforcement is detailed by the engineer, not modelled. 3000 high.")
 
 def rc_round_column():
-    r, h = 200, 3000
+    r, h = S({"400dia_RC": 200, "500dia_RC": 250}), 3000
     parts = [CZ("Kicker", [0, 0], r, 0, 75, 'conc', seg=48), CZ("Shaft", [0, 0], r, 75, h, 'conc', seg=48),
              T("Form Seam", 'z', [0, 0], ring(r, r + 1, 600, 606), 'mortar', lod='f', rep=(4, 0, 0, 600), seg=48)]
     prod('FMC_S_StrColumn_RC_Round', 'Reinforced concrete circular column cast in tube formwork, 75 mm kicker', 'IfcColumn',
          [{"name": "400dia_RC", "desc": "RC circular column 400 dia"}, {"name": "500dia_RC", "desc": "RC circular column 500 dia"}], parts,
-         {"Diameter 400 mm (smallest type)": A(400, ENG), "Kicker 75 mm": A(75, "typical construction practice"), "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
-         "Circular RC column as cast in a tube former: kicker, shaft and the faint tube seams (Fine). Geometry shows 400 dia, 3000 high.")
+         {"Diameter 400 and 500 mm (one per type)": A("400/500", ENG), "Kicker 75 mm": A(75, "typical construction practice"), "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
+         "Circular RC column as cast in a tube former: kicker, shaft and the faint tube seams (Fine). 3000 high.")
 
 def steel_uc():
-    b, d, tw, tf = 203.6, 203.2, 7.2, 11.0
+    b, d, tw, tf = S({"152UC_S275": (152.2, 152.4, 5.8, 6.8), "203UC_S275": (203.6, 203.2, 7.2, 11.0), "254UC_S275": (254.6, 254.1, 8.6, 14.2)})
     parts = [B("Grout Pad", [-210, -210, 0, 210, 210, 30], 'mortar'), B("Base Plate", [-200, -200, 30, 200, 200, 50], 'steel'),
-             PR("Column", ipts(b, d, tw, tf), 50, 3000, 'steel'), B("Cap Plate", [-125, -125, 3000, 125, 125, 3015], 'steel'),
+             PR("Column", ipts(b, d, tw, tf), 50, 3000, 'steel'), B("Cap Plate", [-b / 2 - 25, -d / 2 - 25, 3000, b / 2 + 25, d / 2 + 25, 3015], 'steel'),
              RT("Gusset Front", [[-d / 2, 50], [-190, 50], [-190, 70], [-d / 2, 200]], -6, 6, 'steel'),
              RT("Gusset Back", [[d / 2, 50], [d / 2, 200], [190, 70], [190, 50]], -6, 6, 'steel'),
              FR("Stiffener Left", [[-tw / 2, 50], [-tw / 2, 200], [-190, 70], [-190, 50]], -6, 6, 'steel'),
              FR("Stiffener Right", [[tw / 2, 50], [190, 50], [190, 70], [tw / 2, 200]], -6, 6, 'steel')]
     for i, (x, y) in enumerate(((-150, -150), (150, -150), (-150, 150), (150, 150))): parts += bolt_v(f"HD Bolt {i + 1}", x, y, 50)
     prod('FMC_S_StrColumn_Steel_UC', 'Universal column, S275, on a 20 mm base plate with gussets, four holding-down bolts and a cap plate', 'IfcColumn',
-         [{"name": "152UC_S275", "desc": "UC 152x152 serial size"}, {"name": "203UC_S275", "desc": "UC 203x203 serial size"}, {"name": "254UC_S275", "desc": "UC 254x254 serial size"}],
-         parts, {"Section 203x203x46 UC (geometry)": A("203.2x203.6x7.2x11.0", "BS 4-1 section table, from knowledge; section choice by engineer"),
+         [{"name": "152UC_S275", "desc": "UC 152x152x23"}, {"name": "203UC_S275", "desc": "UC 203x203x46"}, {"name": "254UC_S275", "desc": "UC 254x254x73"}],
+         parts, {"Sections 152x152x23, 203x203x46, 254x254x73 UC (one per type)": A("BS 4-1", "BS 4-1 section table, from knowledge; section choice by engineer"),
                  "Base plate 400 x 400 x 20 mm": A("400x400x20", ENG), "Holding-down bolts 4 x M20": A("4xM20", ENG), "Grade S275": A("S275", "kit material; engineer to confirm")},
-         "UC modelled as erected: grout pad, base plate, I-section shaft, gussets and stiffeners, HD bolts with plate washers and nuts (Fine), cap plate. Geometry shows the 203 UC, 3000 high.")
+         "UC modelled as erected: grout pad, base plate, I-section shaft, gussets and stiffeners, HD bolts with plate washers and nuts (Fine), cap plate. Each type has its own section; 3000 high.")
 
 def chs_canopy():
-    R = 84.15
+    R = S({"114_CHS": 57.15, "168_CHS": 84.15})
     parts = [B("Base Plate", [-175, -175, 0, 175, 175, 20], 'paint'), CZ("Column", [0, 0], R, 20, 3500, 'paint', seg=36),
-             T("Hazard Band", 'z', [0, 0], ring(R, R + 1.5, 300, 450), 'yellow', lod='f', rep=(4, 0, 0, 300), seg=36),
+             T("Hazard Band", 'z', [0, 0], ring(R, R + 1.5, 300, 450), 'safety', lod='f', rep=(4, 0, 0, 300), seg=36),
              B("Cap Plate", [-130, -130, 3500, 130, 130, 3520], 'paint'),
              FB("Truss Fin Plate", [-6, -100, 3520, 6, 100, 3720], 'paint', lod='mf'),
              CX("Fin Bolt", [0, 3580], 10, -20, 20, 'galv', lod='f', rep=(2, 0, 0, 80), seg=12)]
@@ -261,19 +305,18 @@ def chs_canopy():
         parts.append(RT(nm, pts, -5, 5, 'paint'))
     for i, (x, y) in enumerate(((-125, -125), (125, -125), (-125, 125), (125, 125))): parts += bolt_v(f"HD Bolt {i + 1}", x, y, 20, mat='galv', d=16, proj=60)
     prod('FMC_S_StrColumn_Steel_CHS_Canopy', 'Ambulance canopy column, circular hollow section, painted, base plate with radial gussets, hazard banding, truss fin plate at the head', 'IfcColumn',
-         [{"name": "114_CHS", "desc": "CHS 114.3 canopy column"}, {"name": "168_CHS", "desc": "CHS 168.3 canopy column"}], parts,
-         {"CHS 168.3 x 6.3 (geometry)": A("168.3x6.3", "EN 10210 section, from knowledge; section choice by engineer"), "Height 3500 mm to cap plate": A(3500, ENG),
+         [{"name": "114_CHS", "desc": "CHS 114.3 x 5.0 canopy column"}, {"name": "168_CHS", "desc": "CHS 168.3 x 6.3 canopy column"}], parts,
+         {"CHS 114.3 and 168.3 (one per type)": A("114.3/168.3", "EN 10210 sections, from knowledge; section choice by engineer"), "Height 3500 mm to cap plate": A(3500, ENG),
           "Base plate 350 x 350 x 20, 4 x M16": A("350x350x20 4xM16", ENG), "Hazard banding to 1500 mm": A(1500, "vehicle-impact visibility at ambulance set-down")},
-         "Canopy column modelled as erected: base plate, four radial gussets, HD bolts, painted CHS with yellow hazard bands (Fine), cap plate and fin plate with bolts for the truss.")
+         "Canopy column modelled as erected: base plate, four radial gussets, HD bolts, painted CHS with safety-yellow hazard bands (Fine), cap plate and fin plate with bolts for the truss.")
 
-# ================================================================ STRUCTURAL FRAMING
 def rc_beam():
-    L = 4000
-    parts = [RT("Beam", [[-115, -430], [-95, -450], [95, -450], [115, -430], [115, 0], [-115, 0]], -L / 2, L / 2, 'conc'),
-             CY("Tie Hole Plug", [-1500, -225], 12, -116, -110, 'mortar', lod='f', rep=(4, 1000, 0, 0), seg=12)]
+    w, dp = S({"230x450_RC": (230, 450), "300x600_RC": (300, 600)}); L = 4000
+    parts = [RT("Beam", [[-w / 2, -dp + 20], [-w / 2 + 20, -dp], [w / 2 - 20, -dp], [w / 2, -dp + 20], [w / 2, 0], [-w / 2, 0]], -L / 2, L / 2, 'conc'),
+             CY("Tie Hole Plug", [-1500, -dp / 2], 12, -w / 2 - 1, -w / 2 + 5, 'mortar', lod='f', rep=(4, 1000, 0, 0), seg=12)]
     prod('FMC_S_StrFraming_RC_Rect', 'Reinforced concrete beam, rectangular, chamfered soffit arrises, fair-faced', 'IfcBeam',
          [{"name": "230x450_RC", "desc": "RC beam 230 wide x 450 deep"}, {"name": "300x600_RC", "desc": "RC beam 300 wide x 600 deep"}], parts,
-         {"Section 230 x 450 mm (geometry)": A("230x450", ENG), "Soffit chamfer 20 mm": A(20, "typical formwork fillet"), "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
+         {"Sections 230 x 450 and 300 x 600 mm (one per type)": A("230x450/300x600", ENG), "Soffit chamfer 20 mm": A(20, "typical formwork fillet"), "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
          "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer.")
 
 def rc_lbeam():
@@ -288,14 +331,15 @@ def rc_lbeam():
          "Edge L-beam: web at the slab edge (outer face toward -y), slab flange inward, chamfered soffit, drip nib and tie-hole plugs (Fine). Shown 4000 long.")
 
 def steel_ub():
-    b, d, tw, tf, L = 146.1, 251.4, 6.0, 8.6, 4000
+    b, d, tw, tf = S({"203UB_S275": (133.2, 203.2, 5.7, 7.8), "254UB_S275": (146.1, 251.4, 6.0, 8.6), "305UB_S275": (165.0, 303.4, 6.0, 10.2)}); L = 4000
+    st = round(0.26 * d)
     parts = [RT("Beam", ipts(b, d, tw, tf, 0, -d / 2), -L / 2, L / 2, 'steel')]
     for end, x in (("Left", -L / 2 + 50), ("Right", L / 2 - 50)):
-        parts += [FR(f"Bolt Head {end}", hexp(x, -60, 30), -tw / 2 - 13, -tw / 2, 'galv', lod='f', rep=(3, 0, 0, -65)),
-                  FR(f"Bolt Nut {end}", hexp(x, -60, 30), tw / 2, tw / 2 + 16, 'galv', lod='f', rep=(3, 0, 0, -65))]
+        parts += [FR(f"Bolt Head {end}", hexp(x, -d / 2 + st, 30), -tw / 2 - 13, -tw / 2, 'galv', lod='f', rep=(3, 0, 0, -st)),
+                  FR(f"Bolt Nut {end}", hexp(x, -d / 2 + st, 30), tw / 2, tw / 2 + 16, 'galv', lod='f', rep=(3, 0, 0, -st))]
     prod('FMC_S_StrFraming_Steel_UB', 'Universal beam, S275, with bolted web connections at both ends', 'IfcBeam',
-         [{"name": "203UB_S275", "desc": "UB 203x133"}, {"name": "254UB_S275", "desc": "UB 254x146"}, {"name": "305UB_S275", "desc": "UB 305x165"}], parts,
-         {"Section 254x146x31 UB (geometry)": A("251.4x146.1x6.0x8.6", "BS 4-1 section table, from knowledge; section choice by engineer"),
+         [{"name": "203UB_S275", "desc": "UB 203x133x25"}, {"name": "254UB_S275", "desc": "UB 254x146x31"}, {"name": "305UB_S275", "desc": "UB 305x165x40"}], parts,
+         {"Sections 203x133x25, 254x146x31, 305x165x40 UB (one per type)": A("BS 4-1", "BS 4-1 section table, from knowledge; section choice by engineer"),
           "End bolts 3 x M20 per end": A("3xM20", ENG), "Grade S275": A("S275", "kit material; engineer to confirm")},
          "UB with top of steel at z = 0: I-section and three-bolt web connections at each end (Fine). Shown 4000 long.")
 
@@ -328,8 +372,8 @@ def lifting_beam():
              B("Padstone Left", [-1200, -150, -d - 160, -950, 150, -d - 10], 'conc'), B("Padstone Right", [950, -150, -d - 160, 1200, 150, -d - 10], 'conc'),
              FR("Lifting Lug", lug, -8, 8, 'paint'),
              T("Shackle", 'x', [0, -215], [[18, -9], [27, -9], [27, 9], [18, 9]], 'galv', seg=24),
-             FB("SWL Label", [-300, -tw / 2 - 1.5, -110, 300, -tw / 2, -45], 'yellow', lod='f'),
-             FB("SWL Label Back", [-300, tw / 2, -110, 300, tw / 2 + 1.5, -45], 'yellow', lod='f')]
+             FB("SWL Label", [-300, -tw / 2 - 1.5, -110, 300, -tw / 2, -45], 'safety', lod='f'),
+             FB("SWL Label Back", [-300, tw / 2, -110, 300, tw / 2 + 1.5, -45], 'safety', lod='f')]
     prod('FMC_S_StrFraming_Steel_LiftingBeam_LiftShaft', 'Lift-shaft lifting beam, UB on padstones with a centre lifting lug, shackle and SWL marking', 'IfcBeam',
          ["152UB_Lifting"], parts,
          {"Section 152x89x16 UB (geometry)": A("152.4x88.7x4.5x7.7", "BS 4-1 section table, from knowledge; section by engineer"), "Span 2000 mm clear": A(2000, ENG),
@@ -337,43 +381,45 @@ def lifting_beam():
          "Lifting beam with top at z = 0: painted UB bearing on steel plates and concrete padstones, lifting lug and shackle at mid-span, SWL plates both sides (Fine).")
 
 def canopy_truss():
-    L, zt = 6000, 700
+    n = S({"6000_Truss": 6, "9000_Truss": 9}); L, zt = 1000 * n, 700
+    pitch = (L - 60) / n
     parts = [B("Bottom Chord", [-L / 2, -40, 0, L / 2, 40, 80], 'paint'), B("Top Chord", [-L / 2, -40, zt - 80, L / 2, 40, zt], 'paint'),
-             B("Vertical", [-L / 2, -30, 80, -L / 2 + 60, 30, zt - 80], 'paint', rep=(7, 990, 0, 0))]
-    x0, x1 = -L / 2 + 60, -L / 2 + 990
-    parts.append(FR("Diagonal Up", [[x0, 80], [x0 + 85, 80], [x1, zt - 80], [x1 - 85, zt - 80]], -30, 30, 'paint', rep=(3, 1980, 0, 0)))
-    x0b, x1b = x0 + 990, x1 + 990
-    parts.append(FR("Diagonal Down", [[x0b, zt - 80], [x0b + 85, zt - 80], [x1b, 80], [x1b - 85, 80]], -30, 30, 'paint', rep=(3, 1980, 0, 0)))
+             B("Vertical", [-L / 2, -30, 80, -L / 2 + 60, 30, zt - 80], 'paint', rep=(n + 1, pitch, 0, 0))]
+    x0, x1 = -L / 2 + 60, -L / 2 + pitch
+    parts.append(FR("Diagonal Up", [[x0, 80], [x0 + 85, 80], [x1, zt - 80], [x1 - 85, zt - 80]], -30, 30, 'paint', rep=((n + 1) // 2, 2 * pitch, 0, 0)))
+    x0b, x1b = x0 + pitch, x1 + pitch
+    parts.append(FR("Diagonal Down", [[x0b, zt - 80], [x0b + 85, zt - 80], [x1b, 80], [x1b - 85, 80]], -30, 30, 'paint', rep=(n // 2, 2 * pitch, 0, 0)))
     parts += [B("Bearing Plate Left", [-L / 2, -100, -15, -L / 2 + 200, 100, 0], 'paint'), B("Bearing Plate Right", [L / 2 - 200, -100, -15, L / 2, 100, 0], 'paint'),
-              FB("Purlin Cleat", [-L / 2 + 20, -5, zt, -L / 2 + 120, 5, zt + 90], 'paint', lod='f', rep=(7, 975, 0, 0))]
+              FB("Purlin Cleat", [-L / 2 + 20, -5, zt, -L / 2 + 120, 5, zt + 90], 'paint', lod='f', rep=(n + 1, (L - 140) / n, 0, 0))]
     prod('FMC_S_StrFraming_Steel_Truss_Canopy', 'Ambulance canopy truss, Warren girder of square hollow sections, painted, with bearing plates and purlin cleats', 'IfcMember',
-         [{"name": "6000_Truss", "desc": "canopy truss 6.0 m span"}, {"name": "9000_Truss", "desc": "canopy truss 9.0 m span"}], parts,
-         {"Span 6000 mm (geometry)": A(6000, ENG), "Depth 700 mm": A(700, ENG + "; span/depth about 9"), "Chords SHS 80x80, webs SHS 60x60": A("SHS 80/60", ENG),
-          "Purlin cleats at 975 mm": A(975, ENG)},
-         "Warren truss: SHS chords, seven verticals, six diagonals alternating, bearing plates at both ends and purlin cleats on the top chord (Fine). Reference at underside of bearing plates.")
+         [{"name": "6000_Truss", "desc": "canopy truss 6.0 m span, 6 panels"}, {"name": "9000_Truss", "desc": "canopy truss 9.0 m span, 9 panels"}], parts,
+         {"Spans 6000 and 9000 mm, 1 m panels (one per type)": A("6000/9000", ENG), "Depth 700 mm": A(700, ENG), "Chords SHS 80x80, webs SHS 60x60": A("SHS 80/60", ENG),
+          "Purlin cleats at each node": A("each node", ENG)},
+         "Warren truss: SHS chords, verticals at each node, diagonals alternating, bearing plates at both ends and purlin cleats on the top chord (Fine). Each type has its own span. Reference at underside of bearing plates.")
 
 def z_purlin():
-    Z = [[-65, 0], [1, 0], [1, 198], [63, 198], [63, 180], [65, 180], [65, 200], [-1, 200], [-1, 2], [-63, 2], [-63, 20], [-65, 20]]
+    D, F, Lp = S({"Z150_Galv": (150, 62, 18), "Z200_Galv": (200, 65, 20)})
+    Z = [[-F, 0], [1, 0], [1, D - 2], [F - 2, D - 2], [F - 2, D - Lp], [F, D - Lp], [F, D], [-1, D], [-1, 2], [-F + 2, 2], [-F + 2, Lp], [-F, Lp]]
     parts = [RT("Purlin", Z, -1500, 1500, 'galv'),
-             FB("Cleat Left", [-1500, 1, 10, -1420, 9, 160], 'galv'), FB("Cleat Right", [1420, 1, 10, 1500, 9, 160], 'galv')]
-    for zc in (55, 125):
-        parts += [CY(f"Bolt Head {zc}", [-1460, zc], 10, -9, -1, 'galv', lod='f', rep=(2, 2920, 0, 0), seg=6),
-                  CY(f"Bolt Nut {zc}", [-1460, zc], 10, 9, 17, 'galv', lod='f', rep=(2, 2920, 0, 0), seg=6)]
-    parts.append(CY("Sag Rod Hole Marker", [0, 100], 7, -1.5, 1.5, 'black', lod='f'))
+             FB("Cleat Left", [-1500, 1, 10, -1420, 9, D - 40], 'galv'), FB("Cleat Right", [1420, 1, 10, 1500, 9, D - 40], 'galv')]
+    for k, zc in (("Low", round(0.28 * D)), ("High", round(0.62 * D))):
+        parts += [CY(f"Bolt Head {k}", [-1460, zc], 10, -9, -1, 'galv', lod='f', rep=(2, 2920, 0, 0), seg=6),
+                  CY(f"Bolt Nut {k}", [-1460, zc], 10, 9, 17, 'galv', lod='f', rep=(2, 2920, 0, 0), seg=6)]
+    parts.append(CY("Sag Rod Hole Marker", [0, D / 2], 7, -1.5, 1.5, 'black', lod='f'))
     prod('FMC_S_StrFraming_Purlin_Z', 'Cold-formed galvanised Z purlin with lips, cleated and bolted at both ends', 'IfcMember',
          [{"name": "Z150_Galv", "desc": "Z purlin 150 deep"}, {"name": "Z200_Galv", "desc": "Z purlin 200 deep"}], parts,
-         {"Z200, flanges 65 mm, lips 20 mm, 2.0 mm (geometry)": A("200x65x20x2.0", "typical cold-formed Z section; section by engineer"),
+         {"Z150 (62 flange, 18 lip) and Z200 (65 flange, 20 lip), 2.0 mm": A("Z150/Z200", "typical cold-formed Z sections; section by engineer"),
           "Span 3000 mm shown": A(3000, ENG), "Cleat bolts 2 x M12 per end": A("2xM12", "typical purlin cleat")},
-         "Z purlin standing on z = 0: lipped Z section, end cleats, M12 bolts and nuts (Fine), sag-rod hole at mid-span.")
+         "Z purlin standing on z = 0: lipped Z section, end cleats, M12 bolts and nuts (Fine), sag-rod hole at mid-span. Each type has its own section.")
 
-# ================================================================ FOUNDATIONS
 def pad_footing():
-    parts = [B("Blinding", [-800, -800, -550, 800, 800, -500], 'blind'), B("Pad", [-750, -750, -500, 750, 750, 0], 'conc'),
-             B("Setting-out Mark X", [-750, -6, 0, -650, 6, 1], 'white', lod='f', rep=(2, 1400, 0, 0)),
-             B("Setting-out Mark Y", [-6, -750, 0, 6, -650, 1], 'white', lod='f', rep=(2, 0, 1400, 0))]
+    B2, D = S({"1500x1500_RC": (750, 500), "2000x2000_RC": (1000, 600)})
+    parts = [B("Blinding", [-B2 - 50, -B2 - 50, -D - 50, B2 + 50, B2 + 50, -D], 'blind'), B("Pad", [-B2, -B2, -D, B2, B2, 0], 'conc'),
+             B("Setting-out Mark X", [-B2, -6, 0, -B2 + 100, 6, 1], 'white', lod='f', rep=(2, 2 * B2 - 100, 0, 0)),
+             B("Setting-out Mark Y", [-6, -B2, 0, 6, -B2 + 100, 1], 'white', lod='f', rep=(2, 0, 2 * B2 - 100, 0))]
     prod('FMC_S_StrFoundation_PadFooting', 'Reinforced concrete pad footing on 50 mm blinding, top at the column base', 'IfcFooting',
          [{"name": "1500x1500_RC", "desc": "pad 1500 x 1500 x 500"}, {"name": "2000x2000_RC", "desc": "pad 2000 x 2000 x 600"}], parts,
-         {"Pad 1500 x 1500 x 500 mm (geometry)": A("1500x1500x500", ENG), "Blinding 50 mm C15, 50 mm projection": A(50, "typical practice"),
+         {"Pads 1500 x 1500 x 500 and 2000 x 2000 x 600 mm (one per type)": A("1500x500/2000x600", ENG), "Blinding 50 mm C15, 50 mm projection": A(50, "typical practice"),
           "Concrete grade and cover from the kit": A("C30 / kit cover", "FMC kit rulebook; engineer to confirm")},
          "Pad footing with top at z = 0 (the column base): pad, blinding, grid setting-out marks (Fine). Depth and reinforcement by the engineer.")
 
@@ -399,61 +445,68 @@ def pile_cap():
          "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Each type carries its own cap and piles (Show <type> parameters): 2-pile rectangular, 3-pile triangular with cut corners, 4-pile square.")
 
 def bored_pile():
-    r, Lp = 225, 6000
+    r, nb = S({"450_Bored": (225, 8), "600_Bored": (300, 10)}); Lp = 6000
     parts = [CZ("Pile Shaft", [0, 0], r, -Lp, 0, 'conc', seg=36),
              T("Pile Toe", 'z', [0, 0], [[0, -Lp - 40], [r - 40, -Lp - 40], [r, -Lp], [0, -Lp]], 'conc', seg=36)]
-    for k in range(8):
-        a = 2 * math.pi * k / 8; parts.append(CZ(f"Starter Bar {k + 1}", [round(165 * math.cos(a), 1), round(165 * math.sin(a), 1)], 8, 0, 750, 'rebar', lod='f', seg=10))
-    parts.append(T("Link Ring", 'z', [0, 0], ring(155, 175, 120, 130), 'rebar', lod='f', seg=36))
+    rb = r - 60
+    for k in range(nb):
+        a = 2 * math.pi * k / nb; parts.append(CZ(f"Starter Bar {k + 1}", [round(rb * math.cos(a), 1), round(rb * math.sin(a), 1)], 8, 0, 750, 'rebar', lod='f', seg=10))
+    parts.append(T("Link Ring", 'z', [0, 0], ring(rb - 10, rb + 10, 120, 130), 'rebar', lod='f', seg=36))
     prod('FMC_S_StrFoundation_Pile_Bored', 'Bored cast-in-place concrete pile, cut-off at the reference, with the reinforcement cage projecting into the cap', 'IfcPile',
-         [{"name": "450_Bored", "desc": "bored pile 450 dia"}, {"name": "600_Bored", "desc": "bored pile 600 dia"}], parts,
-         {"Diameter 450 mm (geometry)": A(450, ENG), "Length 6000 mm shown": A(6000, "length by the engineer from the site investigation"),
-          "Starter bars 8 x T16, 750 projection": A("8xT16 750", ENG)},
-         "Pile with cut-off level at z = 0: shaft, toe, eight starter bars and a link projecting into the cap (Fine). Length and cage by the engineer.")
+         [{"name": "450_Bored", "desc": "bored pile 450 dia, 8 starter bars"}, {"name": "600_Bored", "desc": "bored pile 600 dia, 10 starter bars"}], parts,
+         {"Diameter 450 and 600 mm (one per type)": A("450/600", ENG), "Length 6000 mm shown": A(6000, "length by the engineer from the site investigation"),
+          "Starter bars 8 / 10 x T16, 750 projection": A("8-10xT16 750", ENG)},
+         "Pile with cut-off level at z = 0: shaft, toe, starter bars and a link projecting into the cap (Fine). Length and cage by the engineer.")
 
 def strip_footing():
-    parts = [B("Blinding", [-1500, -350, -250, 1500, 350, -200], 'blind'), B("Strip", [-1500, -300, -200, 1500, 300, 0], 'conc'),
+    W2, D = S({"600_Strip": (300, 200), "900_Strip": (450, 250)})
+    parts = [B("Blinding", [-1500, -W2 - 50, -D - 50, 1500, W2 + 50, -D], 'blind'), B("Strip", [-1500, -W2, -D, 1500, W2, 0], 'conc'),
              B("Wall Setting-out Line", [-1500, -100, 0, 1500, -95, 1], 'white', lod='f'), B("Wall Setting-out Line Back", [-1500, 95, 0, 1500, 100, 1], 'white', lod='f')]
     prod('FMC_S_StrFoundation_StripFooting', 'Concrete strip footing on blinding, top at the foundation wall base', 'IfcFooting',
          [{"name": "600_Strip", "desc": "strip 600 wide x 200"}, {"name": "900_Strip", "desc": "strip 900 wide x 250"}], parts,
-         {"Strip 600 x 200 mm (geometry)": A("600x200", ENG), "Blinding 50 mm": A(50, "typical practice"), "Wall set-out 200 mm wall centred": A(200, "typical foundation wall")},
+         {"Strips 600 x 200 and 900 x 250 mm (one per type)": A("600x200/900x250", ENG), "Blinding 50 mm": A(50, "typical practice"), "Wall set-out 200 mm wall centred": A(200, "typical foundation wall")},
          "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible.")
 
 def equipment_plinth():
-    parts = [B("Blinding", [-2150, -950, -500, 2150, 950, -450], 'blind'), B("Inertia Block", [-2100, -900, -450, 2100, 900, 0], 'conc'),
-             PR("Plinth Upstand", crect(-2000, -800, 2000, 800, 20), 0, 150, 'conc'),
-             B("Isolation Joint Front", [-2125, -925, -450, 2125, -900, 0], 'filler'), B("Isolation Joint Back", [-2125, 900, -450, 2125, 925, 0], 'filler'),
-             B("Isolation Joint Left", [-2125, -900, -450, -2100, 900, 0], 'filler'), B("Isolation Joint Right", [2100, -900, -450, 2125, 900, 0], 'filler'),
-             B("Joint Sealant Front", [-2125, -925, -15, 2125, -900, 0.5], 'black', lod='f'), B("Joint Sealant Back", [-2125, 900, -15, 2125, 925, 0.5], 'black', lod='f')]
-    for row, y in (("Front", -600), ("Back", 600)):
-        parts += [CZ(f"Anchor Bolt {row}", [-1500, y], 10, 150, 230, 'galv', lod='f', rep=(3, 1500, 0, 0), seg=12),
-                  PR(f"Anchor Nut {row}", hexp(-1500, y, 30), 156, 172, 'galv', lod='f', rep=(3, 1500, 0, 0)),
-                  B(f"Anchor Washer {row}", [-1525, y - 25, 150, -1475, y + 25, 156], 'galv', lod='f', rep=(3, 1500, 0, 0))]
+    L2, W2, D, U, ax, ay = S({"MRI_Isolated": (1600, 1100, 300, 100, (-1100, 2200, 2), (-700, 700)),
+                              "CT_Isolated": (1300, 650, 300, 100, (-850, 1700, 2), (-350, 350)),
+                              "Generator_Isolated": (2100, 900, 450, 150, (-1500, 1500, 3), (-600, 600))})
+    j = 25
+    parts = [B("Blinding", [-L2 - 50, -W2 - 50, -D - 50, L2 + 50, W2 + 50, -D], 'blind'), B("Inertia Block", [-L2, -W2, -D, L2, W2, 0], 'conc'),
+             PR("Plinth Upstand", crect(-L2 + 100, -W2 + 100, L2 - 100, W2 - 100, 20), 0, U, 'conc'),
+             B("Isolation Joint Front", [-L2 - j, -W2 - j, -D, L2 + j, -W2, 0], 'filler'), B("Isolation Joint Back", [-L2 - j, W2, -D, L2 + j, W2 + j, 0], 'filler'),
+             B("Isolation Joint Left", [-L2 - j, -W2, -D, -L2, W2, 0], 'filler'), B("Isolation Joint Right", [L2, -W2, -D, L2 + j, W2, 0], 'filler'),
+             B("Joint Sealant Front", [-L2 - j, -W2 - j, -15, L2 + j, -W2, 0.5], 'black', lod='f'), B("Joint Sealant Back", [-L2 - j, W2, -15, L2 + j, W2 + j, 0.5], 'black', lod='f')]
+    x0, step, n = ax
+    for row, y in zip(("Front", "Back"), ay):
+        parts += [CZ(f"Anchor Bolt {row}", [x0, y], 10, U, U + 80, 'galv', lod='f', rep=(n, step, 0, 0), seg=12),
+                  PR(f"Anchor Nut {row}", hexp(x0, y, 30), U + 6, U + 22, 'galv', lod='f', rep=(n, step, 0, 0)),
+                  B(f"Anchor Washer {row}", [x0 - 25, y - 25, U, x0 + 25, y + 25, U + 6], 'galv', lod='f', rep=(n, step, 0, 0))]
     prod('FMC_S_StrFoundation_Plinth_Equipment_Isolated', 'Isolated equipment plinth: inertia block set into the slab with a 25 mm isolation joint all round, chamfered upstand and cast-in anchor bolts', 'IfcFooting',
-         [{"name": "MRI_Isolated", "desc": "MRI isolated plinth; mass and size from the scanner vendor"}, {"name": "CT_Isolated", "desc": "CT isolated plinth; from the vendor"},
-          {"name": "Generator_Isolated", "desc": "generator inertia base; from the generator vendor"}], parts,
-         {"Inertia block 4200 x 1800 x 450 mm (geometry)": A("4200x1800x450", ENG + "; mass ratio from the equipment vendor"), "Isolation joint 25 mm": A(25, "typical vibration break"),
-          "Upstand 150 mm": A(150, "typical plinth"), "Equipment mass and anchor pattern from the vendor": A("vendor", "vendor installation drawing; engineer to confirm")},
-         "Floor at z = 0: inertia block below floor on blinding, isolation filler and sealant around it, chamfered upstand, six anchor bolts with washers and nuts (Fine). Geometry shows the generator type.")
+         [{"name": "MRI_Isolated", "desc": "MRI isolated base 3200 x 2200; mass, size and anchors from the scanner vendor"}, {"name": "CT_Isolated", "desc": "CT isolated base 2600 x 1300; from the vendor"},
+          {"name": "Generator_Isolated", "desc": "generator inertia base 4200 x 1800; from the generator vendor"}], parts,
+         {"Blocks 3200 x 2200, 2600 x 1300, 4200 x 1800 mm (one per type)": A("per type", "placeholder sizes; vendor installation drawing and engineer"), "Isolation joint 25 mm": A(25, "typical vibration break"),
+          "Upstand 100 / 150 mm": A("100/150", "typical plinth"), "Equipment mass and anchor pattern from the vendor": A("vendor", "vendor installation drawing; engineer to confirm")},
+         "Floor at z = 0: inertia block below floor on blinding, isolation filler and sealant around it, chamfered upstand, anchor bolts with washers and nuts (Fine). Each type has its own block and anchor pattern.")
 
 def tank_base():
+    a = S({"3x3_RC": 1200, "4x4_RC": 1700})
     parts = []
-    for row, y in (("Front", -1200), ("Back", 1200)):
-        parts += [B(f"Pad {row}", [-1700, y - 500, -1000, -700, y + 500, -600], 'conc', rep=(2, 2400, 0, 0)),
-                  B(f"Blinding {row}", [-1750, y - 550, -1050, -650, y + 550, -1000], 'blind', rep=(2, 2400, 0, 0)),
-                  PR(f"Pedestal {row}", crect(-1400, y - 200, -1000, y + 200, 15), -600, 300, 'conc', rep=(2, 2400, 0, 0)),
-                  B(f"Base Plate {row}", [-1350, y - 150, 300, -1050, y + 150, 320], 'galv', lod='f', rep=(2, 2400, 0, 0)),
-                  CZ(f"HD Bolt {row} A", [-1300, y - 100], 10, 320, 380, 'galv', lod='f', rep=(2, 2400, 0, 0), seg=10),
-                  CZ(f"HD Bolt {row} B", [-1100, y + 100], 10, 320, 380, 'galv', lod='f', rep=(2, 2400, 0, 0), seg=10)]
-    parts += [B("Ground Beam Front", [-1000, -1315, -400, 1000, -1085, 0], 'conc'), B("Ground Beam Back", [-1000, 1085, -400, 1000, 1315, 0], 'conc'),
-              B("Ground Beam Left", [-1315, -1000, -400, -1085, 1000, 0], 'conc'), B("Ground Beam Right", [1085, -1000, -400, 1315, 1000, 0], 'conc')]
+    for row, y in (("Front", -a), ("Back", a)):
+        parts += [B(f"Pad {row}", [-a - 500, y - 500, -1000, -a + 500, y + 500, -600], 'conc', rep=(2, 2 * a, 0, 0)),
+                  B(f"Blinding {row}", [-a - 550, y - 550, -1050, -a + 550, y + 550, -1000], 'blind', rep=(2, 2 * a, 0, 0)),
+                  PR(f"Pedestal {row}", crect(-a - 200, y - 200, -a + 200, y + 200, 15), -600, 300, 'conc', rep=(2, 2 * a, 0, 0)),
+                  B(f"Base Plate {row}", [-a - 150, y - 150, 300, -a + 150, y + 150, 320], 'galv', lod='f', rep=(2, 2 * a, 0, 0)),
+                  CZ(f"HD Bolt {row} A", [-a - 100, y - 100], 10, 320, 380, 'galv', lod='f', rep=(2, 2 * a, 0, 0), seg=10),
+                  CZ(f"HD Bolt {row} B", [-a + 100, y + 100], 10, 320, 380, 'galv', lod='f', rep=(2, 2 * a, 0, 0), seg=10)]
+    parts += [B("Ground Beam Front", [-a + 200, -a - 115, -400, a - 200, -a + 115, 0], 'conc'), B("Ground Beam Back", [-a + 200, a - 115, -400, a - 200, a + 115, 0], 'conc'),
+              B("Ground Beam Left", [-a - 115, -a + 200, -400, -a + 115, a - 200, 0], 'conc'), B("Ground Beam Right", [a - 115, -a + 200, -400, a + 115, a - 200, 0], 'conc')]
     prod('FMC_S_StrFoundation_Base_TankStand', 'Foundation for a steel water-tank tower: four pads with pedestals tied by ground beams, base plates and holding-down bolts', 'IfcFooting',
-         [{"name": "3x3_RC", "desc": "base for a 3 x 3 m tower (legs at 2.4 m)"}, {"name": "4x4_RC", "desc": "base for a 4 x 4 m tower"}], parts,
-         {"Legs at 2400 mm centres (geometry)": A(2400, "matches FMC_S_GenericModel_TankStand_Steel"), "Pads 1000 x 1000 x 400 mm at 1000 deep": A("1000x1000x400", ENG),
+         [{"name": "3x3_RC", "desc": "base for a 3 x 3 m tower (legs at 2.4 m)"}, {"name": "4x4_RC", "desc": "base for a 4 x 4 m tower (legs at 3.4 m)"}], parts,
+         {"Legs at 2400 / 3400 mm centres (one per type)": A("2400/3400", "matches FMC_S_GenericModel_TankStand_Steel"), "Pads 1000 x 1000 x 400 mm at 1000 deep": A("1000x1000x400", ENG),
           "Pedestals 400 x 400, 300 above ground": A("400x400 +300", ENG), "Ground beams 230 x 400 mm": A("230x400", ENG)},
          "Ground at z = 0: four pads on blinding, chamfered pedestals 300 above ground, tie beams, base plates and two HD bolts per leg (Fine). Tank mass (water full) to the engineer.")
 
-# ================================================================ GENERIC STRUCTURAL ITEMS
 def lift_pit():
     parts = walls4("Pit Wall", -1000, -1550, 1000, 1550, 200, -1500, 0, 'conc')
     parts += [B("Pit Slab A", [-1000, -750, -1800, 1000, 1550, -1500], 'conc'), B("Pit Slab B", [-1000, -1550, -1800, 200, -750, -1500], 'conc'),
@@ -474,7 +527,7 @@ def lift_pit():
 
 def cast_in_channel():
     parts = [RT("Channel", strut(0, 0), -500, 500, 'galv'),
-             RT("Foam Filler", [[-11, 0.5], [11, 0.5], [11, 37], [-11, 37]], -497, 497, 'yellow', lod='f'),
+             RT("Foam Filler", [[-11, 0.5], [11, 0.5], [11, 37], [-11, 37]], -497, 497, 'absyellow', lod='f'),
              RT("End Cap Left", [[-21, 0], [21, 0], [21, 41], [-21, 41]], -503, -500, 'red', lod='f'), RT("End Cap Right", [[-21, 0], [21, 0], [21, 41], [-21, 41]], 500, 503, 'red', lod='f'),
              CZ("Anchor Stem", [-450, 0], 5, 41, 120, 'galv', rep=(5, 225, 0, 0), seg=12), CZ("Anchor Head", [-450, 0], 12, 120, 126, 'galv', rep=(5, 225, 0, 0), seg=16)]
     for i, x in enumerate((-200, 200)):
@@ -487,73 +540,78 @@ def cast_in_channel():
          "Slab soffit at z = 0: channel cast up into the slab with its slot flush at the soffit, foam filler in the slot, end caps, five I-anchors, two T-bolts with nuts and washers below (Fine).")
 
 def embed_plate():
-    parts = [FB("Plate", [-100, 0, 0, 100, 12, 200], 'steel'),
-             CY("Stud Low", [-60, 40], 8, 12, 112, 'steel', rep=(2, 120, 0, 0), seg=12), CY("Stud High", [-60, 160], 8, 12, 112, 'steel', rep=(2, 120, 0, 0), seg=12),
-             CY("Stud Head Low", [-60, 40], 16, 112, 122, 'steel', rep=(2, 120, 0, 0), seg=16), CY("Stud Head High", [-60, 160], 16, 112, 122, 'steel', rep=(2, 120, 0, 0), seg=16),
-             CY("Weld Collar Low", [-60, 40], 11, 12, 16, 'steel', lod='f', rep=(2, 120, 0, 0), seg=16), CY("Weld Collar High", [-60, 160], 11, 12, 16, 'steel', lod='f', rep=(2, 120, 0, 0), seg=16),
-             FB("Centre Mark", [-1, -0.5, 20, 1, 0, 180], 'white', lod='f'), FB("Centre Mark H", [-80, -0.5, 99, 80, 0, 101], 'white', lod='f')]
+    h, t, sx = S({"200x200_Plate": (100, 12, 60), "300x300_Plate": (150, 15, 100)})
+    parts = [FB("Plate", [-h, 0, 0, h, t, 2 * h], 'steel')]
+    for k, z in (("Low", h - sx), ("High", h + sx)):
+        parts += [CY(f"Stud {k}", [-sx, z], 8, t, t + 100, 'steel', rep=(2, 2 * sx, 0, 0), seg=12),
+                  CY(f"Stud Head {k}", [-sx, z], 16, t + 100, t + 110, 'steel', rep=(2, 2 * sx, 0, 0), seg=16),
+                  CY(f"Weld Collar {k}", [-sx, z], 11, t, t + 4, 'steel', lod='f', rep=(2, 2 * sx, 0, 0), seg=16)]
+    parts += [FB("Centre Mark", [-1, -0.5, 20, 1, 0, 2 * h - 20], 'white', lod='f'), FB("Centre Mark H", [-h + 20, -0.5, h - 1, h - 20, 0, h + 1], 'white', lod='f')]
     prod('FMC_S_GenericModel_Embed_Plate', 'Cast-in steel plate with four headed shear studs, face flush with the concrete', 'IfcPlate',
          [{"name": "200x200_Plate", "desc": "embed plate 200 x 200 x 12, 4 studs"}, {"name": "300x300_Plate", "desc": "embed plate 300 x 300 x 15, 4 studs"}], parts,
-         {"Plate 200 x 200 x 12 mm (geometry)": A("200x200x12", ENG), "Studs 4 x 16 dia x 100": A("4x16x100", ENG), "Load from the attached item": A("by others", "engineer to confirm")},
+         {"Plates 200 x 200 x 12 and 300 x 300 x 15 mm (one per type)": A("200x12/300x15", ENG), "Studs 4 x 16 dia x 100": A("4x16x100", ENG), "Load from the attached item": A("by others", "engineer to confirm")},
          "Face at y = 0 flush with the concrete face; studs run back into the concrete (+y): plate, four headed studs with weld collars, centre marks (Fine).")
 
 def movement_joint():
-    L = 1000
-    parts = [B("Filler Board", [-L / 2, -10, -150, L / 2, 10, -30], 'filler'), CX("Backer Rod", [0, -22], 9, -L / 2, L / 2, 'rubber', seg=12),
-             B("Frame Left", [-L / 2, -60, -10, L / 2, -10, 0], 'alu'), B("Frame Right", [-L / 2, 10, -10, L / 2, 60, 0], 'alu'),
-             B("Anchor Leg Left", [-L / 2, -60, -50, L / 2, -55, -10], 'alu'), B("Anchor Leg Right", [-L / 2, 55, -50, L / 2, 60, -10], 'alu'),
-             B("Rubber Insert", [-L / 2, -10, -12, L / 2, 10, 0], 'rubber'),
-             CZ("Screw Left", [-400, -35], 4, 0, 1, 'ss', lod='f', rep=(4, 266, 0, 0), seg=10), CZ("Screw Right", [-400, 35], 4, 0, 1, 'ss', lod='f', rep=(4, 266, 0, 0), seg=10),
+    L, g = 1000, S({"20_Joint": 10, "30_Joint": 15})
+    parts = [B("Filler Board", [-L / 2, -g, -150, L / 2, g, -30], 'filler'), CX("Backer Rod", [0, -22], g - 1 if g > 10 else 9, -L / 2, L / 2, 'rubber', seg=12),
+             B("Frame Left", [-L / 2, -g - 50, -10, L / 2, -g, 0], 'alu'), B("Frame Right", [-L / 2, g, -10, L / 2, g + 50, 0], 'alu'),
+             B("Anchor Leg Left", [-L / 2, -g - 50, -50, L / 2, -g - 45, -10], 'alu'), B("Anchor Leg Right", [-L / 2, g + 45, -50, L / 2, g + 50, -10], 'alu'),
+             B("Rubber Insert", [-L / 2, -g, -12, L / 2, g, 0], 'rubber'),
+             CZ("Screw Left", [-400, -g - 25], 4, 0, 1, 'ss', lod='f', rep=(4, 266, 0, 0), seg=10), CZ("Screw Right", [-400, g + 25], 4, 0, 1, 'ss', lod='f', rep=(4, 266, 0, 0), seg=10),
              CY("Dowel", [-300, -90], 10, -250, 250, 'rebar', lod='f', rep=(3, 300, 0, 0), seg=12),
-             CY("Dowel Sleeve", [-300, -90], 13, 10, 260, 'grey', lod='f', rep=(3, 300, 0, 0), seg=12)]
+             CY("Dowel Sleeve", [-300, -90], 13, g, 260, 'grey', lod='f', rep=(3, 300, 0, 0), seg=12)]
     prod('FMC_S_GenericModel_MovementJoint_Slab', 'Slab movement joint: fibreboard filler, backer rod, flush aluminium floor joint cover with rubber insert, sleeved dowels', 'IfcBuildingElementProxy',
          [{"name": "20_Joint", "desc": "20 mm joint"}, {"name": "30_Joint", "desc": "30 mm joint"}], parts,
-         {"Joint width 20 mm (geometry)": A(20, ENG), "Cover 120 mm wide, flush": A(120, "typical hospital floor joint cover; cleanable"),
+         {"Joint width 20 and 30 mm (one per type)": A("20/30", ENG), "Cover 100 mm frames each side, flush": A(100, "typical hospital floor joint cover; cleanable"),
           "Dowels 20 dia at 300, 500 long": A("20 at 300", ENG)},
-         "Floor at z = 0, joint along x: filler board and backer rod in the gap, flush aluminium cover frames with anchor legs and screws, rubber insert, sleeved dowels across the joint (Fine). Shown 1000 long.")
+         "Floor at z = 0, joint along x: fibreboard filler and backer rod in the gap, flush aluminium cover frames with anchor legs and screws, rubber insert, sleeved dowels across the joint (Fine). Shown 1000 long.")
 
 def tank_stand():
-    H, a = 3000, 1200
+    H, a = S({"3m_Tower": 3000, "6m_Tower": 6000}), 1200
+    zm = H / 2
     parts = [B("Leg Front", [-a - 50, -a - 50, 15, -a + 50, -a + 50, H], 'galv', rep=(2, 2 * a, 0, 0)),
              B("Leg Back", [-a - 50, a - 50, 15, -a + 50, a + 50, H], 'galv', rep=(2, 2 * a, 0, 0)),
              B("Base Plate Front", [-a - 125, -a - 125, 0, -a + 125, -a + 125, 15], 'galv', rep=(2, 2 * a, 0, 0)),
              B("Base Plate Back", [-a - 125, a - 125, 0, -a + 125, a + 125, 15], 'galv', rep=(2, 2 * a, 0, 0)),
-             B("Mid Rail X", [-a + 50, -a - 40, 1460, a - 50, -a + 40, 1540], 'galv', rep=(2, 0, 2 * a, 0)),
-             B("Mid Rail Y", [-a - 40, -a + 50, 1460, -a + 40, a - 50, 1540], 'galv', rep=(2, 2 * a, 0, 0)),
+             B("Mid Rail X", [-a + 50, -a - 40, zm - 40, a - 50, -a + 40, zm + 40], 'galv', rep=(2, 0, 2 * a, 0)),
+             B("Mid Rail Y", [-a - 40, -a + 50, zm - 40, -a + 40, a - 50, zm + 40], 'galv', rep=(2, 2 * a, 0, 0)),
              B("Ring Beam X", [-a - 50, -a - 37, H - 150, a + 50, -a + 37, H], 'galv', rep=(2, 0, 2 * a, 0)),
              B("Ring Beam Y", [-a - 37, -a + 50, H - 150, -a + 37, a - 50, H], 'galv', rep=(2, 2 * a, 0, 0)),
-             B("Deck Joist", [-1000 - 25, -a + 37, H - 100, -1000 + 25, a - 37, H], 'galv', rep=(5, 500, 0, 0)),
+             B("Deck Joist", [-600 - 25, -a + 37, H - 100, -600 + 25, a - 37, H], 'galv', rep=(3, 600, 0, 0)),
              B("Deck Plate", [-a - 50, -a - 50, H, a + 50, a + 50, H + 6], 'galv')]
-    for z0, z1, bay in ((15, 1460, "Lower"), (1540, H - 150, "Upper")):
+    for z0, z1, bay in ((15, zm - 40, "Lower"), (zm + 40, H - 150, "Upper")):
         x0, x1 = -a + 50, a - 50
         parts.append(FR(f"Brace X {bay} A", [[x0, z0], [x0 + 90, z0], [x1, z1], [x1 - 90, z1]], -a - 12, -a - 4, 'galv', rep=(2, 0, 2 * a + 16, 0)))
         parts.append(FR(f"Brace X {bay} B", [[x1, z0], [x1 - 90, z0], [x0, z1], [x0 + 90, z1]], -a - 4, -a + 4, 'galv', rep=(2, 0, 2 * a, 0)))
         parts.append(RT(f"Brace Y {bay} A", [[x0, z0], [x0 + 90, z0], [x1, z1], [x1 - 90, z1]], -a - 12, -a - 4, 'galv', rep=(2, 2 * a + 16, 0, 0)))
         parts.append(RT(f"Brace Y {bay} B", [[x1, z0], [x1 - 90, z0], [x0, z1], [x0 + 90, z1]], -a - 4, -a + 4, 'galv', rep=(2, 2 * a, 0, 0)))
     parts += [B("Ladder Stile Left", [-210, -a - 160, 0, -190, -a - 140, H + 1000], 'galv'), B("Ladder Stile Right", [190, -a - 160, 0, 210, -a - 140, H + 1000], 'galv'),
-              CX("Ladder Rung", [-a - 150, 300], 10, -190, 190, 'galv', rep=(13, 0, 0, 300), seg=10),
-              B("Ladder Bracket", [-200, -a - 150, 1480, 200, -a - 40, 1520], 'galv', lod='f', rep=(2, 0, 0, 1400)),
+              CX("Ladder Rung", [-a - 150, 300], 10, -190, 190, 'galv', rep=(int((H + 700) // 300), 0, 0, 300), seg=10),
+              B("Ladder Bracket", [-200, -a - 150, zm - 20, 200, -a - 40, zm + 20], 'galv', lod='f', rep=(2, 0, 0, H - 100 - zm)),
               CZ("Guard Post", [-a - 30, -a - 30], 20, H + 6, H + 1100, 'galv', rep=(2, 2 * a + 60, 0, 0), seg=12),
               CZ("Guard Post Back", [-a - 30, a + 30], 20, H + 6, H + 1100, 'galv', rep=(2, 2 * a + 60, 0, 0), seg=12),
               CX("Guard Rail X", [-a - 30, H + 1080], 20, -a - 30, a + 30, 'galv', rep=(2, 0, 2 * a + 60, 0), seg=12),
               CY("Guard Rail Y", [-a - 30, H + 1080], 20, -a - 30, a + 30, 'galv', rep=(2, 2 * a + 60, 0, 0), seg=12)]
     prod('FMC_S_GenericModel_TankStand_Steel', 'Galvanised steel water-tank tower: four SHS legs, X-braced in two bays, channel ring beam, joists and chequer-plate deck, ladder and guard rail', 'IfcBuildingElementProxy',
          [{"name": "3m_Tower", "desc": "tank tower, deck at 3.0 m"}, {"name": "6m_Tower", "desc": "tank tower, deck at 6.0 m"}], parts,
-         {"Legs at 2400 mm centres, deck 2500 square": A("2400 / 2500", "typical 10 000 L tank tower; engineer to confirm"), "Deck at 3000 mm (geometry)": A(3000, ENG),
+         {"Legs at 2400 mm centres, deck 2500 square": A("2400 / 2500", "typical 10 000 L tank tower; engineer to confirm"), "Deck at 3000 / 6000 mm (one per type)": A("3000/6000", ENG),
           "Legs SHS 100 x 100, braces 60 x 8 flat": A("SHS100 / FL60x8", ENG), "Design load: tank full of water": A("by engineer", "engineer to confirm")},
-         "Tower standing on its base (FMC_S_StrFoundation_Base_TankStand): legs on base plates, mid rails, flat-bar X bracing on all four faces in two bays, ring beam, five deck joists, deck plate, front ladder rising 1 m above the deck, corner posts and guard rail.")
+         "Tower standing on its base (FMC_S_StrFoundation_Base_TankStand): legs on base plates, mid rails, flat-bar X bracing on all four faces in two bays, ring beam, three deck joists, deck plate, front ladder rising 1 m above the deck, corner posts and guard rail. A 6 m ladder needs a safety cage per the safety adviser (not modelled).")
 
 def base_plate():
-    parts = [B("Grout", [-160, -160, 0, 160, 160, 30], 'mortar'), B("Plate", [-150, -150, 30, 150, 150, 50], 'steel'),
-             CZ("Grout Hole", [0, 0], 25, 50, 50.6, 'black', lod='f'), B("Shear Key", [-50, -50, -100, 50, 50, 30], 'steel', lod='f')]
-    for row, y in (("Front", -100), ("Back", 100)):
-        parts += [CZ(f"Anchor Bolt {row}", [-100, y], 10, -400, 110, 'galv', rep=(2, 200, 0, 0), seg=12),
-                  B(f"Plate Washer {row}", [-125, y - 25, 50, -75, y + 25, 56], 'galv', lod='f', rep=(2, 200, 0, 0)),
-                  PR(f"Nut {row}", hexp(-100, y, 30), 56, 72, 'galv', lod='f', rep=(2, 200, 0, 0)),
-                  B(f"Anchor Plate {row}", [-140, y - 40, -400, -60, y + 40, -390], 'steel', lod='f', rep=(2, 200, 0, 0))]
+    P2, bx, dd, t = S({"300x300_BasePlate": (150, 100, 20, 20), "400x400_BasePlate": (200, 140, 24, 25)})
+    parts = [B("Grout", [-P2 - 10, -P2 - 10, 0, P2 + 10, P2 + 10, 30], 'mortar'), B("Plate", [-P2, -P2, 30, P2, P2, 30 + t], 'steel'),
+             CZ("Grout Hole", [0, 0], 25, 30 + t, 30.6 + t, 'black', lod='f'), B("Shear Key", [-50, -50, -100, 50, 50, 30], 'steel', lod='f')]
+    zt = 30 + t
+    for row, y in (("Front", -bx), ("Back", bx)):
+        parts += [CZ(f"Anchor Bolt {row}", [-bx, y], dd / 2, -400, zt + 60, 'galv', rep=(2, 2 * bx, 0, 0), seg=12),
+                  B(f"Plate Washer {row}", [-bx - 25, y - 25, zt, -bx + 25, y + 25, zt + 6], 'galv', lod='f', rep=(2, 2 * bx, 0, 0)),
+                  PR(f"Nut {row}", hexp(-bx, y, dd * 1.5), zt + 6, zt + 6 + dd * 0.8, 'galv', lod='f', rep=(2, 2 * bx, 0, 0)),
+                  B(f"Anchor Plate {row}", [-bx - 40, y - 40, -400, -bx + 40, y + 40, -390], 'steel', lod='f', rep=(2, 2 * bx, 0, 0))]
     prod('FMC_S_StrConnection_BasePlate', 'Column base plate connection: plate on grout with a shear key, four cast-in anchor bolts with anchor plates, plate washers and nuts', 'IfcPlate',
          [{"name": "300x300_BasePlate", "desc": "300 x 300 x 20, 4 x M20"}, {"name": "400x400_BasePlate", "desc": "400 x 400 x 25, 4 x M24"}], parts,
-         {"Plate 300 x 300 x 20 mm (geometry)": A("300x300x20", ENG), "Anchors 4 x M20, 400 embedment": A("4xM20x400", ENG), "Grout 30 mm non-shrink": A(30, "typical practice")},
+         {"Plates 300 x 300 x 20 (4 x M20) and 400 x 400 x 25 (4 x M24)": A("300x20 M20 / 400x25 M24", ENG), "Anchor embedment 400 mm": A(400, ENG), "Grout 30 mm non-shrink": A(30, "typical practice")},
          "Top of concrete at z = 0: grout bed, plate with grout hole, shear key, anchor bolts cast into the concrete with anchor plates, plate washers and nuts (Fine). The column is a separate family.")
 
 def fin_plate():
@@ -569,56 +627,57 @@ def fin_plate():
          "Support face at x = 0, top at z = 0: fin plate with fillet welds both sides, three bolts with heads, washers, nuts and thread ends (Fine). The beam web sits against the plate on +y.")
 
 def rad_sleeve():
-    r = 50
+    r = S({"100dia_Lead": 50, "150dia_Lead": 75})
     parts = [T("Sleeve Tube", 'y', [0, 0], ring(r, r + 4, -140, 140), 'gi', seg=32), T("Lead Lining", 'y', [0, 0], ring(r + 4, r + 7, -115, 115), 'lead', seg=32),
              T("Lead Collar Front", 'y', [0, 0], ring(r + 4, r + 60, -118, -115), 'lead', seg=32), T("Lead Collar Back", 'y', [0, 0], ring(r + 4, r + 60, 115, 118), 'lead', seg=32),
              T("Sealant Ring Front", 'y', [0, 0], ring(r + 4, r + 12, -124, -118), 'black', lod='f', seg=32), T("Sealant Ring Back", 'y', [0, 0], ring(r + 4, r + 12, 118, 124), 'black', lod='f', seg=32),
-             FB("Radiation Label", [-25, -119.5, r + 22, 25, -118, r + 52], 'yellow', lod='f')]
+             FB("Radiation Label", [-25, -119.5, r + 22, 25, -118, r + 52], 'safety', lod='f')]
     prod('FMC_S_GenericModel_Opening_RadiationShielded_Sleeve', 'Lead-lined through-wall sleeve for a shielded room: steel sleeve, lead lining and lapping collars on both faces, sealant and warning label', 'IfcBuildingElementProxy',
          [{"name": "100dia_Lead", "desc": "100 mm bore sleeve"}, {"name": "150dia_Lead", "desc": "150 mm bore sleeve"}], parts,
-         {"Bore 100 mm (geometry)": A(100, "service size"), "Lead code and lap from the RPA shielding report": A("RPA report", "radiation protection adviser; not decided here"),
+         {"Bore 100 and 150 mm (one per type)": A("100/150", "service size"), "Lead code and lap from the RPA shielding report": A("RPA report", "radiation protection adviser; not decided here"),
           "Collar lap 60 mm beyond sleeve": A(60, "typical; RPA to confirm"), "Wall 230 mm (sleeve 280 long)": A(230, "typical wall")},
          "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision.")
 
-# ================================================================ DRAINAGE STRUCTURES
 def benching_halves(r, w, z0, z1, mat):
     a0 = math.asin(w / r); pts = [[round(r * math.cos(t), 1), round(r * math.sin(t), 1)] for t in [a0 + (math.pi - 2 * a0) * k / 12 for k in range(13)]]
     return [PR("Benching Back", pts, z0, z1, mat), PR("Benching Front", [[x, -y] for x, y in reversed(pts)], z0, z1, mat)]
 
 def manhole_precast():
-    ri, ro = 525, 625
+    ri, ro = S({"1050dia_Precast": (525, 625), "1200dia_Precast": (600, 720)})
     parts = cover("Access", 0, 0, 600, 600, 0, ribs=5)
     parts += [B("Adjustment Course Front", [-400, -400, -250, 400, -300, -100], 'brick'), B("Adjustment Course Back", [-400, 300, -250, 400, 400, -100], 'brick'),
               B("Adjustment Course Left", [-400, -300, -250, -300, 300, -100], 'brick'), B("Adjustment Course Right", [300, -300, -250, 400, 300, -100], 'brick'),
-              CZ("Cover Slab", [0, 0], 700, -400, -250, 'pre', seg=48), B("Access Opening", [-300, -300, -401, 300, 300, -249], 'pre', void=True),
+              CZ("Cover Slab", [0, 0], ro + 75, -400, -250, 'pre', seg=48), B("Access Opening", [-300, -300, -401, 300, 300, -249], 'pre', void=True),
               T("Chamber Ring", 'z', [0, 0], ring(ri, ro, -900, -400), 'pre', rep=(2, 0, 0, -500), seg=48),
               T("Base Unit", 'z', [0, 0], [[0, -2050], [ro, -2050], [ro, -1400], [ri, -1400], [ri, -1900], [0, -1900]], 'pre', seg=48),
               B("Channel", [-ri, -75, -1900, ri, 75, -1830], 'pre')]
     parts += benching_halves(ri, 75, -1900, -1720, 'pre')
-    parts += [B("Step Iron", [-150, 395, -700, 150, 415, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
-              B("Step Iron Leg L", [-150, 415, -700, -130, ri, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
-              B("Step Iron Leg R", [130, 415, -700, 150, ri, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
-              CX("Inlet Pipe", [0, -1820], 80, -950, -ri + 10, 'upvc'), CX("Outlet Pipe", [0, -1845], 80, ri - 10, 950, 'upvc')]
+    parts += [B("Step Iron", [-150, ri - 130, -700, 150, ri - 110, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
+              B("Step Iron Leg L", [-150, ri - 110, -700, -130, ri, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
+              B("Step Iron Leg R", [130, ri - 110, -700, 150, ri, -680], 'galv', lod='f', rep=(4, 0, 0, -300)),
+              CX("Inlet Pipe", [0, -1820], 80, -1000, -540, 'upvc'), CX("Outlet Pipe", [0, -1845], 80, 540, 1000, 'upvc')]
     prod('FMC_C_Structure_Manhole_Precast', 'Precast concrete inspection chamber: base unit with benching and channel, chamber rings, cover slab, brick adjustment course, ductile-iron cover and frame', 'IfcDistributionChamberElement',
          [{"name": "1050dia_Precast", "desc": "1050 internal diameter"}, {"name": "1200dia_Precast", "desc": "1200 internal diameter"}], parts,
-         {"Internal diameter 1050 mm (geometry)": A(1050, "typical precast ring (BS EN 1917)"), "Depth to invert 1900 mm shown": A(1900, "depth from the drainage design"),
+         {"Internal diameter 1050 and 1200 mm (one per type)": A("1050/1200", "typical precast rings (BS EN 1917)"), "Depth to invert 1900 mm shown": A(1900, "depth from the drainage design"),
           "Cover 600 x 600 D400 near roads": A("600x600 D400", "BS EN 124; class by location"), "Pipes 160 mm uPVC": A(160, "drainage design")},
-         "Ground at z = 0: cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs with connectors.",
+         "Ground at z = 0: ductile-iron cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs (shared by both types) with connectors.",
          conns=[san("SAN In", "Inlet Pipe", "left", 160, "In"), san("SAN Out", "Outlet Pipe", "right", 160, "Out")])
 
 def manhole_brick():
-    parts = cover("Access", 0, -150, 600, 450, 0, ribs=4)
-    parts += [B("Cover Slab", [-530, -680, -230, 530, 680, -100], 'conc'), B("Access Opening", [-300, -375, -231, 300, 75, -99], 'conc', void=True)]
-    parts += walls4("Chamber Wall", -530, -680, 530, 680, 230, -1430, -230, 'brick')
-    parts += [B("Base Slab", [-630, -780, -1580, 630, 780, -1430], 'conc'), B("Channel", [-75, -450, -1430, 75, 450, -1370], 'conc'),
-              B("Benching Left", [-300, -450, -1430, -75, 450, -1260], 'conc'), B("Benching Right", [75, -450, -1430, 300, 450, -1260], 'conc'),
-              B("Step Iron", [-150, -450, -600, 150, -430, -580], 'galv', lod='f', rep=(3, 0, 0, -300)),
-              CY("Inlet Pipe", [0, -1350], 80, -950, -440, 'upvc'), CY("Outlet Pipe", [0, -1365], 80, 440, 950, 'upvc')]
+    ix, iy = S({"600x900_Brick": (300, 450), "900x1200_Brick": (450, 600)})
+    ox, oy = ix + 230, iy + 230
+    parts = cover("Access", 0, -iy + 300, 600, 450, 0, ribs=4)
+    parts += [B("Cover Slab", [-ox, -oy, -230, ox, oy, -100], 'conc'), B("Access Opening", [-300, -iy + 75, -231, 300, -iy + 525, -99], 'conc', void=True)]
+    parts += walls4("Chamber Wall", -ox, -oy, ox, oy, 230, -1430, -230, 'brick')
+    parts += [B("Base Slab", [-ox - 100, -oy - 100, -1580, ox + 100, oy + 100, -1430], 'conc'), B("Channel", [-75, -iy, -1430, 75, iy, -1370], 'conc'),
+              B("Benching Left", [-ix, -iy, -1430, -75, iy, -1260], 'conc'), B("Benching Right", [75, -iy, -1430, ix, iy, -1260], 'conc'),
+              B("Step Iron", [-150, -iy, -600, 150, -iy + 20, -580], 'galv', lod='f', rep=(3, 0, 0, -300)),
+              CY("Inlet Pipe", [0, -1350], 80, -1100, -590, 'upvc'), CY("Outlet Pipe", [0, -1365], 80, 590, 1100, 'upvc')]
     prod('FMC_C_Structure_Manhole_Brick', 'Brick inspection chamber, one-brick walls on a concrete base, benching and channel, RC cover slab, ductile-iron cover and frame', 'IfcDistributionChamberElement',
          [{"name": "600x900_Brick", "desc": "internal 600 x 900"}, {"name": "900x1200_Brick", "desc": "internal 900 x 1200"}], parts,
-         {"Internal 600 x 900 mm (geometry)": A("600x900", "typical shallow chamber"), "Walls 230 mm burnt clay brick in 1:4": A(230, "typical Uganda practice"),
+         {"Internal 600 x 900 and 900 x 1200 mm (one per type)": A("600x900/900x1200", "typical shallow chambers"), "Walls 230 mm burnt clay brick in 1:4": A(230, "typical Uganda practice"),
           "Depth 1200 mm to benching": A(1200, "drainage design"), "Cover 600 x 450 B125": A("600x450 B125", "BS EN 124; footway")},
-         "Ground at z = 0: cover and frame over an opening in the RC cover slab, four brick walls, base slab, channel and benching, step irons (Fine), pipe stubs along y with connectors.",
+         "Ground at z = 0: cover and frame over an opening in the RC cover slab, four brick walls, base slab, channel and benching, step irons (Fine), pipe stubs along y (shared by both types) with connectors.",
          conns=[san("SAN In", "Inlet Pipe", "front", 160, "In"), san("SAN Out", "Outlet Pipe", "back", 160, "Out")])
 
 def catchpit():
@@ -656,19 +715,22 @@ def gully():
          conns=[san("SAN Out", "Outlet Pipe", "right", 150, "Out")])
 
 def septic():
-    parts = [B("Base Slab", [-2100, -1100, -2500, 2100, 1100, -2250], 'conc')] + walls4("Tank Wall", -2000, -1000, 2000, 1000, 200, -2250, -200, 'conc')
-    parts += [B("Baffle Wall", [600, -800, -2250, 750, 800, -500], 'conc'), B("Roof Slab", [-2000, -1000, -200, 2000, 1000, 0], 'conc'),
-              B("Access Shaft 1", [-1650, -450, 0, -750, 450, 150], 'conc'), B("Access Shaft 2", [750, -450, 0, 1650, 450, 150], 'conc')]
-    parts += [B("Shaft Opening 1", [-1500, -300, -201, -900, 300, 150], 'conc', void=True), B("Shaft Opening 2", [900, -300, -201, 1500, 300, 150], 'conc', void=True)]
-    parts += cover("Cover 1", -1200, 0, 600, 600, 250, ribs=4) + cover("Cover 2", 1200, 0, 600, 600, 250, ribs=4)
-    parts += [CZ("Vent Pipe", [1800, 800], 55, 0, 2500, 'upvc', seg=16), T("Vent Cowl", 'z', [1800, 800], [[0, 2480], [55, 2480], [110, 2560], [110, 2600], [0, 2640]], 'upvc', seg=16),
-              CX("Inlet Pipe", [0, -500], 80, -2400, -1990, 'upvc'), CX("Outlet Pipe", [0, -575], 80, 1990, 2400, 'upvc'),
-              CZ("Inlet Dip Tee", [-1700, 0], 80, -1200, -400, 'upvc', lod='f', seg=16), CZ("Outlet Dip Tee", [1700, 0], 80, -1200, -400, 'upvc', lod='f', seg=16)]
+    Li, Wi, Hi = S({"10m3_RC": (3600, 1600, 2050), "20m3_RC": (4800, 2000, 2100), "40m3_RC": (6600, 2800, 2200)})
+    xa = -2000; xb = xa + Li + 400; w2 = Wi / 2 + 200; zb = -200 - Hi
+    xbf = xa + 200 + Li * 2 / 3
+    parts = [B("Base Slab", [xa - 100, -w2 - 100, zb - 250, xb + 100, w2 + 100, zb], 'conc')] + walls4("Tank Wall", xa, -w2, xb, w2, 200, zb, -200, 'conc')
+    parts += [B("Baffle Wall", [xbf, -Wi / 2, zb, xbf + 150, Wi / 2, -500], 'conc'), B("Roof Slab", [xa, -w2, -200, xb, w2, 0], 'conc'),
+              B("Access Shaft 1", [-1650, -450, 0, -750, 450, 150], 'conc'), B("Access Shaft 2", [xb - 1250, -450, 0, xb - 350, 450, 150], 'conc')]
+    parts += [B("Shaft Opening 1", [-1500, -300, -201, -900, 300, 150], 'conc', void=True), B("Shaft Opening 2", [xb - 1100, -300, -201, xb - 500, 300, 150], 'conc', void=True)]
+    parts += cover("Cover 1", -1200, 0, 600, 600, 250, ribs=4) + cover("Cover 2", xb - 800, 0, 600, 600, 250, ribs=4)
+    parts += [CZ("Vent Pipe", [xb - 200, w2 - 200], 55, 0, 2500, 'upvc', seg=16), T("Vent Cowl", 'z', [xb - 200, w2 - 200], [[0, 2480], [55, 2480], [110, 2560], [110, 2600], [0, 2640]], 'upvc', seg=16),
+              CX("Inlet Pipe", [0, -500], 80, -2400, -1990, 'upvc'), CX("Outlet Pipe", [0, -575], 80, xb - 10, xb + 400, 'upvc'),
+              CZ("Inlet Dip Tee", [-1700, 0], 80, -1200, -400, 'upvc', lod='f', seg=16), CZ("Outlet Dip Tee", [xb - 300, 0], 80, -1200, -400, 'upvc', lod='f', seg=16)]
     prod('FMC_C_Structure_SepticTank_MultiChamber', 'Two-chamber reinforced concrete septic tank with baffle wall, roof slab, raised access shafts with covers, dip tees and vent', 'IfcTank',
-         [{"name": "10m3_RC", "desc": "about 10 m3"}, {"name": "20m3_RC", "desc": "about 20 m3"}, {"name": "40m3_RC", "desc": "about 40 m3"}], parts,
-         {"Internal 3600 x 1600 x 2050 mm (10 m3 geometry)": A("3600x1600x2050", "sizing by the engineer (note: where no sewer)"),
+         [{"name": "10m3_RC", "desc": "internal 3600 x 1600 x 2050"}, {"name": "20m3_RC", "desc": "internal 4800 x 2000 x 2100"}, {"name": "40m3_RC", "desc": "internal 6600 x 2800 x 2200"}], parts,
+         {"Internal 3600x1600x2050, 4800x2000x2100, 6600x2800x2200 mm (one per type)": A("per type", "sizing by the engineer (note: where no sewer)"),
           "Chamber split 2:1": A("2:1", "typical practice"), "Walls 200, base 250, roof 200 mm": A("200/250/200", ENG), "Vent 110 mm to 2.5 m": A(110, "typical")},
-         "Ground at z = 0 at roof level: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer.",
+         "Ground at z = 0 at roof level, inlet end fixed at x = -2000 and the tank growing toward +x by type: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer.",
          conns=[san("SAN In", "Inlet Pipe", "left", 160, "In"), san("SAN Out", "Outlet Pipe", "right", 160, "Out")])
 
 def soakpit():
@@ -688,30 +750,30 @@ def soakpit():
          conns=[san("SAN In", "Inlet Pipe", "left", 160, "In")])
 
 def wwtp():
-    L2, W2 = 4500, 1200
-    parts = [B("Plinth", [-4800, -1500, 0, 6300, 1500, 300], 'conc'), B("Tank Body", [-L2, -W2, 300, L2, W2, 2900], 'paint'),
-             B("Rib Front", [-4030, -W2 - 25, 300, -3970, -W2, 2900], 'paint', lod='f', rep=(9, 1000, 0, 0)),
-             B("Rib Back", [-4030, W2, 300, -3970, W2 + 25, 2900], 'paint', lod='f', rep=(9, 1000, 0, 0)),
-             B("Walkway Grating", [-4400, -400, 2900, 4400, 400, 2940], 'galv'),
-             CZ("Rail Post Front", [-4000, -400], 20, 2940, 4040, 'galv', rep=(5, 2000, 0, 0), seg=12),
-             CZ("Rail Post Back", [-4000, 400], 20, 2940, 4040, 'galv', rep=(5, 2000, 0, 0), seg=12),
-             CX("Top Rail", [-400, 4020], 20, -4000, 4000, 'galv', rep=(2, 0, 800, 0), seg=12),
-             CX("Knee Rail", [-400, 3500], 15, -4000, 4000, 'galv', lod='f', rep=(2, 0, 800, 0), seg=12),
-             B("Access Hatch", [-3400, -1050, 2900, -2600, -500, 2930], 'galv', rep=(4, 2000, 0, 0)),
+    Lb, W2 = S({"50m3d_Packaged": 9000, "100m3d_Packaged": 12000}), 1200
+    xa = 4500 - Lb; nr = int(Lb // 1500)
+    parts = [B("Plinth", [xa - 300, -1500, 0, 6300, 1500, 300], 'conc'), B("Tank Body", [xa, -W2, 300, 4500, W2, 2900], 'paint'),
+             B("Rib Front", [xa + 720, -W2 - 25, 300, xa + 780, -W2, 2900], 'paint', lod='f', rep=(nr, 1500, 0, 0)),
+             B("Rib Back", [xa + 720, W2, 300, xa + 780, W2 + 25, 2900], 'paint', lod='f', rep=(nr, 1500, 0, 0)),
+             B("Walkway Grating", [xa + 100, -400, 2900, 4400, 400, 2940], 'galv'),
+             CZ("Rail Post Front", [xa + 500, -400], 20, 2940, 4040, 'galv', rep=(int(Lb // 2000) + 1, (Lb - 1000) / int(Lb // 2000), 0, 0), seg=12),
+             CZ("Rail Post Back", [xa + 500, 400], 20, 2940, 4040, 'galv', rep=(int(Lb // 2000) + 1, (Lb - 1000) / int(Lb // 2000), 0, 0), seg=12),
+             CX("Top Rail", [-400, 4020], 20, xa + 500, 4000, 'galv', rep=(2, 0, 800, 0), seg=12),
+             B("Access Hatch", [xa + 1100, -1050, 2900, xa + 1900, -500, 2930], 'galv', rep=(int(Lb // 2000), 2000, 0, 0)),
              B("Blower Kiosk", [4600, -1000, 300, 6100, 1000, 2500], 'epoxy'), B("Kiosk Roof", [4550, -1050, 2500, 6150, 1050, 2560], 'epoxy'),
              FB("Kiosk Louvre", [5300, -1010, 1800, 5950, -1000, 1840], 'grey', lod='f', rep=(5, 0, 0, -80)),
              FB("Control Panel", [4700, -1060, 900, 5200, -1000, 1900], 'grey'), FB("Panel Handle", [5150, -1075, 1350, 5170, -1060, 1450], 'black', lod='f'),
              CY("Panel Lamp Green", [4800, 1800], 10, -1066, -1060, 'ledg', lod='f', seg=12), CY("Panel Lamp Red", [4840, 1800], 10, -1066, -1060, 'ledr', lod='f', seg=12),
              CX("Air Main", [700, 2300], 40, 4500, 4600, 'gi', lod='f', seg=12),
-             CX("Inlet Pipe", [800, 2200], 80, -4900, -4490, 'upvc'), CY("Outlet Pipe", [4000, 700], 80, -1500, -1190, 'upvc')]
-    parts += ladder("Access Ladder", -4650, -250, 250, 300, 3900, n=11)
+             CY("Inlet Pipe", [3500, 2200], 80, 1190, 1500, 'upvc'), CY("Outlet Pipe", [4000, 700], 80, -1500, -1190, 'upvc')]
+    parts += ladder("Access Ladder", xa - 150, -250, 250, 300, 3900, n=11)
     prod('FMC_C_Structure_WWTP_Packaged', 'Packaged wastewater treatment plant for hospital effluent: containerised steel tank with walkway, handrails and hatches, blower/control kiosk, ladder, on a concrete plinth', 'IfcBuildingElementProxy',
-         [{"name": "50m3d_Packaged", "desc": "50 m3/day plant envelope", "values": {"Apparent Load": 5500}},
-          {"name": "100m3d_Packaged", "desc": "100 m3/day plant envelope", "values": {"Apparent Load": 9000}}], parts,
-         {"Envelope 9000 x 2400 x 2600 mm on 300 plinth (50 m3/d)": A("9000x2400x2600", "typical packaged MBBR/SBR plant envelope; vendor to confirm"),
-          "Supply 415 V 3-phase, 5.5 kVA (50 m3/d)": A("415V 5.5kVA", "typical blower load; vendor to confirm"), "Effluent standard from NEMA permit": A("NEMA", "by the process engineer")},
-         "Plant envelope on a plinth (ground z = 0): ribbed tank body, top walkway with posts and rails, four hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet and outlet stubs with connectors; power on the panel.",
-         conns=[san("SAN In", "Inlet Pipe", "left", 160, "In"), san("SAN Out", "Outlet Pipe", "front", 160, "Out"), power("Control Panel", "front")],
+         [{"name": "50m3d_Packaged", "desc": "50 m3/day plant, tank 9000 long", "values": {"Apparent Load": 5500}},
+          {"name": "100m3d_Packaged", "desc": "100 m3/day plant, tank 12000 long", "values": {"Apparent Load": 9000}}], parts,
+         {"Tank 9000 / 12000 x 2400 x 2600 mm on 300 plinth (one per type)": A("9000/12000", "typical packaged MBBR/SBR plant envelope; vendor to confirm"),
+          "Supply 415 V 3-phase, 5.5 / 9 kVA": A("415V 5.5/9kVA", "typical blower load; vendor to confirm"), "Effluent standard from NEMA permit": A("NEMA", "by the process engineer")},
+         "Plant envelope on a plinth (ground z = 0), kiosk end fixed and the tank growing toward -x by type: ribbed tank body, top walkway with posts and rails, hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet (back) and outlet (front) stubs near the kiosk with connectors; power on the panel.",
+         conns=[san("SAN In", "Inlet Pipe", "back", 160, "In"), san("SAN Out", "Outlet Pipe", "front", 160, "Out"), power("Control Panel", "front")],
          tv={"Voltage": 415, "Number of Poles": 3, "Apparent Load": 5500})
 
 def neutralisation():
@@ -725,7 +787,7 @@ def neutralisation():
     parts += cover("Sampling", 900, 0, 300, 300, 1, ribs=0, frame=40)
     parts += [CX("Inlet Pipe", [0, -500], 55, -1000, -640, 'upvc'), CX("Outlet Pipe", [0, -550], 55, 1140, 1450, 'upvc'),
               CZ("Vent Pipe", [-550, 550], 28, 0, 2400, 'upvc', seg=12), T("Vent Cowl", 'z', [-550, 550], [[0, 2390], [28, 2390], [60, 2440], [0, 2470]], 'upvc', seg=12),
-              FB("Chemical Warning Sign", [-640, 520, 1500, -460, 522, 1680], 'yellow', lod='f')]
+              FB("Chemical Warning Sign", [-640, 520, 1500, -460, 522, 1680], 'safety', lod='f')]
     prod('FMC_C_Structure_NeutralisationPit_Lab', 'Laboratory effluent neutralisation chamber: concrete chamber with HDPE liner, limestone-chip bed and baffle, sealed cover, sampling chamber, vent', 'IfcDistributionChamberElement',
          ["1000x1000_Neutralisation"], parts,
          {"Internal 1000 x 1000 x 1050 mm": A("1000x1000x1050", "typical small lab neutralisation chamber"), "Limestone chips 400 mm bed": A(400, "typical; process engineer to confirm"),
@@ -734,19 +796,21 @@ def neutralisation():
          conns=[san("SAN In", "Inlet Pipe", "left", 110, "In"), san("SAN Out", "Outlet Pipe", "right", 110, "Out")])
 
 def grease_trap():
-    parts = walls4("Chamber Wall", -850, -550, 850, 550, 150, -1150, -150, 'conc')
-    parts += [B("Base", [-900, -600, -1300, 900, 600, -1150], 'conc'), B("Cover Slab", [-850, -550, -150, 850, 550, 0], 'conc'),
-              B("Baffle", [100, -400, -1050, 175, 400, -300], 'conc', lod='mf'), B("Opening 1", [-650, -225, -151, -50, 225, -6], 'conc', void=True),
+    Wi = S({"1000L_Precast": 800, "2000L_Precast": 1300}); Hi = S({"1000L_Precast": 1000, "2000L_Precast": 1200})
+    w2 = Wi / 2 + 150; zb = -150 - Hi
+    parts = walls4("Chamber Wall", -850, -w2, 850, w2, 150, zb, -150, 'conc')
+    parts += [B("Base", [-900, -w2 - 50, zb - 150, 900, w2 + 50, zb], 'conc'), B("Cover Slab", [-850, -w2, -150, 850, w2, 0], 'conc'),
+              B("Baffle", [100, -Wi / 2, zb + 100, 175, Wi / 2, -300], 'conc', lod='mf'), B("Opening 1", [-650, -225, -151, -50, 225, -6], 'conc', void=True),
               B("Opening 2", [250, -225, -151, 650, 225, -6], 'conc', void=True)]
     parts += cover("Cover Inlet", -350, 0, 600, 450, 1, ribs=3) + cover("Cover Outlet", 450, 0, 400, 450, 1, ribs=3)
     parts += [CX("Inlet Pipe", [0, -400], 55, -1150, -840, 'upvc'), CX("Outlet Pipe", [0, -450], 55, 840, 1150, 'upvc'),
               CZ("Inlet Tee", [-650, 0], 55, -800, -350, 'upvc', lod='f', seg=16), CZ("Outlet Tee", [650, 0], 55, -900, -350, 'upvc', lod='f', seg=16),
-              CZ("Vent Pipe", [780, 480], 28, 0, 1800, 'upvc', seg=12), T("Vent Cowl", 'z', [780, 480], [[0, 1790], [28, 1790], [60, 1840], [0, 1870]], 'upvc', seg=12)]
+              CZ("Vent Pipe", [780, w2 - 70], 28, 0, 1800, 'upvc', seg=12), T("Vent Cowl", 'z', [780, w2 - 70], [[0, 1790], [28, 1790], [60, 1840], [0, 1870]], 'upvc', seg=12)]
     prod('FMC_C_Structure_GreaseTrap_External', 'External kitchen grease trap: two-compartment precast/RC chamber with baffle, inlet and outlet tees, two access covers', 'IfcInterceptor',
-         [{"name": "1000L_Precast", "desc": "about 1000 L liquid"}, {"name": "2000L_Precast", "desc": "about 2000 L liquid"}], parts,
-         {"Internal 1400 x 800 x 1000 mm (1000 L geometry)": A("1400x800x1000", "sizing from kitchen flow by the engineer"), "Two compartments 2:1": A("2:1", "typical"),
+         [{"name": "1000L_Precast", "desc": "internal 1400 x 800 x 1000"}, {"name": "2000L_Precast", "desc": "internal 1400 x 1300 x 1200"}], parts,
+         {"Internal 1400 x 800 x 1000 and 1400 x 1300 x 1200 mm (one per type)": A("per type", "sizing from kitchen flow by the engineer"), "Two compartments 2:1": A("2:1", "typical"),
           "Pipes 110 mm": A(110, "drainage design")},
-         "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs with connectors.",
+         "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs (shared by both types; the larger type is wider and deeper) with connectors, vent.",
          conns=[san("SAN In", "Inlet Pipe", "left", 110, "In"), san("SAN Out", "Outlet Pipe", "right", 110, "Out")])
 
 def fuel_interceptor():
@@ -771,69 +835,72 @@ def fuel_interceptor():
 
 # ================================================================ CULVERTS AND CHANNELS
 def box_culvert():
-    left = [[0, 0], [-600, 0], [-600, 900], [0, 900], [0, 750], [-350, 750], [-450, 650], [-450, 250], [-350, 150], [0, 150]]
+    iw, ih = S({"900x600_Precast": (450, 600), "1200x900_Precast": (600, 900)})
+    t, hn = 150, 100
+    ow, oh = iw + t, ih + 2 * t
+    left = [[0, 0], [-ow, 0], [-ow, oh], [0, oh], [0, oh - t], [-iw + hn, oh - t], [-iw, oh - t - hn], [-iw, t + hn], [-iw + hn, t], [0, t]]
     right = [[-x, z] for x, z in reversed(left)]
+    hw2 = ow + 500
     parts = [FR("Unit Left Half", left, -1515, -510, 'pre', rep=(3, 0, 1010, 0)), FR("Unit Right Half", right, -1515, -510, 'pre', rep=(3, 0, 1010, 0))]
-    hw = [[-1100, 0], [-600, 0], [-600, 900], [600, 900], [600, 0], [1100, 0], [1100, 1300], [-1100, 1300]]
+    hw = [[-hw2, 0], [-ow, 0], [-ow, oh], [ow, oh], [ow, 0], [hw2, 0], [hw2, oh + 400], [-hw2, oh + 400]]
+    wing = oh + 100
     parts += [FR("Headwall Inlet", hw, -1765, -1515, 'c20'), FR("Headwall Outlet", hw, 1515, 1765, 'c20'),
-              PR("Wingwall Inlet Left", [[-1100, -1765], [-850, -1765], [-1550, -2465], [-1800, -2465]], 0, 1000, 'c20'),
-              PR("Wingwall Inlet Right", [[850, -1765], [1100, -1765], [1800, -2465], [1550, -2465]], 0, 1000, 'c20'),
-              PR("Wingwall Outlet Left", [[-1100, 1765], [-1800, 2465], [-1550, 2465], [-850, 1765]], 0, 1000, 'c20'),
-              PR("Wingwall Outlet Right", [[1100, 1765], [850, 1765], [1550, 2465], [1800, 2465]], 0, 1000, 'c20'),
-              PR("Apron Inlet", [[-1100, -1765], [1100, -1765], [1550, -2465], [-1550, -2465]], 0, 150, 'c20'),
-              PR("Apron Outlet", [[-1100, 1765], [-1550, 2465], [1550, 2465], [1100, 1765]], 0, 150, 'c20'),
-              B("Cut-off Wall Inlet", [-1550, -2465, -450, 1550, -2265, 0], 'c20'), B("Cut-off Wall Outlet", [-1550, 2265, -450, 1550, 2465, 0], 'c20'),
-              PR("Stone Pitching", [[-1550, 2465], [-1900, 3300], [1900, 3300], [1550, 2465]], 0, 100, 'pitch', lod='f'),
-              B("Bedding", [-650, -1515, -150, 650, 1515, 0], 'blind')]
+              PR("Wingwall Inlet Left", [[-hw2, -1765], [-hw2 + 250, -1765], [-hw2 - 450, -2465], [-hw2 - 700, -2465]], 0, wing, 'c20'),
+              PR("Wingwall Inlet Right", [[hw2 - 250, -1765], [hw2, -1765], [hw2 + 700, -2465], [hw2 + 450, -2465]], 0, wing, 'c20'),
+              PR("Wingwall Outlet Left", [[-hw2, 1765], [-hw2 - 700, 2465], [-hw2 - 450, 2465], [-hw2 + 250, 1765]], 0, wing, 'c20'),
+              PR("Wingwall Outlet Right", [[hw2, 1765], [hw2 - 250, 1765], [hw2 + 450, 2465], [hw2 + 700, 2465]], 0, wing, 'c20'),
+              PR("Apron Inlet", [[-hw2, -1765], [hw2, -1765], [hw2 + 450, -2465], [-hw2 - 450, -2465]], 0, t, 'c20'),
+              PR("Apron Outlet", [[-hw2, 1765], [-hw2 - 450, 2465], [hw2 + 450, 2465], [hw2, 1765]], 0, t, 'c20'),
+              B("Cut-off Wall Inlet", [-hw2 - 450, -2465, -450, hw2 + 450, -2265, 0], 'c20'), B("Cut-off Wall Outlet", [-hw2 - 450, 2265, -450, hw2 + 450, 2465, 0], 'c20'),
+              PR("Stone Pitching", [[-hw2 - 450, 2465], [-hw2 - 800, 3300], [hw2 + 800, 3300], [hw2 + 450, 2465]], 0, 100, 'pitch', lod='f'),
+              B("Bedding", [-ow - 50, -1515, -150, ow + 50, 1515, 0], 'blind')]
     prod('FMC_C_Structure_Culvert_Box', 'Precast concrete box culvert units with internal haunches, concrete headwalls, splayed wingwalls, aprons with cut-off walls and stone pitching', 'IfcBuildingElementProxy',
          [{"name": "900x600_Precast", "desc": "internal 900 wide x 600 high"}, {"name": "1200x900_Precast", "desc": "internal 1200 x 900"}], parts,
-         {"Internal 900 x 600, walls 150 mm (geometry)": A("900x600 t150", "typical precast box; hydraulic size by the engineer"),
+         {"Internal 900 x 600 and 1200 x 900, walls 150 mm (one per type)": A("900x600/1200x900 t150", "typical precast box; hydraulic size by the engineer"),
           "Units 1000 long, 3 shown": A(1000, "typical precast unit"), "Wingwalls splayed 45 degrees": A(45, "typical"), "Cover and loading by the engineer": A("by engineer", "engineer to confirm")},
-         "Invert slab underside at z = 0, flow along y: three precast units (two halves each, haunched inside) on bedding, headwalls, four wingwalls, aprons with cut-off walls, outlet stone pitching (Fine).")
+         "Invert slab underside at z = 0, flow along y: three precast units (two haunched halves each) on bedding, headwalls, four wingwalls, aprons with cut-off walls, outlet stone pitching (Fine). Each type has its own section and headworks.")
 
 def pipe_culvert():
-    ro, zc = 375, 525
-    arc = [[round(ro * math.cos(t), 1), round(zc + ro * math.sin(t), 1)] for t in [-k * math.pi / 12 for k in range(13)]]
-    haunch = [[-525, 0], [525, 0], [525, zc]] + arc + [[-525, zc]]
-    up = [[round(ro * math.cos(t), 1), round(zc + ro * math.sin(t), 1)] for t in [math.pi / 2 + k * math.pi / 12 for k in range(13)]]
-    hl = [[0, 0], [-1100, 0], [-1100, 1300], [0, 1300]] + up + [[0, 0]]
-    hl = hl[:-1]
-    hr = [[-x, z] for x, z in reversed(hl)]
-    parts = [T("Pipe", 'y', [0, zc], ring(300, ro, -2000, -1000), 'ogee', rep=(4, 0, 1000, 0), seg=40),
+    ri, ro = S({"600_Ogee": (300, 375), "900_Ogee": (450, 540)})
+    zc = 150 + ro; hw2 = ro + 725; bw = ro + 150
+    parts = [T("Pipe", 'y', [0, zc], ring(ri, ro, -2000, -1000), 'ogee', rep=(4, 0, 1000, 0), seg=40),
              T("Ogee Joint", 'y', [0, zc], ring(ro, ro + 25, -1050, -950), 'ogee', lod='f', rep=(3, 0, 1000, 0), seg=40),
-             B("Concrete Bed", [-525, -2000, 0, 525, 2000, 150], 'c20'),
-             FR("Haunch Left", [[-525, 150], [-215, 150], [-525, 470]], -2000, 2000, 'c20'),
-             FR("Haunch Right", [[525, 150], [525, 470], [215, 150]], -2000, 2000, 'c20'),
-             B("Headwall Inlet", [-1100, -2250, 0, 1100, -2000, 1300], 'c20'), B("Headwall Outlet", [-1100, 2000, 0, 1100, 2250, 1300], 'c20'),
+             B("Concrete Bed", [-bw, -2000, 0, bw, 2000, 150], 'c20'),
+             FR("Haunch Left", [[-bw, 150], [-ro * 0.57, 150], [-bw, 150 + ro * 0.85]], -2000, 2000, 'c20'),
+             FR("Haunch Right", [[bw, 150], [bw, 150 + ro * 0.85], [ro * 0.57, 150]], -2000, 2000, 'c20'),
+             B("Headwall Inlet", [-hw2, -2250, 0, hw2, -2000, zc + ro + 400], 'c20'), B("Headwall Outlet", [-hw2, 2000, 0, hw2, 2250, zc + ro + 400], 'c20'),
              CY("Pipe Opening Inlet", [0, zc], ro, -2251, -1999, 'c20', void=True), CY("Pipe Opening Outlet", [0, zc], ro, 1999, 2251, 'c20', void=True),
-             T("Pipe Inlet End", 'y', [0, zc], ring(300, ro, -2280, -2000), 'ogee', seg=40), T("Pipe Outlet End", 'y', [0, zc], ring(300, ro, 2000, 2280), 'ogee', seg=40),
-             PR("Wingwall Inlet Left", [[-1100, -2250], [-850, -2250], [-1550, -2950], [-1800, -2950]], 0, 1000, 'c20'),
-             PR("Wingwall Inlet Right", [[850, -2250], [1100, -2250], [1800, -2950], [1550, -2950]], 0, 1000, 'c20'),
-             PR("Wingwall Outlet Left", [[-1100, 2250], [-1800, 2950], [-1550, 2950], [-850, 2250]], 0, 1000, 'c20'),
-             PR("Wingwall Outlet Right", [[1100, 2250], [850, 2250], [1550, 2950], [1800, 2950]], 0, 1000, 'c20'),
-             PR("Apron Inlet", [[-1100, -2250], [1100, -2250], [1550, -2950], [-1550, -2950]], 0, 150, 'c20'),
-             PR("Apron Outlet", [[-1100, 2250], [-1550, 2950], [1550, 2950], [1100, 2250]], 0, 150, 'c20'),
-             PR("Stone Pitching", [[-1550, 2950], [-1900, 3800], [1900, 3800], [1550, 2950]], 0, 100, 'pitch', lod='f')]
+             T("Pipe Inlet End", 'y', [0, zc], ring(ri, ro, -2280, -2000), 'ogee', seg=40), T("Pipe Outlet End", 'y', [0, zc], ring(ri, ro, 2000, 2280), 'ogee', seg=40),
+             PR("Wingwall Inlet Left", [[-hw2, -2250], [-hw2 + 250, -2250], [-hw2 - 450, -2950], [-hw2 - 700, -2950]], 0, zc + ro, 'c20'),
+             PR("Wingwall Inlet Right", [[hw2 - 250, -2250], [hw2, -2250], [hw2 + 700, -2950], [hw2 + 450, -2950]], 0, zc + ro, 'c20'),
+             PR("Wingwall Outlet Left", [[-hw2, 2250], [-hw2 - 700, 2950], [-hw2 - 450, 2950], [-hw2 + 250, 2250]], 0, zc + ro, 'c20'),
+             PR("Wingwall Outlet Right", [[hw2, 2250], [hw2 - 250, 2250], [hw2 + 450, 2950], [hw2 + 700, 2950]], 0, zc + ro, 'c20'),
+             PR("Apron Inlet", [[-hw2, -2250], [hw2, -2250], [hw2 + 450, -2950], [-hw2 - 450, -2950]], 0, 150, 'c20'),
+             PR("Apron Outlet", [[-hw2, 2250], [-hw2 - 450, 2950], [hw2 + 450, 2950], [hw2, 2250]], 0, 150, 'c20'),
+             PR("Stone Pitching", [[-hw2 - 450, 2950], [-hw2 - 800, 3800], [hw2 + 800, 3800], [hw2 + 450, 2950]], 0, 100, 'pitch', lod='f')]
     prod('FMC_C_Structure_Culvert_Pipe', 'Pipe culvert of ogee-jointed concrete pipes on a concrete bed and haunch, with headwalls, splayed wingwalls, aprons and stone pitching', 'IfcBuildingElementProxy',
          [{"name": "600_Ogee", "desc": "600 mm concrete pipes"}, {"name": "900_Ogee", "desc": "900 mm concrete pipes"}], parts,
-         {"Pipe 600 internal, 75 wall (geometry)": A("600 t75", "typical Uganda ogee concrete pipe; hydraulic size by the engineer"),
-          "Pipes 1000 long, 4 shown": A(1000, "typical"), "Bed and haunch C20 to pipe centreline": A("C20", "typical class B bedding; engineer to confirm")},
-         "Bed underside at z = 0, flow along y: four ogee pipes with joint collars (Fine), bed and haunch, headwalls in two halves round the pipe, four wingwalls, aprons, outlet pitching.")
+         {"Pipes 600 (75 wall) and 900 (90 wall) internal (one per type)": A("600/900", "typical Uganda ogee concrete pipes; hydraulic size by the engineer"),
+          "Pipes 1000 long, 4 shown": A(1000, "typical"), "Bed 150 and haunch C20": A("C20", "typical class B bedding; engineer to confirm")},
+         "Bed underside at z = 0, flow along y: four ogee pipes with joint collars (Fine), bed and haunch wedges, headwalls cut round the pipe by voids with the pipe ends showing, four wingwalls, aprons, outlet pitching. Each type has its own pipe and headworks.")
 
 def u_channel():
-    U = [[-225, 0], [225, 0], [225, 375], [175, 375], [175, 325], [150, 325], [150, 75], [-150, 75], [-150, 325], [-175, 325], [-175, 375], [-225, 375]]
-    parts = [RT("Channel Unit", U, -1500, -505, 'pre', rep=(3, 1005, 0, 0)), B("Blinding", [-1500, -275, -50, 1515, 275, 0], 'blind'),
-             B("Cover Slab", [-1500, -174, 325, -1005, 174, 375], 'pre', rep=(2, 500, 0, 0)),
-             B("Lifting Slot", [-1300, -60, 375, -1210, -40, 376], 'black', lod='f', rep=(2, 500, 0, 0)),
-             B("Lifting Slot Back", [-1300, 40, 375, -1210, 60, 376], 'black', lod='f', rep=(2, 500, 0, 0)),
-             B("Grating Frame Front", [-500, -174, 340, 505, -160, 375], 'galv'), B("Grating Frame Back", [-500, 160, 340, 505, 174, 375], 'galv'),
-             B("Grating Bar", [-480, -160, 345, -475, 160, 375], 'galv', rep=(20, 50, 0, 0)),
-             B("Cover Slab Far", [510, -174, 325, 1005, 174, 375], 'pre', rep=(2, 500, 0, 0))]
+    w = S({"300_Covered": 150, "450_Covered": 225, "600_Covered": 300}); h = w * 2 - 50 + 75
+    o = w + 75
+    U = [[-o, 0], [o, 0], [o, h], [w + 25, h], [w + 25, h - 50], [w, h - 50], [w, 75], [-w, 75], [-w, h - 50], [-w - 25, h - 50], [-w - 25, h], [-o, h]]
+    nb = int((2 * w + 20) // 50)
+    parts = [RT("Channel Unit", U, -1500, -505, 'pre', rep=(3, 1005, 0, 0)), B("Blinding", [-1500, -o - 50, -50, 1515, o + 50, 0], 'blind'),
+             B("Cover Slab", [-1500, -w - 24, h - 50, -1005, w + 24, h], 'pre', rep=(2, 500, 0, 0)),
+             B("Lifting Slot", [-1300, -60, h, -1210, -40, h + 1], 'black', lod='f', rep=(2, 500, 0, 0)),
+             B("Lifting Slot Back", [-1300, 40, h, -1210, 60, h + 1], 'black', lod='f', rep=(2, 500, 0, 0)),
+             B("Grating Frame Front", [-500, -w - 24, h - 35, 505, -w - 10, h], 'galv'), B("Grating Frame Back", [-500, w + 10, h - 35, 505, w + 24, h], 'galv'),
+             B("Grating Bar", [-480, -w - 10, h - 30, -475, w + 10, h], 'galv', rep=(20, 50, 0, 0)),
+             B("Cover Slab Far", [510, -w - 24, h - 50, 1005, w + 24, h], 'pre', rep=(2, 500, 0, 0))]
     prod('FMC_C_Structure_Drain_UChannel_Covered', 'Precast concrete U-channel surface drain with rebated seats, precast cover slabs with lifting slots and a galvanised grating section', 'IfcBuildingElementProxy',
          [{"name": "300_Covered", "desc": "300 mm wide channel"}, {"name": "450_Covered", "desc": "450 mm wide channel"}, {"name": "600_Covered", "desc": "600 mm wide channel"}], parts,
-         {"Internal 300 x 250, walls 75 mm (geometry)": A("300x250 t75", "typical precast U-drain"), "Units 1000 long, 3 shown": A(1000, "typical"),
+         {"Internal 300, 450, 600 wide (one per type), walls 75 mm": A("300/450/600", "typical precast U-drains"), "Units 1000 long, 3 shown": A(1000, "typical"),
           "Covers 50 mm in a 25 x 50 rebate": A("50 / 25x50", "typical"), "Grating every third cover": A("1 in 3", "typical for inlets; designer to confirm")},
-         "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and 20 bars.")
+         "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and bars. Each type has its own section.")
 
 def kerb():
     S = [[-62.5, -130], [62.5, -130], [62.5, 125], [-12.5, 125], [-62.5, 25]]
@@ -941,9 +1008,12 @@ def incinerator():
              B("Panel Stand", [1100, -900, 200, 1150, -650, 600], 'paint', rep=(2, 450, 0, 0)),
              CX("Day Tank", [500, 1000], 300, 1100, 1900, 'paint', seg=24), B("Day Tank Stand", [1150, 300, 200, 1200, 700, 700], 'paint', rep=(2, 650, 0, 0)),
              CY("Fuel Line", [-1050, 1000], 10, -150, 300, 'gi', lod='f', seg=8)]
+    sc = S({"50kgh_DualChamber": 1.0, "100kgh_DualChamber": 1.2})   # the 100 kg/h envelope about 1.2 x; the control panel stays put
+    keep = {"Control Panel", "Panel Door", "Panel Lamp", "Panel Lamp Red", "Panel Stand"}
+    parts = [q for q in parts if q['n'] in keep] + scale_parts([q for q in parts if q['n'] not in keep], sc)
     prod('FMC_C_SiteFurniture_Incinerator_MedicalWaste', 'Dual-chamber medical waste incinerator envelope: primary chamber with loading and ash doors, secondary chamber, burners, 9 m stainless stack with rain cap, control panel, day tank, on a plinth', 'IfcBuildingElementProxy',
          [{"name": "50kgh_DualChamber", "desc": "about 50 kg/h envelope", "values": {"Apparent Load": 2500}}, {"name": "100kgh_DualChamber", "desc": "about 100 kg/h envelope", "values": {"Apparent Load": 4000}}], parts,
-         {"Envelope 3600 x 2200 on plinth, stack 9 m (50 kg/h)": A("3600x2200 / 9000", "typical dual-chamber unit; vendor to confirm"),
+         {"Envelope 3600 x 2200, stack 9 m (50 kg/h); about 1.2 x for 100 kg/h": A("3600x2200 / 9000", "typical dual-chamber units; vendor to confirm"),
           "Stack height from the EIA": A("EIA", "by others (NEMA EIA); not decided here"), "Supply 240 V, 2.5 kVA (50 kg/h)": A("240V 2.5kVA", "typical burner/fan load; vendor to confirm"),
           "Secondary chamber 2 s at 1100 C": A("2s 1100C", "WHO/Stockholm guidance; vendor to confirm")},
          "Ground at z = 0: plinth, primary chamber with loading door, hinges, locking wheel, ash door and sight glass, saddled secondary chamber, two burners with fans, stack base, stack with flange, sampling port and rain cap, control panel with lamps, day tank on stand. Power on the panel.",
@@ -955,7 +1025,7 @@ def boom_barrier():
              B("Housing", [-150, -175, 12, 150, 175, 1000], 'epoxy', r=20),
              B("Housing Top", [-160, -185, 1000, 160, 185, 1040], 'epoxy', r=24), FB("Housing Door", [-120, -178, 100, 120, -175, 900], 'epoxy', r=10, lod='f'),
              CY("Door Lock", [80, 800], 10, -182, -178, 'ss', lod='f', seg=12),
-             FB("Reflective Band", [-150, -177, 600, 150, -175, 640], 'yellow', lod='f'),
+             FB("Reflective Band", [-150, -177, 600, 150, -175, 640], 'safety', lod='f'),
              CY("Boom Hub", [0, 960], 70, -230, -175, 'ss', seg=24),
              B("Boom", [0, -260, 920, 3100, -200, 1000], 'abswhite', r=8),
              B("Boom Stripe", [300, -261, 919, 600, -199, 1001], 'red', rep=(5, 600, 0, 0)),
@@ -978,7 +1048,7 @@ def helipad():
              B("Perimeter Line Left", [-h, -h + 300, 0, -h + 300, h - 300, 3], 'white'), B("Perimeter Line Right", [h - 300, -h + 300, 0, h, h - 300, 3], 'white'),
              T("Touchdown Circle", 'z', [0, 0], ring(5000, 5500, 0, 3), 'yellow', seg=64),
              B("Cross Vertical", [-1500, -4500, 0, 1500, 4500, 3], 'white'), B("Cross Horizontal", [-4500, -1500, 0, 4500, 1500, 3], 'white'),
-             B("H Left", [-900, -1500, 3, -500, 1500, 5], 'red'), B("H Right", [500, -1500, 3, 900, 1500, 5], 'red'), B("H Bar", [-500, -200, 3, 500, 200, 5], 'red'),
+             B("H Left", [-900, -1500, 3, -500, 1500, 5], 'rmr'), B("H Right", [500, -1500, 3, 900, 1500, 5], 'rmr'), B("H Bar", [-500, -200, 3, 500, 200, 5], 'rmr'),
              B("D-value Box", [h - 2300, -h + 600, 0, h - 700, -h + 1400, 3], 'white', lod='f'), B("Mass Box", [-h + 700, -h + 600, 0, -h + 2300, -h + 1400, 3], 'white', lod='f')]
     k = 0
     for x in (-h + 150, 0, h - 150):
@@ -1010,7 +1080,9 @@ def check(prod):
     for v in prod['materials'].values():
         if v not in KIT: errs.append('material ' + v)
     ex = fp.expand(prod['parts'])
-    if len(ex) > 70: errs.append(f'{len(ex)} parts')
+    for t in prod['types']:
+        nt = sum(1 for q in ex if not q.get('only') or t['name'] in q['only'])
+        if nt > 70: errs.append(f"{t['name']}: {nt} parts")
     names = [p['n'] for p in ex] + [c['n'] for c in prod.get('clearances', [])]
     if len(names) != len(set(names)): errs.append('duplicate names ' + str({n for n in names if names.count(n) > 1}))
     for c in prod.get('connectors', []):
@@ -1022,10 +1094,10 @@ def check(prod):
 
 if __name__ == '__main__':
     only = sys.argv[1:]
-    for f in BUILD: f()
+    for f in BUILD: build_types(f)
+    next(p for p in P if p['family'] == 'FMC_S_StrFraming_Steel_Unistrut_PendantSupport')['view'] = 'below'
     assert {p['family'] for p in P} == set(RECS), set(RECS) - {p['family'] for p in P}
-    json.dump(NEEDED, open(os.path.join(HERE, 'batches', 'SC_structure_civil.materials_needed.json'), 'w'), indent=1)
-    _hangs, CEILING = fp.hangs, {'FMC_S_StrFraming_Steel_Unistrut_PendantSupport'}
+    json.dump([], open(os.path.join(HERE, 'batches', 'SC_structure_civil.materials_needed.json'), 'w'), indent=1)
     out = []
     for prod in P:
         if only and not any(s in prod['family'] for s in only): continue
@@ -1034,12 +1106,12 @@ if __name__ == '__main__':
         json.dump(prod, open(os.path.join(HERE, prod['family'] + '.product.json'), 'w'), indent=1)
         r = fp.compile_product(prod)
         json.dump(r, open(os.path.join(HERE, prod['family'] + '.recipe.json'), 'w'), indent=1)
-        # fmc_parts views anything at or below z = 0 from below (a ceiling product); below-ground items (top at ground,
-        # z = 0) and beams (top of steel at z = 0) are seen from above here. Only the pendant frame truly hangs.
-        fp.hangs = (lambda T, f=prod['family']: _hangs(T) if f in CEILING else False)
         if prod['family'] == 'FMC_S_StrFoundation_PileCap': prod['_render_type'] = '4-Pile_RC'
         fp.render(prod, os.path.join(HERE, prod['family'] + '.preview.png'))
         fp.render_type_image(prod, os.path.join(HERE, prod['family'] + '.png'), size=600)
+        if os.environ.get('SC_TYPES_DIR'):   # second pass: previews of the other types, for the contact sheets
+            for t in prod['types'][1:]:
+                q = dict(prod, _render_type=t['name']); fp.render(q, os.path.join(os.environ['SC_TYPES_DIR'], f"{prod['family']}__{t['name']}.preview.png"))
         out.append((prod['family'], n, len(r['ops'])))
         print(prod['family'], n, 'parts', len(r['ops']), 'ops', flush=True)
     print(len(out), 'families')

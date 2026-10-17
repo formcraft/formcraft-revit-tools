@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_GrabRail_Straight",
  "template": "Metric Generic Model.rft",
- "about": "Grab rail modelled as a generic product: tube, returns with bends to the wall, flanges with rosettes. Centreline at z = 0, height set by Default Elevation; geometry is the 300 type. Reference: query: grab rail straight specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+straight+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.archiexpo.com/architecture-design-manufacturer/healthcare-facility-grab-bar-65147.html",
+ "about": "Grab rail modelled as a generic product: tube, returns with bends to the wall, flanges with rosettes. Centreline at z = 0, height set by Default Elevation; each length is its own set of parts (Show parameters). Reference: query: grab rail straight specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+straight+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.archiexpo.com/architecture-design-manufacturer/healthcare-facility-grab-bar-65147.html",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -83,6 +389,27 @@
    "type": "300_SS",
    "param": "FMC_Keynote_Code",
    "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Code_Description",
+   "type": "300_SS",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail Straight: Stainless or antimicrobial coated"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Code_Group",
+   "type": "300_SS",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Role_Code",
+   "type": "300_SS",
+   "param": "FMC_Role_Code",
+   "value": "A"
   },
   {
    "op": "set_type_value",
@@ -146,6 +473,27 @@
   },
   {
    "op": "set_type_value",
+   "name": "450_SS/FMC_Code_Description",
+   "type": "450_SS",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail Straight: Stainless or antimicrobial coated"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/FMC_Code_Group",
+   "type": "450_SS",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/FMC_Role_Code",
+   "type": "450_SS",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
    "name": "450_SS/URL",
    "type": "450_SS",
    "param": "URL",
@@ -206,6 +554,27 @@
   },
   {
    "op": "set_type_value",
+   "name": "600_SS/FMC_Code_Description",
+   "type": "600_SS",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail Straight: Stainless or antimicrobial coated"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/FMC_Code_Group",
+   "type": "600_SS",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/FMC_Role_Code",
+   "type": "600_SS",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
    "name": "600_SS/URL",
    "type": "600_SS",
    "param": "URL",
@@ -263,6 +632,27 @@
    "type": "900_SS",
    "param": "FMC_Keynote_Code",
    "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Code_Description",
+   "type": "900_SS",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail Straight: Stainless or antimicrobial coated"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Code_Group",
+   "type": "900_SS",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Role_Code",
+   "type": "900_SS",
+   "param": "FMC_Role_Code",
+   "value": "A"
   },
   {
    "op": "set_type_value",
@@ -335,19 +725,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -186,
+     -486.0,
      -82.0
     ],
     [
-     186,
+     486.0,
      -82.0
     ],
     [
-     186,
+     486.0,
      0
     ],
     [
-     -186,
+     -486.0,
      0
     ]
    ],
@@ -368,7 +758,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Rail Tube",
+   "name": "Rail Tube 300",
    "points": [
     [
      -50.0,
@@ -467,30 +857,30 @@
      -4.14
     ]
    ],
-   "start": -150,
-   "end": 150,
+   "start": -150.0,
+   "end": 150.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Tube",
+   "name": "Rail Tube 300",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Tube",
+   "name": "Rail Tube 300",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Tube",
+   "name": "Rail Tube 300",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Return 1",
+   "name": "Rail Return 300 1",
    "points": [
     [
      -134.0,
@@ -595,24 +985,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Return 1",
+   "name": "Rail Return 300 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Return 1",
+   "name": "Rail Return 300 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Return 1",
+   "name": "Rail Return 300 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Return 2",
+   "name": "Rail Return 300 2",
    "points": [
     [
      166.0,
@@ -717,24 +1107,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Return 2",
+   "name": "Rail Return 300 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Return 2",
+   "name": "Rail Return 300 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Return 2",
+   "name": "Rail Return 300 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rail Bend 1",
+   "name": "Rail Bend 300 1",
    "profile": [
     [
      0,
@@ -774,7 +1164,7 @@
     ]
    ],
    "axis_at": [
-    -150,
+    -150.0,
     0
    ],
    "axis": "y",
@@ -782,19 +1172,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bend 1",
+   "name": "Rail Bend 300 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bend 1",
+   "name": "Rail Bend 300 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rail Bend 2",
+   "name": "Rail Bend 300 2",
    "profile": [
     [
      0,
@@ -834,7 +1224,7 @@
     ]
    ],
    "axis_at": [
-    150,
+    150.0,
     0
    ],
    "axis": "y",
@@ -842,19 +1232,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bend 2",
+   "name": "Rail Bend 300 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bend 2",
+   "name": "Rail Bend 300 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rail Flange 1",
+   "name": "Rail Flange 300 1",
    "profile": [
     [
      0,
@@ -878,7 +1268,7 @@
     ]
    ],
    "axis_at": [
-    -150,
+    -150.0,
     0
    ],
    "axis": "y",
@@ -886,19 +1276,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rail Flange 1",
+   "name": "Rail Flange 300 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Flange 1",
+   "name": "Rail Flange 300 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rail Flange 2",
+   "name": "Rail Flange 300 2",
    "profile": [
     [
      0,
@@ -922,7 +1312,7 @@
     ]
    ],
    "axis_at": [
-    150,
+    150.0,
     0
    ],
    "axis": "y",
@@ -930,19 +1320,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rail Flange 2",
+   "name": "Rail Flange 300 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Flange 2",
+   "name": "Rail Flange 300 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fixing Screw 1",
+   "name": "Fixing Screw 300 1",
    "points": [
     [
      -146.0,
@@ -1047,24 +1437,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fixing Screw 1",
+   "name": "Fixing Screw 300 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Fixing Screw 1",
+   "name": "Fixing Screw 300 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fixing Screw 1",
+   "name": "Fixing Screw 300 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fixing Screw 2",
+   "name": "Fixing Screw 300 2",
    "points": [
     [
      154.0,
@@ -1169,20 +1559,2826 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fixing Screw 2",
+   "name": "Fixing Screw 300 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Fixing Screw 2",
+   "name": "Fixing Screw 300 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fixing Screw 2",
+   "name": "Fixing Screw 300 2",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Tube 450",
+   "points": [
+    [
+     -50.0,
+     0.0
+    ],
+    [
+     -50.55,
+     4.14
+    ],
+    [
+     -52.14,
+     8.0
+    ],
+    [
+     -54.69,
+     11.31
+    ],
+    [
+     -58.0,
+     13.86
+    ],
+    [
+     -61.86,
+     15.45
+    ],
+    [
+     -66.0,
+     16.0
+    ],
+    [
+     -70.14,
+     15.45
+    ],
+    [
+     -74.0,
+     13.86
+    ],
+    [
+     -77.31,
+     11.31
+    ],
+    [
+     -79.86,
+     8.0
+    ],
+    [
+     -81.45,
+     4.14
+    ],
+    [
+     -82.0,
+     0.0
+    ],
+    [
+     -81.45,
+     -4.14
+    ],
+    [
+     -79.86,
+     -8.0
+    ],
+    [
+     -77.31,
+     -11.31
+    ],
+    [
+     -74.0,
+     -13.86
+    ],
+    [
+     -70.14,
+     -15.45
+    ],
+    [
+     -66.0,
+     -16.0
+    ],
+    [
+     -61.86,
+     -15.45
+    ],
+    [
+     -58.0,
+     -13.86
+    ],
+    [
+     -54.69,
+     -11.31
+    ],
+    [
+     -52.14,
+     -8.0
+    ],
+    [
+     -50.55,
+     -4.14
+    ]
+   ],
+   "start": -225.0,
+   "end": 225.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Tube 450",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Tube 450",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Tube 450",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 450 1",
+   "points": [
+    [
+     -209.0,
+     0.0
+    ],
+    [
+     -209.55,
+     4.14
+    ],
+    [
+     -211.14,
+     8.0
+    ],
+    [
+     -213.69,
+     11.31
+    ],
+    [
+     -217.0,
+     13.86
+    ],
+    [
+     -220.86,
+     15.45
+    ],
+    [
+     -225.0,
+     16.0
+    ],
+    [
+     -229.14,
+     15.45
+    ],
+    [
+     -233.0,
+     13.86
+    ],
+    [
+     -236.31,
+     11.31
+    ],
+    [
+     -238.86,
+     8.0
+    ],
+    [
+     -240.45,
+     4.14
+    ],
+    [
+     -241.0,
+     0.0
+    ],
+    [
+     -240.45,
+     -4.14
+    ],
+    [
+     -238.86,
+     -8.0
+    ],
+    [
+     -236.31,
+     -11.31
+    ],
+    [
+     -233.0,
+     -13.86
+    ],
+    [
+     -229.14,
+     -15.45
+    ],
+    [
+     -225.0,
+     -16.0
+    ],
+    [
+     -220.86,
+     -15.45
+    ],
+    [
+     -217.0,
+     -13.86
+    ],
+    [
+     -213.69,
+     -11.31
+    ],
+    [
+     -211.14,
+     -8.0
+    ],
+    [
+     -209.55,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 450 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 450 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 450 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 450 2",
+   "points": [
+    [
+     241.0,
+     0.0
+    ],
+    [
+     240.45,
+     4.14
+    ],
+    [
+     238.86,
+     8.0
+    ],
+    [
+     236.31,
+     11.31
+    ],
+    [
+     233.0,
+     13.86
+    ],
+    [
+     229.14,
+     15.45
+    ],
+    [
+     225.0,
+     16.0
+    ],
+    [
+     220.86,
+     15.45
+    ],
+    [
+     217.0,
+     13.86
+    ],
+    [
+     213.69,
+     11.31
+    ],
+    [
+     211.14,
+     8.0
+    ],
+    [
+     209.55,
+     4.14
+    ],
+    [
+     209.0,
+     0.0
+    ],
+    [
+     209.55,
+     -4.14
+    ],
+    [
+     211.14,
+     -8.0
+    ],
+    [
+     213.69,
+     -11.31
+    ],
+    [
+     217.0,
+     -13.86
+    ],
+    [
+     220.86,
+     -15.45
+    ],
+    [
+     225.0,
+     -16.0
+    ],
+    [
+     229.14,
+     -15.45
+    ],
+    [
+     233.0,
+     -13.86
+    ],
+    [
+     236.31,
+     -11.31
+    ],
+    [
+     238.86,
+     -8.0
+    ],
+    [
+     240.45,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 450 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 450 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 450 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 450 1",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    -225.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 450 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 450 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 450 2",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    225.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 450 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 450 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 450 1",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    -225.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 450 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 450 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 450 2",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    225.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 450 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 450 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 450 1",
+   "points": [
+    [
+     -221.0,
+     0.0
+    ],
+    [
+     -221.14,
+     1.04
+    ],
+    [
+     -221.54,
+     2.0
+    ],
+    [
+     -222.17,
+     2.83
+    ],
+    [
+     -223.0,
+     3.46
+    ],
+    [
+     -223.96,
+     3.86
+    ],
+    [
+     -225.0,
+     4.0
+    ],
+    [
+     -226.04,
+     3.86
+    ],
+    [
+     -227.0,
+     3.46
+    ],
+    [
+     -227.83,
+     2.83
+    ],
+    [
+     -228.46,
+     2.0
+    ],
+    [
+     -228.86,
+     1.04
+    ],
+    [
+     -229.0,
+     0.0
+    ],
+    [
+     -228.86,
+     -1.04
+    ],
+    [
+     -228.46,
+     -2.0
+    ],
+    [
+     -227.83,
+     -2.83
+    ],
+    [
+     -227.0,
+     -3.46
+    ],
+    [
+     -226.04,
+     -3.86
+    ],
+    [
+     -225.0,
+     -4.0
+    ],
+    [
+     -223.96,
+     -3.86
+    ],
+    [
+     -223.0,
+     -3.46
+    ],
+    [
+     -222.17,
+     -2.83
+    ],
+    [
+     -221.54,
+     -2.0
+    ],
+    [
+     -221.14,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 450 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 450 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 450 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 450 2",
+   "points": [
+    [
+     229.0,
+     0.0
+    ],
+    [
+     228.86,
+     1.04
+    ],
+    [
+     228.46,
+     2.0
+    ],
+    [
+     227.83,
+     2.83
+    ],
+    [
+     227.0,
+     3.46
+    ],
+    [
+     226.04,
+     3.86
+    ],
+    [
+     225.0,
+     4.0
+    ],
+    [
+     223.96,
+     3.86
+    ],
+    [
+     223.0,
+     3.46
+    ],
+    [
+     222.17,
+     2.83
+    ],
+    [
+     221.54,
+     2.0
+    ],
+    [
+     221.14,
+     1.04
+    ],
+    [
+     221.0,
+     0.0
+    ],
+    [
+     221.14,
+     -1.04
+    ],
+    [
+     221.54,
+     -2.0
+    ],
+    [
+     222.17,
+     -2.83
+    ],
+    [
+     223.0,
+     -3.46
+    ],
+    [
+     223.96,
+     -3.86
+    ],
+    [
+     225.0,
+     -4.0
+    ],
+    [
+     226.04,
+     -3.86
+    ],
+    [
+     227.0,
+     -3.46
+    ],
+    [
+     227.83,
+     -2.83
+    ],
+    [
+     228.46,
+     -2.0
+    ],
+    [
+     228.86,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 450 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 450 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 450 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Tube 600",
+   "points": [
+    [
+     -50.0,
+     0.0
+    ],
+    [
+     -50.55,
+     4.14
+    ],
+    [
+     -52.14,
+     8.0
+    ],
+    [
+     -54.69,
+     11.31
+    ],
+    [
+     -58.0,
+     13.86
+    ],
+    [
+     -61.86,
+     15.45
+    ],
+    [
+     -66.0,
+     16.0
+    ],
+    [
+     -70.14,
+     15.45
+    ],
+    [
+     -74.0,
+     13.86
+    ],
+    [
+     -77.31,
+     11.31
+    ],
+    [
+     -79.86,
+     8.0
+    ],
+    [
+     -81.45,
+     4.14
+    ],
+    [
+     -82.0,
+     0.0
+    ],
+    [
+     -81.45,
+     -4.14
+    ],
+    [
+     -79.86,
+     -8.0
+    ],
+    [
+     -77.31,
+     -11.31
+    ],
+    [
+     -74.0,
+     -13.86
+    ],
+    [
+     -70.14,
+     -15.45
+    ],
+    [
+     -66.0,
+     -16.0
+    ],
+    [
+     -61.86,
+     -15.45
+    ],
+    [
+     -58.0,
+     -13.86
+    ],
+    [
+     -54.69,
+     -11.31
+    ],
+    [
+     -52.14,
+     -8.0
+    ],
+    [
+     -50.55,
+     -4.14
+    ]
+   ],
+   "start": -300.0,
+   "end": 300.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Tube 600",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Tube 600",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Tube 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 600 1",
+   "points": [
+    [
+     -284.0,
+     0.0
+    ],
+    [
+     -284.55,
+     4.14
+    ],
+    [
+     -286.14,
+     8.0
+    ],
+    [
+     -288.69,
+     11.31
+    ],
+    [
+     -292.0,
+     13.86
+    ],
+    [
+     -295.86,
+     15.45
+    ],
+    [
+     -300.0,
+     16.0
+    ],
+    [
+     -304.14,
+     15.45
+    ],
+    [
+     -308.0,
+     13.86
+    ],
+    [
+     -311.31,
+     11.31
+    ],
+    [
+     -313.86,
+     8.0
+    ],
+    [
+     -315.45,
+     4.14
+    ],
+    [
+     -316.0,
+     0.0
+    ],
+    [
+     -315.45,
+     -4.14
+    ],
+    [
+     -313.86,
+     -8.0
+    ],
+    [
+     -311.31,
+     -11.31
+    ],
+    [
+     -308.0,
+     -13.86
+    ],
+    [
+     -304.14,
+     -15.45
+    ],
+    [
+     -300.0,
+     -16.0
+    ],
+    [
+     -295.86,
+     -15.45
+    ],
+    [
+     -292.0,
+     -13.86
+    ],
+    [
+     -288.69,
+     -11.31
+    ],
+    [
+     -286.14,
+     -8.0
+    ],
+    [
+     -284.55,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 600 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 600 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 600 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 600 2",
+   "points": [
+    [
+     316.0,
+     0.0
+    ],
+    [
+     315.45,
+     4.14
+    ],
+    [
+     313.86,
+     8.0
+    ],
+    [
+     311.31,
+     11.31
+    ],
+    [
+     308.0,
+     13.86
+    ],
+    [
+     304.14,
+     15.45
+    ],
+    [
+     300.0,
+     16.0
+    ],
+    [
+     295.86,
+     15.45
+    ],
+    [
+     292.0,
+     13.86
+    ],
+    [
+     288.69,
+     11.31
+    ],
+    [
+     286.14,
+     8.0
+    ],
+    [
+     284.55,
+     4.14
+    ],
+    [
+     284.0,
+     0.0
+    ],
+    [
+     284.55,
+     -4.14
+    ],
+    [
+     286.14,
+     -8.0
+    ],
+    [
+     288.69,
+     -11.31
+    ],
+    [
+     292.0,
+     -13.86
+    ],
+    [
+     295.86,
+     -15.45
+    ],
+    [
+     300.0,
+     -16.0
+    ],
+    [
+     304.14,
+     -15.45
+    ],
+    [
+     308.0,
+     -13.86
+    ],
+    [
+     311.31,
+     -11.31
+    ],
+    [
+     313.86,
+     -8.0
+    ],
+    [
+     315.45,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 600 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 600 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 600 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 600 1",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    -300.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 600 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 600 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 600 2",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    300.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 600 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 600 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 600 1",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    -300.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 600 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 600 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 600 2",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    300.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 600 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 600 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 600 1",
+   "points": [
+    [
+     -296.0,
+     0.0
+    ],
+    [
+     -296.14,
+     1.04
+    ],
+    [
+     -296.54,
+     2.0
+    ],
+    [
+     -297.17,
+     2.83
+    ],
+    [
+     -298.0,
+     3.46
+    ],
+    [
+     -298.96,
+     3.86
+    ],
+    [
+     -300.0,
+     4.0
+    ],
+    [
+     -301.04,
+     3.86
+    ],
+    [
+     -302.0,
+     3.46
+    ],
+    [
+     -302.83,
+     2.83
+    ],
+    [
+     -303.46,
+     2.0
+    ],
+    [
+     -303.86,
+     1.04
+    ],
+    [
+     -304.0,
+     0.0
+    ],
+    [
+     -303.86,
+     -1.04
+    ],
+    [
+     -303.46,
+     -2.0
+    ],
+    [
+     -302.83,
+     -2.83
+    ],
+    [
+     -302.0,
+     -3.46
+    ],
+    [
+     -301.04,
+     -3.86
+    ],
+    [
+     -300.0,
+     -4.0
+    ],
+    [
+     -298.96,
+     -3.86
+    ],
+    [
+     -298.0,
+     -3.46
+    ],
+    [
+     -297.17,
+     -2.83
+    ],
+    [
+     -296.54,
+     -2.0
+    ],
+    [
+     -296.14,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 600 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 600 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 600 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 600 2",
+   "points": [
+    [
+     304.0,
+     0.0
+    ],
+    [
+     303.86,
+     1.04
+    ],
+    [
+     303.46,
+     2.0
+    ],
+    [
+     302.83,
+     2.83
+    ],
+    [
+     302.0,
+     3.46
+    ],
+    [
+     301.04,
+     3.86
+    ],
+    [
+     300.0,
+     4.0
+    ],
+    [
+     298.96,
+     3.86
+    ],
+    [
+     298.0,
+     3.46
+    ],
+    [
+     297.17,
+     2.83
+    ],
+    [
+     296.54,
+     2.0
+    ],
+    [
+     296.14,
+     1.04
+    ],
+    [
+     296.0,
+     0.0
+    ],
+    [
+     296.14,
+     -1.04
+    ],
+    [
+     296.54,
+     -2.0
+    ],
+    [
+     297.17,
+     -2.83
+    ],
+    [
+     298.0,
+     -3.46
+    ],
+    [
+     298.96,
+     -3.86
+    ],
+    [
+     300.0,
+     -4.0
+    ],
+    [
+     301.04,
+     -3.86
+    ],
+    [
+     302.0,
+     -3.46
+    ],
+    [
+     302.83,
+     -2.83
+    ],
+    [
+     303.46,
+     -2.0
+    ],
+    [
+     303.86,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 600 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 600 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 600 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Tube 900",
+   "points": [
+    [
+     -50.0,
+     0.0
+    ],
+    [
+     -50.55,
+     4.14
+    ],
+    [
+     -52.14,
+     8.0
+    ],
+    [
+     -54.69,
+     11.31
+    ],
+    [
+     -58.0,
+     13.86
+    ],
+    [
+     -61.86,
+     15.45
+    ],
+    [
+     -66.0,
+     16.0
+    ],
+    [
+     -70.14,
+     15.45
+    ],
+    [
+     -74.0,
+     13.86
+    ],
+    [
+     -77.31,
+     11.31
+    ],
+    [
+     -79.86,
+     8.0
+    ],
+    [
+     -81.45,
+     4.14
+    ],
+    [
+     -82.0,
+     0.0
+    ],
+    [
+     -81.45,
+     -4.14
+    ],
+    [
+     -79.86,
+     -8.0
+    ],
+    [
+     -77.31,
+     -11.31
+    ],
+    [
+     -74.0,
+     -13.86
+    ],
+    [
+     -70.14,
+     -15.45
+    ],
+    [
+     -66.0,
+     -16.0
+    ],
+    [
+     -61.86,
+     -15.45
+    ],
+    [
+     -58.0,
+     -13.86
+    ],
+    [
+     -54.69,
+     -11.31
+    ],
+    [
+     -52.14,
+     -8.0
+    ],
+    [
+     -50.55,
+     -4.14
+    ]
+   ],
+   "start": -450.0,
+   "end": 450.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Tube 900",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Tube 900",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Tube 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 900 1",
+   "points": [
+    [
+     -434.0,
+     0.0
+    ],
+    [
+     -434.55,
+     4.14
+    ],
+    [
+     -436.14,
+     8.0
+    ],
+    [
+     -438.69,
+     11.31
+    ],
+    [
+     -442.0,
+     13.86
+    ],
+    [
+     -445.86,
+     15.45
+    ],
+    [
+     -450.0,
+     16.0
+    ],
+    [
+     -454.14,
+     15.45
+    ],
+    [
+     -458.0,
+     13.86
+    ],
+    [
+     -461.31,
+     11.31
+    ],
+    [
+     -463.86,
+     8.0
+    ],
+    [
+     -465.45,
+     4.14
+    ],
+    [
+     -466.0,
+     0.0
+    ],
+    [
+     -465.45,
+     -4.14
+    ],
+    [
+     -463.86,
+     -8.0
+    ],
+    [
+     -461.31,
+     -11.31
+    ],
+    [
+     -458.0,
+     -13.86
+    ],
+    [
+     -454.14,
+     -15.45
+    ],
+    [
+     -450.0,
+     -16.0
+    ],
+    [
+     -445.86,
+     -15.45
+    ],
+    [
+     -442.0,
+     -13.86
+    ],
+    [
+     -438.69,
+     -11.31
+    ],
+    [
+     -436.14,
+     -8.0
+    ],
+    [
+     -434.55,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 900 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 900 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 900 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Return 900 2",
+   "points": [
+    [
+     466.0,
+     0.0
+    ],
+    [
+     465.45,
+     4.14
+    ],
+    [
+     463.86,
+     8.0
+    ],
+    [
+     461.31,
+     11.31
+    ],
+    [
+     458.0,
+     13.86
+    ],
+    [
+     454.14,
+     15.45
+    ],
+    [
+     450.0,
+     16.0
+    ],
+    [
+     445.86,
+     15.45
+    ],
+    [
+     442.0,
+     13.86
+    ],
+    [
+     438.69,
+     11.31
+    ],
+    [
+     436.14,
+     8.0
+    ],
+    [
+     434.55,
+     4.14
+    ],
+    [
+     434.0,
+     0.0
+    ],
+    [
+     434.55,
+     -4.14
+    ],
+    [
+     436.14,
+     -8.0
+    ],
+    [
+     438.69,
+     -11.31
+    ],
+    [
+     442.0,
+     -13.86
+    ],
+    [
+     445.86,
+     -15.45
+    ],
+    [
+     450.0,
+     -16.0
+    ],
+    [
+     454.14,
+     -15.45
+    ],
+    [
+     458.0,
+     -13.86
+    ],
+    [
+     461.31,
+     -11.31
+    ],
+    [
+     463.86,
+     -8.0
+    ],
+    [
+     465.45,
+     -4.14
+    ]
+   ],
+   "start": 8,
+   "end": 66,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Return 900 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Return 900 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Return 900 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 900 1",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    -450.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 900 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Bend 900 2",
+   "profile": [
+    [
+     0,
+     82.0
+    ],
+    [
+     6.12,
+     80.78
+    ],
+    [
+     11.31,
+     77.31
+    ],
+    [
+     14.78,
+     72.12
+    ],
+    [
+     16.0,
+     66.0
+    ],
+    [
+     14.78,
+     59.88
+    ],
+    [
+     11.31,
+     54.69
+    ],
+    [
+     6.12,
+     51.22
+    ],
+    [
+     0,
+     50.0
+    ]
+   ],
+   "axis_at": [
+    450.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bend 900 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bend 900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 900 1",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    -450.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 900 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 900 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rail Flange 900 2",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     4
+    ],
+    [
+     30,
+     9
+    ],
+    [
+     0,
+     9
+    ]
+   ],
+   "axis_at": [
+    450.0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Flange 900 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Flange 900 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 900 1",
+   "points": [
+    [
+     -446.0,
+     0.0
+    ],
+    [
+     -446.14,
+     1.04
+    ],
+    [
+     -446.54,
+     2.0
+    ],
+    [
+     -447.17,
+     2.83
+    ],
+    [
+     -448.0,
+     3.46
+    ],
+    [
+     -448.96,
+     3.86
+    ],
+    [
+     -450.0,
+     4.0
+    ],
+    [
+     -451.04,
+     3.86
+    ],
+    [
+     -452.0,
+     3.46
+    ],
+    [
+     -452.83,
+     2.83
+    ],
+    [
+     -453.46,
+     2.0
+    ],
+    [
+     -453.86,
+     1.04
+    ],
+    [
+     -454.0,
+     0.0
+    ],
+    [
+     -453.86,
+     -1.04
+    ],
+    [
+     -453.46,
+     -2.0
+    ],
+    [
+     -452.83,
+     -2.83
+    ],
+    [
+     -452.0,
+     -3.46
+    ],
+    [
+     -451.04,
+     -3.86
+    ],
+    [
+     -450.0,
+     -4.0
+    ],
+    [
+     -448.96,
+     -3.86
+    ],
+    [
+     -448.0,
+     -3.46
+    ],
+    [
+     -447.17,
+     -2.83
+    ],
+    [
+     -446.54,
+     -2.0
+    ],
+    [
+     -446.14,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 900 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 900 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 900 2",
+   "points": [
+    [
+     454.0,
+     0.0
+    ],
+    [
+     453.86,
+     1.04
+    ],
+    [
+     453.46,
+     2.0
+    ],
+    [
+     452.83,
+     2.83
+    ],
+    [
+     452.0,
+     3.46
+    ],
+    [
+     451.04,
+     3.86
+    ],
+    [
+     450.0,
+     4.0
+    ],
+    [
+     448.96,
+     3.86
+    ],
+    [
+     448.0,
+     3.46
+    ],
+    [
+     447.17,
+     2.83
+    ],
+    [
+     446.54,
+     2.0
+    ],
+    [
+     446.14,
+     1.04
+    ],
+    [
+     446.0,
+     0.0
+    ],
+    [
+     446.14,
+     -1.04
+    ],
+    [
+     446.54,
+     -2.0
+    ],
+    [
+     447.17,
+     -2.83
+    ],
+    [
+     448.0,
+     -3.46
+    ],
+    [
+     448.96,
+     -3.86
+    ],
+    [
+     450.0,
+     -4.0
+    ],
+    [
+     451.04,
+     -3.86
+    ],
+    [
+     452.0,
+     -3.46
+    ],
+    [
+     452.83,
+     -2.83
+    ],
+    [
+     453.46,
+     -2.0
+    ],
+    [
+     453.86,
+     -1.04
+    ]
+   ],
+   "start": 9,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 900 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 900 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 300_SS",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Show 300_SS",
+   "type": "300_SS",
+   "param": "Show 300_SS",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Show 300_SS",
+   "type": "450_SS",
+   "param": "Show 300_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Show 300_SS",
+   "type": "600_SS",
+   "param": "Show 300_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Show 300_SS",
+   "type": "900_SS",
+   "param": "Show 300_SS",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Tube 300/Visible",
+   "solid": "Rail Tube 300",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 300 1/Visible",
+   "solid": "Rail Return 300 1",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 300 2/Visible",
+   "solid": "Rail Return 300 2",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 300 1/Visible",
+   "solid": "Rail Bend 300 1",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 300 2/Visible",
+   "solid": "Rail Bend 300 2",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 300 1/Visible",
+   "solid": "Rail Flange 300 1",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 300 2/Visible",
+   "solid": "Rail Flange 300 2",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 300 1/Visible",
+   "solid": "Fixing Screw 300 1",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 300 2/Visible",
+   "solid": "Fixing Screw 300 2",
+   "param": "Show 300_SS"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 450_SS",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Show 450_SS",
+   "type": "300_SS",
+   "param": "Show 450_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Show 450_SS",
+   "type": "450_SS",
+   "param": "Show 450_SS",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Show 450_SS",
+   "type": "600_SS",
+   "param": "Show 450_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Show 450_SS",
+   "type": "900_SS",
+   "param": "Show 450_SS",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Tube 450/Visible",
+   "solid": "Rail Tube 450",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 450 1/Visible",
+   "solid": "Rail Return 450 1",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 450 2/Visible",
+   "solid": "Rail Return 450 2",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 450 1/Visible",
+   "solid": "Rail Bend 450 1",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 450 2/Visible",
+   "solid": "Rail Bend 450 2",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 450 1/Visible",
+   "solid": "Rail Flange 450 1",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 450 2/Visible",
+   "solid": "Rail Flange 450 2",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 450 1/Visible",
+   "solid": "Fixing Screw 450 1",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 450 2/Visible",
+   "solid": "Fixing Screw 450 2",
+   "param": "Show 450_SS"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_SS",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Show 600_SS",
+   "type": "300_SS",
+   "param": "Show 600_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Show 600_SS",
+   "type": "450_SS",
+   "param": "Show 600_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Show 600_SS",
+   "type": "600_SS",
+   "param": "Show 600_SS",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Show 600_SS",
+   "type": "900_SS",
+   "param": "Show 600_SS",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Tube 600/Visible",
+   "solid": "Rail Tube 600",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 600 1/Visible",
+   "solid": "Rail Return 600 1",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 600 2/Visible",
+   "solid": "Rail Return 600 2",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 600 1/Visible",
+   "solid": "Rail Bend 600 1",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 600 2/Visible",
+   "solid": "Rail Bend 600 2",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 600 1/Visible",
+   "solid": "Rail Flange 600 1",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 600 2/Visible",
+   "solid": "Rail Flange 600 2",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 600 1/Visible",
+   "solid": "Fixing Screw 600 1",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 600 2/Visible",
+   "solid": "Fixing Screw 600 2",
+   "param": "Show 600_SS"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_SS",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Show 900_SS",
+   "type": "300_SS",
+   "param": "Show 900_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Show 900_SS",
+   "type": "450_SS",
+   "param": "Show 900_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Show 900_SS",
+   "type": "600_SS",
+   "param": "Show 900_SS",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Show 900_SS",
+   "type": "900_SS",
+   "param": "Show 900_SS",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Tube 900/Visible",
+   "solid": "Rail Tube 900",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 900 1/Visible",
+   "solid": "Rail Return 900 1",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Return 900 2/Visible",
+   "solid": "Rail Return 900 2",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 900 1/Visible",
+   "solid": "Rail Bend 900 1",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bend 900 2/Visible",
+   "solid": "Rail Bend 900 2",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 900 1/Visible",
+   "solid": "Rail Flange 900 1",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Flange 900 2/Visible",
+   "solid": "Rail Flange 900 2",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 900 1/Visible",
+   "solid": "Fixing Screw 900 1",
+   "param": "Show 900_SS"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 900 2/Visible",
+   "solid": "Fixing Screw 900 2",
+   "param": "Show 900_SS"
   },
   {
    "op": "set_type_image",

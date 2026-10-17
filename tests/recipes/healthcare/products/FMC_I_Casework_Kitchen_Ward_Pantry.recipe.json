@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Casework_Kitchen_Ward_Pantry",
  "template": "Metric Generic Model.rft",
- "about": "Pantry run modelled as a generic product: drawer-over-cupboard unit, sink unit with pair of doors, open bay with under-counter fridge (door, grip, kick grille), HPL worktop and upstand, stainless sink with waste and drainer with grooves, lever mixer with swan neck, wall-mounted water boiler with panel, LEDs, tap and drip tray, 2-leaf wall cupboard. Geometry is drawn at the 1800_Pantry type; the other types share it until a parametric pass. Reference: query: casework kitchen ward pantry casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+kitchen+ward+pantry+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Pantry run modelled as a generic product: drawer-over-cupboard unit, sink unit with pair of doors, open bay with under-counter fridge (door, grip, kick grille), HPL worktop and upstand, stainless sink with waste and drainer with grooves, lever mixer with swan neck, wall-mounted water boiler with panel, LEDs, tap and drip tray, 2-leaf wall cupboard sized to the run. Services enter through a shared box behind the plinth. Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: casework kitchen ward pantry casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+kitchen+ward+pantry+casework+hospital; basis: generic product; brand, model and supplier open for review; photo: https://gecanderson.co.uk/st-barts-ward-kitchen-2/; photo_title: St Barts ward kitchen (GEC Anderson); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -347,6 +347,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1800_Pantry/URL",
+   "type": "1800_Pantry",
+   "param": "URL",
+   "value": "https://gecanderson.co.uk/st-barts-ward-kitchen-2/"
+  },
+  {
+   "op": "set_type_value",
    "name": "1800_Pantry/Voltage",
    "type": "1800_Pantry",
    "param": "Voltage",
@@ -425,6 +432,13 @@
    "type": "2400_Pantry",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400_Pantry/URL",
+   "type": "2400_Pantry",
+   "param": "URL",
+   "value": "https://gecanderson.co.uk/st-barts-ward-kitchen-2/"
   },
   {
    "op": "set_type_value",
@@ -707,19 +721,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -900,
+     -1200.0,
      -630.0
     ],
     [
-     900,
+     1200.0,
      -630.0
     ],
     [
-     900,
+     1200.0,
      0
     ],
     [
-     -900,
+     -1200.0,
      0
     ]
    ],
@@ -740,22 +754,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Carcass",
+   "name": "Carcass 1800",
    "points": [
     [
-     -900,
+     -900.0,
      -580
     ],
     [
-     -300,
+     -300.0,
      -580
     ],
     [
-     -300,
+     -300.0,
      0
     ],
     [
-     -900,
+     -900.0,
      0
     ]
    ],
@@ -764,39 +778,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Carcass",
+   "name": "Carcass 1800",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Carcass",
+   "name": "Carcass 1800",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Carcass",
+   "name": "Carcass 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plinth",
+   "name": "Plinth 1800",
    "points": [
     [
-     -898,
+     -898.0,
      -550
     ],
     [
-     -302,
+     -302.0,
      -550
     ],
     [
-     -302,
+     -302.0,
      -20
     ],
     [
-     -898,
+     -898.0,
      -20
     ]
    ],
@@ -805,39 +819,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth",
+   "name": "Plinth 1800",
    "subcategory": "Plinth"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth",
+   "name": "Plinth 1800",
    "param": "Plinth Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth",
+   "name": "Plinth 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Carcass 2",
+   "name": "Carcass 2 1800",
    "points": [
     [
-     -300,
+     -300.0,
      -580
     ],
     [
-     300,
+     300.0,
      -580
     ],
     [
-     300,
+     300.0,
      0
     ],
     [
-     -300,
+     -300.0,
      0
     ]
    ],
@@ -846,39 +860,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Carcass 2",
+   "name": "Carcass 2 1800",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Carcass 2",
+   "name": "Carcass 2 1800",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Carcass 2",
+   "name": "Carcass 2 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plinth 2",
+   "name": "Plinth 2 1800",
    "points": [
     [
-     -298,
+     -298.0,
      -550
     ],
     [
-     298,
+     298.0,
      -550
     ],
     [
-     298,
+     298.0,
      -20
     ],
     [
-     -298,
+     -298.0,
      -20
     ]
    ],
@@ -887,39 +901,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth 2",
+   "name": "Plinth 2 1800",
    "subcategory": "Plinth"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth 2",
+   "name": "Plinth 2 1800",
    "param": "Plinth Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth 2",
+   "name": "Plinth 2 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Knee Panel 1",
+   "name": "Knee Panel 1 1800",
    "points": [
     [
-     300,
+     300.0,
      -20
     ],
     [
-     900,
+     900.0,
      -20
     ],
     [
-     900,
+     900.0,
      0
     ],
     [
-     300,
+     300.0,
      0
     ]
    ],
@@ -928,39 +942,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Knee Panel 1",
+   "name": "Knee Panel 1 1800",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Knee Panel 1",
+   "name": "Knee Panel 1 1800",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Knee Panel 1",
+   "name": "Knee Panel 1 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop",
+   "name": "Worktop 1800",
    "points": [
     [
-     -900,
+     -900.0,
      -620
     ],
     [
-     -280,
+     -280.0,
      -620
     ],
     [
-     -280,
+     -280.0,
      0
     ],
     [
-     -900,
+     -900.0,
      0
     ]
    ],
@@ -969,39 +983,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop",
+   "name": "Worktop 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop",
+   "name": "Worktop 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop",
+   "name": "Worktop 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Right",
+   "name": "Worktop Right 1800",
    "points": [
     [
-     120,
+     120.0,
      -620
     ],
     [
-     900,
+     900.0,
      -620
     ],
     [
-     900,
+     900.0,
      0
     ],
     [
-     120,
+     120.0,
      0
     ]
    ],
@@ -1010,39 +1024,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Right",
+   "name": "Worktop Right 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Right",
+   "name": "Worktop Right 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Right",
+   "name": "Worktop Right 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Front",
+   "name": "Worktop Front 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -620
     ],
     [
-     120,
+     120.0,
      -620
     ],
     [
-     120,
+     120.0,
      -520
     ],
     [
-     -280,
+     -280.0,
      -520
     ]
    ],
@@ -1051,39 +1065,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Front",
+   "name": "Worktop Front 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Front",
+   "name": "Worktop Front 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Front",
+   "name": "Worktop Front 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Back",
+   "name": "Worktop Back 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -140
     ],
     [
-     120,
+     120.0,
      -140
     ],
     [
-     120,
+     120.0,
      0
     ],
     [
-     -280,
+     -280.0,
      0
     ]
    ],
@@ -1092,24 +1106,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Back",
+   "name": "Worktop Back 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Back",
+   "name": "Worktop Back 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Back",
+   "name": "Worktop Back 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Upstand",
+   "name": "Upstand 1800",
    "points": [
     [
      898.0,
@@ -1197,24 +1211,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Upstand",
+   "name": "Upstand 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Upstand",
+   "name": "Upstand 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Upstand",
+   "name": "Upstand 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drawer 1 Front",
+   "name": "Drawer 1 Front 1800",
    "points": [
     [
      -306.0,
@@ -1303,24 +1317,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drawer 1 Front",
+   "name": "Drawer 1 Front 1800",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Drawer 1 Front",
+   "name": "Drawer 1 Front 1800",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drawer 1 Front",
+   "name": "Drawer 1 Front 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drawer 1 Handle Bar",
+   "name": "Drawer 1 Handle Bar 1800",
    "points": [
     [
      -618.0,
@@ -1425,24 +1439,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drawer 1 Handle Bar",
+   "name": "Drawer 1 Handle Bar 1800",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Drawer 1 Handle Bar",
+   "name": "Drawer 1 Handle Bar 1800",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drawer 1 Handle Bar",
+   "name": "Drawer 1 Handle Bar 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drawer 1 Handle Post 1",
+   "name": "Drawer 1 Handle Post 1800 1",
    "points": [
     [
      -664.0,
@@ -1547,24 +1561,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drawer 1 Handle Post 1",
+   "name": "Drawer 1 Handle Post 1800 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Drawer 1 Handle Post 1",
+   "name": "Drawer 1 Handle Post 1800 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drawer 1 Handle Post 1",
+   "name": "Drawer 1 Handle Post 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drawer 1 Handle Post 2",
+   "name": "Drawer 1 Handle Post 1800 2",
    "points": [
     [
      -528.0,
@@ -1669,24 +1683,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drawer 1 Handle Post 2",
+   "name": "Drawer 1 Handle Post 1800 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Drawer 1 Handle Post 2",
+   "name": "Drawer 1 Handle Post 1800 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drawer 1 Handle Post 2",
+   "name": "Drawer 1 Handle Post 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door 2 Leaf",
+   "name": "Door 2 Leaf 1800",
    "points": [
     [
      -306.0,
@@ -1775,24 +1789,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door 2 Leaf",
+   "name": "Door 2 Leaf 1800",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Door 2 Leaf",
+   "name": "Door 2 Leaf 1800",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door 2 Leaf",
+   "name": "Door 2 Leaf 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door 2 Handle Bar",
+   "name": "Door 2 Handle Bar 1800",
    "points": [
     [
      -339.0,
@@ -1896,24 +1910,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door 2 Handle Bar",
+   "name": "Door 2 Handle Bar 1800",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Door 2 Handle Bar",
+   "name": "Door 2 Handle Bar 1800",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door 2 Handle Bar",
+   "name": "Door 2 Handle Bar 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door 2 Handle Post 1",
+   "name": "Door 2 Handle Post 1800 1",
    "points": [
     [
      -341.0,
@@ -2018,24 +2032,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door 2 Handle Post 1",
+   "name": "Door 2 Handle Post 1800 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Door 2 Handle Post 1",
+   "name": "Door 2 Handle Post 1800 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door 2 Handle Post 1",
+   "name": "Door 2 Handle Post 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door 2 Handle Post 2",
+   "name": "Door 2 Handle Post 1800 2",
    "points": [
     [
      -341.0,
@@ -2140,24 +2154,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door 2 Handle Post 2",
+   "name": "Door 2 Handle Post 1800 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Door 2 Handle Post 2",
+   "name": "Door 2 Handle Post 1800 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door 2 Handle Post 2",
+   "name": "Door 2 Handle Post 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Doors 3 Leaf 1",
+   "name": "Doors 3 Leaf 1800 1",
    "points": [
     [
      -4.5,
@@ -2246,24 +2260,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Doors 3 Leaf 1",
+   "name": "Doors 3 Leaf 1800 1",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Doors 3 Leaf 1",
+   "name": "Doors 3 Leaf 1800 1",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Doors 3 Leaf 1",
+   "name": "Doors 3 Leaf 1800 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Doors 3 Leaf 2",
+   "name": "Doors 3 Leaf 1800 2",
    "points": [
     [
      294.0,
@@ -2352,24 +2366,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Doors 3 Leaf 2",
+   "name": "Doors 3 Leaf 1800 2",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Doors 3 Leaf 2",
+   "name": "Doors 3 Leaf 1800 2",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Doors 3 Leaf 2",
+   "name": "Doors 3 Leaf 1800 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Doors 3 Handle Bar 1",
+   "name": "Doors 3 Handle Bar 1800 1",
    "points": [
     [
      -35.0,
@@ -2473,24 +2487,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Doors 3 Handle Bar 1",
+   "name": "Doors 3 Handle Bar 1800 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Doors 3 Handle Bar 1",
+   "name": "Doors 3 Handle Bar 1800 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Doors 3 Handle Bar 1",
+   "name": "Doors 3 Handle Bar 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Doors 3 Handle Bar 2",
+   "name": "Doors 3 Handle Bar 1800 2",
    "points": [
     [
      45.0,
@@ -2594,39 +2608,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Doors 3 Handle Bar 2",
+   "name": "Doors 3 Handle Bar 1800 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Doors 3 Handle Bar 2",
+   "name": "Doors 3 Handle Bar 1800 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Doors 3 Handle Bar 2",
+   "name": "Doors 3 Handle Bar 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sink Bowl Floor",
+   "name": "Sink Bowl Floor 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -520
     ],
     [
-     120,
+     120.0,
      -520
     ],
     [
-     120,
+     120.0,
      -140
     ],
     [
-     -280,
+     -280.0,
      -140
     ]
    ],
@@ -2635,39 +2649,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Bowl Floor",
+   "name": "Sink Bowl Floor 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Bowl Floor",
+   "name": "Sink Bowl Floor 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Bowl Floor",
+   "name": "Sink Bowl Floor 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sink Bowl Wall Front",
+   "name": "Sink Bowl Wall Front 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -520
     ],
     [
-     120,
+     120.0,
      -520
     ],
     [
-     120,
+     120.0,
      -517
     ],
     [
-     -280,
+     -280.0,
      -517
     ]
    ],
@@ -2676,39 +2690,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Bowl Wall Front",
+   "name": "Sink Bowl Wall Front 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Bowl Wall Front",
+   "name": "Sink Bowl Wall Front 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Bowl Wall Front",
+   "name": "Sink Bowl Wall Front 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sink Bowl Wall Back",
+   "name": "Sink Bowl Wall Back 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -143
     ],
     [
-     120,
+     120.0,
      -143
     ],
     [
-     120,
+     120.0,
      -140
     ],
     [
-     -280,
+     -280.0,
      -140
     ]
    ],
@@ -2717,39 +2731,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Bowl Wall Back",
+   "name": "Sink Bowl Wall Back 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Bowl Wall Back",
+   "name": "Sink Bowl Wall Back 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Bowl Wall Back",
+   "name": "Sink Bowl Wall Back 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sink Bowl Wall Left",
+   "name": "Sink Bowl Wall Left 1800",
    "points": [
     [
-     -280,
+     -280.0,
      -517
     ],
     [
-     -277,
+     -277.0,
      -517
     ],
     [
-     -277,
+     -277.0,
      -143
     ],
     [
-     -280,
+     -280.0,
      -143
     ]
    ],
@@ -2758,39 +2772,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Bowl Wall Left",
+   "name": "Sink Bowl Wall Left 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Bowl Wall Left",
+   "name": "Sink Bowl Wall Left 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Bowl Wall Left",
+   "name": "Sink Bowl Wall Left 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sink Bowl Wall Right",
+   "name": "Sink Bowl Wall Right 1800",
    "points": [
     [
-     117,
+     117.0,
      -517
     ],
     [
-     120,
+     120.0,
      -517
     ],
     [
-     120,
+     120.0,
      -143
     ],
     [
-     117,
+     117.0,
      -143
     ]
    ],
@@ -2799,24 +2813,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Bowl Wall Right",
+   "name": "Sink Bowl Wall Right 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Bowl Wall Right",
+   "name": "Sink Bowl Wall Right 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Bowl Wall Right",
+   "name": "Sink Bowl Wall Right 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fridge Cabinet",
+   "name": "Fridge Cabinet 1800",
    "points": [
     [
      884.0,
@@ -2904,24 +2918,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fridge Cabinet",
+   "name": "Fridge Cabinet 1800",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Fridge Cabinet",
+   "name": "Fridge Cabinet 1800",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fridge Cabinet",
+   "name": "Fridge Cabinet 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fridge Door",
+   "name": "Fridge Door 1800",
    "points": [
     [
      878.0,
@@ -3010,24 +3024,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fridge Door",
+   "name": "Fridge Door 1800",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Fridge Door",
+   "name": "Fridge Door 1800",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fridge Door",
+   "name": "Fridge Door 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fridge Grip",
+   "name": "Fridge Grip 1800",
    "points": [
     [
      334.0,
@@ -3116,39 +3130,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fridge Grip",
+   "name": "Fridge Grip 1800",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Fridge Grip",
+   "name": "Fridge Grip 1800",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fridge Grip",
+   "name": "Fridge Grip 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fridge Kick Grille",
+   "name": "Fridge Kick Grille 1800",
    "points": [
     [
-     330,
+     330.0,
      35
     ],
     [
-     870,
+     870.0,
      35
     ],
     [
-     870,
+     870.0,
      90
     ],
     [
-     330,
+     330.0,
      90
     ]
    ],
@@ -3158,39 +3172,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fridge Kick Grille",
+   "name": "Fridge Kick Grille 1800",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Fridge Kick Grille",
+   "name": "Fridge Kick Grille 1800",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fridge Kick Grille",
+   "name": "Fridge Kick Grille 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Splashback",
+   "name": "Splashback 1800",
    "points": [
     [
-     -900,
+     -900.0,
      1000
     ],
     [
-     900,
+     900.0,
      1000
     ],
     [
-     900,
+     900.0,
      1450
     ],
     [
-     -900,
+     -900.0,
      1450
     ]
    ],
@@ -3200,24 +3214,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Splashback",
+   "name": "Splashback 1800",
    "subcategory": "Top"
   },
   {
    "op": "set_material_param",
-   "name": "Splashback",
+   "name": "Splashback 1800",
    "param": "Top Material"
   },
   {
    "op": "set_visibility",
-   "name": "Splashback",
+   "name": "Splashback 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer",
+   "name": "Drainer 1800",
    "points": [
     [
      -320.0,
@@ -3305,40 +3319,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drainer",
+   "name": "Drainer 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Drainer",
+   "name": "Drainer 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drainer",
+   "name": "Drainer 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer Groove 1",
+   "name": "Drainer Groove 1800 1",
    "points": [
     [
-     -830,
-     -520
+     -830.0,
+     -500
     ],
     [
-     -340,
-     -520
+     -340.0,
+     -500
     ],
     [
-     -340,
-     -512
+     -340.0,
+     -492
     ],
     [
-     -830,
-     -512
+     -830.0,
+     -492
     ]
    ],
    "start": 903,
@@ -3346,40 +3360,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drainer Groove 1",
+   "name": "Drainer Groove 1800 1",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Drainer Groove 1",
+   "name": "Drainer Groove 1800 1",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drainer Groove 1",
+   "name": "Drainer Groove 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer Groove 2",
+   "name": "Drainer Groove 1800 2",
    "points": [
     [
-     -830,
-     -445
+     -830.0,
+     -410
     ],
     [
-     -340,
-     -445
+     -340.0,
+     -410
     ],
     [
-     -340,
-     -437
+     -340.0,
+     -402
     ],
     [
-     -830,
-     -437
+     -830.0,
+     -402
     ]
    ],
    "start": 903,
@@ -3387,40 +3401,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drainer Groove 2",
+   "name": "Drainer Groove 1800 2",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Drainer Groove 2",
+   "name": "Drainer Groove 1800 2",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drainer Groove 2",
+   "name": "Drainer Groove 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer Groove 3",
+   "name": "Drainer Groove 1800 3",
    "points": [
     [
-     -830,
-     -370
+     -830.0,
+     -320
     ],
     [
-     -340,
-     -370
+     -340.0,
+     -320
     ],
     [
-     -340,
-     -362
+     -340.0,
+     -312
     ],
     [
-     -830,
-     -362
+     -830.0,
+     -312
     ]
    ],
    "start": 903,
@@ -3428,40 +3442,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drainer Groove 3",
+   "name": "Drainer Groove 1800 3",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Drainer Groove 3",
+   "name": "Drainer Groove 1800 3",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drainer Groove 3",
+   "name": "Drainer Groove 1800 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer Groove 4",
+   "name": "Drainer Groove 1800 4",
    "points": [
     [
-     -830,
-     -295
+     -830.0,
+     -230
     ],
     [
-     -340,
-     -295
+     -340.0,
+     -230
     ],
     [
-     -340,
-     -287
+     -340.0,
+     -222
     ],
     [
-     -830,
-     -287
+     -830.0,
+     -222
     ]
    ],
    "start": 903,
@@ -3469,65 +3483,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drainer Groove 4",
+   "name": "Drainer Groove 1800 4",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Drainer Groove 4",
+   "name": "Drainer Groove 1800 4",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drainer Groove 4",
+   "name": "Drainer Groove 1800 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drainer Groove 5",
-   "points": [
-    [
-     -830,
-     -220
-    ],
-    [
-     -340,
-     -220
-    ],
-    [
-     -340,
-     -212
-    ],
-    [
-     -830,
-     -212
-    ]
-   ],
-   "start": 903,
-   "end": 905
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drainer Groove 5",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drainer Groove 5",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drainer Groove 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sink Waste",
+   "name": "Sink Waste 1800",
    "points": [
     [
      -55.0,
@@ -3631,24 +3604,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sink Waste",
+   "name": "Sink Waste 1800",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Sink Waste",
+   "name": "Sink Waste 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sink Waste",
+   "name": "Sink Waste 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mixer Body",
+   "name": "Mixer Body 1800",
    "points": [
     [
      -58.0,
@@ -3752,24 +3725,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mixer Body",
+   "name": "Mixer Body 1800",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Mixer Body",
+   "name": "Mixer Body 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mixer Body",
+   "name": "Mixer Body 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Mixer Swan Neck",
+   "name": "Mixer Swan Neck 1800",
    "profile": [
     [
      0,
@@ -3789,7 +3762,7 @@
     ]
    ],
    "axis_at": [
-    -80,
+    -80.0,
     1130
    ],
    "axis": "y",
@@ -3797,19 +3770,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Mixer Swan Neck",
+   "name": "Mixer Swan Neck 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mixer Swan Neck",
+   "name": "Mixer Swan Neck 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mixer Riser",
+   "name": "Mixer Riser 1800",
    "points": [
     [
      -68.0,
@@ -3913,24 +3886,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mixer Riser",
+   "name": "Mixer Riser 1800",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Mixer Riser",
+   "name": "Mixer Riser 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mixer Riser",
+   "name": "Mixer Riser 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mixer Outlet",
+   "name": "Mixer Outlet 1800",
    "points": [
     [
      -68.0,
@@ -4034,39 +4007,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mixer Outlet",
+   "name": "Mixer Outlet 1800",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Mixer Outlet",
+   "name": "Mixer Outlet 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mixer Outlet",
+   "name": "Mixer Outlet 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mixer Lever",
+   "name": "Mixer Lever 1800",
    "points": [
     [
-     -80,
+     -80.0,
      -75
     ],
     [
-     80,
+     80.0,
      -75
     ],
     [
-     80,
+     80.0,
      -60
     ],
     [
-     -80,
+     -80.0,
      -60
     ]
    ],
@@ -4075,24 +4048,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mixer Lever",
+   "name": "Mixer Lever 1800",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Mixer Lever",
+   "name": "Mixer Lever 1800",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mixer Lever",
+   "name": "Mixer Lever 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Body",
+   "name": "Boiler Body 1800",
    "points": [
     [
      780.0,
@@ -4180,24 +4153,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Body",
+   "name": "Boiler Body 1800",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Body",
+   "name": "Boiler Body 1800",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Body",
+   "name": "Boiler Body 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Panel",
+   "name": "Boiler Panel 1800",
    "points": [
     [
      754.0,
@@ -4286,24 +4259,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Panel",
+   "name": "Boiler Panel 1800",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Panel",
+   "name": "Boiler Panel 1800",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Panel",
+   "name": "Boiler Panel 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Ready LED",
+   "name": "Boiler Ready LED 1800",
    "points": [
     [
      507.0,
@@ -4408,24 +4381,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Ready LED",
+   "name": "Boiler Ready LED 1800",
    "subcategory": "Green"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Ready LED",
+   "name": "Boiler Ready LED 1800",
    "param": "Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Ready LED",
+   "name": "Boiler Ready LED 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Power LED",
+   "name": "Boiler Power LED 1800",
    "points": [
     [
      547.0,
@@ -4530,39 +4503,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Power LED",
+   "name": "Boiler Power LED 1800",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Power LED",
+   "name": "Boiler Power LED 1800",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Power LED",
+   "name": "Boiler Power LED 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Tap",
+   "name": "Boiler Tap 1800",
    "points": [
     [
-     585,
+     585.0,
      -200
     ],
     [
-     615,
+     615.0,
      -200
     ],
     [
-     615,
+     615.0,
      -160
     ],
     [
-     585,
+     585.0,
      -160
     ]
    ],
@@ -4571,24 +4544,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Tap",
+   "name": "Boiler Tap 1800",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Tap",
+   "name": "Boiler Tap 1800",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Tap",
+   "name": "Boiler Tap 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Tap Nozzle",
+   "name": "Boiler Tap Nozzle 1800",
    "points": [
     [
      608.0,
@@ -4692,39 +4665,80 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Tap Nozzle",
+   "name": "Boiler Tap Nozzle 1800",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Tap Nozzle",
+   "name": "Boiler Tap Nozzle 1800",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Tap Nozzle",
+   "name": "Boiler Tap Nozzle 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Carcass",
+   "name": "Boiler Drip Tray 1800",
    "points": [
     [
-     -900,
+     470.0,
+     -230
+    ],
+    [
+     730.0,
+     -230
+    ],
+    [
+     730.0,
+     -20
+    ],
+    [
+     470.0,
+     -20
+    ]
+   ],
+   "start": 900,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Drip Tray 1800",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Drip Tray 1800",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Drip Tray 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Carcass 1800",
+   "points": [
+    [
+     -900.0,
      -300
     ],
     [
-     300,
+     300.0,
      -300
     ],
     [
-     300,
+     300.0,
      0
     ],
     [
-     -900,
+     -900.0,
      0
     ]
    ],
@@ -4733,24 +4747,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 1800",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 1800",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1",
+   "name": "Wall Unit Leaf 1 1800",
    "points": [
     [
      -305.0,
@@ -4839,24 +4853,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1",
+   "name": "Wall Unit Leaf 1 1800",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1",
+   "name": "Wall Unit Leaf 1 1800",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1",
+   "name": "Wall Unit Leaf 1 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 1800",
    "points": [
     [
      -321.0,
@@ -4960,24 +4974,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 1800",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 1800",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 1",
    "points": [
     [
      -323.0,
@@ -5082,24 +5096,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 2",
    "points": [
     [
      -323.0,
@@ -5204,24 +5218,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2",
+   "name": "Wall Unit Leaf 2 1800",
    "points": [
     [
      295.0,
@@ -5310,24 +5324,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2",
+   "name": "Wall Unit Leaf 2 1800",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2",
+   "name": "Wall Unit Leaf 2 1800",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2",
+   "name": "Wall Unit Leaf 2 1800",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 1800",
    "points": [
     [
      -267.0,
@@ -5431,24 +5445,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 1800",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 1800",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 1800",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 1",
    "points": [
     [
      -269.0,
@@ -5553,24 +5567,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 2",
    "points": [
     [
      -269.0,
@@ -5675,39 +5689,4975 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Boiler Drip Tray",
+   "name": "Carcass 2400",
    "points": [
     [
-     470,
-     -230
+     -1200.0,
+     -580
     ],
     [
-     730,
-     -230
+     -600.0,
+     -580
     ],
     [
-     730,
+     -600.0,
+     0
+    ],
+    [
+     -1200.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 870
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Carcass 2400",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Carcass 2400",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Carcass 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 2400",
+   "points": [
+    [
+     -1198.0,
+     -550
+    ],
+    [
+     -602.0,
+     -550
+    ],
+    [
+     -602.0,
      -20
     ],
     [
-     470,
+     -1198.0,
+     -20
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 2400",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 2400",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Carcass 2 2400",
+   "points": [
+    [
+     -600.0,
+     -580
+    ],
+    [
+     0.0,
+     -580
+    ],
+    [
+     0.0,
+     0
+    ],
+    [
+     -600.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 870
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Carcass 2 2400",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Carcass 2 2400",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Carcass 2 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 2 2400",
+   "points": [
+    [
+     -598.0,
+     -550
+    ],
+    [
+     -2.0,
+     -550
+    ],
+    [
+     -2.0,
+     -20
+    ],
+    [
+     -598.0,
+     -20
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 2 2400",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 2 2400",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 2 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Carcass 3 2400",
+   "points": [
+    [
+     0.0,
+     -580
+    ],
+    [
+     600.0,
+     -580
+    ],
+    [
+     600.0,
+     0
+    ],
+    [
+     0.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 870
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Carcass 3 2400",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Carcass 3 2400",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Carcass 3 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 3 2400",
+   "points": [
+    [
+     2.0,
+     -550
+    ],
+    [
+     598.0,
+     -550
+    ],
+    [
+     598.0,
+     -20
+    ],
+    [
+     2.0,
+     -20
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 3 2400",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 3 2400",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 3 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Knee Panel 1 2400",
+   "points": [
+    [
+     600.0,
+     -20
+    ],
+    [
+     1200.0,
+     -20
+    ],
+    [
+     1200.0,
+     0
+    ],
+    [
+     600.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 870
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Knee Panel 1 2400",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Knee Panel 1 2400",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Knee Panel 1 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop 2400",
+   "points": [
+    [
+     -1200.0,
+     -620
+    ],
+    [
+     -580.0,
+     -620
+    ],
+    [
+     -580.0,
+     0
+    ],
+    [
+     -1200.0,
+     0
+    ]
+   ],
+   "start": 870,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Right 2400",
+   "points": [
+    [
+     -180.0,
+     -620
+    ],
+    [
+     1200.0,
+     -620
+    ],
+    [
+     1200.0,
+     0
+    ],
+    [
+     -180.0,
+     0
+    ]
+   ],
+   "start": 870,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Right 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Right 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Right 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Front 2400",
+   "points": [
+    [
+     -580.0,
+     -620
+    ],
+    [
+     -180.0,
+     -620
+    ],
+    [
+     -180.0,
+     -520
+    ],
+    [
+     -580.0,
+     -520
+    ]
+   ],
+   "start": 870,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Front 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Front 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Back 2400",
+   "points": [
+    [
+     -580.0,
+     -140
+    ],
+    [
+     -180.0,
+     -140
+    ],
+    [
+     -180.0,
+     0
+    ],
+    [
+     -580.0,
+     0
+    ]
+   ],
+   "start": 870,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Back 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Back 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Back 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upstand 2400",
+   "points": [
+    [
+     1198.0,
+     -15.0
+    ],
+    [
+     1198.77,
+     -14.85
+    ],
+    [
+     1199.41,
+     -14.41
+    ],
+    [
+     1199.85,
+     -13.77
+    ],
+    [
+     1200.0,
+     -13.0
+    ],
+    [
+     1200.0,
+     -2.0
+    ],
+    [
+     1199.85,
+     -1.23
+    ],
+    [
+     1199.41,
+     -0.59
+    ],
+    [
+     1198.77,
+     -0.15
+    ],
+    [
+     1198.0,
+     0.0
+    ],
+    [
+     -1198.0,
+     0.0
+    ],
+    [
+     -1198.77,
+     -0.15
+    ],
+    [
+     -1199.41,
+     -0.59
+    ],
+    [
+     -1199.85,
+     -1.23
+    ],
+    [
+     -1200.0,
+     -2.0
+    ],
+    [
+     -1200.0,
+     -13.0
+    ],
+    [
+     -1199.85,
+     -13.77
+    ],
+    [
+     -1199.41,
+     -14.41
+    ],
+    [
+     -1198.77,
+     -14.85
+    ],
+    [
+     -1198.0,
+     -15.0
+    ]
+   ],
+   "start": 900,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upstand 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upstand 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upstand 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 1 Front 2400",
+   "points": [
+    [
+     -606.0,
+     710.0
+    ],
+    [
+     -604.85,
+     710.23
+    ],
+    [
+     -603.88,
+     710.88
+    ],
+    [
+     -603.23,
+     711.85
+    ],
+    [
+     -603.0,
+     713.0
+    ],
+    [
+     -603.0,
+     864.0
+    ],
+    [
+     -603.23,
+     865.15
+    ],
+    [
+     -603.88,
+     866.12
+    ],
+    [
+     -604.85,
+     866.77
+    ],
+    [
+     -606.0,
+     867.0
+    ],
+    [
+     -1194.0,
+     867.0
+    ],
+    [
+     -1195.15,
+     866.77
+    ],
+    [
+     -1196.12,
+     866.12
+    ],
+    [
+     -1196.77,
+     865.15
+    ],
+    [
+     -1197.0,
+     864.0
+    ],
+    [
+     -1197.0,
+     713.0
+    ],
+    [
+     -1196.77,
+     711.85
+    ],
+    [
+     -1196.12,
+     710.88
+    ],
+    [
+     -1195.15,
+     710.23
+    ],
+    [
+     -1194.0,
+     710.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 1 Front 2400",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 1 Front 2400",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 1 Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 1 Handle Bar 2400",
+   "points": [
+    [
+     -618.0,
+     827.0
+    ],
+    [
+     -618.2,
+     828.55
+    ],
+    [
+     -618.8,
+     830.0
+    ],
+    [
+     -619.76,
+     831.24
+    ],
+    [
+     -621.0,
+     832.2
+    ],
+    [
+     -622.45,
+     832.8
+    ],
+    [
+     -624.0,
+     833.0
+    ],
+    [
+     -625.55,
+     832.8
+    ],
+    [
+     -627.0,
+     832.2
+    ],
+    [
+     -628.24,
+     831.24
+    ],
+    [
+     -629.2,
+     830.0
+    ],
+    [
+     -629.8,
+     828.55
+    ],
+    [
+     -630.0,
+     827.0
+    ],
+    [
+     -629.8,
+     825.45
+    ],
+    [
+     -629.2,
+     824.0
+    ],
+    [
+     -628.24,
+     822.76
+    ],
+    [
+     -627.0,
+     821.8
+    ],
+    [
+     -625.55,
+     821.2
+    ],
+    [
+     -624.0,
+     821.0
+    ],
+    [
+     -622.45,
+     821.2
+    ],
+    [
+     -621.0,
+     821.8
+    ],
+    [
+     -619.76,
+     822.76
+    ],
+    [
+     -618.8,
+     824.0
+    ],
+    [
+     -618.2,
+     825.45
+    ]
+   ],
+   "start": -980.0,
+   "end": -820.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 1 Handle Bar 2400",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 1 Handle Bar 2400",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 1 Handle Bar 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 1 Handle Post 2400 1",
+   "points": [
+    [
+     -964.0,
+     827.0
+    ],
+    [
+     -964.14,
+     828.04
+    ],
+    [
+     -964.54,
+     829.0
+    ],
+    [
+     -965.17,
+     829.83
+    ],
+    [
+     -966.0,
+     830.46
+    ],
+    [
+     -966.96,
+     830.86
+    ],
+    [
+     -968.0,
+     831.0
+    ],
+    [
+     -969.04,
+     830.86
+    ],
+    [
+     -970.0,
+     830.46
+    ],
+    [
+     -970.83,
+     829.83
+    ],
+    [
+     -971.46,
+     829.0
+    ],
+    [
+     -971.86,
+     828.04
+    ],
+    [
+     -972.0,
+     827.0
+    ],
+    [
+     -971.86,
+     825.96
+    ],
+    [
+     -971.46,
+     825.0
+    ],
+    [
+     -970.83,
+     824.17
+    ],
+    [
+     -970.0,
+     823.54
+    ],
+    [
+     -969.04,
+     823.14
+    ],
+    [
+     -968.0,
+     823.0
+    ],
+    [
+     -966.96,
+     823.14
+    ],
+    [
+     -966.0,
+     823.54
+    ],
+    [
+     -965.17,
+     824.17
+    ],
+    [
+     -964.54,
+     825.0
+    ],
+    [
+     -964.14,
+     825.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 1 Handle Post 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 1 Handle Post 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 1 Handle Post 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 1 Handle Post 2400 2",
+   "points": [
+    [
+     -828.0,
+     827.0
+    ],
+    [
+     -828.14,
+     828.04
+    ],
+    [
+     -828.54,
+     829.0
+    ],
+    [
+     -829.17,
+     829.83
+    ],
+    [
+     -830.0,
+     830.46
+    ],
+    [
+     -830.96,
+     830.86
+    ],
+    [
+     -832.0,
+     831.0
+    ],
+    [
+     -833.04,
+     830.86
+    ],
+    [
+     -834.0,
+     830.46
+    ],
+    [
+     -834.83,
+     829.83
+    ],
+    [
+     -835.46,
+     829.0
+    ],
+    [
+     -835.86,
+     828.04
+    ],
+    [
+     -836.0,
+     827.0
+    ],
+    [
+     -835.86,
+     825.96
+    ],
+    [
+     -835.46,
+     825.0
+    ],
+    [
+     -834.83,
+     824.17
+    ],
+    [
+     -834.0,
+     823.54
+    ],
+    [
+     -833.04,
+     823.14
+    ],
+    [
+     -832.0,
+     823.0
+    ],
+    [
+     -830.96,
+     823.14
+    ],
+    [
+     -830.0,
+     823.54
+    ],
+    [
+     -829.17,
+     824.17
+    ],
+    [
+     -828.54,
+     825.0
+    ],
+    [
+     -828.14,
+     825.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 1 Handle Post 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 1 Handle Post 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 1 Handle Post 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 2 Leaf 2400",
+   "points": [
+    [
+     -606.0,
+     110.0
+    ],
+    [
+     -604.85,
+     110.23
+    ],
+    [
+     -603.88,
+     110.88
+    ],
+    [
+     -603.23,
+     111.85
+    ],
+    [
+     -603.0,
+     113.0
+    ],
+    [
+     -603.0,
+     704.0
+    ],
+    [
+     -603.23,
+     705.15
+    ],
+    [
+     -603.88,
+     706.12
+    ],
+    [
+     -604.85,
+     706.77
+    ],
+    [
+     -606.0,
+     707.0
+    ],
+    [
+     -1194.0,
+     707.0
+    ],
+    [
+     -1195.15,
+     706.77
+    ],
+    [
+     -1196.12,
+     706.12
+    ],
+    [
+     -1196.77,
+     705.15
+    ],
+    [
+     -1197.0,
+     704.0
+    ],
+    [
+     -1197.0,
+     113.0
+    ],
+    [
+     -1196.77,
+     111.85
+    ],
+    [
+     -1196.12,
+     110.88
+    ],
+    [
+     -1195.15,
+     110.23
+    ],
+    [
+     -1194.0,
+     110.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 2 Leaf 2400",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 2 Leaf 2400",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 2 Leaf 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 2 Handle Bar 2400",
+   "points": [
+    [
+     -639.0,
+     -624.0
+    ],
+    [
+     -639.2,
+     -622.45
+    ],
+    [
+     -639.8,
+     -621.0
+    ],
+    [
+     -640.76,
+     -619.76
+    ],
+    [
+     -642.0,
+     -618.8
+    ],
+    [
+     -643.45,
+     -618.2
+    ],
+    [
+     -645.0,
+     -618.0
+    ],
+    [
+     -646.55,
+     -618.2
+    ],
+    [
+     -648.0,
+     -618.8
+    ],
+    [
+     -649.24,
+     -619.76
+    ],
+    [
+     -650.2,
+     -621.0
+    ],
+    [
+     -650.8,
+     -622.45
+    ],
+    [
+     -651.0,
+     -624.0
+    ],
+    [
+     -650.8,
+     -625.55
+    ],
+    [
+     -650.2,
+     -627.0
+    ],
+    [
+     -649.24,
+     -628.24
+    ],
+    [
+     -648.0,
+     -629.2
+    ],
+    [
+     -646.55,
+     -629.8
+    ],
+    [
+     -645.0,
+     -630.0
+    ],
+    [
+     -643.45,
+     -629.8
+    ],
+    [
+     -642.0,
+     -629.2
+    ],
+    [
+     -640.76,
+     -628.24
+    ],
+    [
+     -639.8,
+     -627.0
+    ],
+    [
+     -639.2,
+     -625.55
+    ]
+   ],
+   "start": 517.0,
+   "end": 677.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 2 Handle Bar 2400",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 2 Handle Bar 2400",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 2 Handle Bar 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 2 Handle Post 2400 1",
+   "points": [
+    [
+     -641.0,
+     529.0
+    ],
+    [
+     -641.14,
+     530.04
+    ],
+    [
+     -641.54,
+     531.0
+    ],
+    [
+     -642.17,
+     531.83
+    ],
+    [
+     -643.0,
+     532.46
+    ],
+    [
+     -643.96,
+     532.86
+    ],
+    [
+     -645.0,
+     533.0
+    ],
+    [
+     -646.04,
+     532.86
+    ],
+    [
+     -647.0,
+     532.46
+    ],
+    [
+     -647.83,
+     531.83
+    ],
+    [
+     -648.46,
+     531.0
+    ],
+    [
+     -648.86,
+     530.04
+    ],
+    [
+     -649.0,
+     529.0
+    ],
+    [
+     -648.86,
+     527.96
+    ],
+    [
+     -648.46,
+     527.0
+    ],
+    [
+     -647.83,
+     526.17
+    ],
+    [
+     -647.0,
+     525.54
+    ],
+    [
+     -646.04,
+     525.14
+    ],
+    [
+     -645.0,
+     525.0
+    ],
+    [
+     -643.96,
+     525.14
+    ],
+    [
+     -643.0,
+     525.54
+    ],
+    [
+     -642.17,
+     526.17
+    ],
+    [
+     -641.54,
+     527.0
+    ],
+    [
+     -641.14,
+     527.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 2 Handle Post 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 2 Handle Post 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 2 Handle Post 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 2 Handle Post 2400 2",
+   "points": [
+    [
+     -641.0,
+     665.0
+    ],
+    [
+     -641.14,
+     666.04
+    ],
+    [
+     -641.54,
+     667.0
+    ],
+    [
+     -642.17,
+     667.83
+    ],
+    [
+     -643.0,
+     668.46
+    ],
+    [
+     -643.96,
+     668.86
+    ],
+    [
+     -645.0,
+     669.0
+    ],
+    [
+     -646.04,
+     668.86
+    ],
+    [
+     -647.0,
+     668.46
+    ],
+    [
+     -647.83,
+     667.83
+    ],
+    [
+     -648.46,
+     667.0
+    ],
+    [
+     -648.86,
+     666.04
+    ],
+    [
+     -649.0,
+     665.0
+    ],
+    [
+     -648.86,
+     663.96
+    ],
+    [
+     -648.46,
+     663.0
+    ],
+    [
+     -647.83,
+     662.17
+    ],
+    [
+     -647.0,
+     661.54
+    ],
+    [
+     -646.04,
+     661.14
+    ],
+    [
+     -645.0,
+     661.0
+    ],
+    [
+     -643.96,
+     661.14
+    ],
+    [
+     -643.0,
+     661.54
+    ],
+    [
+     -642.17,
+     662.17
+    ],
+    [
+     -641.54,
+     663.0
+    ],
+    [
+     -641.14,
+     663.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 2 Handle Post 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 2 Handle Post 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 2 Handle Post 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 3 Leaf 2400 1",
+   "points": [
+    [
+     -304.5,
+     105.0
+    ],
+    [
+     -303.35,
+     105.23
+    ],
+    [
+     -302.38,
+     105.88
+    ],
+    [
+     -301.73,
+     106.85
+    ],
+    [
+     -301.5,
+     108.0
+    ],
+    [
+     -301.5,
+     864.0
+    ],
+    [
+     -301.73,
+     865.15
+    ],
+    [
+     -302.38,
+     866.12
+    ],
+    [
+     -303.35,
+     866.77
+    ],
+    [
+     -304.5,
+     867.0
+    ],
+    [
+     -594.0,
+     867.0
+    ],
+    [
+     -595.15,
+     866.77
+    ],
+    [
+     -596.12,
+     866.12
+    ],
+    [
+     -596.77,
+     865.15
+    ],
+    [
+     -597.0,
+     864.0
+    ],
+    [
+     -597.0,
+     108.0
+    ],
+    [
+     -596.77,
+     106.85
+    ],
+    [
+     -596.12,
+     105.88
+    ],
+    [
+     -595.15,
+     105.23
+    ],
+    [
+     -594.0,
+     105.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 3 Leaf 2400 1",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 3 Leaf 2400 1",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 3 Leaf 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 3 Leaf 2400 2",
+   "points": [
+    [
+     -6.0,
+     105.0
+    ],
+    [
+     -4.85,
+     105.23
+    ],
+    [
+     -3.88,
+     105.88
+    ],
+    [
+     -3.23,
+     106.85
+    ],
+    [
+     -3.0,
+     108.0
+    ],
+    [
+     -3.0,
+     864.0
+    ],
+    [
+     -3.23,
+     865.15
+    ],
+    [
+     -3.88,
+     866.12
+    ],
+    [
+     -4.85,
+     866.77
+    ],
+    [
+     -6.0,
+     867.0
+    ],
+    [
+     -295.5,
+     867.0
+    ],
+    [
+     -296.65,
+     866.77
+    ],
+    [
+     -297.62,
+     866.12
+    ],
+    [
+     -298.27,
+     865.15
+    ],
+    [
+     -298.5,
+     864.0
+    ],
+    [
+     -298.5,
+     108.0
+    ],
+    [
+     -298.27,
+     106.85
+    ],
+    [
+     -297.62,
+     105.88
+    ],
+    [
+     -296.65,
+     105.23
+    ],
+    [
+     -295.5,
+     105.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 3 Leaf 2400 2",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 3 Leaf 2400 2",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 3 Leaf 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 3 Handle Bar 2400 1",
+   "points": [
+    [
+     -335.0,
+     -620.0
+    ],
+    [
+     -335.17,
+     -618.71
+    ],
+    [
+     -335.67,
+     -617.5
+    ],
+    [
+     -336.46,
+     -616.46
+    ],
+    [
+     -337.5,
+     -615.67
+    ],
+    [
+     -338.71,
+     -615.17
+    ],
+    [
+     -340.0,
+     -615.0
+    ],
+    [
+     -341.29,
+     -615.17
+    ],
+    [
+     -342.5,
+     -615.67
+    ],
+    [
+     -343.54,
+     -616.46
+    ],
+    [
+     -344.33,
+     -617.5
+    ],
+    [
+     -344.83,
+     -618.71
+    ],
+    [
+     -345.0,
+     -620.0
+    ],
+    [
+     -344.83,
+     -621.29
+    ],
+    [
+     -344.33,
+     -622.5
+    ],
+    [
+     -343.54,
+     -623.54
+    ],
+    [
+     -342.5,
+     -624.33
+    ],
+    [
+     -341.29,
+     -624.83
+    ],
+    [
+     -340.0,
+     -625.0
+    ],
+    [
+     -338.71,
+     -624.83
+    ],
+    [
+     -337.5,
+     -624.33
+    ],
+    [
+     -336.46,
+     -623.54
+    ],
+    [
+     -335.67,
+     -622.5
+    ],
+    [
+     -335.17,
+     -621.29
+    ]
+   ],
+   "start": 667,
+   "end": 827
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 3 Handle Bar 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 3 Handle Bar 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 3 Handle Bar 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 3 Handle Bar 2400 2",
+   "points": [
+    [
+     -255.0,
+     -620.0
+    ],
+    [
+     -255.17,
+     -618.71
+    ],
+    [
+     -255.67,
+     -617.5
+    ],
+    [
+     -256.46,
+     -616.46
+    ],
+    [
+     -257.5,
+     -615.67
+    ],
+    [
+     -258.71,
+     -615.17
+    ],
+    [
+     -260.0,
+     -615.0
+    ],
+    [
+     -261.29,
+     -615.17
+    ],
+    [
+     -262.5,
+     -615.67
+    ],
+    [
+     -263.54,
+     -616.46
+    ],
+    [
+     -264.33,
+     -617.5
+    ],
+    [
+     -264.83,
+     -618.71
+    ],
+    [
+     -265.0,
+     -620.0
+    ],
+    [
+     -264.83,
+     -621.29
+    ],
+    [
+     -264.33,
+     -622.5
+    ],
+    [
+     -263.54,
+     -623.54
+    ],
+    [
+     -262.5,
+     -624.33
+    ],
+    [
+     -261.29,
+     -624.83
+    ],
+    [
+     -260.0,
+     -625.0
+    ],
+    [
+     -258.71,
+     -624.83
+    ],
+    [
+     -257.5,
+     -624.33
+    ],
+    [
+     -256.46,
+     -623.54
+    ],
+    [
+     -255.67,
+     -622.5
+    ],
+    [
+     -255.17,
+     -621.29
+    ]
+   ],
+   "start": 667,
+   "end": 827
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 3 Handle Bar 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 3 Handle Bar 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 3 Handle Bar 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 4 Front 2400",
+   "points": [
+    [
+     594.0,
+     710.0
+    ],
+    [
+     595.15,
+     710.23
+    ],
+    [
+     596.12,
+     710.88
+    ],
+    [
+     596.77,
+     711.85
+    ],
+    [
+     597.0,
+     713.0
+    ],
+    [
+     597.0,
+     864.0
+    ],
+    [
+     596.77,
+     865.15
+    ],
+    [
+     596.12,
+     866.12
+    ],
+    [
+     595.15,
+     866.77
+    ],
+    [
+     594.0,
+     867.0
+    ],
+    [
+     6.0,
+     867.0
+    ],
+    [
+     4.85,
+     866.77
+    ],
+    [
+     3.88,
+     866.12
+    ],
+    [
+     3.23,
+     865.15
+    ],
+    [
+     3.0,
+     864.0
+    ],
+    [
+     3.0,
+     713.0
+    ],
+    [
+     3.23,
+     711.85
+    ],
+    [
+     3.88,
+     710.88
+    ],
+    [
+     4.85,
+     710.23
+    ],
+    [
+     6.0,
+     710.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 4 Front 2400",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 4 Front 2400",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 4 Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 4 Handle Bar 2400",
+   "points": [
+    [
+     -618.0,
+     827.0
+    ],
+    [
+     -618.2,
+     828.55
+    ],
+    [
+     -618.8,
+     830.0
+    ],
+    [
+     -619.76,
+     831.24
+    ],
+    [
+     -621.0,
+     832.2
+    ],
+    [
+     -622.45,
+     832.8
+    ],
+    [
+     -624.0,
+     833.0
+    ],
+    [
+     -625.55,
+     832.8
+    ],
+    [
+     -627.0,
+     832.2
+    ],
+    [
+     -628.24,
+     831.24
+    ],
+    [
+     -629.2,
+     830.0
+    ],
+    [
+     -629.8,
+     828.55
+    ],
+    [
+     -630.0,
+     827.0
+    ],
+    [
+     -629.8,
+     825.45
+    ],
+    [
+     -629.2,
+     824.0
+    ],
+    [
+     -628.24,
+     822.76
+    ],
+    [
+     -627.0,
+     821.8
+    ],
+    [
+     -625.55,
+     821.2
+    ],
+    [
+     -624.0,
+     821.0
+    ],
+    [
+     -622.45,
+     821.2
+    ],
+    [
+     -621.0,
+     821.8
+    ],
+    [
+     -619.76,
+     822.76
+    ],
+    [
+     -618.8,
+     824.0
+    ],
+    [
+     -618.2,
+     825.45
+    ]
+   ],
+   "start": 220.0,
+   "end": 380.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 4 Handle Bar 2400",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 4 Handle Bar 2400",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 4 Handle Bar 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 4 Handle Post 2400 1",
+   "points": [
+    [
+     236.0,
+     827.0
+    ],
+    [
+     235.86,
+     828.04
+    ],
+    [
+     235.46,
+     829.0
+    ],
+    [
+     234.83,
+     829.83
+    ],
+    [
+     234.0,
+     830.46
+    ],
+    [
+     233.04,
+     830.86
+    ],
+    [
+     232.0,
+     831.0
+    ],
+    [
+     230.96,
+     830.86
+    ],
+    [
+     230.0,
+     830.46
+    ],
+    [
+     229.17,
+     829.83
+    ],
+    [
+     228.54,
+     829.0
+    ],
+    [
+     228.14,
+     828.04
+    ],
+    [
+     228.0,
+     827.0
+    ],
+    [
+     228.14,
+     825.96
+    ],
+    [
+     228.54,
+     825.0
+    ],
+    [
+     229.17,
+     824.17
+    ],
+    [
+     230.0,
+     823.54
+    ],
+    [
+     230.96,
+     823.14
+    ],
+    [
+     232.0,
+     823.0
+    ],
+    [
+     233.04,
+     823.14
+    ],
+    [
+     234.0,
+     823.54
+    ],
+    [
+     234.83,
+     824.17
+    ],
+    [
+     235.46,
+     825.0
+    ],
+    [
+     235.86,
+     825.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 4 Handle Post 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 4 Handle Post 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 4 Handle Post 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drawer 4 Handle Post 2400 2",
+   "points": [
+    [
+     372.0,
+     827.0
+    ],
+    [
+     371.86,
+     828.04
+    ],
+    [
+     371.46,
+     829.0
+    ],
+    [
+     370.83,
+     829.83
+    ],
+    [
+     370.0,
+     830.46
+    ],
+    [
+     369.04,
+     830.86
+    ],
+    [
+     368.0,
+     831.0
+    ],
+    [
+     366.96,
+     830.86
+    ],
+    [
+     366.0,
+     830.46
+    ],
+    [
+     365.17,
+     829.83
+    ],
+    [
+     364.54,
+     829.0
+    ],
+    [
+     364.14,
+     828.04
+    ],
+    [
+     364.0,
+     827.0
+    ],
+    [
+     364.14,
+     825.96
+    ],
+    [
+     364.54,
+     825.0
+    ],
+    [
+     365.17,
+     824.17
+    ],
+    [
+     366.0,
+     823.54
+    ],
+    [
+     366.96,
+     823.14
+    ],
+    [
+     368.0,
+     823.0
+    ],
+    [
+     369.04,
+     823.14
+    ],
+    [
+     370.0,
+     823.54
+    ],
+    [
+     370.83,
+     824.17
+    ],
+    [
+     371.46,
+     825.0
+    ],
+    [
+     371.86,
+     825.96
+    ]
+   ],
+   "start": 600,
+   "end": 624,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drawer 4 Handle Post 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drawer 4 Handle Post 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drawer 4 Handle Post 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 5 Leaf 2400 1",
+   "points": [
+    [
+     295.5,
+     110.0
+    ],
+    [
+     296.65,
+     110.23
+    ],
+    [
+     297.62,
+     110.88
+    ],
+    [
+     298.27,
+     111.85
+    ],
+    [
+     298.5,
+     113.0
+    ],
+    [
+     298.5,
+     704.0
+    ],
+    [
+     298.27,
+     705.15
+    ],
+    [
+     297.62,
+     706.12
+    ],
+    [
+     296.65,
+     706.77
+    ],
+    [
+     295.5,
+     707.0
+    ],
+    [
+     6.0,
+     707.0
+    ],
+    [
+     4.85,
+     706.77
+    ],
+    [
+     3.88,
+     706.12
+    ],
+    [
+     3.23,
+     705.15
+    ],
+    [
+     3.0,
+     704.0
+    ],
+    [
+     3.0,
+     113.0
+    ],
+    [
+     3.23,
+     111.85
+    ],
+    [
+     3.88,
+     110.88
+    ],
+    [
+     4.85,
+     110.23
+    ],
+    [
+     6.0,
+     110.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 5 Leaf 2400 1",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 5 Leaf 2400 1",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 5 Leaf 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 5 Leaf 2400 2",
+   "points": [
+    [
+     594.0,
+     110.0
+    ],
+    [
+     595.15,
+     110.23
+    ],
+    [
+     596.12,
+     110.88
+    ],
+    [
+     596.77,
+     111.85
+    ],
+    [
+     597.0,
+     113.0
+    ],
+    [
+     597.0,
+     704.0
+    ],
+    [
+     596.77,
+     705.15
+    ],
+    [
+     596.12,
+     706.12
+    ],
+    [
+     595.15,
+     706.77
+    ],
+    [
+     594.0,
+     707.0
+    ],
+    [
+     304.5,
+     707.0
+    ],
+    [
+     303.35,
+     706.77
+    ],
+    [
+     302.38,
+     706.12
+    ],
+    [
+     301.73,
+     705.15
+    ],
+    [
+     301.5,
+     704.0
+    ],
+    [
+     301.5,
+     113.0
+    ],
+    [
+     301.73,
+     111.85
+    ],
+    [
+     302.38,
+     110.88
+    ],
+    [
+     303.35,
+     110.23
+    ],
+    [
+     304.5,
+     110.0
+    ]
+   ],
+   "start": 580,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 5 Leaf 2400 2",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 5 Leaf 2400 2",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 5 Leaf 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 5 Handle Bar 2400 1",
+   "points": [
+    [
+     265.0,
+     -620.0
+    ],
+    [
+     264.83,
+     -618.71
+    ],
+    [
+     264.33,
+     -617.5
+    ],
+    [
+     263.54,
+     -616.46
+    ],
+    [
+     262.5,
+     -615.67
+    ],
+    [
+     261.29,
+     -615.17
+    ],
+    [
+     260.0,
+     -615.0
+    ],
+    [
+     258.71,
+     -615.17
+    ],
+    [
+     257.5,
+     -615.67
+    ],
+    [
+     256.46,
+     -616.46
+    ],
+    [
+     255.67,
+     -617.5
+    ],
+    [
+     255.17,
+     -618.71
+    ],
+    [
+     255.0,
+     -620.0
+    ],
+    [
+     255.17,
+     -621.29
+    ],
+    [
+     255.67,
+     -622.5
+    ],
+    [
+     256.46,
+     -623.54
+    ],
+    [
+     257.5,
+     -624.33
+    ],
+    [
+     258.71,
+     -624.83
+    ],
+    [
+     260.0,
+     -625.0
+    ],
+    [
+     261.29,
+     -624.83
+    ],
+    [
+     262.5,
+     -624.33
+    ],
+    [
+     263.54,
+     -623.54
+    ],
+    [
+     264.33,
+     -622.5
+    ],
+    [
+     264.83,
+     -621.29
+    ]
+   ],
+   "start": 507,
+   "end": 667
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 5 Handle Bar 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 5 Handle Bar 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 5 Handle Bar 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Doors 5 Handle Bar 2400 2",
+   "points": [
+    [
+     345.0,
+     -620.0
+    ],
+    [
+     344.83,
+     -618.71
+    ],
+    [
+     344.33,
+     -617.5
+    ],
+    [
+     343.54,
+     -616.46
+    ],
+    [
+     342.5,
+     -615.67
+    ],
+    [
+     341.29,
+     -615.17
+    ],
+    [
+     340.0,
+     -615.0
+    ],
+    [
+     338.71,
+     -615.17
+    ],
+    [
+     337.5,
+     -615.67
+    ],
+    [
+     336.46,
+     -616.46
+    ],
+    [
+     335.67,
+     -617.5
+    ],
+    [
+     335.17,
+     -618.71
+    ],
+    [
+     335.0,
+     -620.0
+    ],
+    [
+     335.17,
+     -621.29
+    ],
+    [
+     335.67,
+     -622.5
+    ],
+    [
+     336.46,
+     -623.54
+    ],
+    [
+     337.5,
+     -624.33
+    ],
+    [
+     338.71,
+     -624.83
+    ],
+    [
+     340.0,
+     -625.0
+    ],
+    [
+     341.29,
+     -624.83
+    ],
+    [
+     342.5,
+     -624.33
+    ],
+    [
+     343.54,
+     -623.54
+    ],
+    [
+     344.33,
+     -622.5
+    ],
+    [
+     344.83,
+     -621.29
+    ]
+   ],
+   "start": 507,
+   "end": 667
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Doors 5 Handle Bar 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Doors 5 Handle Bar 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Doors 5 Handle Bar 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Bowl Floor 2400",
+   "points": [
+    [
+     -580.0,
+     -520
+    ],
+    [
+     -180.0,
+     -520
+    ],
+    [
+     -180.0,
+     -140
+    ],
+    [
+     -580.0,
+     -140
+    ]
+   ],
+   "start": 720,
+   "end": 723
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Bowl Floor 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Bowl Floor 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Bowl Floor 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Bowl Wall Front 2400",
+   "points": [
+    [
+     -580.0,
+     -520
+    ],
+    [
+     -180.0,
+     -520
+    ],
+    [
+     -180.0,
+     -517
+    ],
+    [
+     -580.0,
+     -517
+    ]
+   ],
+   "start": 720,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Bowl Wall Front 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Bowl Wall Front 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Bowl Wall Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Bowl Wall Back 2400",
+   "points": [
+    [
+     -580.0,
+     -143
+    ],
+    [
+     -180.0,
+     -143
+    ],
+    [
+     -180.0,
+     -140
+    ],
+    [
+     -580.0,
+     -140
+    ]
+   ],
+   "start": 720,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Bowl Wall Back 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Bowl Wall Back 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Bowl Wall Back 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Bowl Wall Left 2400",
+   "points": [
+    [
+     -580.0,
+     -517
+    ],
+    [
+     -577.0,
+     -517
+    ],
+    [
+     -577.0,
+     -143
+    ],
+    [
+     -580.0,
+     -143
+    ]
+   ],
+   "start": 720,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Bowl Wall Left 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Bowl Wall Left 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Bowl Wall Left 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Bowl Wall Right 2400",
+   "points": [
+    [
+     -183.0,
+     -517
+    ],
+    [
+     -180.0,
+     -517
+    ],
+    [
+     -180.0,
+     -143
+    ],
+    [
+     -183.0,
+     -143
+    ]
+   ],
+   "start": 720,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Bowl Wall Right 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Bowl Wall Right 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Bowl Wall Right 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fridge Cabinet 2400",
+   "points": [
+    [
+     1184.0,
+     -570.0
+    ],
+    [
+     1186.3,
+     -569.54
+    ],
+    [
+     1188.24,
+     -568.24
+    ],
+    [
+     1189.54,
+     -566.3
+    ],
+    [
+     1190.0,
+     -564.0
+    ],
+    [
+     1190.0,
+     -26.0
+    ],
+    [
+     1189.54,
+     -23.7
+    ],
+    [
+     1188.24,
+     -21.76
+    ],
+    [
+     1186.3,
+     -20.46
+    ],
+    [
+     1184.0,
+     -20.0
+    ],
+    [
+     616.0,
+     -20.0
+    ],
+    [
+     613.7,
+     -20.46
+    ],
+    [
+     611.76,
+     -21.76
+    ],
+    [
+     610.46,
+     -23.7
+    ],
+    [
+     610.0,
+     -26.0
+    ],
+    [
+     610.0,
+     -564.0
+    ],
+    [
+     610.46,
+     -566.3
+    ],
+    [
+     611.76,
+     -568.24
+    ],
+    [
+     613.7,
+     -569.54
+    ],
+    [
+     616.0,
+     -570.0
+    ]
+   ],
+   "start": 20,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fridge Cabinet 2400",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fridge Cabinet 2400",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fridge Cabinet 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fridge Door 2400",
+   "points": [
+    [
+     1178.0,
+     30.0
+    ],
+    [
+     1181.83,
+     30.76
+    ],
+    [
+     1185.07,
+     32.93
+    ],
+    [
+     1187.24,
+     36.17
+    ],
+    [
+     1188.0,
+     40.0
+    ],
+    [
+     1188.0,
+     835.0
+    ],
+    [
+     1187.24,
+     838.83
+    ],
+    [
+     1185.07,
+     842.07
+    ],
+    [
+     1181.83,
+     844.24
+    ],
+    [
+     1178.0,
+     845.0
+    ],
+    [
+     622.0,
+     845.0
+    ],
+    [
+     618.17,
+     844.24
+    ],
+    [
+     614.93,
+     842.07
+    ],
+    [
+     612.76,
+     838.83
+    ],
+    [
+     612.0,
+     835.0
+    ],
+    [
+     612.0,
+     40.0
+    ],
+    [
+     612.76,
+     36.17
+    ],
+    [
+     614.93,
+     32.93
+    ],
+    [
+     618.17,
+     30.76
+    ],
+    [
+     622.0,
+     30.0
+    ]
+   ],
+   "start": 570,
+   "end": 590,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fridge Door 2400",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fridge Door 2400",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fridge Door 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fridge Grip 2400",
+   "points": [
+    [
+     634.0,
+     600.0
+    ],
+    [
+     636.3,
+     600.46
+    ],
+    [
+     638.24,
+     601.76
+    ],
+    [
+     639.54,
+     603.7
+    ],
+    [
+     640.0,
+     606.0
+    ],
+    [
+     640.0,
+     814.0
+    ],
+    [
+     639.54,
+     816.3
+    ],
+    [
+     638.24,
+     818.24
+    ],
+    [
+     636.3,
+     819.54
+    ],
+    [
+     634.0,
+     820.0
+    ],
+    [
+     626.0,
+     820.0
+    ],
+    [
+     623.7,
+     819.54
+    ],
+    [
+     621.76,
+     818.24
+    ],
+    [
+     620.46,
+     816.3
+    ],
+    [
+     620.0,
+     814.0
+    ],
+    [
+     620.0,
+     606.0
+    ],
+    [
+     620.46,
+     603.7
+    ],
+    [
+     621.76,
+     601.76
+    ],
+    [
+     623.7,
+     600.46
+    ],
+    [
+     626.0,
+     600.0
+    ]
+   ],
+   "start": 590,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fridge Grip 2400",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fridge Grip 2400",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fridge Grip 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fridge Kick Grille 2400",
+   "points": [
+    [
+     630.0,
+     35
+    ],
+    [
+     1170.0,
+     35
+    ],
+    [
+     1170.0,
+     90
+    ],
+    [
+     630.0,
+     90
+    ]
+   ],
+   "start": 590,
+   "end": 592,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fridge Kick Grille 2400",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fridge Kick Grille 2400",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fridge Kick Grille 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Splashback 2400",
+   "points": [
+    [
+     -1200.0,
+     1000
+    ],
+    [
+     1200.0,
+     1000
+    ],
+    [
+     1200.0,
+     1450
+    ],
+    [
+     -1200.0,
+     1450
+    ]
+   ],
+   "start": 0,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Splashback 2400",
+   "subcategory": "Top"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Splashback 2400",
+   "param": "Top Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Splashback 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drainer 2400",
+   "points": [
+    [
+     -620.0,
+     -540.0
+    ],
+    [
+     -612.35,
+     -538.48
+    ],
+    [
+     -605.86,
+     -534.14
+    ],
+    [
+     -601.52,
+     -527.65
+    ],
+    [
+     -600.0,
+     -520.0
+    ],
+    [
+     -600.0,
+     -140.0
+    ],
+    [
+     -601.52,
+     -132.35
+    ],
+    [
+     -605.86,
+     -125.86
+    ],
+    [
+     -612.35,
+     -121.52
+    ],
+    [
+     -620.0,
+     -120.0
+    ],
+    [
+     -1130.0,
+     -120.0
+    ],
+    [
+     -1137.65,
+     -121.52
+    ],
+    [
+     -1144.14,
+     -125.86
+    ],
+    [
+     -1148.48,
+     -132.35
+    ],
+    [
+     -1150.0,
+     -140.0
+    ],
+    [
+     -1150.0,
+     -520.0
+    ],
+    [
+     -1148.48,
+     -527.65
+    ],
+    [
+     -1144.14,
+     -534.14
+    ],
+    [
+     -1137.65,
+     -538.48
+    ],
+    [
+     -1130.0,
+     -540.0
+    ]
+   ],
+   "start": 898,
+   "end": 903
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drainer 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drainer 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drainer 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drainer Groove 2400 1",
+   "points": [
+    [
+     -1130.0,
+     -500
+    ],
+    [
+     -640.0,
+     -500
+    ],
+    [
+     -640.0,
+     -492
+    ],
+    [
+     -1130.0,
+     -492
+    ]
+   ],
+   "start": 903,
+   "end": 905
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drainer Groove 2400 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drainer Groove 2400 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drainer Groove 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drainer Groove 2400 2",
+   "points": [
+    [
+     -1130.0,
+     -410
+    ],
+    [
+     -640.0,
+     -410
+    ],
+    [
+     -640.0,
+     -402
+    ],
+    [
+     -1130.0,
+     -402
+    ]
+   ],
+   "start": 903,
+   "end": 905
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drainer Groove 2400 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drainer Groove 2400 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drainer Groove 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drainer Groove 2400 3",
+   "points": [
+    [
+     -1130.0,
+     -320
+    ],
+    [
+     -640.0,
+     -320
+    ],
+    [
+     -640.0,
+     -312
+    ],
+    [
+     -1130.0,
+     -312
+    ]
+   ],
+   "start": 903,
+   "end": 905
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drainer Groove 2400 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drainer Groove 2400 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drainer Groove 2400 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drainer Groove 2400 4",
+   "points": [
+    [
+     -1130.0,
+     -230
+    ],
+    [
+     -640.0,
+     -230
+    ],
+    [
+     -640.0,
+     -222
+    ],
+    [
+     -1130.0,
+     -222
+    ]
+   ],
+   "start": 903,
+   "end": 905
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drainer Groove 2400 4",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drainer Groove 2400 4",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drainer Groove 2400 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sink Waste 2400",
+   "points": [
+    [
+     -355.0,
+     -330.0
+    ],
+    [
+     -355.85,
+     -323.53
+    ],
+    [
+     -358.35,
+     -317.5
+    ],
+    [
+     -362.32,
+     -312.32
+    ],
+    [
+     -367.5,
+     -308.35
+    ],
+    [
+     -373.53,
+     -305.85
+    ],
+    [
+     -380.0,
+     -305.0
+    ],
+    [
+     -386.47,
+     -305.85
+    ],
+    [
+     -392.5,
+     -308.35
+    ],
+    [
+     -397.68,
+     -312.32
+    ],
+    [
+     -401.65,
+     -317.5
+    ],
+    [
+     -404.15,
+     -323.53
+    ],
+    [
+     -405.0,
+     -330.0
+    ],
+    [
+     -404.15,
+     -336.47
+    ],
+    [
+     -401.65,
+     -342.5
+    ],
+    [
+     -397.68,
+     -347.68
+    ],
+    [
+     -392.5,
+     -351.65
+    ],
+    [
+     -386.47,
+     -354.15
+    ],
+    [
+     -380.0,
+     -355.0
+    ],
+    [
+     -373.53,
+     -354.15
+    ],
+    [
+     -367.5,
+     -351.65
+    ],
+    [
+     -362.32,
+     -347.68
+    ],
+    [
+     -358.35,
+     -342.5
+    ],
+    [
+     -355.85,
+     -336.47
+    ]
+   ],
+   "start": 723,
+   "end": 726
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sink Waste 2400",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sink Waste 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sink Waste 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Body 2400",
+   "points": [
+    [
+     -358.0,
+     -60.0
+    ],
+    [
+     -358.75,
+     -54.31
+    ],
+    [
+     -360.95,
+     -49.0
+    ],
+    [
+     -364.44,
+     -44.44
+    ],
+    [
+     -369.0,
+     -40.95
+    ],
+    [
+     -374.31,
+     -38.75
+    ],
+    [
+     -380.0,
+     -38.0
+    ],
+    [
+     -385.69,
+     -38.75
+    ],
+    [
+     -391.0,
+     -40.95
+    ],
+    [
+     -395.56,
+     -44.44
+    ],
+    [
+     -399.05,
+     -49.0
+    ],
+    [
+     -401.25,
+     -54.31
+    ],
+    [
+     -402.0,
+     -60.0
+    ],
+    [
+     -401.25,
+     -65.69
+    ],
+    [
+     -399.05,
+     -71.0
+    ],
+    [
+     -395.56,
+     -75.56
+    ],
+    [
+     -391.0,
+     -79.05
+    ],
+    [
+     -385.69,
+     -81.25
+    ],
+    [
+     -380.0,
+     -82.0
+    ],
+    [
+     -374.31,
+     -81.25
+    ],
+    [
+     -369.0,
+     -79.05
+    ],
+    [
+     -364.44,
+     -75.56
+    ],
+    [
+     -360.95,
+     -71.0
+    ],
+    [
+     -358.75,
+     -65.69
+    ]
+   ],
+   "start": 900,
+   "end": 960
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Body 2400",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Body 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Body 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Mixer Swan Neck 2400",
+   "profile": [
+    [
+     0,
+     60
+    ],
+    [
+     12,
+     60
+    ],
+    [
+     12,
+     280
+    ],
+    [
+     0,
+     280
+    ]
+   ],
+   "axis_at": [
+    -380.0,
+    1130
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Swan Neck 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Swan Neck 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Riser 2400",
+   "points": [
+    [
+     -368.0,
+     -60.0
+    ],
+    [
+     -368.41,
+     -56.89
+    ],
+    [
+     -369.61,
+     -54.0
+    ],
+    [
+     -371.51,
+     -51.51
+    ],
+    [
+     -374.0,
+     -49.61
+    ],
+    [
+     -376.89,
+     -48.41
+    ],
+    [
+     -380.0,
+     -48.0
+    ],
+    [
+     -383.11,
+     -48.41
+    ],
+    [
+     -386.0,
+     -49.61
+    ],
+    [
+     -388.49,
+     -51.51
+    ],
+    [
+     -390.39,
+     -54.0
+    ],
+    [
+     -391.59,
+     -56.89
+    ],
+    [
+     -392.0,
+     -60.0
+    ],
+    [
+     -391.59,
+     -63.11
+    ],
+    [
+     -390.39,
+     -66.0
+    ],
+    [
+     -388.49,
+     -68.49
+    ],
+    [
+     -386.0,
+     -70.39
+    ],
+    [
+     -383.11,
+     -71.59
+    ],
+    [
+     -380.0,
+     -72.0
+    ],
+    [
+     -376.89,
+     -71.59
+    ],
+    [
+     -374.0,
+     -70.39
+    ],
+    [
+     -371.51,
+     -68.49
+    ],
+    [
+     -369.61,
+     -66.0
+    ],
+    [
+     -368.41,
+     -63.11
+    ]
+   ],
+   "start": 960,
+   "end": 1130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Riser 2400",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Riser 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Riser 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Outlet 2400",
+   "points": [
+    [
+     -368.0,
+     -280.0
+    ],
+    [
+     -368.41,
+     -276.89
+    ],
+    [
+     -369.61,
+     -274.0
+    ],
+    [
+     -371.51,
+     -271.51
+    ],
+    [
+     -374.0,
+     -269.61
+    ],
+    [
+     -376.89,
+     -268.41
+    ],
+    [
+     -380.0,
+     -268.0
+    ],
+    [
+     -383.11,
+     -268.41
+    ],
+    [
+     -386.0,
+     -269.61
+    ],
+    [
+     -388.49,
+     -271.51
+    ],
+    [
+     -390.39,
+     -274.0
+    ],
+    [
+     -391.59,
+     -276.89
+    ],
+    [
+     -392.0,
+     -280.0
+    ],
+    [
+     -391.59,
+     -283.11
+    ],
+    [
+     -390.39,
+     -286.0
+    ],
+    [
+     -388.49,
+     -288.49
+    ],
+    [
+     -386.0,
+     -290.39
+    ],
+    [
+     -383.11,
+     -291.59
+    ],
+    [
+     -380.0,
+     -292.0
+    ],
+    [
+     -376.89,
+     -291.59
+    ],
+    [
+     -374.0,
+     -290.39
+    ],
+    [
+     -371.51,
+     -288.49
+    ],
+    [
+     -369.61,
+     -286.0
+    ],
+    [
+     -368.41,
+     -283.11
+    ]
+   ],
+   "start": 1060,
+   "end": 1130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Outlet 2400",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Outlet 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Outlet 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Lever 2400",
+   "points": [
+    [
+     -380.0,
+     -75
+    ],
+    [
+     -220.0,
+     -75
+    ],
+    [
+     -220.0,
+     -60
+    ],
+    [
+     -380.0,
+     -60
+    ]
+   ],
+   "start": 975,
+   "end": 985
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Lever 2400",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Lever 2400",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Lever 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Body 2400",
+   "points": [
+    [
+     1080.0,
+     -160.0
+    ],
+    [
+     1087.65,
+     -158.48
+    ],
+    [
+     1094.14,
+     -154.14
+    ],
+    [
+     1098.48,
+     -147.65
+    ],
+    [
+     1100.0,
+     -140.0
+    ],
+    [
+     1100.0,
+     -20.0
+    ],
+    [
+     1098.48,
+     -12.35
+    ],
+    [
+     1094.14,
+     -5.86
+    ],
+    [
+     1087.65,
+     -1.52
+    ],
+    [
+     1080.0,
+     0.0
+    ],
+    [
+     720.0,
+     0.0
+    ],
+    [
+     712.35,
+     -1.52
+    ],
+    [
+     705.86,
+     -5.86
+    ],
+    [
+     701.52,
+     -12.35
+    ],
+    [
+     700.0,
+     -20.0
+    ],
+    [
+     700.0,
+     -140.0
+    ],
+    [
+     701.52,
+     -147.65
+    ],
+    [
+     705.86,
+     -154.14
+    ],
+    [
+     712.35,
+     -158.48
+    ],
+    [
+     720.0,
+     -160.0
+    ]
+   ],
+   "start": 1150,
+   "end": 1650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Body 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Body 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Body 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Panel 2400",
+   "points": [
+    [
+     1054.0,
+     1450.0
+    ],
+    [
+     1056.3,
+     1450.46
+    ],
+    [
+     1058.24,
+     1451.76
+    ],
+    [
+     1059.54,
+     1453.7
+    ],
+    [
+     1060.0,
+     1456.0
+    ],
+    [
+     1060.0,
+     1614.0
+    ],
+    [
+     1059.54,
+     1616.3
+    ],
+    [
+     1058.24,
+     1618.24
+    ],
+    [
+     1056.3,
+     1619.54
+    ],
+    [
+     1054.0,
+     1620.0
+    ],
+    [
+     746.0,
+     1620.0
+    ],
+    [
+     743.7,
+     1619.54
+    ],
+    [
+     741.76,
+     1618.24
+    ],
+    [
+     740.46,
+     1616.3
+    ],
+    [
+     740.0,
+     1614.0
+    ],
+    [
+     740.0,
+     1456.0
+    ],
+    [
+     740.46,
+     1453.7
+    ],
+    [
+     741.76,
+     1451.76
+    ],
+    [
+     743.7,
+     1450.46
+    ],
+    [
+     746.0,
+     1450.0
+    ]
+   ],
+   "start": 160,
+   "end": 162,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Panel 2400",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Panel 2400",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Panel 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Ready LED 2400",
+   "points": [
+    [
+     807.0,
+     1560.0
+    ],
+    [
+     806.76,
+     1561.81
+    ],
+    [
+     806.06,
+     1563.5
+    ],
+    [
+     804.95,
+     1564.95
+    ],
+    [
+     803.5,
+     1566.06
+    ],
+    [
+     801.81,
+     1566.76
+    ],
+    [
+     800.0,
+     1567.0
+    ],
+    [
+     798.19,
+     1566.76
+    ],
+    [
+     796.5,
+     1566.06
+    ],
+    [
+     795.05,
+     1564.95
+    ],
+    [
+     793.94,
+     1563.5
+    ],
+    [
+     793.24,
+     1561.81
+    ],
+    [
+     793.0,
+     1560.0
+    ],
+    [
+     793.24,
+     1558.19
+    ],
+    [
+     793.94,
+     1556.5
+    ],
+    [
+     795.05,
+     1555.05
+    ],
+    [
+     796.5,
+     1553.94
+    ],
+    [
+     798.19,
+     1553.24
+    ],
+    [
+     800.0,
+     1553.0
+    ],
+    [
+     801.81,
+     1553.24
+    ],
+    [
+     803.5,
+     1553.94
+    ],
+    [
+     804.95,
+     1555.05
+    ],
+    [
+     806.06,
+     1556.5
+    ],
+    [
+     806.76,
+     1558.19
+    ]
+   ],
+   "start": 162,
+   "end": 165,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Ready LED 2400",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Ready LED 2400",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Ready LED 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Power LED 2400",
+   "points": [
+    [
+     847.0,
+     1560.0
+    ],
+    [
+     846.76,
+     1561.81
+    ],
+    [
+     846.06,
+     1563.5
+    ],
+    [
+     844.95,
+     1564.95
+    ],
+    [
+     843.5,
+     1566.06
+    ],
+    [
+     841.81,
+     1566.76
+    ],
+    [
+     840.0,
+     1567.0
+    ],
+    [
+     838.19,
+     1566.76
+    ],
+    [
+     836.5,
+     1566.06
+    ],
+    [
+     835.05,
+     1564.95
+    ],
+    [
+     833.94,
+     1563.5
+    ],
+    [
+     833.24,
+     1561.81
+    ],
+    [
+     833.0,
+     1560.0
+    ],
+    [
+     833.24,
+     1558.19
+    ],
+    [
+     833.94,
+     1556.5
+    ],
+    [
+     835.05,
+     1555.05
+    ],
+    [
+     836.5,
+     1553.94
+    ],
+    [
+     838.19,
+     1553.24
+    ],
+    [
+     840.0,
+     1553.0
+    ],
+    [
+     841.81,
+     1553.24
+    ],
+    [
+     843.5,
+     1553.94
+    ],
+    [
+     844.95,
+     1555.05
+    ],
+    [
+     846.06,
+     1556.5
+    ],
+    [
+     846.76,
+     1558.19
+    ]
+   ],
+   "start": 162,
+   "end": 165,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Power LED 2400",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Power LED 2400",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Power LED 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Tap 2400",
+   "points": [
+    [
+     885.0,
+     -200
+    ],
+    [
+     915.0,
+     -200
+    ],
+    [
+     915.0,
+     -160
+    ],
+    [
+     885.0,
+     -160
+    ]
+   ],
+   "start": 1130,
+   "end": 1150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Tap 2400",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Tap 2400",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Tap 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Tap Nozzle 2400",
+   "points": [
+    [
+     908.0,
+     -190.0
+    ],
+    [
+     907.73,
+     -187.93
+    ],
+    [
+     906.93,
+     -186.0
+    ],
+    [
+     905.66,
+     -184.34
+    ],
+    [
+     904.0,
+     -183.07
+    ],
+    [
+     902.07,
+     -182.27
+    ],
+    [
+     900.0,
+     -182.0
+    ],
+    [
+     897.93,
+     -182.27
+    ],
+    [
+     896.0,
+     -183.07
+    ],
+    [
+     894.34,
+     -184.34
+    ],
+    [
+     893.07,
+     -186.0
+    ],
+    [
+     892.27,
+     -187.93
+    ],
+    [
+     892.0,
+     -190.0
+    ],
+    [
+     892.27,
+     -192.07
+    ],
+    [
+     893.07,
+     -194.0
+    ],
+    [
+     894.34,
+     -195.66
+    ],
+    [
+     896.0,
+     -196.93
+    ],
+    [
+     897.93,
+     -197.73
+    ],
+    [
+     900.0,
+     -198.0
+    ],
+    [
+     902.07,
+     -197.73
+    ],
+    [
+     904.0,
+     -196.93
+    ],
+    [
+     905.66,
+     -195.66
+    ],
+    [
+     906.93,
+     -194.0
+    ],
+    [
+     907.73,
+     -192.07
+    ]
+   ],
+   "start": 1100,
+   "end": 1130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Boiler Tap Nozzle 2400",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Boiler Tap Nozzle 2400",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Boiler Tap Nozzle 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Boiler Drip Tray 2400",
+   "points": [
+    [
+     770.0,
+     -230
+    ],
+    [
+     1030.0,
+     -230
+    ],
+    [
+     1030.0,
+     -20
+    ],
+    [
+     770.0,
      -20
     ]
    ],
@@ -5716,27 +10666,1859 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Boiler Drip Tray",
+   "name": "Boiler Drip Tray 2400",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Boiler Drip Tray",
+   "name": "Boiler Drip Tray 2400",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Boiler Drip Tray",
+   "name": "Boiler Drip Tray 2400",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Carcass 2400",
+   "points": [
+    [
+     -1200.0,
+     -300
+    ],
+    [
+     600.0,
+     -300
+    ],
+    [
+     600.0,
+     0
+    ],
+    [
+     -1200.0,
+     0
+    ]
+   ],
+   "start": 1450,
+   "end": 2170
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Carcass 2400",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Carcass 2400",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Carcass 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 2400",
+   "points": [
+    [
+     -305.0,
+     1452.0
+    ],
+    [
+     -303.85,
+     1452.23
+    ],
+    [
+     -302.88,
+     1452.88
+    ],
+    [
+     -302.23,
+     1453.85
+    ],
+    [
+     -302.0,
+     1455.0
+    ],
+    [
+     -302.0,
+     2165.0
+    ],
+    [
+     -302.23,
+     2166.15
+    ],
+    [
+     -302.88,
+     2167.12
+    ],
+    [
+     -303.85,
+     2167.77
+    ],
+    [
+     -305.0,
+     2168.0
+    ],
+    [
+     -1195.0,
+     2168.0
+    ],
+    [
+     -1196.15,
+     2167.77
+    ],
+    [
+     -1197.12,
+     2167.12
+    ],
+    [
+     -1197.77,
+     2166.15
+    ],
+    [
+     -1198.0,
+     2165.0
+    ],
+    [
+     -1198.0,
+     1455.0
+    ],
+    [
+     -1197.77,
+     1453.85
+    ],
+    [
+     -1197.12,
+     1452.88
+    ],
+    [
+     -1196.15,
+     1452.23
+    ],
+    [
+     -1195.0,
+     1452.0
+    ]
+   ],
+   "start": 300,
+   "end": 320,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 2400",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 2400",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Bar 2400",
+   "points": [
+    [
+     -321.0,
+     -340.0
+    ],
+    [
+     -321.2,
+     -338.45
+    ],
+    [
+     -321.8,
+     -337.0
+    ],
+    [
+     -322.76,
+     -335.76
+    ],
+    [
+     -324.0,
+     -334.8
+    ],
+    [
+     -325.45,
+     -334.2
+    ],
+    [
+     -327.0,
+     -334.0
+    ],
+    [
+     -328.55,
+     -334.2
+    ],
+    [
+     -330.0,
+     -334.8
+    ],
+    [
+     -331.24,
+     -335.76
+    ],
+    [
+     -332.2,
+     -337.0
+    ],
+    [
+     -332.8,
+     -338.45
+    ],
+    [
+     -333.0,
+     -340.0
+    ],
+    [
+     -332.8,
+     -341.55
+    ],
+    [
+     -332.2,
+     -343.0
+    ],
+    [
+     -331.24,
+     -344.24
+    ],
+    [
+     -330.0,
+     -345.2
+    ],
+    [
+     -328.55,
+     -345.8
+    ],
+    [
+     -327.0,
+     -346.0
+    ],
+    [
+     -325.45,
+     -345.8
+    ],
+    [
+     -324.0,
+     -345.2
+    ],
+    [
+     -322.76,
+     -344.24
+    ],
+    [
+     -321.8,
+     -343.0
+    ],
+    [
+     -321.2,
+     -341.55
+    ]
+   ],
+   "start": 1496.0,
+   "end": 1624.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Bar 2400",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 2400",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Bar 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 1",
+   "points": [
+    [
+     -323.0,
+     1508.0
+    ],
+    [
+     -323.14,
+     1509.04
+    ],
+    [
+     -323.54,
+     1510.0
+    ],
+    [
+     -324.17,
+     1510.83
+    ],
+    [
+     -325.0,
+     1511.46
+    ],
+    [
+     -325.96,
+     1511.86
+    ],
+    [
+     -327.0,
+     1512.0
+    ],
+    [
+     -328.04,
+     1511.86
+    ],
+    [
+     -329.0,
+     1511.46
+    ],
+    [
+     -329.83,
+     1510.83
+    ],
+    [
+     -330.46,
+     1510.0
+    ],
+    [
+     -330.86,
+     1509.04
+    ],
+    [
+     -331.0,
+     1508.0
+    ],
+    [
+     -330.86,
+     1506.96
+    ],
+    [
+     -330.46,
+     1506.0
+    ],
+    [
+     -329.83,
+     1505.17
+    ],
+    [
+     -329.0,
+     1504.54
+    ],
+    [
+     -328.04,
+     1504.14
+    ],
+    [
+     -327.0,
+     1504.0
+    ],
+    [
+     -325.96,
+     1504.14
+    ],
+    [
+     -325.0,
+     1504.54
+    ],
+    [
+     -324.17,
+     1505.17
+    ],
+    [
+     -323.54,
+     1506.0
+    ],
+    [
+     -323.14,
+     1506.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 2",
+   "points": [
+    [
+     -323.0,
+     1612.0
+    ],
+    [
+     -323.14,
+     1613.04
+    ],
+    [
+     -323.54,
+     1614.0
+    ],
+    [
+     -324.17,
+     1614.83
+    ],
+    [
+     -325.0,
+     1615.46
+    ],
+    [
+     -325.96,
+     1615.86
+    ],
+    [
+     -327.0,
+     1616.0
+    ],
+    [
+     -328.04,
+     1615.86
+    ],
+    [
+     -329.0,
+     1615.46
+    ],
+    [
+     -329.83,
+     1614.83
+    ],
+    [
+     -330.46,
+     1614.0
+    ],
+    [
+     -330.86,
+     1613.04
+    ],
+    [
+     -331.0,
+     1612.0
+    ],
+    [
+     -330.86,
+     1610.96
+    ],
+    [
+     -330.46,
+     1610.0
+    ],
+    [
+     -329.83,
+     1609.17
+    ],
+    [
+     -329.0,
+     1608.54
+    ],
+    [
+     -328.04,
+     1608.14
+    ],
+    [
+     -327.0,
+     1608.0
+    ],
+    [
+     -325.96,
+     1608.14
+    ],
+    [
+     -325.0,
+     1608.54
+    ],
+    [
+     -324.17,
+     1609.17
+    ],
+    [
+     -323.54,
+     1610.0
+    ],
+    [
+     -323.14,
+     1610.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 2400",
+   "points": [
+    [
+     595.0,
+     1452.0
+    ],
+    [
+     596.15,
+     1452.23
+    ],
+    [
+     597.12,
+     1452.88
+    ],
+    [
+     597.77,
+     1453.85
+    ],
+    [
+     598.0,
+     1455.0
+    ],
+    [
+     598.0,
+     2165.0
+    ],
+    [
+     597.77,
+     2166.15
+    ],
+    [
+     597.12,
+     2167.12
+    ],
+    [
+     596.15,
+     2167.77
+    ],
+    [
+     595.0,
+     2168.0
+    ],
+    [
+     -295.0,
+     2168.0
+    ],
+    [
+     -296.15,
+     2167.77
+    ],
+    [
+     -297.12,
+     2167.12
+    ],
+    [
+     -297.77,
+     2166.15
+    ],
+    [
+     -298.0,
+     2165.0
+    ],
+    [
+     -298.0,
+     1455.0
+    ],
+    [
+     -297.77,
+     1453.85
+    ],
+    [
+     -297.12,
+     1452.88
+    ],
+    [
+     -296.15,
+     1452.23
+    ],
+    [
+     -295.0,
+     1452.0
+    ]
+   ],
+   "start": 300,
+   "end": 320,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 2400",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 2400",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Bar 2400",
+   "points": [
+    [
+     -267.0,
+     -340.0
+    ],
+    [
+     -267.2,
+     -338.45
+    ],
+    [
+     -267.8,
+     -337.0
+    ],
+    [
+     -268.76,
+     -335.76
+    ],
+    [
+     -270.0,
+     -334.8
+    ],
+    [
+     -271.45,
+     -334.2
+    ],
+    [
+     -273.0,
+     -334.0
+    ],
+    [
+     -274.55,
+     -334.2
+    ],
+    [
+     -276.0,
+     -334.8
+    ],
+    [
+     -277.24,
+     -335.76
+    ],
+    [
+     -278.2,
+     -337.0
+    ],
+    [
+     -278.8,
+     -338.45
+    ],
+    [
+     -279.0,
+     -340.0
+    ],
+    [
+     -278.8,
+     -341.55
+    ],
+    [
+     -278.2,
+     -343.0
+    ],
+    [
+     -277.24,
+     -344.24
+    ],
+    [
+     -276.0,
+     -345.2
+    ],
+    [
+     -274.55,
+     -345.8
+    ],
+    [
+     -273.0,
+     -346.0
+    ],
+    [
+     -271.45,
+     -345.8
+    ],
+    [
+     -270.0,
+     -345.2
+    ],
+    [
+     -268.76,
+     -344.24
+    ],
+    [
+     -267.8,
+     -343.0
+    ],
+    [
+     -267.2,
+     -341.55
+    ]
+   ],
+   "start": 1496.0,
+   "end": 1624.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Bar 2400",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 2400",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Bar 2400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 1",
+   "points": [
+    [
+     -269.0,
+     1508.0
+    ],
+    [
+     -269.14,
+     1509.04
+    ],
+    [
+     -269.54,
+     1510.0
+    ],
+    [
+     -270.17,
+     1510.83
+    ],
+    [
+     -271.0,
+     1511.46
+    ],
+    [
+     -271.96,
+     1511.86
+    ],
+    [
+     -273.0,
+     1512.0
+    ],
+    [
+     -274.04,
+     1511.86
+    ],
+    [
+     -275.0,
+     1511.46
+    ],
+    [
+     -275.83,
+     1510.83
+    ],
+    [
+     -276.46,
+     1510.0
+    ],
+    [
+     -276.86,
+     1509.04
+    ],
+    [
+     -277.0,
+     1508.0
+    ],
+    [
+     -276.86,
+     1506.96
+    ],
+    [
+     -276.46,
+     1506.0
+    ],
+    [
+     -275.83,
+     1505.17
+    ],
+    [
+     -275.0,
+     1504.54
+    ],
+    [
+     -274.04,
+     1504.14
+    ],
+    [
+     -273.0,
+     1504.0
+    ],
+    [
+     -271.96,
+     1504.14
+    ],
+    [
+     -271.0,
+     1504.54
+    ],
+    [
+     -270.17,
+     1505.17
+    ],
+    [
+     -269.54,
+     1506.0
+    ],
+    [
+     -269.14,
+     1506.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 2",
+   "points": [
+    [
+     -269.0,
+     1612.0
+    ],
+    [
+     -269.14,
+     1613.04
+    ],
+    [
+     -269.54,
+     1614.0
+    ],
+    [
+     -270.17,
+     1614.83
+    ],
+    [
+     -271.0,
+     1615.46
+    ],
+    [
+     -271.96,
+     1615.86
+    ],
+    [
+     -273.0,
+     1616.0
+    ],
+    [
+     -274.04,
+     1615.86
+    ],
+    [
+     -275.0,
+     1615.46
+    ],
+    [
+     -275.83,
+     1614.83
+    ],
+    [
+     -276.46,
+     1614.0
+    ],
+    [
+     -276.86,
+     1613.04
+    ],
+    [
+     -277.0,
+     1612.0
+    ],
+    [
+     -276.86,
+     1610.96
+    ],
+    [
+     -276.46,
+     1610.0
+    ],
+    [
+     -275.83,
+     1609.17
+    ],
+    [
+     -275.0,
+     1608.54
+    ],
+    [
+     -274.04,
+     1608.14
+    ],
+    [
+     -273.0,
+     1608.0
+    ],
+    [
+     -271.96,
+     1608.14
+    ],
+    [
+     -271.0,
+     1608.54
+    ],
+    [
+     -270.17,
+     1609.17
+    ],
+    [
+     -269.54,
+     1610.0
+    ],
+    [
+     -269.14,
+     1610.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Service Entry Box",
+   "points": [
+    [
+     -60,
+     -20
+    ],
+    [
+     60,
+     -20
+    ],
+    [
+     60,
+     0
+    ],
+    [
+     -60,
+     0
+    ]
+   ],
+   "start": 20,
+   "end": 90
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Service Entry Box",
+   "subcategory": "Plinth"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Service Entry Box",
+   "param": "Plinth Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Service Entry Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1800_Pantry",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Pantry/Show 1800_Pantry",
+   "type": "1800_Pantry",
+   "param": "Show 1800_Pantry",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400_Pantry/Show 1800_Pantry",
+   "type": "2400_Pantry",
+   "param": "Show 1800_Pantry",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carcass 1800/Visible",
+   "solid": "Carcass 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 1800/Visible",
+   "solid": "Plinth 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carcass 2 1800/Visible",
+   "solid": "Carcass 2 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 2 1800/Visible",
+   "solid": "Plinth 2 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Knee Panel 1 1800/Visible",
+   "solid": "Knee Panel 1 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop 1800/Visible",
+   "solid": "Worktop 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Right 1800/Visible",
+   "solid": "Worktop Right 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Front 1800/Visible",
+   "solid": "Worktop Front 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Back 1800/Visible",
+   "solid": "Worktop Back 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand 1800/Visible",
+   "solid": "Upstand 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Front 1800/Visible",
+   "solid": "Drawer 1 Front 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Bar 1800/Visible",
+   "solid": "Drawer 1 Handle Bar 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Post 1800 1/Visible",
+   "solid": "Drawer 1 Handle Post 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Post 1800 2/Visible",
+   "solid": "Drawer 1 Handle Post 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Leaf 1800/Visible",
+   "solid": "Door 2 Leaf 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Bar 1800/Visible",
+   "solid": "Door 2 Handle Bar 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Post 1800 1/Visible",
+   "solid": "Door 2 Handle Post 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Post 1800 2/Visible",
+   "solid": "Door 2 Handle Post 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Leaf 1800 1/Visible",
+   "solid": "Doors 3 Leaf 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Leaf 1800 2/Visible",
+   "solid": "Doors 3 Leaf 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Handle Bar 1800 1/Visible",
+   "solid": "Doors 3 Handle Bar 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Handle Bar 1800 2/Visible",
+   "solid": "Doors 3 Handle Bar 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Floor 1800/Visible",
+   "solid": "Sink Bowl Floor 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Front 1800/Visible",
+   "solid": "Sink Bowl Wall Front 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Back 1800/Visible",
+   "solid": "Sink Bowl Wall Back 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Left 1800/Visible",
+   "solid": "Sink Bowl Wall Left 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Right 1800/Visible",
+   "solid": "Sink Bowl Wall Right 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Cabinet 1800/Visible",
+   "solid": "Fridge Cabinet 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Door 1800/Visible",
+   "solid": "Fridge Door 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Grip 1800/Visible",
+   "solid": "Fridge Grip 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Kick Grille 1800/Visible",
+   "solid": "Fridge Kick Grille 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Splashback 1800/Visible",
+   "solid": "Splashback 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer 1800/Visible",
+   "solid": "Drainer 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 1800 1/Visible",
+   "solid": "Drainer Groove 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 1800 2/Visible",
+   "solid": "Drainer Groove 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 1800 3/Visible",
+   "solid": "Drainer Groove 1800 3",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 1800 4/Visible",
+   "solid": "Drainer Groove 1800 4",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Waste 1800/Visible",
+   "solid": "Sink Waste 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Body 1800/Visible",
+   "solid": "Mixer Body 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Swan Neck 1800/Visible",
+   "solid": "Mixer Swan Neck 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Riser 1800/Visible",
+   "solid": "Mixer Riser 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Outlet 1800/Visible",
+   "solid": "Mixer Outlet 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Lever 1800/Visible",
+   "solid": "Mixer Lever 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Body 1800/Visible",
+   "solid": "Boiler Body 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Panel 1800/Visible",
+   "solid": "Boiler Panel 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Ready LED 1800/Visible",
+   "solid": "Boiler Ready LED 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Power LED 1800/Visible",
+   "solid": "Boiler Power LED 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Tap 1800/Visible",
+   "solid": "Boiler Tap 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Tap Nozzle 1800/Visible",
+   "solid": "Boiler Tap Nozzle 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Drip Tray 1800/Visible",
+   "solid": "Boiler Drip Tray 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Carcass 1800/Visible",
+   "solid": "Wall Unit Carcass 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 1800/Visible",
+   "solid": "Wall Unit Leaf 1 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 1800/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Bar 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 1/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1800 2/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 1800/Visible",
+   "solid": "Wall Unit Leaf 2 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 1800/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Bar 1800",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 1/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 1800 1",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1800 2/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 1800 2",
+   "param": "Show 1800_Pantry"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2400_Pantry",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Pantry/Show 2400_Pantry",
+   "type": "1800_Pantry",
+   "param": "Show 2400_Pantry",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400_Pantry/Show 2400_Pantry",
+   "type": "2400_Pantry",
+   "param": "Show 2400_Pantry",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carcass 2400/Visible",
+   "solid": "Carcass 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 2400/Visible",
+   "solid": "Plinth 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carcass 2 2400/Visible",
+   "solid": "Carcass 2 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 2 2400/Visible",
+   "solid": "Plinth 2 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carcass 3 2400/Visible",
+   "solid": "Carcass 3 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 3 2400/Visible",
+   "solid": "Plinth 3 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Knee Panel 1 2400/Visible",
+   "solid": "Knee Panel 1 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop 2400/Visible",
+   "solid": "Worktop 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Right 2400/Visible",
+   "solid": "Worktop Right 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Front 2400/Visible",
+   "solid": "Worktop Front 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Back 2400/Visible",
+   "solid": "Worktop Back 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand 2400/Visible",
+   "solid": "Upstand 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Front 2400/Visible",
+   "solid": "Drawer 1 Front 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Bar 2400/Visible",
+   "solid": "Drawer 1 Handle Bar 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Post 2400 1/Visible",
+   "solid": "Drawer 1 Handle Post 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 1 Handle Post 2400 2/Visible",
+   "solid": "Drawer 1 Handle Post 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Leaf 2400/Visible",
+   "solid": "Door 2 Leaf 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Bar 2400/Visible",
+   "solid": "Door 2 Handle Bar 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Post 2400 1/Visible",
+   "solid": "Door 2 Handle Post 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 2 Handle Post 2400 2/Visible",
+   "solid": "Door 2 Handle Post 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Leaf 2400 1/Visible",
+   "solid": "Doors 3 Leaf 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Leaf 2400 2/Visible",
+   "solid": "Doors 3 Leaf 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Handle Bar 2400 1/Visible",
+   "solid": "Doors 3 Handle Bar 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 3 Handle Bar 2400 2/Visible",
+   "solid": "Doors 3 Handle Bar 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 4 Front 2400/Visible",
+   "solid": "Drawer 4 Front 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 4 Handle Bar 2400/Visible",
+   "solid": "Drawer 4 Handle Bar 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 4 Handle Post 2400 1/Visible",
+   "solid": "Drawer 4 Handle Post 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drawer 4 Handle Post 2400 2/Visible",
+   "solid": "Drawer 4 Handle Post 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 5 Leaf 2400 1/Visible",
+   "solid": "Doors 5 Leaf 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 5 Leaf 2400 2/Visible",
+   "solid": "Doors 5 Leaf 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 5 Handle Bar 2400 1/Visible",
+   "solid": "Doors 5 Handle Bar 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Doors 5 Handle Bar 2400 2/Visible",
+   "solid": "Doors 5 Handle Bar 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Floor 2400/Visible",
+   "solid": "Sink Bowl Floor 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Front 2400/Visible",
+   "solid": "Sink Bowl Wall Front 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Back 2400/Visible",
+   "solid": "Sink Bowl Wall Back 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Left 2400/Visible",
+   "solid": "Sink Bowl Wall Left 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Bowl Wall Right 2400/Visible",
+   "solid": "Sink Bowl Wall Right 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Cabinet 2400/Visible",
+   "solid": "Fridge Cabinet 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Door 2400/Visible",
+   "solid": "Fridge Door 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Grip 2400/Visible",
+   "solid": "Fridge Grip 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fridge Kick Grille 2400/Visible",
+   "solid": "Fridge Kick Grille 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Splashback 2400/Visible",
+   "solid": "Splashback 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer 2400/Visible",
+   "solid": "Drainer 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 2400 1/Visible",
+   "solid": "Drainer Groove 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 2400 2/Visible",
+   "solid": "Drainer Groove 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 2400 3/Visible",
+   "solid": "Drainer Groove 2400 3",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drainer Groove 2400 4/Visible",
+   "solid": "Drainer Groove 2400 4",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sink Waste 2400/Visible",
+   "solid": "Sink Waste 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Body 2400/Visible",
+   "solid": "Mixer Body 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Swan Neck 2400/Visible",
+   "solid": "Mixer Swan Neck 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Riser 2400/Visible",
+   "solid": "Mixer Riser 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Outlet 2400/Visible",
+   "solid": "Mixer Outlet 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mixer Lever 2400/Visible",
+   "solid": "Mixer Lever 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Body 2400/Visible",
+   "solid": "Boiler Body 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Panel 2400/Visible",
+   "solid": "Boiler Panel 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Ready LED 2400/Visible",
+   "solid": "Boiler Ready LED 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Power LED 2400/Visible",
+   "solid": "Boiler Power LED 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Tap 2400/Visible",
+   "solid": "Boiler Tap 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Tap Nozzle 2400/Visible",
+   "solid": "Boiler Tap Nozzle 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Boiler Drip Tray 2400/Visible",
+   "solid": "Boiler Drip Tray 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Carcass 2400/Visible",
+   "solid": "Wall Unit Carcass 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 2400/Visible",
+   "solid": "Wall Unit Leaf 1 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 2400/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Bar 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 1/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 2400 2/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 2400 2",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 2400/Visible",
+   "solid": "Wall Unit Leaf 2 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 2400/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Bar 2400",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 1/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 2400 1",
+   "param": "Show 2400_Pantry"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 2400 2/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 2400 2",
+   "param": "Show 2400_Pantry"
   },
   {
    "op": "add_connector",
    "name": "CW",
    "domain": "pipe",
    "system": "DomesticColdWater",
-   "solid": "Upstand",
+   "solid": "Service Entry Box",
    "side": "top",
    "diameter": 15,
    "flow": "In"
@@ -5746,8 +12528,8 @@
    "name": "HW",
    "domain": "pipe",
    "system": "DomesticHotWater",
-   "solid": "Upstand",
-   "side": "back",
+   "solid": "Service Entry Box",
+   "side": "left",
    "diameter": 15,
    "flow": "In"
   },
@@ -5756,8 +12538,8 @@
    "name": "Waste",
    "domain": "pipe",
    "system": "Sanitary",
-   "solid": "Sink Bowl Floor",
-   "side": "bottom",
+   "solid": "Service Entry Box",
+   "side": "right",
    "diameter": 40,
    "flow": "Out"
   },
@@ -5766,8 +12548,8 @@
    "name": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Boiler Body",
-   "side": "top"
+   "solid": "Service Entry Box",
+   "side": "front"
   },
   {
    "op": "link_connector_param",

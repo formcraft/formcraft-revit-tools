@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_LP_LP_SPD_Type2",
  "template": "Metric Generic Model.rft",
- "about": "SPD Type 2: DIN rail, base, four plug-in cartridges with green indicator windows and release slots, top and bottom terminal screws, remote contact pins, label. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: lp lp spd type 2 lightning protection hospital; images: https://www.google.com/search?tbm=isch&q=lp+lp+spd+type+2+lightning+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "SPD Type 2: DIN rail, base, four (TPN) or two (SPN) plug-in cartridges with green indicator windows and release slots, top and bottom terminal screws, remote contact pins. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: lp lp spd type 2 lightning protection hospital; images: https://www.google.com/search?tbm=isch&q=lp+lp+spd+type+2+lightning+protection+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.raycap.com/products/protec-t2/; photo_title: Raycap ProTec T2 surge protection device; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -28,33 +28,345 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cable_Spec",
+   "guid": "1f352e44-006a-5146-87ea-a1da43245855",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Ways",
+   "guid": "84dd2958-9179-588a-8069-1df161c8b4ee",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -101,6 +413,34 @@
    "type": "TPN_T2",
    "param": "FMC_Keynote_Code",
    "value": "X.SPD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "TPN_T2/FMC_Code_Description",
+   "type": "TPN_T2",
+   "param": "FMC_Code_Description",
+   "value": "SPD Type2: Type 2 SPD at DBs"
+  },
+  {
+   "op": "set_type_value",
+   "name": "TPN_T2/FMC_Code_Group",
+   "type": "TPN_T2",
+   "param": "FMC_Code_Group",
+   "value": "X.SPD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "TPN_T2/FMC_Role_Code",
+   "type": "TPN_T2",
+   "param": "FMC_Role_Code",
+   "value": "LP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "TPN_T2/URL",
+   "type": "TPN_T2",
+   "param": "URL",
+   "value": "https://www.raycap.com/products/protec-t2/"
   },
   {
    "op": "set_type_value",
@@ -175,6 +515,34 @@
    "type": "SPN_T2",
    "param": "FMC_Keynote_Code",
    "value": "X.SPD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "SPN_T2/FMC_Code_Description",
+   "type": "SPN_T2",
+   "param": "FMC_Code_Description",
+   "value": "SPD Type2: Type 2 SPD at DBs"
+  },
+  {
+   "op": "set_type_value",
+   "name": "SPN_T2/FMC_Code_Group",
+   "type": "SPN_T2",
+   "param": "FMC_Code_Group",
+   "value": "X.SPD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "SPN_T2/FMC_Role_Code",
+   "type": "SPN_T2",
+   "param": "FMC_Role_Code",
+   "value": "LP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "SPN_T2/URL",
+   "type": "SPN_T2",
+   "param": "URL",
+   "value": "https://www.raycap.com/products/protec-t2/"
   },
   {
    "op": "set_type_value",
@@ -441,7 +809,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Base",
+   "name": "Base 4P",
    "points": [
     [
      34.0,
@@ -530,24 +898,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base",
+   "name": "Base 4P",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Base",
+   "name": "Base 4P",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base",
+   "name": "Base 4P",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cartridge 1",
+   "name": "Cartridge 4P 1",
    "points": [
     [
      -21.0,
@@ -636,24 +1004,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cartridge 1",
+   "name": "Cartridge 4P 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Cartridge 1",
+   "name": "Cartridge 4P 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cartridge 1",
+   "name": "Cartridge 4P 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cartridge 2",
+   "name": "Cartridge 4P 2",
    "points": [
     [
      -3.0,
@@ -742,24 +1110,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cartridge 2",
+   "name": "Cartridge 4P 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Cartridge 2",
+   "name": "Cartridge 4P 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cartridge 2",
+   "name": "Cartridge 4P 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cartridge 3",
+   "name": "Cartridge 4P 3",
    "points": [
     [
      15.0,
@@ -848,24 +1216,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cartridge 3",
+   "name": "Cartridge 4P 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Cartridge 3",
+   "name": "Cartridge 4P 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cartridge 3",
+   "name": "Cartridge 4P 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cartridge 4",
+   "name": "Cartridge 4P 4",
    "points": [
     [
      33.0,
@@ -954,24 +1322,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cartridge 4",
+   "name": "Cartridge 4P 4",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Cartridge 4",
+   "name": "Cartridge 4P 4",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cartridge 4",
+   "name": "Cartridge 4P 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Window 1",
+   "name": "Indicator Window 4P 1",
    "points": [
     [
      -31,
@@ -996,24 +1364,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Window 1",
+   "name": "Indicator Window 4P 1",
    "subcategory": "Green"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Window 1",
+   "name": "Indicator Window 4P 1",
    "param": "Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Window 1",
+   "name": "Indicator Window 4P 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Window 2",
+   "name": "Indicator Window 4P 2",
    "points": [
     [
      -13,
@@ -1038,24 +1406,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Window 2",
+   "name": "Indicator Window 4P 2",
    "subcategory": "Green"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Window 2",
+   "name": "Indicator Window 4P 2",
    "param": "Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Window 2",
+   "name": "Indicator Window 4P 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Window 3",
+   "name": "Indicator Window 4P 3",
    "points": [
     [
      5,
@@ -1080,24 +1448,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Window 3",
+   "name": "Indicator Window 4P 3",
    "subcategory": "Green"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Window 3",
+   "name": "Indicator Window 4P 3",
    "param": "Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Window 3",
+   "name": "Indicator Window 4P 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Window 4",
+   "name": "Indicator Window 4P 4",
    "points": [
     [
      23,
@@ -1122,24 +1490,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Window 4",
+   "name": "Indicator Window 4P 4",
    "subcategory": "Green"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Window 4",
+   "name": "Indicator Window 4P 4",
    "param": "Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Window 4",
+   "name": "Indicator Window 4P 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Release Slot 1",
+   "name": "Release Slot 4P 1",
    "points": [
     [
      -30,
@@ -1164,24 +1532,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Release Slot 1",
+   "name": "Release Slot 4P 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Release Slot 1",
+   "name": "Release Slot 4P 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Release Slot 1",
+   "name": "Release Slot 4P 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Release Slot 2",
+   "name": "Release Slot 4P 2",
    "points": [
     [
      -12,
@@ -1206,24 +1574,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Release Slot 2",
+   "name": "Release Slot 4P 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Release Slot 2",
+   "name": "Release Slot 4P 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Release Slot 2",
+   "name": "Release Slot 4P 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Release Slot 3",
+   "name": "Release Slot 4P 3",
    "points": [
     [
      6,
@@ -1248,24 +1616,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Release Slot 3",
+   "name": "Release Slot 4P 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Release Slot 3",
+   "name": "Release Slot 4P 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Release Slot 3",
+   "name": "Release Slot 4P 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Release Slot 4",
+   "name": "Release Slot 4P 4",
    "points": [
     [
      24,
@@ -1290,24 +1658,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Release Slot 4",
+   "name": "Release Slot 4P 4",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Release Slot 4",
+   "name": "Release Slot 4P 4",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Release Slot 4",
+   "name": "Release Slot 4P 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw 1",
+   "name": "Terminal Screw 4P 1",
    "points": [
     [
      -24.0,
@@ -1411,24 +1779,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw 1",
+   "name": "Terminal Screw 4P 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw 1",
+   "name": "Terminal Screw 4P 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw 1",
+   "name": "Terminal Screw 4P 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw 2",
+   "name": "Terminal Screw 4P 2",
    "points": [
     [
      -6.0,
@@ -1532,24 +1900,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw 2",
+   "name": "Terminal Screw 4P 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw 2",
+   "name": "Terminal Screw 4P 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw 2",
+   "name": "Terminal Screw 4P 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw 3",
+   "name": "Terminal Screw 4P 3",
    "points": [
     [
      12.0,
@@ -1653,24 +2021,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw 3",
+   "name": "Terminal Screw 4P 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw 3",
+   "name": "Terminal Screw 4P 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw 3",
+   "name": "Terminal Screw 4P 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw 4",
+   "name": "Terminal Screw 4P 4",
    "points": [
     [
      30.0,
@@ -1774,24 +2142,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw 4",
+   "name": "Terminal Screw 4P 4",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw 4",
+   "name": "Terminal Screw 4P 4",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw 4",
+   "name": "Terminal Screw 4P 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw Bottom 1",
+   "name": "Terminal Screw Bottom 4P 1",
    "points": [
     [
      -24.0,
@@ -1895,24 +2263,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw Bottom 1",
+   "name": "Terminal Screw Bottom 4P 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw Bottom 1",
+   "name": "Terminal Screw Bottom 4P 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw Bottom 1",
+   "name": "Terminal Screw Bottom 4P 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw Bottom 2",
+   "name": "Terminal Screw Bottom 4P 2",
    "points": [
     [
      -6.0,
@@ -2016,24 +2384,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw Bottom 2",
+   "name": "Terminal Screw Bottom 4P 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw Bottom 2",
+   "name": "Terminal Screw Bottom 4P 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw Bottom 2",
+   "name": "Terminal Screw Bottom 4P 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw Bottom 3",
+   "name": "Terminal Screw Bottom 4P 3",
    "points": [
     [
      12.0,
@@ -2137,24 +2505,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw Bottom 3",
+   "name": "Terminal Screw Bottom 4P 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw Bottom 3",
+   "name": "Terminal Screw Bottom 4P 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw Bottom 3",
+   "name": "Terminal Screw Bottom 4P 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Terminal Screw Bottom 4",
+   "name": "Terminal Screw Bottom 4P 4",
    "points": [
     [
      30.0,
@@ -2258,17 +2626,987 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Terminal Screw Bottom 4",
+   "name": "Terminal Screw Bottom 4P 4",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Terminal Screw Bottom 4",
+   "name": "Terminal Screw Bottom 4P 4",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Terminal Screw Bottom 4",
+   "name": "Terminal Screw Bottom 4P 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base 2P",
+   "points": [
+    [
+     -2.0,
+     0.0
+    ],
+    [
+     -1.23,
+     0.15
+    ],
+    [
+     -0.59,
+     0.59
+    ],
+    [
+     -0.15,
+     1.23
+    ],
+    [
+     0.0,
+     2.0
+    ],
+    [
+     0.0,
+     88.0
+    ],
+    [
+     -0.15,
+     88.77
+    ],
+    [
+     -0.59,
+     89.41
+    ],
+    [
+     -1.23,
+     89.85
+    ],
+    [
+     -2.0,
+     90.0
+    ],
+    [
+     -34.0,
+     90.0
+    ],
+    [
+     -34.77,
+     89.85
+    ],
+    [
+     -35.41,
+     89.41
+    ],
+    [
+     -35.85,
+     88.77
+    ],
+    [
+     -36.0,
+     88.0
+    ],
+    [
+     -36.0,
+     2.0
+    ],
+    [
+     -35.85,
+     1.23
+    ],
+    [
+     -35.41,
+     0.59
+    ],
+    [
+     -34.77,
+     0.15
+    ],
+    [
+     -34.0,
+     0.0
+    ]
+   ],
+   "start": 7.5,
+   "end": 50,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base 2P",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base 2P",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base 2P",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cartridge 2P 1",
+   "points": [
+    [
+     -21.0,
+     12.0
+    ],
+    [
+     -20.23,
+     12.15
+    ],
+    [
+     -19.59,
+     12.59
+    ],
+    [
+     -19.15,
+     13.23
+    ],
+    [
+     -19.0,
+     14.0
+    ],
+    [
+     -19.0,
+     76.0
+    ],
+    [
+     -19.15,
+     76.77
+    ],
+    [
+     -19.59,
+     77.41
+    ],
+    [
+     -20.23,
+     77.85
+    ],
+    [
+     -21.0,
+     78.0
+    ],
+    [
+     -33.0,
+     78.0
+    ],
+    [
+     -33.77,
+     77.85
+    ],
+    [
+     -34.41,
+     77.41
+    ],
+    [
+     -34.85,
+     76.77
+    ],
+    [
+     -35.0,
+     76.0
+    ],
+    [
+     -35.0,
+     14.0
+    ],
+    [
+     -34.85,
+     13.23
+    ],
+    [
+     -34.41,
+     12.59
+    ],
+    [
+     -33.77,
+     12.15
+    ],
+    [
+     -33.0,
+     12.0
+    ]
+   ],
+   "start": 50,
+   "end": 68,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cartridge 2P 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cartridge 2P 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cartridge 2P 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cartridge 2P 2",
+   "points": [
+    [
+     -3.0,
+     12.0
+    ],
+    [
+     -2.23,
+     12.15
+    ],
+    [
+     -1.59,
+     12.59
+    ],
+    [
+     -1.15,
+     13.23
+    ],
+    [
+     -1.0,
+     14.0
+    ],
+    [
+     -1.0,
+     76.0
+    ],
+    [
+     -1.15,
+     76.77
+    ],
+    [
+     -1.59,
+     77.41
+    ],
+    [
+     -2.23,
+     77.85
+    ],
+    [
+     -3.0,
+     78.0
+    ],
+    [
+     -15.0,
+     78.0
+    ],
+    [
+     -15.77,
+     77.85
+    ],
+    [
+     -16.41,
+     77.41
+    ],
+    [
+     -16.85,
+     76.77
+    ],
+    [
+     -17.0,
+     76.0
+    ],
+    [
+     -17.0,
+     14.0
+    ],
+    [
+     -16.85,
+     13.23
+    ],
+    [
+     -16.41,
+     12.59
+    ],
+    [
+     -15.77,
+     12.15
+    ],
+    [
+     -15.0,
+     12.0
+    ]
+   ],
+   "start": 50,
+   "end": 68,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cartridge 2P 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cartridge 2P 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cartridge 2P 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Indicator Window 2P 1",
+   "points": [
+    [
+     -31,
+     62
+    ],
+    [
+     -23,
+     62
+    ],
+    [
+     -23,
+     72
+    ],
+    [
+     -31,
+     72
+    ]
+   ],
+   "start": 68,
+   "end": 68.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Indicator Window 2P 1",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Indicator Window 2P 1",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Indicator Window 2P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Indicator Window 2P 2",
+   "points": [
+    [
+     -13,
+     62
+    ],
+    [
+     -5,
+     62
+    ],
+    [
+     -5,
+     72
+    ],
+    [
+     -13,
+     72
+    ]
+   ],
+   "start": 68,
+   "end": 68.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Indicator Window 2P 2",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Indicator Window 2P 2",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Indicator Window 2P 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Release Slot 2P 1",
+   "points": [
+    [
+     -30,
+     18
+    ],
+    [
+     -24,
+     18
+    ],
+    [
+     -24,
+     22
+    ],
+    [
+     -30,
+     22
+    ]
+   ],
+   "start": 68,
+   "end": 68.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Release Slot 2P 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Release Slot 2P 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Release Slot 2P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Release Slot 2P 2",
+   "points": [
+    [
+     -12,
+     18
+    ],
+    [
+     -6,
+     18
+    ],
+    [
+     -6,
+     22
+    ],
+    [
+     -12,
+     22
+    ]
+   ],
+   "start": 68,
+   "end": 68.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Release Slot 2P 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Release Slot 2P 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Release Slot 2P 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Screw 2P 1",
+   "points": [
+    [
+     -24.0,
+     -40.0
+    ],
+    [
+     -24.1,
+     -39.22
+    ],
+    [
+     -24.4,
+     -38.5
+    ],
+    [
+     -24.88,
+     -37.88
+    ],
+    [
+     -25.5,
+     -37.4
+    ],
+    [
+     -26.22,
+     -37.1
+    ],
+    [
+     -27.0,
+     -37.0
+    ],
+    [
+     -27.78,
+     -37.1
+    ],
+    [
+     -28.5,
+     -37.4
+    ],
+    [
+     -29.12,
+     -37.88
+    ],
+    [
+     -29.6,
+     -38.5
+    ],
+    [
+     -29.9,
+     -39.22
+    ],
+    [
+     -30.0,
+     -40.0
+    ],
+    [
+     -29.9,
+     -40.78
+    ],
+    [
+     -29.6,
+     -41.5
+    ],
+    [
+     -29.12,
+     -42.12
+    ],
+    [
+     -28.5,
+     -42.6
+    ],
+    [
+     -27.78,
+     -42.9
+    ],
+    [
+     -27.0,
+     -43.0
+    ],
+    [
+     -26.22,
+     -42.9
+    ],
+    [
+     -25.5,
+     -42.6
+    ],
+    [
+     -24.88,
+     -42.12
+    ],
+    [
+     -24.4,
+     -41.5
+    ],
+    [
+     -24.1,
+     -40.78
+    ]
+   ],
+   "start": 90,
+   "end": 92
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Screw 2P 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Screw 2P 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Screw 2P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Screw 2P 2",
+   "points": [
+    [
+     -6.0,
+     -40.0
+    ],
+    [
+     -6.1,
+     -39.22
+    ],
+    [
+     -6.4,
+     -38.5
+    ],
+    [
+     -6.88,
+     -37.88
+    ],
+    [
+     -7.5,
+     -37.4
+    ],
+    [
+     -8.22,
+     -37.1
+    ],
+    [
+     -9.0,
+     -37.0
+    ],
+    [
+     -9.78,
+     -37.1
+    ],
+    [
+     -10.5,
+     -37.4
+    ],
+    [
+     -11.12,
+     -37.88
+    ],
+    [
+     -11.6,
+     -38.5
+    ],
+    [
+     -11.9,
+     -39.22
+    ],
+    [
+     -12.0,
+     -40.0
+    ],
+    [
+     -11.9,
+     -40.78
+    ],
+    [
+     -11.6,
+     -41.5
+    ],
+    [
+     -11.12,
+     -42.12
+    ],
+    [
+     -10.5,
+     -42.6
+    ],
+    [
+     -9.78,
+     -42.9
+    ],
+    [
+     -9.0,
+     -43.0
+    ],
+    [
+     -8.22,
+     -42.9
+    ],
+    [
+     -7.5,
+     -42.6
+    ],
+    [
+     -6.88,
+     -42.12
+    ],
+    [
+     -6.4,
+     -41.5
+    ],
+    [
+     -6.1,
+     -40.78
+    ]
+   ],
+   "start": 90,
+   "end": 92
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Screw 2P 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Screw 2P 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Screw 2P 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Screw Bottom 2P 1",
+   "points": [
+    [
+     -24.0,
+     -40.0
+    ],
+    [
+     -24.1,
+     -39.22
+    ],
+    [
+     -24.4,
+     -38.5
+    ],
+    [
+     -24.88,
+     -37.88
+    ],
+    [
+     -25.5,
+     -37.4
+    ],
+    [
+     -26.22,
+     -37.1
+    ],
+    [
+     -27.0,
+     -37.0
+    ],
+    [
+     -27.78,
+     -37.1
+    ],
+    [
+     -28.5,
+     -37.4
+    ],
+    [
+     -29.12,
+     -37.88
+    ],
+    [
+     -29.6,
+     -38.5
+    ],
+    [
+     -29.9,
+     -39.22
+    ],
+    [
+     -30.0,
+     -40.0
+    ],
+    [
+     -29.9,
+     -40.78
+    ],
+    [
+     -29.6,
+     -41.5
+    ],
+    [
+     -29.12,
+     -42.12
+    ],
+    [
+     -28.5,
+     -42.6
+    ],
+    [
+     -27.78,
+     -42.9
+    ],
+    [
+     -27.0,
+     -43.0
+    ],
+    [
+     -26.22,
+     -42.9
+    ],
+    [
+     -25.5,
+     -42.6
+    ],
+    [
+     -24.88,
+     -42.12
+    ],
+    [
+     -24.4,
+     -41.5
+    ],
+    [
+     -24.1,
+     -40.78
+    ]
+   ],
+   "start": -2,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Screw Bottom 2P 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Screw Bottom 2P 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Screw Bottom 2P 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Screw Bottom 2P 2",
+   "points": [
+    [
+     -6.0,
+     -40.0
+    ],
+    [
+     -6.1,
+     -39.22
+    ],
+    [
+     -6.4,
+     -38.5
+    ],
+    [
+     -6.88,
+     -37.88
+    ],
+    [
+     -7.5,
+     -37.4
+    ],
+    [
+     -8.22,
+     -37.1
+    ],
+    [
+     -9.0,
+     -37.0
+    ],
+    [
+     -9.78,
+     -37.1
+    ],
+    [
+     -10.5,
+     -37.4
+    ],
+    [
+     -11.12,
+     -37.88
+    ],
+    [
+     -11.6,
+     -38.5
+    ],
+    [
+     -11.9,
+     -39.22
+    ],
+    [
+     -12.0,
+     -40.0
+    ],
+    [
+     -11.9,
+     -40.78
+    ],
+    [
+     -11.6,
+     -41.5
+    ],
+    [
+     -11.12,
+     -42.12
+    ],
+    [
+     -10.5,
+     -42.6
+    ],
+    [
+     -9.78,
+     -42.9
+    ],
+    [
+     -9.0,
+     -43.0
+    ],
+    [
+     -8.22,
+     -42.9
+    ],
+    [
+     -7.5,
+     -42.6
+    ],
+    [
+     -6.88,
+     -42.12
+    ],
+    [
+     -6.4,
+     -41.5
+    ],
+    [
+     -6.1,
+     -40.78
+    ]
+   ],
+   "start": -2,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Screw Bottom 2P 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Screw Bottom 2P 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Screw Bottom 2P 2",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -2282,11 +3620,11 @@
      -6
     ],
     [
-     30,
+     0,
      -6
     ],
     [
-     30,
+     0,
      0
     ],
     [
@@ -2316,53 +3654,243 @@
    "fine": true
   },
   {
-   "op": "extrusion",
-   "name": "Rating Label",
-   "points": [
-    [
-     -34,
-     82
-    ],
-    [
-     34,
-     82
-    ],
-    [
-     34,
-     88
-    ],
-    [
-     -34,
-     88
-    ]
-   ],
-   "start": 50,
-   "end": 50.5,
-   "sketch": "front"
+   "op": "add_family_param",
+   "name": "Show TPN_T2",
+   "type": "YesNo",
+   "group": "Graphics"
   },
   {
-   "op": "set_subcategory",
-   "name": "Rating Label",
-   "subcategory": "White"
+   "op": "set_type_value",
+   "name": "TPN_T2/Show TPN_T2",
+   "type": "TPN_T2",
+   "param": "Show TPN_T2",
+   "value": true
   },
   {
-   "op": "set_material_param",
-   "name": "Rating Label",
-   "param": "White Material"
+   "op": "set_type_value",
+   "name": "SPN_T2/Show TPN_T2",
+   "type": "SPN_T2",
+   "param": "Show TPN_T2",
+   "value": false
   },
   {
-   "op": "set_visibility",
-   "name": "Rating Label",
-   "coarse": false,
-   "medium": false,
-   "fine": true
+   "op": "set_visible_param",
+   "name": "Base 4P/Visible",
+   "solid": "Base 4P",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 4P 1/Visible",
+   "solid": "Cartridge 4P 1",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 4P 2/Visible",
+   "solid": "Cartridge 4P 2",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 4P 3/Visible",
+   "solid": "Cartridge 4P 3",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 4P 4/Visible",
+   "solid": "Cartridge 4P 4",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 4P 1/Visible",
+   "solid": "Indicator Window 4P 1",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 4P 2/Visible",
+   "solid": "Indicator Window 4P 2",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 4P 3/Visible",
+   "solid": "Indicator Window 4P 3",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 4P 4/Visible",
+   "solid": "Indicator Window 4P 4",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 4P 1/Visible",
+   "solid": "Release Slot 4P 1",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 4P 2/Visible",
+   "solid": "Release Slot 4P 2",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 4P 3/Visible",
+   "solid": "Release Slot 4P 3",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 4P 4/Visible",
+   "solid": "Release Slot 4P 4",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 4P 1/Visible",
+   "solid": "Terminal Screw 4P 1",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 4P 2/Visible",
+   "solid": "Terminal Screw 4P 2",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 4P 3/Visible",
+   "solid": "Terminal Screw 4P 3",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 4P 4/Visible",
+   "solid": "Terminal Screw 4P 4",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 4P 1/Visible",
+   "solid": "Terminal Screw Bottom 4P 1",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 4P 2/Visible",
+   "solid": "Terminal Screw Bottom 4P 2",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 4P 3/Visible",
+   "solid": "Terminal Screw Bottom 4P 3",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 4P 4/Visible",
+   "solid": "Terminal Screw Bottom 4P 4",
+   "param": "Show TPN_T2"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show SPN_T2",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "TPN_T2/Show SPN_T2",
+   "type": "TPN_T2",
+   "param": "Show SPN_T2",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "SPN_T2/Show SPN_T2",
+   "type": "SPN_T2",
+   "param": "Show SPN_T2",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base 2P/Visible",
+   "solid": "Base 2P",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 2P 1/Visible",
+   "solid": "Cartridge 2P 1",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cartridge 2P 2/Visible",
+   "solid": "Cartridge 2P 2",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 2P 1/Visible",
+   "solid": "Indicator Window 2P 1",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 2P 2/Visible",
+   "solid": "Indicator Window 2P 2",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 2P 1/Visible",
+   "solid": "Release Slot 2P 1",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Release Slot 2P 2/Visible",
+   "solid": "Release Slot 2P 2",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 2P 1/Visible",
+   "solid": "Terminal Screw 2P 1",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw 2P 2/Visible",
+   "solid": "Terminal Screw 2P 2",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 2P 1/Visible",
+   "solid": "Terminal Screw Bottom 2P 1",
+   "param": "Show SPN_T2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Terminal Screw Bottom 2P 2/Visible",
+   "solid": "Terminal Screw Bottom 2P 2",
+   "param": "Show SPN_T2"
   },
   {
    "op": "add_connector",
    "name": "Supply",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Base",
+   "solid": "DIN Rail",
    "side": "top"
   },
   {

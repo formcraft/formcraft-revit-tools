@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_ElecFixture_Data_Outlet_RJ45",
  "template": "Metric Generic Model.rft",
- "about": "Data outlet: plate, two modules with RJ45 ports, keyways and shutters, label window, ID icon, screws, steel box. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: data outlet rj45 electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=data+outlet+rj45+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Data outlet: plate, one centred module (1-port) or two (2-port) with RJ45 ports, keyways and shutters, label window, ID icon, screws, steel box. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: data outlet rj45 electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=data+outlet+rj45+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://uk.rs-online.com/web/p/network-faceplates/4103096; photo_title: Polyco Healthline Cat6 1 Way RJ45 Outlet (RS); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,291 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Circuit_Ref",
+   "guid": "1fc378b3-9930-552d-851c-c8a0002ad673",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -83,6 +341,34 @@
    "type": "86x86_1-port",
    "param": "FMC_Keynote_Code",
    "value": "E.ICT_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/FMC_Code_Description",
+   "type": "86x86_1-port",
+   "param": "FMC_Code_Description",
+   "value": "Data Outlet RJ45: Data outlet"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/FMC_Code_Group",
+   "type": "86x86_1-port",
+   "param": "FMC_Code_Group",
+   "value": "E.ICT"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/FMC_Role_Code",
+   "type": "86x86_1-port",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/URL",
+   "type": "86x86_1-port",
+   "param": "URL",
+   "value": "https://uk.rs-online.com/web/p/network-faceplates/4103096"
   },
   {
    "op": "set_type_value",
@@ -136,6 +422,34 @@
    "type": "86x86_2-port",
    "param": "FMC_Keynote_Code",
    "value": "E.ICT_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/FMC_Code_Description",
+   "type": "86x86_2-port",
+   "param": "FMC_Code_Description",
+   "value": "Data Outlet RJ45: Data outlet"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/FMC_Code_Group",
+   "type": "86x86_2-port",
+   "param": "FMC_Code_Group",
+   "value": "E.ICT"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/FMC_Role_Code",
+   "type": "86x86_2-port",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/URL",
+   "type": "86x86_2-port",
+   "param": "URL",
+   "value": "https://uk.rs-online.com/web/p/network-faceplates/4103096"
   },
   {
    "op": "set_type_value",
@@ -788,6 +1102,366 @@
   {
    "op": "set_visibility",
    "name": "Screw 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Module C",
+   "points": [
+    [
+     11.0,
+     28.0
+    ],
+    [
+     11.77,
+     28.15
+    ],
+    [
+     12.41,
+     28.59
+    ],
+    [
+     12.85,
+     29.23
+    ],
+    [
+     13.0,
+     30.0
+    ],
+    [
+     13.0,
+     56.0
+    ],
+    [
+     12.85,
+     56.77
+    ],
+    [
+     12.41,
+     57.41
+    ],
+    [
+     11.77,
+     57.85
+    ],
+    [
+     11.0,
+     58.0
+    ],
+    [
+     -11.0,
+     58.0
+    ],
+    [
+     -11.77,
+     57.85
+    ],
+    [
+     -12.41,
+     57.41
+    ],
+    [
+     -12.85,
+     56.77
+    ],
+    [
+     -13.0,
+     56.0
+    ],
+    [
+     -13.0,
+     30.0
+    ],
+    [
+     -12.85,
+     29.23
+    ],
+    [
+     -12.41,
+     28.59
+    ],
+    [
+     -11.77,
+     28.15
+    ],
+    [
+     -11.0,
+     28.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Module C",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Module C",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Module C",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Port C",
+   "points": [
+    [
+     6.5,
+     34.0
+    ],
+    [
+     6.88,
+     34.08
+    ],
+    [
+     7.21,
+     34.29
+    ],
+    [
+     7.42,
+     34.62
+    ],
+    [
+     7.5,
+     35.0
+    ],
+    [
+     7.5,
+     47.0
+    ],
+    [
+     7.42,
+     47.38
+    ],
+    [
+     7.21,
+     47.71
+    ],
+    [
+     6.88,
+     47.92
+    ],
+    [
+     6.5,
+     48.0
+    ],
+    [
+     -6.5,
+     48.0
+    ],
+    [
+     -6.88,
+     47.92
+    ],
+    [
+     -7.21,
+     47.71
+    ],
+    [
+     -7.42,
+     47.38
+    ],
+    [
+     -7.5,
+     47.0
+    ],
+    [
+     -7.5,
+     35.0
+    ],
+    [
+     -7.42,
+     34.62
+    ],
+    [
+     -7.21,
+     34.29
+    ],
+    [
+     -6.88,
+     34.08
+    ],
+    [
+     -6.5,
+     34.0
+    ]
+   ],
+   "start": 12,
+   "end": 12.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Port C",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Port C",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Port C",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shutter C",
+   "points": [
+    [
+     6.0,
+     46.0
+    ],
+    [
+     6.38,
+     46.08
+    ],
+    [
+     6.71,
+     46.29
+    ],
+    [
+     6.92,
+     46.62
+    ],
+    [
+     7.0,
+     47.0
+    ],
+    [
+     7.0,
+     51.0
+    ],
+    [
+     6.92,
+     51.38
+    ],
+    [
+     6.71,
+     51.71
+    ],
+    [
+     6.38,
+     51.92
+    ],
+    [
+     6.0,
+     52.0
+    ],
+    [
+     -6.0,
+     52.0
+    ],
+    [
+     -6.38,
+     51.92
+    ],
+    [
+     -6.71,
+     51.71
+    ],
+    [
+     -6.92,
+     51.38
+    ],
+    [
+     -7.0,
+     51.0
+    ],
+    [
+     -7.0,
+     47.0
+    ],
+    [
+     -6.92,
+     46.62
+    ],
+    [
+     -6.71,
+     46.29
+    ],
+    [
+     -6.38,
+     46.08
+    ],
+    [
+     -6.0,
+     46.0
+    ]
+   ],
+   "start": 12.2,
+   "end": 12.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shutter C",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shutter C",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shutter C",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Port Key C",
+   "points": [
+    [
+     -3,
+     30
+    ],
+    [
+     3,
+     30
+    ],
+    [
+     3,
+     34
+    ],
+    [
+     -3,
+     34
+    ]
+   ],
+   "start": 12,
+   "end": 12.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Port Key C",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Port Key C",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Port Key C",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -1623,24 +2297,24 @@
    "name": "ID Icon",
    "points": [
     [
-     -30,
+     -36,
      52
     ],
     [
-     -26,
+     -32,
      52
     ],
     [
-     -26,
+     -32,
      56
     ],
     [
-     -30,
+     -36,
      56
     ]
    ],
-   "start": 12,
-   "end": 12.1,
+   "start": 9.5,
+   "end": 10,
    "sketch": "front"
   },
   {
@@ -1659,6 +2333,118 @@
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 86x86_1-port",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/Show 86x86_1-port",
+   "type": "86x86_1-port",
+   "param": "Show 86x86_1-port",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/Show 86x86_1-port",
+   "type": "86x86_2-port",
+   "param": "Show 86x86_1-port",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Module C/Visible",
+   "solid": "Module C",
+   "param": "Show 86x86_1-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port C/Visible",
+   "solid": "Port C",
+   "param": "Show 86x86_1-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shutter C/Visible",
+   "solid": "Shutter C",
+   "param": "Show 86x86_1-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port Key C/Visible",
+   "solid": "Port Key C",
+   "param": "Show 86x86_1-port"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 86x86_2-port",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_1-port/Show 86x86_2-port",
+   "type": "86x86_1-port",
+   "param": "Show 86x86_2-port",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "86x86_2-port/Show 86x86_2-port",
+   "type": "86x86_2-port",
+   "param": "Show 86x86_2-port",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Module L/Visible",
+   "solid": "Module L",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port L/Visible",
+   "solid": "Port L",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shutter L/Visible",
+   "solid": "Shutter L",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port Key L/Visible",
+   "solid": "Port Key L",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Module R/Visible",
+   "solid": "Module R",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port R/Visible",
+   "solid": "Port R",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shutter R/Visible",
+   "solid": "Shutter R",
+   "param": "Show 86x86_2-port"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Port Key R/Visible",
+   "solid": "Port Key R",
+   "param": "Show 86x86_2-port"
   },
   {
    "op": "add_connector",

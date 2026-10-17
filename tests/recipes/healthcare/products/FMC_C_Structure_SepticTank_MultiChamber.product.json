@@ -8,115 +8,24 @@
  "types": [
   {
    "name": "10m3_RC",
-   "desc": "about 10 m3"
+   "desc": "internal 3600 x 1600 x 2050"
   },
   {
    "name": "20m3_RC",
-   "desc": "about 20 m3"
+   "desc": "internal 4800 x 2000 x 2100"
   },
   {
    "name": "40m3_RC",
-   "desc": "about 40 m3"
+   "desc": "internal 6600 x 2800 x 2200"
   }
  ],
  "materials": {
   "conc": "FMC_Concrete_C30",
   "galv": "FMC_Metal_ColdFormed_Galvanised",
-  "ci": "FMC_Metal_BurglarBar_Steel",
+  "ci": "FMC_Metal_DuctileIron_Black",
   "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey"
  },
  "parts": [
-  {
-   "n": "Base Slab",
-   "shape": "box",
-   "at": [
-    -2100,
-    -1100,
-    -2500,
-    2100,
-    1100,
-    -2250
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Tank Wall Front",
-   "shape": "box",
-   "at": [
-    -2000,
-    -1000,
-    -2250,
-    2000,
-    -800,
-    -200
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Tank Wall Back",
-   "shape": "box",
-   "at": [
-    -2000,
-    800,
-    -2250,
-    2000,
-    1000,
-    -200
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Tank Wall Left",
-   "shape": "box",
-   "at": [
-    -2000,
-    -800,
-    -2250,
-    -1800,
-    800,
-    -200
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Tank Wall Right",
-   "shape": "box",
-   "at": [
-    1800,
-    -800,
-    -2250,
-    2000,
-    800,
-    -200
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Baffle Wall",
-   "shape": "box",
-   "at": [
-    600,
-    -800,
-    -2250,
-    750,
-    800,
-    -500
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Roof Slab",
-   "shape": "box",
-   "at": [
-    -2000,
-    -1000,
-    -200,
-    2000,
-    1000,
-    0
-   ],
-   "mat": "conc"
-  },
   {
    "n": "Access Shaft 1",
    "shape": "box",
@@ -131,19 +40,6 @@
    "mat": "conc"
   },
   {
-   "n": "Access Shaft 2",
-   "shape": "box",
-   "at": [
-    750,
-    -450,
-    0,
-    1650,
-    450,
-    150
-   ],
-   "mat": "conc"
-  },
-  {
    "n": "Shaft Opening 1",
    "shape": "box",
    "at": [
@@ -151,19 +47,6 @@
     -300,
     -201,
     -900,
-    300,
-    150
-   ],
-   "void": true
-  },
-  {
-   "n": "Shaft Opening 2",
-   "shape": "box",
-   "at": [
-    900,
-    -300,
-    -201,
-    1500,
     300,
     150
    ],
@@ -279,7 +162,183 @@
    }
   },
   {
-   "n": "Cover 2 Frame Front",
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -500
+   ],
+   "r": 80,
+   "x": [
+    -2400,
+    -1990
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Inlet Dip Tee",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1700,
+    0
+   ],
+   "r": 80,
+   "z": [
+    -1200,
+    -400
+   ],
+   "mat": "upvc",
+   "lod": "f",
+   "seg": 16
+  },
+  {
+   "n": "Base Slab 10m3",
+   "shape": "box",
+   "at": [
+    -2100,
+    -1100.0,
+    -2500,
+    2100,
+    1100.0,
+    -2250
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Front 10m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1000.0,
+    -2250,
+    2000,
+    -800.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Back 10m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    800.0,
+    -2250,
+    2000,
+    1000.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Left 10m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -800.0,
+    -2250,
+    -1800,
+    800.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Right 10m3",
+   "shape": "box",
+   "at": [
+    1800,
+    -800.0,
+    -2250,
+    2000,
+    800.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Baffle Wall 10m3",
+   "shape": "box",
+   "at": [
+    600.0,
+    -800.0,
+    -2250,
+    750.0,
+    800.0,
+    -500
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Roof Slab 10m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1000.0,
+    -200,
+    2000,
+    1000.0,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Access Shaft 2 10m3",
+   "shape": "box",
+   "at": [
+    750,
+    -450,
+    0,
+    1650,
+    450,
+    150
+   ],
+   "mat": "conc",
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Shaft Opening 2 10m3",
+   "shape": "box",
+   "at": [
+    900,
+    -300,
+    -201,
+    1500,
+    300,
+    150
+   ],
+   "void": true,
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Front 10m3",
    "shape": "box",
    "at": [
     825.0,
@@ -289,10 +348,13 @@
     -300.0,
     250
    ],
-   "mat": "ci"
+   "mat": "ci",
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Frame Back",
+   "n": "Cover 2 Frame Back 10m3",
    "shape": "box",
    "at": [
     825.0,
@@ -302,10 +364,13 @@
     375.0,
     250
    ],
-   "mat": "ci"
+   "mat": "ci",
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Frame Left",
+   "n": "Cover 2 Frame Left 10m3",
    "shape": "box",
    "at": [
     825.0,
@@ -315,10 +380,13 @@
     300.0,
     250
    ],
-   "mat": "ci"
+   "mat": "ci",
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Frame Right",
+   "n": "Cover 2 Frame Right 10m3",
    "shape": "box",
    "at": [
     1500.0,
@@ -328,10 +396,13 @@
     300.0,
     250
    ],
-   "mat": "ci"
+   "mat": "ci",
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Cover",
+   "n": "Cover 2 Cover 10m3",
    "shape": "box",
    "at": [
     900.0,
@@ -341,10 +412,13 @@
     300.0,
     251
    ],
-   "mat": "ci"
+   "mat": "ci",
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Pattern",
+   "n": "Cover 2 Pattern 10m3",
    "shape": "box",
    "at": [
     940.0,
@@ -363,10 +437,13 @@
      120.0,
      0
     ]
-   }
+   },
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Cover 2 Keyhole",
+   "n": "Cover 2 Keyhole 10m3",
    "shape": "box",
    "at": [
     925.0,
@@ -385,15 +462,18 @@
      0,
      0
     ]
-   }
+   },
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Vent Pipe",
+   "n": "Vent Pipe 10m3",
    "shape": "cyl",
    "axis": "z",
    "c": [
     1800,
-    800
+    800.0
    ],
    "r": 55,
    "z": [
@@ -401,15 +481,18 @@
     2500
    ],
    "mat": "upvc",
-   "seg": 16
+   "seg": 16,
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Vent Cowl",
+   "n": "Vent Cowl 10m3",
    "shape": "turn",
    "axis": "z",
    "c": [
     1800,
-    800
+    800.0
    ],
    "profile": [
     [
@@ -434,25 +517,13 @@
     ]
    ],
    "mat": "upvc",
-   "seg": 16
+   "seg": 16,
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Inlet Pipe",
-   "shape": "cyl",
-   "axis": "x",
-   "c": [
-    0,
-    -500
-   ],
-   "r": 80,
-   "x": [
-    -2400,
-    -1990
-   ],
-   "mat": "upvc"
-  },
-  {
-   "n": "Outlet Pipe",
+   "n": "Outlet Pipe 10m3",
    "shape": "cyl",
    "axis": "x",
    "c": [
@@ -464,27 +535,13 @@
     1990,
     2400
    ],
-   "mat": "upvc"
-  },
-  {
-   "n": "Inlet Dip Tee",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -1700,
-    0
-   ],
-   "r": 80,
-   "z": [
-    -1200,
-    -400
-   ],
    "mat": "upvc",
-   "lod": "f",
-   "seg": 16
+   "only": [
+    "10m3_RC"
+   ]
   },
   {
-   "n": "Outlet Dip Tee",
+   "n": "Outlet Dip Tee 10m3",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -498,17 +555,757 @@
    ],
    "mat": "upvc",
    "lod": "f",
-   "seg": 16
+   "seg": 16,
+   "only": [
+    "10m3_RC"
+   ]
+  },
+  {
+   "n": "Base Slab 20m3",
+   "shape": "box",
+   "at": [
+    -2100,
+    -1300.0,
+    -2550,
+    3300,
+    1300.0,
+    -2300
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Front 20m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1200.0,
+    -2300,
+    3200,
+    -1000.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Back 20m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    1000.0,
+    -2300,
+    3200,
+    1200.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Left 20m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1000.0,
+    -2300,
+    -1800,
+    1000.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Right 20m3",
+   "shape": "box",
+   "at": [
+    3000,
+    -1000.0,
+    -2300,
+    3200,
+    1000.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Baffle Wall 20m3",
+   "shape": "box",
+   "at": [
+    1400.0,
+    -1000.0,
+    -2300,
+    1550.0,
+    1000.0,
+    -500
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Roof Slab 20m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1200.0,
+    -200,
+    3200,
+    1200.0,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Access Shaft 2 20m3",
+   "shape": "box",
+   "at": [
+    1950,
+    -450,
+    0,
+    2850,
+    450,
+    150
+   ],
+   "mat": "conc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Shaft Opening 2 20m3",
+   "shape": "box",
+   "at": [
+    2100,
+    -300,
+    -201,
+    2700,
+    300,
+    150
+   ],
+   "void": true,
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Front 20m3",
+   "shape": "box",
+   "at": [
+    2025.0,
+    -375.0,
+    150,
+    2775.0,
+    -300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Back 20m3",
+   "shape": "box",
+   "at": [
+    2025.0,
+    300.0,
+    150,
+    2775.0,
+    375.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Left 20m3",
+   "shape": "box",
+   "at": [
+    2025.0,
+    -300.0,
+    150,
+    2100.0,
+    300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Right 20m3",
+   "shape": "box",
+   "at": [
+    2700.0,
+    -300.0,
+    150,
+    2775.0,
+    300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Cover 20m3",
+   "shape": "box",
+   "at": [
+    2100.0,
+    -300.0,
+    244,
+    2700.0,
+    300.0,
+    251
+   ],
+   "mat": "ci",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Pattern 20m3",
+   "shape": "box",
+   "at": [
+    2140.0,
+    -188.0,
+    251,
+    2660.0,
+    -172.0,
+    253.5
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     120.0,
+     0
+    ]
+   },
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Keyhole 20m3",
+   "shape": "box",
+   "at": [
+    2125.0,
+    -20,
+    251,
+    2135.0,
+    20,
+    252
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     540,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Vent Pipe 20m3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    3000,
+    1000.0
+   ],
+   "r": 55,
+   "z": [
+    0,
+    2500
+   ],
+   "mat": "upvc",
+   "seg": 16,
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Vent Cowl 20m3",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    3000,
+    1000.0
+   ],
+   "profile": [
+    [
+     0,
+     2480
+    ],
+    [
+     55,
+     2480
+    ],
+    [
+     110,
+     2560
+    ],
+    [
+     110,
+     2600
+    ],
+    [
+     0,
+     2640
+    ]
+   ],
+   "mat": "upvc",
+   "seg": 16,
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Outlet Pipe 20m3",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -575
+   ],
+   "r": 80,
+   "x": [
+    3190,
+    3600
+   ],
+   "mat": "upvc",
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Outlet Dip Tee 20m3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    2900,
+    0
+   ],
+   "r": 80,
+   "z": [
+    -1200,
+    -400
+   ],
+   "mat": "upvc",
+   "lod": "f",
+   "seg": 16,
+   "only": [
+    "20m3_RC"
+   ]
+  },
+  {
+   "n": "Base Slab 40m3",
+   "shape": "box",
+   "at": [
+    -2100,
+    -1700.0,
+    -2650,
+    5100,
+    1700.0,
+    -2400
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Front 40m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1600.0,
+    -2400,
+    5000,
+    -1400.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Back 40m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    1400.0,
+    -2400,
+    5000,
+    1600.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Left 40m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1400.0,
+    -2400,
+    -1800,
+    1400.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Tank Wall Right 40m3",
+   "shape": "box",
+   "at": [
+    4800,
+    -1400.0,
+    -2400,
+    5000,
+    1400.0,
+    -200
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Baffle Wall 40m3",
+   "shape": "box",
+   "at": [
+    2600.0,
+    -1400.0,
+    -2400,
+    2750.0,
+    1400.0,
+    -500
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Roof Slab 40m3",
+   "shape": "box",
+   "at": [
+    -2000,
+    -1600.0,
+    -200,
+    5000,
+    1600.0,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Access Shaft 2 40m3",
+   "shape": "box",
+   "at": [
+    3750,
+    -450,
+    0,
+    4650,
+    450,
+    150
+   ],
+   "mat": "conc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Shaft Opening 2 40m3",
+   "shape": "box",
+   "at": [
+    3900,
+    -300,
+    -201,
+    4500,
+    300,
+    150
+   ],
+   "void": true,
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Front 40m3",
+   "shape": "box",
+   "at": [
+    3825.0,
+    -375.0,
+    150,
+    4575.0,
+    -300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Back 40m3",
+   "shape": "box",
+   "at": [
+    3825.0,
+    300.0,
+    150,
+    4575.0,
+    375.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Left 40m3",
+   "shape": "box",
+   "at": [
+    3825.0,
+    -300.0,
+    150,
+    3900.0,
+    300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Frame Right 40m3",
+   "shape": "box",
+   "at": [
+    4500.0,
+    -300.0,
+    150,
+    4575.0,
+    300.0,
+    250
+   ],
+   "mat": "ci",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Cover 40m3",
+   "shape": "box",
+   "at": [
+    3900.0,
+    -300.0,
+    244,
+    4500.0,
+    300.0,
+    251
+   ],
+   "mat": "ci",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Pattern 40m3",
+   "shape": "box",
+   "at": [
+    3940.0,
+    -188.0,
+    251,
+    4460.0,
+    -172.0,
+    253.5
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     120.0,
+     0
+    ]
+   },
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Cover 2 Keyhole 40m3",
+   "shape": "box",
+   "at": [
+    3925.0,
+    -20,
+    251,
+    3935.0,
+    20,
+    252
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     540,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Vent Pipe 40m3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    4800,
+    1400.0
+   ],
+   "r": 55,
+   "z": [
+    0,
+    2500
+   ],
+   "mat": "upvc",
+   "seg": 16,
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Vent Cowl 40m3",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    4800,
+    1400.0
+   ],
+   "profile": [
+    [
+     0,
+     2480
+    ],
+    [
+     55,
+     2480
+    ],
+    [
+     110,
+     2560
+    ],
+    [
+     110,
+     2600
+    ],
+    [
+     0,
+     2640
+    ]
+   ],
+   "mat": "upvc",
+   "seg": 16,
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Outlet Pipe 40m3",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -575
+   ],
+   "r": 80,
+   "x": [
+    4990,
+    5400
+   ],
+   "mat": "upvc",
+   "only": [
+    "40m3_RC"
+   ]
+  },
+  {
+   "n": "Outlet Dip Tee 40m3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    4700,
+    0
+   ],
+   "r": 80,
+   "z": [
+    -1200,
+    -400
+   ],
+   "mat": "upvc",
+   "lod": "f",
+   "seg": 16,
+   "only": [
+    "40m3_RC"
+   ]
   }
  ],
  "reference": {
   "query": "structure septic tank multi chamber structures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=structure+septic+tank+multi+chamber+structures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://img0.hospitalityhub.com.au/graf-wastewater-treatment-multi-tank-septic-system/p/179942",
+  "photo_title": "Graf multi-tank septic system",
+  "photo_kind": "supplier"
  },
  "values": {
-  "Internal 3600 x 1600 x 2050 mm (10 m3 geometry)": {
-   "value": "3600x1600x2050",
+  "Internal 3600x1600x2050, 4800x2000x2100, 6600x2800x2200 mm (one per type)": {
+   "value": "per type",
    "source_status": "assumed",
    "source": "sizing by the engineer (note: where no sewer)"
   },
@@ -528,7 +1325,7 @@
    "source": "typical"
   }
  },
- "about": "Ground at z = 0 at roof level: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer.",
+ "about": "Ground at z = 0 at roof level, inlet end fixed at x = -2000 and the tank growing toward +x by type: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer. Each type has its own geometry where it differs (parts with 'only'); the rest is shared.",
  "connectors": [
   {
    "n": "SAN In",
@@ -543,10 +1340,13 @@
    "n": "SAN Out",
    "domain": "pipe",
    "system": "Sanitary",
-   "part": "Outlet Pipe",
+   "part": "Outlet Pipe 10m3",
    "side": "right",
    "diameter": 160,
    "flow": "Out"
   }
+ ],
+ "_conn_type1": [
+  "SAN Out"
  ]
 }

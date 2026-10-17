@@ -21,7 +21,7 @@
  },
  "parts": [
   {
-   "n": "Kicker",
+   "n": "Kicker 400dia",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -34,10 +34,13 @@
     75
    ],
    "mat": "conc",
-   "seg": 48
+   "seg": 48,
+   "only": [
+    "400dia_RC"
+   ]
   },
   {
-   "n": "Shaft",
+   "n": "Shaft 400dia",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -50,10 +53,13 @@
     3000
    ],
    "mat": "conc",
-   "seg": 48
+   "seg": 48,
+   "only": [
+    "400dia_RC"
+   ]
   },
   {
-   "n": "Form Seam",
+   "n": "Form Seam 400dia",
    "shape": "turn",
    "axis": "z",
    "c": [
@@ -88,17 +94,102 @@
      600
     ]
    },
-   "seg": 48
+   "seg": 48,
+   "only": [
+    "400dia_RC"
+   ]
+  },
+  {
+   "n": "Kicker 500dia",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 250,
+   "z": [
+    0,
+    75
+   ],
+   "mat": "conc",
+   "seg": 48,
+   "only": [
+    "500dia_RC"
+   ]
+  },
+  {
+   "n": "Shaft 500dia",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 250,
+   "z": [
+    75,
+    3000
+   ],
+   "mat": "conc",
+   "seg": 48,
+   "only": [
+    "500dia_RC"
+   ]
+  },
+  {
+   "n": "Form Seam 500dia",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     250,
+     600
+    ],
+    [
+     251,
+     600
+    ],
+    [
+     251,
+     606
+    ],
+    [
+     250,
+     606
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     600
+    ]
+   },
+   "seg": 48,
+   "only": [
+    "500dia_RC"
+   ]
   }
  ],
  "reference": {
   "query": "str column rc round structural columns hospital",
   "images": "https://www.google.com/search?tbm=isch&q=str+column+rc+round+structural+columns+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.efcoforms.com/products/formwork/columns-round-column/",
+  "photo_title": "Round Column Formwork (EFCO)",
+  "photo_kind": "other"
  },
  "values": {
-  "Diameter 400 mm (smallest type)": {
-   "value": 400,
+  "Diameter 400 and 500 mm (one per type)": {
+   "value": "400/500",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
@@ -113,5 +204,5 @@
    "source": "FMC kit rulebook; engineer to confirm"
   }
  },
- "about": "Circular RC column as cast in a tube former: kicker, shaft and the faint tube seams (Fine). Geometry shows 400 dia, 3000 high."
+ "about": "Circular RC column as cast in a tube former: kicker, shaft and the faint tube seams (Fine). 3000 high. Each type has its own geometry where it differs (parts with 'only'); the rest is shared."
 }

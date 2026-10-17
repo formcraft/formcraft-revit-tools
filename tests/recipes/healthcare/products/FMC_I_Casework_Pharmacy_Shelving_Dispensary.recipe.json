@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Casework_Pharmacy_Shelving_Dispensary",
  "template": "Metric Generic Model.rft",
- "about": "Dispensary bay modelled as a generic product: uprights, back panel, plinth, canopy with bay label, base shelf and 7 inclined shelves with clear lips and label rails, blue and yellow dispensing bins and boxed stock (Fine). Geometry is drawn at the 900_Dispensary type; the other types share it until a parametric pass. Reference: query: casework pharmacy shelving dispensary casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+pharmacy+shelving+dispensary+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Dispensary bay modelled as a generic product: uprights, back panel, plinth, canopy with bay label, base shelf and 7 inclined shelves with clear lips and label rails, blue and yellow dispensing bins and boxed stock (Fine). Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: casework pharmacy shelving dispensary casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+pharmacy+shelving+dispensary+casework+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.southwestsolutions.com/divisions/healthcare/medication-storage/hospital-pharmacy-shelving/; photo_title: Hospital Pharmacy Shelving (Southwest Solutions Group); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -334,6 +334,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "900_Dispensary/URL",
+   "type": "900_Dispensary",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/divisions/healthcare/medication-storage/hospital-pharmacy-shelving/"
+  },
+  {
    "op": "add_type",
    "name": "1200_Dispensary"
   },
@@ -399,6 +406,13 @@
    "type": "1200_Dispensary",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/URL",
+   "type": "1200_Dispensary",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/divisions/healthcare/medication-storage/hospital-pharmacy-shelving/"
   },
   {
    "op": "add_subcategory",
@@ -604,19 +618,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -450.0,
+     -600.0,
      -352
     ],
     [
-     450.0,
+     600.0,
      -352
     ],
     [
-     450.0,
+     600.0,
      0
     ],
     [
-     -450.0,
+     -600.0,
      0
     ]
    ],
@@ -637,7 +651,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Upright 1",
+   "name": "Upright 900 1",
    "points": [
     [
      -450.0,
@@ -661,24 +675,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Upright 1",
+   "name": "Upright 900 1",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Upright 1",
+   "name": "Upright 900 1",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Upright 1",
+   "name": "Upright 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Upright 2",
+   "name": "Upright 900 2",
    "points": [
     [
      425.0,
@@ -702,24 +716,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Upright 2",
+   "name": "Upright 900 2",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Upright 2",
+   "name": "Upright 900 2",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Upright 2",
+   "name": "Upright 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Panel",
+   "name": "Back Panel 900",
    "points": [
     [
      -425.0,
@@ -743,24 +757,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Panel",
+   "name": "Back Panel 900",
    "subcategory": "Back"
   },
   {
    "op": "set_material_param",
-   "name": "Back Panel",
+   "name": "Back Panel 900",
    "param": "Back Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Panel",
+   "name": "Back Panel 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plinth",
+   "name": "Plinth 900",
    "points": [
     [
      -425.0,
@@ -784,24 +798,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth",
+   "name": "Plinth 900",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth",
+   "name": "Plinth 900",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth",
+   "name": "Plinth 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Canopy",
+   "name": "Canopy 900",
    "points": [
     [
      -450.0,
@@ -825,24 +839,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Canopy",
+   "name": "Canopy 900",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Canopy",
+   "name": "Canopy 900",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy",
+   "name": "Canopy 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base Shelf",
+   "name": "Base Shelf 900",
    "points": [
     [
      -425.0,
@@ -866,24 +880,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Shelf",
+   "name": "Base Shelf 900",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Base Shelf",
+   "name": "Base Shelf 900",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Shelf",
+   "name": "Base Shelf 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "points": [
     [
      -300,
@@ -908,24 +922,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "points": [
     [
      -300,
@@ -950,24 +964,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3",
+   "name": "Shelf 900 3",
    "points": [
     [
      -300,
@@ -992,24 +1006,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3",
+   "name": "Shelf 900 3",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3",
+   "name": "Shelf 900 3",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3",
+   "name": "Shelf 900 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4",
+   "name": "Shelf 900 4",
    "points": [
     [
      -300,
@@ -1034,24 +1048,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4",
+   "name": "Shelf 900 4",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4",
+   "name": "Shelf 900 4",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4",
+   "name": "Shelf 900 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5",
+   "name": "Shelf 900 5",
    "points": [
     [
      -300,
@@ -1076,24 +1090,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5",
+   "name": "Shelf 900 5",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5",
+   "name": "Shelf 900 5",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5",
+   "name": "Shelf 900 5",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 6",
+   "name": "Shelf 900 6",
    "points": [
     [
      -300,
@@ -1118,24 +1132,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 6",
+   "name": "Shelf 900 6",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 6",
+   "name": "Shelf 900 6",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 6",
+   "name": "Shelf 900 6",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 7",
+   "name": "Shelf 900 7",
    "points": [
     [
      -300,
@@ -1160,24 +1174,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 7",
+   "name": "Shelf 900 7",
    "subcategory": "Shelf"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 7",
+   "name": "Shelf 900 7",
    "param": "Shelf Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 7",
+   "name": "Shelf 900 7",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 1",
+   "name": "Shelf Lip 900 1",
    "points": [
     [
      -425.0,
@@ -1202,24 +1216,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 1",
+   "name": "Shelf Lip 900 1",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 1",
+   "name": "Shelf Lip 900 1",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 1",
+   "name": "Shelf Lip 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 2",
+   "name": "Shelf Lip 900 2",
    "points": [
     [
      -425.0,
@@ -1244,24 +1258,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 2",
+   "name": "Shelf Lip 900 2",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 2",
+   "name": "Shelf Lip 900 2",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 2",
+   "name": "Shelf Lip 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 3",
+   "name": "Shelf Lip 900 3",
    "points": [
     [
      -425.0,
@@ -1286,24 +1300,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 3",
+   "name": "Shelf Lip 900 3",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 3",
+   "name": "Shelf Lip 900 3",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 3",
+   "name": "Shelf Lip 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 4",
+   "name": "Shelf Lip 900 4",
    "points": [
     [
      -425.0,
@@ -1328,24 +1342,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 4",
+   "name": "Shelf Lip 900 4",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 4",
+   "name": "Shelf Lip 900 4",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 4",
+   "name": "Shelf Lip 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 5",
+   "name": "Shelf Lip 900 5",
    "points": [
     [
      -425.0,
@@ -1370,24 +1384,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 5",
+   "name": "Shelf Lip 900 5",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 5",
+   "name": "Shelf Lip 900 5",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 5",
+   "name": "Shelf Lip 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 6",
+   "name": "Shelf Lip 900 6",
    "points": [
     [
      -425.0,
@@ -1412,24 +1426,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 6",
+   "name": "Shelf Lip 900 6",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 6",
+   "name": "Shelf Lip 900 6",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 6",
+   "name": "Shelf Lip 900 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Lip 7",
+   "name": "Shelf Lip 900 7",
    "points": [
     [
      -425.0,
@@ -1454,24 +1468,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Lip 7",
+   "name": "Shelf Lip 900 7",
    "subcategory": "Clear"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Lip 7",
+   "name": "Shelf Lip 900 7",
    "param": "Clear Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Lip 7",
+   "name": "Shelf Lip 900 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 1",
+   "name": "Label Rail 900 1",
    "points": [
     [
      -425.0,
@@ -1496,24 +1510,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 1",
+   "name": "Label Rail 900 1",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 1",
+   "name": "Label Rail 900 1",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 1",
+   "name": "Label Rail 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 2",
+   "name": "Label Rail 900 2",
    "points": [
     [
      -425.0,
@@ -1538,24 +1552,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 2",
+   "name": "Label Rail 900 2",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 2",
+   "name": "Label Rail 900 2",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 2",
+   "name": "Label Rail 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 3",
+   "name": "Label Rail 900 3",
    "points": [
     [
      -425.0,
@@ -1580,24 +1594,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 3",
+   "name": "Label Rail 900 3",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 3",
+   "name": "Label Rail 900 3",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 3",
+   "name": "Label Rail 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 4",
+   "name": "Label Rail 900 4",
    "points": [
     [
      -425.0,
@@ -1622,24 +1636,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 4",
+   "name": "Label Rail 900 4",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 4",
+   "name": "Label Rail 900 4",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 4",
+   "name": "Label Rail 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 5",
+   "name": "Label Rail 900 5",
    "points": [
     [
      -425.0,
@@ -1664,24 +1678,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 5",
+   "name": "Label Rail 900 5",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 5",
+   "name": "Label Rail 900 5",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 5",
+   "name": "Label Rail 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 6",
+   "name": "Label Rail 900 6",
    "points": [
     [
      -425.0,
@@ -1706,24 +1720,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 6",
+   "name": "Label Rail 900 6",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 6",
+   "name": "Label Rail 900 6",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 6",
+   "name": "Label Rail 900 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Label Rail 7",
+   "name": "Label Rail 900 7",
    "points": [
     [
      -425.0,
@@ -1748,24 +1762,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label Rail 7",
+   "name": "Label Rail 900 7",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Label Rail 7",
+   "name": "Label Rail 900 7",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Rail 7",
+   "name": "Label Rail 900 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin 1",
+   "name": "Dispensing Bin 900 1",
    "points": [
     [
      -410.0,
@@ -1789,24 +1803,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin 1",
+   "name": "Dispensing Bin 900 1",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin 1",
+   "name": "Dispensing Bin 900 1",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin 1",
+   "name": "Dispensing Bin 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin 2",
+   "name": "Dispensing Bin 900 2",
    "points": [
     [
      -200.0,
@@ -1830,24 +1844,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin 2",
+   "name": "Dispensing Bin 900 2",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin 2",
+   "name": "Dispensing Bin 900 2",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin 2",
+   "name": "Dispensing Bin 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin 3",
+   "name": "Dispensing Bin 900 3",
    "points": [
     [
      10.0,
@@ -1871,65 +1885,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin 3",
+   "name": "Dispensing Bin 900 3",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin 3",
+   "name": "Dispensing Bin 900 3",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin 3",
+   "name": "Dispensing Bin 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin 4",
-   "points": [
-    [
-     220.0,
-     -290
-    ],
-    [
-     410.0,
-     -290
-    ],
-    [
-     410.0,
-     -40
-    ],
-    [
-     220.0,
-     -40
-    ]
-   ],
-   "start": 395,
-   "end": 520
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Dispensing Bin 4",
-   "subcategory": "Bin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dispensing Bin 4",
-   "param": "Bin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dispensing Bin 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Dispensing Bin Row 2 1",
+   "name": "Dispensing Bin Row 2 900 1",
    "points": [
     [
      -410.0,
@@ -1953,24 +1926,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 2 1",
+   "name": "Dispensing Bin Row 2 900 1",
    "subcategory": "Bin2"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 2 1",
+   "name": "Dispensing Bin Row 2 900 1",
    "param": "Bin2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 2 1",
+   "name": "Dispensing Bin Row 2 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 2 2",
+   "name": "Dispensing Bin Row 2 900 2",
    "points": [
     [
      -200.0,
@@ -1994,24 +1967,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 2 2",
+   "name": "Dispensing Bin Row 2 900 2",
    "subcategory": "Bin2"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 2 2",
+   "name": "Dispensing Bin Row 2 900 2",
    "param": "Bin2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 2 2",
+   "name": "Dispensing Bin Row 2 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 2 3",
+   "name": "Dispensing Bin Row 2 900 3",
    "points": [
     [
      10.0,
@@ -2035,65 +2008,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 2 3",
+   "name": "Dispensing Bin Row 2 900 3",
    "subcategory": "Bin2"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 2 3",
+   "name": "Dispensing Bin Row 2 900 3",
    "param": "Bin2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 2 3",
+   "name": "Dispensing Bin Row 2 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 2 4",
-   "points": [
-    [
-     220.0,
-     -285
-    ],
-    [
-     410.0,
-     -285
-    ],
-    [
-     410.0,
-     -40
-    ],
-    [
-     220.0,
-     -40
-    ]
-   ],
-   "start": 635,
-   "end": 760
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Dispensing Bin Row 2 4",
-   "subcategory": "Bin2"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dispensing Bin Row 2 4",
-   "param": "Bin2 Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dispensing Bin Row 2 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drug Boxes Row 3",
+   "name": "Drug Boxes Row 3 900",
    "points": [
     [
      -410.0,
@@ -2117,24 +2049,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drug Boxes Row 3",
+   "name": "Drug Boxes Row 3 900",
    "subcategory": "Box"
   },
   {
    "op": "set_material_param",
-   "name": "Drug Boxes Row 3",
+   "name": "Drug Boxes Row 3 900",
    "param": "Box Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drug Boxes Row 3",
+   "name": "Drug Boxes Row 3 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drug Boxes Row 4",
+   "name": "Drug Boxes Row 4 900",
    "points": [
     [
      -410.0,
@@ -2158,24 +2090,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drug Boxes Row 4",
+   "name": "Drug Boxes Row 4 900",
    "subcategory": "Box2"
   },
   {
    "op": "set_material_param",
-   "name": "Drug Boxes Row 4",
+   "name": "Drug Boxes Row 4 900",
    "param": "Box2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drug Boxes Row 4",
+   "name": "Drug Boxes Row 4 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 5 1",
+   "name": "Dispensing Bin Row 5 900 1",
    "points": [
     [
      -410.0,
@@ -2199,24 +2131,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 5 1",
+   "name": "Dispensing Bin Row 5 900 1",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 5 1",
+   "name": "Dispensing Bin Row 5 900 1",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 5 1",
+   "name": "Dispensing Bin Row 5 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 5 2",
+   "name": "Dispensing Bin Row 5 900 2",
    "points": [
     [
      -200.0,
@@ -2240,24 +2172,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 5 2",
+   "name": "Dispensing Bin Row 5 900 2",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 5 2",
+   "name": "Dispensing Bin Row 5 900 2",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 5 2",
+   "name": "Dispensing Bin Row 5 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 5 3",
+   "name": "Dispensing Bin Row 5 900 3",
    "points": [
     [
      10.0,
@@ -2281,65 +2213,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dispensing Bin Row 5 3",
+   "name": "Dispensing Bin Row 5 900 3",
    "subcategory": "Bin"
   },
   {
    "op": "set_material_param",
-   "name": "Dispensing Bin Row 5 3",
+   "name": "Dispensing Bin Row 5 900 3",
    "param": "Bin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dispensing Bin Row 5 3",
+   "name": "Dispensing Bin Row 5 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dispensing Bin Row 5 4",
-   "points": [
-    [
-     220.0,
-     -280
-    ],
-    [
-     410.0,
-     -280
-    ],
-    [
-     410.0,
-     -40
-    ],
-    [
-     220.0,
-     -40
-    ]
-   ],
-   "start": 1355,
-   "end": 1480
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Dispensing Bin Row 5 4",
-   "subcategory": "Bin"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Dispensing Bin Row 5 4",
-   "param": "Bin Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Dispensing Bin Row 5 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drug Boxes Row 6",
+   "name": "Drug Boxes Row 6 900",
    "points": [
     [
      -410.0,
@@ -2363,24 +2254,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drug Boxes Row 6",
+   "name": "Drug Boxes Row 6 900",
    "subcategory": "Box"
   },
   {
    "op": "set_material_param",
-   "name": "Drug Boxes Row 6",
+   "name": "Drug Boxes Row 6 900",
    "param": "Box Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drug Boxes Row 6",
+   "name": "Drug Boxes Row 6 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bay Label",
+   "name": "Bay Label 900",
    "points": [
     [
      -150,
@@ -2405,20 +2296,2484 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bay Label",
+   "name": "Bay Label 900",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Bay Label",
+   "name": "Bay Label 900",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bay Label",
+   "name": "Bay Label 900",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upright 1200 1",
+   "points": [
+    [
+     -600.0,
+     -350
+    ],
+    [
+     -575.0,
+     -350
+    ],
+    [
+     -575.0,
+     0
+    ],
+    [
+     -600.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upright 1200 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upright 1200 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upright 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upright 1200 2",
+   "points": [
+    [
+     575.0,
+     -350
+    ],
+    [
+     600.0,
+     -350
+    ],
+    [
+     600.0,
+     0
+    ],
+    [
+     575.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upright 1200 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upright 1200 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upright 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Panel 1200",
+   "points": [
+    [
+     -575.0,
+     -15
+    ],
+    [
+     575.0,
+     -15
+    ],
+    [
+     575.0,
+     0
+    ],
+    [
+     -575.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Panel 1200",
+   "subcategory": "Back"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Panel 1200",
+   "param": "Back Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Panel 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 1200",
+   "points": [
+    [
+     -575.0,
+     -330
+    ],
+    [
+     575.0,
+     -330
+    ],
+    [
+     575.0,
+     -15
+    ],
+    [
+     -575.0,
+     -15
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 1200",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 1200",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Canopy 1200",
+   "points": [
+    [
+     -600.0,
+     -350
+    ],
+    [
+     600.0,
+     -350
+    ],
+    [
+     600.0,
+     0
+    ],
+    [
+     -600.0,
+     0
+    ]
+   ],
+   "start": 2100,
+   "end": 2130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy 1200",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy 1200",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Shelf 1200",
+   "points": [
+    [
+     -575.0,
+     -350
+    ],
+    [
+     575.0,
+     -350
+    ],
+    [
+     575.0,
+     -15
+    ],
+    [
+     -575.0,
+     -15
+    ]
+   ],
+   "start": 100,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Shelf 1200",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Shelf 1200",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Shelf 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 1",
+   "points": [
+    [
+     -300,
+     380
+    ],
+    [
+     -15,
+     420
+    ],
+    [
+     -15,
+     432
+    ],
+    [
+     -300,
+     392
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 1",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 1",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 2",
+   "points": [
+    [
+     -300,
+     620
+    ],
+    [
+     -15,
+     660
+    ],
+    [
+     -15,
+     672
+    ],
+    [
+     -300,
+     632
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 2",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 2",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 3",
+   "points": [
+    [
+     -300,
+     860
+    ],
+    [
+     -15,
+     900
+    ],
+    [
+     -15,
+     912
+    ],
+    [
+     -300,
+     872
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 3",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 3",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 4",
+   "points": [
+    [
+     -300,
+     1100
+    ],
+    [
+     -15,
+     1140
+    ],
+    [
+     -15,
+     1152
+    ],
+    [
+     -300,
+     1112
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 4",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 4",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 5",
+   "points": [
+    [
+     -300,
+     1340
+    ],
+    [
+     -15,
+     1380
+    ],
+    [
+     -15,
+     1392
+    ],
+    [
+     -300,
+     1352
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 5",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 5",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 6",
+   "points": [
+    [
+     -300,
+     1580
+    ],
+    [
+     -15,
+     1620
+    ],
+    [
+     -15,
+     1632
+    ],
+    [
+     -300,
+     1592
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 6",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 6",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 7",
+   "points": [
+    [
+     -300,
+     1820
+    ],
+    [
+     -15,
+     1860
+    ],
+    [
+     -15,
+     1872
+    ],
+    [
+     -300,
+     1832
+    ]
+   ],
+   "start": -575.0,
+   "end": 575.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 7",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 7",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 1",
+   "points": [
+    [
+     -575.0,
+     380
+    ],
+    [
+     575.0,
+     380
+    ],
+    [
+     575.0,
+     420
+    ],
+    [
+     -575.0,
+     420
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 1",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 1",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 2",
+   "points": [
+    [
+     -575.0,
+     620
+    ],
+    [
+     575.0,
+     620
+    ],
+    [
+     575.0,
+     660
+    ],
+    [
+     -575.0,
+     660
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 2",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 2",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 3",
+   "points": [
+    [
+     -575.0,
+     860
+    ],
+    [
+     575.0,
+     860
+    ],
+    [
+     575.0,
+     900
+    ],
+    [
+     -575.0,
+     900
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 3",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 3",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 4",
+   "points": [
+    [
+     -575.0,
+     1100
+    ],
+    [
+     575.0,
+     1100
+    ],
+    [
+     575.0,
+     1140
+    ],
+    [
+     -575.0,
+     1140
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 4",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 4",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 5",
+   "points": [
+    [
+     -575.0,
+     1340
+    ],
+    [
+     575.0,
+     1340
+    ],
+    [
+     575.0,
+     1380
+    ],
+    [
+     -575.0,
+     1380
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 5",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 5",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 6",
+   "points": [
+    [
+     -575.0,
+     1580
+    ],
+    [
+     575.0,
+     1580
+    ],
+    [
+     575.0,
+     1620
+    ],
+    [
+     -575.0,
+     1620
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 6",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 6",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1200 7",
+   "points": [
+    [
+     -575.0,
+     1820
+    ],
+    [
+     575.0,
+     1820
+    ],
+    [
+     575.0,
+     1860
+    ],
+    [
+     -575.0,
+     1860
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1200 7",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1200 7",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1200 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 1",
+   "points": [
+    [
+     -575.0,
+     365
+    ],
+    [
+     575.0,
+     365
+    ],
+    [
+     575.0,
+     385
+    ],
+    [
+     -575.0,
+     385
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 1",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 1",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 2",
+   "points": [
+    [
+     -575.0,
+     605
+    ],
+    [
+     575.0,
+     605
+    ],
+    [
+     575.0,
+     625
+    ],
+    [
+     -575.0,
+     625
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 2",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 2",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 3",
+   "points": [
+    [
+     -575.0,
+     845
+    ],
+    [
+     575.0,
+     845
+    ],
+    [
+     575.0,
+     865
+    ],
+    [
+     -575.0,
+     865
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 3",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 3",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 4",
+   "points": [
+    [
+     -575.0,
+     1085
+    ],
+    [
+     575.0,
+     1085
+    ],
+    [
+     575.0,
+     1105
+    ],
+    [
+     -575.0,
+     1105
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 4",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 4",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 5",
+   "points": [
+    [
+     -575.0,
+     1325
+    ],
+    [
+     575.0,
+     1325
+    ],
+    [
+     575.0,
+     1345
+    ],
+    [
+     -575.0,
+     1345
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 5",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 5",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 6",
+   "points": [
+    [
+     -575.0,
+     1565
+    ],
+    [
+     575.0,
+     1565
+    ],
+    [
+     575.0,
+     1585
+    ],
+    [
+     -575.0,
+     1585
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 6",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 6",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1200 7",
+   "points": [
+    [
+     -575.0,
+     1805
+    ],
+    [
+     575.0,
+     1805
+    ],
+    [
+     575.0,
+     1825
+    ],
+    [
+     -575.0,
+     1825
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1200 7",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1200 7",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1200 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1200 1",
+   "points": [
+    [
+     -560.0,
+     -290
+    ],
+    [
+     -370.0,
+     -290
+    ],
+    [
+     -370.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1200 1",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1200 1",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1200 2",
+   "points": [
+    [
+     -350.0,
+     -290
+    ],
+    [
+     -160.0,
+     -290
+    ],
+    [
+     -160.0,
+     -40
+    ],
+    [
+     -350.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1200 2",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1200 2",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1200 3",
+   "points": [
+    [
+     -140.0,
+     -290
+    ],
+    [
+     50.0,
+     -290
+    ],
+    [
+     50.0,
+     -40
+    ],
+    [
+     -140.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1200 3",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1200 3",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1200 4",
+   "points": [
+    [
+     70.0,
+     -290
+    ],
+    [
+     260.0,
+     -290
+    ],
+    [
+     260.0,
+     -40
+    ],
+    [
+     70.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1200 4",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1200 4",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1200 5",
+   "points": [
+    [
+     280.0,
+     -290
+    ],
+    [
+     470.0,
+     -290
+    ],
+    [
+     470.0,
+     -40
+    ],
+    [
+     280.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1200 5",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1200 5",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1200 1",
+   "points": [
+    [
+     -560.0,
+     -285
+    ],
+    [
+     -370.0,
+     -285
+    ],
+    [
+     -370.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1200 1",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1200 1",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1200 2",
+   "points": [
+    [
+     -350.0,
+     -285
+    ],
+    [
+     -160.0,
+     -285
+    ],
+    [
+     -160.0,
+     -40
+    ],
+    [
+     -350.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1200 2",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1200 2",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1200 3",
+   "points": [
+    [
+     -140.0,
+     -285
+    ],
+    [
+     50.0,
+     -285
+    ],
+    [
+     50.0,
+     -40
+    ],
+    [
+     -140.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1200 3",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1200 3",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1200 4",
+   "points": [
+    [
+     70.0,
+     -285
+    ],
+    [
+     260.0,
+     -285
+    ],
+    [
+     260.0,
+     -40
+    ],
+    [
+     70.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1200 4",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1200 4",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1200 5",
+   "points": [
+    [
+     280.0,
+     -285
+    ],
+    [
+     470.0,
+     -285
+    ],
+    [
+     470.0,
+     -40
+    ],
+    [
+     280.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1200 5",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1200 5",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 3 1200",
+   "points": [
+    [
+     -560.0,
+     -270
+    ],
+    [
+     560.0,
+     -270
+    ],
+    [
+     560.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 880,
+   "end": 990
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 3 1200",
+   "subcategory": "Box"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 3 1200",
+   "param": "Box Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 3 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 4 1200",
+   "points": [
+    [
+     -560.0,
+     -270
+    ],
+    [
+     520.0,
+     -270
+    ],
+    [
+     520.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 1120,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 4 1200",
+   "subcategory": "Box2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 4 1200",
+   "param": "Box2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 4 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1200 1",
+   "points": [
+    [
+     -560.0,
+     -280
+    ],
+    [
+     -370.0,
+     -280
+    ],
+    [
+     -370.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1200 1",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1200 1",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1200 2",
+   "points": [
+    [
+     -350.0,
+     -280
+    ],
+    [
+     -160.0,
+     -280
+    ],
+    [
+     -160.0,
+     -40
+    ],
+    [
+     -350.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1200 2",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1200 2",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1200 3",
+   "points": [
+    [
+     -140.0,
+     -280
+    ],
+    [
+     50.0,
+     -280
+    ],
+    [
+     50.0,
+     -40
+    ],
+    [
+     -140.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1200 3",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1200 3",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1200 4",
+   "points": [
+    [
+     70.0,
+     -280
+    ],
+    [
+     260.0,
+     -280
+    ],
+    [
+     260.0,
+     -40
+    ],
+    [
+     70.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1200 4",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1200 4",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1200 5",
+   "points": [
+    [
+     280.0,
+     -280
+    ],
+    [
+     470.0,
+     -280
+    ],
+    [
+     470.0,
+     -40
+    ],
+    [
+     280.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1200 5",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1200 5",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 6 1200",
+   "points": [
+    [
+     -560.0,
+     -270
+    ],
+    [
+     440.0,
+     -270
+    ],
+    [
+     440.0,
+     -40
+    ],
+    [
+     -560.0,
+     -40
+    ]
+   ],
+   "start": 1600,
+   "end": 1710
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 6 1200",
+   "subcategory": "Box"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 6 1200",
+   "param": "Box Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 6 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bay Label 1200",
+   "points": [
+    [
+     -150,
+     2105
+    ],
+    [
+     150,
+     2105
+    ],
+    [
+     150,
+     2125
+    ],
+    [
+     -150,
+     2125
+    ]
+   ],
+   "start": 350,
+   "end": 352,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bay Label 1200",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bay Label 1200",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bay Label 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_Dispensary",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/Show 900_Dispensary",
+   "type": "900_Dispensary",
+   "param": "Show 900_Dispensary",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/Show 900_Dispensary",
+   "type": "1200_Dispensary",
+   "param": "Show 900_Dispensary",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upright 900 1/Visible",
+   "solid": "Upright 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upright 900 2/Visible",
+   "solid": "Upright 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Panel 900/Visible",
+   "solid": "Back Panel 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 900/Visible",
+   "solid": "Plinth 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy 900/Visible",
+   "solid": "Canopy 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Shelf 900/Visible",
+   "solid": "Base Shelf 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 1/Visible",
+   "solid": "Shelf 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 2/Visible",
+   "solid": "Shelf 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 3/Visible",
+   "solid": "Shelf 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 4/Visible",
+   "solid": "Shelf 900 4",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 5/Visible",
+   "solid": "Shelf 900 5",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 6/Visible",
+   "solid": "Shelf 900 6",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 7/Visible",
+   "solid": "Shelf 900 7",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 1/Visible",
+   "solid": "Shelf Lip 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 2/Visible",
+   "solid": "Shelf Lip 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 3/Visible",
+   "solid": "Shelf Lip 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 4/Visible",
+   "solid": "Shelf Lip 900 4",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 5/Visible",
+   "solid": "Shelf Lip 900 5",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 6/Visible",
+   "solid": "Shelf Lip 900 6",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 900 7/Visible",
+   "solid": "Shelf Lip 900 7",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 1/Visible",
+   "solid": "Label Rail 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 2/Visible",
+   "solid": "Label Rail 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 3/Visible",
+   "solid": "Label Rail 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 4/Visible",
+   "solid": "Label Rail 900 4",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 5/Visible",
+   "solid": "Label Rail 900 5",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 6/Visible",
+   "solid": "Label Rail 900 6",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 900 7/Visible",
+   "solid": "Label Rail 900 7",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 900 1/Visible",
+   "solid": "Dispensing Bin 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 900 2/Visible",
+   "solid": "Dispensing Bin 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 900 3/Visible",
+   "solid": "Dispensing Bin 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 900 1/Visible",
+   "solid": "Dispensing Bin Row 2 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 900 2/Visible",
+   "solid": "Dispensing Bin Row 2 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 900 3/Visible",
+   "solid": "Dispensing Bin Row 2 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 3 900/Visible",
+   "solid": "Drug Boxes Row 3 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 4 900/Visible",
+   "solid": "Drug Boxes Row 4 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 900 1/Visible",
+   "solid": "Dispensing Bin Row 5 900 1",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 900 2/Visible",
+   "solid": "Dispensing Bin Row 5 900 2",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 900 3/Visible",
+   "solid": "Dispensing Bin Row 5 900 3",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 6 900/Visible",
+   "solid": "Drug Boxes Row 6 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bay Label 900/Visible",
+   "solid": "Bay Label 900",
+   "param": "Show 900_Dispensary"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Dispensary",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/Show 1200_Dispensary",
+   "type": "900_Dispensary",
+   "param": "Show 1200_Dispensary",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/Show 1200_Dispensary",
+   "type": "1200_Dispensary",
+   "param": "Show 1200_Dispensary",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upright 1200 1/Visible",
+   "solid": "Upright 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upright 1200 2/Visible",
+   "solid": "Upright 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Panel 1200/Visible",
+   "solid": "Back Panel 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 1200/Visible",
+   "solid": "Plinth 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy 1200/Visible",
+   "solid": "Canopy 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Shelf 1200/Visible",
+   "solid": "Base Shelf 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 1/Visible",
+   "solid": "Shelf 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 2/Visible",
+   "solid": "Shelf 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 3/Visible",
+   "solid": "Shelf 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 4/Visible",
+   "solid": "Shelf 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 5/Visible",
+   "solid": "Shelf 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 6/Visible",
+   "solid": "Shelf 1200 6",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 7/Visible",
+   "solid": "Shelf 1200 7",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 1/Visible",
+   "solid": "Shelf Lip 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 2/Visible",
+   "solid": "Shelf Lip 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 3/Visible",
+   "solid": "Shelf Lip 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 4/Visible",
+   "solid": "Shelf Lip 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 5/Visible",
+   "solid": "Shelf Lip 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 6/Visible",
+   "solid": "Shelf Lip 1200 6",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Lip 1200 7/Visible",
+   "solid": "Shelf Lip 1200 7",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 1/Visible",
+   "solid": "Label Rail 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 2/Visible",
+   "solid": "Label Rail 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 3/Visible",
+   "solid": "Label Rail 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 4/Visible",
+   "solid": "Label Rail 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 5/Visible",
+   "solid": "Label Rail 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 6/Visible",
+   "solid": "Label Rail 1200 6",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Rail 1200 7/Visible",
+   "solid": "Label Rail 1200 7",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 1200 1/Visible",
+   "solid": "Dispensing Bin 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 1200 2/Visible",
+   "solid": "Dispensing Bin 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 1200 3/Visible",
+   "solid": "Dispensing Bin 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 1200 4/Visible",
+   "solid": "Dispensing Bin 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin 1200 5/Visible",
+   "solid": "Dispensing Bin 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 1200 1/Visible",
+   "solid": "Dispensing Bin Row 2 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 1200 2/Visible",
+   "solid": "Dispensing Bin Row 2 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 1200 3/Visible",
+   "solid": "Dispensing Bin Row 2 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 1200 4/Visible",
+   "solid": "Dispensing Bin Row 2 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 2 1200 5/Visible",
+   "solid": "Dispensing Bin Row 2 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 3 1200/Visible",
+   "solid": "Drug Boxes Row 3 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 4 1200/Visible",
+   "solid": "Drug Boxes Row 4 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 1200 1/Visible",
+   "solid": "Dispensing Bin Row 5 1200 1",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 1200 2/Visible",
+   "solid": "Dispensing Bin Row 5 1200 2",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 1200 3/Visible",
+   "solid": "Dispensing Bin Row 5 1200 3",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 1200 4/Visible",
+   "solid": "Dispensing Bin Row 5 1200 4",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dispensing Bin Row 5 1200 5/Visible",
+   "solid": "Dispensing Bin Row 5 1200 5",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drug Boxes Row 6 1200/Visible",
+   "solid": "Drug Boxes Row 6 1200",
+   "param": "Show 1200_Dispensary"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bay Label 1200/Visible",
+   "solid": "Bay Label 1200",
+   "param": "Show 1200_Dispensary"
   },
   {
    "op": "set_type_image",

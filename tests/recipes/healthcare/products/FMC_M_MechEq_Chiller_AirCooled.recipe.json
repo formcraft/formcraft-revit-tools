@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_Chiller_AirCooled",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW connectors are not in the record (E only). Reference: query: chiller air cooled mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=chiller+air+cooled+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW return (In) and supply (Out) connectors on the nozzles. Reference: query: chiller air cooled mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=chiller+air+cooled+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.daikinapplied.eu/products/ewaq-f-; photo_title: Daikin Applied EWAQ-F air-cooled scroll chiller; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -443,6 +443,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "200kW_AirCooled/URL",
+   "type": "200kW_AirCooled",
+   "param": "URL",
+   "value": "https://www.daikinapplied.eu/products/ewaq-f-"
+  },
+  {
+   "op": "set_type_value",
    "name": "200kW_AirCooled/Voltage",
    "type": "200kW_AirCooled",
    "param": "Voltage",
@@ -531,6 +538,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "400kW_AirCooled/URL",
+   "type": "400kW_AirCooled",
+   "param": "URL",
+   "value": "https://www.daikinapplied.eu/products/ewaq-f-"
+  },
+  {
+   "op": "set_type_value",
    "name": "400kW_AirCooled/Voltage",
    "type": "400kW_AirCooled",
    "param": "Voltage",
@@ -573,24 +587,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Epw",
+   "name": "Lgrey",
    "color": [
-    237,
-    237,
-    232
+    207,
+    211,
+    208
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Epw Material",
+   "name": "Lgrey Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
+   "name": "FMC_Metal_Steel_PowderCoated_LightGrey",
+   "param": "Lgrey Material"
   },
   {
    "op": "add_subcategory",
@@ -617,9 +631,9 @@
    "op": "add_subcategory",
    "name": "Red",
    "color": [
-    200,
-    16,
-    46
+    198,
+    40,
+    40
    ],
    "line_weight_projection": 1
   },
@@ -631,29 +645,29 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Metal_Steel_Painted_Red",
    "param": "Red Material"
   },
   {
    "op": "add_subcategory",
-   "name": "Alu",
+   "name": "Fin",
    "color": [
-    192,
-    192,
-    192
+    169,
+    178,
+    184
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Alu Material",
+   "name": "Fin Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Material"
   },
   {
    "op": "add_subcategory",
@@ -884,12 +898,12 @@
   {
    "op": "set_subcategory",
    "name": "Electrical Bay",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Electrical Bay",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -990,12 +1004,12 @@
   {
    "op": "set_subcategory",
    "name": "Panel Door Left",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Panel Door Left",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1096,12 +1110,12 @@
   {
    "op": "set_subcategory",
    "name": "Panel Door Right",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Panel Door Right",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1562,12 +1576,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Front",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Front",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -1604,12 +1618,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Rear",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Rear",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -1646,12 +1660,12 @@
   {
    "op": "set_subcategory",
    "name": "V End Panel Left",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "V End Panel Left",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1688,12 +1702,12 @@
   {
    "op": "set_subcategory",
    "name": "V End Panel Right",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "V End Panel Right",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1770,12 +1784,12 @@
   {
    "op": "set_subcategory",
    "name": "Fan Deck",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan Deck",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1811,12 +1825,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Front 1",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Front 1",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1852,12 +1866,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Front 2",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Front 2",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1893,12 +1907,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Front 3",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Front 3",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1934,12 +1948,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Rear 1",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Rear 1",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1975,12 +1989,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Rear 2",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Rear 2",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -2016,12 +2030,12 @@
   {
    "op": "set_subcategory",
    "name": "Post Rear 3",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Post Rear 3",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -2954,12 +2968,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan 1 Shroud",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -3395,12 +3409,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan 2 Shroud",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -3836,12 +3850,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan 3 Shroud",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -4315,6 +4329,26 @@
    "connector": "Power",
    "connector_param": "Apparent Load",
    "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "CHW Return",
+   "domain": "pipe",
+   "system": "ReturnHydronic",
+   "solid": "CHW Inlet",
+   "side": "left",
+   "diameter": 150,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "CHW Supply",
+   "domain": "pipe",
+   "system": "SupplyHydronic",
+   "solid": "CHW Outlet",
+   "side": "left",
+   "diameter": 150,
+   "flow": "Out"
   },
   {
    "op": "set_type_image",

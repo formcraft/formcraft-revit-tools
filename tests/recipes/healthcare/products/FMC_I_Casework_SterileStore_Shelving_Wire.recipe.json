@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Casework_SterileStore_Shelving_Wire",
  "template": "Metric Generic Model.rft",
- "about": "Wire shelving modelled as a generic product: 4 round posts with caps on feet, 5 shelves of rims, end rims and longitudinal wires, shelf labels, sterile packs (Fine). Geometry is drawn at the 900_Wire type; the other types share it until a parametric pass. Reference: query: casework sterile store shelving wire casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+sterile+store+shelving+wire+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Wire shelving modelled as a generic product: 4 round posts with caps on feet, 5 shelves of rims, end rims and longitudinal wires, shelf labels, sterile packs (Fine). Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: casework sterile store shelving wire casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+sterile+store+shelving+wire+casework+hospital; basis: generic product; brand, model and supplier open for review; photo: https://bradfordsystems.com/healthcare/wire-shelving-medical-storage/; photo_title: Wire Shelving For Healthcare (Bradford Systems); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -334,6 +334,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "900_Wire/URL",
+   "type": "900_Wire",
+   "param": "URL",
+   "value": "https://bradfordsystems.com/healthcare/wire-shelving-medical-storage/"
+  },
+  {
    "op": "add_type",
    "name": "1200_Wire"
   },
@@ -399,6 +406,13 @@
    "type": "1200_Wire",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Wire/URL",
+   "type": "1200_Wire",
+   "param": "URL",
+   "value": "https://bradfordsystems.com/healthcare/wire-shelving-medical-storage/"
   },
   {
    "op": "add_subcategory",
@@ -499,19 +513,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -451.0,
+     -601.0,
      -453
     ],
     [
-     451.0,
+     601.0,
      -453
     ],
     [
-     451.0,
+     601.0,
      1.0
     ],
     [
-     -451.0,
+     -601.0,
      1.0
     ]
    ],
@@ -532,7 +546,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Post 1",
+   "name": "Post 900 1",
    "points": [
     [
      -422.0,
@@ -604,24 +618,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 1",
+   "name": "Post 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Post 1",
+   "name": "Post 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 1",
+   "name": "Post 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post 2",
+   "name": "Post 900 2",
    "points": [
     [
      448.0,
@@ -693,24 +707,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 2",
+   "name": "Post 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Post 2",
+   "name": "Post 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 2",
+   "name": "Post 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Back 1",
+   "name": "Post Back 900 1",
    "points": [
     [
      -422.0,
@@ -782,24 +796,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Back 1",
+   "name": "Post Back 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Post Back 1",
+   "name": "Post Back 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Back 1",
+   "name": "Post Back 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Back 2",
+   "name": "Post Back 900 2",
    "points": [
     [
      448.0,
@@ -871,24 +885,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Back 2",
+   "name": "Post Back 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Post Back 2",
+   "name": "Post Back 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Back 2",
+   "name": "Post Back 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Cap 1",
+   "name": "Post Cap 900 1",
    "points": [
     [
      -421.0,
@@ -960,24 +974,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Cap 1",
+   "name": "Post Cap 900 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap 1",
+   "name": "Post Cap 900 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap 1",
+   "name": "Post Cap 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Cap 2",
+   "name": "Post Cap 900 2",
    "points": [
     [
      449.0,
@@ -1049,24 +1063,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Cap 2",
+   "name": "Post Cap 900 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap 2",
+   "name": "Post Cap 900 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap 2",
+   "name": "Post Cap 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Cap Back 1",
+   "name": "Post Cap Back 900 1",
    "points": [
     [
      -421.0,
@@ -1138,24 +1152,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Cap Back 1",
+   "name": "Post Cap Back 900 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap Back 1",
+   "name": "Post Cap Back 900 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap Back 1",
+   "name": "Post Cap Back 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post Cap Back 2",
+   "name": "Post Cap Back 900 2",
    "points": [
     [
      449.0,
@@ -1227,24 +1241,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post Cap Back 2",
+   "name": "Post Cap Back 900 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap Back 2",
+   "name": "Post Cap Back 900 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap Back 2",
+   "name": "Post Cap Back 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot 1",
+   "name": "Foot 900 1",
    "points": [
     [
      -419.0,
@@ -1316,24 +1330,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot 1",
+   "name": "Foot 900 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Foot 1",
+   "name": "Foot 900 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot 1",
+   "name": "Foot 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot 2",
+   "name": "Foot 900 2",
    "points": [
     [
      451.0,
@@ -1405,24 +1419,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot 2",
+   "name": "Foot 900 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Foot 2",
+   "name": "Foot 900 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot 2",
+   "name": "Foot 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Back 1",
+   "name": "Foot Back 900 1",
    "points": [
     [
      -419.0,
@@ -1494,24 +1508,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Back 1",
+   "name": "Foot Back 900 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Back 1",
+   "name": "Foot Back 900 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Back 1",
+   "name": "Foot Back 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Back 2",
+   "name": "Foot Back 900 2",
    "points": [
     [
      451.0,
@@ -1583,24 +1597,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Back 2",
+   "name": "Foot Back 900 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Back 2",
+   "name": "Foot Back 900 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Back 2",
+   "name": "Foot Back 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Rim 1",
+   "name": "Shelf 1 Rim 900 1",
    "points": [
     [
      -448.0,
@@ -1624,24 +1638,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Rim 1",
+   "name": "Shelf 1 Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Rim 1",
+   "name": "Shelf 1 Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Rim 1",
+   "name": "Shelf 1 Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Rim 2",
+   "name": "Shelf 1 Rim 900 2",
    "points": [
     [
      -448.0,
@@ -1665,24 +1679,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Rim 2",
+   "name": "Shelf 1 Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Rim 2",
+   "name": "Shelf 1 Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Rim 2",
+   "name": "Shelf 1 Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 End Rim 1",
+   "name": "Shelf 1 End Rim 900 1",
    "points": [
     [
      -448.0,
@@ -1706,24 +1720,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 End Rim 1",
+   "name": "Shelf 1 End Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 End Rim 1",
+   "name": "Shelf 1 End Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 End Rim 1",
+   "name": "Shelf 1 End Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 End Rim 2",
+   "name": "Shelf 1 End Rim 900 2",
    "points": [
     [
      442.0,
@@ -1747,24 +1761,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 End Rim 2",
+   "name": "Shelf 1 End Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 End Rim 2",
+   "name": "Shelf 1 End Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 End Rim 2",
+   "name": "Shelf 1 End Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Wire 1",
+   "name": "Shelf 1 Wire 900 1",
    "points": [
     [
      -442.0,
@@ -1788,24 +1802,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Wire 1",
+   "name": "Shelf 1 Wire 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Wire 1",
+   "name": "Shelf 1 Wire 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Wire 1",
+   "name": "Shelf 1 Wire 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Wire 2",
+   "name": "Shelf 1 Wire 900 2",
    "points": [
     [
      -442.0,
@@ -1829,24 +1843,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Wire 2",
+   "name": "Shelf 1 Wire 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Wire 2",
+   "name": "Shelf 1 Wire 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Wire 2",
+   "name": "Shelf 1 Wire 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Wire 3",
+   "name": "Shelf 1 Wire 900 3",
    "points": [
     [
      -442.0,
@@ -1870,24 +1884,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Wire 3",
+   "name": "Shelf 1 Wire 900 3",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Wire 3",
+   "name": "Shelf 1 Wire 900 3",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Wire 3",
+   "name": "Shelf 1 Wire 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Wire 4",
+   "name": "Shelf 1 Wire 900 4",
    "points": [
     [
      -442.0,
@@ -1911,24 +1925,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Wire 4",
+   "name": "Shelf 1 Wire 900 4",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Wire 4",
+   "name": "Shelf 1 Wire 900 4",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Wire 4",
+   "name": "Shelf 1 Wire 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1 Wire 5",
+   "name": "Shelf 1 Wire 900 5",
    "points": [
     [
      -442.0,
@@ -1952,24 +1966,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1 Wire 5",
+   "name": "Shelf 1 Wire 900 5",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1 Wire 5",
+   "name": "Shelf 1 Wire 900 5",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1 Wire 5",
+   "name": "Shelf 1 Wire 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Rim 1",
+   "name": "Shelf 2 Rim 900 1",
    "points": [
     [
      -448.0,
@@ -1993,24 +2007,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Rim 1",
+   "name": "Shelf 2 Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Rim 1",
+   "name": "Shelf 2 Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Rim 1",
+   "name": "Shelf 2 Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Rim 2",
+   "name": "Shelf 2 Rim 900 2",
    "points": [
     [
      -448.0,
@@ -2034,24 +2048,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Rim 2",
+   "name": "Shelf 2 Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Rim 2",
+   "name": "Shelf 2 Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Rim 2",
+   "name": "Shelf 2 Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 End Rim 1",
+   "name": "Shelf 2 End Rim 900 1",
    "points": [
     [
      -448.0,
@@ -2075,24 +2089,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 End Rim 1",
+   "name": "Shelf 2 End Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 End Rim 1",
+   "name": "Shelf 2 End Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 End Rim 1",
+   "name": "Shelf 2 End Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 End Rim 2",
+   "name": "Shelf 2 End Rim 900 2",
    "points": [
     [
      442.0,
@@ -2116,24 +2130,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 End Rim 2",
+   "name": "Shelf 2 End Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 End Rim 2",
+   "name": "Shelf 2 End Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 End Rim 2",
+   "name": "Shelf 2 End Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Wire 1",
+   "name": "Shelf 2 Wire 900 1",
    "points": [
     [
      -442.0,
@@ -2157,24 +2171,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Wire 1",
+   "name": "Shelf 2 Wire 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Wire 1",
+   "name": "Shelf 2 Wire 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Wire 1",
+   "name": "Shelf 2 Wire 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Wire 2",
+   "name": "Shelf 2 Wire 900 2",
    "points": [
     [
      -442.0,
@@ -2198,24 +2212,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Wire 2",
+   "name": "Shelf 2 Wire 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Wire 2",
+   "name": "Shelf 2 Wire 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Wire 2",
+   "name": "Shelf 2 Wire 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Wire 3",
+   "name": "Shelf 2 Wire 900 3",
    "points": [
     [
      -442.0,
@@ -2239,24 +2253,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Wire 3",
+   "name": "Shelf 2 Wire 900 3",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Wire 3",
+   "name": "Shelf 2 Wire 900 3",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Wire 3",
+   "name": "Shelf 2 Wire 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Wire 4",
+   "name": "Shelf 2 Wire 900 4",
    "points": [
     [
      -442.0,
@@ -2280,24 +2294,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Wire 4",
+   "name": "Shelf 2 Wire 900 4",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Wire 4",
+   "name": "Shelf 2 Wire 900 4",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Wire 4",
+   "name": "Shelf 2 Wire 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2 Wire 5",
+   "name": "Shelf 2 Wire 900 5",
    "points": [
     [
      -442.0,
@@ -2321,24 +2335,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2 Wire 5",
+   "name": "Shelf 2 Wire 900 5",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2 Wire 5",
+   "name": "Shelf 2 Wire 900 5",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2 Wire 5",
+   "name": "Shelf 2 Wire 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Rim 1",
+   "name": "Shelf 3 Rim 900 1",
    "points": [
     [
      -448.0,
@@ -2362,24 +2376,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Rim 1",
+   "name": "Shelf 3 Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Rim 1",
+   "name": "Shelf 3 Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Rim 1",
+   "name": "Shelf 3 Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Rim 2",
+   "name": "Shelf 3 Rim 900 2",
    "points": [
     [
      -448.0,
@@ -2403,24 +2417,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Rim 2",
+   "name": "Shelf 3 Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Rim 2",
+   "name": "Shelf 3 Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Rim 2",
+   "name": "Shelf 3 Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 End Rim 1",
+   "name": "Shelf 3 End Rim 900 1",
    "points": [
     [
      -448.0,
@@ -2444,24 +2458,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 End Rim 1",
+   "name": "Shelf 3 End Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 End Rim 1",
+   "name": "Shelf 3 End Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 End Rim 1",
+   "name": "Shelf 3 End Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 End Rim 2",
+   "name": "Shelf 3 End Rim 900 2",
    "points": [
     [
      442.0,
@@ -2485,24 +2499,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 End Rim 2",
+   "name": "Shelf 3 End Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 End Rim 2",
+   "name": "Shelf 3 End Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 End Rim 2",
+   "name": "Shelf 3 End Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Wire 1",
+   "name": "Shelf 3 Wire 900 1",
    "points": [
     [
      -442.0,
@@ -2526,24 +2540,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Wire 1",
+   "name": "Shelf 3 Wire 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Wire 1",
+   "name": "Shelf 3 Wire 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Wire 1",
+   "name": "Shelf 3 Wire 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Wire 2",
+   "name": "Shelf 3 Wire 900 2",
    "points": [
     [
      -442.0,
@@ -2567,24 +2581,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Wire 2",
+   "name": "Shelf 3 Wire 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Wire 2",
+   "name": "Shelf 3 Wire 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Wire 2",
+   "name": "Shelf 3 Wire 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Wire 3",
+   "name": "Shelf 3 Wire 900 3",
    "points": [
     [
      -442.0,
@@ -2608,24 +2622,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Wire 3",
+   "name": "Shelf 3 Wire 900 3",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Wire 3",
+   "name": "Shelf 3 Wire 900 3",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Wire 3",
+   "name": "Shelf 3 Wire 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Wire 4",
+   "name": "Shelf 3 Wire 900 4",
    "points": [
     [
      -442.0,
@@ -2649,24 +2663,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Wire 4",
+   "name": "Shelf 3 Wire 900 4",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Wire 4",
+   "name": "Shelf 3 Wire 900 4",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Wire 4",
+   "name": "Shelf 3 Wire 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 3 Wire 5",
+   "name": "Shelf 3 Wire 900 5",
    "points": [
     [
      -442.0,
@@ -2690,24 +2704,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 3 Wire 5",
+   "name": "Shelf 3 Wire 900 5",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 3 Wire 5",
+   "name": "Shelf 3 Wire 900 5",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 3 Wire 5",
+   "name": "Shelf 3 Wire 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Rim 1",
+   "name": "Shelf 4 Rim 900 1",
    "points": [
     [
      -448.0,
@@ -2731,24 +2745,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Rim 1",
+   "name": "Shelf 4 Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Rim 1",
+   "name": "Shelf 4 Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Rim 1",
+   "name": "Shelf 4 Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Rim 2",
+   "name": "Shelf 4 Rim 900 2",
    "points": [
     [
      -448.0,
@@ -2772,24 +2786,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Rim 2",
+   "name": "Shelf 4 Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Rim 2",
+   "name": "Shelf 4 Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Rim 2",
+   "name": "Shelf 4 Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 End Rim 1",
+   "name": "Shelf 4 End Rim 900 1",
    "points": [
     [
      -448.0,
@@ -2813,24 +2827,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 End Rim 1",
+   "name": "Shelf 4 End Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 End Rim 1",
+   "name": "Shelf 4 End Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 End Rim 1",
+   "name": "Shelf 4 End Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 End Rim 2",
+   "name": "Shelf 4 End Rim 900 2",
    "points": [
     [
      442.0,
@@ -2854,24 +2868,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 End Rim 2",
+   "name": "Shelf 4 End Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 End Rim 2",
+   "name": "Shelf 4 End Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 End Rim 2",
+   "name": "Shelf 4 End Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Wire 1",
+   "name": "Shelf 4 Wire 900 1",
    "points": [
     [
      -442.0,
@@ -2895,24 +2909,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Wire 1",
+   "name": "Shelf 4 Wire 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Wire 1",
+   "name": "Shelf 4 Wire 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Wire 1",
+   "name": "Shelf 4 Wire 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Wire 2",
+   "name": "Shelf 4 Wire 900 2",
    "points": [
     [
      -442.0,
@@ -2936,24 +2950,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Wire 2",
+   "name": "Shelf 4 Wire 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Wire 2",
+   "name": "Shelf 4 Wire 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Wire 2",
+   "name": "Shelf 4 Wire 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Wire 3",
+   "name": "Shelf 4 Wire 900 3",
    "points": [
     [
      -442.0,
@@ -2977,24 +2991,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Wire 3",
+   "name": "Shelf 4 Wire 900 3",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Wire 3",
+   "name": "Shelf 4 Wire 900 3",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Wire 3",
+   "name": "Shelf 4 Wire 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Wire 4",
+   "name": "Shelf 4 Wire 900 4",
    "points": [
     [
      -442.0,
@@ -3018,24 +3032,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Wire 4",
+   "name": "Shelf 4 Wire 900 4",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Wire 4",
+   "name": "Shelf 4 Wire 900 4",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Wire 4",
+   "name": "Shelf 4 Wire 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 4 Wire 5",
+   "name": "Shelf 4 Wire 900 5",
    "points": [
     [
      -442.0,
@@ -3059,24 +3073,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 4 Wire 5",
+   "name": "Shelf 4 Wire 900 5",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 4 Wire 5",
+   "name": "Shelf 4 Wire 900 5",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 4 Wire 5",
+   "name": "Shelf 4 Wire 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Rim 1",
+   "name": "Shelf 5 Rim 900 1",
    "points": [
     [
      -448.0,
@@ -3100,24 +3114,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Rim 1",
+   "name": "Shelf 5 Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Rim 1",
+   "name": "Shelf 5 Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Rim 1",
+   "name": "Shelf 5 Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Rim 2",
+   "name": "Shelf 5 Rim 900 2",
    "points": [
     [
      -448.0,
@@ -3141,24 +3155,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Rim 2",
+   "name": "Shelf 5 Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Rim 2",
+   "name": "Shelf 5 Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Rim 2",
+   "name": "Shelf 5 Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 End Rim 1",
+   "name": "Shelf 5 End Rim 900 1",
    "points": [
     [
      -448.0,
@@ -3182,24 +3196,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 End Rim 1",
+   "name": "Shelf 5 End Rim 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 End Rim 1",
+   "name": "Shelf 5 End Rim 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 End Rim 1",
+   "name": "Shelf 5 End Rim 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 End Rim 2",
+   "name": "Shelf 5 End Rim 900 2",
    "points": [
     [
      442.0,
@@ -3223,24 +3237,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 End Rim 2",
+   "name": "Shelf 5 End Rim 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 End Rim 2",
+   "name": "Shelf 5 End Rim 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 End Rim 2",
+   "name": "Shelf 5 End Rim 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Wire 1",
+   "name": "Shelf 5 Wire 900 1",
    "points": [
     [
      -442.0,
@@ -3264,24 +3278,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Wire 1",
+   "name": "Shelf 5 Wire 900 1",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Wire 1",
+   "name": "Shelf 5 Wire 900 1",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Wire 1",
+   "name": "Shelf 5 Wire 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Wire 2",
+   "name": "Shelf 5 Wire 900 2",
    "points": [
     [
      -442.0,
@@ -3305,24 +3319,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Wire 2",
+   "name": "Shelf 5 Wire 900 2",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Wire 2",
+   "name": "Shelf 5 Wire 900 2",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Wire 2",
+   "name": "Shelf 5 Wire 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Wire 3",
+   "name": "Shelf 5 Wire 900 3",
    "points": [
     [
      -442.0,
@@ -3346,24 +3360,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Wire 3",
+   "name": "Shelf 5 Wire 900 3",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Wire 3",
+   "name": "Shelf 5 Wire 900 3",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Wire 3",
+   "name": "Shelf 5 Wire 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Wire 4",
+   "name": "Shelf 5 Wire 900 4",
    "points": [
     [
      -442.0,
@@ -3387,24 +3401,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Wire 4",
+   "name": "Shelf 5 Wire 900 4",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Wire 4",
+   "name": "Shelf 5 Wire 900 4",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Wire 4",
+   "name": "Shelf 5 Wire 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 5 Wire 5",
+   "name": "Shelf 5 Wire 900 5",
    "points": [
     [
      -442.0,
@@ -3428,24 +3442,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 5 Wire 5",
+   "name": "Shelf 5 Wire 900 5",
    "subcategory": "Wire"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 5 Wire 5",
+   "name": "Shelf 5 Wire 900 5",
    "param": "Wire Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 5 Wire 5",
+   "name": "Shelf 5 Wire 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Label 1",
+   "name": "Shelf Label 900 1",
    "points": [
     [
      -80,
@@ -3470,24 +3484,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Label 1",
+   "name": "Shelf Label 900 1",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Label 1",
+   "name": "Shelf Label 900 1",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Label 1",
+   "name": "Shelf Label 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Label 2",
+   "name": "Shelf Label 900 2",
    "points": [
     [
      -80,
@@ -3512,24 +3526,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Label 2",
+   "name": "Shelf Label 900 2",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Label 2",
+   "name": "Shelf Label 900 2",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Label 2",
+   "name": "Shelf Label 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Label 3",
+   "name": "Shelf Label 900 3",
    "points": [
     [
      -80,
@@ -3554,24 +3568,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Label 3",
+   "name": "Shelf Label 900 3",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Label 3",
+   "name": "Shelf Label 900 3",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Label 3",
+   "name": "Shelf Label 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Label 4",
+   "name": "Shelf Label 900 4",
    "points": [
     [
      -80,
@@ -3596,24 +3610,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Label 4",
+   "name": "Shelf Label 900 4",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Label 4",
+   "name": "Shelf Label 900 4",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Label 4",
+   "name": "Shelf Label 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf Label 5",
+   "name": "Shelf Label 900 5",
    "points": [
     [
      -80,
@@ -3638,39 +3652,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf Label 5",
+   "name": "Shelf Label 900 5",
    "subcategory": "Label"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf Label 5",
+   "name": "Shelf Label 900 5",
    "param": "Label Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf Label 5",
+   "name": "Shelf Label 900 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sterile Packs 1",
+   "name": "Sterile Packs 900 1",
    "points": [
     [
-     -380,
+     -380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -60
     ],
     [
-     -380,
+     -380.0,
      -60
     ]
    ],
@@ -3679,39 +3693,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sterile Packs 1",
+   "name": "Sterile Packs 900 1",
    "subcategory": "Pack"
   },
   {
    "op": "set_material_param",
-   "name": "Sterile Packs 1",
+   "name": "Sterile Packs 900 1",
    "param": "Pack Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sterile Packs 1",
+   "name": "Sterile Packs 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sterile Packs 2",
+   "name": "Sterile Packs 900 2",
    "points": [
     [
-     -380,
+     -380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -60
     ],
     [
-     -380,
+     -380.0,
      -60
     ]
    ],
@@ -3720,39 +3734,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sterile Packs 2",
+   "name": "Sterile Packs 900 2",
    "subcategory": "Pack"
   },
   {
    "op": "set_material_param",
-   "name": "Sterile Packs 2",
+   "name": "Sterile Packs 900 2",
    "param": "Pack Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sterile Packs 2",
+   "name": "Sterile Packs 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sterile Packs 3",
+   "name": "Sterile Packs 900 3",
    "points": [
     [
-     -380,
+     -380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -60
     ],
     [
-     -380,
+     -380.0,
      -60
     ]
    ],
@@ -3761,39 +3775,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sterile Packs 3",
+   "name": "Sterile Packs 900 3",
    "subcategory": "Pack"
   },
   {
    "op": "set_material_param",
-   "name": "Sterile Packs 3",
+   "name": "Sterile Packs 900 3",
    "param": "Pack Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sterile Packs 3",
+   "name": "Sterile Packs 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sterile Packs 4",
+   "name": "Sterile Packs 900 4",
    "points": [
     [
-     -380,
+     -380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -400
     ],
     [
-     380,
+     380.0,
      -60
     ],
     [
-     -380,
+     -380.0,
      -60
     ]
    ],
@@ -3802,20 +3816,4139 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sterile Packs 4",
+   "name": "Sterile Packs 900 4",
    "subcategory": "Pack"
   },
   {
    "op": "set_material_param",
-   "name": "Sterile Packs 4",
+   "name": "Sterile Packs 900 4",
    "param": "Pack Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sterile Packs 4",
+   "name": "Sterile Packs 900 4",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 1200 1",
+   "points": [
+    [
+     -572.0,
+     -435.0
+    ],
+    [
+     -572.99,
+     -430.03
+    ],
+    [
+     -575.81,
+     -425.81
+    ],
+    [
+     -580.03,
+     -422.99
+    ],
+    [
+     -585.0,
+     -422.0
+    ],
+    [
+     -589.97,
+     -422.99
+    ],
+    [
+     -594.19,
+     -425.81
+    ],
+    [
+     -597.01,
+     -430.03
+    ],
+    [
+     -598.0,
+     -435.0
+    ],
+    [
+     -597.01,
+     -439.97
+    ],
+    [
+     -594.19,
+     -444.19
+    ],
+    [
+     -589.97,
+     -447.01
+    ],
+    [
+     -585.0,
+     -448.0
+    ],
+    [
+     -580.03,
+     -447.01
+    ],
+    [
+     -575.81,
+     -444.19
+    ],
+    [
+     -572.99,
+     -439.97
+    ]
+   ],
+   "start": 30,
+   "end": 1880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 1200 2",
+   "points": [
+    [
+     598.0,
+     -435.0
+    ],
+    [
+     597.01,
+     -430.03
+    ],
+    [
+     594.19,
+     -425.81
+    ],
+    [
+     589.97,
+     -422.99
+    ],
+    [
+     585.0,
+     -422.0
+    ],
+    [
+     580.03,
+     -422.99
+    ],
+    [
+     575.81,
+     -425.81
+    ],
+    [
+     572.99,
+     -430.03
+    ],
+    [
+     572.0,
+     -435.0
+    ],
+    [
+     572.99,
+     -439.97
+    ],
+    [
+     575.81,
+     -444.19
+    ],
+    [
+     580.03,
+     -447.01
+    ],
+    [
+     585.0,
+     -448.0
+    ],
+    [
+     589.97,
+     -447.01
+    ],
+    [
+     594.19,
+     -444.19
+    ],
+    [
+     597.01,
+     -439.97
+    ]
+   ],
+   "start": 30,
+   "end": 1880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Back 1200 1",
+   "points": [
+    [
+     -572.0,
+     -15.0
+    ],
+    [
+     -572.99,
+     -10.03
+    ],
+    [
+     -575.81,
+     -5.81
+    ],
+    [
+     -580.03,
+     -2.99
+    ],
+    [
+     -585.0,
+     -2.0
+    ],
+    [
+     -589.97,
+     -2.99
+    ],
+    [
+     -594.19,
+     -5.81
+    ],
+    [
+     -597.01,
+     -10.03
+    ],
+    [
+     -598.0,
+     -15.0
+    ],
+    [
+     -597.01,
+     -19.97
+    ],
+    [
+     -594.19,
+     -24.19
+    ],
+    [
+     -589.97,
+     -27.01
+    ],
+    [
+     -585.0,
+     -28.0
+    ],
+    [
+     -580.03,
+     -27.01
+    ],
+    [
+     -575.81,
+     -24.19
+    ],
+    [
+     -572.99,
+     -19.97
+    ]
+   ],
+   "start": 30,
+   "end": 1880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Back 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Back 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Back 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Back 1200 2",
+   "points": [
+    [
+     598.0,
+     -15.0
+    ],
+    [
+     597.01,
+     -10.03
+    ],
+    [
+     594.19,
+     -5.81
+    ],
+    [
+     589.97,
+     -2.99
+    ],
+    [
+     585.0,
+     -2.0
+    ],
+    [
+     580.03,
+     -2.99
+    ],
+    [
+     575.81,
+     -5.81
+    ],
+    [
+     572.99,
+     -10.03
+    ],
+    [
+     572.0,
+     -15.0
+    ],
+    [
+     572.99,
+     -19.97
+    ],
+    [
+     575.81,
+     -24.19
+    ],
+    [
+     580.03,
+     -27.01
+    ],
+    [
+     585.0,
+     -28.0
+    ],
+    [
+     589.97,
+     -27.01
+    ],
+    [
+     594.19,
+     -24.19
+    ],
+    [
+     597.01,
+     -19.97
+    ]
+   ],
+   "start": 30,
+   "end": 1880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Back 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Back 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Back 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Cap 1200 1",
+   "points": [
+    [
+     -571.0,
+     -435.0
+    ],
+    [
+     -572.07,
+     -429.64
+    ],
+    [
+     -575.1,
+     -425.1
+    ],
+    [
+     -579.64,
+     -422.07
+    ],
+    [
+     -585.0,
+     -421.0
+    ],
+    [
+     -590.36,
+     -422.07
+    ],
+    [
+     -594.9,
+     -425.1
+    ],
+    [
+     -597.93,
+     -429.64
+    ],
+    [
+     -599.0,
+     -435.0
+    ],
+    [
+     -597.93,
+     -440.36
+    ],
+    [
+     -594.9,
+     -444.9
+    ],
+    [
+     -590.36,
+     -447.93
+    ],
+    [
+     -585.0,
+     -449.0
+    ],
+    [
+     -579.64,
+     -447.93
+    ],
+    [
+     -575.1,
+     -444.9
+    ],
+    [
+     -572.07,
+     -440.36
+    ]
+   ],
+   "start": 1880,
+   "end": 1890
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Cap 1200 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap 1200 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Cap 1200 2",
+   "points": [
+    [
+     599.0,
+     -435.0
+    ],
+    [
+     597.93,
+     -429.64
+    ],
+    [
+     594.9,
+     -425.1
+    ],
+    [
+     590.36,
+     -422.07
+    ],
+    [
+     585.0,
+     -421.0
+    ],
+    [
+     579.64,
+     -422.07
+    ],
+    [
+     575.1,
+     -425.1
+    ],
+    [
+     572.07,
+     -429.64
+    ],
+    [
+     571.0,
+     -435.0
+    ],
+    [
+     572.07,
+     -440.36
+    ],
+    [
+     575.1,
+     -444.9
+    ],
+    [
+     579.64,
+     -447.93
+    ],
+    [
+     585.0,
+     -449.0
+    ],
+    [
+     590.36,
+     -447.93
+    ],
+    [
+     594.9,
+     -444.9
+    ],
+    [
+     597.93,
+     -440.36
+    ]
+   ],
+   "start": 1880,
+   "end": 1890
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Cap 1200 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap 1200 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Cap Back 1200 1",
+   "points": [
+    [
+     -571.0,
+     -15.0
+    ],
+    [
+     -572.07,
+     -9.64
+    ],
+    [
+     -575.1,
+     -5.1
+    ],
+    [
+     -579.64,
+     -2.07
+    ],
+    [
+     -585.0,
+     -1.0
+    ],
+    [
+     -590.36,
+     -2.07
+    ],
+    [
+     -594.9,
+     -5.1
+    ],
+    [
+     -597.93,
+     -9.64
+    ],
+    [
+     -599.0,
+     -15.0
+    ],
+    [
+     -597.93,
+     -20.36
+    ],
+    [
+     -594.9,
+     -24.9
+    ],
+    [
+     -590.36,
+     -27.93
+    ],
+    [
+     -585.0,
+     -29.0
+    ],
+    [
+     -579.64,
+     -27.93
+    ],
+    [
+     -575.1,
+     -24.9
+    ],
+    [
+     -572.07,
+     -20.36
+    ]
+   ],
+   "start": 1880,
+   "end": 1890
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Cap Back 1200 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap Back 1200 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap Back 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Cap Back 1200 2",
+   "points": [
+    [
+     599.0,
+     -15.0
+    ],
+    [
+     597.93,
+     -9.64
+    ],
+    [
+     594.9,
+     -5.1
+    ],
+    [
+     590.36,
+     -2.07
+    ],
+    [
+     585.0,
+     -1.0
+    ],
+    [
+     579.64,
+     -2.07
+    ],
+    [
+     575.1,
+     -5.1
+    ],
+    [
+     572.07,
+     -9.64
+    ],
+    [
+     571.0,
+     -15.0
+    ],
+    [
+     572.07,
+     -20.36
+    ],
+    [
+     575.1,
+     -24.9
+    ],
+    [
+     579.64,
+     -27.93
+    ],
+    [
+     585.0,
+     -29.0
+    ],
+    [
+     590.36,
+     -27.93
+    ],
+    [
+     594.9,
+     -24.9
+    ],
+    [
+     597.93,
+     -20.36
+    ]
+   ],
+   "start": 1880,
+   "end": 1890
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Cap Back 1200 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap Back 1200 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap Back 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot 1200 1",
+   "points": [
+    [
+     -569.0,
+     -435.0
+    ],
+    [
+     -570.22,
+     -428.88
+    ],
+    [
+     -573.69,
+     -423.69
+    ],
+    [
+     -578.88,
+     -420.22
+    ],
+    [
+     -585.0,
+     -419.0
+    ],
+    [
+     -591.12,
+     -420.22
+    ],
+    [
+     -596.31,
+     -423.69
+    ],
+    [
+     -599.78,
+     -428.88
+    ],
+    [
+     -601.0,
+     -435.0
+    ],
+    [
+     -599.78,
+     -441.12
+    ],
+    [
+     -596.31,
+     -446.31
+    ],
+    [
+     -591.12,
+     -449.78
+    ],
+    [
+     -585.0,
+     -451.0
+    ],
+    [
+     -578.88,
+     -449.78
+    ],
+    [
+     -573.69,
+     -446.31
+    ],
+    [
+     -570.22,
+     -441.12
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot 1200 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot 1200 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot 1200 2",
+   "points": [
+    [
+     601.0,
+     -435.0
+    ],
+    [
+     599.78,
+     -428.88
+    ],
+    [
+     596.31,
+     -423.69
+    ],
+    [
+     591.12,
+     -420.22
+    ],
+    [
+     585.0,
+     -419.0
+    ],
+    [
+     578.88,
+     -420.22
+    ],
+    [
+     573.69,
+     -423.69
+    ],
+    [
+     570.22,
+     -428.88
+    ],
+    [
+     569.0,
+     -435.0
+    ],
+    [
+     570.22,
+     -441.12
+    ],
+    [
+     573.69,
+     -446.31
+    ],
+    [
+     578.88,
+     -449.78
+    ],
+    [
+     585.0,
+     -451.0
+    ],
+    [
+     591.12,
+     -449.78
+    ],
+    [
+     596.31,
+     -446.31
+    ],
+    [
+     599.78,
+     -441.12
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot 1200 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot 1200 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Back 1200 1",
+   "points": [
+    [
+     -569.0,
+     -15.0
+    ],
+    [
+     -570.22,
+     -8.88
+    ],
+    [
+     -573.69,
+     -3.69
+    ],
+    [
+     -578.88,
+     -0.22
+    ],
+    [
+     -585.0,
+     1.0
+    ],
+    [
+     -591.12,
+     -0.22
+    ],
+    [
+     -596.31,
+     -3.69
+    ],
+    [
+     -599.78,
+     -8.88
+    ],
+    [
+     -601.0,
+     -15.0
+    ],
+    [
+     -599.78,
+     -21.12
+    ],
+    [
+     -596.31,
+     -26.31
+    ],
+    [
+     -591.12,
+     -29.78
+    ],
+    [
+     -585.0,
+     -31.0
+    ],
+    [
+     -578.88,
+     -29.78
+    ],
+    [
+     -573.69,
+     -26.31
+    ],
+    [
+     -570.22,
+     -21.12
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Back 1200 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Back 1200 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Back 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Back 1200 2",
+   "points": [
+    [
+     601.0,
+     -15.0
+    ],
+    [
+     599.78,
+     -8.88
+    ],
+    [
+     596.31,
+     -3.69
+    ],
+    [
+     591.12,
+     -0.22
+    ],
+    [
+     585.0,
+     1.0
+    ],
+    [
+     578.88,
+     -0.22
+    ],
+    [
+     573.69,
+     -3.69
+    ],
+    [
+     570.22,
+     -8.88
+    ],
+    [
+     569.0,
+     -15.0
+    ],
+    [
+     570.22,
+     -21.12
+    ],
+    [
+     573.69,
+     -26.31
+    ],
+    [
+     578.88,
+     -29.78
+    ],
+    [
+     585.0,
+     -31.0
+    ],
+    [
+     591.12,
+     -29.78
+    ],
+    [
+     596.31,
+     -26.31
+    ],
+    [
+     599.78,
+     -21.12
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Back 1200 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Back 1200 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Back 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -448
+    ],
+    [
+     598.0,
+     -448
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     -598.0,
+     -442
+    ]
+   ],
+   "start": 225,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Rim 1200 2",
+   "points": [
+    [
+     -598.0,
+     -8
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     598.0,
+     -2
+    ],
+    [
+     -598.0,
+     -2
+    ]
+   ],
+   "start": 225,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 End Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -442
+    ],
+    [
+     -592.0,
+     -442
+    ],
+    [
+     -592.0,
+     -8
+    ],
+    [
+     -598.0,
+     -8
+    ]
+   ],
+   "start": 244,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 End Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 End Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 End Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 End Rim 1200 2",
+   "points": [
+    [
+     592.0,
+     -442
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     592.0,
+     -8
+    ]
+   ],
+   "start": 244,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 End Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 End Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 End Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Wire 1200 1",
+   "points": [
+    [
+     -592.0,
+     -390
+    ],
+    [
+     592.0,
+     -390
+    ],
+    [
+     592.0,
+     -386
+    ],
+    [
+     -592.0,
+     -386
+    ]
+   ],
+   "start": 246,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Wire 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Wire 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Wire 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Wire 1200 2",
+   "points": [
+    [
+     -592.0,
+     -320
+    ],
+    [
+     592.0,
+     -320
+    ],
+    [
+     592.0,
+     -316
+    ],
+    [
+     -592.0,
+     -316
+    ]
+   ],
+   "start": 246,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Wire 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Wire 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Wire 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Wire 1200 3",
+   "points": [
+    [
+     -592.0,
+     -250
+    ],
+    [
+     592.0,
+     -250
+    ],
+    [
+     592.0,
+     -246
+    ],
+    [
+     -592.0,
+     -246
+    ]
+   ],
+   "start": 246,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Wire 1200 3",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Wire 1200 3",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Wire 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Wire 1200 4",
+   "points": [
+    [
+     -592.0,
+     -180
+    ],
+    [
+     592.0,
+     -180
+    ],
+    [
+     592.0,
+     -176
+    ],
+    [
+     -592.0,
+     -176
+    ]
+   ],
+   "start": 246,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Wire 1200 4",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Wire 1200 4",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Wire 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1 Wire 1200 5",
+   "points": [
+    [
+     -592.0,
+     -110
+    ],
+    [
+     592.0,
+     -110
+    ],
+    [
+     592.0,
+     -106
+    ],
+    [
+     -592.0,
+     -106
+    ]
+   ],
+   "start": 246,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1 Wire 1200 5",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1 Wire 1200 5",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1 Wire 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -448
+    ],
+    [
+     598.0,
+     -448
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     -598.0,
+     -442
+    ]
+   ],
+   "start": 625,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Rim 1200 2",
+   "points": [
+    [
+     -598.0,
+     -8
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     598.0,
+     -2
+    ],
+    [
+     -598.0,
+     -2
+    ]
+   ],
+   "start": 625,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 End Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -442
+    ],
+    [
+     -592.0,
+     -442
+    ],
+    [
+     -592.0,
+     -8
+    ],
+    [
+     -598.0,
+     -8
+    ]
+   ],
+   "start": 644,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 End Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 End Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 End Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 End Rim 1200 2",
+   "points": [
+    [
+     592.0,
+     -442
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     592.0,
+     -8
+    ]
+   ],
+   "start": 644,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 End Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 End Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 End Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Wire 1200 1",
+   "points": [
+    [
+     -592.0,
+     -390
+    ],
+    [
+     592.0,
+     -390
+    ],
+    [
+     592.0,
+     -386
+    ],
+    [
+     -592.0,
+     -386
+    ]
+   ],
+   "start": 646,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Wire 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Wire 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Wire 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Wire 1200 2",
+   "points": [
+    [
+     -592.0,
+     -320
+    ],
+    [
+     592.0,
+     -320
+    ],
+    [
+     592.0,
+     -316
+    ],
+    [
+     -592.0,
+     -316
+    ]
+   ],
+   "start": 646,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Wire 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Wire 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Wire 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Wire 1200 3",
+   "points": [
+    [
+     -592.0,
+     -250
+    ],
+    [
+     592.0,
+     -250
+    ],
+    [
+     592.0,
+     -246
+    ],
+    [
+     -592.0,
+     -246
+    ]
+   ],
+   "start": 646,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Wire 1200 3",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Wire 1200 3",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Wire 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Wire 1200 4",
+   "points": [
+    [
+     -592.0,
+     -180
+    ],
+    [
+     592.0,
+     -180
+    ],
+    [
+     592.0,
+     -176
+    ],
+    [
+     -592.0,
+     -176
+    ]
+   ],
+   "start": 646,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Wire 1200 4",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Wire 1200 4",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Wire 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2 Wire 1200 5",
+   "points": [
+    [
+     -592.0,
+     -110
+    ],
+    [
+     592.0,
+     -110
+    ],
+    [
+     592.0,
+     -106
+    ],
+    [
+     -592.0,
+     -106
+    ]
+   ],
+   "start": 646,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2 Wire 1200 5",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2 Wire 1200 5",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2 Wire 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -448
+    ],
+    [
+     598.0,
+     -448
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     -598.0,
+     -442
+    ]
+   ],
+   "start": 1025,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Rim 1200 2",
+   "points": [
+    [
+     -598.0,
+     -8
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     598.0,
+     -2
+    ],
+    [
+     -598.0,
+     -2
+    ]
+   ],
+   "start": 1025,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 End Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -442
+    ],
+    [
+     -592.0,
+     -442
+    ],
+    [
+     -592.0,
+     -8
+    ],
+    [
+     -598.0,
+     -8
+    ]
+   ],
+   "start": 1044,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 End Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 End Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 End Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 End Rim 1200 2",
+   "points": [
+    [
+     592.0,
+     -442
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     592.0,
+     -8
+    ]
+   ],
+   "start": 1044,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 End Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 End Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 End Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Wire 1200 1",
+   "points": [
+    [
+     -592.0,
+     -390
+    ],
+    [
+     592.0,
+     -390
+    ],
+    [
+     592.0,
+     -386
+    ],
+    [
+     -592.0,
+     -386
+    ]
+   ],
+   "start": 1046,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Wire 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Wire 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Wire 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Wire 1200 2",
+   "points": [
+    [
+     -592.0,
+     -320
+    ],
+    [
+     592.0,
+     -320
+    ],
+    [
+     592.0,
+     -316
+    ],
+    [
+     -592.0,
+     -316
+    ]
+   ],
+   "start": 1046,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Wire 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Wire 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Wire 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Wire 1200 3",
+   "points": [
+    [
+     -592.0,
+     -250
+    ],
+    [
+     592.0,
+     -250
+    ],
+    [
+     592.0,
+     -246
+    ],
+    [
+     -592.0,
+     -246
+    ]
+   ],
+   "start": 1046,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Wire 1200 3",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Wire 1200 3",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Wire 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Wire 1200 4",
+   "points": [
+    [
+     -592.0,
+     -180
+    ],
+    [
+     592.0,
+     -180
+    ],
+    [
+     592.0,
+     -176
+    ],
+    [
+     -592.0,
+     -176
+    ]
+   ],
+   "start": 1046,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Wire 1200 4",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Wire 1200 4",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Wire 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3 Wire 1200 5",
+   "points": [
+    [
+     -592.0,
+     -110
+    ],
+    [
+     592.0,
+     -110
+    ],
+    [
+     592.0,
+     -106
+    ],
+    [
+     -592.0,
+     -106
+    ]
+   ],
+   "start": 1046,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3 Wire 1200 5",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3 Wire 1200 5",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3 Wire 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -448
+    ],
+    [
+     598.0,
+     -448
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     -598.0,
+     -442
+    ]
+   ],
+   "start": 1425,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Rim 1200 2",
+   "points": [
+    [
+     -598.0,
+     -8
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     598.0,
+     -2
+    ],
+    [
+     -598.0,
+     -2
+    ]
+   ],
+   "start": 1425,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 End Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -442
+    ],
+    [
+     -592.0,
+     -442
+    ],
+    [
+     -592.0,
+     -8
+    ],
+    [
+     -598.0,
+     -8
+    ]
+   ],
+   "start": 1444,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 End Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 End Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 End Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 End Rim 1200 2",
+   "points": [
+    [
+     592.0,
+     -442
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     592.0,
+     -8
+    ]
+   ],
+   "start": 1444,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 End Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 End Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 End Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Wire 1200 1",
+   "points": [
+    [
+     -592.0,
+     -390
+    ],
+    [
+     592.0,
+     -390
+    ],
+    [
+     592.0,
+     -386
+    ],
+    [
+     -592.0,
+     -386
+    ]
+   ],
+   "start": 1446,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Wire 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Wire 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Wire 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Wire 1200 2",
+   "points": [
+    [
+     -592.0,
+     -320
+    ],
+    [
+     592.0,
+     -320
+    ],
+    [
+     592.0,
+     -316
+    ],
+    [
+     -592.0,
+     -316
+    ]
+   ],
+   "start": 1446,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Wire 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Wire 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Wire 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Wire 1200 3",
+   "points": [
+    [
+     -592.0,
+     -250
+    ],
+    [
+     592.0,
+     -250
+    ],
+    [
+     592.0,
+     -246
+    ],
+    [
+     -592.0,
+     -246
+    ]
+   ],
+   "start": 1446,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Wire 1200 3",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Wire 1200 3",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Wire 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Wire 1200 4",
+   "points": [
+    [
+     -592.0,
+     -180
+    ],
+    [
+     592.0,
+     -180
+    ],
+    [
+     592.0,
+     -176
+    ],
+    [
+     -592.0,
+     -176
+    ]
+   ],
+   "start": 1446,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Wire 1200 4",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Wire 1200 4",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Wire 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4 Wire 1200 5",
+   "points": [
+    [
+     -592.0,
+     -110
+    ],
+    [
+     592.0,
+     -110
+    ],
+    [
+     592.0,
+     -106
+    ],
+    [
+     -592.0,
+     -106
+    ]
+   ],
+   "start": 1446,
+   "end": 1450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4 Wire 1200 5",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4 Wire 1200 5",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4 Wire 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -448
+    ],
+    [
+     598.0,
+     -448
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     -598.0,
+     -442
+    ]
+   ],
+   "start": 1825,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Rim 1200 2",
+   "points": [
+    [
+     -598.0,
+     -8
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     598.0,
+     -2
+    ],
+    [
+     -598.0,
+     -2
+    ]
+   ],
+   "start": 1825,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 End Rim 1200 1",
+   "points": [
+    [
+     -598.0,
+     -442
+    ],
+    [
+     -592.0,
+     -442
+    ],
+    [
+     -592.0,
+     -8
+    ],
+    [
+     -598.0,
+     -8
+    ]
+   ],
+   "start": 1844,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 End Rim 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 End Rim 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 End Rim 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 End Rim 1200 2",
+   "points": [
+    [
+     592.0,
+     -442
+    ],
+    [
+     598.0,
+     -442
+    ],
+    [
+     598.0,
+     -8
+    ],
+    [
+     592.0,
+     -8
+    ]
+   ],
+   "start": 1844,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 End Rim 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 End Rim 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 End Rim 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Wire 1200 1",
+   "points": [
+    [
+     -592.0,
+     -390
+    ],
+    [
+     592.0,
+     -390
+    ],
+    [
+     592.0,
+     -386
+    ],
+    [
+     -592.0,
+     -386
+    ]
+   ],
+   "start": 1846,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Wire 1200 1",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Wire 1200 1",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Wire 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Wire 1200 2",
+   "points": [
+    [
+     -592.0,
+     -320
+    ],
+    [
+     592.0,
+     -320
+    ],
+    [
+     592.0,
+     -316
+    ],
+    [
+     -592.0,
+     -316
+    ]
+   ],
+   "start": 1846,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Wire 1200 2",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Wire 1200 2",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Wire 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Wire 1200 3",
+   "points": [
+    [
+     -592.0,
+     -250
+    ],
+    [
+     592.0,
+     -250
+    ],
+    [
+     592.0,
+     -246
+    ],
+    [
+     -592.0,
+     -246
+    ]
+   ],
+   "start": 1846,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Wire 1200 3",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Wire 1200 3",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Wire 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Wire 1200 4",
+   "points": [
+    [
+     -592.0,
+     -180
+    ],
+    [
+     592.0,
+     -180
+    ],
+    [
+     592.0,
+     -176
+    ],
+    [
+     -592.0,
+     -176
+    ]
+   ],
+   "start": 1846,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Wire 1200 4",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Wire 1200 4",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Wire 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5 Wire 1200 5",
+   "points": [
+    [
+     -592.0,
+     -110
+    ],
+    [
+     592.0,
+     -110
+    ],
+    [
+     592.0,
+     -106
+    ],
+    [
+     -592.0,
+     -106
+    ]
+   ],
+   "start": 1846,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5 Wire 1200 5",
+   "subcategory": "Wire"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5 Wire 1200 5",
+   "param": "Wire Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5 Wire 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Label 1200 1",
+   "points": [
+    [
+     -80,
+     1830
+    ],
+    [
+     80,
+     1830
+    ],
+    [
+     80,
+     1850
+    ],
+    [
+     -80,
+     1850
+    ]
+   ],
+   "start": 448,
+   "end": 453,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Label 1200 1",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Label 1200 1",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Label 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Label 1200 2",
+   "points": [
+    [
+     -80,
+     1430
+    ],
+    [
+     80,
+     1430
+    ],
+    [
+     80,
+     1450
+    ],
+    [
+     -80,
+     1450
+    ]
+   ],
+   "start": 448,
+   "end": 453,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Label 1200 2",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Label 1200 2",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Label 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Label 1200 3",
+   "points": [
+    [
+     -80,
+     1030
+    ],
+    [
+     80,
+     1030
+    ],
+    [
+     80,
+     1050
+    ],
+    [
+     -80,
+     1050
+    ]
+   ],
+   "start": 448,
+   "end": 453,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Label 1200 3",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Label 1200 3",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Label 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Label 1200 4",
+   "points": [
+    [
+     -80,
+     630
+    ],
+    [
+     80,
+     630
+    ],
+    [
+     80,
+     650
+    ],
+    [
+     -80,
+     650
+    ]
+   ],
+   "start": 448,
+   "end": 453,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Label 1200 4",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Label 1200 4",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Label 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Label 1200 5",
+   "points": [
+    [
+     -80,
+     230
+    ],
+    [
+     80,
+     230
+    ],
+    [
+     80,
+     250
+    ],
+    [
+     -80,
+     250
+    ]
+   ],
+   "start": 448,
+   "end": 453,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Label 1200 5",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Label 1200 5",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Label 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sterile Packs 1200 1",
+   "points": [
+    [
+     -530.0,
+     -400
+    ],
+    [
+     530.0,
+     -400
+    ],
+    [
+     530.0,
+     -60
+    ],
+    [
+     -530.0,
+     -60
+    ]
+   ],
+   "start": 254,
+   "end": 420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sterile Packs 1200 1",
+   "subcategory": "Pack"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sterile Packs 1200 1",
+   "param": "Pack Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sterile Packs 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sterile Packs 1200 2",
+   "points": [
+    [
+     -530.0,
+     -400
+    ],
+    [
+     530.0,
+     -400
+    ],
+    [
+     530.0,
+     -60
+    ],
+    [
+     -530.0,
+     -60
+    ]
+   ],
+   "start": 654,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sterile Packs 1200 2",
+   "subcategory": "Pack"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sterile Packs 1200 2",
+   "param": "Pack Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sterile Packs 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sterile Packs 1200 3",
+   "points": [
+    [
+     -530.0,
+     -400
+    ],
+    [
+     530.0,
+     -400
+    ],
+    [
+     530.0,
+     -60
+    ],
+    [
+     -530.0,
+     -60
+    ]
+   ],
+   "start": 1054,
+   "end": 1220
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sterile Packs 1200 3",
+   "subcategory": "Pack"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sterile Packs 1200 3",
+   "param": "Pack Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sterile Packs 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sterile Packs 1200 4",
+   "points": [
+    [
+     -530.0,
+     -400
+    ],
+    [
+     530.0,
+     -400
+    ],
+    [
+     530.0,
+     -60
+    ],
+    [
+     -530.0,
+     -60
+    ]
+   ],
+   "start": 1454,
+   "end": 1620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sterile Packs 1200 4",
+   "subcategory": "Pack"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sterile Packs 1200 4",
+   "param": "Pack Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sterile Packs 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_Wire",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Wire/Show 900_Wire",
+   "type": "900_Wire",
+   "param": "Show 900_Wire",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Wire/Show 900_Wire",
+   "type": "1200_Wire",
+   "param": "Show 900_Wire",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 900 1/Visible",
+   "solid": "Post 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 900 2/Visible",
+   "solid": "Post 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Back 900 1/Visible",
+   "solid": "Post Back 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Back 900 2/Visible",
+   "solid": "Post Back 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 900 1/Visible",
+   "solid": "Post Cap 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 900 2/Visible",
+   "solid": "Post Cap 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap Back 900 1/Visible",
+   "solid": "Post Cap Back 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap Back 900 2/Visible",
+   "solid": "Post Cap Back 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot 900 1/Visible",
+   "solid": "Foot 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot 900 2/Visible",
+   "solid": "Foot 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back 900 1/Visible",
+   "solid": "Foot Back 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back 900 2/Visible",
+   "solid": "Foot Back 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Rim 900 1/Visible",
+   "solid": "Shelf 1 Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Rim 900 2/Visible",
+   "solid": "Shelf 1 Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 End Rim 900 1/Visible",
+   "solid": "Shelf 1 End Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 End Rim 900 2/Visible",
+   "solid": "Shelf 1 End Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 900 1/Visible",
+   "solid": "Shelf 1 Wire 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 900 2/Visible",
+   "solid": "Shelf 1 Wire 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 900 3/Visible",
+   "solid": "Shelf 1 Wire 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 900 4/Visible",
+   "solid": "Shelf 1 Wire 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 900 5/Visible",
+   "solid": "Shelf 1 Wire 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Rim 900 1/Visible",
+   "solid": "Shelf 2 Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Rim 900 2/Visible",
+   "solid": "Shelf 2 Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 End Rim 900 1/Visible",
+   "solid": "Shelf 2 End Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 End Rim 900 2/Visible",
+   "solid": "Shelf 2 End Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 900 1/Visible",
+   "solid": "Shelf 2 Wire 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 900 2/Visible",
+   "solid": "Shelf 2 Wire 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 900 3/Visible",
+   "solid": "Shelf 2 Wire 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 900 4/Visible",
+   "solid": "Shelf 2 Wire 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 900 5/Visible",
+   "solid": "Shelf 2 Wire 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Rim 900 1/Visible",
+   "solid": "Shelf 3 Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Rim 900 2/Visible",
+   "solid": "Shelf 3 Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 End Rim 900 1/Visible",
+   "solid": "Shelf 3 End Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 End Rim 900 2/Visible",
+   "solid": "Shelf 3 End Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 900 1/Visible",
+   "solid": "Shelf 3 Wire 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 900 2/Visible",
+   "solid": "Shelf 3 Wire 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 900 3/Visible",
+   "solid": "Shelf 3 Wire 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 900 4/Visible",
+   "solid": "Shelf 3 Wire 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 900 5/Visible",
+   "solid": "Shelf 3 Wire 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Rim 900 1/Visible",
+   "solid": "Shelf 4 Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Rim 900 2/Visible",
+   "solid": "Shelf 4 Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 End Rim 900 1/Visible",
+   "solid": "Shelf 4 End Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 End Rim 900 2/Visible",
+   "solid": "Shelf 4 End Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 900 1/Visible",
+   "solid": "Shelf 4 Wire 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 900 2/Visible",
+   "solid": "Shelf 4 Wire 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 900 3/Visible",
+   "solid": "Shelf 4 Wire 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 900 4/Visible",
+   "solid": "Shelf 4 Wire 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 900 5/Visible",
+   "solid": "Shelf 4 Wire 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Rim 900 1/Visible",
+   "solid": "Shelf 5 Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Rim 900 2/Visible",
+   "solid": "Shelf 5 Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 End Rim 900 1/Visible",
+   "solid": "Shelf 5 End Rim 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 End Rim 900 2/Visible",
+   "solid": "Shelf 5 End Rim 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 900 1/Visible",
+   "solid": "Shelf 5 Wire 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 900 2/Visible",
+   "solid": "Shelf 5 Wire 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 900 3/Visible",
+   "solid": "Shelf 5 Wire 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 900 4/Visible",
+   "solid": "Shelf 5 Wire 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 900 5/Visible",
+   "solid": "Shelf 5 Wire 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 900 1/Visible",
+   "solid": "Shelf Label 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 900 2/Visible",
+   "solid": "Shelf Label 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 900 3/Visible",
+   "solid": "Shelf Label 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 900 4/Visible",
+   "solid": "Shelf Label 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 900 5/Visible",
+   "solid": "Shelf Label 900 5",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 900 1/Visible",
+   "solid": "Sterile Packs 900 1",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 900 2/Visible",
+   "solid": "Sterile Packs 900 2",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 900 3/Visible",
+   "solid": "Sterile Packs 900 3",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 900 4/Visible",
+   "solid": "Sterile Packs 900 4",
+   "param": "Show 900_Wire"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Wire",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Wire/Show 1200_Wire",
+   "type": "900_Wire",
+   "param": "Show 1200_Wire",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Wire/Show 1200_Wire",
+   "type": "1200_Wire",
+   "param": "Show 1200_Wire",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 1200 1/Visible",
+   "solid": "Post 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 1200 2/Visible",
+   "solid": "Post 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Back 1200 1/Visible",
+   "solid": "Post Back 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Back 1200 2/Visible",
+   "solid": "Post Back 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 1200 1/Visible",
+   "solid": "Post Cap 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 1200 2/Visible",
+   "solid": "Post Cap 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap Back 1200 1/Visible",
+   "solid": "Post Cap Back 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap Back 1200 2/Visible",
+   "solid": "Post Cap Back 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot 1200 1/Visible",
+   "solid": "Foot 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot 1200 2/Visible",
+   "solid": "Foot 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back 1200 1/Visible",
+   "solid": "Foot Back 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Back 1200 2/Visible",
+   "solid": "Foot Back 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Rim 1200 1/Visible",
+   "solid": "Shelf 1 Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Rim 1200 2/Visible",
+   "solid": "Shelf 1 Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 End Rim 1200 1/Visible",
+   "solid": "Shelf 1 End Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 End Rim 1200 2/Visible",
+   "solid": "Shelf 1 End Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 1200 1/Visible",
+   "solid": "Shelf 1 Wire 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 1200 2/Visible",
+   "solid": "Shelf 1 Wire 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 1200 3/Visible",
+   "solid": "Shelf 1 Wire 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 1200 4/Visible",
+   "solid": "Shelf 1 Wire 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1 Wire 1200 5/Visible",
+   "solid": "Shelf 1 Wire 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Rim 1200 1/Visible",
+   "solid": "Shelf 2 Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Rim 1200 2/Visible",
+   "solid": "Shelf 2 Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 End Rim 1200 1/Visible",
+   "solid": "Shelf 2 End Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 End Rim 1200 2/Visible",
+   "solid": "Shelf 2 End Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 1200 1/Visible",
+   "solid": "Shelf 2 Wire 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 1200 2/Visible",
+   "solid": "Shelf 2 Wire 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 1200 3/Visible",
+   "solid": "Shelf 2 Wire 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 1200 4/Visible",
+   "solid": "Shelf 2 Wire 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 2 Wire 1200 5/Visible",
+   "solid": "Shelf 2 Wire 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Rim 1200 1/Visible",
+   "solid": "Shelf 3 Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Rim 1200 2/Visible",
+   "solid": "Shelf 3 Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 End Rim 1200 1/Visible",
+   "solid": "Shelf 3 End Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 End Rim 1200 2/Visible",
+   "solid": "Shelf 3 End Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 1200 1/Visible",
+   "solid": "Shelf 3 Wire 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 1200 2/Visible",
+   "solid": "Shelf 3 Wire 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 1200 3/Visible",
+   "solid": "Shelf 3 Wire 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 1200 4/Visible",
+   "solid": "Shelf 3 Wire 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 3 Wire 1200 5/Visible",
+   "solid": "Shelf 3 Wire 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Rim 1200 1/Visible",
+   "solid": "Shelf 4 Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Rim 1200 2/Visible",
+   "solid": "Shelf 4 Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 End Rim 1200 1/Visible",
+   "solid": "Shelf 4 End Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 End Rim 1200 2/Visible",
+   "solid": "Shelf 4 End Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 1200 1/Visible",
+   "solid": "Shelf 4 Wire 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 1200 2/Visible",
+   "solid": "Shelf 4 Wire 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 1200 3/Visible",
+   "solid": "Shelf 4 Wire 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 1200 4/Visible",
+   "solid": "Shelf 4 Wire 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 4 Wire 1200 5/Visible",
+   "solid": "Shelf 4 Wire 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Rim 1200 1/Visible",
+   "solid": "Shelf 5 Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Rim 1200 2/Visible",
+   "solid": "Shelf 5 Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 End Rim 1200 1/Visible",
+   "solid": "Shelf 5 End Rim 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 End Rim 1200 2/Visible",
+   "solid": "Shelf 5 End Rim 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 1200 1/Visible",
+   "solid": "Shelf 5 Wire 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 1200 2/Visible",
+   "solid": "Shelf 5 Wire 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 1200 3/Visible",
+   "solid": "Shelf 5 Wire 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 1200 4/Visible",
+   "solid": "Shelf 5 Wire 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 5 Wire 1200 5/Visible",
+   "solid": "Shelf 5 Wire 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 1200 1/Visible",
+   "solid": "Shelf Label 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 1200 2/Visible",
+   "solid": "Shelf Label 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 1200 3/Visible",
+   "solid": "Shelf Label 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 1200 4/Visible",
+   "solid": "Shelf Label 1200 4",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf Label 1200 5/Visible",
+   "solid": "Shelf Label 1200 5",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 1200 1/Visible",
+   "solid": "Sterile Packs 1200 1",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 1200 2/Visible",
+   "solid": "Sterile Packs 1200 2",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 1200 3/Visible",
+   "solid": "Sterile Packs 1200 3",
+   "param": "Show 1200_Wire"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sterile Packs 1200 4/Visible",
+   "solid": "Sterile Packs 1200 4",
+   "param": "Show 1200_Wire"
   },
   {
    "op": "set_type_image",

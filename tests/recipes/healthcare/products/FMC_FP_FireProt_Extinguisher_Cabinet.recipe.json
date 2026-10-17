@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_FP_FireProt_Extinguisher_Cabinet",
  "template": "Metric Generic Model.rft",
- "about": "Extinguisher cabinet modelled as a generic product: black plinth, red GRP body with domed top, door with framed viewing window, label, handle and latch, hinges, vent slots. Geometry drawn for 1Ext_Single; the other types share it (sizes in the values). Reference: query: fire prot extinguisher cabinet fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+extinguisher+cabinet+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Extinguisher cabinet modelled as a generic product: black plinth, red GRP body with domed top, framed door(s) with clear viewing window showing the extinguisher inside, label, handle, vent slots. Single and double each have their own parts (Show parameters). Reference: query: fire prot extinguisher cabinet fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+extinguisher+cabinet+fire+protection+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.sylprotec.com/en/cabinets-and-covers-for-fire-extinguishers/5242-recessed-built-in-cabinet-for-10-lbs-powder-fire-extinguishers-pre-painted-flat-white.html; photo_title: Sylprotec 5242 recessed built-in fire extinguisher cabinet; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -374,7 +374,7 @@
    "name": "1Ext_Single/Description",
    "type": "1Ext_Single",
    "param": "Description",
-   "value": "Floor-standing GRP extinguisher cabinet, red, domed top, door with viewing window and label; single (1 x 9 kg) or double"
+   "value": "Floor-standing GRP extinguisher cabinet, red, domed top, door(s) with viewing window and label; single (1 x 9 kg) or double (2 x 9 kg)"
   },
   {
    "op": "set_type_value",
@@ -412,6 +412,13 @@
    "value": "FP"
   },
   {
+   "op": "set_type_value",
+   "name": "1Ext_Single/URL",
+   "type": "1Ext_Single",
+   "param": "URL",
+   "value": "https://www.sylprotec.com/en/cabinets-and-covers-for-fire-extinguishers/5242-recessed-built-in-cabinet-for-10-lbs-powder-fire-extinguishers-pre-painted-flat-white.html"
+  },
+  {
    "op": "add_type",
    "name": "2Ext_Double"
   },
@@ -441,7 +448,7 @@
    "name": "2Ext_Double/Description",
    "type": "2Ext_Double",
    "param": "Description",
-   "value": "Floor-standing GRP extinguisher cabinet, red, domed top, door with viewing window and label; single (1 x 9 kg) or double"
+   "value": "Floor-standing GRP extinguisher cabinet, red, domed top, door(s) with viewing window and label; single (1 x 9 kg) or double (2 x 9 kg)"
   },
   {
    "op": "set_type_value",
@@ -479,6 +486,13 @@
    "value": "FP"
   },
   {
+   "op": "set_type_value",
+   "name": "2Ext_Double/URL",
+   "type": "2Ext_Double",
+   "param": "URL",
+   "value": "https://www.sylprotec.com/en/cabinets-and-covers-for-fire-extinguishers/5242-recessed-built-in-cabinet-for-10-lbs-powder-fire-extinguishers-pre-painted-flat-white.html"
+  },
+  {
    "op": "add_subcategory",
    "name": "Black",
    "color": [
@@ -503,9 +517,9 @@
    "op": "add_subcategory",
    "name": "Red",
    "color": [
-    200,
-    16,
-    46
+    193,
+    18,
+    31
    ],
    "line_weight_projection": 1
   },
@@ -517,7 +531,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Paint_Enamel_SignalRed",
    "param": "Red Material"
   },
   {
@@ -564,6 +578,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Chrome",
    "color": [
     192,
@@ -598,19 +633,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -200.0,
+     -370.0,
      -176
     ],
     [
-     200.0,
+     370.0,
      -176
     ],
     [
-     200.0,
+     370.0,
      160.0
     ],
     [
-     -200.0,
+     -370.0,
      160.0
     ]
    ],
@@ -631,7 +666,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Plinth",
+   "name": "Plinth 1Ext",
    "points": [
     [
      190.0,
@@ -719,24 +754,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth",
+   "name": "Plinth 1Ext",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth",
+   "name": "Plinth 1Ext",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth",
+   "name": "Plinth 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cabinet Body",
+   "name": "Cabinet Body 1Ext",
    "points": [
     [
      170.0,
@@ -824,24 +859,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cabinet Body",
+   "name": "Cabinet Body 1Ext",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Cabinet Body",
+   "name": "Cabinet Body 1Ext",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cabinet Body",
+   "name": "Cabinet Body 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Domed Top",
+   "name": "Domed Top 1Ext",
    "points": [
     [
      -150,
@@ -894,103 +929,209 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Domed Top",
+   "name": "Domed Top 1Ext",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Domed Top",
+   "name": "Domed Top 1Ext",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Domed Top",
+   "name": "Domed Top 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door",
+   "name": "Door Rail Top 1Ext",
    "points": [
     [
-     158.0,
+     166.0,
+     640.0
+    ],
+    [
+     168.3,
+     640.46
+    ],
+    [
+     170.24,
+     641.76
+    ],
+    [
+     171.54,
+     643.7
+    ],
+    [
+     172.0,
+     646.0
+    ],
+    [
+     172.0,
+     774.0
+    ],
+    [
+     171.54,
+     776.3
+    ],
+    [
+     170.24,
+     778.24
+    ],
+    [
+     168.3,
+     779.54
+    ],
+    [
+     166.0,
+     780.0
+    ],
+    [
+     -166.0,
+     780.0
+    ],
+    [
+     -168.3,
+     779.54
+    ],
+    [
+     -170.24,
+     778.24
+    ],
+    [
+     -171.54,
+     776.3
+    ],
+    [
+     -172.0,
+     774.0
+    ],
+    [
+     -172.0,
+     646.0
+    ],
+    [
+     -171.54,
+     643.7
+    ],
+    [
+     -170.24,
+     641.76
+    ],
+    [
+     -168.3,
+     640.46
+    ],
+    [
+     -166.0,
+     640.0
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Top 1Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Top 1Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Top 1Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Bottom 1Ext",
+   "points": [
+    [
+     166.0,
      90.0
     ],
     [
-     163.36,
-     91.07
+     168.3,
+     90.46
     ],
     [
-     167.9,
-     94.1
+     170.24,
+     91.76
     ],
     [
-     170.93,
-     98.64
-    ],
-    [
-     172.0,
-     104.0
+     171.54,
+     93.7
     ],
     [
      172.0,
-     766.0
+     96.0
     ],
     [
-     170.93,
-     771.36
+     172.0,
+     324.0
     ],
     [
-     167.9,
-     775.9
+     171.54,
+     326.3
     ],
     [
-     163.36,
-     778.93
+     170.24,
+     328.24
     ],
     [
-     158.0,
-     780.0
+     168.3,
+     329.54
     ],
     [
-     -158.0,
-     780.0
+     166.0,
+     330.0
     ],
     [
-     -163.36,
-     778.93
+     -166.0,
+     330.0
     ],
     [
-     -167.9,
-     775.9
+     -168.3,
+     329.54
     ],
     [
-     -170.93,
-     771.36
+     -170.24,
+     328.24
+    ],
+    [
+     -171.54,
+     326.3
     ],
     [
      -172.0,
-     766.0
+     324.0
     ],
     [
      -172.0,
-     104.0
+     96.0
     ],
     [
-     -170.93,
-     98.64
+     -171.54,
+     93.7
     ],
     [
-     -167.9,
-     94.1
+     -170.24,
+     91.76
     ],
     [
-     -163.36,
-     91.07
+     -168.3,
+     90.46
     ],
     [
-     -158.0,
+     -166.0,
      90.0
     ]
    ],
@@ -1000,315 +1141,229 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door",
+   "name": "Door Rail Bottom 1Ext",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Door",
+   "name": "Door Rail Bottom 1Ext",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door",
+   "name": "Door Rail Bottom 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Window",
+   "name": "Door Stile Left 1Ext",
    "points": [
     [
-     110.0,
-     330.0
-    ],
-    [
-     113.83,
-     330.76
-    ],
-    [
-     117.07,
-     332.93
-    ],
-    [
-     119.24,
-     336.17
-    ],
-    [
-     120.0,
-     340.0
-    ],
-    [
-     120.0,
-     630.0
-    ],
-    [
-     119.24,
-     633.83
-    ],
-    [
-     117.07,
-     637.07
-    ],
-    [
-     113.83,
-     639.24
-    ],
-    [
-     110.0,
-     640.0
-    ],
-    [
-     -110.0,
-     640.0
-    ],
-    [
-     -113.83,
-     639.24
-    ],
-    [
-     -117.07,
-     637.07
-    ],
-    [
-     -119.24,
-     633.83
+     -172.0,
+     330
     ],
     [
      -120.0,
-     630.0
+     330
     ],
     [
      -120.0,
-     340.0
+     640
     ],
     [
-     -119.24,
-     336.17
-    ],
-    [
-     -117.07,
-     332.93
-    ],
-    [
-     -113.83,
-     330.76
-    ],
-    [
-     -110.0,
-     330.0
+     -172.0,
+     640
     ]
    ],
-   "start": 160,
-   "end": 162,
+   "start": 150,
+   "end": 160,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Window",
+   "name": "Door Stile Left 1Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Left 1Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Left 1Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile Right 1Ext",
+   "points": [
+    [
+     120.0,
+     330
+    ],
+    [
+     172.0,
+     330
+    ],
+    [
+     172.0,
+     640
+    ],
+    [
+     120.0,
+     640
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile Right 1Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Right 1Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Right 1Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Window 1Ext",
+   "points": [
+    [
+     -120.0,
+     330
+    ],
+    [
+     120.0,
+     330
+    ],
+    [
+     120.0,
+     640
+    ],
+    [
+     -120.0,
+     640
+    ]
+   ],
+   "start": 153,
+   "end": 156,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Window 1Ext",
    "subcategory": "Pc"
   },
   {
    "op": "set_material_param",
-   "name": "Window",
+   "name": "Window 1Ext",
    "param": "Pc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Window",
+   "name": "Window 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Window Frame",
+   "name": "Label FIRE EXTINGUISHER 1Ext",
    "points": [
     [
-     116.0,
-     322.0
-    ],
-    [
-     120.59,
-     322.91
-    ],
-    [
-     124.49,
-     325.51
-    ],
-    [
-     127.09,
-     329.41
-    ],
-    [
-     128.0,
-     334.0
-    ],
-    [
-     128.0,
-     636.0
-    ],
-    [
-     127.09,
-     640.59
-    ],
-    [
-     124.49,
-     644.49
-    ],
-    [
-     120.59,
-     647.09
-    ],
-    [
-     116.0,
-     648.0
-    ],
-    [
-     -116.0,
-     648.0
-    ],
-    [
-     -120.59,
-     647.09
-    ],
-    [
-     -124.49,
-     644.49
-    ],
-    [
-     -127.09,
-     640.59
-    ],
-    [
-     -128.0,
-     636.0
-    ],
-    [
-     -128.0,
-     334.0
-    ],
-    [
-     -127.09,
-     329.41
-    ],
-    [
-     -124.49,
-     325.51
-    ],
-    [
-     -120.59,
-     322.91
-    ],
-    [
-     -116.0,
-     322.0
-    ]
-   ],
-   "start": 160,
-   "end": 161,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Window Frame",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Window Frame",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Window Frame",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label FIRE EXTINGUISHER",
-   "points": [
-    [
-     128.0,
+     121.0,
      680.0
     ],
     [
-     129.53,
+     122.53,
      680.3
     ],
     [
-     130.83,
+     123.83,
      681.17
     ],
     [
-     131.7,
+     124.7,
      682.47
     ],
     [
-     132.0,
+     125.0,
      684.0
     ],
     [
-     132.0,
+     125.0,
      746.0
     ],
     [
-     131.7,
+     124.7,
      747.53
     ],
     [
-     130.83,
+     123.83,
      748.83
     ],
     [
-     129.53,
+     122.53,
      749.7
     ],
     [
-     128.0,
+     121.0,
      750.0
     ],
     [
-     -128.0,
+     -121.0,
      750.0
     ],
     [
-     -129.53,
+     -122.53,
      749.7
     ],
     [
-     -130.83,
+     -123.83,
      748.83
     ],
     [
-     -131.7,
+     -124.7,
      747.53
     ],
     [
-     -132.0,
+     -125.0,
      746.0
     ],
     [
-     -132.0,
+     -125.0,
      684.0
     ],
     [
-     -131.7,
+     -124.7,
      682.47
     ],
     [
-     -130.83,
+     -123.83,
      681.17
     ],
     [
-     -129.53,
+     -122.53,
      680.3
     ],
     [
-     -128.0,
+     -121.0,
      680.0
     ]
    ],
@@ -1318,103 +1373,103 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Label FIRE EXTINGUISHER",
+   "name": "Label FIRE EXTINGUISHER 1Ext",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Label FIRE EXTINGUISHER",
+   "name": "Label FIRE EXTINGUISHER 1Ext",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label FIRE EXTINGUISHER",
+   "name": "Label FIRE EXTINGUISHER 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Handle",
+   "name": "Handle 1Ext",
    "points": [
     [
-     144.0,
+     146.0,
      200.0
     ],
     [
-     146.3,
+     148.3,
      200.46
     ],
     [
-     148.24,
+     150.24,
      201.76
     ],
     [
-     149.54,
+     151.54,
      203.7
     ],
     [
-     150.0,
+     152.0,
      206.0
     ],
     [
-     150.0,
+     152.0,
      294.0
     ],
     [
-     149.54,
+     151.54,
      296.3
     ],
     [
-     148.24,
+     150.24,
      298.24
     ],
     [
-     146.3,
+     148.3,
      299.54
     ],
     [
-     144.0,
+     146.0,
      300.0
     ],
     [
-     134.0,
+     136.0,
      300.0
     ],
     [
-     131.7,
+     133.7,
      299.54
     ],
     [
-     129.76,
+     131.76,
      298.24
     ],
     [
-     128.46,
+     130.46,
      296.3
     ],
     [
-     128.0,
+     130.0,
      294.0
     ],
     [
-     128.0,
+     130.0,
      206.0
     ],
     [
-     128.46,
+     130.46,
      203.7
     ],
     [
-     129.76,
+     131.76,
      201.76
     ],
     [
-     131.7,
+     133.7,
      200.46
     ],
     [
-     134.0,
+     136.0,
      200.0
     ]
    ],
@@ -1424,373 +1479,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Handle",
+   "name": "Handle 1Ext",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Handle",
+   "name": "Handle 1Ext",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Handle",
+   "name": "Handle 1Ext",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Latch",
+   "name": "Ventilation Slot 1Ext 1",
    "points": [
     [
-     147.0,
-     330.0
-    ],
-    [
-     146.73,
-     332.07
-    ],
-    [
-     145.93,
-     334.0
-    ],
-    [
-     144.66,
-     335.66
-    ],
-    [
-     143.0,
-     336.93
-    ],
-    [
-     141.07,
-     337.73
-    ],
-    [
-     139.0,
-     338.0
-    ],
-    [
-     136.93,
-     337.73
-    ],
-    [
-     135.0,
-     336.93
-    ],
-    [
-     133.34,
-     335.66
-    ],
-    [
-     132.07,
-     334.0
-    ],
-    [
-     131.27,
-     332.07
-    ],
-    [
-     131.0,
-     330.0
-    ],
-    [
-     131.27,
-     327.93
-    ],
-    [
-     132.07,
-     326.0
-    ],
-    [
-     133.34,
-     324.34
-    ],
-    [
-     135.0,
-     323.07
-    ],
-    [
-     136.93,
-     322.27
-    ],
-    [
-     139.0,
-     322.0
-    ],
-    [
-     141.07,
-     322.27
-    ],
-    [
-     143.0,
-     323.07
-    ],
-    [
-     144.66,
-     324.34
-    ],
-    [
-     145.93,
-     326.0
-    ],
-    [
-     146.73,
-     327.93
-    ]
-   ],
-   "start": 170,
-   "end": 162,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Latch",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Latch",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Latch",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 1",
-   "points": [
-    [
-     -172.0,
-     150.0
-    ],
-    [
-     -171.23,
-     150.15
-    ],
-    [
-     -170.59,
-     150.59
-    ],
-    [
-     -170.15,
-     151.23
-    ],
-    [
-     -170.0,
-     152.0
-    ],
-    [
-     -170.0,
-     208.0
-    ],
-    [
-     -170.15,
-     208.77
-    ],
-    [
-     -170.59,
-     209.41
-    ],
-    [
-     -171.23,
-     209.85
-    ],
-    [
-     -172.0,
-     210.0
-    ],
-    [
-     -182.0,
-     210.0
-    ],
-    [
-     -182.77,
-     209.85
-    ],
-    [
-     -183.41,
-     209.41
-    ],
-    [
-     -183.85,
-     208.77
-    ],
-    [
-     -184.0,
-     208.0
-    ],
-    [
-     -184.0,
-     152.0
-    ],
-    [
-     -183.85,
-     151.23
-    ],
-    [
-     -183.41,
-     150.59
-    ],
-    [
-     -182.77,
-     150.15
-    ],
-    [
-     -182.0,
-     150.0
-    ]
-   ],
-   "start": 150,
-   "end": 165,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hinge 2",
-   "points": [
-    [
-     -172.0,
-     650.0
-    ],
-    [
-     -171.23,
-     650.15
-    ],
-    [
-     -170.59,
-     650.59
-    ],
-    [
-     -170.15,
-     651.23
-    ],
-    [
-     -170.0,
-     652.0
-    ],
-    [
-     -170.0,
-     708.0
-    ],
-    [
-     -170.15,
-     708.77
-    ],
-    [
-     -170.59,
-     709.41
-    ],
-    [
-     -171.23,
-     709.85
-    ],
-    [
-     -172.0,
-     710.0
-    ],
-    [
-     -182.0,
-     710.0
-    ],
-    [
-     -182.77,
-     709.85
-    ],
-    [
-     -183.41,
-     709.41
-    ],
-    [
-     -183.85,
-     708.77
-    ],
-    [
-     -184.0,
-     708.0
-    ],
-    [
-     -184.0,
-     652.0
-    ],
-    [
-     -183.85,
-     651.23
-    ],
-    [
-     -183.41,
-     650.59
-    ],
-    [
-     -182.77,
-     650.15
-    ],
-    [
-     -182.0,
-     650.0
-    ]
-   ],
-   "start": 150,
-   "end": 165,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hinge 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hinge 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hinge 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ventilation Slot 1",
-   "points": [
-    [
-     -80,
+     -80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -160
     ],
     [
-     -80,
+     -80.0,
      -160
     ]
    ],
@@ -1799,39 +1520,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ventilation Slot 1",
+   "name": "Ventilation Slot 1Ext 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Ventilation Slot 1",
+   "name": "Ventilation Slot 1Ext 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ventilation Slot 1",
+   "name": "Ventilation Slot 1Ext 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ventilation Slot 2",
+   "name": "Ventilation Slot 1Ext 2",
    "points": [
     [
-     -80,
+     -80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -160
     ],
     [
-     -80,
+     -80.0,
      -160
     ]
    ],
@@ -1840,39 +1561,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ventilation Slot 2",
+   "name": "Ventilation Slot 1Ext 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Ventilation Slot 2",
+   "name": "Ventilation Slot 1Ext 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ventilation Slot 2",
+   "name": "Ventilation Slot 1Ext 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ventilation Slot 3",
+   "name": "Ventilation Slot 1Ext 3",
    "points": [
     [
-     -80,
+     -80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -162
     ],
     [
-     80,
+     80.0,
      -160
     ],
     [
-     -80,
+     -80.0,
      -160
     ]
    ],
@@ -1881,20 +1602,2535 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ventilation Slot 3",
+   "name": "Ventilation Slot 1Ext 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Ventilation Slot 3",
+   "name": "Ventilation Slot 1Ext 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ventilation Slot 3",
+   "name": "Ventilation Slot 1Ext 3",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Inside 1Ext",
+   "profile": [
+    [
+     0,
+     70
+    ],
+    [
+     80,
+     70
+    ],
+    [
+     80,
+     520
+    ],
+    [
+     60,
+     580
+    ],
+    [
+     22,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Inside 1Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Inside 1Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Band 1Ext",
+   "profile": [
+    [
+     80,
+     230
+    ],
+    [
+     81,
+     230
+    ],
+    [
+     81,
+     360
+    ],
+    [
+     80,
+     360
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Band 1Ext",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Band 1Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Extinguisher Valve 1Ext",
+   "points": [
+    [
+     12.0,
+     -16.0
+    ],
+    [
+     13.53,
+     -15.7
+    ],
+    [
+     14.83,
+     -14.83
+    ],
+    [
+     15.7,
+     -13.53
+    ],
+    [
+     16.0,
+     -12.0
+    ],
+    [
+     16.0,
+     12.0
+    ],
+    [
+     15.7,
+     13.53
+    ],
+    [
+     14.83,
+     14.83
+    ],
+    [
+     13.53,
+     15.7
+    ],
+    [
+     12.0,
+     16.0
+    ],
+    [
+     -12.0,
+     16.0
+    ],
+    [
+     -13.53,
+     15.7
+    ],
+    [
+     -14.83,
+     14.83
+    ],
+    [
+     -15.7,
+     13.53
+    ],
+    [
+     -16.0,
+     12.0
+    ],
+    [
+     -16.0,
+     -12.0
+    ],
+    [
+     -15.7,
+     -13.53
+    ],
+    [
+     -14.83,
+     -14.83
+    ],
+    [
+     -13.53,
+     -15.7
+    ],
+    [
+     -12.0,
+     -16.0
+    ]
+   ],
+   "start": 600,
+   "end": 660
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Extinguisher Valve 1Ext",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Valve 1Ext",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Valve 1Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 2Ext",
+   "points": [
+    [
+     360.0,
+     -160.0
+    ],
+    [
+     363.83,
+     -159.24
+    ],
+    [
+     367.07,
+     -157.07
+    ],
+    [
+     369.24,
+     -153.83
+    ],
+    [
+     370.0,
+     -150.0
+    ],
+    [
+     370.0,
+     150.0
+    ],
+    [
+     369.24,
+     153.83
+    ],
+    [
+     367.07,
+     157.07
+    ],
+    [
+     363.83,
+     159.24
+    ],
+    [
+     360.0,
+     160.0
+    ],
+    [
+     -360.0,
+     160.0
+    ],
+    [
+     -363.83,
+     159.24
+    ],
+    [
+     -367.07,
+     157.07
+    ],
+    [
+     -369.24,
+     153.83
+    ],
+    [
+     -370.0,
+     150.0
+    ],
+    [
+     -370.0,
+     -150.0
+    ],
+    [
+     -369.24,
+     -153.83
+    ],
+    [
+     -367.07,
+     -157.07
+    ],
+    [
+     -363.83,
+     -159.24
+    ],
+    [
+     -360.0,
+     -160.0
+    ]
+   ],
+   "start": 0,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 2Ext",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 2Ext",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Body 2Ext",
+   "points": [
+    [
+     340.0,
+     -150.0
+    ],
+    [
+     347.65,
+     -148.48
+    ],
+    [
+     354.14,
+     -144.14
+    ],
+    [
+     358.48,
+     -137.65
+    ],
+    [
+     360.0,
+     -130.0
+    ],
+    [
+     360.0,
+     130.0
+    ],
+    [
+     358.48,
+     137.65
+    ],
+    [
+     354.14,
+     144.14
+    ],
+    [
+     347.65,
+     148.48
+    ],
+    [
+     340.0,
+     150.0
+    ],
+    [
+     -340.0,
+     150.0
+    ],
+    [
+     -347.65,
+     148.48
+    ],
+    [
+     -354.14,
+     144.14
+    ],
+    [
+     -358.48,
+     137.65
+    ],
+    [
+     -360.0,
+     130.0
+    ],
+    [
+     -360.0,
+     -130.0
+    ],
+    [
+     -358.48,
+     -137.65
+    ],
+    [
+     -354.14,
+     -144.14
+    ],
+    [
+     -347.65,
+     -148.48
+    ],
+    [
+     -340.0,
+     -150.0
+    ]
+   ],
+   "start": 60,
+   "end": 800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Body 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Body 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Body 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Domed Top 2Ext",
+   "points": [
+    [
+     -150,
+     800
+    ],
+    [
+     -150.0,
+     800.0
+    ],
+    [
+     -138.6,
+     834.4
+    ],
+    [
+     -106.1,
+     863.6
+    ],
+    [
+     -57.4,
+     883.1
+    ],
+    [
+     -0.0,
+     890.0
+    ],
+    [
+     57.4,
+     883.1
+    ],
+    [
+     106.1,
+     863.6
+    ],
+    [
+     138.6,
+     834.4
+    ],
+    [
+     150.0,
+     800.0
+    ],
+    [
+     150,
+     800
+    ]
+   ],
+   "start": -360,
+   "end": 360,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Domed Top 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Domed Top 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Domed Top 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Top 1 2Ext",
+   "points": [
+    [
+     -6.0,
+     640.0
+    ],
+    [
+     -3.7,
+     640.46
+    ],
+    [
+     -1.76,
+     641.76
+    ],
+    [
+     -0.46,
+     643.7
+    ],
+    [
+     0.0,
+     646.0
+    ],
+    [
+     0.0,
+     774.0
+    ],
+    [
+     -0.46,
+     776.3
+    ],
+    [
+     -1.76,
+     778.24
+    ],
+    [
+     -3.7,
+     779.54
+    ],
+    [
+     -6.0,
+     780.0
+    ],
+    [
+     -336.0,
+     780.0
+    ],
+    [
+     -338.3,
+     779.54
+    ],
+    [
+     -340.24,
+     778.24
+    ],
+    [
+     -341.54,
+     776.3
+    ],
+    [
+     -342.0,
+     774.0
+    ],
+    [
+     -342.0,
+     646.0
+    ],
+    [
+     -341.54,
+     643.7
+    ],
+    [
+     -340.24,
+     641.76
+    ],
+    [
+     -338.3,
+     640.46
+    ],
+    [
+     -336.0,
+     640.0
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Top 1 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Top 1 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Top 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Bottom 1 2Ext",
+   "points": [
+    [
+     -6.0,
+     90.0
+    ],
+    [
+     -3.7,
+     90.46
+    ],
+    [
+     -1.76,
+     91.76
+    ],
+    [
+     -0.46,
+     93.7
+    ],
+    [
+     0.0,
+     96.0
+    ],
+    [
+     0.0,
+     324.0
+    ],
+    [
+     -0.46,
+     326.3
+    ],
+    [
+     -1.76,
+     328.24
+    ],
+    [
+     -3.7,
+     329.54
+    ],
+    [
+     -6.0,
+     330.0
+    ],
+    [
+     -336.0,
+     330.0
+    ],
+    [
+     -338.3,
+     329.54
+    ],
+    [
+     -340.24,
+     328.24
+    ],
+    [
+     -341.54,
+     326.3
+    ],
+    [
+     -342.0,
+     324.0
+    ],
+    [
+     -342.0,
+     96.0
+    ],
+    [
+     -341.54,
+     93.7
+    ],
+    [
+     -340.24,
+     91.76
+    ],
+    [
+     -338.3,
+     90.46
+    ],
+    [
+     -336.0,
+     90.0
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Bottom 1 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Bottom 1 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Bottom 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile Left 1 2Ext",
+   "points": [
+    [
+     -342.0,
+     330
+    ],
+    [
+     -291.0,
+     330
+    ],
+    [
+     -291.0,
+     640
+    ],
+    [
+     -342.0,
+     640
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile Left 1 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Left 1 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Left 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile Right 1 2Ext",
+   "points": [
+    [
+     -51.0,
+     330
+    ],
+    [
+     0.0,
+     330
+    ],
+    [
+     0.0,
+     640
+    ],
+    [
+     -51.0,
+     640
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile Right 1 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Right 1 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Right 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Window 1 2Ext",
+   "points": [
+    [
+     -291.0,
+     330
+    ],
+    [
+     -51.0,
+     330
+    ],
+    [
+     -51.0,
+     640
+    ],
+    [
+     -291.0,
+     640
+    ]
+   ],
+   "start": 153,
+   "end": 156,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Window 1 2Ext",
+   "subcategory": "Pc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Window 1 2Ext",
+   "param": "Pc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Window 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label FIRE EXTINGUISHER 1 2Ext",
+   "points": [
+    [
+     -50.0,
+     680.0
+    ],
+    [
+     -48.47,
+     680.3
+    ],
+    [
+     -47.17,
+     681.17
+    ],
+    [
+     -46.3,
+     682.47
+    ],
+    [
+     -46.0,
+     684.0
+    ],
+    [
+     -46.0,
+     746.0
+    ],
+    [
+     -46.3,
+     747.53
+    ],
+    [
+     -47.17,
+     748.83
+    ],
+    [
+     -48.47,
+     749.7
+    ],
+    [
+     -50.0,
+     750.0
+    ],
+    [
+     -292.0,
+     750.0
+    ],
+    [
+     -293.53,
+     749.7
+    ],
+    [
+     -294.83,
+     748.83
+    ],
+    [
+     -295.7,
+     747.53
+    ],
+    [
+     -296.0,
+     746.0
+    ],
+    [
+     -296.0,
+     684.0
+    ],
+    [
+     -295.7,
+     682.47
+    ],
+    [
+     -294.83,
+     681.17
+    ],
+    [
+     -293.53,
+     680.3
+    ],
+    [
+     -292.0,
+     680.0
+    ]
+   ],
+   "start": 160,
+   "end": 162,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label FIRE EXTINGUISHER 1 2Ext",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label FIRE EXTINGUISHER 1 2Ext",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label FIRE EXTINGUISHER 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle 1 2Ext",
+   "points": [
+    [
+     -26.0,
+     200.0
+    ],
+    [
+     -23.7,
+     200.46
+    ],
+    [
+     -21.76,
+     201.76
+    ],
+    [
+     -20.46,
+     203.7
+    ],
+    [
+     -20.0,
+     206.0
+    ],
+    [
+     -20.0,
+     294.0
+    ],
+    [
+     -20.46,
+     296.3
+    ],
+    [
+     -21.76,
+     298.24
+    ],
+    [
+     -23.7,
+     299.54
+    ],
+    [
+     -26.0,
+     300.0
+    ],
+    [
+     -36.0,
+     300.0
+    ],
+    [
+     -38.3,
+     299.54
+    ],
+    [
+     -40.24,
+     298.24
+    ],
+    [
+     -41.54,
+     296.3
+    ],
+    [
+     -42.0,
+     294.0
+    ],
+    [
+     -42.0,
+     206.0
+    ],
+    [
+     -41.54,
+     203.7
+    ],
+    [
+     -40.24,
+     201.76
+    ],
+    [
+     -38.3,
+     200.46
+    ],
+    [
+     -36.0,
+     200.0
+    ]
+   ],
+   "start": 162,
+   "end": 176,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle 1 2Ext",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle 1 2Ext",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 1 2Ext 1",
+   "points": [
+    [
+     -251.0,
+     -162
+    ],
+    [
+     -91.0,
+     -162
+    ],
+    [
+     -91.0,
+     -160
+    ],
+    [
+     -251.0,
+     -160
+    ]
+   ],
+   "start": 120,
+   "end": 128
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 1 2Ext 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 1 2Ext 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 1 2Ext 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 1 2Ext 2",
+   "points": [
+    [
+     -251.0,
+     -162
+    ],
+    [
+     -91.0,
+     -162
+    ],
+    [
+     -91.0,
+     -160
+    ],
+    [
+     -251.0,
+     -160
+    ]
+   ],
+   "start": 140,
+   "end": 148
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 1 2Ext 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 1 2Ext 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 1 2Ext 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 1 2Ext 3",
+   "points": [
+    [
+     -251.0,
+     -162
+    ],
+    [
+     -91.0,
+     -162
+    ],
+    [
+     -91.0,
+     -160
+    ],
+    [
+     -251.0,
+     -160
+    ]
+   ],
+   "start": 160,
+   "end": 168
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 1 2Ext 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 1 2Ext 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 1 2Ext 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Inside 1 2Ext",
+   "profile": [
+    [
+     0,
+     70
+    ],
+    [
+     80,
+     70
+    ],
+    [
+     80,
+     520
+    ],
+    [
+     60,
+     580
+    ],
+    [
+     22,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "axis_at": [
+    -171.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Inside 1 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Inside 1 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Band 1 2Ext",
+   "profile": [
+    [
+     80,
+     230
+    ],
+    [
+     81,
+     230
+    ],
+    [
+     81,
+     360
+    ],
+    [
+     80,
+     360
+    ]
+   ],
+   "axis_at": [
+    -171.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Band 1 2Ext",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Band 1 2Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Extinguisher Valve 1 2Ext",
+   "points": [
+    [
+     -159.0,
+     -16.0
+    ],
+    [
+     -157.47,
+     -15.7
+    ],
+    [
+     -156.17,
+     -14.83
+    ],
+    [
+     -155.3,
+     -13.53
+    ],
+    [
+     -155.0,
+     -12.0
+    ],
+    [
+     -155.0,
+     12.0
+    ],
+    [
+     -155.3,
+     13.53
+    ],
+    [
+     -156.17,
+     14.83
+    ],
+    [
+     -157.47,
+     15.7
+    ],
+    [
+     -159.0,
+     16.0
+    ],
+    [
+     -183.0,
+     16.0
+    ],
+    [
+     -184.53,
+     15.7
+    ],
+    [
+     -185.83,
+     14.83
+    ],
+    [
+     -186.7,
+     13.53
+    ],
+    [
+     -187.0,
+     12.0
+    ],
+    [
+     -187.0,
+     -12.0
+    ],
+    [
+     -186.7,
+     -13.53
+    ],
+    [
+     -185.83,
+     -14.83
+    ],
+    [
+     -184.53,
+     -15.7
+    ],
+    [
+     -183.0,
+     -16.0
+    ]
+   ],
+   "start": 600,
+   "end": 660
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Extinguisher Valve 1 2Ext",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Valve 1 2Ext",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Valve 1 2Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Top 2 2Ext",
+   "points": [
+    [
+     336.0,
+     640.0
+    ],
+    [
+     338.3,
+     640.46
+    ],
+    [
+     340.24,
+     641.76
+    ],
+    [
+     341.54,
+     643.7
+    ],
+    [
+     342.0,
+     646.0
+    ],
+    [
+     342.0,
+     774.0
+    ],
+    [
+     341.54,
+     776.3
+    ],
+    [
+     340.24,
+     778.24
+    ],
+    [
+     338.3,
+     779.54
+    ],
+    [
+     336.0,
+     780.0
+    ],
+    [
+     6.0,
+     780.0
+    ],
+    [
+     3.7,
+     779.54
+    ],
+    [
+     1.76,
+     778.24
+    ],
+    [
+     0.46,
+     776.3
+    ],
+    [
+     0.0,
+     774.0
+    ],
+    [
+     0.0,
+     646.0
+    ],
+    [
+     0.46,
+     643.7
+    ],
+    [
+     1.76,
+     641.76
+    ],
+    [
+     3.7,
+     640.46
+    ],
+    [
+     6.0,
+     640.0
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Top 2 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Top 2 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Top 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Bottom 2 2Ext",
+   "points": [
+    [
+     336.0,
+     90.0
+    ],
+    [
+     338.3,
+     90.46
+    ],
+    [
+     340.24,
+     91.76
+    ],
+    [
+     341.54,
+     93.7
+    ],
+    [
+     342.0,
+     96.0
+    ],
+    [
+     342.0,
+     324.0
+    ],
+    [
+     341.54,
+     326.3
+    ],
+    [
+     340.24,
+     328.24
+    ],
+    [
+     338.3,
+     329.54
+    ],
+    [
+     336.0,
+     330.0
+    ],
+    [
+     6.0,
+     330.0
+    ],
+    [
+     3.7,
+     329.54
+    ],
+    [
+     1.76,
+     328.24
+    ],
+    [
+     0.46,
+     326.3
+    ],
+    [
+     0.0,
+     324.0
+    ],
+    [
+     0.0,
+     96.0
+    ],
+    [
+     0.46,
+     93.7
+    ],
+    [
+     1.76,
+     91.76
+    ],
+    [
+     3.7,
+     90.46
+    ],
+    [
+     6.0,
+     90.0
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Bottom 2 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Bottom 2 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Bottom 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile Left 2 2Ext",
+   "points": [
+    [
+     0.0,
+     330
+    ],
+    [
+     51.0,
+     330
+    ],
+    [
+     51.0,
+     640
+    ],
+    [
+     0.0,
+     640
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile Left 2 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Left 2 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Left 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile Right 2 2Ext",
+   "points": [
+    [
+     291.0,
+     330
+    ],
+    [
+     342.0,
+     330
+    ],
+    [
+     342.0,
+     640
+    ],
+    [
+     291.0,
+     640
+    ]
+   ],
+   "start": 150,
+   "end": 160,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile Right 2 2Ext",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile Right 2 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile Right 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Window 2 2Ext",
+   "points": [
+    [
+     51.0,
+     330
+    ],
+    [
+     291.0,
+     330
+    ],
+    [
+     291.0,
+     640
+    ],
+    [
+     51.0,
+     640
+    ]
+   ],
+   "start": 153,
+   "end": 156,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Window 2 2Ext",
+   "subcategory": "Pc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Window 2 2Ext",
+   "param": "Pc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Window 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label FIRE EXTINGUISHER 2 2Ext",
+   "points": [
+    [
+     292.0,
+     680.0
+    ],
+    [
+     293.53,
+     680.3
+    ],
+    [
+     294.83,
+     681.17
+    ],
+    [
+     295.7,
+     682.47
+    ],
+    [
+     296.0,
+     684.0
+    ],
+    [
+     296.0,
+     746.0
+    ],
+    [
+     295.7,
+     747.53
+    ],
+    [
+     294.83,
+     748.83
+    ],
+    [
+     293.53,
+     749.7
+    ],
+    [
+     292.0,
+     750.0
+    ],
+    [
+     50.0,
+     750.0
+    ],
+    [
+     48.47,
+     749.7
+    ],
+    [
+     47.17,
+     748.83
+    ],
+    [
+     46.3,
+     747.53
+    ],
+    [
+     46.0,
+     746.0
+    ],
+    [
+     46.0,
+     684.0
+    ],
+    [
+     46.3,
+     682.47
+    ],
+    [
+     47.17,
+     681.17
+    ],
+    [
+     48.47,
+     680.3
+    ],
+    [
+     50.0,
+     680.0
+    ]
+   ],
+   "start": 160,
+   "end": 162,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label FIRE EXTINGUISHER 2 2Ext",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label FIRE EXTINGUISHER 2 2Ext",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label FIRE EXTINGUISHER 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle 2 2Ext",
+   "points": [
+    [
+     316.0,
+     200.0
+    ],
+    [
+     318.3,
+     200.46
+    ],
+    [
+     320.24,
+     201.76
+    ],
+    [
+     321.54,
+     203.7
+    ],
+    [
+     322.0,
+     206.0
+    ],
+    [
+     322.0,
+     294.0
+    ],
+    [
+     321.54,
+     296.3
+    ],
+    [
+     320.24,
+     298.24
+    ],
+    [
+     318.3,
+     299.54
+    ],
+    [
+     316.0,
+     300.0
+    ],
+    [
+     306.0,
+     300.0
+    ],
+    [
+     303.7,
+     299.54
+    ],
+    [
+     301.76,
+     298.24
+    ],
+    [
+     300.46,
+     296.3
+    ],
+    [
+     300.0,
+     294.0
+    ],
+    [
+     300.0,
+     206.0
+    ],
+    [
+     300.46,
+     203.7
+    ],
+    [
+     301.76,
+     201.76
+    ],
+    [
+     303.7,
+     200.46
+    ],
+    [
+     306.0,
+     200.0
+    ]
+   ],
+   "start": 162,
+   "end": 176,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle 2 2Ext",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle 2 2Ext",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 2 2Ext 1",
+   "points": [
+    [
+     91.0,
+     -162
+    ],
+    [
+     251.0,
+     -162
+    ],
+    [
+     251.0,
+     -160
+    ],
+    [
+     91.0,
+     -160
+    ]
+   ],
+   "start": 120,
+   "end": 128
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 2 2Ext 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 2 2Ext 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 2 2Ext 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 2 2Ext 2",
+   "points": [
+    [
+     91.0,
+     -162
+    ],
+    [
+     251.0,
+     -162
+    ],
+    [
+     251.0,
+     -160
+    ],
+    [
+     91.0,
+     -160
+    ]
+   ],
+   "start": 140,
+   "end": 148
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 2 2Ext 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 2 2Ext 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 2 2Ext 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ventilation Slot 2 2Ext 3",
+   "points": [
+    [
+     91.0,
+     -162
+    ],
+    [
+     251.0,
+     -162
+    ],
+    [
+     251.0,
+     -160
+    ],
+    [
+     91.0,
+     -160
+    ]
+   ],
+   "start": 160,
+   "end": 168
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ventilation Slot 2 2Ext 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ventilation Slot 2 2Ext 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ventilation Slot 2 2Ext 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Inside 2 2Ext",
+   "profile": [
+    [
+     0,
+     70
+    ],
+    [
+     80,
+     70
+    ],
+    [
+     80,
+     520
+    ],
+    [
+     60,
+     580
+    ],
+    [
+     22,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "axis_at": [
+    171.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Inside 2 2Ext",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Inside 2 2Ext",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Extinguisher Band 2 2Ext",
+   "profile": [
+    [
+     80,
+     230
+    ],
+    [
+     81,
+     230
+    ],
+    [
+     81,
+     360
+    ],
+    [
+     80,
+     360
+    ]
+   ],
+   "axis_at": [
+    171.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Band 2 2Ext",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Band 2 2Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Extinguisher Valve 2 2Ext",
+   "points": [
+    [
+     183.0,
+     -16.0
+    ],
+    [
+     184.53,
+     -15.7
+    ],
+    [
+     185.83,
+     -14.83
+    ],
+    [
+     186.7,
+     -13.53
+    ],
+    [
+     187.0,
+     -12.0
+    ],
+    [
+     187.0,
+     12.0
+    ],
+    [
+     186.7,
+     13.53
+    ],
+    [
+     185.83,
+     14.83
+    ],
+    [
+     184.53,
+     15.7
+    ],
+    [
+     183.0,
+     16.0
+    ],
+    [
+     159.0,
+     16.0
+    ],
+    [
+     157.47,
+     15.7
+    ],
+    [
+     156.17,
+     14.83
+    ],
+    [
+     155.3,
+     13.53
+    ],
+    [
+     155.0,
+     12.0
+    ],
+    [
+     155.0,
+     -12.0
+    ],
+    [
+     155.3,
+     -13.53
+    ],
+    [
+     156.17,
+     -14.83
+    ],
+    [
+     157.47,
+     -15.7
+    ],
+    [
+     159.0,
+     -16.0
+    ]
+   ],
+   "start": 600,
+   "end": 660
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Extinguisher Valve 2 2Ext",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Extinguisher Valve 2 2Ext",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Extinguisher Valve 2 2Ext",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1Ext_Single",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1Ext_Single/Show 1Ext_Single",
+   "type": "1Ext_Single",
+   "param": "Show 1Ext_Single",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Ext_Double/Show 1Ext_Single",
+   "type": "2Ext_Double",
+   "param": "Show 1Ext_Single",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 1Ext/Visible",
+   "solid": "Plinth 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet Body 1Ext/Visible",
+   "solid": "Cabinet Body 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Domed Top 1Ext/Visible",
+   "solid": "Domed Top 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Top 1Ext/Visible",
+   "solid": "Door Rail Top 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Bottom 1Ext/Visible",
+   "solid": "Door Rail Bottom 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Left 1Ext/Visible",
+   "solid": "Door Stile Left 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Right 1Ext/Visible",
+   "solid": "Door Stile Right 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Window 1Ext/Visible",
+   "solid": "Window 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label FIRE EXTINGUISHER 1Ext/Visible",
+   "solid": "Label FIRE EXTINGUISHER 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Handle 1Ext/Visible",
+   "solid": "Handle 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1Ext 1/Visible",
+   "solid": "Ventilation Slot 1Ext 1",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1Ext 2/Visible",
+   "solid": "Ventilation Slot 1Ext 2",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1Ext 3/Visible",
+   "solid": "Ventilation Slot 1Ext 3",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Inside 1Ext/Visible",
+   "solid": "Extinguisher Inside 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Band 1Ext/Visible",
+   "solid": "Extinguisher Band 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Valve 1Ext/Visible",
+   "solid": "Extinguisher Valve 1Ext",
+   "param": "Show 1Ext_Single"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2Ext_Double",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1Ext_Single/Show 2Ext_Double",
+   "type": "1Ext_Single",
+   "param": "Show 2Ext_Double",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Ext_Double/Show 2Ext_Double",
+   "type": "2Ext_Double",
+   "param": "Show 2Ext_Double",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 2Ext/Visible",
+   "solid": "Plinth 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet Body 2Ext/Visible",
+   "solid": "Cabinet Body 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Domed Top 2Ext/Visible",
+   "solid": "Domed Top 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Top 1 2Ext/Visible",
+   "solid": "Door Rail Top 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Bottom 1 2Ext/Visible",
+   "solid": "Door Rail Bottom 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Left 1 2Ext/Visible",
+   "solid": "Door Stile Left 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Right 1 2Ext/Visible",
+   "solid": "Door Stile Right 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Window 1 2Ext/Visible",
+   "solid": "Window 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label FIRE EXTINGUISHER 1 2Ext/Visible",
+   "solid": "Label FIRE EXTINGUISHER 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Handle 1 2Ext/Visible",
+   "solid": "Handle 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1 2Ext 1/Visible",
+   "solid": "Ventilation Slot 1 2Ext 1",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1 2Ext 2/Visible",
+   "solid": "Ventilation Slot 1 2Ext 2",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 1 2Ext 3/Visible",
+   "solid": "Ventilation Slot 1 2Ext 3",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Inside 1 2Ext/Visible",
+   "solid": "Extinguisher Inside 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Band 1 2Ext/Visible",
+   "solid": "Extinguisher Band 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Valve 1 2Ext/Visible",
+   "solid": "Extinguisher Valve 1 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Top 2 2Ext/Visible",
+   "solid": "Door Rail Top 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Rail Bottom 2 2Ext/Visible",
+   "solid": "Door Rail Bottom 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Left 2 2Ext/Visible",
+   "solid": "Door Stile Left 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile Right 2 2Ext/Visible",
+   "solid": "Door Stile Right 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Window 2 2Ext/Visible",
+   "solid": "Window 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label FIRE EXTINGUISHER 2 2Ext/Visible",
+   "solid": "Label FIRE EXTINGUISHER 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Handle 2 2Ext/Visible",
+   "solid": "Handle 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 2 2Ext 1/Visible",
+   "solid": "Ventilation Slot 2 2Ext 1",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 2 2Ext 2/Visible",
+   "solid": "Ventilation Slot 2 2Ext 2",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ventilation Slot 2 2Ext 3/Visible",
+   "solid": "Ventilation Slot 2 2Ext 3",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Inside 2 2Ext/Visible",
+   "solid": "Extinguisher Inside 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Band 2 2Ext/Visible",
+   "solid": "Extinguisher Band 2 2Ext",
+   "param": "Show 2Ext_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Extinguisher Valve 2 2Ext/Visible",
+   "solid": "Extinguisher Valve 2 2Ext",
+   "param": "Show 2Ext_Double"
   },
   {
    "op": "set_type_image",
@@ -1908,12 +4144,12 @@
    "source_status": "assumed",
    "source": "typical GRP single cabinet"
   },
-  "Double: 720 x 320 x 890 mm": {
-   "value": "720x320x890",
+  "Double: 740 x 320 x 890 mm": {
+   "value": "740x320x890",
    "source_status": "assumed",
    "source": "typical GRP double cabinet"
   },
-  "Takes 9 kg / 9 l extinguisher": {
+  "Takes 9 kg / 9 l extinguishers": {
    "value": "9kg",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"

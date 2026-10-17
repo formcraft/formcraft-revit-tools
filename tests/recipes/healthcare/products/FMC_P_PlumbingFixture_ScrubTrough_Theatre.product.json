@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_PlumbingFixture_ScrubTrough_Theatre",
  "category": "Plumbing Fixtures",
- "desc": "Theatre scrub trough, 2-bay stainless steel 1200 mm, sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay",
+ "desc": "Theatre scrub trough, stainless steel, 600 mm per bay (1, 2 or 3 bays), sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay",
  "ifc": "IfcSanitaryTerminal",
  "keynote": "P.SNK_02",
  "types": [
@@ -18,19 +18,22 @@
  "materials": {
   "stainless": "FMC_Metal_StainlessSteel_Brushed",
   "black": "FMC_Plastic_ABS_Black",
+  "display": "FMC_Glass_Display_Black",
   "chrome": "FMC_Metal_Chrome_Polished"
  },
  "reference": {
   "query": "scrub trough theatre plumbing fixtures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=scrub+trough+theatre+plumbing+fixtures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.medicalexpo.com/medical-manufacturer/2-station-surgical-sink-39936.html",
+  "photo_title": "Surgical sinks, 2-station (MedicalExpo)",
+  "photo_kind": "supplier"
  },
  "parts": [
   {
-   "n": "Front Apron",
-   "shape": "fbox",
+   "n": "Front Apron 600",
    "at": [
-    -600,
+    0,
     -600,
     650,
     600,
@@ -38,13 +41,16 @@
     950
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
-   "n": "Front Rim",
-   "shape": "box",
+   "n": "Front Rim 600",
    "at": [
-    -600,
+    0,
     -612,
     935,
     600,
@@ -52,45 +58,60 @@
     955
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "box",
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
-   "n": "End Wall",
-   "shape": "box",
+   "n": "End Wall L",
    "at": [
-    -600,
+    0,
     -600,
     740,
-    -585,
+    15,
     -15,
     955
    ],
    "mat": "stainless",
-   "repeat": {
-    "n": 2,
-    "d": [
-     1185,
-     0,
-     0
-    ]
-   }
+   "shape": "box"
   },
   {
-   "n": "Upstand",
-   "shape": "box",
+   "n": "End Wall R 600",
    "at": [
+    585,
     -600,
+    740,
+    600,
+    -15,
+    955
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "600_1Bay"
+   ]
+  },
+  {
+   "n": "Upstand 600",
+   "at": [
+    0,
     -15,
     740,
     600,
     0,
     1300
    ],
-   "mat": "stainless"
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
-   "n": "Trough Floor",
-   "shape": "right",
+   "n": "Trough Floor 600",
+   "mat": "stainless",
    "pts": [
     [
      -585,
@@ -109,29 +130,36 @@
      774
     ]
    ],
+   "shape": "right",
    "x": [
-    -585,
+    15,
     585
    ],
-   "mat": "stainless"
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
-   "n": "Underside Skirt",
-   "shape": "box",
+   "n": "Underside Skirt 600",
    "at": [
-    -585,
+    15,
     -585,
     650,
     585,
     -560,
     790
    ],
+   "lod": "f",
    "mat": "stainless",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
-   "n": "Wall Bracket",
-   "shape": "right",
+   "n": "Wall Bracket L",
+   "lod": "f",
+   "mat": "stainless",
    "pts": [
     [
      -560,
@@ -150,73 +178,99 @@
      740
     ]
    ],
+   "shape": "right",
    "x": [
-    -560,
-    -548
-   ],
-   "mat": "stainless",
-   "lod": "f",
-   "repeat": {
-    "n": 2,
-    "d": [
-     1108,
-     0,
-     0
-    ]
-   }
+    40,
+    52
+   ]
   },
   {
-   "n": "Upstand Capping",
-   "shape": "fbox",
+   "n": "Wall Bracket R 600",
+   "lod": "f",
+   "mat": "stainless",
+   "pts": [
+    [
+     -560,
+     650
+    ],
+    [
+     0,
+     650
+    ],
+    [
+     0,
+     740
+    ],
+    [
+     -80,
+     740
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    548,
+    560
+   ],
+   "only": [
+    "600_1Bay"
+   ]
+  },
+  {
+   "n": "Upstand Capping 600",
    "at": [
-    -600,
+    0,
     -20,
     1290,
     600,
     0,
     1305
    ],
+   "lod": "f",
    "mat": "stainless",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "600_1Bay"
+   ]
   },
   {
    "n": "Spout 1",
-   "shape": "cyl",
    "axis": "y",
    "c": [
-    -300,
+    300,
     1150
    ],
+   "mat": "stainless",
    "r": 12,
+   "shape": "cyl",
    "y": [
     -300,
     -15
-   ],
-   "mat": "stainless"
+   ]
   },
   {
    "n": "Nozzle 1",
-   "shape": "cyl",
    "axis": "z",
    "c": [
-    -300,
+    300,
     -290
    ],
+   "mat": "stainless",
    "r": 12,
+   "shape": "cyl",
    "z": [
     1085,
     1150
-   ],
-   "mat": "stainless"
+   ]
   },
   {
    "n": "Aerator 1",
-   "shape": "turn",
    "axis": "z",
    "c": [
-    -300,
+    300,
     -290
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      0,
@@ -235,184 +289,10 @@
      1085
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "Sensor Window 1",
-   "shape": "fbox",
-   "at": [
-    -325,
-    -18,
-    1040,
-    -275,
-    -15,
-    1070
-   ],
-   "mat": "black",
-   "r": 6,
-   "lod": "f"
-  },
-  {
-   "n": "TMV Access Panel 1",
-   "shape": "fbox",
-   "at": [
-    -410,
-    -17,
-    1190,
-    -190,
-    -15,
-    1270
-   ],
-   "mat": "stainless",
-   "r": 4
-  },
-  {
-   "n": "TMV Panel Screw 1",
-   "shape": "cyl",
-   "axis": "y",
-   "c": [
-    -400,
-    1200
-   ],
-   "r": 3,
-   "y": [
-    -18,
-    -17
-   ],
-   "mat": "chrome",
-   "lod": "f",
-   "repeat": {
-    "n": 2,
-    "d": [
-     200,
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "n": "Knee Paddle 1",
-   "shape": "fbox",
-   "at": [
-    -370,
-    -625,
-    680,
-    -230,
-    -612,
-    760
-   ],
-   "mat": "stainless",
-   "r": 10
-  },
-  {
-   "n": "Waste Outlet 1",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -300,
-    -60
-   ],
-   "r": 22,
-   "z": [
-    600,
-    744
-   ],
-   "mat": "stainless"
-  },
-  {
-   "n": "Waste Plug 1",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -300,
-    -60
-   ],
-   "r": 30,
-   "z": [
-    744,
-    746
-   ],
-   "mat": "chrome",
-   "lod": "f"
-  },
-  {
-   "n": "Waste Hole 1",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -300,
-    -60
-   ],
-   "r": 20,
-   "z": [
-    700,
-    760
-   ],
-   "void": true
-  },
-  {
-   "n": "Spout 2",
-   "shape": "cyl",
-   "axis": "y",
-   "c": [
-    300,
-    1150
-   ],
-   "r": 12,
-   "y": [
-    -300,
-    -15
-   ],
-   "mat": "stainless"
-  },
-  {
-   "n": "Nozzle 2",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    300,
-    -290
-   ],
-   "r": 12,
-   "z": [
-    1085,
-    1150
-   ],
-   "mat": "stainless"
-  },
-  {
-   "n": "Aerator 2",
-   "shape": "turn",
-   "axis": "z",
-   "c": [
-    300,
-    -290
-   ],
-   "profile": [
-    [
-     0,
-     1078
-    ],
-    [
-     10,
-     1078
-    ],
-    [
-     12,
-     1085
-    ],
-    [
-     0,
-     1085
-    ]
-   ],
-   "mat": "black",
-   "lod": "f"
-  },
-  {
-   "n": "Sensor Window 2",
-   "shape": "fbox",
    "at": [
     275,
     -18,
@@ -421,13 +301,13 @@
     -15,
     1070
    ],
-   "mat": "black",
+   "lod": "f",
+   "mat": "display",
    "r": 6,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
-   "n": "TMV Access Panel 2",
-   "shape": "fbox",
+   "n": "TMV Access Panel 1",
    "at": [
     190,
     -17,
@@ -437,35 +317,35 @@
     1270
    ],
    "mat": "stainless",
-   "r": 4
+   "r": 4,
+   "shape": "fbox"
   },
   {
-   "n": "TMV Panel Screw 2",
-   "shape": "cyl",
+   "n": "TMV Panel Screw 1",
    "axis": "y",
    "c": [
     200,
     1200
    ],
-   "r": 3,
-   "y": [
-    -18,
-    -17
-   ],
-   "mat": "chrome",
    "lod": "f",
+   "mat": "chrome",
+   "r": 3,
    "repeat": {
-    "n": 2,
     "d": [
      200,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "cyl",
+   "y": [
+    -18,
+    -17
+   ]
   },
   {
-   "n": "Knee Paddle 2",
-   "shape": "fbox",
+   "n": "Knee Paddle 1",
    "at": [
     230,
     -625,
@@ -475,53 +355,753 @@
     760
    ],
    "mat": "stainless",
-   "r": 10
+   "r": 10,
+   "shape": "fbox"
   },
   {
-   "n": "Waste Outlet 2",
-   "shape": "cyl",
+   "n": "Waste Outlet 1",
    "axis": "z",
    "c": [
     300,
     -60
    ],
+   "mat": "stainless",
    "r": 22,
+   "shape": "cyl",
    "z": [
     600,
     744
-   ],
-   "mat": "stainless"
+   ]
   },
   {
-   "n": "Waste Plug 2",
-   "shape": "cyl",
+   "n": "Waste Plug 1",
    "axis": "z",
    "c": [
     300,
     -60
    ],
+   "lod": "f",
+   "mat": "chrome",
    "r": 30,
+   "shape": "cyl",
    "z": [
     744,
     746
-   ],
-   "mat": "chrome",
-   "lod": "f"
+   ]
   },
   {
-   "n": "Waste Hole 2",
-   "shape": "cyl",
+   "n": "Waste Hole 1",
    "axis": "z",
    "c": [
     300,
     -60
    ],
    "r": 20,
+   "shape": "cyl",
+   "void": true,
    "z": [
     700,
     760
+   ]
+  },
+  {
+   "n": "Front Apron 1200",
+   "at": [
+    0,
+    -600,
+    650,
+    1200,
+    -585,
+    950
    ],
-   "void": true
+   "mat": "stainless",
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Front Rim 1200",
+   "at": [
+    0,
+    -612,
+    935,
+    1200,
+    -585,
+    955
+   ],
+   "mat": "stainless",
+   "r": 6,
+   "shape": "box",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "End Wall R 1200",
+   "at": [
+    1185,
+    -600,
+    740,
+    1200,
+    -15,
+    955
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Upstand 1200",
+   "at": [
+    0,
+    -15,
+    740,
+    1200,
+    0,
+    1300
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Trough Floor 1200",
+   "mat": "stainless",
+   "pts": [
+    [
+     -585,
+     790
+    ],
+    [
+     -15,
+     742
+    ],
+    [
+     -15,
+     726
+    ],
+    [
+     -585,
+     774
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    15,
+    1185
+   ],
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Underside Skirt 1200",
+   "at": [
+    15,
+    -585,
+    650,
+    1185,
+    -560,
+    790
+   ],
+   "lod": "f",
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Wall Bracket R 1200",
+   "lod": "f",
+   "mat": "stainless",
+   "pts": [
+    [
+     -560,
+     650
+    ],
+    [
+     0,
+     650
+    ],
+    [
+     0,
+     740
+    ],
+    [
+     -80,
+     740
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    1148,
+    1160
+   ],
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Upstand Capping 1200",
+   "at": [
+    0,
+    -20,
+    1290,
+    1200,
+    0,
+    1305
+   ],
+   "lod": "f",
+   "mat": "stainless",
+   "shape": "fbox",
+   "only": [
+    "1200_2Bay"
+   ]
+  },
+  {
+   "n": "Spout 2",
+   "axis": "y",
+   "c": [
+    900,
+    1150
+   ],
+   "mat": "stainless",
+   "r": 12,
+   "shape": "cyl",
+   "y": [
+    -300,
+    -15
+   ],
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Nozzle 2",
+   "axis": "z",
+   "c": [
+    900,
+    -290
+   ],
+   "mat": "stainless",
+   "r": 12,
+   "shape": "cyl",
+   "z": [
+    1085,
+    1150
+   ],
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Aerator 2",
+   "axis": "z",
+   "c": [
+    900,
+    -290
+   ],
+   "lod": "f",
+   "mat": "black",
+   "profile": [
+    [
+     0,
+     1078
+    ],
+    [
+     10,
+     1078
+    ],
+    [
+     12,
+     1085
+    ],
+    [
+     0,
+     1085
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Sensor Window 2",
+   "at": [
+    875,
+    -18,
+    1040,
+    925,
+    -15,
+    1070
+   ],
+   "lod": "f",
+   "mat": "display",
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "TMV Access Panel 2",
+   "at": [
+    790,
+    -17,
+    1190,
+    1010,
+    -15,
+    1270
+   ],
+   "mat": "stainless",
+   "r": 4,
+   "shape": "fbox",
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "TMV Panel Screw 2",
+   "axis": "y",
+   "c": [
+    800,
+    1200
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 3,
+   "repeat": {
+    "d": [
+     200,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "cyl",
+   "y": [
+    -18,
+    -17
+   ],
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Knee Paddle 2",
+   "at": [
+    830,
+    -625,
+    680,
+    970,
+    -612,
+    760
+   ],
+   "mat": "stainless",
+   "r": 10,
+   "shape": "fbox",
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Waste Outlet 2",
+   "axis": "z",
+   "c": [
+    900,
+    -60
+   ],
+   "mat": "stainless",
+   "r": 22,
+   "shape": "cyl",
+   "z": [
+    600,
+    744
+   ],
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Waste Plug 2",
+   "axis": "z",
+   "c": [
+    900,
+    -60
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 30,
+   "shape": "cyl",
+   "z": [
+    744,
+    746
+   ],
+   "only": [
+    "1200_2Bay",
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Front Apron 1800",
+   "at": [
+    0,
+    -600,
+    650,
+    1800,
+    -585,
+    950
+   ],
+   "mat": "stainless",
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Front Rim 1800",
+   "at": [
+    0,
+    -612,
+    935,
+    1800,
+    -585,
+    955
+   ],
+   "mat": "stainless",
+   "r": 6,
+   "shape": "box",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "End Wall R 1800",
+   "at": [
+    1785,
+    -600,
+    740,
+    1800,
+    -15,
+    955
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Upstand 1800",
+   "at": [
+    0,
+    -15,
+    740,
+    1800,
+    0,
+    1300
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Trough Floor 1800",
+   "mat": "stainless",
+   "pts": [
+    [
+     -585,
+     790
+    ],
+    [
+     -15,
+     742
+    ],
+    [
+     -15,
+     726
+    ],
+    [
+     -585,
+     774
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    15,
+    1785
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Underside Skirt 1800",
+   "at": [
+    15,
+    -585,
+    650,
+    1785,
+    -560,
+    790
+   ],
+   "lod": "f",
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Wall Bracket R 1800",
+   "lod": "f",
+   "mat": "stainless",
+   "pts": [
+    [
+     -560,
+     650
+    ],
+    [
+     0,
+     650
+    ],
+    [
+     0,
+     740
+    ],
+    [
+     -80,
+     740
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    1748,
+    1760
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Upstand Capping 1800",
+   "at": [
+    0,
+    -20,
+    1290,
+    1800,
+    0,
+    1305
+   ],
+   "lod": "f",
+   "mat": "stainless",
+   "shape": "fbox",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Spout 3",
+   "axis": "y",
+   "c": [
+    1500,
+    1150
+   ],
+   "mat": "stainless",
+   "r": 12,
+   "shape": "cyl",
+   "y": [
+    -300,
+    -15
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Nozzle 3",
+   "axis": "z",
+   "c": [
+    1500,
+    -290
+   ],
+   "mat": "stainless",
+   "r": 12,
+   "shape": "cyl",
+   "z": [
+    1085,
+    1150
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Aerator 3",
+   "axis": "z",
+   "c": [
+    1500,
+    -290
+   ],
+   "lod": "f",
+   "mat": "black",
+   "profile": [
+    [
+     0,
+     1078
+    ],
+    [
+     10,
+     1078
+    ],
+    [
+     12,
+     1085
+    ],
+    [
+     0,
+     1085
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Sensor Window 3",
+   "at": [
+    1475,
+    -18,
+    1040,
+    1525,
+    -15,
+    1070
+   ],
+   "lod": "f",
+   "mat": "display",
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "TMV Access Panel 3",
+   "at": [
+    1390,
+    -17,
+    1190,
+    1610,
+    -15,
+    1270
+   ],
+   "mat": "stainless",
+   "r": 4,
+   "shape": "fbox",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "TMV Panel Screw 3",
+   "axis": "y",
+   "c": [
+    1400,
+    1200
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 3,
+   "repeat": {
+    "d": [
+     200,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "cyl",
+   "y": [
+    -18,
+    -17
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Knee Paddle 3",
+   "at": [
+    1430,
+    -625,
+    680,
+    1570,
+    -612,
+    760
+   ],
+   "mat": "stainless",
+   "r": 10,
+   "shape": "fbox",
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Waste Outlet 3",
+   "axis": "z",
+   "c": [
+    1500,
+    -60
+   ],
+   "mat": "stainless",
+   "r": 22,
+   "shape": "cyl",
+   "z": [
+    600,
+    744
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
+  },
+  {
+   "n": "Waste Plug 3",
+   "axis": "z",
+   "c": [
+    1500,
+    -60
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 30,
+   "shape": "cyl",
+   "z": [
+    744,
+    746
+   ],
+   "only": [
+    "1800_3Bay"
+   ]
   }
  ],
  "connectors": [
@@ -578,11 +1158,38 @@
    "side": "bottom",
    "diameter": 40,
    "flow": "Out"
+  },
+  {
+   "n": "CW 3",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "TMV Access Panel 3",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "HW 3",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "part": "TMV Access Panel 3",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "Waste 3",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Waste Outlet 3",
+   "side": "bottom",
+   "diameter": 40,
+   "flow": "Out"
   }
  ],
  "values": {
-  "Length 1200 mm (2-bay), projection 600 mm": {
-   "value": "1200x600",
+  "Length 600 / 1200 / 1800 mm, projection 600 mm": {
+   "value": "600 per bay",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
@@ -597,6 +1204,6 @@
    "source": "one surgeon per bay"
   }
  },
- "about": "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Drawn at 2 bays with CW/HW/waste arrayed per bay; 1-bay and 3-bay share the geometry until bay count drives it.",
+ "about": "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Per type: the insertion point is the left end; bay 1 is shared, bay 2 shows in the 2- and 3-bay types, bay 3 in the 3-bay type, and the body grows to 600 mm per bay. CW/HW/waste are arrayed per bay; the bay 2-3 connectors exist in every type (Revit can't switch connectors per type) and stay unconnected where the bay is hidden. The 3-bay type's waste holes for bays 2-3 are drawn as plugs because voids can't vary by type.",
  "template": "Metric Generic Model.rft"
 }

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_SepticTank_MultiChamber",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Ground at z = 0 at roof level: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer. Reference: query: structure septic tank multi chamber structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+septic+tank+multi+chamber+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0 at roof level, inlet end fixed at x = -2000 and the tank growing toward +x by type: base, walls, baffle (gap at the top), roof slab, two raised access shafts with covers, inlet and outlet dip tees (Fine), pipe stubs with connectors, vent pipe with cowl. Size by the engineer. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure septic tank multi chamber structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+septic+tank+multi+chamber+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://img0.hospitalityhub.com.au/graf-wastewater-treatment-multi-tank-septic-system/p/179942; photo_title: Graf multi-tank septic system; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -386,7 +386,7 @@
    "name": "10m3_RC/Description",
    "type": "10m3_RC",
    "param": "Description",
-   "value": "about 10 m3"
+   "value": "internal 3600 x 1600 x 2050"
   },
   {
    "op": "set_type_value",
@@ -424,6 +424,13 @@
    "value": "C"
   },
   {
+   "op": "set_type_value",
+   "name": "10m3_RC/URL",
+   "type": "10m3_RC",
+   "param": "URL",
+   "value": "https://img0.hospitalityhub.com.au/graf-wastewater-treatment-multi-tank-septic-system/p/179942"
+  },
+  {
    "op": "add_type",
    "name": "20m3_RC"
   },
@@ -453,7 +460,7 @@
    "name": "20m3_RC/Description",
    "type": "20m3_RC",
    "param": "Description",
-   "value": "about 20 m3"
+   "value": "internal 4800 x 2000 x 2100"
   },
   {
    "op": "set_type_value",
@@ -491,6 +498,13 @@
    "value": "C"
   },
   {
+   "op": "set_type_value",
+   "name": "20m3_RC/URL",
+   "type": "20m3_RC",
+   "param": "URL",
+   "value": "https://img0.hospitalityhub.com.au/graf-wastewater-treatment-multi-tank-septic-system/p/179942"
+  },
+  {
    "op": "add_type",
    "name": "40m3_RC"
   },
@@ -520,7 +534,7 @@
    "name": "40m3_RC/Description",
    "type": "40m3_RC",
    "param": "Description",
-   "value": "about 40 m3"
+   "value": "internal 6600 x 2800 x 2200"
   },
   {
    "op": "set_type_value",
@@ -558,6 +572,13 @@
    "value": "C"
   },
   {
+   "op": "set_type_value",
+   "name": "40m3_RC/URL",
+   "type": "40m3_RC",
+   "param": "URL",
+   "value": "https://img0.hospitalityhub.com.au/graf-wastewater-treatment-multi-tank-septic-system/p/179942"
+  },
+  {
    "op": "add_subcategory",
    "name": "Conc",
    "color": [
@@ -582,9 +603,9 @@
    "op": "add_subcategory",
    "name": "Ci",
    "color": [
-    34,
-    36,
-    38
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
@@ -596,7 +617,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
+   "name": "FMC_Metal_DuctileIron_Black",
    "param": "Ci Material"
   },
   {
@@ -657,22 +678,22 @@
    "points": [
     [
      -2400,
-     -1100
+     -1700.0
     ],
     [
-     2400,
-     -1100
+     5400,
+     -1700.0
     ],
     [
-     2400,
-     1100
+     5400,
+     1700.0
     ],
     [
      -2400,
-     1100
+     1700.0
     ]
    ],
-   "start": -2500,
+   "start": -2650,
    "end": 2640
   },
   {
@@ -689,293 +710,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Base Slab",
-   "points": [
-    [
-     -2100,
-     -1100
-    ],
-    [
-     2100,
-     -1100
-    ],
-    [
-     2100,
-     1100
-    ],
-    [
-     -2100,
-     1100
-    ]
-   ],
-   "start": -2500,
-   "end": -2250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Front",
-   "points": [
-    [
-     -2000,
-     -1000
-    ],
-    [
-     2000,
-     -1000
-    ],
-    [
-     2000,
-     -800
-    ],
-    [
-     -2000,
-     -800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Front",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Front",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Back",
-   "points": [
-    [
-     -2000,
-     800
-    ],
-    [
-     2000,
-     800
-    ],
-    [
-     2000,
-     1000
-    ],
-    [
-     -2000,
-     1000
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Back",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Back",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Left",
-   "points": [
-    [
-     -2000,
-     -800
-    ],
-    [
-     -1800,
-     -800
-    ],
-    [
-     -1800,
-     800
-    ],
-    [
-     -2000,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Left",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Left",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Wall Right",
-   "points": [
-    [
-     1800,
-     -800
-    ],
-    [
-     2000,
-     -800
-    ],
-    [
-     2000,
-     800
-    ],
-    [
-     1800,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Wall Right",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Wall Right",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Baffle Wall",
-   "points": [
-    [
-     600,
-     -800
-    ],
-    [
-     750,
-     -800
-    ],
-    [
-     750,
-     800
-    ],
-    [
-     600,
-     800
-    ]
-   ],
-   "start": -2250,
-   "end": -500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Baffle Wall",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Baffle Wall",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Baffle Wall",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof Slab",
-   "points": [
-    [
-     -2000,
-     -1000
-    ],
-    [
-     2000,
-     -1000
-    ],
-    [
-     2000,
-     1000
-    ],
-    [
-     -2000,
-     1000
-    ]
-   ],
-   "start": -200,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Access Shaft 1",
    "points": [
     [
@@ -1011,47 +745,6 @@
   {
    "op": "set_visibility",
    "name": "Access Shaft 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Shaft 2",
-   "points": [
-    [
-     750,
-     -450
-    ],
-    [
-     1650,
-     -450
-    ],
-    [
-     1650,
-     450
-    ],
-    [
-     750,
-     450
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Shaft 2",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Shaft 2",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Shaft 2",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -1081,30 +774,6 @@
    "end": 150
   },
   {
-   "op": "void_extrusion",
-   "name": "Shaft Opening 2",
-   "points": [
-    [
-     900,
-     -300
-    ],
-    [
-     1500,
-     -300
-    ],
-    [
-     1500,
-     300
-    ],
-    [
-     900,
-     300
-    ]
-   ],
-   "start": -201,
-   "end": 150
-  },
-  {
    "op": "extrusion",
    "name": "Cover 1 Frame Front",
    "points": [
@@ -1553,590 +1222,6 @@
    "name": "Cover 1 Keyhole 2",
    "coarse": false,
    "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Front",
-   "points": [
-    [
-     825.0,
-     -375.0
-    ],
-    [
-     1575.0,
-     -375.0
-    ],
-    [
-     1575.0,
-     -300.0
-    ],
-    [
-     825.0,
-     -300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Front",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Front",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Back",
-   "points": [
-    [
-     825.0,
-     300.0
-    ],
-    [
-     1575.0,
-     300.0
-    ],
-    [
-     1575.0,
-     375.0
-    ],
-    [
-     825.0,
-     375.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Back",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Back",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Left",
-   "points": [
-    [
-     825.0,
-     -300.0
-    ],
-    [
-     900.0,
-     -300.0
-    ],
-    [
-     900.0,
-     300.0
-    ],
-    [
-     825.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Left",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Left",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Frame Right",
-   "points": [
-    [
-     1500.0,
-     -300.0
-    ],
-    [
-     1575.0,
-     -300.0
-    ],
-    [
-     1575.0,
-     300.0
-    ],
-    [
-     1500.0,
-     300.0
-    ]
-   ],
-   "start": 150,
-   "end": 250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Frame Right",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Frame Right",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Cover",
-   "points": [
-    [
-     900.0,
-     -300.0
-    ],
-    [
-     1500.0,
-     -300.0
-    ],
-    [
-     1500.0,
-     300.0
-    ],
-    [
-     900.0,
-     300.0
-    ]
-   ],
-   "start": 244,
-   "end": 251
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Cover",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Cover",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Cover",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 1",
-   "points": [
-    [
-     940.0,
-     -188.0
-    ],
-    [
-     1460.0,
-     -188.0
-    ],
-    [
-     1460.0,
-     -172.0
-    ],
-    [
-     940.0,
-     -172.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 1",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 1",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 2",
-   "points": [
-    [
-     940.0,
-     -68.0
-    ],
-    [
-     1460.0,
-     -68.0
-    ],
-    [
-     1460.0,
-     -52.0
-    ],
-    [
-     940.0,
-     -52.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 2",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 2",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 3",
-   "points": [
-    [
-     940.0,
-     52.0
-    ],
-    [
-     1460.0,
-     52.0
-    ],
-    [
-     1460.0,
-     68.0
-    ],
-    [
-     940.0,
-     68.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 3",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 3",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Pattern 4",
-   "points": [
-    [
-     940.0,
-     172.0
-    ],
-    [
-     1460.0,
-     172.0
-    ],
-    [
-     1460.0,
-     188.0
-    ],
-    [
-     940.0,
-     188.0
-    ]
-   ],
-   "start": 251,
-   "end": 253.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Pattern 4",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Pattern 4",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Pattern 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Keyhole 1",
-   "points": [
-    [
-     925.0,
-     -20
-    ],
-    [
-     935.0,
-     -20
-    ],
-    [
-     935.0,
-     20
-    ],
-    [
-     925.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Keyhole 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Keyhole 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Keyhole 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover 2 Keyhole 2",
-   "points": [
-    [
-     1465.0,
-     -20
-    ],
-    [
-     1475.0,
-     -20
-    ],
-    [
-     1475.0,
-     20
-    ],
-    [
-     1465.0,
-     20
-    ]
-   ],
-   "start": 251,
-   "end": 252
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover 2 Keyhole 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover 2 Keyhole 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover 2 Keyhole 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vent Pipe",
-   "points": [
-    [
-     1855.0,
-     800.0
-    ],
-    [
-     1850.81,
-     821.05
-    ],
-    [
-     1838.89,
-     838.89
-    ],
-    [
-     1821.05,
-     850.81
-    ],
-    [
-     1800.0,
-     855.0
-    ],
-    [
-     1778.95,
-     850.81
-    ],
-    [
-     1761.11,
-     838.89
-    ],
-    [
-     1749.19,
-     821.05
-    ],
-    [
-     1745.0,
-     800.0
-    ],
-    [
-     1749.19,
-     778.95
-    ],
-    [
-     1761.11,
-     761.11
-    ],
-    [
-     1778.95,
-     749.19
-    ],
-    [
-     1800.0,
-     745.0
-    ],
-    [
-     1821.05,
-     749.19
-    ],
-    [
-     1838.89,
-     761.11
-    ],
-    [
-     1850.81,
-     778.95
-    ]
-   ],
-   "start": 0,
-   "end": 2500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vent Pipe",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Pipe",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Pipe",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Vent Cowl",
-   "profile": [
-    [
-     0,
-     2480
-    ],
-    [
-     55,
-     2480
-    ],
-    [
-     110,
-     2560
-    ],
-    [
-     110,
-     2600
-    ],
-    [
-     0,
-     2640
-    ]
-   ],
-   "axis_at": [
-    1800,
-    800
-   ],
-   "axis": "z",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vent Cowl",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vent Cowl",
-   "coarse": false,
-   "medium": true,
    "fine": true
   },
   {
@@ -2263,7 +1348,1032 @@
   },
   {
    "op": "extrusion",
-   "name": "Outlet Pipe",
+   "name": "Inlet Dip Tee",
+   "points": [
+    [
+     -1620.0,
+     0.0
+    ],
+    [
+     -1626.09,
+     30.61
+    ],
+    [
+     -1643.43,
+     56.57
+    ],
+    [
+     -1669.39,
+     73.91
+    ],
+    [
+     -1700.0,
+     80.0
+    ],
+    [
+     -1730.61,
+     73.91
+    ],
+    [
+     -1756.57,
+     56.57
+    ],
+    [
+     -1773.91,
+     30.61
+    ],
+    [
+     -1780.0,
+     0.0
+    ],
+    [
+     -1773.91,
+     -30.61
+    ],
+    [
+     -1756.57,
+     -56.57
+    ],
+    [
+     -1730.61,
+     -73.91
+    ],
+    [
+     -1700.0,
+     -80.0
+    ],
+    [
+     -1669.39,
+     -73.91
+    ],
+    [
+     -1643.43,
+     -56.57
+    ],
+    [
+     -1626.09,
+     -30.61
+    ]
+   ],
+   "start": -1200,
+   "end": -400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Dip Tee",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Dip Tee",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Dip Tee",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 10m3",
+   "points": [
+    [
+     -2100,
+     -1100.0
+    ],
+    [
+     2100,
+     -1100.0
+    ],
+    [
+     2100,
+     1100.0
+    ],
+    [
+     -2100,
+     1100.0
+    ]
+   ],
+   "start": -2500,
+   "end": -2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Front 10m3",
+   "points": [
+    [
+     -2000,
+     -1000.0
+    ],
+    [
+     2000,
+     -1000.0
+    ],
+    [
+     2000,
+     -800.0
+    ],
+    [
+     -2000,
+     -800.0
+    ]
+   ],
+   "start": -2250,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Front 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Front 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Front 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Back 10m3",
+   "points": [
+    [
+     -2000,
+     800.0
+    ],
+    [
+     2000,
+     800.0
+    ],
+    [
+     2000,
+     1000.0
+    ],
+    [
+     -2000,
+     1000.0
+    ]
+   ],
+   "start": -2250,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Back 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Back 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Back 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Left 10m3",
+   "points": [
+    [
+     -2000,
+     -800.0
+    ],
+    [
+     -1800,
+     -800.0
+    ],
+    [
+     -1800,
+     800.0
+    ],
+    [
+     -2000,
+     800.0
+    ]
+   ],
+   "start": -2250,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Left 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Left 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Left 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Right 10m3",
+   "points": [
+    [
+     1800,
+     -800.0
+    ],
+    [
+     2000,
+     -800.0
+    ],
+    [
+     2000,
+     800.0
+    ],
+    [
+     1800,
+     800.0
+    ]
+   ],
+   "start": -2250,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Right 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Right 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Right 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Baffle Wall 10m3",
+   "points": [
+    [
+     600.0,
+     -800.0
+    ],
+    [
+     750.0,
+     -800.0
+    ],
+    [
+     750.0,
+     800.0
+    ],
+    [
+     600.0,
+     800.0
+    ]
+   ],
+   "start": -2250,
+   "end": -500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baffle Wall 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baffle Wall 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baffle Wall 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Slab 10m3",
+   "points": [
+    [
+     -2000,
+     -1000.0
+    ],
+    [
+     2000,
+     -1000.0
+    ],
+    [
+     2000,
+     1000.0
+    ],
+    [
+     -2000,
+     1000.0
+    ]
+   ],
+   "start": -200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Slab 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Slab 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Slab 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Shaft 2 10m3",
+   "points": [
+    [
+     750,
+     -450
+    ],
+    [
+     1650,
+     -450
+    ],
+    [
+     1650,
+     450
+    ],
+    [
+     750,
+     450
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Shaft 2 10m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Shaft 2 10m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Shaft 2 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Shaft Opening 2 10m3",
+   "points": [
+    [
+     900,
+     -300
+    ],
+    [
+     1500,
+     -300
+    ],
+    [
+     1500,
+     300
+    ],
+    [
+     900,
+     300
+    ]
+   ],
+   "start": -201,
+   "end": 150
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Front 10m3",
+   "points": [
+    [
+     825.0,
+     -375.0
+    ],
+    [
+     1575.0,
+     -375.0
+    ],
+    [
+     1575.0,
+     -300.0
+    ],
+    [
+     825.0,
+     -300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Front 10m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Front 10m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Front 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Back 10m3",
+   "points": [
+    [
+     825.0,
+     300.0
+    ],
+    [
+     1575.0,
+     300.0
+    ],
+    [
+     1575.0,
+     375.0
+    ],
+    [
+     825.0,
+     375.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Back 10m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Back 10m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Back 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Left 10m3",
+   "points": [
+    [
+     825.0,
+     -300.0
+    ],
+    [
+     900.0,
+     -300.0
+    ],
+    [
+     900.0,
+     300.0
+    ],
+    [
+     825.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Left 10m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Left 10m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Left 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Right 10m3",
+   "points": [
+    [
+     1500.0,
+     -300.0
+    ],
+    [
+     1575.0,
+     -300.0
+    ],
+    [
+     1575.0,
+     300.0
+    ],
+    [
+     1500.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Right 10m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Right 10m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Right 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Cover 10m3",
+   "points": [
+    [
+     900.0,
+     -300.0
+    ],
+    [
+     1500.0,
+     -300.0
+    ],
+    [
+     1500.0,
+     300.0
+    ],
+    [
+     900.0,
+     300.0
+    ]
+   ],
+   "start": 244,
+   "end": 251
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Cover 10m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Cover 10m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Cover 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 10m3 1",
+   "points": [
+    [
+     940.0,
+     -188.0
+    ],
+    [
+     1460.0,
+     -188.0
+    ],
+    [
+     1460.0,
+     -172.0
+    ],
+    [
+     940.0,
+     -172.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 10m3 1",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 10m3 1",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 10m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 10m3 2",
+   "points": [
+    [
+     940.0,
+     -68.0
+    ],
+    [
+     1460.0,
+     -68.0
+    ],
+    [
+     1460.0,
+     -52.0
+    ],
+    [
+     940.0,
+     -52.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 10m3 2",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 10m3 2",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 10m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 10m3 3",
+   "points": [
+    [
+     940.0,
+     52.0
+    ],
+    [
+     1460.0,
+     52.0
+    ],
+    [
+     1460.0,
+     68.0
+    ],
+    [
+     940.0,
+     68.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 10m3 3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 10m3 3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 10m3 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 10m3 4",
+   "points": [
+    [
+     940.0,
+     172.0
+    ],
+    [
+     1460.0,
+     172.0
+    ],
+    [
+     1460.0,
+     188.0
+    ],
+    [
+     940.0,
+     188.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 10m3 4",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 10m3 4",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 10m3 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 10m3 1",
+   "points": [
+    [
+     925.0,
+     -20
+    ],
+    [
+     935.0,
+     -20
+    ],
+    [
+     935.0,
+     20
+    ],
+    [
+     925.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 10m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 10m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 10m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 10m3 2",
+   "points": [
+    [
+     1465.0,
+     -20
+    ],
+    [
+     1475.0,
+     -20
+    ],
+    [
+     1475.0,
+     20
+    ],
+    [
+     1465.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 10m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 10m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 10m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 10m3",
+   "points": [
+    [
+     1855.0,
+     800.0
+    ],
+    [
+     1850.81,
+     821.05
+    ],
+    [
+     1838.89,
+     838.89
+    ],
+    [
+     1821.05,
+     850.81
+    ],
+    [
+     1800.0,
+     855.0
+    ],
+    [
+     1778.95,
+     850.81
+    ],
+    [
+     1761.11,
+     838.89
+    ],
+    [
+     1749.19,
+     821.05
+    ],
+    [
+     1745.0,
+     800.0
+    ],
+    [
+     1749.19,
+     778.95
+    ],
+    [
+     1761.11,
+     761.11
+    ],
+    [
+     1778.95,
+     749.19
+    ],
+    [
+     1800.0,
+     745.0
+    ],
+    [
+     1821.05,
+     749.19
+    ],
+    [
+     1838.89,
+     761.11
+    ],
+    [
+     1850.81,
+     778.95
+    ]
+   ],
+   "start": 0,
+   "end": 2500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 10m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 10m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 10m3",
+   "profile": [
+    [
+     0,
+     2480
+    ],
+    [
+     55,
+     2480
+    ],
+    [
+     110,
+     2560
+    ],
+    [
+     110,
+     2600
+    ],
+    [
+     0,
+     2640
+    ]
+   ],
+   "axis_at": [
+    1800,
+    800.0
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 10m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 10m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe 10m3",
    "points": [
     [
      80.0,
@@ -2368,113 +2478,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Outlet Pipe",
+   "name": "Outlet Pipe 10m3",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Outlet Pipe",
+   "name": "Outlet Pipe 10m3",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Outlet Pipe",
+   "name": "Outlet Pipe 10m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Inlet Dip Tee",
-   "points": [
-    [
-     -1620.0,
-     0.0
-    ],
-    [
-     -1626.09,
-     30.61
-    ],
-    [
-     -1643.43,
-     56.57
-    ],
-    [
-     -1669.39,
-     73.91
-    ],
-    [
-     -1700.0,
-     80.0
-    ],
-    [
-     -1730.61,
-     73.91
-    ],
-    [
-     -1756.57,
-     56.57
-    ],
-    [
-     -1773.91,
-     30.61
-    ],
-    [
-     -1780.0,
-     0.0
-    ],
-    [
-     -1773.91,
-     -30.61
-    ],
-    [
-     -1756.57,
-     -56.57
-    ],
-    [
-     -1730.61,
-     -73.91
-    ],
-    [
-     -1700.0,
-     -80.0
-    ],
-    [
-     -1669.39,
-     -73.91
-    ],
-    [
-     -1643.43,
-     -56.57
-    ],
-    [
-     -1626.09,
-     -30.61
-    ]
-   ],
-   "start": -1200,
-   "end": -400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Dip Tee",
-   "subcategory": "Upvc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Dip Tee",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Dip Tee",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Outlet Dip Tee",
+   "name": "Outlet Dip Tee 10m3",
    "points": [
     [
      1780.0,
@@ -2546,20 +2567,2827 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Outlet Dip Tee",
+   "name": "Outlet Dip Tee 10m3",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Outlet Dip Tee",
+   "name": "Outlet Dip Tee 10m3",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Outlet Dip Tee",
+   "name": "Outlet Dip Tee 10m3",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 20m3",
+   "points": [
+    [
+     -2100,
+     -1300.0
+    ],
+    [
+     3300,
+     -1300.0
+    ],
+    [
+     3300,
+     1300.0
+    ],
+    [
+     -2100,
+     1300.0
+    ]
+   ],
+   "start": -2550,
+   "end": -2300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Front 20m3",
+   "points": [
+    [
+     -2000,
+     -1200.0
+    ],
+    [
+     3200,
+     -1200.0
+    ],
+    [
+     3200,
+     -1000.0
+    ],
+    [
+     -2000,
+     -1000.0
+    ]
+   ],
+   "start": -2300,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Front 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Front 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Front 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Back 20m3",
+   "points": [
+    [
+     -2000,
+     1000.0
+    ],
+    [
+     3200,
+     1000.0
+    ],
+    [
+     3200,
+     1200.0
+    ],
+    [
+     -2000,
+     1200.0
+    ]
+   ],
+   "start": -2300,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Back 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Back 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Back 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Left 20m3",
+   "points": [
+    [
+     -2000,
+     -1000.0
+    ],
+    [
+     -1800,
+     -1000.0
+    ],
+    [
+     -1800,
+     1000.0
+    ],
+    [
+     -2000,
+     1000.0
+    ]
+   ],
+   "start": -2300,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Left 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Left 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Left 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Right 20m3",
+   "points": [
+    [
+     3000,
+     -1000.0
+    ],
+    [
+     3200,
+     -1000.0
+    ],
+    [
+     3200,
+     1000.0
+    ],
+    [
+     3000,
+     1000.0
+    ]
+   ],
+   "start": -2300,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Right 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Right 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Right 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Baffle Wall 20m3",
+   "points": [
+    [
+     1400.0,
+     -1000.0
+    ],
+    [
+     1550.0,
+     -1000.0
+    ],
+    [
+     1550.0,
+     1000.0
+    ],
+    [
+     1400.0,
+     1000.0
+    ]
+   ],
+   "start": -2300,
+   "end": -500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baffle Wall 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baffle Wall 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baffle Wall 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Slab 20m3",
+   "points": [
+    [
+     -2000,
+     -1200.0
+    ],
+    [
+     3200,
+     -1200.0
+    ],
+    [
+     3200,
+     1200.0
+    ],
+    [
+     -2000,
+     1200.0
+    ]
+   ],
+   "start": -200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Slab 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Slab 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Slab 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Shaft 2 20m3",
+   "points": [
+    [
+     1950,
+     -450
+    ],
+    [
+     2850,
+     -450
+    ],
+    [
+     2850,
+     450
+    ],
+    [
+     1950,
+     450
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Shaft 2 20m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Shaft 2 20m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Shaft 2 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Shaft Opening 2 20m3",
+   "points": [
+    [
+     2100,
+     -300
+    ],
+    [
+     2700,
+     -300
+    ],
+    [
+     2700,
+     300
+    ],
+    [
+     2100,
+     300
+    ]
+   ],
+   "start": -201,
+   "end": 150
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Front 20m3",
+   "points": [
+    [
+     2025.0,
+     -375.0
+    ],
+    [
+     2775.0,
+     -375.0
+    ],
+    [
+     2775.0,
+     -300.0
+    ],
+    [
+     2025.0,
+     -300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Front 20m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Front 20m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Front 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Back 20m3",
+   "points": [
+    [
+     2025.0,
+     300.0
+    ],
+    [
+     2775.0,
+     300.0
+    ],
+    [
+     2775.0,
+     375.0
+    ],
+    [
+     2025.0,
+     375.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Back 20m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Back 20m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Back 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Left 20m3",
+   "points": [
+    [
+     2025.0,
+     -300.0
+    ],
+    [
+     2100.0,
+     -300.0
+    ],
+    [
+     2100.0,
+     300.0
+    ],
+    [
+     2025.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Left 20m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Left 20m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Left 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Right 20m3",
+   "points": [
+    [
+     2700.0,
+     -300.0
+    ],
+    [
+     2775.0,
+     -300.0
+    ],
+    [
+     2775.0,
+     300.0
+    ],
+    [
+     2700.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Right 20m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Right 20m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Right 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Cover 20m3",
+   "points": [
+    [
+     2100.0,
+     -300.0
+    ],
+    [
+     2700.0,
+     -300.0
+    ],
+    [
+     2700.0,
+     300.0
+    ],
+    [
+     2100.0,
+     300.0
+    ]
+   ],
+   "start": 244,
+   "end": 251
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Cover 20m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Cover 20m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Cover 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 20m3 1",
+   "points": [
+    [
+     2140.0,
+     -188.0
+    ],
+    [
+     2660.0,
+     -188.0
+    ],
+    [
+     2660.0,
+     -172.0
+    ],
+    [
+     2140.0,
+     -172.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 20m3 1",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 20m3 1",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 20m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 20m3 2",
+   "points": [
+    [
+     2140.0,
+     -68.0
+    ],
+    [
+     2660.0,
+     -68.0
+    ],
+    [
+     2660.0,
+     -52.0
+    ],
+    [
+     2140.0,
+     -52.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 20m3 2",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 20m3 2",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 20m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 20m3 3",
+   "points": [
+    [
+     2140.0,
+     52.0
+    ],
+    [
+     2660.0,
+     52.0
+    ],
+    [
+     2660.0,
+     68.0
+    ],
+    [
+     2140.0,
+     68.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 20m3 3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 20m3 3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 20m3 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 20m3 4",
+   "points": [
+    [
+     2140.0,
+     172.0
+    ],
+    [
+     2660.0,
+     172.0
+    ],
+    [
+     2660.0,
+     188.0
+    ],
+    [
+     2140.0,
+     188.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 20m3 4",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 20m3 4",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 20m3 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 20m3 1",
+   "points": [
+    [
+     2125.0,
+     -20
+    ],
+    [
+     2135.0,
+     -20
+    ],
+    [
+     2135.0,
+     20
+    ],
+    [
+     2125.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 20m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 20m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 20m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 20m3 2",
+   "points": [
+    [
+     2665.0,
+     -20
+    ],
+    [
+     2675.0,
+     -20
+    ],
+    [
+     2675.0,
+     20
+    ],
+    [
+     2665.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 20m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 20m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 20m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 20m3",
+   "points": [
+    [
+     3055.0,
+     1000.0
+    ],
+    [
+     3050.81,
+     1021.05
+    ],
+    [
+     3038.89,
+     1038.89
+    ],
+    [
+     3021.05,
+     1050.81
+    ],
+    [
+     3000.0,
+     1055.0
+    ],
+    [
+     2978.95,
+     1050.81
+    ],
+    [
+     2961.11,
+     1038.89
+    ],
+    [
+     2949.19,
+     1021.05
+    ],
+    [
+     2945.0,
+     1000.0
+    ],
+    [
+     2949.19,
+     978.95
+    ],
+    [
+     2961.11,
+     961.11
+    ],
+    [
+     2978.95,
+     949.19
+    ],
+    [
+     3000.0,
+     945.0
+    ],
+    [
+     3021.05,
+     949.19
+    ],
+    [
+     3038.89,
+     961.11
+    ],
+    [
+     3050.81,
+     978.95
+    ]
+   ],
+   "start": 0,
+   "end": 2500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 20m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 20m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 20m3",
+   "profile": [
+    [
+     0,
+     2480
+    ],
+    [
+     55,
+     2480
+    ],
+    [
+     110,
+     2560
+    ],
+    [
+     110,
+     2600
+    ],
+    [
+     0,
+     2640
+    ]
+   ],
+   "axis_at": [
+    3000,
+    1000.0
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 20m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe 20m3",
+   "points": [
+    [
+     80.0,
+     -575.0
+    ],
+    [
+     77.27,
+     -554.29
+    ],
+    [
+     69.28,
+     -535.0
+    ],
+    [
+     56.57,
+     -518.43
+    ],
+    [
+     40.0,
+     -505.72
+    ],
+    [
+     20.71,
+     -497.73
+    ],
+    [
+     0.0,
+     -495.0
+    ],
+    [
+     -20.71,
+     -497.73
+    ],
+    [
+     -40.0,
+     -505.72
+    ],
+    [
+     -56.57,
+     -518.43
+    ],
+    [
+     -69.28,
+     -535.0
+    ],
+    [
+     -77.27,
+     -554.29
+    ],
+    [
+     -80.0,
+     -575.0
+    ],
+    [
+     -77.27,
+     -595.71
+    ],
+    [
+     -69.28,
+     -615.0
+    ],
+    [
+     -56.57,
+     -631.57
+    ],
+    [
+     -40.0,
+     -644.28
+    ],
+    [
+     -20.71,
+     -652.27
+    ],
+    [
+     -0.0,
+     -655.0
+    ],
+    [
+     20.71,
+     -652.27
+    ],
+    [
+     40.0,
+     -644.28
+    ],
+    [
+     56.57,
+     -631.57
+    ],
+    [
+     69.28,
+     -615.0
+    ],
+    [
+     77.27,
+     -595.71
+    ]
+   ],
+   "start": 3190,
+   "end": 3600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe 20m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe 20m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe 20m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Dip Tee 20m3",
+   "points": [
+    [
+     2980.0,
+     0.0
+    ],
+    [
+     2973.91,
+     30.61
+    ],
+    [
+     2956.57,
+     56.57
+    ],
+    [
+     2930.61,
+     73.91
+    ],
+    [
+     2900.0,
+     80.0
+    ],
+    [
+     2869.39,
+     73.91
+    ],
+    [
+     2843.43,
+     56.57
+    ],
+    [
+     2826.09,
+     30.61
+    ],
+    [
+     2820.0,
+     0.0
+    ],
+    [
+     2826.09,
+     -30.61
+    ],
+    [
+     2843.43,
+     -56.57
+    ],
+    [
+     2869.39,
+     -73.91
+    ],
+    [
+     2900.0,
+     -80.0
+    ],
+    [
+     2930.61,
+     -73.91
+    ],
+    [
+     2956.57,
+     -56.57
+    ],
+    [
+     2973.91,
+     -30.61
+    ]
+   ],
+   "start": -1200,
+   "end": -400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Dip Tee 20m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Dip Tee 20m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Dip Tee 20m3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 40m3",
+   "points": [
+    [
+     -2100,
+     -1700.0
+    ],
+    [
+     5100,
+     -1700.0
+    ],
+    [
+     5100,
+     1700.0
+    ],
+    [
+     -2100,
+     1700.0
+    ]
+   ],
+   "start": -2650,
+   "end": -2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Front 40m3",
+   "points": [
+    [
+     -2000,
+     -1600.0
+    ],
+    [
+     5000,
+     -1600.0
+    ],
+    [
+     5000,
+     -1400.0
+    ],
+    [
+     -2000,
+     -1400.0
+    ]
+   ],
+   "start": -2400,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Front 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Front 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Front 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Back 40m3",
+   "points": [
+    [
+     -2000,
+     1400.0
+    ],
+    [
+     5000,
+     1400.0
+    ],
+    [
+     5000,
+     1600.0
+    ],
+    [
+     -2000,
+     1600.0
+    ]
+   ],
+   "start": -2400,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Back 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Back 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Back 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Left 40m3",
+   "points": [
+    [
+     -2000,
+     -1400.0
+    ],
+    [
+     -1800,
+     -1400.0
+    ],
+    [
+     -1800,
+     1400.0
+    ],
+    [
+     -2000,
+     1400.0
+    ]
+   ],
+   "start": -2400,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Left 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Left 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Left 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Wall Right 40m3",
+   "points": [
+    [
+     4800,
+     -1400.0
+    ],
+    [
+     5000,
+     -1400.0
+    ],
+    [
+     5000,
+     1400.0
+    ],
+    [
+     4800,
+     1400.0
+    ]
+   ],
+   "start": -2400,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Wall Right 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Wall Right 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Wall Right 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Baffle Wall 40m3",
+   "points": [
+    [
+     2600.0,
+     -1400.0
+    ],
+    [
+     2750.0,
+     -1400.0
+    ],
+    [
+     2750.0,
+     1400.0
+    ],
+    [
+     2600.0,
+     1400.0
+    ]
+   ],
+   "start": -2400,
+   "end": -500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baffle Wall 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baffle Wall 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baffle Wall 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Slab 40m3",
+   "points": [
+    [
+     -2000,
+     -1600.0
+    ],
+    [
+     5000,
+     -1600.0
+    ],
+    [
+     5000,
+     1600.0
+    ],
+    [
+     -2000,
+     1600.0
+    ]
+   ],
+   "start": -200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Slab 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Slab 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Slab 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Shaft 2 40m3",
+   "points": [
+    [
+     3750,
+     -450
+    ],
+    [
+     4650,
+     -450
+    ],
+    [
+     4650,
+     450
+    ],
+    [
+     3750,
+     450
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Shaft 2 40m3",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Shaft 2 40m3",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Shaft 2 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Shaft Opening 2 40m3",
+   "points": [
+    [
+     3900,
+     -300
+    ],
+    [
+     4500,
+     -300
+    ],
+    [
+     4500,
+     300
+    ],
+    [
+     3900,
+     300
+    ]
+   ],
+   "start": -201,
+   "end": 150
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Front 40m3",
+   "points": [
+    [
+     3825.0,
+     -375.0
+    ],
+    [
+     4575.0,
+     -375.0
+    ],
+    [
+     4575.0,
+     -300.0
+    ],
+    [
+     3825.0,
+     -300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Front 40m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Front 40m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Front 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Back 40m3",
+   "points": [
+    [
+     3825.0,
+     300.0
+    ],
+    [
+     4575.0,
+     300.0
+    ],
+    [
+     4575.0,
+     375.0
+    ],
+    [
+     3825.0,
+     375.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Back 40m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Back 40m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Back 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Left 40m3",
+   "points": [
+    [
+     3825.0,
+     -300.0
+    ],
+    [
+     3900.0,
+     -300.0
+    ],
+    [
+     3900.0,
+     300.0
+    ],
+    [
+     3825.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Left 40m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Left 40m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Left 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Frame Right 40m3",
+   "points": [
+    [
+     4500.0,
+     -300.0
+    ],
+    [
+     4575.0,
+     -300.0
+    ],
+    [
+     4575.0,
+     300.0
+    ],
+    [
+     4500.0,
+     300.0
+    ]
+   ],
+   "start": 150,
+   "end": 250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Frame Right 40m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Frame Right 40m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Frame Right 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Cover 40m3",
+   "points": [
+    [
+     3900.0,
+     -300.0
+    ],
+    [
+     4500.0,
+     -300.0
+    ],
+    [
+     4500.0,
+     300.0
+    ],
+    [
+     3900.0,
+     300.0
+    ]
+   ],
+   "start": 244,
+   "end": 251
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Cover 40m3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Cover 40m3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Cover 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 40m3 1",
+   "points": [
+    [
+     3940.0,
+     -188.0
+    ],
+    [
+     4460.0,
+     -188.0
+    ],
+    [
+     4460.0,
+     -172.0
+    ],
+    [
+     3940.0,
+     -172.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 40m3 1",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 40m3 1",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 40m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 40m3 2",
+   "points": [
+    [
+     3940.0,
+     -68.0
+    ],
+    [
+     4460.0,
+     -68.0
+    ],
+    [
+     4460.0,
+     -52.0
+    ],
+    [
+     3940.0,
+     -52.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 40m3 2",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 40m3 2",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 40m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 40m3 3",
+   "points": [
+    [
+     3940.0,
+     52.0
+    ],
+    [
+     4460.0,
+     52.0
+    ],
+    [
+     4460.0,
+     68.0
+    ],
+    [
+     3940.0,
+     68.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 40m3 3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 40m3 3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 40m3 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Pattern 40m3 4",
+   "points": [
+    [
+     3940.0,
+     172.0
+    ],
+    [
+     4460.0,
+     172.0
+    ],
+    [
+     4460.0,
+     188.0
+    ],
+    [
+     3940.0,
+     188.0
+    ]
+   ],
+   "start": 251,
+   "end": 253.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Pattern 40m3 4",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Pattern 40m3 4",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Pattern 40m3 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 40m3 1",
+   "points": [
+    [
+     3925.0,
+     -20
+    ],
+    [
+     3935.0,
+     -20
+    ],
+    [
+     3935.0,
+     20
+    ],
+    [
+     3925.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 40m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 40m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 40m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover 2 Keyhole 40m3 2",
+   "points": [
+    [
+     4465.0,
+     -20
+    ],
+    [
+     4475.0,
+     -20
+    ],
+    [
+     4475.0,
+     20
+    ],
+    [
+     4465.0,
+     20
+    ]
+   ],
+   "start": 251,
+   "end": 252
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover 2 Keyhole 40m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover 2 Keyhole 40m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover 2 Keyhole 40m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 40m3",
+   "points": [
+    [
+     4855.0,
+     1400.0
+    ],
+    [
+     4850.81,
+     1421.05
+    ],
+    [
+     4838.89,
+     1438.89
+    ],
+    [
+     4821.05,
+     1450.81
+    ],
+    [
+     4800.0,
+     1455.0
+    ],
+    [
+     4778.95,
+     1450.81
+    ],
+    [
+     4761.11,
+     1438.89
+    ],
+    [
+     4749.19,
+     1421.05
+    ],
+    [
+     4745.0,
+     1400.0
+    ],
+    [
+     4749.19,
+     1378.95
+    ],
+    [
+     4761.11,
+     1361.11
+    ],
+    [
+     4778.95,
+     1349.19
+    ],
+    [
+     4800.0,
+     1345.0
+    ],
+    [
+     4821.05,
+     1349.19
+    ],
+    [
+     4838.89,
+     1361.11
+    ],
+    [
+     4850.81,
+     1378.95
+    ]
+   ],
+   "start": 0,
+   "end": 2500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 40m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 40m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 40m3",
+   "profile": [
+    [
+     0,
+     2480
+    ],
+    [
+     55,
+     2480
+    ],
+    [
+     110,
+     2560
+    ],
+    [
+     110,
+     2600
+    ],
+    [
+     0,
+     2640
+    ]
+   ],
+   "axis_at": [
+    4800,
+    1400.0
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 40m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe 40m3",
+   "points": [
+    [
+     80.0,
+     -575.0
+    ],
+    [
+     77.27,
+     -554.29
+    ],
+    [
+     69.28,
+     -535.0
+    ],
+    [
+     56.57,
+     -518.43
+    ],
+    [
+     40.0,
+     -505.72
+    ],
+    [
+     20.71,
+     -497.73
+    ],
+    [
+     0.0,
+     -495.0
+    ],
+    [
+     -20.71,
+     -497.73
+    ],
+    [
+     -40.0,
+     -505.72
+    ],
+    [
+     -56.57,
+     -518.43
+    ],
+    [
+     -69.28,
+     -535.0
+    ],
+    [
+     -77.27,
+     -554.29
+    ],
+    [
+     -80.0,
+     -575.0
+    ],
+    [
+     -77.27,
+     -595.71
+    ],
+    [
+     -69.28,
+     -615.0
+    ],
+    [
+     -56.57,
+     -631.57
+    ],
+    [
+     -40.0,
+     -644.28
+    ],
+    [
+     -20.71,
+     -652.27
+    ],
+    [
+     -0.0,
+     -655.0
+    ],
+    [
+     20.71,
+     -652.27
+    ],
+    [
+     40.0,
+     -644.28
+    ],
+    [
+     56.57,
+     -631.57
+    ],
+    [
+     69.28,
+     -615.0
+    ],
+    [
+     77.27,
+     -595.71
+    ]
+   ],
+   "start": 4990,
+   "end": 5400,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe 40m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe 40m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe 40m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Dip Tee 40m3",
+   "points": [
+    [
+     4780.0,
+     0.0
+    ],
+    [
+     4773.91,
+     30.61
+    ],
+    [
+     4756.57,
+     56.57
+    ],
+    [
+     4730.61,
+     73.91
+    ],
+    [
+     4700.0,
+     80.0
+    ],
+    [
+     4669.39,
+     73.91
+    ],
+    [
+     4643.43,
+     56.57
+    ],
+    [
+     4626.09,
+     30.61
+    ],
+    [
+     4620.0,
+     0.0
+    ],
+    [
+     4626.09,
+     -30.61
+    ],
+    [
+     4643.43,
+     -56.57
+    ],
+    [
+     4669.39,
+     -73.91
+    ],
+    [
+     4700.0,
+     -80.0
+    ],
+    [
+     4730.61,
+     -73.91
+    ],
+    [
+     4756.57,
+     -56.57
+    ],
+    [
+     4773.91,
+     -30.61
+    ]
+   ],
+   "start": -1200,
+   "end": -400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Dip Tee 40m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Dip Tee 40m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Dip Tee 40m3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10m3_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10m3_RC/Show 10m3_RC",
+   "type": "10m3_RC",
+   "param": "Show 10m3_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_RC/Show 10m3_RC",
+   "type": "20m3_RC",
+   "param": "Show 10m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "40m3_RC/Show 10m3_RC",
+   "type": "40m3_RC",
+   "param": "Show 10m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 10m3/Visible",
+   "solid": "Base Slab 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Front 10m3/Visible",
+   "solid": "Tank Wall Front 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Back 10m3/Visible",
+   "solid": "Tank Wall Back 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Left 10m3/Visible",
+   "solid": "Tank Wall Left 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Right 10m3/Visible",
+   "solid": "Tank Wall Right 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Baffle Wall 10m3/Visible",
+   "solid": "Baffle Wall 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Slab 10m3/Visible",
+   "solid": "Roof Slab 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Shaft 2 10m3/Visible",
+   "solid": "Access Shaft 2 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft Opening 2 10m3/Visible",
+   "solid": "Shaft Opening 2 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Front 10m3/Visible",
+   "solid": "Cover 2 Frame Front 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Back 10m3/Visible",
+   "solid": "Cover 2 Frame Back 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Left 10m3/Visible",
+   "solid": "Cover 2 Frame Left 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Right 10m3/Visible",
+   "solid": "Cover 2 Frame Right 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Cover 10m3/Visible",
+   "solid": "Cover 2 Cover 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 10m3 1/Visible",
+   "solid": "Cover 2 Pattern 10m3 1",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 10m3 2/Visible",
+   "solid": "Cover 2 Pattern 10m3 2",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 10m3 3/Visible",
+   "solid": "Cover 2 Pattern 10m3 3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 10m3 4/Visible",
+   "solid": "Cover 2 Pattern 10m3 4",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 10m3 1/Visible",
+   "solid": "Cover 2 Keyhole 10m3 1",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 10m3 2/Visible",
+   "solid": "Cover 2 Keyhole 10m3 2",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Pipe 10m3/Visible",
+   "solid": "Vent Pipe 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Cowl 10m3/Visible",
+   "solid": "Vent Cowl 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Pipe 10m3/Visible",
+   "solid": "Outlet Pipe 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Dip Tee 10m3/Visible",
+   "solid": "Outlet Dip Tee 10m3",
+   "param": "Show 10m3_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 20m3_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10m3_RC/Show 20m3_RC",
+   "type": "10m3_RC",
+   "param": "Show 20m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_RC/Show 20m3_RC",
+   "type": "20m3_RC",
+   "param": "Show 20m3_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "40m3_RC/Show 20m3_RC",
+   "type": "40m3_RC",
+   "param": "Show 20m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 20m3/Visible",
+   "solid": "Base Slab 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Front 20m3/Visible",
+   "solid": "Tank Wall Front 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Back 20m3/Visible",
+   "solid": "Tank Wall Back 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Left 20m3/Visible",
+   "solid": "Tank Wall Left 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Right 20m3/Visible",
+   "solid": "Tank Wall Right 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Baffle Wall 20m3/Visible",
+   "solid": "Baffle Wall 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Slab 20m3/Visible",
+   "solid": "Roof Slab 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Shaft 2 20m3/Visible",
+   "solid": "Access Shaft 2 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft Opening 2 20m3/Visible",
+   "solid": "Shaft Opening 2 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Front 20m3/Visible",
+   "solid": "Cover 2 Frame Front 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Back 20m3/Visible",
+   "solid": "Cover 2 Frame Back 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Left 20m3/Visible",
+   "solid": "Cover 2 Frame Left 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Right 20m3/Visible",
+   "solid": "Cover 2 Frame Right 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Cover 20m3/Visible",
+   "solid": "Cover 2 Cover 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 20m3 1/Visible",
+   "solid": "Cover 2 Pattern 20m3 1",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 20m3 2/Visible",
+   "solid": "Cover 2 Pattern 20m3 2",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 20m3 3/Visible",
+   "solid": "Cover 2 Pattern 20m3 3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 20m3 4/Visible",
+   "solid": "Cover 2 Pattern 20m3 4",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 20m3 1/Visible",
+   "solid": "Cover 2 Keyhole 20m3 1",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 20m3 2/Visible",
+   "solid": "Cover 2 Keyhole 20m3 2",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Pipe 20m3/Visible",
+   "solid": "Vent Pipe 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Cowl 20m3/Visible",
+   "solid": "Vent Cowl 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Pipe 20m3/Visible",
+   "solid": "Outlet Pipe 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Dip Tee 20m3/Visible",
+   "solid": "Outlet Dip Tee 20m3",
+   "param": "Show 20m3_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 40m3_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10m3_RC/Show 40m3_RC",
+   "type": "10m3_RC",
+   "param": "Show 40m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_RC/Show 40m3_RC",
+   "type": "20m3_RC",
+   "param": "Show 40m3_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "40m3_RC/Show 40m3_RC",
+   "type": "40m3_RC",
+   "param": "Show 40m3_RC",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 40m3/Visible",
+   "solid": "Base Slab 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Front 40m3/Visible",
+   "solid": "Tank Wall Front 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Back 40m3/Visible",
+   "solid": "Tank Wall Back 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Left 40m3/Visible",
+   "solid": "Tank Wall Left 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Wall Right 40m3/Visible",
+   "solid": "Tank Wall Right 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Baffle Wall 40m3/Visible",
+   "solid": "Baffle Wall 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Slab 40m3/Visible",
+   "solid": "Roof Slab 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Shaft 2 40m3/Visible",
+   "solid": "Access Shaft 2 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft Opening 2 40m3/Visible",
+   "solid": "Shaft Opening 2 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Front 40m3/Visible",
+   "solid": "Cover 2 Frame Front 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Back 40m3/Visible",
+   "solid": "Cover 2 Frame Back 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Left 40m3/Visible",
+   "solid": "Cover 2 Frame Left 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Frame Right 40m3/Visible",
+   "solid": "Cover 2 Frame Right 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Cover 40m3/Visible",
+   "solid": "Cover 2 Cover 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 40m3 1/Visible",
+   "solid": "Cover 2 Pattern 40m3 1",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 40m3 2/Visible",
+   "solid": "Cover 2 Pattern 40m3 2",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 40m3 3/Visible",
+   "solid": "Cover 2 Pattern 40m3 3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Pattern 40m3 4/Visible",
+   "solid": "Cover 2 Pattern 40m3 4",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 40m3 1/Visible",
+   "solid": "Cover 2 Keyhole 40m3 1",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover 2 Keyhole 40m3 2/Visible",
+   "solid": "Cover 2 Keyhole 40m3 2",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Pipe 40m3/Visible",
+   "solid": "Vent Pipe 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Cowl 40m3/Visible",
+   "solid": "Vent Cowl 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Pipe 40m3/Visible",
+   "solid": "Outlet Pipe 40m3",
+   "param": "Show 40m3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Dip Tee 40m3/Visible",
+   "solid": "Outlet Dip Tee 40m3",
+   "param": "Show 40m3_RC"
   },
   {
    "op": "add_connector",
@@ -2576,7 +5404,7 @@
    "name": "SAN Out",
    "domain": "pipe",
    "system": "Sanitary",
-   "solid": "Outlet Pipe",
+   "solid": "Outlet Pipe 10m3",
    "side": "right",
    "diameter": 160,
    "flow": "Out"
@@ -2588,8 +5416,8 @@
   }
  ],
  "values": {
-  "Internal 3600 x 1600 x 2050 mm (10 m3 geometry)": {
-   "value": "3600x1600x2050",
+  "Internal 3600x1600x2050, 4800x2000x2100, 6600x2800x2200 mm (one per type)": {
+   "value": "per type",
    "source_status": "assumed",
    "source": "sizing by the engineer (note: where no sewer)"
   },

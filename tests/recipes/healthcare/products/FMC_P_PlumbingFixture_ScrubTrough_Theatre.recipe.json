@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingFixture_ScrubTrough_Theatre",
  "template": "Metric Generic Model.rft",
- "about": "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Drawn at 2 bays with CW/HW/waste arrayed per bay; 1-bay and 3-bay share the geometry until bay count drives it. Reference: query: scrub trough theatre plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=scrub+trough+theatre+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Per type: the insertion point is the left end; bay 1 is shared, bay 2 shows in the 2- and 3-bay types, bay 3 in the 3-bay type, and the body grows to 600 mm per bay. CW/HW/waste are arrayed per bay; the bay 2-3 connectors exist in every type (Revit can't switch connectors per type) and stay unconnected where the bay is hidden. The 3-bay type's waste holes for bays 2-3 are drawn as plugs because voids can't vary by type. Reference: query: scrub trough theatre plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=scrub+trough+theatre+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.medicalexpo.com/medical-manufacturer/2-station-surgical-sink-39936.html; photo_title: Surgical sinks, 2-station (MedicalExpo); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -326,7 +326,7 @@
    "name": "600_1Bay/Description",
    "type": "600_1Bay",
    "param": "Description",
-   "value": "Theatre scrub trough, 2-bay stainless steel 1200 mm, sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
+   "value": "Theatre scrub trough, stainless steel, 600 mm per bay (1, 2 or 3 bays), sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
   },
   {
    "op": "set_type_value",
@@ -364,6 +364,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "600_1Bay/URL",
+   "type": "600_1Bay",
+   "param": "URL",
+   "value": "https://www.medicalexpo.com/medical-manufacturer/2-station-surgical-sink-39936.html"
+  },
+  {
    "op": "add_type",
    "name": "1200_2Bay"
   },
@@ -393,7 +400,7 @@
    "name": "1200_2Bay/Description",
    "type": "1200_2Bay",
    "param": "Description",
-   "value": "Theatre scrub trough, 2-bay stainless steel 1200 mm, sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
+   "value": "Theatre scrub trough, stainless steel, 600 mm per bay (1, 2 or 3 bays), sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
   },
   {
    "op": "set_type_value",
@@ -431,6 +438,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "1200_2Bay/URL",
+   "type": "1200_2Bay",
+   "param": "URL",
+   "value": "https://www.medicalexpo.com/medical-manufacturer/2-station-surgical-sink-39936.html"
+  },
+  {
    "op": "add_type",
    "name": "1800_3Bay"
   },
@@ -460,7 +474,7 @@
    "name": "1800_3Bay/Description",
    "type": "1800_3Bay",
    "param": "Description",
-   "value": "Theatre scrub trough, 2-bay stainless steel 1200 mm, sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
+   "value": "Theatre scrub trough, stainless steel, 600 mm per bay (1, 2 or 3 bays), sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay"
   },
   {
    "op": "set_type_value",
@@ -496,6 +510,13 @@
    "type": "1800_3Bay",
    "param": "FMC_Role_Code",
    "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_3Bay/URL",
+   "type": "1800_3Bay",
+   "param": "URL",
+   "value": "https://www.medicalexpo.com/medical-manufacturer/2-station-surgical-sink-39936.html"
   },
   {
    "op": "add_subcategory",
@@ -541,6 +562,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Chrome",
    "color": [
     192,
@@ -575,19 +617,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -600.0,
+     0.0,
      -625
     ],
     [
-     600.0,
+     1800.0,
      -625
     ],
     [
-     600.0,
+     1800.0,
      0
     ],
     [
-     -600.0,
+     0.0,
      0
     ]
    ],
@@ -608,7 +650,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Front Apron",
+   "name": "Front Apron 600",
    "points": [
     [
      594.0,
@@ -651,43 +693,43 @@
      950.0
     ],
     [
-     -594.0,
+     6.0,
      950.0
     ],
     [
-     -596.3,
+     3.7,
      949.54
     ],
     [
-     -598.24,
+     1.76,
      948.24
     ],
     [
-     -599.54,
+     0.46,
      946.3
     ],
     [
-     -600.0,
+     0.0,
      944.0
     ],
     [
-     -600.0,
+     0.0,
      656.0
     ],
     [
-     -599.54,
+     0.46,
      653.7
     ],
     [
-     -598.24,
+     1.76,
      651.76
     ],
     [
-     -596.3,
+     3.7,
      650.46
     ],
     [
-     -594.0,
+     6.0,
      650.0
     ]
    ],
@@ -697,24 +739,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Front Apron",
+   "name": "Front Apron 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Front Apron",
+   "name": "Front Apron 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Front Apron",
+   "name": "Front Apron 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Front Rim",
+   "name": "Front Rim 600",
    "points": [
     [
      594.0,
@@ -757,43 +799,43 @@
      -585.0
     ],
     [
-     -594.0,
+     6.0,
      -585.0
     ],
     [
-     -596.3,
+     3.7,
      -585.46
     ],
     [
-     -598.24,
+     1.76,
      -586.76
     ],
     [
-     -599.54,
+     0.46,
      -588.7
     ],
     [
-     -600.0,
+     0.0,
      -591.0
     ],
     [
-     -600.0,
+     0.0,
      -606.0
     ],
     [
-     -599.54,
+     0.46,
      -608.3
     ],
     [
-     -598.24,
+     1.76,
      -610.24
     ],
     [
-     -596.3,
+     3.7,
      -611.54
     ],
     [
-     -594.0,
+     6.0,
      -612.0
     ]
    ],
@@ -802,39 +844,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Front Rim",
+   "name": "Front Rim 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Front Rim",
+   "name": "Front Rim 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Front Rim",
+   "name": "Front Rim 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "End Wall 1",
+   "name": "End Wall L",
    "points": [
     [
-     -600,
+     0,
      -600
     ],
     [
-     -585,
+     15,
      -600
     ],
     [
-     -585,
+     15,
      -15
     ],
     [
-     -600,
+     0,
      -15
     ]
    ],
@@ -843,24 +885,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Wall 1",
+   "name": "End Wall L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "End Wall 1",
+   "name": "End Wall L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Wall 1",
+   "name": "End Wall L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "End Wall 2",
+   "name": "End Wall R 600",
    "points": [
     [
      585,
@@ -884,27 +926,27 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Wall 2",
+   "name": "End Wall R 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "End Wall 2",
+   "name": "End Wall R 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Wall 2",
+   "name": "End Wall R 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Upstand",
+   "name": "Upstand 600",
    "points": [
     [
-     -600,
+     0,
      -15
     ],
     [
@@ -916,7 +958,7 @@
      0
     ],
     [
-     -600,
+     0,
      0
     ]
    ],
@@ -925,24 +967,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Upstand",
+   "name": "Upstand 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Upstand",
+   "name": "Upstand 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Upstand",
+   "name": "Upstand 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Trough Floor",
+   "name": "Trough Floor 600",
    "points": [
     [
      -585,
@@ -961,33 +1003,33 @@
      774
     ]
    ],
-   "start": -585,
+   "start": 15,
    "end": 585,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Trough Floor",
+   "name": "Trough Floor 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Trough Floor",
+   "name": "Trough Floor 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Trough Floor",
+   "name": "Trough Floor 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Underside Skirt",
+   "name": "Underside Skirt 600",
    "points": [
     [
-     -585,
+     15,
      -585
     ],
     [
@@ -999,7 +1041,7 @@
      -560
     ],
     [
-     -585,
+     15,
      -560
     ]
    ],
@@ -1008,24 +1050,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Underside Skirt",
+   "name": "Underside Skirt 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Underside Skirt",
+   "name": "Underside Skirt 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Underside Skirt",
+   "name": "Underside Skirt 600",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Bracket 1",
+   "name": "Wall Bracket L",
    "points": [
     [
      -560,
@@ -1044,30 +1086,30 @@
      740
     ]
    ],
-   "start": -560,
-   "end": -548,
+   "start": 40,
+   "end": 52,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Bracket 1",
+   "name": "Wall Bracket L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Bracket 1",
+   "name": "Wall Bracket L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Bracket 1",
+   "name": "Wall Bracket L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Bracket 2",
+   "name": "Wall Bracket R 600",
    "points": [
     [
      -560,
@@ -1092,27 +1134,27 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Bracket 2",
+   "name": "Wall Bracket R 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Bracket 2",
+   "name": "Wall Bracket R 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Bracket 2",
+   "name": "Wall Bracket R 600",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Upstand Capping",
+   "name": "Upstand Capping 600",
    "points": [
     [
-     -600,
+     0,
      1290
     ],
     [
@@ -1124,7 +1166,7 @@
      1305
     ],
     [
-     -600,
+     0,
      1305
     ]
    ],
@@ -1134,17 +1176,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Upstand Capping",
+   "name": "Upstand Capping 600",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Upstand Capping",
+   "name": "Upstand Capping 600",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Upstand Capping",
+   "name": "Upstand Capping 600",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -1152,1197 +1194,6 @@
   {
    "op": "extrusion",
    "name": "Spout 1",
-   "points": [
-    [
-     -288.0,
-     1150.0
-    ],
-    [
-     -288.41,
-     1153.11
-    ],
-    [
-     -289.61,
-     1156.0
-    ],
-    [
-     -291.51,
-     1158.49
-    ],
-    [
-     -294.0,
-     1160.39
-    ],
-    [
-     -296.89,
-     1161.59
-    ],
-    [
-     -300.0,
-     1162.0
-    ],
-    [
-     -303.11,
-     1161.59
-    ],
-    [
-     -306.0,
-     1160.39
-    ],
-    [
-     -308.49,
-     1158.49
-    ],
-    [
-     -310.39,
-     1156.0
-    ],
-    [
-     -311.59,
-     1153.11
-    ],
-    [
-     -312.0,
-     1150.0
-    ],
-    [
-     -311.59,
-     1146.89
-    ],
-    [
-     -310.39,
-     1144.0
-    ],
-    [
-     -308.49,
-     1141.51
-    ],
-    [
-     -306.0,
-     1139.61
-    ],
-    [
-     -303.11,
-     1138.41
-    ],
-    [
-     -300.0,
-     1138.0
-    ],
-    [
-     -296.89,
-     1138.41
-    ],
-    [
-     -294.0,
-     1139.61
-    ],
-    [
-     -291.51,
-     1141.51
-    ],
-    [
-     -289.61,
-     1144.0
-    ],
-    [
-     -288.41,
-     1146.89
-    ]
-   ],
-   "start": 15,
-   "end": 300,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Spout 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Spout 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Spout 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Nozzle 1",
-   "points": [
-    [
-     -288.0,
-     -290.0
-    ],
-    [
-     -288.41,
-     -286.89
-    ],
-    [
-     -289.61,
-     -284.0
-    ],
-    [
-     -291.51,
-     -281.51
-    ],
-    [
-     -294.0,
-     -279.61
-    ],
-    [
-     -296.89,
-     -278.41
-    ],
-    [
-     -300.0,
-     -278.0
-    ],
-    [
-     -303.11,
-     -278.41
-    ],
-    [
-     -306.0,
-     -279.61
-    ],
-    [
-     -308.49,
-     -281.51
-    ],
-    [
-     -310.39,
-     -284.0
-    ],
-    [
-     -311.59,
-     -286.89
-    ],
-    [
-     -312.0,
-     -290.0
-    ],
-    [
-     -311.59,
-     -293.11
-    ],
-    [
-     -310.39,
-     -296.0
-    ],
-    [
-     -308.49,
-     -298.49
-    ],
-    [
-     -306.0,
-     -300.39
-    ],
-    [
-     -303.11,
-     -301.59
-    ],
-    [
-     -300.0,
-     -302.0
-    ],
-    [
-     -296.89,
-     -301.59
-    ],
-    [
-     -294.0,
-     -300.39
-    ],
-    [
-     -291.51,
-     -298.49
-    ],
-    [
-     -289.61,
-     -296.0
-    ],
-    [
-     -288.41,
-     -293.11
-    ]
-   ],
-   "start": 1085,
-   "end": 1150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Nozzle 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Nozzle 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Nozzle 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Aerator 1",
-   "profile": [
-    [
-     0,
-     1078
-    ],
-    [
-     10,
-     1078
-    ],
-    [
-     12,
-     1085
-    ],
-    [
-     0,
-     1085
-    ]
-   ],
-   "axis_at": [
-    -300,
-    -290
-   ],
-   "axis": "z",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Aerator 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Aerator 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sensor Window 1",
-   "points": [
-    [
-     -281.0,
-     1040.0
-    ],
-    [
-     -278.7,
-     1040.46
-    ],
-    [
-     -276.76,
-     1041.76
-    ],
-    [
-     -275.46,
-     1043.7
-    ],
-    [
-     -275.0,
-     1046.0
-    ],
-    [
-     -275.0,
-     1064.0
-    ],
-    [
-     -275.46,
-     1066.3
-    ],
-    [
-     -276.76,
-     1068.24
-    ],
-    [
-     -278.7,
-     1069.54
-    ],
-    [
-     -281.0,
-     1070.0
-    ],
-    [
-     -319.0,
-     1070.0
-    ],
-    [
-     -321.3,
-     1069.54
-    ],
-    [
-     -323.24,
-     1068.24
-    ],
-    [
-     -324.54,
-     1066.3
-    ],
-    [
-     -325.0,
-     1064.0
-    ],
-    [
-     -325.0,
-     1046.0
-    ],
-    [
-     -324.54,
-     1043.7
-    ],
-    [
-     -323.24,
-     1041.76
-    ],
-    [
-     -321.3,
-     1040.46
-    ],
-    [
-     -319.0,
-     1040.0
-    ]
-   ],
-   "start": 15,
-   "end": 18,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sensor Window 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sensor Window 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sensor Window 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "TMV Access Panel 1",
-   "points": [
-    [
-     -194.0,
-     1190.0
-    ],
-    [
-     -192.47,
-     1190.3
-    ],
-    [
-     -191.17,
-     1191.17
-    ],
-    [
-     -190.3,
-     1192.47
-    ],
-    [
-     -190.0,
-     1194.0
-    ],
-    [
-     -190.0,
-     1266.0
-    ],
-    [
-     -190.3,
-     1267.53
-    ],
-    [
-     -191.17,
-     1268.83
-    ],
-    [
-     -192.47,
-     1269.7
-    ],
-    [
-     -194.0,
-     1270.0
-    ],
-    [
-     -406.0,
-     1270.0
-    ],
-    [
-     -407.53,
-     1269.7
-    ],
-    [
-     -408.83,
-     1268.83
-    ],
-    [
-     -409.7,
-     1267.53
-    ],
-    [
-     -410.0,
-     1266.0
-    ],
-    [
-     -410.0,
-     1194.0
-    ],
-    [
-     -409.7,
-     1192.47
-    ],
-    [
-     -408.83,
-     1191.17
-    ],
-    [
-     -407.53,
-     1190.3
-    ],
-    [
-     -406.0,
-     1190.0
-    ]
-   ],
-   "start": 15,
-   "end": 17,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "TMV Access Panel 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "TMV Access Panel 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "TMV Access Panel 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "TMV Panel Screw 1 1",
-   "points": [
-    [
-     -397.0,
-     1200.0
-    ],
-    [
-     -397.1,
-     1200.78
-    ],
-    [
-     -397.4,
-     1201.5
-    ],
-    [
-     -397.88,
-     1202.12
-    ],
-    [
-     -398.5,
-     1202.6
-    ],
-    [
-     -399.22,
-     1202.9
-    ],
-    [
-     -400.0,
-     1203.0
-    ],
-    [
-     -400.78,
-     1202.9
-    ],
-    [
-     -401.5,
-     1202.6
-    ],
-    [
-     -402.12,
-     1202.12
-    ],
-    [
-     -402.6,
-     1201.5
-    ],
-    [
-     -402.9,
-     1200.78
-    ],
-    [
-     -403.0,
-     1200.0
-    ],
-    [
-     -402.9,
-     1199.22
-    ],
-    [
-     -402.6,
-     1198.5
-    ],
-    [
-     -402.12,
-     1197.88
-    ],
-    [
-     -401.5,
-     1197.4
-    ],
-    [
-     -400.78,
-     1197.1
-    ],
-    [
-     -400.0,
-     1197.0
-    ],
-    [
-     -399.22,
-     1197.1
-    ],
-    [
-     -398.5,
-     1197.4
-    ],
-    [
-     -397.88,
-     1197.88
-    ],
-    [
-     -397.4,
-     1198.5
-    ],
-    [
-     -397.1,
-     1199.22
-    ]
-   ],
-   "start": 17,
-   "end": 18,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "TMV Panel Screw 1 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "TMV Panel Screw 1 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "TMV Panel Screw 1 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "TMV Panel Screw 1 2",
-   "points": [
-    [
-     -197.0,
-     1200.0
-    ],
-    [
-     -197.1,
-     1200.78
-    ],
-    [
-     -197.4,
-     1201.5
-    ],
-    [
-     -197.88,
-     1202.12
-    ],
-    [
-     -198.5,
-     1202.6
-    ],
-    [
-     -199.22,
-     1202.9
-    ],
-    [
-     -200.0,
-     1203.0
-    ],
-    [
-     -200.78,
-     1202.9
-    ],
-    [
-     -201.5,
-     1202.6
-    ],
-    [
-     -202.12,
-     1202.12
-    ],
-    [
-     -202.6,
-     1201.5
-    ],
-    [
-     -202.9,
-     1200.78
-    ],
-    [
-     -203.0,
-     1200.0
-    ],
-    [
-     -202.9,
-     1199.22
-    ],
-    [
-     -202.6,
-     1198.5
-    ],
-    [
-     -202.12,
-     1197.88
-    ],
-    [
-     -201.5,
-     1197.4
-    ],
-    [
-     -200.78,
-     1197.1
-    ],
-    [
-     -200.0,
-     1197.0
-    ],
-    [
-     -199.22,
-     1197.1
-    ],
-    [
-     -198.5,
-     1197.4
-    ],
-    [
-     -197.88,
-     1197.88
-    ],
-    [
-     -197.4,
-     1198.5
-    ],
-    [
-     -197.1,
-     1199.22
-    ]
-   ],
-   "start": 17,
-   "end": 18,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "TMV Panel Screw 1 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "TMV Panel Screw 1 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "TMV Panel Screw 1 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Paddle 1",
-   "points": [
-    [
-     -240.0,
-     680.0
-    ],
-    [
-     -236.17,
-     680.76
-    ],
-    [
-     -232.93,
-     682.93
-    ],
-    [
-     -230.76,
-     686.17
-    ],
-    [
-     -230.0,
-     690.0
-    ],
-    [
-     -230.0,
-     750.0
-    ],
-    [
-     -230.76,
-     753.83
-    ],
-    [
-     -232.93,
-     757.07
-    ],
-    [
-     -236.17,
-     759.24
-    ],
-    [
-     -240.0,
-     760.0
-    ],
-    [
-     -360.0,
-     760.0
-    ],
-    [
-     -363.83,
-     759.24
-    ],
-    [
-     -367.07,
-     757.07
-    ],
-    [
-     -369.24,
-     753.83
-    ],
-    [
-     -370.0,
-     750.0
-    ],
-    [
-     -370.0,
-     690.0
-    ],
-    [
-     -369.24,
-     686.17
-    ],
-    [
-     -367.07,
-     682.93
-    ],
-    [
-     -363.83,
-     680.76
-    ],
-    [
-     -360.0,
-     680.0
-    ]
-   ],
-   "start": 612,
-   "end": 625,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Paddle 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Paddle 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Paddle 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Outlet 1",
-   "points": [
-    [
-     -278.0,
-     -60.0
-    ],
-    [
-     -278.75,
-     -54.31
-    ],
-    [
-     -280.95,
-     -49.0
-    ],
-    [
-     -284.44,
-     -44.44
-    ],
-    [
-     -289.0,
-     -40.95
-    ],
-    [
-     -294.31,
-     -38.75
-    ],
-    [
-     -300.0,
-     -38.0
-    ],
-    [
-     -305.69,
-     -38.75
-    ],
-    [
-     -311.0,
-     -40.95
-    ],
-    [
-     -315.56,
-     -44.44
-    ],
-    [
-     -319.05,
-     -49.0
-    ],
-    [
-     -321.25,
-     -54.31
-    ],
-    [
-     -322.0,
-     -60.0
-    ],
-    [
-     -321.25,
-     -65.69
-    ],
-    [
-     -319.05,
-     -71.0
-    ],
-    [
-     -315.56,
-     -75.56
-    ],
-    [
-     -311.0,
-     -79.05
-    ],
-    [
-     -305.69,
-     -81.25
-    ],
-    [
-     -300.0,
-     -82.0
-    ],
-    [
-     -294.31,
-     -81.25
-    ],
-    [
-     -289.0,
-     -79.05
-    ],
-    [
-     -284.44,
-     -75.56
-    ],
-    [
-     -280.95,
-     -71.0
-    ],
-    [
-     -278.75,
-     -65.69
-    ]
-   ],
-   "start": 600,
-   "end": 744
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Outlet 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Outlet 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Outlet 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Plug 1",
-   "points": [
-    [
-     -270.0,
-     -60.0
-    ],
-    [
-     -271.02,
-     -52.24
-    ],
-    [
-     -274.02,
-     -45.0
-    ],
-    [
-     -278.79,
-     -38.79
-    ],
-    [
-     -285.0,
-     -34.02
-    ],
-    [
-     -292.24,
-     -31.02
-    ],
-    [
-     -300.0,
-     -30.0
-    ],
-    [
-     -307.76,
-     -31.02
-    ],
-    [
-     -315.0,
-     -34.02
-    ],
-    [
-     -321.21,
-     -38.79
-    ],
-    [
-     -325.98,
-     -45.0
-    ],
-    [
-     -328.98,
-     -52.24
-    ],
-    [
-     -330.0,
-     -60.0
-    ],
-    [
-     -328.98,
-     -67.76
-    ],
-    [
-     -325.98,
-     -75.0
-    ],
-    [
-     -321.21,
-     -81.21
-    ],
-    [
-     -315.0,
-     -85.98
-    ],
-    [
-     -307.76,
-     -88.98
-    ],
-    [
-     -300.0,
-     -90.0
-    ],
-    [
-     -292.24,
-     -88.98
-    ],
-    [
-     -285.0,
-     -85.98
-    ],
-    [
-     -278.79,
-     -81.21
-    ],
-    [
-     -274.02,
-     -75.0
-    ],
-    [
-     -271.02,
-     -67.76
-    ]
-   ],
-   "start": 744,
-   "end": 746
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Plug 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Plug 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Plug 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Waste Hole 1",
-   "points": [
-    [
-     -280.0,
-     -60.0
-    ],
-    [
-     -280.68,
-     -54.82
-    ],
-    [
-     -282.68,
-     -50.0
-    ],
-    [
-     -285.86,
-     -45.86
-    ],
-    [
-     -290.0,
-     -42.68
-    ],
-    [
-     -294.82,
-     -40.68
-    ],
-    [
-     -300.0,
-     -40.0
-    ],
-    [
-     -305.18,
-     -40.68
-    ],
-    [
-     -310.0,
-     -42.68
-    ],
-    [
-     -314.14,
-     -45.86
-    ],
-    [
-     -317.32,
-     -50.0
-    ],
-    [
-     -319.32,
-     -54.82
-    ],
-    [
-     -320.0,
-     -60.0
-    ],
-    [
-     -319.32,
-     -65.18
-    ],
-    [
-     -317.32,
-     -70.0
-    ],
-    [
-     -314.14,
-     -74.14
-    ],
-    [
-     -310.0,
-     -77.32
-    ],
-    [
-     -305.18,
-     -79.32
-    ],
-    [
-     -300.0,
-     -80.0
-    ],
-    [
-     -294.82,
-     -79.32
-    ],
-    [
-     -290.0,
-     -77.32
-    ],
-    [
-     -285.86,
-     -74.14
-    ],
-    [
-     -282.68,
-     -70.0
-    ],
-    [
-     -280.68,
-     -65.18
-    ]
-   ],
-   "start": 700,
-   "end": 760
-  },
-  {
-   "op": "extrusion",
-   "name": "Spout 2",
    "points": [
     [
      312.0,
@@ -2447,24 +1298,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Spout 2",
+   "name": "Spout 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Spout 2",
+   "name": "Spout 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Spout 2",
+   "name": "Spout 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Nozzle 2",
+   "name": "Nozzle 1",
    "points": [
     [
      312.0,
@@ -2568,24 +1419,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Nozzle 2",
+   "name": "Nozzle 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Nozzle 2",
+   "name": "Nozzle 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Nozzle 2",
+   "name": "Nozzle 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Aerator 2",
+   "name": "Aerator 1",
    "profile": [
     [
      0,
@@ -2613,19 +1464,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Aerator 2",
+   "name": "Aerator 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Aerator 2",
+   "name": "Aerator 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Sensor Window 2",
+   "name": "Sensor Window 1",
    "points": [
     [
      319.0,
@@ -2714,24 +1565,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Sensor Window 2",
-   "subcategory": "Black"
+   "name": "Sensor Window 1",
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
-   "name": "Sensor Window 2",
-   "param": "Black Material"
+   "name": "Sensor Window 1",
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sensor Window 2",
+   "name": "Sensor Window 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "TMV Access Panel 2",
+   "name": "TMV Access Panel 1",
    "points": [
     [
      406.0,
@@ -2820,24 +1671,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "TMV Access Panel 2",
+   "name": "TMV Access Panel 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "TMV Access Panel 2",
+   "name": "TMV Access Panel 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "TMV Access Panel 2",
+   "name": "TMV Access Panel 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "TMV Panel Screw 2 1",
+   "name": "TMV Panel Screw 1 1",
    "points": [
     [
      203.0,
@@ -2942,24 +1793,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "TMV Panel Screw 2 1",
+   "name": "TMV Panel Screw 1 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "TMV Panel Screw 2 1",
+   "name": "TMV Panel Screw 1 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "TMV Panel Screw 2 1",
+   "name": "TMV Panel Screw 1 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "TMV Panel Screw 2 2",
+   "name": "TMV Panel Screw 1 2",
    "points": [
     [
      403.0,
@@ -3064,24 +1915,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "TMV Panel Screw 2 2",
+   "name": "TMV Panel Screw 1 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "TMV Panel Screw 2 2",
+   "name": "TMV Panel Screw 1 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "TMV Panel Screw 2 2",
+   "name": "TMV Panel Screw 1 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Knee Paddle 2",
+   "name": "Knee Paddle 1",
    "points": [
     [
      360.0,
@@ -3170,24 +2021,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Knee Paddle 2",
+   "name": "Knee Paddle 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Knee Paddle 2",
+   "name": "Knee Paddle 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Knee Paddle 2",
+   "name": "Knee Paddle 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Waste Outlet 2",
+   "name": "Waste Outlet 1",
    "points": [
     [
      322.0,
@@ -3291,24 +2142,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Waste Outlet 2",
+   "name": "Waste Outlet 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Waste Outlet 2",
+   "name": "Waste Outlet 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Waste Outlet 2",
+   "name": "Waste Outlet 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Waste Plug 2",
+   "name": "Waste Plug 1",
    "points": [
     [
      330.0,
@@ -3412,24 +2263,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Waste Plug 2",
+   "name": "Waste Plug 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Waste Plug 2",
+   "name": "Waste Plug 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Waste Plug 2",
+   "name": "Waste Plug 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "void_extrusion",
-   "name": "Waste Hole 2",
+   "name": "Waste Hole 1",
    "points": [
     [
      320.0,
@@ -3532,6 +2383,3472 @@
    "end": 760
   },
   {
+   "op": "extrusion",
+   "name": "Front Apron 1200",
+   "points": [
+    [
+     1194.0,
+     650.0
+    ],
+    [
+     1196.3,
+     650.46
+    ],
+    [
+     1198.24,
+     651.76
+    ],
+    [
+     1199.54,
+     653.7
+    ],
+    [
+     1200.0,
+     656.0
+    ],
+    [
+     1200.0,
+     944.0
+    ],
+    [
+     1199.54,
+     946.3
+    ],
+    [
+     1198.24,
+     948.24
+    ],
+    [
+     1196.3,
+     949.54
+    ],
+    [
+     1194.0,
+     950.0
+    ],
+    [
+     6.0,
+     950.0
+    ],
+    [
+     3.7,
+     949.54
+    ],
+    [
+     1.76,
+     948.24
+    ],
+    [
+     0.46,
+     946.3
+    ],
+    [
+     0.0,
+     944.0
+    ],
+    [
+     0.0,
+     656.0
+    ],
+    [
+     0.46,
+     653.7
+    ],
+    [
+     1.76,
+     651.76
+    ],
+    [
+     3.7,
+     650.46
+    ],
+    [
+     6.0,
+     650.0
+    ]
+   ],
+   "start": 585,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Apron 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Apron 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Apron 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Rim 1200",
+   "points": [
+    [
+     1194.0,
+     -612.0
+    ],
+    [
+     1196.3,
+     -611.54
+    ],
+    [
+     1198.24,
+     -610.24
+    ],
+    [
+     1199.54,
+     -608.3
+    ],
+    [
+     1200.0,
+     -606.0
+    ],
+    [
+     1200.0,
+     -591.0
+    ],
+    [
+     1199.54,
+     -588.7
+    ],
+    [
+     1198.24,
+     -586.76
+    ],
+    [
+     1196.3,
+     -585.46
+    ],
+    [
+     1194.0,
+     -585.0
+    ],
+    [
+     6.0,
+     -585.0
+    ],
+    [
+     3.7,
+     -585.46
+    ],
+    [
+     1.76,
+     -586.76
+    ],
+    [
+     0.46,
+     -588.7
+    ],
+    [
+     0.0,
+     -591.0
+    ],
+    [
+     0.0,
+     -606.0
+    ],
+    [
+     0.46,
+     -608.3
+    ],
+    [
+     1.76,
+     -610.24
+    ],
+    [
+     3.7,
+     -611.54
+    ],
+    [
+     6.0,
+     -612.0
+    ]
+   ],
+   "start": 935,
+   "end": 955
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Rim 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Rim 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Rim 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Wall R 1200",
+   "points": [
+    [
+     1185,
+     -600
+    ],
+    [
+     1200,
+     -600
+    ],
+    [
+     1200,
+     -15
+    ],
+    [
+     1185,
+     -15
+    ]
+   ],
+   "start": 740,
+   "end": 955
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Wall R 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Wall R 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Wall R 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upstand 1200",
+   "points": [
+    [
+     0,
+     -15
+    ],
+    [
+     1200,
+     -15
+    ],
+    [
+     1200,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "start": 740,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upstand 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upstand 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upstand 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Trough Floor 1200",
+   "points": [
+    [
+     -585,
+     790
+    ],
+    [
+     -15,
+     742
+    ],
+    [
+     -15,
+     726
+    ],
+    [
+     -585,
+     774
+    ]
+   ],
+   "start": 15,
+   "end": 1185,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Trough Floor 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trough Floor 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trough Floor 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Underside Skirt 1200",
+   "points": [
+    [
+     15,
+     -585
+    ],
+    [
+     1185,
+     -585
+    ],
+    [
+     1185,
+     -560
+    ],
+    [
+     15,
+     -560
+    ]
+   ],
+   "start": 650,
+   "end": 790
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Underside Skirt 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Underside Skirt 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Underside Skirt 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket R 1200",
+   "points": [
+    [
+     -560,
+     650
+    ],
+    [
+     0,
+     650
+    ],
+    [
+     0,
+     740
+    ],
+    [
+     -80,
+     740
+    ]
+   ],
+   "start": 1148,
+   "end": 1160,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket R 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket R 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket R 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upstand Capping 1200",
+   "points": [
+    [
+     0,
+     1290
+    ],
+    [
+     1200,
+     1290
+    ],
+    [
+     1200,
+     1305
+    ],
+    [
+     0,
+     1305
+    ]
+   ],
+   "start": 0,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upstand Capping 1200",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upstand Capping 1200",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upstand Capping 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spout 2",
+   "points": [
+    [
+     912.0,
+     1150.0
+    ],
+    [
+     911.59,
+     1153.11
+    ],
+    [
+     910.39,
+     1156.0
+    ],
+    [
+     908.49,
+     1158.49
+    ],
+    [
+     906.0,
+     1160.39
+    ],
+    [
+     903.11,
+     1161.59
+    ],
+    [
+     900.0,
+     1162.0
+    ],
+    [
+     896.89,
+     1161.59
+    ],
+    [
+     894.0,
+     1160.39
+    ],
+    [
+     891.51,
+     1158.49
+    ],
+    [
+     889.61,
+     1156.0
+    ],
+    [
+     888.41,
+     1153.11
+    ],
+    [
+     888.0,
+     1150.0
+    ],
+    [
+     888.41,
+     1146.89
+    ],
+    [
+     889.61,
+     1144.0
+    ],
+    [
+     891.51,
+     1141.51
+    ],
+    [
+     894.0,
+     1139.61
+    ],
+    [
+     896.89,
+     1138.41
+    ],
+    [
+     900.0,
+     1138.0
+    ],
+    [
+     903.11,
+     1138.41
+    ],
+    [
+     906.0,
+     1139.61
+    ],
+    [
+     908.49,
+     1141.51
+    ],
+    [
+     910.39,
+     1144.0
+    ],
+    [
+     911.59,
+     1146.89
+    ]
+   ],
+   "start": 15,
+   "end": 300,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spout 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spout 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spout 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nozzle 2",
+   "points": [
+    [
+     912.0,
+     -290.0
+    ],
+    [
+     911.59,
+     -286.89
+    ],
+    [
+     910.39,
+     -284.0
+    ],
+    [
+     908.49,
+     -281.51
+    ],
+    [
+     906.0,
+     -279.61
+    ],
+    [
+     903.11,
+     -278.41
+    ],
+    [
+     900.0,
+     -278.0
+    ],
+    [
+     896.89,
+     -278.41
+    ],
+    [
+     894.0,
+     -279.61
+    ],
+    [
+     891.51,
+     -281.51
+    ],
+    [
+     889.61,
+     -284.0
+    ],
+    [
+     888.41,
+     -286.89
+    ],
+    [
+     888.0,
+     -290.0
+    ],
+    [
+     888.41,
+     -293.11
+    ],
+    [
+     889.61,
+     -296.0
+    ],
+    [
+     891.51,
+     -298.49
+    ],
+    [
+     894.0,
+     -300.39
+    ],
+    [
+     896.89,
+     -301.59
+    ],
+    [
+     900.0,
+     -302.0
+    ],
+    [
+     903.11,
+     -301.59
+    ],
+    [
+     906.0,
+     -300.39
+    ],
+    [
+     908.49,
+     -298.49
+    ],
+    [
+     910.39,
+     -296.0
+    ],
+    [
+     911.59,
+     -293.11
+    ]
+   ],
+   "start": 1085,
+   "end": 1150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nozzle 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nozzle 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nozzle 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Aerator 2",
+   "profile": [
+    [
+     0,
+     1078
+    ],
+    [
+     10,
+     1078
+    ],
+    [
+     12,
+     1085
+    ],
+    [
+     0,
+     1085
+    ]
+   ],
+   "axis_at": [
+    900,
+    -290
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Aerator 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Aerator 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sensor Window 2",
+   "points": [
+    [
+     919.0,
+     1040.0
+    ],
+    [
+     921.3,
+     1040.46
+    ],
+    [
+     923.24,
+     1041.76
+    ],
+    [
+     924.54,
+     1043.7
+    ],
+    [
+     925.0,
+     1046.0
+    ],
+    [
+     925.0,
+     1064.0
+    ],
+    [
+     924.54,
+     1066.3
+    ],
+    [
+     923.24,
+     1068.24
+    ],
+    [
+     921.3,
+     1069.54
+    ],
+    [
+     919.0,
+     1070.0
+    ],
+    [
+     881.0,
+     1070.0
+    ],
+    [
+     878.7,
+     1069.54
+    ],
+    [
+     876.76,
+     1068.24
+    ],
+    [
+     875.46,
+     1066.3
+    ],
+    [
+     875.0,
+     1064.0
+    ],
+    [
+     875.0,
+     1046.0
+    ],
+    [
+     875.46,
+     1043.7
+    ],
+    [
+     876.76,
+     1041.76
+    ],
+    [
+     878.7,
+     1040.46
+    ],
+    [
+     881.0,
+     1040.0
+    ]
+   ],
+   "start": 15,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sensor Window 2",
+   "subcategory": "Display"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sensor Window 2",
+   "param": "Display Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sensor Window 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Access Panel 2",
+   "points": [
+    [
+     1006.0,
+     1190.0
+    ],
+    [
+     1007.53,
+     1190.3
+    ],
+    [
+     1008.83,
+     1191.17
+    ],
+    [
+     1009.7,
+     1192.47
+    ],
+    [
+     1010.0,
+     1194.0
+    ],
+    [
+     1010.0,
+     1266.0
+    ],
+    [
+     1009.7,
+     1267.53
+    ],
+    [
+     1008.83,
+     1268.83
+    ],
+    [
+     1007.53,
+     1269.7
+    ],
+    [
+     1006.0,
+     1270.0
+    ],
+    [
+     794.0,
+     1270.0
+    ],
+    [
+     792.47,
+     1269.7
+    ],
+    [
+     791.17,
+     1268.83
+    ],
+    [
+     790.3,
+     1267.53
+    ],
+    [
+     790.0,
+     1266.0
+    ],
+    [
+     790.0,
+     1194.0
+    ],
+    [
+     790.3,
+     1192.47
+    ],
+    [
+     791.17,
+     1191.17
+    ],
+    [
+     792.47,
+     1190.3
+    ],
+    [
+     794.0,
+     1190.0
+    ]
+   ],
+   "start": 15,
+   "end": 17,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Access Panel 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Access Panel 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Access Panel 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Panel Screw 2 1",
+   "points": [
+    [
+     803.0,
+     1200.0
+    ],
+    [
+     802.9,
+     1200.78
+    ],
+    [
+     802.6,
+     1201.5
+    ],
+    [
+     802.12,
+     1202.12
+    ],
+    [
+     801.5,
+     1202.6
+    ],
+    [
+     800.78,
+     1202.9
+    ],
+    [
+     800.0,
+     1203.0
+    ],
+    [
+     799.22,
+     1202.9
+    ],
+    [
+     798.5,
+     1202.6
+    ],
+    [
+     797.88,
+     1202.12
+    ],
+    [
+     797.4,
+     1201.5
+    ],
+    [
+     797.1,
+     1200.78
+    ],
+    [
+     797.0,
+     1200.0
+    ],
+    [
+     797.1,
+     1199.22
+    ],
+    [
+     797.4,
+     1198.5
+    ],
+    [
+     797.88,
+     1197.88
+    ],
+    [
+     798.5,
+     1197.4
+    ],
+    [
+     799.22,
+     1197.1
+    ],
+    [
+     800.0,
+     1197.0
+    ],
+    [
+     800.78,
+     1197.1
+    ],
+    [
+     801.5,
+     1197.4
+    ],
+    [
+     802.12,
+     1197.88
+    ],
+    [
+     802.6,
+     1198.5
+    ],
+    [
+     802.9,
+     1199.22
+    ]
+   ],
+   "start": 17,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Panel Screw 2 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Panel Screw 2 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Panel Screw 2 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Panel Screw 2 2",
+   "points": [
+    [
+     1003.0,
+     1200.0
+    ],
+    [
+     1002.9,
+     1200.78
+    ],
+    [
+     1002.6,
+     1201.5
+    ],
+    [
+     1002.12,
+     1202.12
+    ],
+    [
+     1001.5,
+     1202.6
+    ],
+    [
+     1000.78,
+     1202.9
+    ],
+    [
+     1000.0,
+     1203.0
+    ],
+    [
+     999.22,
+     1202.9
+    ],
+    [
+     998.5,
+     1202.6
+    ],
+    [
+     997.88,
+     1202.12
+    ],
+    [
+     997.4,
+     1201.5
+    ],
+    [
+     997.1,
+     1200.78
+    ],
+    [
+     997.0,
+     1200.0
+    ],
+    [
+     997.1,
+     1199.22
+    ],
+    [
+     997.4,
+     1198.5
+    ],
+    [
+     997.88,
+     1197.88
+    ],
+    [
+     998.5,
+     1197.4
+    ],
+    [
+     999.22,
+     1197.1
+    ],
+    [
+     1000.0,
+     1197.0
+    ],
+    [
+     1000.78,
+     1197.1
+    ],
+    [
+     1001.5,
+     1197.4
+    ],
+    [
+     1002.12,
+     1197.88
+    ],
+    [
+     1002.6,
+     1198.5
+    ],
+    [
+     1002.9,
+     1199.22
+    ]
+   ],
+   "start": 17,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Panel Screw 2 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Panel Screw 2 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Panel Screw 2 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Knee Paddle 2",
+   "points": [
+    [
+     960.0,
+     680.0
+    ],
+    [
+     963.83,
+     680.76
+    ],
+    [
+     967.07,
+     682.93
+    ],
+    [
+     969.24,
+     686.17
+    ],
+    [
+     970.0,
+     690.0
+    ],
+    [
+     970.0,
+     750.0
+    ],
+    [
+     969.24,
+     753.83
+    ],
+    [
+     967.07,
+     757.07
+    ],
+    [
+     963.83,
+     759.24
+    ],
+    [
+     960.0,
+     760.0
+    ],
+    [
+     840.0,
+     760.0
+    ],
+    [
+     836.17,
+     759.24
+    ],
+    [
+     832.93,
+     757.07
+    ],
+    [
+     830.76,
+     753.83
+    ],
+    [
+     830.0,
+     750.0
+    ],
+    [
+     830.0,
+     690.0
+    ],
+    [
+     830.76,
+     686.17
+    ],
+    [
+     832.93,
+     682.93
+    ],
+    [
+     836.17,
+     680.76
+    ],
+    [
+     840.0,
+     680.0
+    ]
+   ],
+   "start": 612,
+   "end": 625,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Knee Paddle 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Knee Paddle 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Knee Paddle 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Outlet 2",
+   "points": [
+    [
+     922.0,
+     -60.0
+    ],
+    [
+     921.25,
+     -54.31
+    ],
+    [
+     919.05,
+     -49.0
+    ],
+    [
+     915.56,
+     -44.44
+    ],
+    [
+     911.0,
+     -40.95
+    ],
+    [
+     905.69,
+     -38.75
+    ],
+    [
+     900.0,
+     -38.0
+    ],
+    [
+     894.31,
+     -38.75
+    ],
+    [
+     889.0,
+     -40.95
+    ],
+    [
+     884.44,
+     -44.44
+    ],
+    [
+     880.95,
+     -49.0
+    ],
+    [
+     878.75,
+     -54.31
+    ],
+    [
+     878.0,
+     -60.0
+    ],
+    [
+     878.75,
+     -65.69
+    ],
+    [
+     880.95,
+     -71.0
+    ],
+    [
+     884.44,
+     -75.56
+    ],
+    [
+     889.0,
+     -79.05
+    ],
+    [
+     894.31,
+     -81.25
+    ],
+    [
+     900.0,
+     -82.0
+    ],
+    [
+     905.69,
+     -81.25
+    ],
+    [
+     911.0,
+     -79.05
+    ],
+    [
+     915.56,
+     -75.56
+    ],
+    [
+     919.05,
+     -71.0
+    ],
+    [
+     921.25,
+     -65.69
+    ]
+   ],
+   "start": 600,
+   "end": 744
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Outlet 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Outlet 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Outlet 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Plug 2",
+   "points": [
+    [
+     930.0,
+     -60.0
+    ],
+    [
+     928.98,
+     -52.24
+    ],
+    [
+     925.98,
+     -45.0
+    ],
+    [
+     921.21,
+     -38.79
+    ],
+    [
+     915.0,
+     -34.02
+    ],
+    [
+     907.76,
+     -31.02
+    ],
+    [
+     900.0,
+     -30.0
+    ],
+    [
+     892.24,
+     -31.02
+    ],
+    [
+     885.0,
+     -34.02
+    ],
+    [
+     878.79,
+     -38.79
+    ],
+    [
+     874.02,
+     -45.0
+    ],
+    [
+     871.02,
+     -52.24
+    ],
+    [
+     870.0,
+     -60.0
+    ],
+    [
+     871.02,
+     -67.76
+    ],
+    [
+     874.02,
+     -75.0
+    ],
+    [
+     878.79,
+     -81.21
+    ],
+    [
+     885.0,
+     -85.98
+    ],
+    [
+     892.24,
+     -88.98
+    ],
+    [
+     900.0,
+     -90.0
+    ],
+    [
+     907.76,
+     -88.98
+    ],
+    [
+     915.0,
+     -85.98
+    ],
+    [
+     921.21,
+     -81.21
+    ],
+    [
+     925.98,
+     -75.0
+    ],
+    [
+     928.98,
+     -67.76
+    ]
+   ],
+   "start": 744,
+   "end": 746
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Plug 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Plug 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Plug 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Apron 1800",
+   "points": [
+    [
+     1794.0,
+     650.0
+    ],
+    [
+     1796.3,
+     650.46
+    ],
+    [
+     1798.24,
+     651.76
+    ],
+    [
+     1799.54,
+     653.7
+    ],
+    [
+     1800.0,
+     656.0
+    ],
+    [
+     1800.0,
+     944.0
+    ],
+    [
+     1799.54,
+     946.3
+    ],
+    [
+     1798.24,
+     948.24
+    ],
+    [
+     1796.3,
+     949.54
+    ],
+    [
+     1794.0,
+     950.0
+    ],
+    [
+     6.0,
+     950.0
+    ],
+    [
+     3.7,
+     949.54
+    ],
+    [
+     1.76,
+     948.24
+    ],
+    [
+     0.46,
+     946.3
+    ],
+    [
+     0.0,
+     944.0
+    ],
+    [
+     0.0,
+     656.0
+    ],
+    [
+     0.46,
+     653.7
+    ],
+    [
+     1.76,
+     651.76
+    ],
+    [
+     3.7,
+     650.46
+    ],
+    [
+     6.0,
+     650.0
+    ]
+   ],
+   "start": 585,
+   "end": 600,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Apron 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Apron 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Apron 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Rim 1800",
+   "points": [
+    [
+     1794.0,
+     -612.0
+    ],
+    [
+     1796.3,
+     -611.54
+    ],
+    [
+     1798.24,
+     -610.24
+    ],
+    [
+     1799.54,
+     -608.3
+    ],
+    [
+     1800.0,
+     -606.0
+    ],
+    [
+     1800.0,
+     -591.0
+    ],
+    [
+     1799.54,
+     -588.7
+    ],
+    [
+     1798.24,
+     -586.76
+    ],
+    [
+     1796.3,
+     -585.46
+    ],
+    [
+     1794.0,
+     -585.0
+    ],
+    [
+     6.0,
+     -585.0
+    ],
+    [
+     3.7,
+     -585.46
+    ],
+    [
+     1.76,
+     -586.76
+    ],
+    [
+     0.46,
+     -588.7
+    ],
+    [
+     0.0,
+     -591.0
+    ],
+    [
+     0.0,
+     -606.0
+    ],
+    [
+     0.46,
+     -608.3
+    ],
+    [
+     1.76,
+     -610.24
+    ],
+    [
+     3.7,
+     -611.54
+    ],
+    [
+     6.0,
+     -612.0
+    ]
+   ],
+   "start": 935,
+   "end": 955
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Rim 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Rim 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Rim 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Wall R 1800",
+   "points": [
+    [
+     1785,
+     -600
+    ],
+    [
+     1800,
+     -600
+    ],
+    [
+     1800,
+     -15
+    ],
+    [
+     1785,
+     -15
+    ]
+   ],
+   "start": 740,
+   "end": 955
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Wall R 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Wall R 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Wall R 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upstand 1800",
+   "points": [
+    [
+     0,
+     -15
+    ],
+    [
+     1800,
+     -15
+    ],
+    [
+     1800,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "start": 740,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upstand 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upstand 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upstand 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Trough Floor 1800",
+   "points": [
+    [
+     -585,
+     790
+    ],
+    [
+     -15,
+     742
+    ],
+    [
+     -15,
+     726
+    ],
+    [
+     -585,
+     774
+    ]
+   ],
+   "start": 15,
+   "end": 1785,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Trough Floor 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trough Floor 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trough Floor 1800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Underside Skirt 1800",
+   "points": [
+    [
+     15,
+     -585
+    ],
+    [
+     1785,
+     -585
+    ],
+    [
+     1785,
+     -560
+    ],
+    [
+     15,
+     -560
+    ]
+   ],
+   "start": 650,
+   "end": 790
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Underside Skirt 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Underside Skirt 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Underside Skirt 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket R 1800",
+   "points": [
+    [
+     -560,
+     650
+    ],
+    [
+     0,
+     650
+    ],
+    [
+     0,
+     740
+    ],
+    [
+     -80,
+     740
+    ]
+   ],
+   "start": 1748,
+   "end": 1760,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket R 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket R 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket R 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upstand Capping 1800",
+   "points": [
+    [
+     0,
+     1290
+    ],
+    [
+     1800,
+     1290
+    ],
+    [
+     1800,
+     1305
+    ],
+    [
+     0,
+     1305
+    ]
+   ],
+   "start": 0,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upstand Capping 1800",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upstand Capping 1800",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upstand Capping 1800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spout 3",
+   "points": [
+    [
+     1512.0,
+     1150.0
+    ],
+    [
+     1511.59,
+     1153.11
+    ],
+    [
+     1510.39,
+     1156.0
+    ],
+    [
+     1508.49,
+     1158.49
+    ],
+    [
+     1506.0,
+     1160.39
+    ],
+    [
+     1503.11,
+     1161.59
+    ],
+    [
+     1500.0,
+     1162.0
+    ],
+    [
+     1496.89,
+     1161.59
+    ],
+    [
+     1494.0,
+     1160.39
+    ],
+    [
+     1491.51,
+     1158.49
+    ],
+    [
+     1489.61,
+     1156.0
+    ],
+    [
+     1488.41,
+     1153.11
+    ],
+    [
+     1488.0,
+     1150.0
+    ],
+    [
+     1488.41,
+     1146.89
+    ],
+    [
+     1489.61,
+     1144.0
+    ],
+    [
+     1491.51,
+     1141.51
+    ],
+    [
+     1494.0,
+     1139.61
+    ],
+    [
+     1496.89,
+     1138.41
+    ],
+    [
+     1500.0,
+     1138.0
+    ],
+    [
+     1503.11,
+     1138.41
+    ],
+    [
+     1506.0,
+     1139.61
+    ],
+    [
+     1508.49,
+     1141.51
+    ],
+    [
+     1510.39,
+     1144.0
+    ],
+    [
+     1511.59,
+     1146.89
+    ]
+   ],
+   "start": 15,
+   "end": 300,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spout 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spout 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spout 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nozzle 3",
+   "points": [
+    [
+     1512.0,
+     -290.0
+    ],
+    [
+     1511.59,
+     -286.89
+    ],
+    [
+     1510.39,
+     -284.0
+    ],
+    [
+     1508.49,
+     -281.51
+    ],
+    [
+     1506.0,
+     -279.61
+    ],
+    [
+     1503.11,
+     -278.41
+    ],
+    [
+     1500.0,
+     -278.0
+    ],
+    [
+     1496.89,
+     -278.41
+    ],
+    [
+     1494.0,
+     -279.61
+    ],
+    [
+     1491.51,
+     -281.51
+    ],
+    [
+     1489.61,
+     -284.0
+    ],
+    [
+     1488.41,
+     -286.89
+    ],
+    [
+     1488.0,
+     -290.0
+    ],
+    [
+     1488.41,
+     -293.11
+    ],
+    [
+     1489.61,
+     -296.0
+    ],
+    [
+     1491.51,
+     -298.49
+    ],
+    [
+     1494.0,
+     -300.39
+    ],
+    [
+     1496.89,
+     -301.59
+    ],
+    [
+     1500.0,
+     -302.0
+    ],
+    [
+     1503.11,
+     -301.59
+    ],
+    [
+     1506.0,
+     -300.39
+    ],
+    [
+     1508.49,
+     -298.49
+    ],
+    [
+     1510.39,
+     -296.0
+    ],
+    [
+     1511.59,
+     -293.11
+    ]
+   ],
+   "start": 1085,
+   "end": 1150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nozzle 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nozzle 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nozzle 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Aerator 3",
+   "profile": [
+    [
+     0,
+     1078
+    ],
+    [
+     10,
+     1078
+    ],
+    [
+     12,
+     1085
+    ],
+    [
+     0,
+     1085
+    ]
+   ],
+   "axis_at": [
+    1500,
+    -290
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Aerator 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Aerator 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sensor Window 3",
+   "points": [
+    [
+     1519.0,
+     1040.0
+    ],
+    [
+     1521.3,
+     1040.46
+    ],
+    [
+     1523.24,
+     1041.76
+    ],
+    [
+     1524.54,
+     1043.7
+    ],
+    [
+     1525.0,
+     1046.0
+    ],
+    [
+     1525.0,
+     1064.0
+    ],
+    [
+     1524.54,
+     1066.3
+    ],
+    [
+     1523.24,
+     1068.24
+    ],
+    [
+     1521.3,
+     1069.54
+    ],
+    [
+     1519.0,
+     1070.0
+    ],
+    [
+     1481.0,
+     1070.0
+    ],
+    [
+     1478.7,
+     1069.54
+    ],
+    [
+     1476.76,
+     1068.24
+    ],
+    [
+     1475.46,
+     1066.3
+    ],
+    [
+     1475.0,
+     1064.0
+    ],
+    [
+     1475.0,
+     1046.0
+    ],
+    [
+     1475.46,
+     1043.7
+    ],
+    [
+     1476.76,
+     1041.76
+    ],
+    [
+     1478.7,
+     1040.46
+    ],
+    [
+     1481.0,
+     1040.0
+    ]
+   ],
+   "start": 15,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sensor Window 3",
+   "subcategory": "Display"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sensor Window 3",
+   "param": "Display Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sensor Window 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Access Panel 3",
+   "points": [
+    [
+     1606.0,
+     1190.0
+    ],
+    [
+     1607.53,
+     1190.3
+    ],
+    [
+     1608.83,
+     1191.17
+    ],
+    [
+     1609.7,
+     1192.47
+    ],
+    [
+     1610.0,
+     1194.0
+    ],
+    [
+     1610.0,
+     1266.0
+    ],
+    [
+     1609.7,
+     1267.53
+    ],
+    [
+     1608.83,
+     1268.83
+    ],
+    [
+     1607.53,
+     1269.7
+    ],
+    [
+     1606.0,
+     1270.0
+    ],
+    [
+     1394.0,
+     1270.0
+    ],
+    [
+     1392.47,
+     1269.7
+    ],
+    [
+     1391.17,
+     1268.83
+    ],
+    [
+     1390.3,
+     1267.53
+    ],
+    [
+     1390.0,
+     1266.0
+    ],
+    [
+     1390.0,
+     1194.0
+    ],
+    [
+     1390.3,
+     1192.47
+    ],
+    [
+     1391.17,
+     1191.17
+    ],
+    [
+     1392.47,
+     1190.3
+    ],
+    [
+     1394.0,
+     1190.0
+    ]
+   ],
+   "start": 15,
+   "end": 17,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Access Panel 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Access Panel 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Access Panel 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Panel Screw 3 1",
+   "points": [
+    [
+     1403.0,
+     1200.0
+    ],
+    [
+     1402.9,
+     1200.78
+    ],
+    [
+     1402.6,
+     1201.5
+    ],
+    [
+     1402.12,
+     1202.12
+    ],
+    [
+     1401.5,
+     1202.6
+    ],
+    [
+     1400.78,
+     1202.9
+    ],
+    [
+     1400.0,
+     1203.0
+    ],
+    [
+     1399.22,
+     1202.9
+    ],
+    [
+     1398.5,
+     1202.6
+    ],
+    [
+     1397.88,
+     1202.12
+    ],
+    [
+     1397.4,
+     1201.5
+    ],
+    [
+     1397.1,
+     1200.78
+    ],
+    [
+     1397.0,
+     1200.0
+    ],
+    [
+     1397.1,
+     1199.22
+    ],
+    [
+     1397.4,
+     1198.5
+    ],
+    [
+     1397.88,
+     1197.88
+    ],
+    [
+     1398.5,
+     1197.4
+    ],
+    [
+     1399.22,
+     1197.1
+    ],
+    [
+     1400.0,
+     1197.0
+    ],
+    [
+     1400.78,
+     1197.1
+    ],
+    [
+     1401.5,
+     1197.4
+    ],
+    [
+     1402.12,
+     1197.88
+    ],
+    [
+     1402.6,
+     1198.5
+    ],
+    [
+     1402.9,
+     1199.22
+    ]
+   ],
+   "start": 17,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Panel Screw 3 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Panel Screw 3 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Panel Screw 3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "TMV Panel Screw 3 2",
+   "points": [
+    [
+     1603.0,
+     1200.0
+    ],
+    [
+     1602.9,
+     1200.78
+    ],
+    [
+     1602.6,
+     1201.5
+    ],
+    [
+     1602.12,
+     1202.12
+    ],
+    [
+     1601.5,
+     1202.6
+    ],
+    [
+     1600.78,
+     1202.9
+    ],
+    [
+     1600.0,
+     1203.0
+    ],
+    [
+     1599.22,
+     1202.9
+    ],
+    [
+     1598.5,
+     1202.6
+    ],
+    [
+     1597.88,
+     1202.12
+    ],
+    [
+     1597.4,
+     1201.5
+    ],
+    [
+     1597.1,
+     1200.78
+    ],
+    [
+     1597.0,
+     1200.0
+    ],
+    [
+     1597.1,
+     1199.22
+    ],
+    [
+     1597.4,
+     1198.5
+    ],
+    [
+     1597.88,
+     1197.88
+    ],
+    [
+     1598.5,
+     1197.4
+    ],
+    [
+     1599.22,
+     1197.1
+    ],
+    [
+     1600.0,
+     1197.0
+    ],
+    [
+     1600.78,
+     1197.1
+    ],
+    [
+     1601.5,
+     1197.4
+    ],
+    [
+     1602.12,
+     1197.88
+    ],
+    [
+     1602.6,
+     1198.5
+    ],
+    [
+     1602.9,
+     1199.22
+    ]
+   ],
+   "start": 17,
+   "end": 18,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "TMV Panel Screw 3 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "TMV Panel Screw 3 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "TMV Panel Screw 3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Knee Paddle 3",
+   "points": [
+    [
+     1560.0,
+     680.0
+    ],
+    [
+     1563.83,
+     680.76
+    ],
+    [
+     1567.07,
+     682.93
+    ],
+    [
+     1569.24,
+     686.17
+    ],
+    [
+     1570.0,
+     690.0
+    ],
+    [
+     1570.0,
+     750.0
+    ],
+    [
+     1569.24,
+     753.83
+    ],
+    [
+     1567.07,
+     757.07
+    ],
+    [
+     1563.83,
+     759.24
+    ],
+    [
+     1560.0,
+     760.0
+    ],
+    [
+     1440.0,
+     760.0
+    ],
+    [
+     1436.17,
+     759.24
+    ],
+    [
+     1432.93,
+     757.07
+    ],
+    [
+     1430.76,
+     753.83
+    ],
+    [
+     1430.0,
+     750.0
+    ],
+    [
+     1430.0,
+     690.0
+    ],
+    [
+     1430.76,
+     686.17
+    ],
+    [
+     1432.93,
+     682.93
+    ],
+    [
+     1436.17,
+     680.76
+    ],
+    [
+     1440.0,
+     680.0
+    ]
+   ],
+   "start": 612,
+   "end": 625,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Knee Paddle 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Knee Paddle 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Knee Paddle 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Outlet 3",
+   "points": [
+    [
+     1522.0,
+     -60.0
+    ],
+    [
+     1521.25,
+     -54.31
+    ],
+    [
+     1519.05,
+     -49.0
+    ],
+    [
+     1515.56,
+     -44.44
+    ],
+    [
+     1511.0,
+     -40.95
+    ],
+    [
+     1505.69,
+     -38.75
+    ],
+    [
+     1500.0,
+     -38.0
+    ],
+    [
+     1494.31,
+     -38.75
+    ],
+    [
+     1489.0,
+     -40.95
+    ],
+    [
+     1484.44,
+     -44.44
+    ],
+    [
+     1480.95,
+     -49.0
+    ],
+    [
+     1478.75,
+     -54.31
+    ],
+    [
+     1478.0,
+     -60.0
+    ],
+    [
+     1478.75,
+     -65.69
+    ],
+    [
+     1480.95,
+     -71.0
+    ],
+    [
+     1484.44,
+     -75.56
+    ],
+    [
+     1489.0,
+     -79.05
+    ],
+    [
+     1494.31,
+     -81.25
+    ],
+    [
+     1500.0,
+     -82.0
+    ],
+    [
+     1505.69,
+     -81.25
+    ],
+    [
+     1511.0,
+     -79.05
+    ],
+    [
+     1515.56,
+     -75.56
+    ],
+    [
+     1519.05,
+     -71.0
+    ],
+    [
+     1521.25,
+     -65.69
+    ]
+   ],
+   "start": 600,
+   "end": 744
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Outlet 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Outlet 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Outlet 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Plug 3",
+   "points": [
+    [
+     1530.0,
+     -60.0
+    ],
+    [
+     1528.98,
+     -52.24
+    ],
+    [
+     1525.98,
+     -45.0
+    ],
+    [
+     1521.21,
+     -38.79
+    ],
+    [
+     1515.0,
+     -34.02
+    ],
+    [
+     1507.76,
+     -31.02
+    ],
+    [
+     1500.0,
+     -30.0
+    ],
+    [
+     1492.24,
+     -31.02
+    ],
+    [
+     1485.0,
+     -34.02
+    ],
+    [
+     1478.79,
+     -38.79
+    ],
+    [
+     1474.02,
+     -45.0
+    ],
+    [
+     1471.02,
+     -52.24
+    ],
+    [
+     1470.0,
+     -60.0
+    ],
+    [
+     1471.02,
+     -67.76
+    ],
+    [
+     1474.02,
+     -75.0
+    ],
+    [
+     1478.79,
+     -81.21
+    ],
+    [
+     1485.0,
+     -85.98
+    ],
+    [
+     1492.24,
+     -88.98
+    ],
+    [
+     1500.0,
+     -90.0
+    ],
+    [
+     1507.76,
+     -88.98
+    ],
+    [
+     1515.0,
+     -85.98
+    ],
+    [
+     1521.21,
+     -81.21
+    ],
+    [
+     1525.98,
+     -75.0
+    ],
+    [
+     1528.98,
+     -67.76
+    ]
+   ],
+   "start": 744,
+   "end": 746
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Plug 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Plug 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Plug 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_1Bay",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_1Bay/Show 600_1Bay",
+   "type": "600_1Bay",
+   "param": "Show 600_1Bay",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Bay/Show 600_1Bay",
+   "type": "1200_2Bay",
+   "param": "Show 600_1Bay",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_3Bay/Show 600_1Bay",
+   "type": "1800_3Bay",
+   "param": "Show 600_1Bay",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Apron 600/Visible",
+   "solid": "Front Apron 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Rim 600/Visible",
+   "solid": "Front Rim 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Wall R 600/Visible",
+   "solid": "End Wall R 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand 600/Visible",
+   "solid": "Upstand 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trough Floor 600/Visible",
+   "solid": "Trough Floor 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Underside Skirt 600/Visible",
+   "solid": "Underside Skirt 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Bracket R 600/Visible",
+   "solid": "Wall Bracket R 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand Capping 600/Visible",
+   "solid": "Upstand Capping 600",
+   "param": "Show 600_1Bay"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_2Bay",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_1Bay/Show 1200_2Bay",
+   "type": "600_1Bay",
+   "param": "Show 1200_2Bay",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Bay/Show 1200_2Bay",
+   "type": "1200_2Bay",
+   "param": "Show 1200_2Bay",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_3Bay/Show 1200_2Bay",
+   "type": "1800_3Bay",
+   "param": "Show 1200_2Bay",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Apron 1200/Visible",
+   "solid": "Front Apron 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Rim 1200/Visible",
+   "solid": "Front Rim 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Wall R 1200/Visible",
+   "solid": "End Wall R 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand 1200/Visible",
+   "solid": "Upstand 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trough Floor 1200/Visible",
+   "solid": "Trough Floor 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Underside Skirt 1200/Visible",
+   "solid": "Underside Skirt 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Bracket R 1200/Visible",
+   "solid": "Wall Bracket R 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand Capping 1200/Visible",
+   "solid": "Upstand Capping 1200",
+   "param": "Show 1200_2Bay"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_2Bay or 1800_3Bay",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_1Bay/Show 1200_2Bay or 1800_3Bay",
+   "type": "600_1Bay",
+   "param": "Show 1200_2Bay or 1800_3Bay",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Bay/Show 1200_2Bay or 1800_3Bay",
+   "type": "1200_2Bay",
+   "param": "Show 1200_2Bay or 1800_3Bay",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_3Bay/Show 1200_2Bay or 1800_3Bay",
+   "type": "1800_3Bay",
+   "param": "Show 1200_2Bay or 1800_3Bay",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Spout 2/Visible",
+   "solid": "Spout 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nozzle 2/Visible",
+   "solid": "Nozzle 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aerator 2/Visible",
+   "solid": "Aerator 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sensor Window 2/Visible",
+   "solid": "Sensor Window 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Access Panel 2/Visible",
+   "solid": "TMV Access Panel 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Panel Screw 2 1/Visible",
+   "solid": "TMV Panel Screw 2 1",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Panel Screw 2 2/Visible",
+   "solid": "TMV Panel Screw 2 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Knee Paddle 2/Visible",
+   "solid": "Knee Paddle 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Waste Outlet 2/Visible",
+   "solid": "Waste Outlet 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Waste Plug 2/Visible",
+   "solid": "Waste Plug 2",
+   "param": "Show 1200_2Bay or 1800_3Bay"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1800_3Bay",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_1Bay/Show 1800_3Bay",
+   "type": "600_1Bay",
+   "param": "Show 1800_3Bay",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Bay/Show 1800_3Bay",
+   "type": "1200_2Bay",
+   "param": "Show 1800_3Bay",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_3Bay/Show 1800_3Bay",
+   "type": "1800_3Bay",
+   "param": "Show 1800_3Bay",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Apron 1800/Visible",
+   "solid": "Front Apron 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Front Rim 1800/Visible",
+   "solid": "Front Rim 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Wall R 1800/Visible",
+   "solid": "End Wall R 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand 1800/Visible",
+   "solid": "Upstand 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trough Floor 1800/Visible",
+   "solid": "Trough Floor 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Underside Skirt 1800/Visible",
+   "solid": "Underside Skirt 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Bracket R 1800/Visible",
+   "solid": "Wall Bracket R 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Upstand Capping 1800/Visible",
+   "solid": "Upstand Capping 1800",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Spout 3/Visible",
+   "solid": "Spout 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nozzle 3/Visible",
+   "solid": "Nozzle 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aerator 3/Visible",
+   "solid": "Aerator 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sensor Window 3/Visible",
+   "solid": "Sensor Window 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Access Panel 3/Visible",
+   "solid": "TMV Access Panel 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Panel Screw 3 1/Visible",
+   "solid": "TMV Panel Screw 3 1",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "TMV Panel Screw 3 2/Visible",
+   "solid": "TMV Panel Screw 3 2",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Knee Paddle 3/Visible",
+   "solid": "Knee Paddle 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Waste Outlet 3/Visible",
+   "solid": "Waste Outlet 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Waste Plug 3/Visible",
+   "solid": "Waste Plug 3",
+   "param": "Show 1800_3Bay"
+  },
+  {
    "op": "add_connector",
    "name": "CW 1",
    "domain": "pipe",
@@ -3592,14 +5909,44 @@
    "flow": "Out"
   },
   {
+   "op": "add_connector",
+   "name": "CW 3",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "TMV Access Panel 3",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "HW 3",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "solid": "TMV Access Panel 3",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Waste 3",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Waste Outlet 3",
+   "side": "bottom",
+   "diameter": 40,
+   "flow": "Out"
+  },
+  {
    "op": "set_type_image",
    "name": "Type image",
    "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_ScrubTrough_Theatre.png"
   }
  ],
  "values": {
-  "Length 1200 mm (2-bay), projection 600 mm": {
-   "value": "1200x600",
+  "Length 600 / 1200 / 1800 mm, projection 600 mm": {
+   "value": "600 per bay",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },

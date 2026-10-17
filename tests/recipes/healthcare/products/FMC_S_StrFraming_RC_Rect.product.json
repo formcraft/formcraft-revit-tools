@@ -21,31 +21,31 @@
  },
  "parts": [
   {
-   "n": "Beam",
+   "n": "Beam 230x450",
    "shape": "right",
    "pts": [
     [
-     -115,
+     -115.0,
      -430
     ],
     [
-     -95,
+     -95.0,
      -450
     ],
     [
-     95,
+     95.0,
      -450
     ],
     [
-     115,
+     115.0,
      -430
     ],
     [
-     115,
+     115.0,
      0
     ],
     [
-     -115,
+     -115.0,
      0
     ]
    ],
@@ -53,20 +53,23 @@
     -2000.0,
     2000.0
    ],
-   "mat": "conc"
+   "mat": "conc",
+   "only": [
+    "230x450_RC"
+   ]
   },
   {
-   "n": "Tie Hole Plug",
+   "n": "Tie Hole Plug 230x450",
    "shape": "cyl",
    "axis": "y",
    "c": [
     -1500,
-    -225
+    -225.0
    ],
    "r": 12,
    "y": [
-    -116,
-    -110
+    -116.0,
+    -110.0
    ],
    "mat": "mortar",
    "lod": "f",
@@ -78,17 +81,89 @@
      0
     ]
    },
-   "seg": 12
+   "seg": 12,
+   "only": [
+    "230x450_RC"
+   ]
+  },
+  {
+   "n": "Beam 300x600",
+   "shape": "right",
+   "pts": [
+    [
+     -150.0,
+     -580
+    ],
+    [
+     -130.0,
+     -600
+    ],
+    [
+     130.0,
+     -600
+    ],
+    [
+     150.0,
+     -580
+    ],
+    [
+     150.0,
+     0
+    ],
+    [
+     -150.0,
+     0
+    ]
+   ],
+   "x": [
+    -2000.0,
+    2000.0
+   ],
+   "mat": "conc",
+   "only": [
+    "300x600_RC"
+   ]
+  },
+  {
+   "n": "Tie Hole Plug 300x600",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1500,
+    -300.0
+   ],
+   "r": 12,
+   "y": [
+    -151.0,
+    -145.0
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "300x600_RC"
+   ]
   }
  ],
  "reference": {
   "query": "str framing rc rect structural framing hospital",
   "images": "https://www.google.com/search?tbm=isch&q=str+framing+rc+rect+structural+framing+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.abudhabiprecast.com/product/beams-and-columns",
+  "photo_title": "Beams and Columns (Abu Dhabi Precast)",
+  "photo_kind": "manufacturer"
  },
  "values": {
-  "Section 230 x 450 mm (geometry)": {
-   "value": "230x450",
+  "Sections 230 x 450 and 300 x 600 mm (one per type)": {
+   "value": "230x450/300x600",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
@@ -103,5 +178,5 @@
    "source": "FMC kit rulebook; engineer to confirm"
   }
  },
- "about": "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer."
+ "about": "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer. Each type has its own geometry where it differs (parts with 'only'); the rest is shared."
 }

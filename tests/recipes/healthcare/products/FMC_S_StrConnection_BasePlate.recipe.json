@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrConnection_BasePlate",
  "template": "Metric Generic Model.rft",
- "about": "Top of concrete at z = 0: grout bed, plate with grout hole, shear key, anchor bolts cast into the concrete with anchor plates, plate washers and nuts (Fine). The column is a separate family. Reference: query: str connection base plate structural connections hospital; images: https://www.google.com/search?tbm=isch&q=str+connection+base+plate+structural+connections+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Top of concrete at z = 0: grout bed, plate with grout hole, shear key, anchor bolts cast into the concrete with anchor plates, plate washers and nuts (Fine). The column is a separate family. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str connection base plate structural connections hospital; images: https://www.google.com/search?tbm=isch&q=str+connection+base+plate+structural+connections+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.dimensions.com/element/steel-connection-base-plate-outer-bolts; photo_title: Steel Connection - Base Plate, Outer Bolts (Dimensions.com); photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -400,6 +400,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "300x300_BasePlate/URL",
+   "type": "300x300_BasePlate",
+   "param": "URL",
+   "value": "https://www.dimensions.com/element/steel-connection-base-plate-outer-bolts"
+  },
+  {
    "op": "add_type",
    "name": "400x400_BasePlate"
   },
@@ -467,25 +474,11 @@
    "value": "S"
   },
   {
-   "op": "add_subcategory",
-   "name": "Mortar",
-   "color": [
-    168,
-    164,
-    156
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Mortar Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Masonry_Mortar_1to4",
-   "param": "Mortar Material"
+   "op": "set_type_value",
+   "name": "400x400_BasePlate/URL",
+   "type": "400x400_BasePlate",
+   "param": "URL",
+   "value": "https://www.dimensions.com/element/steel-connection-base-plate-outer-bolts"
   },
   {
    "op": "add_subcategory",
@@ -507,6 +500,27 @@
    "op": "add_material",
    "name": "FMC_Metal_StructuralSteel_S275",
    "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mortar",
+   "color": [
+    168,
+    164,
+    156
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mortar Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Masonry_Mortar_1to4",
+   "param": "Mortar Material"
   },
   {
    "op": "add_subcategory",
@@ -565,24 +579,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -160,
-     -160
+     -210,
+     -210
     ],
     [
-     160,
-     -160
+     210,
+     -210
     ],
     [
-     160,
-     160
+     210,
+     210
     ],
     [
-     -160,
-     160
+     -210,
+     210
     ]
    ],
    "start": -400,
-   "end": 110
+   "end": 115
   },
   {
    "op": "set_subcategory",
@@ -598,7 +612,48 @@
   },
   {
    "op": "extrusion",
-   "name": "Grout",
+   "name": "Shear Key",
+   "points": [
+    [
+     -50,
+     -50
+    ],
+    [
+     50,
+     -50
+    ],
+    [
+     50,
+     50
+    ],
+    [
+     -50,
+     50
+    ]
+   ],
+   "start": -100,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shear Key",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shear Key",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shear Key",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grout 300x300",
    "points": [
     [
      -160,
@@ -622,24 +677,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Grout",
+   "name": "Grout 300x300",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Grout",
+   "name": "Grout 300x300",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Grout",
+   "name": "Grout 300x300",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate",
+   "name": "Plate 300x300",
    "points": [
     [
      -150,
@@ -663,24 +718,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plate",
+   "name": "Plate 300x300",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Plate",
+   "name": "Plate 300x300",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate",
+   "name": "Plate 300x300",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Grout Hole",
+   "name": "Grout Hole 300x300",
    "points": [
     [
      25.0,
@@ -784,407 +839,1385 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Grout Hole",
+   "name": "Grout Hole 300x300",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Grout Hole",
+   "name": "Grout Hole 300x300",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Grout Hole",
+   "name": "Grout Hole 300x300",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shear Key",
+   "name": "Anchor Bolt Front 300x300 1",
    "points": [
     [
-     -50,
-     -50
+     -90.0,
+     -100.0
     ],
     [
-     50,
-     -50
+     -91.34,
+     -95.0
     ],
     [
-     50,
-     50
+     -95.0,
+     -91.34
     ],
     [
-     -50,
-     50
+     -100.0,
+     -90.0
+    ],
+    [
+     -105.0,
+     -91.34
+    ],
+    [
+     -108.66,
+     -95.0
+    ],
+    [
+     -110.0,
+     -100.0
+    ],
+    [
+     -108.66,
+     -105.0
+    ],
+    [
+     -105.0,
+     -108.66
+    ],
+    [
+     -100.0,
+     -110.0
+    ],
+    [
+     -95.0,
+     -108.66
+    ],
+    [
+     -91.34,
+     -105.0
     ]
    ],
-   "start": -100,
+   "start": -400,
+   "end": 110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Bolt Front 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Bolt Front 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Bolt Front 300x300 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Bolt Front 300x300 2",
+   "points": [
+    [
+     110.0,
+     -100.0
+    ],
+    [
+     108.66,
+     -95.0
+    ],
+    [
+     105.0,
+     -91.34
+    ],
+    [
+     100.0,
+     -90.0
+    ],
+    [
+     95.0,
+     -91.34
+    ],
+    [
+     91.34,
+     -95.0
+    ],
+    [
+     90.0,
+     -100.0
+    ],
+    [
+     91.34,
+     -105.0
+    ],
+    [
+     95.0,
+     -108.66
+    ],
+    [
+     100.0,
+     -110.0
+    ],
+    [
+     105.0,
+     -108.66
+    ],
+    [
+     108.66,
+     -105.0
+    ]
+   ],
+   "start": -400,
+   "end": 110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Bolt Front 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Bolt Front 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Bolt Front 300x300 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Washer Front 300x300 1",
+   "points": [
+    [
+     -125,
+     -125
+    ],
+    [
+     -75,
+     -125
+    ],
+    [
+     -75,
+     -75
+    ],
+    [
+     -125,
+     -75
+    ]
+   ],
+   "start": 50,
+   "end": 56
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Washer Front 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Washer Front 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Washer Front 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Washer Front 300x300 2",
+   "points": [
+    [
+     75,
+     -125
+    ],
+    [
+     125,
+     -125
+    ],
+    [
+     125,
+     -75
+    ],
+    [
+     75,
+     -75
+    ]
+   ],
+   "start": 50,
+   "end": 56
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Washer Front 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Washer Front 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Washer Front 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nut Front 300x300 1",
+   "points": [
+    [
+     -85.0,
+     -91.34
+    ],
+    [
+     -100.0,
+     -82.68
+    ],
+    [
+     -115.0,
+     -91.34
+    ],
+    [
+     -115.0,
+     -108.66
+    ],
+    [
+     -100.0,
+     -117.32
+    ],
+    [
+     -85.0,
+     -108.66
+    ]
+   ],
+   "start": 56,
+   "end": 72.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nut Front 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nut Front 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nut Front 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nut Front 300x300 2",
+   "points": [
+    [
+     115.0,
+     -91.34
+    ],
+    [
+     100.0,
+     -82.68
+    ],
+    [
+     85.0,
+     -91.34
+    ],
+    [
+     85.0,
+     -108.66
+    ],
+    [
+     100.0,
+     -117.32
+    ],
+    [
+     115.0,
+     -108.66
+    ]
+   ],
+   "start": 56,
+   "end": 72.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nut Front 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nut Front 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nut Front 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Plate Front 300x300 1",
+   "points": [
+    [
+     -140,
+     -140
+    ],
+    [
+     -60,
+     -140
+    ],
+    [
+     -60,
+     -60
+    ],
+    [
+     -140,
+     -60
+    ]
+   ],
+   "start": -400,
+   "end": -390
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Plate Front 300x300 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Plate Front 300x300 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Plate Front 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Plate Front 300x300 2",
+   "points": [
+    [
+     60,
+     -140
+    ],
+    [
+     140,
+     -140
+    ],
+    [
+     140,
+     -60
+    ],
+    [
+     60,
+     -60
+    ]
+   ],
+   "start": -400,
+   "end": -390
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Plate Front 300x300 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Plate Front 300x300 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Plate Front 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Bolt Back 300x300 1",
+   "points": [
+    [
+     -90.0,
+     100.0
+    ],
+    [
+     -91.34,
+     105.0
+    ],
+    [
+     -95.0,
+     108.66
+    ],
+    [
+     -100.0,
+     110.0
+    ],
+    [
+     -105.0,
+     108.66
+    ],
+    [
+     -108.66,
+     105.0
+    ],
+    [
+     -110.0,
+     100.0
+    ],
+    [
+     -108.66,
+     95.0
+    ],
+    [
+     -105.0,
+     91.34
+    ],
+    [
+     -100.0,
+     90.0
+    ],
+    [
+     -95.0,
+     91.34
+    ],
+    [
+     -91.34,
+     95.0
+    ]
+   ],
+   "start": -400,
+   "end": 110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Bolt Back 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Bolt Back 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Bolt Back 300x300 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Bolt Back 300x300 2",
+   "points": [
+    [
+     110.0,
+     100.0
+    ],
+    [
+     108.66,
+     105.0
+    ],
+    [
+     105.0,
+     108.66
+    ],
+    [
+     100.0,
+     110.0
+    ],
+    [
+     95.0,
+     108.66
+    ],
+    [
+     91.34,
+     105.0
+    ],
+    [
+     90.0,
+     100.0
+    ],
+    [
+     91.34,
+     95.0
+    ],
+    [
+     95.0,
+     91.34
+    ],
+    [
+     100.0,
+     90.0
+    ],
+    [
+     105.0,
+     91.34
+    ],
+    [
+     108.66,
+     95.0
+    ]
+   ],
+   "start": -400,
+   "end": 110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Bolt Back 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Bolt Back 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Bolt Back 300x300 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Washer Back 300x300 1",
+   "points": [
+    [
+     -125,
+     75
+    ],
+    [
+     -75,
+     75
+    ],
+    [
+     -75,
+     125
+    ],
+    [
+     -125,
+     125
+    ]
+   ],
+   "start": 50,
+   "end": 56
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Washer Back 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Washer Back 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Washer Back 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Washer Back 300x300 2",
+   "points": [
+    [
+     75,
+     75
+    ],
+    [
+     125,
+     75
+    ],
+    [
+     125,
+     125
+    ],
+    [
+     75,
+     125
+    ]
+   ],
+   "start": 50,
+   "end": 56
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Washer Back 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Washer Back 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Washer Back 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nut Back 300x300 1",
+   "points": [
+    [
+     -85.0,
+     108.66
+    ],
+    [
+     -100.0,
+     117.32
+    ],
+    [
+     -115.0,
+     108.66
+    ],
+    [
+     -115.0,
+     91.34
+    ],
+    [
+     -100.0,
+     82.68
+    ],
+    [
+     -85.0,
+     91.34
+    ]
+   ],
+   "start": 56,
+   "end": 72.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nut Back 300x300 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nut Back 300x300 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nut Back 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nut Back 300x300 2",
+   "points": [
+    [
+     115.0,
+     108.66
+    ],
+    [
+     100.0,
+     117.32
+    ],
+    [
+     85.0,
+     108.66
+    ],
+    [
+     85.0,
+     91.34
+    ],
+    [
+     100.0,
+     82.68
+    ],
+    [
+     115.0,
+     91.34
+    ]
+   ],
+   "start": 56,
+   "end": 72.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nut Back 300x300 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nut Back 300x300 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nut Back 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Plate Back 300x300 1",
+   "points": [
+    [
+     -140,
+     60
+    ],
+    [
+     -60,
+     60
+    ],
+    [
+     -60,
+     140
+    ],
+    [
+     -140,
+     140
+    ]
+   ],
+   "start": -400,
+   "end": -390
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Plate Back 300x300 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Plate Back 300x300 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Plate Back 300x300 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Plate Back 300x300 2",
+   "points": [
+    [
+     60,
+     60
+    ],
+    [
+     140,
+     60
+    ],
+    [
+     140,
+     140
+    ],
+    [
+     60,
+     140
+    ]
+   ],
+   "start": -400,
+   "end": -390
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Plate Back 300x300 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Plate Back 300x300 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Plate Back 300x300 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grout 400x400",
+   "points": [
+    [
+     -210,
+     -210
+    ],
+    [
+     210,
+     -210
+    ],
+    [
+     210,
+     210
+    ],
+    [
+     -210,
+     210
+    ]
+   ],
+   "start": 0,
    "end": 30
   },
   {
    "op": "set_subcategory",
-   "name": "Shear Key",
+   "name": "Grout 400x400",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grout 400x400",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grout 400x400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate 400x400",
+   "points": [
+    [
+     -200,
+     -200
+    ],
+    [
+     200,
+     -200
+    ],
+    [
+     200,
+     200
+    ],
+    [
+     -200,
+     200
+    ]
+   ],
+   "start": 30,
+   "end": 55
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate 400x400",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Shear Key",
+   "name": "Plate 400x400",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shear Key",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anchor Bolt Front 1",
-   "points": [
-    [
-     -90.0,
-     -100.0
-    ],
-    [
-     -91.34,
-     -95.0
-    ],
-    [
-     -95.0,
-     -91.34
-    ],
-    [
-     -100.0,
-     -90.0
-    ],
-    [
-     -105.0,
-     -91.34
-    ],
-    [
-     -108.66,
-     -95.0
-    ],
-    [
-     -110.0,
-     -100.0
-    ],
-    [
-     -108.66,
-     -105.0
-    ],
-    [
-     -105.0,
-     -108.66
-    ],
-    [
-     -100.0,
-     -110.0
-    ],
-    [
-     -95.0,
-     -108.66
-    ],
-    [
-     -91.34,
-     -105.0
-    ]
-   ],
-   "start": -400,
-   "end": 110
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anchor Bolt Front 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anchor Bolt Front 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anchor Bolt Front 1",
+   "name": "Plate 400x400",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Bolt Front 2",
+   "name": "Grout Hole 400x400",
    "points": [
     [
-     110.0,
-     -100.0
+     25.0,
+     0.0
     ],
     [
-     108.66,
-     -95.0
+     24.15,
+     6.47
     ],
     [
-     105.0,
-     -91.34
+     21.65,
+     12.5
     ],
     [
-     100.0,
-     -90.0
+     17.68,
+     17.68
     ],
     [
-     95.0,
-     -91.34
+     12.5,
+     21.65
     ],
     [
-     91.34,
-     -95.0
+     6.47,
+     24.15
     ],
     [
-     90.0,
-     -100.0
+     0.0,
+     25.0
     ],
     [
-     91.34,
-     -105.0
+     -6.47,
+     24.15
     ],
     [
-     95.0,
-     -108.66
+     -12.5,
+     21.65
     ],
     [
-     100.0,
-     -110.0
+     -17.68,
+     17.68
     ],
     [
-     105.0,
-     -108.66
+     -21.65,
+     12.5
     ],
     [
-     108.66,
-     -105.0
+     -24.15,
+     6.47
+    ],
+    [
+     -25.0,
+     0.0
+    ],
+    [
+     -24.15,
+     -6.47
+    ],
+    [
+     -21.65,
+     -12.5
+    ],
+    [
+     -17.68,
+     -17.68
+    ],
+    [
+     -12.5,
+     -21.65
+    ],
+    [
+     -6.47,
+     -24.15
+    ],
+    [
+     -0.0,
+     -25.0
+    ],
+    [
+     6.47,
+     -24.15
+    ],
+    [
+     12.5,
+     -21.65
+    ],
+    [
+     17.68,
+     -17.68
+    ],
+    [
+     21.65,
+     -12.5
+    ],
+    [
+     24.15,
+     -6.47
     ]
    ],
-   "start": -400,
-   "end": 110
+   "start": 55,
+   "end": 55.6
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Bolt Front 2",
+   "name": "Grout Hole 400x400",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grout Hole 400x400",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grout Hole 400x400",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Bolt Front 400x400 1",
+   "points": [
+    [
+     -128.0,
+     -140.0
+    ],
+    [
+     -129.61,
+     -134.0
+    ],
+    [
+     -134.0,
+     -129.61
+    ],
+    [
+     -140.0,
+     -128.0
+    ],
+    [
+     -146.0,
+     -129.61
+    ],
+    [
+     -150.39,
+     -134.0
+    ],
+    [
+     -152.0,
+     -140.0
+    ],
+    [
+     -150.39,
+     -146.0
+    ],
+    [
+     -146.0,
+     -150.39
+    ],
+    [
+     -140.0,
+     -152.0
+    ],
+    [
+     -134.0,
+     -150.39
+    ],
+    [
+     -129.61,
+     -146.0
+    ]
+   ],
+   "start": -400,
+   "end": 115
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Bolt Front 400x400 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Bolt Front 2",
+   "name": "Anchor Bolt Front 400x400 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Bolt Front 2",
+   "name": "Anchor Bolt Front 400x400 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate Washer Front 1",
+   "name": "Anchor Bolt Front 400x400 2",
    "points": [
     [
-     -125,
-     -125
+     152.0,
+     -140.0
     ],
     [
-     -75,
-     -125
+     150.39,
+     -134.0
     ],
     [
-     -75,
-     -75
+     146.0,
+     -129.61
     ],
     [
-     -125,
-     -75
+     140.0,
+     -128.0
+    ],
+    [
+     134.0,
+     -129.61
+    ],
+    [
+     129.61,
+     -134.0
+    ],
+    [
+     128.0,
+     -140.0
+    ],
+    [
+     129.61,
+     -146.0
+    ],
+    [
+     134.0,
+     -150.39
+    ],
+    [
+     140.0,
+     -152.0
+    ],
+    [
+     146.0,
+     -150.39
+    ],
+    [
+     150.39,
+     -146.0
     ]
    ],
-   "start": 50,
-   "end": 56
+   "start": -400,
+   "end": 115
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Washer Front 1",
+   "name": "Anchor Bolt Front 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Washer Front 1",
+   "name": "Anchor Bolt Front 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Washer Front 1",
+   "name": "Anchor Bolt Front 400x400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Washer Front 400x400 1",
+   "points": [
+    [
+     -165,
+     -165
+    ],
+    [
+     -115,
+     -165
+    ],
+    [
+     -115,
+     -115
+    ],
+    [
+     -165,
+     -115
+    ]
+   ],
+   "start": 55,
+   "end": 61
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Washer Front 400x400 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Washer Front 400x400 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Washer Front 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate Washer Front 2",
+   "name": "Plate Washer Front 400x400 2",
    "points": [
     [
-     75,
-     -125
+     115,
+     -165
     ],
     [
-     125,
-     -125
+     165,
+     -165
     ],
     [
-     125,
-     -75
+     165,
+     -115
     ],
     [
-     75,
-     -75
+     115,
+     -115
     ]
    ],
-   "start": 50,
-   "end": 56
+   "start": 55,
+   "end": 61
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Washer Front 2",
+   "name": "Plate Washer Front 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Washer Front 2",
+   "name": "Plate Washer Front 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Washer Front 2",
+   "name": "Plate Washer Front 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Nut Front 1",
+   "name": "Nut Front 400x400 1",
    "points": [
     [
-     -85.0,
-     -91.34
+     -122.0,
+     -129.61
     ],
     [
-     -100.0,
-     -82.68
+     -140.0,
+     -119.22
     ],
     [
-     -115.0,
-     -91.34
+     -158.0,
+     -129.61
     ],
     [
-     -115.0,
-     -108.66
+     -158.0,
+     -150.39
     ],
     [
-     -100.0,
-     -117.32
+     -140.0,
+     -160.78
     ],
     [
-     -85.0,
-     -108.66
+     -122.0,
+     -150.39
     ]
    ],
-   "start": 56,
-   "end": 72
+   "start": 61,
+   "end": 80.2
   },
   {
    "op": "set_subcategory",
-   "name": "Nut Front 1",
+   "name": "Nut Front 400x400 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Nut Front 1",
+   "name": "Nut Front 400x400 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Nut Front 1",
+   "name": "Nut Front 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Nut Front 2",
+   "name": "Nut Front 400x400 2",
    "points": [
     [
-     115.0,
-     -91.34
+     158.0,
+     -129.61
     ],
     [
-     100.0,
-     -82.68
+     140.0,
+     -119.22
     ],
     [
-     85.0,
-     -91.34
+     122.0,
+     -129.61
     ],
     [
-     85.0,
-     -108.66
+     122.0,
+     -150.39
     ],
     [
-     100.0,
-     -117.32
+     140.0,
+     -160.78
     ],
     [
-     115.0,
-     -108.66
+     158.0,
+     -150.39
     ]
    ],
-   "start": 56,
-   "end": 72
+   "start": 61,
+   "end": 80.2
   },
   {
    "op": "set_subcategory",
-   "name": "Nut Front 2",
+   "name": "Nut Front 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Nut Front 2",
+   "name": "Nut Front 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Nut Front 2",
+   "name": "Nut Front 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Plate Front 1",
+   "name": "Anchor Plate Front 400x400 1",
    "points": [
     [
-     -140,
-     -140
+     -180,
+     -180
     ],
     [
-     -60,
-     -140
+     -100,
+     -180
     ],
     [
-     -60,
-     -60
+     -100,
+     -100
     ],
     [
-     -140,
-     -60
+     -180,
+     -100
     ]
    ],
    "start": -400,
@@ -1192,40 +2225,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Plate Front 1",
+   "name": "Anchor Plate Front 400x400 1",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Plate Front 1",
+   "name": "Anchor Plate Front 400x400 1",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Plate Front 1",
+   "name": "Anchor Plate Front 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Plate Front 2",
+   "name": "Anchor Plate Front 400x400 2",
    "points": [
     [
-     60,
-     -140
+     100,
+     -180
     ],
     [
-     140,
-     -140
+     180,
+     -180
     ],
     [
-     140,
-     -60
+     180,
+     -100
     ],
     [
-     60,
-     -60
+     100,
+     -100
     ]
    ],
    "start": -400,
@@ -1233,366 +2266,366 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Plate Front 2",
+   "name": "Anchor Plate Front 400x400 2",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Plate Front 2",
+   "name": "Anchor Plate Front 400x400 2",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Plate Front 2",
+   "name": "Anchor Plate Front 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Bolt Back 1",
+   "name": "Anchor Bolt Back 400x400 1",
    "points": [
     [
-     -90.0,
-     100.0
+     -128.0,
+     140.0
     ],
     [
-     -91.34,
-     105.0
+     -129.61,
+     146.0
     ],
     [
-     -95.0,
-     108.66
+     -134.0,
+     150.39
     ],
     [
-     -100.0,
-     110.0
+     -140.0,
+     152.0
     ],
     [
-     -105.0,
-     108.66
+     -146.0,
+     150.39
     ],
     [
-     -108.66,
-     105.0
+     -150.39,
+     146.0
     ],
     [
-     -110.0,
-     100.0
+     -152.0,
+     140.0
     ],
     [
-     -108.66,
-     95.0
+     -150.39,
+     134.0
     ],
     [
-     -105.0,
-     91.34
+     -146.0,
+     129.61
     ],
     [
-     -100.0,
-     90.0
+     -140.0,
+     128.0
     ],
     [
-     -95.0,
-     91.34
+     -134.0,
+     129.61
     ],
     [
-     -91.34,
-     95.0
+     -129.61,
+     134.0
     ]
    ],
    "start": -400,
-   "end": 110
+   "end": 115
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Bolt Back 1",
+   "name": "Anchor Bolt Back 400x400 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Bolt Back 1",
+   "name": "Anchor Bolt Back 400x400 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Bolt Back 1",
+   "name": "Anchor Bolt Back 400x400 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Bolt Back 2",
+   "name": "Anchor Bolt Back 400x400 2",
    "points": [
     [
-     110.0,
-     100.0
+     152.0,
+     140.0
     ],
     [
-     108.66,
-     105.0
+     150.39,
+     146.0
     ],
     [
-     105.0,
-     108.66
+     146.0,
+     150.39
     ],
     [
-     100.0,
-     110.0
+     140.0,
+     152.0
     ],
     [
-     95.0,
-     108.66
+     134.0,
+     150.39
     ],
     [
-     91.34,
-     105.0
+     129.61,
+     146.0
     ],
     [
-     90.0,
-     100.0
+     128.0,
+     140.0
     ],
     [
-     91.34,
-     95.0
+     129.61,
+     134.0
     ],
     [
-     95.0,
-     91.34
+     134.0,
+     129.61
     ],
     [
-     100.0,
-     90.0
+     140.0,
+     128.0
     ],
     [
-     105.0,
-     91.34
+     146.0,
+     129.61
     ],
     [
-     108.66,
-     95.0
+     150.39,
+     134.0
     ]
    ],
    "start": -400,
-   "end": 110
+   "end": 115
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Bolt Back 2",
+   "name": "Anchor Bolt Back 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Bolt Back 2",
+   "name": "Anchor Bolt Back 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Bolt Back 2",
+   "name": "Anchor Bolt Back 400x400 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate Washer Back 1",
+   "name": "Plate Washer Back 400x400 1",
    "points": [
     [
-     -125,
-     75
+     -165,
+     115
     ],
     [
-     -75,
-     75
+     -115,
+     115
     ],
     [
-     -75,
-     125
+     -115,
+     165
     ],
     [
-     -125,
-     125
+     -165,
+     165
     ]
    ],
-   "start": 50,
-   "end": 56
+   "start": 55,
+   "end": 61
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Washer Back 1",
+   "name": "Plate Washer Back 400x400 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Washer Back 1",
+   "name": "Plate Washer Back 400x400 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Washer Back 1",
+   "name": "Plate Washer Back 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate Washer Back 2",
+   "name": "Plate Washer Back 400x400 2",
    "points": [
     [
-     75,
-     75
+     115,
+     115
     ],
     [
-     125,
-     75
+     165,
+     115
     ],
     [
-     125,
-     125
+     165,
+     165
     ],
     [
-     75,
-     125
+     115,
+     165
     ]
    ],
-   "start": 50,
-   "end": 56
+   "start": 55,
+   "end": 61
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Washer Back 2",
+   "name": "Plate Washer Back 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Washer Back 2",
+   "name": "Plate Washer Back 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Washer Back 2",
+   "name": "Plate Washer Back 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Nut Back 1",
+   "name": "Nut Back 400x400 1",
    "points": [
     [
-     -85.0,
-     108.66
+     -122.0,
+     150.39
     ],
     [
-     -100.0,
-     117.32
+     -140.0,
+     160.78
     ],
     [
-     -115.0,
-     108.66
+     -158.0,
+     150.39
     ],
     [
-     -115.0,
-     91.34
+     -158.0,
+     129.61
     ],
     [
-     -100.0,
-     82.68
+     -140.0,
+     119.22
     ],
     [
-     -85.0,
-     91.34
+     -122.0,
+     129.61
     ]
    ],
-   "start": 56,
-   "end": 72
+   "start": 61,
+   "end": 80.2
   },
   {
    "op": "set_subcategory",
-   "name": "Nut Back 1",
+   "name": "Nut Back 400x400 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Nut Back 1",
+   "name": "Nut Back 400x400 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Nut Back 1",
+   "name": "Nut Back 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Nut Back 2",
+   "name": "Nut Back 400x400 2",
    "points": [
     [
-     115.0,
-     108.66
+     158.0,
+     150.39
     ],
     [
-     100.0,
-     117.32
+     140.0,
+     160.78
     ],
     [
-     85.0,
-     108.66
+     122.0,
+     150.39
     ],
     [
-     85.0,
-     91.34
+     122.0,
+     129.61
     ],
     [
-     100.0,
-     82.68
+     140.0,
+     119.22
     ],
     [
-     115.0,
-     91.34
+     158.0,
+     129.61
     ]
    ],
-   "start": 56,
-   "end": 72
+   "start": 61,
+   "end": 80.2
   },
   {
    "op": "set_subcategory",
-   "name": "Nut Back 2",
+   "name": "Nut Back 400x400 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Nut Back 2",
+   "name": "Nut Back 400x400 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Nut Back 2",
+   "name": "Nut Back 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Plate Back 1",
+   "name": "Anchor Plate Back 400x400 1",
    "points": [
     [
-     -140,
-     60
+     -180,
+     100
     ],
     [
-     -60,
-     60
+     -100,
+     100
     ],
     [
-     -60,
-     140
+     -100,
+     180
     ],
     [
-     -140,
-     140
+     -180,
+     180
     ]
    ],
    "start": -400,
@@ -1600,40 +2633,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Plate Back 1",
+   "name": "Anchor Plate Back 400x400 1",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Plate Back 1",
+   "name": "Anchor Plate Back 400x400 1",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Plate Back 1",
+   "name": "Anchor Plate Back 400x400 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Anchor Plate Back 2",
+   "name": "Anchor Plate Back 400x400 2",
    "points": [
     [
-     60,
-     60
+     100,
+     100
     ],
     [
-     140,
-     60
+     180,
+     100
     ],
     [
-     140,
-     140
+     180,
+     180
     ],
     [
-     60,
-     140
+     100,
+     180
     ]
    ],
    "start": -400,
@@ -1641,20 +2674,288 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Anchor Plate Back 2",
+   "name": "Anchor Plate Back 400x400 2",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Anchor Plate Back 2",
+   "name": "Anchor Plate Back 400x400 2",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Anchor Plate Back 2",
+   "name": "Anchor Plate Back 400x400 2",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 300x300_BasePlate",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x300_BasePlate/Show 300x300_BasePlate",
+   "type": "300x300_BasePlate",
+   "param": "Show 300x300_BasePlate",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_BasePlate/Show 300x300_BasePlate",
+   "type": "400x400_BasePlate",
+   "param": "Show 300x300_BasePlate",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grout 300x300/Visible",
+   "solid": "Grout 300x300",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate 300x300/Visible",
+   "solid": "Plate 300x300",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grout Hole 300x300/Visible",
+   "solid": "Grout Hole 300x300",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Front 300x300 1/Visible",
+   "solid": "Anchor Bolt Front 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Front 300x300 2/Visible",
+   "solid": "Anchor Bolt Front 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Front 300x300 1/Visible",
+   "solid": "Plate Washer Front 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Front 300x300 2/Visible",
+   "solid": "Plate Washer Front 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Front 300x300 1/Visible",
+   "solid": "Nut Front 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Front 300x300 2/Visible",
+   "solid": "Nut Front 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Front 300x300 1/Visible",
+   "solid": "Anchor Plate Front 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Front 300x300 2/Visible",
+   "solid": "Anchor Plate Front 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Back 300x300 1/Visible",
+   "solid": "Anchor Bolt Back 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Back 300x300 2/Visible",
+   "solid": "Anchor Bolt Back 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Back 300x300 1/Visible",
+   "solid": "Plate Washer Back 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Back 300x300 2/Visible",
+   "solid": "Plate Washer Back 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Back 300x300 1/Visible",
+   "solid": "Nut Back 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Back 300x300 2/Visible",
+   "solid": "Nut Back 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Back 300x300 1/Visible",
+   "solid": "Anchor Plate Back 300x300 1",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Back 300x300 2/Visible",
+   "solid": "Anchor Plate Back 300x300 2",
+   "param": "Show 300x300_BasePlate"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 400x400_BasePlate",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x300_BasePlate/Show 400x400_BasePlate",
+   "type": "300x300_BasePlate",
+   "param": "Show 400x400_BasePlate",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_BasePlate/Show 400x400_BasePlate",
+   "type": "400x400_BasePlate",
+   "param": "Show 400x400_BasePlate",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grout 400x400/Visible",
+   "solid": "Grout 400x400",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate 400x400/Visible",
+   "solid": "Plate 400x400",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grout Hole 400x400/Visible",
+   "solid": "Grout Hole 400x400",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Front 400x400 1/Visible",
+   "solid": "Anchor Bolt Front 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Front 400x400 2/Visible",
+   "solid": "Anchor Bolt Front 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Front 400x400 1/Visible",
+   "solid": "Plate Washer Front 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Front 400x400 2/Visible",
+   "solid": "Plate Washer Front 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Front 400x400 1/Visible",
+   "solid": "Nut Front 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Front 400x400 2/Visible",
+   "solid": "Nut Front 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Front 400x400 1/Visible",
+   "solid": "Anchor Plate Front 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Front 400x400 2/Visible",
+   "solid": "Anchor Plate Front 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Back 400x400 1/Visible",
+   "solid": "Anchor Bolt Back 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Bolt Back 400x400 2/Visible",
+   "solid": "Anchor Bolt Back 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Back 400x400 1/Visible",
+   "solid": "Plate Washer Back 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Washer Back 400x400 2/Visible",
+   "solid": "Plate Washer Back 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Back 400x400 1/Visible",
+   "solid": "Nut Back 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Nut Back 400x400 2/Visible",
+   "solid": "Nut Back 400x400 2",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Back 400x400 1/Visible",
+   "solid": "Anchor Plate Back 400x400 1",
+   "param": "Show 400x400_BasePlate"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Plate Back 400x400 2/Visible",
+   "solid": "Anchor Plate Back 400x400 2",
+   "param": "Show 400x400_BasePlate"
   },
   {
    "op": "set_type_image",
@@ -1663,13 +2964,13 @@
   }
  ],
  "values": {
-  "Plate 300 x 300 x 20 mm (geometry)": {
-   "value": "300x300x20",
+  "Plates 300 x 300 x 20 (4 x M20) and 400 x 400 x 25 (4 x M24)": {
+   "value": "300x20 M20 / 400x25 M24",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
-  "Anchors 4 x M20, 400 embedment": {
-   "value": "4xM20x400",
+  "Anchor embedment 400 mm": {
+   "value": 400,
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },

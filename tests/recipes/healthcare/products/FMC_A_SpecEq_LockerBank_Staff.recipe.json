@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_LockerBank_Staff",
  "template": "Metric Generic Model.rft",
- "about": "Locker bank modelled as a generic product: grey steel carcass on a black plinth, anti-dust sloping top, nine white doors with vent slots, cam locks and number plates. Back at y = 0; geometry is the 3-tier type. Reference: query: locker bank staff specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=locker+bank+staff+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Locker bank modelled as a generic product: grey steel carcass on a black plinth, anti-dust sloping top, nine white doors with vent slots, cam locks and number plates. Back at y = 0; doors per type (3 tiers = 9 doors, 2 tiers = 6 doors). Reference: query: locker bank staff specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=locker+bank+staff+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://ufficiostile.com/en/metal-staff-locker-cabinets; photo_title: Metal staff locker cabinets; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -85,6 +391,34 @@
    "value": "F.LOC_00"
   },
   {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/FMC_Code_Description",
+   "type": "900x1800_3-Tier",
+   "param": "FMC_Code_Description",
+   "value": "LockerBank Staff: Staff locker bank"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/FMC_Code_Group",
+   "type": "900x1800_3-Tier",
+   "param": "FMC_Code_Group",
+   "value": "F.LOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/FMC_Role_Code",
+   "type": "900x1800_3-Tier",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/URL",
+   "type": "900x1800_3-Tier",
+   "param": "URL",
+   "value": "https://ufficiostile.com/en/metal-staff-locker-cabinets"
+  },
+  {
    "op": "add_type",
    "name": "900x1800_6-Door"
   },
@@ -129,6 +463,34 @@
    "type": "900x1800_6-Door",
    "param": "FMC_Keynote_Code",
    "value": "F.LOC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/FMC_Code_Description",
+   "type": "900x1800_6-Door",
+   "param": "FMC_Code_Description",
+   "value": "LockerBank Staff: Staff locker bank"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/FMC_Code_Group",
+   "type": "900x1800_6-Door",
+   "param": "FMC_Code_Group",
+   "value": "F.LOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/FMC_Role_Code",
+   "type": "900x1800_6-Door",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/URL",
+   "type": "900x1800_6-Door",
+   "param": "URL",
+   "value": "https://ufficiostile.com/en/metal-staff-locker-cabinets"
   },
   {
    "op": "add_subcategory",
@@ -489,7 +851,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 1 1",
+   "name": "Door Tier 1 3T 1",
    "points": [
     [
      -159.0,
@@ -513,43 +875,43 @@
     ],
     [
      -155.0,
-     659.0
+     659.33
     ],
     [
      -155.3,
-     660.53
+     660.86
     ],
     [
      -156.17,
-     661.83
+     662.16
     ],
     [
      -157.47,
-     662.7
+     663.03
     ],
     [
      -159.0,
-     663.0
+     663.33
     ],
     [
      -441.0,
-     663.0
+     663.33
     ],
     [
      -442.53,
-     662.7
+     663.03
     ],
     [
      -443.83,
-     661.83
+     662.16
     ],
     [
      -444.7,
-     660.53
+     660.86
     ],
     [
      -445.0,
-     659.0
+     659.33
     ],
     [
      -445.0,
@@ -578,24 +940,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 1 1",
+   "name": "Door Tier 1 3T 1",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 1 1",
+   "name": "Door Tier 1 3T 1",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 1 1",
+   "name": "Door Tier 1 3T 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 1 2",
+   "name": "Door Tier 1 3T 2",
    "points": [
     [
      141.0,
@@ -619,43 +981,43 @@
     ],
     [
      145.0,
-     659.0
+     659.33
     ],
     [
      144.7,
-     660.53
+     660.86
     ],
     [
      143.83,
-     661.83
+     662.16
     ],
     [
      142.53,
-     662.7
+     663.03
     ],
     [
      141.0,
-     663.0
+     663.33
     ],
     [
      -141.0,
-     663.0
+     663.33
     ],
     [
      -142.53,
-     662.7
+     663.03
     ],
     [
      -143.83,
-     661.83
+     662.16
     ],
     [
      -144.7,
-     660.53
+     660.86
     ],
     [
      -145.0,
-     659.0
+     659.33
     ],
     [
      -145.0,
@@ -684,24 +1046,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 1 2",
+   "name": "Door Tier 1 3T 2",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 1 2",
+   "name": "Door Tier 1 3T 2",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 1 2",
+   "name": "Door Tier 1 3T 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 1 3",
+   "name": "Door Tier 1 3T 3",
    "points": [
     [
      441.0,
@@ -725,43 +1087,43 @@
     ],
     [
      445.0,
-     659.0
+     659.33
     ],
     [
      444.7,
-     660.53
+     660.86
     ],
     [
      443.83,
-     661.83
+     662.16
     ],
     [
      442.53,
-     662.7
+     663.03
     ],
     [
      441.0,
-     663.0
+     663.33
     ],
     [
      159.0,
-     663.0
+     663.33
     ],
     [
      157.47,
-     662.7
+     663.03
     ],
     [
      156.17,
-     661.83
+     662.16
     ],
     [
      155.3,
-     660.53
+     660.86
     ],
     [
      155.0,
-     659.0
+     659.33
     ],
     [
      155.0,
@@ -790,104 +1152,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 1 3",
+   "name": "Door Tier 1 3T 3",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 1 3",
+   "name": "Door Tier 1 3T 3",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 1 3",
+   "name": "Door Tier 1 3T 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 1 1",
+   "name": "Vent Tier 1 3T 1",
    "points": [
     [
      -223.0,
-     540.0
+     543.33
     ],
     [
      -221.85,
-     540.23
+     543.56
     ],
     [
      -220.88,
-     540.88
+     544.21
     ],
     [
      -220.23,
-     541.85
+     545.19
     ],
     [
      -220.0,
-     543.0
+     546.33
     ],
     [
      -220.0,
-     607.0
+     610.33
     ],
     [
      -220.23,
-     608.15
+     611.48
     ],
     [
      -220.88,
-     609.12
+     612.45
     ],
     [
      -221.85,
-     609.77
+     613.1
     ],
     [
      -223.0,
-     610.0
+     613.33
     ],
     [
      -377.0,
-     610.0
+     613.33
     ],
     [
      -378.15,
-     609.77
+     613.1
     ],
     [
      -379.12,
-     609.12
+     612.45
     ],
     [
      -379.77,
-     608.15
+     611.48
     ],
     [
      -380.0,
-     607.0
+     610.33
     ],
     [
      -380.0,
-     543.0
+     546.33
     ],
     [
      -379.77,
-     541.85
+     545.19
     ],
     [
      -379.12,
-     540.88
+     544.21
     ],
     [
      -378.15,
-     540.23
+     543.56
     ],
     [
      -377.0,
-     540.0
+     543.33
     ]
    ],
    "start": 455,
@@ -896,104 +1258,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 1 1",
+   "name": "Vent Tier 1 3T 1",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 1 1",
+   "name": "Vent Tier 1 3T 1",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 1 1",
+   "name": "Vent Tier 1 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 1 2",
+   "name": "Vent Tier 1 3T 2",
    "points": [
     [
      77.0,
-     540.0
+     543.33
     ],
     [
      78.15,
-     540.23
+     543.56
     ],
     [
      79.12,
-     540.88
+     544.21
     ],
     [
      79.77,
-     541.85
+     545.19
     ],
     [
      80.0,
-     543.0
+     546.33
     ],
     [
      80.0,
-     607.0
+     610.33
     ],
     [
      79.77,
-     608.15
+     611.48
     ],
     [
      79.12,
-     609.12
+     612.45
     ],
     [
      78.15,
-     609.77
+     613.1
     ],
     [
      77.0,
-     610.0
+     613.33
     ],
     [
      -77.0,
-     610.0
+     613.33
     ],
     [
      -78.15,
-     609.77
+     613.1
     ],
     [
      -79.12,
-     609.12
+     612.45
     ],
     [
      -79.77,
-     608.15
+     611.48
     ],
     [
      -80.0,
-     607.0
+     610.33
     ],
     [
      -80.0,
-     543.0
+     546.33
     ],
     [
      -79.77,
-     541.85
+     545.19
     ],
     [
      -79.12,
-     540.88
+     544.21
     ],
     [
      -78.15,
-     540.23
+     543.56
     ],
     [
      -77.0,
-     540.0
+     543.33
     ]
    ],
    "start": 455,
@@ -1002,104 +1364,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 1 2",
+   "name": "Vent Tier 1 3T 2",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 1 2",
+   "name": "Vent Tier 1 3T 2",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 1 2",
+   "name": "Vent Tier 1 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 1 3",
+   "name": "Vent Tier 1 3T 3",
    "points": [
     [
      377.0,
-     540.0
+     543.33
     ],
     [
      378.15,
-     540.23
+     543.56
     ],
     [
      379.12,
-     540.88
+     544.21
     ],
     [
      379.77,
-     541.85
+     545.19
     ],
     [
      380.0,
-     543.0
+     546.33
     ],
     [
      380.0,
-     607.0
+     610.33
     ],
     [
      379.77,
-     608.15
+     611.48
     ],
     [
      379.12,
-     609.12
+     612.45
     ],
     [
      378.15,
-     609.77
+     613.1
     ],
     [
      377.0,
-     610.0
+     613.33
     ],
     [
      223.0,
-     610.0
+     613.33
     ],
     [
      221.85,
-     609.77
+     613.1
     ],
     [
      220.88,
-     609.12
+     612.45
     ],
     [
      220.23,
-     608.15
+     611.48
     ],
     [
      220.0,
-     607.0
+     610.33
     ],
     [
      220.0,
-     543.0
+     546.33
     ],
     [
      220.23,
-     541.85
+     545.19
     ],
     [
      220.88,
-     540.88
+     544.21
     ],
     [
      221.85,
-     540.23
+     543.56
     ],
     [
      223.0,
-     540.0
+     543.33
     ]
    ],
    "start": 455,
@@ -1108,120 +1470,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 1 3",
+   "name": "Vent Tier 1 3T 3",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 1 3",
+   "name": "Vent Tier 1 3T 3",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 1 3",
+   "name": "Vent Tier 1 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 1 1",
+   "name": "Lock Tier 1 3T 1",
    "points": [
     [
      -173.0,
-     410.0
+     391.67
     ],
     [
      -173.41,
-     413.11
+     394.77
     ],
     [
      -174.61,
-     416.0
+     397.67
     ],
     [
      -176.51,
-     418.49
+     400.15
     ],
     [
      -179.0,
-     420.39
+     402.06
     ],
     [
      -181.89,
-     421.59
+     403.26
     ],
     [
      -185.0,
-     422.0
+     403.67
     ],
     [
      -188.11,
-     421.59
+     403.26
     ],
     [
      -191.0,
-     420.39
+     402.06
     ],
     [
      -193.49,
-     418.49
+     400.15
     ],
     [
      -195.39,
-     416.0
+     397.67
     ],
     [
      -196.59,
-     413.11
+     394.77
     ],
     [
      -197.0,
-     410.0
+     391.67
     ],
     [
      -196.59,
-     406.89
+     388.56
     ],
     [
      -195.39,
-     404.0
+     385.67
     ],
     [
      -193.49,
-     401.51
+     383.18
     ],
     [
      -191.0,
-     399.61
+     381.27
     ],
     [
      -188.11,
-     398.41
+     380.08
     ],
     [
      -185.0,
-     398.0
+     379.67
     ],
     [
      -181.89,
-     398.41
+     380.08
     ],
     [
      -179.0,
-     399.61
+     381.27
     ],
     [
      -176.51,
-     401.51
+     383.18
     ],
     [
      -174.61,
-     404.0
+     385.67
     ],
     [
      -173.41,
-     406.89
+     388.56
     ]
    ],
    "start": 455,
@@ -1230,120 +1592,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 1 1",
+   "name": "Lock Tier 1 3T 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 1 1",
+   "name": "Lock Tier 1 3T 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 1 1",
+   "name": "Lock Tier 1 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 1 2",
+   "name": "Lock Tier 1 3T 2",
    "points": [
     [
      127.0,
-     410.0
+     391.67
     ],
     [
      126.59,
-     413.11
+     394.77
     ],
     [
      125.39,
-     416.0
+     397.67
     ],
     [
      123.49,
-     418.49
+     400.15
     ],
     [
      121.0,
-     420.39
+     402.06
     ],
     [
      118.11,
-     421.59
+     403.26
     ],
     [
      115.0,
-     422.0
+     403.67
     ],
     [
      111.89,
-     421.59
+     403.26
     ],
     [
      109.0,
-     420.39
+     402.06
     ],
     [
      106.51,
-     418.49
+     400.15
     ],
     [
      104.61,
-     416.0
+     397.67
     ],
     [
      103.41,
-     413.11
+     394.77
     ],
     [
      103.0,
-     410.0
+     391.67
     ],
     [
      103.41,
-     406.89
+     388.56
     ],
     [
      104.61,
-     404.0
+     385.67
     ],
     [
      106.51,
-     401.51
+     383.18
     ],
     [
      109.0,
-     399.61
+     381.27
     ],
     [
      111.89,
-     398.41
+     380.08
     ],
     [
      115.0,
-     398.0
+     379.67
     ],
     [
      118.11,
-     398.41
+     380.08
     ],
     [
      121.0,
-     399.61
+     381.27
     ],
     [
      123.49,
-     401.51
+     383.18
     ],
     [
      125.39,
-     404.0
+     385.67
     ],
     [
      126.59,
-     406.89
+     388.56
     ]
    ],
    "start": 455,
@@ -1352,120 +1714,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 1 2",
+   "name": "Lock Tier 1 3T 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 1 2",
+   "name": "Lock Tier 1 3T 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 1 2",
+   "name": "Lock Tier 1 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 1 3",
+   "name": "Lock Tier 1 3T 3",
    "points": [
     [
      427.0,
-     410.0
+     391.67
     ],
     [
      426.59,
-     413.11
+     394.77
     ],
     [
      425.39,
-     416.0
+     397.67
     ],
     [
      423.49,
-     418.49
+     400.15
     ],
     [
      421.0,
-     420.39
+     402.06
     ],
     [
      418.11,
-     421.59
+     403.26
     ],
     [
      415.0,
-     422.0
+     403.67
     ],
     [
      411.89,
-     421.59
+     403.26
     ],
     [
      409.0,
-     420.39
+     402.06
     ],
     [
      406.51,
-     418.49
+     400.15
     ],
     [
      404.61,
-     416.0
+     397.67
     ],
     [
      403.41,
-     413.11
+     394.77
     ],
     [
      403.0,
-     410.0
+     391.67
     ],
     [
      403.41,
-     406.89
+     388.56
     ],
     [
      404.61,
-     404.0
+     385.67
     ],
     [
      406.51,
-     401.51
+     383.18
     ],
     [
      409.0,
-     399.61
+     381.27
     ],
     [
      411.89,
-     398.41
+     380.08
     ],
     [
      415.0,
-     398.0
+     379.67
     ],
     [
      418.11,
-     398.41
+     380.08
     ],
     [
      421.0,
-     399.61
+     381.27
     ],
     [
      423.49,
-     401.51
+     383.18
     ],
     [
      425.39,
-     404.0
+     385.67
     ],
     [
      426.59,
-     406.89
+     388.56
     ]
    ],
    "start": 455,
@@ -1474,104 +1836,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 1 3",
+   "name": "Lock Tier 1 3T 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 1 3",
+   "name": "Lock Tier 1 3T 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 1 3",
+   "name": "Lock Tier 1 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 1 1",
+   "name": "Number Tier 1 3T 1",
    "points": [
     [
      -253.0,
-     470.0
+     483.33
     ],
     [
      -251.85,
-     470.23
+     483.56
     ],
     [
      -250.88,
-     470.88
+     484.21
     ],
     [
      -250.23,
-     471.85
+     485.19
     ],
     [
      -250.0,
-     473.0
+     486.33
     ],
     [
      -250.0,
-     507.0
+     520.33
     ],
     [
      -250.23,
-     508.15
+     521.48
     ],
     [
      -250.88,
-     509.12
+     522.45
     ],
     [
      -251.85,
-     509.77
+     523.1
     ],
     [
      -253.0,
-     510.0
+     523.33
     ],
     [
      -347.0,
-     510.0
+     523.33
     ],
     [
      -348.15,
-     509.77
+     523.1
     ],
     [
      -349.12,
-     509.12
+     522.45
     ],
     [
      -349.77,
-     508.15
+     521.48
     ],
     [
      -350.0,
-     507.0
+     520.33
     ],
     [
      -350.0,
-     473.0
+     486.33
     ],
     [
      -349.77,
-     471.85
+     485.19
     ],
     [
      -349.12,
-     470.88
+     484.21
     ],
     [
      -348.15,
-     470.23
+     483.56
     ],
     [
      -347.0,
-     470.0
+     483.33
     ]
    ],
    "start": 455,
@@ -1580,104 +1942,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 1 1",
+   "name": "Number Tier 1 3T 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 1 1",
+   "name": "Number Tier 1 3T 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 1 1",
+   "name": "Number Tier 1 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 1 2",
+   "name": "Number Tier 1 3T 2",
    "points": [
     [
      47.0,
-     470.0
+     483.33
     ],
     [
      48.15,
-     470.23
+     483.56
     ],
     [
      49.12,
-     470.88
+     484.21
     ],
     [
      49.77,
-     471.85
+     485.19
     ],
     [
      50.0,
-     473.0
+     486.33
     ],
     [
      50.0,
-     507.0
+     520.33
     ],
     [
      49.77,
-     508.15
+     521.48
     ],
     [
      49.12,
-     509.12
+     522.45
     ],
     [
      48.15,
-     509.77
+     523.1
     ],
     [
      47.0,
-     510.0
+     523.33
     ],
     [
      -47.0,
-     510.0
+     523.33
     ],
     [
      -48.15,
-     509.77
+     523.1
     ],
     [
      -49.12,
-     509.12
+     522.45
     ],
     [
      -49.77,
-     508.15
+     521.48
     ],
     [
      -50.0,
-     507.0
+     520.33
     ],
     [
      -50.0,
-     473.0
+     486.33
     ],
     [
      -49.77,
-     471.85
+     485.19
     ],
     [
      -49.12,
-     470.88
+     484.21
     ],
     [
      -48.15,
-     470.23
+     483.56
     ],
     [
      -47.0,
-     470.0
+     483.33
     ]
    ],
    "start": 455,
@@ -1686,104 +2048,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 1 2",
+   "name": "Number Tier 1 3T 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 1 2",
+   "name": "Number Tier 1 3T 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 1 2",
+   "name": "Number Tier 1 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 1 3",
+   "name": "Number Tier 1 3T 3",
    "points": [
     [
      347.0,
-     470.0
+     483.33
     ],
     [
      348.15,
-     470.23
+     483.56
     ],
     [
      349.12,
-     470.88
+     484.21
     ],
     [
      349.77,
-     471.85
+     485.19
     ],
     [
      350.0,
-     473.0
+     486.33
     ],
     [
      350.0,
-     507.0
+     520.33
     ],
     [
      349.77,
-     508.15
+     521.48
     ],
     [
      349.12,
-     509.12
+     522.45
     ],
     [
      348.15,
-     509.77
+     523.1
     ],
     [
      347.0,
-     510.0
+     523.33
     ],
     [
      253.0,
-     510.0
+     523.33
     ],
     [
      251.85,
-     509.77
+     523.1
     ],
     [
      250.88,
-     509.12
+     522.45
     ],
     [
      250.23,
-     508.15
+     521.48
     ],
     [
      250.0,
-     507.0
+     520.33
     ],
     [
      250.0,
-     473.0
+     486.33
     ],
     [
      250.23,
-     471.85
+     485.19
     ],
     [
      250.88,
-     470.88
+     484.21
     ],
     [
      251.85,
-     470.23
+     483.56
     ],
     [
      253.0,
-     470.0
+     483.33
     ]
    ],
    "start": 455,
@@ -1792,104 +2154,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 1 3",
+   "name": "Number Tier 1 3T 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 1 3",
+   "name": "Number Tier 1 3T 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 1 3",
+   "name": "Number Tier 1 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 2 1",
+   "name": "Door Tier 2 3T 1",
    "points": [
     [
      -159.0,
-     673.0
+     673.33
     ],
     [
      -157.47,
-     673.3
+     673.64
     ],
     [
      -156.17,
-     674.17
+     674.5
     ],
     [
      -155.3,
-     675.47
+     675.8
     ],
     [
      -155.0,
-     677.0
+     677.33
     ],
     [
      -155.0,
-     1222.0
+     1222.67
     ],
     [
      -155.3,
-     1223.53
+     1224.2
     ],
     [
      -156.17,
-     1224.83
+     1225.5
     ],
     [
      -157.47,
-     1225.7
+     1226.36
     ],
     [
      -159.0,
-     1226.0
+     1226.67
     ],
     [
      -441.0,
-     1226.0
+     1226.67
     ],
     [
      -442.53,
-     1225.7
+     1226.36
     ],
     [
      -443.83,
-     1224.83
+     1225.5
     ],
     [
      -444.7,
-     1223.53
+     1224.2
     ],
     [
      -445.0,
-     1222.0
+     1222.67
     ],
     [
      -445.0,
-     677.0
+     677.33
     ],
     [
      -444.7,
-     675.47
+     675.8
     ],
     [
      -443.83,
-     674.17
+     674.5
     ],
     [
      -442.53,
-     673.3
+     673.64
     ],
     [
      -441.0,
-     673.0
+     673.33
     ]
    ],
    "start": 450,
@@ -1898,104 +2260,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 2 1",
+   "name": "Door Tier 2 3T 1",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 2 1",
+   "name": "Door Tier 2 3T 1",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 2 1",
+   "name": "Door Tier 2 3T 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 2 2",
+   "name": "Door Tier 2 3T 2",
    "points": [
     [
      141.0,
-     673.0
+     673.33
     ],
     [
      142.53,
-     673.3
+     673.64
     ],
     [
      143.83,
-     674.17
+     674.5
     ],
     [
      144.7,
-     675.47
+     675.8
     ],
     [
      145.0,
-     677.0
+     677.33
     ],
     [
      145.0,
-     1222.0
+     1222.67
     ],
     [
      144.7,
-     1223.53
+     1224.2
     ],
     [
      143.83,
-     1224.83
+     1225.5
     ],
     [
      142.53,
-     1225.7
+     1226.36
     ],
     [
      141.0,
-     1226.0
+     1226.67
     ],
     [
      -141.0,
-     1226.0
+     1226.67
     ],
     [
      -142.53,
-     1225.7
+     1226.36
     ],
     [
      -143.83,
-     1224.83
+     1225.5
     ],
     [
      -144.7,
-     1223.53
+     1224.2
     ],
     [
      -145.0,
-     1222.0
+     1222.67
     ],
     [
      -145.0,
-     677.0
+     677.33
     ],
     [
      -144.7,
-     675.47
+     675.8
     ],
     [
      -143.83,
-     674.17
+     674.5
     ],
     [
      -142.53,
-     673.3
+     673.64
     ],
     [
      -141.0,
-     673.0
+     673.33
     ]
    ],
    "start": 450,
@@ -2004,104 +2366,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 2 2",
+   "name": "Door Tier 2 3T 2",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 2 2",
+   "name": "Door Tier 2 3T 2",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 2 2",
+   "name": "Door Tier 2 3T 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 2 3",
+   "name": "Door Tier 2 3T 3",
    "points": [
     [
      441.0,
-     673.0
+     673.33
     ],
     [
      442.53,
-     673.3
+     673.64
     ],
     [
      443.83,
-     674.17
+     674.5
     ],
     [
      444.7,
-     675.47
+     675.8
     ],
     [
      445.0,
-     677.0
+     677.33
     ],
     [
      445.0,
-     1222.0
+     1222.67
     ],
     [
      444.7,
-     1223.53
+     1224.2
     ],
     [
      443.83,
-     1224.83
+     1225.5
     ],
     [
      442.53,
-     1225.7
+     1226.36
     ],
     [
      441.0,
-     1226.0
+     1226.67
     ],
     [
      159.0,
-     1226.0
+     1226.67
     ],
     [
      157.47,
-     1225.7
+     1226.36
     ],
     [
      156.17,
-     1224.83
+     1225.5
     ],
     [
      155.3,
-     1223.53
+     1224.2
     ],
     [
      155.0,
-     1222.0
+     1222.67
     ],
     [
      155.0,
-     677.0
+     677.33
     ],
     [
      155.3,
-     675.47
+     675.8
     ],
     [
      156.17,
-     674.17
+     674.5
     ],
     [
      157.47,
-     673.3
+     673.64
     ],
     [
      159.0,
-     673.0
+     673.33
     ]
    ],
    "start": 450,
@@ -2110,104 +2472,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 2 3",
+   "name": "Door Tier 2 3T 3",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 2 3",
+   "name": "Door Tier 2 3T 3",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 2 3",
+   "name": "Door Tier 2 3T 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 2 1",
+   "name": "Vent Tier 2 3T 1",
    "points": [
     [
      -223.0,
-     1103.0
+     1106.67
     ],
     [
      -221.85,
-     1103.23
+     1106.9
     ],
     [
      -220.88,
-     1103.88
+     1107.55
     ],
     [
      -220.23,
-     1104.85
+     1108.52
     ],
     [
      -220.0,
-     1106.0
+     1109.67
     ],
     [
      -220.0,
-     1170.0
+     1173.67
     ],
     [
      -220.23,
-     1171.15
+     1174.81
     ],
     [
      -220.88,
-     1172.12
+     1175.79
     ],
     [
      -221.85,
-     1172.77
+     1176.44
     ],
     [
      -223.0,
-     1173.0
+     1176.67
     ],
     [
      -377.0,
-     1173.0
+     1176.67
     ],
     [
      -378.15,
-     1172.77
+     1176.44
     ],
     [
      -379.12,
-     1172.12
+     1175.79
     ],
     [
      -379.77,
-     1171.15
+     1174.81
     ],
     [
      -380.0,
-     1170.0
+     1173.67
     ],
     [
      -380.0,
-     1106.0
+     1109.67
     ],
     [
      -379.77,
-     1104.85
+     1108.52
     ],
     [
      -379.12,
-     1103.88
+     1107.55
     ],
     [
      -378.15,
-     1103.23
+     1106.9
     ],
     [
      -377.0,
-     1103.0
+     1106.67
     ]
    ],
    "start": 455,
@@ -2216,104 +2578,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 2 1",
+   "name": "Vent Tier 2 3T 1",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 2 1",
+   "name": "Vent Tier 2 3T 1",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 2 1",
+   "name": "Vent Tier 2 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 2 2",
+   "name": "Vent Tier 2 3T 2",
    "points": [
     [
      77.0,
-     1103.0
+     1106.67
     ],
     [
      78.15,
-     1103.23
+     1106.9
     ],
     [
      79.12,
-     1103.88
+     1107.55
     ],
     [
      79.77,
-     1104.85
+     1108.52
     ],
     [
      80.0,
-     1106.0
+     1109.67
     ],
     [
      80.0,
-     1170.0
+     1173.67
     ],
     [
      79.77,
-     1171.15
+     1174.81
     ],
     [
      79.12,
-     1172.12
+     1175.79
     ],
     [
      78.15,
-     1172.77
+     1176.44
     ],
     [
      77.0,
-     1173.0
+     1176.67
     ],
     [
      -77.0,
-     1173.0
+     1176.67
     ],
     [
      -78.15,
-     1172.77
+     1176.44
     ],
     [
      -79.12,
-     1172.12
+     1175.79
     ],
     [
      -79.77,
-     1171.15
+     1174.81
     ],
     [
      -80.0,
-     1170.0
+     1173.67
     ],
     [
      -80.0,
-     1106.0
+     1109.67
     ],
     [
      -79.77,
-     1104.85
+     1108.52
     ],
     [
      -79.12,
-     1103.88
+     1107.55
     ],
     [
      -78.15,
-     1103.23
+     1106.9
     ],
     [
      -77.0,
-     1103.0
+     1106.67
     ]
    ],
    "start": 455,
@@ -2322,104 +2684,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 2 2",
+   "name": "Vent Tier 2 3T 2",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 2 2",
+   "name": "Vent Tier 2 3T 2",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 2 2",
+   "name": "Vent Tier 2 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 2 3",
+   "name": "Vent Tier 2 3T 3",
    "points": [
     [
      377.0,
-     1103.0
+     1106.67
     ],
     [
      378.15,
-     1103.23
+     1106.9
     ],
     [
      379.12,
-     1103.88
+     1107.55
     ],
     [
      379.77,
-     1104.85
+     1108.52
     ],
     [
      380.0,
-     1106.0
+     1109.67
     ],
     [
      380.0,
-     1170.0
+     1173.67
     ],
     [
      379.77,
-     1171.15
+     1174.81
     ],
     [
      379.12,
-     1172.12
+     1175.79
     ],
     [
      378.15,
-     1172.77
+     1176.44
     ],
     [
      377.0,
-     1173.0
+     1176.67
     ],
     [
      223.0,
-     1173.0
+     1176.67
     ],
     [
      221.85,
-     1172.77
+     1176.44
     ],
     [
      220.88,
-     1172.12
+     1175.79
     ],
     [
      220.23,
-     1171.15
+     1174.81
     ],
     [
      220.0,
-     1170.0
+     1173.67
     ],
     [
      220.0,
-     1106.0
+     1109.67
     ],
     [
      220.23,
-     1104.85
+     1108.52
     ],
     [
      220.88,
-     1103.88
+     1107.55
     ],
     [
      221.85,
-     1103.23
+     1106.9
     ],
     [
      223.0,
-     1103.0
+     1106.67
     ]
    ],
    "start": 455,
@@ -2428,120 +2790,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 2 3",
+   "name": "Vent Tier 2 3T 3",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 2 3",
+   "name": "Vent Tier 2 3T 3",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 2 3",
+   "name": "Vent Tier 2 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 2 1",
+   "name": "Lock Tier 2 3T 1",
    "points": [
     [
      -173.0,
-     973.0
+     955.0
     ],
     [
      -173.41,
-     976.11
+     958.11
     ],
     [
      -174.61,
-     979.0
+     961.0
     ],
     [
      -176.51,
-     981.49
+     963.49
     ],
     [
      -179.0,
-     983.39
+     965.39
     ],
     [
      -181.89,
-     984.59
+     966.59
     ],
     [
      -185.0,
-     985.0
+     967.0
     ],
     [
      -188.11,
-     984.59
+     966.59
     ],
     [
      -191.0,
-     983.39
+     965.39
     ],
     [
      -193.49,
-     981.49
+     963.49
     ],
     [
      -195.39,
-     979.0
+     961.0
     ],
     [
      -196.59,
-     976.11
+     958.11
     ],
     [
      -197.0,
-     973.0
+     955.0
     ],
     [
      -196.59,
-     969.89
+     951.89
     ],
     [
      -195.39,
-     967.0
+     949.0
     ],
     [
      -193.49,
-     964.51
+     946.51
     ],
     [
      -191.0,
-     962.61
+     944.61
     ],
     [
      -188.11,
-     961.41
+     943.41
     ],
     [
      -185.0,
-     961.0
+     943.0
     ],
     [
      -181.89,
-     961.41
+     943.41
     ],
     [
      -179.0,
-     962.61
+     944.61
     ],
     [
      -176.51,
-     964.51
+     946.51
     ],
     [
      -174.61,
-     967.0
+     949.0
     ],
     [
      -173.41,
-     969.89
+     951.89
     ]
    ],
    "start": 455,
@@ -2550,120 +2912,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 2 1",
+   "name": "Lock Tier 2 3T 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 2 1",
+   "name": "Lock Tier 2 3T 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 2 1",
+   "name": "Lock Tier 2 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 2 2",
+   "name": "Lock Tier 2 3T 2",
    "points": [
     [
      127.0,
-     973.0
+     955.0
     ],
     [
      126.59,
-     976.11
+     958.11
     ],
     [
      125.39,
-     979.0
+     961.0
     ],
     [
      123.49,
-     981.49
+     963.49
     ],
     [
      121.0,
-     983.39
+     965.39
     ],
     [
      118.11,
-     984.59
+     966.59
     ],
     [
      115.0,
-     985.0
+     967.0
     ],
     [
      111.89,
-     984.59
+     966.59
     ],
     [
      109.0,
-     983.39
+     965.39
     ],
     [
      106.51,
-     981.49
+     963.49
     ],
     [
      104.61,
-     979.0
+     961.0
     ],
     [
      103.41,
-     976.11
+     958.11
     ],
     [
      103.0,
-     973.0
+     955.0
     ],
     [
      103.41,
-     969.89
+     951.89
     ],
     [
      104.61,
-     967.0
+     949.0
     ],
     [
      106.51,
-     964.51
+     946.51
     ],
     [
      109.0,
-     962.61
+     944.61
     ],
     [
      111.89,
-     961.41
+     943.41
     ],
     [
      115.0,
-     961.0
+     943.0
     ],
     [
      118.11,
-     961.41
+     943.41
     ],
     [
      121.0,
-     962.61
+     944.61
     ],
     [
      123.49,
-     964.51
+     946.51
     ],
     [
      125.39,
-     967.0
+     949.0
     ],
     [
      126.59,
-     969.89
+     951.89
     ]
    ],
    "start": 455,
@@ -2672,120 +3034,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 2 2",
+   "name": "Lock Tier 2 3T 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 2 2",
+   "name": "Lock Tier 2 3T 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 2 2",
+   "name": "Lock Tier 2 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 2 3",
+   "name": "Lock Tier 2 3T 3",
    "points": [
     [
      427.0,
-     973.0
+     955.0
     ],
     [
      426.59,
-     976.11
+     958.11
     ],
     [
      425.39,
-     979.0
-    ],
-    [
-     423.49,
-     981.49
-    ],
-    [
-     421.0,
-     983.39
-    ],
-    [
-     418.11,
-     984.59
-    ],
-    [
-     415.0,
-     985.0
-    ],
-    [
-     411.89,
-     984.59
-    ],
-    [
-     409.0,
-     983.39
-    ],
-    [
-     406.51,
-     981.49
-    ],
-    [
-     404.61,
-     979.0
-    ],
-    [
-     403.41,
-     976.11
-    ],
-    [
-     403.0,
-     973.0
-    ],
-    [
-     403.41,
-     969.89
-    ],
-    [
-     404.61,
-     967.0
-    ],
-    [
-     406.51,
-     964.51
-    ],
-    [
-     409.0,
-     962.61
-    ],
-    [
-     411.89,
-     961.41
-    ],
-    [
-     415.0,
      961.0
     ],
     [
-     418.11,
-     961.41
+     423.49,
+     963.49
     ],
     [
      421.0,
-     962.61
+     965.39
     ],
     [
-     423.49,
-     964.51
+     418.11,
+     966.59
     ],
     [
-     425.39,
+     415.0,
      967.0
     ],
     [
+     411.89,
+     966.59
+    ],
+    [
+     409.0,
+     965.39
+    ],
+    [
+     406.51,
+     963.49
+    ],
+    [
+     404.61,
+     961.0
+    ],
+    [
+     403.41,
+     958.11
+    ],
+    [
+     403.0,
+     955.0
+    ],
+    [
+     403.41,
+     951.89
+    ],
+    [
+     404.61,
+     949.0
+    ],
+    [
+     406.51,
+     946.51
+    ],
+    [
+     409.0,
+     944.61
+    ],
+    [
+     411.89,
+     943.41
+    ],
+    [
+     415.0,
+     943.0
+    ],
+    [
+     418.11,
+     943.41
+    ],
+    [
+     421.0,
+     944.61
+    ],
+    [
+     423.49,
+     946.51
+    ],
+    [
+     425.39,
+     949.0
+    ],
+    [
      426.59,
-     969.89
+     951.89
     ]
    ],
    "start": 455,
@@ -2794,104 +3156,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 2 3",
+   "name": "Lock Tier 2 3T 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 2 3",
+   "name": "Lock Tier 2 3T 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 2 3",
+   "name": "Lock Tier 2 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 2 1",
+   "name": "Number Tier 2 3T 1",
    "points": [
     [
      -253.0,
-     1033.0
+     1046.67
     ],
     [
      -251.85,
-     1033.23
+     1046.9
     ],
     [
      -250.88,
-     1033.88
+     1047.55
     ],
     [
      -250.23,
-     1034.85
+     1048.52
     ],
     [
      -250.0,
-     1036.0
+     1049.67
     ],
     [
      -250.0,
-     1070.0
+     1083.67
     ],
     [
      -250.23,
-     1071.15
+     1084.81
     ],
     [
      -250.88,
-     1072.12
+     1085.79
     ],
     [
      -251.85,
-     1072.77
+     1086.44
     ],
     [
      -253.0,
-     1073.0
+     1086.67
     ],
     [
      -347.0,
-     1073.0
+     1086.67
     ],
     [
      -348.15,
-     1072.77
+     1086.44
     ],
     [
      -349.12,
-     1072.12
+     1085.79
     ],
     [
      -349.77,
-     1071.15
+     1084.81
     ],
     [
      -350.0,
-     1070.0
+     1083.67
     ],
     [
      -350.0,
-     1036.0
+     1049.67
     ],
     [
      -349.77,
-     1034.85
+     1048.52
     ],
     [
      -349.12,
-     1033.88
+     1047.55
     ],
     [
      -348.15,
-     1033.23
+     1046.9
     ],
     [
      -347.0,
-     1033.0
+     1046.67
     ]
    ],
    "start": 455,
@@ -2900,104 +3262,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 2 1",
+   "name": "Number Tier 2 3T 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 2 1",
+   "name": "Number Tier 2 3T 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 2 1",
+   "name": "Number Tier 2 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 2 2",
+   "name": "Number Tier 2 3T 2",
    "points": [
     [
      47.0,
-     1033.0
+     1046.67
     ],
     [
      48.15,
-     1033.23
+     1046.9
     ],
     [
      49.12,
-     1033.88
+     1047.55
     ],
     [
      49.77,
-     1034.85
+     1048.52
     ],
     [
      50.0,
-     1036.0
+     1049.67
     ],
     [
      50.0,
-     1070.0
+     1083.67
     ],
     [
      49.77,
-     1071.15
+     1084.81
     ],
     [
      49.12,
-     1072.12
+     1085.79
     ],
     [
      48.15,
-     1072.77
+     1086.44
     ],
     [
      47.0,
-     1073.0
+     1086.67
     ],
     [
      -47.0,
-     1073.0
+     1086.67
     ],
     [
      -48.15,
-     1072.77
+     1086.44
     ],
     [
      -49.12,
-     1072.12
+     1085.79
     ],
     [
      -49.77,
-     1071.15
+     1084.81
     ],
     [
      -50.0,
-     1070.0
+     1083.67
     ],
     [
      -50.0,
-     1036.0
+     1049.67
     ],
     [
      -49.77,
-     1034.85
+     1048.52
     ],
     [
      -49.12,
-     1033.88
+     1047.55
     ],
     [
      -48.15,
-     1033.23
+     1046.9
     ],
     [
      -47.0,
-     1033.0
+     1046.67
     ]
    ],
    "start": 455,
@@ -3006,104 +3368,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 2 2",
+   "name": "Number Tier 2 3T 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 2 2",
+   "name": "Number Tier 2 3T 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 2 2",
+   "name": "Number Tier 2 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 2 3",
+   "name": "Number Tier 2 3T 3",
    "points": [
     [
      347.0,
-     1033.0
+     1046.67
     ],
     [
      348.15,
-     1033.23
+     1046.9
     ],
     [
      349.12,
-     1033.88
+     1047.55
     ],
     [
      349.77,
-     1034.85
+     1048.52
     ],
     [
      350.0,
-     1036.0
+     1049.67
     ],
     [
      350.0,
-     1070.0
+     1083.67
     ],
     [
      349.77,
-     1071.15
+     1084.81
     ],
     [
      349.12,
-     1072.12
+     1085.79
     ],
     [
      348.15,
-     1072.77
+     1086.44
     ],
     [
      347.0,
-     1073.0
+     1086.67
     ],
     [
      253.0,
-     1073.0
+     1086.67
     ],
     [
      251.85,
-     1072.77
+     1086.44
     ],
     [
      250.88,
-     1072.12
+     1085.79
     ],
     [
      250.23,
-     1071.15
+     1084.81
     ],
     [
      250.0,
-     1070.0
+     1083.67
     ],
     [
      250.0,
-     1036.0
+     1049.67
     ],
     [
      250.23,
-     1034.85
+     1048.52
     ],
     [
      250.88,
-     1033.88
+     1047.55
     ],
     [
      251.85,
-     1033.23
+     1046.9
     ],
     [
      253.0,
-     1033.0
+     1046.67
     ]
    ],
    "start": 455,
@@ -3112,104 +3474,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 2 3",
+   "name": "Number Tier 2 3T 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 2 3",
+   "name": "Number Tier 2 3T 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 2 3",
+   "name": "Number Tier 2 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 3 1",
+   "name": "Door Tier 3 3T 1",
    "points": [
     [
      -159.0,
-     1236.0
+     1236.67
     ],
     [
      -157.47,
-     1236.3
+     1236.97
     ],
     [
      -156.17,
-     1237.17
+     1237.84
     ],
     [
      -155.3,
-     1238.47
+     1239.14
     ],
     [
      -155.0,
-     1240.0
+     1240.67
     ],
     [
      -155.0,
-     1785.0
+     1786.0
     ],
     [
      -155.3,
-     1786.53
+     1787.53
     ],
     [
      -156.17,
-     1787.83
+     1788.83
     ],
     [
      -157.47,
-     1788.7
+     1789.7
     ],
     [
      -159.0,
-     1789.0
+     1790.0
     ],
     [
      -441.0,
-     1789.0
+     1790.0
     ],
     [
      -442.53,
-     1788.7
+     1789.7
     ],
     [
      -443.83,
-     1787.83
+     1788.83
     ],
     [
      -444.7,
-     1786.53
+     1787.53
     ],
     [
      -445.0,
-     1785.0
+     1786.0
     ],
     [
      -445.0,
-     1240.0
+     1240.67
     ],
     [
      -444.7,
-     1238.47
+     1239.14
     ],
     [
      -443.83,
-     1237.17
+     1237.84
     ],
     [
      -442.53,
-     1236.3
+     1236.97
     ],
     [
      -441.0,
-     1236.0
+     1236.67
     ]
    ],
    "start": 450,
@@ -3218,104 +3580,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 3 1",
+   "name": "Door Tier 3 3T 1",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 3 1",
+   "name": "Door Tier 3 3T 1",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 3 1",
+   "name": "Door Tier 3 3T 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 3 2",
+   "name": "Door Tier 3 3T 2",
    "points": [
     [
      141.0,
-     1236.0
+     1236.67
     ],
     [
      142.53,
-     1236.3
+     1236.97
     ],
     [
      143.83,
-     1237.17
+     1237.84
     ],
     [
      144.7,
-     1238.47
+     1239.14
     ],
     [
      145.0,
-     1240.0
+     1240.67
     ],
     [
      145.0,
-     1785.0
+     1786.0
     ],
     [
      144.7,
-     1786.53
+     1787.53
     ],
     [
      143.83,
-     1787.83
+     1788.83
     ],
     [
      142.53,
-     1788.7
+     1789.7
     ],
     [
      141.0,
-     1789.0
+     1790.0
     ],
     [
      -141.0,
-     1789.0
+     1790.0
     ],
     [
      -142.53,
-     1788.7
+     1789.7
     ],
     [
      -143.83,
-     1787.83
+     1788.83
     ],
     [
      -144.7,
-     1786.53
+     1787.53
     ],
     [
      -145.0,
-     1785.0
+     1786.0
     ],
     [
      -145.0,
-     1240.0
+     1240.67
     ],
     [
      -144.7,
-     1238.47
+     1239.14
     ],
     [
      -143.83,
-     1237.17
+     1237.84
     ],
     [
      -142.53,
-     1236.3
+     1236.97
     ],
     [
      -141.0,
-     1236.0
+     1236.67
     ]
    ],
    "start": 450,
@@ -3324,104 +3686,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 3 2",
+   "name": "Door Tier 3 3T 2",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 3 2",
+   "name": "Door Tier 3 3T 2",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 3 2",
+   "name": "Door Tier 3 3T 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Tier 3 3",
+   "name": "Door Tier 3 3T 3",
    "points": [
     [
      441.0,
-     1236.0
+     1236.67
     ],
     [
      442.53,
-     1236.3
+     1236.97
     ],
     [
      443.83,
-     1237.17
+     1237.84
     ],
     [
      444.7,
-     1238.47
+     1239.14
     ],
     [
      445.0,
-     1240.0
+     1240.67
     ],
     [
      445.0,
-     1785.0
+     1786.0
     ],
     [
      444.7,
-     1786.53
+     1787.53
     ],
     [
      443.83,
-     1787.83
+     1788.83
     ],
     [
      442.53,
-     1788.7
+     1789.7
     ],
     [
      441.0,
-     1789.0
+     1790.0
     ],
     [
      159.0,
-     1789.0
+     1790.0
     ],
     [
      157.47,
-     1788.7
+     1789.7
     ],
     [
      156.17,
-     1787.83
+     1788.83
     ],
     [
      155.3,
-     1786.53
+     1787.53
     ],
     [
      155.0,
-     1785.0
+     1786.0
     ],
     [
      155.0,
-     1240.0
+     1240.67
     ],
     [
      155.3,
-     1238.47
+     1239.14
     ],
     [
      156.17,
-     1237.17
+     1237.84
     ],
     [
      157.47,
-     1236.3
+     1236.97
     ],
     [
      159.0,
-     1236.0
+     1236.67
     ]
    ],
    "start": 450,
@@ -3430,104 +3792,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Tier 3 3",
+   "name": "Door Tier 3 3T 3",
    "subcategory": "Epoxy"
   },
   {
    "op": "set_material_param",
-   "name": "Door Tier 3 3",
+   "name": "Door Tier 3 3T 3",
    "param": "Epoxy Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Tier 3 3",
+   "name": "Door Tier 3 3T 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 3 1",
+   "name": "Vent Tier 3 3T 1",
    "points": [
     [
      -223.0,
-     1666.0
+     1670.0
     ],
     [
      -221.85,
-     1666.23
+     1670.23
     ],
     [
      -220.88,
-     1666.88
+     1670.88
     ],
     [
      -220.23,
-     1667.85
+     1671.85
     ],
     [
      -220.0,
-     1669.0
+     1673.0
     ],
     [
      -220.0,
-     1733.0
+     1737.0
     ],
     [
      -220.23,
-     1734.15
+     1738.15
     ],
     [
      -220.88,
-     1735.12
+     1739.12
     ],
     [
      -221.85,
-     1735.77
+     1739.77
     ],
     [
      -223.0,
-     1736.0
+     1740.0
     ],
     [
      -377.0,
-     1736.0
+     1740.0
     ],
     [
      -378.15,
-     1735.77
+     1739.77
     ],
     [
      -379.12,
-     1735.12
+     1739.12
     ],
     [
      -379.77,
-     1734.15
+     1738.15
     ],
     [
      -380.0,
-     1733.0
+     1737.0
     ],
     [
      -380.0,
-     1669.0
+     1673.0
     ],
     [
      -379.77,
-     1667.85
+     1671.85
     ],
     [
      -379.12,
-     1666.88
+     1670.88
     ],
     [
      -378.15,
-     1666.23
+     1670.23
     ],
     [
      -377.0,
-     1666.0
+     1670.0
     ]
    ],
    "start": 455,
@@ -3536,104 +3898,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 3 1",
+   "name": "Vent Tier 3 3T 1",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 3 1",
+   "name": "Vent Tier 3 3T 1",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 3 1",
+   "name": "Vent Tier 3 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 3 2",
+   "name": "Vent Tier 3 3T 2",
    "points": [
     [
      77.0,
-     1666.0
+     1670.0
     ],
     [
      78.15,
-     1666.23
+     1670.23
     ],
     [
      79.12,
-     1666.88
+     1670.88
     ],
     [
      79.77,
-     1667.85
+     1671.85
     ],
     [
      80.0,
-     1669.0
+     1673.0
     ],
     [
      80.0,
-     1733.0
+     1737.0
     ],
     [
      79.77,
-     1734.15
+     1738.15
     ],
     [
      79.12,
-     1735.12
+     1739.12
     ],
     [
      78.15,
-     1735.77
+     1739.77
     ],
     [
      77.0,
-     1736.0
+     1740.0
     ],
     [
      -77.0,
-     1736.0
+     1740.0
     ],
     [
      -78.15,
-     1735.77
+     1739.77
     ],
     [
      -79.12,
-     1735.12
+     1739.12
     ],
     [
      -79.77,
-     1734.15
+     1738.15
     ],
     [
      -80.0,
-     1733.0
+     1737.0
     ],
     [
      -80.0,
-     1669.0
+     1673.0
     ],
     [
      -79.77,
-     1667.85
+     1671.85
     ],
     [
      -79.12,
-     1666.88
+     1670.88
     ],
     [
      -78.15,
-     1666.23
+     1670.23
     ],
     [
      -77.0,
-     1666.0
+     1670.0
     ]
    ],
    "start": 455,
@@ -3642,104 +4004,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 3 2",
+   "name": "Vent Tier 3 3T 2",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 3 2",
+   "name": "Vent Tier 3 3T 2",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 3 2",
+   "name": "Vent Tier 3 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Tier 3 3",
+   "name": "Vent Tier 3 3T 3",
    "points": [
     [
      377.0,
-     1666.0
+     1670.0
     ],
     [
      378.15,
-     1666.23
+     1670.23
     ],
     [
      379.12,
-     1666.88
+     1670.88
     ],
     [
      379.77,
-     1667.85
+     1671.85
     ],
     [
      380.0,
-     1669.0
+     1673.0
     ],
     [
      380.0,
-     1733.0
+     1737.0
     ],
     [
      379.77,
-     1734.15
+     1738.15
     ],
     [
      379.12,
-     1735.12
+     1739.12
     ],
     [
      378.15,
-     1735.77
+     1739.77
     ],
     [
      377.0,
-     1736.0
+     1740.0
     ],
     [
      223.0,
-     1736.0
+     1740.0
     ],
     [
      221.85,
-     1735.77
+     1739.77
     ],
     [
      220.88,
-     1735.12
+     1739.12
     ],
     [
      220.23,
-     1734.15
+     1738.15
     ],
     [
      220.0,
-     1733.0
+     1737.0
     ],
     [
      220.0,
-     1669.0
+     1673.0
     ],
     [
      220.23,
-     1667.85
+     1671.85
     ],
     [
      220.88,
-     1666.88
+     1670.88
     ],
     [
      221.85,
-     1666.23
+     1670.23
     ],
     [
      223.0,
-     1666.0
+     1670.0
     ]
    ],
    "start": 455,
@@ -3748,120 +4110,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Tier 3 3",
+   "name": "Vent Tier 3 3T 3",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Tier 3 3",
+   "name": "Vent Tier 3 3T 3",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Tier 3 3",
+   "name": "Vent Tier 3 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 3 1",
+   "name": "Lock Tier 3 3T 1",
    "points": [
     [
      -173.0,
-     1536.0
+     1518.33
     ],
     [
      -173.41,
-     1539.11
+     1521.44
     ],
     [
      -174.61,
-     1542.0
+     1524.33
     ],
     [
      -176.51,
-     1544.49
+     1526.82
     ],
     [
      -179.0,
-     1546.39
+     1528.73
     ],
     [
      -181.89,
-     1547.59
+     1529.92
     ],
     [
      -185.0,
-     1548.0
+     1530.33
     ],
     [
      -188.11,
-     1547.59
+     1529.92
     ],
     [
      -191.0,
-     1546.39
+     1528.73
     ],
     [
      -193.49,
-     1544.49
+     1526.82
     ],
     [
      -195.39,
-     1542.0
+     1524.33
     ],
     [
      -196.59,
-     1539.11
+     1521.44
     ],
     [
      -197.0,
-     1536.0
+     1518.33
     ],
     [
      -196.59,
-     1532.89
+     1515.23
     ],
     [
      -195.39,
-     1530.0
+     1512.33
     ],
     [
      -193.49,
-     1527.51
+     1509.85
     ],
     [
      -191.0,
-     1525.61
+     1507.94
     ],
     [
      -188.11,
-     1524.41
+     1506.74
     ],
     [
      -185.0,
-     1524.0
+     1506.33
     ],
     [
      -181.89,
-     1524.41
+     1506.74
     ],
     [
      -179.0,
-     1525.61
+     1507.94
     ],
     [
      -176.51,
-     1527.51
+     1509.85
     ],
     [
      -174.61,
-     1530.0
+     1512.33
     ],
     [
      -173.41,
-     1532.89
+     1515.23
     ]
    ],
    "start": 455,
@@ -3870,120 +4232,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 3 1",
+   "name": "Lock Tier 3 3T 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 3 1",
+   "name": "Lock Tier 3 3T 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 3 1",
+   "name": "Lock Tier 3 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 3 2",
+   "name": "Lock Tier 3 3T 2",
    "points": [
     [
      127.0,
-     1536.0
+     1518.33
     ],
     [
      126.59,
-     1539.11
+     1521.44
     ],
     [
      125.39,
-     1542.0
+     1524.33
     ],
     [
      123.49,
-     1544.49
+     1526.82
     ],
     [
      121.0,
-     1546.39
+     1528.73
     ],
     [
      118.11,
-     1547.59
+     1529.92
     ],
     [
      115.0,
-     1548.0
+     1530.33
     ],
     [
      111.89,
-     1547.59
+     1529.92
     ],
     [
      109.0,
-     1546.39
+     1528.73
     ],
     [
      106.51,
-     1544.49
+     1526.82
     ],
     [
      104.61,
-     1542.0
+     1524.33
     ],
     [
      103.41,
-     1539.11
+     1521.44
     ],
     [
      103.0,
-     1536.0
+     1518.33
     ],
     [
      103.41,
-     1532.89
+     1515.23
     ],
     [
      104.61,
-     1530.0
+     1512.33
     ],
     [
      106.51,
-     1527.51
+     1509.85
     ],
     [
      109.0,
-     1525.61
+     1507.94
     ],
     [
      111.89,
-     1524.41
+     1506.74
     ],
     [
      115.0,
-     1524.0
+     1506.33
     ],
     [
      118.11,
-     1524.41
+     1506.74
     ],
     [
      121.0,
-     1525.61
+     1507.94
     ],
     [
      123.49,
-     1527.51
+     1509.85
     ],
     [
      125.39,
-     1530.0
+     1512.33
     ],
     [
      126.59,
-     1532.89
+     1515.23
     ]
    ],
    "start": 455,
@@ -3992,120 +4354,120 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 3 2",
+   "name": "Lock Tier 3 3T 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 3 2",
+   "name": "Lock Tier 3 3T 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 3 2",
+   "name": "Lock Tier 3 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Lock Tier 3 3",
+   "name": "Lock Tier 3 3T 3",
    "points": [
     [
      427.0,
-     1536.0
+     1518.33
     ],
     [
      426.59,
-     1539.11
+     1521.44
     ],
     [
      425.39,
-     1542.0
+     1524.33
     ],
     [
      423.49,
-     1544.49
+     1526.82
     ],
     [
      421.0,
-     1546.39
+     1528.73
     ],
     [
      418.11,
-     1547.59
+     1529.92
     ],
     [
      415.0,
-     1548.0
+     1530.33
     ],
     [
      411.89,
-     1547.59
+     1529.92
     ],
     [
      409.0,
-     1546.39
+     1528.73
     ],
     [
      406.51,
-     1544.49
+     1526.82
     ],
     [
      404.61,
-     1542.0
+     1524.33
     ],
     [
      403.41,
-     1539.11
+     1521.44
     ],
     [
      403.0,
-     1536.0
+     1518.33
     ],
     [
      403.41,
-     1532.89
+     1515.23
     ],
     [
      404.61,
-     1530.0
+     1512.33
     ],
     [
      406.51,
-     1527.51
+     1509.85
     ],
     [
      409.0,
-     1525.61
+     1507.94
     ],
     [
      411.89,
-     1524.41
+     1506.74
     ],
     [
      415.0,
-     1524.0
+     1506.33
     ],
     [
      418.11,
-     1524.41
+     1506.74
     ],
     [
      421.0,
-     1525.61
+     1507.94
     ],
     [
      423.49,
-     1527.51
+     1509.85
     ],
     [
      425.39,
-     1530.0
+     1512.33
     ],
     [
      426.59,
-     1532.89
+     1515.23
     ]
    ],
    "start": 455,
@@ -4114,104 +4476,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock Tier 3 3",
+   "name": "Lock Tier 3 3T 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock Tier 3 3",
+   "name": "Lock Tier 3 3T 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock Tier 3 3",
+   "name": "Lock Tier 3 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 3 1",
+   "name": "Number Tier 3 3T 1",
    "points": [
     [
      -253.0,
-     1596.0
+     1610.0
     ],
     [
      -251.85,
-     1596.23
+     1610.23
     ],
     [
      -250.88,
-     1596.88
+     1610.88
     ],
     [
      -250.23,
-     1597.85
+     1611.85
     ],
     [
      -250.0,
-     1599.0
+     1613.0
     ],
     [
      -250.0,
-     1633.0
+     1647.0
     ],
     [
      -250.23,
-     1634.15
+     1648.15
     ],
     [
      -250.88,
-     1635.12
+     1649.12
     ],
     [
      -251.85,
-     1635.77
+     1649.77
     ],
     [
      -253.0,
-     1636.0
+     1650.0
     ],
     [
      -347.0,
-     1636.0
+     1650.0
     ],
     [
      -348.15,
-     1635.77
+     1649.77
     ],
     [
      -349.12,
-     1635.12
+     1649.12
     ],
     [
      -349.77,
-     1634.15
+     1648.15
     ],
     [
      -350.0,
-     1633.0
+     1647.0
     ],
     [
      -350.0,
-     1599.0
+     1613.0
     ],
     [
      -349.77,
-     1597.85
+     1611.85
     ],
     [
      -349.12,
-     1596.88
+     1610.88
     ],
     [
      -348.15,
-     1596.23
+     1610.23
     ],
     [
      -347.0,
-     1596.0
+     1610.0
     ]
    ],
    "start": 455,
@@ -4220,104 +4582,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 3 1",
+   "name": "Number Tier 3 3T 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 3 1",
+   "name": "Number Tier 3 3T 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 3 1",
+   "name": "Number Tier 3 3T 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 3 2",
+   "name": "Number Tier 3 3T 2",
    "points": [
     [
      47.0,
-     1596.0
+     1610.0
     ],
     [
      48.15,
-     1596.23
+     1610.23
     ],
     [
      49.12,
-     1596.88
+     1610.88
     ],
     [
      49.77,
-     1597.85
+     1611.85
     ],
     [
      50.0,
-     1599.0
+     1613.0
     ],
     [
      50.0,
-     1633.0
+     1647.0
     ],
     [
      49.77,
-     1634.15
+     1648.15
     ],
     [
      49.12,
-     1635.12
+     1649.12
     ],
     [
      48.15,
-     1635.77
+     1649.77
     ],
     [
      47.0,
-     1636.0
+     1650.0
     ],
     [
      -47.0,
-     1636.0
+     1650.0
     ],
     [
      -48.15,
-     1635.77
+     1649.77
     ],
     [
      -49.12,
-     1635.12
+     1649.12
     ],
     [
      -49.77,
-     1634.15
+     1648.15
     ],
     [
      -50.0,
-     1633.0
+     1647.0
     ],
     [
      -50.0,
-     1599.0
+     1613.0
     ],
     [
      -49.77,
-     1597.85
+     1611.85
     ],
     [
      -49.12,
-     1596.88
+     1610.88
     ],
     [
      -48.15,
-     1596.23
+     1610.23
     ],
     [
      -47.0,
-     1596.0
+     1610.0
     ]
    ],
    "start": 455,
@@ -4326,104 +4688,104 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 3 2",
+   "name": "Number Tier 3 3T 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 3 2",
+   "name": "Number Tier 3 3T 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 3 2",
+   "name": "Number Tier 3 3T 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Number Tier 3 3",
+   "name": "Number Tier 3 3T 3",
    "points": [
     [
      347.0,
-     1596.0
+     1610.0
     ],
     [
      348.15,
-     1596.23
+     1610.23
     ],
     [
      349.12,
-     1596.88
+     1610.88
     ],
     [
      349.77,
-     1597.85
+     1611.85
     ],
     [
      350.0,
-     1599.0
+     1613.0
     ],
     [
      350.0,
-     1633.0
+     1647.0
     ],
     [
      349.77,
-     1634.15
+     1648.15
     ],
     [
      349.12,
-     1635.12
+     1649.12
     ],
     [
      348.15,
-     1635.77
+     1649.77
     ],
     [
      347.0,
-     1636.0
+     1650.0
     ],
     [
      253.0,
-     1636.0
+     1650.0
     ],
     [
      251.85,
-     1635.77
+     1649.77
     ],
     [
      250.88,
-     1635.12
+     1649.12
     ],
     [
      250.23,
-     1634.15
+     1648.15
     ],
     [
      250.0,
-     1633.0
+     1647.0
     ],
     [
      250.0,
-     1599.0
+     1613.0
     ],
     [
      250.23,
-     1597.85
+     1611.85
     ],
     [
      250.88,
-     1596.88
+     1610.88
     ],
     [
      251.85,
-     1596.23
+     1610.23
     ],
     [
      253.0,
-     1596.0
+     1610.0
     ]
    ],
    "start": 455,
@@ -4432,20 +4794,3060 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Number Tier 3 3",
+   "name": "Number Tier 3 3T 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Number Tier 3 3",
+   "name": "Number Tier 3 3T 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Number Tier 3 3",
+   "name": "Number Tier 3 3T 3",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 1 2T 1",
+   "points": [
+    [
+     -159.0,
+     110.0
+    ],
+    [
+     -157.47,
+     110.3
+    ],
+    [
+     -156.17,
+     111.17
+    ],
+    [
+     -155.3,
+     112.47
+    ],
+    [
+     -155.0,
+     114.0
+    ],
+    [
+     -155.0,
+     941.0
+    ],
+    [
+     -155.3,
+     942.53
+    ],
+    [
+     -156.17,
+     943.83
+    ],
+    [
+     -157.47,
+     944.7
+    ],
+    [
+     -159.0,
+     945.0
+    ],
+    [
+     -441.0,
+     945.0
+    ],
+    [
+     -442.53,
+     944.7
+    ],
+    [
+     -443.83,
+     943.83
+    ],
+    [
+     -444.7,
+     942.53
+    ],
+    [
+     -445.0,
+     941.0
+    ],
+    [
+     -445.0,
+     114.0
+    ],
+    [
+     -444.7,
+     112.47
+    ],
+    [
+     -443.83,
+     111.17
+    ],
+    [
+     -442.53,
+     110.3
+    ],
+    [
+     -441.0,
+     110.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 1 2T 1",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 1 2T 1",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 1 2T 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 1 2T 2",
+   "points": [
+    [
+     141.0,
+     110.0
+    ],
+    [
+     142.53,
+     110.3
+    ],
+    [
+     143.83,
+     111.17
+    ],
+    [
+     144.7,
+     112.47
+    ],
+    [
+     145.0,
+     114.0
+    ],
+    [
+     145.0,
+     941.0
+    ],
+    [
+     144.7,
+     942.53
+    ],
+    [
+     143.83,
+     943.83
+    ],
+    [
+     142.53,
+     944.7
+    ],
+    [
+     141.0,
+     945.0
+    ],
+    [
+     -141.0,
+     945.0
+    ],
+    [
+     -142.53,
+     944.7
+    ],
+    [
+     -143.83,
+     943.83
+    ],
+    [
+     -144.7,
+     942.53
+    ],
+    [
+     -145.0,
+     941.0
+    ],
+    [
+     -145.0,
+     114.0
+    ],
+    [
+     -144.7,
+     112.47
+    ],
+    [
+     -143.83,
+     111.17
+    ],
+    [
+     -142.53,
+     110.3
+    ],
+    [
+     -141.0,
+     110.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 1 2T 2",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 1 2T 2",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 1 2T 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 1 2T 3",
+   "points": [
+    [
+     441.0,
+     110.0
+    ],
+    [
+     442.53,
+     110.3
+    ],
+    [
+     443.83,
+     111.17
+    ],
+    [
+     444.7,
+     112.47
+    ],
+    [
+     445.0,
+     114.0
+    ],
+    [
+     445.0,
+     941.0
+    ],
+    [
+     444.7,
+     942.53
+    ],
+    [
+     443.83,
+     943.83
+    ],
+    [
+     442.53,
+     944.7
+    ],
+    [
+     441.0,
+     945.0
+    ],
+    [
+     159.0,
+     945.0
+    ],
+    [
+     157.47,
+     944.7
+    ],
+    [
+     156.17,
+     943.83
+    ],
+    [
+     155.3,
+     942.53
+    ],
+    [
+     155.0,
+     941.0
+    ],
+    [
+     155.0,
+     114.0
+    ],
+    [
+     155.3,
+     112.47
+    ],
+    [
+     156.17,
+     111.17
+    ],
+    [
+     157.47,
+     110.3
+    ],
+    [
+     159.0,
+     110.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 1 2T 3",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 1 2T 3",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 1 2T 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 1 2T 1",
+   "points": [
+    [
+     -223.0,
+     825.0
+    ],
+    [
+     -221.85,
+     825.23
+    ],
+    [
+     -220.88,
+     825.88
+    ],
+    [
+     -220.23,
+     826.85
+    ],
+    [
+     -220.0,
+     828.0
+    ],
+    [
+     -220.0,
+     892.0
+    ],
+    [
+     -220.23,
+     893.15
+    ],
+    [
+     -220.88,
+     894.12
+    ],
+    [
+     -221.85,
+     894.77
+    ],
+    [
+     -223.0,
+     895.0
+    ],
+    [
+     -377.0,
+     895.0
+    ],
+    [
+     -378.15,
+     894.77
+    ],
+    [
+     -379.12,
+     894.12
+    ],
+    [
+     -379.77,
+     893.15
+    ],
+    [
+     -380.0,
+     892.0
+    ],
+    [
+     -380.0,
+     828.0
+    ],
+    [
+     -379.77,
+     826.85
+    ],
+    [
+     -379.12,
+     825.88
+    ],
+    [
+     -378.15,
+     825.23
+    ],
+    [
+     -377.0,
+     825.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 1 2T 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 1 2T 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 1 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 1 2T 2",
+   "points": [
+    [
+     77.0,
+     825.0
+    ],
+    [
+     78.15,
+     825.23
+    ],
+    [
+     79.12,
+     825.88
+    ],
+    [
+     79.77,
+     826.85
+    ],
+    [
+     80.0,
+     828.0
+    ],
+    [
+     80.0,
+     892.0
+    ],
+    [
+     79.77,
+     893.15
+    ],
+    [
+     79.12,
+     894.12
+    ],
+    [
+     78.15,
+     894.77
+    ],
+    [
+     77.0,
+     895.0
+    ],
+    [
+     -77.0,
+     895.0
+    ],
+    [
+     -78.15,
+     894.77
+    ],
+    [
+     -79.12,
+     894.12
+    ],
+    [
+     -79.77,
+     893.15
+    ],
+    [
+     -80.0,
+     892.0
+    ],
+    [
+     -80.0,
+     828.0
+    ],
+    [
+     -79.77,
+     826.85
+    ],
+    [
+     -79.12,
+     825.88
+    ],
+    [
+     -78.15,
+     825.23
+    ],
+    [
+     -77.0,
+     825.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 1 2T 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 1 2T 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 1 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 1 2T 3",
+   "points": [
+    [
+     377.0,
+     825.0
+    ],
+    [
+     378.15,
+     825.23
+    ],
+    [
+     379.12,
+     825.88
+    ],
+    [
+     379.77,
+     826.85
+    ],
+    [
+     380.0,
+     828.0
+    ],
+    [
+     380.0,
+     892.0
+    ],
+    [
+     379.77,
+     893.15
+    ],
+    [
+     379.12,
+     894.12
+    ],
+    [
+     378.15,
+     894.77
+    ],
+    [
+     377.0,
+     895.0
+    ],
+    [
+     223.0,
+     895.0
+    ],
+    [
+     221.85,
+     894.77
+    ],
+    [
+     220.88,
+     894.12
+    ],
+    [
+     220.23,
+     893.15
+    ],
+    [
+     220.0,
+     892.0
+    ],
+    [
+     220.0,
+     828.0
+    ],
+    [
+     220.23,
+     826.85
+    ],
+    [
+     220.88,
+     825.88
+    ],
+    [
+     221.85,
+     825.23
+    ],
+    [
+     223.0,
+     825.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 1 2T 3",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 1 2T 3",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 1 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 1 2T 1",
+   "points": [
+    [
+     -173.0,
+     532.5
+    ],
+    [
+     -173.41,
+     535.61
+    ],
+    [
+     -174.61,
+     538.5
+    ],
+    [
+     -176.51,
+     540.99
+    ],
+    [
+     -179.0,
+     542.89
+    ],
+    [
+     -181.89,
+     544.09
+    ],
+    [
+     -185.0,
+     544.5
+    ],
+    [
+     -188.11,
+     544.09
+    ],
+    [
+     -191.0,
+     542.89
+    ],
+    [
+     -193.49,
+     540.99
+    ],
+    [
+     -195.39,
+     538.5
+    ],
+    [
+     -196.59,
+     535.61
+    ],
+    [
+     -197.0,
+     532.5
+    ],
+    [
+     -196.59,
+     529.39
+    ],
+    [
+     -195.39,
+     526.5
+    ],
+    [
+     -193.49,
+     524.01
+    ],
+    [
+     -191.0,
+     522.11
+    ],
+    [
+     -188.11,
+     520.91
+    ],
+    [
+     -185.0,
+     520.5
+    ],
+    [
+     -181.89,
+     520.91
+    ],
+    [
+     -179.0,
+     522.11
+    ],
+    [
+     -176.51,
+     524.01
+    ],
+    [
+     -174.61,
+     526.5
+    ],
+    [
+     -173.41,
+     529.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 1 2T 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 1 2T 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 1 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 1 2T 2",
+   "points": [
+    [
+     127.0,
+     532.5
+    ],
+    [
+     126.59,
+     535.61
+    ],
+    [
+     125.39,
+     538.5
+    ],
+    [
+     123.49,
+     540.99
+    ],
+    [
+     121.0,
+     542.89
+    ],
+    [
+     118.11,
+     544.09
+    ],
+    [
+     115.0,
+     544.5
+    ],
+    [
+     111.89,
+     544.09
+    ],
+    [
+     109.0,
+     542.89
+    ],
+    [
+     106.51,
+     540.99
+    ],
+    [
+     104.61,
+     538.5
+    ],
+    [
+     103.41,
+     535.61
+    ],
+    [
+     103.0,
+     532.5
+    ],
+    [
+     103.41,
+     529.39
+    ],
+    [
+     104.61,
+     526.5
+    ],
+    [
+     106.51,
+     524.01
+    ],
+    [
+     109.0,
+     522.11
+    ],
+    [
+     111.89,
+     520.91
+    ],
+    [
+     115.0,
+     520.5
+    ],
+    [
+     118.11,
+     520.91
+    ],
+    [
+     121.0,
+     522.11
+    ],
+    [
+     123.49,
+     524.01
+    ],
+    [
+     125.39,
+     526.5
+    ],
+    [
+     126.59,
+     529.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 1 2T 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 1 2T 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 1 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 1 2T 3",
+   "points": [
+    [
+     427.0,
+     532.5
+    ],
+    [
+     426.59,
+     535.61
+    ],
+    [
+     425.39,
+     538.5
+    ],
+    [
+     423.49,
+     540.99
+    ],
+    [
+     421.0,
+     542.89
+    ],
+    [
+     418.11,
+     544.09
+    ],
+    [
+     415.0,
+     544.5
+    ],
+    [
+     411.89,
+     544.09
+    ],
+    [
+     409.0,
+     542.89
+    ],
+    [
+     406.51,
+     540.99
+    ],
+    [
+     404.61,
+     538.5
+    ],
+    [
+     403.41,
+     535.61
+    ],
+    [
+     403.0,
+     532.5
+    ],
+    [
+     403.41,
+     529.39
+    ],
+    [
+     404.61,
+     526.5
+    ],
+    [
+     406.51,
+     524.01
+    ],
+    [
+     409.0,
+     522.11
+    ],
+    [
+     411.89,
+     520.91
+    ],
+    [
+     415.0,
+     520.5
+    ],
+    [
+     418.11,
+     520.91
+    ],
+    [
+     421.0,
+     522.11
+    ],
+    [
+     423.49,
+     524.01
+    ],
+    [
+     425.39,
+     526.5
+    ],
+    [
+     426.59,
+     529.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 1 2T 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 1 2T 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 1 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 1 2T 1",
+   "points": [
+    [
+     -253.0,
+     765.0
+    ],
+    [
+     -251.85,
+     765.23
+    ],
+    [
+     -250.88,
+     765.88
+    ],
+    [
+     -250.23,
+     766.85
+    ],
+    [
+     -250.0,
+     768.0
+    ],
+    [
+     -250.0,
+     802.0
+    ],
+    [
+     -250.23,
+     803.15
+    ],
+    [
+     -250.88,
+     804.12
+    ],
+    [
+     -251.85,
+     804.77
+    ],
+    [
+     -253.0,
+     805.0
+    ],
+    [
+     -347.0,
+     805.0
+    ],
+    [
+     -348.15,
+     804.77
+    ],
+    [
+     -349.12,
+     804.12
+    ],
+    [
+     -349.77,
+     803.15
+    ],
+    [
+     -350.0,
+     802.0
+    ],
+    [
+     -350.0,
+     768.0
+    ],
+    [
+     -349.77,
+     766.85
+    ],
+    [
+     -349.12,
+     765.88
+    ],
+    [
+     -348.15,
+     765.23
+    ],
+    [
+     -347.0,
+     765.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 1 2T 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 1 2T 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 1 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 1 2T 2",
+   "points": [
+    [
+     47.0,
+     765.0
+    ],
+    [
+     48.15,
+     765.23
+    ],
+    [
+     49.12,
+     765.88
+    ],
+    [
+     49.77,
+     766.85
+    ],
+    [
+     50.0,
+     768.0
+    ],
+    [
+     50.0,
+     802.0
+    ],
+    [
+     49.77,
+     803.15
+    ],
+    [
+     49.12,
+     804.12
+    ],
+    [
+     48.15,
+     804.77
+    ],
+    [
+     47.0,
+     805.0
+    ],
+    [
+     -47.0,
+     805.0
+    ],
+    [
+     -48.15,
+     804.77
+    ],
+    [
+     -49.12,
+     804.12
+    ],
+    [
+     -49.77,
+     803.15
+    ],
+    [
+     -50.0,
+     802.0
+    ],
+    [
+     -50.0,
+     768.0
+    ],
+    [
+     -49.77,
+     766.85
+    ],
+    [
+     -49.12,
+     765.88
+    ],
+    [
+     -48.15,
+     765.23
+    ],
+    [
+     -47.0,
+     765.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 1 2T 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 1 2T 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 1 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 1 2T 3",
+   "points": [
+    [
+     347.0,
+     765.0
+    ],
+    [
+     348.15,
+     765.23
+    ],
+    [
+     349.12,
+     765.88
+    ],
+    [
+     349.77,
+     766.85
+    ],
+    [
+     350.0,
+     768.0
+    ],
+    [
+     350.0,
+     802.0
+    ],
+    [
+     349.77,
+     803.15
+    ],
+    [
+     349.12,
+     804.12
+    ],
+    [
+     348.15,
+     804.77
+    ],
+    [
+     347.0,
+     805.0
+    ],
+    [
+     253.0,
+     805.0
+    ],
+    [
+     251.85,
+     804.77
+    ],
+    [
+     250.88,
+     804.12
+    ],
+    [
+     250.23,
+     803.15
+    ],
+    [
+     250.0,
+     802.0
+    ],
+    [
+     250.0,
+     768.0
+    ],
+    [
+     250.23,
+     766.85
+    ],
+    [
+     250.88,
+     765.88
+    ],
+    [
+     251.85,
+     765.23
+    ],
+    [
+     253.0,
+     765.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 1 2T 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 1 2T 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 1 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 2 2T 1",
+   "points": [
+    [
+     -159.0,
+     955.0
+    ],
+    [
+     -157.47,
+     955.3
+    ],
+    [
+     -156.17,
+     956.17
+    ],
+    [
+     -155.3,
+     957.47
+    ],
+    [
+     -155.0,
+     959.0
+    ],
+    [
+     -155.0,
+     1786.0
+    ],
+    [
+     -155.3,
+     1787.53
+    ],
+    [
+     -156.17,
+     1788.83
+    ],
+    [
+     -157.47,
+     1789.7
+    ],
+    [
+     -159.0,
+     1790.0
+    ],
+    [
+     -441.0,
+     1790.0
+    ],
+    [
+     -442.53,
+     1789.7
+    ],
+    [
+     -443.83,
+     1788.83
+    ],
+    [
+     -444.7,
+     1787.53
+    ],
+    [
+     -445.0,
+     1786.0
+    ],
+    [
+     -445.0,
+     959.0
+    ],
+    [
+     -444.7,
+     957.47
+    ],
+    [
+     -443.83,
+     956.17
+    ],
+    [
+     -442.53,
+     955.3
+    ],
+    [
+     -441.0,
+     955.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 2 2T 1",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 2 2T 1",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 2 2T 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 2 2T 2",
+   "points": [
+    [
+     141.0,
+     955.0
+    ],
+    [
+     142.53,
+     955.3
+    ],
+    [
+     143.83,
+     956.17
+    ],
+    [
+     144.7,
+     957.47
+    ],
+    [
+     145.0,
+     959.0
+    ],
+    [
+     145.0,
+     1786.0
+    ],
+    [
+     144.7,
+     1787.53
+    ],
+    [
+     143.83,
+     1788.83
+    ],
+    [
+     142.53,
+     1789.7
+    ],
+    [
+     141.0,
+     1790.0
+    ],
+    [
+     -141.0,
+     1790.0
+    ],
+    [
+     -142.53,
+     1789.7
+    ],
+    [
+     -143.83,
+     1788.83
+    ],
+    [
+     -144.7,
+     1787.53
+    ],
+    [
+     -145.0,
+     1786.0
+    ],
+    [
+     -145.0,
+     959.0
+    ],
+    [
+     -144.7,
+     957.47
+    ],
+    [
+     -143.83,
+     956.17
+    ],
+    [
+     -142.53,
+     955.3
+    ],
+    [
+     -141.0,
+     955.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 2 2T 2",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 2 2T 2",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 2 2T 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Tier 2 2T 3",
+   "points": [
+    [
+     441.0,
+     955.0
+    ],
+    [
+     442.53,
+     955.3
+    ],
+    [
+     443.83,
+     956.17
+    ],
+    [
+     444.7,
+     957.47
+    ],
+    [
+     445.0,
+     959.0
+    ],
+    [
+     445.0,
+     1786.0
+    ],
+    [
+     444.7,
+     1787.53
+    ],
+    [
+     443.83,
+     1788.83
+    ],
+    [
+     442.53,
+     1789.7
+    ],
+    [
+     441.0,
+     1790.0
+    ],
+    [
+     159.0,
+     1790.0
+    ],
+    [
+     157.47,
+     1789.7
+    ],
+    [
+     156.17,
+     1788.83
+    ],
+    [
+     155.3,
+     1787.53
+    ],
+    [
+     155.0,
+     1786.0
+    ],
+    [
+     155.0,
+     959.0
+    ],
+    [
+     155.3,
+     957.47
+    ],
+    [
+     156.17,
+     956.17
+    ],
+    [
+     157.47,
+     955.3
+    ],
+    [
+     159.0,
+     955.0
+    ]
+   ],
+   "start": 450,
+   "end": 455,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Tier 2 2T 3",
+   "subcategory": "Epoxy"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Tier 2 2T 3",
+   "param": "Epoxy Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Tier 2 2T 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 2 2T 1",
+   "points": [
+    [
+     -223.0,
+     1670.0
+    ],
+    [
+     -221.85,
+     1670.23
+    ],
+    [
+     -220.88,
+     1670.88
+    ],
+    [
+     -220.23,
+     1671.85
+    ],
+    [
+     -220.0,
+     1673.0
+    ],
+    [
+     -220.0,
+     1737.0
+    ],
+    [
+     -220.23,
+     1738.15
+    ],
+    [
+     -220.88,
+     1739.12
+    ],
+    [
+     -221.85,
+     1739.77
+    ],
+    [
+     -223.0,
+     1740.0
+    ],
+    [
+     -377.0,
+     1740.0
+    ],
+    [
+     -378.15,
+     1739.77
+    ],
+    [
+     -379.12,
+     1739.12
+    ],
+    [
+     -379.77,
+     1738.15
+    ],
+    [
+     -380.0,
+     1737.0
+    ],
+    [
+     -380.0,
+     1673.0
+    ],
+    [
+     -379.77,
+     1671.85
+    ],
+    [
+     -379.12,
+     1670.88
+    ],
+    [
+     -378.15,
+     1670.23
+    ],
+    [
+     -377.0,
+     1670.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 2 2T 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 2 2T 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 2 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 2 2T 2",
+   "points": [
+    [
+     77.0,
+     1670.0
+    ],
+    [
+     78.15,
+     1670.23
+    ],
+    [
+     79.12,
+     1670.88
+    ],
+    [
+     79.77,
+     1671.85
+    ],
+    [
+     80.0,
+     1673.0
+    ],
+    [
+     80.0,
+     1737.0
+    ],
+    [
+     79.77,
+     1738.15
+    ],
+    [
+     79.12,
+     1739.12
+    ],
+    [
+     78.15,
+     1739.77
+    ],
+    [
+     77.0,
+     1740.0
+    ],
+    [
+     -77.0,
+     1740.0
+    ],
+    [
+     -78.15,
+     1739.77
+    ],
+    [
+     -79.12,
+     1739.12
+    ],
+    [
+     -79.77,
+     1738.15
+    ],
+    [
+     -80.0,
+     1737.0
+    ],
+    [
+     -80.0,
+     1673.0
+    ],
+    [
+     -79.77,
+     1671.85
+    ],
+    [
+     -79.12,
+     1670.88
+    ],
+    [
+     -78.15,
+     1670.23
+    ],
+    [
+     -77.0,
+     1670.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 2 2T 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 2 2T 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 2 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Tier 2 2T 3",
+   "points": [
+    [
+     377.0,
+     1670.0
+    ],
+    [
+     378.15,
+     1670.23
+    ],
+    [
+     379.12,
+     1670.88
+    ],
+    [
+     379.77,
+     1671.85
+    ],
+    [
+     380.0,
+     1673.0
+    ],
+    [
+     380.0,
+     1737.0
+    ],
+    [
+     379.77,
+     1738.15
+    ],
+    [
+     379.12,
+     1739.12
+    ],
+    [
+     378.15,
+     1739.77
+    ],
+    [
+     377.0,
+     1740.0
+    ],
+    [
+     223.0,
+     1740.0
+    ],
+    [
+     221.85,
+     1739.77
+    ],
+    [
+     220.88,
+     1739.12
+    ],
+    [
+     220.23,
+     1738.15
+    ],
+    [
+     220.0,
+     1737.0
+    ],
+    [
+     220.0,
+     1673.0
+    ],
+    [
+     220.23,
+     1671.85
+    ],
+    [
+     220.88,
+     1670.88
+    ],
+    [
+     221.85,
+     1670.23
+    ],
+    [
+     223.0,
+     1670.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Tier 2 2T 3",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Tier 2 2T 3",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Tier 2 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 2 2T 1",
+   "points": [
+    [
+     -173.0,
+     1377.5
+    ],
+    [
+     -173.41,
+     1380.61
+    ],
+    [
+     -174.61,
+     1383.5
+    ],
+    [
+     -176.51,
+     1385.99
+    ],
+    [
+     -179.0,
+     1387.89
+    ],
+    [
+     -181.89,
+     1389.09
+    ],
+    [
+     -185.0,
+     1389.5
+    ],
+    [
+     -188.11,
+     1389.09
+    ],
+    [
+     -191.0,
+     1387.89
+    ],
+    [
+     -193.49,
+     1385.99
+    ],
+    [
+     -195.39,
+     1383.5
+    ],
+    [
+     -196.59,
+     1380.61
+    ],
+    [
+     -197.0,
+     1377.5
+    ],
+    [
+     -196.59,
+     1374.39
+    ],
+    [
+     -195.39,
+     1371.5
+    ],
+    [
+     -193.49,
+     1369.01
+    ],
+    [
+     -191.0,
+     1367.11
+    ],
+    [
+     -188.11,
+     1365.91
+    ],
+    [
+     -185.0,
+     1365.5
+    ],
+    [
+     -181.89,
+     1365.91
+    ],
+    [
+     -179.0,
+     1367.11
+    ],
+    [
+     -176.51,
+     1369.01
+    ],
+    [
+     -174.61,
+     1371.5
+    ],
+    [
+     -173.41,
+     1374.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 2 2T 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 2 2T 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 2 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 2 2T 2",
+   "points": [
+    [
+     127.0,
+     1377.5
+    ],
+    [
+     126.59,
+     1380.61
+    ],
+    [
+     125.39,
+     1383.5
+    ],
+    [
+     123.49,
+     1385.99
+    ],
+    [
+     121.0,
+     1387.89
+    ],
+    [
+     118.11,
+     1389.09
+    ],
+    [
+     115.0,
+     1389.5
+    ],
+    [
+     111.89,
+     1389.09
+    ],
+    [
+     109.0,
+     1387.89
+    ],
+    [
+     106.51,
+     1385.99
+    ],
+    [
+     104.61,
+     1383.5
+    ],
+    [
+     103.41,
+     1380.61
+    ],
+    [
+     103.0,
+     1377.5
+    ],
+    [
+     103.41,
+     1374.39
+    ],
+    [
+     104.61,
+     1371.5
+    ],
+    [
+     106.51,
+     1369.01
+    ],
+    [
+     109.0,
+     1367.11
+    ],
+    [
+     111.89,
+     1365.91
+    ],
+    [
+     115.0,
+     1365.5
+    ],
+    [
+     118.11,
+     1365.91
+    ],
+    [
+     121.0,
+     1367.11
+    ],
+    [
+     123.49,
+     1369.01
+    ],
+    [
+     125.39,
+     1371.5
+    ],
+    [
+     126.59,
+     1374.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 2 2T 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 2 2T 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 2 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock Tier 2 2T 3",
+   "points": [
+    [
+     427.0,
+     1377.5
+    ],
+    [
+     426.59,
+     1380.61
+    ],
+    [
+     425.39,
+     1383.5
+    ],
+    [
+     423.49,
+     1385.99
+    ],
+    [
+     421.0,
+     1387.89
+    ],
+    [
+     418.11,
+     1389.09
+    ],
+    [
+     415.0,
+     1389.5
+    ],
+    [
+     411.89,
+     1389.09
+    ],
+    [
+     409.0,
+     1387.89
+    ],
+    [
+     406.51,
+     1385.99
+    ],
+    [
+     404.61,
+     1383.5
+    ],
+    [
+     403.41,
+     1380.61
+    ],
+    [
+     403.0,
+     1377.5
+    ],
+    [
+     403.41,
+     1374.39
+    ],
+    [
+     404.61,
+     1371.5
+    ],
+    [
+     406.51,
+     1369.01
+    ],
+    [
+     409.0,
+     1367.11
+    ],
+    [
+     411.89,
+     1365.91
+    ],
+    [
+     415.0,
+     1365.5
+    ],
+    [
+     418.11,
+     1365.91
+    ],
+    [
+     421.0,
+     1367.11
+    ],
+    [
+     423.49,
+     1369.01
+    ],
+    [
+     425.39,
+     1371.5
+    ],
+    [
+     426.59,
+     1374.39
+    ]
+   ],
+   "start": 455,
+   "end": 465,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock Tier 2 2T 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock Tier 2 2T 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock Tier 2 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 2 2T 1",
+   "points": [
+    [
+     -253.0,
+     1610.0
+    ],
+    [
+     -251.85,
+     1610.23
+    ],
+    [
+     -250.88,
+     1610.88
+    ],
+    [
+     -250.23,
+     1611.85
+    ],
+    [
+     -250.0,
+     1613.0
+    ],
+    [
+     -250.0,
+     1647.0
+    ],
+    [
+     -250.23,
+     1648.15
+    ],
+    [
+     -250.88,
+     1649.12
+    ],
+    [
+     -251.85,
+     1649.77
+    ],
+    [
+     -253.0,
+     1650.0
+    ],
+    [
+     -347.0,
+     1650.0
+    ],
+    [
+     -348.15,
+     1649.77
+    ],
+    [
+     -349.12,
+     1649.12
+    ],
+    [
+     -349.77,
+     1648.15
+    ],
+    [
+     -350.0,
+     1647.0
+    ],
+    [
+     -350.0,
+     1613.0
+    ],
+    [
+     -349.77,
+     1611.85
+    ],
+    [
+     -349.12,
+     1610.88
+    ],
+    [
+     -348.15,
+     1610.23
+    ],
+    [
+     -347.0,
+     1610.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 2 2T 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 2 2T 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 2 2T 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 2 2T 2",
+   "points": [
+    [
+     47.0,
+     1610.0
+    ],
+    [
+     48.15,
+     1610.23
+    ],
+    [
+     49.12,
+     1610.88
+    ],
+    [
+     49.77,
+     1611.85
+    ],
+    [
+     50.0,
+     1613.0
+    ],
+    [
+     50.0,
+     1647.0
+    ],
+    [
+     49.77,
+     1648.15
+    ],
+    [
+     49.12,
+     1649.12
+    ],
+    [
+     48.15,
+     1649.77
+    ],
+    [
+     47.0,
+     1650.0
+    ],
+    [
+     -47.0,
+     1650.0
+    ],
+    [
+     -48.15,
+     1649.77
+    ],
+    [
+     -49.12,
+     1649.12
+    ],
+    [
+     -49.77,
+     1648.15
+    ],
+    [
+     -50.0,
+     1647.0
+    ],
+    [
+     -50.0,
+     1613.0
+    ],
+    [
+     -49.77,
+     1611.85
+    ],
+    [
+     -49.12,
+     1610.88
+    ],
+    [
+     -48.15,
+     1610.23
+    ],
+    [
+     -47.0,
+     1610.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 2 2T 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 2 2T 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 2 2T 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Number Tier 2 2T 3",
+   "points": [
+    [
+     347.0,
+     1610.0
+    ],
+    [
+     348.15,
+     1610.23
+    ],
+    [
+     349.12,
+     1610.88
+    ],
+    [
+     349.77,
+     1611.85
+    ],
+    [
+     350.0,
+     1613.0
+    ],
+    [
+     350.0,
+     1647.0
+    ],
+    [
+     349.77,
+     1648.15
+    ],
+    [
+     349.12,
+     1649.12
+    ],
+    [
+     348.15,
+     1649.77
+    ],
+    [
+     347.0,
+     1650.0
+    ],
+    [
+     253.0,
+     1650.0
+    ],
+    [
+     251.85,
+     1649.77
+    ],
+    [
+     250.88,
+     1649.12
+    ],
+    [
+     250.23,
+     1648.15
+    ],
+    [
+     250.0,
+     1647.0
+    ],
+    [
+     250.0,
+     1613.0
+    ],
+    [
+     250.23,
+     1611.85
+    ],
+    [
+     250.88,
+     1610.88
+    ],
+    [
+     251.85,
+     1610.23
+    ],
+    [
+     253.0,
+     1610.0
+    ]
+   ],
+   "start": 455,
+   "end": 457,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Number Tier 2 2T 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Number Tier 2 2T 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Number Tier 2 2T 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900x1800_3-Tier",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/Show 900x1800_3-Tier",
+   "type": "900x1800_3-Tier",
+   "param": "Show 900x1800_3-Tier",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/Show 900x1800_3-Tier",
+   "type": "900x1800_6-Door",
+   "param": "Show 900x1800_3-Tier",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 3T 1/Visible",
+   "solid": "Door Tier 1 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 3T 2/Visible",
+   "solid": "Door Tier 1 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 3T 3/Visible",
+   "solid": "Door Tier 1 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 3T 1/Visible",
+   "solid": "Vent Tier 1 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 3T 2/Visible",
+   "solid": "Vent Tier 1 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 3T 3/Visible",
+   "solid": "Vent Tier 1 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 3T 1/Visible",
+   "solid": "Lock Tier 1 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 3T 2/Visible",
+   "solid": "Lock Tier 1 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 3T 3/Visible",
+   "solid": "Lock Tier 1 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 3T 1/Visible",
+   "solid": "Number Tier 1 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 3T 2/Visible",
+   "solid": "Number Tier 1 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 3T 3/Visible",
+   "solid": "Number Tier 1 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 3T 1/Visible",
+   "solid": "Door Tier 2 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 3T 2/Visible",
+   "solid": "Door Tier 2 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 3T 3/Visible",
+   "solid": "Door Tier 2 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 3T 1/Visible",
+   "solid": "Vent Tier 2 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 3T 2/Visible",
+   "solid": "Vent Tier 2 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 3T 3/Visible",
+   "solid": "Vent Tier 2 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 3T 1/Visible",
+   "solid": "Lock Tier 2 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 3T 2/Visible",
+   "solid": "Lock Tier 2 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 3T 3/Visible",
+   "solid": "Lock Tier 2 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 3T 1/Visible",
+   "solid": "Number Tier 2 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 3T 2/Visible",
+   "solid": "Number Tier 2 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 3T 3/Visible",
+   "solid": "Number Tier 2 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 3 3T 1/Visible",
+   "solid": "Door Tier 3 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 3 3T 2/Visible",
+   "solid": "Door Tier 3 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 3 3T 3/Visible",
+   "solid": "Door Tier 3 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 3 3T 1/Visible",
+   "solid": "Vent Tier 3 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 3 3T 2/Visible",
+   "solid": "Vent Tier 3 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 3 3T 3/Visible",
+   "solid": "Vent Tier 3 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 3 3T 1/Visible",
+   "solid": "Lock Tier 3 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 3 3T 2/Visible",
+   "solid": "Lock Tier 3 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 3 3T 3/Visible",
+   "solid": "Lock Tier 3 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 3 3T 1/Visible",
+   "solid": "Number Tier 3 3T 1",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 3 3T 2/Visible",
+   "solid": "Number Tier 3 3T 2",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 3 3T 3/Visible",
+   "solid": "Number Tier 3 3T 3",
+   "param": "Show 900x1800_3-Tier"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900x1800_6-Door",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_3-Tier/Show 900x1800_6-Door",
+   "type": "900x1800_3-Tier",
+   "param": "Show 900x1800_6-Door",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1800_6-Door/Show 900x1800_6-Door",
+   "type": "900x1800_6-Door",
+   "param": "Show 900x1800_6-Door",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 2T 1/Visible",
+   "solid": "Door Tier 1 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 2T 2/Visible",
+   "solid": "Door Tier 1 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 1 2T 3/Visible",
+   "solid": "Door Tier 1 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 2T 1/Visible",
+   "solid": "Vent Tier 1 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 2T 2/Visible",
+   "solid": "Vent Tier 1 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 1 2T 3/Visible",
+   "solid": "Vent Tier 1 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 2T 1/Visible",
+   "solid": "Lock Tier 1 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 2T 2/Visible",
+   "solid": "Lock Tier 1 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 1 2T 3/Visible",
+   "solid": "Lock Tier 1 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 2T 1/Visible",
+   "solid": "Number Tier 1 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 2T 2/Visible",
+   "solid": "Number Tier 1 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 1 2T 3/Visible",
+   "solid": "Number Tier 1 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 2T 1/Visible",
+   "solid": "Door Tier 2 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 2T 2/Visible",
+   "solid": "Door Tier 2 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Tier 2 2T 3/Visible",
+   "solid": "Door Tier 2 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 2T 1/Visible",
+   "solid": "Vent Tier 2 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 2T 2/Visible",
+   "solid": "Vent Tier 2 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Tier 2 2T 3/Visible",
+   "solid": "Vent Tier 2 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 2T 1/Visible",
+   "solid": "Lock Tier 2 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 2T 2/Visible",
+   "solid": "Lock Tier 2 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock Tier 2 2T 3/Visible",
+   "solid": "Lock Tier 2 2T 3",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 2T 1/Visible",
+   "solid": "Number Tier 2 2T 1",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 2T 2/Visible",
+   "solid": "Number Tier 2 2T 2",
+   "param": "Show 900x1800_6-Door"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Number Tier 2 2T 3/Visible",
+   "solid": "Number Tier 2 2T 3",
+   "param": "Show 900x1800_6-Door"
   },
   {
    "op": "set_type_image",

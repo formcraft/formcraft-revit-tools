@@ -20,6 +20,8 @@ GUID = {'FMC_Keynote_Code': '2d089b32-0589-516b-8952-9f6afad95971', 'FMC_Cost_Un
         'FMC_Geometry_Stage': '27c3be4d-9757-51ba-aa96-6c7a3a061025', 'IfcExportAs': 'bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7'}
 _mat_cache = None
 STAGING = os.environ.get("FMC_STAGING", r"D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2\04_Families\_Staging")
+# Revit's own enum names for systems people write the other way round (PipeSystemType.SupplyHydronic, ...)
+SYS_ALIAS = {"HydronicSupply": "SupplyHydronic", "HydronicReturn": "ReturnHydronic", "ColdWater": "DomesticColdWater", "HotWater": "DomesticHotWater"}
 OPEN = {"FMC_Manufacturer": "dc399f41-0c78-566b-bf6a-94cdba78e4fa", "FMC_Model_Number": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"}
 
 KIT_ROOT = os.environ.get("FMC_KIT", "/home/claude/kitdata/FMC_Kit_v2.2")
@@ -204,7 +206,7 @@ def compile_product(prod, kn_lookup=None):
         if dropped: about_extra = " Medical Equipment can't join piping or duct systems (QE4), so " + ", ".join(dropped) + " reach it through the nested service point."
         prod = dict(prod, connectors=[c for c in prod.get('connectors', []) if c['domain'] == 'electrical'])
     for c in prod.get('connectors', []):
-        o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": c['system'], "solid": c['part'], "side": c.get('side', 'back')}
+        o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": SYS_ALIAS.get(c['system'], c['system']), "solid": c['part'], "side": c.get('side', 'back')}
         for k in ('diameter', 'width', 'height', 'flow'):
             if k in c: o[k] = c[k]
         ops.append(o)

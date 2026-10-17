@@ -17,7 +17,8 @@ MAT = {"white": "FMC_Plastic_ABS_White", "grey": "FMC_Plastic_ABS_Grey", "mgrey"
        "chrome": "FMC_Metal_Chrome_Polished", "copper": "FMC_Metal_Copper_Pipe", "brass": "FMC_Metal_Brass_Polished",
        "gi": "FMC_Metal_GI_Pipe", "steel": "FMC_Metal_StructuralSteel_S275", "rubber": "FMC_Rubber_Black",
        "lag": "FMC_Insulation_Elastomeric_Black", "mesh": "FMC_Plastic_InsectMesh_Fibreglass", "glass": "FMC_Glass_Clear",
-       "pc": "FMC_Plastic_Polycarbonate_Clear", "enamel": "FMC_Paint_Gloss_Enamel", "red": "FMC_Metal_SprinklerPipe_RedPainted",
+       "pc": "FMC_Plastic_Polycarbonate_Clear", "enamel": "FMC_Paint_Gloss_Enamel", "red": "FMC_Metal_Steel_Painted_Red", "lgrey": "FMC_Metal_Steel_PowderCoated_LightGrey", "mblue": "FMC_Metal_Steel_Painted_MotorBlue",
+       "fin": "FMC_Metal_Aluminium_FinCoil", "amber": "FMC_Plastic_LED_Amber", "hepa": "FMC_Filter_Media_HEPA_White",
        "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey"}
 NEEDED = [
     {"name": "FMC_Metal_Steel_PowderCoated_LightGrey", "colour": "#CFD3D0", "why": "RAL 7035 casings of AHUs, chillers, VRF and condensing units (FMC_Metal_Steel_EpoxyCoated_White used for now)"},
@@ -121,6 +122,7 @@ def make(fam, desc, ifc, types, parts, conns=(), values=None, about='', tv=None,
             "type_values": tv or {}, "materials": {k: MAT[k] for k in used}, "reference": dict(rec['ref']), "parts": parts,
             "connectors": list(conns), "values": values, "about": about}
     if clear: prod['clearances'] = clear
+    if any(k in fam for k in ('Cassette', 'Ducted_FCU', 'ERV', 'Evaporator', 'Diffuser', 'HEPA_Terminal')): prod['view'] = 'below'
     P.append(prod); return prod
 
 # ================================================================= 1. split AC, high wall indoor
@@ -155,7 +157,7 @@ def split_outdoor():
              B("Top Panel", [-428, -156, 600, 428, 156, 612], 'epw', 6),
              B("Valve Cover", [422, -110, 80, 434, 70, 320], 'mgrey', 4),
              CX("Service Valve Liquid", [-40, 130], 8, [434, 470], 'brass'), CX("Service Valve Gas", [10, 130], 12, [434, 470], 'brass'),
-             B("Coil Fins", [-410, 150, 60, 410, 158, 585], 'alu'),
+             B("Coil Fins", [-410, 150, 60, 410, 158, 585], 'fin'),
              rep(F("Coil Guard Bar", [-410, 158, 90, 410, 162, 94], 'dark', 0, 'f'), 10, [0, 0, 50]),
              F("Rating Plate", [260, -152, 470, 380, -150, 540], 'alu', 0, 'f'),
              F("Handle Recess", [300, -152, 120, 380, -150, 150], 'black', 6, 'f')]
@@ -230,21 +232,21 @@ def vrf_outdoor():
     parts = [B("Base Frame", [-620, -382, 0, 620, 382, 80], 'dark'),
              rep(B("Corner Post Front", [-620, -382, 80, -580, -342, 1600], 'pcg'), 2, [1200, 0, 0]),
              rep(B("Corner Post Rear", [-620, 342, 80, -580, 382, 1600], 'pcg'), 2, [1200, 0, 0]),
-             F("Front Panel Lower", [-580, -385, 80, 580, -376, 760], 'epw'),
-             F("Front Panel Upper", [-580, -385, 760, 580, -376, 1600], 'epw'),
-             F("Service Cover", [300, -392, 300, 560, -385, 700], 'epw', 6),
+             F("Front Panel Lower", [-580, -385, 80, 580, -376, 760], 'lgrey'),
+             F("Front Panel Upper", [-580, -385, 760, 580, -376, 1600], 'lgrey'),
+             F("Service Cover", [300, -392, 300, 560, -385, 700], 'lgrey', 6),
              F("Cover Handle", [400, -398, 640, 460, -392, 660], 'black', 4, 'f'),
              F("Rating Plate", [-500, -387, 1350, -340, -385, 1450], 'alu', 0, 'f'),
              B("Core", [-580, -376, 80, 580, 376, 1600], 'dark'),
-             B("Coil Left", [-623, -342, 120, -619, 342, 1560], 'alu'), B("Coil Right", [619, -342, 120, 623, 342, 1560], 'alu'),
-             B("Coil Rear", [-580, 376, 120, 580, 381, 1560], 'alu'),
+             B("Coil Left", [-623, -342, 120, -619, 342, 1560], 'fin'), B("Coil Right", [619, -342, 120, 623, 342, 1560], 'fin'),
+             B("Coil Rear", [-580, 376, 120, 580, 381, 1560], 'fin'),
              rep(B("Guard Bar Left", [-629, -342, 200, -623, 342, 208], 'dark', 0, 'f'), 8, [0, 0, 180]),
              rep(B("Guard Bar Right", [623, -342, 200, 629, 342, 208], 'dark', 0, 'f'), 8, [0, 0, 180]),
              rep(B("Guard Bar Rear", [-580, 381, 200, 580, 387, 208], 'dark', 0, 'f'), 8, [0, 0, 180]),
-             B("Top Deck", [-620, -382, 1600, 620, 382, 1620], 'epw'),
+             B("Top Deck", [-620, -382, 1600, 620, 382, 1620], 'lgrey'),
              CY("Liquid Valve", [440, 200], 10, [-410, -385], 'brass'), CY("Gas Valve", [490, 200], 16, [-410, -385], 'brass'),
              CY("Oil Equaliser Valve", [540, 200], 8, [-405, -385], 'brass', 'f')]
-    parts += fan_top("Fan Left", -300, 0, 1620, 285, 3) + fan_top("Fan Right", 300, 0, 1620, 285, 3)
+    parts += fan_top("Fan Left", -300, 0, 1620, 285, 3, shroud='lgrey') + fan_top("Fan Right", 300, 0, 1620, 285, 3, shroud='lgrey')
     types = [{"name": "28kW_VRF", "values": {"Apparent Load": 9000}}, {"name": "56kW_VRF", "values": {"Apparent Load": 18000}}]
     make("FMC_M_MechEq_VRF_Outdoor", "VRF heat-pump outdoor unit 28 to 56 kW, twin top-discharge fans, three-side finned coil with guards, front service panel, 415 V 3-phase",
          "IfcUnitaryEquipment", types, parts, [E("Front Panel Lower", "front")],
@@ -285,13 +287,13 @@ def precision():
 # ================================================================= 8/9. AHUs
 def ahu(fam, sections, D, H, types, desc, vals, about, va, theatre=False):
     base = 150; L = sum(s[1] for s in sections); x0 = -L / 2; yF, yB = -D / 2, D / 2; zt = base + H
-    parts = [B("Base Frame", [x0, yF, 0, x0 + L, yB, base], 'dark'), B("Casing", [x0, yF, base, x0 + L, yB, zt], 'epw')]
+    parts = [B("Base Frame", [x0, yF, 0, x0 + L, yB, base], 'dark'), B("Casing", [x0, yF, base, x0 + L, yB, zt], 'lgrey')]
     xs = x0; joints = [x0]
     for kind, l, label in sections:
         xe = xs + l; xm = (xs + xe) / 2; joints.append(xe)
         door = kind in ('mix', 'filter', 'fan', 'humid', 'hepa')
         if door:
-            parts += [F(f"Door {label}", [xs + 45, yF - 12, base + 110, xe - 45, yF, zt - 110], 'epw', 8),
+            parts += [F(f"Door {label}", [xs + 45, yF - 12, base + 110, xe - 45, yF, zt - 110], 'lgrey', 8),
                       F(f"Handle {label}", [xe - 115, yF - 42, base + H / 2 - 90, xe - 85, yF - 12, base + H / 2 + 90], 'black', 6),
                       CZ(f"Hinge {label}", [xs + 55, yF - 16], 9, [base + 170, zt - 170], 'chrome', 'f')]
         if kind in ('filter', 'hepa'):
@@ -437,8 +439,8 @@ def fume_fan():
              CY("Flexible Connector", [0, cz], 155, [-330, -280], 'black'),
              CY("Inlet Spigot", [0, cz], 150, [-400, -330], 'galv'),
              B("Motor Pedestal", [-150, 150, 160, 150, 450, 390], 'steel'),
-             CY("Motor", [0, cz], 140, [150, 450], 'pcg'),
-             rep(T("Motor Fin", 'y', [0, cz], ring(140, 150, 180, 190), 'pcg', 'f'), 6, [0, 42, 0]),
+             CY("Motor", [0, cz], 140, [150, 450], 'mblue'),
+             rep(T("Motor Fin", 'y', [0, cz], ring(140, 150, 180, 190), 'mblue', 'f'), 6, [0, 42, 0]),
              T("Fan Cowl", 'y', [0, cz], [[0, 450], [145, 450], [145, 500], [110, 525], [0, 525]], 'dark'),
              B("Terminal Box", [-60, 240, cz + 135, 60, 340, cz + 215], 'grey'),
              B("Discharge Transition", [0, -200, cz + 520, 280, 150, cz + 640], 'galv'),
@@ -487,18 +489,18 @@ def isolation_hepa():
 # ================================================================= 16. chiller
 def chiller():
     parts = [B("Base Frame", [-1800, -1100, 0, 1800, 1100, 150], 'dark'),
-             B("Electrical Bay", [1200, -1100, 150, 1800, 1100, 2250], 'epw'),
-             F("Panel Door Left", [1220, -1112, 400, 1495, -1100, 2150], 'epw', 6), F("Panel Door Right", [1505, -1112, 400, 1780, -1100, 2150], 'epw', 6),
+             B("Electrical Bay", [1200, -1100, 150, 1800, 1100, 2250], 'lgrey'),
+             F("Panel Door Left", [1220, -1112, 400, 1495, -1100, 2150], 'lgrey', 6), F("Panel Door Right", [1505, -1112, 400, 1780, -1100, 2150], 'lgrey', 6),
              F("Door Handle Left", [1460, -1130, 1150, 1480, -1112, 1300], 'black', 4, 'f'), F("Door Handle Right", [1520, -1130, 1150, 1540, -1112, 1300], 'black', 4, 'f'),
              F("HMI Display", [1290, -1116, 1500, 1440, -1112, 1610], 'black', 4), F("Main Isolator", [1600, -1124, 1550, 1680, -1112, 1650], 'red', 4),
-             RT("Coil Front", [(-1100, 2250), (-1040, 2250), (-240, 880), (-300, 880)], [-1780, 1200], 'alu'),
-             RT("Coil Rear", [(1100, 2250), (1040, 2250), (240, 880), (300, 880)], [-1780, 1200], 'alu'),
-             RT("V End Panel Left", [(-1040, 2250), (1040, 2250), (240, 880), (-240, 880)], [-1800, -1780], 'epw'),
-             RT("V End Panel Right", [(-1040, 2250), (1040, 2250), (240, 880), (-240, 880)], [1180, 1200], 'epw'),
+             RT("Coil Front", [(-1100, 2250), (-1040, 2250), (-240, 880), (-300, 880)], [-1780, 1200], 'fin'),
+             RT("Coil Rear", [(1100, 2250), (1040, 2250), (240, 880), (300, 880)], [-1780, 1200], 'fin'),
+             RT("V End Panel Left", [(-1040, 2250), (1040, 2250), (240, 880), (-240, 880)], [-1800, -1780], 'lgrey'),
+             RT("V End Panel Right", [(-1040, 2250), (1040, 2250), (240, 880), (-240, 880)], [1180, 1200], 'lgrey'),
              B("V Floor", [-1780, -300, 860, 1200, 300, 880], 'dark'),
-             B("Fan Deck", [-1800, -1100, 2250, 1200, 1100, 2280], 'epw'),
-             rep(B("Post Front", [-1800, -1100, 150, -1740, -1040, 2250], 'epw'), 3, [1470, 0, 0]),
-             rep(B("Post Rear", [-1800, 1040, 150, -1740, 1100, 2250], 'epw'), 3, [1470, 0, 0]),
+             B("Fan Deck", [-1800, -1100, 2250, 1200, 1100, 2280], 'lgrey'),
+             rep(B("Post Front", [-1800, -1100, 150, -1740, -1040, 2250], 'lgrey'), 3, [1470, 0, 0]),
+             rep(B("Post Rear", [-1800, 1040, 150, -1740, 1100, 2250], 'lgrey'), 3, [1470, 0, 0]),
              rep(CZ("Compressor", [-1150, -650], 160, [180, 760], 'enamel'), 2, [750, 0, 0]),
              rep(T("Compressor Dome", 'z', [-1150, -650], [[0, 760], [160, 760], [130, 830], [70, 860], [0, 866]], 'enamel'), 2, [750, 0, 0]),
              CX("Suction Header", [-650, 900], 40, [-1250, -300], 'copper'),
@@ -506,13 +508,15 @@ def chiller():
              CX("CHW Inlet", [500, 520], 75, [-1880, -1600], 'gi'), CX("CHW Outlet", [720, 520], 75, [-1880, -1600], 'gi'),
              T("CHW Inlet Flange", 'x', [500, 520], ring(75, 115, -1880, -1860), 'gi', 'f'), T("CHW Outlet Flange", 'x', [720, 520], ring(75, 115, -1880, -1860), 'gi', 'f')]
     for i, x in enumerate((-1300, -300, 700)):
-        parts += fan_top(f"Fan {i + 1}", x, 0, 2280, 420, 3)
+        parts += fan_top(f"Fan {i + 1}", x, 0, 2280, 420, 3, shroud='lgrey')
     types = [{"name": "200kW_AirCooled", "values": {"Apparent Load": 85000}}, {"name": "400kW_AirCooled", "values": {"Apparent Load": 170000}}]
     make("FMC_M_MechEq_Chiller_AirCooled", "Air-cooled scroll chiller 200 to 400 kW, V-coil with top fans, compressors under the coils, insulated evaporator with CHW nozzles, end electrical bay",
-         "IfcChiller", types, parts, [E("Electrical Bay", "right")],
+         "IfcChiller", types, parts, [E("Electrical Bay", "right"),
+          {"n": "CHW Return", "domain": "pipe", "system": "HydronicReturn", "part": "CHW Inlet", "side": "left", "diameter": 150, "flow": "In"},
+          {"n": "CHW Supply", "domain": "pipe", "system": "HydronicSupply", "part": "CHW Outlet", "side": "left", "diameter": 150, "flow": "Out"}],
          {"Unit 3600 x 2200 x 2400 mm (200 kW)": A("3600x2200x2400", "typical 200 kW air-cooled scroll chiller"), "Cooling 200 / 400 kW": A("200/400kW"),
           "Load 85 / 170 kVA, 415 V 3-phase": A("85/170kVA", "EER about 2.9, engineer confirms"), "Clearance 1500 mm sides, open above": A(1500, "manufacturer practice")},
-         "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW connectors are not in the record (E only).",
+         "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW return (In) and supply (Out) connectors on the nozzles.",
          elec(415, 85000, 3), [{"n": "Coil Airflow Space", "shape": "box", "at": [-1800, -2600, 0, 1800, -1100, 2400], "sub": "Clearance Maintenance"}])
 
 # ================================================================= 17. CHW pump
@@ -520,24 +524,26 @@ def chw_pump():
     zc = 350
     vol = [(y, z) for y, z in volute_pts(0, zc, 150, 55, 70)]
     parts = [B("Baseplate", [-560, -220, 0, 400, 220, 60], 'dark'),
-             B("Volute Foot", [-440, -100, 60, -320, 100, 210], 'pcg'),
-             RT("Volute", vol, [-440, -310], 'pcg'),
-             CX("Suction Nozzle", [0, zc], 55, [-530, -440], 'pcg'), T("Suction Flange", 'x', [0, zc], ring(0, 95, -550, -530), 'pcg'),
-             CZ("Discharge Nozzle", [-375, 75], 42, [zc + 250, zc + 330], 'pcg'), T("Discharge Flange", 'z', [-375, 75], ring(0, 80, zc + 330, zc + 350), 'pcg'),
-             T("Motor Adapter", 'x', [0, zc], [[0, -310], [125, -310], [105, -200], [0, -200]], 'pcg'),
-             CX("Motor", [0, zc], 135, [-200, 250], 'pcg'),
-             rep(T("Motor Fin", 'x', [0, zc], ring(135, 145, -170, -160), 'pcg', 'f'), 6, [65, 0, 0]),
+             B("Volute Foot", [-440, -100, 60, -320, 100, 210], 'mblue'),
+             RT("Volute", vol, [-440, -310], 'mblue'),
+             CX("Suction Nozzle", [0, zc], 55, [-530, -440], 'mblue'), T("Suction Flange", 'x', [0, zc], ring(0, 95, -550, -530), 'mblue'),
+             CZ("Discharge Nozzle", [-375, 75], 42, [zc + 250, zc + 330], 'mblue'), T("Discharge Flange", 'z', [-375, 75], ring(0, 80, zc + 330, zc + 350), 'mblue'),
+             T("Motor Adapter", 'x', [0, zc], [[0, -310], [125, -310], [105, -200], [0, -200]], 'mblue'),
+             CX("Motor", [0, zc], 135, [-200, 250], 'mblue'),
+             rep(T("Motor Fin", 'x', [0, zc], ring(135, 145, -170, -160), 'mblue', 'f'), 6, [65, 0, 0]),
              T("Fan Cowl", 'x', [0, zc], [[0, 250], [140, 250], [140, 310], [100, 335], [0, 340]], 'dark'),
-             B("Motor Feet", [-160, -120, 60, 200, 120, 225], 'pcg'),
-             B("Terminal Box", [-40, -60, zc + 135, 80, 60, zc + 215], 'pcg'),
+             B("Motor Feet", [-160, -120, 60, 200, 120, 225], 'mblue'),
+             B("Terminal Box", [-40, -60, zc + 135, 80, 60, zc + 215], 'mblue'),
              CZ("Cable Gland", [80, 0], 10, [zc + 175, zc + 195], 'black', 'f'),
              CY("Gauge Cock", [-375, zc + 300], 6, [15, 33], 'brass', 'f'),
              T("Lifting Eye", 'z', [180, 0], ring(14, 20, zc + 130, zc + 170), 'chrome', 'f')]
     make("FMC_M_MechEq_Pump_ChilledWater", "Chilled water pump 5 l/s, close-coupled end-suction, cast-iron volute, flanged suction and discharge, TEFC motor on a common baseplate",
-         "IfcPump", ["5ls_EndSuction"], parts, [E("Terminal Box", "top")],
+         "IfcPump", ["5ls_EndSuction"], parts, [E("Terminal Box", "top"),
+          {"n": "CHW Return", "domain": "pipe", "system": "HydronicReturn", "part": "Suction Nozzle", "side": "left", "diameter": 65, "flow": "In"},
+          {"n": "CHW Supply", "domain": "pipe", "system": "HydronicSupply", "part": "Discharge Nozzle", "side": "top", "diameter": 50, "flow": "Out"}],
          {"Flow 5 l/s at 200 kPa": A("5l/s@200kPa", "record basis, head assumed"), "Suction DN65, discharge DN50": A("DN65/DN50"), "Motor 2.2 kW, 415 V 3-phase": A(2200),
           "Baseplate 960 x 440 mm": A("960x440")},
-         "Modelled as a generic product: baseplate, scroll volute with foot, flanged end suction and top discharge, motor adapter, finned motor with cowl and feet, terminal box with gland, gauge cock, vent, lifting eye. CHW pipe connectors are not in the record (E only).",
+         "Modelled as a generic product: baseplate, scroll volute with foot, flanged end suction and top discharge, motor adapter, finned motor with cowl and feet, terminal box with gland, gauge cock, vent, lifting eye. CHW return on the suction, supply on the discharge.",
          elec(415, 2800, 3))
 
 # ================================================================= 18. kitchen hood
@@ -572,8 +578,8 @@ def cold_condenser():
     parts = [B("Base Plate", [-500, -300, 0, 500, 300, 30], 'dark'),
              rep(CZ("Rubber Foot Front", [-450, -250], 20, [-15, 0], 'rubber', 'f'), 2, [900, 0, 0]),
              rep(CZ("Rubber Foot Rear", [-450, 250], 20, [-15, 0], 'rubber', 'f'), 2, [900, 0, 0]),
-             B("Coil Housing", [0, -300, 30, 500, 300, 700], 'epw', 6),
-             B("Coil", [10, 300, 60, 490, 306, 680], 'alu'),
+             B("Coil Housing", [0, -300, 30, 500, 300, 700], 'lgrey', 6),
+             B("Coil", [10, 300, 60, 490, 306, 680], 'fin'),
              rep(B("Coil Guard Bar", [10, 306, 90, 490, 310, 96], 'dark', 0, 'f'), 6, [0, 0, 100]),
              B("Compressor Mount", [-420, -200, 30, -120, 100, 50], 'rubber'),
              CZ("Compressor", [-270, -50], 120, [50, 330], 'enamel'),
@@ -587,7 +593,7 @@ def cold_condenser():
              rep(CY("Service Valve", [-440, 120], 12, [-330, -300], 'brass', 'f'), 2, [90, 0, 0]),
              B("Electrical Box", [-80, -260, 430, 0, -60, 650], 'grey', 4),
              B("HP LP Switch", [-40, -40, 450, 0, 40, 520], 'black', 0, 'f')]
-    parts += fan_front("Fan", 250, 380, 205, -300, 4)
+    parts += fan_front("Fan", 250, 380, 205, -300, 4, bezel='lgrey')
     parts = [p for p in parts if p['n'] != 'Fan Guard Mid']
     types = [{"name": "2kW_CondUnit", "values": {"Apparent Load": 1500, "Voltage": 240, "Number of Poles": 1}},
              {"name": "5kW_CondUnit", "values": {"Apparent Load": 3500, "Voltage": 415, "Number of Poles": 3}}]
@@ -601,7 +607,7 @@ def cold_condenser():
 def cold_evap():
     parts = [B("Casing", [-600, -250, -350, 600, 250, -50], 'epw', 6),
              rep(B("Mounting Rail", [-620, -200, -50, 620, -150, 0], 'epw'), 2, [0, 350, 0]),
-             B("Coil Face", [-560, 250, -330, 560, 256, -70], 'alu'),
+             B("Coil Face", [-560, 250, -330, 560, 256, -70], 'fin'),
              rep(B("Coil Guard Bar", [-560, 256, -300, 560, 260, -294], 'dark', 0, 'f'), 4, [0, 0, 60]),
              B("Drip Tray", [-620, -265, -385, 620, 270, -350], 'epw'),
              CZ("Drain Stub", [560, 0], 16, [-440, -385], 'grey'),
@@ -649,15 +655,15 @@ def pts_blower():
     parts = [B("Base Frame", [-400, -300, 0, 400, 300, 80], 'dark'),
              rep(CZ("AV Mount", [-340, -240], 25, [-20, 0], 'rubber', 'f'), 2, [680, 0, 0]),
              rep(CZ("AV Mount Rear", [-340, 240], 25, [-20, 0], 'rubber', 'f'), 2, [680, 0, 0]),
-             B("Housing Foot", [-200, -230, 80, 200, -60, 130], 'pcg'),
-             T("Blower Housing", 'y', [0, zc], [[0, -230], [255, -230], [272, -205], [272, -85], [255, -60], [0, -60]], 'pcg'),
-             rep(T("Housing Rib", 'y', [0, zc], ring(272, 280, -190, -182), 'pcg', 'f'), 3, [0, 40, 0]),
-             CY("Motor", [0, zc], 140, [-60, 260], 'pcg'),
-             rep(T("Motor Fin", 'y', [0, zc], ring(140, 150, -30, -20), 'pcg', 'f'), 5, [0, 55, 0]),
+             B("Housing Foot", [-200, -230, 80, 200, -60, 130], 'mblue'),
+             T("Blower Housing", 'y', [0, zc], [[0, -230], [255, -230], [272, -205], [272, -85], [255, -60], [0, -60]], 'mblue'),
+             rep(T("Housing Rib", 'y', [0, zc], ring(272, 280, -190, -182), 'mblue', 'f'), 3, [0, 40, 0]),
+             CY("Motor", [0, zc], 140, [-60, 260], 'mblue'),
+             rep(T("Motor Fin", 'y', [0, zc], ring(140, 150, -30, -20), 'mblue', 'f'), 5, [0, 55, 0]),
              T("Fan Cowl", 'y', [0, zc], [[0, 260], [145, 260], [145, 315], [105, 340], [0, 345]], 'dark'),
-             B("Motor Feet", [-120, -60, 80, 120, 240, 245], 'pcg'),
-             B("Terminal Box", [-60, 0, zc + 135, 60, 120, zc + 205], 'pcg'),
-             CZ("Inlet Port", [-130, -145], 42, [600, 720], 'pcg'), CZ("Outlet Port", [130, -145], 42, [600, 720], 'pcg'),
+             B("Motor Feet", [-120, -60, 80, 120, 240, 245], 'mblue'),
+             B("Terminal Box", [-60, 0, zc + 135, 60, 120, zc + 205], 'mblue'),
+             CZ("Inlet Port", [-130, -145], 42, [600, 720], 'mblue'), CZ("Outlet Port", [130, -145], 42, [600, 720], 'mblue'),
              CZ("Inlet Silencer", [-130, -145], 72, [720, 960], 'galv'), CZ("Outlet Silencer", [130, -145], 72, [720, 960], 'galv'),
              B("Diverter Valve", [-220, -230, 960, 220, -60, 1060], 'dark', 8),
              B("Valve Actuator", [-60, -60, 990, 60, 40, 1050], 'black'),
@@ -698,8 +704,8 @@ def steam_boiler():
              CZ("Steam Outlet Flange", [350, 0], 110, [1650, 1675], 'dark'),
              CZ("Pressure Gauge Siphon", [100, 0], 10, [1490, 1620], 'copper', 'f'),
              CY("Steam Pressure Gauge", [100, 1660], 60, [-15, 15], 'white'),
-             CX("Feed Pump", [-580, 330], 90, [-1000, -650], 'pcg'),
-             CX("Feed Pump Motor", [-580, 330], 110, [-650, -300], 'pcg'),
+             CX("Feed Pump", [-580, 330], 90, [-1000, -650], 'mblue'),
+             CX("Feed Pump Motor", [-580, 330], 110, [-650, -300], 'mblue'),
              CX("Feedwater Inlet", [-580, 330], 26, [-1180, -1000], 'gi'),
              CZ("Blowdown Valve", [-200, -300], 25, [150, 420], 'brass', 'f')]
     types = [{"name": "100kgh_Steam", "values": {"Apparent Load": 3000}}, {"name": "250kgh_Steam", "values": {"Apparent Load": 5000}}]
@@ -827,9 +833,9 @@ def laminar():
              B("Perimeter Frame Left", [-H, -H + 60, -30, -H + 60, H - 60, 0], 'ss'), B("Perimeter Frame Right", [H - 60, -H + 60, -30, H, H - 60, 0], 'ss'),
              rep(B("Grid Bar NS", [-500, -H + 60, -30, -470, H - 60, 0], 'ss'), 2, [970, 0, 0]),
              rep(B("Grid Bar EW", [-H + 60, -500, -30, H - 60, -470, 0], 'ss'), 2, [0, 970, 0]),
-             rep(B("Screen Row A", [-1440, -1440, -24, -500, -500, -4], 'epw'), 3, [970, 0, 0]),
-             rep(B("Screen Row B", [-1440, -470, -24, -500, 470, -4], 'epw'), 3, [970, 0, 0]),
-             rep(B("Screen Row C", [-1440, 500, -24, -500, 1440, -4], 'epw'), 3, [970, 0, 0]),
+             rep(B("Screen Row A", [-1440, -1440, -24, -500, -500, -4], 'hepa'), 3, [970, 0, 0]),
+             rep(B("Screen Row B", [-1440, -470, -24, -500, 470, -4], 'hepa'), 3, [970, 0, 0]),
+             rep(B("Screen Row C", [-1440, 500, -24, -500, 1440, -4], 'hepa'), 3, [970, 0, 0]),
              CZ("Light Mount Boss", [0, 0], 150, [-90, -24], 'ss'), T("Light Mount Plate", 'z', [0, 0], ring(150, 230, -30, -24), 'ss', 'f'),
              B("Skirt Front", [-H, -H - 12, -450, H, -H, 0], 'glass'), B("Skirt Rear", [-H, H, -450, H, H + 12, 0], 'glass'),
              B("Skirt Left", [-H - 12, -H, -450, -H, H, 0], 'glass'), B("Skirt Right", [H, -H, -450, H + 12, H, 0], 'glass'),
@@ -893,7 +899,7 @@ def grille_transfer():
 def hepa_terminal():
     parts = [B("Housing", [-290, -290, 0, 290, 290, 350], 'epw'),
              B("Face Frame", [-297, -297, -15, 297, 297, 0], 'epw', 2),
-             B("Perforated Face", [-268, -268, -18, 268, 268, -15], 'mgrey'),
+             B("Perforated Face", [-268, -268, -18, 268, 268, -15], 'hepa'),
              rep(B("Perforation Row", [-250, -251, -19, 250, -248, -18], 'dark', 0, 'f'), 24, [0, 21.7, 0]),
              rep(CZ("Face Fixing", [-255, -255], 6, [-21, -18], 'chrome', 'f'), 2, [510, 0, 0]),
              CZ("DOP Test Port", [230, 230], 10, [-24, -18], 'chrome', 'f'),
@@ -1037,7 +1043,7 @@ def pressure_monitor():
              F("Housing", [-70, -38, 0, 70, 0, 140], 'white', 10),
              F("Display Bezel", [-58, -40, 55, 58, -38, 128], 'black', 6),
              F("Display Screen", [-50, -41, 64, 50, -40, 120], 'ledb', 3, 'f'),
-             CY("LED Green", [-35, 38], 6, [-42, -38], 'ledg'), CY("LED Amber", [0, 38], 6, [-42, -38], 'yellow'), CY("LED Red", [35, 38], 6, [-42, -38], 'ledr'),
+             CY("LED Green", [-35, 38], 6, [-42, -38], 'ledg'), CY("LED Amber", [0, 38], 6, [-42, -38], 'amber'), CY("LED Red", [35, 38], 6, [-42, -38], 'ledr'),
              rep(CY("Button", [-35, 15], 7, [-41, -38], 'grey', 'f'), 3, [35, 0, 0]),
              rep(F("Sounder Slot", [48, -39, 8, 62, -38, 10], 'black', 0, 'f'), 3, [0, 0, 5]),
              CZ("Reference Port", [-55, -19], 3, [-6, 0], 'chrome', 'f'),
@@ -1075,6 +1081,130 @@ def thermostat():
          {"Plate 86 x 86 x 12 mm on 35 mm box": A("86x86x12", "BS 4662 single box"), "Set point range 16 to 28 C": A("16-28C"), "Mounting height 1400 mm": A(1400, "accessible controls practice")},
          "Modelled as a generic product: plate on a back box, LCD bezel with digits and mode icons, four buttons, occupancy LED, screw covers.",
          {"Default Elevation": 1400})
+
+# ================================================================= second pass (17 Oct evening): per-type geometry
+STD_D = [100, 125, 150, 160, 200, 250, 315, 355, 400, 450]
+def only(parts, t):
+    for p in parts: p['only'] = [t]
+    return parts
+def capture(builder):
+    builder(); return P.pop()
+def scale_part(p, kx, ky, kz, sfx):
+    import copy
+    q = copy.deepcopy(p); q['n'] = f"{p['n']} {sfx}"; K = {'x': kx, 'y': ky, 'z': kz}; s = q['shape']; ax = q.get('axis', 'z')
+    if 'at' in q: a = q['at']; q['at'] = [round(a[0] * kx, 2), round(a[1] * ky, 2), round(a[2] * kz, 2), round(a[3] * kx, 2), round(a[4] * ky, 2), round(a[5] * kz, 2)]
+    for k in ('x', 'y', 'z'):
+        if k in q and isinstance(q[k], list): q[k] = [round(v * K[k], 2) for v in q[k]]
+    if s == 'prism': q['pts'] = [[round(a * kx, 2), round(b * ky, 2)] for a, b in q['pts']]
+    if s == 'front': q['pts'] = [[round(a * kx, 2), round(b * kz, 2)] for a, b in q['pts']]
+    if s == 'right': q['pts'] = [[round(a * ky, 2), round(b * kz, 2)] for a, b in q['pts']]
+    if s in ('cyl', 'turn'):
+        perp = {'z': ('x', 'y'), 'y': ('x', 'z'), 'x': ('y', 'z')}[ax]
+        q['c'] = [round(q['c'][0] * K[perp[0]], 2), round(q['c'][1] * K[perp[1]], 2)]
+        kr = min(K[perp[0]], K[perp[1]])
+        if s == 'cyl': q['r'] = round(q['r'] * kr, 2)
+        else: q['profile'] = [[round(r * kr, 2), round(t * K[ax], 2)] for r, t in q['profile']]
+    if 'repeat' in q: d = q['repeat']['d']; q['repeat']['d'] = [round(d[0] * kx, 2), round(d[1] * ky, 2), round(d[2] * kz, 2)]
+    return q
+def per_type(prod, specs, shared=(), drop=None):
+    """specs: [(type, kx, ky, kz, sfx)]; the spec with k = 1 is the drawn base. Shared parts stay once, without 'only'.
+    Duct connectors are repeated per type on that type's part, sized by the scale; other connectors stay on the base type."""
+    base = [p for p in prod['parts']]; sh = [p for p in base if p['n'] in shared]; var = [p for p in base if p['n'] not in shared]
+    new = list(sh); conns = []
+    shared = set(shared) | {f"{p['n']} {k + 1}" for p in sh if p.get('repeat') for k in range(p['repeat']['n'])}
+    bsfx = [sp[4] for sp in specs if sp[1] == sp[2] == sp[3] == 1][0]
+    for t, kx, ky, kz, sf in specs:
+        ps = [scale_part(p, kx, ky, kz, sf) for p in var if not (drop and p['n'] in drop.get(t, ()))]
+        new += only(ps, t)
+        for c in prod['connectors']:
+            if c['domain'] != 'duct' or c['part'] in shared: continue
+            c2 = dict(c, n=f"{c['n']} {sf}", part=f"{c['part']} {sf}")
+            side = c['side']; a, b = ((kx, ky) if side in ('top', 'bottom') else (kx, kz) if side in ('front', 'back') else (ky, kz))
+            if 'diameter' in c: c2['diameter'] = min(STD_D, key=lambda d: abs(d - c['diameter'] * min(a, b)))
+            if 'width' in c: c2['width'] = round(c['width'] * a / 10) * 10; c2['height'] = round(c['height'] * b / 10) * 10
+            conns.append(c2)
+    for c in prod['connectors']:
+        if c['domain'] == 'duct' and c['part'] not in shared: continue
+        conns.append(dict(c, part=c['part'] if c['part'] in shared else f"{c['part']} {bsfx}"))
+    prod['parts'] = new; prod['connectors'] = conns
+    check(prod); P.append(prod); return prod
+def check(prod):
+    ex = fp.expand(prod['parts']); names = [p['n'] for p in ex]
+    assert len(names) == len(set(names)), (prod['family'], [n for n in names if names.count(n) > 1])
+    assert len(ex) <= 70, (prod['family'], len(ex))
+    tn = {t['name'] for t in prod['types']}
+    for p in ex: assert set(p.get('only', [])) <= tn, (prod['family'], p['n'])
+    for c in prod['connectors']: assert c['part'] in names, (prod['family'], c['part'])
+    prod['materials'] = {k: MAT[k] for k in sorted({p['mat'] for p in ex if p.get('mat')})}
+
+_inline, _roof, _wall, _hood, _curtain, _cfan, _dsq, _dlin, _lam, _gret, _louv = inline_fan, roof_fan, wall_fan, kitchen_hood, air_curtain, ceiling_fan, diffuser_square, diffuser_linear, laminar, grille_return, louvre
+def inline_fan(): per_type(capture(_inline), [("100_Inline", .5, .5, .5, "100"), ("150_Inline", .75, .75, .75, "150"), ("200_Inline", 1, 1, 1, "200")])
+def roof_fan(): per_type(capture(_roof), [("300_Roof", .75, .75, .8, "300"), ("450_Roof", 1, 1, 1, "450")])
+def wall_fan(): per_type(capture(_wall), [("150_Wall", .7, 1, .7, "150"), ("250_Wall", 1, 1, 1, "250")])
+def kitchen_hood(): per_type(capture(_hood), [("2400_WallCanopy", 1, 1, 1, "2400"), ("3600_WallCanopy", 1.5, 1, 1, "3600")])
+def air_curtain(): per_type(capture(_curtain), [("1500_Ambient", 1, 1, 1, "1500"), ("2000_Ambient", 1.335, 1, 1, "2000")], shared=("Mounting Bracket",))
+def ceiling_fan():
+    prod = capture(_cfan)
+    per_type(prod, [("1200_3Blade", .857, .857, 1, "1200"), ("1400_3Blade", 1, 1, 1, "1400")],
+             shared=tuple(p['n'] for p in prod['parts'] if not p['n'].startswith(('Blade ', 'Blade Screw'))))
+def diffuser_square(): per_type(capture(_dsq), [("300_4Way", .5, .5, .8, "300"), ("450_4Way", .75, .75, .9, "450"), ("600_4Way", 1, 1, 1, "600")])
+def diffuser_linear(): per_type(capture(_dlin), [("1200_2Slot", .8, 1, 1, "1200"), ("1500_2Slot", 1, 1, 1, "1500")], shared=("Spigot", "Spigot Bead"))
+def laminar(): per_type(capture(_lam), [("2400x2400_UCV", .8, .8, 1, "2400"), ("3000x3000_UCV", 1, 1, 1, "3000")], shared=("Light Mount Boss", "Light Mount Plate"))
+def grille_return(): per_type(capture(_gret), [("300x300_Return", .5, 1, 1, "300"), ("600x300_Return", 1, 1, 1, "600")])
+def louvre(): per_type(capture(_louv), [("600x600_Weather", .5, 1, 1, "600"), ("1200x600_Weather", 1, 1, 1, "1200")], drop={"600x600_Weather": ("Mullion",)})
+
+def damper_fire():
+    parts, conns = [], []
+    for t, w, h, sf, nb in (("200x200_Curtain", 200, 200, "200", 4), ("600x400_Curtain", 600, 400, "600", 7)):
+        x1, z1 = w / 2, h / 2
+        p = damper_body(w, h, 300) + frame4("Retaining Angle", -x1 - 60, x1 + 60, -z1 - 60, z1 + 60, -2, 2, 57, 'galv') + [
+            rep(F("Curtain Blade", [-x1 + 4, -18, z1 - 55, x1 - 4, 18, z1 - 50], 'gi'), nb, [0, 0, 7.5]),
+            rep(B("Closing Spring", [-x1 + 20, -10, z1 - 100, -x1 + 30, 10, z1 - 55], 'chrome', 0, 'f'), 2, [w - 50, 0, 0]),
+            F("Fusible Link", [-14, -6, z1 - 95, 14, -6 + 12, z1 - 60], 'brass', 0, 'f'),
+            F("Link Strap", [-4, -4, z1 - 140, 4, 4, z1 - 95], 'galv', 0, 'f'),
+            RT("Blade Guide Left", [(-20, -z1), (20, -z1), (20, z1), (-20, z1)], [-x1, -x1 + 8], 'galv', 'f'),
+            RT("Blade Guide Right", [(-20, -z1), (20, -z1), (20, z1), (-20, z1)], [x1 - 8, x1], 'galv', 'f'),
+            RT("Label", [(-80, -min(50, z1 - 10)), (80, -min(50, z1 - 10)), (80, min(50, z1 - 10)), (-80, min(50, z1 - 10))], [x1 + 3, x1 + 4], 'yellow', 'f')]
+        parts += only([scale_part(q, 1, 1, 1, sf) for q in p], t)
+        conns += [DUCT(f"Duct In {sf}", "SupplyAir", f"Duct End Front {sf}", "front", "In", w=w, h=h), DUCT(f"Duct Out {sf}", "SupplyAir", f"Duct End Rear {sf}", "back", "Out", w=w, h=h)]
+    make("FMC_M_DuctAccessory_Damper_Fire", "Curtain fire damper 200 x 200 to 600 x 400, galvanised casing with flanges, folded interlocking curtain blades held by a 72 C fusible link, stainless closing springs",
+         "IfcDamper", ["200x200_Curtain", "600x400_Curtain"], parts, conns,
+         {"Duct 200 x 200 / 600 x 400 mm, casing 300 long": A("200x200/600x400x300"), "Fire rating E60 / ES60 (EN 1366-2)": A("E60", "rated at compartment walls; engineer confirms"),
+          "Fusible link 72 C": A(72), "Access door within 500 mm": A(500, "BS 9999 / maintenance practice")},
+         "Modelled as a generic product, one part set per type size: four-wall casing, front and rear flanges, retaining angle at the wall line (y = 0), folded curtain pack at the head, blade guides, closing springs, fusible link and strap, label. Duct ends are Medium-only faces for the connectors.")
+
+def damper_volume():
+    rect = damper_body(600, 400, 200) + [
+        rep(RT("Opposed Blade A", aerofoil(0, -150, 100, 30, 6), [-296, 296], 'gi'), 2, [0, 0, 200]),
+        rep(RT("Opposed Blade B", aerofoil(0, -50, 100, -30, 6), [-296, 296], 'gi'), 2, [0, 0, 200]),
+        rep(CX("Blade Spindle", [0, -150], 6, [300, 312], 'chrome', 'f'), 4, [0, 0, 100]),
+        F("Linkage Bar", [306, -20, -170, 312, -10, 170], 'galv', 0, 'f'),
+        RT("Quadrant Plate", [(-60, -30), (60, -30), (60, 60), (0, 90), (-60, 60)], [303, 306], 'galv'),
+        RT("Hand Lever", [(-8, 0), (8, 0), (8, 130), (-8, 130)], [306, 312], 'red'),
+        CX("Locking Nut", [0, 70], 10, [312, 322], 'chrome', 'f')]
+    rnd = [CY("Round Casing", [0, 0], 100, [-100, 100], 'galv'),
+           T("Bead Front", 'y', [0, 0], ring(100, 104, -80, -72), 'galv', 'f'), T("Bead Rear", 'y', [0, 0], ring(100, 104, 72, 80), 'galv', 'f'),
+           CY("Duct End Front", [0, 0], 100, [-101, -100], 'galv', 'm'), CY("Duct End Rear", [0, 0], 100, [100, 101], 'galv', 'm'),
+           CX("Spindle", [0, 0], 5, [-112, 118], 'chrome'),
+           RT("Quadrant Plate", [(-45, -20), (45, -20), (45, 40), (0, 60), (-45, 40)], [100, 103], 'galv'),
+           RT("Hand Lever", [(-6, 0), (6, 0), (6, 95), (-6, 95)], [103, 108], 'red'),
+           CX("Locking Nut", [0, 45], 8, [108, 116], 'chrome', 'f'),
+           T("Seal Front", 'y', [0, 0], ring(104, 108, -100, -94), 'rubber', 'f')]
+    parts = only([scale_part(q, 1, 1, 1, "Rect") for q in rect], "600x400_OBD") + only([scale_part(q, 1, 1, 1, "Round") for q in rnd], "200dia_Balancing")
+    conns = [DUCT("Duct In Round", "SupplyAir", "Duct End Front Round", "front", "In", d=200), DUCT("Duct Out Round", "SupplyAir", "Duct End Rear Round", "back", "Out", d=200),
+             DUCT("Duct In Rect", "SupplyAir", "Duct End Front Rect", "front", "In", w=600, h=400), DUCT("Duct Out Rect", "SupplyAir", "Duct End Rear Rect", "back", "Out", w=600, h=400)]
+    make("FMC_M_DuctAccessory_Damper_Volume", "Volume control damper for balancing: 200 mm round single-blade (iris-free butterfly) or 600 x 400 rectangular opposed-blade, locking quadrant and hand lever",
+         "IfcDamper", ["200dia_Balancing", "600x400_OBD"], parts, conns,
+         {"Round 200 mm x 200 long / rectangular 600 x 400 x 200": A("200dia/600x400"), "Leakage class 2 (EN 1751)": A(2), "Blade pitch 100 mm, opposed (rectangular)": A(100)},
+         "Modelled as a generic product with a part set per type: the round type has a beaded round casing, butterfly spindle, quadrant, red lever and nut; the rectangular type has casing, flanges, four opposed blades, spindles, linkage, quadrant and lever. Duct ends are Medium-only faces for the connectors.")
+    P[-1]['parts'] = parts
+
+_vav = vav
+def vav():
+    prod = capture(_vav)
+    inlet = ("Inlet Spigot", "Inlet Seal", "Flow Sensor Ring", "Damper Body")
+    sh = tuple(p['n'] for p in prod['parts'] if p['n'] not in inlet)
+    per_type(prod, [("200_VAV", .667, 1, .667, "200"), ("300_VAV", 1, 1, 1, "300")], shared=sh)
 
 # ================================================================= build list
 BUILD = [split_wall, split_outdoor,
@@ -1114,19 +1244,26 @@ BUILD = [split_wall, split_outdoor,
 if __name__ == '__main__':
     for b in BUILD: b()
     assert {p['family'] for p in P} == set(RECS), set(RECS) - {p['family'] for p in P}
-    json.dump(NEEDED, open(os.path.join(HERE, 'batches', 'M_mechanical.materials_needed.json'), 'w'), indent=1)
-    only = sys.argv[1:]
+    json.dump([], open(os.path.join(HERE, 'batches', 'M_mechanical.materials_needed.json'), 'w'), indent=1)
+    sel = sys.argv[1:]
+    SCR = os.environ.get('FMC_SCRATCH', '/tmp/claude-0/-home-claude/ce672511-dda7-500e-94dd-9bdb64997d11/scratchpad/M2')
     below = {"Air Terminals"}
     out = []
     for prod in P:
-        if only and not any(s in prod['family'] for s in only): continue
+        if sel and not any(s in prod['family'] for s in only): continue
         f = prod['family']
         json.dump(prod, open(os.path.join(HERE, f + '.product.json'), 'w'), indent=1)
         r = fp.compile_product(prod)
         json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
-        ceiling = any(k in f for k in ('Hood', 'Cassette', 'Diffuser', 'HEPA_Terminal', 'CeilingFan', 'Evaporator', 'Ducted_FCU', 'ERV', 'Inline'))
-        views = (('3D', -35, 22), ('Below', -35, -40), ('Front', 0, 0), ('Side', 90, 0)) if ceiling else (('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9))
+        ceiling = any(k in f for k in ('Hood', 'CeilingFan', 'Inline'))
+        views = ((('3D', -35, 22), ('Top', -35, 22), ('Front', 0, 0), ('Side', 90, 0)) if prod.get('view') == 'below' else
+                 (('3D', -35, 22), ('Below', -35, -40), ('Front', 0, 0), ('Side', 90, 0)) if ceiling else (('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9)))
         fp.render(prod, os.path.join(HERE, f + '.preview.png'), views=views)
         fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
+        if any(p.get('only') for p in prod['parts']):   # check the other types too (scratch only)
+            os.makedirs(SCR, exist_ok=True)
+            for t in prod['types'][1:]:
+                prod['_render_type'] = t['name']; fp.render(prod, os.path.join(SCR, f + '__' + t['name'] + '.png'), views=views)
+            prod.pop('_render_type', None)
         out.append((f, len(fp.expand(prod['parts'])), len(r['ops'])))
         print(out[-1], flush=True)

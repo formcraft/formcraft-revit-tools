@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_EQ_DB_Essential_Red",
  "template": "Metric Generic Model.rft",
- "about": "Essential board: white enclosure, red door with window, breaker rows with toggles, ESSENTIAL label, main switch with red handle, handle, lock, hinges, gland plate. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: distribution board essential red electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=distribution+board+essential+red+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Essential board: white enclosure, red door with window, breaker rows with 12 or 18 toggles per row (blank strip on 12way), ESSENTIAL label, main switch with red handle, handle, lock, hinges, gland plate. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: distribution board essential red electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=distribution+board+essential+red+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://efapel.pt/en/products/panelboards/distribution-panelboard-semi-assembled-1; photo_title: Distribution panelboard semi-assembled (Efapel) - generic DB, no red essential-supply example found; photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -28,33 +28,345 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cable_Spec",
+   "guid": "1f352e44-006a-5146-87ea-a1da43245855",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Ways",
+   "guid": "84dd2958-9179-588a-8069-1df161c8b4ee",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -101,6 +413,34 @@
    "type": "12way_TPN",
    "param": "FMC_Keynote_Code",
    "value": "E.DBD_08"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/FMC_Code_Description",
+   "type": "12way_TPN",
+   "param": "FMC_Code_Description",
+   "value": "DB Essential Red: Essential-supply DB, red identification"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/FMC_Code_Group",
+   "type": "12way_TPN",
+   "param": "FMC_Code_Group",
+   "value": "E.DBD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/FMC_Role_Code",
+   "type": "12way_TPN",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/URL",
+   "type": "12way_TPN",
+   "param": "URL",
+   "value": "https://efapel.pt/en/products/panelboards/distribution-panelboard-semi-assembled-1"
   },
   {
    "op": "set_type_value",
@@ -178,6 +518,34 @@
   },
   {
    "op": "set_type_value",
+   "name": "18way_TPN/FMC_Code_Description",
+   "type": "18way_TPN",
+   "param": "FMC_Code_Description",
+   "value": "DB Essential Red: Essential-supply DB, red identification"
+  },
+  {
+   "op": "set_type_value",
+   "name": "18way_TPN/FMC_Code_Group",
+   "type": "18way_TPN",
+   "param": "FMC_Code_Group",
+   "value": "E.DBD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "18way_TPN/FMC_Role_Code",
+   "type": "18way_TPN",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "18way_TPN/URL",
+   "type": "18way_TPN",
+   "param": "URL",
+   "value": "https://efapel.pt/en/products/panelboards/distribution-panelboard-semi-assembled-1"
+  },
+  {
+   "op": "set_type_value",
    "name": "18way_TPN/Voltage",
    "type": "18way_TPN",
    "param": "Voltage",
@@ -229,9 +597,9 @@
    "op": "add_subcategory",
    "name": "Redsteel",
    "color": [
-    200,
-    16,
-    46
+    198,
+    40,
+    40
    ],
    "line_weight_projection": 1
   },
@@ -243,7 +611,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Metal_Steel_Painted_Red",
    "param": "Redsteel Material"
   },
   {
@@ -334,9 +702,9 @@
    "op": "add_subcategory",
    "name": "Redabs",
    "color": [
-    181,
-    18,
-    27
+    200,
+    32,
+    42
    ],
    "line_weight_projection": 1
   },
@@ -348,7 +716,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
+   "name": "FMC_Plastic_ABS_Red",
    "param": "Redabs Material"
   },
   {
@@ -2358,642 +2726,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle 13",
-   "points": [
-    [
-     63.0,
-     335.0
-    ],
-    [
-     63.38,
-     335.08
-    ],
-    [
-     63.71,
-     335.29
-    ],
-    [
-     63.92,
-     335.62
-    ],
-    [
-     64.0,
-     336.0
-    ],
-    [
-     64.0,
-     354.0
-    ],
-    [
-     63.92,
-     354.38
-    ],
-    [
-     63.71,
-     354.71
-    ],
-    [
-     63.38,
-     354.92
-    ],
-    [
-     63.0,
-     355.0
-    ],
-    [
-     55.0,
-     355.0
-    ],
-    [
-     54.62,
-     354.92
-    ],
-    [
-     54.29,
-     354.71
-    ],
-    [
-     54.08,
-     354.38
-    ],
-    [
-     54.0,
-     354.0
-    ],
-    [
-     54.0,
-     336.0
-    ],
-    [
-     54.08,
-     335.62
-    ],
-    [
-     54.29,
-     335.29
-    ],
-    [
-     54.62,
-     335.08
-    ],
-    [
-     55.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 13",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 13",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Breaker Toggle 14",
-   "points": [
-    [
-     80.0,
-     335.0
-    ],
-    [
-     80.38,
-     335.08
-    ],
-    [
-     80.71,
-     335.29
-    ],
-    [
-     80.92,
-     335.62
-    ],
-    [
-     81.0,
-     336.0
-    ],
-    [
-     81.0,
-     354.0
-    ],
-    [
-     80.92,
-     354.38
-    ],
-    [
-     80.71,
-     354.71
-    ],
-    [
-     80.38,
-     354.92
-    ],
-    [
-     80.0,
-     355.0
-    ],
-    [
-     72.0,
-     355.0
-    ],
-    [
-     71.62,
-     354.92
-    ],
-    [
-     71.29,
-     354.71
-    ],
-    [
-     71.08,
-     354.38
-    ],
-    [
-     71.0,
-     354.0
-    ],
-    [
-     71.0,
-     336.0
-    ],
-    [
-     71.08,
-     335.62
-    ],
-    [
-     71.29,
-     335.29
-    ],
-    [
-     71.62,
-     335.08
-    ],
-    [
-     72.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 14",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 14",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Breaker Toggle 15",
-   "points": [
-    [
-     97.0,
-     335.0
-    ],
-    [
-     97.38,
-     335.08
-    ],
-    [
-     97.71,
-     335.29
-    ],
-    [
-     97.92,
-     335.62
-    ],
-    [
-     98.0,
-     336.0
-    ],
-    [
-     98.0,
-     354.0
-    ],
-    [
-     97.92,
-     354.38
-    ],
-    [
-     97.71,
-     354.71
-    ],
-    [
-     97.38,
-     354.92
-    ],
-    [
-     97.0,
-     355.0
-    ],
-    [
-     89.0,
-     355.0
-    ],
-    [
-     88.62,
-     354.92
-    ],
-    [
-     88.29,
-     354.71
-    ],
-    [
-     88.08,
-     354.38
-    ],
-    [
-     88.0,
-     354.0
-    ],
-    [
-     88.0,
-     336.0
-    ],
-    [
-     88.08,
-     335.62
-    ],
-    [
-     88.29,
-     335.29
-    ],
-    [
-     88.62,
-     335.08
-    ],
-    [
-     89.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 15",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 15",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 15",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Breaker Toggle 16",
-   "points": [
-    [
-     114.0,
-     335.0
-    ],
-    [
-     114.38,
-     335.08
-    ],
-    [
-     114.71,
-     335.29
-    ],
-    [
-     114.92,
-     335.62
-    ],
-    [
-     115.0,
-     336.0
-    ],
-    [
-     115.0,
-     354.0
-    ],
-    [
-     114.92,
-     354.38
-    ],
-    [
-     114.71,
-     354.71
-    ],
-    [
-     114.38,
-     354.92
-    ],
-    [
-     114.0,
-     355.0
-    ],
-    [
-     106.0,
-     355.0
-    ],
-    [
-     105.62,
-     354.92
-    ],
-    [
-     105.29,
-     354.71
-    ],
-    [
-     105.08,
-     354.38
-    ],
-    [
-     105.0,
-     354.0
-    ],
-    [
-     105.0,
-     336.0
-    ],
-    [
-     105.08,
-     335.62
-    ],
-    [
-     105.29,
-     335.29
-    ],
-    [
-     105.62,
-     335.08
-    ],
-    [
-     106.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 16",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 16",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 16",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Breaker Toggle 17",
-   "points": [
-    [
-     131.0,
-     335.0
-    ],
-    [
-     131.38,
-     335.08
-    ],
-    [
-     131.71,
-     335.29
-    ],
-    [
-     131.92,
-     335.62
-    ],
-    [
-     132.0,
-     336.0
-    ],
-    [
-     132.0,
-     354.0
-    ],
-    [
-     131.92,
-     354.38
-    ],
-    [
-     131.71,
-     354.71
-    ],
-    [
-     131.38,
-     354.92
-    ],
-    [
-     131.0,
-     355.0
-    ],
-    [
-     123.0,
-     355.0
-    ],
-    [
-     122.62,
-     354.92
-    ],
-    [
-     122.29,
-     354.71
-    ],
-    [
-     122.08,
-     354.38
-    ],
-    [
-     122.0,
-     354.0
-    ],
-    [
-     122.0,
-     336.0
-    ],
-    [
-     122.08,
-     335.62
-    ],
-    [
-     122.29,
-     335.29
-    ],
-    [
-     122.62,
-     335.08
-    ],
-    [
-     123.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 17",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 17",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 17",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Breaker Toggle 18",
-   "points": [
-    [
-     148.0,
-     335.0
-    ],
-    [
-     148.38,
-     335.08
-    ],
-    [
-     148.71,
-     335.29
-    ],
-    [
-     148.92,
-     335.62
-    ],
-    [
-     149.0,
-     336.0
-    ],
-    [
-     149.0,
-     354.0
-    ],
-    [
-     148.92,
-     354.38
-    ],
-    [
-     148.71,
-     354.71
-    ],
-    [
-     148.38,
-     354.92
-    ],
-    [
-     148.0,
-     355.0
-    ],
-    [
-     140.0,
-     355.0
-    ],
-    [
-     139.62,
-     354.92
-    ],
-    [
-     139.29,
-     354.71
-    ],
-    [
-     139.08,
-     354.38
-    ],
-    [
-     139.0,
-     354.0
-    ],
-    [
-     139.0,
-     336.0
-    ],
-    [
-     139.08,
-     335.62
-    ],
-    [
-     139.29,
-     335.29
-    ],
-    [
-     139.62,
-     335.08
-    ],
-    [
-     140.0,
-     335.0
-    ]
-   ],
-   "start": 149.5,
-   "end": 153,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Breaker Toggle 18",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Breaker Toggle 18",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Breaker Toggle 18",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Breaker Toggle Mid 1",
    "points": [
     [
@@ -4266,7 +3998,855 @@
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 13",
+   "name": "Blank Strip",
+   "points": [
+    [
+     149.0,
+     330.0
+    ],
+    [
+     149.38,
+     330.08
+    ],
+    [
+     149.71,
+     330.29
+    ],
+    [
+     149.92,
+     330.62
+    ],
+    [
+     150.0,
+     331.0
+    ],
+    [
+     150.0,
+     359.0
+    ],
+    [
+     149.92,
+     359.38
+    ],
+    [
+     149.71,
+     359.71
+    ],
+    [
+     149.38,
+     359.92
+    ],
+    [
+     149.0,
+     360.0
+    ],
+    [
+     55.0,
+     360.0
+    ],
+    [
+     54.62,
+     359.92
+    ],
+    [
+     54.29,
+     359.71
+    ],
+    [
+     54.08,
+     359.38
+    ],
+    [
+     54.0,
+     359.0
+    ],
+    [
+     54.0,
+     331.0
+    ],
+    [
+     54.08,
+     330.62
+    ],
+    [
+     54.29,
+     330.29
+    ],
+    [
+     54.62,
+     330.08
+    ],
+    [
+     55.0,
+     330.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 151,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Strip",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Strip",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Strip Mid",
+   "points": [
+    [
+     149.0,
+     415.0
+    ],
+    [
+     149.38,
+     415.08
+    ],
+    [
+     149.71,
+     415.29
+    ],
+    [
+     149.92,
+     415.62
+    ],
+    [
+     150.0,
+     416.0
+    ],
+    [
+     150.0,
+     444.0
+    ],
+    [
+     149.92,
+     444.38
+    ],
+    [
+     149.71,
+     444.71
+    ],
+    [
+     149.38,
+     444.92
+    ],
+    [
+     149.0,
+     445.0
+    ],
+    [
+     55.0,
+     445.0
+    ],
+    [
+     54.62,
+     444.92
+    ],
+    [
+     54.29,
+     444.71
+    ],
+    [
+     54.08,
+     444.38
+    ],
+    [
+     54.0,
+     444.0
+    ],
+    [
+     54.0,
+     416.0
+    ],
+    [
+     54.08,
+     415.62
+    ],
+    [
+     54.29,
+     415.29
+    ],
+    [
+     54.62,
+     415.08
+    ],
+    [
+     55.0,
+     415.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 151,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Strip Mid",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Strip Mid",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Strip Mid",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 1",
+   "points": [
+    [
+     63.0,
+     335.0
+    ],
+    [
+     63.38,
+     335.08
+    ],
+    [
+     63.71,
+     335.29
+    ],
+    [
+     63.92,
+     335.62
+    ],
+    [
+     64.0,
+     336.0
+    ],
+    [
+     64.0,
+     354.0
+    ],
+    [
+     63.92,
+     354.38
+    ],
+    [
+     63.71,
+     354.71
+    ],
+    [
+     63.38,
+     354.92
+    ],
+    [
+     63.0,
+     355.0
+    ],
+    [
+     55.0,
+     355.0
+    ],
+    [
+     54.62,
+     354.92
+    ],
+    [
+     54.29,
+     354.71
+    ],
+    [
+     54.08,
+     354.38
+    ],
+    [
+     54.0,
+     354.0
+    ],
+    [
+     54.0,
+     336.0
+    ],
+    [
+     54.08,
+     335.62
+    ],
+    [
+     54.29,
+     335.29
+    ],
+    [
+     54.62,
+     335.08
+    ],
+    [
+     55.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 2",
+   "points": [
+    [
+     80.0,
+     335.0
+    ],
+    [
+     80.38,
+     335.08
+    ],
+    [
+     80.71,
+     335.29
+    ],
+    [
+     80.92,
+     335.62
+    ],
+    [
+     81.0,
+     336.0
+    ],
+    [
+     81.0,
+     354.0
+    ],
+    [
+     80.92,
+     354.38
+    ],
+    [
+     80.71,
+     354.71
+    ],
+    [
+     80.38,
+     354.92
+    ],
+    [
+     80.0,
+     355.0
+    ],
+    [
+     72.0,
+     355.0
+    ],
+    [
+     71.62,
+     354.92
+    ],
+    [
+     71.29,
+     354.71
+    ],
+    [
+     71.08,
+     354.38
+    ],
+    [
+     71.0,
+     354.0
+    ],
+    [
+     71.0,
+     336.0
+    ],
+    [
+     71.08,
+     335.62
+    ],
+    [
+     71.29,
+     335.29
+    ],
+    [
+     71.62,
+     335.08
+    ],
+    [
+     72.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 3",
+   "points": [
+    [
+     97.0,
+     335.0
+    ],
+    [
+     97.38,
+     335.08
+    ],
+    [
+     97.71,
+     335.29
+    ],
+    [
+     97.92,
+     335.62
+    ],
+    [
+     98.0,
+     336.0
+    ],
+    [
+     98.0,
+     354.0
+    ],
+    [
+     97.92,
+     354.38
+    ],
+    [
+     97.71,
+     354.71
+    ],
+    [
+     97.38,
+     354.92
+    ],
+    [
+     97.0,
+     355.0
+    ],
+    [
+     89.0,
+     355.0
+    ],
+    [
+     88.62,
+     354.92
+    ],
+    [
+     88.29,
+     354.71
+    ],
+    [
+     88.08,
+     354.38
+    ],
+    [
+     88.0,
+     354.0
+    ],
+    [
+     88.0,
+     336.0
+    ],
+    [
+     88.08,
+     335.62
+    ],
+    [
+     88.29,
+     335.29
+    ],
+    [
+     88.62,
+     335.08
+    ],
+    [
+     89.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 4",
+   "points": [
+    [
+     114.0,
+     335.0
+    ],
+    [
+     114.38,
+     335.08
+    ],
+    [
+     114.71,
+     335.29
+    ],
+    [
+     114.92,
+     335.62
+    ],
+    [
+     115.0,
+     336.0
+    ],
+    [
+     115.0,
+     354.0
+    ],
+    [
+     114.92,
+     354.38
+    ],
+    [
+     114.71,
+     354.71
+    ],
+    [
+     114.38,
+     354.92
+    ],
+    [
+     114.0,
+     355.0
+    ],
+    [
+     106.0,
+     355.0
+    ],
+    [
+     105.62,
+     354.92
+    ],
+    [
+     105.29,
+     354.71
+    ],
+    [
+     105.08,
+     354.38
+    ],
+    [
+     105.0,
+     354.0
+    ],
+    [
+     105.0,
+     336.0
+    ],
+    [
+     105.08,
+     335.62
+    ],
+    [
+     105.29,
+     335.29
+    ],
+    [
+     105.62,
+     335.08
+    ],
+    [
+     106.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 4",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 4",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 5",
+   "points": [
+    [
+     131.0,
+     335.0
+    ],
+    [
+     131.38,
+     335.08
+    ],
+    [
+     131.71,
+     335.29
+    ],
+    [
+     131.92,
+     335.62
+    ],
+    [
+     132.0,
+     336.0
+    ],
+    [
+     132.0,
+     354.0
+    ],
+    [
+     131.92,
+     354.38
+    ],
+    [
+     131.71,
+     354.71
+    ],
+    [
+     131.38,
+     354.92
+    ],
+    [
+     131.0,
+     355.0
+    ],
+    [
+     123.0,
+     355.0
+    ],
+    [
+     122.62,
+     354.92
+    ],
+    [
+     122.29,
+     354.71
+    ],
+    [
+     122.08,
+     354.38
+    ],
+    [
+     122.0,
+     354.0
+    ],
+    [
+     122.0,
+     336.0
+    ],
+    [
+     122.08,
+     335.62
+    ],
+    [
+     122.29,
+     335.29
+    ],
+    [
+     122.62,
+     335.08
+    ],
+    [
+     123.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 5",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 5",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Extra 6",
+   "points": [
+    [
+     148.0,
+     335.0
+    ],
+    [
+     148.38,
+     335.08
+    ],
+    [
+     148.71,
+     335.29
+    ],
+    [
+     148.92,
+     335.62
+    ],
+    [
+     149.0,
+     336.0
+    ],
+    [
+     149.0,
+     354.0
+    ],
+    [
+     148.92,
+     354.38
+    ],
+    [
+     148.71,
+     354.71
+    ],
+    [
+     148.38,
+     354.92
+    ],
+    [
+     148.0,
+     355.0
+    ],
+    [
+     140.0,
+     355.0
+    ],
+    [
+     139.62,
+     354.92
+    ],
+    [
+     139.29,
+     354.71
+    ],
+    [
+     139.08,
+     354.38
+    ],
+    [
+     139.0,
+     354.0
+    ],
+    [
+     139.0,
+     336.0
+    ],
+    [
+     139.08,
+     335.62
+    ],
+    [
+     139.29,
+     335.29
+    ],
+    [
+     139.62,
+     335.08
+    ],
+    [
+     140.0,
+     335.0
+    ]
+   ],
+   "start": 149.5,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Breaker Toggle Extra 6",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Breaker Toggle Extra 6",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Breaker Toggle Extra 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Breaker Toggle Mid Extra 1",
    "points": [
     [
      63.0,
@@ -4355,24 +4935,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 13",
+   "name": "Breaker Toggle Mid Extra 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 13",
+   "name": "Breaker Toggle Mid Extra 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 13",
+   "name": "Breaker Toggle Mid Extra 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 14",
+   "name": "Breaker Toggle Mid Extra 2",
    "points": [
     [
      80.0,
@@ -4461,24 +5041,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 14",
+   "name": "Breaker Toggle Mid Extra 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 14",
+   "name": "Breaker Toggle Mid Extra 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 14",
+   "name": "Breaker Toggle Mid Extra 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 15",
+   "name": "Breaker Toggle Mid Extra 3",
    "points": [
     [
      97.0,
@@ -4567,24 +5147,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 15",
+   "name": "Breaker Toggle Mid Extra 3",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 15",
+   "name": "Breaker Toggle Mid Extra 3",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 15",
+   "name": "Breaker Toggle Mid Extra 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 16",
+   "name": "Breaker Toggle Mid Extra 4",
    "points": [
     [
      114.0,
@@ -4673,24 +5253,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 16",
+   "name": "Breaker Toggle Mid Extra 4",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 16",
+   "name": "Breaker Toggle Mid Extra 4",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 16",
+   "name": "Breaker Toggle Mid Extra 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 17",
+   "name": "Breaker Toggle Mid Extra 5",
    "points": [
     [
      131.0,
@@ -4779,24 +5359,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 17",
+   "name": "Breaker Toggle Mid Extra 5",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 17",
+   "name": "Breaker Toggle Mid Extra 5",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 17",
+   "name": "Breaker Toggle Mid Extra 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Breaker Toggle Mid 18",
+   "name": "Breaker Toggle Mid Extra 6",
    "points": [
     [
      148.0,
@@ -4885,17 +5465,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Breaker Toggle Mid 18",
+   "name": "Breaker Toggle Mid Extra 6",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Breaker Toggle Mid 18",
+   "name": "Breaker Toggle Mid Extra 6",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Breaker Toggle Mid 18",
+   "name": "Breaker Toggle Mid Extra 6",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -5734,6 +6314,130 @@
    "coarse": true,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 12way_TPN",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/Show 12way_TPN",
+   "type": "12way_TPN",
+   "param": "Show 12way_TPN",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "18way_TPN/Show 12way_TPN",
+   "type": "18way_TPN",
+   "param": "Show 12way_TPN",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Strip/Visible",
+   "solid": "Blank Strip",
+   "param": "Show 12way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Strip Mid/Visible",
+   "solid": "Blank Strip Mid",
+   "param": "Show 12way_TPN"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 18way_TPN",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "12way_TPN/Show 18way_TPN",
+   "type": "12way_TPN",
+   "param": "Show 18way_TPN",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "18way_TPN/Show 18way_TPN",
+   "type": "18way_TPN",
+   "param": "Show 18way_TPN",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 1/Visible",
+   "solid": "Breaker Toggle Extra 1",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 2/Visible",
+   "solid": "Breaker Toggle Extra 2",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 3/Visible",
+   "solid": "Breaker Toggle Extra 3",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 4/Visible",
+   "solid": "Breaker Toggle Extra 4",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 5/Visible",
+   "solid": "Breaker Toggle Extra 5",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Extra 6/Visible",
+   "solid": "Breaker Toggle Extra 6",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 1/Visible",
+   "solid": "Breaker Toggle Mid Extra 1",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 2/Visible",
+   "solid": "Breaker Toggle Mid Extra 2",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 3/Visible",
+   "solid": "Breaker Toggle Mid Extra 3",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 4/Visible",
+   "solid": "Breaker Toggle Mid Extra 4",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 5/Visible",
+   "solid": "Breaker Toggle Mid Extra 5",
+   "param": "Show 18way_TPN"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Breaker Toggle Mid Extra 6/Visible",
+   "solid": "Breaker Toggle Mid Extra 6",
+   "param": "Show 18way_TPN"
   },
   {
    "op": "add_connector",

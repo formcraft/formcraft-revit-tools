@@ -30,7 +30,7 @@
  "materials": {
   "grey": "FMC_Plastic_ABS_Grey",
   "yellow": "FMC_Plastic_ABS_Yellow",
-  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "redabs": "FMC_Plastic_ABS_Red",
   "blue": "FMC_Plastic_ABS_Blue",
   "white": "FMC_Plastic_ABS_White",
   "black": "FMC_Plastic_ABS_Black"
@@ -38,7 +38,10 @@
  "reference": {
   "query": "socket industrial 32a electrical fixtures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=socket+industrial+32a+electrical+fixtures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://uk.rs-online.com/web/p/industrial-power-connectors/1115521",
+  "photo_title": "MENNEKES IP44 Blue Wall Mount 32A Industrial Socket (RS)",
+  "photo_kind": "supplier"
  },
  "parts": [
   {
@@ -116,7 +119,7 @@
    "r": 5
   },
   {
-   "n": "Socket Body",
+   "n": "Socket Body 1P",
    "shape": "turn",
    "axis": "y",
    "c": [
@@ -146,10 +149,13 @@
     ]
    ],
    "mat": "blue",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "32A_1P"
+   ]
   },
   {
-   "n": "Socket Lid",
+   "n": "Socket Lid 1P",
    "shape": "turn",
    "axis": "y",
    "c": [
@@ -175,10 +181,13 @@
     ]
    ],
    "mat": "blue",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "32A_1P"
+   ]
   },
   {
-   "n": "Lid Hinge",
+   "n": "Lid Hinge 1P",
    "shape": "fbox",
    "at": [
     -20,
@@ -190,10 +199,13 @@
    ],
    "mat": "blue",
    "lod": "f",
-   "r": 4
+   "r": 4,
+   "only": [
+    "32A_1P"
+   ]
   },
   {
-   "n": "Lid Latch",
+   "n": "Lid Latch 1P",
    "shape": "fbox",
    "at": [
     -12,
@@ -205,7 +217,114 @@
    ],
    "mat": "blue",
    "lod": "f",
-   "r": 3
+   "r": 3,
+   "only": [
+    "32A_1P"
+   ]
+  },
+  {
+   "n": "Socket Body 3P",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    85
+   ],
+   "profile": [
+    [
+     0,
+     -110
+    ],
+    [
+     42,
+     -110
+    ],
+    [
+     42,
+     -150
+    ],
+    [
+     38,
+     -160
+    ],
+    [
+     0,
+     -160
+    ]
+   ],
+   "mat": "redabs",
+   "lod": "mf",
+   "only": [
+    "32A_3P"
+   ]
+  },
+  {
+   "n": "Socket Lid 3P",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    85
+   ],
+   "profile": [
+    [
+     0,
+     -160
+    ],
+    [
+     44,
+     -160
+    ],
+    [
+     44,
+     -170
+    ],
+    [
+     0,
+     -172
+    ]
+   ],
+   "mat": "redabs",
+   "lod": "mf",
+   "only": [
+    "32A_3P"
+   ]
+  },
+  {
+   "n": "Lid Hinge 3P",
+   "shape": "fbox",
+   "at": [
+    -20,
+    -168,
+    128,
+    20,
+    -150,
+    140
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 4,
+   "only": [
+    "32A_3P"
+   ]
+  },
+  {
+   "n": "Lid Latch 3P",
+   "shape": "fbox",
+   "at": [
+    -12,
+    -175,
+    30,
+    12,
+    -160,
+    45
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 3,
+   "only": [
+    "32A_3P"
+   ]
   },
   {
    "n": "Rating Label",
@@ -304,7 +423,7 @@
   "32 A, 1P+N+E (blue, 230 V) or 3P+N+E (red, 415 V)": {
    "value": "32A",
    "source_status": "assumed",
-   "source": "IEC 60309 colour code; body colour shown blue, set per type"
+   "source": "IEC 60309 colour code: blue body on 1P, red on 3P (per type)"
   },
   "Height 1200 mm": {
    "value": 1200,

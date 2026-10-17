@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_AirCurtain_Entrance",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: curved white casing with grey end caps, front intake grille with slats, discharge slot with vanes on the underside, control panel with LED, wall brackets. Reference: query: air curtain entrance mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=air+curtain+entrance+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: curved white casing with grey end caps, front intake grille with slats, discharge slot with vanes on the underside, control panel with LED, wall brackets. Reference: query: air curtain entrance mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=air+curtain+entrance+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://systemair.com/en-ae/products/air-curtains/commercial-air-curtains; photo_title: Systemair Commercial Air Curtains; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -437,6 +437,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1500_Ambient/URL",
+   "type": "1500_Ambient",
+   "param": "URL",
+   "value": "https://systemair.com/en-ae/products/air-curtains/commercial-air-curtains"
+  },
+  {
+   "op": "set_type_value",
    "name": "1500_Ambient/Voltage",
    "type": "1500_Ambient",
    "param": "Voltage",
@@ -525,6 +532,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2000_Ambient/URL",
+   "type": "2000_Ambient",
+   "param": "URL",
+   "value": "https://systemair.com/en-ae/products/air-curtains/commercial-air-curtains"
+  },
+  {
+   "op": "set_type_value",
    "name": "2000_Ambient/Voltage",
    "type": "2000_Ambient",
    "param": "Voltage",
@@ -543,6 +557,27 @@
    "type": "2000_Ambient",
    "param": "Default Elevation",
    "value": 2200
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
   },
   {
    "op": "add_subcategory",
@@ -630,27 +665,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Dark",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Dark Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Dark Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -664,19 +678,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -750,
+     -1001.2,
      -258
     ],
     [
-     750,
+     1001.2,
      -258
     ],
     [
-     750,
+     1001.2,
      0
     ],
     [
-     -750,
+     -1001.2,
      0
     ]
    ],
@@ -697,7 +711,89 @@
   },
   {
    "op": "extrusion",
-   "name": "Casing",
+   "name": "Mounting Bracket 1",
+   "points": [
+    [
+     -600,
+     -10
+    ],
+    [
+     -560,
+     -10
+    ],
+    [
+     -560,
+     0
+    ],
+    [
+     -600,
+     0
+    ]
+   ],
+   "start": 40,
+   "end": 200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mounting Bracket 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mounting Bracket 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mounting Bracket 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mounting Bracket 2",
+   "points": [
+    [
+     560,
+     -10
+    ],
+    [
+     600,
+     -10
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     560,
+     0
+    ]
+   ],
+   "start": 40,
+   "end": 200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mounting Bracket 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mounting Bracket 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mounting Bracket 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Casing 1500",
    "points": [
     [
      0,
@@ -734,24 +830,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Casing",
+   "name": "Casing 1500",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Casing",
+   "name": "Casing 1500",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Casing",
+   "name": "Casing 1500",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "End Cap Left",
+   "name": "End Cap Left 1500",
    "points": [
     [
      0,
@@ -788,24 +884,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Cap Left",
+   "name": "End Cap Left 1500",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "End Cap Left",
+   "name": "End Cap Left 1500",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Cap Left",
+   "name": "End Cap Left 1500",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "End Cap Right",
+   "name": "End Cap Right 1500",
    "points": [
     [
      0,
@@ -842,24 +938,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Cap Right",
+   "name": "End Cap Right 1500",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "End Cap Right",
+   "name": "End Cap Right 1500",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Cap Right",
+   "name": "End Cap Right 1500",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Slot",
+   "name": "Discharge Slot 1500",
    "points": [
     [
      -700,
@@ -883,24 +979,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Slot",
+   "name": "Discharge Slot 1500",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Slot",
+   "name": "Discharge Slot 1500",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Slot",
+   "name": "Discharge Slot 1500",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 1",
+   "name": "Discharge Vane 1500 1",
    "points": [
     [
      -690.0,
@@ -924,24 +1020,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 1",
+   "name": "Discharge Vane 1500 1",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 1",
+   "name": "Discharge Vane 1500 1",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 1",
+   "name": "Discharge Vane 1500 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 2",
+   "name": "Discharge Vane 1500 2",
    "points": [
     [
      -598.3,
@@ -965,24 +1061,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 2",
+   "name": "Discharge Vane 1500 2",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 2",
+   "name": "Discharge Vane 1500 2",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 2",
+   "name": "Discharge Vane 1500 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 3",
+   "name": "Discharge Vane 1500 3",
    "points": [
     [
      -506.6,
@@ -1006,24 +1102,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 3",
+   "name": "Discharge Vane 1500 3",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 3",
+   "name": "Discharge Vane 1500 3",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 3",
+   "name": "Discharge Vane 1500 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 4",
+   "name": "Discharge Vane 1500 4",
    "points": [
     [
      -414.9,
@@ -1047,24 +1143,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 4",
+   "name": "Discharge Vane 1500 4",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 4",
+   "name": "Discharge Vane 1500 4",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 4",
+   "name": "Discharge Vane 1500 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 5",
+   "name": "Discharge Vane 1500 5",
    "points": [
     [
      -323.2,
@@ -1088,24 +1184,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 5",
+   "name": "Discharge Vane 1500 5",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 5",
+   "name": "Discharge Vane 1500 5",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 5",
+   "name": "Discharge Vane 1500 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 6",
+   "name": "Discharge Vane 1500 6",
    "points": [
     [
      -231.5,
@@ -1129,24 +1225,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 6",
+   "name": "Discharge Vane 1500 6",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 6",
+   "name": "Discharge Vane 1500 6",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 6",
+   "name": "Discharge Vane 1500 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 7",
+   "name": "Discharge Vane 1500 7",
    "points": [
     [
      -139.79999999999995,
@@ -1170,24 +1266,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 7",
+   "name": "Discharge Vane 1500 7",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 7",
+   "name": "Discharge Vane 1500 7",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 7",
+   "name": "Discharge Vane 1500 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 8",
+   "name": "Discharge Vane 1500 8",
    "points": [
     [
      -48.10000000000002,
@@ -1211,24 +1307,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 8",
+   "name": "Discharge Vane 1500 8",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 8",
+   "name": "Discharge Vane 1500 8",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 8",
+   "name": "Discharge Vane 1500 8",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 9",
+   "name": "Discharge Vane 1500 9",
    "points": [
     [
      43.60000000000002,
@@ -1252,24 +1348,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 9",
+   "name": "Discharge Vane 1500 9",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 9",
+   "name": "Discharge Vane 1500 9",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 9",
+   "name": "Discharge Vane 1500 9",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 10",
+   "name": "Discharge Vane 1500 10",
    "points": [
     [
      135.30000000000007,
@@ -1293,24 +1389,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 10",
+   "name": "Discharge Vane 1500 10",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 10",
+   "name": "Discharge Vane 1500 10",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 10",
+   "name": "Discharge Vane 1500 10",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 11",
+   "name": "Discharge Vane 1500 11",
    "points": [
     [
      227.0,
@@ -1334,24 +1430,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 11",
+   "name": "Discharge Vane 1500 11",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 11",
+   "name": "Discharge Vane 1500 11",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 11",
+   "name": "Discharge Vane 1500 11",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 12",
+   "name": "Discharge Vane 1500 12",
    "points": [
     [
      318.70000000000005,
@@ -1375,24 +1471,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 12",
+   "name": "Discharge Vane 1500 12",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 12",
+   "name": "Discharge Vane 1500 12",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 12",
+   "name": "Discharge Vane 1500 12",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 13",
+   "name": "Discharge Vane 1500 13",
    "points": [
     [
      410.4000000000001,
@@ -1416,24 +1512,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 13",
+   "name": "Discharge Vane 1500 13",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 13",
+   "name": "Discharge Vane 1500 13",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 13",
+   "name": "Discharge Vane 1500 13",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 14",
+   "name": "Discharge Vane 1500 14",
    "points": [
     [
      502.10000000000014,
@@ -1457,24 +1553,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 14",
+   "name": "Discharge Vane 1500 14",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 14",
+   "name": "Discharge Vane 1500 14",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 14",
+   "name": "Discharge Vane 1500 14",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 15",
+   "name": "Discharge Vane 1500 15",
    "points": [
     [
      593.8,
@@ -1498,24 +1594,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 15",
+   "name": "Discharge Vane 1500 15",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 15",
+   "name": "Discharge Vane 1500 15",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 15",
+   "name": "Discharge Vane 1500 15",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Discharge Vane 16",
+   "name": "Discharge Vane 1500 16",
    "points": [
     [
      685.5,
@@ -1539,24 +1635,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Discharge Vane 16",
+   "name": "Discharge Vane 1500 16",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Vane 16",
+   "name": "Discharge Vane 1500 16",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Vane 16",
+   "name": "Discharge Vane 1500 16",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Grille",
+   "name": "Intake Grille 1500",
    "points": [
     [
      694.0,
@@ -1645,24 +1741,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Grille",
+   "name": "Intake Grille 1500",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Grille",
+   "name": "Intake Grille 1500",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Grille",
+   "name": "Intake Grille 1500",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 1",
+   "name": "Intake Slat 1500 1",
    "points": [
     [
      -700,
@@ -1687,24 +1783,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 1",
+   "name": "Intake Slat 1500 1",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 1",
+   "name": "Intake Slat 1500 1",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 1",
+   "name": "Intake Slat 1500 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 2",
+   "name": "Intake Slat 1500 2",
    "points": [
     [
      -700,
@@ -1729,24 +1825,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 2",
+   "name": "Intake Slat 1500 2",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 2",
+   "name": "Intake Slat 1500 2",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 2",
+   "name": "Intake Slat 1500 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 3",
+   "name": "Intake Slat 1500 3",
    "points": [
     [
      -700,
@@ -1771,24 +1867,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 3",
+   "name": "Intake Slat 1500 3",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 3",
+   "name": "Intake Slat 1500 3",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 3",
+   "name": "Intake Slat 1500 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 4",
+   "name": "Intake Slat 1500 4",
    "points": [
     [
      -700,
@@ -1813,24 +1909,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 4",
+   "name": "Intake Slat 1500 4",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 4",
+   "name": "Intake Slat 1500 4",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 4",
+   "name": "Intake Slat 1500 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 5",
+   "name": "Intake Slat 1500 5",
    "points": [
     [
      -700,
@@ -1855,24 +1951,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 5",
+   "name": "Intake Slat 1500 5",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 5",
+   "name": "Intake Slat 1500 5",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 5",
+   "name": "Intake Slat 1500 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 6",
+   "name": "Intake Slat 1500 6",
    "points": [
     [
      -700,
@@ -1897,24 +1993,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 6",
+   "name": "Intake Slat 1500 6",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 6",
+   "name": "Intake Slat 1500 6",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 6",
+   "name": "Intake Slat 1500 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 7",
+   "name": "Intake Slat 1500 7",
    "points": [
     [
      -700,
@@ -1939,24 +2035,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 7",
+   "name": "Intake Slat 1500 7",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 7",
+   "name": "Intake Slat 1500 7",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 7",
+   "name": "Intake Slat 1500 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Intake Slat 8",
+   "name": "Intake Slat 1500 8",
    "points": [
     [
      -700,
@@ -1981,24 +2077,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Intake Slat 8",
+   "name": "Intake Slat 1500 8",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Intake Slat 8",
+   "name": "Intake Slat 1500 8",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Intake Slat 8",
+   "name": "Intake Slat 1500 8",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel",
+   "name": "Control Panel 1500",
    "points": [
     [
      696.0,
@@ -2087,24 +2183,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel",
+   "name": "Control Panel 1500",
    "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel",
+   "name": "Control Panel 1500",
    "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel",
+   "name": "Control Panel 1500",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Run LED",
+   "name": "Run LED 1500",
    "points": [
     [
      683.0,
@@ -2209,102 +2305,1961 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Run LED",
+   "name": "Run LED 1500",
    "subcategory": "Ledg"
   },
   {
    "op": "set_material_param",
-   "name": "Run LED",
+   "name": "Run LED 1500",
    "param": "Ledg Material"
   },
   {
    "op": "set_visibility",
-   "name": "Run LED",
+   "name": "Run LED 1500",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mounting Bracket 1",
+   "name": "Casing 2000",
    "points": [
     [
-     -600,
-     -10
-    ],
-    [
-     -560,
-     -10
-    ],
-    [
-     -560,
+     0,
      0
     ],
     [
-     -600,
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
      0
     ]
    ],
-   "start": 40,
-   "end": 200
+   "start": -987.9,
+   "end": 987.9,
+   "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Mounting Bracket 1",
-   "subcategory": "Dark"
+   "name": "Casing 2000",
+   "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Mounting Bracket 1",
-   "param": "Dark Material"
+   "name": "Casing 2000",
+   "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mounting Bracket 1",
+   "name": "Casing 2000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mounting Bracket 2",
+   "name": "End Cap Left 2000",
    "points": [
     [
-     560,
-     -10
-    ],
-    [
-     600,
-     -10
-    ],
-    [
-     600,
+     0,
      0
     ],
     [
-     560,
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
      0
     ]
    ],
-   "start": 40,
-   "end": 200
+   "start": -1001.25,
+   "end": -987.9,
+   "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Mounting Bracket 2",
-   "subcategory": "Dark"
+   "name": "End Cap Left 2000",
+   "subcategory": "Mgrey"
   },
   {
    "op": "set_material_param",
-   "name": "Mounting Bracket 2",
-   "param": "Dark Material"
+   "name": "End Cap Left 2000",
+   "param": "Mgrey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mounting Bracket 2",
+   "name": "End Cap Left 2000",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap Right 2000",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "start": 987.9,
+   "end": 1001.25,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap Right 2000",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap Right 2000",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap Right 2000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Slot 2000",
+   "points": [
+    [
+     -934.5,
+     -190
+    ],
+    [
+     934.5,
+     -190
+    ],
+    [
+     934.5,
+     -110
+    ],
+    [
+     -934.5,
+     -110
+    ]
+   ],
+   "start": -4,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Slot 2000",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Slot 2000",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Slot 2000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 1",
+   "points": [
+    [
+     -921.15,
+     -186
+    ],
+    [
+     -915.81,
+     -186
+    ],
+    [
+     -915.81,
+     -114
+    ],
+    [
+     -921.15,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 2",
+   "points": [
+    [
+     -798.73,
+     -186
+    ],
+    [
+     -793.39,
+     -186
+    ],
+    [
+     -793.39,
+     -114
+    ],
+    [
+     -798.73,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 3",
+   "points": [
+    [
+     -676.31,
+     -186
+    ],
+    [
+     -670.9699999999999,
+     -186
+    ],
+    [
+     -670.9699999999999,
+     -114
+    ],
+    [
+     -676.31,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 4",
+   "points": [
+    [
+     -553.89,
+     -186
+    ],
+    [
+     -548.55,
+     -186
+    ],
+    [
+     -548.55,
+     -114
+    ],
+    [
+     -553.89,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 5",
+   "points": [
+    [
+     -431.46999999999997,
+     -186
+    ],
+    [
+     -426.12999999999994,
+     -186
+    ],
+    [
+     -426.12999999999994,
+     -114
+    ],
+    [
+     -431.46999999999997,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 6",
+   "points": [
+    [
+     -309.04999999999995,
+     -186
+    ],
+    [
+     -303.7099999999999,
+     -186
+    ],
+    [
+     -303.7099999999999,
+     -114
+    ],
+    [
+     -309.04999999999995,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 7",
+   "points": [
+    [
+     -186.63,
+     -186
+    ],
+    [
+     -181.28999999999996,
+     -186
+    ],
+    [
+     -181.28999999999996,
+     -114
+    ],
+    [
+     -186.63,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 8",
+   "points": [
+    [
+     -64.20999999999992,
+     -186
+    ],
+    [
+     -58.86999999999989,
+     -186
+    ],
+    [
+     -58.86999999999989,
+     -114
+    ],
+    [
+     -64.20999999999992,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 9",
+   "points": [
+    [
+     58.210000000000036,
+     -186
+    ],
+    [
+     63.55000000000007,
+     -186
+    ],
+    [
+     63.55000000000007,
+     -114
+    ],
+    [
+     58.210000000000036,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 10",
+   "points": [
+    [
+     180.63,
+     -186
+    ],
+    [
+     185.97000000000003,
+     -186
+    ],
+    [
+     185.97000000000003,
+     -114
+    ],
+    [
+     180.63,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 11",
+   "points": [
+    [
+     303.05000000000007,
+     -186
+    ],
+    [
+     308.3900000000001,
+     -186
+    ],
+    [
+     308.3900000000001,
+     -114
+    ],
+    [
+     303.05000000000007,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 12",
+   "points": [
+    [
+     425.47000000000014,
+     -186
+    ],
+    [
+     430.8100000000002,
+     -186
+    ],
+    [
+     430.8100000000002,
+     -114
+    ],
+    [
+     425.47000000000014,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 13",
+   "points": [
+    [
+     547.89,
+     -186
+    ],
+    [
+     553.23,
+     -186
+    ],
+    [
+     553.23,
+     -114
+    ],
+    [
+     547.89,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 13",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 13",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 13",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 14",
+   "points": [
+    [
+     670.3100000000001,
+     -186
+    ],
+    [
+     675.6500000000001,
+     -186
+    ],
+    [
+     675.6500000000001,
+     -114
+    ],
+    [
+     670.3100000000001,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 14",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 14",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 14",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 15",
+   "points": [
+    [
+     792.7300000000001,
+     -186
+    ],
+    [
+     798.0700000000002,
+     -186
+    ],
+    [
+     798.0700000000002,
+     -114
+    ],
+    [
+     792.7300000000001,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 15",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 15",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 15",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2000 16",
+   "points": [
+    [
+     915.15,
+     -186
+    ],
+    [
+     920.49,
+     -186
+    ],
+    [
+     920.49,
+     -114
+    ],
+    [
+     915.15,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2000 16",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2000 16",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2000 16",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Grille 2000",
+   "points": [
+    [
+     928.5,
+     55.0
+    ],
+    [
+     930.8,
+     55.46
+    ],
+    [
+     932.74,
+     56.76
+    ],
+    [
+     934.04,
+     58.7
+    ],
+    [
+     934.5,
+     61.0
+    ],
+    [
+     934.5,
+     179.0
+    ],
+    [
+     934.04,
+     181.3
+    ],
+    [
+     932.74,
+     183.24
+    ],
+    [
+     930.8,
+     184.54
+    ],
+    [
+     928.5,
+     185.0
+    ],
+    [
+     -928.5,
+     185.0
+    ],
+    [
+     -930.8,
+     184.54
+    ],
+    [
+     -932.74,
+     183.24
+    ],
+    [
+     -934.04,
+     181.3
+    ],
+    [
+     -934.5,
+     179.0
+    ],
+    [
+     -934.5,
+     61.0
+    ],
+    [
+     -934.04,
+     58.7
+    ],
+    [
+     -932.74,
+     56.76
+    ],
+    [
+     -930.8,
+     55.46
+    ],
+    [
+     -928.5,
+     55.0
+    ]
+   ],
+   "start": 236,
+   "end": 253,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Grille 2000",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Grille 2000",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Grille 2000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 1",
+   "points": [
+    [
+     -934.5,
+     62.0
+    ],
+    [
+     934.5,
+     62.0
+    ],
+    [
+     934.5,
+     70.0
+    ],
+    [
+     -934.5,
+     70.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 2",
+   "points": [
+    [
+     -934.5,
+     77.5
+    ],
+    [
+     934.5,
+     77.5
+    ],
+    [
+     934.5,
+     85.5
+    ],
+    [
+     -934.5,
+     85.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 3",
+   "points": [
+    [
+     -934.5,
+     93.0
+    ],
+    [
+     934.5,
+     93.0
+    ],
+    [
+     934.5,
+     101.0
+    ],
+    [
+     -934.5,
+     101.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 4",
+   "points": [
+    [
+     -934.5,
+     108.5
+    ],
+    [
+     934.5,
+     108.5
+    ],
+    [
+     934.5,
+     116.5
+    ],
+    [
+     -934.5,
+     116.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 5",
+   "points": [
+    [
+     -934.5,
+     124.0
+    ],
+    [
+     934.5,
+     124.0
+    ],
+    [
+     934.5,
+     132.0
+    ],
+    [
+     -934.5,
+     132.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 5",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 5",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 6",
+   "points": [
+    [
+     -934.5,
+     139.5
+    ],
+    [
+     934.5,
+     139.5
+    ],
+    [
+     934.5,
+     147.5
+    ],
+    [
+     -934.5,
+     147.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 6",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 6",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 7",
+   "points": [
+    [
+     -934.5,
+     155.0
+    ],
+    [
+     934.5,
+     155.0
+    ],
+    [
+     934.5,
+     163.0
+    ],
+    [
+     -934.5,
+     163.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 7",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 7",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2000 8",
+   "points": [
+    [
+     -934.5,
+     170.5
+    ],
+    [
+     934.5,
+     170.5
+    ],
+    [
+     934.5,
+     178.5
+    ],
+    [
+     -934.5,
+     178.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2000 8",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2000 8",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2000 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel 2000",
+   "points": [
+    [
+     930.5,
+     192.0
+    ],
+    [
+     932.03,
+     192.3
+    ],
+    [
+     933.33,
+     193.17
+    ],
+    [
+     934.2,
+     194.47
+    ],
+    [
+     934.5,
+     196.0
+    ],
+    [
+     934.5,
+     210.0
+    ],
+    [
+     934.2,
+     211.53
+    ],
+    [
+     933.33,
+     212.83
+    ],
+    [
+     932.03,
+     213.7
+    ],
+    [
+     930.5,
+     214.0
+    ],
+    [
+     698.2,
+     214.0
+    ],
+    [
+     696.67,
+     213.7
+    ],
+    [
+     695.37,
+     212.83
+    ],
+    [
+     694.5,
+     211.53
+    ],
+    [
+     694.2,
+     210.0
+    ],
+    [
+     694.2,
+     196.0
+    ],
+    [
+     694.5,
+     194.47
+    ],
+    [
+     695.37,
+     193.17
+    ],
+    [
+     696.67,
+     192.3
+    ],
+    [
+     698.2,
+     192.0
+    ]
+   ],
+   "start": 250,
+   "end": 254,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel 2000",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel 2000",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel 2000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Run LED 2000",
+   "points": [
+    [
+     910.8,
+     203.0
+    ],
+    [
+     910.7,
+     203.78
+    ],
+    [
+     910.4,
+     204.5
+    ],
+    [
+     909.92,
+     205.12
+    ],
+    [
+     909.3,
+     205.6
+    ],
+    [
+     908.58,
+     205.9
+    ],
+    [
+     907.8,
+     206.0
+    ],
+    [
+     907.02,
+     205.9
+    ],
+    [
+     906.3,
+     205.6
+    ],
+    [
+     905.68,
+     205.12
+    ],
+    [
+     905.2,
+     204.5
+    ],
+    [
+     904.9,
+     203.78
+    ],
+    [
+     904.8,
+     203.0
+    ],
+    [
+     904.9,
+     202.22
+    ],
+    [
+     905.2,
+     201.5
+    ],
+    [
+     905.68,
+     200.88
+    ],
+    [
+     906.3,
+     200.4
+    ],
+    [
+     907.02,
+     200.1
+    ],
+    [
+     907.8,
+     200.0
+    ],
+    [
+     908.58,
+     200.1
+    ],
+    [
+     909.3,
+     200.4
+    ],
+    [
+     909.92,
+     200.88
+    ],
+    [
+     910.4,
+     201.5
+    ],
+    [
+     910.7,
+     202.22
+    ]
+   ],
+   "start": 254,
+   "end": 256,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Run LED 2000",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Run LED 2000",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Run LED 2000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500_Ambient",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Show 1500_Ambient",
+   "type": "1500_Ambient",
+   "param": "Show 1500_Ambient",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Show 1500_Ambient",
+   "type": "2000_Ambient",
+   "param": "Show 1500_Ambient",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing 1500/Visible",
+   "solid": "Casing 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap Left 1500/Visible",
+   "solid": "End Cap Left 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap Right 1500/Visible",
+   "solid": "End Cap Right 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Slot 1500/Visible",
+   "solid": "Discharge Slot 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 1/Visible",
+   "solid": "Discharge Vane 1500 1",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 2/Visible",
+   "solid": "Discharge Vane 1500 2",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 3/Visible",
+   "solid": "Discharge Vane 1500 3",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 4/Visible",
+   "solid": "Discharge Vane 1500 4",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 5/Visible",
+   "solid": "Discharge Vane 1500 5",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 6/Visible",
+   "solid": "Discharge Vane 1500 6",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 7/Visible",
+   "solid": "Discharge Vane 1500 7",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 8/Visible",
+   "solid": "Discharge Vane 1500 8",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 9/Visible",
+   "solid": "Discharge Vane 1500 9",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 10/Visible",
+   "solid": "Discharge Vane 1500 10",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 11/Visible",
+   "solid": "Discharge Vane 1500 11",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 12/Visible",
+   "solid": "Discharge Vane 1500 12",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 13/Visible",
+   "solid": "Discharge Vane 1500 13",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 14/Visible",
+   "solid": "Discharge Vane 1500 14",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 15/Visible",
+   "solid": "Discharge Vane 1500 15",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 1500 16/Visible",
+   "solid": "Discharge Vane 1500 16",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Grille 1500/Visible",
+   "solid": "Intake Grille 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 1/Visible",
+   "solid": "Intake Slat 1500 1",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 2/Visible",
+   "solid": "Intake Slat 1500 2",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 3/Visible",
+   "solid": "Intake Slat 1500 3",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 4/Visible",
+   "solid": "Intake Slat 1500 4",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 5/Visible",
+   "solid": "Intake Slat 1500 5",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 6/Visible",
+   "solid": "Intake Slat 1500 6",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 7/Visible",
+   "solid": "Intake Slat 1500 7",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 1500 8/Visible",
+   "solid": "Intake Slat 1500 8",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel 1500/Visible",
+   "solid": "Control Panel 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Run LED 1500/Visible",
+   "solid": "Run LED 1500",
+   "param": "Show 1500_Ambient"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2000_Ambient",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Show 2000_Ambient",
+   "type": "1500_Ambient",
+   "param": "Show 2000_Ambient",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Show 2000_Ambient",
+   "type": "2000_Ambient",
+   "param": "Show 2000_Ambient",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing 2000/Visible",
+   "solid": "Casing 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap Left 2000/Visible",
+   "solid": "End Cap Left 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap Right 2000/Visible",
+   "solid": "End Cap Right 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Slot 2000/Visible",
+   "solid": "Discharge Slot 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 1/Visible",
+   "solid": "Discharge Vane 2000 1",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 2/Visible",
+   "solid": "Discharge Vane 2000 2",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 3/Visible",
+   "solid": "Discharge Vane 2000 3",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 4/Visible",
+   "solid": "Discharge Vane 2000 4",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 5/Visible",
+   "solid": "Discharge Vane 2000 5",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 6/Visible",
+   "solid": "Discharge Vane 2000 6",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 7/Visible",
+   "solid": "Discharge Vane 2000 7",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 8/Visible",
+   "solid": "Discharge Vane 2000 8",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 9/Visible",
+   "solid": "Discharge Vane 2000 9",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 10/Visible",
+   "solid": "Discharge Vane 2000 10",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 11/Visible",
+   "solid": "Discharge Vane 2000 11",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 12/Visible",
+   "solid": "Discharge Vane 2000 12",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 13/Visible",
+   "solid": "Discharge Vane 2000 13",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 14/Visible",
+   "solid": "Discharge Vane 2000 14",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 15/Visible",
+   "solid": "Discharge Vane 2000 15",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Vane 2000 16/Visible",
+   "solid": "Discharge Vane 2000 16",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Grille 2000/Visible",
+   "solid": "Intake Grille 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 1/Visible",
+   "solid": "Intake Slat 2000 1",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 2/Visible",
+   "solid": "Intake Slat 2000 2",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 3/Visible",
+   "solid": "Intake Slat 2000 3",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 4/Visible",
+   "solid": "Intake Slat 2000 4",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 5/Visible",
+   "solid": "Intake Slat 2000 5",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 6/Visible",
+   "solid": "Intake Slat 2000 6",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 7/Visible",
+   "solid": "Intake Slat 2000 7",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Intake Slat 2000 8/Visible",
+   "solid": "Intake Slat 2000 8",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel 2000/Visible",
+   "solid": "Control Panel 2000",
+   "param": "Show 2000_Ambient"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Run LED 2000/Visible",
+   "solid": "Run LED 2000",
+   "param": "Show 2000_Ambient"
   },
   {
    "op": "add_connector",

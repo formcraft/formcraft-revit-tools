@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFraming_Steel_UB",
  "template": "Metric Generic Model.rft",
- "about": "UB with top of steel at z = 0: I-section and three-bolt web connections at each end (Fine). Shown 4000 long. Reference: query: str framing steel ub structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+steel+ub+structural+framing+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "UB with top of steel at z = 0: I-section and three-bolt web connections at each end (Fine). Shown 4000 long. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str framing steel ub structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+steel+ub+structural+framing+hospital; basis: generic product; brand, model and supplier open for review; photo: https://bmsteel.co.uk/305-x-127-x-42kg-universal-beam-bsen10025-2-s355j0/p197; photo_title: 305 x 127 x 42kg Universal Beam (BM Steel); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -362,7 +362,7 @@
    "name": "203UB_S275/Description",
    "type": "203UB_S275",
    "param": "Description",
-   "value": "UB 203x133"
+   "value": "UB 203x133x25"
   },
   {
    "op": "set_type_value",
@@ -400,6 +400,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "203UB_S275/URL",
+   "type": "203UB_S275",
+   "param": "URL",
+   "value": "https://bmsteel.co.uk/305-x-127-x-42kg-universal-beam-bsen10025-2-s355j0/p197"
+  },
+  {
    "op": "add_type",
    "name": "254UB_S275"
   },
@@ -429,7 +436,7 @@
    "name": "254UB_S275/Description",
    "type": "254UB_S275",
    "param": "Description",
-   "value": "UB 254x146"
+   "value": "UB 254x146x31"
   },
   {
    "op": "set_type_value",
@@ -467,6 +474,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "254UB_S275/URL",
+   "type": "254UB_S275",
+   "param": "URL",
+   "value": "https://bmsteel.co.uk/305-x-127-x-42kg-universal-beam-bsen10025-2-s355j0/p197"
+  },
+  {
    "op": "add_type",
    "name": "305UB_S275"
   },
@@ -496,7 +510,7 @@
    "name": "305UB_S275/Description",
    "type": "305UB_S275",
    "param": "Description",
-   "value": "UB 305x165"
+   "value": "UB 305x165x40"
   },
   {
    "op": "set_type_value",
@@ -532,6 +546,13 @@
    "type": "305UB_S275",
    "param": "FMC_Role_Code",
    "value": "S"
+  },
+  {
+   "op": "set_type_value",
+   "name": "305UB_S275/URL",
+   "type": "305UB_S275",
+   "param": "URL",
+   "value": "https://bmsteel.co.uk/305-x-127-x-42kg-universal-beam-bsen10025-2-s355j0/p197"
   },
   {
    "op": "add_subcategory",
@@ -591,22 +612,22 @@
    "points": [
     [
      -2000.0,
-     -73.0
+     -82.5
     ],
     [
      2000.0,
-     -73.0
+     -82.5
     ],
     [
      2000.0,
-     73.0
+     82.5
     ],
     [
      -2000.0,
-     73.0
+     82.5
     ]
    ],
-   "start": -251.4,
+   "start": -303.4,
    "end": 0.0
   },
   {
@@ -623,7 +644,733 @@
   },
   {
    "op": "extrusion",
-   "name": "Beam",
+   "name": "Beam 203UB",
+   "points": [
+    [
+     -66.6,
+     -203.2
+    ],
+    [
+     66.6,
+     -203.2
+    ],
+    [
+     66.6,
+     -195.4
+    ],
+    [
+     -66.6,
+     -195.4
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam 203UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam 203UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam 203UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam Part 2 203UB",
+   "points": [
+    [
+     -2.85,
+     -195.4
+    ],
+    [
+     2.85,
+     -195.4
+    ],
+    [
+     2.85,
+     -7.8
+    ],
+    [
+     -2.85,
+     -7.8
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam Part 2 203UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam Part 2 203UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam Part 2 203UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam Part 3 203UB",
+   "points": [
+    [
+     -66.6,
+     -7.8
+    ],
+    [
+     66.6,
+     -7.8
+    ],
+    [
+     66.6,
+     0.0
+    ],
+    [
+     -66.6,
+     0.0
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam Part 3 203UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam Part 3 203UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam Part 3 203UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 203UB 1",
+   "points": [
+    [
+     -1935.0,
+     -39.94
+    ],
+    [
+     -1950.0,
+     -31.28
+    ],
+    [
+     -1965.0,
+     -39.94
+    ],
+    [
+     -1965.0,
+     -57.26
+    ],
+    [
+     -1950.0,
+     -65.92
+    ],
+    [
+     -1935.0,
+     -57.26
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 203UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 203UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 203UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 203UB 2",
+   "points": [
+    [
+     -1935.0,
+     -92.94
+    ],
+    [
+     -1950.0,
+     -84.28
+    ],
+    [
+     -1965.0,
+     -92.94
+    ],
+    [
+     -1965.0,
+     -110.25999999999999
+    ],
+    [
+     -1950.0,
+     -118.92
+    ],
+    [
+     -1935.0,
+     -110.25999999999999
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 203UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 203UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 203UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 203UB 3",
+   "points": [
+    [
+     -1935.0,
+     -145.94
+    ],
+    [
+     -1950.0,
+     -137.28
+    ],
+    [
+     -1965.0,
+     -145.94
+    ],
+    [
+     -1965.0,
+     -163.26
+    ],
+    [
+     -1950.0,
+     -171.92000000000002
+    ],
+    [
+     -1935.0,
+     -163.26
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 203UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 203UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 203UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 203UB 1",
+   "points": [
+    [
+     -1935.0,
+     -39.94
+    ],
+    [
+     -1950.0,
+     -31.28
+    ],
+    [
+     -1965.0,
+     -39.94
+    ],
+    [
+     -1965.0,
+     -57.26
+    ],
+    [
+     -1950.0,
+     -65.92
+    ],
+    [
+     -1935.0,
+     -57.26
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 203UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 203UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 203UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 203UB 2",
+   "points": [
+    [
+     -1935.0,
+     -92.94
+    ],
+    [
+     -1950.0,
+     -84.28
+    ],
+    [
+     -1965.0,
+     -92.94
+    ],
+    [
+     -1965.0,
+     -110.25999999999999
+    ],
+    [
+     -1950.0,
+     -118.92
+    ],
+    [
+     -1935.0,
+     -110.25999999999999
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 203UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 203UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 203UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 203UB 3",
+   "points": [
+    [
+     -1935.0,
+     -145.94
+    ],
+    [
+     -1950.0,
+     -137.28
+    ],
+    [
+     -1965.0,
+     -145.94
+    ],
+    [
+     -1965.0,
+     -163.26
+    ],
+    [
+     -1950.0,
+     -171.92000000000002
+    ],
+    [
+     -1935.0,
+     -163.26
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 203UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 203UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 203UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 203UB 1",
+   "points": [
+    [
+     1965.0,
+     -39.94
+    ],
+    [
+     1950.0,
+     -31.28
+    ],
+    [
+     1935.0,
+     -39.94
+    ],
+    [
+     1935.0,
+     -57.26
+    ],
+    [
+     1950.0,
+     -65.92
+    ],
+    [
+     1965.0,
+     -57.26
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 203UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 203UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 203UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 203UB 2",
+   "points": [
+    [
+     1965.0,
+     -92.94
+    ],
+    [
+     1950.0,
+     -84.28
+    ],
+    [
+     1935.0,
+     -92.94
+    ],
+    [
+     1935.0,
+     -110.25999999999999
+    ],
+    [
+     1950.0,
+     -118.92
+    ],
+    [
+     1965.0,
+     -110.25999999999999
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 203UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 203UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 203UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 203UB 3",
+   "points": [
+    [
+     1965.0,
+     -145.94
+    ],
+    [
+     1950.0,
+     -137.28
+    ],
+    [
+     1935.0,
+     -145.94
+    ],
+    [
+     1935.0,
+     -163.26
+    ],
+    [
+     1950.0,
+     -171.92000000000002
+    ],
+    [
+     1965.0,
+     -163.26
+    ]
+   ],
+   "start": 2.85,
+   "end": 15.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 203UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 203UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 203UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 203UB 1",
+   "points": [
+    [
+     1965.0,
+     -39.94
+    ],
+    [
+     1950.0,
+     -31.28
+    ],
+    [
+     1935.0,
+     -39.94
+    ],
+    [
+     1935.0,
+     -57.26
+    ],
+    [
+     1950.0,
+     -65.92
+    ],
+    [
+     1965.0,
+     -57.26
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 203UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 203UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 203UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 203UB 2",
+   "points": [
+    [
+     1965.0,
+     -92.94
+    ],
+    [
+     1950.0,
+     -84.28
+    ],
+    [
+     1935.0,
+     -92.94
+    ],
+    [
+     1935.0,
+     -110.25999999999999
+    ],
+    [
+     1950.0,
+     -118.92
+    ],
+    [
+     1965.0,
+     -110.25999999999999
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 203UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 203UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 203UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 203UB 3",
+   "points": [
+    [
+     1965.0,
+     -145.94
+    ],
+    [
+     1950.0,
+     -137.28
+    ],
+    [
+     1935.0,
+     -145.94
+    ],
+    [
+     1935.0,
+     -163.26
+    ],
+    [
+     1950.0,
+     -171.92000000000002
+    ],
+    [
+     1965.0,
+     -163.26
+    ]
+   ],
+   "start": -18.85,
+   "end": -2.85,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 203UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 203UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 203UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam 254UB",
    "points": [
     [
      -73.05,
@@ -648,24 +1395,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Beam",
+   "name": "Beam 254UB",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Beam",
+   "name": "Beam 254UB",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Beam",
+   "name": "Beam 254UB",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Beam Part 2",
+   "name": "Beam Part 2 254UB",
    "points": [
     [
      -3.0,
@@ -690,24 +1437,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Beam Part 2",
+   "name": "Beam Part 2 254UB",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Beam Part 2",
+   "name": "Beam Part 2 254UB",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Beam Part 2",
+   "name": "Beam Part 2 254UB",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Beam Part 3",
+   "name": "Beam Part 3 254UB",
    "points": [
     [
      -73.05,
@@ -732,48 +1479,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Beam Part 3",
+   "name": "Beam Part 3 254UB",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Beam Part 3",
+   "name": "Beam Part 3 254UB",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Beam Part 3",
+   "name": "Beam Part 3 254UB",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Left 1",
+   "name": "Bolt Head Left 254UB 1",
    "points": [
     [
      -1935.0,
-     -51.34
+     -52.04
     ],
     [
      -1950.0,
-     -42.68
+     -43.38
     ],
     [
      -1965.0,
-     -51.34
+     -52.04
     ],
     [
      -1965.0,
-     -68.66
+     -69.36
     ],
     [
      -1950.0,
-     -77.32
+     -78.02
     ],
     [
      -1935.0,
-     -68.66
+     -69.36
     ]
    ],
    "start": 3.0,
@@ -782,48 +1529,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Left 1",
+   "name": "Bolt Head Left 254UB 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Left 1",
+   "name": "Bolt Head Left 254UB 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Left 1",
+   "name": "Bolt Head Left 254UB 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Left 2",
+   "name": "Bolt Head Left 254UB 2",
    "points": [
     [
      -1935.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      -1950.0,
-     -107.68
+     -108.38
     ],
     [
      -1965.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      -1965.0,
-     -133.66
+     -134.36
     ],
     [
      -1950.0,
-     -142.32
+     -143.01999999999998
     ],
     [
      -1935.0,
-     -133.66
+     -134.36
     ]
    ],
    "start": 3.0,
@@ -832,48 +1579,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Left 2",
+   "name": "Bolt Head Left 254UB 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Left 2",
+   "name": "Bolt Head Left 254UB 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Left 2",
+   "name": "Bolt Head Left 254UB 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Left 3",
+   "name": "Bolt Head Left 254UB 3",
    "points": [
     [
      -1935.0,
-     -181.34
+     -182.04
     ],
     [
      -1950.0,
-     -172.68
+     -173.38
     ],
     [
      -1965.0,
-     -181.34
+     -182.04
     ],
     [
      -1965.0,
-     -198.66
+     -199.36
     ],
     [
      -1950.0,
-     -207.32
+     -208.01999999999998
     ],
     [
      -1935.0,
-     -198.66
+     -199.36
     ]
    ],
    "start": 3.0,
@@ -882,48 +1629,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Left 3",
+   "name": "Bolt Head Left 254UB 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Left 3",
+   "name": "Bolt Head Left 254UB 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Left 3",
+   "name": "Bolt Head Left 254UB 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Left 1",
+   "name": "Bolt Nut Left 254UB 1",
    "points": [
     [
      -1935.0,
-     -51.34
+     -52.04
     ],
     [
      -1950.0,
-     -42.68
+     -43.38
     ],
     [
      -1965.0,
-     -51.34
+     -52.04
     ],
     [
      -1965.0,
-     -68.66
+     -69.36
     ],
     [
      -1950.0,
-     -77.32
+     -78.02
     ],
     [
      -1935.0,
-     -68.66
+     -69.36
     ]
    ],
    "start": -19.0,
@@ -932,48 +1679,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Left 1",
+   "name": "Bolt Nut Left 254UB 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Left 1",
+   "name": "Bolt Nut Left 254UB 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Left 1",
+   "name": "Bolt Nut Left 254UB 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Left 2",
+   "name": "Bolt Nut Left 254UB 2",
    "points": [
     [
      -1935.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      -1950.0,
-     -107.68
+     -108.38
     ],
     [
      -1965.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      -1965.0,
-     -133.66
+     -134.36
     ],
     [
      -1950.0,
-     -142.32
+     -143.01999999999998
     ],
     [
      -1935.0,
-     -133.66
+     -134.36
     ]
    ],
    "start": -19.0,
@@ -982,48 +1729,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Left 2",
+   "name": "Bolt Nut Left 254UB 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Left 2",
+   "name": "Bolt Nut Left 254UB 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Left 2",
+   "name": "Bolt Nut Left 254UB 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Left 3",
+   "name": "Bolt Nut Left 254UB 3",
    "points": [
     [
      -1935.0,
-     -181.34
+     -182.04
     ],
     [
      -1950.0,
-     -172.68
+     -173.38
     ],
     [
      -1965.0,
-     -181.34
+     -182.04
     ],
     [
      -1965.0,
-     -198.66
+     -199.36
     ],
     [
      -1950.0,
-     -207.32
+     -208.01999999999998
     ],
     [
      -1935.0,
-     -198.66
+     -199.36
     ]
    ],
    "start": -19.0,
@@ -1032,48 +1779,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Left 3",
+   "name": "Bolt Nut Left 254UB 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Left 3",
+   "name": "Bolt Nut Left 254UB 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Left 3",
+   "name": "Bolt Nut Left 254UB 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Right 1",
+   "name": "Bolt Head Right 254UB 1",
    "points": [
     [
      1965.0,
-     -51.34
+     -52.04
     ],
     [
      1950.0,
-     -42.68
+     -43.38
     ],
     [
      1935.0,
-     -51.34
+     -52.04
     ],
     [
      1935.0,
-     -68.66
+     -69.36
     ],
     [
      1950.0,
-     -77.32
+     -78.02
     ],
     [
      1965.0,
-     -68.66
+     -69.36
     ]
    ],
    "start": 3.0,
@@ -1082,48 +1829,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Right 1",
+   "name": "Bolt Head Right 254UB 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Right 1",
+   "name": "Bolt Head Right 254UB 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Right 1",
+   "name": "Bolt Head Right 254UB 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Right 2",
+   "name": "Bolt Head Right 254UB 2",
    "points": [
     [
      1965.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      1950.0,
-     -107.68
+     -108.38
     ],
     [
      1935.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      1935.0,
-     -133.66
+     -134.36
     ],
     [
      1950.0,
-     -142.32
+     -143.01999999999998
     ],
     [
      1965.0,
-     -133.66
+     -134.36
     ]
    ],
    "start": 3.0,
@@ -1132,48 +1879,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Right 2",
+   "name": "Bolt Head Right 254UB 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Right 2",
+   "name": "Bolt Head Right 254UB 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Right 2",
+   "name": "Bolt Head Right 254UB 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Head Right 3",
+   "name": "Bolt Head Right 254UB 3",
    "points": [
     [
      1965.0,
-     -181.34
+     -182.04
     ],
     [
      1950.0,
-     -172.68
+     -173.38
     ],
     [
      1935.0,
-     -181.34
+     -182.04
     ],
     [
      1935.0,
-     -198.66
+     -199.36
     ],
     [
      1950.0,
-     -207.32
+     -208.01999999999998
     ],
     [
      1965.0,
-     -198.66
+     -199.36
     ]
    ],
    "start": 3.0,
@@ -1182,48 +1929,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Head Right 3",
+   "name": "Bolt Head Right 254UB 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Head Right 3",
+   "name": "Bolt Head Right 254UB 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Head Right 3",
+   "name": "Bolt Head Right 254UB 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Right 1",
+   "name": "Bolt Nut Right 254UB 1",
    "points": [
     [
      1965.0,
-     -51.34
+     -52.04
     ],
     [
      1950.0,
-     -42.68
+     -43.38
     ],
     [
      1935.0,
-     -51.34
+     -52.04
     ],
     [
      1935.0,
-     -68.66
+     -69.36
     ],
     [
      1950.0,
-     -77.32
+     -78.02
     ],
     [
      1965.0,
-     -68.66
+     -69.36
     ]
    ],
    "start": -19.0,
@@ -1232,48 +1979,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Right 1",
+   "name": "Bolt Nut Right 254UB 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Right 1",
+   "name": "Bolt Nut Right 254UB 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Right 1",
+   "name": "Bolt Nut Right 254UB 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Right 2",
+   "name": "Bolt Nut Right 254UB 2",
    "points": [
     [
      1965.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      1950.0,
-     -107.68
+     -108.38
     ],
     [
      1935.0,
-     -116.34
+     -117.03999999999999
     ],
     [
      1935.0,
-     -133.66
+     -134.36
     ],
     [
      1950.0,
-     -142.32
+     -143.01999999999998
     ],
     [
      1965.0,
-     -133.66
+     -134.36
     ]
    ],
    "start": -19.0,
@@ -1282,48 +2029,48 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Right 2",
+   "name": "Bolt Nut Right 254UB 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Right 2",
+   "name": "Bolt Nut Right 254UB 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Right 2",
+   "name": "Bolt Nut Right 254UB 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bolt Nut Right 3",
+   "name": "Bolt Nut Right 254UB 3",
    "points": [
     [
      1965.0,
-     -181.34
+     -182.04
     ],
     [
      1950.0,
-     -172.68
+     -173.38
     ],
     [
      1935.0,
-     -181.34
+     -182.04
     ],
     [
      1935.0,
-     -198.66
+     -199.36
     ],
     [
      1950.0,
-     -207.32
+     -208.01999999999998
     ],
     [
      1965.0,
-     -198.66
+     -199.36
     ]
    ],
    "start": -19.0,
@@ -1332,20 +2079,1097 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bolt Nut Right 3",
+   "name": "Bolt Nut Right 254UB 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bolt Nut Right 3",
+   "name": "Bolt Nut Right 254UB 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bolt Nut Right 3",
+   "name": "Bolt Nut Right 254UB 3",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam 305UB",
+   "points": [
+    [
+     -82.5,
+     -303.4
+    ],
+    [
+     82.5,
+     -303.4
+    ],
+    [
+     82.5,
+     -293.2
+    ],
+    [
+     -82.5,
+     -293.2
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam 305UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam 305UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam 305UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam Part 2 305UB",
+   "points": [
+    [
+     -3.0,
+     -293.2
+    ],
+    [
+     3.0,
+     -293.2
+    ],
+    [
+     3.0,
+     -10.2
+    ],
+    [
+     -3.0,
+     -10.2
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam Part 2 305UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam Part 2 305UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam Part 2 305UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam Part 3 305UB",
+   "points": [
+    [
+     -82.5,
+     -10.2
+    ],
+    [
+     82.5,
+     -10.2
+    ],
+    [
+     82.5,
+     0.0
+    ],
+    [
+     -82.5,
+     0.0
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam Part 3 305UB",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam Part 3 305UB",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam Part 3 305UB",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 305UB 1",
+   "points": [
+    [
+     -1935.0,
+     -64.04
+    ],
+    [
+     -1950.0,
+     -55.38
+    ],
+    [
+     -1965.0,
+     -64.04
+    ],
+    [
+     -1965.0,
+     -81.36
+    ],
+    [
+     -1950.0,
+     -90.02
+    ],
+    [
+     -1935.0,
+     -81.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 305UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 305UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 305UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 305UB 2",
+   "points": [
+    [
+     -1935.0,
+     -143.04000000000002
+    ],
+    [
+     -1950.0,
+     -134.38
+    ],
+    [
+     -1965.0,
+     -143.04000000000002
+    ],
+    [
+     -1965.0,
+     -160.36
+    ],
+    [
+     -1950.0,
+     -169.01999999999998
+    ],
+    [
+     -1935.0,
+     -160.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 305UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 305UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 305UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Left 305UB 3",
+   "points": [
+    [
+     -1935.0,
+     -222.04000000000002
+    ],
+    [
+     -1950.0,
+     -213.38
+    ],
+    [
+     -1965.0,
+     -222.04000000000002
+    ],
+    [
+     -1965.0,
+     -239.36
+    ],
+    [
+     -1950.0,
+     -248.01999999999998
+    ],
+    [
+     -1935.0,
+     -239.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Left 305UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Left 305UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Left 305UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 305UB 1",
+   "points": [
+    [
+     -1935.0,
+     -64.04
+    ],
+    [
+     -1950.0,
+     -55.38
+    ],
+    [
+     -1965.0,
+     -64.04
+    ],
+    [
+     -1965.0,
+     -81.36
+    ],
+    [
+     -1950.0,
+     -90.02
+    ],
+    [
+     -1935.0,
+     -81.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 305UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 305UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 305UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 305UB 2",
+   "points": [
+    [
+     -1935.0,
+     -143.04000000000002
+    ],
+    [
+     -1950.0,
+     -134.38
+    ],
+    [
+     -1965.0,
+     -143.04000000000002
+    ],
+    [
+     -1965.0,
+     -160.36
+    ],
+    [
+     -1950.0,
+     -169.01999999999998
+    ],
+    [
+     -1935.0,
+     -160.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 305UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 305UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 305UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Left 305UB 3",
+   "points": [
+    [
+     -1935.0,
+     -222.04000000000002
+    ],
+    [
+     -1950.0,
+     -213.38
+    ],
+    [
+     -1965.0,
+     -222.04000000000002
+    ],
+    [
+     -1965.0,
+     -239.36
+    ],
+    [
+     -1950.0,
+     -248.01999999999998
+    ],
+    [
+     -1935.0,
+     -239.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Left 305UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Left 305UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Left 305UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 305UB 1",
+   "points": [
+    [
+     1965.0,
+     -64.04
+    ],
+    [
+     1950.0,
+     -55.38
+    ],
+    [
+     1935.0,
+     -64.04
+    ],
+    [
+     1935.0,
+     -81.36
+    ],
+    [
+     1950.0,
+     -90.02
+    ],
+    [
+     1965.0,
+     -81.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 305UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 305UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 305UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 305UB 2",
+   "points": [
+    [
+     1965.0,
+     -143.04000000000002
+    ],
+    [
+     1950.0,
+     -134.38
+    ],
+    [
+     1935.0,
+     -143.04000000000002
+    ],
+    [
+     1935.0,
+     -160.36
+    ],
+    [
+     1950.0,
+     -169.01999999999998
+    ],
+    [
+     1965.0,
+     -160.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 305UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 305UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 305UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Head Right 305UB 3",
+   "points": [
+    [
+     1965.0,
+     -222.04000000000002
+    ],
+    [
+     1950.0,
+     -213.38
+    ],
+    [
+     1935.0,
+     -222.04000000000002
+    ],
+    [
+     1935.0,
+     -239.36
+    ],
+    [
+     1950.0,
+     -248.01999999999998
+    ],
+    [
+     1965.0,
+     -239.36
+    ]
+   ],
+   "start": 3.0,
+   "end": 16.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Head Right 305UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Head Right 305UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Head Right 305UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 305UB 1",
+   "points": [
+    [
+     1965.0,
+     -64.04
+    ],
+    [
+     1950.0,
+     -55.38
+    ],
+    [
+     1935.0,
+     -64.04
+    ],
+    [
+     1935.0,
+     -81.36
+    ],
+    [
+     1950.0,
+     -90.02
+    ],
+    [
+     1965.0,
+     -81.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 305UB 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 305UB 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 305UB 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 305UB 2",
+   "points": [
+    [
+     1965.0,
+     -143.04000000000002
+    ],
+    [
+     1950.0,
+     -134.38
+    ],
+    [
+     1935.0,
+     -143.04000000000002
+    ],
+    [
+     1935.0,
+     -160.36
+    ],
+    [
+     1950.0,
+     -169.01999999999998
+    ],
+    [
+     1965.0,
+     -160.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 305UB 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 305UB 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 305UB 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bolt Nut Right 305UB 3",
+   "points": [
+    [
+     1965.0,
+     -222.04000000000002
+    ],
+    [
+     1950.0,
+     -213.38
+    ],
+    [
+     1935.0,
+     -222.04000000000002
+    ],
+    [
+     1935.0,
+     -239.36
+    ],
+    [
+     1950.0,
+     -248.01999999999998
+    ],
+    [
+     1965.0,
+     -239.36
+    ]
+   ],
+   "start": -19.0,
+   "end": -3.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bolt Nut Right 305UB 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bolt Nut Right 305UB 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bolt Nut Right 305UB 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 203UB_S275",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "203UB_S275/Show 203UB_S275",
+   "type": "203UB_S275",
+   "param": "Show 203UB_S275",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "254UB_S275/Show 203UB_S275",
+   "type": "254UB_S275",
+   "param": "Show 203UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "305UB_S275/Show 203UB_S275",
+   "type": "305UB_S275",
+   "param": "Show 203UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam 203UB/Visible",
+   "solid": "Beam 203UB",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 2 203UB/Visible",
+   "solid": "Beam Part 2 203UB",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 3 203UB/Visible",
+   "solid": "Beam Part 3 203UB",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 203UB 1/Visible",
+   "solid": "Bolt Head Left 203UB 1",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 203UB 2/Visible",
+   "solid": "Bolt Head Left 203UB 2",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 203UB 3/Visible",
+   "solid": "Bolt Head Left 203UB 3",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 203UB 1/Visible",
+   "solid": "Bolt Nut Left 203UB 1",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 203UB 2/Visible",
+   "solid": "Bolt Nut Left 203UB 2",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 203UB 3/Visible",
+   "solid": "Bolt Nut Left 203UB 3",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 203UB 1/Visible",
+   "solid": "Bolt Head Right 203UB 1",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 203UB 2/Visible",
+   "solid": "Bolt Head Right 203UB 2",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 203UB 3/Visible",
+   "solid": "Bolt Head Right 203UB 3",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 203UB 1/Visible",
+   "solid": "Bolt Nut Right 203UB 1",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 203UB 2/Visible",
+   "solid": "Bolt Nut Right 203UB 2",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 203UB 3/Visible",
+   "solid": "Bolt Nut Right 203UB 3",
+   "param": "Show 203UB_S275"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 254UB_S275",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "203UB_S275/Show 254UB_S275",
+   "type": "203UB_S275",
+   "param": "Show 254UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "254UB_S275/Show 254UB_S275",
+   "type": "254UB_S275",
+   "param": "Show 254UB_S275",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "305UB_S275/Show 254UB_S275",
+   "type": "305UB_S275",
+   "param": "Show 254UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam 254UB/Visible",
+   "solid": "Beam 254UB",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 2 254UB/Visible",
+   "solid": "Beam Part 2 254UB",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 3 254UB/Visible",
+   "solid": "Beam Part 3 254UB",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 254UB 1/Visible",
+   "solid": "Bolt Head Left 254UB 1",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 254UB 2/Visible",
+   "solid": "Bolt Head Left 254UB 2",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 254UB 3/Visible",
+   "solid": "Bolt Head Left 254UB 3",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 254UB 1/Visible",
+   "solid": "Bolt Nut Left 254UB 1",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 254UB 2/Visible",
+   "solid": "Bolt Nut Left 254UB 2",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 254UB 3/Visible",
+   "solid": "Bolt Nut Left 254UB 3",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 254UB 1/Visible",
+   "solid": "Bolt Head Right 254UB 1",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 254UB 2/Visible",
+   "solid": "Bolt Head Right 254UB 2",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 254UB 3/Visible",
+   "solid": "Bolt Head Right 254UB 3",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 254UB 1/Visible",
+   "solid": "Bolt Nut Right 254UB 1",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 254UB 2/Visible",
+   "solid": "Bolt Nut Right 254UB 2",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 254UB 3/Visible",
+   "solid": "Bolt Nut Right 254UB 3",
+   "param": "Show 254UB_S275"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 305UB_S275",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "203UB_S275/Show 305UB_S275",
+   "type": "203UB_S275",
+   "param": "Show 305UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "254UB_S275/Show 305UB_S275",
+   "type": "254UB_S275",
+   "param": "Show 305UB_S275",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "305UB_S275/Show 305UB_S275",
+   "type": "305UB_S275",
+   "param": "Show 305UB_S275",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam 305UB/Visible",
+   "solid": "Beam 305UB",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 2 305UB/Visible",
+   "solid": "Beam Part 2 305UB",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam Part 3 305UB/Visible",
+   "solid": "Beam Part 3 305UB",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 305UB 1/Visible",
+   "solid": "Bolt Head Left 305UB 1",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 305UB 2/Visible",
+   "solid": "Bolt Head Left 305UB 2",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Left 305UB 3/Visible",
+   "solid": "Bolt Head Left 305UB 3",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 305UB 1/Visible",
+   "solid": "Bolt Nut Left 305UB 1",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 305UB 2/Visible",
+   "solid": "Bolt Nut Left 305UB 2",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Left 305UB 3/Visible",
+   "solid": "Bolt Nut Left 305UB 3",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 305UB 1/Visible",
+   "solid": "Bolt Head Right 305UB 1",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 305UB 2/Visible",
+   "solid": "Bolt Head Right 305UB 2",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Head Right 305UB 3/Visible",
+   "solid": "Bolt Head Right 305UB 3",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 305UB 1/Visible",
+   "solid": "Bolt Nut Right 305UB 1",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 305UB 2/Visible",
+   "solid": "Bolt Nut Right 305UB 2",
+   "param": "Show 305UB_S275"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bolt Nut Right 305UB 3/Visible",
+   "solid": "Bolt Nut Right 305UB 3",
+   "param": "Show 305UB_S275"
   },
   {
    "op": "set_type_image",
@@ -1354,8 +3178,8 @@
   }
  ],
  "values": {
-  "Section 254x146x31 UB (geometry)": {
-   "value": "251.4x146.1x6.0x8.6",
+  "Sections 203x133x25, 254x146x31, 305x165x40 UB (one per type)": {
+   "value": "BS 4-1",
    "source_status": "assumed",
    "source": "BS 4-1 section table, from knowledge; section choice by engineer"
   },

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFraming_RC_Rect",
  "template": "Metric Generic Model.rft",
- "about": "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer. Reference: query: str framing rc rect structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+rc+rect+structural+framing+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str framing rc rect structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+rc+rect+structural+framing+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.abudhabiprecast.com/product/beams-and-columns; photo_title: Beams and Columns (Abu Dhabi Precast); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -400,6 +400,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "230x450_RC/URL",
+   "type": "230x450_RC",
+   "param": "URL",
+   "value": "https://www.abudhabiprecast.com/product/beams-and-columns"
+  },
+  {
    "op": "add_type",
    "name": "300x600_RC"
   },
@@ -467,6 +474,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "300x600_RC/URL",
+   "type": "300x600_RC",
+   "param": "URL",
+   "value": "https://www.abudhabiprecast.com/product/beams-and-columns"
+  },
+  {
    "op": "add_subcategory",
    "name": "Conc",
    "color": [
@@ -524,22 +538,22 @@
    "points": [
     [
      -2000.0,
-     -116
+     -151.0
     ],
     [
      2000.0,
-     -116
+     -151.0
     ],
     [
      2000.0,
-     115
+     150.0
     ],
     [
      -2000.0,
-     115
+     150.0
     ]
    ],
-   "start": -450,
+   "start": -600,
    "end": 0
   },
   {
@@ -556,30 +570,30 @@
   },
   {
    "op": "extrusion",
-   "name": "Beam",
+   "name": "Beam 230x450",
    "points": [
     [
-     -115,
+     -115.0,
      -430
     ],
     [
-     -95,
+     -95.0,
      -450
     ],
     [
-     95,
+     95.0,
      -450
     ],
     [
-     115,
+     115.0,
      -430
     ],
     [
-     115,
+     115.0,
      0
     ],
     [
-     -115,
+     -115.0,
      0
     ]
    ],
@@ -589,24 +603,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Beam",
+   "name": "Beam 230x450",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Beam",
+   "name": "Beam 230x450",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Beam",
+   "name": "Beam 230x450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug 1",
+   "name": "Tie Hole Plug 230x450 1",
    "points": [
     [
      -1488.0,
@@ -657,30 +671,30 @@
      -231.0
     ]
    ],
-   "start": 110,
-   "end": 116,
+   "start": 110.0,
+   "end": 116.0,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug 1",
+   "name": "Tie Hole Plug 230x450 1",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug 1",
+   "name": "Tie Hole Plug 230x450 1",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug 1",
+   "name": "Tie Hole Plug 230x450 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug 2",
+   "name": "Tie Hole Plug 230x450 2",
    "points": [
     [
      -488.0,
@@ -731,30 +745,30 @@
      -231.0
     ]
    ],
-   "start": 110,
-   "end": 116,
+   "start": 110.0,
+   "end": 116.0,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug 2",
+   "name": "Tie Hole Plug 230x450 2",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug 2",
+   "name": "Tie Hole Plug 230x450 2",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug 2",
+   "name": "Tie Hole Plug 230x450 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug 3",
+   "name": "Tie Hole Plug 230x450 3",
    "points": [
     [
      512.0,
@@ -805,30 +819,30 @@
      -231.0
     ]
    ],
-   "start": 110,
-   "end": 116,
+   "start": 110.0,
+   "end": 116.0,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug 3",
+   "name": "Tie Hole Plug 230x450 3",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug 3",
+   "name": "Tie Hole Plug 230x450 3",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug 3",
+   "name": "Tie Hole Plug 230x450 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug 4",
+   "name": "Tie Hole Plug 230x450 4",
    "points": [
     [
      1512.0,
@@ -879,26 +893,472 @@
      -231.0
     ]
    ],
-   "start": 110,
-   "end": 116,
+   "start": 110.0,
+   "end": 116.0,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug 4",
+   "name": "Tie Hole Plug 230x450 4",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug 4",
+   "name": "Tie Hole Plug 230x450 4",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug 4",
+   "name": "Tie Hole Plug 230x450 4",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam 300x600",
+   "points": [
+    [
+     -150.0,
+     -580
+    ],
+    [
+     -130.0,
+     -600
+    ],
+    [
+     130.0,
+     -600
+    ],
+    [
+     150.0,
+     -580
+    ],
+    [
+     150.0,
+     0
+    ],
+    [
+     -150.0,
+     0
+    ]
+   ],
+   "start": -2000.0,
+   "end": 2000.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam 300x600",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam 300x600",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam 300x600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug 300x600 1",
+   "points": [
+    [
+     -1488.0,
+     -300.0
+    ],
+    [
+     -1489.61,
+     -294.0
+    ],
+    [
+     -1494.0,
+     -289.61
+    ],
+    [
+     -1500.0,
+     -288.0
+    ],
+    [
+     -1506.0,
+     -289.61
+    ],
+    [
+     -1510.39,
+     -294.0
+    ],
+    [
+     -1512.0,
+     -300.0
+    ],
+    [
+     -1510.39,
+     -306.0
+    ],
+    [
+     -1506.0,
+     -310.39
+    ],
+    [
+     -1500.0,
+     -312.0
+    ],
+    [
+     -1494.0,
+     -310.39
+    ],
+    [
+     -1489.61,
+     -306.0
+    ]
+   ],
+   "start": 145.0,
+   "end": 151.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug 300x600 1",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug 300x600 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug 300x600 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug 300x600 2",
+   "points": [
+    [
+     -488.0,
+     -300.0
+    ],
+    [
+     -489.61,
+     -294.0
+    ],
+    [
+     -494.0,
+     -289.61
+    ],
+    [
+     -500.0,
+     -288.0
+    ],
+    [
+     -506.0,
+     -289.61
+    ],
+    [
+     -510.39,
+     -294.0
+    ],
+    [
+     -512.0,
+     -300.0
+    ],
+    [
+     -510.39,
+     -306.0
+    ],
+    [
+     -506.0,
+     -310.39
+    ],
+    [
+     -500.0,
+     -312.0
+    ],
+    [
+     -494.0,
+     -310.39
+    ],
+    [
+     -489.61,
+     -306.0
+    ]
+   ],
+   "start": 145.0,
+   "end": 151.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug 300x600 2",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug 300x600 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug 300x600 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug 300x600 3",
+   "points": [
+    [
+     512.0,
+     -300.0
+    ],
+    [
+     510.39,
+     -294.0
+    ],
+    [
+     506.0,
+     -289.61
+    ],
+    [
+     500.0,
+     -288.0
+    ],
+    [
+     494.0,
+     -289.61
+    ],
+    [
+     489.61,
+     -294.0
+    ],
+    [
+     488.0,
+     -300.0
+    ],
+    [
+     489.61,
+     -306.0
+    ],
+    [
+     494.0,
+     -310.39
+    ],
+    [
+     500.0,
+     -312.0
+    ],
+    [
+     506.0,
+     -310.39
+    ],
+    [
+     510.39,
+     -306.0
+    ]
+   ],
+   "start": 145.0,
+   "end": 151.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug 300x600 3",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug 300x600 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug 300x600 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug 300x600 4",
+   "points": [
+    [
+     1512.0,
+     -300.0
+    ],
+    [
+     1510.39,
+     -294.0
+    ],
+    [
+     1506.0,
+     -289.61
+    ],
+    [
+     1500.0,
+     -288.0
+    ],
+    [
+     1494.0,
+     -289.61
+    ],
+    [
+     1489.61,
+     -294.0
+    ],
+    [
+     1488.0,
+     -300.0
+    ],
+    [
+     1489.61,
+     -306.0
+    ],
+    [
+     1494.0,
+     -310.39
+    ],
+    [
+     1500.0,
+     -312.0
+    ],
+    [
+     1506.0,
+     -310.39
+    ],
+    [
+     1510.39,
+     -306.0
+    ]
+   ],
+   "start": 145.0,
+   "end": 151.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug 300x600 4",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug 300x600 4",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug 300x600 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 230x450_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "230x450_RC/Show 230x450_RC",
+   "type": "230x450_RC",
+   "param": "Show 230x450_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x600_RC/Show 230x450_RC",
+   "type": "300x600_RC",
+   "param": "Show 230x450_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam 230x450/Visible",
+   "solid": "Beam 230x450",
+   "param": "Show 230x450_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 230x450 1/Visible",
+   "solid": "Tie Hole Plug 230x450 1",
+   "param": "Show 230x450_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 230x450 2/Visible",
+   "solid": "Tie Hole Plug 230x450 2",
+   "param": "Show 230x450_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 230x450 3/Visible",
+   "solid": "Tie Hole Plug 230x450 3",
+   "param": "Show 230x450_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 230x450 4/Visible",
+   "solid": "Tie Hole Plug 230x450 4",
+   "param": "Show 230x450_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 300x600_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "230x450_RC/Show 300x600_RC",
+   "type": "230x450_RC",
+   "param": "Show 300x600_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x600_RC/Show 300x600_RC",
+   "type": "300x600_RC",
+   "param": "Show 300x600_RC",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Beam 300x600/Visible",
+   "solid": "Beam 300x600",
+   "param": "Show 300x600_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 300x600 1/Visible",
+   "solid": "Tie Hole Plug 300x600 1",
+   "param": "Show 300x600_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 300x600 2/Visible",
+   "solid": "Tie Hole Plug 300x600 2",
+   "param": "Show 300x600_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 300x600 3/Visible",
+   "solid": "Tie Hole Plug 300x600 3",
+   "param": "Show 300x600_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug 300x600 4/Visible",
+   "solid": "Tie Hole Plug 300x600 4",
+   "param": "Show 300x600_RC"
   },
   {
    "op": "set_type_image",
@@ -907,8 +1367,8 @@
   }
  ],
  "values": {
-  "Section 230 x 450 mm (geometry)": {
-   "value": "230x450",
+  "Sections 230 x 450 and 300 x 600 mm (one per type)": {
+   "value": "230x450/300x600",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },

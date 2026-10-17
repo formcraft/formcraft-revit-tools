@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingFixture_Basin_Vanity",
  "template": "Metric Generic Model.rft",
- "about": "Vanity basin modelled as a generic product: china top with oval bowl (rim sectors, bowl wall, floor, waste), monobloc mixer, two-door cabinet, recessed plinth. Geometry drawn at the 600 single type; the 1200 double type shares it until a two-bowl body is added. Reference: query: basin vanity plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=basin+vanity+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Vanity basin modelled as a generic product: china top with oval bowl (rim sectors, bowl wall, floor, waste), monobloc mixer, cabinet with doors, recessed plinth. Per type: the single is centred on x = 0; the double keeps that bowl and adds a second one 600 mm to the right on a 1200 cabinet (four doors), its waste linked to the first trap so the connectors stay on the shared bowl. Reference: query: basin vanity plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=basin+vanity+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://source.thenbs.com/en/product/chartham-counter-top-530-washbasin/vndPKoFusaPxAbDLnfHrSD/8BVP5Ty3qCM9Y5LofJfFG7; photo_title: Chartham counter top 530 washbasin (NBS Source); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -326,7 +326,7 @@
    "name": "600_Single/Description",
    "type": "600_Single",
    "param": "Description",
-   "value": "Vanity basin 600 mm: one-piece vitreous china top with oval bowl on a two-door melamine cabinet, monobloc lever mixer"
+   "value": "Vanity basin: one-piece vitreous china top with oval bowl on a melamine cabinet with doors, monobloc lever mixer; single 600 mm or double 1200 mm"
   },
   {
    "op": "set_type_value",
@@ -364,6 +364,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "600_Single/URL",
+   "type": "600_Single",
+   "param": "URL",
+   "value": "https://source.thenbs.com/en/product/chartham-counter-top-530-washbasin/vndPKoFusaPxAbDLnfHrSD/8BVP5Ty3qCM9Y5LofJfFG7"
+  },
+  {
    "op": "add_type",
    "name": "1200_Double"
   },
@@ -393,7 +400,7 @@
    "name": "1200_Double/Description",
    "type": "1200_Double",
    "param": "Description",
-   "value": "Vanity basin 600 mm: one-piece vitreous china top with oval bowl on a two-door melamine cabinet, monobloc lever mixer"
+   "value": "Vanity basin: one-piece vitreous china top with oval bowl on a melamine cabinet with doors, monobloc lever mixer; single 600 mm or double 1200 mm"
   },
   {
    "op": "set_type_value",
@@ -431,6 +438,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "1200_Double/URL",
+   "type": "1200_Double",
+   "param": "URL",
+   "value": "https://source.thenbs.com/en/product/chartham-counter-top-530-washbasin/vndPKoFusaPxAbDLnfHrSD/8BVP5Ty3qCM9Y5LofJfFG7"
+  },
+  {
    "op": "add_subcategory",
    "name": "China",
    "color": [
@@ -450,6 +464,48 @@
    "op": "add_material",
    "name": "FMC_Ceramic_VitreousChina_White",
    "param": "China Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
   },
   {
    "op": "add_subcategory",
@@ -516,48 +572,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -571,19 +585,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -305.0,
+     -300.0,
      -478
     ],
     [
-     305.0,
+     900.0,
      -478
     ],
     [
-     305.0,
+     900.0,
      0.0
     ],
     [
-     -305.0,
+     -300.0,
      0.0
     ]
    ],
@@ -611,15 +625,15 @@
      -470.0
     ],
     [
-     232.8,
+     228.9,
      -468.4
     ],
     [
-     265.5,
+     261.2,
      -463.3
     ],
     [
-     284.6,
+     279.9,
      -454.3
     ],
     [
@@ -664,19 +678,19 @@
    "name": "Vanity Top 2",
    "points": [
     [
-     284.6,
+     279.9,
      -454.3
     ],
     [
-     296.4,
+     291.5,
      -439.6
     ],
     [
-     302.9,
+     297.9,
      -414.3
     ],
     [
-     305.0,
+     300.0,
      -235.0
     ],
     [
@@ -721,19 +735,19 @@
    "name": "Vanity Top 3",
    "points": [
     [
-     305.0,
+     300.0,
      -235.0
     ],
     [
-     302.9,
+     297.9,
      -55.7
     ],
     [
-     296.4,
+     291.5,
      -30.4
     ],
     [
-     284.6,
+     279.9,
      -15.7
     ],
     [
@@ -778,15 +792,15 @@
    "name": "Vanity Top 4",
    "points": [
     [
-     284.6,
+     279.9,
      -15.7
     ],
     [
-     265.5,
+     261.2,
      -6.7
     ],
     [
-     232.8,
+     228.9,
      -1.6
     ],
     [
@@ -839,15 +853,15 @@
      0.0
     ],
     [
-     -232.8,
+     -228.9,
      -1.6
     ],
     [
-     -265.5,
+     -261.2,
      -6.7
     ],
     [
-     -284.6,
+     -279.9,
      -15.7
     ],
     [
@@ -892,19 +906,19 @@
    "name": "Vanity Top 6",
    "points": [
     [
-     -284.6,
+     -279.9,
      -15.7
     ],
     [
-     -296.4,
+     -291.5,
      -30.4
     ],
     [
-     -302.9,
+     -297.9,
      -55.7
     ],
     [
-     -305.0,
+     -300.0,
      -234.8
     ],
     [
@@ -949,19 +963,19 @@
    "name": "Vanity Top 7",
    "points": [
     [
-     -305.0,
+     -300.0,
      -234.8
     ],
     [
-     -302.9,
+     -297.9,
      -414.3
     ],
     [
-     -296.4,
+     -291.5,
      -439.6
     ],
     [
-     -284.6,
+     -279.9,
      -454.3
     ],
     [
@@ -1006,15 +1020,15 @@
    "name": "Vanity Top 8",
    "points": [
     [
-     -284.6,
+     -279.9,
      -454.3
     ],
     [
-     -265.5,
+     -261.2,
      -463.3
     ],
     [
-     -232.8,
+     -228.9,
      -468.4
     ],
     [
@@ -1515,512 +1529,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Cabinet",
-   "points": [
-    [
-     -290,
-     -440
-    ],
-    [
-     290,
-     -440
-    ],
-    [
-     290,
-     0
-    ],
-    [
-     -290,
-     0
-    ]
-   ],
-   "start": 100,
-   "end": 818
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cabinet",
-   "subcategory": "Melamine"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cabinet",
-   "param": "Melamine Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cabinet",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth",
-   "points": [
-    [
-     -280,
-     -400
-    ],
-    [
-     280,
-     -400
-    ],
-    [
-     280,
-     -20
-    ],
-    [
-     -280,
-     -20
-    ]
-   ],
-   "start": 0,
-   "end": 100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door 1",
-   "points": [
-    [
-     -6.0,
-     110.0
-    ],
-    [
-     -4.85,
-     110.23
-    ],
-    [
-     -3.88,
-     110.88
-    ],
-    [
-     -3.23,
-     111.85
-    ],
-    [
-     -3.0,
-     113.0
-    ],
-    [
-     -3.0,
-     809.0
-    ],
-    [
-     -3.23,
-     810.15
-    ],
-    [
-     -3.88,
-     811.12
-    ],
-    [
-     -4.85,
-     811.77
-    ],
-    [
-     -6.0,
-     812.0
-    ],
-    [
-     -285.0,
-     812.0
-    ],
-    [
-     -286.15,
-     811.77
-    ],
-    [
-     -287.12,
-     811.12
-    ],
-    [
-     -287.77,
-     810.15
-    ],
-    [
-     -288.0,
-     809.0
-    ],
-    [
-     -288.0,
-     113.0
-    ],
-    [
-     -287.77,
-     111.85
-    ],
-    [
-     -287.12,
-     110.88
-    ],
-    [
-     -286.15,
-     110.23
-    ],
-    [
-     -285.0,
-     110.0
-    ]
-   ],
-   "start": 440,
-   "end": 458,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door 1",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door 1",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door 2",
-   "points": [
-    [
-     285.0,
-     110.0
-    ],
-    [
-     286.15,
-     110.23
-    ],
-    [
-     287.12,
-     110.88
-    ],
-    [
-     287.77,
-     111.85
-    ],
-    [
-     288.0,
-     113.0
-    ],
-    [
-     288.0,
-     809.0
-    ],
-    [
-     287.77,
-     810.15
-    ],
-    [
-     287.12,
-     811.12
-    ],
-    [
-     286.15,
-     811.77
-    ],
-    [
-     285.0,
-     812.0
-    ],
-    [
-     6.0,
-     812.0
-    ],
-    [
-     4.85,
-     811.77
-    ],
-    [
-     3.88,
-     811.12
-    ],
-    [
-     3.23,
-     810.15
-    ],
-    [
-     3.0,
-     809.0
-    ],
-    [
-     3.0,
-     113.0
-    ],
-    [
-     3.23,
-     111.85
-    ],
-    [
-     3.88,
-     110.88
-    ],
-    [
-     4.85,
-     110.23
-    ],
-    [
-     6.0,
-     110.0
-    ]
-   ],
-   "start": 440,
-   "end": 458,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door 2",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door 2",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Handle 1",
-   "points": [
-    [
-     -32.0,
-     600.0
-    ],
-    [
-     -30.47,
-     600.3
-    ],
-    [
-     -29.17,
-     601.17
-    ],
-    [
-     -28.3,
-     602.47
-    ],
-    [
-     -28.0,
-     604.0
-    ],
-    [
-     -28.0,
-     776.0
-    ],
-    [
-     -28.3,
-     777.53
-    ],
-    [
-     -29.17,
-     778.83
-    ],
-    [
-     -30.47,
-     779.7
-    ],
-    [
-     -32.0,
-     780.0
-    ],
-    [
-     -36.0,
-     780.0
-    ],
-    [
-     -37.53,
-     779.7
-    ],
-    [
-     -38.83,
-     778.83
-    ],
-    [
-     -39.7,
-     777.53
-    ],
-    [
-     -40.0,
-     776.0
-    ],
-    [
-     -40.0,
-     604.0
-    ],
-    [
-     -39.7,
-     602.47
-    ],
-    [
-     -38.83,
-     601.17
-    ],
-    [
-     -37.53,
-     600.3
-    ],
-    [
-     -36.0,
-     600.0
-    ]
-   ],
-   "start": 458,
-   "end": 478,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Handle 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Handle 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Handle 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Handle 2",
-   "points": [
-    [
-     36.0,
-     600.0
-    ],
-    [
-     37.53,
-     600.3
-    ],
-    [
-     38.83,
-     601.17
-    ],
-    [
-     39.7,
-     602.47
-    ],
-    [
-     40.0,
-     604.0
-    ],
-    [
-     40.0,
-     776.0
-    ],
-    [
-     39.7,
-     777.53
-    ],
-    [
-     38.83,
-     778.83
-    ],
-    [
-     37.53,
-     779.7
-    ],
-    [
-     36.0,
-     780.0
-    ],
-    [
-     32.0,
-     780.0
-    ],
-    [
-     30.47,
-     779.7
-    ],
-    [
-     29.17,
-     778.83
-    ],
-    [
-     28.3,
-     777.53
-    ],
-    [
-     28.0,
-     776.0
-    ],
-    [
-     28.0,
-     604.0
-    ],
-    [
-     28.3,
-     602.47
-    ],
-    [
-     29.17,
-     601.17
-    ],
-    [
-     30.47,
-     600.3
-    ],
-    [
-     32.0,
-     600.0
-    ]
-   ],
-   "start": 458,
-   "end": 478,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Handle 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Handle 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Handle 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Supply Tails",
    "points": [
     [
@@ -2259,128 +1767,6 @@
    "name": "Trap",
    "coarse": false,
    "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Arm",
-   "points": [
-    [
-     20.0,
-     520.0
-    ],
-    [
-     19.32,
-     525.18
-    ],
-    [
-     17.32,
-     530.0
-    ],
-    [
-     14.14,
-     534.14
-    ],
-    [
-     10.0,
-     537.32
-    ],
-    [
-     5.18,
-     539.32
-    ],
-    [
-     0.0,
-     540.0
-    ],
-    [
-     -5.18,
-     539.32
-    ],
-    [
-     -10.0,
-     537.32
-    ],
-    [
-     -14.14,
-     534.14
-    ],
-    [
-     -17.32,
-     530.0
-    ],
-    [
-     -19.32,
-     525.18
-    ],
-    [
-     -20.0,
-     520.0
-    ],
-    [
-     -19.32,
-     514.82
-    ],
-    [
-     -17.32,
-     510.0
-    ],
-    [
-     -14.14,
-     505.86
-    ],
-    [
-     -10.0,
-     502.68
-    ],
-    [
-     -5.18,
-     500.68
-    ],
-    [
-     -0.0,
-     500.0
-    ],
-    [
-     5.18,
-     500.68
-    ],
-    [
-     10.0,
-     502.68
-    ],
-    [
-     14.14,
-     505.86
-    ],
-    [
-     17.32,
-     510.0
-    ],
-    [
-     19.32,
-     514.82
-    ]
-   ],
-   "start": 0,
-   "end": 240,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Arm",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Waste Arm",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Arm",
-   "coarse": false,
-   "medium": true,
    "fine": true
   },
   {
@@ -3320,6 +2706,3739 @@
    "fine": true
   },
   {
+   "op": "extrusion",
+   "name": "Cabinet 600",
+   "points": [
+    [
+     -290,
+     -440
+    ],
+    [
+     290,
+     -440
+    ],
+    [
+     290,
+     0
+    ],
+    [
+     -290,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 818
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet 600",
+   "subcategory": "Melamine"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet 600",
+   "param": "Melamine Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 600",
+   "points": [
+    [
+     -280,
+     -400
+    ],
+    [
+     280,
+     -400
+    ],
+    [
+     280,
+     -20
+    ],
+    [
+     -280,
+     -20
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 600",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 600",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Arm",
+   "points": [
+    [
+     20.0,
+     520.0
+    ],
+    [
+     19.32,
+     525.18
+    ],
+    [
+     17.32,
+     530.0
+    ],
+    [
+     14.14,
+     534.14
+    ],
+    [
+     10.0,
+     537.32
+    ],
+    [
+     5.18,
+     539.32
+    ],
+    [
+     0.0,
+     540.0
+    ],
+    [
+     -5.18,
+     539.32
+    ],
+    [
+     -10.0,
+     537.32
+    ],
+    [
+     -14.14,
+     534.14
+    ],
+    [
+     -17.32,
+     530.0
+    ],
+    [
+     -19.32,
+     525.18
+    ],
+    [
+     -20.0,
+     520.0
+    ],
+    [
+     -19.32,
+     514.82
+    ],
+    [
+     -17.32,
+     510.0
+    ],
+    [
+     -14.14,
+     505.86
+    ],
+    [
+     -10.0,
+     502.68
+    ],
+    [
+     -5.18,
+     500.68
+    ],
+    [
+     -0.0,
+     500.0
+    ],
+    [
+     5.18,
+     500.68
+    ],
+    [
+     10.0,
+     502.68
+    ],
+    [
+     14.14,
+     505.86
+    ],
+    [
+     17.32,
+     510.0
+    ],
+    [
+     19.32,
+     514.82
+    ]
+   ],
+   "start": 0,
+   "end": 240,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Arm",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Arm",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 600 1",
+   "points": [
+    [
+     -6.0,
+     110.0
+    ],
+    [
+     -4.85,
+     110.23
+    ],
+    [
+     -3.88,
+     110.88
+    ],
+    [
+     -3.23,
+     111.85
+    ],
+    [
+     -3.0,
+     113.0
+    ],
+    [
+     -3.0,
+     809.0
+    ],
+    [
+     -3.23,
+     810.15
+    ],
+    [
+     -3.88,
+     811.12
+    ],
+    [
+     -4.85,
+     811.77
+    ],
+    [
+     -6.0,
+     812.0
+    ],
+    [
+     -285.0,
+     812.0
+    ],
+    [
+     -286.15,
+     811.77
+    ],
+    [
+     -287.12,
+     811.12
+    ],
+    [
+     -287.77,
+     810.15
+    ],
+    [
+     -288.0,
+     809.0
+    ],
+    [
+     -288.0,
+     113.0
+    ],
+    [
+     -287.77,
+     111.85
+    ],
+    [
+     -287.12,
+     110.88
+    ],
+    [
+     -286.15,
+     110.23
+    ],
+    [
+     -285.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 600 1",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 600 1",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 600 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 600 2",
+   "points": [
+    [
+     282.0,
+     110.0
+    ],
+    [
+     283.15,
+     110.23
+    ],
+    [
+     284.12,
+     110.88
+    ],
+    [
+     284.77,
+     111.85
+    ],
+    [
+     285.0,
+     113.0
+    ],
+    [
+     285.0,
+     809.0
+    ],
+    [
+     284.77,
+     810.15
+    ],
+    [
+     284.12,
+     811.12
+    ],
+    [
+     283.15,
+     811.77
+    ],
+    [
+     282.0,
+     812.0
+    ],
+    [
+     3.0,
+     812.0
+    ],
+    [
+     1.85,
+     811.77
+    ],
+    [
+     0.88,
+     811.12
+    ],
+    [
+     0.23,
+     810.15
+    ],
+    [
+     0.0,
+     809.0
+    ],
+    [
+     0.0,
+     113.0
+    ],
+    [
+     0.23,
+     111.85
+    ],
+    [
+     0.88,
+     110.88
+    ],
+    [
+     1.85,
+     110.23
+    ],
+    [
+     3.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 600 2",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 600 2",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 600 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle 1",
+   "points": [
+    [
+     -32.0,
+     600.0
+    ],
+    [
+     -30.47,
+     600.3
+    ],
+    [
+     -29.17,
+     601.17
+    ],
+    [
+     -28.3,
+     602.47
+    ],
+    [
+     -28.0,
+     604.0
+    ],
+    [
+     -28.0,
+     776.0
+    ],
+    [
+     -28.3,
+     777.53
+    ],
+    [
+     -29.17,
+     778.83
+    ],
+    [
+     -30.47,
+     779.7
+    ],
+    [
+     -32.0,
+     780.0
+    ],
+    [
+     -36.0,
+     780.0
+    ],
+    [
+     -37.53,
+     779.7
+    ],
+    [
+     -38.83,
+     778.83
+    ],
+    [
+     -39.7,
+     777.53
+    ],
+    [
+     -40.0,
+     776.0
+    ],
+    [
+     -40.0,
+     604.0
+    ],
+    [
+     -39.7,
+     602.47
+    ],
+    [
+     -38.83,
+     601.17
+    ],
+    [
+     -37.53,
+     600.3
+    ],
+    [
+     -36.0,
+     600.0
+    ]
+   ],
+   "start": 458,
+   "end": 478,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle 2",
+   "points": [
+    [
+     36.0,
+     600.0
+    ],
+    [
+     37.53,
+     600.3
+    ],
+    [
+     38.83,
+     601.17
+    ],
+    [
+     39.7,
+     602.47
+    ],
+    [
+     40.0,
+     604.0
+    ],
+    [
+     40.0,
+     776.0
+    ],
+    [
+     39.7,
+     777.53
+    ],
+    [
+     38.83,
+     778.83
+    ],
+    [
+     37.53,
+     779.7
+    ],
+    [
+     36.0,
+     780.0
+    ],
+    [
+     32.0,
+     780.0
+    ],
+    [
+     30.47,
+     779.7
+    ],
+    [
+     29.17,
+     778.83
+    ],
+    [
+     28.3,
+     777.53
+    ],
+    [
+     28.0,
+     776.0
+    ],
+    [
+     28.0,
+     604.0
+    ],
+    [
+     28.3,
+     602.47
+    ],
+    [
+     29.17,
+     601.17
+    ],
+    [
+     30.47,
+     600.3
+    ],
+    [
+     32.0,
+     600.0
+    ]
+   ],
+   "start": 458,
+   "end": 478,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet 1200",
+   "points": [
+    [
+     -290,
+     -440
+    ],
+    [
+     890,
+     -440
+    ],
+    [
+     890,
+     0
+    ],
+    [
+     -290,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 818
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet 1200",
+   "subcategory": "Melamine"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet 1200",
+   "param": "Melamine Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 1200",
+   "points": [
+    [
+     -280,
+     -400
+    ],
+    [
+     880,
+     -400
+    ],
+    [
+     880,
+     -20
+    ],
+    [
+     -280,
+     -20
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 1200",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 1200",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 1200 1",
+   "points": [
+    [
+     0.0,
+     110.0
+    ],
+    [
+     1.15,
+     110.23
+    ],
+    [
+     2.12,
+     110.88
+    ],
+    [
+     2.77,
+     111.85
+    ],
+    [
+     3.0,
+     113.0
+    ],
+    [
+     3.0,
+     809.0
+    ],
+    [
+     2.77,
+     810.15
+    ],
+    [
+     2.12,
+     811.12
+    ],
+    [
+     1.15,
+     811.77
+    ],
+    [
+     0.0,
+     812.0
+    ],
+    [
+     -285.0,
+     812.0
+    ],
+    [
+     -286.15,
+     811.77
+    ],
+    [
+     -287.12,
+     811.12
+    ],
+    [
+     -287.77,
+     810.15
+    ],
+    [
+     -288.0,
+     809.0
+    ],
+    [
+     -288.0,
+     113.0
+    ],
+    [
+     -287.77,
+     111.85
+    ],
+    [
+     -287.12,
+     110.88
+    ],
+    [
+     -286.15,
+     110.23
+    ],
+    [
+     -285.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 1200 1",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 1200 1",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 1200 2",
+   "points": [
+    [
+     294.0,
+     110.0
+    ],
+    [
+     295.15,
+     110.23
+    ],
+    [
+     296.12,
+     110.88
+    ],
+    [
+     296.77,
+     111.85
+    ],
+    [
+     297.0,
+     113.0
+    ],
+    [
+     297.0,
+     809.0
+    ],
+    [
+     296.77,
+     810.15
+    ],
+    [
+     296.12,
+     811.12
+    ],
+    [
+     295.15,
+     811.77
+    ],
+    [
+     294.0,
+     812.0
+    ],
+    [
+     9.0,
+     812.0
+    ],
+    [
+     7.85,
+     811.77
+    ],
+    [
+     6.88,
+     811.12
+    ],
+    [
+     6.23,
+     810.15
+    ],
+    [
+     6.0,
+     809.0
+    ],
+    [
+     6.0,
+     113.0
+    ],
+    [
+     6.23,
+     111.85
+    ],
+    [
+     6.88,
+     110.88
+    ],
+    [
+     7.85,
+     110.23
+    ],
+    [
+     9.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 1200 2",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 1200 2",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 1200 3",
+   "points": [
+    [
+     588.0,
+     110.0
+    ],
+    [
+     589.15,
+     110.23
+    ],
+    [
+     590.12,
+     110.88
+    ],
+    [
+     590.77,
+     111.85
+    ],
+    [
+     591.0,
+     113.0
+    ],
+    [
+     591.0,
+     809.0
+    ],
+    [
+     590.77,
+     810.15
+    ],
+    [
+     590.12,
+     811.12
+    ],
+    [
+     589.15,
+     811.77
+    ],
+    [
+     588.0,
+     812.0
+    ],
+    [
+     303.0,
+     812.0
+    ],
+    [
+     301.85,
+     811.77
+    ],
+    [
+     300.88,
+     811.12
+    ],
+    [
+     300.23,
+     810.15
+    ],
+    [
+     300.0,
+     809.0
+    ],
+    [
+     300.0,
+     113.0
+    ],
+    [
+     300.23,
+     111.85
+    ],
+    [
+     300.88,
+     110.88
+    ],
+    [
+     301.85,
+     110.23
+    ],
+    [
+     303.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 1200 3",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 1200 3",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 1200 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door 1200 4",
+   "points": [
+    [
+     882.0,
+     110.0
+    ],
+    [
+     883.15,
+     110.23
+    ],
+    [
+     884.12,
+     110.88
+    ],
+    [
+     884.77,
+     111.85
+    ],
+    [
+     885.0,
+     113.0
+    ],
+    [
+     885.0,
+     809.0
+    ],
+    [
+     884.77,
+     810.15
+    ],
+    [
+     884.12,
+     811.12
+    ],
+    [
+     883.15,
+     811.77
+    ],
+    [
+     882.0,
+     812.0
+    ],
+    [
+     597.0,
+     812.0
+    ],
+    [
+     595.85,
+     811.77
+    ],
+    [
+     594.88,
+     811.12
+    ],
+    [
+     594.23,
+     810.15
+    ],
+    [
+     594.0,
+     809.0
+    ],
+    [
+     594.0,
+     113.0
+    ],
+    [
+     594.23,
+     111.85
+    ],
+    [
+     594.88,
+     110.88
+    ],
+    [
+     595.85,
+     110.23
+    ],
+    [
+     597.0,
+     110.0
+    ]
+   ],
+   "start": 440,
+   "end": 458,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door 1200 4",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door 1200 4",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door 1200 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 1",
+   "points": [
+    [
+     600.2,
+     -470.0
+    ],
+    [
+     828.9,
+     -468.4
+    ],
+    [
+     861.2,
+     -463.3
+    ],
+    [
+     879.9,
+     -454.3
+    ],
+    [
+     753.6,
+     -351.1
+    ],
+    [
+     715.1,
+     -372.5
+    ],
+    [
+     666.5,
+     -385.6
+    ],
+    [
+     600.0,
+     -390.0
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 2",
+   "points": [
+    [
+     879.9,
+     -454.3
+    ],
+    [
+     891.5,
+     -439.6
+    ],
+    [
+     897.9,
+     -414.3
+    ],
+    [
+     900.0,
+     -235.0
+    ],
+    [
+     805.0,
+     -235.0
+    ],
+    [
+     799.2,
+     -285.3
+    ],
+    [
+     781.8,
+     -322.0
+    ],
+    [
+     753.6,
+     -351.1
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 3",
+   "points": [
+    [
+     900.0,
+     -235.0
+    ],
+    [
+     897.9,
+     -55.7
+    ],
+    [
+     891.5,
+     -30.4
+    ],
+    [
+     879.9,
+     -15.7
+    ],
+    [
+     753.6,
+     -118.9
+    ],
+    [
+     781.8,
+     -148.0
+    ],
+    [
+     799.2,
+     -184.7
+    ],
+    [
+     805.0,
+     -235.0
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 4",
+   "points": [
+    [
+     879.9,
+     -15.7
+    ],
+    [
+     861.2,
+     -6.7
+    ],
+    [
+     828.9,
+     -1.6
+    ],
+    [
+     600.2,
+     0.0
+    ],
+    [
+     600.0,
+     -80.0
+    ],
+    [
+     666.5,
+     -84.4
+    ],
+    [
+     715.1,
+     -97.5
+    ],
+    [
+     753.6,
+     -118.9
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 5",
+   "points": [
+    [
+     600.2,
+     0.0
+    ],
+    [
+     371.1,
+     -1.6
+    ],
+    [
+     338.8,
+     -6.7
+    ],
+    [
+     320.1,
+     -15.7
+    ],
+    [
+     446.4,
+     -118.9
+    ],
+    [
+     484.9,
+     -97.5
+    ],
+    [
+     533.5,
+     -84.4
+    ],
+    [
+     600.0,
+     -80.0
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 6",
+   "points": [
+    [
+     320.1,
+     -15.7
+    ],
+    [
+     308.5,
+     -30.4
+    ],
+    [
+     302.1,
+     -55.7
+    ],
+    [
+     300.0,
+     -234.8
+    ],
+    [
+     395.0,
+     -235.0
+    ],
+    [
+     400.8,
+     -184.7
+    ],
+    [
+     418.2,
+     -148.0
+    ],
+    [
+     446.4,
+     -118.9
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 7",
+   "points": [
+    [
+     300.0,
+     -234.8
+    ],
+    [
+     302.1,
+     -414.3
+    ],
+    [
+     308.5,
+     -439.6
+    ],
+    [
+     320.1,
+     -454.3
+    ],
+    [
+     446.4,
+     -351.1
+    ],
+    [
+     418.2,
+     -322.0
+    ],
+    [
+     400.8,
+     -285.3
+    ],
+    [
+     395.0,
+     -235.0
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 7",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 7",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Vanity Top 8",
+   "points": [
+    [
+     320.1,
+     -454.3
+    ],
+    [
+     338.8,
+     -463.3
+    ],
+    [
+     371.1,
+     -468.4
+    ],
+    [
+     599.8,
+     -470.0
+    ],
+    [
+     600.0,
+     -390.0
+    ],
+    [
+     533.5,
+     -385.6
+    ],
+    [
+     484.9,
+     -372.5
+    ],
+    [
+     446.4,
+     -351.1
+    ]
+   ],
+   "start": 820,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Vanity Top 8",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Vanity Top 8",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Vanity Top 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 1",
+   "points": [
+    [
+     600.0,
+     -405.0
+    ],
+    [
+     720.7,
+     -386.4
+    ],
+    [
+     790.7,
+     -332.6
+    ],
+    [
+     777.4,
+     -324.2
+    ],
+    [
+     712.2,
+     -373.1
+    ],
+    [
+     600.0,
+     -390.0
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 2",
+   "points": [
+    [
+     790.7,
+     -332.6
+    ],
+    [
+     815.0,
+     -240.0
+    ],
+    [
+     790.7,
+     -147.4
+    ],
+    [
+     777.4,
+     -155.8
+    ],
+    [
+     800.0,
+     -240.0
+    ],
+    [
+     777.4,
+     -324.2
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 3",
+   "points": [
+    [
+     790.7,
+     -147.4
+    ],
+    [
+     720.7,
+     -93.6
+    ],
+    [
+     600.0,
+     -75.0
+    ],
+    [
+     600.0,
+     -90.0
+    ],
+    [
+     712.2,
+     -106.9
+    ],
+    [
+     777.4,
+     -155.8
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 4",
+   "points": [
+    [
+     600.0,
+     -75.0
+    ],
+    [
+     479.3,
+     -93.6
+    ],
+    [
+     409.3,
+     -147.4
+    ],
+    [
+     422.6,
+     -155.8
+    ],
+    [
+     487.8,
+     -106.9
+    ],
+    [
+     600.0,
+     -90.0
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 5",
+   "points": [
+    [
+     409.3,
+     -147.4
+    ],
+    [
+     385.0,
+     -240.0
+    ],
+    [
+     409.3,
+     -332.6
+    ],
+    [
+     422.6,
+     -324.2
+    ],
+    [
+     400.0,
+     -240.0
+    ],
+    [
+     422.6,
+     -155.8
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Wall 6",
+   "points": [
+    [
+     409.3,
+     -332.6
+    ],
+    [
+     479.3,
+     -386.4
+    ],
+    [
+     600.0,
+     -405.0
+    ],
+    [
+     600.0,
+     -390.0
+    ],
+    [
+     487.8,
+     -373.1
+    ],
+    [
+     422.6,
+     -324.2
+    ]
+   ],
+   "start": 690,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Wall 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Wall 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Wall 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Bowl Floor",
+   "points": [
+    [
+     805.0,
+     -240.0
+    ],
+    [
+     799.2,
+     -189.7
+    ],
+    [
+     781.8,
+     -153.0
+    ],
+    [
+     753.6,
+     -123.9
+    ],
+    [
+     715.1,
+     -102.5
+    ],
+    [
+     666.5,
+     -89.4
+    ],
+    [
+     600.0,
+     -85.0
+    ],
+    [
+     533.5,
+     -89.4
+    ],
+    [
+     484.9,
+     -102.5
+    ],
+    [
+     446.4,
+     -123.9
+    ],
+    [
+     418.2,
+     -153.0
+    ],
+    [
+     400.8,
+     -189.7
+    ],
+    [
+     395.0,
+     -240.0
+    ],
+    [
+     400.8,
+     -290.3
+    ],
+    [
+     418.2,
+     -327.0
+    ],
+    [
+     446.4,
+     -356.1
+    ],
+    [
+     484.9,
+     -377.5
+    ],
+    [
+     533.5,
+     -390.6
+    ],
+    [
+     600.0,
+     -395.0
+    ],
+    [
+     666.5,
+     -390.6
+    ],
+    [
+     715.1,
+     -377.5
+    ],
+    [
+     753.6,
+     -356.1
+    ],
+    [
+     781.8,
+     -327.0
+    ],
+    [
+     799.2,
+     -290.3
+    ]
+   ],
+   "start": 680,
+   "end": 695
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Bowl Floor",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Floor",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Floor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Right Bowl Slope",
+   "profile": [
+    [
+     60,
+     695
+    ],
+    [
+     150,
+     695
+    ],
+    [
+     150,
+     712
+    ],
+    [
+     60,
+     700
+    ]
+   ],
+   "axis_at": [
+    600,
+    -240
+   ],
+   "axis": "z",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Bowl Slope",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Bowl Slope",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Supply Tails",
+   "points": [
+    [
+     610.0,
+     -60.0
+    ],
+    [
+     609.66,
+     -57.41
+    ],
+    [
+     608.66,
+     -55.0
+    ],
+    [
+     607.07,
+     -52.93
+    ],
+    [
+     605.0,
+     -51.34
+    ],
+    [
+     602.59,
+     -50.34
+    ],
+    [
+     600.0,
+     -50.0
+    ],
+    [
+     597.41,
+     -50.34
+    ],
+    [
+     595.0,
+     -51.34
+    ],
+    [
+     592.93,
+     -52.93
+    ],
+    [
+     591.34,
+     -55.0
+    ],
+    [
+     590.34,
+     -57.41
+    ],
+    [
+     590.0,
+     -60.0
+    ],
+    [
+     590.34,
+     -62.59
+    ],
+    [
+     591.34,
+     -65.0
+    ],
+    [
+     592.93,
+     -67.07
+    ],
+    [
+     595.0,
+     -68.66
+    ],
+    [
+     597.41,
+     -69.66
+    ],
+    [
+     600.0,
+     -70.0
+    ],
+    [
+     602.59,
+     -69.66
+    ],
+    [
+     605.0,
+     -68.66
+    ],
+    [
+     607.07,
+     -67.07
+    ],
+    [
+     608.66,
+     -65.0
+    ],
+    [
+     609.66,
+     -62.59
+    ]
+   ],
+   "start": 700,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Supply Tails",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Supply Tails",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Supply Tails",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Trap",
+   "points": [
+    [
+     632.0,
+     -240.0
+    ],
+    [
+     630.91,
+     -231.72
+    ],
+    [
+     627.71,
+     -224.0
+    ],
+    [
+     622.63,
+     -217.37
+    ],
+    [
+     616.0,
+     -212.29
+    ],
+    [
+     608.28,
+     -209.09
+    ],
+    [
+     600.0,
+     -208.0
+    ],
+    [
+     591.72,
+     -209.09
+    ],
+    [
+     584.0,
+     -212.29
+    ],
+    [
+     577.37,
+     -217.37
+    ],
+    [
+     572.29,
+     -224.0
+    ],
+    [
+     569.09,
+     -231.72
+    ],
+    [
+     568.0,
+     -240.0
+    ],
+    [
+     569.09,
+     -248.28
+    ],
+    [
+     572.29,
+     -256.0
+    ],
+    [
+     577.37,
+     -262.63
+    ],
+    [
+     584.0,
+     -267.71
+    ],
+    [
+     591.72,
+     -270.91
+    ],
+    [
+     600.0,
+     -272.0
+    ],
+    [
+     608.28,
+     -270.91
+    ],
+    [
+     616.0,
+     -267.71
+    ],
+    [
+     622.63,
+     -262.63
+    ],
+    [
+     627.71,
+     -256.0
+    ],
+    [
+     630.91,
+     -248.28
+    ]
+   ],
+   "start": 480,
+   "end": 680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Trap",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Trap",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Trap",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Waste Plug",
+   "points": [
+    [
+     624.0,
+     -240.0
+    ],
+    [
+     623.18,
+     -233.79
+    ],
+    [
+     620.78,
+     -228.0
+    ],
+    [
+     616.97,
+     -223.03
+    ],
+    [
+     612.0,
+     -219.22
+    ],
+    [
+     606.21,
+     -216.82
+    ],
+    [
+     600.0,
+     -216.0
+    ],
+    [
+     593.79,
+     -216.82
+    ],
+    [
+     588.0,
+     -219.22
+    ],
+    [
+     583.03,
+     -223.03
+    ],
+    [
+     579.22,
+     -228.0
+    ],
+    [
+     576.82,
+     -233.79
+    ],
+    [
+     576.0,
+     -240.0
+    ],
+    [
+     576.82,
+     -246.21
+    ],
+    [
+     579.22,
+     -252.0
+    ],
+    [
+     583.03,
+     -256.97
+    ],
+    [
+     588.0,
+     -260.78
+    ],
+    [
+     593.79,
+     -263.18
+    ],
+    [
+     600.0,
+     -264.0
+    ],
+    [
+     606.21,
+     -263.18
+    ],
+    [
+     612.0,
+     -260.78
+    ],
+    [
+     616.97,
+     -256.97
+    ],
+    [
+     620.78,
+     -252.0
+    ],
+    [
+     623.18,
+     -246.21
+    ]
+   ],
+   "start": 695,
+   "end": 697
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Waste Plug",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Waste Plug",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Waste Plug",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Right Waste Grid",
+   "profile": [
+    [
+     8.399999999999999,
+     697
+    ],
+    [
+     10.8,
+     697
+    ],
+    [
+     10.8,
+     698
+    ],
+    [
+     8.399999999999999,
+     698
+    ]
+   ],
+   "axis_at": [
+    600,
+    -240
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Waste Grid",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Waste Grid",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Right Mixer Base",
+   "profile": [
+    [
+     0,
+     850
+    ],
+    [
+     28,
+     850
+    ],
+    [
+     26,
+     858
+    ],
+    [
+     0,
+     858
+    ]
+   ],
+   "axis_at": [
+    600,
+    -60
+   ],
+   "axis": "z",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Base",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Mixer Body",
+   "points": [
+    [
+     622.0,
+     -60.0
+    ],
+    [
+     621.25,
+     -54.31
+    ],
+    [
+     619.05,
+     -49.0
+    ],
+    [
+     615.56,
+     -44.44
+    ],
+    [
+     611.0,
+     -40.95
+    ],
+    [
+     605.69,
+     -38.75
+    ],
+    [
+     600.0,
+     -38.0
+    ],
+    [
+     594.31,
+     -38.75
+    ],
+    [
+     589.0,
+     -40.95
+    ],
+    [
+     584.44,
+     -44.44
+    ],
+    [
+     580.95,
+     -49.0
+    ],
+    [
+     578.75,
+     -54.31
+    ],
+    [
+     578.0,
+     -60.0
+    ],
+    [
+     578.75,
+     -65.69
+    ],
+    [
+     580.95,
+     -71.0
+    ],
+    [
+     584.44,
+     -75.56
+    ],
+    [
+     589.0,
+     -79.05
+    ],
+    [
+     594.31,
+     -81.25
+    ],
+    [
+     600.0,
+     -82.0
+    ],
+    [
+     605.69,
+     -81.25
+    ],
+    [
+     611.0,
+     -79.05
+    ],
+    [
+     615.56,
+     -75.56
+    ],
+    [
+     619.05,
+     -71.0
+    ],
+    [
+     621.25,
+     -65.69
+    ]
+   ],
+   "start": 858,
+   "end": 1030
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Mixer Body",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Body",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Mixer Spout",
+   "points": [
+    [
+     611.0,
+     1018.0
+    ],
+    [
+     610.63,
+     1020.85
+    ],
+    [
+     609.53,
+     1023.5
+    ],
+    [
+     607.78,
+     1025.78
+    ],
+    [
+     605.5,
+     1027.53
+    ],
+    [
+     602.85,
+     1028.63
+    ],
+    [
+     600.0,
+     1029.0
+    ],
+    [
+     597.15,
+     1028.63
+    ],
+    [
+     594.5,
+     1027.53
+    ],
+    [
+     592.22,
+     1025.78
+    ],
+    [
+     590.47,
+     1023.5
+    ],
+    [
+     589.37,
+     1020.85
+    ],
+    [
+     589.0,
+     1018.0
+    ],
+    [
+     589.37,
+     1015.15
+    ],
+    [
+     590.47,
+     1012.5
+    ],
+    [
+     592.22,
+     1010.22
+    ],
+    [
+     594.5,
+     1008.47
+    ],
+    [
+     597.15,
+     1007.37
+    ],
+    [
+     600.0,
+     1007.0
+    ],
+    [
+     602.85,
+     1007.37
+    ],
+    [
+     605.5,
+     1008.47
+    ],
+    [
+     607.78,
+     1010.22
+    ],
+    [
+     609.53,
+     1012.5
+    ],
+    [
+     610.63,
+     1015.15
+    ]
+   ],
+   "start": 60,
+   "end": 185,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Mixer Spout",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Spout",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Spout",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Mixer Nozzle",
+   "points": [
+    [
+     612.0,
+     -177.0
+    ],
+    [
+     611.59,
+     -173.89
+    ],
+    [
+     610.39,
+     -171.0
+    ],
+    [
+     608.49,
+     -168.51
+    ],
+    [
+     606.0,
+     -166.61
+    ],
+    [
+     603.11,
+     -165.41
+    ],
+    [
+     600.0,
+     -165.0
+    ],
+    [
+     596.89,
+     -165.41
+    ],
+    [
+     594.0,
+     -166.61
+    ],
+    [
+     591.51,
+     -168.51
+    ],
+    [
+     589.61,
+     -171.0
+    ],
+    [
+     588.41,
+     -173.89
+    ],
+    [
+     588.0,
+     -177.0
+    ],
+    [
+     588.41,
+     -180.11
+    ],
+    [
+     589.61,
+     -183.0
+    ],
+    [
+     591.51,
+     -185.49
+    ],
+    [
+     594.0,
+     -187.39
+    ],
+    [
+     596.89,
+     -188.59
+    ],
+    [
+     600.0,
+     -189.0
+    ],
+    [
+     603.11,
+     -188.59
+    ],
+    [
+     606.0,
+     -187.39
+    ],
+    [
+     608.49,
+     -185.49
+    ],
+    [
+     610.39,
+     -183.0
+    ],
+    [
+     611.59,
+     -180.11
+    ]
+   ],
+   "start": 970,
+   "end": 1028
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Mixer Nozzle",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Nozzle",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Nozzle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Right Mixer Aerator",
+   "profile": [
+    [
+     0,
+     964
+    ],
+    [
+     10,
+     964
+    ],
+    [
+     12,
+     970
+    ],
+    [
+     0,
+     970
+    ]
+   ],
+   "axis_at": [
+    600,
+    -177
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Aerator",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Aerator",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Mixer Lever Hub",
+   "points": [
+    [
+     -46.0,
+     980.0
+    ],
+    [
+     -46.48,
+     983.62
+    ],
+    [
+     -47.88,
+     987.0
+    ],
+    [
+     -50.1,
+     989.9
+    ],
+    [
+     -53.0,
+     992.12
+    ],
+    [
+     -56.38,
+     993.52
+    ],
+    [
+     -60.0,
+     994.0
+    ],
+    [
+     -63.62,
+     993.52
+    ],
+    [
+     -67.0,
+     992.12
+    ],
+    [
+     -69.9,
+     989.9
+    ],
+    [
+     -72.12,
+     987.0
+    ],
+    [
+     -73.52,
+     983.62
+    ],
+    [
+     -74.0,
+     980.0
+    ],
+    [
+     -73.52,
+     976.38
+    ],
+    [
+     -72.12,
+     973.0
+    ],
+    [
+     -69.9,
+     970.1
+    ],
+    [
+     -67.0,
+     967.88
+    ],
+    [
+     -63.62,
+     966.48
+    ],
+    [
+     -60.0,
+     966.0
+    ],
+    [
+     -56.38,
+     966.48
+    ],
+    [
+     -53.0,
+     967.88
+    ],
+    [
+     -50.1,
+     970.1
+    ],
+    [
+     -47.88,
+     973.0
+    ],
+    [
+     -46.48,
+     976.38
+    ]
+   ],
+   "start": 620,
+   "end": 638,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Mixer Lever Hub",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Lever Hub",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Lever Hub",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Mixer Lever",
+   "points": [
+    [
+     716.0,
+     -68.0
+    ],
+    [
+     717.53,
+     -67.7
+    ],
+    [
+     718.83,
+     -66.83
+    ],
+    [
+     719.7,
+     -65.53
+    ],
+    [
+     720.0,
+     -64.0
+    ],
+    [
+     720.0,
+     -56.0
+    ],
+    [
+     719.7,
+     -54.47
+    ],
+    [
+     718.83,
+     -53.17
+    ],
+    [
+     717.53,
+     -52.3
+    ],
+    [
+     716.0,
+     -52.0
+    ],
+    [
+     634.0,
+     -52.0
+    ],
+    [
+     632.47,
+     -52.3
+    ],
+    [
+     631.17,
+     -53.17
+    ],
+    [
+     630.3,
+     -54.47
+    ],
+    [
+     630.0,
+     -56.0
+    ],
+    [
+     630.0,
+     -64.0
+    ],
+    [
+     630.3,
+     -65.53
+    ],
+    [
+     631.17,
+     -66.83
+    ],
+    [
+     632.47,
+     -67.7
+    ],
+    [
+     634.0,
+     -68.0
+    ]
+   ],
+   "start": 974,
+   "end": 986
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Mixer Lever",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Mixer Lever",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Mixer Lever",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle Right 1",
+   "points": [
+    [
+     568.0,
+     600.0
+    ],
+    [
+     569.53,
+     600.3
+    ],
+    [
+     570.83,
+     601.17
+    ],
+    [
+     571.7,
+     602.47
+    ],
+    [
+     572.0,
+     604.0
+    ],
+    [
+     572.0,
+     776.0
+    ],
+    [
+     571.7,
+     777.53
+    ],
+    [
+     570.83,
+     778.83
+    ],
+    [
+     569.53,
+     779.7
+    ],
+    [
+     568.0,
+     780.0
+    ],
+    [
+     564.0,
+     780.0
+    ],
+    [
+     562.47,
+     779.7
+    ],
+    [
+     561.17,
+     778.83
+    ],
+    [
+     560.3,
+     777.53
+    ],
+    [
+     560.0,
+     776.0
+    ],
+    [
+     560.0,
+     604.0
+    ],
+    [
+     560.3,
+     602.47
+    ],
+    [
+     561.17,
+     601.17
+    ],
+    [
+     562.47,
+     600.3
+    ],
+    [
+     564.0,
+     600.0
+    ]
+   ],
+   "start": 458,
+   "end": 478,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle Right 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle Right 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle Right 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle Right 2",
+   "points": [
+    [
+     636.0,
+     600.0
+    ],
+    [
+     637.53,
+     600.3
+    ],
+    [
+     638.83,
+     601.17
+    ],
+    [
+     639.7,
+     602.47
+    ],
+    [
+     640.0,
+     604.0
+    ],
+    [
+     640.0,
+     776.0
+    ],
+    [
+     639.7,
+     777.53
+    ],
+    [
+     638.83,
+     778.83
+    ],
+    [
+     637.53,
+     779.7
+    ],
+    [
+     636.0,
+     780.0
+    ],
+    [
+     632.0,
+     780.0
+    ],
+    [
+     630.47,
+     779.7
+    ],
+    [
+     629.17,
+     778.83
+    ],
+    [
+     628.3,
+     777.53
+    ],
+    [
+     628.0,
+     776.0
+    ],
+    [
+     628.0,
+     604.0
+    ],
+    [
+     628.3,
+     602.47
+    ],
+    [
+     629.17,
+     601.17
+    ],
+    [
+     630.47,
+     600.3
+    ],
+    [
+     632.0,
+     600.0
+    ]
+   ],
+   "start": 458,
+   "end": 478,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle Right 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle Right 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle Right 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Link",
+   "points": [
+    [
+     -220.0,
+     500.0
+    ],
+    [
+     -220.68,
+     505.18
+    ],
+    [
+     -222.68,
+     510.0
+    ],
+    [
+     -225.86,
+     514.14
+    ],
+    [
+     -230.0,
+     517.32
+    ],
+    [
+     -234.82,
+     519.32
+    ],
+    [
+     -240.0,
+     520.0
+    ],
+    [
+     -245.18,
+     519.32
+    ],
+    [
+     -250.0,
+     517.32
+    ],
+    [
+     -254.14,
+     514.14
+    ],
+    [
+     -257.32,
+     510.0
+    ],
+    [
+     -259.32,
+     505.18
+    ],
+    [
+     -260.0,
+     500.0
+    ],
+    [
+     -259.32,
+     494.82
+    ],
+    [
+     -257.32,
+     490.0
+    ],
+    [
+     -254.14,
+     485.86
+    ],
+    [
+     -250.0,
+     482.68
+    ],
+    [
+     -245.18,
+     480.68
+    ],
+    [
+     -240.0,
+     480.0
+    ],
+    [
+     -234.82,
+     480.68
+    ],
+    [
+     -230.0,
+     482.68
+    ],
+    [
+     -225.86,
+     485.86
+    ],
+    [
+     -222.68,
+     490.0
+    ],
+    [
+     -220.68,
+     494.82
+    ]
+   ],
+   "start": 0,
+   "end": 600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Link",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Link",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Link",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_Single",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Single/Show 600_Single",
+   "type": "600_Single",
+   "param": "Show 600_Single",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Double/Show 600_Single",
+   "type": "1200_Double",
+   "param": "Show 600_Single",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet 600/Visible",
+   "solid": "Cabinet 600",
+   "param": "Show 600_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 600/Visible",
+   "solid": "Plinth 600",
+   "param": "Show 600_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 600 1/Visible",
+   "solid": "Door 600 1",
+   "param": "Show 600_Single"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 600 2/Visible",
+   "solid": "Door 600 2",
+   "param": "Show 600_Single"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Double",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Single/Show 1200_Double",
+   "type": "600_Single",
+   "param": "Show 1200_Double",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Double/Show 1200_Double",
+   "type": "1200_Double",
+   "param": "Show 1200_Double",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet 1200/Visible",
+   "solid": "Cabinet 1200",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 1200/Visible",
+   "solid": "Plinth 1200",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 1200 1/Visible",
+   "solid": "Door 1200 1",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 1200 2/Visible",
+   "solid": "Door 1200 2",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 1200 3/Visible",
+   "solid": "Door 1200 3",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door 1200 4/Visible",
+   "solid": "Door 1200 4",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 1/Visible",
+   "solid": "Right Vanity Top 1",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 2/Visible",
+   "solid": "Right Vanity Top 2",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 3/Visible",
+   "solid": "Right Vanity Top 3",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 4/Visible",
+   "solid": "Right Vanity Top 4",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 5/Visible",
+   "solid": "Right Vanity Top 5",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 6/Visible",
+   "solid": "Right Vanity Top 6",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 7/Visible",
+   "solid": "Right Vanity Top 7",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Vanity Top 8/Visible",
+   "solid": "Right Vanity Top 8",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 1/Visible",
+   "solid": "Right Bowl Wall 1",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 2/Visible",
+   "solid": "Right Bowl Wall 2",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 3/Visible",
+   "solid": "Right Bowl Wall 3",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 4/Visible",
+   "solid": "Right Bowl Wall 4",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 5/Visible",
+   "solid": "Right Bowl Wall 5",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Wall 6/Visible",
+   "solid": "Right Bowl Wall 6",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Floor/Visible",
+   "solid": "Right Bowl Floor",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Bowl Slope/Visible",
+   "solid": "Right Bowl Slope",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Supply Tails/Visible",
+   "solid": "Right Supply Tails",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Trap/Visible",
+   "solid": "Right Trap",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Waste Plug/Visible",
+   "solid": "Right Waste Plug",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Waste Grid/Visible",
+   "solid": "Right Waste Grid",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Base/Visible",
+   "solid": "Right Mixer Base",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Body/Visible",
+   "solid": "Right Mixer Body",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Spout/Visible",
+   "solid": "Right Mixer Spout",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Nozzle/Visible",
+   "solid": "Right Mixer Nozzle",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Aerator/Visible",
+   "solid": "Right Mixer Aerator",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Lever Hub/Visible",
+   "solid": "Right Mixer Lever Hub",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Mixer Lever/Visible",
+   "solid": "Right Mixer Lever",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Handle Right 1/Visible",
+   "solid": "Door Handle Right 1",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Handle Right 2/Visible",
+   "solid": "Door Handle Right 2",
+   "param": "Show 1200_Double"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Waste Link/Visible",
+   "solid": "Waste Link",
+   "param": "Show 1200_Double"
+  },
+  {
    "op": "add_connector",
    "name": "CW",
    "domain": "pipe",
@@ -3356,7 +6475,7 @@
   }
  ],
  "values": {
-  "Width 600 mm, depth 470 mm": {
+  "Width 600 / 1200 mm, depth 470 mm": {
    "value": "600x470",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"

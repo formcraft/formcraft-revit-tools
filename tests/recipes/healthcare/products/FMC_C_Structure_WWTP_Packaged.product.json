@@ -8,14 +8,14 @@
  "types": [
   {
    "name": "50m3d_Packaged",
-   "desc": "50 m3/day plant envelope",
+   "desc": "50 m3/day plant, tank 9000 long",
    "values": {
     "Apparent Load": 5500
    }
   },
   {
    "name": "100m3d_Packaged",
-   "desc": "100 m3/day plant envelope",
+   "desc": "100 m3/day plant, tank 12000 long",
    "values": {
     "Apparent Load": 9000
    }
@@ -34,207 +34,6 @@
   "epoxy": "FMC_Metal_Steel_EpoxyCoated_White"
  },
  "parts": [
-  {
-   "n": "Plinth",
-   "shape": "box",
-   "at": [
-    -4800,
-    -1500,
-    0,
-    6300,
-    1500,
-    300
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Tank Body",
-   "shape": "box",
-   "at": [
-    -4500,
-    -1200,
-    300,
-    4500,
-    1200,
-    2900
-   ],
-   "mat": "paint"
-  },
-  {
-   "n": "Rib Front",
-   "shape": "box",
-   "at": [
-    -4030,
-    -1225,
-    300,
-    -3970,
-    -1200,
-    2900
-   ],
-   "mat": "paint",
-   "lod": "f",
-   "repeat": {
-    "n": 9,
-    "d": [
-     1000,
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "n": "Rib Back",
-   "shape": "box",
-   "at": [
-    -4030,
-    1200,
-    300,
-    -3970,
-    1225,
-    2900
-   ],
-   "mat": "paint",
-   "lod": "f",
-   "repeat": {
-    "n": 9,
-    "d": [
-     1000,
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "n": "Walkway Grating",
-   "shape": "box",
-   "at": [
-    -4400,
-    -400,
-    2900,
-    4400,
-    400,
-    2940
-   ],
-   "mat": "galv"
-  },
-  {
-   "n": "Rail Post Front",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -4000,
-    -400
-   ],
-   "r": 20,
-   "z": [
-    2940,
-    4040
-   ],
-   "mat": "galv",
-   "repeat": {
-    "n": 5,
-    "d": [
-     2000,
-     0,
-     0
-    ]
-   },
-   "seg": 12
-  },
-  {
-   "n": "Rail Post Back",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -4000,
-    400
-   ],
-   "r": 20,
-   "z": [
-    2940,
-    4040
-   ],
-   "mat": "galv",
-   "repeat": {
-    "n": 5,
-    "d": [
-     2000,
-     0,
-     0
-    ]
-   },
-   "seg": 12
-  },
-  {
-   "n": "Top Rail",
-   "shape": "cyl",
-   "axis": "x",
-   "c": [
-    -400,
-    4020
-   ],
-   "r": 20,
-   "x": [
-    -4000,
-    4000
-   ],
-   "mat": "galv",
-   "repeat": {
-    "n": 2,
-    "d": [
-     0,
-     800,
-     0
-    ]
-   },
-   "seg": 12
-  },
-  {
-   "n": "Knee Rail",
-   "shape": "cyl",
-   "axis": "x",
-   "c": [
-    -400,
-    3500
-   ],
-   "r": 15,
-   "x": [
-    -4000,
-    4000
-   ],
-   "mat": "galv",
-   "lod": "f",
-   "repeat": {
-    "n": 2,
-    "d": [
-     0,
-     800,
-     0
-    ]
-   },
-   "seg": 12
-  },
-  {
-   "n": "Access Hatch",
-   "shape": "box",
-   "at": [
-    -3400,
-    -1050,
-    2900,
-    -2600,
-    -500,
-    2930
-   ],
-   "mat": "galv",
-   "repeat": {
-    "n": 4,
-    "d": [
-     2000,
-     0,
-     0
-    ]
-   }
-  },
   {
    "n": "Blower Kiosk",
    "shape": "box",
@@ -364,15 +163,15 @@
   {
    "n": "Inlet Pipe",
    "shape": "cyl",
-   "axis": "x",
+   "axis": "y",
    "c": [
-    800,
+    3500,
     2200
    ],
    "r": 80,
-   "x": [
-    -4900,
-    -4490
+   "y": [
+    1190,
+    1500
    ],
    "mat": "upvc"
   },
@@ -392,7 +191,210 @@
    "mat": "upvc"
   },
   {
-   "n": "Access Ladder Stile Left",
+   "n": "Plinth 50m3d",
+   "shape": "box",
+   "at": [
+    -4800,
+    -1500,
+    0,
+    6300,
+    1500,
+    300
+   ],
+   "mat": "conc",
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Tank Body 50m3d",
+   "shape": "box",
+   "at": [
+    -4500,
+    -1200,
+    300,
+    4500,
+    1200,
+    2900
+   ],
+   "mat": "paint",
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rib Front 50m3d",
+   "shape": "box",
+   "at": [
+    -3780,
+    -1225,
+    300,
+    -3720,
+    -1200,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rib Back 50m3d",
+   "shape": "box",
+   "at": [
+    -3780,
+    1200,
+    300,
+    -3720,
+    1225,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Walkway Grating 50m3d",
+   "shape": "box",
+   "at": [
+    -4400,
+    -400,
+    2900,
+    4400,
+    400,
+    2940
+   ],
+   "mat": "galv",
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rail Post Front 50m3d",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -4000,
+    -400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 5,
+    "d": [
+     2000.0,
+     0,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rail Post Back 50m3d",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -4000,
+    400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 5,
+    "d": [
+     2000.0,
+     0,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Top Rail 50m3d",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -400,
+    4020
+   ],
+   "r": 20,
+   "x": [
+    -4000,
+    4000
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     800,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Hatch 50m3d",
+   "shape": "box",
+   "at": [
+    -3400,
+    -1050,
+    2900,
+    -2600,
+    -500,
+    2930
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 4,
+    "d": [
+     2000,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Ladder Stile Left 50m3d",
    "shape": "box",
    "at": [
     -4660,
@@ -402,10 +404,13 @@
     -240,
     3900
    ],
-   "mat": "galv"
+   "mat": "galv",
+   "only": [
+    "50m3d_Packaged"
+   ]
   },
   {
-   "n": "Access Ladder Stile Right",
+   "n": "Access Ladder Stile Right 50m3d",
    "shape": "box",
    "at": [
     -4660,
@@ -415,10 +420,13 @@
     260,
     3900
    ],
-   "mat": "galv"
+   "mat": "galv",
+   "only": [
+    "50m3d_Packaged"
+   ]
   },
   {
-   "n": "Access Ladder Rung",
+   "n": "Access Ladder Rung 50m3d",
    "shape": "cyl",
    "axis": "y",
    "c": [
@@ -439,22 +447,290 @@
      300
     ]
    },
-   "seg": 12
+   "seg": 12,
+   "only": [
+    "50m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Plinth 100m3d",
+   "shape": "box",
+   "at": [
+    -7800,
+    -1500,
+    0,
+    6300,
+    1500,
+    300
+   ],
+   "mat": "conc",
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Tank Body 100m3d",
+   "shape": "box",
+   "at": [
+    -7500,
+    -1200,
+    300,
+    4500,
+    1200,
+    2900
+   ],
+   "mat": "paint",
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rib Front 100m3d",
+   "shape": "box",
+   "at": [
+    -6780,
+    -1225,
+    300,
+    -6720,
+    -1200,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 8,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rib Back 100m3d",
+   "shape": "box",
+   "at": [
+    -6780,
+    1200,
+    300,
+    -6720,
+    1225,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 8,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Walkway Grating 100m3d",
+   "shape": "box",
+   "at": [
+    -7400,
+    -400,
+    2900,
+    4400,
+    400,
+    2940
+   ],
+   "mat": "galv",
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rail Post Front 100m3d",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -7000,
+    -400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 7,
+    "d": [
+     1833.3333333333333,
+     0,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Rail Post Back 100m3d",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -7000,
+    400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 7,
+    "d": [
+     1833.3333333333333,
+     0,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Top Rail 100m3d",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -400,
+    4020
+   ],
+   "r": 20,
+   "x": [
+    -7000,
+    4000
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     800,
+     0
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Hatch 100m3d",
+   "shape": "box",
+   "at": [
+    -6400,
+    -1050,
+    2900,
+    -5600,
+    -500,
+    2930
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 6,
+    "d": [
+     2000,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Ladder Stile Left 100m3d",
+   "shape": "box",
+   "at": [
+    -7660,
+    -260,
+    300,
+    -7640,
+    -240,
+    3900
+   ],
+   "mat": "galv",
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Ladder Stile Right 100m3d",
+   "shape": "box",
+   "at": [
+    -7660,
+    240,
+    300,
+    -7640,
+    260,
+    3900
+   ],
+   "mat": "galv",
+   "only": [
+    "100m3d_Packaged"
+   ]
+  },
+  {
+   "n": "Access Ladder Rung 100m3d",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -7650,
+    600
+   ],
+   "r": 12,
+   "y": [
+    -250,
+    250
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 11,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   },
+   "seg": 12,
+   "only": [
+    "100m3d_Packaged"
+   ]
   }
  ],
  "reference": {
   "query": "structure wwtp packaged structures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=structure+wwtp+packaged+structures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://susbio.in/tag/sewage-treatment-plant-for-hospital/",
+  "photo_title": "Sewage treatment plant for hospital (SusBio)",
+  "photo_kind": "supplier"
  },
  "values": {
-  "Envelope 9000 x 2400 x 2600 mm on 300 plinth (50 m3/d)": {
-   "value": "9000x2400x2600",
+  "Tank 9000 / 12000 x 2400 x 2600 mm on 300 plinth (one per type)": {
+   "value": "9000/12000",
    "source_status": "assumed",
    "source": "typical packaged MBBR/SBR plant envelope; vendor to confirm"
   },
-  "Supply 415 V 3-phase, 5.5 kVA (50 m3/d)": {
-   "value": "415V 5.5kVA",
+  "Supply 415 V 3-phase, 5.5 / 9 kVA": {
+   "value": "415V 5.5/9kVA",
    "source_status": "assumed",
    "source": "typical blower load; vendor to confirm"
   },
@@ -464,7 +740,7 @@
    "source": "by the process engineer"
   }
  },
- "about": "Plant envelope on a plinth (ground z = 0): ribbed tank body, top walkway with posts and rails, four hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet and outlet stubs with connectors; power on the panel.",
+ "about": "Plant envelope on a plinth (ground z = 0), kiosk end fixed and the tank growing toward -x by type: ribbed tank body, top walkway with posts and rails, hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet (back) and outlet (front) stubs near the kiosk with connectors; power on the panel. Each type has its own geometry where it differs (parts with 'only'); the rest is shared.",
  "type_values": {
   "Voltage": 415,
   "Number of Poles": 3,
@@ -476,7 +752,7 @@
    "domain": "pipe",
    "system": "Sanitary",
    "part": "Inlet Pipe",
-   "side": "left",
+   "side": "back",
    "diameter": 160,
    "flow": "In"
   },

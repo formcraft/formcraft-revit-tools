@@ -18,7 +18,7 @@
  "materials": {
   "pre": "FMC_Concrete_Manhole_Precast",
   "galv": "FMC_Metal_ColdFormed_Galvanised",
-  "ci": "FMC_Metal_BurglarBar_Steel",
+  "ci": "FMC_Metal_DuctileIron_Black",
   "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
   "brick": "FMC_Masonry_BurntClayBrick_Common"
  },
@@ -185,22 +185,6 @@
    "mat": "brick"
   },
   {
-   "n": "Cover Slab",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    0,
-    0
-   ],
-   "r": 700,
-   "z": [
-    -400,
-    -250
-   ],
-   "mat": "pre",
-   "seg": 48
-  },
-  {
    "n": "Access Opening",
    "shape": "box",
    "at": [
@@ -214,7 +198,56 @@
    "void": true
   },
   {
-   "n": "Chamber Ring",
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -1820
+   ],
+   "r": 80,
+   "x": [
+    -1000,
+    -540
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Outlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -1845
+   ],
+   "r": 80,
+   "x": [
+    540,
+    1000
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Cover Slab 1050dia",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 700,
+   "z": [
+    -400,
+    -250
+   ],
+   "mat": "pre",
+   "seg": 48,
+   "only": [
+    "1050dia_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Ring 1050dia",
    "shape": "turn",
    "axis": "z",
    "c": [
@@ -248,10 +281,13 @@
      -500
     ]
    },
-   "seg": 48
+   "seg": 48,
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Base Unit",
+   "n": "Base Unit 1050dia",
    "shape": "turn",
    "axis": "z",
    "c": [
@@ -285,10 +321,13 @@
     ]
    ],
    "mat": "pre",
-   "seg": 48
+   "seg": 48,
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Channel",
+   "n": "Channel 1050dia",
    "shape": "box",
    "at": [
     -525,
@@ -298,10 +337,13 @@
     75,
     -1830
    ],
-   "mat": "pre"
+   "mat": "pre",
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Benching Back",
+   "n": "Benching Back 1050dia",
    "shape": "prism",
    "pts": [
     [
@@ -361,10 +403,13 @@
     -1900,
     -1720
    ],
-   "mat": "pre"
+   "mat": "pre",
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Benching Front",
+   "n": "Benching Front 1050dia",
    "shape": "prism",
    "pts": [
     [
@@ -424,10 +469,13 @@
     -1900,
     -1720
    ],
-   "mat": "pre"
+   "mat": "pre",
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Step Iron",
+   "n": "Step Iron 1050dia",
    "shape": "box",
    "at": [
     -150,
@@ -446,10 +494,13 @@
      0,
      -300
     ]
-   }
+   },
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Step Iron Leg L",
+   "n": "Step Iron Leg L 1050dia",
    "shape": "box",
    "at": [
     -150,
@@ -468,10 +519,13 @@
      0,
      -300
     ]
-   }
+   },
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Step Iron Leg R",
+   "n": "Step Iron Leg R 1050dia",
    "shape": "box",
    "at": [
     130,
@@ -490,49 +544,347 @@
      0,
      -300
     ]
-   }
+   },
+   "only": [
+    "1050dia_Precast"
+   ]
   },
   {
-   "n": "Inlet Pipe",
+   "n": "Cover Slab 1200dia",
    "shape": "cyl",
-   "axis": "x",
+   "axis": "z",
    "c": [
     0,
-    -1820
+    0
    ],
-   "r": 80,
-   "x": [
-    -950,
-    -515
+   "r": 795,
+   "z": [
+    -400,
+    -250
    ],
-   "mat": "upvc"
+   "mat": "pre",
+   "seg": 48,
+   "only": [
+    "1200dia_Precast"
+   ]
   },
   {
-   "n": "Outlet Pipe",
-   "shape": "cyl",
-   "axis": "x",
+   "n": "Chamber Ring 1200dia",
+   "shape": "turn",
+   "axis": "z",
    "c": [
     0,
-    -1845
+    0
    ],
-   "r": 80,
-   "x": [
-    515,
-    950
+   "profile": [
+    [
+     600,
+     -900
+    ],
+    [
+     720,
+     -900
+    ],
+    [
+     720,
+     -400
+    ],
+    [
+     600,
+     -400
+    ]
    ],
-   "mat": "upvc"
+   "mat": "pre",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     -500
+    ]
+   },
+   "seg": 48,
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Base Unit 1200dia",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -2050
+    ],
+    [
+     720,
+     -2050
+    ],
+    [
+     720,
+     -1400
+    ],
+    [
+     600,
+     -1400
+    ],
+    [
+     600,
+     -1900
+    ],
+    [
+     0,
+     -1900
+    ]
+   ],
+   "mat": "pre",
+   "seg": 48,
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Channel 1200dia",
+   "shape": "box",
+   "at": [
+    -600,
+    -75,
+    -1900,
+    600,
+    75,
+    -1830
+   ],
+   "mat": "pre",
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Benching Back 1200dia",
+   "shape": "prism",
+   "pts": [
+    [
+     595.3,
+     75.0
+    ],
+    [
+     560.2,
+     214.9
+    ],
+    [
+     492.8,
+     342.3
+    ],
+    [
+     396.9,
+     450.0
+    ],
+    [
+     278.0,
+     531.7
+    ],
+    [
+     143.2,
+     582.7
+    ],
+    [
+     0.0,
+     600.0
+    ],
+    [
+     -143.2,
+     582.7
+    ],
+    [
+     -278.0,
+     531.7
+    ],
+    [
+     -396.9,
+     450.0
+    ],
+    [
+     -492.8,
+     342.3
+    ],
+    [
+     -560.2,
+     214.9
+    ],
+    [
+     -595.3,
+     75.0
+    ]
+   ],
+   "z": [
+    -1900,
+    -1720
+   ],
+   "mat": "pre",
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Benching Front 1200dia",
+   "shape": "prism",
+   "pts": [
+    [
+     -595.3,
+     -75.0
+    ],
+    [
+     -560.2,
+     -214.9
+    ],
+    [
+     -492.8,
+     -342.3
+    ],
+    [
+     -396.9,
+     -450.0
+    ],
+    [
+     -278.0,
+     -531.7
+    ],
+    [
+     -143.2,
+     -582.7
+    ],
+    [
+     0.0,
+     -600.0
+    ],
+    [
+     143.2,
+     -582.7
+    ],
+    [
+     278.0,
+     -531.7
+    ],
+    [
+     396.9,
+     -450.0
+    ],
+    [
+     492.8,
+     -342.3
+    ],
+    [
+     560.2,
+     -214.9
+    ],
+    [
+     595.3,
+     -75.0
+    ]
+   ],
+   "z": [
+    -1900,
+    -1720
+   ],
+   "mat": "pre",
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Step Iron 1200dia",
+   "shape": "box",
+   "at": [
+    -150,
+    470,
+    -700,
+    150,
+    490,
+    -680
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     -300
+    ]
+   },
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Step Iron Leg L 1200dia",
+   "shape": "box",
+   "at": [
+    -150,
+    490,
+    -700,
+    -130,
+    600,
+    -680
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     -300
+    ]
+   },
+   "only": [
+    "1200dia_Precast"
+   ]
+  },
+  {
+   "n": "Step Iron Leg R 1200dia",
+   "shape": "box",
+   "at": [
+    130,
+    490,
+    -700,
+    150,
+    600,
+    -680
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     -300
+    ]
+   },
+   "only": [
+    "1200dia_Precast"
+   ]
   }
  ],
  "reference": {
   "query": "structure manhole precast structures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=structure+manhole+precast+structures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.marshalls.co.uk/commercial/product/chamber-rings",
+  "photo_title": "Chamber Rings (Marshalls)",
+  "photo_kind": "manufacturer"
  },
  "values": {
-  "Internal diameter 1050 mm (geometry)": {
-   "value": 1050,
+  "Internal diameter 1050 and 1200 mm (one per type)": {
+   "value": "1050/1200",
    "source_status": "assumed",
-   "source": "typical precast ring (BS EN 1917)"
+   "source": "typical precast rings (BS EN 1917)"
   },
   "Depth to invert 1900 mm shown": {
    "value": 1900,
@@ -550,7 +902,7 @@
    "source": "drainage design"
   }
  },
- "about": "Ground at z = 0: cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs with connectors.",
+ "about": "Ground at z = 0: ductile-iron cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs (shared by both types) with connectors. Each type has its own geometry where it differs (parts with 'only'); the rest is shared.",
  "connectors": [
   {
    "n": "SAN In",

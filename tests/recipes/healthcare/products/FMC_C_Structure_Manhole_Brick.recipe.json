@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_Manhole_Brick",
  "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0: cover and frame over an opening in the RC cover slab, four brick walls, base slab, channel and benching, step irons (Fine), pipe stubs along y with connectors. Reference: query: structure manhole brick structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+manhole+brick+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: cover and frame over an opening in the RC cover slab, four brick walls, base slab, channel and benching, step irons (Fine), pipe stubs along y (shared by both types) with connectors. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure manhole brick structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+manhole+brick+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://water.ie/sites/default/files/2024-10/TT3-IW-Manholes-and-Inspection-Chambers.pdf; photo_title: TT3 Manholes and Inspection Chambers (Uisce Eireann); photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -115,6 +115,13 @@
    "value": "P.MAN_03"
   },
   {
+   "op": "set_type_value",
+   "name": "600x900_Brick/URL",
+   "type": "600x900_Brick",
+   "param": "URL",
+   "value": "https://water.ie/sites/default/files/2024-10/TT3-IW-Manholes-and-Inspection-Chambers.pdf"
+  },
+  {
    "op": "add_type",
    "name": "900x1200_Brick"
   },
@@ -161,12 +168,40 @@
    "value": "P.MAN_03"
   },
   {
+   "op": "set_type_value",
+   "name": "900x1200_Brick/URL",
+   "type": "900x1200_Brick",
+   "param": "URL",
+   "value": "https://water.ie/sites/default/files/2024-10/TT3-IW-Manholes-and-Inspection-Chambers.pdf"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upvc",
+   "color": [
+    74,
+    77,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upvc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+   "param": "Upvc Material"
+  },
+  {
    "op": "add_subcategory",
    "name": "Ci",
    "color": [
-    34,
-    36,
-    38
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
@@ -178,7 +213,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
+   "name": "FMC_Metal_DuctileIron_Black",
    "param": "Ci Material"
   },
   {
@@ -246,27 +281,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Upvc",
-   "color": [
-    74,
-    77,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Upvc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
-   "param": "Upvc Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -280,20 +294,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -630,
-     -950
+     -780,
+     -1100
     ],
     [
-     630,
-     -950
+     780,
+     -1100
     ],
     [
-     630,
-     950
+     780,
+     1100
     ],
     [
-     -630,
-     950
+     -780,
+     1100
     ]
    ],
    "start": -1580,
@@ -310,973 +324,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Frame Front",
-   "points": [
-    [
-     -375.0,
-     -450.0
-    ],
-    [
-     375.0,
-     -450.0
-    ],
-    [
-     375.0,
-     -375.0
-    ],
-    [
-     -375.0,
-     -375.0
-    ]
-   ],
-   "start": -100,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Frame Front",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Frame Front",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Frame Back",
-   "points": [
-    [
-     -375.0,
-     75.0
-    ],
-    [
-     375.0,
-     75.0
-    ],
-    [
-     375.0,
-     150.0
-    ],
-    [
-     -375.0,
-     150.0
-    ]
-   ],
-   "start": -100,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Frame Back",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Frame Back",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Frame Left",
-   "points": [
-    [
-     -375.0,
-     -375.0
-    ],
-    [
-     -300.0,
-     -375.0
-    ],
-    [
-     -300.0,
-     75.0
-    ],
-    [
-     -375.0,
-     75.0
-    ]
-   ],
-   "start": -100,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Frame Left",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Frame Left",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Frame Right",
-   "points": [
-    [
-     300.0,
-     -375.0
-    ],
-    [
-     375.0,
-     -375.0
-    ],
-    [
-     375.0,
-     75.0
-    ],
-    [
-     300.0,
-     75.0
-    ]
-   ],
-   "start": -100,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Frame Right",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Frame Right",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Cover",
-   "points": [
-    [
-     -300.0,
-     -375.0
-    ],
-    [
-     300.0,
-     -375.0
-    ],
-    [
-     300.0,
-     75.0
-    ],
-    [
-     -300.0,
-     75.0
-    ]
-   ],
-   "start": -6,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Cover",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Cover",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Cover",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Pattern 1",
-   "points": [
-    [
-     -260.0,
-     -293.0
-    ],
-    [
-     260.0,
-     -293.0
-    ],
-    [
-     260.0,
-     -277.0
-    ],
-    [
-     -260.0,
-     -277.0
-    ]
-   ],
-   "start": 1,
-   "end": 3.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Pattern 1",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Pattern 1",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Pattern 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Pattern 2",
-   "points": [
-    [
-     -260.0,
-     -203.0
-    ],
-    [
-     260.0,
-     -203.0
-    ],
-    [
-     260.0,
-     -187.0
-    ],
-    [
-     -260.0,
-     -187.0
-    ]
-   ],
-   "start": 1,
-   "end": 3.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Pattern 2",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Pattern 2",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Pattern 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Pattern 3",
-   "points": [
-    [
-     -260.0,
-     -113.0
-    ],
-    [
-     260.0,
-     -113.0
-    ],
-    [
-     260.0,
-     -97.0
-    ],
-    [
-     -260.0,
-     -97.0
-    ]
-   ],
-   "start": 1,
-   "end": 3.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Pattern 3",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Pattern 3",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Pattern 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Pattern 4",
-   "points": [
-    [
-     -260.0,
-     -23.0
-    ],
-    [
-     260.0,
-     -23.0
-    ],
-    [
-     260.0,
-     -7.0
-    ],
-    [
-     -260.0,
-     -7.0
-    ]
-   ],
-   "start": 1,
-   "end": 3.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Pattern 4",
-   "subcategory": "Ci"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Pattern 4",
-   "param": "Ci Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Pattern 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Keyhole 1",
-   "points": [
-    [
-     -275.0,
-     -170
-    ],
-    [
-     -265.0,
-     -170
-    ],
-    [
-     -265.0,
-     -130
-    ],
-    [
-     -275.0,
-     -130
-    ]
-   ],
-   "start": 1,
-   "end": 2
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Keyhole 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Keyhole 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Keyhole 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Keyhole 2",
-   "points": [
-    [
-     265.0,
-     -170
-    ],
-    [
-     275.0,
-     -170
-    ],
-    [
-     275.0,
-     -130
-    ],
-    [
-     265.0,
-     -130
-    ]
-   ],
-   "start": 1,
-   "end": 2
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Keyhole 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Keyhole 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Keyhole 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab",
-   "points": [
-    [
-     -530,
-     -680
-    ],
-    [
-     530,
-     -680
-    ],
-    [
-     530,
-     680
-    ],
-    [
-     -530,
-     680
-    ]
-   ],
-   "start": -230,
-   "end": -100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Access Opening",
-   "points": [
-    [
-     -300,
-     -375
-    ],
-    [
-     300,
-     -375
-    ],
-    [
-     300,
-     75
-    ],
-    [
-     -300,
-     75
-    ]
-   ],
-   "start": -231,
-   "end": -99
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Front",
-   "points": [
-    [
-     -530,
-     -680
-    ],
-    [
-     530,
-     -680
-    ],
-    [
-     530,
-     -450
-    ],
-    [
-     -530,
-     -450
-    ]
-   ],
-   "start": -1430,
-   "end": -230
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Front",
-   "subcategory": "Brick"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Front",
-   "param": "Brick Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Back",
-   "points": [
-    [
-     -530,
-     450
-    ],
-    [
-     530,
-     450
-    ],
-    [
-     530,
-     680
-    ],
-    [
-     -530,
-     680
-    ]
-   ],
-   "start": -1430,
-   "end": -230
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Back",
-   "subcategory": "Brick"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Back",
-   "param": "Brick Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Left",
-   "points": [
-    [
-     -530,
-     -450
-    ],
-    [
-     -300,
-     -450
-    ],
-    [
-     -300,
-     450
-    ],
-    [
-     -530,
-     450
-    ]
-   ],
-   "start": -1430,
-   "end": -230
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Left",
-   "subcategory": "Brick"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Left",
-   "param": "Brick Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Right",
-   "points": [
-    [
-     300,
-     -450
-    ],
-    [
-     530,
-     -450
-    ],
-    [
-     530,
-     450
-    ],
-    [
-     300,
-     450
-    ]
-   ],
-   "start": -1430,
-   "end": -230
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Right",
-   "subcategory": "Brick"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Right",
-   "param": "Brick Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Slab",
-   "points": [
-    [
-     -630,
-     -780
-    ],
-    [
-     630,
-     -780
-    ],
-    [
-     630,
-     780
-    ],
-    [
-     -630,
-     780
-    ]
-   ],
-   "start": -1580,
-   "end": -1430
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel",
-   "points": [
-    [
-     -75,
-     -450
-    ],
-    [
-     75,
-     -450
-    ],
-    [
-     75,
-     450
-    ],
-    [
-     -75,
-     450
-    ]
-   ],
-   "start": -1430,
-   "end": -1370
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Benching Left",
-   "points": [
-    [
-     -300,
-     -450
-    ],
-    [
-     -75,
-     -450
-    ],
-    [
-     -75,
-     450
-    ],
-    [
-     -300,
-     450
-    ]
-   ],
-   "start": -1430,
-   "end": -1260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Benching Left",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Benching Left",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Benching Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Benching Right",
-   "points": [
-    [
-     75,
-     -450
-    ],
-    [
-     300,
-     -450
-    ],
-    [
-     300,
-     450
-    ],
-    [
-     75,
-     450
-    ]
-   ],
-   "start": -1430,
-   "end": -1260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Benching Right",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Benching Right",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Benching Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Step Iron 1",
-   "points": [
-    [
-     -150,
-     -450
-    ],
-    [
-     150,
-     -450
-    ],
-    [
-     150,
-     -430
-    ],
-    [
-     -150,
-     -430
-    ]
-   ],
-   "start": -600,
-   "end": -580
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Step Iron 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Step Iron 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Step Iron 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Step Iron 2",
-   "points": [
-    [
-     -150,
-     -450
-    ],
-    [
-     150,
-     -450
-    ],
-    [
-     150,
-     -430
-    ],
-    [
-     -150,
-     -430
-    ]
-   ],
-   "start": -900,
-   "end": -880
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Step Iron 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Step Iron 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Step Iron 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Step Iron 3",
-   "points": [
-    [
-     -150,
-     -450
-    ],
-    [
-     150,
-     -450
-    ],
-    [
-     150,
-     -430
-    ],
-    [
-     -150,
-     -430
-    ]
-   ],
-   "start": -1200,
-   "end": -1180
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Step Iron 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Step Iron 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Step Iron 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1379,8 +426,8 @@
      -1370.71
     ]
    ],
-   "start": 440,
-   "end": 950,
+   "start": 590,
+   "end": 1100,
    "sketch": "front"
   },
   {
@@ -1501,8 +548,8 @@
      -1385.71
     ]
    ],
-   "start": -950,
-   "end": -440,
+   "start": -1100,
+   "end": -590,
    "sketch": "front"
   },
   {
@@ -1521,6 +568,2268 @@
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Front 600x900",
+   "points": [
+    [
+     -375.0,
+     -450.0
+    ],
+    [
+     375.0,
+     -450.0
+    ],
+    [
+     375.0,
+     -375.0
+    ],
+    [
+     -375.0,
+     -375.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Front 600x900",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Front 600x900",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Front 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Back 600x900",
+   "points": [
+    [
+     -375.0,
+     75.0
+    ],
+    [
+     375.0,
+     75.0
+    ],
+    [
+     375.0,
+     150.0
+    ],
+    [
+     -375.0,
+     150.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Back 600x900",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Back 600x900",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Back 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Left 600x900",
+   "points": [
+    [
+     -375.0,
+     -375.0
+    ],
+    [
+     -300.0,
+     -375.0
+    ],
+    [
+     -300.0,
+     75.0
+    ],
+    [
+     -375.0,
+     75.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Left 600x900",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Left 600x900",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Left 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Right 600x900",
+   "points": [
+    [
+     300.0,
+     -375.0
+    ],
+    [
+     375.0,
+     -375.0
+    ],
+    [
+     375.0,
+     75.0
+    ],
+    [
+     300.0,
+     75.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Right 600x900",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Right 600x900",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Right 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Cover 600x900",
+   "points": [
+    [
+     -300.0,
+     -375.0
+    ],
+    [
+     300.0,
+     -375.0
+    ],
+    [
+     300.0,
+     75.0
+    ],
+    [
+     -300.0,
+     75.0
+    ]
+   ],
+   "start": -6,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Cover 600x900",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Cover 600x900",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Cover 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 600x900 1",
+   "points": [
+    [
+     -260.0,
+     -293.0
+    ],
+    [
+     260.0,
+     -293.0
+    ],
+    [
+     260.0,
+     -277.0
+    ],
+    [
+     -260.0,
+     -277.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 600x900 1",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 600x900 1",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 600x900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 600x900 2",
+   "points": [
+    [
+     -260.0,
+     -203.0
+    ],
+    [
+     260.0,
+     -203.0
+    ],
+    [
+     260.0,
+     -187.0
+    ],
+    [
+     -260.0,
+     -187.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 600x900 2",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 600x900 2",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 600x900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 600x900 3",
+   "points": [
+    [
+     -260.0,
+     -113.0
+    ],
+    [
+     260.0,
+     -113.0
+    ],
+    [
+     260.0,
+     -97.0
+    ],
+    [
+     -260.0,
+     -97.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 600x900 3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 600x900 3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 600x900 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 600x900 4",
+   "points": [
+    [
+     -260.0,
+     -23.0
+    ],
+    [
+     260.0,
+     -23.0
+    ],
+    [
+     260.0,
+     -7.0
+    ],
+    [
+     -260.0,
+     -7.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 600x900 4",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 600x900 4",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 600x900 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Keyhole 600x900 1",
+   "points": [
+    [
+     -275.0,
+     -170
+    ],
+    [
+     -265.0,
+     -170
+    ],
+    [
+     -265.0,
+     -130
+    ],
+    [
+     -275.0,
+     -130
+    ]
+   ],
+   "start": 1,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Keyhole 600x900 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Keyhole 600x900 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Keyhole 600x900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Keyhole 600x900 2",
+   "points": [
+    [
+     265.0,
+     -170
+    ],
+    [
+     275.0,
+     -170
+    ],
+    [
+     275.0,
+     -130
+    ],
+    [
+     265.0,
+     -130
+    ]
+   ],
+   "start": 1,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Keyhole 600x900 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Keyhole 600x900 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Keyhole 600x900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Slab 600x900",
+   "points": [
+    [
+     -530,
+     -680
+    ],
+    [
+     530,
+     -680
+    ],
+    [
+     530,
+     680
+    ],
+    [
+     -530,
+     680
+    ]
+   ],
+   "start": -230,
+   "end": -100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Slab 600x900",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Slab 600x900",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Slab 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Access Opening 600x900",
+   "points": [
+    [
+     -300,
+     -375
+    ],
+    [
+     300,
+     -375
+    ],
+    [
+     300,
+     75
+    ],
+    [
+     -300,
+     75
+    ]
+   ],
+   "start": -231,
+   "end": -99
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Front 600x900",
+   "points": [
+    [
+     -530,
+     -680
+    ],
+    [
+     530,
+     -680
+    ],
+    [
+     530,
+     -450
+    ],
+    [
+     -530,
+     -450
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Front 600x900",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Front 600x900",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Front 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Back 600x900",
+   "points": [
+    [
+     -530,
+     450
+    ],
+    [
+     530,
+     450
+    ],
+    [
+     530,
+     680
+    ],
+    [
+     -530,
+     680
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Back 600x900",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Back 600x900",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Back 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Left 600x900",
+   "points": [
+    [
+     -530,
+     -450
+    ],
+    [
+     -300,
+     -450
+    ],
+    [
+     -300,
+     450
+    ],
+    [
+     -530,
+     450
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Left 600x900",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Left 600x900",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Left 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Right 600x900",
+   "points": [
+    [
+     300,
+     -450
+    ],
+    [
+     530,
+     -450
+    ],
+    [
+     530,
+     450
+    ],
+    [
+     300,
+     450
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Right 600x900",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Right 600x900",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Right 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 600x900",
+   "points": [
+    [
+     -630,
+     -780
+    ],
+    [
+     630,
+     -780
+    ],
+    [
+     630,
+     780
+    ],
+    [
+     -630,
+     780
+    ]
+   ],
+   "start": -1580,
+   "end": -1430
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 600x900",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 600x900",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Channel 600x900",
+   "points": [
+    [
+     -75,
+     -450
+    ],
+    [
+     75,
+     -450
+    ],
+    [
+     75,
+     450
+    ],
+    [
+     -75,
+     450
+    ]
+   ],
+   "start": -1430,
+   "end": -1370
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Channel 600x900",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Channel 600x900",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Channel 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Left 600x900",
+   "points": [
+    [
+     -300,
+     -450
+    ],
+    [
+     -75,
+     -450
+    ],
+    [
+     -75,
+     450
+    ],
+    [
+     -300,
+     450
+    ]
+   ],
+   "start": -1430,
+   "end": -1260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Left 600x900",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Left 600x900",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Left 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Right 600x900",
+   "points": [
+    [
+     75,
+     -450
+    ],
+    [
+     300,
+     -450
+    ],
+    [
+     300,
+     450
+    ],
+    [
+     75,
+     450
+    ]
+   ],
+   "start": -1430,
+   "end": -1260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Right 600x900",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Right 600x900",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Right 600x900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 600x900 1",
+   "points": [
+    [
+     -150,
+     -450
+    ],
+    [
+     150,
+     -450
+    ],
+    [
+     150,
+     -430
+    ],
+    [
+     -150,
+     -430
+    ]
+   ],
+   "start": -600,
+   "end": -580
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 600x900 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 600x900 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 600x900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 600x900 2",
+   "points": [
+    [
+     -150,
+     -450
+    ],
+    [
+     150,
+     -450
+    ],
+    [
+     150,
+     -430
+    ],
+    [
+     -150,
+     -430
+    ]
+   ],
+   "start": -900,
+   "end": -880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 600x900 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 600x900 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 600x900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 600x900 3",
+   "points": [
+    [
+     -150,
+     -450
+    ],
+    [
+     150,
+     -450
+    ],
+    [
+     150,
+     -430
+    ],
+    [
+     -150,
+     -430
+    ]
+   ],
+   "start": -1200,
+   "end": -1180
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 600x900 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 600x900 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 600x900 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Front 900x1200",
+   "points": [
+    [
+     -375.0,
+     -600.0
+    ],
+    [
+     375.0,
+     -600.0
+    ],
+    [
+     375.0,
+     -525.0
+    ],
+    [
+     -375.0,
+     -525.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Front 900x1200",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Front 900x1200",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Front 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Back 900x1200",
+   "points": [
+    [
+     -375.0,
+     -75.0
+    ],
+    [
+     375.0,
+     -75.0
+    ],
+    [
+     375.0,
+     0.0
+    ],
+    [
+     -375.0,
+     0.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Back 900x1200",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Back 900x1200",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Back 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Left 900x1200",
+   "points": [
+    [
+     -375.0,
+     -525.0
+    ],
+    [
+     -300.0,
+     -525.0
+    ],
+    [
+     -300.0,
+     -75.0
+    ],
+    [
+     -375.0,
+     -75.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Left 900x1200",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Left 900x1200",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Left 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Frame Right 900x1200",
+   "points": [
+    [
+     300.0,
+     -525.0
+    ],
+    [
+     375.0,
+     -525.0
+    ],
+    [
+     375.0,
+     -75.0
+    ],
+    [
+     300.0,
+     -75.0
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Frame Right 900x1200",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Frame Right 900x1200",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Frame Right 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Cover 900x1200",
+   "points": [
+    [
+     -300.0,
+     -525.0
+    ],
+    [
+     300.0,
+     -525.0
+    ],
+    [
+     300.0,
+     -75.0
+    ],
+    [
+     -300.0,
+     -75.0
+    ]
+   ],
+   "start": -6,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Cover 900x1200",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Cover 900x1200",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Cover 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 900x1200 1",
+   "points": [
+    [
+     -260.0,
+     -443.0
+    ],
+    [
+     260.0,
+     -443.0
+    ],
+    [
+     260.0,
+     -427.0
+    ],
+    [
+     -260.0,
+     -427.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 900x1200 1",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 900x1200 1",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 900x1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 900x1200 2",
+   "points": [
+    [
+     -260.0,
+     -353.0
+    ],
+    [
+     260.0,
+     -353.0
+    ],
+    [
+     260.0,
+     -337.0
+    ],
+    [
+     -260.0,
+     -337.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 900x1200 2",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 900x1200 2",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 900x1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 900x1200 3",
+   "points": [
+    [
+     -260.0,
+     -263.0
+    ],
+    [
+     260.0,
+     -263.0
+    ],
+    [
+     260.0,
+     -247.0
+    ],
+    [
+     -260.0,
+     -247.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 900x1200 3",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 900x1200 3",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 900x1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Pattern 900x1200 4",
+   "points": [
+    [
+     -260.0,
+     -173.0
+    ],
+    [
+     260.0,
+     -173.0
+    ],
+    [
+     260.0,
+     -157.0
+    ],
+    [
+     -260.0,
+     -157.0
+    ]
+   ],
+   "start": 1,
+   "end": 3.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Pattern 900x1200 4",
+   "subcategory": "Ci"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Pattern 900x1200 4",
+   "param": "Ci Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Pattern 900x1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Keyhole 900x1200 1",
+   "points": [
+    [
+     -275.0,
+     -320
+    ],
+    [
+     -265.0,
+     -320
+    ],
+    [
+     -265.0,
+     -280
+    ],
+    [
+     -275.0,
+     -280
+    ]
+   ],
+   "start": 1,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Keyhole 900x1200 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Keyhole 900x1200 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Keyhole 900x1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Keyhole 900x1200 2",
+   "points": [
+    [
+     265.0,
+     -320
+    ],
+    [
+     275.0,
+     -320
+    ],
+    [
+     275.0,
+     -280
+    ],
+    [
+     265.0,
+     -280
+    ]
+   ],
+   "start": 1,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Keyhole 900x1200 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Keyhole 900x1200 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Keyhole 900x1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Slab 900x1200",
+   "points": [
+    [
+     -680,
+     -830
+    ],
+    [
+     680,
+     -830
+    ],
+    [
+     680,
+     830
+    ],
+    [
+     -680,
+     830
+    ]
+   ],
+   "start": -230,
+   "end": -100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Slab 900x1200",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Slab 900x1200",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Slab 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Access Opening 900x1200",
+   "points": [
+    [
+     -300,
+     -525
+    ],
+    [
+     300,
+     -525
+    ],
+    [
+     300,
+     -75
+    ],
+    [
+     -300,
+     -75
+    ]
+   ],
+   "start": -231,
+   "end": -99
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Front 900x1200",
+   "points": [
+    [
+     -680,
+     -830
+    ],
+    [
+     680,
+     -830
+    ],
+    [
+     680,
+     -600
+    ],
+    [
+     -680,
+     -600
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Front 900x1200",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Front 900x1200",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Front 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Back 900x1200",
+   "points": [
+    [
+     -680,
+     600
+    ],
+    [
+     680,
+     600
+    ],
+    [
+     680,
+     830
+    ],
+    [
+     -680,
+     830
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Back 900x1200",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Back 900x1200",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Back 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Left 900x1200",
+   "points": [
+    [
+     -680,
+     -600
+    ],
+    [
+     -450,
+     -600
+    ],
+    [
+     -450,
+     600
+    ],
+    [
+     -680,
+     600
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Left 900x1200",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Left 900x1200",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Left 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Right 900x1200",
+   "points": [
+    [
+     450,
+     -600
+    ],
+    [
+     680,
+     -600
+    ],
+    [
+     680,
+     600
+    ],
+    [
+     450,
+     600
+    ]
+   ],
+   "start": -1430,
+   "end": -230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Right 900x1200",
+   "subcategory": "Brick"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Right 900x1200",
+   "param": "Brick Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Right 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 900x1200",
+   "points": [
+    [
+     -780,
+     -930
+    ],
+    [
+     780,
+     -930
+    ],
+    [
+     780,
+     930
+    ],
+    [
+     -780,
+     930
+    ]
+   ],
+   "start": -1580,
+   "end": -1430
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 900x1200",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 900x1200",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Channel 900x1200",
+   "points": [
+    [
+     -75,
+     -600
+    ],
+    [
+     75,
+     -600
+    ],
+    [
+     75,
+     600
+    ],
+    [
+     -75,
+     600
+    ]
+   ],
+   "start": -1430,
+   "end": -1370
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Channel 900x1200",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Channel 900x1200",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Channel 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Left 900x1200",
+   "points": [
+    [
+     -450,
+     -600
+    ],
+    [
+     -75,
+     -600
+    ],
+    [
+     -75,
+     600
+    ],
+    [
+     -450,
+     600
+    ]
+   ],
+   "start": -1430,
+   "end": -1260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Left 900x1200",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Left 900x1200",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Left 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Right 900x1200",
+   "points": [
+    [
+     75,
+     -600
+    ],
+    [
+     450,
+     -600
+    ],
+    [
+     450,
+     600
+    ],
+    [
+     75,
+     600
+    ]
+   ],
+   "start": -1430,
+   "end": -1260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Right 900x1200",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Right 900x1200",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Right 900x1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 900x1200 1",
+   "points": [
+    [
+     -150,
+     -600
+    ],
+    [
+     150,
+     -600
+    ],
+    [
+     150,
+     -580
+    ],
+    [
+     -150,
+     -580
+    ]
+   ],
+   "start": -600,
+   "end": -580
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 900x1200 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 900x1200 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 900x1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 900x1200 2",
+   "points": [
+    [
+     -150,
+     -600
+    ],
+    [
+     150,
+     -600
+    ],
+    [
+     150,
+     -580
+    ],
+    [
+     -150,
+     -580
+    ]
+   ],
+   "start": -900,
+   "end": -880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 900x1200 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 900x1200 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 900x1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 900x1200 3",
+   "points": [
+    [
+     -150,
+     -600
+    ],
+    [
+     150,
+     -600
+    ],
+    [
+     150,
+     -580
+    ],
+    [
+     -150,
+     -580
+    ]
+   ],
+   "start": -1200,
+   "end": -1180
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 900x1200 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 900x1200 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 900x1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600x900_Brick",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x900_Brick/Show 600x900_Brick",
+   "type": "600x900_Brick",
+   "param": "Show 600x900_Brick",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1200_Brick/Show 600x900_Brick",
+   "type": "900x1200_Brick",
+   "param": "Show 600x900_Brick",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Front 600x900/Visible",
+   "solid": "Access Frame Front 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Back 600x900/Visible",
+   "solid": "Access Frame Back 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Left 600x900/Visible",
+   "solid": "Access Frame Left 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Right 600x900/Visible",
+   "solid": "Access Frame Right 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Cover 600x900/Visible",
+   "solid": "Access Cover 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 600x900 1/Visible",
+   "solid": "Access Pattern 600x900 1",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 600x900 2/Visible",
+   "solid": "Access Pattern 600x900 2",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 600x900 3/Visible",
+   "solid": "Access Pattern 600x900 3",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 600x900 4/Visible",
+   "solid": "Access Pattern 600x900 4",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Keyhole 600x900 1/Visible",
+   "solid": "Access Keyhole 600x900 1",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Keyhole 600x900 2/Visible",
+   "solid": "Access Keyhole 600x900 2",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 600x900/Visible",
+   "solid": "Cover Slab 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Opening 600x900/Visible",
+   "solid": "Access Opening 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Front 600x900/Visible",
+   "solid": "Chamber Wall Front 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Back 600x900/Visible",
+   "solid": "Chamber Wall Back 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Left 600x900/Visible",
+   "solid": "Chamber Wall Left 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Right 600x900/Visible",
+   "solid": "Chamber Wall Right 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 600x900/Visible",
+   "solid": "Base Slab 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Channel 600x900/Visible",
+   "solid": "Channel 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Left 600x900/Visible",
+   "solid": "Benching Left 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Right 600x900/Visible",
+   "solid": "Benching Right 600x900",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 600x900 1/Visible",
+   "solid": "Step Iron 600x900 1",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 600x900 2/Visible",
+   "solid": "Step Iron 600x900 2",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 600x900 3/Visible",
+   "solid": "Step Iron 600x900 3",
+   "param": "Show 600x900_Brick"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900x1200_Brick",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x900_Brick/Show 900x1200_Brick",
+   "type": "600x900_Brick",
+   "param": "Show 900x1200_Brick",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1200_Brick/Show 900x1200_Brick",
+   "type": "900x1200_Brick",
+   "param": "Show 900x1200_Brick",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Front 900x1200/Visible",
+   "solid": "Access Frame Front 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Back 900x1200/Visible",
+   "solid": "Access Frame Back 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Left 900x1200/Visible",
+   "solid": "Access Frame Left 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Frame Right 900x1200/Visible",
+   "solid": "Access Frame Right 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Cover 900x1200/Visible",
+   "solid": "Access Cover 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 900x1200 1/Visible",
+   "solid": "Access Pattern 900x1200 1",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 900x1200 2/Visible",
+   "solid": "Access Pattern 900x1200 2",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 900x1200 3/Visible",
+   "solid": "Access Pattern 900x1200 3",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Pattern 900x1200 4/Visible",
+   "solid": "Access Pattern 900x1200 4",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Keyhole 900x1200 1/Visible",
+   "solid": "Access Keyhole 900x1200 1",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Keyhole 900x1200 2/Visible",
+   "solid": "Access Keyhole 900x1200 2",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 900x1200/Visible",
+   "solid": "Cover Slab 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Opening 900x1200/Visible",
+   "solid": "Access Opening 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Front 900x1200/Visible",
+   "solid": "Chamber Wall Front 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Back 900x1200/Visible",
+   "solid": "Chamber Wall Back 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Left 900x1200/Visible",
+   "solid": "Chamber Wall Left 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Right 900x1200/Visible",
+   "solid": "Chamber Wall Right 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 900x1200/Visible",
+   "solid": "Base Slab 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Channel 900x1200/Visible",
+   "solid": "Channel 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Left 900x1200/Visible",
+   "solid": "Benching Left 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Right 900x1200/Visible",
+   "solid": "Benching Right 900x1200",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 900x1200 1/Visible",
+   "solid": "Step Iron 900x1200 1",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 900x1200 2/Visible",
+   "solid": "Step Iron 900x1200 2",
+   "param": "Show 900x1200_Brick"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 900x1200 3/Visible",
+   "solid": "Step Iron 900x1200 3",
+   "param": "Show 900x1200_Brick"
   },
   {
    "op": "add_connector",
@@ -1549,10 +2858,10 @@
   }
  ],
  "values": {
-  "Internal 600 x 900 mm (geometry)": {
-   "value": "600x900",
+  "Internal 600 x 900 and 900 x 1200 mm (one per type)": {
+   "value": "600x900/900x1200",
    "source_status": "assumed",
-   "source": "typical shallow chamber"
+   "source": "typical shallow chambers"
   },
   "Walls 230 mm burnt clay brick in 1:4": {
    "value": 230,

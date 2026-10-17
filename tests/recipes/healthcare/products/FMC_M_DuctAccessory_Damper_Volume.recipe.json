@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_DuctAccessory_Damper_Volume",
  "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: casing and flanges, four opposed blades, spindles and linkage, quadrant plate with red hand lever and locking nut. One geometry for both types (drawn at 600 x 400); the round 200 type keeps the same parts. Reference: query: duct accessory damper volume duct accessories hospital; images: https://www.google.com/search?tbm=isch&q=duct+accessory+damper+volume+duct+accessories+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product with a part set per type: the round type has a beaded round casing, butterfly spindle, quadrant, red lever and nut; the rectangular type has casing, flanges, four opposed blades, spindles, linkage, quadrant and lever. Duct ends are Medium-only faces for the connectors. Reference: query: duct accessory damper volume duct accessories hospital; images: https://www.google.com/search?tbm=isch&q=duct+accessory+damper+volume+duct+accessories+hospital; basis: generic product; brand, model and supplier open for review; photo: https://airmasteremirates.com/product/volume-control-damper-2/; photo_title: Airmaster Volume Control Damper AVCD; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -98,7 +98,7 @@
    "name": "200dia_Balancing/Description",
    "type": "200dia_Balancing",
    "param": "Description",
-   "value": "Volume control damper, opposed-blade, galvanised casing with flanges, locking quadrant and hand lever for balancing"
+   "value": "Volume control damper for balancing: 200 mm round single-blade (iris-free butterfly) or 600 x 400 rectangular opposed-blade, locking quadrant and hand lever"
   },
   {
    "op": "set_type_value",
@@ -113,6 +113,13 @@
    "type": "200dia_Balancing",
    "param": "FMC_Keynote_Code",
    "value": "H.DMP_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200dia_Balancing/URL",
+   "type": "200dia_Balancing",
+   "param": "URL",
+   "value": "https://airmasteremirates.com/product/volume-control-damper-2/"
   },
   {
    "op": "add_type",
@@ -144,7 +151,7 @@
    "name": "600x400_OBD/Description",
    "type": "600x400_OBD",
    "param": "Description",
-   "value": "Volume control damper, opposed-blade, galvanised casing with flanges, locking quadrant and hand lever for balancing"
+   "value": "Volume control damper for balancing: 200 mm round single-blade (iris-free butterfly) or 600 x 400 rectangular opposed-blade, locking quadrant and hand lever"
   },
   {
    "op": "set_type_value",
@@ -159,6 +166,13 @@
    "type": "600x400_OBD",
    "param": "FMC_Keynote_Code",
    "value": "H.DMP_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x400_OBD/URL",
+   "type": "600x400_OBD",
+   "param": "URL",
+   "value": "https://airmasteremirates.com/product/volume-control-damper-2/"
   },
   {
    "op": "add_subcategory",
@@ -227,9 +241,9 @@
    "op": "add_subcategory",
    "name": "Red",
    "color": [
-    200,
-    16,
-    46
+    198,
+    40,
+    40
    ],
    "line_weight_projection": 1
   },
@@ -241,8 +255,29 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Metal_Steel_Painted_Red",
    "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
   },
   {
    "op": "add_subcategory",
@@ -292,7 +327,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Casing Top",
+   "name": "Casing Top Rect",
    "points": [
     [
      -300.0,
@@ -317,24 +352,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Casing Top",
+   "name": "Casing Top Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Casing Top",
+   "name": "Casing Top Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Casing Top",
+   "name": "Casing Top Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Casing Bottom",
+   "name": "Casing Bottom Rect",
    "points": [
     [
      -300.0,
@@ -359,24 +394,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Casing Bottom",
+   "name": "Casing Bottom Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Casing Bottom",
+   "name": "Casing Bottom Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Casing Bottom",
+   "name": "Casing Bottom Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Casing Left",
+   "name": "Casing Left Rect",
    "points": [
     [
      -303.0,
@@ -401,24 +436,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Casing Left",
+   "name": "Casing Left Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Casing Left",
+   "name": "Casing Left Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Casing Left",
+   "name": "Casing Left Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Casing Right",
+   "name": "Casing Right Rect",
    "points": [
     [
      300.0,
@@ -443,24 +478,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Casing Right",
+   "name": "Casing Right Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Casing Right",
+   "name": "Casing Right Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Casing Right",
+   "name": "Casing Right Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Front Top",
+   "name": "Flange Front Top Rect",
    "points": [
     [
      -330.0,
@@ -485,24 +520,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Front Top",
+   "name": "Flange Front Top Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Front Top",
+   "name": "Flange Front Top Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Front Top",
+   "name": "Flange Front Top Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Front Bottom",
+   "name": "Flange Front Bottom Rect",
    "points": [
     [
      -330.0,
@@ -527,24 +562,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Front Bottom",
+   "name": "Flange Front Bottom Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Front Bottom",
+   "name": "Flange Front Bottom Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Front Bottom",
+   "name": "Flange Front Bottom Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Front Left",
+   "name": "Flange Front Left Rect",
    "points": [
     [
      -330.0,
@@ -569,24 +604,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Front Left",
+   "name": "Flange Front Left Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Front Left",
+   "name": "Flange Front Left Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Front Left",
+   "name": "Flange Front Left Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Front Right",
+   "name": "Flange Front Right Rect",
    "points": [
     [
      300.0,
@@ -611,24 +646,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Front Right",
+   "name": "Flange Front Right Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Front Right",
+   "name": "Flange Front Right Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Front Right",
+   "name": "Flange Front Right Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Rear Top",
+   "name": "Flange Rear Top Rect",
    "points": [
     [
      -330.0,
@@ -653,24 +688,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Rear Top",
+   "name": "Flange Rear Top Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Rear Top",
+   "name": "Flange Rear Top Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Rear Top",
+   "name": "Flange Rear Top Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Rear Bottom",
+   "name": "Flange Rear Bottom Rect",
    "points": [
     [
      -330.0,
@@ -695,24 +730,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Rear Bottom",
+   "name": "Flange Rear Bottom Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Rear Bottom",
+   "name": "Flange Rear Bottom Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Rear Bottom",
+   "name": "Flange Rear Bottom Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Rear Left",
+   "name": "Flange Rear Left Rect",
    "points": [
     [
      -330.0,
@@ -737,24 +772,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Rear Left",
+   "name": "Flange Rear Left Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Rear Left",
+   "name": "Flange Rear Left Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Rear Left",
+   "name": "Flange Rear Left Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Flange Rear Right",
+   "name": "Flange Rear Right Rect",
    "points": [
     [
      300.0,
@@ -779,24 +814,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flange Rear Right",
+   "name": "Flange Rear Right Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Flange Rear Right",
+   "name": "Flange Rear Right Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flange Rear Right",
+   "name": "Flange Rear Right Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Duct End Front",
+   "name": "Duct End Front Rect",
    "points": [
     [
      -300.0,
@@ -821,24 +856,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Duct End Front",
+   "name": "Duct End Front Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Duct End Front",
+   "name": "Duct End Front Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Duct End Front",
+   "name": "Duct End Front Rect",
    "coarse": false,
    "medium": true,
    "fine": false
   },
   {
    "op": "extrusion",
-   "name": "Duct End Rear",
+   "name": "Duct End Rear Rect",
    "points": [
     [
      -300.0,
@@ -863,24 +898,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Duct End Rear",
+   "name": "Duct End Rear Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Duct End Rear",
+   "name": "Duct End Rear Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Duct End Rear",
+   "name": "Duct End Rear Rect",
    "coarse": false,
    "medium": true,
    "fine": false
   },
   {
    "op": "extrusion",
-   "name": "Opposed Blade A 1",
+   "name": "Opposed Blade A Rect 1",
    "points": [
     [
      -43.3,
@@ -913,24 +948,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Opposed Blade A 1",
+   "name": "Opposed Blade A Rect 1",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Opposed Blade A 1",
+   "name": "Opposed Blade A Rect 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Opposed Blade A 1",
+   "name": "Opposed Blade A Rect 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Opposed Blade A 2",
+   "name": "Opposed Blade A Rect 2",
    "points": [
     [
      -43.3,
@@ -963,24 +998,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Opposed Blade A 2",
+   "name": "Opposed Blade A Rect 2",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Opposed Blade A 2",
+   "name": "Opposed Blade A Rect 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Opposed Blade A 2",
+   "name": "Opposed Blade A Rect 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Opposed Blade B 1",
+   "name": "Opposed Blade B Rect 1",
    "points": [
     [
      -43.3,
@@ -1013,24 +1048,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Opposed Blade B 1",
+   "name": "Opposed Blade B Rect 1",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Opposed Blade B 1",
+   "name": "Opposed Blade B Rect 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Opposed Blade B 1",
+   "name": "Opposed Blade B Rect 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Opposed Blade B 2",
+   "name": "Opposed Blade B Rect 2",
    "points": [
     [
      -43.3,
@@ -1063,24 +1098,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Opposed Blade B 2",
+   "name": "Opposed Blade B Rect 2",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Opposed Blade B 2",
+   "name": "Opposed Blade B Rect 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Opposed Blade B 2",
+   "name": "Opposed Blade B Rect 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blade Spindle 1",
+   "name": "Blade Spindle Rect 1",
    "points": [
     [
      6.0,
@@ -1185,24 +1220,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blade Spindle 1",
+   "name": "Blade Spindle Rect 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Blade Spindle 1",
+   "name": "Blade Spindle Rect 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blade Spindle 1",
+   "name": "Blade Spindle Rect 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blade Spindle 2",
+   "name": "Blade Spindle Rect 2",
    "points": [
     [
      6.0,
@@ -1307,24 +1342,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blade Spindle 2",
+   "name": "Blade Spindle Rect 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Blade Spindle 2",
+   "name": "Blade Spindle Rect 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blade Spindle 2",
+   "name": "Blade Spindle Rect 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blade Spindle 3",
+   "name": "Blade Spindle Rect 3",
    "points": [
     [
      6.0,
@@ -1429,24 +1464,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blade Spindle 3",
+   "name": "Blade Spindle Rect 3",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Blade Spindle 3",
+   "name": "Blade Spindle Rect 3",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blade Spindle 3",
+   "name": "Blade Spindle Rect 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blade Spindle 4",
+   "name": "Blade Spindle Rect 4",
    "points": [
     [
      6.0,
@@ -1551,24 +1586,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blade Spindle 4",
+   "name": "Blade Spindle Rect 4",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Blade Spindle 4",
+   "name": "Blade Spindle Rect 4",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blade Spindle 4",
+   "name": "Blade Spindle Rect 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Linkage Bar",
+   "name": "Linkage Bar Rect",
    "points": [
     [
      306,
@@ -1593,24 +1628,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Linkage Bar",
+   "name": "Linkage Bar Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Linkage Bar",
+   "name": "Linkage Bar Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Linkage Bar",
+   "name": "Linkage Bar Rect",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Quadrant Plate",
+   "name": "Quadrant Plate Rect",
    "points": [
     [
      -60,
@@ -1639,24 +1674,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Quadrant Plate",
+   "name": "Quadrant Plate Rect",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Quadrant Plate",
+   "name": "Quadrant Plate Rect",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Quadrant Plate",
+   "name": "Quadrant Plate Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hand Lever",
+   "name": "Hand Lever Rect",
    "points": [
     [
      -8,
@@ -1681,24 +1716,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hand Lever",
+   "name": "Hand Lever Rect",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Hand Lever",
+   "name": "Hand Lever Rect",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hand Lever",
+   "name": "Hand Lever Rect",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Locking Nut",
+   "name": "Locking Nut Rect",
    "points": [
     [
      10.0,
@@ -1803,27 +1838,1121 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Locking Nut",
+   "name": "Locking Nut Rect",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Locking Nut",
+   "name": "Locking Nut Rect",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Locking Nut",
+   "name": "Locking Nut Rect",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
+   "op": "extrusion",
+   "name": "Round Casing Round",
+   "points": [
+    [
+     100.0,
+     0.0
+    ],
+    [
+     96.59,
+     25.88
+    ],
+    [
+     86.6,
+     50.0
+    ],
+    [
+     70.71,
+     70.71
+    ],
+    [
+     50.0,
+     86.6
+    ],
+    [
+     25.88,
+     96.59
+    ],
+    [
+     0.0,
+     100.0
+    ],
+    [
+     -25.88,
+     96.59
+    ],
+    [
+     -50.0,
+     86.6
+    ],
+    [
+     -70.71,
+     70.71
+    ],
+    [
+     -86.6,
+     50.0
+    ],
+    [
+     -96.59,
+     25.88
+    ],
+    [
+     -100.0,
+     0.0
+    ],
+    [
+     -96.59,
+     -25.88
+    ],
+    [
+     -86.6,
+     -50.0
+    ],
+    [
+     -70.71,
+     -70.71
+    ],
+    [
+     -50.0,
+     -86.6
+    ],
+    [
+     -25.88,
+     -96.59
+    ],
+    [
+     -0.0,
+     -100.0
+    ],
+    [
+     25.88,
+     -96.59
+    ],
+    [
+     50.0,
+     -86.6
+    ],
+    [
+     70.71,
+     -70.71
+    ],
+    [
+     86.6,
+     -50.0
+    ],
+    [
+     96.59,
+     -25.88
+    ]
+   ],
+   "start": -100,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Round Casing Round",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Round Casing Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Round Casing Round",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bead Front Round",
+   "profile": [
+    [
+     100,
+     80
+    ],
+    [
+     104,
+     80
+    ],
+    [
+     104,
+     72
+    ],
+    [
+     100,
+     72
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bead Front Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bead Front Round",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bead Rear Round",
+   "profile": [
+    [
+     100,
+     -72
+    ],
+    [
+     104,
+     -72
+    ],
+    [
+     104,
+     -80
+    ],
+    [
+     100,
+     -80
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bead Rear Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bead Rear Round",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Duct End Front Round",
+   "points": [
+    [
+     100.0,
+     0.0
+    ],
+    [
+     96.59,
+     25.88
+    ],
+    [
+     86.6,
+     50.0
+    ],
+    [
+     70.71,
+     70.71
+    ],
+    [
+     50.0,
+     86.6
+    ],
+    [
+     25.88,
+     96.59
+    ],
+    [
+     0.0,
+     100.0
+    ],
+    [
+     -25.88,
+     96.59
+    ],
+    [
+     -50.0,
+     86.6
+    ],
+    [
+     -70.71,
+     70.71
+    ],
+    [
+     -86.6,
+     50.0
+    ],
+    [
+     -96.59,
+     25.88
+    ],
+    [
+     -100.0,
+     0.0
+    ],
+    [
+     -96.59,
+     -25.88
+    ],
+    [
+     -86.6,
+     -50.0
+    ],
+    [
+     -70.71,
+     -70.71
+    ],
+    [
+     -50.0,
+     -86.6
+    ],
+    [
+     -25.88,
+     -96.59
+    ],
+    [
+     -0.0,
+     -100.0
+    ],
+    [
+     25.88,
+     -96.59
+    ],
+    [
+     50.0,
+     -86.6
+    ],
+    [
+     70.71,
+     -70.71
+    ],
+    [
+     86.6,
+     -50.0
+    ],
+    [
+     96.59,
+     -25.88
+    ]
+   ],
+   "start": 100,
+   "end": 101,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Duct End Front Round",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Duct End Front Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Duct End Front Round",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Duct End Rear Round",
+   "points": [
+    [
+     100.0,
+     0.0
+    ],
+    [
+     96.59,
+     25.88
+    ],
+    [
+     86.6,
+     50.0
+    ],
+    [
+     70.71,
+     70.71
+    ],
+    [
+     50.0,
+     86.6
+    ],
+    [
+     25.88,
+     96.59
+    ],
+    [
+     0.0,
+     100.0
+    ],
+    [
+     -25.88,
+     96.59
+    ],
+    [
+     -50.0,
+     86.6
+    ],
+    [
+     -70.71,
+     70.71
+    ],
+    [
+     -86.6,
+     50.0
+    ],
+    [
+     -96.59,
+     25.88
+    ],
+    [
+     -100.0,
+     0.0
+    ],
+    [
+     -96.59,
+     -25.88
+    ],
+    [
+     -86.6,
+     -50.0
+    ],
+    [
+     -70.71,
+     -70.71
+    ],
+    [
+     -50.0,
+     -86.6
+    ],
+    [
+     -25.88,
+     -96.59
+    ],
+    [
+     -0.0,
+     -100.0
+    ],
+    [
+     25.88,
+     -96.59
+    ],
+    [
+     50.0,
+     -86.6
+    ],
+    [
+     70.71,
+     -70.71
+    ],
+    [
+     86.6,
+     -50.0
+    ],
+    [
+     96.59,
+     -25.88
+    ]
+   ],
+   "start": -101,
+   "end": -100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Duct End Rear Round",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Duct End Rear Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Duct End Rear Round",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Spindle Round",
+   "points": [
+    [
+     5.0,
+     0.0
+    ],
+    [
+     4.83,
+     1.29
+    ],
+    [
+     4.33,
+     2.5
+    ],
+    [
+     3.54,
+     3.54
+    ],
+    [
+     2.5,
+     4.33
+    ],
+    [
+     1.29,
+     4.83
+    ],
+    [
+     0.0,
+     5.0
+    ],
+    [
+     -1.29,
+     4.83
+    ],
+    [
+     -2.5,
+     4.33
+    ],
+    [
+     -3.54,
+     3.54
+    ],
+    [
+     -4.33,
+     2.5
+    ],
+    [
+     -4.83,
+     1.29
+    ],
+    [
+     -5.0,
+     0.0
+    ],
+    [
+     -4.83,
+     -1.29
+    ],
+    [
+     -4.33,
+     -2.5
+    ],
+    [
+     -3.54,
+     -3.54
+    ],
+    [
+     -2.5,
+     -4.33
+    ],
+    [
+     -1.29,
+     -4.83
+    ],
+    [
+     -0.0,
+     -5.0
+    ],
+    [
+     1.29,
+     -4.83
+    ],
+    [
+     2.5,
+     -4.33
+    ],
+    [
+     3.54,
+     -3.54
+    ],
+    [
+     4.33,
+     -2.5
+    ],
+    [
+     4.83,
+     -1.29
+    ]
+   ],
+   "start": -112,
+   "end": 118,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spindle Round",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spindle Round",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spindle Round",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Quadrant Plate Round",
+   "points": [
+    [
+     -45,
+     -20
+    ],
+    [
+     45,
+     -20
+    ],
+    [
+     45,
+     40
+    ],
+    [
+     0,
+     60
+    ],
+    [
+     -45,
+     40
+    ]
+   ],
+   "start": 100,
+   "end": 103,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Quadrant Plate Round",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Quadrant Plate Round",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Quadrant Plate Round",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hand Lever Round",
+   "points": [
+    [
+     -6,
+     0
+    ],
+    [
+     6,
+     0
+    ],
+    [
+     6,
+     95
+    ],
+    [
+     -6,
+     95
+    ]
+   ],
+   "start": 103,
+   "end": 108,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hand Lever Round",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hand Lever Round",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hand Lever Round",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Locking Nut Round",
+   "points": [
+    [
+     8.0,
+     45.0
+    ],
+    [
+     7.73,
+     47.07
+    ],
+    [
+     6.93,
+     49.0
+    ],
+    [
+     5.66,
+     50.66
+    ],
+    [
+     4.0,
+     51.93
+    ],
+    [
+     2.07,
+     52.73
+    ],
+    [
+     0.0,
+     53.0
+    ],
+    [
+     -2.07,
+     52.73
+    ],
+    [
+     -4.0,
+     51.93
+    ],
+    [
+     -5.66,
+     50.66
+    ],
+    [
+     -6.93,
+     49.0
+    ],
+    [
+     -7.73,
+     47.07
+    ],
+    [
+     -8.0,
+     45.0
+    ],
+    [
+     -7.73,
+     42.93
+    ],
+    [
+     -6.93,
+     41.0
+    ],
+    [
+     -5.66,
+     39.34
+    ],
+    [
+     -4.0,
+     38.07
+    ],
+    [
+     -2.07,
+     37.27
+    ],
+    [
+     -0.0,
+     37.0
+    ],
+    [
+     2.07,
+     37.27
+    ],
+    [
+     4.0,
+     38.07
+    ],
+    [
+     5.66,
+     39.34
+    ],
+    [
+     6.93,
+     41.0
+    ],
+    [
+     7.73,
+     42.93
+    ]
+   ],
+   "start": 108,
+   "end": 116,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Locking Nut Round",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Locking Nut Round",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Locking Nut Round",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Seal Front Round",
+   "profile": [
+    [
+     104,
+     100
+    ],
+    [
+     108,
+     100
+    ],
+    [
+     108,
+     94
+    ],
+    [
+     104,
+     94
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seal Front Round",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seal Front Round",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600x400_OBD",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200dia_Balancing/Show 600x400_OBD",
+   "type": "200dia_Balancing",
+   "param": "Show 600x400_OBD",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x400_OBD/Show 600x400_OBD",
+   "type": "600x400_OBD",
+   "param": "Show 600x400_OBD",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing Top Rect/Visible",
+   "solid": "Casing Top Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing Bottom Rect/Visible",
+   "solid": "Casing Bottom Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing Left Rect/Visible",
+   "solid": "Casing Left Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Casing Right Rect/Visible",
+   "solid": "Casing Right Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Front Top Rect/Visible",
+   "solid": "Flange Front Top Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Front Bottom Rect/Visible",
+   "solid": "Flange Front Bottom Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Front Left Rect/Visible",
+   "solid": "Flange Front Left Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Front Right Rect/Visible",
+   "solid": "Flange Front Right Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Rear Top Rect/Visible",
+   "solid": "Flange Rear Top Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Rear Bottom Rect/Visible",
+   "solid": "Flange Rear Bottom Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Rear Left Rect/Visible",
+   "solid": "Flange Rear Left Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flange Rear Right Rect/Visible",
+   "solid": "Flange Rear Right Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Duct End Front Rect/Visible",
+   "solid": "Duct End Front Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Duct End Rear Rect/Visible",
+   "solid": "Duct End Rear Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Opposed Blade A Rect 1/Visible",
+   "solid": "Opposed Blade A Rect 1",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Opposed Blade A Rect 2/Visible",
+   "solid": "Opposed Blade A Rect 2",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Opposed Blade B Rect 1/Visible",
+   "solid": "Opposed Blade B Rect 1",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Opposed Blade B Rect 2/Visible",
+   "solid": "Opposed Blade B Rect 2",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blade Spindle Rect 1/Visible",
+   "solid": "Blade Spindle Rect 1",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blade Spindle Rect 2/Visible",
+   "solid": "Blade Spindle Rect 2",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blade Spindle Rect 3/Visible",
+   "solid": "Blade Spindle Rect 3",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blade Spindle Rect 4/Visible",
+   "solid": "Blade Spindle Rect 4",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Linkage Bar Rect/Visible",
+   "solid": "Linkage Bar Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Quadrant Plate Rect/Visible",
+   "solid": "Quadrant Plate Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hand Lever Rect/Visible",
+   "solid": "Hand Lever Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Locking Nut Rect/Visible",
+   "solid": "Locking Nut Rect",
+   "param": "Show 600x400_OBD"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 200dia_Balancing",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200dia_Balancing/Show 200dia_Balancing",
+   "type": "200dia_Balancing",
+   "param": "Show 200dia_Balancing",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x400_OBD/Show 200dia_Balancing",
+   "type": "600x400_OBD",
+   "param": "Show 200dia_Balancing",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Round Casing Round/Visible",
+   "solid": "Round Casing Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bead Front Round/Visible",
+   "solid": "Bead Front Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bead Rear Round/Visible",
+   "solid": "Bead Rear Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Duct End Front Round/Visible",
+   "solid": "Duct End Front Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Duct End Rear Round/Visible",
+   "solid": "Duct End Rear Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Spindle Round/Visible",
+   "solid": "Spindle Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Quadrant Plate Round/Visible",
+   "solid": "Quadrant Plate Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hand Lever Round/Visible",
+   "solid": "Hand Lever Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Locking Nut Round/Visible",
+   "solid": "Locking Nut Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seal Front Round/Visible",
+   "solid": "Seal Front Round",
+   "param": "Show 200dia_Balancing"
+  },
+  {
    "op": "add_connector",
-   "name": "Duct In",
+   "name": "Duct In Round",
    "domain": "duct",
    "system": "SupplyAir",
-   "solid": "Duct End Front",
+   "solid": "Duct End Front Round",
+   "side": "front",
+   "diameter": 200,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Duct Out Round",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Duct End Rear Round",
+   "side": "back",
+   "diameter": 200,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Duct In Rect",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Duct End Front Rect",
    "side": "front",
    "width": 600,
    "height": 400,
@@ -1831,10 +2960,10 @@
   },
   {
    "op": "add_connector",
-   "name": "Duct Out",
+   "name": "Duct Out Rect",
    "domain": "duct",
    "system": "SupplyAir",
-   "solid": "Duct End Rear",
+   "solid": "Duct End Rear Rect",
    "side": "back",
    "width": 600,
    "height": 400,
@@ -1847,8 +2976,8 @@
   }
  ],
  "values": {
-  "Duct 600 x 400 mm, casing 200 long": {
-   "value": "600x400x200",
+  "Round 200 mm x 200 long / rectangular 600 x 400 x 200": {
+   "value": "200dia/600x400",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
@@ -1857,7 +2986,7 @@
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
-  "Blade pitch 100 mm, opposed": {
+  "Blade pitch 100 mm, opposed (rectangular)": {
    "value": 100,
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"

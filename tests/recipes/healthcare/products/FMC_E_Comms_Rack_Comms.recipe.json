@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_Comms_Rack_Comms",
  "template": "Metric Generic Model.rft",
- "about": "Comms rack: frame, plinth, castors, roof with fans, glass door in frame with handle, 19 in rails, four patch panels with port rows and cable managers, two switches with LEDs, two servers with bezels, PDU. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: comms rack comms communication devices hospital; images: https://www.google.com/search?tbm=isch&q=comms+rack+comms+communication+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Comms rack: plinth, castors; per type (24U/42U) side and back panels, roof with fans, glass door with stiles, rails and handle, 19 in rails; patch panels with port rows and cable managers (two more on 42U), two switches with LEDs, two servers with bezels, PDU. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: comms rack comms communication devices hospital; images: https://www.google.com/search?tbm=isch&q=comms+rack+comms+communication+devices+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.scan.co.uk/products/dynamode-42u-19-800x600-floorstanding-data-comms-cabinet-rack; photo_title: Dynamode 42U Floorstanding Data Comms Cabinet; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -22,33 +22,243 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -95,6 +305,34 @@
    "type": "24U_600x800",
    "param": "FMC_Keynote_Code",
    "value": "E.ICT_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/FMC_Code_Description",
+   "type": "24U_600x800",
+   "param": "FMC_Code_Description",
+   "value": "Rack Comms: Comms rack"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/FMC_Code_Group",
+   "type": "24U_600x800",
+   "param": "FMC_Code_Group",
+   "value": "E.ICT"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/FMC_Role_Code",
+   "type": "24U_600x800",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/URL",
+   "type": "24U_600x800",
+   "param": "URL",
+   "value": "https://www.scan.co.uk/products/dynamode-42u-19-800x600-floorstanding-data-comms-cabinet-rack"
   },
   {
    "op": "set_type_value",
@@ -155,6 +393,34 @@
    "type": "42U_600x800",
    "param": "FMC_Keynote_Code",
    "value": "E.ICT_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/FMC_Code_Description",
+   "type": "42U_600x800",
+   "param": "FMC_Code_Description",
+   "value": "Rack Comms: Comms rack"
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/FMC_Code_Group",
+   "type": "42U_600x800",
+   "param": "FMC_Code_Group",
+   "value": "E.ICT"
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/FMC_Role_Code",
+   "type": "42U_600x800",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/URL",
+   "type": "42U_600x800",
+   "param": "URL",
+   "value": "https://www.scan.co.uk/products/dynamode-42u-19-800x600-floorstanding-data-comms-cabinet-rack"
   },
   {
    "op": "set_type_value",
@@ -235,48 +501,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Glass",
-   "color": [
-    191,
-    217,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Glass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Clear",
-   "param": "Glass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Mgrey",
    "color": [
     201,
@@ -340,6 +564,48 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Glass",
+   "color": [
+    191,
+    217,
+    230
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Clear",
+   "param": "Glass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Galv",
    "color": [
     167,
@@ -384,20 +650,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -301,
+     -300,
      -840
     ],
     [
-     300.0,
+     300,
      -840
     ],
     [
-     300.0,
-     0.0
+     300,
+     0
     ],
     [
-     -301,
-     0.0
+     -300,
+     0
     ]
    ],
    "start": 0,
@@ -414,111 +680,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame",
-   "points": [
-    [
-     296.0,
-     -800.0
-    ],
-    [
-     297.53,
-     -799.7
-    ],
-    [
-     298.83,
-     -798.83
-    ],
-    [
-     299.7,
-     -797.53
-    ],
-    [
-     300.0,
-     -796.0
-    ],
-    [
-     300.0,
-     -4.0
-    ],
-    [
-     299.7,
-     -2.47
-    ],
-    [
-     298.83,
-     -1.17
-    ],
-    [
-     297.53,
-     -0.3
-    ],
-    [
-     296.0,
-     0.0
-    ],
-    [
-     -296.0,
-     0.0
-    ],
-    [
-     -297.53,
-     -0.3
-    ],
-    [
-     -298.83,
-     -1.17
-    ],
-    [
-     -299.7,
-     -2.47
-    ],
-    [
-     -300.0,
-     -4.0
-    ],
-    [
-     -300.0,
-     -796.0
-    ],
-    [
-     -299.7,
-     -797.53
-    ],
-    [
-     -298.83,
-     -798.83
-    ],
-    [
-     -297.53,
-     -799.7
-    ],
-    [
-     -296.0,
-     -800.0
-    ]
-   ],
-   "start": 100,
-   "end": 2000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1047,7 +1208,1950 @@
   },
   {
    "op": "extrusion",
-   "name": "Roof",
+   "name": "Patch Panel 1",
+   "points": [
+    [
+     -240,
+     1000
+    ],
+    [
+     240,
+     1000
+    ],
+    [
+     240,
+     1044
+    ],
+    [
+     -240,
+     1044
+    ]
+   ],
+   "start": 780,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Panel 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Panel 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Panel 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Panel 2",
+   "points": [
+    [
+     -240,
+     880
+    ],
+    [
+     240,
+     880
+    ],
+    [
+     240,
+     924
+    ],
+    [
+     -240,
+     924
+    ]
+   ],
+   "start": 780,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Panel 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Panel 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Panel 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Port Row 1",
+   "points": [
+    [
+     -225,
+     1015
+    ],
+    [
+     225,
+     1015
+    ],
+    [
+     225,
+     1030
+    ],
+    [
+     -225,
+     1030
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Port Row 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Port Row 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Port Row 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Port Row 2",
+   "points": [
+    [
+     -225,
+     895
+    ],
+    [
+     225,
+     895
+    ],
+    [
+     225,
+     910
+    ],
+    [
+     -225,
+     910
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Port Row 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Port Row 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Port Row 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Manager 1",
+   "points": [
+    [
+     -240,
+     1046
+    ],
+    [
+     240,
+     1046
+    ],
+    [
+     240,
+     1080
+    ],
+    [
+     -240,
+     1080
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Manager 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Manager 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Manager 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Manager 2",
+   "points": [
+    [
+     -240,
+     926
+    ],
+    [
+     240,
+     926
+    ],
+    [
+     240,
+     960
+    ],
+    [
+     -240,
+     960
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Manager 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Manager 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Manager 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Switch 1",
+   "points": [
+    [
+     238.0,
+     700.0
+    ],
+    [
+     238.77,
+     700.15
+    ],
+    [
+     239.41,
+     700.59
+    ],
+    [
+     239.85,
+     701.23
+    ],
+    [
+     240.0,
+     702.0
+    ],
+    [
+     240.0,
+     742.0
+    ],
+    [
+     239.85,
+     742.77
+    ],
+    [
+     239.41,
+     743.41
+    ],
+    [
+     238.77,
+     743.85
+    ],
+    [
+     238.0,
+     744.0
+    ],
+    [
+     -238.0,
+     744.0
+    ],
+    [
+     -238.77,
+     743.85
+    ],
+    [
+     -239.41,
+     743.41
+    ],
+    [
+     -239.85,
+     742.77
+    ],
+    [
+     -240.0,
+     742.0
+    ],
+    [
+     -240.0,
+     702.0
+    ],
+    [
+     -239.85,
+     701.23
+    ],
+    [
+     -239.41,
+     700.59
+    ],
+    [
+     -238.77,
+     700.15
+    ],
+    [
+     -238.0,
+     700.0
+    ]
+   ],
+   "start": 760,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Switch 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Switch 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Switch 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Switch 2",
+   "points": [
+    [
+     238.0,
+     640.0
+    ],
+    [
+     238.77,
+     640.15
+    ],
+    [
+     239.41,
+     640.59
+    ],
+    [
+     239.85,
+     641.23
+    ],
+    [
+     240.0,
+     642.0
+    ],
+    [
+     240.0,
+     682.0
+    ],
+    [
+     239.85,
+     682.77
+    ],
+    [
+     239.41,
+     683.41
+    ],
+    [
+     238.77,
+     683.85
+    ],
+    [
+     238.0,
+     684.0
+    ],
+    [
+     -238.0,
+     684.0
+    ],
+    [
+     -238.77,
+     683.85
+    ],
+    [
+     -239.41,
+     683.41
+    ],
+    [
+     -239.85,
+     682.77
+    ],
+    [
+     -240.0,
+     682.0
+    ],
+    [
+     -240.0,
+     642.0
+    ],
+    [
+     -239.85,
+     641.23
+    ],
+    [
+     -239.41,
+     640.59
+    ],
+    [
+     -238.77,
+     640.15
+    ],
+    [
+     -238.0,
+     640.0
+    ]
+   ],
+   "start": 760,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Switch 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Switch 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Switch 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Switch LEDs 1",
+   "points": [
+    [
+     -200,
+     725
+    ],
+    [
+     160,
+     725
+    ],
+    [
+     160,
+     730
+    ],
+    [
+     -200,
+     730
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Switch LEDs 1",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Switch LEDs 1",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Switch LEDs 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Switch LEDs 2",
+   "points": [
+    [
+     -200,
+     665
+    ],
+    [
+     160,
+     665
+    ],
+    [
+     160,
+     670
+    ],
+    [
+     -200,
+     670
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Switch LEDs 2",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Switch LEDs 2",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Switch LEDs 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Server 1",
+   "points": [
+    [
+     238.0,
+     400.0
+    ],
+    [
+     238.77,
+     400.15
+    ],
+    [
+     239.41,
+     400.59
+    ],
+    [
+     239.85,
+     401.23
+    ],
+    [
+     240.0,
+     402.0
+    ],
+    [
+     240.0,
+     486.0
+    ],
+    [
+     239.85,
+     486.77
+    ],
+    [
+     239.41,
+     487.41
+    ],
+    [
+     238.77,
+     487.85
+    ],
+    [
+     238.0,
+     488.0
+    ],
+    [
+     -238.0,
+     488.0
+    ],
+    [
+     -238.77,
+     487.85
+    ],
+    [
+     -239.41,
+     487.41
+    ],
+    [
+     -239.85,
+     486.77
+    ],
+    [
+     -240.0,
+     486.0
+    ],
+    [
+     -240.0,
+     402.0
+    ],
+    [
+     -239.85,
+     401.23
+    ],
+    [
+     -239.41,
+     400.59
+    ],
+    [
+     -238.77,
+     400.15
+    ],
+    [
+     -238.0,
+     400.0
+    ]
+   ],
+   "start": 770,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Server 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Server 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Server 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Server 2",
+   "points": [
+    [
+     238.0,
+     300.0
+    ],
+    [
+     238.77,
+     300.15
+    ],
+    [
+     239.41,
+     300.59
+    ],
+    [
+     239.85,
+     301.23
+    ],
+    [
+     240.0,
+     302.0
+    ],
+    [
+     240.0,
+     386.0
+    ],
+    [
+     239.85,
+     386.77
+    ],
+    [
+     239.41,
+     387.41
+    ],
+    [
+     238.77,
+     387.85
+    ],
+    [
+     238.0,
+     388.0
+    ],
+    [
+     -238.0,
+     388.0
+    ],
+    [
+     -238.77,
+     387.85
+    ],
+    [
+     -239.41,
+     387.41
+    ],
+    [
+     -239.85,
+     386.77
+    ],
+    [
+     -240.0,
+     386.0
+    ],
+    [
+     -240.0,
+     302.0
+    ],
+    [
+     -239.85,
+     301.23
+    ],
+    [
+     -239.41,
+     300.59
+    ],
+    [
+     -238.77,
+     300.15
+    ],
+    [
+     -238.0,
+     300.0
+    ]
+   ],
+   "start": 770,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Server 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Server 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Server 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Server Bezel 1",
+   "points": [
+    [
+     228.0,
+     410.0
+    ],
+    [
+     228.77,
+     410.15
+    ],
+    [
+     229.41,
+     410.59
+    ],
+    [
+     229.85,
+     411.23
+    ],
+    [
+     230.0,
+     412.0
+    ],
+    [
+     230.0,
+     476.0
+    ],
+    [
+     229.85,
+     476.77
+    ],
+    [
+     229.41,
+     477.41
+    ],
+    [
+     228.77,
+     477.85
+    ],
+    [
+     228.0,
+     478.0
+    ],
+    [
+     -228.0,
+     478.0
+    ],
+    [
+     -228.77,
+     477.85
+    ],
+    [
+     -229.41,
+     477.41
+    ],
+    [
+     -229.85,
+     476.77
+    ],
+    [
+     -230.0,
+     476.0
+    ],
+    [
+     -230.0,
+     412.0
+    ],
+    [
+     -229.85,
+     411.23
+    ],
+    [
+     -229.41,
+     410.59
+    ],
+    [
+     -228.77,
+     410.15
+    ],
+    [
+     -228.0,
+     410.0
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Server Bezel 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Server Bezel 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Server Bezel 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Server Bezel 2",
+   "points": [
+    [
+     228.0,
+     310.0
+    ],
+    [
+     228.77,
+     310.15
+    ],
+    [
+     229.41,
+     310.59
+    ],
+    [
+     229.85,
+     311.23
+    ],
+    [
+     230.0,
+     312.0
+    ],
+    [
+     230.0,
+     376.0
+    ],
+    [
+     229.85,
+     376.77
+    ],
+    [
+     229.41,
+     377.41
+    ],
+    [
+     228.77,
+     377.85
+    ],
+    [
+     228.0,
+     378.0
+    ],
+    [
+     -228.0,
+     378.0
+    ],
+    [
+     -228.77,
+     377.85
+    ],
+    [
+     -229.41,
+     377.41
+    ],
+    [
+     -229.85,
+     376.77
+    ],
+    [
+     -230.0,
+     376.0
+    ],
+    [
+     -230.0,
+     312.0
+    ],
+    [
+     -229.85,
+     311.23
+    ],
+    [
+     -229.41,
+     310.59
+    ],
+    [
+     -228.77,
+     310.15
+    ],
+    [
+     -228.0,
+     310.0
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Server Bezel 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Server Bezel 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Server Bezel 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "PDU Strip",
+   "points": [
+    [
+     -240,
+     150
+    ],
+    [
+     240,
+     150
+    ],
+    [
+     240,
+     194
+    ],
+    [
+     -240,
+     194
+    ]
+   ],
+   "start": 770,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "PDU Strip",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PDU Strip",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PDU Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 24U 1",
+   "points": [
+    [
+     -300,
+     -800
+    ],
+    [
+     -285,
+     -800
+    ],
+    [
+     -285,
+     0
+    ],
+    [
+     -300,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 24U 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 24U 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 24U 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 24U 2",
+   "points": [
+    [
+     285,
+     -800
+    ],
+    [
+     300,
+     -800
+    ],
+    [
+     300,
+     0
+    ],
+    [
+     285,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 24U 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 24U 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 24U 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Panel 24U",
+   "points": [
+    [
+     -285,
+     -15
+    ],
+    [
+     285,
+     -15
+    ],
+    [
+     285,
+     0
+    ],
+    [
+     -285,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Panel 24U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Panel 24U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Panel 24U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof 24U",
+   "points": [
+    [
+     -300,
+     -800
+    ],
+    [
+     300,
+     -800
+    ],
+    [
+     300,
+     0
+    ],
+    [
+     -300,
+     0
+    ]
+   ],
+   "start": 1200,
+   "end": 1240
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof 24U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof 24U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof 24U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Fan 24U 1",
+   "points": [
+    [
+     -70.0,
+     -400.0
+    ],
+    [
+     -72.04,
+     -384.47
+    ],
+    [
+     -78.04,
+     -370.0
+    ],
+    [
+     -87.57,
+     -357.57
+    ],
+    [
+     -100.0,
+     -348.04
+    ],
+    [
+     -114.47,
+     -342.04
+    ],
+    [
+     -130.0,
+     -340.0
+    ],
+    [
+     -145.53,
+     -342.04
+    ],
+    [
+     -160.0,
+     -348.04
+    ],
+    [
+     -172.43,
+     -357.57
+    ],
+    [
+     -181.96,
+     -370.0
+    ],
+    [
+     -187.96,
+     -384.47
+    ],
+    [
+     -190.0,
+     -400.0
+    ],
+    [
+     -187.96,
+     -415.53
+    ],
+    [
+     -181.96,
+     -430.0
+    ],
+    [
+     -172.43,
+     -442.43
+    ],
+    [
+     -160.0,
+     -451.96
+    ],
+    [
+     -145.53,
+     -457.96
+    ],
+    [
+     -130.0,
+     -460.0
+    ],
+    [
+     -114.47,
+     -457.96
+    ],
+    [
+     -100.0,
+     -451.96
+    ],
+    [
+     -87.57,
+     -442.43
+    ],
+    [
+     -78.04,
+     -430.0
+    ],
+    [
+     -72.04,
+     -415.53
+    ]
+   ],
+   "start": 1240,
+   "end": 1245
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Fan 24U 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Fan 24U 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Fan 24U 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Fan 24U 2",
+   "points": [
+    [
+     190.0,
+     -400.0
+    ],
+    [
+     187.96,
+     -384.47
+    ],
+    [
+     181.96,
+     -370.0
+    ],
+    [
+     172.43,
+     -357.57
+    ],
+    [
+     160.0,
+     -348.04
+    ],
+    [
+     145.53,
+     -342.04
+    ],
+    [
+     130.0,
+     -340.0
+    ],
+    [
+     114.47,
+     -342.04
+    ],
+    [
+     100.0,
+     -348.04
+    ],
+    [
+     87.57,
+     -357.57
+    ],
+    [
+     78.04,
+     -370.0
+    ],
+    [
+     72.04,
+     -384.47
+    ],
+    [
+     70.0,
+     -400.0
+    ],
+    [
+     72.04,
+     -415.53
+    ],
+    [
+     78.04,
+     -430.0
+    ],
+    [
+     87.57,
+     -442.43
+    ],
+    [
+     100.0,
+     -451.96
+    ],
+    [
+     114.47,
+     -457.96
+    ],
+    [
+     130.0,
+     -460.0
+    ],
+    [
+     145.53,
+     -457.96
+    ],
+    [
+     160.0,
+     -451.96
+    ],
+    [
+     172.43,
+     -442.43
+    ],
+    [
+     181.96,
+     -430.0
+    ],
+    [
+     187.96,
+     -415.53
+    ]
+   ],
+   "start": 1240,
+   "end": 1245
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Fan 24U 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Fan 24U 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Fan 24U 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile 24U 1",
+   "points": [
+    [
+     -298,
+     110
+    ],
+    [
+     -270,
+     110
+    ],
+    [
+     -270,
+     1190
+    ],
+    [
+     -298,
+     1190
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile 24U 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile 24U 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile 24U 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile 24U 2",
+   "points": [
+    [
+     270,
+     110
+    ],
+    [
+     298,
+     110
+    ],
+    [
+     298,
+     1190
+    ],
+    [
+     270,
+     1190
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile 24U 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile 24U 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile 24U 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Top Rail 24U",
+   "points": [
+    [
+     -270,
+     1160
+    ],
+    [
+     270,
+     1160
+    ],
+    [
+     270,
+     1190
+    ],
+    [
+     -270,
+     1190
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Top Rail 24U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Top Rail 24U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Top Rail 24U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Bottom Rail 24U",
+   "points": [
+    [
+     -270,
+     110
+    ],
+    [
+     270,
+     110
+    ],
+    [
+     270,
+     140
+    ],
+    [
+     -270,
+     140
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Bottom Rail 24U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Bottom Rail 24U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Bottom Rail 24U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Glass 24U",
+   "points": [
+    [
+     -270,
+     140
+    ],
+    [
+     270,
+     140
+    ],
+    [
+     270,
+     1160
+    ],
+    [
+     -270,
+     1160
+    ]
+   ],
+   "start": 810,
+   "end": 812,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Glass 24U",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Glass 24U",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Glass 24U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle 24U",
+   "points": [
+    [
+     254.0,
+     500.0
+    ],
+    [
+     255.53,
+     500.3
+    ],
+    [
+     256.83,
+     501.17
+    ],
+    [
+     257.7,
+     502.47
+    ],
+    [
+     258.0,
+     504.0
+    ],
+    [
+     258.0,
+     696.0
+    ],
+    [
+     257.7,
+     697.53
+    ],
+    [
+     256.83,
+     698.83
+    ],
+    [
+     255.53,
+     699.7
+    ],
+    [
+     254.0,
+     700.0
+    ],
+    [
+     244.0,
+     700.0
+    ],
+    [
+     242.47,
+     699.7
+    ],
+    [
+     241.17,
+     698.83
+    ],
+    [
+     240.3,
+     697.53
+    ],
+    [
+     240.0,
+     696.0
+    ],
+    [
+     240.0,
+     504.0
+    ],
+    [
+     240.3,
+     502.47
+    ],
+    [
+     241.17,
+     501.17
+    ],
+    [
+     242.47,
+     500.3
+    ],
+    [
+     244.0,
+     500.0
+    ]
+   ],
+   "start": 815,
+   "end": 840,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle 24U",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle 24U",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle 24U",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail 24U 1",
+   "points": [
+    [
+     -252,
+     120
+    ],
+    [
+     -240,
+     120
+    ],
+    [
+     -240,
+     1180
+    ],
+    [
+     -252,
+     1180
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail 24U 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail 24U 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail 24U 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail 24U 2",
+   "points": [
+    [
+     240,
+     120
+    ],
+    [
+     252,
+     120
+    ],
+    [
+     252,
+     1180
+    ],
+    [
+     240,
+     1180
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail 24U 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail 24U 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail 24U 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 42U 1",
+   "points": [
+    [
+     -300,
+     -800
+    ],
+    [
+     -285,
+     -800
+    ],
+    [
+     -285,
+     0
+    ],
+    [
+     -300,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 42U 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 42U 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 42U 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 42U 2",
+   "points": [
+    [
+     285,
+     -800
+    ],
+    [
+     300,
+     -800
+    ],
+    [
+     300,
+     0
+    ],
+    [
+     285,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 42U 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 42U 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 42U 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Panel 42U",
+   "points": [
+    [
+     -285,
+     -15
+    ],
+    [
+     285,
+     -15
+    ],
+    [
+     285,
+     0
+    ],
+    [
+     -285,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Panel 42U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Panel 42U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Panel 42U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof 42U",
    "points": [
     [
      -300,
@@ -1071,24 +3175,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Roof",
+   "name": "Roof 42U",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Roof",
+   "name": "Roof 42U",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Roof",
+   "name": "Roof 42U",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Roof Fan 1",
+   "name": "Roof Fan 42U 1",
    "points": [
     [
      -70.0,
@@ -1192,24 +3296,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Roof Fan 1",
+   "name": "Roof Fan 42U 1",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Roof Fan 1",
+   "name": "Roof Fan 42U 1",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Roof Fan 1",
+   "name": "Roof Fan 42U 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Roof Fan 2",
+   "name": "Roof Fan 42U 2",
    "points": [
     [
      190.0,
@@ -1313,104 +3417,40 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Roof Fan 2",
+   "name": "Roof Fan 42U 2",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Roof Fan 2",
+   "name": "Roof Fan 42U 2",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Roof Fan 2",
+   "name": "Roof Fan 42U 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Frame",
+   "name": "Door Stile 42U 1",
    "points": [
     [
-     292.0,
-     110.0
+     -298,
+     110
     ],
     [
-     294.3,
-     110.46
+     -270,
+     110
     ],
     [
-     296.24,
-     111.76
+     -270,
+     1990
     ],
     [
-     297.54,
-     113.7
-    ],
-    [
-     298.0,
-     116.0
-    ],
-    [
-     298.0,
-     1984.0
-    ],
-    [
-     297.54,
-     1986.3
-    ],
-    [
-     296.24,
-     1988.24
-    ],
-    [
-     294.3,
-     1989.54
-    ],
-    [
-     292.0,
-     1990.0
-    ],
-    [
-     -292.0,
-     1990.0
-    ],
-    [
-     -294.3,
-     1989.54
-    ],
-    [
-     -296.24,
-     1988.24
-    ],
-    [
-     -297.54,
-     1986.3
-    ],
-    [
-     -298.0,
-     1984.0
-    ],
-    [
-     -298.0,
-     116.0
-    ],
-    [
-     -297.54,
-     113.7
-    ],
-    [
-     -296.24,
-     111.76
-    ],
-    [
-     -294.3,
-     110.46
-    ],
-    [
-     -292.0,
-     110.0
+     -298,
+     1990
     ]
    ],
    "start": 800,
@@ -1419,1502 +3459,298 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Frame",
+   "name": "Door Stile 42U 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Door Frame",
+   "name": "Door Stile 42U 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Frame",
+   "name": "Door Stile 42U 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Glass",
+   "name": "Door Stile 42U 2",
    "points": [
     [
-     266.0,
-     140.0
+     270,
+     110
     ],
     [
-     267.53,
-     140.3
+     298,
+     110
     ],
     [
-     268.83,
-     141.17
+     298,
+     1990
     ],
     [
-     269.7,
-     142.47
-    ],
-    [
-     270.0,
-     144.0
-    ],
-    [
-     270.0,
-     1956.0
-    ],
-    [
-     269.7,
-     1957.53
-    ],
-    [
-     268.83,
-     1958.83
-    ],
-    [
-     267.53,
-     1959.7
-    ],
-    [
-     266.0,
-     1960.0
-    ],
-    [
-     -266.0,
-     1960.0
-    ],
-    [
-     -267.53,
-     1959.7
-    ],
-    [
-     -268.83,
-     1958.83
-    ],
-    [
-     -269.7,
-     1957.53
-    ],
-    [
-     -270.0,
-     1956.0
-    ],
-    [
-     -270.0,
-     144.0
-    ],
-    [
-     -269.7,
-     142.47
-    ],
-    [
-     -268.83,
-     141.17
-    ],
-    [
-     -267.53,
-     140.3
-    ],
-    [
-     -266.0,
-     140.0
+     270,
+     1990
     ]
    ],
-   "start": 815,
-   "end": 816,
+   "start": 800,
+   "end": 815,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Door Glass",
-   "subcategory": "Glass"
+   "name": "Door Stile 42U 2",
+   "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Door Glass",
-   "param": "Glass Material"
+   "name": "Door Stile 42U 2",
+   "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Glass",
+   "name": "Door Stile 42U 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Handle",
+   "name": "Door Top Rail 42U",
+   "points": [
+    [
+     -270,
+     1960
+    ],
+    [
+     270,
+     1960
+    ],
+    [
+     270,
+     1990
+    ],
+    [
+     -270,
+     1990
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Top Rail 42U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Top Rail 42U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Top Rail 42U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Bottom Rail 42U",
+   "points": [
+    [
+     -270,
+     110
+    ],
+    [
+     270,
+     110
+    ],
+    [
+     270,
+     140
+    ],
+    [
+     -270,
+     140
+    ]
+   ],
+   "start": 800,
+   "end": 815,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Bottom Rail 42U",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Bottom Rail 42U",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Bottom Rail 42U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Glass 42U",
+   "points": [
+    [
+     -270,
+     140
+    ],
+    [
+     270,
+     140
+    ],
+    [
+     270,
+     1960
+    ],
+    [
+     -270,
+     1960
+    ]
+   ],
+   "start": 810,
+   "end": 812,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Glass 42U",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Glass 42U",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Glass 42U",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle 42U",
    "points": [
     [
      254.0,
-     950.0
+     900.0
     ],
     [
      255.53,
-     950.3
+     900.3
     ],
     [
      256.83,
-     951.17
+     901.17
     ],
     [
      257.7,
-     952.47
+     902.47
     ],
     [
      258.0,
-     954.0
+     904.0
     ],
     [
      258.0,
-     1146.0
+     1096.0
     ],
     [
      257.7,
-     1147.53
+     1097.53
     ],
     [
      256.83,
-     1148.83
+     1098.83
     ],
     [
      255.53,
-     1149.7
+     1099.7
     ],
     [
      254.0,
-     1150.0
+     1100.0
     ],
     [
      244.0,
-     1150.0
+     1100.0
     ],
     [
      242.47,
-     1149.7
+     1099.7
     ],
     [
      241.17,
-     1148.83
+     1098.83
     ],
     [
      240.3,
-     1147.53
+     1097.53
     ],
     [
      240.0,
-     1146.0
+     1096.0
     ],
     [
      240.0,
-     954.0
+     904.0
     ],
     [
      240.3,
-     952.47
+     902.47
     ],
     [
      241.17,
-     951.17
+     901.17
     ],
     [
      242.47,
-     950.3
+     900.3
     ],
     [
      244.0,
-     950.0
+     900.0
     ]
    ],
-   "start": 816,
+   "start": 815,
    "end": 840,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Door Handle",
+   "name": "Door Handle 42U",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Door Handle",
+   "name": "Door Handle 42U",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Handle",
+   "name": "Door Handle 42U",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Patch Panel 1",
-   "points": [
-    [
-     -240,
-     1820
-    ],
-    [
-     240,
-     1820
-    ],
-    [
-     240,
-     1864
-    ],
-    [
-     -240,
-     1864
-    ]
-   ],
-   "start": 780,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Panel 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Panel 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Panel 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Panel 2",
-   "points": [
-    [
-     -240,
-     1690
-    ],
-    [
-     240,
-     1690
-    ],
-    [
-     240,
-     1734
-    ],
-    [
-     -240,
-     1734
-    ]
-   ],
-   "start": 780,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Panel 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Panel 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Panel 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Panel 3",
-   "points": [
-    [
-     -240,
-     1560
-    ],
-    [
-     240,
-     1560
-    ],
-    [
-     240,
-     1604
-    ],
-    [
-     -240,
-     1604
-    ]
-   ],
-   "start": 780,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Panel 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Panel 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Panel 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Panel 4",
-   "points": [
-    [
-     -240,
-     1430
-    ],
-    [
-     240,
-     1430
-    ],
-    [
-     240,
-     1474
-    ],
-    [
-     -240,
-     1474
-    ]
-   ],
-   "start": 780,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Panel 4",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Panel 4",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Panel 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Port Row 1",
-   "points": [
-    [
-     -225,
-     1835
-    ],
-    [
-     225,
-     1835
-    ],
-    [
-     225,
-     1850
-    ],
-    [
-     -225,
-     1850
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Port Row 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Port Row 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Port Row 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Port Row 2",
-   "points": [
-    [
-     -225,
-     1705
-    ],
-    [
-     225,
-     1705
-    ],
-    [
-     225,
-     1720
-    ],
-    [
-     -225,
-     1720
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Port Row 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Port Row 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Port Row 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Port Row 3",
-   "points": [
-    [
-     -225,
-     1575
-    ],
-    [
-     225,
-     1575
-    ],
-    [
-     225,
-     1590
-    ],
-    [
-     -225,
-     1590
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Port Row 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Port Row 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Port Row 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Patch Port Row 4",
-   "points": [
-    [
-     -225,
-     1445
-    ],
-    [
-     225,
-     1445
-    ],
-    [
-     225,
-     1460
-    ],
-    [
-     -225,
-     1460
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Patch Port Row 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Patch Port Row 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Patch Port Row 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Manager 1",
-   "points": [
-    [
-     -240,
-     1866
-    ],
-    [
-     240,
-     1866
-    ],
-    [
-     240,
-     1906
-    ],
-    [
-     -240,
-     1906
-    ]
-   ],
-   "start": 780,
-   "end": 795,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Manager 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Manager 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Manager 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Manager 2",
-   "points": [
-    [
-     -240,
-     1736
-    ],
-    [
-     240,
-     1736
-    ],
-    [
-     240,
-     1776
-    ],
-    [
-     -240,
-     1776
-    ]
-   ],
-   "start": 780,
-   "end": 795,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Manager 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Manager 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Manager 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Manager 3",
-   "points": [
-    [
-     -240,
-     1606
-    ],
-    [
-     240,
-     1606
-    ],
-    [
-     240,
-     1646
-    ],
-    [
-     -240,
-     1646
-    ]
-   ],
-   "start": 780,
-   "end": 795,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Manager 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Manager 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Manager 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Manager 4",
-   "points": [
-    [
-     -240,
-     1476
-    ],
-    [
-     240,
-     1476
-    ],
-    [
-     240,
-     1516
-    ],
-    [
-     -240,
-     1516
-    ]
-   ],
-   "start": 780,
-   "end": 795,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Manager 4",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Manager 4",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Manager 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Switch 1",
-   "points": [
-    [
-     238.0,
-     1200.0
-    ],
-    [
-     238.77,
-     1200.15
-    ],
-    [
-     239.41,
-     1200.59
-    ],
-    [
-     239.85,
-     1201.23
-    ],
-    [
-     240.0,
-     1202.0
-    ],
-    [
-     240.0,
-     1242.0
-    ],
-    [
-     239.85,
-     1242.77
-    ],
-    [
-     239.41,
-     1243.41
-    ],
-    [
-     238.77,
-     1243.85
-    ],
-    [
-     238.0,
-     1244.0
-    ],
-    [
-     -238.0,
-     1244.0
-    ],
-    [
-     -238.77,
-     1243.85
-    ],
-    [
-     -239.41,
-     1243.41
-    ],
-    [
-     -239.85,
-     1242.77
-    ],
-    [
-     -240.0,
-     1242.0
-    ],
-    [
-     -240.0,
-     1202.0
-    ],
-    [
-     -239.85,
-     1201.23
-    ],
-    [
-     -239.41,
-     1200.59
-    ],
-    [
-     -238.77,
-     1200.15
-    ],
-    [
-     -238.0,
-     1200.0
-    ]
-   ],
-   "start": 760,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Switch 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Switch 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Switch 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Switch 2",
-   "points": [
-    [
-     238.0,
-     1140.0
-    ],
-    [
-     238.77,
-     1140.15
-    ],
-    [
-     239.41,
-     1140.59
-    ],
-    [
-     239.85,
-     1141.23
-    ],
-    [
-     240.0,
-     1142.0
-    ],
-    [
-     240.0,
-     1182.0
-    ],
-    [
-     239.85,
-     1182.77
-    ],
-    [
-     239.41,
-     1183.41
-    ],
-    [
-     238.77,
-     1183.85
-    ],
-    [
-     238.0,
-     1184.0
-    ],
-    [
-     -238.0,
-     1184.0
-    ],
-    [
-     -238.77,
-     1183.85
-    ],
-    [
-     -239.41,
-     1183.41
-    ],
-    [
-     -239.85,
-     1182.77
-    ],
-    [
-     -240.0,
-     1182.0
-    ],
-    [
-     -240.0,
-     1142.0
-    ],
-    [
-     -239.85,
-     1141.23
-    ],
-    [
-     -239.41,
-     1140.59
-    ],
-    [
-     -238.77,
-     1140.15
-    ],
-    [
-     -238.0,
-     1140.0
-    ]
-   ],
-   "start": 760,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Switch 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Switch 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Switch 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Switch LEDs 1",
-   "points": [
-    [
-     -200,
-     1225
-    ],
-    [
-     160,
-     1225
-    ],
-    [
-     160,
-     1230
-    ],
-    [
-     -200,
-     1230
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Switch LEDs 1",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Switch LEDs 1",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Switch LEDs 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Switch LEDs 2",
-   "points": [
-    [
-     -200,
-     1165
-    ],
-    [
-     160,
-     1165
-    ],
-    [
-     160,
-     1170
-    ],
-    [
-     -200,
-     1170
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Switch LEDs 2",
-   "subcategory": "Green"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Switch LEDs 2",
-   "param": "Green Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Switch LEDs 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Server 1",
-   "points": [
-    [
-     238.0,
-     700.0
-    ],
-    [
-     238.77,
-     700.15
-    ],
-    [
-     239.41,
-     700.59
-    ],
-    [
-     239.85,
-     701.23
-    ],
-    [
-     240.0,
-     702.0
-    ],
-    [
-     240.0,
-     786.0
-    ],
-    [
-     239.85,
-     786.77
-    ],
-    [
-     239.41,
-     787.41
-    ],
-    [
-     238.77,
-     787.85
-    ],
-    [
-     238.0,
-     788.0
-    ],
-    [
-     -238.0,
-     788.0
-    ],
-    [
-     -238.77,
-     787.85
-    ],
-    [
-     -239.41,
-     787.41
-    ],
-    [
-     -239.85,
-     786.77
-    ],
-    [
-     -240.0,
-     786.0
-    ],
-    [
-     -240.0,
-     702.0
-    ],
-    [
-     -239.85,
-     701.23
-    ],
-    [
-     -239.41,
-     700.59
-    ],
-    [
-     -238.77,
-     700.15
-    ],
-    [
-     -238.0,
-     700.0
-    ]
-   ],
-   "start": 770,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Server 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Server 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Server 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Server 2",
-   "points": [
-    [
-     238.0,
-     600.0
-    ],
-    [
-     238.77,
-     600.15
-    ],
-    [
-     239.41,
-     600.59
-    ],
-    [
-     239.85,
-     601.23
-    ],
-    [
-     240.0,
-     602.0
-    ],
-    [
-     240.0,
-     686.0
-    ],
-    [
-     239.85,
-     686.77
-    ],
-    [
-     239.41,
-     687.41
-    ],
-    [
-     238.77,
-     687.85
-    ],
-    [
-     238.0,
-     688.0
-    ],
-    [
-     -238.0,
-     688.0
-    ],
-    [
-     -238.77,
-     687.85
-    ],
-    [
-     -239.41,
-     687.41
-    ],
-    [
-     -239.85,
-     686.77
-    ],
-    [
-     -240.0,
-     686.0
-    ],
-    [
-     -240.0,
-     602.0
-    ],
-    [
-     -239.85,
-     601.23
-    ],
-    [
-     -239.41,
-     600.59
-    ],
-    [
-     -238.77,
-     600.15
-    ],
-    [
-     -238.0,
-     600.0
-    ]
-   ],
-   "start": 770,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Server 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Server 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Server 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Server Bezel 1",
-   "points": [
-    [
-     228.0,
-     710.0
-    ],
-    [
-     228.77,
-     710.15
-    ],
-    [
-     229.41,
-     710.59
-    ],
-    [
-     229.85,
-     711.23
-    ],
-    [
-     230.0,
-     712.0
-    ],
-    [
-     230.0,
-     776.0
-    ],
-    [
-     229.85,
-     776.77
-    ],
-    [
-     229.41,
-     777.41
-    ],
-    [
-     228.77,
-     777.85
-    ],
-    [
-     228.0,
-     778.0
-    ],
-    [
-     -228.0,
-     778.0
-    ],
-    [
-     -228.77,
-     777.85
-    ],
-    [
-     -229.41,
-     777.41
-    ],
-    [
-     -229.85,
-     776.77
-    ],
-    [
-     -230.0,
-     776.0
-    ],
-    [
-     -230.0,
-     712.0
-    ],
-    [
-     -229.85,
-     711.23
-    ],
-    [
-     -229.41,
-     710.59
-    ],
-    [
-     -228.77,
-     710.15
-    ],
-    [
-     -228.0,
-     710.0
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Server Bezel 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Server Bezel 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Server Bezel 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Server Bezel 2",
-   "points": [
-    [
-     228.0,
-     610.0
-    ],
-    [
-     228.77,
-     610.15
-    ],
-    [
-     229.41,
-     610.59
-    ],
-    [
-     229.85,
-     611.23
-    ],
-    [
-     230.0,
-     612.0
-    ],
-    [
-     230.0,
-     676.0
-    ],
-    [
-     229.85,
-     676.77
-    ],
-    [
-     229.41,
-     677.41
-    ],
-    [
-     228.77,
-     677.85
-    ],
-    [
-     228.0,
-     678.0
-    ],
-    [
-     -228.0,
-     678.0
-    ],
-    [
-     -228.77,
-     677.85
-    ],
-    [
-     -229.41,
-     677.41
-    ],
-    [
-     -229.85,
-     676.77
-    ],
-    [
-     -230.0,
-     676.0
-    ],
-    [
-     -230.0,
-     612.0
-    ],
-    [
-     -229.85,
-     611.23
-    ],
-    [
-     -229.41,
-     610.59
-    ],
-    [
-     -228.77,
-     610.15
-    ],
-    [
-     -228.0,
-     610.0
-    ]
-   ],
-   "start": 790,
-   "end": 791,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Server Bezel 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Server Bezel 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Server Bezel 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "PDU Strip",
-   "points": [
-    [
-     -240,
-     200
-    ],
-    [
-     240,
-     200
-    ],
-    [
-     240,
-     244
-    ],
-    [
-     -240,
-     244
-    ]
-   ],
-   "start": 770,
-   "end": 790,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "PDU Strip",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "PDU Strip",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "PDU Strip",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail 1",
+   "name": "Rail 42U 1",
    "points": [
     [
      -252,
@@ -2939,24 +3775,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail 1",
+   "name": "Rail 42U 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Rail 1",
+   "name": "Rail 42U 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail 1",
+   "name": "Rail 42U 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail 2",
+   "name": "Rail 42U 2",
    "points": [
     [
      240,
@@ -2981,59 +3817,269 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail 2",
+   "name": "Rail 42U 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Rail 2",
+   "name": "Rail 42U 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail 2",
+   "name": "Rail 42U 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Side Panel Lock",
+   "name": "Patch Panel Upper 1",
    "points": [
     [
-     -301,
-     1700
+     -240,
+     1800
     ],
     [
-     -300,
-     1700
+     240,
+     1800
     ],
     [
-     -300,
-     1720
+     240,
+     1844
     ],
     [
-     -301,
-     1720
+     -240,
+     1844
     ]
    ],
-   "start": 380,
-   "end": 400,
+   "start": 780,
+   "end": 790,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Side Panel Lock",
-   "subcategory": "Chrome"
+   "name": "Patch Panel Upper 1",
+   "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Side Panel Lock",
-   "param": "Chrome Material"
+   "name": "Patch Panel Upper 1",
+   "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Side Panel Lock",
+   "name": "Patch Panel Upper 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Panel Upper 2",
+   "points": [
+    [
+     -240,
+     1680
+    ],
+    [
+     240,
+     1680
+    ],
+    [
+     240,
+     1724
+    ],
+    [
+     -240,
+     1724
+    ]
+   ],
+   "start": 780,
+   "end": 790,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Panel Upper 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Panel Upper 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Panel Upper 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Port Row Upper 1",
+   "points": [
+    [
+     -225,
+     1815
+    ],
+    [
+     225,
+     1815
+    ],
+    [
+     225,
+     1830
+    ],
+    [
+     -225,
+     1830
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Port Row Upper 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Port Row Upper 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Port Row Upper 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Patch Port Row Upper 2",
+   "points": [
+    [
+     -225,
+     1695
+    ],
+    [
+     225,
+     1695
+    ],
+    [
+     225,
+     1710
+    ],
+    [
+     -225,
+     1710
+    ]
+   ],
+   "start": 790,
+   "end": 791,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Patch Port Row Upper 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Patch Port Row Upper 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Patch Port Row Upper 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Manager Upper 1",
+   "points": [
+    [
+     -240,
+     1846
+    ],
+    [
+     240,
+     1846
+    ],
+    [
+     240,
+     1880
+    ],
+    [
+     -240,
+     1880
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Manager Upper 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Manager Upper 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Manager Upper 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Manager Upper 2",
+   "points": [
+    [
+     -240,
+     1726
+    ],
+    [
+     240,
+     1726
+    ],
+    [
+     240,
+     1760
+    ],
+    [
+     -240,
+     1760
+    ]
+   ],
+   "start": 780,
+   "end": 795,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Manager Upper 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Manager Upper 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Manager Upper 2",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -3075,12 +4121,256 @@
    "fine": true
   },
   {
+   "op": "add_family_param",
+   "name": "Show 24U_600x800",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/Show 24U_600x800",
+   "type": "24U_600x800",
+   "param": "Show 24U_600x800",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/Show 24U_600x800",
+   "type": "42U_600x800",
+   "param": "Show 24U_600x800",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 24U 1/Visible",
+   "solid": "Side Panel 24U 1",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 24U 2/Visible",
+   "solid": "Side Panel 24U 2",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Panel 24U/Visible",
+   "solid": "Back Panel 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof 24U/Visible",
+   "solid": "Roof 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Fan 24U 1/Visible",
+   "solid": "Roof Fan 24U 1",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Fan 24U 2/Visible",
+   "solid": "Roof Fan 24U 2",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile 24U 1/Visible",
+   "solid": "Door Stile 24U 1",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile 24U 2/Visible",
+   "solid": "Door Stile 24U 2",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Top Rail 24U/Visible",
+   "solid": "Door Top Rail 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Bottom Rail 24U/Visible",
+   "solid": "Door Bottom Rail 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Glass 24U/Visible",
+   "solid": "Door Glass 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Handle 24U/Visible",
+   "solid": "Door Handle 24U",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail 24U 1/Visible",
+   "solid": "Rail 24U 1",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail 24U 2/Visible",
+   "solid": "Rail 24U 2",
+   "param": "Show 24U_600x800"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 42U_600x800",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "24U_600x800/Show 42U_600x800",
+   "type": "24U_600x800",
+   "param": "Show 42U_600x800",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "42U_600x800/Show 42U_600x800",
+   "type": "42U_600x800",
+   "param": "Show 42U_600x800",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 42U 1/Visible",
+   "solid": "Side Panel 42U 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 42U 2/Visible",
+   "solid": "Side Panel 42U 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Panel 42U/Visible",
+   "solid": "Back Panel 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof 42U/Visible",
+   "solid": "Roof 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Fan 42U 1/Visible",
+   "solid": "Roof Fan 42U 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof Fan 42U 2/Visible",
+   "solid": "Roof Fan 42U 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile 42U 1/Visible",
+   "solid": "Door Stile 42U 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Stile 42U 2/Visible",
+   "solid": "Door Stile 42U 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Top Rail 42U/Visible",
+   "solid": "Door Top Rail 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Bottom Rail 42U/Visible",
+   "solid": "Door Bottom Rail 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Glass 42U/Visible",
+   "solid": "Door Glass 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Handle 42U/Visible",
+   "solid": "Door Handle 42U",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail 42U 1/Visible",
+   "solid": "Rail 42U 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail 42U 2/Visible",
+   "solid": "Rail 42U 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Patch Panel Upper 1/Visible",
+   "solid": "Patch Panel Upper 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Patch Panel Upper 2/Visible",
+   "solid": "Patch Panel Upper 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Patch Port Row Upper 1/Visible",
+   "solid": "Patch Port Row Upper 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Patch Port Row Upper 2/Visible",
+   "solid": "Patch Port Row Upper 2",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cable Manager Upper 1/Visible",
+   "solid": "Cable Manager Upper 1",
+   "param": "Show 42U_600x800"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cable Manager Upper 2/Visible",
+   "solid": "Cable Manager Upper 2",
+   "param": "Show 42U_600x800"
+  },
+  {
    "op": "add_connector",
    "name": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Roof",
-   "side": "top"
+   "solid": "Plinth",
+   "side": "bottom"
   },
   {
    "op": "link_connector_param",
@@ -3101,8 +4391,8 @@
    "name": "Data",
    "domain": "electrical",
    "system": "Data",
-   "solid": "Roof",
-   "side": "top"
+   "solid": "Plinth",
+   "side": "bottom"
   },
   {
    "op": "link_connector_param",
@@ -3125,10 +4415,10 @@
   }
  ],
  "values": {
-  "Rack 600 x 800 x 2040 mm (42U)": {
-   "value": "600x800x2040",
+  "Rack 600 x 800, 1240 high (24U) or 2040 high (42U)": {
+   "value": "600x800x1240/2040",
    "source_status": "assumed",
-   "source": "24U type 1200 high"
+   "source": "typical product, to confirm with the supplier"
   },
   "Front 1000 mm, rear 750 mm access": {
    "value": 1000,

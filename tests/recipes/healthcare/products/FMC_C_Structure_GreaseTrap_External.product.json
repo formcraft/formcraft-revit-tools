@@ -8,112 +8,20 @@
  "types": [
   {
    "name": "1000L_Precast",
-   "desc": "about 1000 L liquid"
+   "desc": "internal 1400 x 800 x 1000"
   },
   {
    "name": "2000L_Precast",
-   "desc": "about 2000 L liquid"
+   "desc": "internal 1400 x 1300 x 1200"
   }
  ],
  "materials": {
   "conc": "FMC_Concrete_C30",
   "galv": "FMC_Metal_ColdFormed_Galvanised",
-  "ci": "FMC_Metal_BurglarBar_Steel",
+  "ci": "FMC_Metal_DuctileIron_Black",
   "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey"
  },
  "parts": [
-  {
-   "n": "Chamber Wall Front",
-   "shape": "box",
-   "at": [
-    -850,
-    -550,
-    -1150,
-    850,
-    -400,
-    -150
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Chamber Wall Back",
-   "shape": "box",
-   "at": [
-    -850,
-    400,
-    -1150,
-    850,
-    550,
-    -150
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Chamber Wall Left",
-   "shape": "box",
-   "at": [
-    -850,
-    -400,
-    -1150,
-    -700,
-    400,
-    -150
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Chamber Wall Right",
-   "shape": "box",
-   "at": [
-    700,
-    -400,
-    -1150,
-    850,
-    400,
-    -150
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Base",
-   "shape": "box",
-   "at": [
-    -900,
-    -600,
-    -1300,
-    900,
-    600,
-    -1150
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Cover Slab",
-   "shape": "box",
-   "at": [
-    -850,
-    -550,
-    -150,
-    850,
-    550,
-    0
-   ],
-   "mat": "conc"
-  },
-  {
-   "n": "Baffle",
-   "shape": "box",
-   "at": [
-    100,
-    -400,
-    -1050,
-    175,
-    400,
-    -300
-   ],
-   "mat": "conc",
-   "lod": "mf"
-  },
   {
    "n": "Opening 1",
    "shape": "box",
@@ -423,12 +331,125 @@
    "seg": 16
   },
   {
-   "n": "Vent Pipe",
+   "n": "Chamber Wall Front 1000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -550.0,
+    -1150,
+    850,
+    -400.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Back 1000L",
+   "shape": "box",
+   "at": [
+    -850,
+    400.0,
+    -1150,
+    850,
+    550.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Left 1000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -400.0,
+    -1150,
+    -700,
+    400.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Right 1000L",
+   "shape": "box",
+   "at": [
+    700,
+    -400.0,
+    -1150,
+    850,
+    400.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Base 1000L",
+   "shape": "box",
+   "at": [
+    -900,
+    -600.0,
+    -1300,
+    900,
+    600.0,
+    -1150
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Cover Slab 1000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -550.0,
+    -150,
+    850,
+    550.0,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Baffle 1000L",
+   "shape": "box",
+   "at": [
+    100,
+    -400.0,
+    -1050,
+    175,
+    400.0,
+    -300
+   ],
+   "mat": "conc",
+   "lod": "mf",
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Vent Pipe 1000L",
    "shape": "cyl",
    "axis": "z",
    "c": [
     780,
-    480
+    480.0
    ],
    "r": 28,
    "z": [
@@ -436,15 +457,18 @@
     1800
    ],
    "mat": "upvc",
-   "seg": 12
+   "seg": 12,
+   "only": [
+    "1000L_Precast"
+   ]
   },
   {
-   "n": "Vent Cowl",
+   "n": "Vent Cowl 1000L",
    "shape": "turn",
    "axis": "z",
    "c": [
     780,
-    480
+    480.0
    ],
    "profile": [
     [
@@ -465,17 +489,187 @@
     ]
    ],
    "mat": "upvc",
-   "seg": 12
+   "seg": 12,
+   "only": [
+    "1000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Front 2000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -800.0,
+    -1350,
+    850,
+    -650.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Back 2000L",
+   "shape": "box",
+   "at": [
+    -850,
+    650.0,
+    -1350,
+    850,
+    800.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Left 2000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -650.0,
+    -1350,
+    -700,
+    650.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Chamber Wall Right 2000L",
+   "shape": "box",
+   "at": [
+    700,
+    -650.0,
+    -1350,
+    850,
+    650.0,
+    -150
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Base 2000L",
+   "shape": "box",
+   "at": [
+    -900,
+    -850.0,
+    -1500,
+    900,
+    850.0,
+    -1350
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Cover Slab 2000L",
+   "shape": "box",
+   "at": [
+    -850,
+    -800.0,
+    -150,
+    850,
+    800.0,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Baffle 2000L",
+   "shape": "box",
+   "at": [
+    100,
+    -650.0,
+    -1250,
+    175,
+    650.0,
+    -300
+   ],
+   "mat": "conc",
+   "lod": "mf",
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Vent Pipe 2000L",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    780,
+    730.0
+   ],
+   "r": 28,
+   "z": [
+    0,
+    1800
+   ],
+   "mat": "upvc",
+   "seg": 12,
+   "only": [
+    "2000L_Precast"
+   ]
+  },
+  {
+   "n": "Vent Cowl 2000L",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    780,
+    730.0
+   ],
+   "profile": [
+    [
+     0,
+     1790
+    ],
+    [
+     28,
+     1790
+    ],
+    [
+     60,
+     1840
+    ],
+    [
+     0,
+     1870
+    ]
+   ],
+   "mat": "upvc",
+   "seg": 12,
+   "only": [
+    "2000L_Precast"
+   ]
   }
  ],
  "reference": {
   "query": "structure grease trap external structures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=structure+grease+trap+external+structures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.archiexpo.com/prod/roto-slovenija/product-4630857-2566888.html",
+  "photo_title": "In-ground grease trap ROFETT (Roto)",
+  "photo_kind": "supplier"
  },
  "values": {
-  "Internal 1400 x 800 x 1000 mm (1000 L geometry)": {
-   "value": "1400x800x1000",
+  "Internal 1400 x 800 x 1000 and 1400 x 1300 x 1200 mm (one per type)": {
+   "value": "per type",
    "source_status": "assumed",
    "source": "sizing from kitchen flow by the engineer"
   },
@@ -490,7 +684,7 @@
    "source": "drainage design"
   }
  },
- "about": "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs with connectors.",
+ "about": "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs (shared by both types; the larger type is wider and deeper) with connectors, vent. Each type has its own geometry where it differs (parts with 'only'); the rest is shared.",
  "connectors": [
   {
    "n": "SAN In",

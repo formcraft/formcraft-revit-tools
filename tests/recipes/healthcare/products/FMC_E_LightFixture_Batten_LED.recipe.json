@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_LightFixture_Batten_LED",
  "template": "Metric Generic Model.rft",
- "about": "Batten: steel base channel on the ceiling, half-round opal diffuser, grey end caps, LED strip, fixing screws, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: light fixture batten led lighting fixtures hospital; images: https://www.google.com/search?tbm=isch&q=light+fixture+batten+led+lighting+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Batten: steel base channel on the ceiling, half-round opal diffuser, grey end caps, fixing screws (length per type), cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: light fixture batten led lighting fixtures hospital; images: https://www.google.com/search?tbm=isch&q=light+fixture+batten+led+lighting+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.electrical4less.co.uk/product/aurora-dartmouth-linear-led-batten/; photo_title: Aurora Dartmouth Linear LED Batten; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -22,33 +22,273 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Circuit_Ref",
+   "guid": "1fc378b3-9930-552d-851c-c8a0002ad673",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -95,6 +335,34 @@
    "type": "1200_Batten",
    "param": "FMC_Keynote_Code",
    "value": "E.LED_09"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/FMC_Code_Description",
+   "type": "1200_Batten",
+   "param": "FMC_Code_Description",
+   "value": "Batten LED: Batten"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/FMC_Code_Group",
+   "type": "1200_Batten",
+   "param": "FMC_Code_Group",
+   "value": "E.LED"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/FMC_Role_Code",
+   "type": "1200_Batten",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/URL",
+   "type": "1200_Batten",
+   "param": "URL",
+   "value": "https://www.electrical4less.co.uk/product/aurora-dartmouth-linear-led-batten/"
   },
   {
    "op": "set_type_value",
@@ -158,6 +426,34 @@
   },
   {
    "op": "set_type_value",
+   "name": "1500_Batten/FMC_Code_Description",
+   "type": "1500_Batten",
+   "param": "FMC_Code_Description",
+   "value": "Batten LED: Batten"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Batten/FMC_Code_Group",
+   "type": "1500_Batten",
+   "param": "FMC_Code_Group",
+   "value": "E.LED"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Batten/FMC_Role_Code",
+   "type": "1500_Batten",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Batten/URL",
+   "type": "1500_Batten",
+   "param": "URL",
+   "value": "https://www.electrical4less.co.uk/product/aurora-dartmouth-linear-led-batten/"
+  },
+  {
+   "op": "set_type_value",
    "name": "1500_Batten/Voltage",
    "type": "1500_Batten",
    "param": "Voltage",
@@ -169,6 +465,27 @@
    "type": "1500_Batten",
    "param": "Apparent Load",
    "value": 45
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
   },
   {
    "op": "add_subcategory",
@@ -195,9 +512,9 @@
    "op": "add_subcategory",
    "name": "Opal",
    "color": [
-    242,
-    242,
-    238
+    247,
+    247,
+    242
    ],
    "line_weight_projection": 1
   },
@@ -209,29 +526,8 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
+   "name": "FMC_Plastic_Diffuser_Opal",
    "param": "Opal Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Grey",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Grey Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Grey Material"
   },
   {
    "op": "add_subcategory",
@@ -269,19 +565,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -600,
+     -750,
      -36
     ],
     [
-     600,
+     750,
      -36
     ],
     [
-     600,
+     750,
      36
     ],
     [
-     -600,
+     -750,
      36
     ]
    ],
@@ -299,447 +595,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Channel",
-   "points": [
-    [
-     -600,
-     -35
-    ],
-    [
-     600,
-     -35
-    ],
-    [
-     600,
-     35
-    ],
-    [
-     -600,
-     35
-    ]
-   ],
-   "start": -12,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Channel",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Channel",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Channel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Diffuser",
-   "points": [
-    [
-     35.0,
-     -12.0
-    ],
-    [
-     33.80740392011739,
-     -19.764571353075624
-    ],
-    [
-     30.310889132455355,
-     -27.0
-    ],
-    [
-     24.748737341529164,
-     -33.21320343559643
-    ],
-    [
-     17.500000000000004,
-     -37.98076211353316
-    ],
-    [
-     9.058666578588227,
-     -40.97777478867205
-    ],
-    [
-     2.1431318985078682e-15,
-     -42.0
-    ],
-    [
-     -9.058666578588221,
-     -40.97777478867205
-    ],
-    [
-     -17.499999999999993,
-     -37.98076211353316
-    ],
-    [
-     -24.74873734152916,
-     -33.21320343559643
-    ],
-    [
-     -30.310889132455355,
-     -27.0
-    ],
-    [
-     -33.80740392011739,
-     -19.76457135307563
-    ],
-    [
-     -35.0,
-     -12.000000000000004
-    ]
-   ],
-   "start": -585,
-   "end": 585,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Diffuser",
-   "subcategory": "Opal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Diffuser",
-   "param": "Opal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Diffuser",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "End Cap",
-   "profile": [
-    [
-     0,
-     -600
-    ],
-    [
-     36,
-     -600
-    ],
-    [
-     36,
-     -585
-    ],
-    [
-     0,
-     -585
-    ]
-   ],
-   "axis_at": [
-    0,
-    -12
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "End Cap Right",
-   "profile": [
-    [
-     0,
-     585
-    ],
-    [
-     36,
-     585
-    ],
-    [
-     36,
-     600
-    ],
-    [
-     0,
-     600
-    ]
-   ],
-   "axis_at": [
-    0,
-    -12
-   ],
-   "axis": "x",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap Right",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Screw 1",
-   "points": [
-    [
-     -446.0,
-     0.0
-    ],
-    [
-     -446.14,
-     1.04
-    ],
-    [
-     -446.54,
-     2.0
-    ],
-    [
-     -447.17,
-     2.83
-    ],
-    [
-     -448.0,
-     3.46
-    ],
-    [
-     -448.96,
-     3.86
-    ],
-    [
-     -450.0,
-     4.0
-    ],
-    [
-     -451.04,
-     3.86
-    ],
-    [
-     -452.0,
-     3.46
-    ],
-    [
-     -452.83,
-     2.83
-    ],
-    [
-     -453.46,
-     2.0
-    ],
-    [
-     -453.86,
-     1.04
-    ],
-    [
-     -454.0,
-     0.0
-    ],
-    [
-     -453.86,
-     -1.04
-    ],
-    [
-     -453.46,
-     -2.0
-    ],
-    [
-     -452.83,
-     -2.83
-    ],
-    [
-     -452.0,
-     -3.46
-    ],
-    [
-     -451.04,
-     -3.86
-    ],
-    [
-     -450.0,
-     -4.0
-    ],
-    [
-     -448.96,
-     -3.86
-    ],
-    [
-     -448.0,
-     -3.46
-    ],
-    [
-     -447.17,
-     -2.83
-    ],
-    [
-     -446.54,
-     -2.0
-    ],
-    [
-     -446.14,
-     -1.04
-    ]
-   ],
-   "start": -13,
-   "end": -12
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Screw 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Screw 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Screw 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Fixing Screw 2",
-   "points": [
-    [
-     454.0,
-     0.0
-    ],
-    [
-     453.86,
-     1.04
-    ],
-    [
-     453.46,
-     2.0
-    ],
-    [
-     452.83,
-     2.83
-    ],
-    [
-     452.0,
-     3.46
-    ],
-    [
-     451.04,
-     3.86
-    ],
-    [
-     450.0,
-     4.0
-    ],
-    [
-     448.96,
-     3.86
-    ],
-    [
-     448.0,
-     3.46
-    ],
-    [
-     447.17,
-     2.83
-    ],
-    [
-     446.54,
-     2.0
-    ],
-    [
-     446.14,
-     1.04
-    ],
-    [
-     446.0,
-     0.0
-    ],
-    [
-     446.14,
-     -1.04
-    ],
-    [
-     446.54,
-     -2.0
-    ],
-    [
-     447.17,
-     -2.83
-    ],
-    [
-     448.0,
-     -3.46
-    ],
-    [
-     448.96,
-     -3.86
-    ],
-    [
-     450.0,
-     -4.0
-    ],
-    [
-     451.04,
-     -3.86
-    ],
-    [
-     452.0,
-     -3.46
-    ],
-    [
-     452.83,
-     -2.83
-    ],
-    [
-     453.46,
-     -2.0
-    ],
-    [
-     453.86,
-     -1.04
-    ]
-   ],
-   "start": -13,
-   "end": -12
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fixing Screw 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fixing Screw 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fixing Screw 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -864,51 +719,1004 @@
   },
   {
    "op": "extrusion",
-   "name": "LED Strip",
+   "name": "Base Channel 1200",
    "points": [
     [
-     -580,
-     -6
+     -600,
+     -35
     ],
     [
-     580,
-     -6
+     600,
+     -35
     ],
     [
-     580,
-     6
+     600,
+     35
     ],
     [
-     -580,
-     6
+     -600,
+     35
     ]
    ],
-   "start": -14,
-   "end": -12
+   "start": -12,
+   "end": 0
   },
   {
    "op": "set_subcategory",
-   "name": "LED Strip",
+   "name": "Base Channel 1200",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Channel 1200",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Channel 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diffuser 1200",
+   "points": [
+    [
+     35.0,
+     -12.0
+    ],
+    [
+     33.80740392011739,
+     -19.764571353075624
+    ],
+    [
+     30.310889132455355,
+     -27.0
+    ],
+    [
+     24.748737341529164,
+     -33.21320343559643
+    ],
+    [
+     17.500000000000004,
+     -37.98076211353316
+    ],
+    [
+     9.058666578588227,
+     -40.97777478867205
+    ],
+    [
+     2.1431318985078682e-15,
+     -42.0
+    ],
+    [
+     -9.058666578588221,
+     -40.97777478867205
+    ],
+    [
+     -17.499999999999993,
+     -37.98076211353316
+    ],
+    [
+     -24.74873734152916,
+     -33.21320343559643
+    ],
+    [
+     -30.310889132455355,
+     -27.0
+    ],
+    [
+     -33.80740392011739,
+     -19.76457135307563
+    ],
+    [
+     -35.0,
+     -12.000000000000004
+    ]
+   ],
+   "start": -585,
+   "end": 585,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diffuser 1200",
+   "subcategory": "Opal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diffuser 1200",
+   "param": "Opal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diffuser 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap L 1200",
+   "profile": [
+    [
+     0,
+     -600
+    ],
+    [
+     36,
+     -600
+    ],
+    [
+     36,
+     -585
+    ],
+    [
+     0,
+     -585
+    ]
+   ],
+   "axis_at": [
+    0,
+    -12
+   ],
+   "axis": "x",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "LED Strip",
+   "name": "End Cap L 1200",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "LED Strip",
+   "name": "End Cap L 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap R 1200",
+   "profile": [
+    [
+     0,
+     585
+    ],
+    [
+     36,
+     585
+    ],
+    [
+     36,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "axis_at": [
+    0,
+    -12
+   ],
+   "axis": "x",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap R 1200",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap R 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 1200 1",
+   "points": [
+    [
+     -446.0,
+     0.0
+    ],
+    [
+     -446.14,
+     1.04
+    ],
+    [
+     -446.54,
+     2.0
+    ],
+    [
+     -447.17,
+     2.83
+    ],
+    [
+     -448.0,
+     3.46
+    ],
+    [
+     -448.96,
+     3.86
+    ],
+    [
+     -450.0,
+     4.0
+    ],
+    [
+     -451.04,
+     3.86
+    ],
+    [
+     -452.0,
+     3.46
+    ],
+    [
+     -452.83,
+     2.83
+    ],
+    [
+     -453.46,
+     2.0
+    ],
+    [
+     -453.86,
+     1.04
+    ],
+    [
+     -454.0,
+     0.0
+    ],
+    [
+     -453.86,
+     -1.04
+    ],
+    [
+     -453.46,
+     -2.0
+    ],
+    [
+     -452.83,
+     -2.83
+    ],
+    [
+     -452.0,
+     -3.46
+    ],
+    [
+     -451.04,
+     -3.86
+    ],
+    [
+     -450.0,
+     -4.0
+    ],
+    [
+     -448.96,
+     -3.86
+    ],
+    [
+     -448.0,
+     -3.46
+    ],
+    [
+     -447.17,
+     -2.83
+    ],
+    [
+     -446.54,
+     -2.0
+    ],
+    [
+     -446.14,
+     -1.04
+    ]
+   ],
+   "start": -13,
+   "end": -12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 1200 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 1200 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 1200 1",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 1200 2",
+   "points": [
+    [
+     454.0,
+     0.0
+    ],
+    [
+     453.86,
+     1.04
+    ],
+    [
+     453.46,
+     2.0
+    ],
+    [
+     452.83,
+     2.83
+    ],
+    [
+     452.0,
+     3.46
+    ],
+    [
+     451.04,
+     3.86
+    ],
+    [
+     450.0,
+     4.0
+    ],
+    [
+     448.96,
+     3.86
+    ],
+    [
+     448.0,
+     3.46
+    ],
+    [
+     447.17,
+     2.83
+    ],
+    [
+     446.54,
+     2.0
+    ],
+    [
+     446.14,
+     1.04
+    ],
+    [
+     446.0,
+     0.0
+    ],
+    [
+     446.14,
+     -1.04
+    ],
+    [
+     446.54,
+     -2.0
+    ],
+    [
+     447.17,
+     -2.83
+    ],
+    [
+     448.0,
+     -3.46
+    ],
+    [
+     448.96,
+     -3.86
+    ],
+    [
+     450.0,
+     -4.0
+    ],
+    [
+     451.04,
+     -3.86
+    ],
+    [
+     452.0,
+     -3.46
+    ],
+    [
+     452.83,
+     -2.83
+    ],
+    [
+     453.46,
+     -2.0
+    ],
+    [
+     453.86,
+     -1.04
+    ]
+   ],
+   "start": -13,
+   "end": -12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 1200 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 1200 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Channel 1500",
+   "points": [
+    [
+     -750,
+     -35
+    ],
+    [
+     750,
+     -35
+    ],
+    [
+     750,
+     35
+    ],
+    [
+     -750,
+     35
+    ]
+   ],
+   "start": -12,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Channel 1500",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Channel 1500",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Channel 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diffuser 1500",
+   "points": [
+    [
+     35.0,
+     -12.0
+    ],
+    [
+     33.80740392011739,
+     -19.764571353075624
+    ],
+    [
+     30.310889132455355,
+     -27.0
+    ],
+    [
+     24.748737341529164,
+     -33.21320343559643
+    ],
+    [
+     17.500000000000004,
+     -37.98076211353316
+    ],
+    [
+     9.058666578588227,
+     -40.97777478867205
+    ],
+    [
+     2.1431318985078682e-15,
+     -42.0
+    ],
+    [
+     -9.058666578588221,
+     -40.97777478867205
+    ],
+    [
+     -17.499999999999993,
+     -37.98076211353316
+    ],
+    [
+     -24.74873734152916,
+     -33.21320343559643
+    ],
+    [
+     -30.310889132455355,
+     -27.0
+    ],
+    [
+     -33.80740392011739,
+     -19.76457135307563
+    ],
+    [
+     -35.0,
+     -12.000000000000004
+    ]
+   ],
+   "start": -735,
+   "end": 735,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diffuser 1500",
+   "subcategory": "Opal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diffuser 1500",
+   "param": "Opal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diffuser 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap L 1500",
+   "profile": [
+    [
+     0,
+     -750
+    ],
+    [
+     36,
+     -750
+    ],
+    [
+     36,
+     -735
+    ],
+    [
+     0,
+     -735
+    ]
+   ],
+   "axis_at": [
+    0,
+    -12
+   ],
+   "axis": "x",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap L 1500",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap L 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap R 1500",
+   "profile": [
+    [
+     0,
+     735
+    ],
+    [
+     36,
+     735
+    ],
+    [
+     36,
+     750
+    ],
+    [
+     0,
+     750
+    ]
+   ],
+   "axis_at": [
+    0,
+    -12
+   ],
+   "axis": "x",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap R 1500",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap R 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 1500 1",
+   "points": [
+    [
+     -596.0,
+     0.0
+    ],
+    [
+     -596.14,
+     1.04
+    ],
+    [
+     -596.54,
+     2.0
+    ],
+    [
+     -597.17,
+     2.83
+    ],
+    [
+     -598.0,
+     3.46
+    ],
+    [
+     -598.96,
+     3.86
+    ],
+    [
+     -600.0,
+     4.0
+    ],
+    [
+     -601.04,
+     3.86
+    ],
+    [
+     -602.0,
+     3.46
+    ],
+    [
+     -602.83,
+     2.83
+    ],
+    [
+     -603.46,
+     2.0
+    ],
+    [
+     -603.86,
+     1.04
+    ],
+    [
+     -604.0,
+     0.0
+    ],
+    [
+     -603.86,
+     -1.04
+    ],
+    [
+     -603.46,
+     -2.0
+    ],
+    [
+     -602.83,
+     -2.83
+    ],
+    [
+     -602.0,
+     -3.46
+    ],
+    [
+     -601.04,
+     -3.86
+    ],
+    [
+     -600.0,
+     -4.0
+    ],
+    [
+     -598.96,
+     -3.86
+    ],
+    [
+     -598.0,
+     -3.46
+    ],
+    [
+     -597.17,
+     -2.83
+    ],
+    [
+     -596.54,
+     -2.0
+    ],
+    [
+     -596.14,
+     -1.04
+    ]
+   ],
+   "start": -13,
+   "end": -12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 1500 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 1500 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 1500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing Screw 1500 2",
+   "points": [
+    [
+     604.0,
+     0.0
+    ],
+    [
+     603.86,
+     1.04
+    ],
+    [
+     603.46,
+     2.0
+    ],
+    [
+     602.83,
+     2.83
+    ],
+    [
+     602.0,
+     3.46
+    ],
+    [
+     601.04,
+     3.86
+    ],
+    [
+     600.0,
+     4.0
+    ],
+    [
+     598.96,
+     3.86
+    ],
+    [
+     598.0,
+     3.46
+    ],
+    [
+     597.17,
+     2.83
+    ],
+    [
+     596.54,
+     2.0
+    ],
+    [
+     596.14,
+     1.04
+    ],
+    [
+     596.0,
+     0.0
+    ],
+    [
+     596.14,
+     -1.04
+    ],
+    [
+     596.54,
+     -2.0
+    ],
+    [
+     597.17,
+     -2.83
+    ],
+    [
+     598.0,
+     -3.46
+    ],
+    [
+     598.96,
+     -3.86
+    ],
+    [
+     600.0,
+     -4.0
+    ],
+    [
+     601.04,
+     -3.86
+    ],
+    [
+     602.0,
+     -3.46
+    ],
+    [
+     602.83,
+     -2.83
+    ],
+    [
+     603.46,
+     -2.0
+    ],
+    [
+     603.86,
+     -1.04
+    ]
+   ],
+   "start": -13,
+   "end": -12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing Screw 1500 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fixing Screw 1500 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing Screw 1500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Batten",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/Show 1200_Batten",
+   "type": "1200_Batten",
+   "param": "Show 1200_Batten",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Batten/Show 1200_Batten",
+   "type": "1500_Batten",
+   "param": "Show 1200_Batten",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Channel 1200/Visible",
+   "solid": "Base Channel 1200",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diffuser 1200/Visible",
+   "solid": "Diffuser 1200",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap L 1200/Visible",
+   "solid": "End Cap L 1200",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 1200/Visible",
+   "solid": "End Cap R 1200",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 1200 1/Visible",
+   "solid": "Fixing Screw 1200 1",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 1200 2/Visible",
+   "solid": "Fixing Screw 1200 2",
+   "param": "Show 1200_Batten"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500_Batten",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Batten/Show 1500_Batten",
+   "type": "1200_Batten",
+   "param": "Show 1500_Batten",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Batten/Show 1500_Batten",
+   "type": "1500_Batten",
+   "param": "Show 1500_Batten",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Channel 1500/Visible",
+   "solid": "Base Channel 1500",
+   "param": "Show 1500_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diffuser 1500/Visible",
+   "solid": "Diffuser 1500",
+   "param": "Show 1500_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap L 1500/Visible",
+   "solid": "End Cap L 1500",
+   "param": "Show 1500_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 1500/Visible",
+   "solid": "End Cap R 1500",
+   "param": "Show 1500_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 1500 1/Visible",
+   "solid": "Fixing Screw 1500 1",
+   "param": "Show 1500_Batten"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fixing Screw 1500 2/Visible",
+   "solid": "Fixing Screw 1500 2",
+   "param": "Show 1500_Batten"
   },
   {
    "op": "add_connector",
    "name": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Base Channel",
+   "solid": "Cable Entry",
    "side": "top"
   },
   {
@@ -932,8 +1740,8 @@
   }
  ],
  "values": {
-  "Length 1200 mm (1500 type longer), 70 x 45 mm": {
-   "value": "1200x70x45",
+  "Length 1200 / 1500 mm (per type), 70 x 45 mm": {
+   "value": "1200/1500x70x45",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },

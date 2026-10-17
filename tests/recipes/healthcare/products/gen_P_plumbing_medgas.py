@@ -23,15 +23,12 @@ MAT = {
     'upvc': 'FMC_Plastic_uPVC_Pipe_DarkGrey', 'hdpe': 'FMC_Plastic_HDPE_PE100_Black', 'tank': 'FMC_Plastic_WaterTank_Black', 'concrete': 'FMC_Concrete_Precast_Painted',
     'gloss_black': 'FMC_Paint_Gloss_Enamel', 'red': 'FMC_Plastic_FireHoseReel_Red', 'steel': 'FMC_Metal_StructuralSteel_S275', 'collector_glass': 'FMC_Glass_PV_Module',
     'vinyl': 'FMC_Fabric_Vinyl_Upholstery_Blue', 'castor': 'FMC_Plastic_Nylon_CastorGrey',
-    # nearest kit material stands in; the wanted finish is in P_plumbing_medgas.materials_needed.json
-    'epoxy_resin': 'FMC_Plastic_ABS_Black', 'grp': 'FMC_Plastic_ABS_Grey', 'french_blue': 'FMC_Plastic_ABS_Blue', 'safety_green': 'FMC_Plastic_LED_Green',
+    'epoxy_resin': 'FMC_Plastic_EpoxyResin_Black', 'grp': 'FMC_Plastic_GRP_Panel', 'french_blue': 'FMC_Plastic_ABS_FrenchBlue', 'safety_green': 'FMC_Plastic_Sign_SafetyGreen',
+    'display': 'FMC_Glass_Display_Black', 'motor_blue': 'FMC_Metal_Steel_Painted_MotorBlue', 'painted_red': 'FMC_Metal_Steel_Painted_Red',
+    'fin_coil': 'FMC_Metal_Aluminium_FinCoil', 'ductile_iron': 'FMC_Metal_DuctileIron_Black', 'led_amber': 'FMC_Plastic_LED_Amber',
+    'safety_yellow': 'FMC_Paint_Safety_Yellow', 'safety_floor': 'FMC_Plastic_Vinyl_SafetyFloor_Grey',
 }
-NEEDED = [
-    {"name": "FMC_Plastic_EpoxyResin_Black", "colour": "#2A2C2E", "why": "lab sink and worktop in black epoxy resin (FMC_P_PlumbingFixture_Sink_Lab_Epoxy); ABS black stands in"},
-    {"name": "FMC_Plastic_GRP_Panel", "colour": "#9FB0BC", "why": "GRP sectional tank panels (FMC_P_PlumbingEq_Tank_Sectional_GRP); ABS grey stands in"},
-    {"name": "FMC_Plastic_ABS_FrenchBlue", "colour": "#1F4E99", "why": "BS 1710 / BS 381C 166 French blue for nitrous oxide terminal rings and labels; ABS blue (#2F6DB5) stands in"},
-    {"name": "FMC_Plastic_Sign_SafetyGreen", "colour": "#008C45", "why": "ISO 7010 safety green for the emergency shower sign; LED green stands in"},
-]
+NEEDED = []   # second pass: the kit now has every material this batch asked for (17 Oct)
 # BS 1710 / HTM 02-01 gas identification colours (ring, label)
 GAS = {'O2': ('white', 'black'), 'N2O': ('french_blue', 'french_blue'), 'MA4': ('black', 'white'), 'SA7': ('black', 'white'),
        'VAC': ('yellow', 'yellow'), 'AGSS': ('grey', 'black'), 'ENT': ('french_blue', 'white')}
@@ -140,7 +137,7 @@ def handwheel(pre, x, y, z, R_=80, m='red', axis='z'):
             B(f"{pre} Spoke A", (x - R_ + 5, y - 8, z - 5, x + R_ - 5, y - 2, z + 5), m, lod='f'),
             B(f"{pre} Spoke B", (x - 5, y - 8, z - R_ + 5, x + 5, y - 2, z + R_ - 5), m, lod='f'),
             C(f"{pre} Hub", 'y', (x, z), 16, (y - 18, y), m)]
-def motor_x(pre, x0, x1, y, z, r, m='blue', feet=True, fins=4):
+def motor_x(pre, x0, x1, y, z, r, m='motor_blue', feet=True, fins=4):
     """Horizontal foot-mounted motor along x: finned body, fan cowl at x0, terminal box, feet."""
     L = x1 - x0
     p = [C(f"{pre} Motor", 'x', (y, z), r, (x0 + 0.18 * L, x1), m),
@@ -150,19 +147,19 @@ def motor_x(pre, x0, x1, y, z, r, m='blue', feet=True, fins=4):
     if fins: p.append(R(T(f"{pre} Fin", 'x', (y, z), [[r, x0 + 0.25 * L], [r + 5, x0 + 0.25 * L], [r + 5, x0 + 0.25 * L + 6], [r, x0 + 0.25 * L + 6]], m, 'f'), fins, (0.7 * L / fins, 0, 0)))
     if feet: p.append(R(B(f"{pre} Foot", (x0 + 0.25 * L, y - r * 0.85, z - r - 8, x0 + 0.33 * L, y + r * 0.85, z - r * 0.55), m), 2, (0.5 * L, 0, 0)))
     return p
-def motor_z(pre, x, y, z0, z1, r, m='blue'):
+def motor_z(pre, x, y, z0, z1, r, m='motor_blue'):
     """Vertical motor on a pump: body, fan cowl on top, terminal box on the -y side."""
     H = z1 - z0
     return [C(f"{pre} Motor", 'z', (x, y), r, (z0, z0 + 0.8 * H), m),
             T(f"{pre} Fan Cowl", 'z', (x, y), [[0, z0 + 0.8 * H], [r + 4, z0 + 0.8 * H], [r + 4, z1 - 10], [r * 0.8, z1], [0, z1]], m),
             B(f"{pre} Terminal Box", (x - r * 0.4, y - r - r * 0.45, z0 + 0.35 * H, x + r * 0.4, y - r + 10, z0 + 0.65 * H), m, r=4),
             R(T(f"{pre} Fin", 'z', (x, y), [[r, z0 + 0.12 * H], [r + 5, z0 + 0.12 * H], [r + 5, z0 + 0.12 * H + 6], [r, z0 + 0.12 * H + 6]], m, 'f'), 4, (0, 0, 0.15 * H))]
-def panel(pre, x0, x1, z0, z1, yf, depth=200, m='epoxy_white', screen=True, leds=('led_green', 'yellow', 'led_red'), isolator=True):
+def panel(pre, x0, x1, z0, z1, yf, depth=200, m='epoxy_white', screen=True, leds=('led_green', 'led_amber', 'led_red'), isolator=True):
     """Control panel on its front face yf (facing -y): enclosure, door, HMI screen, LEDs, isolator, door handle."""
     W, H = x1 - x0, z1 - z0
     p = [B(f"{pre} Enclosure", (x0, yf, z0, x1, yf + depth, z1), m, r=4),
          F(f"{pre} Door", (x0 + 8, yf - 6, z0 + 8, x1 - 8, yf, z1 - 8), m, r=4, lod='f')]
-    if screen: p.append(F(f"{pre} Screen", (x0 + 0.2 * W, yf - 8, z0 + 0.6 * H, x0 + 0.65 * W, yf - 6, z0 + 0.86 * H), 'black', r=3, lod='f'))
+    if screen: p.append(F(f"{pre} Screen", (x0 + 0.2 * W, yf - 8, z0 + 0.6 * H, x0 + 0.65 * W, yf - 6, z0 + 0.86 * H), 'display', r=3, lod='f'))
     for i, l in enumerate(leds):
         p.append(C(f"{pre} LED {i + 1}", 'y', (x0 + 0.2 * W + i * 0.12 * W, z0 + 0.48 * H), 8, (yf - 10, yf - 6), l, 'f'))
     if isolator:
@@ -207,9 +204,76 @@ def ST(part, side='back', n='Steam', flow='In', d=25): return {"n": n, "domain":
 def E(part, side='back', n='Power'): return {"n": n, "domain": "electrical", "system": "PowerBalanced", "part": part, "side": side}
 def ELV(part, system, side='back', n=None): return {"n": n or system, "domain": "electrical", "system": system, "part": part, "side": side}
 
+import copy, collections
+def scale_parts(parts, sx, sy=None, sz=None, pivot=(0, 0, 0)):
+    """Scale a parts list about `pivot` (per-type sizes from one drawn model). Radii take the mean of the two cross scales."""
+    sy = sx if sy is None else sy; sz = sx if sz is None else sz; px, py, pz = pivot
+    X = lambda v: round(px + (v - px) * sx, 1); Y = lambda v: round(py + (v - py) * sy, 1); Z = lambda v: round(pz + (v - pz) * sz, 1)
+    out = []
+    for p in parts:
+        q = copy.deepcopy(p); sh = q['shape']; ax = q.get('axis', 'z')
+        if 'at' in q:
+            a = q['at']; q['at'] = [X(a[0]), Y(a[1]), Z(a[2]), X(a[3]), Y(a[4]), Z(a[5])]
+            if q.get('r'): q['r'] = round(q['r'] * min(sx, sy if sh == 'box' else sz), 1)
+        if sh in ('cyl', 'turn'):
+            c = q['c']
+            if ax == 'z': q['c'] = [X(c[0]), Y(c[1])]; rs = (sx + sy) / 2; Tt = Z
+            elif ax == 'y': q['c'] = [X(c[0]), Z(c[1])]; rs = (sx + sz) / 2; Tt = Y
+            else: q['c'] = [Y(c[0]), Z(c[1])]; rs = (sy + sz) / 2; Tt = X
+            if sh == 'cyl': q['r'] = round(q['r'] * rs, 1); q[ax] = [Tt(v) for v in q[ax]]
+            else: q['profile'] = [[round(r * rs, 1), Tt(t)] for r, t in q['profile']]
+        if sh == 'prism': q['pts'] = [[X(a), Y(b)] for a, b in q['pts']]; q['z'] = [Z(v) for v in q['z']]
+        if sh == 'front': q['pts'] = [[X(a), Z(b)] for a, b in q['pts']]; q['y'] = [Y(v) for v in q['y']]
+        if sh == 'right': q['pts'] = [[Y(a), Z(b)] for a, b in q['pts']]; q['x'] = [X(v) for v in q['x']]
+        if 'repeat' in q: d = q['repeat']['d']; q['repeat']['d'] = [round(d[0] * sx, 1), round(d[1] * sy, 1), round(d[2] * sz, 1)]
+        out.append(q)
+    return out
+
+DROPPED = collections.defaultdict(list)
+def merge(fam, models, conns):
+    """{type: parts} -> one parts list: identical parts are shared, others carry "only": [types]; same-named variants get a
+    type suffix. Voids that differ by type are dropped (a void can't be switched per type). Connectors move to the shared
+    part where there is one, else to the first type that has it."""
+    tn = list(models)
+    ks = [t.split('_')[0] for t in tn]; vs = [t.split('_', 1)[1] for t in tn]
+    pick = (lambda t: t.split('_')[0]) if len(set(ks)) == len(ks) else (lambda t: t.split('_', 1)[1]) if len(set(vs)) == len(vs) else (lambda t: t)
+    ent, order = {}, []
+    for t, parts in models.items():
+        for p in parts:
+            key = (p['n'], json.dumps({k: v for k, v in p.items() if k != 'n'}, sort_keys=True))
+            if key not in ent: ent[key] = []; order.append(key)
+            if t not in ent[key]: ent[key].append(t)
+    cnt = collections.Counter(k[0] for k in order)
+    out, ren = [], {}
+    for key in order:
+        ts = ent[key]; g = json.loads(key[1]); p = {'n': key[0], **g}
+        if cnt[key[0]] > 1: p['n'] = key[0] + ' ' + ' '.join(pick(t) for t in ts)
+        if len(ts) < len(tn):
+            if p.get('void'): DROPPED[fam].append(p['n']); continue
+            p['only'] = ts
+        for t in ts: ren[(t, key[0])] = (p['n'], len(ts) == len(tn))
+        out.append(p)
+    def resolve(part):
+        best = None
+        for t in tn:
+            names = {q['n']: q for q in models[t]}; base, k = part, ''
+            if part not in names:
+                b, _, num = part.rpartition(' ')
+                if b in names and names[b].get('repeat') and num.isdigit(): base, k = b, ' ' + num
+                else: continue
+            nn, shared = ren[(t, base)]
+            if shared: return nn + k
+            best = best or nn + k
+        return best
+    cs = []
+    for c in conns:
+        c = dict(c); r = resolve(c['part']); assert r, (fam, c['part']); c['part'] = r; cs.append(c)
+    return out, cs
+
 P = []
 def add(fam, desc, ifc, types, parts, conns, values, about, template=None, category=None, type_values=None, clearances=None, extra=None):
     rec = RECS[fam]
+    if isinstance(parts, dict): parts, conns = merge(fam, parts, conns)
     mats = {}
     for p in parts:
         if p.get('mat'): mats[p['mat']] = MAT[p['mat']]
@@ -225,26 +289,32 @@ def add(fam, desc, ifc, types, parts, conns, values, about, template=None, categ
     return prod
 
 # =================================================================== PLUMBING FIXTURES
-# 1 Vanity basin: one-piece vitreous china vanity top with oval bowl, monobloc mixer, two-door cabinet, recessed plinth
+# 1 Vanity basin: one-piece vitreous china top(s) with oval bowl, monobloc mixer, cabinet, recessed plinth. Left bowl at x = 0
+# is shared; the double type adds a second bowl unit to the right on a 1200 cabinet.
 f = 'FMC_P_PlumbingFixture_Basin_Vanity'
-cy = -235
-parts = ring("Vanity Top", (0, cy), (305, 235, 10), (205, 155, 2.4), (820, 850), 'china', seg=8, k=4)
-parts += ring("Bowl Wall", (0, cy - 5), (215, 165, 2.4), (200, 150, 2.4), (690, 820), 'china', seg=6)
-parts += [PR("Bowl Floor", oval(0, cy - 5, 205, 155, 2.4, 24), (680, 695), 'china'),
-          T("Bowl Slope", 'z', (0, cy - 5), [[60, 695], [150, 695], [150, 712], [60, 700]], 'china', 'f'),
-          B("Cabinet", (-290, -440, 100, 290, 0, 818), 'melamine'),
-          B("Plinth", (-280, -400, 0, 280, -20, 100), 'grey'),
-          R(F("Door", (-288, -458, 110, -3, -440, 812), 'laminate', r=3), 2, (291, 0, 0)),
-          R(F("Door Handle", (-40, -478, 600, -28, -458, 780), 'chrome', r=4, lod='f'), 2, (68, 0, 0)),
-          C("Supply Tails", 'z', (0, -60), 10, (700, 820), 'chrome', 'm'),
-          C("Trap", 'z', (0, cy - 5), 32, (480, 680), 'chrome', 'f'),
-          C("Waste Arm", 'y', (0, 520), 20, (cy - 5, 0), 'chrome')]
-parts += waste("Waste", 0, cy - 5, 695) + deck_mixer("Mixer", 0, -60, 850, reach=125, h=180, lever=90)
-add(f, "Vanity basin 600 mm: one-piece vitreous china top with oval bowl on a two-door melamine cabinet, monobloc lever mixer",
-    "IfcSanitaryTerminal", ["600_Single", "1200_Double"], parts,
+def vanity_unit(pre, x):
+    cy = -235
+    p = ring(f"{pre}Vanity Top", (x, cy), (300, 235, 10), (205, 155, 2.4), (820, 850), 'china', seg=8, k=4)
+    p += ring(f"{pre}Bowl Wall", (x, cy - 5), (215, 165, 2.4), (200, 150, 2.4), (690, 820), 'china', seg=6)
+    p += [PR(f"{pre}Bowl Floor", oval(x, cy - 5, 205, 155, 2.4, 24), (680, 695), 'china'),
+          T(f"{pre}Bowl Slope", 'z', (x, cy - 5), [[60, 695], [150, 695], [150, 712], [60, 700]], 'china', 'f'),
+          C(f"{pre}Supply Tails", 'z', (x, -60), 10, (700, 820), 'chrome', 'm'), C(f"{pre}Trap", 'z', (x, cy - 5), 32, (480, 680), 'chrome', 'f')]
+    return p + waste(f"{pre}Waste", x, cy - 5, 695) + deck_mixer(f"{pre}Mixer", x, -60, 850, reach=125, h=180, lever=90)
+def vanity(double):
+    x0, x1 = (-300, 900) if double else (-300, 300)
+    p = vanity_unit('', 0) + [B("Cabinet", (x0 + 10, -440, 100, x1 - 10, 0, 818), 'melamine'), B("Plinth", (x0 + 20, -400, 0, x1 - 20, -20, 100), 'grey'),
+                               C("Waste Arm", 'y', (0, 520), 20, (-240, 0), 'chrome')]
+    nd = 4 if double else 2; dw = (x1 - x0 - 24) / nd
+    p += [R(F("Door", (x0 + 12, -458, 110, x0 + 12 + dw - 3, -440, 812), 'laminate', r=3), nd, (dw, 0, 0)),
+          R(F("Door Handle", (-40, -478, 600, -28, -458, 780), 'chrome', r=4, lod='f'), 2, (68, 0, 0))]
+    if double: p += vanity_unit('Right ', 600) + [R(F("Door Handle Right", (560, -478, 600, 572, -458, 780), 'chrome', r=4, lod='f'), 2, (68, 0, 0)),
+                                                  C("Waste Link", 'x', (-240, 500), 20, (0, 600), 'chrome', 'f')]
+    return p
+add(f, "Vanity basin: one-piece vitreous china top with oval bowl on a melamine cabinet with doors, monobloc lever mixer; single 600 mm or double 1200 mm",
+    "IfcSanitaryTerminal", ["600_Single", "1200_Double"], {"600_Single": vanity(False), "1200_Double": vanity(True)},
     [CW("Supply Tails", 'bottom'), HW("Mixer Body", 'bottom'), SAN("Waste Arm")],
-    {"Width 600 mm, depth 470 mm": A("600x470"), "Rim height 850 mm": A(850, "HBN 00-10 Part C / BS 6465 basin height"), "Waste 32/40 mm": A(40)},
-    "Vanity basin modelled as a generic product: china top with oval bowl (rim sectors, bowl wall, floor, waste), monobloc mixer, two-door cabinet, recessed plinth. Geometry drawn at the 600 single type; the 1200 double type shares it until a two-bowl body is added.")
+    {"Width 600 / 1200 mm, depth 470 mm": A("600x470"), "Rim height 850 mm": A(850, "HBN 00-10 Part C / BS 6465 basin height"), "Waste 32/40 mm": A(40)},
+    "Vanity basin modelled as a generic product: china top with oval bowl (rim sectors, bowl wall, floor, waste), monobloc mixer, cabinet with doors, recessed plinth. Per type: the single is centred on x = 0; the double keeps that bowl and adds a second one 600 mm to the right on a 1200 cabinet (four doors), its waste linked to the first trap so the connectors stay on the shared bowl.")
 
 # 2 Accessible basin with knee space
 f = 'FMC_P_PlumbingFixture_Basin_Accessible'
@@ -266,33 +336,37 @@ add(f, "Accessible wall-hung basin 550 mm, vitreous china, shallow body and wall
     "Accessible basin modelled as a generic product: shallow china bowl (rim sectors, floor, slope), tap ledge, long-lever mixer, waste run tight to the wall to keep the knee space clear; approach zone as a clearance.",
     clearances=[{"n": "Approach Zone", "shape": "box", "at": [-450, -1550, 0, 450, -450, 10], "sub": "Clearance Accessibility"}])
 
-# 3 Theatre scrub trough, stainless, 2-bay drawn; arrayed CW/HW/SAN per bay
+# 3 Theatre scrub trough, stainless, 1/2/3 bays; insertion point at the left end so bay 1 is shared and bays 2-3 are added
 f = 'FMC_P_PlumbingFixture_ScrubTrough_Theatre'
-parts = [F("Front Apron", (-600, -600, 650, 600, -585, 950), 'stainless', r=6),
-         B("Front Rim", (-600, -612, 935, 600, -585, 955), 'stainless', r=6),
-         R(B("End Wall", (-600, -600, 740, -585, -15, 955), 'stainless'), 2, (1185, 0, 0)),
-         B("Upstand", (-600, -15, 740, 600, 0, 1300), 'stainless'),
-         RT("Trough Floor", [[-585, 790], [-15, 742], [-15, 726], [-585, 774]], (-585, 585), 'stainless'),
-         B("Underside Skirt", (-585, -585, 650, 585, -560, 790), 'stainless', lod='f'),
-         R(RT("Wall Bracket", [[-560, 650], [0, 650], [0, 740], [-80, 740]], (-560, -548), 'stainless', 'f'), 2, (1108, 0, 0)),
-         F("Upstand Capping", (-600, -20, 1290, 600, 0, 1305), 'stainless', lod='f')]
-for i, x in enumerate((-300, 300)):
-    k = i + 1
-    parts += [C(f"Spout {k}", 'y', (x, 1150), 12, (-300, -15), 'stainless'), C(f"Nozzle {k}", 'z', (x, -290), 12, (1085, 1150), 'stainless'),
-              T(f"Aerator {k}", 'z', (x, -290), [[0, 1078], [10, 1078], [12, 1085], [0, 1085]], 'black', 'f'),
-              F(f"Sensor Window {k}", (x - 25, -18, 1040, x + 25, -15, 1070), 'black', r=6, lod='f'),
-              F(f"TMV Access Panel {k}", (x - 110, -17, 1190, x + 110, -15, 1270), 'stainless', r=4),
-              R(C(f"TMV Panel Screw {k}", 'y', (x - 100, 1200), 3, (-18, -17), 'chrome', 'f'), 2, (200, 0, 0)),
-              F(f"Knee Paddle {k}", (x - 70, -625, 680, x + 70, -612, 760), 'stainless', r=10),
-              C(f"Waste Outlet {k}", 'z', (x, -60), 22, (600, 744), 'stainless'),
-              C(f"Waste Plug {k}", 'z', (x, -60), 30, (744, 746), 'chrome', 'f'), VD(C(f"Waste Hole {k}", 'z', (x, -60), 20, (700, 760), None))]
+def trough(nb):
+    L = 600 * nb
+    parts = [F("Front Apron", (0, -600, 650, L, -585, 950), 'stainless', r=6),
+             B("Front Rim", (0, -612, 935, L, -585, 955), 'stainless', r=6),
+             B("End Wall L", (0, -600, 740, 15, -15, 955), 'stainless'), B("End Wall R", (L - 15, -600, 740, L, -15, 955), 'stainless'),
+             B("Upstand", (0, -15, 740, L, 0, 1300), 'stainless'),
+             RT("Trough Floor", [[-585, 790], [-15, 742], [-15, 726], [-585, 774]], (15, L - 15), 'stainless'),
+             B("Underside Skirt", (15, -585, 650, L - 15, -560, 790), 'stainless', lod='f'),
+             RT("Wall Bracket L", [[-560, 650], [0, 650], [0, 740], [-80, 740]], (40, 52), 'stainless', 'f'),
+             RT("Wall Bracket R", [[-560, 650], [0, 650], [0, 740], [-80, 740]], (L - 52, L - 40), 'stainless', 'f'),
+             F("Upstand Capping", (0, -20, 1290, L, 0, 1305), 'stainless', lod='f')]
+    for i in range(nb):
+        k = i + 1; x = 300 + 600 * i
+        parts += [C(f"Spout {k}", 'y', (x, 1150), 12, (-300, -15), 'stainless'), C(f"Nozzle {k}", 'z', (x, -290), 12, (1085, 1150), 'stainless'),
+                  T(f"Aerator {k}", 'z', (x, -290), [[0, 1078], [10, 1078], [12, 1085], [0, 1085]], 'black', 'f'),
+                  F(f"Sensor Window {k}", (x - 25, -18, 1040, x + 25, -15, 1070), 'display', r=6, lod='f'),
+                  F(f"TMV Access Panel {k}", (x - 110, -17, 1190, x + 110, -15, 1270), 'stainless', r=4),
+                  R(C(f"TMV Panel Screw {k}", 'y', (x - 100, 1200), 3, (-18, -17), 'chrome', 'f'), 2, (200, 0, 0)),
+                  F(f"Knee Paddle {k}", (x - 70, -625, 680, x + 70, -612, 760), 'stainless', r=10),
+                  C(f"Waste Outlet {k}", 'z', (x, -60), 22, (600, 744), 'stainless'),
+                  C(f"Waste Plug {k}", 'z', (x, -60), 30, (744, 746), 'chrome', 'f'), VD(C(f"Waste Hole {k}", 'z', (x, -60), 20, (700, 760), None))]
+    return parts
 conns = []
-for k in (1, 2):
+for k in (1, 2, 3):
     conns += [CW(f"TMV Access Panel {k}", 'back', f"CW {k}"), HW(f"TMV Access Panel {k}", 'top', f"HW {k}"), SAN(f"Waste Outlet {k}", 'bottom', f"Waste {k}")]
-add(f, "Theatre scrub trough, 2-bay stainless steel 1200 mm, sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay",
-    "IfcSanitaryTerminal", ["600_1Bay", "1200_2Bay", "1800_3Bay"], parts, conns,
-    {"Length 1200 mm (2-bay), projection 600 mm": A("1200x600"), "Rim height 950 mm": A(950, "HBN 26 / theatre scrub practice"), "Bay width 600 mm": A(600, "one surgeon per bay")},
-    "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Drawn at 2 bays with CW/HW/waste arrayed per bay; 1-bay and 3-bay share the geometry until bay count drives it.")
+add(f, "Theatre scrub trough, stainless steel, 600 mm per bay (1, 2 or 3 bays), sloped trough, 350 mm upstand, wall spouts with sensor and knee control, TMV per bay",
+    "IfcSanitaryTerminal", ["600_1Bay", "1200_2Bay", "1800_3Bay"], {f"{600 * n}_{n}Bay": trough(n) for n in (1, 2, 3)}, conns,
+    {"Length 600 / 1200 / 1800 mm, projection 600 mm": A("600 per bay"), "Rim height 950 mm": A(950, "HBN 26 / theatre scrub practice"), "Bay width 600 mm": A(600, "one surgeon per bay")},
+    "Scrub trough modelled as a generic product: stainless apron, rim, end walls, sloped trough floor, upstand with capping, per bay a wall spout, sensor window, TMV access panel, knee paddle and waste. Per type: the insertion point is the left end; bay 1 is shared, bay 2 shows in the 2- and 3-bay types, bay 3 in the 3-bay type, and the body grows to 600 mm per bay. CW/HW/waste are arrayed per bay; the bay 2-3 connectors exist in every type (Revit can't switch connectors per type) and stay unconnected where the bay is hidden. The 3-bay type's waste holes for bays 2-3 are drawn as plugs because voids can't vary by type.")
 
 # 4 Sluice hopper with flushing rim, bucket grating, high-level cistern and flush pipe, bib taps
 f = 'FMC_P_PlumbingFixture_Sink_Sluice_Hopper'
@@ -411,11 +485,13 @@ add(f, "Cleaner's sink 600 x 460 mm, vitreous china, low level with back upstand
 # WC pan builder (pedestal, oval bowl rim, seat ring, raised lid, hinges)
 def wc_pan(yb, L, rim, A_=180, seat=True, lid_top=None):
     yc = yb - L * 0.52
-    p = [PR("Pedestal", [(-A_ + 40, yb)] + oval(0, yb - L * 0.45, A_ - 50, L * 0.45, 2, 16, 180, 360) + [(A_ - 40, yb)], (0, rim - 120), 'china'),
-         PR("Pedestal Foot", [(-A_ + 25, yb)] + oval(0, yb - L * 0.45, A_ - 35, L * 0.47, 2, 16, 180, 360) + [(A_ - 25, yb)], (0, 25), 'china', 'f'),
-         PR("Bowl Floor", oval(0, yc, A_ - 10, L * 0.47, 2.2, 24), (rim - 130, rim - 110), 'china'),
-         B("Pan Back", (-A_ + 20, yb - 140, rim - 130, A_ - 20, yb, rim), 'china', r=30)]
-    p += ring("Bowl Rim", (0, yc), (A_, L * 0.48, 2.2), (A_ - 45, L * 0.48 - 55, 2.0), (rim - 120, rim), 'china', seg=8)
+    # pedestal waisted (narrow trapway) and flaring to a foot; bowl in two tiers so the pan reads rounded, not boxy
+    p = [PR("Pedestal", [(-A_ + 70, yb)] + oval(0, yb - L * 0.42, A_ - 80, L * 0.38, 2, 16, 180, 360) + [(A_ - 70, yb)], (0, rim - 160), 'china'),
+         PR("Pedestal Foot", [(-A_ + 45, yb)] + oval(0, yb - L * 0.42, A_ - 55, L * 0.42, 2, 16, 180, 360) + [(A_ - 45, yb)], (0, 30), 'china'),
+         PR("Bowl Floor", oval(0, yc, A_ - 30, L * 0.44, 2.2, 24), (rim - 175, rim - 150), 'china'),
+         PR("Pan Back", [(-A_ + 30, yb)] + oval(0, yb - 60, A_ - 30, 90, 2, 12, 180, 360) + [(A_ - 30, yb)], (rim - 175, rim), 'china')]
+    p += ring("Bowl Base", (0, yc), (A_ - 25, L * 0.48 - 25, 2.2), (A_ - 70, L * 0.48 - 80, 2.0), (rim - 160, rim - 70), 'china', seg=8)
+    p += ring("Bowl Rim", (0, yc), (A_, L * 0.48, 2.3), (A_ - 45, L * 0.48 - 55, 2.0), (rim - 70, rim), 'china', seg=10)
     p += [T("Bowl Throat", 'z', (0, yc - 30), [[40, rim - 110], [110, rim - 110], [110, rim - 95], [40, rim - 106]], 'china', 'f')]
     if seat:
         p += ring("Seat", (0, yc - 8), (A_ + 2, L * 0.48 - 5, 2.2), (A_ - 65, L * 0.48 - 85, 2.0), (rim, rim + 22), 'white', seg=8, k=3)
@@ -516,7 +592,7 @@ parts = [B("Cabinet", (-300, -600, 100, 300, 0, 1800), 'stainless', r=8),
          C("Door Handle", 'x', (-640, 1405), 12, (-180, 180), 'chrome'),
          R(F("Handle Post", (-190, -640, 1395, -175, -616, 1415), 'chrome', lod='f'), 2, (365, 0, 0)),
          F("Control Panel", (-260, -606, 1520, 260, -600, 1740), 'medical_grey', r=8),
-         F("Display", (-220, -608, 1610, -20, -606, 1700), 'black', r=4, lod='f'),
+         F("Display", (-220, -608, 1610, -20, -606, 1700), 'display', r=4, lod='f'),
          R(C("Program Button", 'y', (40, 1650), 15, (-610, -606), 'white', 'f'), 3, (60, 0, 0)),
          C("Ready LED", 'y', (40, 1575), 6, (-609, -606), 'led_green', 'f'),
          C("Fault LED", 'y', (100, 1575), 6, (-609, -606), 'led_red', 'f'),
@@ -571,38 +647,39 @@ parts = [C("Valve Bar", 'x', (-55, 1000), 30, (-160, 160), 'chrome'),
          C("Hose Rise", 'z', (120, -55), 9, (720, 1580), 'grey', 'f'),
          C("Riser Rail", 'z', (0, -50), 12, (1150, 2050), 'chrome'),
          R(F("Rail Bracket", (-25, -50, 1130, 25, 0, 1170), 'chrome', r=6), 2, (0, 0, 920)),
+         B("Floor Former", (-1000, -1200, -32, 450, 0, -2), 'safety_floor'),
          B("Slider", (-22, -75, 1620, 22, -30, 1680), 'white', r=8),
          C("Handset Grip", 'z', (60, -95), 16, (1580, 1780), 'white'),
          T("Handset Head", 'z', (60, -95), [[0, 1780], [48, 1780], [52, 1795], [0, 1810]], 'white'),
-         B("Seat", (-1050, -480, 460, -600, -50, 490), 'white', r=25),
-         R(B("Seat Slot", (-1020, -460, 489, -630, -450, 491), 'grey', lod='f'), 6, (0, 70, 0)),
-         F("Seat Bracket", (-1000, -40, 380, -650, 0, 560), 'aluminium', r=10),
-         R(B("Seat Leg", (-1030, -470, 0, -1005, -445, 460), 'aluminium'), 2, (395, 0, 0)),
+         B("Seat", (-900, -480, 460, -450, -50, 490), 'white', r=25),
+         R(B("Seat Slot", (-870, -460, 489, -480, -450, 491), 'grey', lod='f'), 6, (0, 70, 0)),
+         F("Seat Bracket", (-850, -40, 380, -500, 0, 560), 'aluminium', r=10),
+         R(B("Seat Leg", (-880, -470, 0, -855, -445, 460), 'aluminium'), 2, (395, 0, 0)),
          C("Grab Rail", 'z', (420, -65), 17, (850, 1500), 'white'),
          R(C("Grab Rail Flange", 'y', (420, 870), 25, (-65, 0), 'white', 'f'), 2, (0, 0, 610)),
-         B("Linear Drain", (-950, -160, -40, 950, -60, 0), 'stainless'),
-         R(B("Drain Slot", (-930, -140, -1, -920, -80, 0.5), 'black', lod='f'), 25, (76, 0, 0)),
-         C("Drain Outlet", 'z', (700, -110), 25, (-120, -40), 'grey')]
+         B("Linear Drain", (-950, -160, -40, 400, -60, 0), 'stainless'),
+         R(B("Drain Slot", (-930, -140, -1, -920, -80, 0.5), 'black', lod='f'), 18, (74, 0, 0)),
+         C("Drain Outlet", 'z', (250, -110), 25, (-120, -40), 'grey')]
 add(f, "Accessible thermostatic shower set: exposed TMV3 bar valve with long flow lever, riser rail and handset, fold-down seat with legs, grab rail, level-access linear drain",
     "IfcSanitaryTerminal", ["TMV3_Wall"], parts,
     [CW("Wall Union R"), HW("Wall Union L"), SAN("Drain Outlet", 'bottom', d=50)],
     {"Valve at 1000 mm, rail to 2050 mm": A("1000/2050", "BS 8300-2 shower controls 750-1000 mm"), "Seat 480 mm high": A(480, "BS 8300-2"), "Area 1500 x 1200 mm level access": A("1500x1200", "HBN 00-02")},
-    "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs, grab rail, linear drain with slots and outlet; level-access area as clearance.",
+    "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs beside the valve, grab rail, linear drain with slots and outlet on a safety-vinyl floor former that ties the set together; level-access area as clearance.",
     clearances=[{"n": "Shower Area", "shape": "box", "at": [-1100, -1200, 0, 450, -60, 10], "sub": "Clearance Accessibility"}])
 
 # 16 Emergency shower and eyewash combination
 f = 'FMC_P_PlumbingFixture_Shower_Emergency_Eyewash'
-parts = [T("Foot Plate", 'z', (0, 0), [[0, 0], [130, 0], [120, 15], [0, 15]], 'yellow'),
-         C("Column", 'z', (0, 0), 20, (15, 2200), 'yellow'),
+parts = [T("Foot Plate", 'z', (0, 0), [[0, 0], [130, 0], [120, 15], [0, 15]], 'safety_yellow'),
+         C("Column", 'z', (0, 0), 20, (15, 2200), 'safety_yellow'),
          C("Inlet Tee", 'z', (0, 0), 26, (2170, 2260), 'brass'),
-         C("Shower Arm", 'y', (0, 2215), 18, (-520, 0), 'yellow'),
-         C("Head Stem", 'z', (0, -500), 15, (2150, 2215), 'yellow'),
+         C("Shower Arm", 'y', (0, 2215), 18, (-520, 0), 'safety_yellow'),
+         C("Head Stem", 'z', (0, -500), 15, (2150, 2215), 'safety_yellow'),
          T("Shower Head", 'z', (0, -500), [[0, 2050], [140, 2068], [152, 2090], [30, 2150], [0, 2150]], 'yellow'),
          C("Shower Valve", 'y', (0, 2215), 30, (-150, -100), 'brass'),
          B("Valve Lever", (0, -135, 2205, 190, -115, 2225), 'chrome'),
          C("Pull Rod", 'z', (180, -125), 5, (1580, 2210), 'chrome'),
          T("Pull Ring", 'y', (180, 1545), [[30, -120], [38, -120], [38, -130], [30, -130]], 'yellow'),
-         C("Eyewash Arm", 'y', (0, 1000), 15, (-300, 0), 'yellow'),
+         C("Eyewash Arm", 'y', (0, 1000), 15, (-300, 0), 'safety_yellow'),
          C("Eyewash Valve", 'y', (0, 1000), 26, (-120, -70), 'brass'),
          T("Eyewash Bowl", 'z', (0, -400), [[20, 945], [150, 1000], [150, 1012], [140, 1012], [15, 965], [0, 965], [0, 945]], 'yellow'),
          R(C("Spray Head", 'z', (-60, -400), 14, (965, 1030), 'chrome'), 2, (120, 0, 0)),
@@ -675,8 +752,8 @@ parts = [B("Upper Housing", (-210, -270, 1450, 210, 0, 1720), 'stainless', r=25)
          R(B("Drip Grille Bar", (-160, -245, 1058, 160, -237, 1062), 'stainless', lod='f'), 8, (0, 21, 0)),
          T("Nozzle", 'z', (0, -150), [[0, 1395], [10, 1395], [14, 1420], [20, 1450], [0, 1450]], 'chrome'),
          F("Sensor Window", (-30, -272, 1460, 30, -270, 1480), 'black', r=4, lod='f'),
-         F("Counter Display", (-120, -272, 1560, 120, -270, 1660), 'black', r=8),
-         F("Counter Digits", (-90, -273, 1590, 90, -272, 1630), 'led_green', lod='f'),
+         F("Counter Display", (-65, -272, 1600, 65, -270, 1650), 'display', r=5),
+         F("Counter Digits", (-45, -273, 1612, 45, -272, 1636), 'led_green', lod='f'),
          C("Filter LED", 'y', (150, 1500), 6, (-273, -270), 'led_green', 'f'),
          R(F("Vent Slot", (-150, -272, 880, 150, -270, 888), 'grey', lod='f'), 4, (0, 0, 25)),
          C("Supply Stop", 'y', (-100, 900), 9, (-40, 0), 'chrome', 'm'),
@@ -884,7 +961,7 @@ f = 'FMC_P_PlumbingEq_WaterHeater_Instant'
 z0 = 1300
 parts = [B("Body", (-115, -80, z0, 115, 0, z0 + 330), 'white', r=20),
          F("Front Cover", (-110, -88, z0 + 8, 110, -80, z0 + 322), 'white', r=18),
-         F("Display", (-60, -90, z0 + 210, 60, -88, z0 + 260), 'black', r=4, lod='f'),
+         F("Display", (-60, -90, z0 + 210, 60, -88, z0 + 260), 'display', r=4, lod='f'),
          F("Display Digits", (-40, -91, z0 + 222, 40, -90, z0 + 248), 'led_blue', lod='f'),
          C("Temp Knob", 'y', (0, z0 + 140), 30, (-104, -88), 'medical_grey'),
          B("Knob Grip", (-4, -108, z0 + 115, 4, -104, z0 + 165), 'grey', lod='f'),
@@ -950,7 +1027,7 @@ parts += [R(B("Leg", (-420, -420, 0, -360, -360, 500), 'painted_steel'), 2, (780
           R(B("Leg Back", (-420, 360, 0, -360, 420, 500), 'painted_steel'), 2, (780, 0, 0)),
           R(T("Cladding Band", 'z', (0, 0), [[520, 700], [524, 700], [524, 715], [520, 715]], 'stainless', 'f'), 3, (0, 0, 450)),
           C("Manhole", 'y', (0, 800), 210, (-560, -520), 'painted_steel'),
-          C("Manhole Cover", 'y', (0, 800), 180, (-580, -560), 'painted_steel'),
+          C("Manhole Cover", 'y', (0, 800), 180, (-580, -560), 'ductile_iron'),
           R(C("Manhole Bolt", 'y', (-150, 800), 9, (-590, -580), 'chrome', 'f', seg=6), 2, (300, 0, 0)),
           T("Coil Flange", 'x', (0, 600), [[0, 520], [200, 520], [200, 560], [0, 560]], 'painted_steel'),
           C("Steam Inlet", 'x', (60, 700), 30, (560, 720), 'steel'),
@@ -1034,10 +1111,10 @@ parts = [C("Tank Body", 'x', (0, -1750), 1250, (-2200, 2200), 'hdpe'),
          T("End Cap R", 'x', (0, -1750), [[0, 2200], [1250, 2200], [800, 2350], [0, 2400]], 'hdpe'),
          R(T("Rib", 'x', (0, -1750), [[1250, -1900], [1300, -1900], [1300, -1840], [1250, -1840]], 'hdpe', 'f'), 8, (500, 0, 0)),
          C("Access Turret", 'z', (0, 0), 350, (-560, -70), 'hdpe'),
-         C("Manhole Cover", 'z', (0, 0), 380, (-70, 0), 'painted_steel'),
+         C("Manhole Cover", 'z', (0, 0), 380, (-70, 0), 'ductile_iron'),
          R(B("Cover Keyhole", (-120, -10, -1, -90, 10, 0.5), 'black', lod='f'), 2, (210, 0, 0)),
          C("Filter Turret", 'z', (-1500, 0), 250, (-560, -70), 'hdpe'),
-         C("Filter Cover", 'z', (-1500, 0), 280, (-70, 0), 'painted_steel'),
+         C("Filter Cover", 'z', (-1500, 0), 280, (-70, 0), 'ductile_iron'),
          C("Inlet Pipe", 'x', (0, -350), 55, (-2700, -1750), 'upvc'),
          C("Overflow Pipe", 'x', (0, -600), 55, (1750, 2700), 'upvc'),
          C("Delivery Pipe", 'y', (200, -350), 20, (0, 600), 'hdpe'),
@@ -1053,10 +1130,10 @@ parts = [B("Base Frame", (-650, -450, 0, 650, 350, 120), 'painted_steel'),
          R(B("Pump Foot", (-330, -90, 120, -170, 90, 160), 'stainless'), 2, (500, 0, 0)),
          R(C("Pump Sleeve", 'z', (-250, 0), 70, (160, 640), 'stainless'), 2, (500, 0, 0)),
          R(T("Pump Head", 'z', (-250, 0), [[0, 640], [85, 640], [85, 680], [60, 700], [0, 700]], 'stainless'), 2, (500, 0, 0)),
-         R(T("Motor Stool", 'z', (-250, 0), [[0, 700], [70, 700], [95, 780], [0, 780]], 'blue'), 2, (500, 0, 0)),
-         R(C("Motor", 'z', (-250, 0), 105, (780, 1080), 'blue'), 2, (500, 0, 0)),
-         R(T("Fan Cowl", 'z', (-250, 0), [[0, 1080], [110, 1080], [110, 1140], [80, 1160], [0, 1160]], 'blue'), 2, (500, 0, 0)),
-         R(B("Terminal Box", (-300, -170, 880, -200, -100, 990), 'blue', r=4), 2, (500, 0, 0)),
+         R(T("Motor Stool", 'z', (-250, 0), [[0, 700], [70, 700], [95, 780], [0, 780]], 'motor_blue'), 2, (500, 0, 0)),
+         R(C("Motor", 'z', (-250, 0), 105, (780, 1080), 'motor_blue'), 2, (500, 0, 0)),
+         R(T("Fan Cowl", 'z', (-250, 0), [[0, 1080], [110, 1080], [110, 1140], [80, 1160], [0, 1160]], 'motor_blue'), 2, (500, 0, 0)),
+         R(B("Terminal Box", (-300, -170, 880, -200, -100, 990), 'motor_blue', r=4), 2, (500, 0, 0)),
          C("Suction Header", 'x', (-330, 220), 50, (-700, 600), 'stainless'),
          R(C("Suction Branch", 'y', (-250, 220), 32, (-330, -60), 'stainless'), 2, (500, 0, 0)),
          C("Discharge Header", 'x', (250, 600), 50, (-600, 700), 'stainless'),
@@ -1066,7 +1143,7 @@ parts = [B("Base Frame", (-650, -450, 0, 650, 350, 120), 'painted_steel'),
          R(B("Isolator Lever", (-260, -255, 262, -110, -205, 274), 'red', lod='f'), 2, (500, 0, 0)),
          C("Gauge Riser", 'z', (550, 250), 8, (650, 760), 'brass')]
 parts += gauge("Discharge Gauge", 550, 225, 800, 45, stem=False)
-parts += vessel("Pressure Vessel", 860, 0, 120, 900, 180, 'red', legs=True)
+parts += vessel("Pressure Vessel", 860, 0, 120, 900, 180, 'painted_red', legs=True)
 parts += [B("Panel Stand", (-40, 280, 120, 40, 330, 1150), 'painted_steel')] + panel("Control Panel", -280, 280, 1150, 1600, 300, 180)
 add(f, "Cold water booster set, duty/standby: two vertical multistage stainless pumps with motors on a base frame, suction and discharge headers, check and isolating valves, membrane pressure vessel, VSD control panel",
     "IfcPump", ["2x2.2kW_DutyStandby"], parts,
@@ -1116,7 +1193,7 @@ parts = [R(B("Frame Post Front", (-800, -400, 0, -760, -360, 1900), 'stainless')
          R(C("Cartridge Housing", 'z', (-600, -200), 65, (350, 850), 'blue'), 2, (200, 0, 0)),
          R(T("Cartridge Head", 'z', (-600, -200), [[0, 850], [75, 850], [75, 900], [0, 900]], 'blue'), 2, (200, 0, 0)),
          B("Pump Base", (-150, -300, 40, 450, 100, 80), 'stainless')]
-parts += motor_x("HP Pump", 0, 420, -100, 200, 110, 'blue', fins=3)
+parts += motor_x("HP Pump", 0, 420, -100, 200, 110, fins=3)
 parts += [C("Pump End", 'x', (-100, 200), 70, (-140, 0), 'stainless'),
           R(C("Flow Meter", 'z', (200, -385), 18, (1200, 1450), 'polycarbonate'), 3, (90, 0, 0)),
           R(C("Flow Float", 'z', (200, -385), 12, (1300, 1320), 'led_red', 'f'), 3, (90, 0, 0))]
@@ -1143,7 +1220,7 @@ parts = [C("Chamber", 'x', (-150, 1600), 50, (-450, 450), 'stainless'),
          R(B("Clamp Arm", (-300, -150, 1540, -260, -30, 1560), 'stainless', lod='f'), 2, (560, 0, 0)),
          C("UV Sensor Port", 'y', (0, 1600), 14, (-215, -195), 'black'),
          B("Controller", (-180, -90, 1200, 180, 0, 1420), 'white', r=10),
-         F("Controller Display", (-120, -92, 1320, 40, -90, 1390), 'black', r=4, lod='f'),
+         F("Controller Display", (-120, -92, 1320, 40, -90, 1390), 'display', r=4, lod='f'),
          C("Lamp LED", 'y', (90, 1360), 6, (-93, -90), 'led_blue', 'f'),
          C("Alarm LED", 'y', (130, 1360), 6, (-93, -90), 'led_red', 'f'),
          R(C("Controller Button", 'y', (-80, 1250), 10, (-94, -90), 'grey', 'f'), 3, (60, 0, 0))]
@@ -1161,7 +1238,7 @@ def cssd_face(pre, yf, s, door_glass=True, wide=380):
     if door_glass: p.append(F(f"{pre} Door Glass", (-wide + 40, min(o, o + s * 3), 340, wide - 40, max(o, o + s * 3), 1460), 'glass', r=8))
     p += [F(f"{pre} Kick Plate", (-wide - 60, min(yf, yf + s * 4), 20, wide + 60, max(yf, yf + s * 4), 260), 'grey'),
           F(f"{pre} Control Panel", (-wide, min(yf, yf + s * 4), 1560, wide, max(yf, yf + s * 4), 1880), 'medical_grey', r=8),
-          F(f"{pre} Touchscreen", (-wide + 40, min(yf, yf + s * 7), 1620, -wide + 300, max(yf, yf + s * 7), 1820), 'black', r=4),
+          F(f"{pre} Touchscreen", (-wide + 40, min(yf, yf + s * 7), 1620, -wide + 300, max(yf, yf + s * 7), 1820), 'display', r=4),
           C(f"{pre} Status LED", 'y', (wide - 60, 1760), 9, sorted((yf, yf + s * 8)), 'led_green', 'f'),
           C(f"{pre} Stop Button", 'y', (wide - 60, 1660), 18, sorted((yf, yf + s * 14)), 'red', 'f')]
     return p
@@ -1208,7 +1285,7 @@ parts = [B("Body", (-230, -580, 25, 230, 0, 440), 'white', r=25),
          T("Door", 'y', (-50, 230), [[0, -590], [150, -590], [150, -608], [140, -615], [0, -615]], 'stainless'),
          T("Door Seal Ring", 'y', (-50, 230), [[150, -590], [158, -590], [158, -594], [150, -594]], 'black', 'f'),
          B("Door Handle", (60, -640, 200, 130, -612, 260), 'black', r=8),
-         F("Display", (130, -593, 300, 210, -590, 380), 'black', r=4),
+         F("Display", (130, -593, 300, 210, -590, 380), 'display', r=4),
          R(C("Program Button", 'y', (150, 250), 9, (-594, -590), 'blue', 'f'), 3, (25, 0, 0)),
          C("Power LED", 'y', (170, 100), 5, (-593, -590), 'led_green', 'f'),
          F("Reservoir Lid", (-150, -430, 440, 150, -160, 448), 'grey', r=10),
@@ -1221,7 +1298,7 @@ add(f, "Benchtop steam autoclave 23 l, class B, 460 x 590 x 440 mm, round stainl
     "IfcMedicalDevice", ["23L_Benchtop"], parts,
     [CW("Water Fill Port"), SAN("Drain Hose Port", d=15), E("Body", 'back')],
     {"460 x 590 x 440 mm": A("460x590x440"), "23 l chamber, class B": A(23, "BS EN 13060"), "Power 2.3 kVA, 240 V": A(2300)},
-    "Bench autoclave modelled as a generic product: body, bezel, round door with seal ring and handle, display, buttons, LED, reservoir lid, side vents, feet, fill and drain ports. Sits on the bench (z = 0 at worktop).",
+    "Bench autoclave modelled as a generic product: body, bezel, round stainless door with seal ring and locking handle, display and program buttons, power LED, top water-reservoir lid, side vents, rubber feet, and fill and drain ports at the back. It sits on the bench (z = 0 at the worktop).",
     type_values={"Voltage": 240, "Apparent Load": 2300})
 
 for fam, tname, desc, labels, conns in (
@@ -1278,30 +1355,35 @@ terminal('FMC_P_MechEq_MedGas_Outlet_AGSS', ["ISO9170_AGSS"], 'AGSS',
 # Bedhead panel (horizontal trunking)
 f = 'FMC_P_MechEq_MedGas_BedheadPanel'
 nose = [[0, 0], [-70, 0], [-90, 25], [-90, 275], [-70, 300], [0, 300]]
-parts = [RT("Trunking", nose, (-1000, 1000), 'aluminium'),
-         RT("End Cap L", [[0, -5], [-75, -5], [-95, 25], [-95, 275], [-75, 305], [0, 305]], (-1012, -1000), 'grey'),
-         RT("End Cap R", [[0, -5], [-75, -5], [-95, 25], [-95, 275], [-75, 305], [0, 305]], (1000, 1012), 'grey'),
-         B("Uplight Lens", (-950, -70, 300, 950, -15, 308), 'polycarbonate'),
-         F("Reading Light Lens", (-400, -88, -6, 400, -18, 0), 'polycarbonate', lod='f'),
-         R(F("Divider", (-260, -92, 20, -256, -90, 280), 'grey', lod='f'), 3, (380, 0, 0)),
-         F("Label Strip", (-950, -92, 262, 950, -90, 280), 'white', lod='f')]
-for n, x in (('O2', 450), ('VAC', 580), ('MA4', 710)): parts += tu(n, x, 140, n, y0=-90)
-parts += socket("Socket A", -800, 150, y0=-90) + socket("Socket B", -620, 150, y0=-90, switch='red')
-parts += [F("Nurse Call Plate", (-410, -99, 107, -290, -90, 193), 'white', r=5),
-          C("Call Button", 'y', (-370, 165), 14, (-104, -99), 'led_red', 'f'),
-          C("Reset Button", 'y', (-330, 165), 14, (-104, -99), 'led_green', 'f'),
-          C("Reassurance LED", 'y', (-310, 125), 4, (-101, -99), 'yellow', 'f'),
-          C("Handset Socket", 'y', (-370, 125), 10, (-101, -99), 'black', 'f'),
-          F("Data Plate", (-240, -99, 107, -154, -90, 193), 'white', r=5),
-          R(F("RJ45", (-228, -100, 150, -208, -99, 166), 'black', lod='f'), 2, (34, 0, 0))]
-add(f, "Bedhead services panel: 2000 mm horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential red rockers), nurse call and data, uplight and reading light",
-    "IfcFlowTerminal", [{"name": "1Bed_Panel"}, {"name": "2Bed_Panel"}], parts,
+cap = [[0, -5], [-75, -5], [-95, 25], [-95, 275], [-75, 305], [0, 305]]
+def bedset(pre, dx):
+    p = []
+    for n, x in (('O2', 450), ('VAC', 580), ('MA4', 710)): p += tu(pre + n, x + dx, 140, n, y0=-90)
+    p += socket(pre + "Socket A", -800 + dx, 150, y0=-90) + socket(pre + "Socket B", -620 + dx, 150, y0=-90, switch='red')
+    p += [F(pre + "Nurse Call Plate", (-410 + dx, -99, 107, -290 + dx, -90, 193), 'white', r=5),
+          C(pre + "Call Button", 'y', (-370 + dx, 165), 14, (-104, -99), 'led_red', 'f'),
+          C(pre + "Reset Button", 'y', (-330 + dx, 165), 14, (-104, -99), 'led_green', 'f'),
+          C(pre + "Reassurance LED", 'y', (-310 + dx, 125), 4, (-101, -99), 'led_amber', 'f'),
+          C(pre + "Handset Socket", 'y', (-370 + dx, 125), 10, (-101, -99), 'black', 'f'),
+          F(pre + "Data Plate", (-240 + dx, -99, 107, -154 + dx, -90, 193), 'white', r=5),
+          R(F(pre + "RJ45", (-228 + dx, -100, 150, -208 + dx, -99, 166), 'black', lod='f'), 2, (34, 0, 0)),
+          F(pre + "Reading Light Lens", (-400 + dx, -88, -6, 400 + dx, -18, 0), 'polycarbonate', lod='f')]
+    return p
+def bedhead(beds):
+    x1 = 1000 + 2000 * (beds - 1)
+    p = [RT("Trunking", nose, (-1000, x1), 'aluminium'), RT("End Cap L", cap, (-1012, -1000), 'grey'), RT("End Cap R", cap, (x1, x1 + 12), 'grey'),
+         B("Uplight Lens", (-950, -70, 300, x1 - 50, -15, 308), 'polycarbonate')] + bedset('', 0)
+    if beds == 1: p.append(R(F("Divider", (-260, -92, 20, -256, -90, 280), 'grey', lod='f'), 3, (380, 0, 0)))
+    else: p += bedset('Bed 2 ', 2000) + [F("Bed Divider", (998, -92, 20, 1002, -90, 280), 'grey', lod='f')]
+    return p
+add(f, "Bedhead services panel: horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential, red rockers), nurse call and data, uplight and reading light per bed; 1-bed 2000 mm or 2-bed 4000 mm",
+    "IfcFlowTerminal", [{"name": "1Bed_Panel"}, {"name": "2Bed_Panel"}], {"1Bed_Panel": bedhead(1), "2Bed_Panel": bedhead(2)},
     [MG('O2', 'O2 Fascia'), MG('VAC', 'VAC Fascia', flow='Out'), MG('MA4', 'MA4 Fascia'), E("Socket A Plate"), ELV("Nurse Call Plate", 'NurseCall'), ELV("Data Plate", 'Data')],
-    {"Trunking 2000 x 300 x 90 mm": A("2000x300x90", "HTM 08-03 bedhead services"), "Outlets at 1440 mm": A(1440, "trunking at 1300 mm, HBN 04-01"), "Gas order O2, VAC, MA": A("O2/VAC/MA4", "HTM 02-01 terminal order")},
-    "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight and reading-light lenses, dividers, label strip, three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate. 1-bed drawn; 2-bed shares it until a second set is nested.",
+    {"Trunking 2000 / 4000 x 300 x 90 mm": A("2000x300x90", "HTM 08-03 bedhead services"), "Outlets at 1440 mm": A(1440, "trunking at 1300 mm, HBN 04-01"), "Gas order O2, VAC, MA": A("O2/VAC/MA4", "HTM 02-01 terminal order")},
+    "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight lens, and per bed three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate and reading light. Per type: bed 1 sits at x = 0 in both; the 2-bed type runs the trunking on to 4000 mm with a second bed set, fed inside the trunking from bed 1's service connectors.",
     type_values={"Voltage": 240, "Apparent Load": 1000, "Default Elevation": 1300})
 
-def pendant(fam, desc, types, gases, arms, shelves, head_h, extra_parts, vals, about):
+def pendant_parts(gases, arms, shelves, head_h, extra_parts):
     parts = [T("Ceiling Flange", 'z', (0, 0), [[0, -30], [260, -30], [260, 0], [0, 0]], 'epoxy_white'),
              T("Canopy", 'z', (0, 0), [[0, -380], [140, -380], [200, -60], [220, -30], [0, -30]], 'epoxy_white'),
              C("Gas Inlet O2", 'z', (-120, 60), 11, (0, 120), 'copper', 'f'), C("Gas Inlet VAC", 'z', (-60, 120), 11, (0, 120), 'copper', 'f'),
@@ -1327,56 +1409,64 @@ def pendant(fam, desc, types, gases, arms, shelves, head_h, extra_parts, vals, a
     parts += socket("Socket A", xh - 75, zs, y0=-210) + socket("Socket B", xh - 75, zs - 110, y0=-210, switch='red')
     parts += [F("Nurse Call", (xh + 20, -219, zs - 40, xh + 140, -210, zs + 40), 'white', r=5),
               C("Call LED", 'y', (xh + 80, zs + 10), 8, (-222, -219), 'led_red', 'f')]
-    for s in range(shelves):
-        zz = zs - 260 - s * 260
-        parts += [B(f"Shelf {s + 1}", (xh - 330, -460, zz, xh + 330, 0, zz + 25), 'laminate', r=20),
-                  B(f"Shelf Rail {s + 1}", (xh - 330, -470, zz - 15, xh + 330, -455, zz + 40), 'chrome', lod='f')]
-    parts += [p(xh, ztop) for p in extra_parts]
+    for s_ in range(shelves):
+        zz = zs - 260 - s_ * 260
+        parts += [B(f"Shelf {s_ + 1}", (xh - 330, -460, zz, xh + 330, 0, zz + 25), 'laminate', r=20),
+                  B(f"Shelf Rail {s_ + 1}", (xh - 330, -470, zz - 15, xh + 330, -455, zz + 40), 'chrome', lod='f')]
+    return parts + [p(xh, ztop) for p in extra_parts]
+def pendant(fam, desc, models, vals, about):
     conns = [MG('O2', 'Gas Inlet O2', 'top'), MG('VAC', 'Gas Inlet VAC', 'top', 'Out'), MG('MA4', 'Gas Inlet MA4', 'top'),
              E("Power Inlet", 'top'), ELV("Data Inlet", 'Data', 'top')]
-    add(fam, desc, "IfcFlowTerminal", types, parts, conns, vals, about, type_values={"Voltage": 240, "Apparent Load": 3000})
+    add(fam, desc, "IfcFlowTerminal", list(models), models, conns, vals, about, type_values={"Voltage": 240, "Apparent Load": 3000})
 
+icu_extra = [lambda xh, zt: C("Infusion Pole", 'z', (xh + 200, -150), 12, (zt - 1100, zt + 120), 'chrome'),
+             lambda xh, zt: C("Status LED", 'y', (xh + 120, zt + 60), 8, (-213, -210), 'led_green', 'f')]
+icu_gas = ['O2', 'O2', 'VAC', 'VAC', 'MA4', 'MA4']
 pendant('FMC_P_MechEq_MedGas_Pendant_ICU',
-        "ICU ceiling pendant, single articulated arm 900 mm on a Unistrut frame, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails",
-        [{"name": "900_SingleArm"}, {"name": "1600_DoubleArm"}], ['O2', 'O2', 'VAC', 'VAC', 'MA4', 'MA4'], 1, 2, 1250,
-        [lambda xh, zt: C("Infusion Pole", 'z', (xh + 200, -150), 12, (zt - 1100, zt + 120), 'chrome'),
-         lambda xh, zt: C("Status LED", 'y', (xh + 120, zt + 60), 8, (-213, -210), 'led_green', 'f')],
-        {"Arm reach 900 mm, rotation 330 degrees": A("900/330"), "Head 320 x 420 x 1250 mm": A("320x420x1250"), "Ceiling fixing to Unistrut, about 300 kg load": A(300, "HTM 02-01 / supplier fixing detail")},
-        "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Single arm drawn; double arm shares it.")
+        "ICU ceiling pendant on a Unistrut frame, single (900 mm) or double (900 + 700 mm) articulated arm, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails",
+        {"900_SingleArm": pendant_parts(icu_gas, 1, 2, 1250, icu_extra), "1600_DoubleArm": pendant_parts(icu_gas, 2, 2, 1250, icu_extra)},
+        {"Arm reach 900 / 1600 mm, rotation 330 degrees": A("900/330"), "Head 320 x 420 x 1250 mm": A("320x420x1250"), "Ceiling fixing to Unistrut, about 300 kg load": A(300, "HTM 02-01 / supplier fixing detail")},
+        "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm(s) with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Per type: one arm with the head at 900 mm, or two arms with the head at 1600 mm; ceiling parts and connectors are shared.")
+th_extra = [lambda xh, zt: B("Drawer Unit", (xh - 200, -440, zt - 1180, xh + 200, -40, zt - 1060), 'epoxy_white', r=10),
+            lambda xh, zt: B("Drawer Handle", (xh - 80, -455, zt - 1130, xh + 80, -440, zt - 1115), 'chrome', lod='f'),
+            lambda xh, zt: C("Monitor Arm Post", 'z', (xh + 200, 120), 25, (zt - 200, zt + 100), 'chrome'),
+            lambda xh, zt: B("Monitor Arm", (xh + 200, 100, zt + 60, xh + 650, 140, zt + 100), 'medical_grey', r=10),
+            lambda xh, zt: F("Monitor", (xh + 500, -60, zt - 130, xh + 900, -10, zt + 150), 'display', r=10)]
+sg_extra = [lambda xh, zt: C("Infusion Pole", 'z', (xh + 200, -150), 12, (zt - 1100, zt + 120), 'chrome'),
+            lambda xh, zt: socket("Socket C", xh - 75, zt - 600, y0=-210)[0]]
 pendant('FMC_P_MechEq_MedGas_Pendant_Theatre',
-        "Theatre anaesthesia pendant, double articulated arm, service head with O2, N2O, medical air, surgical air, vacuum and AGSS terminals, sockets, three shelves, drawer and monitor arm",
-        [{"name": "1600_Anaesthesia"}, {"name": "1600_Surgeon"}], ['O2', 'N2O', 'MA4', 'SA7', 'VAC', 'AGSS'], 2, 3, 1150,
-        [lambda xh, zt: B("Drawer Unit", (xh - 200, -440, zt - 1180, xh + 200, -40, zt - 1060), 'epoxy_white', r=10),
-         lambda xh, zt: B("Drawer Handle", (xh - 80, -455, zt - 1130, xh + 80, -440, zt - 1115), 'chrome', lod='f'),
-         lambda xh, zt: C("Monitor Arm Post", 'z', (xh + 200, 120), 25, (zt - 200, zt + 100), 'chrome'),
-         lambda xh, zt: B("Monitor Arm", (xh + 200, 100, zt + 60, xh + 650, 140, zt + 100), 'medical_grey', r=10),
-         lambda xh, zt: F("Monitor", (xh + 500, -60, zt - 130, xh + 900, -10, zt + 150), 'black', r=10)],
-        {"Two arms 900 + 700 mm": A("900+700"), "Head 320 x 420 x 1150 mm": A("320x420x1150"), "Gases O2, N2O, MA4, SA7, VAC, AGSS": A(6, "HTM 02-01 anaesthetic room / theatre schedule")},
-        "Theatre pendant modelled as a generic product: ceiling flange, canopy, inlets above the ceiling, two arms with joints, brake, service head with rails, base and handle, six terminal units in BS 1710 colours, two sockets, nurse call, three shelves, drawer unit, monitor arm and monitor. Anaesthesia drawn; surgeon type shares it.")
+        "Theatre pendant, double articulated arm: anaesthesia type with O2, N2O, medical air, surgical air, vacuum and AGSS terminals, three shelves, drawer and monitor arm; surgeon type with O2, air, surgical air and vacuum, two shelves and an infusion pole",
+        {"1600_Anaesthesia": pendant_parts(['O2', 'N2O', 'MA4', 'SA7', 'VAC', 'AGSS'], 2, 3, 1150, th_extra),
+         "1600_Surgeon": pendant_parts(['O2', 'MA4', 'SA7', 'VAC'], 2, 2, 1150, sg_extra)},
+        {"Two arms 900 + 700 mm": A("900+700"), "Head 320 x 420 x 1150 mm": A("320x420x1150"), "Gases: anaesthesia 6, surgeon 4": A("6/4", "HTM 02-01 theatre schedule")},
+        "Theatre pendant modelled as a generic product: ceiling flange, canopy, inlets above the ceiling, two arms with joints, brake, service head with rails, base and handle, terminal units in BS 1710 colours, sockets, nurse call, shelves. Per type: anaesthesia has six gases, three shelves, a drawer unit and a monitor arm; surgeon has four gases, two shelves, an extra socket plate and an infusion pole; arms, head and connectors are shared.")
 
-# Area valve service unit (AVSU), 3-gas drawn
+# Area valve service unit (AVSU): insertion at the O2 valve's left box edge so the first gases are shared; 130 mm per gas
 f = 'FMC_P_MechEq_MedGas_AreaValveBox'
-parts = [B("Box Back", (-225, -15, 0, 225, 0, 320), 'epoxy_white'),
-         B("Box Top", (-225, -110, 300, 225, -15, 320), 'epoxy_white'), B("Box Bottom", (-225, -110, 0, 225, -15, 20), 'epoxy_white'),
-         B("Box Left", (-225, -110, 20, -205, -15, 300), 'epoxy_white'), B("Box Right", (205, -110, 20, 225, -15, 300), 'epoxy_white'),
-         F("Frame Top", (-235, -122, 290, 235, -110, 330), 'epoxy_white'), F("Frame Bottom", (-235, -122, -10, 235, -110, 30), 'epoxy_white'),
-         F("Frame Left", (-235, -122, 30, -205, -110, 290), 'epoxy_white'), F("Frame Right", (205, -122, 30, 235, -110, 290), 'epoxy_white'),
-         F("Cover Glazing", (-205, -118, 30, 205, -114, 290), 'polycarbonate', lod='m'),
-         F("Lock", (195, -132, 140, 225, -122, 180), 'chrome'),
-         F("Warning Label", (-200, -124, 296, 200, -122, 324), 'yellow', lod='f')]
-for n, x in (('O2', -130), ('VAC', 0), ('MA4', 130)):
-    ring_m, lab = GAS[n]
-    parts += [C(f"{n} Pipe", 'z', (x, -55), 11, (-60, 400), 'copper'),
-              C(f"{n} Valve", 'z', (x, -55), 22, (130, 190), 'brass'),
-              B(f"{n} Lever", (x - 10, -110, 150, x + 10, -55, 170), ring_m, r=4),
-              C(f"{n} Emergency Inlet", 'y', (x, 90), 12, (-100, -55), 'brass', 'f'),
-              F(f"{n} Label", (x - 50, -112, 240, x + 50, -110, 270), lab if lab != 'white' else 'black', lod='f'),
-              T(f"{n} Band", 'z', (x, -55), [[11, 330], [13, 330], [13, 350], [11, 350]], ring_m, 'f')]
-add(f, "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)",
-    "IfcValve", ["2Gas_AVSU", "3Gas_AVSU", "4Gas_AVSU"], parts,
-    [MG('O2', 'O2 Pipe', 'top'), MG('VAC', 'VAC Pipe', 'top', 'Out'), MG('MA4', 'MA4 Pipe', 'top')],
-    {"Box 450 x 330 x 120 mm": A("450x330x120"), "Mounted at 1500 mm": A(1500, "HTM 02-01 AVSU at an accessible height"), "Valves 22 mm with NIST emergency inlets": A(22)},
-    "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it.",
+def avsu(ng):
+    x0 = -225; x1 = x0 + 60 + 130 * ng
+    parts = [B("Box Back", (x0, -15, 0, x1, 0, 320), 'epoxy_white'),
+             B("Box Top", (x0, -110, 300, x1, -15, 320), 'epoxy_white'), B("Box Bottom", (x0, -110, 0, x1, -15, 20), 'epoxy_white'),
+             B("Box Left", (x0, -110, 20, x0 + 20, -15, 300), 'epoxy_white'), B("Box Right", (x1 - 20, -110, 20, x1, -15, 300), 'epoxy_white'),
+             F("Frame Top", (x0 - 10, -122, 290, x1 + 10, -110, 330), 'epoxy_white'), F("Frame Bottom", (x0 - 10, -122, -10, x1 + 10, -110, 30), 'epoxy_white'),
+             F("Frame Left", (x0 - 10, -122, 30, x0 + 20, -110, 290), 'epoxy_white'), F("Frame Right", (x1 - 20, -122, 30, x1 + 10, -110, 290), 'epoxy_white'),
+             F("Cover Glazing", (x0 + 20, -118, 30, x1 - 20, -114, 290), 'polycarbonate', lod='m'),
+             F("Lock", (x1 - 30, -132, 140, x1, -122, 180), 'chrome'),
+             F("Warning Label", (x0 + 25, -124, 296, x1 - 25, -122, 324), 'yellow', lod='f')]
+    for n, x in list(zip(('O2', 'VAC', 'MA4', 'N2O'), (-130, 0, 130, 260)))[:ng]:
+        ring_m, lab = GAS[n]
+        parts += [C(f"{n} Pipe", 'z', (x, -55), 11, (-60, 400), 'copper'),
+                  C(f"{n} Valve", 'z', (x, -55), 22, (130, 190), 'brass'),
+                  B(f"{n} Lever", (x - 10, -110, 150, x + 10, -55, 170), ring_m, r=4),
+                  C(f"{n} Emergency Inlet", 'y', (x, 90), 12, (-100, -55), 'brass', 'f'),
+                  F(f"{n} Label", (x - 50, -112, 240, x + 50, -110, 270), lab if lab != 'white' else 'black', lod='f'),
+                  T(f"{n} Band", 'z', (x, -55), [[11, 330], [13, 330], [13, 350], [11, 350]], ring_m, 'f')]
+    return parts
+add(f, "Area valve service unit (AVSU), steel box with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels: 2-gas (O2, VAC), 3-gas (+ MA4) or 4-gas (+ N2O)",
+    "IfcValve", ["2Gas_AVSU", "3Gas_AVSU", "4Gas_AVSU"], {f"{n}Gas_AVSU": avsu(n) for n in (2, 3, 4)},
+    [MG('O2', 'O2 Pipe', 'top'), MG('VAC', 'VAC Pipe', 'top', 'Out'), MG('MA4', 'MA4 Pipe', 'top'), MG('N2O', 'N2O Pipe', 'top')],
+    {"Box 320 / 450 / 580 x 330 x 120 mm": A("130 mm per gas + 60"), "Mounted at 1500 mm": A(1500, "HTM 02-01 AVSU at an accessible height"), "Valves 22 mm with NIST emergency inlets": A(22)},
+    "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. Per type: the box grows 130 mm per gas to the right; O2 and VAC are shared, MA4 shows in the 3- and 4-gas types, N2O in the 4-gas type. The MA4 and N2O connectors exist in every type and stay unconnected where the gas is hidden.",
     type_values={"Default Elevation": 1500})
 
 f = 'FMC_P_MechEq_MedGas_AlarmPanel_Area'
@@ -1401,25 +1491,29 @@ add(f, "Medical gas area alarm panel, 3 gases, 300 x 240 mm white fascia with no
     type_values={"Voltage": 240, "Apparent Load": 20, "Default Elevation": 1500})
 
 f = 'FMC_P_MechEq_MedGas_Manifold_O2Cylinder'
-parts = [B("Control Cabinet", (-260, -180, 1000, 260, 0, 1500), 'epoxy_white', r=8),
-         F("Cabinet Door", (-250, -186, 1010, 250, -180, 1490), 'epoxy_white', r=6, lod='f')]
-parts += gauge("Bank A Gauge", -150, -186, 1380, 45, stem=False) + gauge("Bank B Gauge", 150, -186, 1380, 45, stem=False) + gauge("Line Gauge", 0, -186, 1250, 40, stem=False)
-parts += [C("Duty A LED", 'y', (-150, 1110), 8, (-190, -186), 'led_green', 'f'), C("Duty B LED", 'y', (150, 1110), 8, (-190, -186), 'yellow', 'f'),
-          C("Outlet Pipe", 'z', (0, -90), 11, (1500, 1800), 'copper'),
-          T("Outlet Band", 'z', (0, -90), [[11, 1700], [13, 1700], [13, 1720], [11, 1720]], 'white', 'f'),
-          C("Header A", 'x', (-200, 1650), 12, (-1650, -260), 'brass'), C("Header B", 'x', (-200, 1650), 12, (260, 1650), 'brass'),
-          B("Restraint Rail A", (-1700, -60, 1050, -500, -20, 1100), 'painted_steel'),
-          B("Restraint Rail B", (500, -60, 1050, 1700, -20, 1100), 'painted_steel')]
-for bank, x0 in (('A', -1600), ('B', 600)):
-    parts += [R(C(f"Cylinder {bank}", 'z', (x0, -200), 115, (0, 1250), 'gloss_black'), 5, (250, 0, 0)),
-              R(T(f"Shoulder {bank}", 'z', (x0, -200), [[0, 1250], [115, 1250], [100, 1330], [45, 1380], [0, 1385]], 'white'), 5, (250, 0, 0)),
-              R(C(f"Cylinder Valve {bank}", 'z', (x0, -200), 22, (1385, 1470), 'brass'), 5, (250, 0, 0)),
-              R(C(f"Pigtail {bank}", 'z', (x0, -200), 5, (1470, 1650), 'copper', 'f'), 5, (250, 0, 0))]
-add(f, "Automatic oxygen cylinder manifold, 2 x 5 J-size cylinders, wall-mounted control cabinet with bank and line pressure gauges, changeover indication, headers with pigtails, cylinder restraint rails",
-    "IfcUnitaryEquipment", ["2x5_Auto", "2x10_Auto"], parts,
+def manifold(rows):
+    parts = [B("Control Cabinet", (-260, -180, 1000, 260, 0, 1500), 'epoxy_white', r=8),
+             F("Cabinet Door", (-250, -186, 1010, 250, -180, 1490), 'epoxy_white', r=6, lod='f')]
+    parts += gauge("Bank A Gauge", -150, -186, 1380, 45, stem=False) + gauge("Bank B Gauge", 150, -186, 1380, 45, stem=False) + gauge("Line Gauge", 0, -186, 1250, 40, stem=False)
+    parts += [C("Duty A LED", 'y', (-150, 1110), 8, (-190, -186), 'led_green', 'f'), C("Duty B LED", 'y', (150, 1110), 8, (-190, -186), 'led_amber', 'f'),
+              C("Outlet Pipe", 'z', (0, -90), 11, (1500, 1800), 'copper'),
+              T("Outlet Band", 'z', (0, -90), [[11, 1700], [13, 1700], [13, 1720], [11, 1720]], 'white', 'f'),
+              C("Header A", 'x', (-200, 1650), 12, (-1650, -260), 'brass'), C("Header B", 'x', (-200, 1650), 12, (260, 1650), 'brass'),
+              B("Restraint Rail A", (-1700, -60, 1050, -500, -20, 1100), 'painted_steel'),
+              B("Restraint Rail B", (500, -60, 1050, 1700, -20, 1100), 'painted_steel')]
+    for bank, x0 in (('A', -1600), ('B', 600)):
+        parts += [R(C(f"Cylinder {bank}", 'z', (x0, -200), 115, (0, 1250), 'gloss_black'), 5, (250, 0, 0)),
+                  R(T(f"Shoulder {bank}", 'z', (x0, -200), [[0, 1250], [115, 1250], [100, 1330], [45, 1380], [0, 1385]], 'white'), 5, (250, 0, 0)),
+                  R(T(f"Valve and Pigtail {bank}", 'z', (x0, -200), [[0, 1385], [22, 1385], [22, 1470], [5, 1470], [5, 1650], [0, 1650]], 'brass'), 5, (250, 0, 0))]
+        if rows == 2:
+            parts += [R(C(f"Reserve Cylinder {bank}", 'z', (x0, -460), 115, (0, 1250), 'gloss_black'), 5, (250, 0, 0)),
+                      R(T(f"Reserve Shoulder {bank}", 'z', (x0, -460), [[0, 1250], [115, 1250], [100, 1330], [45, 1380], [22, 1385], [22, 1470], [0, 1470]], 'white'), 5, (250, 0, 0))]
+    return parts
+add(f, "Automatic oxygen cylinder manifold, J-size cylinders in two banks (2 x 5 or 2 x 10), wall-mounted control cabinet with bank and line pressure gauges, changeover indication, headers with pigtails, cylinder restraint rails",
+    "IfcUnitaryEquipment", ["2x5_Auto", "2x10_Auto"], {"2x5_Auto": manifold(1), "2x10_Auto": manifold(2)},
     [MG('O2', 'Outlet Pipe', 'top', 'Out', 22), E("Control Cabinet", 'back')],
-    {"2 x 5 J cylinders (230 dia x 1385 mm)": A("2x5 J", "BS EN ISO 7396-1 / HTM 02-01 manifold"), "Cabinet 520 x 500 x 180 mm": A("520x500x180"), "Power 50 VA, 240 V": A(50)},
-    "Manifold modelled as a generic product: control cabinet and door, bank and line gauges, duty LEDs, outlet pipe with white band, two brass headers, restraint rails, per bank five black cylinders with white shoulders, valves and pigtails. 2 x 5 drawn; 2 x 10 shares it.",
+    {"J cylinders 230 dia x 1470 mm": A("J", "BS EN ISO 7396-1 / HTM 02-01 manifold"), "Cabinet 520 x 500 x 180 mm": A("520x500x180"), "Power 50 VA, 240 V": A(50)},
+    "Manifold modelled as a generic product: control cabinet and door, bank and line gauges, duty LEDs, outlet pipe with white band, two brass headers, restraint rails, per bank black cylinders with white shoulders and a brass valve-and-pigtail. Per type: 2 x 5 has one row of five per bank on the headers; 2 x 10 adds a second row of five per bank in front, swapped onto the headers at changeover.",
     type_values={"Voltage": 240, "Apparent Load": 50})
 
 f = 'FMC_P_MechEq_MedGas_VIE_LOX'
@@ -1431,9 +1525,9 @@ parts += [R(B("Leg Front", (-560, -560, 150, -480, -480, 900), 'painted_steel'),
           R(C("Safety Valve", 'z', (-200, -770), 15, (1500, 1620), 'brass'), 2, (400, 0, 0)),
           C("Top Vent", 'z', (0, 0), 25, (3600, 3800), 'stainless'),
           C("Liquid Line", 'x', (-770, 1100), 18, (300, 1600), 'stainless'),
-          R(B("Vaporiser Fin A", (1450, -10, 300, 1750, 10, 3000), 'aluminium'), 3, (420, 0, 0)),
-          R(B("Vaporiser Fin B", (1590, -150, 300, 1610, 150, 3000), 'aluminium'), 3, (420, 0, 0)),
-          R(C("Vaporiser Core", 'z', (1600, 0), 35, (300, 3000), 'aluminium'), 3, (420, 0, 0)),
+          R(B("Vaporiser Fin A", (1450, -10, 300, 1750, 10, 3000), 'fin_coil'), 3, (420, 0, 0)),
+          R(B("Vaporiser Fin B", (1590, -150, 300, 1610, 150, 3000), 'fin_coil'), 3, (420, 0, 0)),
+          R(C("Vaporiser Core", 'z', (1600, 0), 35, (300, 3000), 'fin_coil'), 3, (420, 0, 0)),
           B("Vaporiser Header Bottom", (1450, -40, 220, 2590, 40, 300), 'stainless'),
           B("Vaporiser Header Top", (1450, -40, 3000, 2590, 40, 3080), 'stainless'),
           C("Supply Pipe", 'x', (0, 2600), 18, (2590, 2900), 'copper'),
@@ -1450,7 +1544,7 @@ add(f, "Liquid oxygen VIE (vacuum insulated evaporator) 1500 l, vertical vessel 
 
 f = 'FMC_P_MechEq_MedGas_OxygenPlant_PSA'
 parts = [B("Skid", (-1600, -700, 0, 1600, 700, 100), 'painted_steel'),
-         B("Compressor Enclosure", (-1550, -600, 100, -550, 400, 1400), 'blue', r=10),
+         B("Compressor Enclosure", (-1550, -600, 100, -550, 400, 1400), 'motor_blue', r=10),
          R(F("Compressor Louvre", (-1450, -606, 300, -650, -600, 320), 'grey', lod='f'), 8, (0, 0, 50)),
          F("Compressor Panel", (-1000, -606, 1000, -650, -600, 1300), 'black', r=4, lod='f'),
          B("Refrigerant Dryer", (-450, -600, 100, 50, -100, 900), 'white', r=8),
@@ -1472,47 +1566,102 @@ add(f, "PSA oxygen plant 20 m3/h (93 % O2), skid with screw compressor package, 
     "PSA plant modelled as a generic product: skid, compressor enclosure with louvres and panel, dryer, three filter housings, air header, galvanised air receiver, two blue adsorber columns with manifold and gauges, oxygen receiver with white band, outlet, control panel with screen, LEDs and isolator. 20 m3/h drawn; 50 m3/h shares it.",
     type_values={"Voltage": 415, "Number of Poles": 3, "Apparent Load": 18000})
 
-def plant(fam, desc, types, gas, flow, pump_m, vessel_m, extra, vals, about):
-    parts = [B("Base Frame", (-1300, -650, 0, 1300, 650, 120), 'painted_steel')]
-    for i, x0 in enumerate((-1200, -200)):
-        k = 'AB'[i]
-        parts += motor_x(f"Pump {k}", x0, x0 + 550, -250, 330, 150, 'blue', fins=3)
+def plant_parts(n, gas, pump_m, vessel_m, extra):
+    xr = -1200 + 1000 * n + 100
+    parts = [B("Base Frame", (-1300, -650, 0, xr + 400, 650, 120), 'painted_steel')]
+    for i in range(n):
+        k = 'ABC'[i]; x0 = -1200 + 1000 * i
+        parts += motor_x(f"Pump {k}", x0, x0 + 550, -250, 330, 150, fins=3)
         parts += [C(f"Pump {k} Body", 'x', (-250, 330), 170, (x0 + 550, x0 + 850), pump_m),
                   B(f"Pump {k} Base", (x0, -420, 120, x0 + 850, -80, 160), 'painted_steel'),
                   C(f"Pump {k} Exhaust", 'z', (x0 + 700, -250), 25, (500, 1200), 'galvanised'),
                   C(f"Pump {k} Isolator", 'z', (x0 + 700, 150), 30, (400, 470), 'brass')]
-    parts += vessel("Receiver", 900, 150, 120, 1900, 350, vessel_m, legs=False, band=GAS[gas][0])
-    parts += [C("Plant Header", 'x', (150, 1000), 25, (-1200, 900), 'copper'),
+    parts += vessel("Receiver", xr, 150, 120, 1900, 350, vessel_m, legs=False, band=GAS[gas][0])
+    parts += [C("Plant Header", 'x', (150, 1000), 25, (-1200, xr), 'copper'),
               T("Header Band", 'x', (150, 1000), [[25, -300], [27, -300], [27, -260], [25, -260]], GAS[gas][0], 'f'),
               C("Plant Connection", 'z', (-1200, 150), 25, (1000, 1500), 'copper')]
     parts += [p() for p in extra]
     parts += panel("Control Panel", -1250, -650, 1300, 1900, 300, 180)
     parts.append(B("Panel Stand", (-1000, 400, 120, -900, 480, 1300), 'painted_steel'))
-    add(fam, desc, "IfcUnitaryEquipment", types, parts,
+    return parts
+def plant(fam, desc, types, gas, flow, pump_m, vessel_m, extra, vals, about):
+    models = {types[0]: plant_parts(2, gas, pump_m, vessel_m, extra), types[1]: plant_parts(3, gas, pump_m, vessel_m, extra)}
+    add(fam, desc, "IfcUnitaryEquipment", types, models,
         [MG(gas, 'Plant Connection', 'top', flow, 42), E("Control Panel Enclosure", 'top')], vals, about,
         type_values={"Voltage": 415, "Number of Poles": 3, "Apparent Load": 15000})
 
 plant('FMC_P_MechEq_MedGas_VacuumPlant',
-      "Medical vacuum plant, duplex: two oil-lubricated rotary vane pumps with motors on a base frame, vacuum receiver, duplex bacteria filters with drain flasks, exhaust pipes, control panel",
+      "Medical vacuum plant, duplex or triplex: oil-lubricated rotary vane pumps with motors on a base frame, vacuum receiver, duplex bacteria filters with drain flasks, exhaust pipes, control panel",
       ["Duplex_Vacuum", "Triplex_Vacuum"], 'VAC', 'In', 'yellow', 'galvanised',
       [lambda: C("Bacteria Filter A", 'z', (-300, 450), 70, (900, 1350), 'aluminium'),
        lambda: C("Bacteria Filter B", 'z', (-100, 450), 70, (900, 1350), 'aluminium'),
        lambda: C("Drain Flask A", 'z', (-300, 450), 45, (780, 900), 'polycarbonate', 'f'),
        lambda: C("Drain Flask B", 'z', (-100, 450), 45, (780, 900), 'polycarbonate', 'f')],
-      {"Base 2600 x 1300 mm": A("2600x1300"), "Duplex, each pump 100 % duty": A("2 x 100 %", "HTM 02-01 vacuum plant"), "Receiver 500 l": A(500)},
-      "Vacuum plant modelled as a generic product: base frame, two pump sets (finned motor, fan cowl, terminal box, feet, yellow pump body, base, exhaust, isolator), galvanised receiver with yellow band, header with band, plant connection, two bacteria filters with drain flasks, control panel on a stand. Duplex drawn; triplex shares it.")
+      {"Base 2700 / 3700 x 1300 mm": A("2700x1300"), "Each pump 100 % duty (duplex) or 50 % (triplex)": A("2 x 100 % / 3 x 50 %", "HTM 02-01 vacuum plant"), "Receiver 500 l": A(500)},
+      "Vacuum plant modelled as a generic product: base frame, pump sets (finned motor, fan cowl, terminal box, feet, yellow pump body, base, exhaust, isolator), galvanised receiver with yellow band, header with band, plant connection, two bacteria filters with drain flasks, control panel on a stand. Per type: duplex has two pump sets, triplex a third, with the frame, header and receiver moving 1000 mm to the right; panel, filters and connection are shared.")
 plant('FMC_P_MechEq_MedGas_AirPlant',
-      "Medical air compressor plant, duplex: two compressors with motors on a base frame, air receiver, twin-tower desiccant dryers, filters and dew-point monitor, control panel",
+      "Medical air compressor plant, duplex or triplex: compressors with motors on a base frame, air receiver, twin-tower desiccant dryers, filters and dew-point monitor, control panel",
       ["Duplex_Air", "Triplex_Air"], 'MA4', 'Out', 'grey', 'epoxy_white',
       [lambda: C("Dryer Tower A", 'z', (-350, 480), 90, (120, 1500), 'aluminium'),
        lambda: C("Dryer Tower B", 'z', (-100, 480), 90, (120, 1500), 'aluminium'),
        lambda: B("Dryer Head", (-460, 400, 1500, 10, 560, 1600), 'grey', r=10),
        lambda: C("Filter Bowl", 'z', (200, 480), 45, (900, 1250), 'aluminium'),
        lambda: B("Dewpoint Monitor", (300, 440, 1150, 450, 520, 1300), 'white', r=6)],
-      {"Base 2600 x 1300 mm": A("2600x1300"), "Duplex compressors, twin-tower dryers": A("2 x 100 %", "HTM 02-01 medical air plant"), "Receiver 500 l, 10 bar": A(500)},
-      "Air plant modelled as a generic product: base frame, two compressor sets (finned motor, fan cowl, terminal box, feet, grey compressor body, base, intake, isolator), receiver with black band, header, plant connection, twin dryer towers with head, filter bowl, dew-point monitor, control panel on a stand. Duplex drawn; triplex shares it.")
+      {"Base 2700 / 3700 x 1300 mm": A("2700x1300"), "Duplex or triplex compressors, twin-tower dryers": A("2 x 100 % / 3 x 50 %", "HTM 02-01 medical air plant"), "Receiver 500 l, 10 bar": A(500)},
+      "Air plant modelled as a generic product: base frame, compressor sets (finned motor, fan cowl, terminal box, feet, grey compressor body, base, intake, isolator), receiver with black band, header, plant connection, twin dryer towers with head, filter bowl, dew-point monitor, control panel on a stand. Per type: duplex has two compressor sets, triplex a third, with the frame, header and receiver moving 1000 mm to the right; dryers, panel and connection are shared.")
+
+# ------------------------------------------------------------------ second pass: per-type geometry for families drawn once
+def vary(fam, models_of, about_add):
+    """models_of(parts) -> {type: parts}; rebuild the family's parts with `only` and move its connectors."""
+    prod = next(p for p in P if p['family'] == fam)
+    models = models_of(prod['parts'])
+    assert list(models) == [t['name'] for t in prod['types']], (fam, list(models))
+    prod['parts'], prod['connectors'] = merge(fam, models, prod.get('connectors', []))
+    for p in prod['parts']:
+        if p.get('mat'): prod['materials'][p['mat']] = MAT[p['mat']]
+    prod['desc'] = re.sub(r' \([^)]*drawn\)', '', prod['desc'])
+    prod['about'] = re.sub(r' [^.]*(drawn|shares it)[^.]*\.', '', prod['about']).rstrip() + ' ' + about_add
+def sel(parts, *prefixes): return [p for p in parts if p['n'].startswith(prefixes)]
+def rest(parts, *prefixes): return [p for p in parts if not p['n'].startswith(prefixes)]
+import re
+
+vary('FMC_P_PlumbingFixture_Sink_Kitchen_SS_Double', lambda ps: {"1200_Double": ps, "1500_Double": scale_parts(ps, 1.25, 1, 1)},
+     "Per type: the 1500 unit is the 1200 unit stretched in length (bowls 650 mm); the mixer stays central. Waste holes are shown as plugs only, because voids can't vary by type.")
+vary('FMC_P_PlumbingFixture_Sink_Lab_Epoxy', lambda ps: {"450_Epoxy": scale_parts(rest(ps, "Gooseneck", "Serrated", "Valve Bodies", "Wrist Blade", "Index Button", "Tap Base", "Drain", "Dilution", "Waste"), 0.75, 1, 1) + sel(ps, "Gooseneck", "Serrated", "Valve Bodies", "Wrist Blade", "Index Button", "Tap Base", "Drain", "Dilution", "Waste"), "600_Epoxy": ps},
+     "Per type: 450 has a 450 x 450 mm bowl in a 675 mm worktop segment, 600 a 600 x 450 mm bowl in 900 mm; tap, drain and trap are shared.")
+vary('FMC_P_PlumbingFixture_BedpanWasher_Disinfector', lambda ps: {"600_Floor": ps, "600_Wall": [B("Wall Frame", (-280, -40, 0, 280, 0, 450), 'stainless')] + scale_parts(rest(ps, "Plinth"), 1, 1, 1350 / 1700, (0, 0, 1800))},
+     "Per type: the floor unit stands on a plinth (1800 mm); the wall unit is 1350 mm tall, hung on a stainless wall frame with its base at 450 mm.")
+vary('FMC_P_PlumbingFixture_BottleRefill_Station', lambda ps: {"420_Wall": ps, "420_FreeStanding": ps + [B("Pedestal", (-170, -240, 40, 170, -30, 850), 'stainless', r=20), B("Pedestal Foot", (-230, -320, 0, 230, 0, 40), 'stainless', r=20)]},
+     "Per type: the free-standing type adds a stainless pedestal and foot under the same head.")
+vary('FMC_P_PipeAccessory_Tap_Sensor', lambda ps: {"15_Deck": ps, "15_Wall": sel(ps, "Control Box", "Solenoid", "Mains Lead") + [
+        F("Wall Plate", (-38, -8, 120, 38, 0, 196), 'chrome', r=12), C("Wall Body", 'y', (0, 158), 22, (-70, -8), 'chrome'),
+        C("Wall Spout", 'y', (0, 158), 15, (-200, -70), 'chrome'), C("Wall Nose", 'z', (0, -190), 15, (125, 158), 'chrome'),
+        T("Wall Aerator", 'z', (0, -190), [[0, 119], [12, 119], [14, 125], [0, 125]], 'black', 'f'),
+        B("Wall Sensor Window", (-11, -150, 141, 11, -110, 143.5), 'display', lod='f'), C("Wall Tail", 'z', (0, -30), 6, (-180, 120), 'chrome', 'f')]},
+     "Per type: the deck tap stands on a flange; the wall tap has a wall plate, horizontal spout and sensor under the spout; both use the same control box below.")
+vary('FMC_P_PipeAccessory_TMV_Type3', lambda ps: {"15_TMV3": ps, "22_TMV3": scale_parts(ps, 1.15)}, "Per type: the 22 mm valve is the 15 mm valve scaled 1.15.")
+vary('FMC_P_PipeAccessory_Valve_PRV', lambda ps: {"25_PRV": ps, "50_PRV": scale_parts(ps, 1.6)}, "Per type: DN50 is DN25 scaled 1.6 (length 350 mm).")
+vary('FMC_P_PipeAccessory_FloorDrain_SS', lambda ps: {"100_SS": scale_parts(ps, 0.68, 0.68, 0.8), "150_SS": ps}, "Per type: 100 has a 106 mm grate and 50 mm outlet, 150 a 156 mm grate and 75 mm outlet.")
+vary('FMC_P_PlumbingEq_WaterHeater_Storage', lambda ps: {"50L_Storage": scale_parts(ps, 1, 1, 0.62, (0, 0, 900)), "100L_Storage": ps, "200L_Storage": scale_parts(ps, 1.22, 1.22, 1.45, (0, 0, 900))},
+     "Per type: 50 l is 450 dia x 560, 100 l 450 x 900, 200 l 550 x 1300 mm, all wall-hung from 900 mm.")
+vary('FMC_P_PlumbingEq_WaterHeater_Solar', lambda ps: {"200L_Thermosiphon": ps, "300L_Thermosiphon": scale_parts(ps, 1.5, 1, 1)},
+     "Per type: 300 l is 1.5 times as wide (3 m2 collectors each side, 3.4 m tank).")
+vary('FMC_P_PlumbingEq_Calorifier', lambda ps: {"1000L_Calorifier": ps, "2000L_Calorifier": scale_parts(ps, 1.26)}, "Per type: 2000 l is the 1000 l vessel scaled 1.26 (1310 dia x 2750 mm).")
+vary('FMC_P_PlumbingEq_Tank_Poly_Tower', lambda ps: {"5000L_Tower": ps, "10000L_Tower": scale_parts(ps, 1.28, 1.28, 1.1)},
+     "Per type: 10000 l is a 2330 dia x 2680 mm tank on a 2560 mm square, 4950 mm tower.")
+vary('FMC_P_PlumbingEq_Tank_Sectional_GRP', lambda ps: {"20m3_GRP": ps, "50m3_GRP": scale_parts(ps, 1.25, 1.6, 1.25, (0, 0, 0))},
+     "Per type: 20 m3 is 4000 x 2500 x 2000, 50 m3 5000 x 4000 x 2500 mm (flange grid drawn at the same panel count, so 1.25 x 1.6 m bays).")
+vary('FMC_P_PlumbingEq_Tank_Underground_Rainwater', lambda ps: {"20m3_Underground": ps, "50m3_Underground": scale_parts(ps, 1.33)},
+     "Per type: 50 m3 is 3330 dia x 6400 mm, cover still at grade.")
+vary('FMC_P_PlumbingEq_Washer_Disinfector_CSSD', lambda ps: {"1000_SingleDoor": rest(ps, "Unload"), "1000_DoubleDoor": ps},
+     "Per type: the double-door (pass-through) type adds the clean-side door, panel and touchscreen; the single-door type has a plain rear.")
+vary('FMC_P_PlumbingEq_Steriliser_Steam_CSSD', lambda ps: {"300L_PassThrough": ps, "600L_PassThrough": scale_parts(ps, 1.18, 1.3, 1.04)},
+     "Per type: 600 l is 1300 x 1820 x 2030 mm with a larger chamber door.")
+vary('FMC_P_MechEq_MedGas_VIE_LOX', lambda ps: {"1500L_VIE": ps, "3000L_VIE": scale_parts(ps, 1.26)}, "Per type: 3000 l is the 1500 l installation scaled 1.26 (1810 dia x 4540 mm vessel).")
+vary('FMC_P_MechEq_MedGas_OxygenPlant_PSA', lambda ps: {"20m3h_PSA": ps, "50m3h_PSA": scale_parts(ps, 1.3, 1.3, 1.2)}, "Per type: 50 m3/h is the 20 m3/h skid scaled 1.3 in plan and 1.2 in height (columns 3.1 m).")
 
 # ------------------------------------------------------------------ write, compile, render
+SCR = '/tmp/claude-0/-home-claude/ce672511-dda7-500e-94dd-9bdb64997d11/scratchpad/P_medgas_sheets/types'
 def build(prod):
     fam = prod['family']
     n = len(fp.expand(prod['parts']))
@@ -1521,14 +1670,23 @@ def build(prod):
     json.dump(r, open(os.path.join(HERE, fam + '.recipe.json'), 'w'), indent=1)
     fp.render(prod, os.path.join(HERE, fam + '.preview.png'))
     fp.render_type_image(prod, os.path.join(HERE, fam + '.png'), size=600)
+    if any(p.get('only') for p in prod['parts']):   # check the other types too (scratchpad only)
+        os.makedirs(SCR, exist_ok=True)
+        for t in prod['types'][1:]:
+            fp.render(dict(prod, _render_type=t['name']), os.path.join(SCR, f"{fam}__{t['name']}.preview.png"))
     return fam, n, len(r['ops'])
 
 def check(prod):
     import re
     errs = []
-    names = [p['n'] for p in fp.expand(prod['parts'])]
+    ex = fp.expand(prod['parts']); names = [p['n'] for p in ex]
     if len(names) != len(set(names)): errs.append('duplicate part names: ' + str(sorted({x for x in names if names.count(x) > 1})))
-    if len(names) > 70: errs.append(f'{len(names)} parts > 70')
+    for t in prod['types']:
+        n = sum(1 for p in ex if not p.get('only') or t['name'] in p['only'])
+        if n > 70: errs.append(f"{t['name']}: {n} parts > 70")
+    for p in ex:
+        for t in p.get('only', []):
+            if t not in [x['name'] for x in prod['types']]: errs.append('only names unknown type ' + t)
     for t in prod['types']:
         if not re.match(r'^[A-Za-z0-9.x×-]+_[A-Za-z0-9-]+$', t['name']): errs.append('type name ' + t['name'])
     for c in prod.get('connectors', []):
@@ -1552,3 +1710,4 @@ if __name__ == '__main__':
     if bad: sys.exit(1)
     with Pool(min(8, os.cpu_count() or 2)) as pool:
         for fam, n, ops in pool.imap_unordered(build, sel): print(f"{fam}: {n} parts, {ops} ops")
+    for fam, v in DROPPED.items(): print('voids dropped (vary by type):', fam, v)

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_WWTP_Packaged",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Plant envelope on a plinth (ground z = 0): ribbed tank body, top walkway with posts and rails, four hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet and outlet stubs with connectors; power on the panel. Reference: query: structure wwtp packaged structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+wwtp+packaged+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Plant envelope on a plinth (ground z = 0), kiosk end fixed and the tank growing toward -x by type: ribbed tank body, top walkway with posts and rails, hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet (back) and outlet (front) stubs near the kiosk with connectors; power on the panel. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure wwtp packaged structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+wwtp+packaged+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://susbio.in/tag/sewage-treatment-plant-for-hospital/; photo_title: Sewage treatment plant for hospital (SusBio); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -404,7 +404,7 @@
    "name": "50m3d_Packaged/Description",
    "type": "50m3d_Packaged",
    "param": "Description",
-   "value": "50 m3/day plant envelope"
+   "value": "50 m3/day plant, tank 9000 long"
   },
   {
    "op": "set_type_value",
@@ -440,6 +440,13 @@
    "type": "50m3d_Packaged",
    "param": "FMC_Role_Code",
    "value": "C"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3d_Packaged/URL",
+   "type": "50m3d_Packaged",
+   "param": "URL",
+   "value": "https://susbio.in/tag/sewage-treatment-plant-for-hospital/"
   },
   {
    "op": "set_type_value",
@@ -492,7 +499,7 @@
    "name": "100m3d_Packaged/Description",
    "type": "100m3d_Packaged",
    "param": "Description",
-   "value": "100 m3/day plant envelope"
+   "value": "100 m3/day plant, tank 12000 long"
   },
   {
    "op": "set_type_value",
@@ -531,6 +538,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "100m3d_Packaged/URL",
+   "type": "100m3d_Packaged",
+   "param": "URL",
+   "value": "https://susbio.in/tag/sewage-treatment-plant-for-hospital/"
+  },
+  {
+   "op": "set_type_value",
    "name": "100m3d_Packaged/Voltage",
    "type": "100m3d_Packaged",
    "param": "Voltage",
@@ -549,69 +563,6 @@
    "type": "100m3d_Packaged",
    "param": "Apparent Load",
    "value": 9000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Paint",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Paint Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Paint Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
   },
   {
    "op": "add_subcategory",
@@ -762,6 +713,69 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Paint",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Paint Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Paint Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    167,
+    172,
+    175
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_ColdFormed_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -775,7 +789,7 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -4900,
+     -7800,
      -1500
     ],
     [
@@ -787,7 +801,7 @@
      1500
     ],
     [
-     -4900,
+     -7800,
      1500
     ]
    ],
@@ -805,2057 +819,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth",
-   "points": [
-    [
-     -4800,
-     -1500
-    ],
-    [
-     6300,
-     -1500
-    ],
-    [
-     6300,
-     1500
-    ],
-    [
-     -4800,
-     1500
-    ]
-   ],
-   "start": 0,
-   "end": 300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Body",
-   "points": [
-    [
-     -4500,
-     -1200
-    ],
-    [
-     4500,
-     -1200
-    ],
-    [
-     4500,
-     1200
-    ],
-    [
-     -4500,
-     1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Body",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Body",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Body",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 1",
-   "points": [
-    [
-     -4030,
-     -1225
-    ],
-    [
-     -3970,
-     -1225
-    ],
-    [
-     -3970,
-     -1200
-    ],
-    [
-     -4030,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 1",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 1",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 2",
-   "points": [
-    [
-     -3030,
-     -1225
-    ],
-    [
-     -2970,
-     -1225
-    ],
-    [
-     -2970,
-     -1200
-    ],
-    [
-     -3030,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 2",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 2",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 3",
-   "points": [
-    [
-     -2030,
-     -1225
-    ],
-    [
-     -1970,
-     -1225
-    ],
-    [
-     -1970,
-     -1200
-    ],
-    [
-     -2030,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 3",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 3",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 4",
-   "points": [
-    [
-     -1030,
-     -1225
-    ],
-    [
-     -970,
-     -1225
-    ],
-    [
-     -970,
-     -1200
-    ],
-    [
-     -1030,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 4",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 4",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 5",
-   "points": [
-    [
-     -30,
-     -1225
-    ],
-    [
-     30,
-     -1225
-    ],
-    [
-     30,
-     -1200
-    ],
-    [
-     -30,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 5",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 5",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 6",
-   "points": [
-    [
-     970,
-     -1225
-    ],
-    [
-     1030,
-     -1225
-    ],
-    [
-     1030,
-     -1200
-    ],
-    [
-     970,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 6",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 6",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 7",
-   "points": [
-    [
-     1970,
-     -1225
-    ],
-    [
-     2030,
-     -1225
-    ],
-    [
-     2030,
-     -1200
-    ],
-    [
-     1970,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 7",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 7",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 8",
-   "points": [
-    [
-     2970,
-     -1225
-    ],
-    [
-     3030,
-     -1225
-    ],
-    [
-     3030,
-     -1200
-    ],
-    [
-     2970,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 8",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 8",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Front 9",
-   "points": [
-    [
-     3970,
-     -1225
-    ],
-    [
-     4030,
-     -1225
-    ],
-    [
-     4030,
-     -1200
-    ],
-    [
-     3970,
-     -1200
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Front 9",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Front 9",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Front 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 1",
-   "points": [
-    [
-     -4030,
-     1200
-    ],
-    [
-     -3970,
-     1200
-    ],
-    [
-     -3970,
-     1225
-    ],
-    [
-     -4030,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 1",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 1",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 2",
-   "points": [
-    [
-     -3030,
-     1200
-    ],
-    [
-     -2970,
-     1200
-    ],
-    [
-     -2970,
-     1225
-    ],
-    [
-     -3030,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 2",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 2",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 3",
-   "points": [
-    [
-     -2030,
-     1200
-    ],
-    [
-     -1970,
-     1200
-    ],
-    [
-     -1970,
-     1225
-    ],
-    [
-     -2030,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 3",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 3",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 4",
-   "points": [
-    [
-     -1030,
-     1200
-    ],
-    [
-     -970,
-     1200
-    ],
-    [
-     -970,
-     1225
-    ],
-    [
-     -1030,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 4",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 4",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 5",
-   "points": [
-    [
-     -30,
-     1200
-    ],
-    [
-     30,
-     1200
-    ],
-    [
-     30,
-     1225
-    ],
-    [
-     -30,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 5",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 5",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 6",
-   "points": [
-    [
-     970,
-     1200
-    ],
-    [
-     1030,
-     1200
-    ],
-    [
-     1030,
-     1225
-    ],
-    [
-     970,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 6",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 6",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 7",
-   "points": [
-    [
-     1970,
-     1200
-    ],
-    [
-     2030,
-     1200
-    ],
-    [
-     2030,
-     1225
-    ],
-    [
-     1970,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 7",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 7",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 8",
-   "points": [
-    [
-     2970,
-     1200
-    ],
-    [
-     3030,
-     1200
-    ],
-    [
-     3030,
-     1225
-    ],
-    [
-     2970,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 8",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 8",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rib Back 9",
-   "points": [
-    [
-     3970,
-     1200
-    ],
-    [
-     4030,
-     1200
-    ],
-    [
-     4030,
-     1225
-    ],
-    [
-     3970,
-     1225
-    ]
-   ],
-   "start": 300,
-   "end": 2900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rib Back 9",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rib Back 9",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rib Back 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Walkway Grating",
-   "points": [
-    [
-     -4400,
-     -400
-    ],
-    [
-     4400,
-     -400
-    ],
-    [
-     4400,
-     400
-    ],
-    [
-     -4400,
-     400
-    ]
-   ],
-   "start": 2900,
-   "end": 2940
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Walkway Grating",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Walkway Grating",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Walkway Grating",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Front 1",
-   "points": [
-    [
-     -3980.0,
-     -400.0
-    ],
-    [
-     -3982.68,
-     -390.0
-    ],
-    [
-     -3990.0,
-     -382.68
-    ],
-    [
-     -4000.0,
-     -380.0
-    ],
-    [
-     -4010.0,
-     -382.68
-    ],
-    [
-     -4017.32,
-     -390.0
-    ],
-    [
-     -4020.0,
-     -400.0
-    ],
-    [
-     -4017.32,
-     -410.0
-    ],
-    [
-     -4010.0,
-     -417.32
-    ],
-    [
-     -4000.0,
-     -420.0
-    ],
-    [
-     -3990.0,
-     -417.32
-    ],
-    [
-     -3982.68,
-     -410.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Front 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Front 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Front 2",
-   "points": [
-    [
-     -1980.0,
-     -400.0
-    ],
-    [
-     -1982.68,
-     -390.0
-    ],
-    [
-     -1990.0,
-     -382.68
-    ],
-    [
-     -2000.0,
-     -380.0
-    ],
-    [
-     -2010.0,
-     -382.68
-    ],
-    [
-     -2017.32,
-     -390.0
-    ],
-    [
-     -2020.0,
-     -400.0
-    ],
-    [
-     -2017.32,
-     -410.0
-    ],
-    [
-     -2010.0,
-     -417.32
-    ],
-    [
-     -2000.0,
-     -420.0
-    ],
-    [
-     -1990.0,
-     -417.32
-    ],
-    [
-     -1982.68,
-     -410.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Front 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Front 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Front 3",
-   "points": [
-    [
-     20.0,
-     -400.0
-    ],
-    [
-     17.32,
-     -390.0
-    ],
-    [
-     10.0,
-     -382.68
-    ],
-    [
-     0.0,
-     -380.0
-    ],
-    [
-     -10.0,
-     -382.68
-    ],
-    [
-     -17.32,
-     -390.0
-    ],
-    [
-     -20.0,
-     -400.0
-    ],
-    [
-     -17.32,
-     -410.0
-    ],
-    [
-     -10.0,
-     -417.32
-    ],
-    [
-     -0.0,
-     -420.0
-    ],
-    [
-     10.0,
-     -417.32
-    ],
-    [
-     17.32,
-     -410.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Front 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Front 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Front 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Front 4",
-   "points": [
-    [
-     2020.0,
-     -400.0
-    ],
-    [
-     2017.32,
-     -390.0
-    ],
-    [
-     2010.0,
-     -382.68
-    ],
-    [
-     2000.0,
-     -380.0
-    ],
-    [
-     1990.0,
-     -382.68
-    ],
-    [
-     1982.68,
-     -390.0
-    ],
-    [
-     1980.0,
-     -400.0
-    ],
-    [
-     1982.68,
-     -410.0
-    ],
-    [
-     1990.0,
-     -417.32
-    ],
-    [
-     2000.0,
-     -420.0
-    ],
-    [
-     2010.0,
-     -417.32
-    ],
-    [
-     2017.32,
-     -410.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Front 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Front 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Front 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Front 5",
-   "points": [
-    [
-     4020.0,
-     -400.0
-    ],
-    [
-     4017.32,
-     -390.0
-    ],
-    [
-     4010.0,
-     -382.68
-    ],
-    [
-     4000.0,
-     -380.0
-    ],
-    [
-     3990.0,
-     -382.68
-    ],
-    [
-     3982.68,
-     -390.0
-    ],
-    [
-     3980.0,
-     -400.0
-    ],
-    [
-     3982.68,
-     -410.0
-    ],
-    [
-     3990.0,
-     -417.32
-    ],
-    [
-     4000.0,
-     -420.0
-    ],
-    [
-     4010.0,
-     -417.32
-    ],
-    [
-     4017.32,
-     -410.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Front 5",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Front 5",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Front 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Back 1",
-   "points": [
-    [
-     -3980.0,
-     400.0
-    ],
-    [
-     -3982.68,
-     410.0
-    ],
-    [
-     -3990.0,
-     417.32
-    ],
-    [
-     -4000.0,
-     420.0
-    ],
-    [
-     -4010.0,
-     417.32
-    ],
-    [
-     -4017.32,
-     410.0
-    ],
-    [
-     -4020.0,
-     400.0
-    ],
-    [
-     -4017.32,
-     390.0
-    ],
-    [
-     -4010.0,
-     382.68
-    ],
-    [
-     -4000.0,
-     380.0
-    ],
-    [
-     -3990.0,
-     382.68
-    ],
-    [
-     -3982.68,
-     390.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Back 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Back 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Back 2",
-   "points": [
-    [
-     -1980.0,
-     400.0
-    ],
-    [
-     -1982.68,
-     410.0
-    ],
-    [
-     -1990.0,
-     417.32
-    ],
-    [
-     -2000.0,
-     420.0
-    ],
-    [
-     -2010.0,
-     417.32
-    ],
-    [
-     -2017.32,
-     410.0
-    ],
-    [
-     -2020.0,
-     400.0
-    ],
-    [
-     -2017.32,
-     390.0
-    ],
-    [
-     -2010.0,
-     382.68
-    ],
-    [
-     -2000.0,
-     380.0
-    ],
-    [
-     -1990.0,
-     382.68
-    ],
-    [
-     -1982.68,
-     390.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Back 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Back 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Back 3",
-   "points": [
-    [
-     20.0,
-     400.0
-    ],
-    [
-     17.32,
-     410.0
-    ],
-    [
-     10.0,
-     417.32
-    ],
-    [
-     0.0,
-     420.0
-    ],
-    [
-     -10.0,
-     417.32
-    ],
-    [
-     -17.32,
-     410.0
-    ],
-    [
-     -20.0,
-     400.0
-    ],
-    [
-     -17.32,
-     390.0
-    ],
-    [
-     -10.0,
-     382.68
-    ],
-    [
-     -0.0,
-     380.0
-    ],
-    [
-     10.0,
-     382.68
-    ],
-    [
-     17.32,
-     390.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Back 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Back 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Back 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Back 4",
-   "points": [
-    [
-     2020.0,
-     400.0
-    ],
-    [
-     2017.32,
-     410.0
-    ],
-    [
-     2010.0,
-     417.32
-    ],
-    [
-     2000.0,
-     420.0
-    ],
-    [
-     1990.0,
-     417.32
-    ],
-    [
-     1982.68,
-     410.0
-    ],
-    [
-     1980.0,
-     400.0
-    ],
-    [
-     1982.68,
-     390.0
-    ],
-    [
-     1990.0,
-     382.68
-    ],
-    [
-     2000.0,
-     380.0
-    ],
-    [
-     2010.0,
-     382.68
-    ],
-    [
-     2017.32,
-     390.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Back 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Back 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Back 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rail Post Back 5",
-   "points": [
-    [
-     4020.0,
-     400.0
-    ],
-    [
-     4017.32,
-     410.0
-    ],
-    [
-     4010.0,
-     417.32
-    ],
-    [
-     4000.0,
-     420.0
-    ],
-    [
-     3990.0,
-     417.32
-    ],
-    [
-     3982.68,
-     410.0
-    ],
-    [
-     3980.0,
-     400.0
-    ],
-    [
-     3982.68,
-     390.0
-    ],
-    [
-     3990.0,
-     382.68
-    ],
-    [
-     4000.0,
-     380.0
-    ],
-    [
-     4010.0,
-     382.68
-    ],
-    [
-     4017.32,
-     390.0
-    ]
-   ],
-   "start": 2940,
-   "end": 4040
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rail Post Back 5",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Post Back 5",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Post Back 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Rail 1",
-   "points": [
-    [
-     -380.0,
-     4020.0
-    ],
-    [
-     -382.68,
-     4030.0
-    ],
-    [
-     -390.0,
-     4037.32
-    ],
-    [
-     -400.0,
-     4040.0
-    ],
-    [
-     -410.0,
-     4037.32
-    ],
-    [
-     -417.32,
-     4030.0
-    ],
-    [
-     -420.0,
-     4020.0
-    ],
-    [
-     -417.32,
-     4010.0
-    ],
-    [
-     -410.0,
-     4002.68
-    ],
-    [
-     -400.0,
-     4000.0
-    ],
-    [
-     -390.0,
-     4002.68
-    ],
-    [
-     -382.68,
-     4010.0
-    ]
-   ],
-   "start": -4000,
-   "end": 4000,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Rail 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Rail 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Rail 2",
-   "points": [
-    [
-     420.0,
-     4020.0
-    ],
-    [
-     417.32,
-     4030.0
-    ],
-    [
-     410.0,
-     4037.32
-    ],
-    [
-     400.0,
-     4040.0
-    ],
-    [
-     390.0,
-     4037.32
-    ],
-    [
-     382.68,
-     4030.0
-    ],
-    [
-     380.0,
-     4020.0
-    ],
-    [
-     382.68,
-     4010.0
-    ],
-    [
-     390.0,
-     4002.68
-    ],
-    [
-     400.0,
-     4000.0
-    ],
-    [
-     410.0,
-     4002.68
-    ],
-    [
-     417.32,
-     4010.0
-    ]
-   ],
-   "start": -4000,
-   "end": 4000,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Rail 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Rail 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Rail 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Rail 1",
-   "points": [
-    [
-     -385.0,
-     3500.0
-    ],
-    [
-     -387.01,
-     3507.5
-    ],
-    [
-     -392.5,
-     3512.99
-    ],
-    [
-     -400.0,
-     3515.0
-    ],
-    [
-     -407.5,
-     3512.99
-    ],
-    [
-     -412.99,
-     3507.5
-    ],
-    [
-     -415.0,
-     3500.0
-    ],
-    [
-     -412.99,
-     3492.5
-    ],
-    [
-     -407.5,
-     3487.01
-    ],
-    [
-     -400.0,
-     3485.0
-    ],
-    [
-     -392.5,
-     3487.01
-    ],
-    [
-     -387.01,
-     3492.5
-    ]
-   ],
-   "start": -4000,
-   "end": 4000,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Rail 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Rail 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Rail 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Knee Rail 2",
-   "points": [
-    [
-     415.0,
-     3500.0
-    ],
-    [
-     412.99,
-     3507.5
-    ],
-    [
-     407.5,
-     3512.99
-    ],
-    [
-     400.0,
-     3515.0
-    ],
-    [
-     392.5,
-     3512.99
-    ],
-    [
-     387.01,
-     3507.5
-    ],
-    [
-     385.0,
-     3500.0
-    ],
-    [
-     387.01,
-     3492.5
-    ],
-    [
-     392.5,
-     3487.01
-    ],
-    [
-     400.0,
-     3485.0
-    ],
-    [
-     407.5,
-     3487.01
-    ],
-    [
-     412.99,
-     3492.5
-    ]
-   ],
-   "start": -4000,
-   "end": 4000,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Knee Rail 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Knee Rail 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Knee Rail 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Hatch 1",
-   "points": [
-    [
-     -3400,
-     -1050
-    ],
-    [
-     -2600,
-     -1050
-    ],
-    [
-     -2600,
-     -500
-    ],
-    [
-     -3400,
-     -500
-    ]
-   ],
-   "start": 2900,
-   "end": 2930
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Hatch 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Hatch 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Hatch 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Hatch 2",
-   "points": [
-    [
-     -1400,
-     -1050
-    ],
-    [
-     -600,
-     -1050
-    ],
-    [
-     -600,
-     -500
-    ],
-    [
-     -1400,
-     -500
-    ]
-   ],
-   "start": 2900,
-   "end": 2930
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Hatch 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Hatch 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Hatch 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Hatch 3",
-   "points": [
-    [
-     600,
-     -1050
-    ],
-    [
-     1400,
-     -1050
-    ],
-    [
-     1400,
-     -500
-    ],
-    [
-     600,
-     -500
-    ]
-   ],
-   "start": 2900,
-   "end": 2930
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Hatch 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Hatch 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Hatch 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Access Hatch 4",
-   "points": [
-    [
-     2600,
-     -1050
-    ],
-    [
-     3400,
-     -1050
-    ],
-    [
-     3400,
-     -500
-    ],
-    [
-     2600,
-     -500
-    ]
-   ],
-   "start": 2900,
-   "end": 2930
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Access Hatch 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Access Hatch 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Access Hatch 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -3460,105 +1423,105 @@
    "name": "Inlet Pipe",
    "points": [
     [
-     880.0,
+     3580.0,
      2200.0
     ],
     [
-     877.27,
+     3577.27,
      2220.71
     ],
     [
-     869.28,
+     3569.28,
      2240.0
     ],
     [
-     856.57,
+     3556.57,
      2256.57
     ],
     [
-     840.0,
+     3540.0,
      2269.28
     ],
     [
-     820.71,
+     3520.71,
      2277.27
     ],
     [
-     800.0,
+     3500.0,
      2280.0
     ],
     [
-     779.29,
+     3479.29,
      2277.27
     ],
     [
-     760.0,
+     3460.0,
      2269.28
     ],
     [
-     743.43,
+     3443.43,
      2256.57
     ],
     [
-     730.72,
+     3430.72,
      2240.0
     ],
     [
-     722.73,
+     3422.73,
      2220.71
     ],
     [
-     720.0,
+     3420.0,
      2200.0
     ],
     [
-     722.73,
+     3422.73,
      2179.29
     ],
     [
-     730.72,
+     3430.72,
      2160.0
     ],
     [
-     743.43,
+     3443.43,
      2143.43
     ],
     [
-     760.0,
+     3460.0,
      2130.72
     ],
     [
-     779.29,
+     3479.29,
      2122.73
     ],
     [
-     800.0,
+     3500.0,
      2120.0
     ],
     [
-     820.71,
+     3520.71,
      2122.73
     ],
     [
-     840.0,
+     3540.0,
      2130.72
     ],
     [
-     856.57,
+     3556.57,
      2143.43
     ],
     [
-     869.28,
+     3569.28,
      2160.0
     ],
     [
-     877.27,
+     3577.27,
      2179.29
     ]
    ],
-   "start": -4900,
-   "end": -4490,
-   "sketch": "right"
+   "start": -1500,
+   "end": -1190,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
@@ -3701,7 +1664,1664 @@
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Stile Left",
+   "name": "Plinth 50m3d",
+   "points": [
+    [
+     -4800,
+     -1500
+    ],
+    [
+     6300,
+     -1500
+    ],
+    [
+     6300,
+     1500
+    ],
+    [
+     -4800,
+     1500
+    ]
+   ],
+   "start": 0,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 50m3d",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 50m3d",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 50m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Body 50m3d",
+   "points": [
+    [
+     -4500,
+     -1200
+    ],
+    [
+     4500,
+     -1200
+    ],
+    [
+     4500,
+     1200
+    ],
+    [
+     -4500,
+     1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Body 50m3d",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Body 50m3d",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Body 50m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 1",
+   "points": [
+    [
+     -3780,
+     -1225
+    ],
+    [
+     -3720,
+     -1225
+    ],
+    [
+     -3720,
+     -1200
+    ],
+    [
+     -3780,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 2",
+   "points": [
+    [
+     -2280,
+     -1225
+    ],
+    [
+     -2220,
+     -1225
+    ],
+    [
+     -2220,
+     -1200
+    ],
+    [
+     -2280,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 3",
+   "points": [
+    [
+     -780,
+     -1225
+    ],
+    [
+     -720,
+     -1225
+    ],
+    [
+     -720,
+     -1200
+    ],
+    [
+     -780,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 4",
+   "points": [
+    [
+     720,
+     -1225
+    ],
+    [
+     780,
+     -1225
+    ],
+    [
+     780,
+     -1200
+    ],
+    [
+     720,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 5",
+   "points": [
+    [
+     2220,
+     -1225
+    ],
+    [
+     2280,
+     -1225
+    ],
+    [
+     2280,
+     -1200
+    ],
+    [
+     2220,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 50m3d 6",
+   "points": [
+    [
+     3720,
+     -1225
+    ],
+    [
+     3780,
+     -1225
+    ],
+    [
+     3780,
+     -1200
+    ],
+    [
+     3720,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 50m3d 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 50m3d 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 50m3d 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 1",
+   "points": [
+    [
+     -3780,
+     1200
+    ],
+    [
+     -3720,
+     1200
+    ],
+    [
+     -3720,
+     1225
+    ],
+    [
+     -3780,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 2",
+   "points": [
+    [
+     -2280,
+     1200
+    ],
+    [
+     -2220,
+     1200
+    ],
+    [
+     -2220,
+     1225
+    ],
+    [
+     -2280,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 3",
+   "points": [
+    [
+     -780,
+     1200
+    ],
+    [
+     -720,
+     1200
+    ],
+    [
+     -720,
+     1225
+    ],
+    [
+     -780,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 4",
+   "points": [
+    [
+     720,
+     1200
+    ],
+    [
+     780,
+     1200
+    ],
+    [
+     780,
+     1225
+    ],
+    [
+     720,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 5",
+   "points": [
+    [
+     2220,
+     1200
+    ],
+    [
+     2280,
+     1200
+    ],
+    [
+     2280,
+     1225
+    ],
+    [
+     2220,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 50m3d 6",
+   "points": [
+    [
+     3720,
+     1200
+    ],
+    [
+     3780,
+     1200
+    ],
+    [
+     3780,
+     1225
+    ],
+    [
+     3720,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 50m3d 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 50m3d 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 50m3d 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Walkway Grating 50m3d",
+   "points": [
+    [
+     -4400,
+     -400
+    ],
+    [
+     4400,
+     -400
+    ],
+    [
+     4400,
+     400
+    ],
+    [
+     -4400,
+     400
+    ]
+   ],
+   "start": 2900,
+   "end": 2940
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Walkway Grating 50m3d",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Walkway Grating 50m3d",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Walkway Grating 50m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 50m3d 1",
+   "points": [
+    [
+     -3980.0,
+     -400.0
+    ],
+    [
+     -3982.68,
+     -390.0
+    ],
+    [
+     -3990.0,
+     -382.68
+    ],
+    [
+     -4000.0,
+     -380.0
+    ],
+    [
+     -4010.0,
+     -382.68
+    ],
+    [
+     -4017.32,
+     -390.0
+    ],
+    [
+     -4020.0,
+     -400.0
+    ],
+    [
+     -4017.32,
+     -410.0
+    ],
+    [
+     -4010.0,
+     -417.32
+    ],
+    [
+     -4000.0,
+     -420.0
+    ],
+    [
+     -3990.0,
+     -417.32
+    ],
+    [
+     -3982.68,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 50m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 50m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 50m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 50m3d 2",
+   "points": [
+    [
+     -1980.0,
+     -400.0
+    ],
+    [
+     -1982.68,
+     -390.0
+    ],
+    [
+     -1990.0,
+     -382.68
+    ],
+    [
+     -2000.0,
+     -380.0
+    ],
+    [
+     -2010.0,
+     -382.68
+    ],
+    [
+     -2017.32,
+     -390.0
+    ],
+    [
+     -2020.0,
+     -400.0
+    ],
+    [
+     -2017.32,
+     -410.0
+    ],
+    [
+     -2010.0,
+     -417.32
+    ],
+    [
+     -2000.0,
+     -420.0
+    ],
+    [
+     -1990.0,
+     -417.32
+    ],
+    [
+     -1982.68,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 50m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 50m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 50m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 50m3d 3",
+   "points": [
+    [
+     20.0,
+     -400.0
+    ],
+    [
+     17.32,
+     -390.0
+    ],
+    [
+     10.0,
+     -382.68
+    ],
+    [
+     0.0,
+     -380.0
+    ],
+    [
+     -10.0,
+     -382.68
+    ],
+    [
+     -17.32,
+     -390.0
+    ],
+    [
+     -20.0,
+     -400.0
+    ],
+    [
+     -17.32,
+     -410.0
+    ],
+    [
+     -10.0,
+     -417.32
+    ],
+    [
+     -0.0,
+     -420.0
+    ],
+    [
+     10.0,
+     -417.32
+    ],
+    [
+     17.32,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 50m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 50m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 50m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 50m3d 4",
+   "points": [
+    [
+     2020.0,
+     -400.0
+    ],
+    [
+     2017.32,
+     -390.0
+    ],
+    [
+     2010.0,
+     -382.68
+    ],
+    [
+     2000.0,
+     -380.0
+    ],
+    [
+     1990.0,
+     -382.68
+    ],
+    [
+     1982.68,
+     -390.0
+    ],
+    [
+     1980.0,
+     -400.0
+    ],
+    [
+     1982.68,
+     -410.0
+    ],
+    [
+     1990.0,
+     -417.32
+    ],
+    [
+     2000.0,
+     -420.0
+    ],
+    [
+     2010.0,
+     -417.32
+    ],
+    [
+     2017.32,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 50m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 50m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 50m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 50m3d 5",
+   "points": [
+    [
+     4020.0,
+     -400.0
+    ],
+    [
+     4017.32,
+     -390.0
+    ],
+    [
+     4010.0,
+     -382.68
+    ],
+    [
+     4000.0,
+     -380.0
+    ],
+    [
+     3990.0,
+     -382.68
+    ],
+    [
+     3982.68,
+     -390.0
+    ],
+    [
+     3980.0,
+     -400.0
+    ],
+    [
+     3982.68,
+     -410.0
+    ],
+    [
+     3990.0,
+     -417.32
+    ],
+    [
+     4000.0,
+     -420.0
+    ],
+    [
+     4010.0,
+     -417.32
+    ],
+    [
+     4017.32,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 50m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 50m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 50m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 50m3d 1",
+   "points": [
+    [
+     -3980.0,
+     400.0
+    ],
+    [
+     -3982.68,
+     410.0
+    ],
+    [
+     -3990.0,
+     417.32
+    ],
+    [
+     -4000.0,
+     420.0
+    ],
+    [
+     -4010.0,
+     417.32
+    ],
+    [
+     -4017.32,
+     410.0
+    ],
+    [
+     -4020.0,
+     400.0
+    ],
+    [
+     -4017.32,
+     390.0
+    ],
+    [
+     -4010.0,
+     382.68
+    ],
+    [
+     -4000.0,
+     380.0
+    ],
+    [
+     -3990.0,
+     382.68
+    ],
+    [
+     -3982.68,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 50m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 50m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 50m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 50m3d 2",
+   "points": [
+    [
+     -1980.0,
+     400.0
+    ],
+    [
+     -1982.68,
+     410.0
+    ],
+    [
+     -1990.0,
+     417.32
+    ],
+    [
+     -2000.0,
+     420.0
+    ],
+    [
+     -2010.0,
+     417.32
+    ],
+    [
+     -2017.32,
+     410.0
+    ],
+    [
+     -2020.0,
+     400.0
+    ],
+    [
+     -2017.32,
+     390.0
+    ],
+    [
+     -2010.0,
+     382.68
+    ],
+    [
+     -2000.0,
+     380.0
+    ],
+    [
+     -1990.0,
+     382.68
+    ],
+    [
+     -1982.68,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 50m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 50m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 50m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 50m3d 3",
+   "points": [
+    [
+     20.0,
+     400.0
+    ],
+    [
+     17.32,
+     410.0
+    ],
+    [
+     10.0,
+     417.32
+    ],
+    [
+     0.0,
+     420.0
+    ],
+    [
+     -10.0,
+     417.32
+    ],
+    [
+     -17.32,
+     410.0
+    ],
+    [
+     -20.0,
+     400.0
+    ],
+    [
+     -17.32,
+     390.0
+    ],
+    [
+     -10.0,
+     382.68
+    ],
+    [
+     -0.0,
+     380.0
+    ],
+    [
+     10.0,
+     382.68
+    ],
+    [
+     17.32,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 50m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 50m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 50m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 50m3d 4",
+   "points": [
+    [
+     2020.0,
+     400.0
+    ],
+    [
+     2017.32,
+     410.0
+    ],
+    [
+     2010.0,
+     417.32
+    ],
+    [
+     2000.0,
+     420.0
+    ],
+    [
+     1990.0,
+     417.32
+    ],
+    [
+     1982.68,
+     410.0
+    ],
+    [
+     1980.0,
+     400.0
+    ],
+    [
+     1982.68,
+     390.0
+    ],
+    [
+     1990.0,
+     382.68
+    ],
+    [
+     2000.0,
+     380.0
+    ],
+    [
+     2010.0,
+     382.68
+    ],
+    [
+     2017.32,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 50m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 50m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 50m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 50m3d 5",
+   "points": [
+    [
+     4020.0,
+     400.0
+    ],
+    [
+     4017.32,
+     410.0
+    ],
+    [
+     4010.0,
+     417.32
+    ],
+    [
+     4000.0,
+     420.0
+    ],
+    [
+     3990.0,
+     417.32
+    ],
+    [
+     3982.68,
+     410.0
+    ],
+    [
+     3980.0,
+     400.0
+    ],
+    [
+     3982.68,
+     390.0
+    ],
+    [
+     3990.0,
+     382.68
+    ],
+    [
+     4000.0,
+     380.0
+    ],
+    [
+     4010.0,
+     382.68
+    ],
+    [
+     4017.32,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 50m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 50m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 50m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Rail 50m3d 1",
+   "points": [
+    [
+     -380.0,
+     4020.0
+    ],
+    [
+     -382.68,
+     4030.0
+    ],
+    [
+     -390.0,
+     4037.32
+    ],
+    [
+     -400.0,
+     4040.0
+    ],
+    [
+     -410.0,
+     4037.32
+    ],
+    [
+     -417.32,
+     4030.0
+    ],
+    [
+     -420.0,
+     4020.0
+    ],
+    [
+     -417.32,
+     4010.0
+    ],
+    [
+     -410.0,
+     4002.68
+    ],
+    [
+     -400.0,
+     4000.0
+    ],
+    [
+     -390.0,
+     4002.68
+    ],
+    [
+     -382.68,
+     4010.0
+    ]
+   ],
+   "start": -4000,
+   "end": 4000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Rail 50m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Rail 50m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Rail 50m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Rail 50m3d 2",
+   "points": [
+    [
+     420.0,
+     4020.0
+    ],
+    [
+     417.32,
+     4030.0
+    ],
+    [
+     410.0,
+     4037.32
+    ],
+    [
+     400.0,
+     4040.0
+    ],
+    [
+     390.0,
+     4037.32
+    ],
+    [
+     382.68,
+     4030.0
+    ],
+    [
+     380.0,
+     4020.0
+    ],
+    [
+     382.68,
+     4010.0
+    ],
+    [
+     390.0,
+     4002.68
+    ],
+    [
+     400.0,
+     4000.0
+    ],
+    [
+     410.0,
+     4002.68
+    ],
+    [
+     417.32,
+     4010.0
+    ]
+   ],
+   "start": -4000,
+   "end": 4000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Rail 50m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Rail 50m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Rail 50m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 50m3d 1",
+   "points": [
+    [
+     -3400,
+     -1050
+    ],
+    [
+     -2600,
+     -1050
+    ],
+    [
+     -2600,
+     -500
+    ],
+    [
+     -3400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 50m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 50m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 50m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 50m3d 2",
+   "points": [
+    [
+     -1400,
+     -1050
+    ],
+    [
+     -600,
+     -1050
+    ],
+    [
+     -600,
+     -500
+    ],
+    [
+     -1400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 50m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 50m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 50m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 50m3d 3",
+   "points": [
+    [
+     600,
+     -1050
+    ],
+    [
+     1400,
+     -1050
+    ],
+    [
+     1400,
+     -500
+    ],
+    [
+     600,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 50m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 50m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 50m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 50m3d 4",
+   "points": [
+    [
+     2600,
+     -1050
+    ],
+    [
+     3400,
+     -1050
+    ],
+    [
+     3400,
+     -500
+    ],
+    [
+     2600,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 50m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 50m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 50m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Stile Left 50m3d",
    "points": [
     [
      -4660,
@@ -3725,24 +3345,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Stile Left",
+   "name": "Access Ladder Stile Left 50m3d",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Stile Left",
+   "name": "Access Ladder Stile Left 50m3d",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Stile Left",
+   "name": "Access Ladder Stile Left 50m3d",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Stile Right",
+   "name": "Access Ladder Stile Right 50m3d",
    "points": [
     [
      -4660,
@@ -3766,24 +3386,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Stile Right",
+   "name": "Access Ladder Stile Right 50m3d",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Stile Right",
+   "name": "Access Ladder Stile Right 50m3d",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Stile Right",
+   "name": "Access Ladder Stile Right 50m3d",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 1",
+   "name": "Access Ladder Rung 50m3d 1",
    "points": [
     [
      -4638.0,
@@ -3840,24 +3460,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 1",
+   "name": "Access Ladder Rung 50m3d 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 1",
+   "name": "Access Ladder Rung 50m3d 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 1",
+   "name": "Access Ladder Rung 50m3d 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 2",
+   "name": "Access Ladder Rung 50m3d 2",
    "points": [
     [
      -4638.0,
@@ -3914,24 +3534,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 2",
+   "name": "Access Ladder Rung 50m3d 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 2",
+   "name": "Access Ladder Rung 50m3d 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 2",
+   "name": "Access Ladder Rung 50m3d 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 3",
+   "name": "Access Ladder Rung 50m3d 3",
    "points": [
     [
      -4638.0,
@@ -3988,24 +3608,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 3",
+   "name": "Access Ladder Rung 50m3d 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 3",
+   "name": "Access Ladder Rung 50m3d 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 3",
+   "name": "Access Ladder Rung 50m3d 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 4",
+   "name": "Access Ladder Rung 50m3d 4",
    "points": [
     [
      -4638.0,
@@ -4062,24 +3682,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 4",
+   "name": "Access Ladder Rung 50m3d 4",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 4",
+   "name": "Access Ladder Rung 50m3d 4",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 4",
+   "name": "Access Ladder Rung 50m3d 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 5",
+   "name": "Access Ladder Rung 50m3d 5",
    "points": [
     [
      -4638.0,
@@ -4136,24 +3756,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 5",
+   "name": "Access Ladder Rung 50m3d 5",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 5",
+   "name": "Access Ladder Rung 50m3d 5",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 5",
+   "name": "Access Ladder Rung 50m3d 5",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 6",
+   "name": "Access Ladder Rung 50m3d 6",
    "points": [
     [
      -4638.0,
@@ -4210,24 +3830,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 6",
+   "name": "Access Ladder Rung 50m3d 6",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 6",
+   "name": "Access Ladder Rung 50m3d 6",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 6",
+   "name": "Access Ladder Rung 50m3d 6",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 7",
+   "name": "Access Ladder Rung 50m3d 7",
    "points": [
     [
      -4638.0,
@@ -4284,24 +3904,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 7",
+   "name": "Access Ladder Rung 50m3d 7",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 7",
+   "name": "Access Ladder Rung 50m3d 7",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 7",
+   "name": "Access Ladder Rung 50m3d 7",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 8",
+   "name": "Access Ladder Rung 50m3d 8",
    "points": [
     [
      -4638.0,
@@ -4358,24 +3978,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 8",
+   "name": "Access Ladder Rung 50m3d 8",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 8",
+   "name": "Access Ladder Rung 50m3d 8",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 8",
+   "name": "Access Ladder Rung 50m3d 8",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 9",
+   "name": "Access Ladder Rung 50m3d 9",
    "points": [
     [
      -4638.0,
@@ -4432,24 +4052,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 9",
+   "name": "Access Ladder Rung 50m3d 9",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 9",
+   "name": "Access Ladder Rung 50m3d 9",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 9",
+   "name": "Access Ladder Rung 50m3d 9",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 10",
+   "name": "Access Ladder Rung 50m3d 10",
    "points": [
     [
      -4638.0,
@@ -4506,24 +4126,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 10",
+   "name": "Access Ladder Rung 50m3d 10",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 10",
+   "name": "Access Ladder Rung 50m3d 10",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 10",
+   "name": "Access Ladder Rung 50m3d 10",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Ladder Rung 11",
+   "name": "Access Ladder Rung 50m3d 11",
    "points": [
     [
      -4638.0,
@@ -4580,20 +4200,3739 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Ladder Rung 11",
+   "name": "Access Ladder Rung 50m3d 11",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Access Ladder Rung 11",
+   "name": "Access Ladder Rung 50m3d 11",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Ladder Rung 11",
+   "name": "Access Ladder Rung 50m3d 11",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 100m3d",
+   "points": [
+    [
+     -7800,
+     -1500
+    ],
+    [
+     6300,
+     -1500
+    ],
+    [
+     6300,
+     1500
+    ],
+    [
+     -7800,
+     1500
+    ]
+   ],
+   "start": 0,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 100m3d",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 100m3d",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 100m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Body 100m3d",
+   "points": [
+    [
+     -7500,
+     -1200
+    ],
+    [
+     4500,
+     -1200
+    ],
+    [
+     4500,
+     1200
+    ],
+    [
+     -7500,
+     1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Body 100m3d",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Body 100m3d",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Body 100m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 1",
+   "points": [
+    [
+     -6780,
+     -1225
+    ],
+    [
+     -6720,
+     -1225
+    ],
+    [
+     -6720,
+     -1200
+    ],
+    [
+     -6780,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 2",
+   "points": [
+    [
+     -5280,
+     -1225
+    ],
+    [
+     -5220,
+     -1225
+    ],
+    [
+     -5220,
+     -1200
+    ],
+    [
+     -5280,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 3",
+   "points": [
+    [
+     -3780,
+     -1225
+    ],
+    [
+     -3720,
+     -1225
+    ],
+    [
+     -3720,
+     -1200
+    ],
+    [
+     -3780,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 4",
+   "points": [
+    [
+     -2280,
+     -1225
+    ],
+    [
+     -2220,
+     -1225
+    ],
+    [
+     -2220,
+     -1200
+    ],
+    [
+     -2280,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 5",
+   "points": [
+    [
+     -780,
+     -1225
+    ],
+    [
+     -720,
+     -1225
+    ],
+    [
+     -720,
+     -1200
+    ],
+    [
+     -780,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 6",
+   "points": [
+    [
+     720,
+     -1225
+    ],
+    [
+     780,
+     -1225
+    ],
+    [
+     780,
+     -1200
+    ],
+    [
+     720,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 7",
+   "points": [
+    [
+     2220,
+     -1225
+    ],
+    [
+     2280,
+     -1225
+    ],
+    [
+     2280,
+     -1200
+    ],
+    [
+     2220,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 7",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 7",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Front 100m3d 8",
+   "points": [
+    [
+     3720,
+     -1225
+    ],
+    [
+     3780,
+     -1225
+    ],
+    [
+     3780,
+     -1200
+    ],
+    [
+     3720,
+     -1200
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Front 100m3d 8",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Front 100m3d 8",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Front 100m3d 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 1",
+   "points": [
+    [
+     -6780,
+     1200
+    ],
+    [
+     -6720,
+     1200
+    ],
+    [
+     -6720,
+     1225
+    ],
+    [
+     -6780,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 2",
+   "points": [
+    [
+     -5280,
+     1200
+    ],
+    [
+     -5220,
+     1200
+    ],
+    [
+     -5220,
+     1225
+    ],
+    [
+     -5280,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 3",
+   "points": [
+    [
+     -3780,
+     1200
+    ],
+    [
+     -3720,
+     1200
+    ],
+    [
+     -3720,
+     1225
+    ],
+    [
+     -3780,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 4",
+   "points": [
+    [
+     -2280,
+     1200
+    ],
+    [
+     -2220,
+     1200
+    ],
+    [
+     -2220,
+     1225
+    ],
+    [
+     -2280,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 5",
+   "points": [
+    [
+     -780,
+     1200
+    ],
+    [
+     -720,
+     1200
+    ],
+    [
+     -720,
+     1225
+    ],
+    [
+     -780,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 6",
+   "points": [
+    [
+     720,
+     1200
+    ],
+    [
+     780,
+     1200
+    ],
+    [
+     780,
+     1225
+    ],
+    [
+     720,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 7",
+   "points": [
+    [
+     2220,
+     1200
+    ],
+    [
+     2280,
+     1200
+    ],
+    [
+     2280,
+     1225
+    ],
+    [
+     2220,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 7",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 7",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rib Back 100m3d 8",
+   "points": [
+    [
+     3720,
+     1200
+    ],
+    [
+     3780,
+     1200
+    ],
+    [
+     3780,
+     1225
+    ],
+    [
+     3720,
+     1225
+    ]
+   ],
+   "start": 300,
+   "end": 2900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rib Back 100m3d 8",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib Back 100m3d 8",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib Back 100m3d 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Walkway Grating 100m3d",
+   "points": [
+    [
+     -7400,
+     -400
+    ],
+    [
+     4400,
+     -400
+    ],
+    [
+     4400,
+     400
+    ],
+    [
+     -7400,
+     400
+    ]
+   ],
+   "start": 2900,
+   "end": 2940
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Walkway Grating 100m3d",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Walkway Grating 100m3d",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Walkway Grating 100m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 1",
+   "points": [
+    [
+     -6980.0,
+     -400.0
+    ],
+    [
+     -6982.68,
+     -390.0
+    ],
+    [
+     -6990.0,
+     -382.68
+    ],
+    [
+     -7000.0,
+     -380.0
+    ],
+    [
+     -7010.0,
+     -382.68
+    ],
+    [
+     -7017.32,
+     -390.0
+    ],
+    [
+     -7020.0,
+     -400.0
+    ],
+    [
+     -7017.32,
+     -410.0
+    ],
+    [
+     -7010.0,
+     -417.32
+    ],
+    [
+     -7000.0,
+     -420.0
+    ],
+    [
+     -6990.0,
+     -417.32
+    ],
+    [
+     -6982.68,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 2",
+   "points": [
+    [
+     -5146.67,
+     -400.0
+    ],
+    [
+     -5149.35,
+     -390.0
+    ],
+    [
+     -5156.67,
+     -382.68
+    ],
+    [
+     -5166.67,
+     -380.0
+    ],
+    [
+     -5176.67,
+     -382.68
+    ],
+    [
+     -5183.99,
+     -390.0
+    ],
+    [
+     -5186.67,
+     -400.0
+    ],
+    [
+     -5183.99,
+     -410.0
+    ],
+    [
+     -5176.67,
+     -417.32
+    ],
+    [
+     -5166.67,
+     -420.0
+    ],
+    [
+     -5156.67,
+     -417.32
+    ],
+    [
+     -5149.35,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 3",
+   "points": [
+    [
+     -3313.33,
+     -400.0
+    ],
+    [
+     -3316.01,
+     -390.0
+    ],
+    [
+     -3323.33,
+     -382.68
+    ],
+    [
+     -3333.33,
+     -380.0
+    ],
+    [
+     -3343.33,
+     -382.68
+    ],
+    [
+     -3350.65,
+     -390.0
+    ],
+    [
+     -3353.33,
+     -400.0
+    ],
+    [
+     -3350.65,
+     -410.0
+    ],
+    [
+     -3343.33,
+     -417.32
+    ],
+    [
+     -3333.33,
+     -420.0
+    ],
+    [
+     -3323.33,
+     -417.32
+    ],
+    [
+     -3316.01,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 4",
+   "points": [
+    [
+     -1480.0,
+     -400.0
+    ],
+    [
+     -1482.68,
+     -390.0
+    ],
+    [
+     -1490.0,
+     -382.68
+    ],
+    [
+     -1500.0,
+     -380.0
+    ],
+    [
+     -1510.0,
+     -382.68
+    ],
+    [
+     -1517.32,
+     -390.0
+    ],
+    [
+     -1520.0,
+     -400.0
+    ],
+    [
+     -1517.32,
+     -410.0
+    ],
+    [
+     -1510.0,
+     -417.32
+    ],
+    [
+     -1500.0,
+     -420.0
+    ],
+    [
+     -1490.0,
+     -417.32
+    ],
+    [
+     -1482.68,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 5",
+   "points": [
+    [
+     353.33,
+     -400.0
+    ],
+    [
+     350.65,
+     -390.0
+    ],
+    [
+     343.33,
+     -382.68
+    ],
+    [
+     333.33,
+     -380.0
+    ],
+    [
+     323.33,
+     -382.68
+    ],
+    [
+     316.01,
+     -390.0
+    ],
+    [
+     313.33,
+     -400.0
+    ],
+    [
+     316.01,
+     -410.0
+    ],
+    [
+     323.33,
+     -417.32
+    ],
+    [
+     333.33,
+     -420.0
+    ],
+    [
+     343.33,
+     -417.32
+    ],
+    [
+     350.65,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 6",
+   "points": [
+    [
+     2186.67,
+     -400.0
+    ],
+    [
+     2183.99,
+     -390.0
+    ],
+    [
+     2176.67,
+     -382.68
+    ],
+    [
+     2166.67,
+     -380.0
+    ],
+    [
+     2156.67,
+     -382.68
+    ],
+    [
+     2149.35,
+     -390.0
+    ],
+    [
+     2146.67,
+     -400.0
+    ],
+    [
+     2149.35,
+     -410.0
+    ],
+    [
+     2156.67,
+     -417.32
+    ],
+    [
+     2166.67,
+     -420.0
+    ],
+    [
+     2176.67,
+     -417.32
+    ],
+    [
+     2183.99,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Front 100m3d 7",
+   "points": [
+    [
+     4020.0,
+     -400.0
+    ],
+    [
+     4017.32,
+     -390.0
+    ],
+    [
+     4010.0,
+     -382.68
+    ],
+    [
+     4000.0,
+     -380.0
+    ],
+    [
+     3990.0,
+     -382.68
+    ],
+    [
+     3982.68,
+     -390.0
+    ],
+    [
+     3980.0,
+     -400.0
+    ],
+    [
+     3982.68,
+     -410.0
+    ],
+    [
+     3990.0,
+     -417.32
+    ],
+    [
+     4000.0,
+     -420.0
+    ],
+    [
+     4010.0,
+     -417.32
+    ],
+    [
+     4017.32,
+     -410.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Front 100m3d 7",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Front 100m3d 7",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Front 100m3d 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 1",
+   "points": [
+    [
+     -6980.0,
+     400.0
+    ],
+    [
+     -6982.68,
+     410.0
+    ],
+    [
+     -6990.0,
+     417.32
+    ],
+    [
+     -7000.0,
+     420.0
+    ],
+    [
+     -7010.0,
+     417.32
+    ],
+    [
+     -7017.32,
+     410.0
+    ],
+    [
+     -7020.0,
+     400.0
+    ],
+    [
+     -7017.32,
+     390.0
+    ],
+    [
+     -7010.0,
+     382.68
+    ],
+    [
+     -7000.0,
+     380.0
+    ],
+    [
+     -6990.0,
+     382.68
+    ],
+    [
+     -6982.68,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 2",
+   "points": [
+    [
+     -5146.67,
+     400.0
+    ],
+    [
+     -5149.35,
+     410.0
+    ],
+    [
+     -5156.67,
+     417.32
+    ],
+    [
+     -5166.67,
+     420.0
+    ],
+    [
+     -5176.67,
+     417.32
+    ],
+    [
+     -5183.99,
+     410.0
+    ],
+    [
+     -5186.67,
+     400.0
+    ],
+    [
+     -5183.99,
+     390.0
+    ],
+    [
+     -5176.67,
+     382.68
+    ],
+    [
+     -5166.67,
+     380.0
+    ],
+    [
+     -5156.67,
+     382.68
+    ],
+    [
+     -5149.35,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 3",
+   "points": [
+    [
+     -3313.33,
+     400.0
+    ],
+    [
+     -3316.01,
+     410.0
+    ],
+    [
+     -3323.33,
+     417.32
+    ],
+    [
+     -3333.33,
+     420.0
+    ],
+    [
+     -3343.33,
+     417.32
+    ],
+    [
+     -3350.65,
+     410.0
+    ],
+    [
+     -3353.33,
+     400.0
+    ],
+    [
+     -3350.65,
+     390.0
+    ],
+    [
+     -3343.33,
+     382.68
+    ],
+    [
+     -3333.33,
+     380.0
+    ],
+    [
+     -3323.33,
+     382.68
+    ],
+    [
+     -3316.01,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 4",
+   "points": [
+    [
+     -1480.0,
+     400.0
+    ],
+    [
+     -1482.68,
+     410.0
+    ],
+    [
+     -1490.0,
+     417.32
+    ],
+    [
+     -1500.0,
+     420.0
+    ],
+    [
+     -1510.0,
+     417.32
+    ],
+    [
+     -1517.32,
+     410.0
+    ],
+    [
+     -1520.0,
+     400.0
+    ],
+    [
+     -1517.32,
+     390.0
+    ],
+    [
+     -1510.0,
+     382.68
+    ],
+    [
+     -1500.0,
+     380.0
+    ],
+    [
+     -1490.0,
+     382.68
+    ],
+    [
+     -1482.68,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 5",
+   "points": [
+    [
+     353.33,
+     400.0
+    ],
+    [
+     350.65,
+     410.0
+    ],
+    [
+     343.33,
+     417.32
+    ],
+    [
+     333.33,
+     420.0
+    ],
+    [
+     323.33,
+     417.32
+    ],
+    [
+     316.01,
+     410.0
+    ],
+    [
+     313.33,
+     400.0
+    ],
+    [
+     316.01,
+     390.0
+    ],
+    [
+     323.33,
+     382.68
+    ],
+    [
+     333.33,
+     380.0
+    ],
+    [
+     343.33,
+     382.68
+    ],
+    [
+     350.65,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 6",
+   "points": [
+    [
+     2186.67,
+     400.0
+    ],
+    [
+     2183.99,
+     410.0
+    ],
+    [
+     2176.67,
+     417.32
+    ],
+    [
+     2166.67,
+     420.0
+    ],
+    [
+     2156.67,
+     417.32
+    ],
+    [
+     2149.35,
+     410.0
+    ],
+    [
+     2146.67,
+     400.0
+    ],
+    [
+     2149.35,
+     390.0
+    ],
+    [
+     2156.67,
+     382.68
+    ],
+    [
+     2166.67,
+     380.0
+    ],
+    [
+     2176.67,
+     382.68
+    ],
+    [
+     2183.99,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Post Back 100m3d 7",
+   "points": [
+    [
+     4020.0,
+     400.0
+    ],
+    [
+     4017.32,
+     410.0
+    ],
+    [
+     4010.0,
+     417.32
+    ],
+    [
+     4000.0,
+     420.0
+    ],
+    [
+     3990.0,
+     417.32
+    ],
+    [
+     3982.68,
+     410.0
+    ],
+    [
+     3980.0,
+     400.0
+    ],
+    [
+     3982.68,
+     390.0
+    ],
+    [
+     3990.0,
+     382.68
+    ],
+    [
+     4000.0,
+     380.0
+    ],
+    [
+     4010.0,
+     382.68
+    ],
+    [
+     4017.32,
+     390.0
+    ]
+   ],
+   "start": 2940,
+   "end": 4040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Post Back 100m3d 7",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Post Back 100m3d 7",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Post Back 100m3d 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Rail 100m3d 1",
+   "points": [
+    [
+     -380.0,
+     4020.0
+    ],
+    [
+     -382.68,
+     4030.0
+    ],
+    [
+     -390.0,
+     4037.32
+    ],
+    [
+     -400.0,
+     4040.0
+    ],
+    [
+     -410.0,
+     4037.32
+    ],
+    [
+     -417.32,
+     4030.0
+    ],
+    [
+     -420.0,
+     4020.0
+    ],
+    [
+     -417.32,
+     4010.0
+    ],
+    [
+     -410.0,
+     4002.68
+    ],
+    [
+     -400.0,
+     4000.0
+    ],
+    [
+     -390.0,
+     4002.68
+    ],
+    [
+     -382.68,
+     4010.0
+    ]
+   ],
+   "start": -7000,
+   "end": 4000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Rail 100m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Rail 100m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Rail 100m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Rail 100m3d 2",
+   "points": [
+    [
+     420.0,
+     4020.0
+    ],
+    [
+     417.32,
+     4030.0
+    ],
+    [
+     410.0,
+     4037.32
+    ],
+    [
+     400.0,
+     4040.0
+    ],
+    [
+     390.0,
+     4037.32
+    ],
+    [
+     382.68,
+     4030.0
+    ],
+    [
+     380.0,
+     4020.0
+    ],
+    [
+     382.68,
+     4010.0
+    ],
+    [
+     390.0,
+     4002.68
+    ],
+    [
+     400.0,
+     4000.0
+    ],
+    [
+     410.0,
+     4002.68
+    ],
+    [
+     417.32,
+     4010.0
+    ]
+   ],
+   "start": -7000,
+   "end": 4000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Rail 100m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Rail 100m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Rail 100m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 1",
+   "points": [
+    [
+     -6400,
+     -1050
+    ],
+    [
+     -5600,
+     -1050
+    ],
+    [
+     -5600,
+     -500
+    ],
+    [
+     -6400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 2",
+   "points": [
+    [
+     -4400,
+     -1050
+    ],
+    [
+     -3600,
+     -1050
+    ],
+    [
+     -3600,
+     -500
+    ],
+    [
+     -4400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 3",
+   "points": [
+    [
+     -2400,
+     -1050
+    ],
+    [
+     -1600,
+     -1050
+    ],
+    [
+     -1600,
+     -500
+    ],
+    [
+     -2400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 4",
+   "points": [
+    [
+     -400,
+     -1050
+    ],
+    [
+     400,
+     -1050
+    ],
+    [
+     400,
+     -500
+    ],
+    [
+     -400,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 5",
+   "points": [
+    [
+     1600,
+     -1050
+    ],
+    [
+     2400,
+     -1050
+    ],
+    [
+     2400,
+     -500
+    ],
+    [
+     1600,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Hatch 100m3d 6",
+   "points": [
+    [
+     3600,
+     -1050
+    ],
+    [
+     4400,
+     -1050
+    ],
+    [
+     4400,
+     -500
+    ],
+    [
+     3600,
+     -500
+    ]
+   ],
+   "start": 2900,
+   "end": 2930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Hatch 100m3d 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Hatch 100m3d 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Hatch 100m3d 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Stile Left 100m3d",
+   "points": [
+    [
+     -7660,
+     -260
+    ],
+    [
+     -7640,
+     -260
+    ],
+    [
+     -7640,
+     -240
+    ],
+    [
+     -7660,
+     -240
+    ]
+   ],
+   "start": 300,
+   "end": 3900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Stile Left 100m3d",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Stile Left 100m3d",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Stile Left 100m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Stile Right 100m3d",
+   "points": [
+    [
+     -7660,
+     240
+    ],
+    [
+     -7640,
+     240
+    ],
+    [
+     -7640,
+     260
+    ],
+    [
+     -7660,
+     260
+    ]
+   ],
+   "start": 300,
+   "end": 3900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Stile Right 100m3d",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Stile Right 100m3d",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Stile Right 100m3d",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 1",
+   "points": [
+    [
+     -7638.0,
+     600.0
+    ],
+    [
+     -7639.61,
+     606.0
+    ],
+    [
+     -7644.0,
+     610.39
+    ],
+    [
+     -7650.0,
+     612.0
+    ],
+    [
+     -7656.0,
+     610.39
+    ],
+    [
+     -7660.39,
+     606.0
+    ],
+    [
+     -7662.0,
+     600.0
+    ],
+    [
+     -7660.39,
+     594.0
+    ],
+    [
+     -7656.0,
+     589.61
+    ],
+    [
+     -7650.0,
+     588.0
+    ],
+    [
+     -7644.0,
+     589.61
+    ],
+    [
+     -7639.61,
+     594.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 2",
+   "points": [
+    [
+     -7638.0,
+     900.0
+    ],
+    [
+     -7639.61,
+     906.0
+    ],
+    [
+     -7644.0,
+     910.39
+    ],
+    [
+     -7650.0,
+     912.0
+    ],
+    [
+     -7656.0,
+     910.39
+    ],
+    [
+     -7660.39,
+     906.0
+    ],
+    [
+     -7662.0,
+     900.0
+    ],
+    [
+     -7660.39,
+     894.0
+    ],
+    [
+     -7656.0,
+     889.61
+    ],
+    [
+     -7650.0,
+     888.0
+    ],
+    [
+     -7644.0,
+     889.61
+    ],
+    [
+     -7639.61,
+     894.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 3",
+   "points": [
+    [
+     -7638.0,
+     1200.0
+    ],
+    [
+     -7639.61,
+     1206.0
+    ],
+    [
+     -7644.0,
+     1210.39
+    ],
+    [
+     -7650.0,
+     1212.0
+    ],
+    [
+     -7656.0,
+     1210.39
+    ],
+    [
+     -7660.39,
+     1206.0
+    ],
+    [
+     -7662.0,
+     1200.0
+    ],
+    [
+     -7660.39,
+     1194.0
+    ],
+    [
+     -7656.0,
+     1189.61
+    ],
+    [
+     -7650.0,
+     1188.0
+    ],
+    [
+     -7644.0,
+     1189.61
+    ],
+    [
+     -7639.61,
+     1194.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 4",
+   "points": [
+    [
+     -7638.0,
+     1500.0
+    ],
+    [
+     -7639.61,
+     1506.0
+    ],
+    [
+     -7644.0,
+     1510.39
+    ],
+    [
+     -7650.0,
+     1512.0
+    ],
+    [
+     -7656.0,
+     1510.39
+    ],
+    [
+     -7660.39,
+     1506.0
+    ],
+    [
+     -7662.0,
+     1500.0
+    ],
+    [
+     -7660.39,
+     1494.0
+    ],
+    [
+     -7656.0,
+     1489.61
+    ],
+    [
+     -7650.0,
+     1488.0
+    ],
+    [
+     -7644.0,
+     1489.61
+    ],
+    [
+     -7639.61,
+     1494.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 5",
+   "points": [
+    [
+     -7638.0,
+     1800.0
+    ],
+    [
+     -7639.61,
+     1806.0
+    ],
+    [
+     -7644.0,
+     1810.39
+    ],
+    [
+     -7650.0,
+     1812.0
+    ],
+    [
+     -7656.0,
+     1810.39
+    ],
+    [
+     -7660.39,
+     1806.0
+    ],
+    [
+     -7662.0,
+     1800.0
+    ],
+    [
+     -7660.39,
+     1794.0
+    ],
+    [
+     -7656.0,
+     1789.61
+    ],
+    [
+     -7650.0,
+     1788.0
+    ],
+    [
+     -7644.0,
+     1789.61
+    ],
+    [
+     -7639.61,
+     1794.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 6",
+   "points": [
+    [
+     -7638.0,
+     2100.0
+    ],
+    [
+     -7639.61,
+     2106.0
+    ],
+    [
+     -7644.0,
+     2110.39
+    ],
+    [
+     -7650.0,
+     2112.0
+    ],
+    [
+     -7656.0,
+     2110.39
+    ],
+    [
+     -7660.39,
+     2106.0
+    ],
+    [
+     -7662.0,
+     2100.0
+    ],
+    [
+     -7660.39,
+     2094.0
+    ],
+    [
+     -7656.0,
+     2089.61
+    ],
+    [
+     -7650.0,
+     2088.0
+    ],
+    [
+     -7644.0,
+     2089.61
+    ],
+    [
+     -7639.61,
+     2094.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 7",
+   "points": [
+    [
+     -7638.0,
+     2400.0
+    ],
+    [
+     -7639.61,
+     2406.0
+    ],
+    [
+     -7644.0,
+     2410.39
+    ],
+    [
+     -7650.0,
+     2412.0
+    ],
+    [
+     -7656.0,
+     2410.39
+    ],
+    [
+     -7660.39,
+     2406.0
+    ],
+    [
+     -7662.0,
+     2400.0
+    ],
+    [
+     -7660.39,
+     2394.0
+    ],
+    [
+     -7656.0,
+     2389.61
+    ],
+    [
+     -7650.0,
+     2388.0
+    ],
+    [
+     -7644.0,
+     2389.61
+    ],
+    [
+     -7639.61,
+     2394.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 7",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 7",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 8",
+   "points": [
+    [
+     -7638.0,
+     2700.0
+    ],
+    [
+     -7639.61,
+     2706.0
+    ],
+    [
+     -7644.0,
+     2710.39
+    ],
+    [
+     -7650.0,
+     2712.0
+    ],
+    [
+     -7656.0,
+     2710.39
+    ],
+    [
+     -7660.39,
+     2706.0
+    ],
+    [
+     -7662.0,
+     2700.0
+    ],
+    [
+     -7660.39,
+     2694.0
+    ],
+    [
+     -7656.0,
+     2689.61
+    ],
+    [
+     -7650.0,
+     2688.0
+    ],
+    [
+     -7644.0,
+     2689.61
+    ],
+    [
+     -7639.61,
+     2694.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 8",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 8",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 9",
+   "points": [
+    [
+     -7638.0,
+     3000.0
+    ],
+    [
+     -7639.61,
+     3006.0
+    ],
+    [
+     -7644.0,
+     3010.39
+    ],
+    [
+     -7650.0,
+     3012.0
+    ],
+    [
+     -7656.0,
+     3010.39
+    ],
+    [
+     -7660.39,
+     3006.0
+    ],
+    [
+     -7662.0,
+     3000.0
+    ],
+    [
+     -7660.39,
+     2994.0
+    ],
+    [
+     -7656.0,
+     2989.61
+    ],
+    [
+     -7650.0,
+     2988.0
+    ],
+    [
+     -7644.0,
+     2989.61
+    ],
+    [
+     -7639.61,
+     2994.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 9",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 9",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 9",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 10",
+   "points": [
+    [
+     -7638.0,
+     3300.0
+    ],
+    [
+     -7639.61,
+     3306.0
+    ],
+    [
+     -7644.0,
+     3310.39
+    ],
+    [
+     -7650.0,
+     3312.0
+    ],
+    [
+     -7656.0,
+     3310.39
+    ],
+    [
+     -7660.39,
+     3306.0
+    ],
+    [
+     -7662.0,
+     3300.0
+    ],
+    [
+     -7660.39,
+     3294.0
+    ],
+    [
+     -7656.0,
+     3289.61
+    ],
+    [
+     -7650.0,
+     3288.0
+    ],
+    [
+     -7644.0,
+     3289.61
+    ],
+    [
+     -7639.61,
+     3294.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 10",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 10",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 10",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Ladder Rung 100m3d 11",
+   "points": [
+    [
+     -7638.0,
+     3600.0
+    ],
+    [
+     -7639.61,
+     3606.0
+    ],
+    [
+     -7644.0,
+     3610.39
+    ],
+    [
+     -7650.0,
+     3612.0
+    ],
+    [
+     -7656.0,
+     3610.39
+    ],
+    [
+     -7660.39,
+     3606.0
+    ],
+    [
+     -7662.0,
+     3600.0
+    ],
+    [
+     -7660.39,
+     3594.0
+    ],
+    [
+     -7656.0,
+     3589.61
+    ],
+    [
+     -7650.0,
+     3588.0
+    ],
+    [
+     -7644.0,
+     3589.61
+    ],
+    [
+     -7639.61,
+     3594.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Ladder Rung 100m3d 11",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Ladder Rung 100m3d 11",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Ladder Rung 100m3d 11",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 50m3d_Packaged",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3d_Packaged/Show 50m3d_Packaged",
+   "type": "50m3d_Packaged",
+   "param": "Show 50m3d_Packaged",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "100m3d_Packaged/Show 50m3d_Packaged",
+   "type": "100m3d_Packaged",
+   "param": "Show 50m3d_Packaged",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 50m3d/Visible",
+   "solid": "Plinth 50m3d",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Body 50m3d/Visible",
+   "solid": "Tank Body 50m3d",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 1/Visible",
+   "solid": "Rib Front 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 2/Visible",
+   "solid": "Rib Front 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 3/Visible",
+   "solid": "Rib Front 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 4/Visible",
+   "solid": "Rib Front 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 5/Visible",
+   "solid": "Rib Front 50m3d 5",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 50m3d 6/Visible",
+   "solid": "Rib Front 50m3d 6",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 1/Visible",
+   "solid": "Rib Back 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 2/Visible",
+   "solid": "Rib Back 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 3/Visible",
+   "solid": "Rib Back 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 4/Visible",
+   "solid": "Rib Back 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 5/Visible",
+   "solid": "Rib Back 50m3d 5",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 50m3d 6/Visible",
+   "solid": "Rib Back 50m3d 6",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Walkway Grating 50m3d/Visible",
+   "solid": "Walkway Grating 50m3d",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 50m3d 1/Visible",
+   "solid": "Rail Post Front 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 50m3d 2/Visible",
+   "solid": "Rail Post Front 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 50m3d 3/Visible",
+   "solid": "Rail Post Front 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 50m3d 4/Visible",
+   "solid": "Rail Post Front 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 50m3d 5/Visible",
+   "solid": "Rail Post Front 50m3d 5",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 50m3d 1/Visible",
+   "solid": "Rail Post Back 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 50m3d 2/Visible",
+   "solid": "Rail Post Back 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 50m3d 3/Visible",
+   "solid": "Rail Post Back 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 50m3d 4/Visible",
+   "solid": "Rail Post Back 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 50m3d 5/Visible",
+   "solid": "Rail Post Back 50m3d 5",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 50m3d 1/Visible",
+   "solid": "Top Rail 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 50m3d 2/Visible",
+   "solid": "Top Rail 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 50m3d 1/Visible",
+   "solid": "Access Hatch 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 50m3d 2/Visible",
+   "solid": "Access Hatch 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 50m3d 3/Visible",
+   "solid": "Access Hatch 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 50m3d 4/Visible",
+   "solid": "Access Hatch 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Stile Left 50m3d/Visible",
+   "solid": "Access Ladder Stile Left 50m3d",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Stile Right 50m3d/Visible",
+   "solid": "Access Ladder Stile Right 50m3d",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 1/Visible",
+   "solid": "Access Ladder Rung 50m3d 1",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 2/Visible",
+   "solid": "Access Ladder Rung 50m3d 2",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 3/Visible",
+   "solid": "Access Ladder Rung 50m3d 3",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 4/Visible",
+   "solid": "Access Ladder Rung 50m3d 4",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 5/Visible",
+   "solid": "Access Ladder Rung 50m3d 5",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 6/Visible",
+   "solid": "Access Ladder Rung 50m3d 6",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 7/Visible",
+   "solid": "Access Ladder Rung 50m3d 7",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 8/Visible",
+   "solid": "Access Ladder Rung 50m3d 8",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 9/Visible",
+   "solid": "Access Ladder Rung 50m3d 9",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 10/Visible",
+   "solid": "Access Ladder Rung 50m3d 10",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 50m3d 11/Visible",
+   "solid": "Access Ladder Rung 50m3d 11",
+   "param": "Show 50m3d_Packaged"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 100m3d_Packaged",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3d_Packaged/Show 100m3d_Packaged",
+   "type": "50m3d_Packaged",
+   "param": "Show 100m3d_Packaged",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "100m3d_Packaged/Show 100m3d_Packaged",
+   "type": "100m3d_Packaged",
+   "param": "Show 100m3d_Packaged",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 100m3d/Visible",
+   "solid": "Plinth 100m3d",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Body 100m3d/Visible",
+   "solid": "Tank Body 100m3d",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 1/Visible",
+   "solid": "Rib Front 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 2/Visible",
+   "solid": "Rib Front 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 3/Visible",
+   "solid": "Rib Front 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 4/Visible",
+   "solid": "Rib Front 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 5/Visible",
+   "solid": "Rib Front 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 6/Visible",
+   "solid": "Rib Front 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 7/Visible",
+   "solid": "Rib Front 100m3d 7",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Front 100m3d 8/Visible",
+   "solid": "Rib Front 100m3d 8",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 1/Visible",
+   "solid": "Rib Back 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 2/Visible",
+   "solid": "Rib Back 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 3/Visible",
+   "solid": "Rib Back 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 4/Visible",
+   "solid": "Rib Back 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 5/Visible",
+   "solid": "Rib Back 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 6/Visible",
+   "solid": "Rib Back 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 7/Visible",
+   "solid": "Rib Back 100m3d 7",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib Back 100m3d 8/Visible",
+   "solid": "Rib Back 100m3d 8",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Walkway Grating 100m3d/Visible",
+   "solid": "Walkway Grating 100m3d",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 1/Visible",
+   "solid": "Rail Post Front 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 2/Visible",
+   "solid": "Rail Post Front 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 3/Visible",
+   "solid": "Rail Post Front 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 4/Visible",
+   "solid": "Rail Post Front 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 5/Visible",
+   "solid": "Rail Post Front 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 6/Visible",
+   "solid": "Rail Post Front 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Front 100m3d 7/Visible",
+   "solid": "Rail Post Front 100m3d 7",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 1/Visible",
+   "solid": "Rail Post Back 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 2/Visible",
+   "solid": "Rail Post Back 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 3/Visible",
+   "solid": "Rail Post Back 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 4/Visible",
+   "solid": "Rail Post Back 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 5/Visible",
+   "solid": "Rail Post Back 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 6/Visible",
+   "solid": "Rail Post Back 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Post Back 100m3d 7/Visible",
+   "solid": "Rail Post Back 100m3d 7",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 100m3d 1/Visible",
+   "solid": "Top Rail 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 100m3d 2/Visible",
+   "solid": "Top Rail 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 1/Visible",
+   "solid": "Access Hatch 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 2/Visible",
+   "solid": "Access Hatch 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 3/Visible",
+   "solid": "Access Hatch 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 4/Visible",
+   "solid": "Access Hatch 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 5/Visible",
+   "solid": "Access Hatch 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Hatch 100m3d 6/Visible",
+   "solid": "Access Hatch 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Stile Left 100m3d/Visible",
+   "solid": "Access Ladder Stile Left 100m3d",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Stile Right 100m3d/Visible",
+   "solid": "Access Ladder Stile Right 100m3d",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 1/Visible",
+   "solid": "Access Ladder Rung 100m3d 1",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 2/Visible",
+   "solid": "Access Ladder Rung 100m3d 2",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 3/Visible",
+   "solid": "Access Ladder Rung 100m3d 3",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 4/Visible",
+   "solid": "Access Ladder Rung 100m3d 4",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 5/Visible",
+   "solid": "Access Ladder Rung 100m3d 5",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 6/Visible",
+   "solid": "Access Ladder Rung 100m3d 6",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 7/Visible",
+   "solid": "Access Ladder Rung 100m3d 7",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 8/Visible",
+   "solid": "Access Ladder Rung 100m3d 8",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 9/Visible",
+   "solid": "Access Ladder Rung 100m3d 9",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 10/Visible",
+   "solid": "Access Ladder Rung 100m3d 10",
+   "param": "Show 100m3d_Packaged"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Ladder Rung 100m3d 11/Visible",
+   "solid": "Access Ladder Rung 100m3d 11",
+   "param": "Show 100m3d_Packaged"
   },
   {
    "op": "add_connector",
@@ -4601,7 +7940,7 @@
    "domain": "pipe",
    "system": "Sanitary",
    "solid": "Inlet Pipe",
-   "side": "left",
+   "side": "back",
    "diameter": 160,
    "flow": "In"
   },
@@ -4651,13 +7990,13 @@
   }
  ],
  "values": {
-  "Envelope 9000 x 2400 x 2600 mm on 300 plinth (50 m3/d)": {
-   "value": "9000x2400x2600",
+  "Tank 9000 / 12000 x 2400 x 2600 mm on 300 plinth (one per type)": {
+   "value": "9000/12000",
    "source_status": "assumed",
    "source": "typical packaged MBBR/SBR plant envelope; vendor to confirm"
   },
-  "Supply 415 V 3-phase, 5.5 kVA (50 m3/d)": {
-   "value": "415V 5.5kVA",
+  "Supply 415 V 3-phase, 5.5 / 9 kVA": {
+   "value": "415V 5.5/9kVA",
    "source_status": "assumed",
    "source": "typical blower load; vendor to confirm"
   },

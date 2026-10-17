@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_WheelchairRack_Wall",
  "template": "Metric Generic Model.rft",
- "about": "Wheelchair rack modelled as a generic product: stainless floor plate with wheel guides, wall rail and low bumper rail on brackets, four bay dividers with rounded corners, blue parking sign. Back wall at y = 0; geometry is the 3-chair type. Reference: query: wheelchair rack wall specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=wheelchair+rack+wall+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Wheelchair rack modelled as a generic product: stainless floor plate with wheel guides, wall rail and low bumper rail on brackets, tubular bay dividers, blue parking sign. Back wall at y = 0; the rack is per type (3 or 5 bays), the sign is shared. Reference: query: wheelchair rack wall specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=wheelchair+rack+wall+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.southwestsolutions.com/specialty-products/wheelchair-storage-system/; photo_title: Wheelchair Storage for Hospitals, Clinics, and Care Facilities; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -85,6 +391,34 @@
    "value": "A.EQP_00"
   },
   {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/FMC_Code_Description",
+   "type": "3-Chair_Rack",
+   "param": "FMC_Code_Description",
+   "value": "WheelchairRack Wall: Wheelchair parking rack, floor protection plate"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/FMC_Code_Group",
+   "type": "3-Chair_Rack",
+   "param": "FMC_Code_Group",
+   "value": "A.EQP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/FMC_Role_Code",
+   "type": "3-Chair_Rack",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/URL",
+   "type": "3-Chair_Rack",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/specialty-products/wheelchair-storage-system/"
+  },
+  {
    "op": "add_type",
    "name": "5-Chair_Rack"
   },
@@ -129,6 +463,34 @@
    "type": "5-Chair_Rack",
    "param": "FMC_Keynote_Code",
    "value": "A.EQP_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/FMC_Code_Description",
+   "type": "5-Chair_Rack",
+   "param": "FMC_Code_Description",
+   "value": "WheelchairRack Wall: Wheelchair parking rack, floor protection plate"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/FMC_Code_Group",
+   "type": "5-Chair_Rack",
+   "param": "FMC_Code_Group",
+   "value": "A.EQP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/FMC_Role_Code",
+   "type": "5-Chair_Rack",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/URL",
+   "type": "5-Chair_Rack",
+   "param": "URL",
+   "value": "https://www.southwestsolutions.com/specialty-products/wheelchair-storage-system/"
   },
   {
    "op": "add_subcategory",
@@ -208,19 +570,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1075,
+     -1760.0,
      -950
     ],
     [
-     1095,
+     1760.0,
      -950
     ],
     [
-     1095,
+     1760.0,
      0
     ],
     [
-     -1075,
+     -1760.0,
      0
     ]
    ],
@@ -241,22 +603,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Floor Plate",
+   "name": "Floor Plate 3Bay",
    "points": [
     [
-     -1050,
+     -1050.0,
      -950
     ],
     [
-     1050,
+     1050.0,
      -950
     ],
     [
-     1050,
+     1050.0,
      0
     ],
     [
-     -1050,
+     -1050.0,
      0
     ]
    ],
@@ -265,39 +627,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Floor Plate",
+   "name": "Floor Plate 3Bay",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Floor Plate",
+   "name": "Floor Plate 3Bay",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Floor Plate",
+   "name": "Floor Plate 3Bay",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wheel Guide 1",
+   "name": "Wheel Guide 3Bay 1",
    "points": [
     [
-     -830,
+     -830.0,
      -700
     ],
     [
-     -810,
+     -810.0,
      -700
     ],
     [
-     -810,
+     -810.0,
      -100
     ],
     [
-     -830,
+     -830.0,
      -100
     ]
    ],
@@ -306,39 +668,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wheel Guide 1",
+   "name": "Wheel Guide 3Bay 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Wheel Guide 1",
+   "name": "Wheel Guide 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wheel Guide 1",
+   "name": "Wheel Guide 3Bay 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wheel Guide 2",
+   "name": "Wheel Guide 3Bay 2",
    "points": [
     [
-     -130,
+     -130.0,
      -700
     ],
     [
-     -110,
+     -110.0,
      -700
     ],
     [
-     -110,
+     -110.0,
      -100
     ],
     [
-     -130,
+     -130.0,
      -100
     ]
    ],
@@ -347,39 +709,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wheel Guide 2",
+   "name": "Wheel Guide 3Bay 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Wheel Guide 2",
+   "name": "Wheel Guide 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wheel Guide 2",
+   "name": "Wheel Guide 3Bay 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wheel Guide 3",
+   "name": "Wheel Guide 3Bay 3",
    "points": [
     [
-     570,
+     570.0,
      -700
     ],
     [
-     590,
+     590.0,
      -700
     ],
     [
-     590,
+     590.0,
      -100
     ],
     [
-     570,
+     570.0,
      -100
     ]
    ],
@@ -388,24 +750,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wheel Guide 3",
+   "name": "Wheel Guide 3Bay 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Wheel Guide 3",
+   "name": "Wheel Guide 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wheel Guide 3",
+   "name": "Wheel Guide 3Bay 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Rail",
+   "name": "Wall Rail 3Bay",
    "points": [
     [
      -35.0,
@@ -504,30 +866,30 @@
      893.53
     ]
    ],
-   "start": -1050,
-   "end": 1050,
+   "start": -1050.0,
+   "end": 1050.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Rail",
+   "name": "Wall Rail 3Bay",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Rail",
+   "name": "Wall Rail 3Bay",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Rail",
+   "name": "Wall Rail 3Bay",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bumper Rail",
+   "name": "Bumper Rail 3Bay",
    "points": [
     [
      -35.0,
@@ -626,125 +988,125 @@
      313.53
     ]
    ],
-   "start": -1050,
-   "end": 1050,
+   "start": -1050.0,
+   "end": 1050.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Bumper Rail",
+   "name": "Bumper Rail 3Bay",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Bumper Rail",
+   "name": "Bumper Rail 3Bay",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bumper Rail",
+   "name": "Bumper Rail 3Bay",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Bracket 1",
+   "name": "Rail Bracket 3Bay 1",
    "points": [
     [
-     -982.0,
+     -1022.0,
      900.0
     ],
     [
-     -982.61,
+     -1022.61,
      904.66
     ],
     [
-     -984.41,
+     -1024.41,
      909.0
     ],
     [
-     -987.27,
+     -1027.27,
      912.73
     ],
     [
-     -991.0,
+     -1031.0,
      915.59
     ],
     [
-     -995.34,
+     -1035.34,
      917.39
     ],
     [
-     -1000.0,
+     -1040.0,
      918.0
     ],
     [
-     -1004.66,
+     -1044.66,
      917.39
     ],
     [
-     -1009.0,
+     -1049.0,
      915.59
     ],
     [
-     -1012.73,
+     -1052.73,
      912.73
     ],
     [
-     -1015.59,
+     -1055.59,
      909.0
     ],
     [
-     -1017.39,
+     -1057.39,
      904.66
     ],
     [
-     -1018.0,
+     -1058.0,
      900.0
     ],
     [
-     -1017.39,
+     -1057.39,
      895.34
     ],
     [
-     -1015.59,
+     -1055.59,
      891.0
     ],
     [
-     -1012.73,
+     -1052.73,
      887.27
     ],
     [
-     -1009.0,
+     -1049.0,
      884.41
     ],
     [
-     -1004.66,
+     -1044.66,
      882.61
     ],
     [
-     -1000.0,
+     -1040.0,
      882.0
     ],
     [
-     -995.34,
+     -1035.34,
      882.61
     ],
     [
-     -991.0,
+     -1031.0,
      884.41
     ],
     [
-     -987.27,
+     -1027.27,
      887.27
     ],
     [
-     -984.41,
+     -1024.41,
      891.0
     ],
     [
-     -982.61,
+     -1022.61,
      895.34
     ]
    ],
@@ -754,119 +1116,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Bracket 1",
+   "name": "Rail Bracket 3Bay 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bracket 1",
+   "name": "Rail Bracket 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bracket 1",
+   "name": "Rail Bracket 3Bay 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Bracket 2",
+   "name": "Rail Bracket 3Bay 2",
    "points": [
     [
-     -315.3,
+     -328.67,
      900.0
     ],
     [
-     -315.91,
+     -329.28,
      904.66
     ],
     [
-     -317.71,
+     -331.08,
      909.0
     ],
     [
-     -320.57,
+     -333.94,
      912.73
     ],
     [
-     -324.3,
+     -337.67,
      915.59
     ],
     [
-     -328.64,
+     -342.01,
      917.39
     ],
     [
-     -333.3,
+     -346.67,
      918.0
     ],
     [
-     -337.96,
+     -351.33,
      917.39
     ],
     [
-     -342.3,
+     -355.67,
      915.59
     ],
     [
-     -346.03,
+     -359.39,
      912.73
     ],
     [
-     -348.89,
+     -362.26,
      909.0
     ],
     [
-     -350.69,
+     -364.05,
      904.66
     ],
     [
-     -351.3,
+     -364.67,
      900.0
     ],
     [
-     -350.69,
+     -364.05,
      895.34
     ],
     [
-     -348.89,
+     -362.26,
      891.0
     ],
     [
-     -346.03,
+     -359.39,
      887.27
     ],
     [
-     -342.3,
+     -355.67,
      884.41
     ],
     [
-     -337.96,
+     -351.33,
      882.61
     ],
     [
-     -333.3,
+     -346.67,
      882.0
     ],
     [
-     -328.64,
+     -342.01,
      882.61
     ],
     [
-     -324.3,
+     -337.67,
      884.41
     ],
     [
-     -320.57,
+     -333.94,
      887.27
     ],
     [
-     -317.71,
+     -331.08,
      891.0
     ],
     [
-     -315.91,
+     -329.28,
      895.34
     ]
    ],
@@ -876,119 +1238,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Bracket 2",
+   "name": "Rail Bracket 3Bay 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bracket 2",
+   "name": "Rail Bracket 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bracket 2",
+   "name": "Rail Bracket 3Bay 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Bracket 3",
+   "name": "Rail Bracket 3Bay 3",
    "points": [
     [
-     351.4,
+     364.67,
      900.0
     ],
     [
-     350.79,
+     364.05,
      904.66
     ],
     [
-     348.99,
+     362.26,
      909.0
     ],
     [
-     346.13,
+     359.39,
      912.73
     ],
     [
-     342.4,
+     355.67,
      915.59
     ],
     [
-     338.06,
+     351.33,
      917.39
     ],
     [
-     333.4,
+     346.67,
      918.0
     ],
     [
-     328.74,
+     342.01,
      917.39
     ],
     [
-     324.4,
+     337.67,
      915.59
     ],
     [
-     320.67,
+     333.94,
      912.73
     ],
     [
-     317.81,
+     331.08,
      909.0
     ],
     [
-     316.01,
+     329.28,
      904.66
     ],
     [
-     315.4,
+     328.67,
      900.0
     ],
     [
-     316.01,
+     329.28,
      895.34
     ],
     [
-     317.81,
+     331.08,
      891.0
     ],
     [
-     320.67,
+     333.94,
      887.27
     ],
     [
-     324.4,
+     337.67,
      884.41
     ],
     [
-     328.74,
+     342.01,
      882.61
     ],
     [
-     333.4,
+     346.67,
      882.0
     ],
     [
-     338.06,
+     351.33,
      882.61
     ],
     [
-     342.4,
+     355.67,
      884.41
     ],
     [
-     346.13,
+     359.39,
      887.27
     ],
     [
-     348.99,
+     362.26,
      891.0
     ],
     [
-     350.79,
+     364.05,
      895.34
     ]
    ],
@@ -998,119 +1360,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Bracket 3",
+   "name": "Rail Bracket 3Bay 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bracket 3",
+   "name": "Rail Bracket 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bracket 3",
+   "name": "Rail Bracket 3Bay 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rail Bracket 4",
+   "name": "Rail Bracket 3Bay 4",
    "points": [
     [
-     1018.1,
+     1058.0,
      900.0
     ],
     [
-     1017.49,
+     1057.39,
      904.66
     ],
     [
-     1015.69,
+     1055.59,
      909.0
     ],
     [
-     1012.83,
+     1052.73,
      912.73
     ],
     [
-     1009.1,
+     1049.0,
      915.59
     ],
     [
-     1004.76,
+     1044.66,
      917.39
     ],
     [
-     1000.1,
+     1040.0,
      918.0
     ],
     [
-     995.44,
+     1035.34,
      917.39
     ],
     [
-     991.1,
+     1031.0,
      915.59
     ],
     [
-     987.37,
+     1027.27,
      912.73
     ],
     [
-     984.51,
+     1024.41,
      909.0
     ],
     [
-     982.71,
+     1022.61,
      904.66
     ],
     [
-     982.1,
+     1022.0,
      900.0
     ],
     [
-     982.71,
+     1022.61,
      895.34
     ],
     [
-     984.51,
+     1024.41,
      891.0
     ],
     [
-     987.37,
+     1027.27,
      887.27
     ],
     [
-     991.1,
+     1031.0,
      884.41
     ],
     [
-     995.44,
+     1035.34,
      882.61
     ],
     [
-     1000.1,
+     1040.0,
      882.0
     ],
     [
-     1004.76,
+     1044.66,
      882.61
     ],
     [
-     1009.1,
+     1049.0,
      884.41
     ],
     [
-     1012.83,
+     1052.73,
      887.27
     ],
     [
-     1015.69,
+     1055.59,
      891.0
     ],
     [
-     1017.49,
+     1057.39,
      895.34
     ]
    ],
@@ -1120,119 +1482,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rail Bracket 4",
+   "name": "Rail Bracket 3Bay 4",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Rail Bracket 4",
+   "name": "Rail Bracket 3Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rail Bracket 4",
+   "name": "Rail Bracket 3Bay 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bumper Bracket 1",
+   "name": "Bumper Bracket 3Bay 1",
    "points": [
     [
-     -982.0,
+     -1022.0,
      320.0
     ],
     [
-     -982.61,
+     -1022.61,
      324.66
     ],
     [
-     -984.41,
+     -1024.41,
      329.0
     ],
     [
-     -987.27,
+     -1027.27,
      332.73
     ],
     [
-     -991.0,
+     -1031.0,
      335.59
     ],
     [
-     -995.34,
+     -1035.34,
      337.39
     ],
     [
-     -1000.0,
+     -1040.0,
      338.0
     ],
     [
-     -1004.66,
+     -1044.66,
      337.39
     ],
     [
-     -1009.0,
+     -1049.0,
      335.59
     ],
     [
-     -1012.73,
+     -1052.73,
      332.73
     ],
     [
-     -1015.59,
+     -1055.59,
      329.0
     ],
     [
-     -1017.39,
+     -1057.39,
      324.66
     ],
     [
-     -1018.0,
+     -1058.0,
      320.0
     ],
     [
-     -1017.39,
+     -1057.39,
      315.34
     ],
     [
-     -1015.59,
+     -1055.59,
      311.0
     ],
     [
-     -1012.73,
+     -1052.73,
      307.27
     ],
     [
-     -1009.0,
+     -1049.0,
      304.41
     ],
     [
-     -1004.66,
+     -1044.66,
      302.61
     ],
     [
-     -1000.0,
+     -1040.0,
      302.0
     ],
     [
-     -995.34,
+     -1035.34,
      302.61
     ],
     [
-     -991.0,
+     -1031.0,
      304.41
     ],
     [
-     -987.27,
+     -1027.27,
      307.27
     ],
     [
-     -984.41,
+     -1024.41,
      311.0
     ],
     [
-     -982.61,
+     -1022.61,
      315.34
     ]
    ],
@@ -1242,119 +1604,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bumper Bracket 1",
+   "name": "Bumper Bracket 3Bay 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Bumper Bracket 1",
+   "name": "Bumper Bracket 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bumper Bracket 1",
+   "name": "Bumper Bracket 3Bay 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bumper Bracket 2",
+   "name": "Bumper Bracket 3Bay 2",
    "points": [
     [
-     -315.3,
+     -328.67,
      320.0
     ],
     [
-     -315.91,
+     -329.28,
      324.66
     ],
     [
-     -317.71,
+     -331.08,
      329.0
     ],
     [
-     -320.57,
+     -333.94,
      332.73
     ],
     [
-     -324.3,
+     -337.67,
      335.59
     ],
     [
-     -328.64,
+     -342.01,
      337.39
     ],
     [
-     -333.3,
+     -346.67,
      338.0
     ],
     [
-     -337.96,
+     -351.33,
      337.39
     ],
     [
-     -342.3,
+     -355.67,
      335.59
     ],
     [
-     -346.03,
+     -359.39,
      332.73
     ],
     [
-     -348.89,
+     -362.26,
      329.0
     ],
     [
-     -350.69,
+     -364.05,
      324.66
     ],
     [
-     -351.3,
+     -364.67,
      320.0
     ],
     [
-     -350.69,
+     -364.05,
      315.34
     ],
     [
-     -348.89,
+     -362.26,
      311.0
     ],
     [
-     -346.03,
+     -359.39,
      307.27
     ],
     [
-     -342.3,
+     -355.67,
      304.41
     ],
     [
-     -337.96,
+     -351.33,
      302.61
     ],
     [
-     -333.3,
+     -346.67,
      302.0
     ],
     [
-     -328.64,
+     -342.01,
      302.61
     ],
     [
-     -324.3,
+     -337.67,
      304.41
     ],
     [
-     -320.57,
+     -333.94,
      307.27
     ],
     [
-     -317.71,
+     -331.08,
      311.0
     ],
     [
-     -315.91,
+     -329.28,
      315.34
     ]
    ],
@@ -1364,119 +1726,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bumper Bracket 2",
+   "name": "Bumper Bracket 3Bay 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Bumper Bracket 2",
+   "name": "Bumper Bracket 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bumper Bracket 2",
+   "name": "Bumper Bracket 3Bay 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bumper Bracket 3",
+   "name": "Bumper Bracket 3Bay 3",
    "points": [
     [
-     351.4,
+     364.67,
      320.0
     ],
     [
-     350.79,
+     364.05,
      324.66
     ],
     [
-     348.99,
+     362.26,
      329.0
     ],
     [
-     346.13,
+     359.39,
      332.73
     ],
     [
-     342.4,
+     355.67,
      335.59
     ],
     [
-     338.06,
+     351.33,
      337.39
     ],
     [
-     333.4,
+     346.67,
      338.0
     ],
     [
-     328.74,
+     342.01,
      337.39
     ],
     [
-     324.4,
+     337.67,
      335.59
     ],
     [
-     320.67,
+     333.94,
      332.73
     ],
     [
-     317.81,
+     331.08,
      329.0
     ],
     [
-     316.01,
+     329.28,
      324.66
     ],
     [
-     315.4,
+     328.67,
      320.0
     ],
     [
-     316.01,
+     329.28,
      315.34
     ],
     [
-     317.81,
+     331.08,
      311.0
     ],
     [
-     320.67,
+     333.94,
      307.27
     ],
     [
-     324.4,
+     337.67,
      304.41
     ],
     [
-     328.74,
+     342.01,
      302.61
     ],
     [
-     333.4,
+     346.67,
      302.0
     ],
     [
-     338.06,
+     351.33,
      302.61
     ],
     [
-     342.4,
+     355.67,
      304.41
     ],
     [
-     346.13,
+     359.39,
      307.27
     ],
     [
-     348.99,
+     362.26,
      311.0
     ],
     [
-     350.79,
+     364.05,
      315.34
     ]
    ],
@@ -1486,119 +1848,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bumper Bracket 3",
+   "name": "Bumper Bracket 3Bay 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Bumper Bracket 3",
+   "name": "Bumper Bracket 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bumper Bracket 3",
+   "name": "Bumper Bracket 3Bay 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bumper Bracket 4",
+   "name": "Bumper Bracket 3Bay 4",
    "points": [
     [
-     1018.1,
+     1058.0,
      320.0
     ],
     [
-     1017.49,
+     1057.39,
      324.66
     ],
     [
-     1015.69,
+     1055.59,
      329.0
     ],
     [
-     1012.83,
+     1052.73,
      332.73
     ],
     [
-     1009.1,
+     1049.0,
      335.59
     ],
     [
-     1004.76,
+     1044.66,
      337.39
     ],
     [
-     1000.1,
+     1040.0,
      338.0
     ],
     [
-     995.44,
+     1035.34,
      337.39
     ],
     [
-     991.1,
+     1031.0,
      335.59
     ],
     [
-     987.37,
+     1027.27,
      332.73
     ],
     [
-     984.51,
+     1024.41,
      329.0
     ],
     [
-     982.71,
+     1022.61,
      324.66
     ],
     [
-     982.1,
+     1022.0,
      320.0
     ],
     [
-     982.71,
+     1022.61,
      315.34
     ],
     [
-     984.51,
+     1024.41,
      311.0
     ],
     [
-     987.37,
+     1027.27,
      307.27
     ],
     [
-     991.1,
+     1031.0,
      304.41
     ],
     [
-     995.44,
+     1035.34,
      302.61
     ],
     [
-     1000.1,
+     1040.0,
      302.0
     ],
     [
-     1004.76,
+     1044.66,
      302.61
     ],
     [
-     1009.1,
+     1049.0,
      304.41
     ],
     [
-     1012.83,
+     1052.73,
      307.27
     ],
     [
-     1015.69,
+     1055.59,
      311.0
     ],
     [
-     1017.49,
+     1057.39,
      315.34
     ]
    ],
@@ -1608,184 +1970,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bumper Bracket 4",
+   "name": "Bumper Bracket 3Bay 4",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Bumper Bracket 4",
+   "name": "Bumper Bracket 3Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bumper Bracket 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail Flange 1",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     35,
-     0
-    ],
-    [
-     35,
-     8
-    ],
-    [
-     0,
-     8
-    ]
-   ],
-   "axis_at": [
-    -1000.0,
-    900
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Flange 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Flange 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail Flange 2",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     35,
-     0
-    ],
-    [
-     35,
-     8
-    ],
-    [
-     0,
-     8
-    ]
-   ],
-   "axis_at": [
-    -333.29999999999995,
-    900
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Flange 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Flange 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail Flange 3",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     35,
-     0
-    ],
-    [
-     35,
-     8
-    ],
-    [
-     0,
-     8
-    ]
-   ],
-   "axis_at": [
-    333.4000000000001,
-    900
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Flange 3",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Flange 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rail Flange 4",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     35,
-     0
-    ],
-    [
-     35,
-     8
-    ],
-    [
-     0,
-     8
-    ]
-   ],
-   "axis_at": [
-    1000.1000000000001,
-    900
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rail Flange 4",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rail Flange 4",
+   "name": "Bumper Bracket 3Bay 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Arm 1",
+   "name": "Divider Arm 3Bay 1",
    "points": [
     [
      -1020.0,
@@ -1890,119 +2092,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Arm 1",
+   "name": "Divider Arm 3Bay 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Arm 1",
+   "name": "Divider Arm 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Arm 1",
+   "name": "Divider Arm 3Bay 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Arm 2",
+   "name": "Divider Arm 3Bay 2",
    "points": [
     [
-     -320.0,
+     -326.67,
      850.0
     ],
     [
-     -320.68,
+     -327.35,
      855.18
     ],
     [
-     -322.68,
+     -329.35,
      860.0
     ],
     [
-     -325.86,
+     -332.52,
      864.14
     ],
     [
-     -330.0,
+     -336.67,
      867.32
     ],
     [
-     -334.82,
+     -341.49,
      869.32
     ],
     [
-     -340.0,
+     -346.67,
      870.0
     ],
     [
-     -345.18,
+     -351.84,
      869.32
     ],
     [
-     -350.0,
+     -356.67,
      867.32
     ],
     [
-     -354.14,
+     -360.81,
      864.14
     ],
     [
-     -357.32,
+     -363.99,
      860.0
     ],
     [
-     -359.32,
+     -365.99,
      855.18
     ],
     [
-     -360.0,
+     -366.67,
      850.0
     ],
     [
-     -359.32,
+     -365.99,
      844.82
     ],
     [
-     -357.32,
+     -363.99,
      840.0
     ],
     [
-     -354.14,
+     -360.81,
      835.86
     ],
     [
-     -350.0,
+     -356.67,
      832.68
     ],
     [
-     -345.18,
+     -351.84,
      830.68
     ],
     [
-     -340.0,
+     -346.67,
      830.0
     ],
     [
-     -334.82,
+     -341.49,
      830.68
     ],
     [
-     -330.0,
+     -336.67,
      832.68
     ],
     [
-     -325.86,
+     -332.52,
      835.86
     ],
     [
-     -322.68,
+     -329.35,
      840.0
     ],
     [
-     -320.68,
+     -327.35,
      844.82
     ]
    ],
@@ -2012,119 +2214,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Arm 2",
+   "name": "Divider Arm 3Bay 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Arm 2",
+   "name": "Divider Arm 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Arm 2",
+   "name": "Divider Arm 3Bay 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Arm 3",
+   "name": "Divider Arm 3Bay 3",
    "points": [
     [
-     380.0,
+     366.67,
      850.0
     ],
     [
-     379.32,
+     365.99,
      855.18
     ],
     [
-     377.32,
+     363.99,
      860.0
     ],
     [
-     374.14,
+     360.81,
      864.14
     ],
     [
-     370.0,
+     356.67,
      867.32
     ],
     [
-     365.18,
+     351.84,
      869.32
     ],
     [
-     360.0,
+     346.67,
      870.0
     ],
     [
-     354.82,
+     341.49,
      869.32
     ],
     [
-     350.0,
+     336.67,
      867.32
     ],
     [
-     345.86,
+     332.52,
      864.14
     ],
     [
-     342.68,
+     329.35,
      860.0
     ],
     [
-     340.68,
+     327.35,
      855.18
     ],
     [
-     340.0,
+     326.67,
      850.0
     ],
     [
-     340.68,
+     327.35,
      844.82
     ],
     [
-     342.68,
+     329.35,
      840.0
     ],
     [
-     345.86,
+     332.52,
      835.86
     ],
     [
-     350.0,
+     336.67,
      832.68
     ],
     [
-     354.82,
+     341.49,
      830.68
     ],
     [
-     360.0,
+     346.67,
      830.0
     ],
     [
-     365.18,
+     351.84,
      830.68
     ],
     [
-     370.0,
+     356.67,
      832.68
     ],
     [
-     374.14,
+     360.81,
      835.86
     ],
     [
-     377.32,
+     363.99,
      840.0
     ],
     [
-     379.32,
+     365.99,
      844.82
     ]
    ],
@@ -2134,119 +2336,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Arm 3",
+   "name": "Divider Arm 3Bay 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Arm 3",
+   "name": "Divider Arm 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Arm 3",
+   "name": "Divider Arm 3Bay 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Arm 4",
+   "name": "Divider Arm 3Bay 4",
    "points": [
-    [
-     1080.0,
-     850.0
-    ],
-    [
-     1079.32,
-     855.18
-    ],
-    [
-     1077.32,
-     860.0
-    ],
-    [
-     1074.14,
-     864.14
-    ],
-    [
-     1070.0,
-     867.32
-    ],
-    [
-     1065.18,
-     869.32
-    ],
     [
      1060.0,
-     870.0
+     850.0
     ],
     [
-     1054.82,
-     869.32
+     1059.32,
+     855.18
+    ],
+    [
+     1057.32,
+     860.0
+    ],
+    [
+     1054.14,
+     864.14
     ],
     [
      1050.0,
      867.32
     ],
     [
-     1045.86,
-     864.14
-    ],
-    [
-     1042.68,
-     860.0
-    ],
-    [
-     1040.68,
-     855.18
+     1045.18,
+     869.32
     ],
     [
      1040.0,
+     870.0
+    ],
+    [
+     1034.82,
+     869.32
+    ],
+    [
+     1030.0,
+     867.32
+    ],
+    [
+     1025.86,
+     864.14
+    ],
+    [
+     1022.68,
+     860.0
+    ],
+    [
+     1020.68,
+     855.18
+    ],
+    [
+     1020.0,
      850.0
     ],
     [
-     1040.68,
+     1020.68,
      844.82
     ],
     [
-     1042.68,
+     1022.68,
      840.0
     ],
     [
-     1045.86,
+     1025.86,
      835.86
+    ],
+    [
+     1030.0,
+     832.68
+    ],
+    [
+     1034.82,
+     830.68
+    ],
+    [
+     1040.0,
+     830.0
+    ],
+    [
+     1045.18,
+     830.68
     ],
     [
      1050.0,
      832.68
     ],
     [
-     1054.82,
-     830.68
-    ],
-    [
-     1060.0,
-     830.0
-    ],
-    [
-     1065.18,
-     830.68
-    ],
-    [
-     1070.0,
-     832.68
-    ],
-    [
-     1074.14,
+     1054.14,
      835.86
     ],
     [
-     1077.32,
+     1057.32,
      840.0
     ],
     [
-     1079.32,
+     1059.32,
      844.82
     ]
    ],
@@ -2256,24 +2458,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Arm 4",
+   "name": "Divider Arm 3Bay 4",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Arm 4",
+   "name": "Divider Arm 3Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Arm 4",
+   "name": "Divider Arm 3Bay 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Post 1",
+   "name": "Divider Post 3Bay 1",
    "points": [
     [
      -1020.0,
@@ -2377,119 +2579,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Post 1",
+   "name": "Divider Post 3Bay 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Post 1",
+   "name": "Divider Post 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Post 1",
+   "name": "Divider Post 3Bay 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Post 2",
+   "name": "Divider Post 3Bay 2",
    "points": [
     [
-     -320.0,
+     -326.67,
      -630.0
     ],
     [
-     -320.68,
+     -327.35,
      -624.82
     ],
     [
-     -322.68,
+     -329.35,
      -620.0
     ],
     [
-     -325.86,
+     -332.52,
      -615.86
     ],
     [
-     -330.0,
+     -336.67,
      -612.68
     ],
     [
-     -334.82,
+     -341.49,
      -610.68
     ],
     [
-     -340.0,
+     -346.67,
      -610.0
     ],
     [
-     -345.18,
+     -351.84,
      -610.68
     ],
     [
-     -350.0,
+     -356.67,
      -612.68
     ],
     [
-     -354.14,
+     -360.81,
      -615.86
     ],
     [
-     -357.32,
+     -363.99,
      -620.0
     ],
     [
-     -359.32,
+     -365.99,
      -624.82
     ],
     [
-     -360.0,
+     -366.67,
      -630.0
     ],
     [
-     -359.32,
+     -365.99,
      -635.18
     ],
     [
-     -357.32,
+     -363.99,
      -640.0
     ],
     [
-     -354.14,
+     -360.81,
      -644.14
     ],
     [
-     -350.0,
+     -356.67,
      -647.32
     ],
     [
-     -345.18,
+     -351.84,
      -649.32
     ],
     [
-     -340.0,
+     -346.67,
      -650.0
     ],
     [
-     -334.82,
+     -341.49,
      -649.32
     ],
     [
-     -330.0,
+     -336.67,
      -647.32
     ],
     [
-     -325.86,
+     -332.52,
      -644.14
     ],
     [
-     -322.68,
+     -329.35,
      -640.0
     ],
     [
-     -320.68,
+     -327.35,
      -635.18
     ]
    ],
@@ -2498,119 +2700,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Post 2",
+   "name": "Divider Post 3Bay 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Post 2",
+   "name": "Divider Post 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Post 2",
+   "name": "Divider Post 3Bay 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Post 3",
+   "name": "Divider Post 3Bay 3",
    "points": [
     [
-     380.0,
+     366.67,
      -630.0
     ],
     [
-     379.32,
+     365.99,
      -624.82
     ],
     [
-     377.32,
+     363.99,
      -620.0
     ],
     [
-     374.14,
+     360.81,
      -615.86
     ],
     [
-     370.0,
+     356.67,
      -612.68
     ],
     [
-     365.18,
+     351.84,
      -610.68
     ],
     [
-     360.0,
+     346.67,
      -610.0
     ],
     [
-     354.82,
+     341.49,
      -610.68
     ],
     [
-     350.0,
+     336.67,
      -612.68
     ],
     [
-     345.86,
+     332.52,
      -615.86
     ],
     [
-     342.68,
+     329.35,
      -620.0
     ],
     [
-     340.68,
+     327.35,
      -624.82
     ],
     [
-     340.0,
+     326.67,
      -630.0
     ],
     [
-     340.68,
+     327.35,
      -635.18
     ],
     [
-     342.68,
+     329.35,
      -640.0
     ],
     [
-     345.86,
+     332.52,
      -644.14
     ],
     [
-     350.0,
+     336.67,
      -647.32
     ],
     [
-     354.82,
+     341.49,
      -649.32
     ],
     [
-     360.0,
+     346.67,
      -650.0
     ],
     [
-     365.18,
+     351.84,
      -649.32
     ],
     [
-     370.0,
+     356.67,
      -647.32
     ],
     [
-     374.14,
+     360.81,
      -644.14
     ],
     [
-     377.32,
+     363.99,
      -640.0
     ],
     [
-     379.32,
+     365.99,
      -635.18
     ]
    ],
@@ -2619,119 +2821,119 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Post 3",
+   "name": "Divider Post 3Bay 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Post 3",
+   "name": "Divider Post 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Post 3",
+   "name": "Divider Post 3Bay 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Divider Post 4",
+   "name": "Divider Post 3Bay 4",
    "points": [
-    [
-     1080.0,
-     -630.0
-    ],
-    [
-     1079.32,
-     -624.82
-    ],
-    [
-     1077.32,
-     -620.0
-    ],
-    [
-     1074.14,
-     -615.86
-    ],
-    [
-     1070.0,
-     -612.68
-    ],
-    [
-     1065.18,
-     -610.68
-    ],
     [
      1060.0,
-     -610.0
+     -630.0
     ],
     [
-     1054.82,
-     -610.68
+     1059.32,
+     -624.82
+    ],
+    [
+     1057.32,
+     -620.0
+    ],
+    [
+     1054.14,
+     -615.86
     ],
     [
      1050.0,
      -612.68
     ],
     [
-     1045.86,
-     -615.86
-    ],
-    [
-     1042.68,
-     -620.0
-    ],
-    [
-     1040.68,
-     -624.82
+     1045.18,
+     -610.68
     ],
     [
      1040.0,
+     -610.0
+    ],
+    [
+     1034.82,
+     -610.68
+    ],
+    [
+     1030.0,
+     -612.68
+    ],
+    [
+     1025.86,
+     -615.86
+    ],
+    [
+     1022.68,
+     -620.0
+    ],
+    [
+     1020.68,
+     -624.82
+    ],
+    [
+     1020.0,
      -630.0
     ],
     [
-     1040.68,
+     1020.68,
      -635.18
     ],
     [
-     1042.68,
+     1022.68,
      -640.0
     ],
     [
-     1045.86,
+     1025.86,
      -644.14
+    ],
+    [
+     1030.0,
+     -647.32
+    ],
+    [
+     1034.82,
+     -649.32
+    ],
+    [
+     1040.0,
+     -650.0
+    ],
+    [
+     1045.18,
+     -649.32
     ],
     [
      1050.0,
      -647.32
     ],
     [
-     1054.82,
-     -649.32
-    ],
-    [
-     1060.0,
-     -650.0
-    ],
-    [
-     1065.18,
-     -649.32
-    ],
-    [
-     1070.0,
-     -647.32
-    ],
-    [
-     1074.14,
+     1054.14,
      -644.14
     ],
     [
-     1077.32,
+     1057.32,
      -640.0
     ],
     [
-     1079.32,
+     1059.32,
      -635.18
     ]
    ],
@@ -2740,24 +2942,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Divider Post 4",
+   "name": "Divider Post 3Bay 4",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Divider Post 4",
+   "name": "Divider Post 3Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Post 4",
+   "name": "Divider Post 3Bay 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Corner 1",
+   "name": "Divider Corner 3Bay 1",
    "profile": [
     [
      0,
@@ -2797,7 +2999,7 @@
     ]
    ],
    "axis_at": [
-    -1040,
+    -1040.0,
     850
    ],
    "axis": "y",
@@ -2805,19 +3007,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Corner 1",
+   "name": "Divider Corner 3Bay 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Corner 1",
+   "name": "Divider Corner 3Bay 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Corner 2",
+   "name": "Divider Corner 3Bay 2",
    "profile": [
     [
      0,
@@ -2857,7 +3059,7 @@
     ]
    ],
    "axis_at": [
-    -340,
+    -346.66666666666663,
     850
    ],
    "axis": "y",
@@ -2865,19 +3067,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Corner 2",
+   "name": "Divider Corner 3Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Corner 2",
+   "name": "Divider Corner 3Bay 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Corner 3",
+   "name": "Divider Corner 3Bay 3",
    "profile": [
     [
      0,
@@ -2917,7 +3119,7 @@
     ]
    ],
    "axis_at": [
-    360,
+    346.66666666666674,
     850
    ],
    "axis": "y",
@@ -2925,19 +3127,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Corner 3",
+   "name": "Divider Corner 3Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Corner 3",
+   "name": "Divider Corner 3Bay 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Corner 4",
+   "name": "Divider Corner 3Bay 4",
    "profile": [
     [
      0,
@@ -2977,7 +3179,7 @@
     ]
    ],
    "axis_at": [
-    1060,
+    1040.0,
     850
    ],
    "axis": "y",
@@ -2985,39 +3187,3531 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Corner 4",
+   "name": "Divider Corner 3Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Corner 4",
+   "name": "Divider Corner 3Bay 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Floor Plate 5Bay",
+   "points": [
+    [
+     -1750.0,
+     -950
+    ],
+    [
+     1750.0,
+     -950
+    ],
+    [
+     1750.0,
+     0
+    ],
+    [
+     -1750.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 3
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Floor Plate 5Bay",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Plate 5Bay",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Plate 5Bay",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Guide 5Bay 1",
+   "points": [
+    [
+     -1530.0,
+     -700
+    ],
+    [
+     -1510.0,
+     -700
+    ],
+    [
+     -1510.0,
+     -100
+    ],
+    [
+     -1530.0,
+     -100
+    ]
+   ],
+   "start": 3,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Guide 5Bay 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Guide 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Guide 5Bay 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Guide 5Bay 2",
+   "points": [
+    [
+     -830.0,
+     -700
+    ],
+    [
+     -810.0,
+     -700
+    ],
+    [
+     -810.0,
+     -100
+    ],
+    [
+     -830.0,
+     -100
+    ]
+   ],
+   "start": 3,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Guide 5Bay 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Guide 5Bay 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Guide 5Bay 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Guide 5Bay 3",
+   "points": [
+    [
+     -130.0,
+     -700
+    ],
+    [
+     -110.0,
+     -700
+    ],
+    [
+     -110.0,
+     -100
+    ],
+    [
+     -130.0,
+     -100
+    ]
+   ],
+   "start": 3,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Guide 5Bay 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Guide 5Bay 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Guide 5Bay 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Guide 5Bay 4",
+   "points": [
+    [
+     570.0,
+     -700
+    ],
+    [
+     590.0,
+     -700
+    ],
+    [
+     590.0,
+     -100
+    ],
+    [
+     570.0,
+     -100
+    ]
+   ],
+   "start": 3,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Guide 5Bay 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Guide 5Bay 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Guide 5Bay 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Guide 5Bay 5",
+   "points": [
+    [
+     1270.0,
+     -700
+    ],
+    [
+     1290.0,
+     -700
+    ],
+    [
+     1290.0,
+     -100
+    ],
+    [
+     1270.0,
+     -100
+    ]
+   ],
+   "start": 3,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Guide 5Bay 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Guide 5Bay 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Guide 5Bay 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Rail 5Bay",
+   "points": [
+    [
+     -35.0,
+     900.0
+    ],
+    [
+     -35.85,
+     906.47
+    ],
+    [
+     -38.35,
+     912.5
+    ],
+    [
+     -42.32,
+     917.68
+    ],
+    [
+     -47.5,
+     921.65
+    ],
+    [
+     -53.53,
+     924.15
+    ],
+    [
+     -60.0,
+     925.0
+    ],
+    [
+     -66.47,
+     924.15
+    ],
+    [
+     -72.5,
+     921.65
+    ],
+    [
+     -77.68,
+     917.68
+    ],
+    [
+     -81.65,
+     912.5
+    ],
+    [
+     -84.15,
+     906.47
+    ],
+    [
+     -85.0,
+     900.0
+    ],
+    [
+     -84.15,
+     893.53
+    ],
+    [
+     -81.65,
+     887.5
+    ],
+    [
+     -77.68,
+     882.32
+    ],
+    [
+     -72.5,
+     878.35
+    ],
+    [
+     -66.47,
+     875.85
+    ],
+    [
+     -60.0,
+     875.0
+    ],
+    [
+     -53.53,
+     875.85
+    ],
+    [
+     -47.5,
+     878.35
+    ],
+    [
+     -42.32,
+     882.32
+    ],
+    [
+     -38.35,
+     887.5
+    ],
+    [
+     -35.85,
+     893.53
+    ]
+   ],
+   "start": -1750.0,
+   "end": 1750.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Rail 5Bay",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Rail 5Bay",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Rail 5Bay",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Rail 5Bay",
+   "points": [
+    [
+     -35.0,
+     320.0
+    ],
+    [
+     -35.85,
+     326.47
+    ],
+    [
+     -38.35,
+     332.5
+    ],
+    [
+     -42.32,
+     337.68
+    ],
+    [
+     -47.5,
+     341.65
+    ],
+    [
+     -53.53,
+     344.15
+    ],
+    [
+     -60.0,
+     345.0
+    ],
+    [
+     -66.47,
+     344.15
+    ],
+    [
+     -72.5,
+     341.65
+    ],
+    [
+     -77.68,
+     337.68
+    ],
+    [
+     -81.65,
+     332.5
+    ],
+    [
+     -84.15,
+     326.47
+    ],
+    [
+     -85.0,
+     320.0
+    ],
+    [
+     -84.15,
+     313.53
+    ],
+    [
+     -81.65,
+     307.5
+    ],
+    [
+     -77.68,
+     302.32
+    ],
+    [
+     -72.5,
+     298.35
+    ],
+    [
+     -66.47,
+     295.85
+    ],
+    [
+     -60.0,
+     295.0
+    ],
+    [
+     -53.53,
+     295.85
+    ],
+    [
+     -47.5,
+     298.35
+    ],
+    [
+     -42.32,
+     302.32
+    ],
+    [
+     -38.35,
+     307.5
+    ],
+    [
+     -35.85,
+     313.53
+    ]
+   ],
+   "start": -1750.0,
+   "end": 1750.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Rail 5Bay",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Rail 5Bay",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Rail 5Bay",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 1",
+   "points": [
+    [
+     -1722.0,
+     900.0
+    ],
+    [
+     -1722.61,
+     904.66
+    ],
+    [
+     -1724.41,
+     909.0
+    ],
+    [
+     -1727.27,
+     912.73
+    ],
+    [
+     -1731.0,
+     915.59
+    ],
+    [
+     -1735.34,
+     917.39
+    ],
+    [
+     -1740.0,
+     918.0
+    ],
+    [
+     -1744.66,
+     917.39
+    ],
+    [
+     -1749.0,
+     915.59
+    ],
+    [
+     -1752.73,
+     912.73
+    ],
+    [
+     -1755.59,
+     909.0
+    ],
+    [
+     -1757.39,
+     904.66
+    ],
+    [
+     -1758.0,
+     900.0
+    ],
+    [
+     -1757.39,
+     895.34
+    ],
+    [
+     -1755.59,
+     891.0
+    ],
+    [
+     -1752.73,
+     887.27
+    ],
+    [
+     -1749.0,
+     884.41
+    ],
+    [
+     -1744.66,
+     882.61
+    ],
+    [
+     -1740.0,
+     882.0
+    ],
+    [
+     -1735.34,
+     882.61
+    ],
+    [
+     -1731.0,
+     884.41
+    ],
+    [
+     -1727.27,
+     887.27
+    ],
+    [
+     -1724.41,
+     891.0
+    ],
+    [
+     -1722.61,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 2",
+   "points": [
+    [
+     -1026.0,
+     900.0
+    ],
+    [
+     -1026.61,
+     904.66
+    ],
+    [
+     -1028.41,
+     909.0
+    ],
+    [
+     -1031.27,
+     912.73
+    ],
+    [
+     -1035.0,
+     915.59
+    ],
+    [
+     -1039.34,
+     917.39
+    ],
+    [
+     -1044.0,
+     918.0
+    ],
+    [
+     -1048.66,
+     917.39
+    ],
+    [
+     -1053.0,
+     915.59
+    ],
+    [
+     -1056.73,
+     912.73
+    ],
+    [
+     -1059.59,
+     909.0
+    ],
+    [
+     -1061.39,
+     904.66
+    ],
+    [
+     -1062.0,
+     900.0
+    ],
+    [
+     -1061.39,
+     895.34
+    ],
+    [
+     -1059.59,
+     891.0
+    ],
+    [
+     -1056.73,
+     887.27
+    ],
+    [
+     -1053.0,
+     884.41
+    ],
+    [
+     -1048.66,
+     882.61
+    ],
+    [
+     -1044.0,
+     882.0
+    ],
+    [
+     -1039.34,
+     882.61
+    ],
+    [
+     -1035.0,
+     884.41
+    ],
+    [
+     -1031.27,
+     887.27
+    ],
+    [
+     -1028.41,
+     891.0
+    ],
+    [
+     -1026.61,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 3",
+   "points": [
+    [
+     -330.0,
+     900.0
+    ],
+    [
+     -330.61,
+     904.66
+    ],
+    [
+     -332.41,
+     909.0
+    ],
+    [
+     -335.27,
+     912.73
+    ],
+    [
+     -339.0,
+     915.59
+    ],
+    [
+     -343.34,
+     917.39
+    ],
+    [
+     -348.0,
+     918.0
+    ],
+    [
+     -352.66,
+     917.39
+    ],
+    [
+     -357.0,
+     915.59
+    ],
+    [
+     -360.73,
+     912.73
+    ],
+    [
+     -363.59,
+     909.0
+    ],
+    [
+     -365.39,
+     904.66
+    ],
+    [
+     -366.0,
+     900.0
+    ],
+    [
+     -365.39,
+     895.34
+    ],
+    [
+     -363.59,
+     891.0
+    ],
+    [
+     -360.73,
+     887.27
+    ],
+    [
+     -357.0,
+     884.41
+    ],
+    [
+     -352.66,
+     882.61
+    ],
+    [
+     -348.0,
+     882.0
+    ],
+    [
+     -343.34,
+     882.61
+    ],
+    [
+     -339.0,
+     884.41
+    ],
+    [
+     -335.27,
+     887.27
+    ],
+    [
+     -332.41,
+     891.0
+    ],
+    [
+     -330.61,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 4",
+   "points": [
+    [
+     366.0,
+     900.0
+    ],
+    [
+     365.39,
+     904.66
+    ],
+    [
+     363.59,
+     909.0
+    ],
+    [
+     360.73,
+     912.73
+    ],
+    [
+     357.0,
+     915.59
+    ],
+    [
+     352.66,
+     917.39
+    ],
+    [
+     348.0,
+     918.0
+    ],
+    [
+     343.34,
+     917.39
+    ],
+    [
+     339.0,
+     915.59
+    ],
+    [
+     335.27,
+     912.73
+    ],
+    [
+     332.41,
+     909.0
+    ],
+    [
+     330.61,
+     904.66
+    ],
+    [
+     330.0,
+     900.0
+    ],
+    [
+     330.61,
+     895.34
+    ],
+    [
+     332.41,
+     891.0
+    ],
+    [
+     335.27,
+     887.27
+    ],
+    [
+     339.0,
+     884.41
+    ],
+    [
+     343.34,
+     882.61
+    ],
+    [
+     348.0,
+     882.0
+    ],
+    [
+     352.66,
+     882.61
+    ],
+    [
+     357.0,
+     884.41
+    ],
+    [
+     360.73,
+     887.27
+    ],
+    [
+     363.59,
+     891.0
+    ],
+    [
+     365.39,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 5",
+   "points": [
+    [
+     1062.0,
+     900.0
+    ],
+    [
+     1061.39,
+     904.66
+    ],
+    [
+     1059.59,
+     909.0
+    ],
+    [
+     1056.73,
+     912.73
+    ],
+    [
+     1053.0,
+     915.59
+    ],
+    [
+     1048.66,
+     917.39
+    ],
+    [
+     1044.0,
+     918.0
+    ],
+    [
+     1039.34,
+     917.39
+    ],
+    [
+     1035.0,
+     915.59
+    ],
+    [
+     1031.27,
+     912.73
+    ],
+    [
+     1028.41,
+     909.0
+    ],
+    [
+     1026.61,
+     904.66
+    ],
+    [
+     1026.0,
+     900.0
+    ],
+    [
+     1026.61,
+     895.34
+    ],
+    [
+     1028.41,
+     891.0
+    ],
+    [
+     1031.27,
+     887.27
+    ],
+    [
+     1035.0,
+     884.41
+    ],
+    [
+     1039.34,
+     882.61
+    ],
+    [
+     1044.0,
+     882.0
+    ],
+    [
+     1048.66,
+     882.61
+    ],
+    [
+     1053.0,
+     884.41
+    ],
+    [
+     1056.73,
+     887.27
+    ],
+    [
+     1059.59,
+     891.0
+    ],
+    [
+     1061.39,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Bracket 5Bay 6",
+   "points": [
+    [
+     1758.0,
+     900.0
+    ],
+    [
+     1757.39,
+     904.66
+    ],
+    [
+     1755.59,
+     909.0
+    ],
+    [
+     1752.73,
+     912.73
+    ],
+    [
+     1749.0,
+     915.59
+    ],
+    [
+     1744.66,
+     917.39
+    ],
+    [
+     1740.0,
+     918.0
+    ],
+    [
+     1735.34,
+     917.39
+    ],
+    [
+     1731.0,
+     915.59
+    ],
+    [
+     1727.27,
+     912.73
+    ],
+    [
+     1724.41,
+     909.0
+    ],
+    [
+     1722.61,
+     904.66
+    ],
+    [
+     1722.0,
+     900.0
+    ],
+    [
+     1722.61,
+     895.34
+    ],
+    [
+     1724.41,
+     891.0
+    ],
+    [
+     1727.27,
+     887.27
+    ],
+    [
+     1731.0,
+     884.41
+    ],
+    [
+     1735.34,
+     882.61
+    ],
+    [
+     1740.0,
+     882.0
+    ],
+    [
+     1744.66,
+     882.61
+    ],
+    [
+     1749.0,
+     884.41
+    ],
+    [
+     1752.73,
+     887.27
+    ],
+    [
+     1755.59,
+     891.0
+    ],
+    [
+     1757.39,
+     895.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Bracket 5Bay 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Bracket 5Bay 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Bracket 5Bay 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 1",
+   "points": [
+    [
+     -1722.0,
+     320.0
+    ],
+    [
+     -1722.61,
+     324.66
+    ],
+    [
+     -1724.41,
+     329.0
+    ],
+    [
+     -1727.27,
+     332.73
+    ],
+    [
+     -1731.0,
+     335.59
+    ],
+    [
+     -1735.34,
+     337.39
+    ],
+    [
+     -1740.0,
+     338.0
+    ],
+    [
+     -1744.66,
+     337.39
+    ],
+    [
+     -1749.0,
+     335.59
+    ],
+    [
+     -1752.73,
+     332.73
+    ],
+    [
+     -1755.59,
+     329.0
+    ],
+    [
+     -1757.39,
+     324.66
+    ],
+    [
+     -1758.0,
+     320.0
+    ],
+    [
+     -1757.39,
+     315.34
+    ],
+    [
+     -1755.59,
+     311.0
+    ],
+    [
+     -1752.73,
+     307.27
+    ],
+    [
+     -1749.0,
+     304.41
+    ],
+    [
+     -1744.66,
+     302.61
+    ],
+    [
+     -1740.0,
+     302.0
+    ],
+    [
+     -1735.34,
+     302.61
+    ],
+    [
+     -1731.0,
+     304.41
+    ],
+    [
+     -1727.27,
+     307.27
+    ],
+    [
+     -1724.41,
+     311.0
+    ],
+    [
+     -1722.61,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 2",
+   "points": [
+    [
+     -1026.0,
+     320.0
+    ],
+    [
+     -1026.61,
+     324.66
+    ],
+    [
+     -1028.41,
+     329.0
+    ],
+    [
+     -1031.27,
+     332.73
+    ],
+    [
+     -1035.0,
+     335.59
+    ],
+    [
+     -1039.34,
+     337.39
+    ],
+    [
+     -1044.0,
+     338.0
+    ],
+    [
+     -1048.66,
+     337.39
+    ],
+    [
+     -1053.0,
+     335.59
+    ],
+    [
+     -1056.73,
+     332.73
+    ],
+    [
+     -1059.59,
+     329.0
+    ],
+    [
+     -1061.39,
+     324.66
+    ],
+    [
+     -1062.0,
+     320.0
+    ],
+    [
+     -1061.39,
+     315.34
+    ],
+    [
+     -1059.59,
+     311.0
+    ],
+    [
+     -1056.73,
+     307.27
+    ],
+    [
+     -1053.0,
+     304.41
+    ],
+    [
+     -1048.66,
+     302.61
+    ],
+    [
+     -1044.0,
+     302.0
+    ],
+    [
+     -1039.34,
+     302.61
+    ],
+    [
+     -1035.0,
+     304.41
+    ],
+    [
+     -1031.27,
+     307.27
+    ],
+    [
+     -1028.41,
+     311.0
+    ],
+    [
+     -1026.61,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 3",
+   "points": [
+    [
+     -330.0,
+     320.0
+    ],
+    [
+     -330.61,
+     324.66
+    ],
+    [
+     -332.41,
+     329.0
+    ],
+    [
+     -335.27,
+     332.73
+    ],
+    [
+     -339.0,
+     335.59
+    ],
+    [
+     -343.34,
+     337.39
+    ],
+    [
+     -348.0,
+     338.0
+    ],
+    [
+     -352.66,
+     337.39
+    ],
+    [
+     -357.0,
+     335.59
+    ],
+    [
+     -360.73,
+     332.73
+    ],
+    [
+     -363.59,
+     329.0
+    ],
+    [
+     -365.39,
+     324.66
+    ],
+    [
+     -366.0,
+     320.0
+    ],
+    [
+     -365.39,
+     315.34
+    ],
+    [
+     -363.59,
+     311.0
+    ],
+    [
+     -360.73,
+     307.27
+    ],
+    [
+     -357.0,
+     304.41
+    ],
+    [
+     -352.66,
+     302.61
+    ],
+    [
+     -348.0,
+     302.0
+    ],
+    [
+     -343.34,
+     302.61
+    ],
+    [
+     -339.0,
+     304.41
+    ],
+    [
+     -335.27,
+     307.27
+    ],
+    [
+     -332.41,
+     311.0
+    ],
+    [
+     -330.61,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 4",
+   "points": [
+    [
+     366.0,
+     320.0
+    ],
+    [
+     365.39,
+     324.66
+    ],
+    [
+     363.59,
+     329.0
+    ],
+    [
+     360.73,
+     332.73
+    ],
+    [
+     357.0,
+     335.59
+    ],
+    [
+     352.66,
+     337.39
+    ],
+    [
+     348.0,
+     338.0
+    ],
+    [
+     343.34,
+     337.39
+    ],
+    [
+     339.0,
+     335.59
+    ],
+    [
+     335.27,
+     332.73
+    ],
+    [
+     332.41,
+     329.0
+    ],
+    [
+     330.61,
+     324.66
+    ],
+    [
+     330.0,
+     320.0
+    ],
+    [
+     330.61,
+     315.34
+    ],
+    [
+     332.41,
+     311.0
+    ],
+    [
+     335.27,
+     307.27
+    ],
+    [
+     339.0,
+     304.41
+    ],
+    [
+     343.34,
+     302.61
+    ],
+    [
+     348.0,
+     302.0
+    ],
+    [
+     352.66,
+     302.61
+    ],
+    [
+     357.0,
+     304.41
+    ],
+    [
+     360.73,
+     307.27
+    ],
+    [
+     363.59,
+     311.0
+    ],
+    [
+     365.39,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 5",
+   "points": [
+    [
+     1062.0,
+     320.0
+    ],
+    [
+     1061.39,
+     324.66
+    ],
+    [
+     1059.59,
+     329.0
+    ],
+    [
+     1056.73,
+     332.73
+    ],
+    [
+     1053.0,
+     335.59
+    ],
+    [
+     1048.66,
+     337.39
+    ],
+    [
+     1044.0,
+     338.0
+    ],
+    [
+     1039.34,
+     337.39
+    ],
+    [
+     1035.0,
+     335.59
+    ],
+    [
+     1031.27,
+     332.73
+    ],
+    [
+     1028.41,
+     329.0
+    ],
+    [
+     1026.61,
+     324.66
+    ],
+    [
+     1026.0,
+     320.0
+    ],
+    [
+     1026.61,
+     315.34
+    ],
+    [
+     1028.41,
+     311.0
+    ],
+    [
+     1031.27,
+     307.27
+    ],
+    [
+     1035.0,
+     304.41
+    ],
+    [
+     1039.34,
+     302.61
+    ],
+    [
+     1044.0,
+     302.0
+    ],
+    [
+     1048.66,
+     302.61
+    ],
+    [
+     1053.0,
+     304.41
+    ],
+    [
+     1056.73,
+     307.27
+    ],
+    [
+     1059.59,
+     311.0
+    ],
+    [
+     1061.39,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Bracket 5Bay 6",
+   "points": [
+    [
+     1758.0,
+     320.0
+    ],
+    [
+     1757.39,
+     324.66
+    ],
+    [
+     1755.59,
+     329.0
+    ],
+    [
+     1752.73,
+     332.73
+    ],
+    [
+     1749.0,
+     335.59
+    ],
+    [
+     1744.66,
+     337.39
+    ],
+    [
+     1740.0,
+     338.0
+    ],
+    [
+     1735.34,
+     337.39
+    ],
+    [
+     1731.0,
+     335.59
+    ],
+    [
+     1727.27,
+     332.73
+    ],
+    [
+     1724.41,
+     329.0
+    ],
+    [
+     1722.61,
+     324.66
+    ],
+    [
+     1722.0,
+     320.0
+    ],
+    [
+     1722.61,
+     315.34
+    ],
+    [
+     1724.41,
+     311.0
+    ],
+    [
+     1727.27,
+     307.27
+    ],
+    [
+     1731.0,
+     304.41
+    ],
+    [
+     1735.34,
+     302.61
+    ],
+    [
+     1740.0,
+     302.0
+    ],
+    [
+     1744.66,
+     302.61
+    ],
+    [
+     1749.0,
+     304.41
+    ],
+    [
+     1752.73,
+     307.27
+    ],
+    [
+     1755.59,
+     311.0
+    ],
+    [
+     1757.39,
+     315.34
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Bracket 5Bay 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Bracket 5Bay 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Bracket 5Bay 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 1",
+   "points": [
+    [
+     -1720.0,
+     850.0
+    ],
+    [
+     -1720.68,
+     855.18
+    ],
+    [
+     -1722.68,
+     860.0
+    ],
+    [
+     -1725.86,
+     864.14
+    ],
+    [
+     -1730.0,
+     867.32
+    ],
+    [
+     -1734.82,
+     869.32
+    ],
+    [
+     -1740.0,
+     870.0
+    ],
+    [
+     -1745.18,
+     869.32
+    ],
+    [
+     -1750.0,
+     867.32
+    ],
+    [
+     -1754.14,
+     864.14
+    ],
+    [
+     -1757.32,
+     860.0
+    ],
+    [
+     -1759.32,
+     855.18
+    ],
+    [
+     -1760.0,
+     850.0
+    ],
+    [
+     -1759.32,
+     844.82
+    ],
+    [
+     -1757.32,
+     840.0
+    ],
+    [
+     -1754.14,
+     835.86
+    ],
+    [
+     -1750.0,
+     832.68
+    ],
+    [
+     -1745.18,
+     830.68
+    ],
+    [
+     -1740.0,
+     830.0
+    ],
+    [
+     -1734.82,
+     830.68
+    ],
+    [
+     -1730.0,
+     832.68
+    ],
+    [
+     -1725.86,
+     835.86
+    ],
+    [
+     -1722.68,
+     840.0
+    ],
+    [
+     -1720.68,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 2",
+   "points": [
+    [
+     -1024.0,
+     850.0
+    ],
+    [
+     -1024.68,
+     855.18
+    ],
+    [
+     -1026.68,
+     860.0
+    ],
+    [
+     -1029.86,
+     864.14
+    ],
+    [
+     -1034.0,
+     867.32
+    ],
+    [
+     -1038.82,
+     869.32
+    ],
+    [
+     -1044.0,
+     870.0
+    ],
+    [
+     -1049.18,
+     869.32
+    ],
+    [
+     -1054.0,
+     867.32
+    ],
+    [
+     -1058.14,
+     864.14
+    ],
+    [
+     -1061.32,
+     860.0
+    ],
+    [
+     -1063.32,
+     855.18
+    ],
+    [
+     -1064.0,
+     850.0
+    ],
+    [
+     -1063.32,
+     844.82
+    ],
+    [
+     -1061.32,
+     840.0
+    ],
+    [
+     -1058.14,
+     835.86
+    ],
+    [
+     -1054.0,
+     832.68
+    ],
+    [
+     -1049.18,
+     830.68
+    ],
+    [
+     -1044.0,
+     830.0
+    ],
+    [
+     -1038.82,
+     830.68
+    ],
+    [
+     -1034.0,
+     832.68
+    ],
+    [
+     -1029.86,
+     835.86
+    ],
+    [
+     -1026.68,
+     840.0
+    ],
+    [
+     -1024.68,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 3",
+   "points": [
+    [
+     -328.0,
+     850.0
+    ],
+    [
+     -328.68,
+     855.18
+    ],
+    [
+     -330.68,
+     860.0
+    ],
+    [
+     -333.86,
+     864.14
+    ],
+    [
+     -338.0,
+     867.32
+    ],
+    [
+     -342.82,
+     869.32
+    ],
+    [
+     -348.0,
+     870.0
+    ],
+    [
+     -353.18,
+     869.32
+    ],
+    [
+     -358.0,
+     867.32
+    ],
+    [
+     -362.14,
+     864.14
+    ],
+    [
+     -365.32,
+     860.0
+    ],
+    [
+     -367.32,
+     855.18
+    ],
+    [
+     -368.0,
+     850.0
+    ],
+    [
+     -367.32,
+     844.82
+    ],
+    [
+     -365.32,
+     840.0
+    ],
+    [
+     -362.14,
+     835.86
+    ],
+    [
+     -358.0,
+     832.68
+    ],
+    [
+     -353.18,
+     830.68
+    ],
+    [
+     -348.0,
+     830.0
+    ],
+    [
+     -342.82,
+     830.68
+    ],
+    [
+     -338.0,
+     832.68
+    ],
+    [
+     -333.86,
+     835.86
+    ],
+    [
+     -330.68,
+     840.0
+    ],
+    [
+     -328.68,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 4",
+   "points": [
+    [
+     368.0,
+     850.0
+    ],
+    [
+     367.32,
+     855.18
+    ],
+    [
+     365.32,
+     860.0
+    ],
+    [
+     362.14,
+     864.14
+    ],
+    [
+     358.0,
+     867.32
+    ],
+    [
+     353.18,
+     869.32
+    ],
+    [
+     348.0,
+     870.0
+    ],
+    [
+     342.82,
+     869.32
+    ],
+    [
+     338.0,
+     867.32
+    ],
+    [
+     333.86,
+     864.14
+    ],
+    [
+     330.68,
+     860.0
+    ],
+    [
+     328.68,
+     855.18
+    ],
+    [
+     328.0,
+     850.0
+    ],
+    [
+     328.68,
+     844.82
+    ],
+    [
+     330.68,
+     840.0
+    ],
+    [
+     333.86,
+     835.86
+    ],
+    [
+     338.0,
+     832.68
+    ],
+    [
+     342.82,
+     830.68
+    ],
+    [
+     348.0,
+     830.0
+    ],
+    [
+     353.18,
+     830.68
+    ],
+    [
+     358.0,
+     832.68
+    ],
+    [
+     362.14,
+     835.86
+    ],
+    [
+     365.32,
+     840.0
+    ],
+    [
+     367.32,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 5",
+   "points": [
+    [
+     1064.0,
+     850.0
+    ],
+    [
+     1063.32,
+     855.18
+    ],
+    [
+     1061.32,
+     860.0
+    ],
+    [
+     1058.14,
+     864.14
+    ],
+    [
+     1054.0,
+     867.32
+    ],
+    [
+     1049.18,
+     869.32
+    ],
+    [
+     1044.0,
+     870.0
+    ],
+    [
+     1038.82,
+     869.32
+    ],
+    [
+     1034.0,
+     867.32
+    ],
+    [
+     1029.86,
+     864.14
+    ],
+    [
+     1026.68,
+     860.0
+    ],
+    [
+     1024.68,
+     855.18
+    ],
+    [
+     1024.0,
+     850.0
+    ],
+    [
+     1024.68,
+     844.82
+    ],
+    [
+     1026.68,
+     840.0
+    ],
+    [
+     1029.86,
+     835.86
+    ],
+    [
+     1034.0,
+     832.68
+    ],
+    [
+     1038.82,
+     830.68
+    ],
+    [
+     1044.0,
+     830.0
+    ],
+    [
+     1049.18,
+     830.68
+    ],
+    [
+     1054.0,
+     832.68
+    ],
+    [
+     1058.14,
+     835.86
+    ],
+    [
+     1061.32,
+     840.0
+    ],
+    [
+     1063.32,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Arm 5Bay 6",
+   "points": [
+    [
+     1760.0,
+     850.0
+    ],
+    [
+     1759.32,
+     855.18
+    ],
+    [
+     1757.32,
+     860.0
+    ],
+    [
+     1754.14,
+     864.14
+    ],
+    [
+     1750.0,
+     867.32
+    ],
+    [
+     1745.18,
+     869.32
+    ],
+    [
+     1740.0,
+     870.0
+    ],
+    [
+     1734.82,
+     869.32
+    ],
+    [
+     1730.0,
+     867.32
+    ],
+    [
+     1725.86,
+     864.14
+    ],
+    [
+     1722.68,
+     860.0
+    ],
+    [
+     1720.68,
+     855.18
+    ],
+    [
+     1720.0,
+     850.0
+    ],
+    [
+     1720.68,
+     844.82
+    ],
+    [
+     1722.68,
+     840.0
+    ],
+    [
+     1725.86,
+     835.86
+    ],
+    [
+     1730.0,
+     832.68
+    ],
+    [
+     1734.82,
+     830.68
+    ],
+    [
+     1740.0,
+     830.0
+    ],
+    [
+     1745.18,
+     830.68
+    ],
+    [
+     1750.0,
+     832.68
+    ],
+    [
+     1754.14,
+     835.86
+    ],
+    [
+     1757.32,
+     840.0
+    ],
+    [
+     1759.32,
+     844.82
+    ]
+   ],
+   "start": 8,
+   "end": 630,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Arm 5Bay 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Arm 5Bay 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Arm 5Bay 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 1",
+   "points": [
+    [
+     -1720.0,
+     -630.0
+    ],
+    [
+     -1720.68,
+     -624.82
+    ],
+    [
+     -1722.68,
+     -620.0
+    ],
+    [
+     -1725.86,
+     -615.86
+    ],
+    [
+     -1730.0,
+     -612.68
+    ],
+    [
+     -1734.82,
+     -610.68
+    ],
+    [
+     -1740.0,
+     -610.0
+    ],
+    [
+     -1745.18,
+     -610.68
+    ],
+    [
+     -1750.0,
+     -612.68
+    ],
+    [
+     -1754.14,
+     -615.86
+    ],
+    [
+     -1757.32,
+     -620.0
+    ],
+    [
+     -1759.32,
+     -624.82
+    ],
+    [
+     -1760.0,
+     -630.0
+    ],
+    [
+     -1759.32,
+     -635.18
+    ],
+    [
+     -1757.32,
+     -640.0
+    ],
+    [
+     -1754.14,
+     -644.14
+    ],
+    [
+     -1750.0,
+     -647.32
+    ],
+    [
+     -1745.18,
+     -649.32
+    ],
+    [
+     -1740.0,
+     -650.0
+    ],
+    [
+     -1734.82,
+     -649.32
+    ],
+    [
+     -1730.0,
+     -647.32
+    ],
+    [
+     -1725.86,
+     -644.14
+    ],
+    [
+     -1722.68,
+     -640.0
+    ],
+    [
+     -1720.68,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 2",
+   "points": [
+    [
+     -1024.0,
+     -630.0
+    ],
+    [
+     -1024.68,
+     -624.82
+    ],
+    [
+     -1026.68,
+     -620.0
+    ],
+    [
+     -1029.86,
+     -615.86
+    ],
+    [
+     -1034.0,
+     -612.68
+    ],
+    [
+     -1038.82,
+     -610.68
+    ],
+    [
+     -1044.0,
+     -610.0
+    ],
+    [
+     -1049.18,
+     -610.68
+    ],
+    [
+     -1054.0,
+     -612.68
+    ],
+    [
+     -1058.14,
+     -615.86
+    ],
+    [
+     -1061.32,
+     -620.0
+    ],
+    [
+     -1063.32,
+     -624.82
+    ],
+    [
+     -1064.0,
+     -630.0
+    ],
+    [
+     -1063.32,
+     -635.18
+    ],
+    [
+     -1061.32,
+     -640.0
+    ],
+    [
+     -1058.14,
+     -644.14
+    ],
+    [
+     -1054.0,
+     -647.32
+    ],
+    [
+     -1049.18,
+     -649.32
+    ],
+    [
+     -1044.0,
+     -650.0
+    ],
+    [
+     -1038.82,
+     -649.32
+    ],
+    [
+     -1034.0,
+     -647.32
+    ],
+    [
+     -1029.86,
+     -644.14
+    ],
+    [
+     -1026.68,
+     -640.0
+    ],
+    [
+     -1024.68,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 3",
+   "points": [
+    [
+     -328.0,
+     -630.0
+    ],
+    [
+     -328.68,
+     -624.82
+    ],
+    [
+     -330.68,
+     -620.0
+    ],
+    [
+     -333.86,
+     -615.86
+    ],
+    [
+     -338.0,
+     -612.68
+    ],
+    [
+     -342.82,
+     -610.68
+    ],
+    [
+     -348.0,
+     -610.0
+    ],
+    [
+     -353.18,
+     -610.68
+    ],
+    [
+     -358.0,
+     -612.68
+    ],
+    [
+     -362.14,
+     -615.86
+    ],
+    [
+     -365.32,
+     -620.0
+    ],
+    [
+     -367.32,
+     -624.82
+    ],
+    [
+     -368.0,
+     -630.0
+    ],
+    [
+     -367.32,
+     -635.18
+    ],
+    [
+     -365.32,
+     -640.0
+    ],
+    [
+     -362.14,
+     -644.14
+    ],
+    [
+     -358.0,
+     -647.32
+    ],
+    [
+     -353.18,
+     -649.32
+    ],
+    [
+     -348.0,
+     -650.0
+    ],
+    [
+     -342.82,
+     -649.32
+    ],
+    [
+     -338.0,
+     -647.32
+    ],
+    [
+     -333.86,
+     -644.14
+    ],
+    [
+     -330.68,
+     -640.0
+    ],
+    [
+     -328.68,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 4",
+   "points": [
+    [
+     368.0,
+     -630.0
+    ],
+    [
+     367.32,
+     -624.82
+    ],
+    [
+     365.32,
+     -620.0
+    ],
+    [
+     362.14,
+     -615.86
+    ],
+    [
+     358.0,
+     -612.68
+    ],
+    [
+     353.18,
+     -610.68
+    ],
+    [
+     348.0,
+     -610.0
+    ],
+    [
+     342.82,
+     -610.68
+    ],
+    [
+     338.0,
+     -612.68
+    ],
+    [
+     333.86,
+     -615.86
+    ],
+    [
+     330.68,
+     -620.0
+    ],
+    [
+     328.68,
+     -624.82
+    ],
+    [
+     328.0,
+     -630.0
+    ],
+    [
+     328.68,
+     -635.18
+    ],
+    [
+     330.68,
+     -640.0
+    ],
+    [
+     333.86,
+     -644.14
+    ],
+    [
+     338.0,
+     -647.32
+    ],
+    [
+     342.82,
+     -649.32
+    ],
+    [
+     348.0,
+     -650.0
+    ],
+    [
+     353.18,
+     -649.32
+    ],
+    [
+     358.0,
+     -647.32
+    ],
+    [
+     362.14,
+     -644.14
+    ],
+    [
+     365.32,
+     -640.0
+    ],
+    [
+     367.32,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 5",
+   "points": [
+    [
+     1064.0,
+     -630.0
+    ],
+    [
+     1063.32,
+     -624.82
+    ],
+    [
+     1061.32,
+     -620.0
+    ],
+    [
+     1058.14,
+     -615.86
+    ],
+    [
+     1054.0,
+     -612.68
+    ],
+    [
+     1049.18,
+     -610.68
+    ],
+    [
+     1044.0,
+     -610.0
+    ],
+    [
+     1038.82,
+     -610.68
+    ],
+    [
+     1034.0,
+     -612.68
+    ],
+    [
+     1029.86,
+     -615.86
+    ],
+    [
+     1026.68,
+     -620.0
+    ],
+    [
+     1024.68,
+     -624.82
+    ],
+    [
+     1024.0,
+     -630.0
+    ],
+    [
+     1024.68,
+     -635.18
+    ],
+    [
+     1026.68,
+     -640.0
+    ],
+    [
+     1029.86,
+     -644.14
+    ],
+    [
+     1034.0,
+     -647.32
+    ],
+    [
+     1038.82,
+     -649.32
+    ],
+    [
+     1044.0,
+     -650.0
+    ],
+    [
+     1049.18,
+     -649.32
+    ],
+    [
+     1054.0,
+     -647.32
+    ],
+    [
+     1058.14,
+     -644.14
+    ],
+    [
+     1061.32,
+     -640.0
+    ],
+    [
+     1063.32,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Post 5Bay 6",
+   "points": [
+    [
+     1760.0,
+     -630.0
+    ],
+    [
+     1759.32,
+     -624.82
+    ],
+    [
+     1757.32,
+     -620.0
+    ],
+    [
+     1754.14,
+     -615.86
+    ],
+    [
+     1750.0,
+     -612.68
+    ],
+    [
+     1745.18,
+     -610.68
+    ],
+    [
+     1740.0,
+     -610.0
+    ],
+    [
+     1734.82,
+     -610.68
+    ],
+    [
+     1730.0,
+     -612.68
+    ],
+    [
+     1725.86,
+     -615.86
+    ],
+    [
+     1722.68,
+     -620.0
+    ],
+    [
+     1720.68,
+     -624.82
+    ],
+    [
+     1720.0,
+     -630.0
+    ],
+    [
+     1720.68,
+     -635.18
+    ],
+    [
+     1722.68,
+     -640.0
+    ],
+    [
+     1725.86,
+     -644.14
+    ],
+    [
+     1730.0,
+     -647.32
+    ],
+    [
+     1734.82,
+     -649.32
+    ],
+    [
+     1740.0,
+     -650.0
+    ],
+    [
+     1745.18,
+     -649.32
+    ],
+    [
+     1750.0,
+     -647.32
+    ],
+    [
+     1754.14,
+     -644.14
+    ],
+    [
+     1757.32,
+     -640.0
+    ],
+    [
+     1759.32,
+     -635.18
+    ]
+   ],
+   "start": 0,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Post 5Bay 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Post 5Bay 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Post 5Bay 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Divider Corner 5Bay 1",
+   "profile": [
+    [
+     0,
+     650.0
+    ],
+    [
+     7.65,
+     648.48
+    ],
+    [
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
+    ],
+    [
+     0,
+     610.0
+    ]
+   ],
+   "axis_at": [
+    -1740.0,
+    850
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Corner 5Bay 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Corner 5Bay 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Flange 1",
+   "name": "Divider Corner 5Bay 2",
    "profile": [
     [
      0,
-     0
+     650.0
     ],
     [
-     35,
-     0
+     7.65,
+     648.48
     ],
     [
-     35,
-     8
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
     ],
     [
      0,
-     8
+     610.0
     ]
    ],
    "axis_at": [
-    -1040,
+    -1044.0,
     850
    ],
    "axis": "y",
@@ -3025,39 +6719,59 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Flange 1",
+   "name": "Divider Corner 5Bay 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Flange 1",
+   "name": "Divider Corner 5Bay 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Flange 2",
+   "name": "Divider Corner 5Bay 3",
    "profile": [
     [
      0,
-     0
+     650.0
     ],
     [
-     35,
-     0
+     7.65,
+     648.48
     ],
     [
-     35,
-     8
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
     ],
     [
      0,
-     8
+     610.0
     ]
    ],
    "axis_at": [
-    -340,
+    -348.0,
     850
    ],
    "axis": "y",
@@ -3065,39 +6779,59 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Flange 2",
+   "name": "Divider Corner 5Bay 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Flange 2",
+   "name": "Divider Corner 5Bay 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Flange 3",
+   "name": "Divider Corner 5Bay 4",
    "profile": [
     [
      0,
-     0
+     650.0
     ],
     [
-     35,
-     0
+     7.65,
+     648.48
     ],
     [
-     35,
-     8
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
     ],
     [
      0,
-     8
+     610.0
     ]
    ],
    "axis_at": [
-    360,
+    348.0,
     850
    ],
    "axis": "y",
@@ -3105,39 +6839,59 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Flange 3",
+   "name": "Divider Corner 5Bay 4",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Flange 3",
+   "name": "Divider Corner 5Bay 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Divider Flange 4",
+   "name": "Divider Corner 5Bay 5",
    "profile": [
     [
      0,
-     0
+     650.0
     ],
     [
-     35,
-     0
+     7.65,
+     648.48
     ],
     [
-     35,
-     8
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
     ],
     [
      0,
-     8
+     610.0
     ]
    ],
    "axis_at": [
-    1060,
+    1044.0,
     850
    ],
    "axis": "y",
@@ -3145,12 +6899,72 @@
   },
   {
    "op": "set_material_param",
-   "name": "Divider Flange 4",
+   "name": "Divider Corner 5Bay 5",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Divider Flange 4",
+   "name": "Divider Corner 5Bay 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Divider Corner 5Bay 6",
+   "profile": [
+    [
+     0,
+     650.0
+    ],
+    [
+     7.65,
+     648.48
+    ],
+    [
+     14.14,
+     644.14
+    ],
+    [
+     18.48,
+     637.65
+    ],
+    [
+     20.0,
+     630.0
+    ],
+    [
+     18.48,
+     622.35
+    ],
+    [
+     14.14,
+     615.86
+    ],
+    [
+     7.65,
+     611.52
+    ],
+    [
+     0,
+     610.0
+    ]
+   ],
+   "axis_at": [
+    1740.0,
+    850
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Corner 5Bay 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Corner 5Bay 6",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -3410,13 +7224,437 @@
    "fine": true
   },
   {
+   "op": "add_family_param",
+   "name": "Show 3-Chair_Rack",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/Show 3-Chair_Rack",
+   "type": "3-Chair_Rack",
+   "param": "Show 3-Chair_Rack",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/Show 3-Chair_Rack",
+   "type": "5-Chair_Rack",
+   "param": "Show 3-Chair_Rack",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Floor Plate 3Bay/Visible",
+   "solid": "Floor Plate 3Bay",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 3Bay 1/Visible",
+   "solid": "Wheel Guide 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 3Bay 2/Visible",
+   "solid": "Wheel Guide 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 3Bay 3/Visible",
+   "solid": "Wheel Guide 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Rail 3Bay/Visible",
+   "solid": "Wall Rail 3Bay",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Rail 3Bay/Visible",
+   "solid": "Bumper Rail 3Bay",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 3Bay 1/Visible",
+   "solid": "Rail Bracket 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 3Bay 2/Visible",
+   "solid": "Rail Bracket 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 3Bay 3/Visible",
+   "solid": "Rail Bracket 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 3Bay 4/Visible",
+   "solid": "Rail Bracket 3Bay 4",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 3Bay 1/Visible",
+   "solid": "Bumper Bracket 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 3Bay 2/Visible",
+   "solid": "Bumper Bracket 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 3Bay 3/Visible",
+   "solid": "Bumper Bracket 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 3Bay 4/Visible",
+   "solid": "Bumper Bracket 3Bay 4",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 3Bay 1/Visible",
+   "solid": "Divider Arm 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 3Bay 2/Visible",
+   "solid": "Divider Arm 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 3Bay 3/Visible",
+   "solid": "Divider Arm 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 3Bay 4/Visible",
+   "solid": "Divider Arm 3Bay 4",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 3Bay 1/Visible",
+   "solid": "Divider Post 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 3Bay 2/Visible",
+   "solid": "Divider Post 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 3Bay 3/Visible",
+   "solid": "Divider Post 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 3Bay 4/Visible",
+   "solid": "Divider Post 3Bay 4",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 3Bay 1/Visible",
+   "solid": "Divider Corner 3Bay 1",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 3Bay 2/Visible",
+   "solid": "Divider Corner 3Bay 2",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 3Bay 3/Visible",
+   "solid": "Divider Corner 3Bay 3",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 3Bay 4/Visible",
+   "solid": "Divider Corner 3Bay 4",
+   "param": "Show 3-Chair_Rack"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 5-Chair_Rack",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-Chair_Rack/Show 5-Chair_Rack",
+   "type": "3-Chair_Rack",
+   "param": "Show 5-Chair_Rack",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "5-Chair_Rack/Show 5-Chair_Rack",
+   "type": "5-Chair_Rack",
+   "param": "Show 5-Chair_Rack",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Floor Plate 5Bay/Visible",
+   "solid": "Floor Plate 5Bay",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 5Bay 1/Visible",
+   "solid": "Wheel Guide 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 5Bay 2/Visible",
+   "solid": "Wheel Guide 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 5Bay 3/Visible",
+   "solid": "Wheel Guide 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 5Bay 4/Visible",
+   "solid": "Wheel Guide 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Guide 5Bay 5/Visible",
+   "solid": "Wheel Guide 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Rail 5Bay/Visible",
+   "solid": "Wall Rail 5Bay",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Rail 5Bay/Visible",
+   "solid": "Bumper Rail 5Bay",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 1/Visible",
+   "solid": "Rail Bracket 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 2/Visible",
+   "solid": "Rail Bracket 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 3/Visible",
+   "solid": "Rail Bracket 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 4/Visible",
+   "solid": "Rail Bracket 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 5/Visible",
+   "solid": "Rail Bracket 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rail Bracket 5Bay 6/Visible",
+   "solid": "Rail Bracket 5Bay 6",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 1/Visible",
+   "solid": "Bumper Bracket 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 2/Visible",
+   "solid": "Bumper Bracket 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 3/Visible",
+   "solid": "Bumper Bracket 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 4/Visible",
+   "solid": "Bumper Bracket 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 5/Visible",
+   "solid": "Bumper Bracket 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bumper Bracket 5Bay 6/Visible",
+   "solid": "Bumper Bracket 5Bay 6",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 1/Visible",
+   "solid": "Divider Arm 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 2/Visible",
+   "solid": "Divider Arm 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 3/Visible",
+   "solid": "Divider Arm 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 4/Visible",
+   "solid": "Divider Arm 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 5/Visible",
+   "solid": "Divider Arm 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Arm 5Bay 6/Visible",
+   "solid": "Divider Arm 5Bay 6",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 1/Visible",
+   "solid": "Divider Post 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 2/Visible",
+   "solid": "Divider Post 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 3/Visible",
+   "solid": "Divider Post 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 4/Visible",
+   "solid": "Divider Post 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 5/Visible",
+   "solid": "Divider Post 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Post 5Bay 6/Visible",
+   "solid": "Divider Post 5Bay 6",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 1/Visible",
+   "solid": "Divider Corner 5Bay 1",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 2/Visible",
+   "solid": "Divider Corner 5Bay 2",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 3/Visible",
+   "solid": "Divider Corner 5Bay 3",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 4/Visible",
+   "solid": "Divider Corner 5Bay 4",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 5/Visible",
+   "solid": "Divider Corner 5Bay 5",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider Corner 5Bay 6/Visible",
+   "solid": "Divider Corner 5Bay 6",
+   "param": "Show 5-Chair_Rack"
+  },
+  {
    "op": "set_type_image",
    "name": "Type image",
    "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_WheelchairRack_Wall.png"
   }
  ],
  "values": {
-  "Bay width 700 mm, rack 2100 mm (3 bays)": {
+  "Bay width 700 mm, rack 2100 / 3500 mm": {
    "value": 700,
    "source_status": "assumed",
    "source": "folded/open attendant chair widths"

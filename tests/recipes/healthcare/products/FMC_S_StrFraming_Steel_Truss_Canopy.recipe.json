@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFraming_Steel_Truss_Canopy",
  "template": "Metric Generic Model.rft",
- "about": "Warren truss: SHS chords, seven verticals, six diagonals alternating, bearing plates at both ends and purlin cleats on the top chord (Fine). Reference at underside of bearing plates. Reference: query: str framing steel truss canopy structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+steel+truss+canopy+structural+framing+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Warren truss: SHS chords, verticals at each node, diagonals alternating, bearing plates at both ends and purlin cleats on the top chord (Fine). Each type has its own span. Reference at underside of bearing plates. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str framing steel truss canopy structural framing hospital; images: https://www.google.com/search?tbm=isch&q=str+framing+steel+truss+canopy+structural+framing+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.specifiedby.com/street-space-group/cantilever-steel-frame; photo_title: Cantilever Steel Frame canopy (StreetSpace Group); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -362,7 +362,7 @@
    "name": "6000_Truss/Description",
    "type": "6000_Truss",
    "param": "Description",
-   "value": "canopy truss 6.0 m span"
+   "value": "canopy truss 6.0 m span, 6 panels"
   },
   {
    "op": "set_type_value",
@@ -400,6 +400,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "6000_Truss/URL",
+   "type": "6000_Truss",
+   "param": "URL",
+   "value": "https://www.specifiedby.com/street-space-group/cantilever-steel-frame"
+  },
+  {
    "op": "add_type",
    "name": "9000_Truss"
   },
@@ -429,7 +436,7 @@
    "name": "9000_Truss/Description",
    "type": "9000_Truss",
    "param": "Description",
-   "value": "canopy truss 9.0 m span"
+   "value": "canopy truss 9.0 m span, 9 panels"
   },
   {
    "op": "set_type_value",
@@ -467,6 +474,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "9000_Truss/URL",
+   "type": "9000_Truss",
+   "param": "URL",
+   "value": "https://www.specifiedby.com/street-space-group/cantilever-steel-frame"
+  },
+  {
    "op": "add_subcategory",
    "name": "Paint",
    "color": [
@@ -502,19 +516,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -3000.0,
+     -4500.0,
      -100
     ],
     [
-     3000.0,
+     4500.0,
      -100
     ],
     [
-     3000.0,
+     4500.0,
      100
     ],
     [
-     -3000.0,
+     -4500.0,
      100
     ]
    ],
@@ -535,7 +549,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Bottom Chord",
+   "name": "Bottom Chord 6000",
    "points": [
     [
      -3000.0,
@@ -559,24 +573,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bottom Chord",
+   "name": "Bottom Chord 6000",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Bottom Chord",
+   "name": "Bottom Chord 6000",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bottom Chord",
+   "name": "Bottom Chord 6000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Top Chord",
+   "name": "Top Chord 6000",
    "points": [
     [
      -3000.0,
@@ -600,24 +614,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Top Chord",
+   "name": "Top Chord 6000",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Top Chord",
+   "name": "Top Chord 6000",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Chord",
+   "name": "Top Chord 6000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 1",
+   "name": "Vertical 6000 1",
    "points": [
     [
      -3000.0,
@@ -641,24 +655,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 1",
+   "name": "Vertical 6000 1",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 1",
+   "name": "Vertical 6000 1",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 1",
+   "name": "Vertical 6000 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 2",
+   "name": "Vertical 6000 2",
    "points": [
     [
      -2010.0,
@@ -682,24 +696,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 2",
+   "name": "Vertical 6000 2",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 2",
+   "name": "Vertical 6000 2",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 2",
+   "name": "Vertical 6000 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 3",
+   "name": "Vertical 6000 3",
    "points": [
     [
      -1020.0,
@@ -723,24 +737,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 3",
+   "name": "Vertical 6000 3",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 3",
+   "name": "Vertical 6000 3",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 3",
+   "name": "Vertical 6000 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 4",
+   "name": "Vertical 6000 4",
    "points": [
     [
      -30.0,
@@ -764,24 +778,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 4",
+   "name": "Vertical 6000 4",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 4",
+   "name": "Vertical 6000 4",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 4",
+   "name": "Vertical 6000 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 5",
+   "name": "Vertical 6000 5",
    "points": [
     [
      960.0,
@@ -805,24 +819,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 5",
+   "name": "Vertical 6000 5",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 5",
+   "name": "Vertical 6000 5",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 5",
+   "name": "Vertical 6000 5",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 6",
+   "name": "Vertical 6000 6",
    "points": [
     [
      1950.0,
@@ -846,24 +860,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 6",
+   "name": "Vertical 6000 6",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 6",
+   "name": "Vertical 6000 6",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 6",
+   "name": "Vertical 6000 6",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vertical 7",
+   "name": "Vertical 6000 7",
    "points": [
     [
      2940.0,
@@ -887,24 +901,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vertical 7",
+   "name": "Vertical 6000 7",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Vertical 7",
+   "name": "Vertical 6000 7",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vertical 7",
+   "name": "Vertical 6000 7",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Up 1",
+   "name": "Diagonal Up 6000 1",
    "points": [
     [
      -2940.0,
@@ -929,24 +943,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Up 1",
+   "name": "Diagonal Up 6000 1",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Up 1",
+   "name": "Diagonal Up 6000 1",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Up 1",
+   "name": "Diagonal Up 6000 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Up 2",
+   "name": "Diagonal Up 6000 2",
    "points": [
     [
      -960.0,
@@ -971,24 +985,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Up 2",
+   "name": "Diagonal Up 6000 2",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Up 2",
+   "name": "Diagonal Up 6000 2",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Up 2",
+   "name": "Diagonal Up 6000 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Up 3",
+   "name": "Diagonal Up 6000 3",
    "points": [
     [
      1020.0,
@@ -1013,24 +1027,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Up 3",
+   "name": "Diagonal Up 6000 3",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Up 3",
+   "name": "Diagonal Up 6000 3",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Up 3",
+   "name": "Diagonal Up 6000 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Down 1",
+   "name": "Diagonal Down 6000 1",
    "points": [
     [
      -1950.0,
@@ -1055,24 +1069,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Down 1",
+   "name": "Diagonal Down 6000 1",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Down 1",
+   "name": "Diagonal Down 6000 1",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Down 1",
+   "name": "Diagonal Down 6000 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Down 2",
+   "name": "Diagonal Down 6000 2",
    "points": [
     [
      30.0,
@@ -1097,24 +1111,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Down 2",
+   "name": "Diagonal Down 6000 2",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Down 2",
+   "name": "Diagonal Down 6000 2",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Down 2",
+   "name": "Diagonal Down 6000 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Diagonal Down 3",
+   "name": "Diagonal Down 6000 3",
    "points": [
     [
      2010.0,
@@ -1139,24 +1153,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Diagonal Down 3",
+   "name": "Diagonal Down 6000 3",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Diagonal Down 3",
+   "name": "Diagonal Down 6000 3",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Diagonal Down 3",
+   "name": "Diagonal Down 6000 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bearing Plate Left",
+   "name": "Bearing Plate Left 6000",
    "points": [
     [
      -3000.0,
@@ -1180,24 +1194,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bearing Plate Left",
+   "name": "Bearing Plate Left 6000",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Bearing Plate Left",
+   "name": "Bearing Plate Left 6000",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bearing Plate Left",
+   "name": "Bearing Plate Left 6000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bearing Plate Right",
+   "name": "Bearing Plate Right 6000",
    "points": [
     [
      2800.0,
@@ -1221,24 +1235,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bearing Plate Right",
+   "name": "Bearing Plate Right 6000",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Bearing Plate Right",
+   "name": "Bearing Plate Right 6000",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bearing Plate Right",
+   "name": "Bearing Plate Right 6000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 1",
+   "name": "Purlin Cleat 6000 1",
    "points": [
     [
      -2980.0,
@@ -1263,39 +1277,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 1",
+   "name": "Purlin Cleat 6000 1",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 1",
+   "name": "Purlin Cleat 6000 1",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 1",
+   "name": "Purlin Cleat 6000 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 2",
+   "name": "Purlin Cleat 6000 2",
    "points": [
     [
-     -2005.0,
+     -2003.3333333333335,
      700
     ],
     [
-     -1905.0,
+     -1903.3333333333335,
      700
     ],
     [
-     -1905.0,
+     -1903.3333333333335,
      790
     ],
     [
-     -2005.0,
+     -2003.3333333333335,
      790
     ]
    ],
@@ -1305,39 +1319,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 2",
+   "name": "Purlin Cleat 6000 2",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 2",
+   "name": "Purlin Cleat 6000 2",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 2",
+   "name": "Purlin Cleat 6000 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 3",
+   "name": "Purlin Cleat 6000 3",
    "points": [
     [
-     -1030.0,
+     -1026.6666666666667,
      700
     ],
     [
-     -930.0,
+     -926.6666666666667,
      700
     ],
     [
-     -930.0,
+     -926.6666666666667,
      790
     ],
     [
-     -1030.0,
+     -1026.6666666666667,
      790
     ]
    ],
@@ -1347,39 +1361,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 3",
+   "name": "Purlin Cleat 6000 3",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 3",
+   "name": "Purlin Cleat 6000 3",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 3",
+   "name": "Purlin Cleat 6000 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 4",
+   "name": "Purlin Cleat 6000 4",
    "points": [
     [
-     -55.0,
+     -50.0,
      700
     ],
     [
-     45.0,
+     50.0,
      700
     ],
     [
-     45.0,
+     50.0,
      790
     ],
     [
-     -55.0,
+     -50.0,
      790
     ]
    ],
@@ -1389,39 +1403,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 4",
+   "name": "Purlin Cleat 6000 4",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 4",
+   "name": "Purlin Cleat 6000 4",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 4",
+   "name": "Purlin Cleat 6000 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 5",
+   "name": "Purlin Cleat 6000 5",
    "points": [
     [
-     920.0,
+     926.6666666666665,
      700
     ],
     [
-     1020.0,
+     1026.6666666666665,
      700
     ],
     [
-     1020.0,
+     1026.6666666666665,
      790
     ],
     [
-     920.0,
+     926.6666666666665,
      790
     ]
    ],
@@ -1431,39 +1445,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 5",
+   "name": "Purlin Cleat 6000 5",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 5",
+   "name": "Purlin Cleat 6000 5",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 5",
+   "name": "Purlin Cleat 6000 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 6",
+   "name": "Purlin Cleat 6000 6",
    "points": [
     [
-     1895.0,
+     1903.333333333333,
      700
     ],
     [
-     1995.0,
+     2003.333333333333,
      700
     ],
     [
-     1995.0,
+     2003.333333333333,
      790
     ],
     [
-     1895.0,
+     1903.333333333333,
      790
     ]
    ],
@@ -1473,39 +1487,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 6",
+   "name": "Purlin Cleat 6000 6",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 6",
+   "name": "Purlin Cleat 6000 6",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 6",
+   "name": "Purlin Cleat 6000 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Purlin Cleat 7",
+   "name": "Purlin Cleat 6000 7",
    "points": [
     [
-     2870.0,
+     2880.0,
      700
     ],
     [
-     2970.0,
+     2980.0,
      700
     ],
     [
-     2970.0,
+     2980.0,
      790
     ],
     [
-     2870.0,
+     2880.0,
      790
     ]
    ],
@@ -1515,20 +1529,1774 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Purlin Cleat 7",
+   "name": "Purlin Cleat 6000 7",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Purlin Cleat 7",
+   "name": "Purlin Cleat 6000 7",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Purlin Cleat 7",
+   "name": "Purlin Cleat 6000 7",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bottom Chord 9000",
+   "points": [
+    [
+     -4500.0,
+     -40
+    ],
+    [
+     4500.0,
+     -40
+    ],
+    [
+     4500.0,
+     40
+    ],
+    [
+     -4500.0,
+     40
+    ]
+   ],
+   "start": 0,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bottom Chord 9000",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bottom Chord 9000",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bottom Chord 9000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Chord 9000",
+   "points": [
+    [
+     -4500.0,
+     -40
+    ],
+    [
+     4500.0,
+     -40
+    ],
+    [
+     4500.0,
+     40
+    ],
+    [
+     -4500.0,
+     40
+    ]
+   ],
+   "start": 620,
+   "end": 700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Chord 9000",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Chord 9000",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Chord 9000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 1",
+   "points": [
+    [
+     -4500.0,
+     -30
+    ],
+    [
+     -4440.0,
+     -30
+    ],
+    [
+     -4440.0,
+     30
+    ],
+    [
+     -4500.0,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 2",
+   "points": [
+    [
+     -3506.6666666666665,
+     -30
+    ],
+    [
+     -3446.6666666666665,
+     -30
+    ],
+    [
+     -3446.6666666666665,
+     30
+    ],
+    [
+     -3506.6666666666665,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 3",
+   "points": [
+    [
+     -2513.333333333333,
+     -30
+    ],
+    [
+     -2453.333333333333,
+     -30
+    ],
+    [
+     -2453.333333333333,
+     30
+    ],
+    [
+     -2513.333333333333,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 4",
+   "points": [
+    [
+     -1520.0,
+     -30
+    ],
+    [
+     -1460.0,
+     -30
+    ],
+    [
+     -1460.0,
+     30
+    ],
+    [
+     -1520.0,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 5",
+   "points": [
+    [
+     -526.6666666666665,
+     -30
+    ],
+    [
+     -466.6666666666665,
+     -30
+    ],
+    [
+     -466.6666666666665,
+     30
+    ],
+    [
+     -526.6666666666665,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 6",
+   "points": [
+    [
+     466.66666666666697,
+     -30
+    ],
+    [
+     526.666666666667,
+     -30
+    ],
+    [
+     526.666666666667,
+     30
+    ],
+    [
+     466.66666666666697,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 7",
+   "points": [
+    [
+     1460.0,
+     -30
+    ],
+    [
+     1520.0,
+     -30
+    ],
+    [
+     1520.0,
+     30
+    ],
+    [
+     1460.0,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 7",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 7",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 8",
+   "points": [
+    [
+     2453.333333333334,
+     -30
+    ],
+    [
+     2513.333333333334,
+     -30
+    ],
+    [
+     2513.333333333334,
+     30
+    ],
+    [
+     2453.333333333334,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 8",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 8",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 9",
+   "points": [
+    [
+     3446.666666666667,
+     -30
+    ],
+    [
+     3506.666666666667,
+     -30
+    ],
+    [
+     3506.666666666667,
+     30
+    ],
+    [
+     3446.666666666667,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 9",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 9",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 9",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vertical 9000 10",
+   "points": [
+    [
+     4440.0,
+     -30
+    ],
+    [
+     4500.0,
+     -30
+    ],
+    [
+     4500.0,
+     30
+    ],
+    [
+     4440.0,
+     30
+    ]
+   ],
+   "start": 80,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vertical 9000 10",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vertical 9000 10",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vertical 9000 10",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Up 9000 1",
+   "points": [
+    [
+     -4440.0,
+     80
+    ],
+    [
+     -4355.0,
+     80
+    ],
+    [
+     -3506.67,
+     620
+    ],
+    [
+     -3591.67,
+     620
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Up 9000 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Up 9000 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Up 9000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Up 9000 2",
+   "points": [
+    [
+     -2453.333333333333,
+     80
+    ],
+    [
+     -2368.333333333333,
+     80
+    ],
+    [
+     -1520.0033333333333,
+     620
+    ],
+    [
+     -1605.0033333333333,
+     620
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Up 9000 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Up 9000 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Up 9000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Up 9000 3",
+   "points": [
+    [
+     -466.6666666666665,
+     80
+    ],
+    [
+     -381.6666666666665,
+     80
+    ],
+    [
+     466.6633333333334,
+     620
+    ],
+    [
+     381.6633333333334,
+     620
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Up 9000 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Up 9000 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Up 9000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Up 9000 4",
+   "points": [
+    [
+     1520.0,
+     80
+    ],
+    [
+     1605.0,
+     80
+    ],
+    [
+     2453.33,
+     620
+    ],
+    [
+     2368.33,
+     620
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Up 9000 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Up 9000 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Up 9000 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Up 9000 5",
+   "points": [
+    [
+     3506.666666666667,
+     80
+    ],
+    [
+     3591.666666666667,
+     80
+    ],
+    [
+     4439.996666666667,
+     620
+    ],
+    [
+     4354.996666666667,
+     620
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Up 9000 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Up 9000 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Up 9000 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Down 9000 1",
+   "points": [
+    [
+     -3446.67,
+     620
+    ],
+    [
+     -3361.67,
+     620
+    ],
+    [
+     -2513.33,
+     80
+    ],
+    [
+     -2598.33,
+     80
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Down 9000 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Down 9000 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Down 9000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Down 9000 2",
+   "points": [
+    [
+     -1460.0033333333333,
+     620
+    ],
+    [
+     -1375.0033333333333,
+     620
+    ],
+    [
+     -526.6633333333332,
+     80
+    ],
+    [
+     -611.6633333333332,
+     80
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Down 9000 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Down 9000 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Down 9000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Down 9000 3",
+   "points": [
+    [
+     526.6633333333334,
+     620
+    ],
+    [
+     611.6633333333334,
+     620
+    ],
+    [
+     1460.0033333333336,
+     80
+    ],
+    [
+     1375.0033333333336,
+     80
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Down 9000 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Down 9000 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Down 9000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diagonal Down 9000 4",
+   "points": [
+    [
+     2513.33,
+     620
+    ],
+    [
+     2598.33,
+     620
+    ],
+    [
+     3446.67,
+     80
+    ],
+    [
+     3361.67,
+     80
+    ]
+   ],
+   "start": -30,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diagonal Down 9000 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diagonal Down 9000 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diagonal Down 9000 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bearing Plate Left 9000",
+   "points": [
+    [
+     -4500.0,
+     -100
+    ],
+    [
+     -4300.0,
+     -100
+    ],
+    [
+     -4300.0,
+     100
+    ],
+    [
+     -4500.0,
+     100
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bearing Plate Left 9000",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bearing Plate Left 9000",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bearing Plate Left 9000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bearing Plate Right 9000",
+   "points": [
+    [
+     4300.0,
+     -100
+    ],
+    [
+     4500.0,
+     -100
+    ],
+    [
+     4500.0,
+     100
+    ],
+    [
+     4300.0,
+     100
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bearing Plate Right 9000",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bearing Plate Right 9000",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bearing Plate Right 9000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 1",
+   "points": [
+    [
+     -4480.0,
+     700
+    ],
+    [
+     -4380.0,
+     700
+    ],
+    [
+     -4380.0,
+     790
+    ],
+    [
+     -4480.0,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 2",
+   "points": [
+    [
+     -3495.5555555555557,
+     700
+    ],
+    [
+     -3395.5555555555557,
+     700
+    ],
+    [
+     -3395.5555555555557,
+     790
+    ],
+    [
+     -3495.5555555555557,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 3",
+   "points": [
+    [
+     -2511.1111111111113,
+     700
+    ],
+    [
+     -2411.1111111111113,
+     700
+    ],
+    [
+     -2411.1111111111113,
+     790
+    ],
+    [
+     -2511.1111111111113,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 3",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 3",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 4",
+   "points": [
+    [
+     -1526.6666666666665,
+     700
+    ],
+    [
+     -1426.6666666666665,
+     700
+    ],
+    [
+     -1426.6666666666665,
+     790
+    ],
+    [
+     -1526.6666666666665,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 4",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 4",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 5",
+   "points": [
+    [
+     -542.2222222222222,
+     700
+    ],
+    [
+     -442.2222222222222,
+     700
+    ],
+    [
+     -442.2222222222222,
+     790
+    ],
+    [
+     -542.2222222222222,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 5",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 5",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 6",
+   "points": [
+    [
+     442.2222222222226,
+     700
+    ],
+    [
+     542.2222222222226,
+     700
+    ],
+    [
+     542.2222222222226,
+     790
+    ],
+    [
+     442.2222222222226,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 6",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 6",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 7",
+   "points": [
+    [
+     1426.666666666667,
+     700
+    ],
+    [
+     1526.666666666667,
+     700
+    ],
+    [
+     1526.666666666667,
+     790
+    ],
+    [
+     1426.666666666667,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 7",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 7",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 8",
+   "points": [
+    [
+     2411.1111111111113,
+     700
+    ],
+    [
+     2511.1111111111113,
+     700
+    ],
+    [
+     2511.1111111111113,
+     790
+    ],
+    [
+     2411.1111111111113,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 8",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 8",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 9",
+   "points": [
+    [
+     3395.5555555555557,
+     700
+    ],
+    [
+     3495.5555555555557,
+     700
+    ],
+    [
+     3495.5555555555557,
+     790
+    ],
+    [
+     3395.5555555555557,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 9",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 9",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Purlin Cleat 9000 10",
+   "points": [
+    [
+     4380.0,
+     700
+    ],
+    [
+     4480.0,
+     700
+    ],
+    [
+     4480.0,
+     790
+    ],
+    [
+     4380.0,
+     790
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Purlin Cleat 9000 10",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Purlin Cleat 9000 10",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Purlin Cleat 9000 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 6000_Truss",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_Truss/Show 6000_Truss",
+   "type": "6000_Truss",
+   "param": "Show 6000_Truss",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "9000_Truss/Show 6000_Truss",
+   "type": "9000_Truss",
+   "param": "Show 6000_Truss",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bottom Chord 6000/Visible",
+   "solid": "Bottom Chord 6000",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Chord 6000/Visible",
+   "solid": "Top Chord 6000",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 1/Visible",
+   "solid": "Vertical 6000 1",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 2/Visible",
+   "solid": "Vertical 6000 2",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 3/Visible",
+   "solid": "Vertical 6000 3",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 4/Visible",
+   "solid": "Vertical 6000 4",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 5/Visible",
+   "solid": "Vertical 6000 5",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 6/Visible",
+   "solid": "Vertical 6000 6",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 6000 7/Visible",
+   "solid": "Vertical 6000 7",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 6000 1/Visible",
+   "solid": "Diagonal Up 6000 1",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 6000 2/Visible",
+   "solid": "Diagonal Up 6000 2",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 6000 3/Visible",
+   "solid": "Diagonal Up 6000 3",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 6000 1/Visible",
+   "solid": "Diagonal Down 6000 1",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 6000 2/Visible",
+   "solid": "Diagonal Down 6000 2",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 6000 3/Visible",
+   "solid": "Diagonal Down 6000 3",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bearing Plate Left 6000/Visible",
+   "solid": "Bearing Plate Left 6000",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bearing Plate Right 6000/Visible",
+   "solid": "Bearing Plate Right 6000",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 1/Visible",
+   "solid": "Purlin Cleat 6000 1",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 2/Visible",
+   "solid": "Purlin Cleat 6000 2",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 3/Visible",
+   "solid": "Purlin Cleat 6000 3",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 4/Visible",
+   "solid": "Purlin Cleat 6000 4",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 5/Visible",
+   "solid": "Purlin Cleat 6000 5",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 6/Visible",
+   "solid": "Purlin Cleat 6000 6",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 6000 7/Visible",
+   "solid": "Purlin Cleat 6000 7",
+   "param": "Show 6000_Truss"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 9000_Truss",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6000_Truss/Show 9000_Truss",
+   "type": "6000_Truss",
+   "param": "Show 9000_Truss",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "9000_Truss/Show 9000_Truss",
+   "type": "9000_Truss",
+   "param": "Show 9000_Truss",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bottom Chord 9000/Visible",
+   "solid": "Bottom Chord 9000",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Chord 9000/Visible",
+   "solid": "Top Chord 9000",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 1/Visible",
+   "solid": "Vertical 9000 1",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 2/Visible",
+   "solid": "Vertical 9000 2",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 3/Visible",
+   "solid": "Vertical 9000 3",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 4/Visible",
+   "solid": "Vertical 9000 4",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 5/Visible",
+   "solid": "Vertical 9000 5",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 6/Visible",
+   "solid": "Vertical 9000 6",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 7/Visible",
+   "solid": "Vertical 9000 7",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 8/Visible",
+   "solid": "Vertical 9000 8",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 9/Visible",
+   "solid": "Vertical 9000 9",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vertical 9000 10/Visible",
+   "solid": "Vertical 9000 10",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 9000 1/Visible",
+   "solid": "Diagonal Up 9000 1",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 9000 2/Visible",
+   "solid": "Diagonal Up 9000 2",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 9000 3/Visible",
+   "solid": "Diagonal Up 9000 3",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 9000 4/Visible",
+   "solid": "Diagonal Up 9000 4",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Up 9000 5/Visible",
+   "solid": "Diagonal Up 9000 5",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 9000 1/Visible",
+   "solid": "Diagonal Down 9000 1",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 9000 2/Visible",
+   "solid": "Diagonal Down 9000 2",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 9000 3/Visible",
+   "solid": "Diagonal Down 9000 3",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Diagonal Down 9000 4/Visible",
+   "solid": "Diagonal Down 9000 4",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bearing Plate Left 9000/Visible",
+   "solid": "Bearing Plate Left 9000",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bearing Plate Right 9000/Visible",
+   "solid": "Bearing Plate Right 9000",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 1/Visible",
+   "solid": "Purlin Cleat 9000 1",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 2/Visible",
+   "solid": "Purlin Cleat 9000 2",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 3/Visible",
+   "solid": "Purlin Cleat 9000 3",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 4/Visible",
+   "solid": "Purlin Cleat 9000 4",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 5/Visible",
+   "solid": "Purlin Cleat 9000 5",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 6/Visible",
+   "solid": "Purlin Cleat 9000 6",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 7/Visible",
+   "solid": "Purlin Cleat 9000 7",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 8/Visible",
+   "solid": "Purlin Cleat 9000 8",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 9/Visible",
+   "solid": "Purlin Cleat 9000 9",
+   "param": "Show 9000_Truss"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Purlin Cleat 9000 10/Visible",
+   "solid": "Purlin Cleat 9000 10",
+   "param": "Show 9000_Truss"
   },
   {
    "op": "set_type_image",
@@ -1537,23 +3305,23 @@
   }
  ],
  "values": {
-  "Span 6000 mm (geometry)": {
-   "value": 6000,
+  "Spans 6000 and 9000 mm, 1 m panels (one per type)": {
+   "value": "6000/9000",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
   "Depth 700 mm": {
    "value": 700,
    "source_status": "assumed",
-   "source": "typical size, engineer to confirm; span/depth about 9"
+   "source": "typical size, engineer to confirm"
   },
   "Chords SHS 80x80, webs SHS 60x60": {
    "value": "SHS 80/60",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
-  "Purlin cleats at 975 mm": {
-   "value": 975,
+  "Purlin cleats at each node": {
+   "value": "each node",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   }

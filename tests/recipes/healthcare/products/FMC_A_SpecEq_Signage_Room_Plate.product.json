@@ -2,7 +2,7 @@
  "family": "FMC_A_SpecEq_Signage_Room_Plate",
  "category": "Specialty Equipment",
  "template": "Metric Generic Model.rft",
- "desc": "Room identification plate 300 x 100 with tactile name and number and Grade 2 braille strip, contrasting colours",
+ "desc": "Room identification plate 300 x 100 or 300 x 200 with tactile name and number, Grade 2 braille strip, pictogram (200 type)",
  "ifc": "IfcBuildingElementProxy",
  "keynote": "A.SGN_00",
  "types": [
@@ -21,36 +21,6 @@
   "white": "FMC_Plastic_ABS_White"
  },
  "parts": [
-  {
-   "n": "Back Plate",
-   "shape": "fbox",
-   "at": [
-    -150,
-    -4,
-    0,
-    150,
-    0,
-    100
-   ],
-   "mat": "blue",
-   "lod": "mf",
-   "r": 6
-  },
-  {
-   "n": "Face",
-   "shape": "fbox",
-   "at": [
-    -145,
-    -8,
-    5,
-    145,
-    -4,
-    95
-   ],
-   "mat": "blue",
-   "lod": "mf",
-   "r": 4
-  },
   {
    "n": "Number Panel",
    "shape": "fbox",
@@ -139,9 +109,9 @@
    "mat": "white",
    "lod": "f",
    "repeat": {
-    "n": 28,
+    "n": 20,
     "d": [
-     7,
+     9.5,
      0,
      0
     ]
@@ -163,21 +133,57 @@
    "mat": "white",
    "lod": "f",
    "repeat": {
-    "n": 28,
+    "n": 20,
     "d": [
-     7,
+     9.5,
      0,
      0
     ]
    }
   },
   {
-   "n": "Fixing Pad",
+   "n": "Back Plate 100",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -4,
+    0,
+    150,
+    0,
+    100
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 6,
+   "only": [
+    "300x100_Braille"
+   ]
+  },
+  {
+   "n": "Face 100",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -8,
+    5,
+    145,
+    -4,
+    95
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 4,
+   "only": [
+    "300x100_Braille"
+   ]
+  },
+  {
+   "n": "Fixing Pad 100",
    "shape": "cyl",
    "axis": "y",
    "c": [
     -130,
-    50
+    50.0
    ],
    "r": 8,
    "y": [
@@ -193,17 +199,122 @@
      0,
      0
     ]
-   }
+   },
+   "only": [
+    "300x100_Braille"
+   ]
+  },
+  {
+   "n": "Back Plate 200",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -4,
+    0,
+    150,
+    0,
+    200
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 6,
+   "only": [
+    "300x200_Braille"
+   ]
+  },
+  {
+   "n": "Face 200",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -8,
+    5,
+    145,
+    -4,
+    195
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 4,
+   "only": [
+    "300x200_Braille"
+   ]
+  },
+  {
+   "n": "Fixing Pad 200",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -130,
+    100.0
+   ],
+   "r": 8,
+   "y": [
+    -5,
+    -4
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     260,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "300x200_Braille"
+   ]
+  },
+  {
+   "n": "Pictogram Panel 200",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -9,
+    110,
+    60,
+    -8,
+    190
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 8,
+   "only": [
+    "300x200_Braille"
+   ]
+  },
+  {
+   "n": "Pictogram 200",
+   "shape": "fbox",
+   "at": [
+    -35,
+    -10,
+    125,
+    35,
+    -9,
+    175
+   ],
+   "mat": "blue",
+   "lod": "f",
+   "r": 20,
+   "only": [
+    "300x200_Braille"
+   ]
   }
  ],
  "reference": {
   "query": "signage room plate specialty equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=signage+room+plate+specialty+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.vkf-renzel.nl/en/door-sign-lite-10779.html",
+  "photo_title": "Door sign Lite",
+  "photo_kind": "manufacturer"
  },
  "values": {
-  "Plate 300 x 100 mm": {
-   "value": "300x100",
+  "Plate 300 x 100 / 300 x 200 mm": {
+   "value": "300x100/300x200",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
@@ -218,7 +329,7 @@
    "source": "BS 8300-2"
   }
  },
- "about": "Room plate modelled as a generic product: back plate and face, number panel, raised name text, braille strip with two rows of dots, fixing pads. Default Elevation 1450 (bottom). Room name and number come from the room in the project (label in the tag).",
+ "about": "Room plate modelled as a generic product: back plate and face per type, number panel, raised name text, braille strip with two rows of dots, fixing pads; the 200 type adds a pictogram above. Default Elevation 1450 (bottom). Room name and number come from the room in the project (label in the tag).",
  "type_values": {
   "Default Elevation": 1450
  }
