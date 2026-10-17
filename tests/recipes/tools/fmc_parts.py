@@ -133,7 +133,7 @@ def bounds(g):
 def compile_product(prod, kn_lookup=None):
     mats = prod.get('materials', {}); kit = kit_materials()
     parts = expand(prod['parts'])
-    ops, values = [], dict(prod.get('values', {}))
+    ops, values, about_extra = [], dict(prod.get('values', {})), ''
     if prod.get('category'): ops.append({"op": "set_category", "name": prod['category']})
     if prod.get('shared'): ops.append({"op": "set_family_params", "name": "family", "shared": True})
     for prm, typ, grp in (("Voltage", "Voltage", "Electrical"), ("Number of Poles", "NumberOfPoles", "Electrical"), ("Apparent Load", "ApparentPower", "ElectricalLoads")):
@@ -199,6 +199,10 @@ def compile_product(prod, kn_lookup=None):
         ops.append({"op": "add_family_param", "name": prm, "type": "YesNo", "group": "Graphics"})
         for tn in tnames: ops.append({"op": "set_type_value", "name": f"{tn}/{prm}", "type": tn, "param": prm, "value": tn in only})
         for n in names: ops.append({"op": "set_visible_param", "name": f"{n}/Visible", "solid": n, "param": prm})
+    if cat == "Medical Equipment":
+        dropped = [c['n'] for c in prod.get('connectors', []) if c['domain'] != 'electrical']
+        if dropped: about_extra = " Medical Equipment can't join piping or duct systems (QE4), so " + ", ".join(dropped) + " reach it through the nested service point."
+        prod = dict(prod, connectors=[c for c in prod.get('connectors', []) if c['domain'] == 'electrical'])
     for c in prod.get('connectors', []):
         o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": c['system'], "solid": c['part'], "side": c.get('side', 'back')}
         for k in ('diameter', 'width', 'height', 'flow'):
@@ -212,7 +216,7 @@ def compile_product(prod, kn_lookup=None):
     # owner, 17 Oct: the 3D picture is the Type Image (Type Properties, schedules, legends); render_type_image makes it
     role = prod['family'].split('_')[1]
     ops.append({"op": "set_type_image", "name": "Type image", "path": f"{STAGING}\\{role}\\_Images\\{prod['family']}.png"})
-    about = prod.get('about', '')
+    about = prod.get('about', '') + about_extra
     if ref:
         about += ' Reference: ' + '; '.join(f"{k}: {v}" for k, v in ref.items() if v)
     r = {"schema": "fmc-recipe/0.1", "family": prod['family'], "template": prod.get('template', 'Metric Generic Model.rft'), "about": about.strip(), "ops": ops, "values": values}
@@ -268,7 +272,7 @@ def mesh(g, seg=32):
 # ---------------------------------------------------------------- preview (z-buffer renderer, numpy + PIL)
 import re as _re
 GLASS_TAG = 100000
-GLASS_RE = _re.compile(r'Glass|Glazing|Polycarbonate_Clear|Acrylic_Clear|Perspex', _re.I)
+GLASS_RE = _re.compile(r'^(?!.*Display)(?=.*(Glass|Glazing|Polycarbonate_Clear|Acrylic_Clear|Perspex))', _re.I)
 
 def _tris(prod, lod):
     import numpy as np
@@ -348,15 +352,20 @@ def _view(T, C, I, az, el, W, H, persp=False):
         gl[y0:y1 + 1, x0:x1 + 1] |= upd
     return img
 
-def hangs(T):
-    """A ceiling product: everything at or below the ceiling line z = 0, so it is seen from below."""
-    return len(T) and T[:, :, 2].max() <= 30 and T[:, :, 2].min() < -10
+CEILING_CATS = {"Fire Alarm Devices", "Lighting Fixtures", "Sprinklers", "Air Terminals", "Communication Devices", "Security Devices",
+                "Data Devices", "Nurse Call Devices", "Lighting Devices"}
+def hangs(T, prod=None):
+    """A ceiling product is seen from below: prod 'view': 'below' says so, or a ceiling category with everything at or
+    below z = 0. Products sunk into the ground (top at z = 0) are not ceiling products and keep the view from above."""
+    if prod is not None and prod.get('view') in ('below', 'above'): return prod['view'] == 'below'
+    if prod is not None and prod.get('category') not in CEILING_CATS: return False
+    return bool(len(T)) and T[:, :, 2].max() <= 30 and T[:, :, 2].min() < -10
 
 def render(prod, path, lod='f', views=(('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9)), W=520, H=420):
     import numpy as np
     from PIL import Image, ImageDraw
     T, C, I, n = _tris(prod, lod)
-    if hangs(T): views = tuple((t, a, -25 if t == '3D' else e) for t, a, e in views)
+    if hangs(T, prod): views = tuple((t, a, -25 if t == '3D' else e) for t, a, e in views)
     tiles = []
     for title, az, el in views:
         im = Image.fromarray((_view(T, C, I, az, el, W, H) * 255).astype('uint8'))
@@ -371,7 +380,7 @@ def render_type_image(prod, path, lod='f', size=800):
     """The Type Image: one 3D view, rendered at twice the size and scaled down for clean edges, on white."""
     from PIL import Image
     T, C, I, n = _tris(prod, lod)
-    im = Image.fromarray((_view(T, C, I, -35, -25 if hangs(T) else 22, size * 2, size * 2) * 255).astype('uint8'))
+    im = Image.fromarray((_view(T, C, I, -35, -25 if hangs(T, prod) else 22, size * 2, size * 2) * 255).astype('uint8'))
     im.resize((size, size), Image.LANCZOS).save(path); return path
 
 if __name__ == '__main__':

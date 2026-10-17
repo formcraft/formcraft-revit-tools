@@ -17,22 +17,17 @@ MAT = {
     'laminate': 'FMC_Plastic_Laminate_HPL', 'lipping': 'FMC_Timber_Musizi', 'timber': 'FMC_Timber_Mvule',
     'stainless': 'FMC_Metal_StainlessSteel_Brushed', 'chrome': 'FMC_Metal_Chrome_Polished',
     'glass': 'FMC_Glass_Clear', 'fire_glass': 'FMC_Glass_Laminated', 'frosted': 'FMC_Glass_Frosted',
-    'seal': 'FMC_Rubber_Black', 'intumescent': 'FMC_Rubber_Black',
+    'seal': 'FMC_Rubber_Black', 'intumescent': 'FMC_Seal_Intumescent_Graphite',
     'aluminium': 'FMC_Metal_Aluminium_Anodised_Silver', 'powder_coat': 'FMC_Metal_Aluminium_PowderCoated',
     'steel': 'FMC_Metal_SteelLTZ_Painted', 'sign_blue': 'FMC_Plastic_ABS_Blue', 'sign_yellow': 'FMC_Plastic_ABS_Yellow',
     'black': 'FMC_Plastic_ABS_Black', 'white': 'FMC_Plastic_ABS_White', 'grey': 'FMC_Plastic_ABS_Grey',
     'led_red': 'FMC_Plastic_LED_Red', 'led_green': 'FMC_Plastic_LED_Green',
-    'lead': 'FMC_Metal_Aluminium_PowderCoated', 'lead_glass': 'FMC_Glass_Laminated',
+    'lead': 'FMC_Metal_Lead_Sheet', 'lead_glass': 'FMC_Glass_Lead_Xray',
     'copper': 'FMC_Metal_CopperTape_20x3', 'mesh': 'FMC_Plastic_InsectMesh_Fibreglass', 'bars': 'FMC_Metal_BurglarBar_Steel',
     'precast': 'FMC_Concrete_Precast_Painted', 'quartz': 'FMC_Stone_Quartz_Engineered_White',
-    'curtain': 'FMC_Fabric_Vinyl_Upholstery_Blue', 'strip_curtain': 'FMC_Plastic_Polycarbonate_Clear',
+    'curtain': 'FMC_Fabric_Curtain_Plain', 'strip_curtain': 'FMC_Plastic_Polycarbonate_Clear',
 }
-NEEDED = [
-    {"name": "FMC_Metal_Lead_Sheet", "colour": "#6E747A", "why": "lead lining (Code 4-5 sheet, 2 mm Pb) in X-ray and CT doors; stand-in FMC_Metal_Aluminium_PowderCoated"},
-    {"name": "FMC_Glass_Lead_Xray", "colour": "#CFCBA6", "why": "lead glass (2 mm Pb equivalent) in X-ray door vision panels and control-room viewing windows; stand-in FMC_Glass_Laminated"},
-    {"name": "FMC_Seal_Intumescent_Graphite", "colour": "#34363A", "why": "intumescent and smoke seals in fire-door frames; stand-in FMC_Rubber_Black"},
-    {"name": "FMC_Fabric_Curtain_Plain", "colour": "#6E5A78", "why": "viewing-room curtain (mortuary viewing window); stand-in FMC_Fabric_Vinyl_Upholstery_Blue"},
-]
+NEEDED = []   # second pass: the kit now has FMC_Metal_Lead_Sheet, FMC_Glass_Lead_Xray, FMC_Seal_Intumescent_Graphite, FMC_Fabric_Curtain_Plain
 
 # ------------------------------------------------------------------ part helpers
 R1 = lambda v: round(v, 1)
@@ -190,6 +185,10 @@ def make(fam, variant, desc, parts, values, about, ifc='IfcDoor', window=False, 
     return prod
 
 PRODUCTS = {}
+CUR = {}
+def SZ(w, h):
+    """Size of the type being built (second pass: each type builds its own geometry, then the parts are merged)."""
+    return CUR.get('W', w), CUR.get('H', h)
 def reg(f): PRODUCTS[f.__name__] = f; return f
 D_SRC = "typical hospital doorset, HTM 58 / BS 8300; confirm with the supplier"
 W_SRC = "typical hospital window, HBN / HTM 55; confirm with the supplier"
@@ -211,7 +210,7 @@ def single_basic(W, H, t=44, frame_mat='frame', arch_mat=None, vision=True, vp=(
 
 @reg
 def HC001():
-    d, x0, x1 = single_basic(926, 2100)
+    d, x0, x1 = single_basic(*SZ(926, 2100))
     return make("FMC_A_Door_FlushSingle_Hygienic", "Hygienic", "Hygienic flush single doorset: HPL-faced 44 mm leaf with hardwood lipping, beaded vision panel, white pressed-steel frame with architraves, return-to-door lever, closer, kick and push plates, perimeter seals",
                 d.p, {"Opening 926 x 2100 mm": A("926x2100", "frame outside size, type 1; " + D_SRC), "Leaf 44 mm HPL faced": A(44, D_SRC),
                       "Vision panel 300 x 850 mm, sill 800": A("300x850", "BS 8300 vision zone 500-1500 mm"), "Kick plate 300 mm stainless": A(300, "HTM 58 door protection")},
@@ -219,7 +218,7 @@ def HC001():
 
 @reg
 def HC002():
-    W, H = 1500, 2100; d = Door(W, H).frame()
+    W, H = SZ(1500, 2100); d = Door(W, H).frame()
     xm = -d.xi + 3 + (2 * d.xi - 6) * 0.66            # master 2/3, slave 1/3
     m0, m1, s0, s1 = -d.xi + 3, xm - 1.5, xm + 1.5, d.xi - 3
     cm = (m0 + m1) / 2; cs = (s0 + s1) / 2
@@ -257,7 +256,7 @@ def pair_fire(fam, variant, W, H, t, vp_w, vp_c, vp_d, desc, values, about, buff
 
 @reg
 def HC003():
-    d = pair_fire("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", 1800, 2100, 54, 200, 980, 1650, "", {}, "", buffer=True)
+    d = pair_fire("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", *SZ(1800, 2100), 54, 200, 980, 1650, "", {}, "", buffer=True)
     return make("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", "FD60S double bed-passage doorset: equal 54 mm leaves, fire-glazed vision panels, intumescent and smoke seals, coordinator, two closers, push and pull handles, bed buffer rails, fire signs",
                 d.p, {"Opening 1800 x 2100 mm": A("1800x2100", "frame outside size, type 1; " + D_SRC), "Fire resistance FD60S (60 min, smoke)": A("FD60S", "BS 476-22 / EN 1634-1 tested doorset, certifier confirms"),
                       "Leaf 54 mm": A(54, "typical FD60 leaf"), "Bed buffer rail 800-900 mm": A("800-900", "HTM 58 bed protection")},
@@ -265,7 +264,7 @@ def HC003():
 
 @reg
 def HC004():
-    W, H = 1200, 2100; d = Door(W, H, 44).frame(stop=False)
+    W, H = SZ(1200, 2100); d = Door(W, H, 44).frame(stop=False)
     L0, L1, R0, R1_ = -d.xi + 4, -2, 2, d.xi - 4
     for side, a, b in (("Left", L0, L1), ("Right", R0, R1_)):
         c = (a + b) / 2
@@ -322,7 +321,7 @@ def e_conn(part, load): return [{"n": "Power", "domain": "electrical", "system":
 
 @reg
 def HC005():
-    W, H = 1500, 2100; p, yb, yf = slide_base(W, H)
+    W, H = SZ(1500, 2100); p, yb, yf = slide_base(W, H)
     p += slide_leaf(W, H, yb, yf)
     p += ring("Leaf Gasket", -W / 2 - 50, W / 2 + 50, 20, H + 50, 10, [yb, yb + 5], 'seal', 'f')
     p += bar_pull(-W / 2 - 15, 850, 1450, yf)
@@ -343,7 +342,7 @@ def HC005():
 
 @reg
 def HC006():
-    W, H = 2000, 2400; p = []; fw = 60; hh = 260; scr = W / 4
+    W, H = SZ(2000, 2400); p = []; fw = 60; hh = 260; scr = W / 4
     p += [box("Frame Jamb", [-W / 2, -60, 0, -W / 2 + fw, 60, H], 'powder_coat', rep=(2, [W - fw, 0, 0])),
           right("Operator Header", rr(-110, H - hh, 110, H, 16), [-W / 2 + fw, W / 2 - fw], 'powder_coat'),
           box("Threshold", [-W / 2 + fw, -60, 0, W / 2 - fw, 60, 6], 'aluminium', 'f')]
@@ -373,7 +372,7 @@ def HC006():
 
 @reg
 def HC007():
-    W, H = 1200, 2100; p, yb, yf = slide_base(W, H, leaf_t=50)
+    W, H = SZ(1200, 2100); p, yb, yf = slide_base(W, H, leaf_t=50)
     p += slide_leaf(W, H, yb, yf, kind='glazed', mat='laminate', edge='aluminium')
     p += ring("Leaf Gasket", -W / 2 - 50, W / 2 + 50, 20, H + 50, 10, [yb, yb + 5], 'seal', 'f')
     p += bar_pull(-W / 2 - 18, 850, 1450, yf)
@@ -393,23 +392,29 @@ def HC007():
 
 @reg
 def HC008():
-    W, H, t = 1026, 2100, 54; d = Door(W, H, t).frame(arch_mat='frame')
-    x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2
+    (W, H), t = SZ(1026, 2100), 54; d = Door(W, H, t).frame(arch_mat='frame')
+    LAY = [("Skin Room", 'laminate', [-t / 2, -2]), ("Lead Lining", 'lead', [-2, 2]), ("Skin Corridor", 'laminate', [2, t / 2])]
+    x0, x1 = -d.xi + 3, d.xi - 3
+    if W > 1200:                                  # 1500 type: leaf-and-half (master 2/3 with the vision, lead-lined slave)
+        xm = x0 + (x1 - x0) * 0.66; x1, s0 = xm - 1.5, xm + 1.5
+        d.leaf("Slave Leaf", s0, d.xi - 3, (), layers=LAY).hinges(d.xi - 1.5, 4, "Slave Hinge", r=8).closer(d.xi, -1, "Slave Closer", big=True).kick(s0, d.xi - 3, 300, "Slave Kick Plate")
+        d.add(box("Flush Bolt", [s0 - 1.5, -9, d.Hl - 200, s0, 9, d.Hl - 20], 'stainless', 'f', rep=(2, [0, 0, -(d.Hl - 200 - d.z0 - 20)])))
+    cx = (x0 + x1) / 2
     vh = d.vision("Lead Glass Vision", cx - 110, cx + 110, 1250, 1600, 'lead_glass', 'stainless', bw=30, proud=8, gl=8)
-    d.leaf("Leaf", x0, x1, [vh], layers=[("Skin Room", 'laminate', [-t / 2, -2]), ("Lead Lining", 'lead', [-2, 2]), ("Skin Corridor", 'laminate', [2, t / 2])])
+    d.leaf("Leaf", x0, x1, [vh], layers=LAY)
     d.lever(x1 - 68).forend(x1).hinges(-d.xi + 1.5, 4, r=8).closer(-d.xi, big=True).kick(x0, x1).seals()
     zt = d.Hs + 8 + 70
     d.add(fbox("Warning Light Housing", [-200, d.d2, zt + 40, 200, d.d2 + 80, zt + 190], 'white', r=10),
           fbox("Warning Light Lens", [-180, d.d2 + 80, zt + 55, 180, d.d2 + 83, zt + 175], 'led_red', 'f', r=8),
           fbox("Radiation Sign", [cx - 75, t / 2, 1700, cx + 75, t / 2 + 1.5, 1850], 'sign_yellow', 'f', r=4))
-    return make("FMC_A_Door_LeadLined_Xray", "Pb2", "Lead-lined X-ray room doorset: 54 mm leaf with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign",
+    return make("FMC_A_Door_LeadLined_Xray", "Pb2", "Lead-lined X-ray room doorset (single 1026, leaf-and-half 1500): 54 mm leaves with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign",
                 d.p, {"Opening 1026 x 2100 mm": A("1026x2100", "frame outside size, type 1; " + D_SRC), "Lead lining 2 mm Pb": A(2, "typical diagnostic X-ray, radiation protection adviser confirms"),
                       "Lead glass vision 220 x 350 mm, 2 mm Pb eq.": A("220x350", "typical shielded door vision panel"), "Warning light 400 x 150 mm over the door": A("400x150", "IRR17 warning signal at entrance")},
                 "Lead-lined doorset modelled as a product: frame with stops and architraves, leaf as two HPL skins with a lead lining layer (visible on the leaf top and bottom), lipping, lead-glass vision with wide stainless bead, lever and escutcheons, four heavy hinges, heavy closer, kick plates, seals, illuminated warning light on the corridor face (+y) and radiation sign.")
 
 @reg
 def HC009():
-    W, H = 1500, 2100; p, yb, yf = slide_base(W, H, leaf_t=70)
+    W, H = SZ(1500, 2100); p, yb, yf = slide_base(W, H, leaf_t=70)
     p += slide_leaf(W, H, yb, yf, vision=(300, 1300, 1700), glass='lead_glass',
                     layers=[("Skin Room", 'laminate', [yf + 2, yf + 33]), ("Lead Lining", 'lead', [yf + 33, yf + 37]), ("Skin Wall", 'laminate', [yf + 37, yb - 2])])
     p += bar_pull(-W / 2 - 15, 800, 1500, yf)
@@ -429,7 +434,7 @@ def HC009():
 
 @reg
 def HC010():
-    W, H, t = 1200, 2100, 80; d = Door(W, H, t, face=60).frame('stainless', arch=False, stop_mat='stainless')
+    (W, H), t = SZ(1200, 2100), 80; d = Door(W, H, t, face=60).frame('stainless', arch=False, stop_mat='stainless')
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2
     d.add(fbox("RF Face Frame", [-W / 2 - 60, -d.d2 - 10, 0, -W / 2, -d.d2, H + 60], 'stainless', rep=(2, [W + 60, 0, 0])),
           fbox("RF Face Frame Head", [-W / 2, -d.d2 - 10, H, W / 2, -d.d2, H + 60], 'stainless'))
@@ -452,7 +457,7 @@ def HC010():
 
 @reg
 def HC011():
-    d, x0, x1 = single_basic(926, 2100, frame_mat='timber', arch_mat='timber', glass='fire_glass', seals='Intumescent Seal', seal_mat='intumescent', vp=(250, 800, 1550))
+    d, x0, x1 = single_basic(*SZ(926, 2100), frame_mat='timber', arch_mat='timber', glass='fire_glass', seals='Intumescent Seal', seal_mat='intumescent', vp=(250, 800, 1550))
     d.sign((x0 + x1) / 2, 1700)
     return make("FMC_A_Door_FireRated_FD30_Ward", "FD30S", "FD30S ward doorset: hardwood frame and architraves, HPL leaf with lipping, fire-glazed vision panel, intumescent and smoke seals, closer, lever, kick and push plates, FIRE DOOR KEEP SHUT signs",
                 d.p, {"Opening 926 x 2100 mm": A("926x2100", "frame outside size, type 1; " + D_SRC), "Fire resistance FD30S (30 min, smoke)": A("FD30S", "BS 476-22 / EN 1634-1 tested doorset, certifier confirms"),
@@ -461,7 +466,7 @@ def HC011():
 
 @reg
 def HC012():
-    d = pair_fire("FMC_A_Door_FireRated_FD60_Corridor", "", 1800, 2100, 54, 420, 700, 1750, "", {}, "", buffer=False)
+    d = pair_fire("FMC_A_Door_FireRated_FD60_Corridor", "", *SZ(1800, 2100), 54, 420, 700, 1750, "", {}, "", buffer=False)
     return make("FMC_A_Door_FireRated_FD60_Corridor", "FD60S-Pair", "FD60S cross-corridor compartment pair: equal 54 mm HPL leaves with large fire-glazed vision panels, intumescent and smoke seals, coordinator, closers, push plates, D pulls, kick plates, fire signs",
                 d.p, {"Opening 1800 x 2100 mm": A("1800x2100", "frame outside size, type 1; " + D_SRC), "Fire resistance FD60S (60 min, smoke)": A("FD60S", "HTM 05-02 compartment doors, certifier confirms"),
                       "Vision panels 420 x 1050 mm": A("420x1050", "cross-corridor visibility, HBN 00-04"), "Leaf 54 mm": A(54, "typical FD60 leaf")},
@@ -469,7 +474,7 @@ def HC012():
 
 @reg
 def HC013():
-    d = pair_fire("FMC_A_Door_Smoke_CrossCorridor_HoldOpen", "", 1800, 2100, 44, 480, 1000, 1850, "", {}, "", hold_open=True, glass='fire_glass', seal_name="Smoke Seal", sign=False)
+    d = pair_fire("FMC_A_Door_Smoke_CrossCorridor_HoldOpen", "", *SZ(1800, 2100), 44, 480, 1000, 1850, "", {}, "", hold_open=True, glass='fire_glass', seal_name="Smoke Seal", sign=False)
     for side, x in (("Left", -d.xi + 150), ("Right", d.xi - 150)):
         d.add(cyly(f"{side} Hold Open Sign", x, 1450 - 600, 45, [-d.t / 2 - 1.5, -d.t / 2], 'sign_blue', 'f', rep=(2, [0, d.t + 1.5, 0]), seg=32))
     c, tv = e_conn("Left Closer Body", 20)
@@ -482,7 +487,7 @@ def HC013():
 
 @reg
 def HC014():
-    d, x0, x1 = single_basic(1026, 2100, vp=(300, 800, 1650), seals='Pressure Seal')
+    d, x0, x1 = single_basic(*SZ(1026, 2100), vp=(300, 800, 1650), seals='Pressure Seal')
     d.drop_seal(x0, x1)
     d.add(box("Threshold Plate", [-d.xi, -d.t / 2 - 40, 0, d.xi, d.t / 2 + 40, 4], 'stainless', 'f'),
           box("Stop Compression Seal Jamb", [-d.xi + 15, d.t / 2 - 2, 0, -d.xi + 20, d.t / 2, d.Hs - 15], 'seal', 'f', rep=(2, [2 * d.xi - 35, 0, 0])),
@@ -494,7 +499,7 @@ def HC014():
 
 @reg
 def HC015():
-    W, H = 926, 2100; d = Door(W, H, 54).frame('frame', coved=True, arch=False)
+    W, H = SZ(926, 2100); d = Door(W, H, 54).frame('frame', coved=True, arch=False)
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2; t = d.t
     a, b, c, dd = cx - 175, cx + 175, 1000, 1600
     d.leaf("Leaf", x0, x1, [hrect(a, b, c, dd)], mat='panel', lip=None)
@@ -512,7 +517,7 @@ def HC015():
 
 @reg
 def HC016():
-    W, H = 900, 2000; t = 100; d = Door(W, H, t, face=90, under=12)
+    W, H = SZ(900, 2000); t = 100; d = Door(W, H, t, face=90, under=12)
     d2 = d.d2; p = d.p
     fy = [-d2 - 20, d2]
     p += [box("Frame Jamb", [-W / 2, fy[0], 0, -W / 2 + 90, fy[1], H], 'panel', r=4, rep=(2, [W - 90, 0, 0])),
@@ -546,7 +551,7 @@ def HC016():
 
 @reg
 def HC017():
-    W, H = 1500, 2100; d = Door(W, H, 54).frame()
+    W, H = SZ(1500, 2100); d = Door(W, H, 54).frame()
     L0, L1, R0, R1_ = -d.xi + 3, -1.5, 1.5, d.xi - 3
     for side, a, b in (("Left", L0, L1), ("Right", R0, R1_)):
         c = (a + b) / 2; d.leaf(f"{side} Leaf", a, b, [d.vision(f"{side} Vision", c - 90, c + 90, 1200, 1600, 'glass', 'stainless')], mat='stainless', lip='stainless', lw=4)
@@ -564,7 +569,7 @@ def HC017():
 
 @reg
 def HC018():
-    d, x0, x1 = single_basic(1000, 2100, vision=False, push=False)
+    d, x0, x1 = single_basic(*SZ(1000, 2100), vision=False, push=False)
     t = d.t; yr = t / 2
     d.add(cylx("Horizontal Pull Rail", yr + 50, 900, 12.5, [x0 + 80, x1 - 160], 'stainless', 'f'),
           cyly("Pull Rail Standoff", x0 + 100, 900, 10, [yr, yr + 50], 'stainless', 'f', rep=(2, [x1 - x0 - 280, 0, 0]), seg=12),
@@ -582,7 +587,7 @@ def HC018():
 
 @reg
 def HC019():
-    d, x0, x1 = single_basic(926, 2100, vision=False, push=False, hinges=0, closer=False)
+    d, x0, x1 = single_basic(*SZ(926, 2100), vision=False, push=False, hinges=0, closer=False)
     t = d.t; xi = d.xi
     for i, pt in enumerate(list(d.p)):
         if pt['n'] in ("Stop Jamb", "Stop Head"): pt['mat'] = 'stainless'; pt['n'] = "Reversible " + pt['n']
@@ -600,7 +605,7 @@ def HC019():
 
 @reg
 def HC020():
-    W, H, t = 926, 2100, 54; d = Door(W, H, t).frame()
+    (W, H), t = SZ(926, 2100), 54; d = Door(W, H, t).frame()
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2
     vh = d.vision("Observation Panel", cx - 110, cx + 110, 1150, 1650, 'fire_glass', 'stainless', bw=24, proud=4, gl=10)
     d.leaf("Leaf", x0, x1, [vh])
@@ -620,7 +625,7 @@ def HC020():
 
 @reg
 def HC021():
-    d, x0, x1 = single_basic(926, 2100, vp=(250, 800, 1600))
+    d, x0, x1 = single_basic(*SZ(926, 2100), vp=(250, 800, 1600))
     t, d2, xi = d.t, d.d2, d.xi
     d.add(fbox("Maglock Body", [x1 - 280, -t / 2 - 45, d.Hs - 50, x1 - 20, -t / 2 - 2, d.Hs], 'aluminium', 'f', r=4),
           fbox("Maglock Armature", [x1 - 270, -t / 2 - 2, d.Hl - 50, x1 - 30, -t / 2, d.Hl - 2], 'chrome', 'f'),
@@ -638,7 +643,7 @@ def HC021():
 
 @reg
 def HC022():
-    W, H, t = 1200, 2100, 45; d = Door(W, H, t, face=50)
+    (W, H), t = SZ(1200, 2100), 45; d = Door(W, H, t, face=50)
     xi, d2 = d.xi, d.d2
     d.frame('steel', arch=False)
     L0, L1, R0, R1_ = -xi + 3, -1.5, 1.5, xi - 3
@@ -660,7 +665,7 @@ def HC022():
 
 @reg
 def HC023():
-    W, H = 926, 2100; d = Door(W, H).frame()
+    W, H = SZ(926, 2100); d = Door(W, H).frame()
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2; t = d.t
     ga, gb = cx - 200, cx + 200              # transfer grille 400 x 180 just above the 600 mm protection plate
     d.leaf("Leaf", x0, x1, [hrect(ga, gb, 650, 830)])
@@ -680,7 +685,7 @@ def HC023():
 
 @reg
 def HC024():
-    W, H = 926, 2100; d = Door(W, H).frame()
+    W, H = SZ(926, 2100); d = Door(W, H).frame()
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2 - 40
     a, b, c, dd = cx - 130, cx + 130, 450, 1850
     d.leaf("Leaf", x0, x1, [d.vision("Full Height Vision", a, b, c, dd, 'glass', 'lipping', bw=20, gl=10)])
@@ -695,7 +700,7 @@ def HC024():
 
 @reg
 def HC025():
-    W, H = 1400, 2100; p = []; d2 = 100
+    W, H = SZ(1400, 2100); p = []; d2 = 100
     p += [fbox("Landing Frame Jamb", [-W / 2 - 100, -d2 - 15, 0, -W / 2, -d2 + 40, H], 'stainless', rep=(2, [W + 100, 0, 0])),
           fbox("Landing Frame Header", [-W / 2 - 100, -d2 - 15, H, W / 2 + 100, -d2 + 40, H + 160], 'stainless'),
           box("Landing Sill", [-W / 2 - 60, -d2 - 20, -0.1, W / 2 + 60, 40, 2], 'aluminium'),
@@ -719,7 +724,7 @@ def HC025():
 
 @reg
 def HC026():
-    W, H = 1200, 2100; d = Door(W, H, 32).frame(stop=False)
+    W, H = SZ(1200, 2100); d = Door(W, H, 32).frame(stop=False)
     x0, x1 = -d.xi + 3, d.xi - 3; pw = (x1 - x0 - 9) / 4
     p = d.p
     for i in range(4):
@@ -741,7 +746,7 @@ def HC026():
 
 @reg
 def HC027():
-    W, H = 600, 600; p = []; d2 = 70; z0 = 0
+    W, H = SZ(600, 600); p = []; d2 = 70; z0 = 0
     p += panel("Opening Lining", -W / 2 - 25, W / 2 + 25, z0, z0 + H + 25, [-d2, d2], 'frame', [hrect(-W / 2, W / 2, z0 + 25, z0 + H)])
     p += ring("Face Frame", -W / 2 - 25, W / 2 + 25, z0 - 25, z0 + H + 25, 25, [-d2 - 10, -d2], 'frame')
     p += [fbox("Access Panel", [-W / 2 + 2, -d2 - 9, z0 + 2, W / 2 - 2, -d2 + 15, z0 + H - 2], 'panel', r=3),
@@ -767,7 +772,7 @@ def int_trims(W, H, S, d2=70, aw=60, at=12, mat='frame'):
 
 @reg
 def HC028():
-    W, H, S = 1200, 1200, 900; p = []; y = [-15, 20]; f = 35; zt = S + H - 320
+    (W, H), S = SZ(1200, 1200), 900; p = []; y = [-15, 20]; f = 35; zt = S + H - 320
     p += ring("Outer Frame", -W / 2, W / 2, S, S + H, f, y, 'steel')
     p += [box("Mullion", [-f / 2, y[0], S + f, f / 2, y[1], zt], 'steel'), box("Transom", [-W / 2 + f, y[0], zt, W / 2 - f, y[1], zt + f], 'steel')]
     sw = 28; cw = (W / 2 - f - f / 2)
@@ -795,7 +800,7 @@ def HC028():
 
 @reg
 def HC029():
-    W, H, S = 1200, 1200, 900; p = []; y = [-45, 45]; f = 40
+    (W, H), S = SZ(1200, 1200), 900; p = []; y = [-45, 45]; f = 40
     p += ring("Outer Frame", -W / 2, W / 2, S, S + H, f, y, 'powder_coat')
     sw = W / 2 - f + 30
     for k, (side, a, ys) in enumerate((("Inner", -W / 2 + f, [-40, -12]), ("Outer", W / 2 - f - sw, [-8, 20]))):
@@ -834,7 +839,7 @@ def internal_glazed(W, H, S, d2=70, f=45, blind=True, glass='glass', two=True, g
 
 @reg
 def HC030():
-    W, H, S = 1200, 900, 900
+    (W, H), S = SZ(1200, 900), 900
     p = internal_glazed(W, H, S) + int_trims(W, H, S)
     p += [box("Window Board", [-W / 2 - 40, -95, S - 25, W / 2 + 40, -24, S + 45], 'quartz', r=6),
           box("Window Board Corridor", [-W / 2 - 40, 24, S - 25, W / 2 + 40, 95, S + 45], 'quartz', r=6)]
@@ -846,7 +851,7 @@ def HC030():
 
 @reg
 def HC031():
-    W, H, S = 1200, 900, 1000; p = []; d2 = 100; r = 60
+    (W, H), S = SZ(1200, 900), 1000; p = []; d2 = 100; r = 60
     p += panel("Flush Frame", -W / 2, W / 2, S, S + H, [-d2, d2], 'stainless', [hrect(-W / 2 + 50, W / 2 - 50, S + 50, S + H - 50)])
     a, b, c, d = -W / 2 + 50, W / 2 - 50, S + 50, S + H - 50
     p += ring("Cavity Spacer", a, b, c, d, 12, [-d2 + 8, d2 - 8], 'grey', 'f')
@@ -861,7 +866,7 @@ def HC031():
 
 @reg
 def HC032():
-    W, H, S = 900, 600, 1000; p = []; d2 = 100; f = 60
+    (W, H), S = SZ(900, 600), 1000; p = []; d2 = 100; f = 60
     p += panel("Lead Lined Frame", -W / 2, W / 2, S, S + H, [-d2, d2], 'steel', [hrect(-W / 2 + f, W / 2 - f, S + f, S + H - f)])
     for side, y in (("Control", [-d2 - 12, -d2]), ("Room", [d2, d2 + 12])):
         p += panel(f"Face Frame {side}", -W / 2 - 40, W / 2 + 40, S - 40, S + H + 40, y, 'steel', [hrect(-W / 2 + f + 20, W / 2 - f - 20, S + f + 20, S + H - f - 20)])
@@ -878,7 +883,7 @@ def HC032():
 
 @reg
 def HC033():
-    W, H, S = 900, 900, 1000
+    (W, H), S = SZ(900, 900), 1000
     p = internal_glazed(W, H, S, f=50, glass='glass')
     for q in p:
         if q['mat'] == 'frame': q['mat'] = 'stainless'
@@ -894,7 +899,7 @@ def HC033():
 
 @reg
 def HC034():
-    W, H, S = 900, 600, 900; p = []; d2 = 70
+    (W, H), S = SZ(900, 600), 900; p = []; d2 = 70
     p += panel("Hatch Lining", -W / 2, W / 2, S, S + H, [-d2, d2], 'frame', [hrect(-W / 2 + 40, W / 2 - 40, S + 40, S + H - 40)])
     a, b = -W / 2 + 40, W / 2 - 40
     p += [box("Counter Top", [-W / 2 - 100, -d2 - 320, S + 40 - 30, W / 2 + 100, d2 + 300, S + 40], 'quartz', r=12),
@@ -915,7 +920,7 @@ def HC034():
 
 @reg
 def HC035():
-    W, H, S = 600, 600, 900; p = []; d2 = 70; dp = 280
+    (W, H), S = SZ(600, 600), 900; p = []; d2 = 70; dp = 280
     p += [box("Cabinet Shell", [-W / 2, -dp, S, W / 2, dp, S + H], 'stainless', r=6)]
     p += [fbox("Wall Flange", [-W / 2 - 50, -d2 - 2, S - 50, W / 2 + 50, -d2, S + H + 50], 'stainless', 'f', r=6, rep=(2, [0, 2 * d2 + 2, 0])),
           fbox("Door", [-W / 2 + 15, -dp - 18, S + 15, W / 2 - 15, -dp, S + H - 15], 'stainless', r=10, rep=(2, [0, 2 * dp + 18, 0])),
@@ -936,7 +941,7 @@ def HC035():
 
 @reg
 def HC036():
-    W, H, S = 900, 600, 1000; p = []; d2 = 70; f = 40
+    (W, H), S = SZ(900, 600), 1000; p = []; d2 = 70; f = 40
     p += panel("Screen Lining", -W / 2, W / 2, S, S + H, [-d2, d2], 'frame', [hrect(-W / 2 + f, W / 2 - f, S + f + 60, S + H - f)])
     a, b, c, d = -W / 2 + f, W / 2 - f, S + f + 60, S + H - f
     p += [fbox("Security Glass", [a, -6, c, b, 6, d], 'fire_glass'),
@@ -959,7 +964,7 @@ def HC036():
 
 @reg
 def HC037():
-    W, H, S = 1800, 1200, 900; p = []; y = [-30, 30]; f = 50
+    (W, H), S = SZ(1800, 1200), 900; p = []; y = [-30, 30]; f = 50
     p += ring("Screen Frame", -W / 2, W / 2, S, S + H, f, y, 'powder_coat')
     m = W / 6
     p += [box("Mullion", [-m - f / 2, y[0], S + f, -m + f / 2, y[1], S + H - f], 'powder_coat', rep=(2, [2 * m, 0, 0])),
@@ -980,7 +985,7 @@ def HC037():
 
 @reg
 def HC038():
-    W, H, S = 600, 450, 1800; p = []; y = [-20, 20]; f = 35
+    (W, H), S = SZ(600, 450), 1800; p = []; y = [-20, 20]; f = 35
     p += ring("Outer Frame", -W / 2, W / 2, S, S + H, f, y, 'powder_coat')
     p += ring("Hopper Sash", -W / 2 + f, W / 2 - f, S + f, S + H - f, 30, [-28, 0], 'powder_coat')
     p += [fbox("Obscured Glass", [-W / 2 + f + 30, -18, S + f + 30, W / 2 - f - 30, -12, S + H - f - 30], 'frosted'),
@@ -997,7 +1002,7 @@ def HC038():
 
 @reg
 def HC039():
-    W, H, S = 1200, 1200, 900; p = []; y = [-50, 40]; f = 60
+    (W, H), S = SZ(1200, 1200), 900; p = []; y = [-50, 40]; f = 60
     p += [prism("Frame Jamb", rr(-W / 2, y[0], -W / 2 + f, y[1], 10), [S, S + H], 'powder_coat', rep=(2, [W - f, 0, 0])),
           right("Frame Head", [(y[0], S + H - f - 40), (y[0], S + H), (y[1], S + H), (y[1], S + H - f)], [-W / 2 + f, W / 2 - f], 'powder_coat'),
           box("Frame Sill", [-W / 2 + f, y[0], S, W / 2 - f, y[1], S + f], 'powder_coat')]
@@ -1022,7 +1027,7 @@ def HC039():
 
 @reg
 def HC040():
-    W, H, S = 1200, 900, 900
+    (W, H), S = SZ(1200, 900), 900
     p = internal_glazed(W, H, S, blind=False, glass='fire_glass', two=False, gl=6) + int_trims(W, H, S)
     p += [box("Window Board", [-W / 2 - 40, -95, S - 25, W / 2 + 40, -22, S + 45], 'quartz', r=6),
           box("Curtain Track", [-W / 2 - 150, -140, S + H + 80, W / 2 + 150, -110, S + H + 100], 'aluminium'),
@@ -1042,7 +1047,9 @@ def HC040():
 TYPE_RX = __import__('re').compile(r'^[A-Za-z0-9.x×-]+_[A-Za-z0-9-]+$')
 def check(prod):
     parts = fp.expand(prod['parts']); names = [p['n'] for p in parts]
-    assert len(parts) <= 70, (prod['family'], len(parts))
+    for t in prod['types']:
+        nt = sum(1 for p in parts if not p.get('only') or t['name'] in p['only'])
+        assert nt <= 70, (prod['family'], t['name'], nt)
     assert len(set(names)) == len(names), (prod['family'], [n for n in names if names.count(n) > 1])
     for t in prod['types']: assert TYPE_RX.match(t['name']), t['name']
     for k, v in prod['materials'].items(): assert v in KIT, v
@@ -1052,11 +1059,37 @@ def check(prod):
     assert prod['keynote'] and prod['desc'] and prod['about']
     return len(parts)
 
+def build_types(fn):
+    """Second pass: build the family once per type at that type's size; parts identical in every type stay shared,
+    the rest carry "only": [type] and the type's key size in their name (the compiler adds a Show Yes/No per type)."""
+    CUR.clear(); base = fn(); types = [t['name'] for t in base['types']]
+    if len(types) == 1: return base
+    builds = []
+    for t in base['types']:
+        CUR.update(W=t['values']['Width'], H=t['values']['Height']); builds.append(fn())
+    CUR.clear()
+    keys = [[json.dumps(p, sort_keys=True) for p in b['parts']] for b in builds]
+    shared = set(keys[0]).intersection(*map(set, keys[1:]))
+    parts, mats = [], {}
+    for p, k in zip(builds[0]['parts'], keys[0]):
+        if k in shared: parts.append(p)
+    for tn, b, ks in zip(types, builds, keys):
+        mats.update(b['materials'])
+        for p, k in zip(b['parts'], ks):
+            if k not in shared: parts.append(dict(p, n=f"{p['n']} {tn.split('_')[0]}", only=[tn]))
+    names = {p['n'] for p in parts}
+    for c in base.get('connectors', []):     # a connector stays on a shared part when it can, else on type 1's copy
+        if c['part'] not in names: c['part'] = f"{c['part']} {types[0].split('_')[0]}"
+    used = {p['mat'] for p in parts}
+    base.update(parts=parts, materials={k: v for k, v in mats.items() if k in used})
+    return base
+
+CHECK = os.environ.get('A1_CHECK', '/tmp/claude-0/-home-claude/ce672511-dda7-500e-94dd-9bdb64997d11/scratchpad/A1/types'); os.makedirs(CHECK, exist_ok=True)
 KIT = set(open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read().split())
 if __name__ == '__main__':
     sel = sys.argv[1:]; out = []
     for key, fn in PRODUCTS.items():
-        prod = fn()
+        prod = build_types(fn)
         if sel and not any(s in prod['family'] or s == key for s in sel): continue
         n = check(prod)
         json.dump(prod, open(os.path.join(HERE, prod['family'] + '.product.json'), 'w'), indent=1)
@@ -1064,5 +1097,9 @@ if __name__ == '__main__':
         json.dump(r, open(os.path.join(HERE, prod['family'] + '.recipe.json'), 'w'), indent=1)
         fp.render(prod, os.path.join(HERE, prod['family'] + '.preview.png'))
         fp.render_type_image(prod, os.path.join(HERE, prod['family'] + '.png'), size=600)
-        out.append((key, prod['family'], n, len(r['ops']))); print(out[-1], flush=True)
+        for t in prod['types'][1:]:
+            if any(p.get('only') for p in prod['parts']):
+                fp.render(dict(prod, _render_type=t['name']), os.path.join(CHECK, f"{prod['family']}__{t['name']}.preview.png"))
+        only = sorted({o for p in prod['parts'] for o in p.get('only', [])})
+        out.append((key, prod['family'], n, len(r['ops']), len(only))); print(out[-1], flush=True)
     json.dump(NEEDED, open(os.path.join(HERE, 'batches', 'A1_doors_windows.materials_needed.json'), 'w'), indent=1)
