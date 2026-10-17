@@ -1,0 +1,665 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_AHU_Theatre_HEPA",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Wave 1: theatre AHU; four rectangular duct connectors (supply, return, fresh, exhaust), condensate pipe, 415 V power; 1 m service zone (HTM 03-01 basis).",
+ "ops": [
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_type",
+   "name": "2500ls_HEPA"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/Keynote",
+   "type": "2500ls_HEPA",
+   "param": "Keynote",
+   "value": "H.AHU_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/FMC_Keynote_Code",
+   "type": "2500ls_HEPA",
+   "param": "FMC_Keynote_Code",
+   "value": "H.AHU_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/FMC_Cost_Unit",
+   "type": "2500ls_HEPA",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/FMC_Geometry_Stage",
+   "type": "2500ls_HEPA",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/IfcExportAs",
+   "type": "2500ls_HEPA",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/Description",
+   "type": "2500ls_HEPA",
+   "param": "Description",
+   "value": "Theatre air handling unit 2.5 m3/s, F7 + HEPA H14, cooling coil, humidifier, EC fans"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/Voltage",
+   "type": "2500ls_HEPA",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/Number of Poles",
+   "type": "2500ls_HEPA",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "set_type_value",
+   "name": "2500ls_HEPA/Apparent Load",
+   "type": "2500ls_HEPA",
+   "param": "Apparent Load",
+   "value": 15000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Casing",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Base",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Maintenance",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -2500,
+     -800
+    ],
+    [
+     2500,
+     -800
+    ],
+    [
+     2500,
+     800
+    ],
+    [
+     -2500,
+     800
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base",
+   "points": [
+    [
+     -2500,
+     -800
+    ],
+    [
+     2500,
+     -800
+    ],
+    [
+     2500,
+     800
+    ],
+    [
+     -2500,
+     800
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base",
+   "subcategory": "Base"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Casing",
+   "points": [
+    [
+     -2500,
+     -800
+    ],
+    [
+     2500,
+     -800
+    ],
+    [
+     2500,
+     800
+    ],
+    [
+     -2500,
+     800
+    ]
+   ],
+   "start": 150,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Casing",
+   "subcategory": "Casing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Casing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Line 1",
+   "points": [
+    [
+     -1510,
+     -820
+    ],
+    [
+     -1490,
+     -820
+    ],
+    [
+     -1490,
+     -800
+    ],
+    [
+     -1510,
+     -800
+    ]
+   ],
+   "start": 150,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Line 1",
+   "subcategory": "Base"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Line 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Line 2",
+   "points": [
+    [
+     -10,
+     -820
+    ],
+    [
+     10,
+     -820
+    ],
+    [
+     10,
+     -800
+    ],
+    [
+     -10,
+     -800
+    ]
+   ],
+   "start": 150,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Line 2",
+   "subcategory": "Base"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Line 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Line 3",
+   "points": [
+    [
+     1490,
+     -820
+    ],
+    [
+     1510,
+     -820
+    ],
+    [
+     1510,
+     -800
+    ],
+    [
+     1490,
+     -800
+    ]
+   ],
+   "start": 150,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Line 3",
+   "subcategory": "Base"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Line 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Spigot",
+   "points": [
+    [
+     2500,
+     -400
+    ],
+    [
+     2700,
+     -400
+    ],
+    [
+     2700,
+     400
+    ],
+    [
+     2500,
+     400
+    ]
+   ],
+   "start": 1200,
+   "end": 1800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Spigot",
+   "subcategory": "Casing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Spigot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fresh Spigot",
+   "points": [
+    [
+     -2700,
+     -400
+    ],
+    [
+     -2500,
+     -400
+    ],
+    [
+     -2500,
+     400
+    ],
+    [
+     -2700,
+     400
+    ]
+   ],
+   "start": 1200,
+   "end": 1800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fresh Spigot",
+   "subcategory": "Casing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fresh Spigot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Return Spigot",
+   "points": [
+    [
+     -1800,
+     -300
+    ],
+    [
+     -1000,
+     -300
+    ],
+    [
+     -1000,
+     300
+    ],
+    [
+     -1800,
+     300
+    ]
+   ],
+   "start": 2100,
+   "end": 2300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Return Spigot",
+   "subcategory": "Casing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Return Spigot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Exhaust Spigot",
+   "points": [
+    [
+     -2700,
+     -400
+    ],
+    [
+     -2500,
+     -400
+    ],
+    [
+     -2500,
+     400
+    ],
+    [
+     -2700,
+     400
+    ]
+   ],
+   "start": 400,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Exhaust Spigot",
+   "subcategory": "Casing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Exhaust Spigot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drain Stub",
+   "points": [
+    [
+     800,
+     -830
+    ],
+    [
+     860,
+     -830
+    ],
+    [
+     860,
+     -800
+    ],
+    [
+     800,
+     -800
+    ]
+   ],
+   "start": 150,
+   "end": 210
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain Stub",
+   "subcategory": "Base"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Stub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Service Zone",
+   "points": [
+    [
+     -2500,
+     -1800
+    ],
+    [
+     2500,
+     -1800
+    ],
+    [
+     2500,
+     -800
+    ],
+    [
+     -2500,
+     -800
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Service Zone",
+   "subcategory": "Clearance Maintenance"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Service Zone",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Supply Spigot",
+   "side": "right",
+   "width": 800,
+   "height": 600,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Fresh Air",
+   "domain": "duct",
+   "system": "OtherAir",
+   "solid": "Fresh Spigot",
+   "side": "left",
+   "width": 800,
+   "height": 600,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Return",
+   "domain": "duct",
+   "system": "ReturnAir",
+   "solid": "Return Spigot",
+   "side": "top",
+   "width": 800,
+   "height": 600,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Exhaust",
+   "domain": "duct",
+   "system": "ExhaustAir",
+   "solid": "Exhaust Spigot",
+   "side": "left",
+   "width": 800,
+   "height": 600,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Condensate",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Drain Stub",
+   "side": "front",
+   "diameter": 32,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Casing",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  }
+ ],
+ "values": {
+  "Casing 5000 x 1600 x 2100 mm": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "typical 2.5 m3/s theatre AHU"
+  },
+  "Load 15 kVA": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "engineer confirms"
+  },
+  "Spigots 800 x 600 mm": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}
