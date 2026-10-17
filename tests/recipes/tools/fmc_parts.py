@@ -46,6 +46,14 @@ def kit_params(category):
         except Exception: _kit['p'] = {}
     ost = CAT_OST.get(category, "OST_GenericModel"); ost = ost if any(ost in p.get('categories', []) for p in _kit['p'].values()) else CAT_PROXY.get(ost, "OST_GenericModel")
     return {n: p for n, p in _kit['p'].items() if p.get('binding') in ('Type', 'Instance') and ost in p.get('categories', [])}
+HC_PACK = os.environ.get("FMC_HC_PACK", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "healthcare", "healthcare_pack.json"))
+def catalogue_kn(family):
+    """The keynote the catalogue gives the family (healthcare_pack.json 'kn'), when the product file has none."""
+    if 'c' not in _kit:
+        try: _kit['c'] = {f['family']: f.get('kn', '') for f in json.load(open(HC_PACK, encoding='utf-8'))['families']}
+        except Exception: _kit['c'] = {}
+    return _kit['c'].get(family, '')
+
 def keynote_text(code):
     if 'k' not in _kit:
         _kit['k'] = {}
@@ -67,6 +75,15 @@ def hexrgb(h):
 
 # ---------------------------------------------------------------- outlines
 def circle(cx, cy, r, n=24): return [[round(cx + r * math.cos(2 * math.pi * k / n), 2), round(cy + r * math.sin(2 * math.pi * k / n), 2)] for k in range(n)]
+MIN_EDGE = 1.0   # mm: Revit refuses edges under its ShortCurveTolerance (~0.8 mm), so outlines keep 1 mm or more
+def clean(pts):
+    """Drop points closer than MIN_EDGE to the last kept one (and to the first), so no edge is too short for Revit."""
+    out = []
+    for q in pts:
+        if not out or math.dist(q, out[-1]) >= MIN_EDGE: out.append(q)
+    while len(out) > 3 and math.dist(out[-1], out[0]) < MIN_EDGE: out.pop()
+    return out
+
 def rrect(x0, y0, x1, y1, r=0, n=4):
     r = max(0, min(r, (x1 - x0) / 2 - 0.01, (y1 - y0) / 2 - 0.01))
     if r <= 0.5: return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
@@ -147,7 +164,7 @@ def compile_product(prod, kn_lookup=None):
     # owner, 17 Oct: every shared parameter the kit binds to this category, as the kit binds it (SPR-005/006/016/021);
     # brand and model stay blank for review (supplier: kit change request FMC_Supplier)
     for n, p in kp.items(): ops.append({"op": "add_shared_param", "name": n, "guid": p['guid'], "instance": p['binding'] == 'Instance'})
-    kn = prod.get('keynote') or (kn_lookup or {}).get(prod['family'], '')
+    kn = prod.get('keynote') or (kn_lookup or {}).get(prod['family'], '') or catalogue_kn(prod['family'])
     ref = prod.get('reference', {})
     for t in prod['types']:
         tn = t['name']; ops.append({"op": "add_type", "name": tn})
@@ -230,12 +247,15 @@ def solid_ops(p, g, sub, matparam, lod):
     if g['kind'] == 'turn':
         prof = g['profile']
         if g['axis'] == 'y': prof = [[r, -t] for r, t in prof]   # engine: axis y depth runs toward -y (room side)
-        o = {"op": "revolution", "name": name, "profile": prof, "axis_at": g['c'], "axis": g['axis']}
+        o = {"op": "revolution", "name": name, "profile": clean(prof), "axis_at": g['c'], "axis": g['axis']}
         if sub: o['subcategory'] = sub
         ops = [o]
     else:
-        o = {"op": "void_extrusion" if void else "extrusion", "name": name, "points": g['pts'], "start": round(g['a'], 2), "end": round(g['b'], 2)}
+        o = {"op": "void_extrusion" if void else "extrusion", "name": name, "points": clean(g['pts']), "start": round(g['a'], 2), "end": round(g['b'], 2)}
         if g['kind'] == 'front': o['sketch'] = 'front'; o['start'], o['end'] = round(-g['b'], 2), round(-g['a'], 2)
+        if abs(o['end'] - o['start']) < MIN_EDGE:   # thin marks and labels: at least 1 mm deep, grown away from the body
+            if o['start'] <= o['end']: o['start'] = round(o['end'] - MIN_EDGE, 2)
+            else: o['start'] = round(o['end'] + MIN_EDGE, 2)
         if g['kind'] == 'right': o['sketch'] = 'right'
         ops = [o]
         if sub and not void: ops.append({"op": "set_subcategory", "name": name, "subcategory": sub})
