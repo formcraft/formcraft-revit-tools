@@ -1,0 +1,331 @@
+{
+ "family": "FMC_E_ElecFixture_Intercom_Door",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Door entry intercom panel, stainless, camera with IR, speaker, name window, illuminated call button, rain hood",
+ "ifc": "IfcCommunicationsAppliance",
+ "keynote": "E.NCS_04",
+ "types": [
+  {
+   "name": "110x250_Audio",
+   "values": {}
+  },
+  {
+   "name": "110x250_Video",
+   "values": {}
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1000
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "screen": "FMC_Plastic_ABS_Black",
+  "black": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "ledblue": "FMC_Plastic_LED_Blue"
+ },
+ "reference": {
+  "query": "intercom door electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=intercom+door+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -50,
+    0,
+    5,
+    50,
+    45,
+    245
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Panel",
+   "shape": "fbox",
+   "at": [
+    -55,
+    -12,
+    0,
+    55,
+    0,
+    250
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Rain Hood",
+   "shape": "fbox",
+   "at": [
+    -55,
+    -30,
+    240,
+    55,
+    -12,
+    250
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Camera Window",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    210
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     14,
+     -12
+    ],
+    [
+     14,
+     -14
+    ],
+    [
+     0,
+     -14
+    ]
+   ],
+   "mat": "screen",
+   "lod": "mf"
+  },
+  {
+   "n": "Camera Lens",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    210
+   ],
+   "profile": [
+    [
+     0,
+     -14
+    ],
+    [
+     6,
+     -14
+    ],
+    [
+     6,
+     -15
+    ],
+    [
+     0,
+     -15
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "IR LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -22,
+    210
+   ],
+   "r": 3,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "red",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     44,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Speaker Slot",
+   "shape": "fbox",
+   "at": [
+    -25,
+    -13,
+    150,
+    25,
+    -12,
+    154
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 1,
+   "repeat": {
+    "n": 5,
+    "d": [
+     0,
+     0,
+     8
+    ]
+   }
+  },
+  {
+   "n": "Name Window",
+   "shape": "fbox",
+   "at": [
+    -38,
+    -13,
+    90,
+    38,
+    -12,
+    130
+   ],
+   "mat": "pc",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Call Button",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     16,
+     -12
+    ],
+    [
+     16,
+     -16
+    ],
+    [
+     13,
+     -19
+    ],
+    [
+     0,
+     -19
+    ]
+   ],
+   "mat": "chrome",
+   "lod": "mf"
+  },
+  {
+   "n": "Call Button Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     16,
+     -12
+    ],
+    [
+     19,
+     -12
+    ],
+    [
+     19,
+     -14
+    ],
+    [
+     16,
+     -14
+    ]
+   ],
+   "mat": "ledblue",
+   "lod": "f"
+  },
+  {
+   "n": "Mic Hole",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    25
+   ],
+   "r": 1.5,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Security Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -45,
+    12
+   ],
+   "r": 2.5,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     90,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Communication",
+   "domain": "electrical",
+   "system": "Communication",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Panel 110 x 250 x 12 mm on flush box": {
+   "value": "110x250",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Camera on video type": {
+   "value": "video",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Call button at 1100 mm": {
+   "value": 1100,
+   "source_status": "assumed",
+   "source": "Approved Document M"
+  }
+ },
+ "about": "Intercom: back box, stainless panel with rain hood, camera window and lens with IR LEDs, speaker slots, name window, illuminated call button, mic hole, security screws. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

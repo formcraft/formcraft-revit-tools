@@ -1,0 +1,404 @@
+{
+ "family": "FMC_C_SiteFurniture_Parking_Bay_Accessible",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Accessible parking bay 2400 x 5000 with a 1200 hatched transfer zone, blue surface, wheelchair symbol, wheel stop and sign",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "T.MRK_02",
+ "types": [
+  {
+   "name": "3600x5000_Accessible"
+  }
+ ],
+ "materials": {
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "white": "FMC_Paint_RoadMarking_White",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "kerb": "FMC_Concrete_Kerb_Precast",
+  "abswhite": "FMC_Plastic_ABS_White"
+ },
+ "parts": [
+  {
+   "n": "Bay Surface",
+   "shape": "box",
+   "at": [
+    -1800,
+    -2500,
+    0,
+    600,
+    2500,
+    2
+   ],
+   "mat": "blue"
+  },
+  {
+   "n": "Side Line Left",
+   "shape": "box",
+   "at": [
+    -1800,
+    -2500,
+    0,
+    -1700,
+    2500,
+    3
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Side Line Right",
+   "shape": "box",
+   "at": [
+    1700,
+    -2500,
+    0,
+    1800,
+    2500,
+    3
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Divider Line",
+   "shape": "box",
+   "at": [
+    550,
+    -2500,
+    0,
+    650,
+    2500,
+    3
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Head Line",
+   "shape": "box",
+   "at": [
+    -1800,
+    2400,
+    0,
+    1800,
+    2500,
+    3
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Hatch Stripe",
+   "shape": "prism",
+   "pts": [
+    [
+     650,
+     -2400
+    ],
+    [
+     650,
+     -2250
+    ],
+    [
+     1700,
+     -1200
+    ],
+    [
+     1700,
+     -1350
+    ]
+   ],
+   "z": [
+    0,
+    3
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     1000,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Symbol Head",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -760,
+    650
+   ],
+   "r": 110,
+   "z": [
+    2,
+    4
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Symbol Back",
+   "shape": "prism",
+   "pts": [
+    [
+     -695.0,
+     515.0
+    ],
+    [
+     -825.0,
+     515.0
+    ],
+    [
+     -825.0,
+     -215.0
+    ],
+    [
+     -695.0,
+     -215.0
+    ]
+   ],
+   "z": [
+    2,
+    4
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Symbol Seat",
+   "shape": "prism",
+   "pts": [
+    [
+     -820.0,
+     -90.0
+    ],
+    [
+     -820.0,
+     -210.0
+    ],
+    [
+     -270.0,
+     -210.0
+    ],
+    [
+     -270.0,
+     -90.0
+    ]
+   ],
+   "z": [
+    2,
+    4
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Symbol Leg",
+   "shape": "prism",
+   "pts": [
+    [
+     -289.98,
+     -83.3
+    ],
+    [
+     -396.7,
+     -109.98
+    ],
+    [
+     -270.02,
+     -616.7
+    ],
+    [
+     -163.3,
+     -590.02
+    ]
+   ],
+   "z": [
+    2,
+    4
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Symbol Arm",
+   "shape": "prism",
+   "pts": [
+    [
+     -810.0,
+     300.0
+    ],
+    [
+     -810.0,
+     200.0
+    ],
+    [
+     -410.0,
+     200.0
+    ],
+    [
+     -410.0,
+     300.0
+    ]
+   ],
+   "z": [
+    2,
+    4
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Symbol Wheel",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -700,
+    -330
+   ],
+   "profile": [
+    [
+     330,
+     2
+    ],
+    [
+     420,
+     2
+    ],
+    [
+     420,
+     4
+    ],
+    [
+     330,
+     4
+    ]
+   ],
+   "mat": "white",
+   "seg": 40
+  },
+  {
+   "n": "Wheel Stop",
+   "shape": "box",
+   "at": [
+    -1200,
+    1900,
+    0,
+    0,
+    2050,
+    100
+   ],
+   "mat": "kerb"
+  },
+  {
+   "n": "Wheel Stop Band",
+   "shape": "box",
+   "at": [
+    -1000,
+    1899,
+    20,
+    -800,
+    2051,
+    101
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Sign Post",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -600,
+    2750
+   ],
+   "r": 38,
+   "z": [
+    0,
+    2400
+   ],
+   "mat": "galv",
+   "seg": 16
+  },
+  {
+   "n": "Sign Plate",
+   "shape": "fbox",
+   "at": [
+    -825,
+    2700,
+    1800,
+    -375,
+    2710,
+    2400
+   ],
+   "mat": "blue"
+  },
+  {
+   "n": "Sign Symbol",
+   "shape": "fbox",
+   "at": [
+    -700,
+    2698,
+    1950,
+    -500,
+    2700,
+    2250
+   ],
+   "mat": "abswhite",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "site furniture parking bay accessible site hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=site+furniture+parking+bay+accessible+site+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Bay 2400 + 1200 transfer zone, 5000 long": {
+   "value": "3600x5000",
+   "source_status": "assumed",
+   "source": "typical (BS 8300-1 / KS ISO 21542 practice)"
+  },
+  "Lines 100 mm white": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Rear access zone 1200 mm": {
+   "value": 1200,
+   "source_status": "assumed",
+   "source": "BS 8300-1 practice"
+  }
+ },
+ "about": "Ground at z = 0, entry at -y: blue bay surface, side, divider and head lines, four hatch stripes in the transfer zone, wheelchair symbol, wheel stop with yellow bands (Fine), sign post with blue plate. Transfer and rear zones are clearances.",
+ "clearances": [
+  {
+   "n": "Transfer Zone",
+   "shape": "box",
+   "at": [
+    600,
+    -2500,
+    0,
+    1800,
+    2500,
+    10
+   ],
+   "sub": "Clearance Accessibility"
+  },
+  {
+   "n": "Rear Access Zone",
+   "shape": "box",
+   "at": [
+    -1800,
+    -3700,
+    0,
+    1800,
+    -2500,
+    10
+   ],
+   "sub": "Clearance Accessibility"
+  }
+ ]
+}

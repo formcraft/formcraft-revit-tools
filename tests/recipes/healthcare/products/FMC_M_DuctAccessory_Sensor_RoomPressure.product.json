@@ -1,0 +1,249 @@
+{
+ "family": "FMC_M_DuctAccessory_Sensor_RoomPressure",
+ "category": "Duct Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Room pressure monitor with display at the room door, differential pressure reading, green / amber / red status LEDs, mute and test buttons, reference port",
+ "ifc": "IfcSensor",
+ "keynote": "H.CTL_00",
+ "types": [
+  {
+   "name": "140x140_Wall"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1600
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledb": "FMC_Plastic_LED_Blue",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "duct accessory sensor room pressure duct accessories hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=duct+accessory+sensor+room+pressure+duct+accessories+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -38,
+    0,
+    32,
+    38,
+    35,
+    108
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Housing",
+   "shape": "fbox",
+   "at": [
+    -70,
+    -38,
+    0,
+    70,
+    0,
+    140
+   ],
+   "mat": "white",
+   "r": 10
+  },
+  {
+   "n": "Display Bezel",
+   "shape": "fbox",
+   "at": [
+    -58,
+    -40,
+    55,
+    58,
+    -38,
+    128
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Display Screen",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -41,
+    64,
+    50,
+    -40,
+    120
+   ],
+   "mat": "ledb",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "LED Green",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -35,
+    38
+   ],
+   "r": 6,
+   "y": [
+    -42,
+    -38
+   ],
+   "mat": "ledg"
+  },
+  {
+   "n": "LED Amber",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    38
+   ],
+   "r": 6,
+   "y": [
+    -42,
+    -38
+   ],
+   "mat": "yellow"
+  },
+  {
+   "n": "LED Red",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    35,
+    38
+   ],
+   "r": 6,
+   "y": [
+    -42,
+    -38
+   ],
+   "mat": "ledr"
+  },
+  {
+   "n": "Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -35,
+    15
+   ],
+   "r": 7,
+   "y": [
+    -41,
+    -38
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     35,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Sounder Slot",
+   "shape": "fbox",
+   "at": [
+    48,
+    -39,
+    8,
+    62,
+    -38,
+    10
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     5
+    ]
+   }
+  },
+  {
+   "n": "Reference Port",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -55,
+    -19
+   ],
+   "r": 3,
+   "z": [
+    -6,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Screw Cover",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -62,
+    130
+   ],
+   "r": 3,
+   "y": [
+    -39,
+    -38
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     124,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Housing 140 x 140 x 38 mm": {
+   "value": "140x140x38",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Range plus or minus 50 Pa, alarm at set point": {
+   "value": "50Pa",
+   "source_status": "assumed",
+   "source": "HTM 03-01 isolation room monitoring"
+  },
+  "Mounting height 1600 mm beside door": {
+   "value": 1600,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: white housing on a back box, display with bezel, three status LEDs, three buttons, sounder slots, reference port, screw covers."
+}

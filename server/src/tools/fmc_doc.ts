@@ -50,13 +50,17 @@ function kitManifest(cfg: GuardConfig): { kit?: string; revision?: string } {
 export const FMC_DOC_DESCRIPTION =
   "Formcraft asset builder engine (plan B1), sessions. open: a background family from a family template (.rft) in the " +
     "template roots, or a family file in staging (_Staging, _ChainTests); returns a session id and what the document holds. " +
-    "report: what an open session holds (category, parameters, types, reference planes, solids, connectors, warnings). " +
-    "screenshot: PNGs of its 3D and front views to the reports folder. save: to an .rfa in the write roots under a name " +
+    "report: what an open session holds (category, parameters, types, reference planes, warnings, and each solid's name, kind, " +
+    "subcategory, detail-level visibility and box in mm, each connector's domain, system, size, origin and facing, nested families " +
+    "and the overall extents, F-056). " +
+    "screenshot: PNGs of its 3D, front and plan views to the reports folder, each cropped to the family's own geometry, " +
+    "at a detail level (coarse, medium, fine or all three) and style (shaded, hidden, wireframe, realistic), with reference planes, " +
+    "levels and dimensions hidden (F-055). save: to an .rfa in the write roots under a name " +
     "the naming rules accept, with <name>.build.json beside it. close: discards unsaved changes. background (read-only): the " +
     "sessions Revit holds, which close may close, and other background family documents. Never a project or " +
     "workshared model; sessions idle for 30 minutes close by themselves. flex: every type regenerated in turn, constraint errors per type (nothing kept). apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); set_type_image: a product picture from 04_Families as the built-in Type Image of every type (shows in Type Properties, schedules and legends); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
@@ -68,6 +72,9 @@ export const FMC_DOC_SHAPE = {
   session: z.string().optional().default(""),
   path: z.string().optional().default("").describe("save: the target .rfa (inside the write roots, named by the rules)"),
   overwrite: z.boolean().optional().default(false).describe("save: replace an existing file (a person decided)"),
+  detail_level: z.enum(["coarse", "medium", "fine", "all"]).optional().default("fine").describe("screenshot: detail level; all gives one image per level"),
+  style: z.enum(["shaded", "hidden", "wireframe", "realistic"]).optional().default("shaded").describe("screenshot: visual style"),
+  views: z.array(z.enum(["3d", "front", "right", "plan"])).optional().default(["3d", "front", "plan"]).describe("screenshot: which views"),
 };
 
 export type FmcDocArgs = z.infer<z.ZodObject<typeof FMC_DOC_SHAPE>>;
@@ -98,8 +105,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (args.action === "screenshot") {
       const folder = win.join(expandEnv(config.reports_dir), "Screenshots");
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_screenshot", { session: s.id, folder }, 120000));
-      return reply({ session: s.id, files: r?.files ?? [] });
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_screenshot", { session: s.id, folder, detail_level: args.detail_level, style: args.style, views: args.views }, 180000));
+      return reply({ session: s.id, files: r?.files ?? [], extents_mm: r?.extents_mm ?? null, notes: r?.notes ?? [] });
     }
 
     if (args.action === "apply") {

@@ -1,0 +1,2003 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireAlarm_Interface_Module",
+ "template": "Metric Generic Model.rft",
+ "about": "Interface module modelled as a generic product: back box and cover, label window, status and active LEDs, address switch, cable glands, screws, terminal warning label. Used for AHU shutdown and lift recall. Geometry drawn for Input_Module; the other types share it (sizes in the values). Reference: query: interface module fire alarm devices hospital; images: https://www.google.com/search?tbm=isch&q=interface+module+fire+alarm+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Fire Alarm Devices"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "Input_Module"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Cost_Unit",
+   "type": "Input_Module",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Geometry_Stage",
+   "type": "Input_Module",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/IfcExportAs",
+   "type": "Input_Module",
+   "param": "IfcExportAs",
+   "value": "IfcAlarm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/Description",
+   "type": "Input_Module",
+   "param": "Description",
+   "value": "Addressable fire alarm interface module (input or relay output) in a surface back box, 150 x 150 x 45, LEDs, address switch, glands"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/Keynote",
+   "type": "Input_Module",
+   "param": "Keynote",
+   "value": "V.FAL_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Keynote_Code",
+   "type": "Input_Module",
+   "param": "FMC_Keynote_Code",
+   "value": "V.FAL_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Code_Description",
+   "type": "Input_Module",
+   "param": "FMC_Code_Description",
+   "value": "Interface Module: I/O module for AHU shutdown and lifts"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Code_Group",
+   "type": "Input_Module",
+   "param": "FMC_Code_Group",
+   "value": "V.FAL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/FMC_Role_Code",
+   "type": "Input_Module",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Input_Module/Default Elevation",
+   "type": "Input_Module",
+   "param": "Default Elevation",
+   "value": 1800
+  },
+  {
+   "op": "add_type",
+   "name": "Output_Module"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Cost_Unit",
+   "type": "Output_Module",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Geometry_Stage",
+   "type": "Output_Module",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/IfcExportAs",
+   "type": "Output_Module",
+   "param": "IfcExportAs",
+   "value": "IfcAlarm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/Description",
+   "type": "Output_Module",
+   "param": "Description",
+   "value": "Addressable fire alarm interface module (input or relay output) in a surface back box, 150 x 150 x 45, LEDs, address switch, glands"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/Keynote",
+   "type": "Output_Module",
+   "param": "Keynote",
+   "value": "V.FAL_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Keynote_Code",
+   "type": "Output_Module",
+   "param": "FMC_Keynote_Code",
+   "value": "V.FAL_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Code_Description",
+   "type": "Output_Module",
+   "param": "FMC_Code_Description",
+   "value": "Interface Module: I/O module for AHU shutdown and lifts"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Code_Group",
+   "type": "Output_Module",
+   "param": "FMC_Code_Group",
+   "value": "V.FAL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/FMC_Role_Code",
+   "type": "Output_Module",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "Output_Module/Default Elevation",
+   "type": "Output_Module",
+   "param": "Default Elevation",
+   "value": 1800
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -75.0,
+     -46
+    ],
+    [
+     75.0,
+     -46
+    ],
+    [
+     75.0,
+     0.0
+    ],
+    [
+     -75.0,
+     0.0
+    ]
+   ],
+   "start": -14,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Box",
+   "points": [
+    [
+     69.0,
+     -35.0
+    ],
+    [
+     71.3,
+     -34.54
+    ],
+    [
+     73.24,
+     -33.24
+    ],
+    [
+     74.54,
+     -31.3
+    ],
+    [
+     75.0,
+     -29.0
+    ],
+    [
+     75.0,
+     -6.0
+    ],
+    [
+     74.54,
+     -3.7
+    ],
+    [
+     73.24,
+     -1.76
+    ],
+    [
+     71.3,
+     -0.46
+    ],
+    [
+     69.0,
+     0.0
+    ],
+    [
+     -69.0,
+     0.0
+    ],
+    [
+     -71.3,
+     -0.46
+    ],
+    [
+     -73.24,
+     -1.76
+    ],
+    [
+     -74.54,
+     -3.7
+    ],
+    [
+     -75.0,
+     -6.0
+    ],
+    [
+     -75.0,
+     -29.0
+    ],
+    [
+     -74.54,
+     -31.3
+    ],
+    [
+     -73.24,
+     -33.24
+    ],
+    [
+     -71.3,
+     -34.54
+    ],
+    [
+     -69.0,
+     -35.0
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Box",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Box",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover",
+   "points": [
+    [
+     64.0,
+     3.0
+    ],
+    [
+     67.06,
+     3.61
+    ],
+    [
+     69.66,
+     5.34
+    ],
+    [
+     71.39,
+     7.94
+    ],
+    [
+     72.0,
+     11.0
+    ],
+    [
+     72.0,
+     139.0
+    ],
+    [
+     71.39,
+     142.06
+    ],
+    [
+     69.66,
+     144.66
+    ],
+    [
+     67.06,
+     146.39
+    ],
+    [
+     64.0,
+     147.0
+    ],
+    [
+     -64.0,
+     147.0
+    ],
+    [
+     -67.06,
+     146.39
+    ],
+    [
+     -69.66,
+     144.66
+    ],
+    [
+     -71.39,
+     142.06
+    ],
+    [
+     -72.0,
+     139.0
+    ],
+    [
+     -72.0,
+     11.0
+    ],
+    [
+     -71.39,
+     7.94
+    ],
+    [
+     -69.66,
+     5.34
+    ],
+    [
+     -67.06,
+     3.61
+    ],
+    [
+     -64.0,
+     3.0
+    ]
+   ],
+   "start": 35,
+   "end": 45,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Window",
+   "points": [
+    [
+     47.0,
+     100.0
+    ],
+    [
+     48.15,
+     100.23
+    ],
+    [
+     49.12,
+     100.88
+    ],
+    [
+     49.77,
+     101.85
+    ],
+    [
+     50.0,
+     103.0
+    ],
+    [
+     50.0,
+     127.0
+    ],
+    [
+     49.77,
+     128.15
+    ],
+    [
+     49.12,
+     129.12
+    ],
+    [
+     48.15,
+     129.77
+    ],
+    [
+     47.0,
+     130.0
+    ],
+    [
+     -47.0,
+     130.0
+    ],
+    [
+     -48.15,
+     129.77
+    ],
+    [
+     -49.12,
+     129.12
+    ],
+    [
+     -49.77,
+     128.15
+    ],
+    [
+     -50.0,
+     127.0
+    ],
+    [
+     -50.0,
+     103.0
+    ],
+    [
+     -49.77,
+     101.85
+    ],
+    [
+     -49.12,
+     100.88
+    ],
+    [
+     -48.15,
+     100.23
+    ],
+    [
+     -47.0,
+     100.0
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Window",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Window",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Window",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED Status",
+   "points": [
+    [
+     -37.0,
+     75.0
+    ],
+    [
+     -37.1,
+     75.78
+    ],
+    [
+     -37.4,
+     76.5
+    ],
+    [
+     -37.88,
+     77.12
+    ],
+    [
+     -38.5,
+     77.6
+    ],
+    [
+     -39.22,
+     77.9
+    ],
+    [
+     -40.0,
+     78.0
+    ],
+    [
+     -40.78,
+     77.9
+    ],
+    [
+     -41.5,
+     77.6
+    ],
+    [
+     -42.12,
+     77.12
+    ],
+    [
+     -42.6,
+     76.5
+    ],
+    [
+     -42.9,
+     75.78
+    ],
+    [
+     -43.0,
+     75.0
+    ],
+    [
+     -42.9,
+     74.22
+    ],
+    [
+     -42.6,
+     73.5
+    ],
+    [
+     -42.12,
+     72.88
+    ],
+    [
+     -41.5,
+     72.4
+    ],
+    [
+     -40.78,
+     72.1
+    ],
+    [
+     -40.0,
+     72.0
+    ],
+    [
+     -39.22,
+     72.1
+    ],
+    [
+     -38.5,
+     72.4
+    ],
+    [
+     -37.88,
+     72.88
+    ],
+    [
+     -37.4,
+     73.5
+    ],
+    [
+     -37.1,
+     74.22
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED Status",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED Status",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED Status",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED Active",
+   "points": [
+    [
+     -17.0,
+     75.0
+    ],
+    [
+     -17.1,
+     75.78
+    ],
+    [
+     -17.4,
+     76.5
+    ],
+    [
+     -17.88,
+     77.12
+    ],
+    [
+     -18.5,
+     77.6
+    ],
+    [
+     -19.22,
+     77.9
+    ],
+    [
+     -20.0,
+     78.0
+    ],
+    [
+     -20.78,
+     77.9
+    ],
+    [
+     -21.5,
+     77.6
+    ],
+    [
+     -22.12,
+     77.12
+    ],
+    [
+     -22.6,
+     76.5
+    ],
+    [
+     -22.9,
+     75.78
+    ],
+    [
+     -23.0,
+     75.0
+    ],
+    [
+     -22.9,
+     74.22
+    ],
+    [
+     -22.6,
+     73.5
+    ],
+    [
+     -22.12,
+     72.88
+    ],
+    [
+     -21.5,
+     72.4
+    ],
+    [
+     -20.78,
+     72.1
+    ],
+    [
+     -20.0,
+     72.0
+    ],
+    [
+     -19.22,
+     72.1
+    ],
+    [
+     -18.5,
+     72.4
+    ],
+    [
+     -17.88,
+     72.88
+    ],
+    [
+     -17.4,
+     73.5
+    ],
+    [
+     -17.1,
+     74.22
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED Active",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED Active",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED Active",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Address Switch",
+   "points": [
+    [
+     49.0,
+     66.0
+    ],
+    [
+     49.38,
+     66.08
+    ],
+    [
+     49.71,
+     66.29
+    ],
+    [
+     49.92,
+     66.62
+    ],
+    [
+     50.0,
+     67.0
+    ],
+    [
+     50.0,
+     83.0
+    ],
+    [
+     49.92,
+     83.38
+    ],
+    [
+     49.71,
+     83.71
+    ],
+    [
+     49.38,
+     83.92
+    ],
+    [
+     49.0,
+     84.0
+    ],
+    [
+     1.0,
+     84.0
+    ],
+    [
+     0.62,
+     83.92
+    ],
+    [
+     0.29,
+     83.71
+    ],
+    [
+     0.08,
+     83.38
+    ],
+    [
+     0.0,
+     83.0
+    ],
+    [
+     0.0,
+     67.0
+    ],
+    [
+     0.08,
+     66.62
+    ],
+    [
+     0.29,
+     66.29
+    ],
+    [
+     0.62,
+     66.08
+    ],
+    [
+     1.0,
+     66.0
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Address Switch",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Address Switch",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Address Switch",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Gland 1",
+   "points": [
+    [
+     -42.0,
+     -18.0
+    ],
+    [
+     -42.27,
+     -15.93
+    ],
+    [
+     -43.07,
+     -14.0
+    ],
+    [
+     -44.34,
+     -12.34
+    ],
+    [
+     -46.0,
+     -11.07
+    ],
+    [
+     -47.93,
+     -10.27
+    ],
+    [
+     -50.0,
+     -10.0
+    ],
+    [
+     -52.07,
+     -10.27
+    ],
+    [
+     -54.0,
+     -11.07
+    ],
+    [
+     -55.66,
+     -12.34
+    ],
+    [
+     -56.93,
+     -14.0
+    ],
+    [
+     -57.73,
+     -15.93
+    ],
+    [
+     -58.0,
+     -18.0
+    ],
+    [
+     -57.73,
+     -20.07
+    ],
+    [
+     -56.93,
+     -22.0
+    ],
+    [
+     -55.66,
+     -23.66
+    ],
+    [
+     -54.0,
+     -24.93
+    ],
+    [
+     -52.07,
+     -25.73
+    ],
+    [
+     -50.0,
+     -26.0
+    ],
+    [
+     -47.93,
+     -25.73
+    ],
+    [
+     -46.0,
+     -24.93
+    ],
+    [
+     -44.34,
+     -23.66
+    ],
+    [
+     -43.07,
+     -22.0
+    ],
+    [
+     -42.27,
+     -20.07
+    ]
+   ],
+   "start": -14,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Gland 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Gland 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Gland 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Gland 2",
+   "points": [
+    [
+     8.0,
+     -18.0
+    ],
+    [
+     7.73,
+     -15.93
+    ],
+    [
+     6.93,
+     -14.0
+    ],
+    [
+     5.66,
+     -12.34
+    ],
+    [
+     4.0,
+     -11.07
+    ],
+    [
+     2.07,
+     -10.27
+    ],
+    [
+     0.0,
+     -10.0
+    ],
+    [
+     -2.07,
+     -10.27
+    ],
+    [
+     -4.0,
+     -11.07
+    ],
+    [
+     -5.66,
+     -12.34
+    ],
+    [
+     -6.93,
+     -14.0
+    ],
+    [
+     -7.73,
+     -15.93
+    ],
+    [
+     -8.0,
+     -18.0
+    ],
+    [
+     -7.73,
+     -20.07
+    ],
+    [
+     -6.93,
+     -22.0
+    ],
+    [
+     -5.66,
+     -23.66
+    ],
+    [
+     -4.0,
+     -24.93
+    ],
+    [
+     -2.07,
+     -25.73
+    ],
+    [
+     -0.0,
+     -26.0
+    ],
+    [
+     2.07,
+     -25.73
+    ],
+    [
+     4.0,
+     -24.93
+    ],
+    [
+     5.66,
+     -23.66
+    ],
+    [
+     6.93,
+     -22.0
+    ],
+    [
+     7.73,
+     -20.07
+    ]
+   ],
+   "start": -14,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Gland 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Gland 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Gland 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Gland 3",
+   "points": [
+    [
+     58.0,
+     -18.0
+    ],
+    [
+     57.73,
+     -15.93
+    ],
+    [
+     56.93,
+     -14.0
+    ],
+    [
+     55.66,
+     -12.34
+    ],
+    [
+     54.0,
+     -11.07
+    ],
+    [
+     52.07,
+     -10.27
+    ],
+    [
+     50.0,
+     -10.0
+    ],
+    [
+     47.93,
+     -10.27
+    ],
+    [
+     46.0,
+     -11.07
+    ],
+    [
+     44.34,
+     -12.34
+    ],
+    [
+     43.07,
+     -14.0
+    ],
+    [
+     42.27,
+     -15.93
+    ],
+    [
+     42.0,
+     -18.0
+    ],
+    [
+     42.27,
+     -20.07
+    ],
+    [
+     43.07,
+     -22.0
+    ],
+    [
+     44.34,
+     -23.66
+    ],
+    [
+     46.0,
+     -24.93
+    ],
+    [
+     47.93,
+     -25.73
+    ],
+    [
+     50.0,
+     -26.0
+    ],
+    [
+     52.07,
+     -25.73
+    ],
+    [
+     54.0,
+     -24.93
+    ],
+    [
+     55.66,
+     -23.66
+    ],
+    [
+     56.93,
+     -22.0
+    ],
+    [
+     57.73,
+     -20.07
+    ]
+   ],
+   "start": -14,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Gland 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Gland 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Gland 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Screw 1",
+   "points": [
+    [
+     -59.0,
+     14.0
+    ],
+    [
+     -59.1,
+     14.78
+    ],
+    [
+     -59.4,
+     15.5
+    ],
+    [
+     -59.88,
+     16.12
+    ],
+    [
+     -60.5,
+     16.6
+    ],
+    [
+     -61.22,
+     16.9
+    ],
+    [
+     -62.0,
+     17.0
+    ],
+    [
+     -62.78,
+     16.9
+    ],
+    [
+     -63.5,
+     16.6
+    ],
+    [
+     -64.12,
+     16.12
+    ],
+    [
+     -64.6,
+     15.5
+    ],
+    [
+     -64.9,
+     14.78
+    ],
+    [
+     -65.0,
+     14.0
+    ],
+    [
+     -64.9,
+     13.22
+    ],
+    [
+     -64.6,
+     12.5
+    ],
+    [
+     -64.12,
+     11.88
+    ],
+    [
+     -63.5,
+     11.4
+    ],
+    [
+     -62.78,
+     11.1
+    ],
+    [
+     -62.0,
+     11.0
+    ],
+    [
+     -61.22,
+     11.1
+    ],
+    [
+     -60.5,
+     11.4
+    ],
+    [
+     -59.88,
+     11.88
+    ],
+    [
+     -59.4,
+     12.5
+    ],
+    [
+     -59.1,
+     13.22
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Screw 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Screw 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Screw 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Screw 2",
+   "points": [
+    [
+     65.0,
+     14.0
+    ],
+    [
+     64.9,
+     14.78
+    ],
+    [
+     64.6,
+     15.5
+    ],
+    [
+     64.12,
+     16.12
+    ],
+    [
+     63.5,
+     16.6
+    ],
+    [
+     62.78,
+     16.9
+    ],
+    [
+     62.0,
+     17.0
+    ],
+    [
+     61.22,
+     16.9
+    ],
+    [
+     60.5,
+     16.6
+    ],
+    [
+     59.88,
+     16.12
+    ],
+    [
+     59.4,
+     15.5
+    ],
+    [
+     59.1,
+     14.78
+    ],
+    [
+     59.0,
+     14.0
+    ],
+    [
+     59.1,
+     13.22
+    ],
+    [
+     59.4,
+     12.5
+    ],
+    [
+     59.88,
+     11.88
+    ],
+    [
+     60.5,
+     11.4
+    ],
+    [
+     61.22,
+     11.1
+    ],
+    [
+     62.0,
+     11.0
+    ],
+    [
+     62.78,
+     11.1
+    ],
+    [
+     63.5,
+     11.4
+    ],
+    [
+     64.12,
+     11.88
+    ],
+    [
+     64.6,
+     12.5
+    ],
+    [
+     64.9,
+     13.22
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Screw 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Screw 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Screw 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Warning",
+   "points": [
+    [
+     38.0,
+     22.0
+    ],
+    [
+     38.77,
+     22.15
+    ],
+    [
+     39.41,
+     22.59
+    ],
+    [
+     39.85,
+     23.23
+    ],
+    [
+     40.0,
+     24.0
+    ],
+    [
+     40.0,
+     38.0
+    ],
+    [
+     39.85,
+     38.77
+    ],
+    [
+     39.41,
+     39.41
+    ],
+    [
+     38.77,
+     39.85
+    ],
+    [
+     38.0,
+     40.0
+    ],
+    [
+     -38.0,
+     40.0
+    ],
+    [
+     -38.77,
+     39.85
+    ],
+    [
+     -39.41,
+     39.41
+    ],
+    [
+     -39.85,
+     38.77
+    ],
+    [
+     -40.0,
+     38.0
+    ],
+    [
+     -40.0,
+     24.0
+    ],
+    [
+     -39.85,
+     23.23
+    ],
+    [
+     -39.41,
+     22.59
+    ],
+    [
+     -38.77,
+     22.15
+    ],
+    [
+     -38.0,
+     22.0
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Warning",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Warning",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Warning",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Loop",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "solid": "Back Box",
+   "side": "back"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireAlarm_Interface_Module.png"
+  }
+ ],
+ "values": {
+  "Box 150 x 150 x 45 mm": {
+   "value": "150x150x45",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Input monitored / output 1 A volt-free relay": {
+   "value": "1A relay",
+   "source_status": "assumed",
+   "source": "type names"
+  },
+  "Height 1800 mm beside the plant it controls": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

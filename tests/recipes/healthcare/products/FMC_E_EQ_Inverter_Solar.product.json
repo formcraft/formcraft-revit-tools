@@ -1,0 +1,378 @@
+{
+ "family": "FMC_E_EQ_Inverter_Solar",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Grid-tie / hybrid solar inverter, 3-phase, wall mounted 600 x 700 x 250, LCD, DC isolator, finned heatsink",
+ "ifc": "IfcElectricFlowTreatmentDevice",
+ "keynote": "Z.INV_03",
+ "types": [
+  {
+   "name": "10kW_3Ph",
+   "values": {
+    "Apparent Load": 10000
+   }
+  },
+  {
+   "name": "50kW_3Ph",
+   "values": {
+    "Apparent Load": 50000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 10000,
+  "Number of Poles": 3,
+  "Default Elevation": 1000
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "white": "FMC_Plastic_ABS_White",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "black": "FMC_Plastic_ABS_Black",
+  "screen": "FMC_Plastic_ABS_Black",
+  "green": "FMC_Plastic_LED_Green",
+  "red": "FMC_Plastic_LED_Red",
+  "ledblue": "FMC_Plastic_LED_Blue",
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "inverter solar electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=inverter+solar+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Mounting Bracket",
+   "shape": "box",
+   "at": [
+    -250,
+    -15,
+    150,
+    250,
+    0,
+    550
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -300,
+    -250,
+    0,
+    300,
+    -15,
+    700
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 20
+  },
+  {
+   "n": "Front Panel",
+   "shape": "fbox",
+   "at": [
+    -280,
+    -255,
+    380,
+    280,
+    -250,
+    680
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 12
+  },
+  {
+   "n": "Display Band",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -258,
+    520,
+    200,
+    -255,
+    640
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "LCD",
+   "shape": "fbox",
+   "at": [
+    -170,
+    -260,
+    545,
+    30,
+    -258,
+    615
+   ],
+   "mat": "screen",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Status LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    80,
+    600
+   ],
+   "r": 6,
+   "y": [
+    -260,
+    -258
+   ],
+   "mat": "green",
+   "lod": "f"
+  },
+  {
+   "n": "Fault LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    120,
+    600
+   ],
+   "r": 6,
+   "y": [
+    -260,
+    -258
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Comms LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    160,
+    600
+   ],
+   "r": 6,
+   "y": [
+    -260,
+    -258
+   ],
+   "mat": "ledblue",
+   "lod": "f"
+  },
+  {
+   "n": "Heatsink Fin",
+   "shape": "fbox",
+   "at": [
+    -322,
+    -230,
+    60,
+    -300,
+    -35,
+    640
+   ],
+   "mat": "alu",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     622,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Heatsink Fin Back",
+   "shape": "box",
+   "at": [
+    -322,
+    -200,
+    60,
+    322,
+    -175,
+    640
+   ],
+   "mat": "alu",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     50,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Vent Grille",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -252,
+    80,
+    200,
+    -250,
+    220
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 8
+  },
+  {
+   "n": "Vent Slat",
+   "shape": "fbox",
+   "at": [
+    -195,
+    -253,
+    92,
+    195,
+    -252,
+    98
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     20
+    ]
+   }
+  },
+  {
+   "n": "DC Switch",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    200,
+    -150
+   ],
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     35,
+     0
+    ],
+    [
+     35,
+     -15
+    ],
+    [
+     0,
+     -15
+    ]
+   ],
+   "mat": "black",
+   "lod": "mf"
+  },
+  {
+   "n": "DC Switch Handle",
+   "shape": "fbox",
+   "at": [
+    185,
+    -175,
+    -40,
+    215,
+    -125,
+    -15
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "DC Connector",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -220,
+    -150
+   ],
+   "r": 9,
+   "z": [
+    -30,
+    0
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     40,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "AC Gland",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    80,
+    -150
+   ],
+   "r": 16,
+   "z": [
+    -25,
+    0
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Comms Gland",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    130,
+    -150
+   ],
+   "r": 10,
+   "z": [
+    -20,
+    0
+   ],
+   "mat": "grey",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "AC Out",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "AC Gland",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "Body 600 x 700 x 250 mm": {
+   "value": "600x700x250",
+   "source_status": "assumed",
+   "source": "typical 10-50 kW string inverter; 50 kW body larger, supplier GA"
+  },
+  "Output 10 / 50 kW, 415 V": {
+   "value": "kW",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Bottom at 1000 mm, 500 mm free space above and below": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "inverter installation practice"
+  }
+ },
+ "about": "Inverter: wall bracket, body, front panel with display band, LCD and status/fault/comms LEDs, side and rear heatsink fins, vent grille with slats, DC isolator with red handle, DC connector row, AC and comms glands underneath. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

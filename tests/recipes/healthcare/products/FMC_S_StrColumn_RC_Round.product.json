@@ -1,0 +1,117 @@
+{
+ "family": "FMC_S_StrColumn_RC_Round",
+ "category": "Structural Columns",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete circular column cast in tube formwork, 75 mm kicker",
+ "ifc": "IfcColumn",
+ "keynote": "C.COL_05",
+ "types": [
+  {
+   "name": "400dia_RC",
+   "desc": "RC circular column 400 dia"
+  },
+  {
+   "name": "500dia_RC",
+   "desc": "RC circular column 500 dia"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "mortar": "FMC_Masonry_Mortar_1to4"
+ },
+ "parts": [
+  {
+   "n": "Kicker",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 200,
+   "z": [
+    0,
+    75
+   ],
+   "mat": "conc",
+   "seg": 48
+  },
+  {
+   "n": "Shaft",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 200,
+   "z": [
+    75,
+    3000
+   ],
+   "mat": "conc",
+   "seg": 48
+  },
+  {
+   "n": "Form Seam",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     200,
+     600
+    ],
+    [
+     201,
+     600
+    ],
+    [
+     201,
+     606
+    ],
+    [
+     200,
+     606
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     600
+    ]
+   },
+   "seg": 48
+  }
+ ],
+ "reference": {
+  "query": "str column rc round structural columns hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+column+rc+round+structural+columns+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Diameter 400 mm (smallest type)": {
+   "value": 400,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Kicker 75 mm": {
+   "value": 75,
+   "source_status": "assumed",
+   "source": "typical construction practice"
+  },
+  "Concrete grade and cover from the kit": {
+   "value": "C30 / kit cover",
+   "source_status": "assumed",
+   "source": "FMC kit rulebook; engineer to confirm"
+  }
+ },
+ "about": "Circular RC column as cast in a tube former: kicker, shaft and the faint tube seams (Fine). Geometry shows 400 dia, 3000 high."
+}

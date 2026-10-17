@@ -1,0 +1,174 @@
+{
+ "family": "FMC_E_LightFixture_Emergency_Bulkhead_Maintained",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Emergency LED bulkhead, maintained, 3 h, self-contained with green charge LED and test switch, IP65",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.LED_15",
+ "types": [
+  {
+   "name": "3h_Maintained"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 4,
+  "Default Elevation": 2400
+ },
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "opal": "FMC_Plastic_ABS_White",
+  "green": "FMC_Plastic_LED_Green",
+  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "light fixture emergency bulkhead maintained lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+emergency+bulkhead+maintained+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "fbox",
+   "at": [
+    -170,
+    -55,
+    0,
+    170,
+    0,
+    140
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 30
+  },
+  {
+   "n": "Diffuser",
+   "shape": "fbox",
+   "at": [
+    -160,
+    -80,
+    10,
+    160,
+    -55,
+    130
+   ],
+   "mat": "opal",
+   "lod": "mf",
+   "r": 28
+  },
+  {
+   "n": "Diffuser Crown",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -84,
+    22,
+    145,
+    -80,
+    118
+   ],
+   "mat": "opal",
+   "lod": "f",
+   "r": 24
+  },
+  {
+   "n": "Charge LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    140,
+    20
+   ],
+   "r": 4,
+   "y": [
+    -60,
+    -55
+   ],
+   "mat": "green",
+   "lod": "f"
+  },
+  {
+   "n": "Test Switch",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -58,
+    15,
+    -130,
+    -55,
+    30
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Clip",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -170,
+    70
+   ],
+   "r": 5,
+   "y": [
+    -60,
+    -50
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     340,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Pictogram Strip",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -85,
+    60,
+    60,
+    -84,
+    80
+   ],
+   "mat": "green",
+   "lod": "f",
+   "r": 2
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Base",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Body 340 x 140 x 85 mm": {
+   "value": "340x140x85",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "3 h duration, maintained": {
+   "value": "3h",
+   "source_status": "assumed",
+   "source": "BS 5266-1 for premises with sleeping risk"
+  },
+  "Height 2400 mm": {
+   "value": 2400,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Emergency bulkhead: base, rounded opal diffuser with crown, green charge LED, test switch, side clips, pictogram strip. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

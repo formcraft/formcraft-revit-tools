@@ -1,0 +1,2441 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_Casework_Pharmacy_Shelving_Dispensary",
+ "template": "Metric Generic Model.rft",
+ "about": "Dispensary bay modelled as a generic product: uprights, back panel, plinth, canopy with bay label, base shelf and 7 inclined shelves with clear lips and label rails, blue and yellow dispensing bins and boxed stock (Fine). Geometry is drawn at the 900_Dispensary type; the other types share it until a parametric pass. Reference: query: casework pharmacy shelving dispensary casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+pharmacy+shelving+dispensary+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Casework"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Assembly_Mark",
+   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carcass_Spec",
+   "guid": "c28e7161-7153-5158-8a2d-4ff17c6b96e0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Worktop_Spec",
+   "guid": "dbb29109-d7be-55a5-8c12-9aca51551dc3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "900_Dispensary"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Cost_Unit",
+   "type": "900_Dispensary",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Geometry_Stage",
+   "type": "900_Dispensary",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/IfcExportAs",
+   "type": "900_Dispensary",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/Description",
+   "type": "900_Dispensary",
+   "param": "Description",
+   "value": "Dispensary shelving bay 900, 7 inclined shelves"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/Keynote",
+   "type": "900_Dispensary",
+   "param": "Keynote",
+   "value": "K.PHA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Keynote_Code",
+   "type": "900_Dispensary",
+   "param": "FMC_Keynote_Code",
+   "value": "K.PHA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Code_Description",
+   "type": "900_Dispensary",
+   "param": "FMC_Code_Description",
+   "value": "Pharmacy Shelving Dispensary: Adjustable shelving bays"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Code_Group",
+   "type": "900_Dispensary",
+   "param": "FMC_Code_Group",
+   "value": "K.PHA"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Dispensary/FMC_Role_Code",
+   "type": "900_Dispensary",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "add_type",
+   "name": "1200_Dispensary"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Cost_Unit",
+   "type": "1200_Dispensary",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Geometry_Stage",
+   "type": "1200_Dispensary",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/IfcExportAs",
+   "type": "1200_Dispensary",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/Description",
+   "type": "1200_Dispensary",
+   "param": "Description",
+   "value": "Dispensary shelving bay 1200, 7 inclined shelves"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/Keynote",
+   "type": "1200_Dispensary",
+   "param": "Keynote",
+   "value": "K.PHA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Keynote_Code",
+   "type": "1200_Dispensary",
+   "param": "FMC_Keynote_Code",
+   "value": "K.PHA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Code_Description",
+   "type": "1200_Dispensary",
+   "param": "FMC_Code_Description",
+   "value": "Pharmacy Shelving Dispensary: Adjustable shelving bays"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Code_Group",
+   "type": "1200_Dispensary",
+   "param": "FMC_Code_Group",
+   "value": "K.PHA"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Dispensary/FMC_Role_Code",
+   "type": "1200_Dispensary",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Back",
+   "color": [
+    245,
+    245,
+    243
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Back Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Board_Melamine_White",
+   "param": "Back Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Shelf",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Shelf Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clear",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Clear Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Clear Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Label",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Label Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "Label Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Bin",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bin Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Bin Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Bin2",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bin2 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Box",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Box Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "Box Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Box2",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Box2 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Box2 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -450.0,
+     -352
+    ],
+    [
+     450.0,
+     -352
+    ],
+    [
+     450.0,
+     0
+    ],
+    [
+     -450.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 2130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Upright 1",
+   "points": [
+    [
+     -450.0,
+     -350
+    ],
+    [
+     -425.0,
+     -350
+    ],
+    [
+     -425.0,
+     0
+    ],
+    [
+     -450.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upright 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upright 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upright 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Upright 2",
+   "points": [
+    [
+     425.0,
+     -350
+    ],
+    [
+     450.0,
+     -350
+    ],
+    [
+     450.0,
+     0
+    ],
+    [
+     425.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Upright 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Upright 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Upright 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Panel",
+   "points": [
+    [
+     -425.0,
+     -15
+    ],
+    [
+     425.0,
+     -15
+    ],
+    [
+     425.0,
+     0
+    ],
+    [
+     -425.0,
+     0
+    ]
+   ],
+   "start": 100,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Panel",
+   "subcategory": "Back"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Panel",
+   "param": "Back Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth",
+   "points": [
+    [
+     -425.0,
+     -330
+    ],
+    [
+     425.0,
+     -330
+    ],
+    [
+     425.0,
+     -15
+    ],
+    [
+     -425.0,
+     -15
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Canopy",
+   "points": [
+    [
+     -450.0,
+     -350
+    ],
+    [
+     450.0,
+     -350
+    ],
+    [
+     450.0,
+     0
+    ],
+    [
+     -450.0,
+     0
+    ]
+   ],
+   "start": 2100,
+   "end": 2130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Shelf",
+   "points": [
+    [
+     -425.0,
+     -350
+    ],
+    [
+     425.0,
+     -350
+    ],
+    [
+     425.0,
+     -15
+    ],
+    [
+     -425.0,
+     -15
+    ]
+   ],
+   "start": 100,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Shelf",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Shelf",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Shelf",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1",
+   "points": [
+    [
+     -300,
+     380
+    ],
+    [
+     -15,
+     420
+    ],
+    [
+     -15,
+     432
+    ],
+    [
+     -300,
+     392
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2",
+   "points": [
+    [
+     -300,
+     620
+    ],
+    [
+     -15,
+     660
+    ],
+    [
+     -15,
+     672
+    ],
+    [
+     -300,
+     632
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 3",
+   "points": [
+    [
+     -300,
+     860
+    ],
+    [
+     -15,
+     900
+    ],
+    [
+     -15,
+     912
+    ],
+    [
+     -300,
+     872
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 3",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 3",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 4",
+   "points": [
+    [
+     -300,
+     1100
+    ],
+    [
+     -15,
+     1140
+    ],
+    [
+     -15,
+     1152
+    ],
+    [
+     -300,
+     1112
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 4",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 4",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 5",
+   "points": [
+    [
+     -300,
+     1340
+    ],
+    [
+     -15,
+     1380
+    ],
+    [
+     -15,
+     1392
+    ],
+    [
+     -300,
+     1352
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 5",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 5",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 6",
+   "points": [
+    [
+     -300,
+     1580
+    ],
+    [
+     -15,
+     1620
+    ],
+    [
+     -15,
+     1632
+    ],
+    [
+     -300,
+     1592
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 6",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 6",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 7",
+   "points": [
+    [
+     -300,
+     1820
+    ],
+    [
+     -15,
+     1860
+    ],
+    [
+     -15,
+     1872
+    ],
+    [
+     -300,
+     1832
+    ]
+   ],
+   "start": -425.0,
+   "end": 425.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 7",
+   "subcategory": "Shelf"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 7",
+   "param": "Shelf Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 1",
+   "points": [
+    [
+     -425.0,
+     380
+    ],
+    [
+     425.0,
+     380
+    ],
+    [
+     425.0,
+     420
+    ],
+    [
+     -425.0,
+     420
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 1",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 1",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 2",
+   "points": [
+    [
+     -425.0,
+     620
+    ],
+    [
+     425.0,
+     620
+    ],
+    [
+     425.0,
+     660
+    ],
+    [
+     -425.0,
+     660
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 2",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 2",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 3",
+   "points": [
+    [
+     -425.0,
+     860
+    ],
+    [
+     425.0,
+     860
+    ],
+    [
+     425.0,
+     900
+    ],
+    [
+     -425.0,
+     900
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 3",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 3",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 4",
+   "points": [
+    [
+     -425.0,
+     1100
+    ],
+    [
+     425.0,
+     1100
+    ],
+    [
+     425.0,
+     1140
+    ],
+    [
+     -425.0,
+     1140
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 4",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 4",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 5",
+   "points": [
+    [
+     -425.0,
+     1340
+    ],
+    [
+     425.0,
+     1340
+    ],
+    [
+     425.0,
+     1380
+    ],
+    [
+     -425.0,
+     1380
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 5",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 5",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 6",
+   "points": [
+    [
+     -425.0,
+     1580
+    ],
+    [
+     425.0,
+     1580
+    ],
+    [
+     425.0,
+     1620
+    ],
+    [
+     -425.0,
+     1620
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 6",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 6",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Lip 7",
+   "points": [
+    [
+     -425.0,
+     1820
+    ],
+    [
+     425.0,
+     1820
+    ],
+    [
+     425.0,
+     1860
+    ],
+    [
+     -425.0,
+     1860
+    ]
+   ],
+   "start": 300,
+   "end": 306,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Lip 7",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Lip 7",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Lip 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 1",
+   "points": [
+    [
+     -425.0,
+     365
+    ],
+    [
+     425.0,
+     365
+    ],
+    [
+     425.0,
+     385
+    ],
+    [
+     -425.0,
+     385
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 1",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 1",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 2",
+   "points": [
+    [
+     -425.0,
+     605
+    ],
+    [
+     425.0,
+     605
+    ],
+    [
+     425.0,
+     625
+    ],
+    [
+     -425.0,
+     625
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 2",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 2",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 3",
+   "points": [
+    [
+     -425.0,
+     845
+    ],
+    [
+     425.0,
+     845
+    ],
+    [
+     425.0,
+     865
+    ],
+    [
+     -425.0,
+     865
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 3",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 3",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 4",
+   "points": [
+    [
+     -425.0,
+     1085
+    ],
+    [
+     425.0,
+     1085
+    ],
+    [
+     425.0,
+     1105
+    ],
+    [
+     -425.0,
+     1105
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 4",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 4",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 5",
+   "points": [
+    [
+     -425.0,
+     1325
+    ],
+    [
+     425.0,
+     1325
+    ],
+    [
+     425.0,
+     1345
+    ],
+    [
+     -425.0,
+     1345
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 5",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 5",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 6",
+   "points": [
+    [
+     -425.0,
+     1565
+    ],
+    [
+     425.0,
+     1565
+    ],
+    [
+     425.0,
+     1585
+    ],
+    [
+     -425.0,
+     1585
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 6",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 6",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Rail 7",
+   "points": [
+    [
+     -425.0,
+     1805
+    ],
+    [
+     425.0,
+     1805
+    ],
+    [
+     425.0,
+     1825
+    ],
+    [
+     -425.0,
+     1825
+    ]
+   ],
+   "start": 306,
+   "end": 308,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Rail 7",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Rail 7",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Rail 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 1",
+   "points": [
+    [
+     -410.0,
+     -290
+    ],
+    [
+     -220.0,
+     -290
+    ],
+    [
+     -220.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 1",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 1",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 2",
+   "points": [
+    [
+     -200.0,
+     -290
+    ],
+    [
+     -10.0,
+     -290
+    ],
+    [
+     -10.0,
+     -40
+    ],
+    [
+     -200.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 2",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 2",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 3",
+   "points": [
+    [
+     10.0,
+     -290
+    ],
+    [
+     200.0,
+     -290
+    ],
+    [
+     200.0,
+     -40
+    ],
+    [
+     10.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 3",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 3",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin 4",
+   "points": [
+    [
+     220.0,
+     -290
+    ],
+    [
+     410.0,
+     -290
+    ],
+    [
+     410.0,
+     -40
+    ],
+    [
+     220.0,
+     -40
+    ]
+   ],
+   "start": 395,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin 4",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin 4",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 1",
+   "points": [
+    [
+     -410.0,
+     -285
+    ],
+    [
+     -220.0,
+     -285
+    ],
+    [
+     -220.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 1",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 1",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 2",
+   "points": [
+    [
+     -200.0,
+     -285
+    ],
+    [
+     -10.0,
+     -285
+    ],
+    [
+     -10.0,
+     -40
+    ],
+    [
+     -200.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 2",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 2",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 3",
+   "points": [
+    [
+     10.0,
+     -285
+    ],
+    [
+     200.0,
+     -285
+    ],
+    [
+     200.0,
+     -40
+    ],
+    [
+     10.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 3",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 3",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 2 4",
+   "points": [
+    [
+     220.0,
+     -285
+    ],
+    [
+     410.0,
+     -285
+    ],
+    [
+     410.0,
+     -40
+    ],
+    [
+     220.0,
+     -40
+    ]
+   ],
+   "start": 635,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 2 4",
+   "subcategory": "Bin2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 2 4",
+   "param": "Bin2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 2 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 3",
+   "points": [
+    [
+     -410.0,
+     -270
+    ],
+    [
+     410.0,
+     -270
+    ],
+    [
+     410.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 880,
+   "end": 990
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 3",
+   "subcategory": "Box"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 3",
+   "param": "Box Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 4",
+   "points": [
+    [
+     -410.0,
+     -270
+    ],
+    [
+     370.0,
+     -270
+    ],
+    [
+     370.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 1120,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 4",
+   "subcategory": "Box2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 4",
+   "param": "Box2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 1",
+   "points": [
+    [
+     -410.0,
+     -280
+    ],
+    [
+     -220.0,
+     -280
+    ],
+    [
+     -220.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 1",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 1",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 2",
+   "points": [
+    [
+     -200.0,
+     -280
+    ],
+    [
+     -10.0,
+     -280
+    ],
+    [
+     -10.0,
+     -40
+    ],
+    [
+     -200.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 2",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 2",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 3",
+   "points": [
+    [
+     10.0,
+     -280
+    ],
+    [
+     200.0,
+     -280
+    ],
+    [
+     200.0,
+     -40
+    ],
+    [
+     10.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 3",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 3",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dispensing Bin Row 5 4",
+   "points": [
+    [
+     220.0,
+     -280
+    ],
+    [
+     410.0,
+     -280
+    ],
+    [
+     410.0,
+     -40
+    ],
+    [
+     220.0,
+     -40
+    ]
+   ],
+   "start": 1355,
+   "end": 1480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dispensing Bin Row 5 4",
+   "subcategory": "Bin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dispensing Bin Row 5 4",
+   "param": "Bin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dispensing Bin Row 5 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drug Boxes Row 6",
+   "points": [
+    [
+     -410.0,
+     -270
+    ],
+    [
+     290.0,
+     -270
+    ],
+    [
+     290.0,
+     -40
+    ],
+    [
+     -410.0,
+     -40
+    ]
+   ],
+   "start": 1600,
+   "end": 1710
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drug Boxes Row 6",
+   "subcategory": "Box"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drug Boxes Row 6",
+   "param": "Box Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drug Boxes Row 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bay Label",
+   "points": [
+    [
+     -150,
+     2105
+    ],
+    [
+     150,
+     2105
+    ],
+    [
+     150,
+     2125
+    ],
+    [
+     -150,
+     2125
+    ]
+   ],
+   "start": 350,
+   "end": 352,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bay Label",
+   "subcategory": "Label"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bay Label",
+   "param": "Label Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bay Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Casework_Pharmacy_Shelving_Dispensary.png"
+  }
+ ],
+ "values": {
+  "Bay 900 / 1200 x 350 x 2100 mm": {
+   "value": "900/1200x350x2100",
+   "source_status": "assumed",
+   "source": "record types; typical dispensary shelving"
+  },
+  "Shelf pitch 240 mm, 10 degree incline": {
+   "value": "240/10",
+   "source_status": "assumed",
+   "source": "typical gravity-fed dispensary shelving"
+  }
+ }
+}

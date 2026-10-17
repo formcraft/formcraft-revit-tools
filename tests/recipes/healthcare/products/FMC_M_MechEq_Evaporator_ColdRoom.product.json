@@ -1,0 +1,844 @@
+{
+ "family": "FMC_M_MechEq_Evaporator_ColdRoom",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Cold room evaporator (unit cooler) 2 to 5 kW, low-profile ceiling hung, two front fans with guards, rear finned coil, drip tray with drain, electric defrost",
+ "ifc": "IfcEvaporator",
+ "keynote": "H.CLD_01",
+ "types": [
+  {
+   "name": "2kW_UnitCooler",
+   "values": {
+    "Apparent Load": 800
+   }
+  },
+  {
+   "name": "5kW_UnitCooler",
+   "values": {
+    "Apparent Load": 1500
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 1500,
+  "Default Elevation": 2700
+ },
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "black": "FMC_Plastic_ABS_Black",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "evaporator cold room mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=evaporator+cold+room+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Casing",
+   "shape": "box",
+   "at": [
+    -600,
+    -250,
+    -350,
+    600,
+    250,
+    -50
+   ],
+   "mat": "epw",
+   "r": 6
+  },
+  {
+   "n": "Mounting Rail",
+   "shape": "box",
+   "at": [
+    -620,
+    -200,
+    -50,
+    620,
+    -150,
+    0
+   ],
+   "mat": "epw",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     350,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Coil Face",
+   "shape": "box",
+   "at": [
+    -560,
+    250,
+    -330,
+    560,
+    256,
+    -70
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Coil Guard Bar",
+   "shape": "box",
+   "at": [
+    -560,
+    256,
+    -300,
+    560,
+    260,
+    -294
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     60
+    ]
+   }
+  },
+  {
+   "n": "Drip Tray",
+   "shape": "box",
+   "at": [
+    -620,
+    -265,
+    -385,
+    620,
+    270,
+    -350
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Drain Stub",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    560,
+    0
+   ],
+   "r": 16,
+   "z": [
+    -440,
+    -385
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "End Cover Left",
+   "shape": "box",
+   "at": [
+    -620,
+    -260,
+    -360,
+    -600,
+    260,
+    -40
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "End Cover Right",
+   "shape": "box",
+   "at": [
+    600,
+    -260,
+    -360,
+    620,
+    260,
+    -40
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Terminal Box",
+   "shape": "box",
+   "at": [
+    620,
+    -150,
+    -300,
+    670,
+    0,
+    -160
+   ],
+   "mat": "grey",
+   "r": 4
+  },
+  {
+   "n": "Defrost Heater Gland",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -75,
+    -230
+   ],
+   "r": 8,
+   "x": [
+    670,
+    690
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Opening",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -300,
+    -200
+   ],
+   "r": 135,
+   "y": [
+    -251.5,
+    -250
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Fan Left Bezel",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -300,
+    -200
+   ],
+   "profile": [
+    [
+     135,
+     -258
+    ],
+    [
+     153,
+     -258
+    ],
+    [
+     153,
+     -250
+    ],
+    [
+     135,
+     -250
+    ]
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Fan Left Hub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -300,
+    -200
+   ],
+   "r": 24.3,
+   "y": [
+    -268,
+    -251.5
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Fan Left Blade 1",
+   "shape": "front",
+   "pts": [
+    [
+     -247.51,
+     -87.44
+    ],
+    [
+     -273.12,
+     -78.74
+    ],
+    [
+     -300.0,
+     -75.8
+    ],
+    [
+     -326.88,
+     -78.74
+    ],
+    [
+     -352.49,
+     -87.44
+    ],
+    [
+     -309.64,
+     -180.67
+    ],
+    [
+     -300.57,
+     -178.41
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Blade 2",
+   "shape": "front",
+   "pts": [
+    [
+     -412.56,
+     -147.51
+    ],
+    [
+     -421.26,
+     -173.12
+    ],
+    [
+     -424.2,
+     -200.0
+    ],
+    [
+     -421.26,
+     -226.88
+    ],
+    [
+     -412.56,
+     -252.49
+    ],
+    [
+     -319.33,
+     -209.64
+    ],
+    [
+     -321.59,
+     -200.57
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Blade 3",
+   "shape": "front",
+   "pts": [
+    [
+     -352.49,
+     -312.56
+    ],
+    [
+     -326.88,
+     -321.26
+    ],
+    [
+     -300.0,
+     -324.2
+    ],
+    [
+     -273.12,
+     -321.26
+    ],
+    [
+     -247.51,
+     -312.56
+    ],
+    [
+     -290.36,
+     -219.33
+    ],
+    [
+     -299.43,
+     -221.59
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Blade 4",
+   "shape": "front",
+   "pts": [
+    [
+     -187.44,
+     -252.49
+    ],
+    [
+     -178.74,
+     -226.88
+    ],
+    [
+     -175.8,
+     -200.0
+    ],
+    [
+     -178.74,
+     -173.12
+    ],
+    [
+     -187.44,
+     -147.51
+    ],
+    [
+     -280.67,
+     -190.36
+    ],
+    [
+     -278.41,
+     -199.43
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Guard Outer",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -300,
+    -200
+   ],
+   "profile": [
+    [
+     129,
+     -266
+    ],
+    [
+     137,
+     -266
+    ],
+    [
+     137,
+     -262
+    ],
+    [
+     129,
+     -262
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Guard Inner",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -300,
+    -200
+   ],
+   "profile": [
+    [
+     37.5,
+     -266
+    ],
+    [
+     43.5,
+     -266
+    ],
+    [
+     43.5,
+     -262
+    ],
+    [
+     37.5,
+     -262
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Guard Bar H",
+   "shape": "fbox",
+   "at": [
+    -435,
+    -265,
+    -203,
+    -165,
+    -262,
+    -197
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Left Guard Bar V",
+   "shape": "fbox",
+   "at": [
+    -303,
+    -265,
+    -335,
+    -297,
+    -262,
+    -65
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Opening",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    300,
+    -200
+   ],
+   "r": 135,
+   "y": [
+    -251.5,
+    -250
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Fan Right Bezel",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    300,
+    -200
+   ],
+   "profile": [
+    [
+     135,
+     -258
+    ],
+    [
+     153,
+     -258
+    ],
+    [
+     153,
+     -250
+    ],
+    [
+     135,
+     -250
+    ]
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Fan Right Hub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    300,
+    -200
+   ],
+   "r": 24.3,
+   "y": [
+    -268,
+    -251.5
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Fan Right Blade 1",
+   "shape": "front",
+   "pts": [
+    [
+     352.49,
+     -87.44
+    ],
+    [
+     326.88,
+     -78.74
+    ],
+    [
+     300.0,
+     -75.8
+    ],
+    [
+     273.12,
+     -78.74
+    ],
+    [
+     247.51,
+     -87.44
+    ],
+    [
+     290.36,
+     -180.67
+    ],
+    [
+     299.43,
+     -178.41
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Blade 2",
+   "shape": "front",
+   "pts": [
+    [
+     187.44,
+     -147.51
+    ],
+    [
+     178.74,
+     -173.12
+    ],
+    [
+     175.8,
+     -200.0
+    ],
+    [
+     178.74,
+     -226.88
+    ],
+    [
+     187.44,
+     -252.49
+    ],
+    [
+     280.67,
+     -209.64
+    ],
+    [
+     278.41,
+     -200.57
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Blade 3",
+   "shape": "front",
+   "pts": [
+    [
+     247.51,
+     -312.56
+    ],
+    [
+     273.12,
+     -321.26
+    ],
+    [
+     300.0,
+     -324.2
+    ],
+    [
+     326.88,
+     -321.26
+    ],
+    [
+     352.49,
+     -312.56
+    ],
+    [
+     309.64,
+     -219.33
+    ],
+    [
+     300.57,
+     -221.59
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Blade 4",
+   "shape": "front",
+   "pts": [
+    [
+     412.56,
+     -252.49
+    ],
+    [
+     421.26,
+     -226.88
+    ],
+    [
+     424.2,
+     -200.0
+    ],
+    [
+     421.26,
+     -173.12
+    ],
+    [
+     412.56,
+     -147.51
+    ],
+    [
+     319.33,
+     -190.36
+    ],
+    [
+     321.59,
+     -199.43
+    ]
+   ],
+   "y": [
+    -257,
+    -254
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Guard Outer",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    300,
+    -200
+   ],
+   "profile": [
+    [
+     129,
+     -266
+    ],
+    [
+     137,
+     -266
+    ],
+    [
+     137,
+     -262
+    ],
+    [
+     129,
+     -262
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Guard Inner",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    300,
+    -200
+   ],
+   "profile": [
+    [
+     37.5,
+     -266
+    ],
+    [
+     43.5,
+     -266
+    ],
+    [
+     43.5,
+     -262
+    ],
+    [
+     37.5,
+     -262
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Guard Bar H",
+   "shape": "fbox",
+   "at": [
+    165,
+    -265,
+    -203,
+    435,
+    -262,
+    -197
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Right Guard Bar V",
+   "shape": "fbox",
+   "at": [
+    297,
+    -265,
+    -335,
+    303,
+    -262,
+    -65
+   ],
+   "mat": "dark",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Terminal Box",
+   "side": "right"
+  },
+  {
+   "n": "Condensate",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Drain Stub",
+   "side": "bottom",
+   "diameter": 40,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Unit 1240 x 535 x 385 mm": {
+   "value": "1240x535x385",
+   "source_status": "assumed",
+   "source": "typical 2-5 kW unit cooler"
+  },
+  "Fans 2 x 270 mm": {
+   "value": "2x270",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 0.8 / 1.5 kVA with defrost": {
+   "value": "0.8/1.5kVA",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Coil inlet clearance 300 mm": {
+   "value": 300,
+   "source_status": "assumed",
+   "source": "manufacturer practice"
+  }
+ },
+ "about": "Modelled as a generic product: white casing on two ceiling rails (z = 0), two front fans (bezel, blades, hub, guard), rear finned coil with bars, drip tray and drain, end covers, terminal box with defrost gland."
+}

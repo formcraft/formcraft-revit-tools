@@ -1,0 +1,92 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Profile_Nosing_StairAntiSlip",
+ "template": "Metric Profile.rft",
+ "about": "Aluminium stair nosing 55 x 30 mm with an anti-slip insert channel. A 2D profile for sweeps (rails, coving, nosings); never scheduled.",
+ "ops": [
+  {
+   "op": "add_type",
+   "name": "55x30_Nosing"
+  },
+  {
+   "op": "set_type_value",
+   "name": "55x30_Nosing/Description",
+   "type": "55x30_Nosing",
+   "param": "Description",
+   "value": "Aluminium stair nosing 55 x 30 mm with an anti-slip insert channel"
+  },
+  {
+   "op": "profile_lines",
+   "name": "Section",
+   "start": [
+    0,
+    0
+   ],
+   "segments": [
+    {
+     "to": [
+      55,
+      0
+     ]
+    },
+    {
+     "to": [
+      55,
+      3
+     ]
+    },
+    {
+     "to": [
+      10,
+      3
+     ]
+    },
+    {
+     "to": [
+      10,
+      8
+     ]
+    },
+    {
+     "to": [
+      4,
+      8
+     ]
+    },
+    {
+     "to": [
+      4,
+      30
+     ]
+    },
+    {
+     "to": [
+      0,
+      30
+     ]
+    },
+    {
+     "to": [
+      0,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "values": {
+  "Tread 55 mm": {
+   "value": 55,
+   "source_status": "assumed",
+   "source": "BS 8300 / Approved Doc K: 50-65 mm"
+  },
+  "Riser 30 mm": {
+   "value": 30,
+   "source_status": "assumed",
+   "source": "BS 8300: 30-55 mm"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "profile family: used inside sweeps, never scheduled"
+ }
+}

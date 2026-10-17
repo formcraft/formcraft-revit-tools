@@ -1,0 +1,320 @@
+{
+ "family": "FMC_C_Structure_Soakpit",
+ "category": "Pipe Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Soak pit lined with honeycomb (open-jointed) brickwork on a gravel base, solid top collar, RC ring beam and cover slab with access cover",
+ "ifc": "IfcDistributionChamberElement",
+ "keynote": "P.SEP_03",
+ "types": [
+  {
+   "name": "2000dia_Honeycomb"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "ci": "FMC_Metal_BurglarBar_Steel",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "brick": "FMC_Masonry_BurntClayBrick_Common",
+  "stone": "FMC_Stone_CrushedStone_20"
+ },
+ "parts": [
+  {
+   "n": "Gravel Base",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 1300,
+   "z": [
+    -3700,
+    -3400
+   ],
+   "mat": "stone",
+   "seg": 48
+  },
+  {
+   "n": "Honeycomb Course",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     1000,
+     -3400
+    ],
+    [
+     1230,
+     -3400
+    ],
+    [
+     1230,
+     -3250
+    ],
+    [
+     1000,
+     -3250
+    ]
+   ],
+   "mat": "brick",
+   "repeat": {
+    "n": 10,
+    "d": [
+     0,
+     0,
+     250
+    ]
+   },
+   "seg": 48
+  },
+  {
+   "n": "Solid Collar",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     1000,
+     -900
+    ],
+    [
+     1230,
+     -900
+    ],
+    [
+     1230,
+     -400
+    ],
+    [
+     1000,
+     -400
+    ]
+   ],
+   "mat": "brick",
+   "seg": 48
+  },
+  {
+   "n": "Ring Beam",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     980,
+     -400
+    ],
+    [
+     1280,
+     -400
+    ],
+    [
+     1280,
+     -210
+    ],
+    [
+     980,
+     -210
+    ]
+   ],
+   "mat": "conc",
+   "seg": 48
+  },
+  {
+   "n": "Cover Slab",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 1300,
+   "z": [
+    -210,
+    -60
+   ],
+   "mat": "conc",
+   "seg": 48
+  },
+  {
+   "n": "Access Opening",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 300,
+   "z": [
+    -211,
+    -59
+   ],
+   "void": true
+  },
+  {
+   "n": "Access Frame",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     300,
+     -60
+    ],
+    [
+     380,
+     -60
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     300,
+     0
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Access Cover",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -6
+    ],
+    [
+     300,
+     -6
+    ],
+    [
+     300,
+     1
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Access Pattern Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     165.0,
+     1
+    ],
+    [
+     195.0,
+     1
+    ],
+    [
+     195.0,
+     3.5
+    ],
+    [
+     165.0,
+     3.5
+    ]
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "seg": 40
+  },
+  {
+   "n": "Access Pattern Bar",
+   "shape": "box",
+   "at": [
+    -150.0,
+    -10,
+    1,
+    150.0,
+    10,
+    3.5
+   ],
+   "mat": "ci",
+   "lod": "f"
+  },
+  {
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -650
+   ],
+   "r": 80,
+   "x": [
+    -1600,
+    -1020
+   ],
+   "mat": "upvc"
+  }
+ ],
+ "reference": {
+  "query": "structure soakpit structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+soakpit+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Internal diameter 2000 mm": {
+   "value": 2000,
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Effective depth 2500 mm": {
+   "value": 2500,
+   "source_status": "assumed",
+   "source": "percolation test and engineer"
+  },
+  "Lining 230 mm honeycomb brick": {
+   "value": 230,
+   "source_status": "assumed",
+   "source": "typical Uganda practice"
+  },
+  "Cover slab 150 mm RC": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Ground at z = 0: round cover and frame, RC cover slab with opening, ring beam, solid brick collar, ten honeycomb courses with open bands, gravel base, inlet pipe stub with connector.",
+ "connectors": [
+  {
+   "n": "SAN In",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Inlet Pipe",
+   "side": "left",
+   "diameter": 160,
+   "flow": "In"
+  }
+ ]
+}

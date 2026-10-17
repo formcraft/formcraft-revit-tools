@@ -1,0 +1,2915 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_ERV_FreshAir",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: white casing hung on four brackets and rods, four round spigots with seals (OA, EA at one end; SA, RA at the other), side filter doors with knobs, control box, underside access panel with latches. Reference: query: erv fresh air mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=erv+fresh+air+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "500m3h_ERV"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Cost_Unit",
+   "type": "500m3h_ERV",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Geometry_Stage",
+   "type": "500m3h_ERV",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/IfcExportAs",
+   "type": "500m3h_ERV",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/Description",
+   "type": "500m3h_ERV",
+   "param": "Description",
+   "value": "Energy recovery ventilator 500 to 1000 m3/h, ceiling-void mounted, counter-flow core, four round spigots, side filter doors, underside access panel"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/Keynote",
+   "type": "500m3h_ERV",
+   "param": "Keynote",
+   "value": "H.AHU_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Keynote_Code",
+   "type": "500m3h_ERV",
+   "param": "FMC_Keynote_Code",
+   "value": "H.AHU_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Code_Description",
+   "type": "500m3h_ERV",
+   "param": "FMC_Code_Description",
+   "value": "ERV FreshAir: Energy recovery ventilator"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Code_Group",
+   "type": "500m3h_ERV",
+   "param": "FMC_Code_Group",
+   "value": "H.AHU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/FMC_Role_Code",
+   "type": "500m3h_ERV",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/Voltage",
+   "type": "500m3h_ERV",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/Apparent Load",
+   "type": "500m3h_ERV",
+   "param": "Apparent Load",
+   "value": 250
+  },
+  {
+   "op": "set_type_value",
+   "name": "500m3h_ERV/Default Elevation",
+   "type": "500m3h_ERV",
+   "param": "Default Elevation",
+   "value": 3000
+  },
+  {
+   "op": "add_type",
+   "name": "1000m3h_ERV"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Cost_Unit",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Geometry_Stage",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/IfcExportAs",
+   "type": "1000m3h_ERV",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/Description",
+   "type": "1000m3h_ERV",
+   "param": "Description",
+   "value": "Energy recovery ventilator 500 to 1000 m3/h, ceiling-void mounted, counter-flow core, four round spigots, side filter doors, underside access panel"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/Keynote",
+   "type": "1000m3h_ERV",
+   "param": "Keynote",
+   "value": "H.AHU_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Keynote_Code",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Keynote_Code",
+   "value": "H.AHU_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Code_Description",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Code_Description",
+   "value": "ERV FreshAir: Energy recovery ventilator"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Code_Group",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Code_Group",
+   "value": "H.AHU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/FMC_Role_Code",
+   "type": "1000m3h_ERV",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/Voltage",
+   "type": "1000m3h_ERV",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/Apparent Load",
+   "type": "1000m3h_ERV",
+   "param": "Apparent Load",
+   "value": 520
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000m3h_ERV/Default Elevation",
+   "type": "1000m3h_ERV",
+   "param": "Default Elevation",
+   "value": 3000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epw",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epw Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epw Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    183,
+    188,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Duct_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Gi",
+   "color": [
+    158,
+    163,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Gi Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_GI_Pipe",
+   "param": "Gi Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -680,
+     -510
+    ],
+    [
+     680,
+     -510
+    ],
+    [
+     680,
+     510
+    ],
+    [
+     -680,
+     510
+    ]
+   ],
+   "start": -398,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Casing",
+   "points": [
+    [
+     -600,
+     -480
+    ],
+    [
+     600,
+     -480
+    ],
+    [
+     600,
+     480
+    ],
+    [
+     -600,
+     480
+    ]
+   ],
+   "start": -390,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Casing",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Casing",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Casing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spigot OA",
+   "points": [
+    [
+     -115.0,
+     -210.0
+    ],
+    [
+     -119.26,
+     -177.65
+    ],
+    [
+     -131.75,
+     -147.5
+    ],
+    [
+     -151.61,
+     -121.61
+    ],
+    [
+     -177.5,
+     -101.75
+    ],
+    [
+     -207.65,
+     -89.26
+    ],
+    [
+     -240.0,
+     -85.0
+    ],
+    [
+     -272.35,
+     -89.26
+    ],
+    [
+     -302.5,
+     -101.75
+    ],
+    [
+     -328.39,
+     -121.61
+    ],
+    [
+     -348.25,
+     -147.5
+    ],
+    [
+     -360.74,
+     -177.65
+    ],
+    [
+     -365.0,
+     -210.0
+    ],
+    [
+     -360.74,
+     -242.35
+    ],
+    [
+     -348.25,
+     -272.5
+    ],
+    [
+     -328.39,
+     -298.39
+    ],
+    [
+     -302.5,
+     -318.25
+    ],
+    [
+     -272.35,
+     -330.74
+    ],
+    [
+     -240.0,
+     -335.0
+    ],
+    [
+     -207.65,
+     -330.74
+    ],
+    [
+     -177.5,
+     -318.25
+    ],
+    [
+     -151.61,
+     -298.39
+    ],
+    [
+     -131.75,
+     -272.5
+    ],
+    [
+     -119.26,
+     -242.35
+    ]
+   ],
+   "start": -680,
+   "end": -600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spigot OA",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot OA",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot OA",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Spigot Seal OA",
+   "profile": [
+    [
+     124,
+     -635
+    ],
+    [
+     130,
+     -635
+    ],
+    [
+     130,
+     -625
+    ],
+    [
+     124,
+     -625
+    ]
+   ],
+   "axis_at": [
+    -240,
+    -210
+   ],
+   "axis": "x",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot Seal OA",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot Seal OA",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spigot EA",
+   "points": [
+    [
+     365.0,
+     -210.0
+    ],
+    [
+     360.74,
+     -177.65
+    ],
+    [
+     348.25,
+     -147.5
+    ],
+    [
+     328.39,
+     -121.61
+    ],
+    [
+     302.5,
+     -101.75
+    ],
+    [
+     272.35,
+     -89.26
+    ],
+    [
+     240.0,
+     -85.0
+    ],
+    [
+     207.65,
+     -89.26
+    ],
+    [
+     177.5,
+     -101.75
+    ],
+    [
+     151.61,
+     -121.61
+    ],
+    [
+     131.75,
+     -147.5
+    ],
+    [
+     119.26,
+     -177.65
+    ],
+    [
+     115.0,
+     -210.0
+    ],
+    [
+     119.26,
+     -242.35
+    ],
+    [
+     131.75,
+     -272.5
+    ],
+    [
+     151.61,
+     -298.39
+    ],
+    [
+     177.5,
+     -318.25
+    ],
+    [
+     207.65,
+     -330.74
+    ],
+    [
+     240.0,
+     -335.0
+    ],
+    [
+     272.35,
+     -330.74
+    ],
+    [
+     302.5,
+     -318.25
+    ],
+    [
+     328.39,
+     -298.39
+    ],
+    [
+     348.25,
+     -272.5
+    ],
+    [
+     360.74,
+     -242.35
+    ]
+   ],
+   "start": -680,
+   "end": -600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spigot EA",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot EA",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot EA",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Spigot Seal EA",
+   "profile": [
+    [
+     124,
+     -635
+    ],
+    [
+     130,
+     -635
+    ],
+    [
+     130,
+     -625
+    ],
+    [
+     124,
+     -625
+    ]
+   ],
+   "axis_at": [
+    240,
+    -210
+   ],
+   "axis": "x",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot Seal EA",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot Seal EA",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spigot SA",
+   "points": [
+    [
+     -115.0,
+     -210.0
+    ],
+    [
+     -119.26,
+     -177.65
+    ],
+    [
+     -131.75,
+     -147.5
+    ],
+    [
+     -151.61,
+     -121.61
+    ],
+    [
+     -177.5,
+     -101.75
+    ],
+    [
+     -207.65,
+     -89.26
+    ],
+    [
+     -240.0,
+     -85.0
+    ],
+    [
+     -272.35,
+     -89.26
+    ],
+    [
+     -302.5,
+     -101.75
+    ],
+    [
+     -328.39,
+     -121.61
+    ],
+    [
+     -348.25,
+     -147.5
+    ],
+    [
+     -360.74,
+     -177.65
+    ],
+    [
+     -365.0,
+     -210.0
+    ],
+    [
+     -360.74,
+     -242.35
+    ],
+    [
+     -348.25,
+     -272.5
+    ],
+    [
+     -328.39,
+     -298.39
+    ],
+    [
+     -302.5,
+     -318.25
+    ],
+    [
+     -272.35,
+     -330.74
+    ],
+    [
+     -240.0,
+     -335.0
+    ],
+    [
+     -207.65,
+     -330.74
+    ],
+    [
+     -177.5,
+     -318.25
+    ],
+    [
+     -151.61,
+     -298.39
+    ],
+    [
+     -131.75,
+     -272.5
+    ],
+    [
+     -119.26,
+     -242.35
+    ]
+   ],
+   "start": 600,
+   "end": 680,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spigot SA",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot SA",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot SA",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Spigot Seal SA",
+   "profile": [
+    [
+     124,
+     625
+    ],
+    [
+     130,
+     625
+    ],
+    [
+     130,
+     635
+    ],
+    [
+     124,
+     635
+    ]
+   ],
+   "axis_at": [
+    -240,
+    -210
+   ],
+   "axis": "x",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot Seal SA",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot Seal SA",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spigot RA",
+   "points": [
+    [
+     365.0,
+     -210.0
+    ],
+    [
+     360.74,
+     -177.65
+    ],
+    [
+     348.25,
+     -147.5
+    ],
+    [
+     328.39,
+     -121.61
+    ],
+    [
+     302.5,
+     -101.75
+    ],
+    [
+     272.35,
+     -89.26
+    ],
+    [
+     240.0,
+     -85.0
+    ],
+    [
+     207.65,
+     -89.26
+    ],
+    [
+     177.5,
+     -101.75
+    ],
+    [
+     151.61,
+     -121.61
+    ],
+    [
+     131.75,
+     -147.5
+    ],
+    [
+     119.26,
+     -177.65
+    ],
+    [
+     115.0,
+     -210.0
+    ],
+    [
+     119.26,
+     -242.35
+    ],
+    [
+     131.75,
+     -272.5
+    ],
+    [
+     151.61,
+     -298.39
+    ],
+    [
+     177.5,
+     -318.25
+    ],
+    [
+     207.65,
+     -330.74
+    ],
+    [
+     240.0,
+     -335.0
+    ],
+    [
+     272.35,
+     -330.74
+    ],
+    [
+     302.5,
+     -318.25
+    ],
+    [
+     328.39,
+     -298.39
+    ],
+    [
+     348.25,
+     -272.5
+    ],
+    [
+     360.74,
+     -242.35
+    ]
+   ],
+   "start": 600,
+   "end": 680,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spigot RA",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot RA",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot RA",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Spigot Seal RA",
+   "profile": [
+    [
+     124,
+     625
+    ],
+    [
+     130,
+     625
+    ],
+    [
+     130,
+     635
+    ],
+    [
+     124,
+     635
+    ]
+   ],
+   "axis_at": [
+    240,
+    -210
+   ],
+   "axis": "x",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spigot Seal RA",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spigot Seal RA",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Panel",
+   "points": [
+    [
+     -560,
+     -440
+    ],
+    [
+     560,
+     -440
+    ],
+    [
+     560,
+     440
+    ],
+    [
+     -560,
+     440
+    ]
+   ],
+   "start": -396,
+   "end": -390
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Panel",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Panel",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Latch 1",
+   "points": [
+    [
+     -420,
+     -446
+    ],
+    [
+     -380,
+     -446
+    ],
+    [
+     -380,
+     -430
+    ],
+    [
+     -420,
+     -430
+    ]
+   ],
+   "start": -398,
+   "end": -388
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Latch 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Latch 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Latch 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Latch 2",
+   "points": [
+    [
+     -20,
+     -446
+    ],
+    [
+     20,
+     -446
+    ],
+    [
+     20,
+     -430
+    ],
+    [
+     -20,
+     -430
+    ]
+   ],
+   "start": -398,
+   "end": -388
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Latch 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Latch 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Latch 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Latch 3",
+   "points": [
+    [
+     380,
+     -446
+    ],
+    [
+     420,
+     -446
+    ],
+    [
+     420,
+     -430
+    ],
+    [
+     380,
+     -430
+    ]
+   ],
+   "start": -398,
+   "end": -388
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Latch 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Latch 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Latch 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Door 1",
+   "points": [
+    [
+     -176.0,
+     -360.0
+    ],
+    [
+     -173.7,
+     -359.54
+    ],
+    [
+     -171.76,
+     -358.24
+    ],
+    [
+     -170.46,
+     -356.3
+    ],
+    [
+     -170.0,
+     -354.0
+    ],
+    [
+     -170.0,
+     -86.0
+    ],
+    [
+     -170.46,
+     -83.7
+    ],
+    [
+     -171.76,
+     -81.76
+    ],
+    [
+     -173.7,
+     -80.46
+    ],
+    [
+     -176.0,
+     -80.0
+    ],
+    [
+     -464.0,
+     -80.0
+    ],
+    [
+     -466.3,
+     -80.46
+    ],
+    [
+     -468.24,
+     -81.76
+    ],
+    [
+     -469.54,
+     -83.7
+    ],
+    [
+     -470.0,
+     -86.0
+    ],
+    [
+     -470.0,
+     -354.0
+    ],
+    [
+     -469.54,
+     -356.3
+    ],
+    [
+     -468.24,
+     -358.24
+    ],
+    [
+     -466.3,
+     -359.54
+    ],
+    [
+     -464.0,
+     -360.0
+    ]
+   ],
+   "start": 480,
+   "end": 488,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Door 1",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Door 1",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Door 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Door 2",
+   "points": [
+    [
+     464.0,
+     -360.0
+    ],
+    [
+     466.3,
+     -359.54
+    ],
+    [
+     468.24,
+     -358.24
+    ],
+    [
+     469.54,
+     -356.3
+    ],
+    [
+     470.0,
+     -354.0
+    ],
+    [
+     470.0,
+     -86.0
+    ],
+    [
+     469.54,
+     -83.7
+    ],
+    [
+     468.24,
+     -81.76
+    ],
+    [
+     466.3,
+     -80.46
+    ],
+    [
+     464.0,
+     -80.0
+    ],
+    [
+     176.0,
+     -80.0
+    ],
+    [
+     173.7,
+     -80.46
+    ],
+    [
+     171.76,
+     -81.76
+    ],
+    [
+     170.46,
+     -83.7
+    ],
+    [
+     170.0,
+     -86.0
+    ],
+    [
+     170.0,
+     -354.0
+    ],
+    [
+     170.46,
+     -356.3
+    ],
+    [
+     171.76,
+     -358.24
+    ],
+    [
+     173.7,
+     -359.54
+    ],
+    [
+     176.0,
+     -360.0
+    ]
+   ],
+   "start": 480,
+   "end": 488,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Door 2",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Door 2",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Door 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Knob 1",
+   "points": [
+    [
+     -306.0,
+     -220.0
+    ],
+    [
+     -306.48,
+     -216.38
+    ],
+    [
+     -307.88,
+     -213.0
+    ],
+    [
+     -310.1,
+     -210.1
+    ],
+    [
+     -313.0,
+     -207.88
+    ],
+    [
+     -316.38,
+     -206.48
+    ],
+    [
+     -320.0,
+     -206.0
+    ],
+    [
+     -323.62,
+     -206.48
+    ],
+    [
+     -327.0,
+     -207.88
+    ],
+    [
+     -329.9,
+     -210.1
+    ],
+    [
+     -332.12,
+     -213.0
+    ],
+    [
+     -333.52,
+     -216.38
+    ],
+    [
+     -334.0,
+     -220.0
+    ],
+    [
+     -333.52,
+     -223.62
+    ],
+    [
+     -332.12,
+     -227.0
+    ],
+    [
+     -329.9,
+     -229.9
+    ],
+    [
+     -327.0,
+     -232.12
+    ],
+    [
+     -323.62,
+     -233.52
+    ],
+    [
+     -320.0,
+     -234.0
+    ],
+    [
+     -316.38,
+     -233.52
+    ],
+    [
+     -313.0,
+     -232.12
+    ],
+    [
+     -310.1,
+     -229.9
+    ],
+    [
+     -307.88,
+     -227.0
+    ],
+    [
+     -306.48,
+     -223.62
+    ]
+   ],
+   "start": 488,
+   "end": 500,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Knob 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Knob 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Knob 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Knob 2",
+   "points": [
+    [
+     334.0,
+     -220.0
+    ],
+    [
+     333.52,
+     -216.38
+    ],
+    [
+     332.12,
+     -213.0
+    ],
+    [
+     329.9,
+     -210.1
+    ],
+    [
+     327.0,
+     -207.88
+    ],
+    [
+     323.62,
+     -206.48
+    ],
+    [
+     320.0,
+     -206.0
+    ],
+    [
+     316.38,
+     -206.48
+    ],
+    [
+     313.0,
+     -207.88
+    ],
+    [
+     310.1,
+     -210.1
+    ],
+    [
+     307.88,
+     -213.0
+    ],
+    [
+     306.48,
+     -216.38
+    ],
+    [
+     306.0,
+     -220.0
+    ],
+    [
+     306.48,
+     -223.62
+    ],
+    [
+     307.88,
+     -227.0
+    ],
+    [
+     310.1,
+     -229.9
+    ],
+    [
+     313.0,
+     -232.12
+    ],
+    [
+     316.38,
+     -233.52
+    ],
+    [
+     320.0,
+     -234.0
+    ],
+    [
+     323.62,
+     -233.52
+    ],
+    [
+     327.0,
+     -232.12
+    ],
+    [
+     329.9,
+     -229.9
+    ],
+    [
+     332.12,
+     -227.0
+    ],
+    [
+     333.52,
+     -223.62
+    ]
+   ],
+   "start": 488,
+   "end": 500,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Knob 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Knob 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Knob 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Box",
+   "points": [
+    [
+     106.0,
+     -340.0
+    ],
+    [
+     107.53,
+     -339.7
+    ],
+    [
+     108.83,
+     -338.83
+    ],
+    [
+     109.7,
+     -337.53
+    ],
+    [
+     110.0,
+     -336.0
+    ],
+    [
+     110.0,
+     -124.0
+    ],
+    [
+     109.7,
+     -122.47
+    ],
+    [
+     108.83,
+     -121.17
+    ],
+    [
+     107.53,
+     -120.3
+    ],
+    [
+     106.0,
+     -120.0
+    ],
+    [
+     -106.0,
+     -120.0
+    ],
+    [
+     -107.53,
+     -120.3
+    ],
+    [
+     -108.83,
+     -121.17
+    ],
+    [
+     -109.7,
+     -122.47
+    ],
+    [
+     -110.0,
+     -124.0
+    ],
+    [
+     -110.0,
+     -336.0
+    ],
+    [
+     -109.7,
+     -337.53
+    ],
+    [
+     -108.83,
+     -338.83
+    ],
+    [
+     -107.53,
+     -339.7
+    ],
+    [
+     -106.0,
+     -340.0
+    ]
+   ],
+   "start": 480,
+   "end": 500,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Box",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Box",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Airflow Label",
+   "points": [
+    [
+     -80,
+     -100
+    ],
+    [
+     80,
+     -100
+    ],
+    [
+     80,
+     -80
+    ],
+    [
+     -80,
+     -80
+    ]
+   ],
+   "start": 480,
+   "end": 481,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Airflow Label",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Airflow Label",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Airflow Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Bracket Front 1",
+   "points": [
+    [
+     -560,
+     -510
+    ],
+    [
+     -500,
+     -510
+    ],
+    [
+     -500,
+     -480
+    ],
+    [
+     -560,
+     -480
+    ]
+   ],
+   "start": -90,
+   "end": -50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Bracket Front 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Bracket Front 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Bracket Front 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Bracket Front 2",
+   "points": [
+    [
+     500,
+     -510
+    ],
+    [
+     560,
+     -510
+    ],
+    [
+     560,
+     -480
+    ],
+    [
+     500,
+     -480
+    ]
+   ],
+   "start": -90,
+   "end": -50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Bracket Front 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Bracket Front 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Bracket Front 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Bracket Rear 1",
+   "points": [
+    [
+     -560,
+     480
+    ],
+    [
+     -500,
+     480
+    ],
+    [
+     -500,
+     510
+    ],
+    [
+     -560,
+     510
+    ]
+   ],
+   "start": -90,
+   "end": -50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Bracket Rear 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Bracket Rear 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Bracket Rear 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Bracket Rear 2",
+   "points": [
+    [
+     500,
+     480
+    ],
+    [
+     560,
+     480
+    ],
+    [
+     560,
+     510
+    ],
+    [
+     500,
+     510
+    ]
+   ],
+   "start": -90,
+   "end": -50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Bracket Rear 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Bracket Rear 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Bracket Rear 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Rod Front 1",
+   "points": [
+    [
+     -525.0,
+     -495.0
+    ],
+    [
+     -525.17,
+     -493.71
+    ],
+    [
+     -525.67,
+     -492.5
+    ],
+    [
+     -526.46,
+     -491.46
+    ],
+    [
+     -527.5,
+     -490.67
+    ],
+    [
+     -528.71,
+     -490.17
+    ],
+    [
+     -530.0,
+     -490.0
+    ],
+    [
+     -531.29,
+     -490.17
+    ],
+    [
+     -532.5,
+     -490.67
+    ],
+    [
+     -533.54,
+     -491.46
+    ],
+    [
+     -534.33,
+     -492.5
+    ],
+    [
+     -534.83,
+     -493.71
+    ],
+    [
+     -535.0,
+     -495.0
+    ],
+    [
+     -534.83,
+     -496.29
+    ],
+    [
+     -534.33,
+     -497.5
+    ],
+    [
+     -533.54,
+     -498.54
+    ],
+    [
+     -532.5,
+     -499.33
+    ],
+    [
+     -531.29,
+     -499.83
+    ],
+    [
+     -530.0,
+     -500.0
+    ],
+    [
+     -528.71,
+     -499.83
+    ],
+    [
+     -527.5,
+     -499.33
+    ],
+    [
+     -526.46,
+     -498.54
+    ],
+    [
+     -525.67,
+     -497.5
+    ],
+    [
+     -525.17,
+     -496.29
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Rod Front 1",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Rod Front 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Rod Front 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Rod Front 2",
+   "points": [
+    [
+     535.0,
+     -495.0
+    ],
+    [
+     534.83,
+     -493.71
+    ],
+    [
+     534.33,
+     -492.5
+    ],
+    [
+     533.54,
+     -491.46
+    ],
+    [
+     532.5,
+     -490.67
+    ],
+    [
+     531.29,
+     -490.17
+    ],
+    [
+     530.0,
+     -490.0
+    ],
+    [
+     528.71,
+     -490.17
+    ],
+    [
+     527.5,
+     -490.67
+    ],
+    [
+     526.46,
+     -491.46
+    ],
+    [
+     525.67,
+     -492.5
+    ],
+    [
+     525.17,
+     -493.71
+    ],
+    [
+     525.0,
+     -495.0
+    ],
+    [
+     525.17,
+     -496.29
+    ],
+    [
+     525.67,
+     -497.5
+    ],
+    [
+     526.46,
+     -498.54
+    ],
+    [
+     527.5,
+     -499.33
+    ],
+    [
+     528.71,
+     -499.83
+    ],
+    [
+     530.0,
+     -500.0
+    ],
+    [
+     531.29,
+     -499.83
+    ],
+    [
+     532.5,
+     -499.33
+    ],
+    [
+     533.54,
+     -498.54
+    ],
+    [
+     534.33,
+     -497.5
+    ],
+    [
+     534.83,
+     -496.29
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Rod Front 2",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Rod Front 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Rod Front 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Rod Rear 1",
+   "points": [
+    [
+     -525.0,
+     495.0
+    ],
+    [
+     -525.17,
+     496.29
+    ],
+    [
+     -525.67,
+     497.5
+    ],
+    [
+     -526.46,
+     498.54
+    ],
+    [
+     -527.5,
+     499.33
+    ],
+    [
+     -528.71,
+     499.83
+    ],
+    [
+     -530.0,
+     500.0
+    ],
+    [
+     -531.29,
+     499.83
+    ],
+    [
+     -532.5,
+     499.33
+    ],
+    [
+     -533.54,
+     498.54
+    ],
+    [
+     -534.33,
+     497.5
+    ],
+    [
+     -534.83,
+     496.29
+    ],
+    [
+     -535.0,
+     495.0
+    ],
+    [
+     -534.83,
+     493.71
+    ],
+    [
+     -534.33,
+     492.5
+    ],
+    [
+     -533.54,
+     491.46
+    ],
+    [
+     -532.5,
+     490.67
+    ],
+    [
+     -531.29,
+     490.17
+    ],
+    [
+     -530.0,
+     490.0
+    ],
+    [
+     -528.71,
+     490.17
+    ],
+    [
+     -527.5,
+     490.67
+    ],
+    [
+     -526.46,
+     491.46
+    ],
+    [
+     -525.67,
+     492.5
+    ],
+    [
+     -525.17,
+     493.71
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Rod Rear 1",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Rod Rear 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Rod Rear 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Rod Rear 2",
+   "points": [
+    [
+     535.0,
+     495.0
+    ],
+    [
+     534.83,
+     496.29
+    ],
+    [
+     534.33,
+     497.5
+    ],
+    [
+     533.54,
+     498.54
+    ],
+    [
+     532.5,
+     499.33
+    ],
+    [
+     531.29,
+     499.83
+    ],
+    [
+     530.0,
+     500.0
+    ],
+    [
+     528.71,
+     499.83
+    ],
+    [
+     527.5,
+     499.33
+    ],
+    [
+     526.46,
+     498.54
+    ],
+    [
+     525.67,
+     497.5
+    ],
+    [
+     525.17,
+     496.29
+    ],
+    [
+     525.0,
+     495.0
+    ],
+    [
+     525.17,
+     493.71
+    ],
+    [
+     525.67,
+     492.5
+    ],
+    [
+     526.46,
+     491.46
+    ],
+    [
+     527.5,
+     490.67
+    ],
+    [
+     528.71,
+     490.17
+    ],
+    [
+     530.0,
+     490.0
+    ],
+    [
+     531.29,
+     490.17
+    ],
+    [
+     532.5,
+     490.67
+    ],
+    [
+     533.54,
+     491.46
+    ],
+    [
+     534.33,
+     492.5
+    ],
+    [
+     534.83,
+     493.71
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Rod Rear 2",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Rod Rear 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Rod Rear 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Control Box",
+   "side": "front"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Spigot SA",
+   "side": "right",
+   "diameter": 250,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Exhaust",
+   "domain": "duct",
+   "system": "ExhaustAir",
+   "solid": "Spigot EA",
+   "side": "left",
+   "diameter": 250,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ERV_FreshAir.png"
+  }
+ ],
+ "values": {
+  "Casing 1200 x 960 x 360 mm": {
+   "value": "1200x960x360",
+   "source_status": "assumed",
+   "source": "typical 1000 m3/h ERV"
+  },
+  "Spigots 250 mm": {
+   "value": 250,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Heat recovery efficiency 75 %": {
+   "value": "75%",
+   "source_status": "assumed",
+   "source": "counter-flow core, typical"
+  },
+  "Fan load 250 / 520 VA": {
+   "value": "250/520",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

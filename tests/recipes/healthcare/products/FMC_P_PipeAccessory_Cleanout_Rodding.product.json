@@ -1,0 +1,202 @@
+{
+ "family": "FMC_P_PipeAccessory_Cleanout_Rodding",
+ "category": "Pipe Accessories",
+ "desc": "Rodding eye, 100 mm, stainless access frame with screwed brass plug flush with floor, riser and 45 degree bend into the drain",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "P.DRN_02",
+ "types": [
+  {
+   "name": "100_RoddingEye"
+  }
+ ],
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey"
+ },
+ "reference": {
+  "query": "pipe accessory cleanout rodding pipe accessories hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=pipe+accessory+cleanout+rodding+pipe+accessories+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Access Frame",
+   "shape": "box",
+   "at": [
+    -100,
+    -100,
+    -8,
+    100,
+    100,
+    0
+   ],
+   "mat": "stainless"
+  },
+  {
+   "n": "Screwed Plug",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 58,
+   "z": [
+    -6,
+    0.5
+   ],
+   "mat": "brass"
+  },
+  {
+   "n": "Plug Key Bar",
+   "shape": "box",
+   "at": [
+    -30,
+    -6,
+    0.5,
+    30,
+    6,
+    6
+   ],
+   "mat": "brass",
+   "lod": "f"
+  },
+  {
+   "n": "Frame Screw",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -85,
+    -85
+   ],
+   "r": 4,
+   "z": [
+    -1,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     170,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Frame Screw B",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -85,
+    85
+   ],
+   "r": 4,
+   "z": [
+    -1,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     170,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Riser",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 55,
+   "z": [
+    -400,
+    -8
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Bend 45",
+   "shape": "right",
+   "pts": [
+    [
+     55,
+     -400
+    ],
+    [
+     -55,
+     -400
+    ],
+    [
+     -255,
+     -600
+    ],
+    [
+     -145,
+     -600
+    ]
+   ],
+   "x": [
+    -55,
+    55
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Drain Pipe",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -655
+   ],
+   "r": 55,
+   "y": [
+    -600,
+    400
+   ],
+   "mat": "upvc"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Drain Pipe",
+   "side": "back",
+   "diameter": 100,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "100 mm access": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "BS EN 12056 / Approved Document H access points"
+  },
+  "Frame 200 x 200 mm": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "45 degree entry": {
+   "value": 45,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Rodding eye modelled as a generic product: access frame with screws, screwed brass plug with key bar, riser, 45 degree bend and drain pipe below floor (z = 0).",
+ "template": "Metric Generic Model.rft"
+}

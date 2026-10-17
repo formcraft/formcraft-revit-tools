@@ -179,17 +179,23 @@ namespace RevitMCPCommandSet.Services.Fmc
             string name = op.Value<string>("name");
             if (FmcDocGeometry.Solid(doc, name) != null) return ("skip", "exists");
             var axisAt = (op["axis_at"] as JArray)?.Select(v => v.Value<double>()).ToArray() ?? new[] { 0.0, 0.0 };
-            XYZ origin = new XYZ(Mm(axisAt[0]), Mm(axisAt[1]), 0);
-            var loop = Points(op["profile"]).Select(p => origin + new XYZ(Mm(p[0]), 0, Mm(p[1]))).ToList();
+            // axis z (default): axis_at [x, y], profile [r, z]. axis y (faces the viewer): axis_at [x, z], profile [r, d] with d
+            // toward the viewer (-y). axis x: axis_at [y, z], profile [r, d] with d along +x.
+            string ax = (op.Value<string>("axis") ?? "z").ToLowerInvariant();
+            XYZ origin; XYZ dir; Func<double[], XYZ> at; XYZ sketchNormal;
+            if (ax == "y") { origin = new XYZ(Mm(axisAt[0]), 0, Mm(axisAt[1])); dir = XYZ.BasisY.Negate(); sketchNormal = XYZ.BasisZ; at = p => origin + new XYZ(Mm(p[0]), -Mm(p[1]), 0); }
+            else if (ax == "x") { origin = new XYZ(0, Mm(axisAt[0]), Mm(axisAt[1])); dir = XYZ.BasisX; sketchNormal = XYZ.BasisZ; at = p => origin + new XYZ(Mm(p[1]), Mm(p[0]), 0); }
+            else { origin = new XYZ(Mm(axisAt[0]), Mm(axisAt[1]), 0); dir = XYZ.BasisZ; sketchNormal = XYZ.BasisY; at = p => origin + new XYZ(Mm(p[0]), 0, Mm(p[1])); }
+            var loop = Points(op["profile"]).Select(at).ToList();
             var arr = new CurveArrArray();
             arr.Append(Polyline(loop, true));
-            SketchPlane sketch = SketchPlane.Create(doc, Plane.CreateByNormalAndOrigin(XYZ.BasisY, origin));
-            Line axis = Line.CreateBound(origin, origin + XYZ.BasisZ);
+            SketchPlane sketch = SketchPlane.Create(doc, Plane.CreateByNormalAndOrigin(sketchNormal, origin));
+            Line axis = Line.CreateBound(origin, origin + dir);
             double a0 = Rad(op.Value<double?>("start_deg") ?? 0), a1 = Rad(op.Value<double?>("end_deg") ?? 360);
             Autodesk.Revit.DB.Revolution made = doc.FamilyCreate.NewRevolution(true, arr, sketch, axis, a0, a1);
             FmcDocGeometry.Label(made, name);
             ApplySubcategory(doc, made, op);
-            return ("create", "revolution about a vertical axis at " + axisAt[0] + ", " + axisAt[1]);
+            return ("create", "revolution about the " + ax + " axis at " + axisAt[0] + ", " + axisAt[1]);
         }
 
         public static (string, string) MakeBlend(Document doc, JObject op)

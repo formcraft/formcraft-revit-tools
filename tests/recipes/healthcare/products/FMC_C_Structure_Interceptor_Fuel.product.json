@@ -1,0 +1,557 @@
+{
+ "family": "FMC_C_Structure_Interceptor_Fuel",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Underground Class I full-retention fuel/oil interceptor: polyethylene separator tank on a concrete bed, two access turrets with covers, oil-level alarm and vent",
+ "ifc": "IfcInterceptor",
+ "keynote": "P.TRT_03",
+ "types": [
+  {
+   "name": "1000L_ClassI"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "c20": "FMC_Concrete_C20",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "ci": "FMC_Metal_BurglarBar_Steel",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "hdpe": "FMC_Plastic_HDPE_PE100_Black",
+  "ledr": "FMC_Plastic_LED_Red"
+ },
+ "parts": [
+  {
+   "n": "Concrete Bed",
+   "shape": "box",
+   "at": [
+    -1150,
+    -750,
+    -2250,
+    1150,
+    750,
+    -2100
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Separator Tank",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -1500
+   ],
+   "profile": [
+    [
+     0,
+     -1000
+    ],
+    [
+     300,
+     -980
+    ],
+    [
+     500,
+     -930
+    ],
+    [
+     600,
+     -850
+    ],
+    [
+     600,
+     850
+    ],
+    [
+     500,
+     930
+    ],
+    [
+     300,
+     980
+    ],
+    [
+     0,
+     1000
+    ]
+   ],
+   "mat": "hdpe",
+   "seg": 40
+  },
+  {
+   "n": "Tank Rib",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -1500
+   ],
+   "profile": [
+    [
+     600,
+     -400
+    ],
+    [
+     625,
+     -400
+    ],
+    [
+     625,
+     -340
+    ],
+    [
+     600,
+     -340
+    ]
+   ],
+   "mat": "hdpe",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     400,
+     0,
+     0
+    ]
+   },
+   "seg": 40
+  },
+  {
+   "n": "Access Turret Inlet",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -600,
+    0
+   ],
+   "r": 300,
+   "z": [
+    -950,
+    -150
+   ],
+   "mat": "hdpe",
+   "seg": 32
+  },
+  {
+   "n": "Access Turret Outlet",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    600,
+    0
+   ],
+   "r": 300,
+   "z": [
+    -950,
+    -150
+   ],
+   "mat": "hdpe",
+   "seg": 32
+  },
+  {
+   "n": "Cover Slab",
+   "shape": "box",
+   "at": [
+    -1100,
+    -500,
+    -150,
+    1100,
+    500,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Opening Inlet",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -600,
+    0
+   ],
+   "r": 300,
+   "z": [
+    -151,
+    -6
+   ],
+   "void": true
+  },
+  {
+   "n": "Opening Outlet",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    600,
+    0
+   ],
+   "r": 300,
+   "z": [
+    -151,
+    -6
+   ],
+   "void": true
+  },
+  {
+   "n": "Inlet Cover Frame",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -600,
+    0
+   ],
+   "profile": [
+    [
+     300,
+     -99
+    ],
+    [
+     370,
+     -99
+    ],
+    [
+     370,
+     1
+    ],
+    [
+     300,
+     1
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Inlet Cover Cover",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -600,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -5
+    ],
+    [
+     300,
+     -5
+    ],
+    [
+     300,
+     2
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Inlet Cover Pattern Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -600,
+    0
+   ],
+   "profile": [
+    [
+     165.0,
+     2
+    ],
+    [
+     195.0,
+     2
+    ],
+    [
+     195.0,
+     4.5
+    ],
+    [
+     165.0,
+     4.5
+    ]
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "seg": 40
+  },
+  {
+   "n": "Inlet Cover Pattern Bar",
+   "shape": "box",
+   "at": [
+    -750.0,
+    -10,
+    2,
+    -450.0,
+    10,
+    4.5
+   ],
+   "mat": "ci",
+   "lod": "f"
+  },
+  {
+   "n": "Outlet Cover Frame",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    600,
+    0
+   ],
+   "profile": [
+    [
+     300,
+     -99
+    ],
+    [
+     370,
+     -99
+    ],
+    [
+     370,
+     1
+    ],
+    [
+     300,
+     1
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Outlet Cover Cover",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    600,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -5
+    ],
+    [
+     300,
+     -5
+    ],
+    [
+     300,
+     2
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "mat": "ci",
+   "seg": 40
+  },
+  {
+   "n": "Outlet Cover Pattern Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    600,
+    0
+   ],
+   "profile": [
+    [
+     165.0,
+     2
+    ],
+    [
+     195.0,
+     2
+    ],
+    [
+     195.0,
+     4.5
+    ],
+    [
+     165.0,
+     4.5
+    ]
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "seg": 40
+  },
+  {
+   "n": "Outlet Cover Pattern Bar",
+   "shape": "box",
+   "at": [
+    450.0,
+    -10,
+    2,
+    750.0,
+    10,
+    4.5
+   ],
+   "mat": "ci",
+   "lod": "f"
+  },
+  {
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -650
+   ],
+   "r": 75,
+   "x": [
+    -1400,
+    -890
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Outlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -700
+   ],
+   "r": 75,
+   "x": [
+    890,
+    1400
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Vent Pipe",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1000,
+    400
+   ],
+   "r": 28,
+   "z": [
+    0,
+    2400
+   ],
+   "mat": "upvc",
+   "seg": 12
+  },
+  {
+   "n": "Alarm Post",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    1000,
+    400
+   ],
+   "r": 30,
+   "z": [
+    0,
+    1500
+   ],
+   "mat": "galv",
+   "seg": 12
+  },
+  {
+   "n": "Alarm Panel",
+   "shape": "box",
+   "at": [
+    900,
+    340,
+    1500,
+    1100,
+    460,
+    1750
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Alarm Beacon",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1000,
+    1700
+   ],
+   "r": 18,
+   "y": [
+    330,
+    340
+   ],
+   "mat": "ledr",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Probe Conduit",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    700,
+    200
+   ],
+   "r": 16,
+   "z": [
+    -900,
+    0
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "seg": 10
+  }
+ ],
+ "reference": {
+  "query": "structure interceptor fuel structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+interceptor+fuel+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Nominal size 1000 L (tank 1200 dia x 2000)": {
+   "value": "1200x2000",
+   "source_status": "assumed",
+   "source": "typical small Class I interceptor (BS EN 858)"
+  },
+  "Inlet/outlet 150 mm": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "drainage design"
+  },
+  "Oil-level alarm required": {
+   "value": "alarm",
+   "source_status": "assumed",
+   "source": "BS EN 858-2 / Environment Agency PPG3 practice"
+  },
+  "Covers 600 dia": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "typical"
+  }
+ },
+ "about": "Ground at z = 0: concrete bed, domed separator tank with ribs, two turrets through the cover slab with round covers, inlet/outlet stubs with connectors, vent, alarm post with panel and beacon, probe conduit (Fine).",
+ "connectors": [
+  {
+   "n": "SAN In",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Inlet Pipe",
+   "side": "left",
+   "diameter": 150,
+   "flow": "In"
+  },
+  {
+   "n": "SAN Out",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Outlet Pipe",
+   "side": "right",
+   "diameter": 150,
+   "flow": "Out"
+  }
+ ]
+}

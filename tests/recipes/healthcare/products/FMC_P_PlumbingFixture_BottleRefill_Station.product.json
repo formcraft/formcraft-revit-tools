@@ -1,0 +1,321 @@
+{
+ "family": "FMC_P_PlumbingFixture_BottleRefill_Station",
+ "category": "Plumbing Fixtures",
+ "desc": "Bottle refill station, wall-mounted stainless 420 x 270 x 870 mm, chilled and filtered, sensor-operated nozzle, bottle counter display, drip tray with grille",
+ "ifc": "IfcSanitaryTerminal",
+ "keynote": "P.DRK_01",
+ "types": [
+  {
+   "name": "420_Wall"
+  },
+  {
+   "name": "420_FreeStanding"
+  }
+ ],
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "led_green": "FMC_Plastic_LED_Green",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "bottle refill station plumbing fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=bottle+refill+station+plumbing+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Upper Housing",
+   "shape": "box",
+   "at": [
+    -210,
+    -270,
+    1450,
+    210,
+    0,
+    1720
+   ],
+   "mat": "stainless",
+   "r": 25
+  },
+  {
+   "n": "Side Wall",
+   "shape": "box",
+   "at": [
+    -210,
+    -270,
+    1050,
+    -185,
+    0,
+    1450
+   ],
+   "mat": "stainless",
+   "repeat": {
+    "n": 2,
+    "d": [
+     395,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Back Panel",
+   "shape": "box",
+   "at": [
+    -185,
+    -60,
+    1050,
+    185,
+    0,
+    1450
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Base Unit",
+   "shape": "box",
+   "at": [
+    -210,
+    -270,
+    850,
+    210,
+    0,
+    1050
+   ],
+   "mat": "stainless",
+   "r": 25
+  },
+  {
+   "n": "Drip Tray",
+   "shape": "box",
+   "at": [
+    -170,
+    -250,
+    1050,
+    170,
+    -70,
+    1058
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Drip Grille Bar",
+   "shape": "box",
+   "at": [
+    -160,
+    -245,
+    1058,
+    160,
+    -237,
+    1062
+   ],
+   "mat": "stainless",
+   "lod": "f",
+   "repeat": {
+    "n": 8,
+    "d": [
+     0,
+     21,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Nozzle",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    -150
+   ],
+   "profile": [
+    [
+     0,
+     1395
+    ],
+    [
+     10,
+     1395
+    ],
+    [
+     14,
+     1420
+    ],
+    [
+     20,
+     1450
+    ],
+    [
+     0,
+     1450
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Sensor Window",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -272,
+    1460,
+    30,
+    -270,
+    1480
+   ],
+   "mat": "black",
+   "r": 4,
+   "lod": "f"
+  },
+  {
+   "n": "Counter Display",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -272,
+    1560,
+    120,
+    -270,
+    1660
+   ],
+   "mat": "black",
+   "r": 8
+  },
+  {
+   "n": "Counter Digits",
+   "shape": "fbox",
+   "at": [
+    -90,
+    -273,
+    1590,
+    90,
+    -272,
+    1630
+   ],
+   "mat": "led_green",
+   "lod": "f"
+  },
+  {
+   "n": "Filter LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    150,
+    1500
+   ],
+   "r": 6,
+   "y": [
+    -273,
+    -270
+   ],
+   "mat": "led_green",
+   "lod": "f"
+  },
+  {
+   "n": "Vent Slot",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -272,
+    880,
+    150,
+    -270,
+    888
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     25
+    ]
+   }
+  },
+  {
+   "n": "Supply Stop",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -100,
+    900
+   ],
+   "r": 9,
+   "y": [
+    -40,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "m"
+  },
+  {
+   "n": "Drain Tail",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    100,
+    900
+   ],
+   "r": 18,
+   "y": [
+    -60,
+    0
+   ],
+   "mat": "grey",
+   "lod": "m"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Supply Stop",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Drain Tail",
+   "side": "back",
+   "diameter": 32,
+   "flow": "Out"
+  },
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Upper Housing",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "420 x 270 x 870 mm, nozzle at 1395 mm": {
+   "value": "420x270x870",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Chiller 370 VA": {
+   "value": 370,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Bottle alcove 400 mm clear": {
+   "value": 400,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Refill station modelled as a generic product: upper housing with sensor and counter display, alcove side walls and back panel, base unit with vents, drip tray with grille bars, nozzle. Wall type drawn; free-standing shares it.",
+ "template": "Metric Generic Model.rft",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 370
+ }
+}

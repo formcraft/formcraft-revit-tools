@@ -1,0 +1,239 @@
+{
+ "family": "FMC_S_StrConnection_FinPlate",
+ "category": "Structural Connections",
+ "template": "Metric Generic Model.rft",
+ "desc": "Beam fin plate, 10 mm, fillet-welded to the support, three M20 bolts with washers and nuts",
+ "ifc": "IfcPlate",
+ "keynote": "M.FIX_03",
+ "types": [
+  {
+   "name": "100x200_Fin"
+  }
+ ],
+ "materials": {
+  "steel": "FMC_Metal_StructuralSteel_S275",
+  "galv": "FMC_Metal_ColdFormed_Galvanised"
+ },
+ "parts": [
+  {
+   "n": "Fin Plate",
+   "shape": "fbox",
+   "at": [
+    0,
+    -5,
+    -200,
+    100,
+    5,
+    0
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Weld Front",
+   "shape": "prism",
+   "pts": [
+    [
+     0,
+     -5
+    ],
+    [
+     0,
+     -13
+    ],
+    [
+     8,
+     -5
+    ]
+   ],
+   "z": [
+    -200,
+    0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "Weld Back",
+   "shape": "prism",
+   "pts": [
+    [
+     0,
+     5
+    ],
+    [
+     8,
+     5
+    ],
+    [
+     0,
+     13
+    ]
+   ],
+   "z": [
+    -200,
+    0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "Bolt Head",
+   "shape": "front",
+   "pts": [
+    [
+     70.0,
+     -31.34
+    ],
+    [
+     55.0,
+     -22.68
+    ],
+    [
+     40.0,
+     -31.34
+    ],
+    [
+     40.0,
+     -48.66
+    ],
+    [
+     55.0,
+     -57.32
+    ],
+    [
+     70.0,
+     -48.66
+    ]
+   ],
+   "y": [
+    -18,
+    -5
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     -60
+    ]
+   }
+  },
+  {
+   "n": "Washer",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    55,
+    -40
+   ],
+   "r": 18,
+   "y": [
+    5,
+    8
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     -60
+    ]
+   },
+   "seg": 16
+  },
+  {
+   "n": "Nut",
+   "shape": "front",
+   "pts": [
+    [
+     70.0,
+     -31.34
+    ],
+    [
+     55.0,
+     -22.68
+    ],
+    [
+     40.0,
+     -31.34
+    ],
+    [
+     40.0,
+     -48.66
+    ],
+    [
+     55.0,
+     -57.32
+    ],
+    [
+     70.0,
+     -48.66
+    ]
+   ],
+   "y": [
+    8,
+    24
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     -60
+    ]
+   }
+  },
+  {
+   "n": "Thread End",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    55,
+    -40
+   ],
+   "r": 10,
+   "y": [
+    24,
+    32
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     -60
+    ]
+   },
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "str connection fin plate structural connections hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+connection+fin+plate+structural+connections+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Fin plate 100 x 200 x 10 mm": {
+   "value": "100x200x10",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Bolts 3 x M20 8.8 at 60 mm": {
+   "value": "3xM20 8.8",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Fillet welds 8 mm both sides": {
+   "value": 8,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Support face at x = 0, top at z = 0: fin plate with fillet welds both sides, three bolts with heads, washers, nuts and thread ends (Fine). The beam web sits against the plate on +y."
+}

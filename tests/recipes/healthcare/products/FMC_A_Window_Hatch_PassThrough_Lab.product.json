@@ -1,0 +1,289 @@
+{
+ "family": "FMC_A_Window_Hatch_PassThrough_Lab",
+ "category": "Windows",
+ "template": "Metric Window.rft",
+ "desc": "Interlocked pass-through hatch for lab and CSSD: stainless cabinet through the wall, glazed doors both faces with interlock lamps, handles, hinges, wall flanges, UV lamp",
+ "ifc": "IfcWindow",
+ "keynote": "G.HAT_01",
+ "types": [
+  {
+   "name": "600x600_PassThrough",
+   "values": {
+    "Width": 600.0,
+    "Height": 600.0
+   }
+  }
+ ],
+ "type_values": {
+  "Sill Height": 900
+ },
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "glass": "FMC_Glass_Clear",
+  "led_red": "FMC_Plastic_LED_Red",
+  "led_green": "FMC_Plastic_LED_Green",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "parts": [
+  {
+   "n": "Cabinet Shell",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    -300.0,
+    -280,
+    900,
+    300.0,
+    280,
+    1500
+   ],
+   "r": 6
+  },
+  {
+   "n": "Wall Flange",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -350.0,
+    -72,
+    850,
+    350.0,
+    -70,
+    1550
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     142,
+     0
+    ]
+   },
+   "r": 6
+  },
+  {
+   "n": "Door",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -285.0,
+    -298,
+    915,
+    285.0,
+    -280,
+    1485
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     578,
+     0
+    ]
+   },
+   "r": 10
+  },
+  {
+   "n": "Door Window",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -210.0,
+    -300,
+    1100,
+    210.0,
+    -298,
+    1430
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     598,
+     0
+    ]
+   },
+   "r": 8
+  },
+  {
+   "n": "Door Handle",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    240.0,
+    -335,
+    1080,
+    265.0,
+    -298,
+    1320
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     633,
+     0
+    ]
+   },
+   "r": 6
+  },
+  {
+   "n": "Door Hinge",
+   "shape": "cyl",
+   "mat": "stainless",
+   "c": [
+    -285.0,
+    -289
+   ],
+   "z": [
+    960,
+    1040
+   ],
+   "r": 7,
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     400
+    ]
+   },
+   "axis": "z",
+   "seg": 16
+  },
+  {
+   "n": "Door Hinge Back",
+   "shape": "cyl",
+   "mat": "stainless",
+   "c": [
+    -285.0,
+    289
+   ],
+   "z": [
+    960,
+    1040
+   ],
+   "r": 7,
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     400
+    ]
+   },
+   "axis": "z",
+   "seg": 16
+  },
+  {
+   "n": "Interlock Lamp Red",
+   "shape": "cyl",
+   "mat": "led_red",
+   "c": [
+    -240.0,
+    1460
+   ],
+   "y": [
+    -301,
+    -298
+   ],
+   "r": 10,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Interlock Lamp Green",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    -205.0,
+    1460
+   ],
+   "y": [
+    -301,
+    -298
+   ],
+   "r": 10,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Interlock Lamp Red Back",
+   "shape": "cyl",
+   "mat": "led_red",
+   "c": [
+    -240.0,
+    1460
+   ],
+   "y": [
+    298,
+    301
+   ],
+   "r": 10,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Interlock Lamp Green Back",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    -205.0,
+    1460
+   ],
+   "y": [
+    298,
+    301
+   ],
+   "r": 10,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "UV Lamp Window",
+   "shape": "fbox",
+   "mat": "white",
+   "at": [
+    -270.0,
+    -250,
+    1475,
+    270.0,
+    250,
+    1485
+   ],
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "window hatch pass through lab windows hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=window+hatch+pass+through+lab+windows+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Hatch 600 x 600 mm, sill 900": {
+   "value": "600x600",
+   "source_status": "assumed",
+   "source": "type 1; HBN 15 pathology / HBN 13 CSSD"
+  },
+  "Depth 560 mm through the wall": {
+   "value": 560,
+   "source_status": "assumed",
+   "source": "typical pass box"
+  },
+  "Mechanical / electric interlock, one door open at a time": {
+   "value": "interlock",
+   "source_status": "assumed",
+   "source": "cleanroom practice"
+  }
+ },
+ "about": "Pass-through hatch modelled as a product: stainless shell through the wall, flanges on both faces, rounded doors both faces with vision windows, handles, hinges, red/green interlock lamps both faces, UV lamp strip inside. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

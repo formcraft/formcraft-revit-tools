@@ -27,6 +27,8 @@ export const RECIPE = z.object({
   checks: z.object({
     clear_opening_min_mm: z.number().positive().optional(),
     clear_opening_param: z.string().optional().default("Width"),
+    /** A nested helper or clearance family that is never scheduled: Gate A shows the keynote check as exempt, with this reason. */
+    keynote_exempt: z.string().min(3).optional(),
   }).optional().default({}),
 });
 export type Recipe = z.infer<typeof RECIPE>;
@@ -110,6 +112,9 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
       line = { check: c.check, state: missing.length || spec ? "Fail" : "Pass",
         detail: (missing.length ? `${expected.length - missing.length} of ${expected.length} present; missing ${missing.map((p) => `${p.name} (${p.guid})`).join(", ")}`
           : `${expected.length} of ${expected.length} present by GUID: ${expected.map((p) => p.name).join(", ")}`) + (spec ? `; the kit spec: ${spec.detail}` : "") };
+    } else if (/keynote/i.test(c.check) && line.state === "Fail" && recipe?.checks.keynote_exempt) {
+      // a nested helper or clearance family, never scheduled: exempt, and the reason stays in the gate record
+      line = { ...line, state: "Pass", detail: `Exempt: ${recipe.checks.keynote_exempt} (the file has none: ${c.detail})` };
     } else if (c.check === REQUIRED_PARAMS && line.state === "Pass" && /^0 /.test(c.detail)) {
       line = { ...line, state: "Fail", detail: `0 required and 0 checked: the kit spec lists none and the recipe adds none, so nothing shows the family carries its kit parameters` };
     }

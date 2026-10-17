@@ -1,0 +1,226 @@
+{
+ "family": "FMC_FP_FireAlarm_Detector_Smoke",
+ "category": "Fire Alarm Devices",
+ "desc": "Optical smoke detector with mounting base, addressable, 100 mm diameter, 48 mm high",
+ "ifc": "IfcSensor",
+ "keynote": "V.FAL_01",
+ "types": [
+  {
+   "name": "100_OpticalAddressable"
+  }
+ ],
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "led": "FMC_Plastic_LED_Red"
+ },
+ "reference": {
+  "query": "detector smoke fire alarm devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=detector+smoke+fire+alarm+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://intellcom.net/en/product/03375/Addressable-Optical-Smoke-Detector/",
+  "datasheet": "https://cdn.contentspeed.ro/siel.websales.ro/cs-content/cs-docs/Pp2515-Soteria-Optical-Smoke-Detector-Datasheet-Pdf-19590-1716548559.pdf"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     51,
+     -12
+    ],
+    [
+     51,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Head",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -48
+    ],
+    [
+     38,
+     -48
+    ],
+    [
+     46,
+     -44
+    ],
+    [
+     50,
+     -36
+    ],
+    [
+     50,
+     -12
+    ],
+    [
+     0,
+     -12
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Smoke Inlet Gap",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     47,
+     -32
+    ],
+    [
+     50.5,
+     -32
+    ],
+    [
+     50.5,
+     -22
+    ],
+    [
+     47,
+     -22
+    ]
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Centre Boss",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -50
+    ],
+    [
+     14,
+     -50
+    ],
+    [
+     16,
+     -48
+    ],
+    [
+     0,
+     -48
+    ]
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "LED",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -30
+   ],
+   "r": 4,
+   "z": [
+    -49.5,
+    -48
+   ],
+   "mat": "led",
+   "lod": "f"
+  }
+ ],
+ "clearances": [
+  {
+   "n": "Coverage",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -60
+    ],
+    [
+     7500,
+     -60
+    ],
+    [
+     7500,
+     -55
+    ],
+    [
+     0,
+     -55
+    ]
+   ],
+   "sub": "Coverage"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Fire Alarm",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "part": "Base",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Diameter 100 mm": {
+   "value": 100,
+   "source_status": "verified",
+   "source": "Apollo Soteria datasheet PP2515"
+  },
+  "Height 48 mm with base": {
+   "value": 48,
+   "source_status": "verified",
+   "source": "Apollo Soteria datasheet PP2515"
+  },
+  "Tricolour 360 LED": {
+   "value": "LED",
+   "source_status": "verified",
+   "source": "Apollo Soteria datasheet PP2515"
+  },
+  "Coverage radius 7500 mm": {
+   "value": 7500,
+   "source_status": "assumed",
+   "source": "BS 5839-1 point smoke detector, flat ceiling"
+  }
+ },
+ "about": "Detector sized from a Soteria datasheet: base, domed head with smoke-inlet band, centre boss and LED; hangs below the ceiling (z = 0); 7.5 m coverage disc."
+}

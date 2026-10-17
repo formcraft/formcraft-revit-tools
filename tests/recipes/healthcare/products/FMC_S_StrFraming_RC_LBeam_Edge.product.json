@@ -1,0 +1,157 @@
+{
+ "family": "FMC_S_StrFraming_RC_LBeam_Edge",
+ "category": "Structural Framing",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete edge L-beam: downstand at the slab edge with the integral slab flange, drip nib on the outer soffit",
+ "ifc": "IfcBeam",
+ "keynote": "C.COL_07",
+ "types": [
+  {
+   "name": "230x600_Edge"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "mortar": "FMC_Masonry_Mortar_1to4"
+ },
+ "parts": [
+  {
+   "n": "Beam",
+   "shape": "right",
+   "pts": [
+    [
+     -115,
+     0
+    ],
+    [
+     -115,
+     -580
+    ],
+    [
+     -95,
+     -600
+    ],
+    [
+     95,
+     -600
+    ],
+    [
+     115,
+     -580
+    ],
+    [
+     115,
+     -150
+    ]
+   ],
+   "x": [
+    -2000.0,
+    2000.0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Beam Part 2",
+   "shape": "right",
+   "pts": [
+    [
+     -115,
+     0
+    ],
+    [
+     115,
+     -150
+    ],
+    [
+     700,
+     -150
+    ],
+    [
+     700,
+     0
+    ]
+   ],
+   "x": [
+    -2000.0,
+    2000.0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Drip Nib",
+   "shape": "right",
+   "pts": [
+    [
+     -115,
+     -600
+    ],
+    [
+     -95,
+     -600
+    ],
+    [
+     -95,
+     -615
+    ],
+    [
+     -115,
+     -615
+    ]
+   ],
+   "x": [
+    -2000.0,
+    2000.0
+   ],
+   "mat": "conc",
+   "lod": "f"
+  },
+  {
+   "n": "Tie Hole Plug",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1500,
+    -375
+   ],
+   "r": 12,
+   "y": [
+    -116,
+    -110
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "str framing rc lbeam edge structural framing hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+framing+rc+lbeam+edge+structural+framing+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Downstand 230 x 600 mm": {
+   "value": "230x600",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Slab flange 150 x 585 mm": {
+   "value": "150x585",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm; flange width per BS EN 1992 effective width"
+  },
+  "Drip nib 15 mm": {
+   "value": 15,
+   "source_status": "assumed",
+   "source": "typical edge detail"
+  }
+ },
+ "about": "Edge L-beam: web at the slab edge (outer face toward -y), slab flange inward, chamfered soffit, drip nib and tie-hole plugs (Fine). Shown 4000 long."
+}

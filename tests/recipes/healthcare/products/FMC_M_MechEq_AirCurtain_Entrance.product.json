@@ -1,0 +1,313 @@
+{
+ "family": "FMC_M_MechEq_AirCurtain_Entrance",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Entrance air curtain 1500 to 2000 mm, over-door wall mounted, ambient, white casing, front intake grille, downward discharge slot with vanes",
+ "ifc": "IfcUnitaryEquipment",
+ "keynote": "H.FAN_10",
+ "types": [
+  {
+   "name": "1500_Ambient",
+   "values": {
+    "Apparent Load": 250
+   }
+  },
+  {
+   "name": "2000_Ambient",
+   "values": {
+    "Apparent Load": 350
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 350,
+  "Default Elevation": 2200
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "ledg": "FMC_Plastic_LED_Green",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "air curtain entrance mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=air+curtain+entrance+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Casing",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "x": [
+    -740,
+    740
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "End Cap Left",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "x": [
+    -750,
+    -740
+   ],
+   "mat": "mgrey"
+  },
+  {
+   "n": "End Cap Right",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "x": [
+    740,
+    750
+   ],
+   "mat": "mgrey"
+  },
+  {
+   "n": "Discharge Slot",
+   "shape": "box",
+   "at": [
+    -700,
+    -190,
+    -4,
+    700,
+    -110,
+    0
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Discharge Vane",
+   "shape": "box",
+   "at": [
+    -690,
+    -186,
+    -14,
+    -686,
+    -114,
+    -4
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 16,
+    "d": [
+     91.7,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Intake Grille",
+   "shape": "fbox",
+   "at": [
+    -700,
+    -253,
+    55,
+    700,
+    -236,
+    185
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Intake Slat",
+   "shape": "fbox",
+   "at": [
+    -700,
+    -258,
+    62,
+    700,
+    -253,
+    70
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 8,
+    "d": [
+     0,
+     0,
+     15.5
+    ]
+   }
+  },
+  {
+   "n": "Control Panel",
+   "shape": "fbox",
+   "at": [
+    520,
+    -254,
+    192,
+    700,
+    -250,
+    214
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Run LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    680,
+    203
+   ],
+   "r": 3,
+   "y": [
+    -256,
+    -254
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Mounting Bracket",
+   "shape": "box",
+   "at": [
+    -600,
+    -10,
+    40,
+    -560,
+    0,
+    200
+   ],
+   "mat": "dark",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1160,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Mounting Bracket 1",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Length 1500 / 2000 mm, 250 deep, 220 high": {
+   "value": "1500/2000x250x220",
+   "source_status": "assumed",
+   "source": "typical over-door air curtain"
+  },
+  "Discharge velocity 8 m/s": {
+   "value": 8,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 250 / 350 VA (ambient)": {
+   "value": "250/350",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Fixed 100 mm above door head": {
+   "value": 2200,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: curved white casing with grey end caps, front intake grille with slats, discharge slot with vanes on the underside, control panel with LED, wall brackets."
+}

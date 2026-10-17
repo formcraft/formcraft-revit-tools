@@ -1,0 +1,6000 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireAlarm_Panel_Addressable",
+ "template": "Metric Generic Model.rft",
+ "about": "Fire alarm panel modelled as a generic product: red back box and door, LCD with bezel, rows of fire and fault LEDs, power LED, keypad with keys, silence/reset/evacuate buttons, key switch, label, door lock, cable knockouts. Reference: query: panel addressable fire alarm devices hospital; images: https://www.google.com/search?tbm=isch&q=panel+addressable+fire+alarm+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Fire Alarm Devices"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "2-loop_Addressable"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Cost_Unit",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Geometry_Stage",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/IfcExportAs",
+   "type": "2-loop_Addressable",
+   "param": "IfcExportAs",
+   "value": "IfcAlarm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/Description",
+   "type": "2-loop_Addressable",
+   "param": "Description",
+   "value": "Addressable fire alarm control panel, 2-loop / 4-loop, surface red steel enclosure 450 x 420 x 135, LCD, zone LEDs, keypad, controls, key switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/Keynote",
+   "type": "2-loop_Addressable",
+   "param": "Keynote",
+   "value": "V.FAL_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Keynote_Code",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Keynote_Code",
+   "value": "V.FAL_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Code_Description",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Code_Description",
+   "value": "Panel Addressable: Addressable fire alarm panel"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Code_Group",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Code_Group",
+   "value": "V.FAL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/FMC_Role_Code",
+   "type": "2-loop_Addressable",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/Voltage",
+   "type": "2-loop_Addressable",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/Apparent Load",
+   "type": "2-loop_Addressable",
+   "param": "Apparent Load",
+   "value": 150
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-loop_Addressable/Default Elevation",
+   "type": "2-loop_Addressable",
+   "param": "Default Elevation",
+   "value": 1180
+  },
+  {
+   "op": "add_type",
+   "name": "4-loop_Addressable"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Cost_Unit",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Geometry_Stage",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/IfcExportAs",
+   "type": "4-loop_Addressable",
+   "param": "IfcExportAs",
+   "value": "IfcAlarm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/Description",
+   "type": "4-loop_Addressable",
+   "param": "Description",
+   "value": "Addressable fire alarm control panel, 2-loop / 4-loop, surface red steel enclosure 450 x 420 x 135, LCD, zone LEDs, keypad, controls, key switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/Keynote",
+   "type": "4-loop_Addressable",
+   "param": "Keynote",
+   "value": "V.FAL_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Keynote_Code",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Keynote_Code",
+   "value": "V.FAL_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Code_Description",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Code_Description",
+   "value": "Panel Addressable: Addressable fire alarm panel"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Code_Group",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Code_Group",
+   "value": "V.FAL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/FMC_Role_Code",
+   "type": "4-loop_Addressable",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/Voltage",
+   "type": "4-loop_Addressable",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/Apparent Load",
+   "type": "4-loop_Addressable",
+   "param": "Apparent Load",
+   "value": 150
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-loop_Addressable/Default Elevation",
+   "type": "4-loop_Addressable",
+   "param": "Default Elevation",
+   "value": 1180
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    200,
+    16,
+    46
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Lcd",
+   "color": [
+    79,
+    124,
+    130
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Lcd Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Reflective_BlueGreen",
+   "param": "Lcd Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -225.0,
+     -136
+    ],
+    [
+     225.0,
+     -136
+    ],
+    [
+     225.0,
+     0.0
+    ],
+    [
+     -225.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Box",
+   "points": [
+    [
+     219.0,
+     -120.0
+    ],
+    [
+     221.3,
+     -119.54
+    ],
+    [
+     223.24,
+     -118.24
+    ],
+    [
+     224.54,
+     -116.3
+    ],
+    [
+     225.0,
+     -114.0
+    ],
+    [
+     225.0,
+     -6.0
+    ],
+    [
+     224.54,
+     -3.7
+    ],
+    [
+     223.24,
+     -1.76
+    ],
+    [
+     221.3,
+     -0.46
+    ],
+    [
+     219.0,
+     0.0
+    ],
+    [
+     -219.0,
+     0.0
+    ],
+    [
+     -221.3,
+     -0.46
+    ],
+    [
+     -223.24,
+     -1.76
+    ],
+    [
+     -224.54,
+     -3.7
+    ],
+    [
+     -225.0,
+     -6.0
+    ],
+    [
+     -225.0,
+     -114.0
+    ],
+    [
+     -224.54,
+     -116.3
+    ],
+    [
+     -223.24,
+     -118.24
+    ],
+    [
+     -221.3,
+     -119.54
+    ],
+    [
+     -219.0,
+     -120.0
+    ]
+   ],
+   "start": 0,
+   "end": 420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Box",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Box",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door",
+   "points": [
+    [
+     214.0,
+     6.0
+    ],
+    [
+     216.3,
+     6.46
+    ],
+    [
+     218.24,
+     7.76
+    ],
+    [
+     219.54,
+     9.7
+    ],
+    [
+     220.0,
+     12.0
+    ],
+    [
+     220.0,
+     408.0
+    ],
+    [
+     219.54,
+     410.3
+    ],
+    [
+     218.24,
+     412.24
+    ],
+    [
+     216.3,
+     413.54
+    ],
+    [
+     214.0,
+     414.0
+    ],
+    [
+     -214.0,
+     414.0
+    ],
+    [
+     -216.3,
+     413.54
+    ],
+    [
+     -218.24,
+     412.24
+    ],
+    [
+     -219.54,
+     410.3
+    ],
+    [
+     -220.0,
+     408.0
+    ],
+    [
+     -220.0,
+     12.0
+    ],
+    [
+     -219.54,
+     9.7
+    ],
+    [
+     -218.24,
+     7.76
+    ],
+    [
+     -216.3,
+     6.46
+    ],
+    [
+     -214.0,
+     6.0
+    ]
+   ],
+   "start": 120,
+   "end": 132,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Display Bezel",
+   "points": [
+    [
+     126.0,
+     290.0
+    ],
+    [
+     127.53,
+     290.3
+    ],
+    [
+     128.83,
+     291.17
+    ],
+    [
+     129.7,
+     292.47
+    ],
+    [
+     130.0,
+     294.0
+    ],
+    [
+     130.0,
+     368.0
+    ],
+    [
+     129.7,
+     369.53
+    ],
+    [
+     128.83,
+     370.83
+    ],
+    [
+     127.53,
+     371.7
+    ],
+    [
+     126.0,
+     372.0
+    ],
+    [
+     -126.0,
+     372.0
+    ],
+    [
+     -127.53,
+     371.7
+    ],
+    [
+     -128.83,
+     370.83
+    ],
+    [
+     -129.7,
+     369.53
+    ],
+    [
+     -130.0,
+     368.0
+    ],
+    [
+     -130.0,
+     294.0
+    ],
+    [
+     -129.7,
+     292.47
+    ],
+    [
+     -128.83,
+     291.17
+    ],
+    [
+     -127.53,
+     290.3
+    ],
+    [
+     -126.0,
+     290.0
+    ]
+   ],
+   "start": 132,
+   "end": 134,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Display Bezel",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Display Bezel",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Display Bezel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LCD",
+   "points": [
+    [
+     110.0,
+     302.0
+    ],
+    [
+     110.77,
+     302.15
+    ],
+    [
+     111.41,
+     302.59
+    ],
+    [
+     111.85,
+     303.23
+    ],
+    [
+     112.0,
+     304.0
+    ],
+    [
+     112.0,
+     358.0
+    ],
+    [
+     111.85,
+     358.77
+    ],
+    [
+     111.41,
+     359.41
+    ],
+    [
+     110.77,
+     359.85
+    ],
+    [
+     110.0,
+     360.0
+    ],
+    [
+     -110.0,
+     360.0
+    ],
+    [
+     -110.77,
+     359.85
+    ],
+    [
+     -111.41,
+     359.41
+    ],
+    [
+     -111.85,
+     358.77
+    ],
+    [
+     -112.0,
+     358.0
+    ],
+    [
+     -112.0,
+     304.0
+    ],
+    [
+     -111.85,
+     303.23
+    ],
+    [
+     -111.41,
+     302.59
+    ],
+    [
+     -110.77,
+     302.15
+    ],
+    [
+     -110.0,
+     302.0
+    ]
+   ],
+   "start": 134,
+   "end": 135,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LCD",
+   "subcategory": "Lcd"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LCD",
+   "param": "Lcd Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LCD",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 1",
+   "points": [
+    [
+     -176.0,
+     260.0
+    ],
+    [
+     -176.14,
+     261.04
+    ],
+    [
+     -176.54,
+     262.0
+    ],
+    [
+     -177.17,
+     262.83
+    ],
+    [
+     -178.0,
+     263.46
+    ],
+    [
+     -178.96,
+     263.86
+    ],
+    [
+     -180.0,
+     264.0
+    ],
+    [
+     -181.04,
+     263.86
+    ],
+    [
+     -182.0,
+     263.46
+    ],
+    [
+     -182.83,
+     262.83
+    ],
+    [
+     -183.46,
+     262.0
+    ],
+    [
+     -183.86,
+     261.04
+    ],
+    [
+     -184.0,
+     260.0
+    ],
+    [
+     -183.86,
+     258.96
+    ],
+    [
+     -183.46,
+     258.0
+    ],
+    [
+     -182.83,
+     257.17
+    ],
+    [
+     -182.0,
+     256.54
+    ],
+    [
+     -181.04,
+     256.14
+    ],
+    [
+     -180.0,
+     256.0
+    ],
+    [
+     -178.96,
+     256.14
+    ],
+    [
+     -178.0,
+     256.54
+    ],
+    [
+     -177.17,
+     257.17
+    ],
+    [
+     -176.54,
+     258.0
+    ],
+    [
+     -176.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 1",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 1",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 2",
+   "points": [
+    [
+     -150.0,
+     260.0
+    ],
+    [
+     -150.14,
+     261.04
+    ],
+    [
+     -150.54,
+     262.0
+    ],
+    [
+     -151.17,
+     262.83
+    ],
+    [
+     -152.0,
+     263.46
+    ],
+    [
+     -152.96,
+     263.86
+    ],
+    [
+     -154.0,
+     264.0
+    ],
+    [
+     -155.04,
+     263.86
+    ],
+    [
+     -156.0,
+     263.46
+    ],
+    [
+     -156.83,
+     262.83
+    ],
+    [
+     -157.46,
+     262.0
+    ],
+    [
+     -157.86,
+     261.04
+    ],
+    [
+     -158.0,
+     260.0
+    ],
+    [
+     -157.86,
+     258.96
+    ],
+    [
+     -157.46,
+     258.0
+    ],
+    [
+     -156.83,
+     257.17
+    ],
+    [
+     -156.0,
+     256.54
+    ],
+    [
+     -155.04,
+     256.14
+    ],
+    [
+     -154.0,
+     256.0
+    ],
+    [
+     -152.96,
+     256.14
+    ],
+    [
+     -152.0,
+     256.54
+    ],
+    [
+     -151.17,
+     257.17
+    ],
+    [
+     -150.54,
+     258.0
+    ],
+    [
+     -150.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 2",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 2",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 3",
+   "points": [
+    [
+     -124.0,
+     260.0
+    ],
+    [
+     -124.14,
+     261.04
+    ],
+    [
+     -124.54,
+     262.0
+    ],
+    [
+     -125.17,
+     262.83
+    ],
+    [
+     -126.0,
+     263.46
+    ],
+    [
+     -126.96,
+     263.86
+    ],
+    [
+     -128.0,
+     264.0
+    ],
+    [
+     -129.04,
+     263.86
+    ],
+    [
+     -130.0,
+     263.46
+    ],
+    [
+     -130.83,
+     262.83
+    ],
+    [
+     -131.46,
+     262.0
+    ],
+    [
+     -131.86,
+     261.04
+    ],
+    [
+     -132.0,
+     260.0
+    ],
+    [
+     -131.86,
+     258.96
+    ],
+    [
+     -131.46,
+     258.0
+    ],
+    [
+     -130.83,
+     257.17
+    ],
+    [
+     -130.0,
+     256.54
+    ],
+    [
+     -129.04,
+     256.14
+    ],
+    [
+     -128.0,
+     256.0
+    ],
+    [
+     -126.96,
+     256.14
+    ],
+    [
+     -126.0,
+     256.54
+    ],
+    [
+     -125.17,
+     257.17
+    ],
+    [
+     -124.54,
+     258.0
+    ],
+    [
+     -124.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 3",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 3",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 4",
+   "points": [
+    [
+     -98.0,
+     260.0
+    ],
+    [
+     -98.14,
+     261.04
+    ],
+    [
+     -98.54,
+     262.0
+    ],
+    [
+     -99.17,
+     262.83
+    ],
+    [
+     -100.0,
+     263.46
+    ],
+    [
+     -100.96,
+     263.86
+    ],
+    [
+     -102.0,
+     264.0
+    ],
+    [
+     -103.04,
+     263.86
+    ],
+    [
+     -104.0,
+     263.46
+    ],
+    [
+     -104.83,
+     262.83
+    ],
+    [
+     -105.46,
+     262.0
+    ],
+    [
+     -105.86,
+     261.04
+    ],
+    [
+     -106.0,
+     260.0
+    ],
+    [
+     -105.86,
+     258.96
+    ],
+    [
+     -105.46,
+     258.0
+    ],
+    [
+     -104.83,
+     257.17
+    ],
+    [
+     -104.0,
+     256.54
+    ],
+    [
+     -103.04,
+     256.14
+    ],
+    [
+     -102.0,
+     256.0
+    ],
+    [
+     -100.96,
+     256.14
+    ],
+    [
+     -100.0,
+     256.54
+    ],
+    [
+     -99.17,
+     257.17
+    ],
+    [
+     -98.54,
+     258.0
+    ],
+    [
+     -98.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 4",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 4",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 5",
+   "points": [
+    [
+     -72.0,
+     260.0
+    ],
+    [
+     -72.14,
+     261.04
+    ],
+    [
+     -72.54,
+     262.0
+    ],
+    [
+     -73.17,
+     262.83
+    ],
+    [
+     -74.0,
+     263.46
+    ],
+    [
+     -74.96,
+     263.86
+    ],
+    [
+     -76.0,
+     264.0
+    ],
+    [
+     -77.04,
+     263.86
+    ],
+    [
+     -78.0,
+     263.46
+    ],
+    [
+     -78.83,
+     262.83
+    ],
+    [
+     -79.46,
+     262.0
+    ],
+    [
+     -79.86,
+     261.04
+    ],
+    [
+     -80.0,
+     260.0
+    ],
+    [
+     -79.86,
+     258.96
+    ],
+    [
+     -79.46,
+     258.0
+    ],
+    [
+     -78.83,
+     257.17
+    ],
+    [
+     -78.0,
+     256.54
+    ],
+    [
+     -77.04,
+     256.14
+    ],
+    [
+     -76.0,
+     256.0
+    ],
+    [
+     -74.96,
+     256.14
+    ],
+    [
+     -74.0,
+     256.54
+    ],
+    [
+     -73.17,
+     257.17
+    ],
+    [
+     -72.54,
+     258.0
+    ],
+    [
+     -72.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 5",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 5",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 6",
+   "points": [
+    [
+     -46.0,
+     260.0
+    ],
+    [
+     -46.14,
+     261.04
+    ],
+    [
+     -46.54,
+     262.0
+    ],
+    [
+     -47.17,
+     262.83
+    ],
+    [
+     -48.0,
+     263.46
+    ],
+    [
+     -48.96,
+     263.86
+    ],
+    [
+     -50.0,
+     264.0
+    ],
+    [
+     -51.04,
+     263.86
+    ],
+    [
+     -52.0,
+     263.46
+    ],
+    [
+     -52.83,
+     262.83
+    ],
+    [
+     -53.46,
+     262.0
+    ],
+    [
+     -53.86,
+     261.04
+    ],
+    [
+     -54.0,
+     260.0
+    ],
+    [
+     -53.86,
+     258.96
+    ],
+    [
+     -53.46,
+     258.0
+    ],
+    [
+     -52.83,
+     257.17
+    ],
+    [
+     -52.0,
+     256.54
+    ],
+    [
+     -51.04,
+     256.14
+    ],
+    [
+     -50.0,
+     256.0
+    ],
+    [
+     -48.96,
+     256.14
+    ],
+    [
+     -48.0,
+     256.54
+    ],
+    [
+     -47.17,
+     257.17
+    ],
+    [
+     -46.54,
+     258.0
+    ],
+    [
+     -46.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 6",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 6",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 7",
+   "points": [
+    [
+     -20.0,
+     260.0
+    ],
+    [
+     -20.14,
+     261.04
+    ],
+    [
+     -20.54,
+     262.0
+    ],
+    [
+     -21.17,
+     262.83
+    ],
+    [
+     -22.0,
+     263.46
+    ],
+    [
+     -22.96,
+     263.86
+    ],
+    [
+     -24.0,
+     264.0
+    ],
+    [
+     -25.04,
+     263.86
+    ],
+    [
+     -26.0,
+     263.46
+    ],
+    [
+     -26.83,
+     262.83
+    ],
+    [
+     -27.46,
+     262.0
+    ],
+    [
+     -27.86,
+     261.04
+    ],
+    [
+     -28.0,
+     260.0
+    ],
+    [
+     -27.86,
+     258.96
+    ],
+    [
+     -27.46,
+     258.0
+    ],
+    [
+     -26.83,
+     257.17
+    ],
+    [
+     -26.0,
+     256.54
+    ],
+    [
+     -25.04,
+     256.14
+    ],
+    [
+     -24.0,
+     256.0
+    ],
+    [
+     -22.96,
+     256.14
+    ],
+    [
+     -22.0,
+     256.54
+    ],
+    [
+     -21.17,
+     257.17
+    ],
+    [
+     -20.54,
+     258.0
+    ],
+    [
+     -20.14,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 7",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 7",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Zone LED 8",
+   "points": [
+    [
+     6.0,
+     260.0
+    ],
+    [
+     5.86,
+     261.04
+    ],
+    [
+     5.46,
+     262.0
+    ],
+    [
+     4.83,
+     262.83
+    ],
+    [
+     4.0,
+     263.46
+    ],
+    [
+     3.04,
+     263.86
+    ],
+    [
+     2.0,
+     264.0
+    ],
+    [
+     0.96,
+     263.86
+    ],
+    [
+     0.0,
+     263.46
+    ],
+    [
+     -0.83,
+     262.83
+    ],
+    [
+     -1.46,
+     262.0
+    ],
+    [
+     -1.86,
+     261.04
+    ],
+    [
+     -2.0,
+     260.0
+    ],
+    [
+     -1.86,
+     258.96
+    ],
+    [
+     -1.46,
+     258.0
+    ],
+    [
+     -0.83,
+     257.17
+    ],
+    [
+     -0.0,
+     256.54
+    ],
+    [
+     0.96,
+     256.14
+    ],
+    [
+     2.0,
+     256.0
+    ],
+    [
+     3.04,
+     256.14
+    ],
+    [
+     4.0,
+     256.54
+    ],
+    [
+     4.83,
+     257.17
+    ],
+    [
+     5.46,
+     258.0
+    ],
+    [
+     5.86,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Zone LED 8",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Zone LED 8",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Zone LED 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 1",
+   "points": [
+    [
+     -176.0,
+     238.0
+    ],
+    [
+     -176.14,
+     239.04
+    ],
+    [
+     -176.54,
+     240.0
+    ],
+    [
+     -177.17,
+     240.83
+    ],
+    [
+     -178.0,
+     241.46
+    ],
+    [
+     -178.96,
+     241.86
+    ],
+    [
+     -180.0,
+     242.0
+    ],
+    [
+     -181.04,
+     241.86
+    ],
+    [
+     -182.0,
+     241.46
+    ],
+    [
+     -182.83,
+     240.83
+    ],
+    [
+     -183.46,
+     240.0
+    ],
+    [
+     -183.86,
+     239.04
+    ],
+    [
+     -184.0,
+     238.0
+    ],
+    [
+     -183.86,
+     236.96
+    ],
+    [
+     -183.46,
+     236.0
+    ],
+    [
+     -182.83,
+     235.17
+    ],
+    [
+     -182.0,
+     234.54
+    ],
+    [
+     -181.04,
+     234.14
+    ],
+    [
+     -180.0,
+     234.0
+    ],
+    [
+     -178.96,
+     234.14
+    ],
+    [
+     -178.0,
+     234.54
+    ],
+    [
+     -177.17,
+     235.17
+    ],
+    [
+     -176.54,
+     236.0
+    ],
+    [
+     -176.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 1",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 1",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 2",
+   "points": [
+    [
+     -150.0,
+     238.0
+    ],
+    [
+     -150.14,
+     239.04
+    ],
+    [
+     -150.54,
+     240.0
+    ],
+    [
+     -151.17,
+     240.83
+    ],
+    [
+     -152.0,
+     241.46
+    ],
+    [
+     -152.96,
+     241.86
+    ],
+    [
+     -154.0,
+     242.0
+    ],
+    [
+     -155.04,
+     241.86
+    ],
+    [
+     -156.0,
+     241.46
+    ],
+    [
+     -156.83,
+     240.83
+    ],
+    [
+     -157.46,
+     240.0
+    ],
+    [
+     -157.86,
+     239.04
+    ],
+    [
+     -158.0,
+     238.0
+    ],
+    [
+     -157.86,
+     236.96
+    ],
+    [
+     -157.46,
+     236.0
+    ],
+    [
+     -156.83,
+     235.17
+    ],
+    [
+     -156.0,
+     234.54
+    ],
+    [
+     -155.04,
+     234.14
+    ],
+    [
+     -154.0,
+     234.0
+    ],
+    [
+     -152.96,
+     234.14
+    ],
+    [
+     -152.0,
+     234.54
+    ],
+    [
+     -151.17,
+     235.17
+    ],
+    [
+     -150.54,
+     236.0
+    ],
+    [
+     -150.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 2",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 2",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 3",
+   "points": [
+    [
+     -124.0,
+     238.0
+    ],
+    [
+     -124.14,
+     239.04
+    ],
+    [
+     -124.54,
+     240.0
+    ],
+    [
+     -125.17,
+     240.83
+    ],
+    [
+     -126.0,
+     241.46
+    ],
+    [
+     -126.96,
+     241.86
+    ],
+    [
+     -128.0,
+     242.0
+    ],
+    [
+     -129.04,
+     241.86
+    ],
+    [
+     -130.0,
+     241.46
+    ],
+    [
+     -130.83,
+     240.83
+    ],
+    [
+     -131.46,
+     240.0
+    ],
+    [
+     -131.86,
+     239.04
+    ],
+    [
+     -132.0,
+     238.0
+    ],
+    [
+     -131.86,
+     236.96
+    ],
+    [
+     -131.46,
+     236.0
+    ],
+    [
+     -130.83,
+     235.17
+    ],
+    [
+     -130.0,
+     234.54
+    ],
+    [
+     -129.04,
+     234.14
+    ],
+    [
+     -128.0,
+     234.0
+    ],
+    [
+     -126.96,
+     234.14
+    ],
+    [
+     -126.0,
+     234.54
+    ],
+    [
+     -125.17,
+     235.17
+    ],
+    [
+     -124.54,
+     236.0
+    ],
+    [
+     -124.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 3",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 3",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 4",
+   "points": [
+    [
+     -98.0,
+     238.0
+    ],
+    [
+     -98.14,
+     239.04
+    ],
+    [
+     -98.54,
+     240.0
+    ],
+    [
+     -99.17,
+     240.83
+    ],
+    [
+     -100.0,
+     241.46
+    ],
+    [
+     -100.96,
+     241.86
+    ],
+    [
+     -102.0,
+     242.0
+    ],
+    [
+     -103.04,
+     241.86
+    ],
+    [
+     -104.0,
+     241.46
+    ],
+    [
+     -104.83,
+     240.83
+    ],
+    [
+     -105.46,
+     240.0
+    ],
+    [
+     -105.86,
+     239.04
+    ],
+    [
+     -106.0,
+     238.0
+    ],
+    [
+     -105.86,
+     236.96
+    ],
+    [
+     -105.46,
+     236.0
+    ],
+    [
+     -104.83,
+     235.17
+    ],
+    [
+     -104.0,
+     234.54
+    ],
+    [
+     -103.04,
+     234.14
+    ],
+    [
+     -102.0,
+     234.0
+    ],
+    [
+     -100.96,
+     234.14
+    ],
+    [
+     -100.0,
+     234.54
+    ],
+    [
+     -99.17,
+     235.17
+    ],
+    [
+     -98.54,
+     236.0
+    ],
+    [
+     -98.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 4",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 4",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 5",
+   "points": [
+    [
+     -72.0,
+     238.0
+    ],
+    [
+     -72.14,
+     239.04
+    ],
+    [
+     -72.54,
+     240.0
+    ],
+    [
+     -73.17,
+     240.83
+    ],
+    [
+     -74.0,
+     241.46
+    ],
+    [
+     -74.96,
+     241.86
+    ],
+    [
+     -76.0,
+     242.0
+    ],
+    [
+     -77.04,
+     241.86
+    ],
+    [
+     -78.0,
+     241.46
+    ],
+    [
+     -78.83,
+     240.83
+    ],
+    [
+     -79.46,
+     240.0
+    ],
+    [
+     -79.86,
+     239.04
+    ],
+    [
+     -80.0,
+     238.0
+    ],
+    [
+     -79.86,
+     236.96
+    ],
+    [
+     -79.46,
+     236.0
+    ],
+    [
+     -78.83,
+     235.17
+    ],
+    [
+     -78.0,
+     234.54
+    ],
+    [
+     -77.04,
+     234.14
+    ],
+    [
+     -76.0,
+     234.0
+    ],
+    [
+     -74.96,
+     234.14
+    ],
+    [
+     -74.0,
+     234.54
+    ],
+    [
+     -73.17,
+     235.17
+    ],
+    [
+     -72.54,
+     236.0
+    ],
+    [
+     -72.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 5",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 5",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 6",
+   "points": [
+    [
+     -46.0,
+     238.0
+    ],
+    [
+     -46.14,
+     239.04
+    ],
+    [
+     -46.54,
+     240.0
+    ],
+    [
+     -47.17,
+     240.83
+    ],
+    [
+     -48.0,
+     241.46
+    ],
+    [
+     -48.96,
+     241.86
+    ],
+    [
+     -50.0,
+     242.0
+    ],
+    [
+     -51.04,
+     241.86
+    ],
+    [
+     -52.0,
+     241.46
+    ],
+    [
+     -52.83,
+     240.83
+    ],
+    [
+     -53.46,
+     240.0
+    ],
+    [
+     -53.86,
+     239.04
+    ],
+    [
+     -54.0,
+     238.0
+    ],
+    [
+     -53.86,
+     236.96
+    ],
+    [
+     -53.46,
+     236.0
+    ],
+    [
+     -52.83,
+     235.17
+    ],
+    [
+     -52.0,
+     234.54
+    ],
+    [
+     -51.04,
+     234.14
+    ],
+    [
+     -50.0,
+     234.0
+    ],
+    [
+     -48.96,
+     234.14
+    ],
+    [
+     -48.0,
+     234.54
+    ],
+    [
+     -47.17,
+     235.17
+    ],
+    [
+     -46.54,
+     236.0
+    ],
+    [
+     -46.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 6",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 6",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 7",
+   "points": [
+    [
+     -20.0,
+     238.0
+    ],
+    [
+     -20.14,
+     239.04
+    ],
+    [
+     -20.54,
+     240.0
+    ],
+    [
+     -21.17,
+     240.83
+    ],
+    [
+     -22.0,
+     241.46
+    ],
+    [
+     -22.96,
+     241.86
+    ],
+    [
+     -24.0,
+     242.0
+    ],
+    [
+     -25.04,
+     241.86
+    ],
+    [
+     -26.0,
+     241.46
+    ],
+    [
+     -26.83,
+     240.83
+    ],
+    [
+     -27.46,
+     240.0
+    ],
+    [
+     -27.86,
+     239.04
+    ],
+    [
+     -28.0,
+     238.0
+    ],
+    [
+     -27.86,
+     236.96
+    ],
+    [
+     -27.46,
+     236.0
+    ],
+    [
+     -26.83,
+     235.17
+    ],
+    [
+     -26.0,
+     234.54
+    ],
+    [
+     -25.04,
+     234.14
+    ],
+    [
+     -24.0,
+     234.0
+    ],
+    [
+     -22.96,
+     234.14
+    ],
+    [
+     -22.0,
+     234.54
+    ],
+    [
+     -21.17,
+     235.17
+    ],
+    [
+     -20.54,
+     236.0
+    ],
+    [
+     -20.14,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 7",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 7",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fault LED 8",
+   "points": [
+    [
+     6.0,
+     238.0
+    ],
+    [
+     5.86,
+     239.04
+    ],
+    [
+     5.46,
+     240.0
+    ],
+    [
+     4.83,
+     240.83
+    ],
+    [
+     4.0,
+     241.46
+    ],
+    [
+     3.04,
+     241.86
+    ],
+    [
+     2.0,
+     242.0
+    ],
+    [
+     0.96,
+     241.86
+    ],
+    [
+     0.0,
+     241.46
+    ],
+    [
+     -0.83,
+     240.83
+    ],
+    [
+     -1.46,
+     240.0
+    ],
+    [
+     -1.86,
+     239.04
+    ],
+    [
+     -2.0,
+     238.0
+    ],
+    [
+     -1.86,
+     236.96
+    ],
+    [
+     -1.46,
+     236.0
+    ],
+    [
+     -0.83,
+     235.17
+    ],
+    [
+     -0.0,
+     234.54
+    ],
+    [
+     0.96,
+     234.14
+    ],
+    [
+     2.0,
+     234.0
+    ],
+    [
+     3.04,
+     234.14
+    ],
+    [
+     4.0,
+     234.54
+    ],
+    [
+     4.83,
+     235.17
+    ],
+    [
+     5.46,
+     236.0
+    ],
+    [
+     5.86,
+     236.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fault LED 8",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fault LED 8",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fault LED 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Power LED",
+   "points": [
+    [
+     184.0,
+     260.0
+    ],
+    [
+     183.86,
+     261.04
+    ],
+    [
+     183.46,
+     262.0
+    ],
+    [
+     182.83,
+     262.83
+    ],
+    [
+     182.0,
+     263.46
+    ],
+    [
+     181.04,
+     263.86
+    ],
+    [
+     180.0,
+     264.0
+    ],
+    [
+     178.96,
+     263.86
+    ],
+    [
+     178.0,
+     263.46
+    ],
+    [
+     177.17,
+     262.83
+    ],
+    [
+     176.54,
+     262.0
+    ],
+    [
+     176.14,
+     261.04
+    ],
+    [
+     176.0,
+     260.0
+    ],
+    [
+     176.14,
+     258.96
+    ],
+    [
+     176.54,
+     258.0
+    ],
+    [
+     177.17,
+     257.17
+    ],
+    [
+     178.0,
+     256.54
+    ],
+    [
+     178.96,
+     256.14
+    ],
+    [
+     180.0,
+     256.0
+    ],
+    [
+     181.04,
+     256.14
+    ],
+    [
+     182.0,
+     256.54
+    ],
+    [
+     182.83,
+     257.17
+    ],
+    [
+     183.46,
+     258.0
+    ],
+    [
+     183.86,
+     258.96
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Power LED",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Power LED",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Power LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Keypad",
+   "points": [
+    [
+     176.0,
+     90.0
+    ],
+    [
+     177.53,
+     90.3
+    ],
+    [
+     178.83,
+     91.17
+    ],
+    [
+     179.7,
+     92.47
+    ],
+    [
+     180.0,
+     94.0
+    ],
+    [
+     180.0,
+     208.0
+    ],
+    [
+     179.7,
+     209.53
+    ],
+    [
+     178.83,
+     210.83
+    ],
+    [
+     177.53,
+     211.7
+    ],
+    [
+     176.0,
+     212.0
+    ],
+    [
+     44.0,
+     212.0
+    ],
+    [
+     42.47,
+     211.7
+    ],
+    [
+     41.17,
+     210.83
+    ],
+    [
+     40.3,
+     209.53
+    ],
+    [
+     40.0,
+     208.0
+    ],
+    [
+     40.0,
+     94.0
+    ],
+    [
+     40.3,
+     92.47
+    ],
+    [
+     41.17,
+     91.17
+    ],
+    [
+     42.47,
+     90.3
+    ],
+    [
+     44.0,
+     90.0
+    ]
+   ],
+   "start": 132,
+   "end": 134,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Keypad",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Keypad",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Keypad",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 1 1",
+   "points": [
+    [
+     73.0,
+     180.0
+    ],
+    [
+     73.77,
+     180.15
+    ],
+    [
+     74.41,
+     180.59
+    ],
+    [
+     74.85,
+     181.23
+    ],
+    [
+     75.0,
+     182.0
+    ],
+    [
+     75.0,
+     198.0
+    ],
+    [
+     74.85,
+     198.77
+    ],
+    [
+     74.41,
+     199.41
+    ],
+    [
+     73.77,
+     199.85
+    ],
+    [
+     73.0,
+     200.0
+    ],
+    [
+     52.0,
+     200.0
+    ],
+    [
+     51.23,
+     199.85
+    ],
+    [
+     50.59,
+     199.41
+    ],
+    [
+     50.15,
+     198.77
+    ],
+    [
+     50.0,
+     198.0
+    ],
+    [
+     50.0,
+     182.0
+    ],
+    [
+     50.15,
+     181.23
+    ],
+    [
+     50.59,
+     180.59
+    ],
+    [
+     51.23,
+     180.15
+    ],
+    [
+     52.0,
+     180.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 1 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 1 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 1 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 1 2",
+   "points": [
+    [
+     105.0,
+     180.0
+    ],
+    [
+     105.77,
+     180.15
+    ],
+    [
+     106.41,
+     180.59
+    ],
+    [
+     106.85,
+     181.23
+    ],
+    [
+     107.0,
+     182.0
+    ],
+    [
+     107.0,
+     198.0
+    ],
+    [
+     106.85,
+     198.77
+    ],
+    [
+     106.41,
+     199.41
+    ],
+    [
+     105.77,
+     199.85
+    ],
+    [
+     105.0,
+     200.0
+    ],
+    [
+     84.0,
+     200.0
+    ],
+    [
+     83.23,
+     199.85
+    ],
+    [
+     82.59,
+     199.41
+    ],
+    [
+     82.15,
+     198.77
+    ],
+    [
+     82.0,
+     198.0
+    ],
+    [
+     82.0,
+     182.0
+    ],
+    [
+     82.15,
+     181.23
+    ],
+    [
+     82.59,
+     180.59
+    ],
+    [
+     83.23,
+     180.15
+    ],
+    [
+     84.0,
+     180.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 1 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 1 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 1 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 1 3",
+   "points": [
+    [
+     137.0,
+     180.0
+    ],
+    [
+     137.77,
+     180.15
+    ],
+    [
+     138.41,
+     180.59
+    ],
+    [
+     138.85,
+     181.23
+    ],
+    [
+     139.0,
+     182.0
+    ],
+    [
+     139.0,
+     198.0
+    ],
+    [
+     138.85,
+     198.77
+    ],
+    [
+     138.41,
+     199.41
+    ],
+    [
+     137.77,
+     199.85
+    ],
+    [
+     137.0,
+     200.0
+    ],
+    [
+     116.0,
+     200.0
+    ],
+    [
+     115.23,
+     199.85
+    ],
+    [
+     114.59,
+     199.41
+    ],
+    [
+     114.15,
+     198.77
+    ],
+    [
+     114.0,
+     198.0
+    ],
+    [
+     114.0,
+     182.0
+    ],
+    [
+     114.15,
+     181.23
+    ],
+    [
+     114.59,
+     180.59
+    ],
+    [
+     115.23,
+     180.15
+    ],
+    [
+     116.0,
+     180.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 1 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 1 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 1 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 1 4",
+   "points": [
+    [
+     169.0,
+     180.0
+    ],
+    [
+     169.77,
+     180.15
+    ],
+    [
+     170.41,
+     180.59
+    ],
+    [
+     170.85,
+     181.23
+    ],
+    [
+     171.0,
+     182.0
+    ],
+    [
+     171.0,
+     198.0
+    ],
+    [
+     170.85,
+     198.77
+    ],
+    [
+     170.41,
+     199.41
+    ],
+    [
+     169.77,
+     199.85
+    ],
+    [
+     169.0,
+     200.0
+    ],
+    [
+     148.0,
+     200.0
+    ],
+    [
+     147.23,
+     199.85
+    ],
+    [
+     146.59,
+     199.41
+    ],
+    [
+     146.15,
+     198.77
+    ],
+    [
+     146.0,
+     198.0
+    ],
+    [
+     146.0,
+     182.0
+    ],
+    [
+     146.15,
+     181.23
+    ],
+    [
+     146.59,
+     180.59
+    ],
+    [
+     147.23,
+     180.15
+    ],
+    [
+     148.0,
+     180.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 1 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 1 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 1 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 2 1",
+   "points": [
+    [
+     73.0,
+     145.0
+    ],
+    [
+     73.77,
+     145.15
+    ],
+    [
+     74.41,
+     145.59
+    ],
+    [
+     74.85,
+     146.23
+    ],
+    [
+     75.0,
+     147.0
+    ],
+    [
+     75.0,
+     163.0
+    ],
+    [
+     74.85,
+     163.77
+    ],
+    [
+     74.41,
+     164.41
+    ],
+    [
+     73.77,
+     164.85
+    ],
+    [
+     73.0,
+     165.0
+    ],
+    [
+     52.0,
+     165.0
+    ],
+    [
+     51.23,
+     164.85
+    ],
+    [
+     50.59,
+     164.41
+    ],
+    [
+     50.15,
+     163.77
+    ],
+    [
+     50.0,
+     163.0
+    ],
+    [
+     50.0,
+     147.0
+    ],
+    [
+     50.15,
+     146.23
+    ],
+    [
+     50.59,
+     145.59
+    ],
+    [
+     51.23,
+     145.15
+    ],
+    [
+     52.0,
+     145.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 2 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 2 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 2 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 2 2",
+   "points": [
+    [
+     105.0,
+     145.0
+    ],
+    [
+     105.77,
+     145.15
+    ],
+    [
+     106.41,
+     145.59
+    ],
+    [
+     106.85,
+     146.23
+    ],
+    [
+     107.0,
+     147.0
+    ],
+    [
+     107.0,
+     163.0
+    ],
+    [
+     106.85,
+     163.77
+    ],
+    [
+     106.41,
+     164.41
+    ],
+    [
+     105.77,
+     164.85
+    ],
+    [
+     105.0,
+     165.0
+    ],
+    [
+     84.0,
+     165.0
+    ],
+    [
+     83.23,
+     164.85
+    ],
+    [
+     82.59,
+     164.41
+    ],
+    [
+     82.15,
+     163.77
+    ],
+    [
+     82.0,
+     163.0
+    ],
+    [
+     82.0,
+     147.0
+    ],
+    [
+     82.15,
+     146.23
+    ],
+    [
+     82.59,
+     145.59
+    ],
+    [
+     83.23,
+     145.15
+    ],
+    [
+     84.0,
+     145.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 2 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 2 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 2 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 2 3",
+   "points": [
+    [
+     137.0,
+     145.0
+    ],
+    [
+     137.77,
+     145.15
+    ],
+    [
+     138.41,
+     145.59
+    ],
+    [
+     138.85,
+     146.23
+    ],
+    [
+     139.0,
+     147.0
+    ],
+    [
+     139.0,
+     163.0
+    ],
+    [
+     138.85,
+     163.77
+    ],
+    [
+     138.41,
+     164.41
+    ],
+    [
+     137.77,
+     164.85
+    ],
+    [
+     137.0,
+     165.0
+    ],
+    [
+     116.0,
+     165.0
+    ],
+    [
+     115.23,
+     164.85
+    ],
+    [
+     114.59,
+     164.41
+    ],
+    [
+     114.15,
+     163.77
+    ],
+    [
+     114.0,
+     163.0
+    ],
+    [
+     114.0,
+     147.0
+    ],
+    [
+     114.15,
+     146.23
+    ],
+    [
+     114.59,
+     145.59
+    ],
+    [
+     115.23,
+     145.15
+    ],
+    [
+     116.0,
+     145.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 2 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 2 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 2 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 2 4",
+   "points": [
+    [
+     169.0,
+     145.0
+    ],
+    [
+     169.77,
+     145.15
+    ],
+    [
+     170.41,
+     145.59
+    ],
+    [
+     170.85,
+     146.23
+    ],
+    [
+     171.0,
+     147.0
+    ],
+    [
+     171.0,
+     163.0
+    ],
+    [
+     170.85,
+     163.77
+    ],
+    [
+     170.41,
+     164.41
+    ],
+    [
+     169.77,
+     164.85
+    ],
+    [
+     169.0,
+     165.0
+    ],
+    [
+     148.0,
+     165.0
+    ],
+    [
+     147.23,
+     164.85
+    ],
+    [
+     146.59,
+     164.41
+    ],
+    [
+     146.15,
+     163.77
+    ],
+    [
+     146.0,
+     163.0
+    ],
+    [
+     146.0,
+     147.0
+    ],
+    [
+     146.15,
+     146.23
+    ],
+    [
+     146.59,
+     145.59
+    ],
+    [
+     147.23,
+     145.15
+    ],
+    [
+     148.0,
+     145.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 2 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 2 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 2 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 3 1",
+   "points": [
+    [
+     73.0,
+     110.0
+    ],
+    [
+     73.77,
+     110.15
+    ],
+    [
+     74.41,
+     110.59
+    ],
+    [
+     74.85,
+     111.23
+    ],
+    [
+     75.0,
+     112.0
+    ],
+    [
+     75.0,
+     128.0
+    ],
+    [
+     74.85,
+     128.77
+    ],
+    [
+     74.41,
+     129.41
+    ],
+    [
+     73.77,
+     129.85
+    ],
+    [
+     73.0,
+     130.0
+    ],
+    [
+     52.0,
+     130.0
+    ],
+    [
+     51.23,
+     129.85
+    ],
+    [
+     50.59,
+     129.41
+    ],
+    [
+     50.15,
+     128.77
+    ],
+    [
+     50.0,
+     128.0
+    ],
+    [
+     50.0,
+     112.0
+    ],
+    [
+     50.15,
+     111.23
+    ],
+    [
+     50.59,
+     110.59
+    ],
+    [
+     51.23,
+     110.15
+    ],
+    [
+     52.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 3 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 3 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 3 2",
+   "points": [
+    [
+     105.0,
+     110.0
+    ],
+    [
+     105.77,
+     110.15
+    ],
+    [
+     106.41,
+     110.59
+    ],
+    [
+     106.85,
+     111.23
+    ],
+    [
+     107.0,
+     112.0
+    ],
+    [
+     107.0,
+     128.0
+    ],
+    [
+     106.85,
+     128.77
+    ],
+    [
+     106.41,
+     129.41
+    ],
+    [
+     105.77,
+     129.85
+    ],
+    [
+     105.0,
+     130.0
+    ],
+    [
+     84.0,
+     130.0
+    ],
+    [
+     83.23,
+     129.85
+    ],
+    [
+     82.59,
+     129.41
+    ],
+    [
+     82.15,
+     128.77
+    ],
+    [
+     82.0,
+     128.0
+    ],
+    [
+     82.0,
+     112.0
+    ],
+    [
+     82.15,
+     111.23
+    ],
+    [
+     82.59,
+     110.59
+    ],
+    [
+     83.23,
+     110.15
+    ],
+    [
+     84.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 3 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 3 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 3 3",
+   "points": [
+    [
+     137.0,
+     110.0
+    ],
+    [
+     137.77,
+     110.15
+    ],
+    [
+     138.41,
+     110.59
+    ],
+    [
+     138.85,
+     111.23
+    ],
+    [
+     139.0,
+     112.0
+    ],
+    [
+     139.0,
+     128.0
+    ],
+    [
+     138.85,
+     128.77
+    ],
+    [
+     138.41,
+     129.41
+    ],
+    [
+     137.77,
+     129.85
+    ],
+    [
+     137.0,
+     130.0
+    ],
+    [
+     116.0,
+     130.0
+    ],
+    [
+     115.23,
+     129.85
+    ],
+    [
+     114.59,
+     129.41
+    ],
+    [
+     114.15,
+     128.77
+    ],
+    [
+     114.0,
+     128.0
+    ],
+    [
+     114.0,
+     112.0
+    ],
+    [
+     114.15,
+     111.23
+    ],
+    [
+     114.59,
+     110.59
+    ],
+    [
+     115.23,
+     110.15
+    ],
+    [
+     116.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 3 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 3 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 3 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Row 3 4",
+   "points": [
+    [
+     169.0,
+     110.0
+    ],
+    [
+     169.77,
+     110.15
+    ],
+    [
+     170.41,
+     110.59
+    ],
+    [
+     170.85,
+     111.23
+    ],
+    [
+     171.0,
+     112.0
+    ],
+    [
+     171.0,
+     128.0
+    ],
+    [
+     170.85,
+     128.77
+    ],
+    [
+     170.41,
+     129.41
+    ],
+    [
+     169.77,
+     129.85
+    ],
+    [
+     169.0,
+     130.0
+    ],
+    [
+     148.0,
+     130.0
+    ],
+    [
+     147.23,
+     129.85
+    ],
+    [
+     146.59,
+     129.41
+    ],
+    [
+     146.15,
+     128.77
+    ],
+    [
+     146.0,
+     128.0
+    ],
+    [
+     146.0,
+     112.0
+    ],
+    [
+     146.15,
+     111.23
+    ],
+    [
+     146.59,
+     110.59
+    ],
+    [
+     147.23,
+     110.15
+    ],
+    [
+     148.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Row 3 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Row 3 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Row 3 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Button 1",
+   "points": [
+    [
+     -153.0,
+     110.0
+    ],
+    [
+     -151.85,
+     110.23
+    ],
+    [
+     -150.88,
+     110.88
+    ],
+    [
+     -150.23,
+     111.85
+    ],
+    [
+     -150.0,
+     113.0
+    ],
+    [
+     -150.0,
+     137.0
+    ],
+    [
+     -150.23,
+     138.15
+    ],
+    [
+     -150.88,
+     139.12
+    ],
+    [
+     -151.85,
+     139.77
+    ],
+    [
+     -153.0,
+     140.0
+    ],
+    [
+     -187.0,
+     140.0
+    ],
+    [
+     -188.15,
+     139.77
+    ],
+    [
+     -189.12,
+     139.12
+    ],
+    [
+     -189.77,
+     138.15
+    ],
+    [
+     -190.0,
+     137.0
+    ],
+    [
+     -190.0,
+     113.0
+    ],
+    [
+     -189.77,
+     111.85
+    ],
+    [
+     -189.12,
+     110.88
+    ],
+    [
+     -188.15,
+     110.23
+    ],
+    [
+     -187.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Button 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Button 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Button 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Button 2",
+   "points": [
+    [
+     -93.0,
+     110.0
+    ],
+    [
+     -91.85,
+     110.23
+    ],
+    [
+     -90.88,
+     110.88
+    ],
+    [
+     -90.23,
+     111.85
+    ],
+    [
+     -90.0,
+     113.0
+    ],
+    [
+     -90.0,
+     137.0
+    ],
+    [
+     -90.23,
+     138.15
+    ],
+    [
+     -90.88,
+     139.12
+    ],
+    [
+     -91.85,
+     139.77
+    ],
+    [
+     -93.0,
+     140.0
+    ],
+    [
+     -127.0,
+     140.0
+    ],
+    [
+     -128.15,
+     139.77
+    ],
+    [
+     -129.12,
+     139.12
+    ],
+    [
+     -129.77,
+     138.15
+    ],
+    [
+     -130.0,
+     137.0
+    ],
+    [
+     -130.0,
+     113.0
+    ],
+    [
+     -129.77,
+     111.85
+    ],
+    [
+     -129.12,
+     110.88
+    ],
+    [
+     -128.15,
+     110.23
+    ],
+    [
+     -127.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Button 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Button 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Button 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Button 3",
+   "points": [
+    [
+     -33.0,
+     110.0
+    ],
+    [
+     -31.85,
+     110.23
+    ],
+    [
+     -30.88,
+     110.88
+    ],
+    [
+     -30.23,
+     111.85
+    ],
+    [
+     -30.0,
+     113.0
+    ],
+    [
+     -30.0,
+     137.0
+    ],
+    [
+     -30.23,
+     138.15
+    ],
+    [
+     -30.88,
+     139.12
+    ],
+    [
+     -31.85,
+     139.77
+    ],
+    [
+     -33.0,
+     140.0
+    ],
+    [
+     -67.0,
+     140.0
+    ],
+    [
+     -68.15,
+     139.77
+    ],
+    [
+     -69.12,
+     139.12
+    ],
+    [
+     -69.77,
+     138.15
+    ],
+    [
+     -70.0,
+     137.0
+    ],
+    [
+     -70.0,
+     113.0
+    ],
+    [
+     -69.77,
+     111.85
+    ],
+    [
+     -69.12,
+     110.88
+    ],
+    [
+     -68.15,
+     110.23
+    ],
+    [
+     -67.0,
+     110.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Button 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Button 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Button 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Evacuate Button",
+   "points": [
+    [
+     -153.0,
+     160.0
+    ],
+    [
+     -151.85,
+     160.23
+    ],
+    [
+     -150.88,
+     160.88
+    ],
+    [
+     -150.23,
+     161.85
+    ],
+    [
+     -150.0,
+     163.0
+    ],
+    [
+     -150.0,
+     187.0
+    ],
+    [
+     -150.23,
+     188.15
+    ],
+    [
+     -150.88,
+     189.12
+    ],
+    [
+     -151.85,
+     189.77
+    ],
+    [
+     -153.0,
+     190.0
+    ],
+    [
+     -187.0,
+     190.0
+    ],
+    [
+     -188.15,
+     189.77
+    ],
+    [
+     -189.12,
+     189.12
+    ],
+    [
+     -189.77,
+     188.15
+    ],
+    [
+     -190.0,
+     187.0
+    ],
+    [
+     -190.0,
+     163.0
+    ],
+    [
+     -189.77,
+     161.85
+    ],
+    [
+     -189.12,
+     160.88
+    ],
+    [
+     -188.15,
+     160.23
+    ],
+    [
+     -187.0,
+     160.0
+    ]
+   ],
+   "start": 134,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Evacuate Button",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Evacuate Button",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Evacuate Button",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Switch",
+   "points": [
+    [
+     -160.0,
+     60.0
+    ],
+    [
+     -160.34,
+     62.59
+    ],
+    [
+     -161.34,
+     65.0
+    ],
+    [
+     -162.93,
+     67.07
+    ],
+    [
+     -165.0,
+     68.66
+    ],
+    [
+     -167.41,
+     69.66
+    ],
+    [
+     -170.0,
+     70.0
+    ],
+    [
+     -172.59,
+     69.66
+    ],
+    [
+     -175.0,
+     68.66
+    ],
+    [
+     -177.07,
+     67.07
+    ],
+    [
+     -178.66,
+     65.0
+    ],
+    [
+     -179.66,
+     62.59
+    ],
+    [
+     -180.0,
+     60.0
+    ],
+    [
+     -179.66,
+     57.41
+    ],
+    [
+     -178.66,
+     55.0
+    ],
+    [
+     -177.07,
+     52.93
+    ],
+    [
+     -175.0,
+     51.34
+    ],
+    [
+     -172.59,
+     50.34
+    ],
+    [
+     -170.0,
+     50.0
+    ],
+    [
+     -167.41,
+     50.34
+    ],
+    [
+     -165.0,
+     51.34
+    ],
+    [
+     -162.93,
+     52.93
+    ],
+    [
+     -161.34,
+     55.0
+    ],
+    [
+     -160.34,
+     57.41
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Switch",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Switch",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Switch",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Strip",
+   "points": [
+    [
+     148.0,
+     385.0
+    ],
+    [
+     148.77,
+     385.15
+    ],
+    [
+     149.41,
+     385.59
+    ],
+    [
+     149.85,
+     386.23
+    ],
+    [
+     150.0,
+     387.0
+    ],
+    [
+     150.0,
+     403.0
+    ],
+    [
+     149.85,
+     403.77
+    ],
+    [
+     149.41,
+     404.41
+    ],
+    [
+     148.77,
+     404.85
+    ],
+    [
+     148.0,
+     405.0
+    ],
+    [
+     -148.0,
+     405.0
+    ],
+    [
+     -148.77,
+     404.85
+    ],
+    [
+     -149.41,
+     404.41
+    ],
+    [
+     -149.85,
+     403.77
+    ],
+    [
+     -150.0,
+     403.0
+    ],
+    [
+     -150.0,
+     387.0
+    ],
+    [
+     -149.85,
+     386.23
+    ],
+    [
+     -149.41,
+     385.59
+    ],
+    [
+     -148.77,
+     385.15
+    ],
+    [
+     -148.0,
+     385.0
+    ]
+   ],
+   "start": 133,
+   "end": 134,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Strip",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Strip",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Lock",
+   "points": [
+    [
+     203.0,
+     210.0
+    ],
+    [
+     202.73,
+     212.07
+    ],
+    [
+     201.93,
+     214.0
+    ],
+    [
+     200.66,
+     215.66
+    ],
+    [
+     199.0,
+     216.93
+    ],
+    [
+     197.07,
+     217.73
+    ],
+    [
+     195.0,
+     218.0
+    ],
+    [
+     192.93,
+     217.73
+    ],
+    [
+     191.0,
+     216.93
+    ],
+    [
+     189.34,
+     215.66
+    ],
+    [
+     188.07,
+     214.0
+    ],
+    [
+     187.27,
+     212.07
+    ],
+    [
+     187.0,
+     210.0
+    ],
+    [
+     187.27,
+     207.93
+    ],
+    [
+     188.07,
+     206.0
+    ],
+    [
+     189.34,
+     204.34
+    ],
+    [
+     191.0,
+     203.07
+    ],
+    [
+     192.93,
+     202.27
+    ],
+    [
+     195.0,
+     202.0
+    ],
+    [
+     197.07,
+     202.27
+    ],
+    [
+     199.0,
+     203.07
+    ],
+    [
+     200.66,
+     204.34
+    ],
+    [
+     201.93,
+     206.0
+    ],
+    [
+     202.73,
+     207.93
+    ]
+   ],
+   "start": 132,
+   "end": 136,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Lock",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Lock",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Lock",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Knockout 1",
+   "points": [
+    [
+     -138.0,
+     -60.0
+    ],
+    [
+     -138.41,
+     -56.89
+    ],
+    [
+     -139.61,
+     -54.0
+    ],
+    [
+     -141.51,
+     -51.51
+    ],
+    [
+     -144.0,
+     -49.61
+    ],
+    [
+     -146.89,
+     -48.41
+    ],
+    [
+     -150.0,
+     -48.0
+    ],
+    [
+     -153.11,
+     -48.41
+    ],
+    [
+     -156.0,
+     -49.61
+    ],
+    [
+     -158.49,
+     -51.51
+    ],
+    [
+     -160.39,
+     -54.0
+    ],
+    [
+     -161.59,
+     -56.89
+    ],
+    [
+     -162.0,
+     -60.0
+    ],
+    [
+     -161.59,
+     -63.11
+    ],
+    [
+     -160.39,
+     -66.0
+    ],
+    [
+     -158.49,
+     -68.49
+    ],
+    [
+     -156.0,
+     -70.39
+    ],
+    [
+     -153.11,
+     -71.59
+    ],
+    [
+     -150.0,
+     -72.0
+    ],
+    [
+     -146.89,
+     -71.59
+    ],
+    [
+     -144.0,
+     -70.39
+    ],
+    [
+     -141.51,
+     -68.49
+    ],
+    [
+     -139.61,
+     -66.0
+    ],
+    [
+     -138.41,
+     -63.11
+    ]
+   ],
+   "start": 420,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Knockout 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Knockout 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Knockout 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Knockout 2",
+   "points": [
+    [
+     -63.0,
+     -60.0
+    ],
+    [
+     -63.41,
+     -56.89
+    ],
+    [
+     -64.61,
+     -54.0
+    ],
+    [
+     -66.51,
+     -51.51
+    ],
+    [
+     -69.0,
+     -49.61
+    ],
+    [
+     -71.89,
+     -48.41
+    ],
+    [
+     -75.0,
+     -48.0
+    ],
+    [
+     -78.11,
+     -48.41
+    ],
+    [
+     -81.0,
+     -49.61
+    ],
+    [
+     -83.49,
+     -51.51
+    ],
+    [
+     -85.39,
+     -54.0
+    ],
+    [
+     -86.59,
+     -56.89
+    ],
+    [
+     -87.0,
+     -60.0
+    ],
+    [
+     -86.59,
+     -63.11
+    ],
+    [
+     -85.39,
+     -66.0
+    ],
+    [
+     -83.49,
+     -68.49
+    ],
+    [
+     -81.0,
+     -70.39
+    ],
+    [
+     -78.11,
+     -71.59
+    ],
+    [
+     -75.0,
+     -72.0
+    ],
+    [
+     -71.89,
+     -71.59
+    ],
+    [
+     -69.0,
+     -70.39
+    ],
+    [
+     -66.51,
+     -68.49
+    ],
+    [
+     -64.61,
+     -66.0
+    ],
+    [
+     -63.41,
+     -63.11
+    ]
+   ],
+   "start": 420,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Knockout 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Knockout 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Knockout 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Knockout 3",
+   "points": [
+    [
+     12.0,
+     -60.0
+    ],
+    [
+     11.59,
+     -56.89
+    ],
+    [
+     10.39,
+     -54.0
+    ],
+    [
+     8.49,
+     -51.51
+    ],
+    [
+     6.0,
+     -49.61
+    ],
+    [
+     3.11,
+     -48.41
+    ],
+    [
+     0.0,
+     -48.0
+    ],
+    [
+     -3.11,
+     -48.41
+    ],
+    [
+     -6.0,
+     -49.61
+    ],
+    [
+     -8.49,
+     -51.51
+    ],
+    [
+     -10.39,
+     -54.0
+    ],
+    [
+     -11.59,
+     -56.89
+    ],
+    [
+     -12.0,
+     -60.0
+    ],
+    [
+     -11.59,
+     -63.11
+    ],
+    [
+     -10.39,
+     -66.0
+    ],
+    [
+     -8.49,
+     -68.49
+    ],
+    [
+     -6.0,
+     -70.39
+    ],
+    [
+     -3.11,
+     -71.59
+    ],
+    [
+     -0.0,
+     -72.0
+    ],
+    [
+     3.11,
+     -71.59
+    ],
+    [
+     6.0,
+     -70.39
+    ],
+    [
+     8.49,
+     -68.49
+    ],
+    [
+     10.39,
+     -66.0
+    ],
+    [
+     11.59,
+     -63.11
+    ]
+   ],
+   "start": 420,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Knockout 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Knockout 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Knockout 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Knockout 4",
+   "points": [
+    [
+     87.0,
+     -60.0
+    ],
+    [
+     86.59,
+     -56.89
+    ],
+    [
+     85.39,
+     -54.0
+    ],
+    [
+     83.49,
+     -51.51
+    ],
+    [
+     81.0,
+     -49.61
+    ],
+    [
+     78.11,
+     -48.41
+    ],
+    [
+     75.0,
+     -48.0
+    ],
+    [
+     71.89,
+     -48.41
+    ],
+    [
+     69.0,
+     -49.61
+    ],
+    [
+     66.51,
+     -51.51
+    ],
+    [
+     64.61,
+     -54.0
+    ],
+    [
+     63.41,
+     -56.89
+    ],
+    [
+     63.0,
+     -60.0
+    ],
+    [
+     63.41,
+     -63.11
+    ],
+    [
+     64.61,
+     -66.0
+    ],
+    [
+     66.51,
+     -68.49
+    ],
+    [
+     69.0,
+     -70.39
+    ],
+    [
+     71.89,
+     -71.59
+    ],
+    [
+     75.0,
+     -72.0
+    ],
+    [
+     78.11,
+     -71.59
+    ],
+    [
+     81.0,
+     -70.39
+    ],
+    [
+     83.49,
+     -68.49
+    ],
+    [
+     85.39,
+     -66.0
+    ],
+    [
+     86.59,
+     -63.11
+    ]
+   ],
+   "start": 420,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Knockout 4",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Knockout 4",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Knockout 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Knockout 5",
+   "points": [
+    [
+     162.0,
+     -60.0
+    ],
+    [
+     161.59,
+     -56.89
+    ],
+    [
+     160.39,
+     -54.0
+    ],
+    [
+     158.49,
+     -51.51
+    ],
+    [
+     156.0,
+     -49.61
+    ],
+    [
+     153.11,
+     -48.41
+    ],
+    [
+     150.0,
+     -48.0
+    ],
+    [
+     146.89,
+     -48.41
+    ],
+    [
+     144.0,
+     -49.61
+    ],
+    [
+     141.51,
+     -51.51
+    ],
+    [
+     139.61,
+     -54.0
+    ],
+    [
+     138.41,
+     -56.89
+    ],
+    [
+     138.0,
+     -60.0
+    ],
+    [
+     138.41,
+     -63.11
+    ],
+    [
+     139.61,
+     -66.0
+    ],
+    [
+     141.51,
+     -68.49
+    ],
+    [
+     144.0,
+     -70.39
+    ],
+    [
+     146.89,
+     -71.59
+    ],
+    [
+     150.0,
+     -72.0
+    ],
+    [
+     153.11,
+     -71.59
+    ],
+    [
+     156.0,
+     -70.39
+    ],
+    [
+     158.49,
+     -68.49
+    ],
+    [
+     160.39,
+     -66.0
+    ],
+    [
+     161.59,
+     -63.11
+    ]
+   ],
+   "start": 420,
+   "end": 425
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Knockout 5",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Knockout 5",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Knockout 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Mains",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Back Box",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Mains/Voltage",
+   "connector": "Mains",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Mains/Apparent Load",
+   "connector": "Mains",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Loop",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "solid": "Back Box",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Loop/Voltage",
+   "connector": "Loop",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Loop/Apparent Load",
+   "connector": "Loop",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireAlarm_Panel_Addressable.png"
+  }
+ ],
+ "values": {
+  "Enclosure 450 x 420 x 135 mm": {
+   "value": "450x420x135",
+   "source_status": "assumed",
+   "source": "typical 2-4 loop panel"
+  },
+  "Mains 230 V, standby batteries 24 h + 30 min alarm": {
+   "value": "24h",
+   "source_status": "assumed",
+   "source": "BS 5839-1 / BS EN 54-4"
+  },
+  "Loop capacity 2 or 4 loops of 126 to 250 devices": {
+   "value": "2/4 loops",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Top at 1600 mm": {
+   "value": 1600,
+   "source_status": "assumed",
+   "source": "access level practice"
+  }
+ }
+}

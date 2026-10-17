@@ -1,0 +1,290 @@
+{
+ "family": "FMC_P_PipeAccessory_Tap_Sensor",
+ "category": "Pipe Accessories",
+ "desc": "Sensor (infra-red) tap, deck-mounted chrome column with spout, sensor window, under-deck control box with solenoid and transformer (nested)",
+ "ifc": "IfcValve",
+ "keynote": "P.TAP_02",
+ "types": [
+  {
+   "name": "15_Deck"
+  },
+  {
+   "name": "15_Wall"
+  }
+ ],
+ "materials": {
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "black": "FMC_Plastic_ABS_Black",
+  "led_red": "FMC_Plastic_LED_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "pipe accessory tap sensor pipe accessories hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=pipe+accessory+tap+sensor+pipe+accessories+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base Flange",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     30,
+     0
+    ],
+    [
+     28,
+     8
+    ],
+    [
+     0,
+     8
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Column",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 22,
+   "z": [
+    8,
+    170
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Head",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     170
+    ],
+    [
+     22,
+     170
+    ],
+    [
+     22,
+     188
+    ],
+    [
+     0,
+     196
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Spout",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    180
+   ],
+   "r": 15,
+   "y": [
+    -140,
+    0
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Nose",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -130
+   ],
+   "r": 15,
+   "z": [
+    150,
+    180
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Aerator",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    -130
+   ],
+   "profile": [
+    [
+     0,
+     144
+    ],
+    [
+     12,
+     144
+    ],
+    [
+     14,
+     150
+    ],
+    [
+     0,
+     150
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Sensor Window",
+   "shape": "fbox",
+   "at": [
+    -12,
+    -24,
+    95,
+    12,
+    -20,
+    125
+   ],
+   "mat": "black",
+   "r": 5
+  },
+  {
+   "n": "Sensor LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    132
+   ],
+   "r": 2.5,
+   "y": [
+    -24,
+    -21
+   ],
+   "mat": "led_red",
+   "lod": "f"
+  },
+  {
+   "n": "Tail",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -10,
+    0
+   ],
+   "r": 5,
+   "z": [
+    -180,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     20,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Control Box",
+   "shape": "box",
+   "at": [
+    -60,
+    -30,
+    -320,
+    60,
+    30,
+    -180
+   ],
+   "mat": "grey",
+   "r": 6
+  },
+  {
+   "n": "Solenoid",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    20,
+    -250
+   ],
+   "r": 14,
+   "y": [
+    -50,
+    -30
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Mains Lead",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -300
+   ],
+   "r": 4,
+   "x": [
+    60,
+    160
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Control Box",
+   "side": "right"
+  }
+ ],
+ "values": {
+  "Height 196 mm, spout 140 mm": {
+   "value": "196/140",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Supply 240 V via 6 V transformer, 10 VA": {
+   "value": 10,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Thermal disinfection cycle": {
+   "value": "timed flush",
+   "source_status": "assumed",
+   "source": "HTM 04-01 water safety"
+  }
+ },
+ "about": "Sensor tap modelled as a generic product: base flange, column, head, spout, nose and aerator, sensor window and LED, tails, control box with solenoid and lead. Deck type drawn; wall type shares it.",
+ "template": "Metric Generic Model.rft",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 10
+ }
+}

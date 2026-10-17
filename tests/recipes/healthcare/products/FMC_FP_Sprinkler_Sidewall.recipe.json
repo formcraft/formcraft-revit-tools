@@ -1,0 +1,1170 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_Sprinkler_Sidewall",
+ "template": "Metric Generic Model.rft",
+ "about": "Sidewall sprinkler modelled as a generic product: chrome escutcheon at the wall, brass body and wrench boss, frame arms, red bulb, vertical deflector with top hood and tines. Reference: query: sprinkler sidewall sprinklers hospital; images: https://www.google.com/search?tbm=isch&q=sprinkler+sidewall+sprinklers+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Sprinklers"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sprinkler_K_Factor",
+   "guid": "12304c4b-43dc-54f3-a437-6e06dcc81ce7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sprinkler_Temp_C",
+   "guid": "6cc5dfb1-71df-5704-a576-fe68be384267",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "K80_Sidewall"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Cost_Unit",
+   "type": "K80_Sidewall",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Geometry_Stage",
+   "type": "K80_Sidewall",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/IfcExportAs",
+   "type": "K80_Sidewall",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/Description",
+   "type": "K80_Sidewall",
+   "param": "Description",
+   "value": "Horizontal sidewall sprinkler K80 (5.6K), 68 C 5 mm bulb, 1/2 in thread, brass, recessed chrome escutcheon"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/Keynote",
+   "type": "K80_Sidewall",
+   "param": "Keynote",
+   "value": "V.SPR_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Keynote_Code",
+   "type": "K80_Sidewall",
+   "param": "FMC_Keynote_Code",
+   "value": "V.SPR_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Code_Description",
+   "type": "K80_Sidewall",
+   "param": "FMC_Code_Description",
+   "value": "Sidewall: Sidewall sprinkler"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Code_Group",
+   "type": "K80_Sidewall",
+   "param": "FMC_Code_Group",
+   "value": "V.SPR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/FMC_Role_Code",
+   "type": "K80_Sidewall",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Sidewall/Default Elevation",
+   "type": "K80_Sidewall",
+   "param": "Default Elevation",
+   "value": 2550
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -34,
+     -64.0
+    ],
+    [
+     34,
+     -64.0
+    ],
+    [
+     34,
+     6
+    ],
+    [
+     -34,
+     6
+    ]
+   ],
+   "start": -34,
+   "end": 34
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Escutcheon",
+   "profile": [
+    [
+     11,
+     0
+    ],
+    [
+     34,
+     0
+    ],
+    [
+     34,
+     3
+    ],
+    [
+     14,
+     9
+    ],
+    [
+     11,
+     9
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Escutcheon",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Escutcheon",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Body",
+   "profile": [
+    [
+     0,
+     -6
+    ],
+    [
+     11,
+     -6
+    ],
+    [
+     11,
+     18
+    ],
+    [
+     0,
+     18
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Body",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wrench Boss",
+   "points": [
+    [
+     11.0,
+     -24.0
+    ],
+    [
+     11.77,
+     -23.85
+    ],
+    [
+     12.41,
+     -23.41
+    ],
+    [
+     12.85,
+     -22.77
+    ],
+    [
+     13.0,
+     -22.0
+    ],
+    [
+     13.0,
+     -20.0
+    ],
+    [
+     12.85,
+     -19.23
+    ],
+    [
+     12.41,
+     -18.59
+    ],
+    [
+     11.77,
+     -18.15
+    ],
+    [
+     11.0,
+     -18.0
+    ],
+    [
+     -11.0,
+     -18.0
+    ],
+    [
+     -11.77,
+     -18.15
+    ],
+    [
+     -12.41,
+     -18.59
+    ],
+    [
+     -12.85,
+     -19.23
+    ],
+    [
+     -13.0,
+     -20.0
+    ],
+    [
+     -13.0,
+     -22.0
+    ],
+    [
+     -12.85,
+     -22.77
+    ],
+    [
+     -12.41,
+     -23.41
+    ],
+    [
+     -11.77,
+     -23.85
+    ],
+    [
+     -11.0,
+     -24.0
+    ]
+   ],
+   "start": -8,
+   "end": 8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wrench Boss",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wrench Boss",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wrench Boss",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Arm 1",
+   "points": [
+    [
+     -11,
+     -52
+    ],
+    [
+     -8,
+     -52
+    ],
+    [
+     -8,
+     -24
+    ],
+    [
+     -11,
+     -24
+    ]
+   ],
+   "start": -2.5,
+   "end": 2.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Arm 1",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Arm 1",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Arm 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Arm 2",
+   "points": [
+    [
+     8,
+     -52
+    ],
+    [
+     11,
+     -52
+    ],
+    [
+     11,
+     -24
+    ],
+    [
+     8,
+     -24
+    ]
+   ],
+   "start": -2.5,
+   "end": 2.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Arm 2",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Arm 2",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Arm 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head",
+   "points": [
+    [
+     -11,
+     -56
+    ],
+    [
+     11,
+     -56
+    ],
+    [
+     11,
+     -52
+    ],
+    [
+     -11,
+     -52
+    ]
+   ],
+   "start": -2.5,
+   "end": 2.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bulb",
+   "profile": [
+    [
+     0,
+     52
+    ],
+    [
+     2.5,
+     49
+    ],
+    [
+     2.5,
+     28
+    ],
+    [
+     0,
+     24
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bulb",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bulb",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deflector Plate",
+   "points": [
+    [
+     21.0,
+     -10.0
+    ],
+    [
+     22.15,
+     -9.77
+    ],
+    [
+     23.12,
+     -9.12
+    ],
+    [
+     23.77,
+     -8.15
+    ],
+    [
+     24.0,
+     -7.0
+    ],
+    [
+     24.0,
+     11.0
+    ],
+    [
+     23.77,
+     12.15
+    ],
+    [
+     23.12,
+     13.12
+    ],
+    [
+     22.15,
+     13.77
+    ],
+    [
+     21.0,
+     14.0
+    ],
+    [
+     -21.0,
+     14.0
+    ],
+    [
+     -22.15,
+     13.77
+    ],
+    [
+     -23.12,
+     13.12
+    ],
+    [
+     -23.77,
+     12.15
+    ],
+    [
+     -24.0,
+     11.0
+    ],
+    [
+     -24.0,
+     -7.0
+    ],
+    [
+     -23.77,
+     -8.15
+    ],
+    [
+     -23.12,
+     -9.12
+    ],
+    [
+     -22.15,
+     -9.77
+    ],
+    [
+     -21.0,
+     -10.0
+    ]
+   ],
+   "start": 56,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deflector Plate",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector Plate",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deflector Hood",
+   "points": [
+    [
+     23.0,
+     -64.0
+    ],
+    [
+     24.15,
+     -63.77
+    ],
+    [
+     25.12,
+     -63.12
+    ],
+    [
+     25.77,
+     -62.15
+    ],
+    [
+     26.0,
+     -61.0
+    ],
+    [
+     26.0,
+     -53.0
+    ],
+    [
+     25.77,
+     -51.85
+    ],
+    [
+     25.12,
+     -50.88
+    ],
+    [
+     24.15,
+     -50.23
+    ],
+    [
+     23.0,
+     -50.0
+    ],
+    [
+     -23.0,
+     -50.0
+    ],
+    [
+     -24.15,
+     -50.23
+    ],
+    [
+     -25.12,
+     -50.88
+    ],
+    [
+     -25.77,
+     -51.85
+    ],
+    [
+     -26.0,
+     -53.0
+    ],
+    [
+     -26.0,
+     -61.0
+    ],
+    [
+     -25.77,
+     -62.15
+    ],
+    [
+     -25.12,
+     -63.12
+    ],
+    [
+     -24.15,
+     -63.77
+    ],
+    [
+     -23.0,
+     -64.0
+    ]
+   ],
+   "start": 14,
+   "end": 17
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deflector Hood",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector Hood",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector Hood",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deflector Tine 1",
+   "points": [
+    [
+     -24.0,
+     -60
+    ],
+    [
+     -19.0,
+     -60
+    ],
+    [
+     -19.0,
+     -57
+    ],
+    [
+     -24.0,
+     -57
+    ]
+   ],
+   "start": -15,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deflector Tine 1",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector Tine 1",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector Tine 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deflector Tine 2",
+   "points": [
+    [
+     -2.5,
+     -60
+    ],
+    [
+     2.5,
+     -60
+    ],
+    [
+     2.5,
+     -57
+    ],
+    [
+     -2.5,
+     -57
+    ]
+   ],
+   "start": -15,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deflector Tine 2",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector Tine 2",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector Tine 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deflector Tine 3",
+   "points": [
+    [
+     19.0,
+     -60
+    ],
+    [
+     24.0,
+     -60
+    ],
+    [
+     24.0,
+     -57
+    ],
+    [
+     19.0,
+     -57
+    ]
+   ],
+   "start": -15,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deflector Tine 3",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector Tine 3",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector Tine 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Body",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_Sprinkler_Sidewall.png"
+  }
+ ],
+ "values": {
+  "K-factor 5.6 (K80)": {
+   "value": "K80",
+   "source_status": "assumed",
+   "source": "type name; standard-response sidewall"
+  },
+  "Deflector 52 mm wide with top hood": {
+   "value": 52,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "68 C bulb, 5 mm": {
+   "value": "68C 5mm",
+   "source_status": "assumed",
+   "source": "ordinary-hazard sidewall practice"
+  },
+  "Mounting 100-150 mm below ceiling": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "BS EN 12845 / NFPA 13 sidewall practice"
+  }
+ }
+}

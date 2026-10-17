@@ -1,0 +1,4866 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_MedEq_Chair_Dental",
+ "template": "Metric Generic Model.rft",
+ "about": "Dental unit modelled as a generic product: base plate, lift column, seat, backrest, headrest on bar, leg rest, armrest, delivery post and arm with instrument table, tray, keypad, holder, 5 handpieces with hoses, water unit with china cuspidor and cup filler, assistant suction arm, light pole, arm and head with lens and handle, foot control. Water and gases via the nested service point (FMC_P_MechEq_ServicePoint); Medical Equipment cannot hold pipe connectors. Reference: query: chair dental medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=chair+dental+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Medical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "1900x900_Unit"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Cost_Unit",
+   "type": "1900x900_Unit",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Geometry_Stage",
+   "type": "1900x900_Unit",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/IfcExportAs",
+   "type": "1900x900_Unit",
+   "param": "IfcExportAs",
+   "value": "IfcMedicalDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/Description",
+   "type": "1900x900_Unit",
+   "param": "Description",
+   "value": "Dental chair unit, 1900 x 900, electric lift and recline, doctor's delivery unit with 5 handpieces, assistant water unit with cuspidor, operating light, foot control"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/Keynote",
+   "type": "1900x900_Unit",
+   "param": "Keynote",
+   "value": "F.MED_13"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Keynote_Code",
+   "type": "1900x900_Unit",
+   "param": "FMC_Keynote_Code",
+   "value": "F.MED_13"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Code_Description",
+   "type": "1900x900_Unit",
+   "param": "FMC_Code_Description",
+   "value": "Chair Dental: Dental chair"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Code_Group",
+   "type": "1900x900_Unit",
+   "param": "FMC_Code_Group",
+   "value": "F.MED"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/FMC_Role_Code",
+   "type": "1900x900_Unit",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/Voltage",
+   "type": "1900x900_Unit",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "1900x900_Unit/Apparent Load",
+   "type": "1900x900_Unit",
+   "param": "Apparent Load",
+   "value": 1000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Vinyl",
+   "color": [
+    58,
+    110,
+    165
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Vinyl Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ss",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ss Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Ss Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "China",
+   "color": [
+    255,
+    255,
+    255
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "China Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Ceramic_VitreousChina_White",
+   "param": "China Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clear",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Clear Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Clear Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1058.9,
+     -710
+    ],
+    [
+     1000.0,
+     -710
+    ],
+    [
+     1000.0,
+     560
+    ],
+    [
+     -1058.9,
+     560
+    ]
+   ],
+   "start": 0,
+   "end": 1930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate",
+   "points": [
+    [
+     410.0,
+     -270.0
+    ],
+    [
+     432.96,
+     -265.43
+    ],
+    [
+     452.43,
+     -252.43
+    ],
+    [
+     465.43,
+     -232.96
+    ],
+    [
+     470.0,
+     -210.0
+    ],
+    [
+     470.0,
+     210.0
+    ],
+    [
+     465.43,
+     232.96
+    ],
+    [
+     452.43,
+     252.43
+    ],
+    [
+     432.96,
+     265.43
+    ],
+    [
+     410.0,
+     270.0
+    ],
+    [
+     -260.0,
+     270.0
+    ],
+    [
+     -282.96,
+     265.43
+    ],
+    [
+     -302.43,
+     252.43
+    ],
+    [
+     -315.43,
+     232.96
+    ],
+    [
+     -320.0,
+     210.0
+    ],
+    [
+     -320.0,
+     -210.0
+    ],
+    [
+     -315.43,
+     -232.96
+    ],
+    [
+     -302.43,
+     -252.43
+    ],
+    [
+     -282.96,
+     -265.43
+    ],
+    [
+     -260.0,
+     -270.0
+    ]
+   ],
+   "start": 0,
+   "end": 40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lift Column",
+   "points": [
+    [
+     320.0,
+     -170.0
+    ],
+    [
+     335.31,
+     -166.96
+    ],
+    [
+     348.28,
+     -158.28
+    ],
+    [
+     356.96,
+     -145.31
+    ],
+    [
+     360.0,
+     -130.0
+    ],
+    [
+     360.0,
+     130.0
+    ],
+    [
+     356.96,
+     145.31
+    ],
+    [
+     348.28,
+     158.28
+    ],
+    [
+     335.31,
+     166.96
+    ],
+    [
+     320.0,
+     170.0
+    ],
+    [
+     120.0,
+     170.0
+    ],
+    [
+     104.69,
+     166.96
+    ],
+    [
+     91.72,
+     158.28
+    ],
+    [
+     83.04,
+     145.31
+    ],
+    [
+     80.0,
+     130.0
+    ],
+    [
+     80.0,
+     -130.0
+    ],
+    [
+     83.04,
+     -145.31
+    ],
+    [
+     91.72,
+     -158.28
+    ],
+    [
+     104.69,
+     -166.96
+    ],
+    [
+     120.0,
+     -170.0
+    ]
+   ],
+   "start": 40,
+   "end": 420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lift Column",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lift Column",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lift Column",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Shell",
+   "points": [
+    [
+     270.0,
+     -260.0
+    ],
+    [
+     281.48,
+     -257.72
+    ],
+    [
+     291.21,
+     -251.21
+    ],
+    [
+     297.72,
+     -241.48
+    ],
+    [
+     300.0,
+     -230.0
+    ],
+    [
+     300.0,
+     230.0
+    ],
+    [
+     297.72,
+     241.48
+    ],
+    [
+     291.21,
+     251.21
+    ],
+    [
+     281.48,
+     257.72
+    ],
+    [
+     270.0,
+     260.0
+    ],
+    [
+     -230.0,
+     260.0
+    ],
+    [
+     -241.48,
+     257.72
+    ],
+    [
+     -251.21,
+     251.21
+    ],
+    [
+     -257.72,
+     241.48
+    ],
+    [
+     -260.0,
+     230.0
+    ],
+    [
+     -260.0,
+     -230.0
+    ],
+    [
+     -257.72,
+     -241.48
+    ],
+    [
+     -251.21,
+     -251.21
+    ],
+    [
+     -241.48,
+     -257.72
+    ],
+    [
+     -230.0,
+     -260.0
+    ]
+   ],
+   "start": 420,
+   "end": 470
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Shell",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Shell",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Shell",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion",
+   "points": [
+    [
+     260.0,
+     470.0
+    ],
+    [
+     275.31,
+     473.04
+    ],
+    [
+     288.28,
+     481.72
+    ],
+    [
+     296.96,
+     494.69
+    ],
+    [
+     300.0,
+     510.0
+    ],
+    [
+     300.0,
+     520.0
+    ],
+    [
+     296.96,
+     535.31
+    ],
+    [
+     288.28,
+     548.28
+    ],
+    [
+     275.31,
+     556.96
+    ],
+    [
+     260.0,
+     560.0
+    ],
+    [
+     -210.0,
+     560.0
+    ],
+    [
+     -225.31,
+     556.96
+    ],
+    [
+     -238.28,
+     548.28
+    ],
+    [
+     -246.96,
+     535.31
+    ],
+    [
+     -250.0,
+     520.0
+    ],
+    [
+     -250.0,
+     510.0
+    ],
+    [
+     -246.96,
+     494.69
+    ],
+    [
+     -238.28,
+     481.72
+    ],
+    [
+     -225.31,
+     473.04
+    ],
+    [
+     -210.0,
+     470.0
+    ]
+   ],
+   "start": -250,
+   "end": 250,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backrest",
+   "points": [
+    [
+     -250.0,
+     520.0
+    ],
+    [
+     -856.2,
+     870.0
+    ],
+    [
+     -806.2,
+     956.6
+    ],
+    [
+     -200.0,
+     606.6
+    ]
+   ],
+   "start": -230,
+   "end": 230,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backrest",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backrest",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backrest",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backrest Shell",
+   "points": [
+    [
+     -267.5,
+     489.7
+    ],
+    [
+     -873.7,
+     839.7
+    ],
+    [
+     -856.2,
+     870.0
+    ],
+    [
+     -250.0,
+     520.0
+    ]
+   ],
+   "start": -235,
+   "end": 235,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backrest Shell",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backrest Shell",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backrest Shell",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headrest",
+   "points": [
+    [
+     -842.8,
+     894.4
+    ],
+    [
+     -1058.9,
+     973.1
+    ],
+    [
+     -1028.1,
+     1057.6
+    ],
+    [
+     -812.0,
+     979.0
+    ]
+   ],
+   "start": -130,
+   "end": 130,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headrest",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headrest",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headrest",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headrest Bar",
+   "points": [
+    [
+     -823.1,
+     841.2
+    ],
+    [
+     -1029.8,
+     916.5
+    ],
+    [
+     -1018.8,
+     946.5
+    ],
+    [
+     -812.1,
+     871.3
+    ]
+   ],
+   "start": -40,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headrest Bar",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headrest Bar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headrest Bar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Rest",
+   "points": [
+    [
+     300.0,
+     520.0
+    ],
+    [
+     863.8,
+     314.8
+    ],
+    [
+     894.6,
+     399.4
+    ],
+    [
+     330.8,
+     604.6
+    ]
+   ],
+   "start": -230,
+   "end": 230,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Rest",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Rest",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Rest",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Rest Shell",
+   "points": [
+    [
+     288.0,
+     487.1
+    ],
+    [
+     851.8,
+     281.9
+    ],
+    [
+     863.8,
+     314.8
+    ],
+    [
+     300.0,
+     520.0
+    ]
+   ],
+   "start": -235,
+   "end": 235,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Rest Shell",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Rest Shell",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Rest Shell",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Armrest",
+   "points": [
+    [
+     135.0,
+     255.0
+    ],
+    [
+     144.57,
+     256.9
+    ],
+    [
+     152.68,
+     262.32
+    ],
+    [
+     158.1,
+     270.43
+    ],
+    [
+     160.0,
+     280.0
+    ],
+    [
+     160.0,
+     295.0
+    ],
+    [
+     158.1,
+     304.57
+    ],
+    [
+     152.68,
+     312.68
+    ],
+    [
+     144.57,
+     318.1
+    ],
+    [
+     135.0,
+     320.0
+    ],
+    [
+     -195.0,
+     320.0
+    ],
+    [
+     -204.57,
+     318.1
+    ],
+    [
+     -212.68,
+     312.68
+    ],
+    [
+     -218.1,
+     304.57
+    ],
+    [
+     -220.0,
+     295.0
+    ],
+    [
+     -220.0,
+     280.0
+    ],
+    [
+     -218.1,
+     270.43
+    ],
+    [
+     -212.68,
+     262.32
+    ],
+    [
+     -204.57,
+     256.9
+    ],
+    [
+     -195.0,
+     255.0
+    ]
+   ],
+   "start": 600,
+   "end": 650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Armrest",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Armrest",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Armrest",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Armrest Post",
+   "points": [
+    [
+     100,
+     260
+    ],
+    [
+     140,
+     260
+    ],
+    [
+     140,
+     300
+    ],
+    [
+     100,
+     300
+    ]
+   ],
+   "start": 470,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Armrest Post",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Armrest Post",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Armrest Post",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Delivery Bracket",
+   "points": [
+    [
+     180,
+     -310
+    ],
+    [
+     260,
+     -310
+    ],
+    [
+     260,
+     -250
+    ],
+    [
+     180,
+     -250
+    ]
+   ],
+   "start": 420,
+   "end": 470
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Delivery Bracket",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Delivery Bracket",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Delivery Bracket",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Delivery Post",
+   "points": [
+    [
+     255.0,
+     -300.0
+    ],
+    [
+     253.81,
+     -290.94
+    ],
+    [
+     250.31,
+     -282.5
+    ],
+    [
+     244.75,
+     -275.25
+    ],
+    [
+     237.5,
+     -269.69
+    ],
+    [
+     229.06,
+     -266.19
+    ],
+    [
+     220.0,
+     -265.0
+    ],
+    [
+     210.94,
+     -266.19
+    ],
+    [
+     202.5,
+     -269.69
+    ],
+    [
+     195.25,
+     -275.25
+    ],
+    [
+     189.69,
+     -282.5
+    ],
+    [
+     186.19,
+     -290.94
+    ],
+    [
+     185.0,
+     -300.0
+    ],
+    [
+     186.19,
+     -309.06
+    ],
+    [
+     189.69,
+     -317.5
+    ],
+    [
+     195.25,
+     -324.75
+    ],
+    [
+     202.5,
+     -330.31
+    ],
+    [
+     210.94,
+     -333.81
+    ],
+    [
+     220.0,
+     -335.0
+    ],
+    [
+     229.06,
+     -333.81
+    ],
+    [
+     237.5,
+     -330.31
+    ],
+    [
+     244.75,
+     -324.75
+    ],
+    [
+     250.31,
+     -317.5
+    ],
+    [
+     253.81,
+     -309.06
+    ]
+   ],
+   "start": 470,
+   "end": 830
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Delivery Post",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Delivery Post",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Delivery Post",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Delivery Arm",
+   "points": [
+    [
+     675.0,
+     -335.0
+    ],
+    [
+     684.57,
+     -333.1
+    ],
+    [
+     692.68,
+     -327.68
+    ],
+    [
+     698.1,
+     -319.57
+    ],
+    [
+     700.0,
+     -310.0
+    ],
+    [
+     700.0,
+     -290.0
+    ],
+    [
+     698.1,
+     -280.43
+    ],
+    [
+     692.68,
+     -272.32
+    ],
+    [
+     684.57,
+     -266.9
+    ],
+    [
+     675.0,
+     -265.0
+    ],
+    [
+     205.0,
+     -265.0
+    ],
+    [
+     195.43,
+     -266.9
+    ],
+    [
+     187.32,
+     -272.32
+    ],
+    [
+     181.9,
+     -280.43
+    ],
+    [
+     180.0,
+     -290.0
+    ],
+    [
+     180.0,
+     -310.0
+    ],
+    [
+     181.9,
+     -319.57
+    ],
+    [
+     187.32,
+     -327.68
+    ],
+    [
+     195.43,
+     -333.1
+    ],
+    [
+     205.0,
+     -335.0
+    ]
+   ],
+   "start": 800,
+   "end": 850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Delivery Arm",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Delivery Arm",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Delivery Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Instrument Table",
+   "points": [
+    [
+     960.0,
+     -630.0
+    ],
+    [
+     975.31,
+     -626.96
+    ],
+    [
+     988.28,
+     -618.28
+    ],
+    [
+     996.96,
+     -605.31
+    ],
+    [
+     1000.0,
+     -590.0
+    ],
+    [
+     1000.0,
+     -320.0
+    ],
+    [
+     996.96,
+     -304.69
+    ],
+    [
+     988.28,
+     -291.72
+    ],
+    [
+     975.31,
+     -283.04
+    ],
+    [
+     960.0,
+     -280.0
+    ],
+    [
+     640.0,
+     -280.0
+    ],
+    [
+     624.69,
+     -283.04
+    ],
+    [
+     611.72,
+     -291.72
+    ],
+    [
+     603.04,
+     -304.69
+    ],
+    [
+     600.0,
+     -320.0
+    ],
+    [
+     600.0,
+     -590.0
+    ],
+    [
+     603.04,
+     -605.31
+    ],
+    [
+     611.72,
+     -618.28
+    ],
+    [
+     624.69,
+     -626.96
+    ],
+    [
+     640.0,
+     -630.0
+    ]
+   ],
+   "start": 850,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Instrument Table",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Instrument Table",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Instrument Table",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Instrument Tray",
+   "points": [
+    [
+     700,
+     -560
+    ],
+    [
+     950,
+     -560
+    ],
+    [
+     950,
+     -340
+    ],
+    [
+     700,
+     -340
+    ]
+   ],
+   "start": 900,
+   "end": 910
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Instrument Tray",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Instrument Tray",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Instrument Tray",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Table Keypad",
+   "points": [
+    [
+     860,
+     900
+    ],
+    [
+     980,
+     900
+    ],
+    [
+     980,
+     906
+    ],
+    [
+     860,
+     906
+    ]
+   ],
+   "start": 460,
+   "end": 560,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Table Keypad",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Table Keypad",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Table Keypad",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Holder",
+   "points": [
+    [
+     972.0,
+     -650.0
+    ],
+    [
+     975.06,
+     -649.39
+    ],
+    [
+     977.66,
+     -647.66
+    ],
+    [
+     979.39,
+     -645.06
+    ],
+    [
+     980.0,
+     -642.0
+    ],
+    [
+     980.0,
+     -623.0
+    ],
+    [
+     979.39,
+     -619.94
+    ],
+    [
+     977.66,
+     -617.34
+    ],
+    [
+     975.06,
+     -615.61
+    ],
+    [
+     972.0,
+     -615.0
+    ],
+    [
+     628.0,
+     -615.0
+    ],
+    [
+     624.94,
+     -615.61
+    ],
+    [
+     622.34,
+     -617.34
+    ],
+    [
+     620.61,
+     -619.94
+    ],
+    [
+     620.0,
+     -623.0
+    ],
+    [
+     620.0,
+     -642.0
+    ],
+    [
+     620.61,
+     -645.06
+    ],
+    [
+     622.34,
+     -647.66
+    ],
+    [
+     624.94,
+     -649.39
+    ],
+    [
+     628.0,
+     -650.0
+    ]
+   ],
+   "start": 860,
+   "end": 935
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Holder",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Holder",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Holder",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece 1",
+   "points": [
+    [
+     664.0,
+     -632.0
+    ],
+    [
+     663.69,
+     -629.67
+    ],
+    [
+     662.79,
+     -627.5
+    ],
+    [
+     661.36,
+     -625.64
+    ],
+    [
+     659.5,
+     -624.21
+    ],
+    [
+     657.33,
+     -623.31
+    ],
+    [
+     655.0,
+     -623.0
+    ],
+    [
+     652.67,
+     -623.31
+    ],
+    [
+     650.5,
+     -624.21
+    ],
+    [
+     648.64,
+     -625.64
+    ],
+    [
+     647.21,
+     -627.5
+    ],
+    [
+     646.31,
+     -629.67
+    ],
+    [
+     646.0,
+     -632.0
+    ],
+    [
+     646.31,
+     -634.33
+    ],
+    [
+     647.21,
+     -636.5
+    ],
+    [
+     648.64,
+     -638.36
+    ],
+    [
+     650.5,
+     -639.79
+    ],
+    [
+     652.67,
+     -640.69
+    ],
+    [
+     655.0,
+     -641.0
+    ],
+    [
+     657.33,
+     -640.69
+    ],
+    [
+     659.5,
+     -639.79
+    ],
+    [
+     661.36,
+     -638.36
+    ],
+    [
+     662.79,
+     -636.5
+    ],
+    [
+     663.69,
+     -634.33
+    ]
+   ],
+   "start": 935,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece 2",
+   "points": [
+    [
+     739.0,
+     -632.0
+    ],
+    [
+     738.69,
+     -629.67
+    ],
+    [
+     737.79,
+     -627.5
+    ],
+    [
+     736.36,
+     -625.64
+    ],
+    [
+     734.5,
+     -624.21
+    ],
+    [
+     732.33,
+     -623.31
+    ],
+    [
+     730.0,
+     -623.0
+    ],
+    [
+     727.67,
+     -623.31
+    ],
+    [
+     725.5,
+     -624.21
+    ],
+    [
+     723.64,
+     -625.64
+    ],
+    [
+     722.21,
+     -627.5
+    ],
+    [
+     721.31,
+     -629.67
+    ],
+    [
+     721.0,
+     -632.0
+    ],
+    [
+     721.31,
+     -634.33
+    ],
+    [
+     722.21,
+     -636.5
+    ],
+    [
+     723.64,
+     -638.36
+    ],
+    [
+     725.5,
+     -639.79
+    ],
+    [
+     727.67,
+     -640.69
+    ],
+    [
+     730.0,
+     -641.0
+    ],
+    [
+     732.33,
+     -640.69
+    ],
+    [
+     734.5,
+     -639.79
+    ],
+    [
+     736.36,
+     -638.36
+    ],
+    [
+     737.79,
+     -636.5
+    ],
+    [
+     738.69,
+     -634.33
+    ]
+   ],
+   "start": 935,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece 3",
+   "points": [
+    [
+     814.0,
+     -632.0
+    ],
+    [
+     813.69,
+     -629.67
+    ],
+    [
+     812.79,
+     -627.5
+    ],
+    [
+     811.36,
+     -625.64
+    ],
+    [
+     809.5,
+     -624.21
+    ],
+    [
+     807.33,
+     -623.31
+    ],
+    [
+     805.0,
+     -623.0
+    ],
+    [
+     802.67,
+     -623.31
+    ],
+    [
+     800.5,
+     -624.21
+    ],
+    [
+     798.64,
+     -625.64
+    ],
+    [
+     797.21,
+     -627.5
+    ],
+    [
+     796.31,
+     -629.67
+    ],
+    [
+     796.0,
+     -632.0
+    ],
+    [
+     796.31,
+     -634.33
+    ],
+    [
+     797.21,
+     -636.5
+    ],
+    [
+     798.64,
+     -638.36
+    ],
+    [
+     800.5,
+     -639.79
+    ],
+    [
+     802.67,
+     -640.69
+    ],
+    [
+     805.0,
+     -641.0
+    ],
+    [
+     807.33,
+     -640.69
+    ],
+    [
+     809.5,
+     -639.79
+    ],
+    [
+     811.36,
+     -638.36
+    ],
+    [
+     812.79,
+     -636.5
+    ],
+    [
+     813.69,
+     -634.33
+    ]
+   ],
+   "start": 935,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece 4",
+   "points": [
+    [
+     889.0,
+     -632.0
+    ],
+    [
+     888.69,
+     -629.67
+    ],
+    [
+     887.79,
+     -627.5
+    ],
+    [
+     886.36,
+     -625.64
+    ],
+    [
+     884.5,
+     -624.21
+    ],
+    [
+     882.33,
+     -623.31
+    ],
+    [
+     880.0,
+     -623.0
+    ],
+    [
+     877.67,
+     -623.31
+    ],
+    [
+     875.5,
+     -624.21
+    ],
+    [
+     873.64,
+     -625.64
+    ],
+    [
+     872.21,
+     -627.5
+    ],
+    [
+     871.31,
+     -629.67
+    ],
+    [
+     871.0,
+     -632.0
+    ],
+    [
+     871.31,
+     -634.33
+    ],
+    [
+     872.21,
+     -636.5
+    ],
+    [
+     873.64,
+     -638.36
+    ],
+    [
+     875.5,
+     -639.79
+    ],
+    [
+     877.67,
+     -640.69
+    ],
+    [
+     880.0,
+     -641.0
+    ],
+    [
+     882.33,
+     -640.69
+    ],
+    [
+     884.5,
+     -639.79
+    ],
+    [
+     886.36,
+     -638.36
+    ],
+    [
+     887.79,
+     -636.5
+    ],
+    [
+     888.69,
+     -634.33
+    ]
+   ],
+   "start": 935,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece 4",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece 4",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece 5",
+   "points": [
+    [
+     964.0,
+     -632.0
+    ],
+    [
+     963.69,
+     -629.67
+    ],
+    [
+     962.79,
+     -627.5
+    ],
+    [
+     961.36,
+     -625.64
+    ],
+    [
+     959.5,
+     -624.21
+    ],
+    [
+     957.33,
+     -623.31
+    ],
+    [
+     955.0,
+     -623.0
+    ],
+    [
+     952.67,
+     -623.31
+    ],
+    [
+     950.5,
+     -624.21
+    ],
+    [
+     948.64,
+     -625.64
+    ],
+    [
+     947.21,
+     -627.5
+    ],
+    [
+     946.31,
+     -629.67
+    ],
+    [
+     946.0,
+     -632.0
+    ],
+    [
+     946.31,
+     -634.33
+    ],
+    [
+     947.21,
+     -636.5
+    ],
+    [
+     948.64,
+     -638.36
+    ],
+    [
+     950.5,
+     -639.79
+    ],
+    [
+     952.67,
+     -640.69
+    ],
+    [
+     955.0,
+     -641.0
+    ],
+    [
+     957.33,
+     -640.69
+    ],
+    [
+     959.5,
+     -639.79
+    ],
+    [
+     961.36,
+     -638.36
+    ],
+    [
+     962.79,
+     -636.5
+    ],
+    [
+     963.69,
+     -634.33
+    ]
+   ],
+   "start": 935,
+   "end": 1080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece 5",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece 5",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Hose 1",
+   "points": [
+    [
+     660.0,
+     -640.0
+    ],
+    [
+     659.83,
+     -638.71
+    ],
+    [
+     659.33,
+     -637.5
+    ],
+    [
+     658.54,
+     -636.46
+    ],
+    [
+     657.5,
+     -635.67
+    ],
+    [
+     656.29,
+     -635.17
+    ],
+    [
+     655.0,
+     -635.0
+    ],
+    [
+     653.71,
+     -635.17
+    ],
+    [
+     652.5,
+     -635.67
+    ],
+    [
+     651.46,
+     -636.46
+    ],
+    [
+     650.67,
+     -637.5
+    ],
+    [
+     650.17,
+     -638.71
+    ],
+    [
+     650.0,
+     -640.0
+    ],
+    [
+     650.17,
+     -641.29
+    ],
+    [
+     650.67,
+     -642.5
+    ],
+    [
+     651.46,
+     -643.54
+    ],
+    [
+     652.5,
+     -644.33
+    ],
+    [
+     653.71,
+     -644.83
+    ],
+    [
+     655.0,
+     -645.0
+    ],
+    [
+     656.29,
+     -644.83
+    ],
+    [
+     657.5,
+     -644.33
+    ],
+    [
+     658.54,
+     -643.54
+    ],
+    [
+     659.33,
+     -642.5
+    ],
+    [
+     659.83,
+     -641.29
+    ]
+   ],
+   "start": 640,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Hose 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Hose 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Hose 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Hose 2",
+   "points": [
+    [
+     735.0,
+     -640.0
+    ],
+    [
+     734.83,
+     -638.71
+    ],
+    [
+     734.33,
+     -637.5
+    ],
+    [
+     733.54,
+     -636.46
+    ],
+    [
+     732.5,
+     -635.67
+    ],
+    [
+     731.29,
+     -635.17
+    ],
+    [
+     730.0,
+     -635.0
+    ],
+    [
+     728.71,
+     -635.17
+    ],
+    [
+     727.5,
+     -635.67
+    ],
+    [
+     726.46,
+     -636.46
+    ],
+    [
+     725.67,
+     -637.5
+    ],
+    [
+     725.17,
+     -638.71
+    ],
+    [
+     725.0,
+     -640.0
+    ],
+    [
+     725.17,
+     -641.29
+    ],
+    [
+     725.67,
+     -642.5
+    ],
+    [
+     726.46,
+     -643.54
+    ],
+    [
+     727.5,
+     -644.33
+    ],
+    [
+     728.71,
+     -644.83
+    ],
+    [
+     730.0,
+     -645.0
+    ],
+    [
+     731.29,
+     -644.83
+    ],
+    [
+     732.5,
+     -644.33
+    ],
+    [
+     733.54,
+     -643.54
+    ],
+    [
+     734.33,
+     -642.5
+    ],
+    [
+     734.83,
+     -641.29
+    ]
+   ],
+   "start": 640,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Hose 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Hose 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Hose 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Hose 3",
+   "points": [
+    [
+     810.0,
+     -640.0
+    ],
+    [
+     809.83,
+     -638.71
+    ],
+    [
+     809.33,
+     -637.5
+    ],
+    [
+     808.54,
+     -636.46
+    ],
+    [
+     807.5,
+     -635.67
+    ],
+    [
+     806.29,
+     -635.17
+    ],
+    [
+     805.0,
+     -635.0
+    ],
+    [
+     803.71,
+     -635.17
+    ],
+    [
+     802.5,
+     -635.67
+    ],
+    [
+     801.46,
+     -636.46
+    ],
+    [
+     800.67,
+     -637.5
+    ],
+    [
+     800.17,
+     -638.71
+    ],
+    [
+     800.0,
+     -640.0
+    ],
+    [
+     800.17,
+     -641.29
+    ],
+    [
+     800.67,
+     -642.5
+    ],
+    [
+     801.46,
+     -643.54
+    ],
+    [
+     802.5,
+     -644.33
+    ],
+    [
+     803.71,
+     -644.83
+    ],
+    [
+     805.0,
+     -645.0
+    ],
+    [
+     806.29,
+     -644.83
+    ],
+    [
+     807.5,
+     -644.33
+    ],
+    [
+     808.54,
+     -643.54
+    ],
+    [
+     809.33,
+     -642.5
+    ],
+    [
+     809.83,
+     -641.29
+    ]
+   ],
+   "start": 640,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Hose 3",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Hose 3",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Hose 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Hose 4",
+   "points": [
+    [
+     885.0,
+     -640.0
+    ],
+    [
+     884.83,
+     -638.71
+    ],
+    [
+     884.33,
+     -637.5
+    ],
+    [
+     883.54,
+     -636.46
+    ],
+    [
+     882.5,
+     -635.67
+    ],
+    [
+     881.29,
+     -635.17
+    ],
+    [
+     880.0,
+     -635.0
+    ],
+    [
+     878.71,
+     -635.17
+    ],
+    [
+     877.5,
+     -635.67
+    ],
+    [
+     876.46,
+     -636.46
+    ],
+    [
+     875.67,
+     -637.5
+    ],
+    [
+     875.17,
+     -638.71
+    ],
+    [
+     875.0,
+     -640.0
+    ],
+    [
+     875.17,
+     -641.29
+    ],
+    [
+     875.67,
+     -642.5
+    ],
+    [
+     876.46,
+     -643.54
+    ],
+    [
+     877.5,
+     -644.33
+    ],
+    [
+     878.71,
+     -644.83
+    ],
+    [
+     880.0,
+     -645.0
+    ],
+    [
+     881.29,
+     -644.83
+    ],
+    [
+     882.5,
+     -644.33
+    ],
+    [
+     883.54,
+     -643.54
+    ],
+    [
+     884.33,
+     -642.5
+    ],
+    [
+     884.83,
+     -641.29
+    ]
+   ],
+   "start": 640,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Hose 4",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Hose 4",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Hose 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handpiece Hose 5",
+   "points": [
+    [
+     960.0,
+     -640.0
+    ],
+    [
+     959.83,
+     -638.71
+    ],
+    [
+     959.33,
+     -637.5
+    ],
+    [
+     958.54,
+     -636.46
+    ],
+    [
+     957.5,
+     -635.67
+    ],
+    [
+     956.29,
+     -635.17
+    ],
+    [
+     955.0,
+     -635.0
+    ],
+    [
+     953.71,
+     -635.17
+    ],
+    [
+     952.5,
+     -635.67
+    ],
+    [
+     951.46,
+     -636.46
+    ],
+    [
+     950.67,
+     -637.5
+    ],
+    [
+     950.17,
+     -638.71
+    ],
+    [
+     950.0,
+     -640.0
+    ],
+    [
+     950.17,
+     -641.29
+    ],
+    [
+     950.67,
+     -642.5
+    ],
+    [
+     951.46,
+     -643.54
+    ],
+    [
+     952.5,
+     -644.33
+    ],
+    [
+     953.71,
+     -644.83
+    ],
+    [
+     955.0,
+     -645.0
+    ],
+    [
+     956.29,
+     -644.83
+    ],
+    [
+     957.5,
+     -644.33
+    ],
+    [
+     958.54,
+     -643.54
+    ],
+    [
+     959.33,
+     -642.5
+    ],
+    [
+     959.83,
+     -641.29
+    ]
+   ],
+   "start": 640,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handpiece Hose 5",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handpiece Hose 5",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handpiece Hose 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Water Unit",
+   "points": [
+    [
+     70.0,
+     290.0
+    ],
+    [
+     85.31,
+     293.04
+    ],
+    [
+     98.28,
+     301.72
+    ],
+    [
+     106.96,
+     314.69
+    ],
+    [
+     110.0,
+     330.0
+    ],
+    [
+     110.0,
+     420.0
+    ],
+    [
+     106.96,
+     435.31
+    ],
+    [
+     98.28,
+     448.28
+    ],
+    [
+     85.31,
+     456.96
+    ],
+    [
+     70.0,
+     460.0
+    ],
+    [
+     -130.0,
+     460.0
+    ],
+    [
+     -145.31,
+     456.96
+    ],
+    [
+     -158.28,
+     448.28
+    ],
+    [
+     -166.96,
+     435.31
+    ],
+    [
+     -170.0,
+     420.0
+    ],
+    [
+     -170.0,
+     330.0
+    ],
+    [
+     -166.96,
+     314.69
+    ],
+    [
+     -158.28,
+     301.72
+    ],
+    [
+     -145.31,
+     293.04
+    ],
+    [
+     -130.0,
+     290.0
+    ]
+   ],
+   "start": 0,
+   "end": 860
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Water Unit",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Water Unit",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Water Unit",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cuspidor Bowl",
+   "profile": [
+    [
+     0,
+     860
+    ],
+    [
+     110,
+     860
+    ],
+    [
+     140,
+     960
+    ],
+    [
+     130,
+     960
+    ],
+    [
+     100,
+     872
+    ],
+    [
+     0,
+     872
+    ]
+   ],
+   "axis_at": [
+    -30,
+    420
+   ],
+   "axis": "z",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cuspidor Bowl",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cuspidor Bowl",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cup Filler",
+   "points": [
+    [
+     -40,
+     330
+    ],
+    [
+     -20,
+     330
+    ],
+    [
+     -20,
+     380
+    ],
+    [
+     -40,
+     380
+    ]
+   ],
+   "start": 940,
+   "end": 975
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cup Filler",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cup Filler",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cup Filler",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Assistant Arm",
+   "points": [
+    [
+     -300,
+     300
+    ],
+    [
+     -150,
+     300
+    ],
+    [
+     -150,
+     340
+    ],
+    [
+     -300,
+     340
+    ]
+   ],
+   "start": 780,
+   "end": 810
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Assistant Arm",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Assistant Arm",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Assistant Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Suction Holder",
+   "points": [
+    [
+     -290.0,
+     280.0
+    ],
+    [
+     -286.17,
+     280.76
+    ],
+    [
+     -282.93,
+     282.93
+    ],
+    [
+     -280.76,
+     286.17
+    ],
+    [
+     -280.0,
+     290.0
+    ],
+    [
+     -280.0,
+     350.0
+    ],
+    [
+     -280.76,
+     353.83
+    ],
+    [
+     -282.93,
+     357.07
+    ],
+    [
+     -286.17,
+     359.24
+    ],
+    [
+     -290.0,
+     360.0
+    ],
+    [
+     -350.0,
+     360.0
+    ],
+    [
+     -353.83,
+     359.24
+    ],
+    [
+     -357.07,
+     357.07
+    ],
+    [
+     -359.24,
+     353.83
+    ],
+    [
+     -360.0,
+     350.0
+    ],
+    [
+     -360.0,
+     290.0
+    ],
+    [
+     -359.24,
+     286.17
+    ],
+    [
+     -357.07,
+     282.93
+    ],
+    [
+     -353.83,
+     280.76
+    ],
+    [
+     -350.0,
+     280.0
+    ]
+   ],
+   "start": 760,
+   "end": 830
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Suction Holder",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Holder",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Holder",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Suction Tip 1",
+   "points": [
+    [
+     -325.0,
+     320.0
+    ],
+    [
+     -325.34,
+     322.59
+    ],
+    [
+     -326.34,
+     325.0
+    ],
+    [
+     -327.93,
+     327.07
+    ],
+    [
+     -330.0,
+     328.66
+    ],
+    [
+     -332.41,
+     329.66
+    ],
+    [
+     -335.0,
+     330.0
+    ],
+    [
+     -337.59,
+     329.66
+    ],
+    [
+     -340.0,
+     328.66
+    ],
+    [
+     -342.07,
+     327.07
+    ],
+    [
+     -343.66,
+     325.0
+    ],
+    [
+     -344.66,
+     322.59
+    ],
+    [
+     -345.0,
+     320.0
+    ],
+    [
+     -344.66,
+     317.41
+    ],
+    [
+     -343.66,
+     315.0
+    ],
+    [
+     -342.07,
+     312.93
+    ],
+    [
+     -340.0,
+     311.34
+    ],
+    [
+     -337.59,
+     310.34
+    ],
+    [
+     -335.0,
+     310.0
+    ],
+    [
+     -332.41,
+     310.34
+    ],
+    [
+     -330.0,
+     311.34
+    ],
+    [
+     -327.93,
+     312.93
+    ],
+    [
+     -326.34,
+     315.0
+    ],
+    [
+     -325.34,
+     317.41
+    ]
+   ],
+   "start": 830,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Suction Tip 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Tip 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Tip 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Suction Tip 2",
+   "points": [
+    [
+     -325.0,
+     345.0
+    ],
+    [
+     -325.34,
+     347.59
+    ],
+    [
+     -326.34,
+     350.0
+    ],
+    [
+     -327.93,
+     352.07
+    ],
+    [
+     -330.0,
+     353.66
+    ],
+    [
+     -332.41,
+     354.66
+    ],
+    [
+     -335.0,
+     355.0
+    ],
+    [
+     -337.59,
+     354.66
+    ],
+    [
+     -340.0,
+     353.66
+    ],
+    [
+     -342.07,
+     352.07
+    ],
+    [
+     -343.66,
+     350.0
+    ],
+    [
+     -344.66,
+     347.59
+    ],
+    [
+     -345.0,
+     345.0
+    ],
+    [
+     -344.66,
+     342.41
+    ],
+    [
+     -343.66,
+     340.0
+    ],
+    [
+     -342.07,
+     337.93
+    ],
+    [
+     -340.0,
+     336.34
+    ],
+    [
+     -337.59,
+     335.34
+    ],
+    [
+     -335.0,
+     335.0
+    ],
+    [
+     -332.41,
+     335.34
+    ],
+    [
+     -330.0,
+     336.34
+    ],
+    [
+     -327.93,
+     337.93
+    ],
+    [
+     -326.34,
+     340.0
+    ],
+    [
+     -325.34,
+     342.41
+    ]
+   ],
+   "start": 830,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Suction Tip 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Tip 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Tip 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Pole",
+   "points": [
+    [
+     -120.0,
+     400.0
+    ],
+    [
+     -121.02,
+     407.76
+    ],
+    [
+     -124.02,
+     415.0
+    ],
+    [
+     -128.79,
+     421.21
+    ],
+    [
+     -135.0,
+     425.98
+    ],
+    [
+     -142.24,
+     428.98
+    ],
+    [
+     -150.0,
+     430.0
+    ],
+    [
+     -157.76,
+     428.98
+    ],
+    [
+     -165.0,
+     425.98
+    ],
+    [
+     -171.21,
+     421.21
+    ],
+    [
+     -175.98,
+     415.0
+    ],
+    [
+     -178.98,
+     407.76
+    ],
+    [
+     -180.0,
+     400.0
+    ],
+    [
+     -178.98,
+     392.24
+    ],
+    [
+     -175.98,
+     385.0
+    ],
+    [
+     -171.21,
+     378.79
+    ],
+    [
+     -165.0,
+     374.02
+    ],
+    [
+     -157.76,
+     371.02
+    ],
+    [
+     -150.0,
+     370.0
+    ],
+    [
+     -142.24,
+     371.02
+    ],
+    [
+     -135.0,
+     374.02
+    ],
+    [
+     -128.79,
+     378.79
+    ],
+    [
+     -124.02,
+     385.0
+    ],
+    [
+     -121.02,
+     392.24
+    ]
+   ],
+   "start": 860,
+   "end": 1920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Pole",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Pole",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Pole",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Arm",
+   "points": [
+    [
+     -145.0,
+     380.0
+    ],
+    [
+     -139.26,
+     381.14
+    ],
+    [
+     -134.39,
+     384.39
+    ],
+    [
+     -131.14,
+     389.26
+    ],
+    [
+     -130.0,
+     395.0
+    ],
+    [
+     -130.0,
+     405.0
+    ],
+    [
+     -131.14,
+     410.74
+    ],
+    [
+     -134.39,
+     415.61
+    ],
+    [
+     -139.26,
+     418.86
+    ],
+    [
+     -145.0,
+     420.0
+    ],
+    [
+     -805.0,
+     420.0
+    ],
+    [
+     -810.74,
+     418.86
+    ],
+    [
+     -815.61,
+     415.61
+    ],
+    [
+     -818.86,
+     410.74
+    ],
+    [
+     -820.0,
+     405.0
+    ],
+    [
+     -820.0,
+     395.0
+    ],
+    [
+     -818.86,
+     389.26
+    ],
+    [
+     -815.61,
+     384.39
+    ],
+    [
+     -810.74,
+     381.14
+    ],
+    [
+     -805.0,
+     380.0
+    ]
+   ],
+   "start": 1890,
+   "end": 1930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Arm",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Arm",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Arm Drop",
+   "points": [
+    [
+     -795.0,
+     -20.0
+    ],
+    [
+     -789.26,
+     -18.86
+    ],
+    [
+     -784.39,
+     -15.61
+    ],
+    [
+     -781.14,
+     -10.74
+    ],
+    [
+     -780.0,
+     -5.0
+    ],
+    [
+     -780.0,
+     405.0
+    ],
+    [
+     -781.14,
+     410.74
+    ],
+    [
+     -784.39,
+     415.61
+    ],
+    [
+     -789.26,
+     418.86
+    ],
+    [
+     -795.0,
+     420.0
+    ],
+    [
+     -805.0,
+     420.0
+    ],
+    [
+     -810.74,
+     418.86
+    ],
+    [
+     -815.61,
+     415.61
+    ],
+    [
+     -818.86,
+     410.74
+    ],
+    [
+     -820.0,
+     405.0
+    ],
+    [
+     -820.0,
+     -5.0
+    ],
+    [
+     -818.86,
+     -10.74
+    ],
+    [
+     -815.61,
+     -15.61
+    ],
+    [
+     -810.74,
+     -18.86
+    ],
+    [
+     -805.0,
+     -20.0
+    ]
+   ],
+   "start": 1890,
+   "end": 1930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Arm Drop",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Arm Drop",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Arm Drop",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Swivel",
+   "points": [
+    [
+     -785.0,
+     0.0
+    ],
+    [
+     -785.51,
+     3.88
+    ],
+    [
+     -787.01,
+     7.5
+    ],
+    [
+     -789.39,
+     10.61
+    ],
+    [
+     -792.5,
+     12.99
+    ],
+    [
+     -796.12,
+     14.49
+    ],
+    [
+     -800.0,
+     15.0
+    ],
+    [
+     -803.88,
+     14.49
+    ],
+    [
+     -807.5,
+     12.99
+    ],
+    [
+     -810.61,
+     10.61
+    ],
+    [
+     -812.99,
+     7.5
+    ],
+    [
+     -814.49,
+     3.88
+    ],
+    [
+     -815.0,
+     0.0
+    ],
+    [
+     -814.49,
+     -3.88
+    ],
+    [
+     -812.99,
+     -7.5
+    ],
+    [
+     -810.61,
+     -10.61
+    ],
+    [
+     -807.5,
+     -12.99
+    ],
+    [
+     -803.88,
+     -14.49
+    ],
+    [
+     -800.0,
+     -15.0
+    ],
+    [
+     -796.12,
+     -14.49
+    ],
+    [
+     -792.5,
+     -12.99
+    ],
+    [
+     -789.39,
+     -10.61
+    ],
+    [
+     -787.01,
+     -7.5
+    ],
+    [
+     -785.51,
+     -3.88
+    ]
+   ],
+   "start": 1760,
+   "end": 1890
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Swivel",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Swivel",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Swivel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Head",
+   "points": [
+    [
+     -760.0,
+     -170.0
+    ],
+    [
+     -714.08,
+     -160.87
+    ],
+    [
+     -675.15,
+     -134.85
+    ],
+    [
+     -649.13,
+     -95.92
+    ],
+    [
+     -640.0,
+     -50.0
+    ],
+    [
+     -640.0,
+     50.0
+    ],
+    [
+     -649.13,
+     95.92
+    ],
+    [
+     -675.15,
+     134.85
+    ],
+    [
+     -714.08,
+     160.87
+    ],
+    [
+     -760.0,
+     170.0
+    ],
+    [
+     -840.0,
+     170.0
+    ],
+    [
+     -885.92,
+     160.87
+    ],
+    [
+     -924.85,
+     134.85
+    ],
+    [
+     -950.87,
+     95.92
+    ],
+    [
+     -960.0,
+     50.0
+    ],
+    [
+     -960.0,
+     -50.0
+    ],
+    [
+     -950.87,
+     -95.92
+    ],
+    [
+     -924.85,
+     -134.85
+    ],
+    [
+     -885.92,
+     -160.87
+    ],
+    [
+     -840.0,
+     -170.0
+    ]
+   ],
+   "start": 1680,
+   "end": 1760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Head",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Head",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Lens",
+   "points": [
+    [
+     -770.0,
+     -140.0
+    ],
+    [
+     -731.73,
+     -132.39
+    ],
+    [
+     -699.29,
+     -110.71
+    ],
+    [
+     -677.61,
+     -78.27
+    ],
+    [
+     -670.0,
+     -40.0
+    ],
+    [
+     -670.0,
+     40.0
+    ],
+    [
+     -677.61,
+     78.27
+    ],
+    [
+     -699.29,
+     110.71
+    ],
+    [
+     -731.73,
+     132.39
+    ],
+    [
+     -770.0,
+     140.0
+    ],
+    [
+     -830.0,
+     140.0
+    ],
+    [
+     -868.27,
+     132.39
+    ],
+    [
+     -900.71,
+     110.71
+    ],
+    [
+     -922.39,
+     78.27
+    ],
+    [
+     -930.0,
+     40.0
+    ],
+    [
+     -930.0,
+     -40.0
+    ],
+    [
+     -922.39,
+     -78.27
+    ],
+    [
+     -900.71,
+     -110.71
+    ],
+    [
+     -868.27,
+     -132.39
+    ],
+    [
+     -830.0,
+     -140.0
+    ]
+   ],
+   "start": 1672,
+   "end": 1680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Lens",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Lens",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Lens",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Light Handle",
+   "points": [
+    [
+     14.0,
+     1720.0
+    ],
+    [
+     13.52,
+     1723.62
+    ],
+    [
+     12.12,
+     1727.0
+    ],
+    [
+     9.9,
+     1729.9
+    ],
+    [
+     7.0,
+     1732.12
+    ],
+    [
+     3.62,
+     1733.52
+    ],
+    [
+     0.0,
+     1734.0
+    ],
+    [
+     -3.62,
+     1733.52
+    ],
+    [
+     -7.0,
+     1732.12
+    ],
+    [
+     -9.9,
+     1729.9
+    ],
+    [
+     -12.12,
+     1727.0
+    ],
+    [
+     -13.52,
+     1723.62
+    ],
+    [
+     -14.0,
+     1720.0
+    ],
+    [
+     -13.52,
+     1716.38
+    ],
+    [
+     -12.12,
+     1713.0
+    ],
+    [
+     -9.9,
+     1710.1
+    ],
+    [
+     -7.0,
+     1707.88
+    ],
+    [
+     -3.62,
+     1706.48
+    ],
+    [
+     -0.0,
+     1706.0
+    ],
+    [
+     3.62,
+     1706.48
+    ],
+    [
+     7.0,
+     1707.88
+    ],
+    [
+     9.9,
+     1710.1
+    ],
+    [
+     12.12,
+     1713.0
+    ],
+    [
+     13.52,
+     1716.38
+    ]
+   ],
+   "start": -1010,
+   "end": -960,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Light Handle",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Light Handle",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Light Handle",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Foot Control",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     150,
+     0
+    ],
+    [
+     150,
+     30
+    ],
+    [
+     120,
+     60
+    ],
+    [
+     0,
+     60
+    ]
+   ],
+   "axis_at": [
+    520,
+    -560
+   ],
+   "axis": "z",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Control",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Control",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Control Pedal",
+   "points": [
+    [
+     560.0,
+     -560.0
+    ],
+    [
+     558.64,
+     -549.65
+    ],
+    [
+     554.64,
+     -540.0
+    ],
+    [
+     548.28,
+     -531.72
+    ],
+    [
+     540.0,
+     -525.36
+    ],
+    [
+     530.35,
+     -521.36
+    ],
+    [
+     520.0,
+     -520.0
+    ],
+    [
+     509.65,
+     -521.36
+    ],
+    [
+     500.0,
+     -525.36
+    ],
+    [
+     491.72,
+     -531.72
+    ],
+    [
+     485.36,
+     -540.0
+    ],
+    [
+     481.36,
+     -549.65
+    ],
+    [
+     480.0,
+     -560.0
+    ],
+    [
+     481.36,
+     -570.35
+    ],
+    [
+     485.36,
+     -580.0
+    ],
+    [
+     491.72,
+     -588.28
+    ],
+    [
+     500.0,
+     -594.64
+    ],
+    [
+     509.65,
+     -598.64
+    ],
+    [
+     520.0,
+     -600.0
+    ],
+    [
+     530.35,
+     -598.64
+    ],
+    [
+     540.0,
+     -594.64
+    ],
+    [
+     548.28,
+     -588.28
+    ],
+    [
+     554.64,
+     -580.0
+    ],
+    [
+     558.64,
+     -570.35
+    ]
+   ],
+   "start": 60,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Control Pedal",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Control Pedal",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Control Pedal",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Base Plate",
+   "side": "bottom"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Chair_Dental.png"
+  }
+ ],
+ "values": {
+  "Chair 1900 x 900 mm": {
+   "value": "1900x900",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Seat height 420 to 800 mm": {
+   "value": "420-800",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Operating light 15000-35000 lux": {
+   "value": "15000-35000",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Power 1000 VA": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical dental unit incl. light"
+  }
+ }
+}

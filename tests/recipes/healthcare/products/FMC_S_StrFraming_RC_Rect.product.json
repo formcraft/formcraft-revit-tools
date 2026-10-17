@@ -1,0 +1,107 @@
+{
+ "family": "FMC_S_StrFraming_RC_Rect",
+ "category": "Structural Framing",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete beam, rectangular, chamfered soffit arrises, fair-faced",
+ "ifc": "IfcBeam",
+ "keynote": "C.COL_04",
+ "types": [
+  {
+   "name": "230x450_RC",
+   "desc": "RC beam 230 wide x 450 deep"
+  },
+  {
+   "name": "300x600_RC",
+   "desc": "RC beam 300 wide x 600 deep"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "mortar": "FMC_Masonry_Mortar_1to4"
+ },
+ "parts": [
+  {
+   "n": "Beam",
+   "shape": "right",
+   "pts": [
+    [
+     -115,
+     -430
+    ],
+    [
+     -95,
+     -450
+    ],
+    [
+     95,
+     -450
+    ],
+    [
+     115,
+     -430
+    ],
+    [
+     115,
+     0
+    ],
+    [
+     -115,
+     0
+    ]
+   ],
+   "x": [
+    -2000.0,
+    2000.0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Tie Hole Plug",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1500,
+    -225
+   ],
+   "r": 12,
+   "y": [
+    -116,
+    -110
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "str framing rc rect structural framing hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+framing+rc+rect+structural+framing+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Section 230 x 450 mm (geometry)": {
+   "value": "230x450",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Soffit chamfer 20 mm": {
+   "value": 20,
+   "source_status": "assumed",
+   "source": "typical formwork fillet"
+  },
+  "Concrete grade and cover from the kit": {
+   "value": "C30 / kit cover",
+   "source_status": "assumed",
+   "source": "FMC kit rulebook; engineer to confirm"
+  }
+ },
+ "about": "RC beam with top at the reference (z = 0), chamfered soffit, plugged tie holes (Fine). Shown 4000 long; reinforcement by the engineer."
+}

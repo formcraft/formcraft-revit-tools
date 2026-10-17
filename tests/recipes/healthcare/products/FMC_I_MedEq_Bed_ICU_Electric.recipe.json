@@ -1,0 +1,7680 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_MedEq_Bed_ICU_Electric",
+ "template": "Metric Generic Model.rft",
+ "about": "ICU bed modelled as a generic product: hooded castors with brake pedals, base frame and shroud, twin lift columns, deck, 4-section mattress with the backrest raised 30 deg (seams at Fine), split head and foot rails with grip slots and nurse keypad, headboard, footboard nurse panel with display, keys and LEDs, IV pole, handset, red CPR release. Reference: query: bed ICU electric medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=bed+ICU+electric+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://hospimedica.com/expo/product/13405/hospital-icu-electric-bed",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Medical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "2200x1000_ICU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Cost_Unit",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Geometry_Stage",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/IfcExportAs",
+   "type": "2200x1000_ICU",
+   "param": "IfcExportAs",
+   "value": "IfcMedicalDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/Description",
+   "type": "2200x1000_ICU",
+   "param": "Description",
+   "value": "ICU bed, electric, 4-section, 2200 x 1000, split side rails with nurse controls, 150 mm central-brake castors, IV pole, CPR release"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/Keynote",
+   "type": "2200x1000_ICU",
+   "param": "Keynote",
+   "value": "F.MED_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Keynote_Code",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Keynote_Code",
+   "value": "F.MED_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Code_Description",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Code_Description",
+   "value": "Bed ICU Electric: Multi-section ICU bed: rails up/down, IV pole, caster sweep"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Code_Group",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Code_Group",
+   "value": "F.MED"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/FMC_Role_Code",
+   "type": "2200x1000_ICU",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/URL",
+   "type": "2200x1000_ICU",
+   "param": "URL",
+   "value": "https://hospimedica.com/expo/product/13405/hospital-icu-electric-bed"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/Voltage",
+   "type": "2200x1000_ICU",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x1000_ICU/Apparent Load",
+   "type": "2200x1000_ICU",
+   "param": "Apparent Load",
+   "value": 600
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Castor",
+   "color": [
+    85,
+    89,
+    94
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Castor Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Nylon_CastorGrey",
+   "param": "Castor Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    181,
+    18,
+    27
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_FireHoseReel_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Frame",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Frame Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Frame Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mattress",
+   "color": [
+    91,
+    141,
+    184
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mattress Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Mattress_PU_Blue",
+   "param": "Mattress Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Vinyl",
+   "color": [
+    58,
+    110,
+    165
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Vinyl Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Operation",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1155.0,
+     -553.5
+    ],
+    [
+     1098.0,
+     -553.5
+    ],
+    [
+     1098.0,
+     533.5
+    ],
+    [
+     -1155.0,
+     533.5
+    ]
+   ],
+   "start": 0.0,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Wheel 1",
+   "points": [
+    [
+     -285.0,
+     75.0
+    ],
+    [
+     -287.56,
+     94.41
+    ],
+    [
+     -295.05,
+     112.5
+    ],
+    [
+     -306.97,
+     128.03
+    ],
+    [
+     -322.5,
+     139.95
+    ],
+    [
+     -340.59,
+     147.44
+    ],
+    [
+     -360.0,
+     150.0
+    ],
+    [
+     -379.41,
+     147.44
+    ],
+    [
+     -397.5,
+     139.95
+    ],
+    [
+     -413.03,
+     128.03
+    ],
+    [
+     -424.95,
+     112.5
+    ],
+    [
+     -432.44,
+     94.41
+    ],
+    [
+     -435.0,
+     75.0
+    ],
+    [
+     -432.44,
+     55.59
+    ],
+    [
+     -424.95,
+     37.5
+    ],
+    [
+     -413.03,
+     21.97
+    ],
+    [
+     -397.5,
+     10.05
+    ],
+    [
+     -379.41,
+     2.56
+    ],
+    [
+     -360.0,
+     0.0
+    ],
+    [
+     -340.59,
+     2.56
+    ],
+    [
+     -322.5,
+     10.05
+    ],
+    [
+     -306.97,
+     21.97
+    ],
+    [
+     -295.05,
+     37.5
+    ],
+    [
+     -287.56,
+     55.59
+    ]
+   ],
+   "start": -952.5,
+   "end": -907.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Wheel 1",
+   "subcategory": "Castor"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Wheel 1",
+   "param": "Castor Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Wheel 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Wheel 2",
+   "points": [
+    [
+     -285.0,
+     75.0
+    ],
+    [
+     -287.56,
+     94.41
+    ],
+    [
+     -295.05,
+     112.5
+    ],
+    [
+     -306.97,
+     128.03
+    ],
+    [
+     -322.5,
+     139.95
+    ],
+    [
+     -340.59,
+     147.44
+    ],
+    [
+     -360.0,
+     150.0
+    ],
+    [
+     -379.41,
+     147.44
+    ],
+    [
+     -397.5,
+     139.95
+    ],
+    [
+     -413.03,
+     128.03
+    ],
+    [
+     -424.95,
+     112.5
+    ],
+    [
+     -432.44,
+     94.41
+    ],
+    [
+     -435.0,
+     75.0
+    ],
+    [
+     -432.44,
+     55.59
+    ],
+    [
+     -424.95,
+     37.5
+    ],
+    [
+     -413.03,
+     21.97
+    ],
+    [
+     -397.5,
+     10.05
+    ],
+    [
+     -379.41,
+     2.56
+    ],
+    [
+     -360.0,
+     0.0
+    ],
+    [
+     -340.59,
+     2.56
+    ],
+    [
+     -322.5,
+     10.05
+    ],
+    [
+     -306.97,
+     21.97
+    ],
+    [
+     -295.05,
+     37.5
+    ],
+    [
+     -287.56,
+     55.59
+    ]
+   ],
+   "start": 907.5,
+   "end": 952.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Wheel 2",
+   "subcategory": "Castor"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Wheel 2",
+   "param": "Castor Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Wheel 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Hood 1",
+   "points": [
+    [
+     -925.0,
+     -420.0
+    ],
+    [
+     -916.39,
+     -418.29
+    ],
+    [
+     -909.09,
+     -413.41
+    ],
+    [
+     -904.21,
+     -406.11
+    ],
+    [
+     -902.5,
+     -397.5
+    ],
+    [
+     -902.5,
+     -322.5
+    ],
+    [
+     -904.21,
+     -313.89
+    ],
+    [
+     -909.09,
+     -306.59
+    ],
+    [
+     -916.39,
+     -301.71
+    ],
+    [
+     -925.0,
+     -300.0
+    ],
+    [
+     -935.0,
+     -300.0
+    ],
+    [
+     -943.61,
+     -301.71
+    ],
+    [
+     -950.91,
+     -306.59
+    ],
+    [
+     -955.79,
+     -313.89
+    ],
+    [
+     -957.5,
+     -322.5
+    ],
+    [
+     -957.5,
+     -397.5
+    ],
+    [
+     -955.79,
+     -406.11
+    ],
+    [
+     -950.91,
+     -413.41
+    ],
+    [
+     -943.61,
+     -418.29
+    ],
+    [
+     -935.0,
+     -420.0
+    ]
+   ],
+   "start": 71.2,
+   "end": 160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Hood 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Hood 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Hood 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Hood 2",
+   "points": [
+    [
+     935.0,
+     -420.0
+    ],
+    [
+     943.61,
+     -418.29
+    ],
+    [
+     950.91,
+     -413.41
+    ],
+    [
+     955.79,
+     -406.11
+    ],
+    [
+     957.5,
+     -397.5
+    ],
+    [
+     957.5,
+     -322.5
+    ],
+    [
+     955.79,
+     -313.89
+    ],
+    [
+     950.91,
+     -306.59
+    ],
+    [
+     943.61,
+     -301.71
+    ],
+    [
+     935.0,
+     -300.0
+    ],
+    [
+     925.0,
+     -300.0
+    ],
+    [
+     916.39,
+     -301.71
+    ],
+    [
+     909.09,
+     -306.59
+    ],
+    [
+     904.21,
+     -313.89
+    ],
+    [
+     902.5,
+     -322.5
+    ],
+    [
+     902.5,
+     -397.5
+    ],
+    [
+     904.21,
+     -406.11
+    ],
+    [
+     909.09,
+     -413.41
+    ],
+    [
+     916.39,
+     -418.29
+    ],
+    [
+     925.0,
+     -420.0
+    ]
+   ],
+   "start": 71.2,
+   "end": 160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Hood 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Hood 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Hood 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Stem 1",
+   "points": [
+    [
+     -915.0,
+     -360.0
+    ],
+    [
+     -915.51,
+     -356.12
+    ],
+    [
+     -917.01,
+     -352.5
+    ],
+    [
+     -919.39,
+     -349.39
+    ],
+    [
+     -922.5,
+     -347.01
+    ],
+    [
+     -926.12,
+     -345.51
+    ],
+    [
+     -930.0,
+     -345.0
+    ],
+    [
+     -933.88,
+     -345.51
+    ],
+    [
+     -937.5,
+     -347.01
+    ],
+    [
+     -940.61,
+     -349.39
+    ],
+    [
+     -942.99,
+     -352.5
+    ],
+    [
+     -944.49,
+     -356.12
+    ],
+    [
+     -945.0,
+     -360.0
+    ],
+    [
+     -944.49,
+     -363.88
+    ],
+    [
+     -942.99,
+     -367.5
+    ],
+    [
+     -940.61,
+     -370.61
+    ],
+    [
+     -937.5,
+     -372.99
+    ],
+    [
+     -933.88,
+     -374.49
+    ],
+    [
+     -930.0,
+     -375.0
+    ],
+    [
+     -926.12,
+     -374.49
+    ],
+    [
+     -922.5,
+     -372.99
+    ],
+    [
+     -919.39,
+     -370.61
+    ],
+    [
+     -917.01,
+     -367.5
+    ],
+    [
+     -915.51,
+     -363.88
+    ]
+   ],
+   "start": 160,
+   "end": 184
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Stem 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Stem 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Stem 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Stem 2",
+   "points": [
+    [
+     945.0,
+     -360.0
+    ],
+    [
+     944.49,
+     -356.12
+    ],
+    [
+     942.99,
+     -352.5
+    ],
+    [
+     940.61,
+     -349.39
+    ],
+    [
+     937.5,
+     -347.01
+    ],
+    [
+     933.88,
+     -345.51
+    ],
+    [
+     930.0,
+     -345.0
+    ],
+    [
+     926.12,
+     -345.51
+    ],
+    [
+     922.5,
+     -347.01
+    ],
+    [
+     919.39,
+     -349.39
+    ],
+    [
+     917.01,
+     -352.5
+    ],
+    [
+     915.51,
+     -356.12
+    ],
+    [
+     915.0,
+     -360.0
+    ],
+    [
+     915.51,
+     -363.88
+    ],
+    [
+     917.01,
+     -367.5
+    ],
+    [
+     919.39,
+     -370.61
+    ],
+    [
+     922.5,
+     -372.99
+    ],
+    [
+     926.12,
+     -374.49
+    ],
+    [
+     930.0,
+     -375.0
+    ],
+    [
+     933.88,
+     -374.49
+    ],
+    [
+     937.5,
+     -372.99
+    ],
+    [
+     940.61,
+     -370.61
+    ],
+    [
+     942.99,
+     -367.5
+    ],
+    [
+     944.49,
+     -363.88
+    ]
+   ],
+   "start": 160,
+   "end": 184
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Stem 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Stem 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Stem 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Brake Pedal 1",
+   "points": [
+    [
+     -911.5,
+     -465.0
+    ],
+    [
+     -909.97,
+     -464.7
+    ],
+    [
+     -908.67,
+     -463.83
+    ],
+    [
+     -907.8,
+     -462.53
+    ],
+    [
+     -907.5,
+     -461.0
+    ],
+    [
+     -907.5,
+     -424.0
+    ],
+    [
+     -907.8,
+     -422.47
+    ],
+    [
+     -908.67,
+     -421.17
+    ],
+    [
+     -909.97,
+     -420.3
+    ],
+    [
+     -911.5,
+     -420.0
+    ],
+    [
+     -948.5,
+     -420.0
+    ],
+    [
+     -950.03,
+     -420.3
+    ],
+    [
+     -951.33,
+     -421.17
+    ],
+    [
+     -952.2,
+     -422.47
+    ],
+    [
+     -952.5,
+     -424.0
+    ],
+    [
+     -952.5,
+     -461.0
+    ],
+    [
+     -952.2,
+     -462.53
+    ],
+    [
+     -951.33,
+     -463.83
+    ],
+    [
+     -950.03,
+     -464.7
+    ],
+    [
+     -948.5,
+     -465.0
+    ]
+   ],
+   "start": 97.5,
+   "end": 111.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Brake Pedal 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Brake Pedal 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Brake Pedal 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Front Brake Pedal 2",
+   "points": [
+    [
+     948.5,
+     -465.0
+    ],
+    [
+     950.03,
+     -464.7
+    ],
+    [
+     951.33,
+     -463.83
+    ],
+    [
+     952.2,
+     -462.53
+    ],
+    [
+     952.5,
+     -461.0
+    ],
+    [
+     952.5,
+     -424.0
+    ],
+    [
+     952.2,
+     -422.47
+    ],
+    [
+     951.33,
+     -421.17
+    ],
+    [
+     950.03,
+     -420.3
+    ],
+    [
+     948.5,
+     -420.0
+    ],
+    [
+     911.5,
+     -420.0
+    ],
+    [
+     909.97,
+     -420.3
+    ],
+    [
+     908.67,
+     -421.17
+    ],
+    [
+     907.8,
+     -422.47
+    ],
+    [
+     907.5,
+     -424.0
+    ],
+    [
+     907.5,
+     -461.0
+    ],
+    [
+     907.8,
+     -462.53
+    ],
+    [
+     908.67,
+     -463.83
+    ],
+    [
+     909.97,
+     -464.7
+    ],
+    [
+     911.5,
+     -465.0
+    ]
+   ],
+   "start": 97.5,
+   "end": 111.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Front Brake Pedal 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Front Brake Pedal 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Front Brake Pedal 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Wheel 1",
+   "points": [
+    [
+     435.0,
+     75.0
+    ],
+    [
+     432.44,
+     94.41
+    ],
+    [
+     424.95,
+     112.5
+    ],
+    [
+     413.03,
+     128.03
+    ],
+    [
+     397.5,
+     139.95
+    ],
+    [
+     379.41,
+     147.44
+    ],
+    [
+     360.0,
+     150.0
+    ],
+    [
+     340.59,
+     147.44
+    ],
+    [
+     322.5,
+     139.95
+    ],
+    [
+     306.97,
+     128.03
+    ],
+    [
+     295.05,
+     112.5
+    ],
+    [
+     287.56,
+     94.41
+    ],
+    [
+     285.0,
+     75.0
+    ],
+    [
+     287.56,
+     55.59
+    ],
+    [
+     295.05,
+     37.5
+    ],
+    [
+     306.97,
+     21.97
+    ],
+    [
+     322.5,
+     10.05
+    ],
+    [
+     340.59,
+     2.56
+    ],
+    [
+     360.0,
+     0.0
+    ],
+    [
+     379.41,
+     2.56
+    ],
+    [
+     397.5,
+     10.05
+    ],
+    [
+     413.03,
+     21.97
+    ],
+    [
+     424.95,
+     37.5
+    ],
+    [
+     432.44,
+     55.59
+    ]
+   ],
+   "start": -952.5,
+   "end": -907.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Wheel 1",
+   "subcategory": "Castor"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Wheel 1",
+   "param": "Castor Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Wheel 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Wheel 2",
+   "points": [
+    [
+     435.0,
+     75.0
+    ],
+    [
+     432.44,
+     94.41
+    ],
+    [
+     424.95,
+     112.5
+    ],
+    [
+     413.03,
+     128.03
+    ],
+    [
+     397.5,
+     139.95
+    ],
+    [
+     379.41,
+     147.44
+    ],
+    [
+     360.0,
+     150.0
+    ],
+    [
+     340.59,
+     147.44
+    ],
+    [
+     322.5,
+     139.95
+    ],
+    [
+     306.97,
+     128.03
+    ],
+    [
+     295.05,
+     112.5
+    ],
+    [
+     287.56,
+     94.41
+    ],
+    [
+     285.0,
+     75.0
+    ],
+    [
+     287.56,
+     55.59
+    ],
+    [
+     295.05,
+     37.5
+    ],
+    [
+     306.97,
+     21.97
+    ],
+    [
+     322.5,
+     10.05
+    ],
+    [
+     340.59,
+     2.56
+    ],
+    [
+     360.0,
+     0.0
+    ],
+    [
+     379.41,
+     2.56
+    ],
+    [
+     397.5,
+     10.05
+    ],
+    [
+     413.03,
+     21.97
+    ],
+    [
+     424.95,
+     37.5
+    ],
+    [
+     432.44,
+     55.59
+    ]
+   ],
+   "start": 907.5,
+   "end": 952.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Wheel 2",
+   "subcategory": "Castor"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Wheel 2",
+   "param": "Castor Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Wheel 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Hood 1",
+   "points": [
+    [
+     -925.0,
+     300.0
+    ],
+    [
+     -916.39,
+     301.71
+    ],
+    [
+     -909.09,
+     306.59
+    ],
+    [
+     -904.21,
+     313.89
+    ],
+    [
+     -902.5,
+     322.5
+    ],
+    [
+     -902.5,
+     397.5
+    ],
+    [
+     -904.21,
+     406.11
+    ],
+    [
+     -909.09,
+     413.41
+    ],
+    [
+     -916.39,
+     418.29
+    ],
+    [
+     -925.0,
+     420.0
+    ],
+    [
+     -935.0,
+     420.0
+    ],
+    [
+     -943.61,
+     418.29
+    ],
+    [
+     -950.91,
+     413.41
+    ],
+    [
+     -955.79,
+     406.11
+    ],
+    [
+     -957.5,
+     397.5
+    ],
+    [
+     -957.5,
+     322.5
+    ],
+    [
+     -955.79,
+     313.89
+    ],
+    [
+     -950.91,
+     306.59
+    ],
+    [
+     -943.61,
+     301.71
+    ],
+    [
+     -935.0,
+     300.0
+    ]
+   ],
+   "start": 71.2,
+   "end": 160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Hood 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Hood 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Hood 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Hood 2",
+   "points": [
+    [
+     935.0,
+     300.0
+    ],
+    [
+     943.61,
+     301.71
+    ],
+    [
+     950.91,
+     306.59
+    ],
+    [
+     955.79,
+     313.89
+    ],
+    [
+     957.5,
+     322.5
+    ],
+    [
+     957.5,
+     397.5
+    ],
+    [
+     955.79,
+     406.11
+    ],
+    [
+     950.91,
+     413.41
+    ],
+    [
+     943.61,
+     418.29
+    ],
+    [
+     935.0,
+     420.0
+    ],
+    [
+     925.0,
+     420.0
+    ],
+    [
+     916.39,
+     418.29
+    ],
+    [
+     909.09,
+     413.41
+    ],
+    [
+     904.21,
+     406.11
+    ],
+    [
+     902.5,
+     397.5
+    ],
+    [
+     902.5,
+     322.5
+    ],
+    [
+     904.21,
+     313.89
+    ],
+    [
+     909.09,
+     306.59
+    ],
+    [
+     916.39,
+     301.71
+    ],
+    [
+     925.0,
+     300.0
+    ]
+   ],
+   "start": 71.2,
+   "end": 160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Hood 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Hood 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Hood 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Stem 1",
+   "points": [
+    [
+     -915.0,
+     360.0
+    ],
+    [
+     -915.51,
+     363.88
+    ],
+    [
+     -917.01,
+     367.5
+    ],
+    [
+     -919.39,
+     370.61
+    ],
+    [
+     -922.5,
+     372.99
+    ],
+    [
+     -926.12,
+     374.49
+    ],
+    [
+     -930.0,
+     375.0
+    ],
+    [
+     -933.88,
+     374.49
+    ],
+    [
+     -937.5,
+     372.99
+    ],
+    [
+     -940.61,
+     370.61
+    ],
+    [
+     -942.99,
+     367.5
+    ],
+    [
+     -944.49,
+     363.88
+    ],
+    [
+     -945.0,
+     360.0
+    ],
+    [
+     -944.49,
+     356.12
+    ],
+    [
+     -942.99,
+     352.5
+    ],
+    [
+     -940.61,
+     349.39
+    ],
+    [
+     -937.5,
+     347.01
+    ],
+    [
+     -933.88,
+     345.51
+    ],
+    [
+     -930.0,
+     345.0
+    ],
+    [
+     -926.12,
+     345.51
+    ],
+    [
+     -922.5,
+     347.01
+    ],
+    [
+     -919.39,
+     349.39
+    ],
+    [
+     -917.01,
+     352.5
+    ],
+    [
+     -915.51,
+     356.12
+    ]
+   ],
+   "start": 160,
+   "end": 184
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Stem 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Stem 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Stem 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Stem 2",
+   "points": [
+    [
+     945.0,
+     360.0
+    ],
+    [
+     944.49,
+     363.88
+    ],
+    [
+     942.99,
+     367.5
+    ],
+    [
+     940.61,
+     370.61
+    ],
+    [
+     937.5,
+     372.99
+    ],
+    [
+     933.88,
+     374.49
+    ],
+    [
+     930.0,
+     375.0
+    ],
+    [
+     926.12,
+     374.49
+    ],
+    [
+     922.5,
+     372.99
+    ],
+    [
+     919.39,
+     370.61
+    ],
+    [
+     917.01,
+     367.5
+    ],
+    [
+     915.51,
+     363.88
+    ],
+    [
+     915.0,
+     360.0
+    ],
+    [
+     915.51,
+     356.12
+    ],
+    [
+     917.01,
+     352.5
+    ],
+    [
+     919.39,
+     349.39
+    ],
+    [
+     922.5,
+     347.01
+    ],
+    [
+     926.12,
+     345.51
+    ],
+    [
+     930.0,
+     345.0
+    ],
+    [
+     933.88,
+     345.51
+    ],
+    [
+     937.5,
+     347.01
+    ],
+    [
+     940.61,
+     349.39
+    ],
+    [
+     942.99,
+     352.5
+    ],
+    [
+     944.49,
+     356.12
+    ]
+   ],
+   "start": 160,
+   "end": 184
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Stem 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Stem 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Stem 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Brake Pedal 1",
+   "points": [
+    [
+     -911.5,
+     420.0
+    ],
+    [
+     -909.97,
+     420.3
+    ],
+    [
+     -908.67,
+     421.17
+    ],
+    [
+     -907.8,
+     422.47
+    ],
+    [
+     -907.5,
+     424.0
+    ],
+    [
+     -907.5,
+     461.0
+    ],
+    [
+     -907.8,
+     462.53
+    ],
+    [
+     -908.67,
+     463.83
+    ],
+    [
+     -909.97,
+     464.7
+    ],
+    [
+     -911.5,
+     465.0
+    ],
+    [
+     -948.5,
+     465.0
+    ],
+    [
+     -950.03,
+     464.7
+    ],
+    [
+     -951.33,
+     463.83
+    ],
+    [
+     -952.2,
+     462.53
+    ],
+    [
+     -952.5,
+     461.0
+    ],
+    [
+     -952.5,
+     424.0
+    ],
+    [
+     -952.2,
+     422.47
+    ],
+    [
+     -951.33,
+     421.17
+    ],
+    [
+     -950.03,
+     420.3
+    ],
+    [
+     -948.5,
+     420.0
+    ]
+   ],
+   "start": 97.5,
+   "end": 111.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Brake Pedal 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Brake Pedal 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Brake Pedal 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Castor Back Brake Pedal 2",
+   "points": [
+    [
+     948.5,
+     420.0
+    ],
+    [
+     950.03,
+     420.3
+    ],
+    [
+     951.33,
+     421.17
+    ],
+    [
+     952.2,
+     422.47
+    ],
+    [
+     952.5,
+     424.0
+    ],
+    [
+     952.5,
+     461.0
+    ],
+    [
+     952.2,
+     462.53
+    ],
+    [
+     951.33,
+     463.83
+    ],
+    [
+     950.03,
+     464.7
+    ],
+    [
+     948.5,
+     465.0
+    ],
+    [
+     911.5,
+     465.0
+    ],
+    [
+     909.97,
+     464.7
+    ],
+    [
+     908.67,
+     463.83
+    ],
+    [
+     907.8,
+     462.53
+    ],
+    [
+     907.5,
+     461.0
+    ],
+    [
+     907.5,
+     424.0
+    ],
+    [
+     907.8,
+     422.47
+    ],
+    [
+     908.67,
+     421.17
+    ],
+    [
+     909.97,
+     420.3
+    ],
+    [
+     911.5,
+     420.0
+    ]
+   ],
+   "start": 97.5,
+   "end": 111.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Castor Back Brake Pedal 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Castor Back Brake Pedal 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Castor Back Brake Pedal 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame",
+   "points": [
+    [
+     955.0,
+     -400.0
+    ],
+    [
+     964.57,
+     -398.1
+    ],
+    [
+     972.68,
+     -392.68
+    ],
+    [
+     978.1,
+     -384.57
+    ],
+    [
+     980.0,
+     -375.0
+    ],
+    [
+     980.0,
+     375.0
+    ],
+    [
+     978.1,
+     384.57
+    ],
+    [
+     972.68,
+     392.68
+    ],
+    [
+     964.57,
+     398.1
+    ],
+    [
+     955.0,
+     400.0
+    ],
+    [
+     -955.0,
+     400.0
+    ],
+    [
+     -964.57,
+     398.1
+    ],
+    [
+     -972.68,
+     392.68
+    ],
+    [
+     -978.1,
+     384.57
+    ],
+    [
+     -980.0,
+     375.0
+    ],
+    [
+     -980.0,
+     -375.0
+    ],
+    [
+     -978.1,
+     -384.57
+    ],
+    [
+     -972.68,
+     -392.68
+    ],
+    [
+     -964.57,
+     -398.1
+    ],
+    [
+     -955.0,
+     -400.0
+    ]
+   ],
+   "start": 178,
+   "end": 224
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Cover",
+   "points": [
+    [
+     710.0,
+     -330.0
+    ],
+    [
+     736.79,
+     -324.67
+    ],
+    [
+     759.5,
+     -309.5
+    ],
+    [
+     774.67,
+     -286.79
+    ],
+    [
+     780.0,
+     -260.0
+    ],
+    [
+     780.0,
+     260.0
+    ],
+    [
+     774.67,
+     286.79
+    ],
+    [
+     759.5,
+     309.5
+    ],
+    [
+     736.79,
+     324.67
+    ],
+    [
+     710.0,
+     330.0
+    ],
+    [
+     -710.0,
+     330.0
+    ],
+    [
+     -736.79,
+     324.67
+    ],
+    [
+     -759.5,
+     309.5
+    ],
+    [
+     -774.67,
+     286.79
+    ],
+    [
+     -780.0,
+     260.0
+    ],
+    [
+     -780.0,
+     -260.0
+    ],
+    [
+     -774.67,
+     -286.79
+    ],
+    [
+     -759.5,
+     -309.5
+    ],
+    [
+     -736.79,
+     -324.67
+    ],
+    [
+     -710.0,
+     -330.0
+    ]
+   ],
+   "start": 224,
+   "end": 334
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Cover",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Cover",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Cover",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lift Column 1",
+   "points": [
+    [
+     -540.0,
+     -120.0
+    ],
+    [
+     -528.52,
+     -117.72
+    ],
+    [
+     -518.79,
+     -111.21
+    ],
+    [
+     -512.28,
+     -101.48
+    ],
+    [
+     -510.0,
+     -90.0
+    ],
+    [
+     -510.0,
+     90.0
+    ],
+    [
+     -512.28,
+     101.48
+    ],
+    [
+     -518.79,
+     111.21
+    ],
+    [
+     -528.52,
+     117.72
+    ],
+    [
+     -540.0,
+     120.0
+    ],
+    [
+     -640.0,
+     120.0
+    ],
+    [
+     -651.48,
+     117.72
+    ],
+    [
+     -661.21,
+     111.21
+    ],
+    [
+     -667.72,
+     101.48
+    ],
+    [
+     -670.0,
+     90.0
+    ],
+    [
+     -670.0,
+     -90.0
+    ],
+    [
+     -667.72,
+     -101.48
+    ],
+    [
+     -661.21,
+     -111.21
+    ],
+    [
+     -651.48,
+     -117.72
+    ],
+    [
+     -640.0,
+     -120.0
+    ]
+   ],
+   "start": 224,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lift Column 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lift Column 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lift Column 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lift Column 2",
+   "points": [
+    [
+     640.0,
+     -120.0
+    ],
+    [
+     651.48,
+     -117.72
+    ],
+    [
+     661.21,
+     -111.21
+    ],
+    [
+     667.72,
+     -101.48
+    ],
+    [
+     670.0,
+     -90.0
+    ],
+    [
+     670.0,
+     90.0
+    ],
+    [
+     667.72,
+     101.48
+    ],
+    [
+     661.21,
+     111.21
+    ],
+    [
+     651.48,
+     117.72
+    ],
+    [
+     640.0,
+     120.0
+    ],
+    [
+     540.0,
+     120.0
+    ],
+    [
+     528.52,
+     117.72
+    ],
+    [
+     518.79,
+     111.21
+    ],
+    [
+     512.28,
+     101.48
+    ],
+    [
+     510.0,
+     90.0
+    ],
+    [
+     510.0,
+     -90.0
+    ],
+    [
+     512.28,
+     -101.48
+    ],
+    [
+     518.79,
+     -111.21
+    ],
+    [
+     528.52,
+     -117.72
+    ],
+    [
+     540.0,
+     -120.0
+    ]
+   ],
+   "start": 224,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lift Column 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lift Column 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lift Column 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Deck Frame",
+   "points": [
+    [
+     1030.0,
+     -455.0
+    ],
+    [
+     1037.65,
+     -453.48
+    ],
+    [
+     1044.14,
+     -449.14
+    ],
+    [
+     1048.48,
+     -442.65
+    ],
+    [
+     1050.0,
+     -435.0
+    ],
+    [
+     1050.0,
+     435.0
+    ],
+    [
+     1048.48,
+     442.65
+    ],
+    [
+     1044.14,
+     449.14
+    ],
+    [
+     1037.65,
+     453.48
+    ],
+    [
+     1030.0,
+     455.0
+    ],
+    [
+     -1030.0,
+     455.0
+    ],
+    [
+     -1037.65,
+     453.48
+    ],
+    [
+     -1044.14,
+     449.14
+    ],
+    [
+     -1048.48,
+     442.65
+    ],
+    [
+     -1050.0,
+     435.0
+    ],
+    [
+     -1050.0,
+     -435.0
+    ],
+    [
+     -1048.48,
+     -442.65
+    ],
+    [
+     -1044.14,
+     -449.14
+    ],
+    [
+     -1037.65,
+     -453.48
+    ],
+    [
+     -1030.0,
+     -455.0
+    ]
+   ],
+   "start": 450,
+   "end": 495
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Deck Frame",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deck Frame",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deck Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Wheel 1",
+   "points": [
+    [
+     -1044.0,
+     -455.0
+    ],
+    [
+     -1045.23,
+     -445.68
+    ],
+    [
+     -1048.82,
+     -437.0
+    ],
+    [
+     -1054.54,
+     -429.54
+    ],
+    [
+     -1062.0,
+     -423.82
+    ],
+    [
+     -1070.68,
+     -420.23
+    ],
+    [
+     -1080.0,
+     -419.0
+    ],
+    [
+     -1089.32,
+     -420.23
+    ],
+    [
+     -1098.0,
+     -423.82
+    ],
+    [
+     -1105.46,
+     -429.54
+    ],
+    [
+     -1111.18,
+     -437.0
+    ],
+    [
+     -1114.77,
+     -445.68
+    ],
+    [
+     -1116.0,
+     -455.0
+    ],
+    [
+     -1114.77,
+     -464.32
+    ],
+    [
+     -1111.18,
+     -473.0
+    ],
+    [
+     -1105.46,
+     -480.46
+    ],
+    [
+     -1098.0,
+     -486.18
+    ],
+    [
+     -1089.32,
+     -489.77
+    ],
+    [
+     -1080.0,
+     -491.0
+    ],
+    [
+     -1070.68,
+     -489.77
+    ],
+    [
+     -1062.0,
+     -486.18
+    ],
+    [
+     -1054.54,
+     -480.46
+    ],
+    [
+     -1048.82,
+     -473.0
+    ],
+    [
+     -1045.23,
+     -464.32
+    ]
+   ],
+   "start": 415,
+   "end": 505
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Wheel 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Wheel 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Wheel 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Wheel 2",
+   "points": [
+    [
+     -1044.0,
+     455.0
+    ],
+    [
+     -1045.23,
+     464.32
+    ],
+    [
+     -1048.82,
+     473.0
+    ],
+    [
+     -1054.54,
+     480.46
+    ],
+    [
+     -1062.0,
+     486.18
+    ],
+    [
+     -1070.68,
+     489.77
+    ],
+    [
+     -1080.0,
+     491.0
+    ],
+    [
+     -1089.32,
+     489.77
+    ],
+    [
+     -1098.0,
+     486.18
+    ],
+    [
+     -1105.46,
+     480.46
+    ],
+    [
+     -1111.18,
+     473.0
+    ],
+    [
+     -1114.77,
+     464.32
+    ],
+    [
+     -1116.0,
+     455.0
+    ],
+    [
+     -1114.77,
+     445.68
+    ],
+    [
+     -1111.18,
+     437.0
+    ],
+    [
+     -1105.46,
+     429.54
+    ],
+    [
+     -1098.0,
+     423.82
+    ],
+    [
+     -1089.32,
+     420.23
+    ],
+    [
+     -1080.0,
+     419.0
+    ],
+    [
+     -1070.68,
+     420.23
+    ],
+    [
+     -1062.0,
+     423.82
+    ],
+    [
+     -1054.54,
+     429.54
+    ],
+    [
+     -1048.82,
+     437.0
+    ],
+    [
+     -1045.23,
+     445.68
+    ]
+   ],
+   "start": 415,
+   "end": 505
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Wheel 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Wheel 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Wheel 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mattress Seat And Legs",
+   "points": [
+    [
+     980.0,
+     495.0
+    ],
+    [
+     995.31,
+     498.04
+    ],
+    [
+     1008.28,
+     506.72
+    ],
+    [
+     1016.96,
+     519.69
+    ],
+    [
+     1020.0,
+     535.0
+    ],
+    [
+     1020.0,
+     625.0
+    ],
+    [
+     1016.96,
+     640.31
+    ],
+    [
+     1008.28,
+     653.28
+    ],
+    [
+     995.31,
+     661.96
+    ],
+    [
+     980.0,
+     665.0
+    ],
+    [
+     -160.0,
+     665.0
+    ],
+    [
+     -175.31,
+     661.96
+    ],
+    [
+     -188.28,
+     653.28
+    ],
+    [
+     -196.96,
+     640.31
+    ],
+    [
+     -200.0,
+     625.0
+    ],
+    [
+     -200.0,
+     535.0
+    ],
+    [
+     -196.96,
+     519.69
+    ],
+    [
+     -188.28,
+     506.72
+    ],
+    [
+     -175.31,
+     498.04
+    ],
+    [
+     -160.0,
+     495.0
+    ]
+   ],
+   "start": -435.0,
+   "end": 435.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mattress Seat And Legs",
+   "subcategory": "Mattress"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mattress Seat And Legs",
+   "param": "Mattress Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mattress Seat And Legs",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mattress Back",
+   "points": [
+    [
+     -200.0,
+     495.0
+    ],
+    [
+     -910.1,
+     905.0
+    ],
+    [
+     -825.1,
+     1052.2
+    ],
+    [
+     -115.0,
+     642.2
+    ]
+   ],
+   "start": -435.0,
+   "end": 435.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mattress Back",
+   "subcategory": "Mattress"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mattress Back",
+   "param": "Mattress Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mattress Back",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backrest Deck",
+   "points": [
+    [
+     -220.0,
+     460.4
+    ],
+    [
+     -930.1,
+     870.4
+    ],
+    [
+     -910.1,
+     905.0
+    ],
+    [
+     -200.0,
+     495.0
+    ]
+   ],
+   "start": -445.0,
+   "end": 445.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backrest Deck",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backrest Deck",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backrest Deck",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mattress Side Seam",
+   "points": [
+    [
+     -190,
+     580.0
+    ],
+    [
+     990.0,
+     580.0
+    ],
+    [
+     990.0,
+     586.0
+    ],
+    [
+     -190,
+     586.0
+    ]
+   ],
+   "start": 435.0,
+   "end": 437.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mattress Side Seam",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mattress Side Seam",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mattress Side Seam",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mattress Back Seam",
+   "points": [
+    [
+     -157.5,
+     568.6
+    ],
+    [
+     -841.7,
+     963.6
+    ],
+    [
+     -838.7,
+     968.8
+    ],
+    [
+     -154.5,
+     573.8
+    ]
+   ],
+   "start": 435.0,
+   "end": 437.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mattress Back Seam",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mattress Back Seam",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mattress Back Seam",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mattress Section Seam",
+   "points": [
+    [
+     330,
+     -435.0
+    ],
+    [
+     338,
+     -435.0
+    ],
+    [
+     338,
+     435.0
+    ],
+    [
+     330,
+     435.0
+    ]
+   ],
+   "start": 665,
+   "end": 667
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mattress Section Seam",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mattress Section Seam",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mattress Section Seam",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headboard",
+   "points": [
+    [
+     415.0,
+     410.0
+    ],
+    [
+     441.8,
+     415.3
+    ],
+    [
+     464.5,
+     430.5
+    ],
+    [
+     479.7,
+     453.2
+    ],
+    [
+     485.0,
+     480.0
+    ],
+    [
+     485.0,
+     940.0
+    ],
+    [
+     479.7,
+     966.8
+    ],
+    [
+     464.5,
+     989.5
+    ],
+    [
+     441.8,
+     1004.7
+    ],
+    [
+     415.0,
+     1010.0
+    ],
+    [
+     -415.0,
+     1010.0
+    ],
+    [
+     -441.8,
+     1004.7
+    ],
+    [
+     -464.5,
+     989.5
+    ],
+    [
+     -479.7,
+     966.8
+    ],
+    [
+     -485.0,
+     940.0
+    ],
+    [
+     -485.0,
+     480.0
+    ],
+    [
+     -479.7,
+     453.2
+    ],
+    [
+     -464.5,
+     430.5
+    ],
+    [
+     -441.8,
+     415.3
+    ],
+    [
+     -415.0,
+     410.0
+    ]
+   ],
+   "start": -1090.0,
+   "end": -1060.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headboard",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headboard",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headboard",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headboard Grip Slot",
+   "points": [
+    [
+     172.0,
+     890.0
+    ],
+    [
+     182.7,
+     892.1
+    ],
+    [
+     191.8,
+     898.2
+    ],
+    [
+     197.9,
+     907.3
+    ],
+    [
+     200.0,
+     918.0
+    ],
+    [
+     200.0,
+     922.0
+    ],
+    [
+     197.9,
+     932.7
+    ],
+    [
+     191.8,
+     941.8
+    ],
+    [
+     182.7,
+     947.9
+    ],
+    [
+     172.0,
+     950.0
+    ],
+    [
+     -172.0,
+     950.0
+    ],
+    [
+     -182.7,
+     947.9
+    ],
+    [
+     -191.8,
+     941.8
+    ],
+    [
+     -197.9,
+     932.7
+    ],
+    [
+     -200.0,
+     922.0
+    ],
+    [
+     -200.0,
+     918.0
+    ],
+    [
+     -197.9,
+     907.3
+    ],
+    [
+     -191.8,
+     898.2
+    ],
+    [
+     -182.7,
+     892.1
+    ],
+    [
+     -172.0,
+     890.0
+    ]
+   ],
+   "start": -1060.0,
+   "end": -1058.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headboard Grip Slot",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headboard Grip Slot",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headboard Grip Slot",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footboard",
+   "points": [
+    [
+     425.0,
+     410.0
+    ],
+    [
+     448.0,
+     414.6
+    ],
+    [
+     467.4,
+     427.6
+    ],
+    [
+     480.4,
+     447.0
+    ],
+    [
+     485.0,
+     470.0
+    ],
+    [
+     485.0,
+     820.0
+    ],
+    [
+     480.4,
+     843.0
+    ],
+    [
+     467.4,
+     862.4
+    ],
+    [
+     448.0,
+     875.4
+    ],
+    [
+     425.0,
+     880.0
+    ],
+    [
+     -425.0,
+     880.0
+    ],
+    [
+     -448.0,
+     875.4
+    ],
+    [
+     -467.4,
+     862.4
+    ],
+    [
+     -480.4,
+     843.0
+    ],
+    [
+     -485.0,
+     820.0
+    ],
+    [
+     -485.0,
+     470.0
+    ],
+    [
+     -480.4,
+     447.0
+    ],
+    [
+     -467.4,
+     427.6
+    ],
+    [
+     -448.0,
+     414.6
+    ],
+    [
+     -425.0,
+     410.0
+    ]
+   ],
+   "start": 1060.0,
+   "end": 1090.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footboard",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footboard",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footboard",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footboard Grip Slot",
+   "points": [
+    [
+     -288.0,
+     815.0
+    ],
+    [
+     -281.1,
+     816.4
+    ],
+    [
+     -275.3,
+     820.3
+    ],
+    [
+     -271.4,
+     826.1
+    ],
+    [
+     -270.0,
+     833.0
+    ],
+    [
+     -270.0,
+     837.0
+    ],
+    [
+     -271.4,
+     843.9
+    ],
+    [
+     -275.3,
+     849.7
+    ],
+    [
+     -281.1,
+     853.6
+    ],
+    [
+     -288.0,
+     855.0
+    ],
+    [
+     -432.0,
+     855.0
+    ],
+    [
+     -438.9,
+     853.6
+    ],
+    [
+     -444.7,
+     849.7
+    ],
+    [
+     -448.6,
+     843.9
+    ],
+    [
+     -450.0,
+     837.0
+    ],
+    [
+     -450.0,
+     833.0
+    ],
+    [
+     -448.6,
+     826.1
+    ],
+    [
+     -444.7,
+     820.3
+    ],
+    [
+     -438.9,
+     816.4
+    ],
+    [
+     -432.0,
+     815.0
+    ]
+   ],
+   "start": 1090.0,
+   "end": 1092.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footboard Grip Slot",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footboard Grip Slot",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footboard Grip Slot",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footboard Grip Slot Right",
+   "points": [
+    [
+     432.0,
+     815.0
+    ],
+    [
+     438.9,
+     816.4
+    ],
+    [
+     444.7,
+     820.3
+    ],
+    [
+     448.6,
+     826.1
+    ],
+    [
+     450.0,
+     833.0
+    ],
+    [
+     450.0,
+     837.0
+    ],
+    [
+     448.6,
+     843.9
+    ],
+    [
+     444.7,
+     849.7
+    ],
+    [
+     438.9,
+     853.6
+    ],
+    [
+     432.0,
+     855.0
+    ],
+    [
+     288.0,
+     855.0
+    ],
+    [
+     281.1,
+     853.6
+    ],
+    [
+     275.3,
+     849.7
+    ],
+    [
+     271.4,
+     843.9
+    ],
+    [
+     270.0,
+     837.0
+    ],
+    [
+     270.0,
+     833.0
+    ],
+    [
+     271.4,
+     826.1
+    ],
+    [
+     275.3,
+     820.3
+    ],
+    [
+     281.1,
+     816.4
+    ],
+    [
+     288.0,
+     815.0
+    ]
+   ],
+   "start": 1090.0,
+   "end": 1092.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footboard Grip Slot Right",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footboard Grip Slot Right",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footboard Grip Slot Right",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel",
+   "points": [
+    [
+     192.0,
+     650.0
+    ],
+    [
+     198.9,
+     651.4
+    ],
+    [
+     204.7,
+     655.3
+    ],
+    [
+     208.6,
+     661.1
+    ],
+    [
+     210.0,
+     668.0
+    ],
+    [
+     210.0,
+     777.0
+    ],
+    [
+     208.6,
+     783.9
+    ],
+    [
+     204.7,
+     789.7
+    ],
+    [
+     198.9,
+     793.6
+    ],
+    [
+     192.0,
+     795.0
+    ],
+    [
+     -192.0,
+     795.0
+    ],
+    [
+     -198.9,
+     793.6
+    ],
+    [
+     -204.7,
+     789.7
+    ],
+    [
+     -208.6,
+     783.9
+    ],
+    [
+     -210.0,
+     777.0
+    ],
+    [
+     -210.0,
+     668.0
+    ],
+    [
+     -208.6,
+     661.1
+    ],
+    [
+     -204.7,
+     655.3
+    ],
+    [
+     -198.9,
+     651.4
+    ],
+    [
+     -192.0,
+     650.0
+    ]
+   ],
+   "start": 1090.0,
+   "end": 1095.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel Display",
+   "points": [
+    [
+     -51.0,
+     685.0
+    ],
+    [
+     -48.7,
+     685.5
+    ],
+    [
+     -46.8,
+     686.8
+    ],
+    [
+     -45.5,
+     688.7
+    ],
+    [
+     -45.0,
+     691.0
+    ],
+    [
+     -45.0,
+     769.0
+    ],
+    [
+     -45.5,
+     771.3
+    ],
+    [
+     -46.8,
+     773.2
+    ],
+    [
+     -48.7,
+     774.5
+    ],
+    [
+     -51.0,
+     775.0
+    ],
+    [
+     -179.0,
+     775.0
+    ],
+    [
+     -181.3,
+     774.5
+    ],
+    [
+     -183.2,
+     773.2
+    ],
+    [
+     -184.5,
+     771.3
+    ],
+    [
+     -185.0,
+     769.0
+    ],
+    [
+     -185.0,
+     691.0
+    ],
+    [
+     -184.5,
+     688.7
+    ],
+    [
+     -183.2,
+     686.8
+    ],
+    [
+     -181.3,
+     685.5
+    ],
+    [
+     -179.0,
+     685.0
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1096.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel Display",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel Display",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel Display",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel Key 1",
+   "points": [
+    [
+     19.0,
+     750.0
+    ],
+    [
+     18.52,
+     753.62
+    ],
+    [
+     17.12,
+     757.0
+    ],
+    [
+     14.9,
+     759.9
+    ],
+    [
+     12.0,
+     762.12
+    ],
+    [
+     8.62,
+     763.52
+    ],
+    [
+     5.0,
+     764.0
+    ],
+    [
+     1.38,
+     763.52
+    ],
+    [
+     -2.0,
+     762.12
+    ],
+    [
+     -4.9,
+     759.9
+    ],
+    [
+     -7.12,
+     757.0
+    ],
+    [
+     -8.52,
+     753.62
+    ],
+    [
+     -9.0,
+     750.0
+    ],
+    [
+     -8.52,
+     746.38
+    ],
+    [
+     -7.12,
+     743.0
+    ],
+    [
+     -4.9,
+     740.1
+    ],
+    [
+     -2.0,
+     737.88
+    ],
+    [
+     1.38,
+     736.48
+    ],
+    [
+     5.0,
+     736.0
+    ],
+    [
+     8.62,
+     736.48
+    ],
+    [
+     12.0,
+     737.88
+    ],
+    [
+     14.9,
+     740.1
+    ],
+    [
+     17.12,
+     743.0
+    ],
+    [
+     18.52,
+     746.38
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1098.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel Key 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel Key 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel Key 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel Key 2",
+   "points": [
+    [
+     65.0,
+     750.0
+    ],
+    [
+     64.52,
+     753.62
+    ],
+    [
+     63.12,
+     757.0
+    ],
+    [
+     60.9,
+     759.9
+    ],
+    [
+     58.0,
+     762.12
+    ],
+    [
+     54.62,
+     763.52
+    ],
+    [
+     51.0,
+     764.0
+    ],
+    [
+     47.38,
+     763.52
+    ],
+    [
+     44.0,
+     762.12
+    ],
+    [
+     41.1,
+     759.9
+    ],
+    [
+     38.88,
+     757.0
+    ],
+    [
+     37.48,
+     753.62
+    ],
+    [
+     37.0,
+     750.0
+    ],
+    [
+     37.48,
+     746.38
+    ],
+    [
+     38.88,
+     743.0
+    ],
+    [
+     41.1,
+     740.1
+    ],
+    [
+     44.0,
+     737.88
+    ],
+    [
+     47.38,
+     736.48
+    ],
+    [
+     51.0,
+     736.0
+    ],
+    [
+     54.62,
+     736.48
+    ],
+    [
+     58.0,
+     737.88
+    ],
+    [
+     60.9,
+     740.1
+    ],
+    [
+     63.12,
+     743.0
+    ],
+    [
+     64.52,
+     746.38
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1098.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel Key 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel Key 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel Key 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel Key 3",
+   "points": [
+    [
+     111.0,
+     750.0
+    ],
+    [
+     110.52,
+     753.62
+    ],
+    [
+     109.12,
+     757.0
+    ],
+    [
+     106.9,
+     759.9
+    ],
+    [
+     104.0,
+     762.12
+    ],
+    [
+     100.62,
+     763.52
+    ],
+    [
+     97.0,
+     764.0
+    ],
+    [
+     93.38,
+     763.52
+    ],
+    [
+     90.0,
+     762.12
+    ],
+    [
+     87.1,
+     759.9
+    ],
+    [
+     84.88,
+     757.0
+    ],
+    [
+     83.48,
+     753.62
+    ],
+    [
+     83.0,
+     750.0
+    ],
+    [
+     83.48,
+     746.38
+    ],
+    [
+     84.88,
+     743.0
+    ],
+    [
+     87.1,
+     740.1
+    ],
+    [
+     90.0,
+     737.88
+    ],
+    [
+     93.38,
+     736.48
+    ],
+    [
+     97.0,
+     736.0
+    ],
+    [
+     100.62,
+     736.48
+    ],
+    [
+     104.0,
+     737.88
+    ],
+    [
+     106.9,
+     740.1
+    ],
+    [
+     109.12,
+     743.0
+    ],
+    [
+     110.52,
+     746.38
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1098.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel Key 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel Key 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel Key 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Panel Key 4",
+   "points": [
+    [
+     157.0,
+     750.0
+    ],
+    [
+     156.52,
+     753.62
+    ],
+    [
+     155.12,
+     757.0
+    ],
+    [
+     152.9,
+     759.9
+    ],
+    [
+     150.0,
+     762.12
+    ],
+    [
+     146.62,
+     763.52
+    ],
+    [
+     143.0,
+     764.0
+    ],
+    [
+     139.38,
+     763.52
+    ],
+    [
+     136.0,
+     762.12
+    ],
+    [
+     133.1,
+     759.9
+    ],
+    [
+     130.88,
+     757.0
+    ],
+    [
+     129.48,
+     753.62
+    ],
+    [
+     129.0,
+     750.0
+    ],
+    [
+     129.48,
+     746.38
+    ],
+    [
+     130.88,
+     743.0
+    ],
+    [
+     133.1,
+     740.1
+    ],
+    [
+     136.0,
+     737.88
+    ],
+    [
+     139.38,
+     736.48
+    ],
+    [
+     143.0,
+     736.0
+    ],
+    [
+     146.62,
+     736.48
+    ],
+    [
+     150.0,
+     737.88
+    ],
+    [
+     152.9,
+     740.1
+    ],
+    [
+     155.12,
+     743.0
+    ],
+    [
+     156.52,
+     746.38
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1098.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Panel Key 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Panel Key 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Panel Key 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED 1",
+   "points": [
+    [
+     11.0,
+     695.0
+    ],
+    [
+     10.8,
+     696.55
+    ],
+    [
+     10.2,
+     698.0
+    ],
+    [
+     9.24,
+     699.24
+    ],
+    [
+     8.0,
+     700.2
+    ],
+    [
+     6.55,
+     700.8
+    ],
+    [
+     5.0,
+     701.0
+    ],
+    [
+     3.45,
+     700.8
+    ],
+    [
+     2.0,
+     700.2
+    ],
+    [
+     0.76,
+     699.24
+    ],
+    [
+     -0.2,
+     698.0
+    ],
+    [
+     -0.8,
+     696.55
+    ],
+    [
+     -1.0,
+     695.0
+    ],
+    [
+     -0.8,
+     693.45
+    ],
+    [
+     -0.2,
+     692.0
+    ],
+    [
+     0.76,
+     690.76
+    ],
+    [
+     2.0,
+     689.8
+    ],
+    [
+     3.45,
+     689.2
+    ],
+    [
+     5.0,
+     689.0
+    ],
+    [
+     6.55,
+     689.2
+    ],
+    [
+     8.0,
+     689.8
+    ],
+    [
+     9.24,
+     690.76
+    ],
+    [
+     10.2,
+     692.0
+    ],
+    [
+     10.8,
+     693.45
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1097.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED 1",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED 1",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED 2",
+   "points": [
+    [
+     57.0,
+     695.0
+    ],
+    [
+     56.8,
+     696.55
+    ],
+    [
+     56.2,
+     698.0
+    ],
+    [
+     55.24,
+     699.24
+    ],
+    [
+     54.0,
+     700.2
+    ],
+    [
+     52.55,
+     700.8
+    ],
+    [
+     51.0,
+     701.0
+    ],
+    [
+     49.45,
+     700.8
+    ],
+    [
+     48.0,
+     700.2
+    ],
+    [
+     46.76,
+     699.24
+    ],
+    [
+     45.8,
+     698.0
+    ],
+    [
+     45.2,
+     696.55
+    ],
+    [
+     45.0,
+     695.0
+    ],
+    [
+     45.2,
+     693.45
+    ],
+    [
+     45.8,
+     692.0
+    ],
+    [
+     46.76,
+     690.76
+    ],
+    [
+     48.0,
+     689.8
+    ],
+    [
+     49.45,
+     689.2
+    ],
+    [
+     51.0,
+     689.0
+    ],
+    [
+     52.55,
+     689.2
+    ],
+    [
+     54.0,
+     689.8
+    ],
+    [
+     55.24,
+     690.76
+    ],
+    [
+     56.2,
+     692.0
+    ],
+    [
+     56.8,
+     693.45
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1097.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED 2",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED 2",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED 3",
+   "points": [
+    [
+     103.0,
+     695.0
+    ],
+    [
+     102.8,
+     696.55
+    ],
+    [
+     102.2,
+     698.0
+    ],
+    [
+     101.24,
+     699.24
+    ],
+    [
+     100.0,
+     700.2
+    ],
+    [
+     98.55,
+     700.8
+    ],
+    [
+     97.0,
+     701.0
+    ],
+    [
+     95.45,
+     700.8
+    ],
+    [
+     94.0,
+     700.2
+    ],
+    [
+     92.76,
+     699.24
+    ],
+    [
+     91.8,
+     698.0
+    ],
+    [
+     91.2,
+     696.55
+    ],
+    [
+     91.0,
+     695.0
+    ],
+    [
+     91.2,
+     693.45
+    ],
+    [
+     91.8,
+     692.0
+    ],
+    [
+     92.76,
+     690.76
+    ],
+    [
+     94.0,
+     689.8
+    ],
+    [
+     95.45,
+     689.2
+    ],
+    [
+     97.0,
+     689.0
+    ],
+    [
+     98.55,
+     689.2
+    ],
+    [
+     100.0,
+     689.8
+    ],
+    [
+     101.24,
+     690.76
+    ],
+    [
+     102.2,
+     692.0
+    ],
+    [
+     102.8,
+     693.45
+    ]
+   ],
+   "start": 1095.0,
+   "end": 1097.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED 3",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED 3",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail 1",
+   "points": [
+    [
+     -335.0,
+     600.0
+    ],
+    [
+     -313.95,
+     604.19
+    ],
+    [
+     -296.11,
+     616.11
+    ],
+    [
+     -284.19,
+     633.95
+    ],
+    [
+     -280.0,
+     655.0
+    ],
+    [
+     -280.0,
+     915.0
+    ],
+    [
+     -284.19,
+     936.05
+    ],
+    [
+     -296.11,
+     953.89
+    ],
+    [
+     -313.95,
+     965.81
+    ],
+    [
+     -335.0,
+     970.0
+    ],
+    [
+     -905.0,
+     970.0
+    ],
+    [
+     -926.05,
+     965.81
+    ],
+    [
+     -943.89,
+     953.89
+    ],
+    [
+     -955.81,
+     936.05
+    ],
+    [
+     -960.0,
+     915.0
+    ],
+    [
+     -960.0,
+     655.0
+    ],
+    [
+     -955.81,
+     633.95
+    ],
+    [
+     -943.89,
+     616.11
+    ],
+    [
+     -926.05,
+     604.19
+    ],
+    [
+     -905.0,
+     600.0
+    ]
+   ],
+   "start": 510.0,
+   "end": 532.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail 2",
+   "points": [
+    [
+     -335.0,
+     600.0
+    ],
+    [
+     -313.95,
+     604.19
+    ],
+    [
+     -296.11,
+     616.11
+    ],
+    [
+     -284.19,
+     633.95
+    ],
+    [
+     -280.0,
+     655.0
+    ],
+    [
+     -280.0,
+     915.0
+    ],
+    [
+     -284.19,
+     936.05
+    ],
+    [
+     -296.11,
+     953.89
+    ],
+    [
+     -313.95,
+     965.81
+    ],
+    [
+     -335.0,
+     970.0
+    ],
+    [
+     -905.0,
+     970.0
+    ],
+    [
+     -926.05,
+     965.81
+    ],
+    [
+     -943.89,
+     953.89
+    ],
+    [
+     -955.81,
+     936.05
+    ],
+    [
+     -960.0,
+     915.0
+    ],
+    [
+     -960.0,
+     655.0
+    ],
+    [
+     -955.81,
+     633.95
+    ],
+    [
+     -943.89,
+     616.11
+    ],
+    [
+     -926.05,
+     604.19
+    ],
+    [
+     -905.0,
+     600.0
+    ]
+   ],
+   "start": -532.0,
+   "end": -510.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Grip Slot 1",
+   "points": [
+    [
+     -392.0,
+     875.0
+    ],
+    [
+     -383.58,
+     876.67
+    ],
+    [
+     -376.44,
+     881.44
+    ],
+    [
+     -371.67,
+     888.58
+    ],
+    [
+     -370.0,
+     897.0
+    ],
+    [
+     -370.0,
+     903.0
+    ],
+    [
+     -371.67,
+     911.42
+    ],
+    [
+     -376.44,
+     918.56
+    ],
+    [
+     -383.58,
+     923.33
+    ],
+    [
+     -392.0,
+     925.0
+    ],
+    [
+     -848.0,
+     925.0
+    ],
+    [
+     -856.42,
+     923.33
+    ],
+    [
+     -863.56,
+     918.56
+    ],
+    [
+     -868.33,
+     911.42
+    ],
+    [
+     -870.0,
+     903.0
+    ],
+    [
+     -870.0,
+     897.0
+    ],
+    [
+     -868.33,
+     888.58
+    ],
+    [
+     -863.56,
+     881.44
+    ],
+    [
+     -856.42,
+     876.67
+    ],
+    [
+     -848.0,
+     875.0
+    ]
+   ],
+   "start": 532.0,
+   "end": 533.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Grip Slot 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Grip Slot 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Grip Slot 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Grip Slot 2",
+   "points": [
+    [
+     -392.0,
+     875.0
+    ],
+    [
+     -383.58,
+     876.67
+    ],
+    [
+     -376.44,
+     881.44
+    ],
+    [
+     -371.67,
+     888.58
+    ],
+    [
+     -370.0,
+     897.0
+    ],
+    [
+     -370.0,
+     903.0
+    ],
+    [
+     -371.67,
+     911.42
+    ],
+    [
+     -376.44,
+     918.56
+    ],
+    [
+     -383.58,
+     923.33
+    ],
+    [
+     -392.0,
+     925.0
+    ],
+    [
+     -848.0,
+     925.0
+    ],
+    [
+     -856.42,
+     923.33
+    ],
+    [
+     -863.56,
+     918.56
+    ],
+    [
+     -868.33,
+     911.42
+    ],
+    [
+     -870.0,
+     903.0
+    ],
+    [
+     -870.0,
+     897.0
+    ],
+    [
+     -868.33,
+     888.58
+    ],
+    [
+     -863.56,
+     881.44
+    ],
+    [
+     -856.42,
+     876.67
+    ],
+    [
+     -848.0,
+     875.0
+    ]
+   ],
+   "start": -533.5,
+   "end": -532.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Grip Slot 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Grip Slot 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Grip Slot 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Arm 1",
+   "points": [
+    [
+     -860.0,
+     -515.0
+    ],
+    [
+     -820.0,
+     -515.0
+    ],
+    [
+     -820.0,
+     515.0
+    ],
+    [
+     -860.0,
+     515.0
+    ]
+   ],
+   "start": 470,
+   "end": 630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Arm 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Arm 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Arm 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Arm 2",
+   "points": [
+    [
+     -420.0,
+     -515.0
+    ],
+    [
+     -380.0,
+     -515.0
+    ],
+    [
+     -380.0,
+     515.0
+    ],
+    [
+     -420.0,
+     515.0
+    ]
+   ],
+   "start": 470,
+   "end": 630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Arm 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Arm 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Arm 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail 1",
+   "points": [
+    [
+     885.0,
+     600.0
+    ],
+    [
+     906.05,
+     604.19
+    ],
+    [
+     923.89,
+     616.11
+    ],
+    [
+     935.81,
+     633.95
+    ],
+    [
+     940.0,
+     655.0
+    ],
+    [
+     940.0,
+     865.0
+    ],
+    [
+     935.81,
+     886.05
+    ],
+    [
+     923.89,
+     903.89
+    ],
+    [
+     906.05,
+     915.81
+    ],
+    [
+     885.0,
+     920.0
+    ],
+    [
+     115.0,
+     920.0
+    ],
+    [
+     93.95,
+     915.81
+    ],
+    [
+     76.11,
+     903.89
+    ],
+    [
+     64.19,
+     886.05
+    ],
+    [
+     60.0,
+     865.0
+    ],
+    [
+     60.0,
+     655.0
+    ],
+    [
+     64.19,
+     633.95
+    ],
+    [
+     76.11,
+     616.11
+    ],
+    [
+     93.95,
+     604.19
+    ],
+    [
+     115.0,
+     600.0
+    ]
+   ],
+   "start": 510.0,
+   "end": 532.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail 2",
+   "points": [
+    [
+     885.0,
+     600.0
+    ],
+    [
+     906.05,
+     604.19
+    ],
+    [
+     923.89,
+     616.11
+    ],
+    [
+     935.81,
+     633.95
+    ],
+    [
+     940.0,
+     655.0
+    ],
+    [
+     940.0,
+     865.0
+    ],
+    [
+     935.81,
+     886.05
+    ],
+    [
+     923.89,
+     903.89
+    ],
+    [
+     906.05,
+     915.81
+    ],
+    [
+     885.0,
+     920.0
+    ],
+    [
+     115.0,
+     920.0
+    ],
+    [
+     93.95,
+     915.81
+    ],
+    [
+     76.11,
+     903.89
+    ],
+    [
+     64.19,
+     886.05
+    ],
+    [
+     60.0,
+     865.0
+    ],
+    [
+     60.0,
+     655.0
+    ],
+    [
+     64.19,
+     633.95
+    ],
+    [
+     76.11,
+     616.11
+    ],
+    [
+     93.95,
+     604.19
+    ],
+    [
+     115.0,
+     600.0
+    ]
+   ],
+   "start": -532.0,
+   "end": -510.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail Grip Slot 1",
+   "points": [
+    [
+     828.0,
+     825.0
+    ],
+    [
+     836.42,
+     826.67
+    ],
+    [
+     843.56,
+     831.44
+    ],
+    [
+     848.33,
+     838.58
+    ],
+    [
+     850.0,
+     847.0
+    ],
+    [
+     850.0,
+     853.0
+    ],
+    [
+     848.33,
+     861.42
+    ],
+    [
+     843.56,
+     868.56
+    ],
+    [
+     836.42,
+     873.33
+    ],
+    [
+     828.0,
+     875.0
+    ],
+    [
+     172.0,
+     875.0
+    ],
+    [
+     163.58,
+     873.33
+    ],
+    [
+     156.44,
+     868.56
+    ],
+    [
+     151.67,
+     861.42
+    ],
+    [
+     150.0,
+     853.0
+    ],
+    [
+     150.0,
+     847.0
+    ],
+    [
+     151.67,
+     838.58
+    ],
+    [
+     156.44,
+     831.44
+    ],
+    [
+     163.58,
+     826.67
+    ],
+    [
+     172.0,
+     825.0
+    ]
+   ],
+   "start": 532.0,
+   "end": 533.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail Grip Slot 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail Grip Slot 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail Grip Slot 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail Grip Slot 2",
+   "points": [
+    [
+     828.0,
+     825.0
+    ],
+    [
+     836.42,
+     826.67
+    ],
+    [
+     843.56,
+     831.44
+    ],
+    [
+     848.33,
+     838.58
+    ],
+    [
+     850.0,
+     847.0
+    ],
+    [
+     850.0,
+     853.0
+    ],
+    [
+     848.33,
+     861.42
+    ],
+    [
+     843.56,
+     868.56
+    ],
+    [
+     836.42,
+     873.33
+    ],
+    [
+     828.0,
+     875.0
+    ],
+    [
+     172.0,
+     875.0
+    ],
+    [
+     163.58,
+     873.33
+    ],
+    [
+     156.44,
+     868.56
+    ],
+    [
+     151.67,
+     861.42
+    ],
+    [
+     150.0,
+     853.0
+    ],
+    [
+     150.0,
+     847.0
+    ],
+    [
+     151.67,
+     838.58
+    ],
+    [
+     156.44,
+     831.44
+    ],
+    [
+     163.58,
+     826.67
+    ],
+    [
+     172.0,
+     825.0
+    ]
+   ],
+   "start": -533.5,
+   "end": -532.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail Grip Slot 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail Grip Slot 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail Grip Slot 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail Arm 1",
+   "points": [
+    [
+     160.0,
+     -515.0
+    ],
+    [
+     200.0,
+     -515.0
+    ],
+    [
+     200.0,
+     515.0
+    ],
+    [
+     160.0,
+     515.0
+    ]
+   ],
+   "start": 470,
+   "end": 630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail Arm 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail Arm 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail Arm 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Rail Arm 2",
+   "points": [
+    [
+     800.0,
+     -515.0
+    ],
+    [
+     840.0,
+     -515.0
+    ],
+    [
+     840.0,
+     515.0
+    ],
+    [
+     800.0,
+     515.0
+    ]
+   ],
+   "start": 470,
+   "end": 630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Rail Arm 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Rail Arm 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Rail Arm 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IV Pole",
+   "points": [
+    [
+     -1033.0,
+     -425.0
+    ],
+    [
+     -1033.41,
+     -421.89
+    ],
+    [
+     -1034.61,
+     -419.0
+    ],
+    [
+     -1036.51,
+     -416.51
+    ],
+    [
+     -1039.0,
+     -414.61
+    ],
+    [
+     -1041.89,
+     -413.41
+    ],
+    [
+     -1045.0,
+     -413.0
+    ],
+    [
+     -1048.11,
+     -413.41
+    ],
+    [
+     -1051.0,
+     -414.61
+    ],
+    [
+     -1053.49,
+     -416.51
+    ],
+    [
+     -1055.39,
+     -419.0
+    ],
+    [
+     -1056.59,
+     -421.89
+    ],
+    [
+     -1057.0,
+     -425.0
+    ],
+    [
+     -1056.59,
+     -428.11
+    ],
+    [
+     -1055.39,
+     -431.0
+    ],
+    [
+     -1053.49,
+     -433.49
+    ],
+    [
+     -1051.0,
+     -435.39
+    ],
+    [
+     -1048.11,
+     -436.59
+    ],
+    [
+     -1045.0,
+     -437.0
+    ],
+    [
+     -1041.89,
+     -436.59
+    ],
+    [
+     -1039.0,
+     -435.39
+    ],
+    [
+     -1036.51,
+     -433.49
+    ],
+    [
+     -1034.61,
+     -431.0
+    ],
+    [
+     -1033.41,
+     -428.11
+    ]
+   ],
+   "start": 420,
+   "end": 1850
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IV Pole",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IV Pole",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IV Pole",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IV Pole Hook Bar",
+   "points": [
+    [
+     -1155.0,
+     -430.0
+    ],
+    [
+     -935.0,
+     -430.0
+    ],
+    [
+     -935.0,
+     -420.0
+    ],
+    [
+     -1155.0,
+     -420.0
+    ]
+   ],
+   "start": 1832,
+   "end": 1844
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IV Pole Hook Bar",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IV Pole Hook Bar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IV Pole Hook Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IV Pole Hook 1",
+   "points": [
+    [
+     -1140.0,
+     -425.0
+    ],
+    [
+     -1140.17,
+     -423.71
+    ],
+    [
+     -1140.67,
+     -422.5
+    ],
+    [
+     -1141.46,
+     -421.46
+    ],
+    [
+     -1142.5,
+     -420.67
+    ],
+    [
+     -1143.71,
+     -420.17
+    ],
+    [
+     -1145.0,
+     -420.0
+    ],
+    [
+     -1146.29,
+     -420.17
+    ],
+    [
+     -1147.5,
+     -420.67
+    ],
+    [
+     -1148.54,
+     -421.46
+    ],
+    [
+     -1149.33,
+     -422.5
+    ],
+    [
+     -1149.83,
+     -423.71
+    ],
+    [
+     -1150.0,
+     -425.0
+    ],
+    [
+     -1149.83,
+     -426.29
+    ],
+    [
+     -1149.33,
+     -427.5
+    ],
+    [
+     -1148.54,
+     -428.54
+    ],
+    [
+     -1147.5,
+     -429.33
+    ],
+    [
+     -1146.29,
+     -429.83
+    ],
+    [
+     -1145.0,
+     -430.0
+    ],
+    [
+     -1143.71,
+     -429.83
+    ],
+    [
+     -1142.5,
+     -429.33
+    ],
+    [
+     -1141.46,
+     -428.54
+    ],
+    [
+     -1140.67,
+     -427.5
+    ],
+    [
+     -1140.17,
+     -426.29
+    ]
+   ],
+   "start": 1795,
+   "end": 1844
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IV Pole Hook 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IV Pole Hook 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IV Pole Hook 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IV Pole Hook 2",
+   "points": [
+    [
+     -940.0,
+     -425.0
+    ],
+    [
+     -940.17,
+     -423.71
+    ],
+    [
+     -940.67,
+     -422.5
+    ],
+    [
+     -941.46,
+     -421.46
+    ],
+    [
+     -942.5,
+     -420.67
+    ],
+    [
+     -943.71,
+     -420.17
+    ],
+    [
+     -945.0,
+     -420.0
+    ],
+    [
+     -946.29,
+     -420.17
+    ],
+    [
+     -947.5,
+     -420.67
+    ],
+    [
+     -948.54,
+     -421.46
+    ],
+    [
+     -949.33,
+     -422.5
+    ],
+    [
+     -949.83,
+     -423.71
+    ],
+    [
+     -950.0,
+     -425.0
+    ],
+    [
+     -949.83,
+     -426.29
+    ],
+    [
+     -949.33,
+     -427.5
+    ],
+    [
+     -948.54,
+     -428.54
+    ],
+    [
+     -947.5,
+     -429.33
+    ],
+    [
+     -946.29,
+     -429.83
+    ],
+    [
+     -945.0,
+     -430.0
+    ],
+    [
+     -943.71,
+     -429.83
+    ],
+    [
+     -942.5,
+     -429.33
+    ],
+    [
+     -941.46,
+     -428.54
+    ],
+    [
+     -940.67,
+     -427.5
+    ],
+    [
+     -940.17,
+     -426.29
+    ]
+   ],
+   "start": 1795,
+   "end": 1844
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IV Pole Hook 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IV Pole Hook 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IV Pole Hook 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handset",
+   "points": [
+    [
+     350.0,
+     690.0
+    ],
+    [
+     357.65,
+     691.52
+    ],
+    [
+     364.14,
+     695.86
+    ],
+    [
+     368.48,
+     702.35
+    ],
+    [
+     370.0,
+     710.0
+    ],
+    [
+     370.0,
+     840.0
+    ],
+    [
+     368.48,
+     847.65
+    ],
+    [
+     364.14,
+     854.14
+    ],
+    [
+     357.65,
+     858.48
+    ],
+    [
+     350.0,
+     860.0
+    ],
+    [
+     320.0,
+     860.0
+    ],
+    [
+     312.35,
+     858.48
+    ],
+    [
+     305.86,
+     854.14
+    ],
+    [
+     301.52,
+     847.65
+    ],
+    [
+     300.0,
+     840.0
+    ],
+    [
+     300.0,
+     710.0
+    ],
+    [
+     301.52,
+     702.35
+    ],
+    [
+     305.86,
+     695.86
+    ],
+    [
+     312.35,
+     691.52
+    ],
+    [
+     320.0,
+     690.0
+    ]
+   ],
+   "start": 532.0,
+   "end": 552.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handset",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handset",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handset",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handset Keys",
+   "points": [
+    [
+     352.0,
+     730.0
+    ],
+    [
+     354.3,
+     730.46
+    ],
+    [
+     356.24,
+     731.76
+    ],
+    [
+     357.54,
+     733.7
+    ],
+    [
+     358.0,
+     736.0
+    ],
+    [
+     358.0,
+     834.0
+    ],
+    [
+     357.54,
+     836.3
+    ],
+    [
+     356.24,
+     838.24
+    ],
+    [
+     354.3,
+     839.54
+    ],
+    [
+     352.0,
+     840.0
+    ],
+    [
+     318.0,
+     840.0
+    ],
+    [
+     315.7,
+     839.54
+    ],
+    [
+     313.76,
+     838.24
+    ],
+    [
+     312.46,
+     836.3
+    ],
+    [
+     312.0,
+     834.0
+    ],
+    [
+     312.0,
+     736.0
+    ],
+    [
+     312.46,
+     733.7
+    ],
+    [
+     313.76,
+     731.76
+    ],
+    [
+     315.7,
+     730.46
+    ],
+    [
+     318.0,
+     730.0
+    ]
+   ],
+   "start": 552.0,
+   "end": 553.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handset Keys",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handset Keys",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handset Keys",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Control Panel",
+   "points": [
+    [
+     -492.0,
+     710.0
+    ],
+    [
+     -487.41,
+     710.91
+    ],
+    [
+     -483.51,
+     713.51
+    ],
+    [
+     -480.91,
+     717.41
+    ],
+    [
+     -480.0,
+     722.0
+    ],
+    [
+     -480.0,
+     798.0
+    ],
+    [
+     -480.91,
+     802.59
+    ],
+    [
+     -483.51,
+     806.49
+    ],
+    [
+     -487.41,
+     809.09
+    ],
+    [
+     -492.0,
+     810.0
+    ],
+    [
+     -708.0,
+     810.0
+    ],
+    [
+     -712.59,
+     809.09
+    ],
+    [
+     -716.49,
+     806.49
+    ],
+    [
+     -719.09,
+     802.59
+    ],
+    [
+     -720.0,
+     798.0
+    ],
+    [
+     -720.0,
+     722.0
+    ],
+    [
+     -719.09,
+     717.41
+    ],
+    [
+     -716.49,
+     713.51
+    ],
+    [
+     -712.59,
+     710.91
+    ],
+    [
+     -708.0,
+     710.0
+    ]
+   ],
+   "start": 532.0,
+   "end": 535.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Control Panel",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Control Panel",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Control Panel",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Control Key 1",
+   "points": [
+    [
+     -674.0,
+     760.0
+    ],
+    [
+     -674.37,
+     762.85
+    ],
+    [
+     -675.47,
+     765.5
+    ],
+    [
+     -677.22,
+     767.78
+    ],
+    [
+     -679.5,
+     769.53
+    ],
+    [
+     -682.15,
+     770.63
+    ],
+    [
+     -685.0,
+     771.0
+    ],
+    [
+     -687.85,
+     770.63
+    ],
+    [
+     -690.5,
+     769.53
+    ],
+    [
+     -692.78,
+     767.78
+    ],
+    [
+     -694.53,
+     765.5
+    ],
+    [
+     -695.63,
+     762.85
+    ],
+    [
+     -696.0,
+     760.0
+    ],
+    [
+     -695.63,
+     757.15
+    ],
+    [
+     -694.53,
+     754.5
+    ],
+    [
+     -692.78,
+     752.22
+    ],
+    [
+     -690.5,
+     750.47
+    ],
+    [
+     -687.85,
+     749.37
+    ],
+    [
+     -685.0,
+     749.0
+    ],
+    [
+     -682.15,
+     749.37
+    ],
+    [
+     -679.5,
+     750.47
+    ],
+    [
+     -677.22,
+     752.22
+    ],
+    [
+     -675.47,
+     754.5
+    ],
+    [
+     -674.37,
+     757.15
+    ]
+   ],
+   "start": 535.0,
+   "end": 538.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Control Key 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Control Key 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Control Key 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Control Key 2",
+   "points": [
+    [
+     -629.0,
+     760.0
+    ],
+    [
+     -629.37,
+     762.85
+    ],
+    [
+     -630.47,
+     765.5
+    ],
+    [
+     -632.22,
+     767.78
+    ],
+    [
+     -634.5,
+     769.53
+    ],
+    [
+     -637.15,
+     770.63
+    ],
+    [
+     -640.0,
+     771.0
+    ],
+    [
+     -642.85,
+     770.63
+    ],
+    [
+     -645.5,
+     769.53
+    ],
+    [
+     -647.78,
+     767.78
+    ],
+    [
+     -649.53,
+     765.5
+    ],
+    [
+     -650.63,
+     762.85
+    ],
+    [
+     -651.0,
+     760.0
+    ],
+    [
+     -650.63,
+     757.15
+    ],
+    [
+     -649.53,
+     754.5
+    ],
+    [
+     -647.78,
+     752.22
+    ],
+    [
+     -645.5,
+     750.47
+    ],
+    [
+     -642.85,
+     749.37
+    ],
+    [
+     -640.0,
+     749.0
+    ],
+    [
+     -637.15,
+     749.37
+    ],
+    [
+     -634.5,
+     750.47
+    ],
+    [
+     -632.22,
+     752.22
+    ],
+    [
+     -630.47,
+     754.5
+    ],
+    [
+     -629.37,
+     757.15
+    ]
+   ],
+   "start": 535.0,
+   "end": 538.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Control Key 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Control Key 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Control Key 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Control Key 3",
+   "points": [
+    [
+     -584.0,
+     760.0
+    ],
+    [
+     -584.37,
+     762.85
+    ],
+    [
+     -585.47,
+     765.5
+    ],
+    [
+     -587.22,
+     767.78
+    ],
+    [
+     -589.5,
+     769.53
+    ],
+    [
+     -592.15,
+     770.63
+    ],
+    [
+     -595.0,
+     771.0
+    ],
+    [
+     -597.85,
+     770.63
+    ],
+    [
+     -600.5,
+     769.53
+    ],
+    [
+     -602.78,
+     767.78
+    ],
+    [
+     -604.53,
+     765.5
+    ],
+    [
+     -605.63,
+     762.85
+    ],
+    [
+     -606.0,
+     760.0
+    ],
+    [
+     -605.63,
+     757.15
+    ],
+    [
+     -604.53,
+     754.5
+    ],
+    [
+     -602.78,
+     752.22
+    ],
+    [
+     -600.5,
+     750.47
+    ],
+    [
+     -597.85,
+     749.37
+    ],
+    [
+     -595.0,
+     749.0
+    ],
+    [
+     -592.15,
+     749.37
+    ],
+    [
+     -589.5,
+     750.47
+    ],
+    [
+     -587.22,
+     752.22
+    ],
+    [
+     -585.47,
+     754.5
+    ],
+    [
+     -584.37,
+     757.15
+    ]
+   ],
+   "start": 535.0,
+   "end": 538.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Control Key 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Control Key 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Control Key 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail Control Key 4",
+   "points": [
+    [
+     -539.0,
+     760.0
+    ],
+    [
+     -539.37,
+     762.85
+    ],
+    [
+     -540.47,
+     765.5
+    ],
+    [
+     -542.22,
+     767.78
+    ],
+    [
+     -544.5,
+     769.53
+    ],
+    [
+     -547.15,
+     770.63
+    ],
+    [
+     -550.0,
+     771.0
+    ],
+    [
+     -552.85,
+     770.63
+    ],
+    [
+     -555.5,
+     769.53
+    ],
+    [
+     -557.78,
+     767.78
+    ],
+    [
+     -559.53,
+     765.5
+    ],
+    [
+     -560.63,
+     762.85
+    ],
+    [
+     -561.0,
+     760.0
+    ],
+    [
+     -560.63,
+     757.15
+    ],
+    [
+     -559.53,
+     754.5
+    ],
+    [
+     -557.78,
+     752.22
+    ],
+    [
+     -555.5,
+     750.47
+    ],
+    [
+     -552.85,
+     749.37
+    ],
+    [
+     -550.0,
+     749.0
+    ],
+    [
+     -547.15,
+     749.37
+    ],
+    [
+     -544.5,
+     750.47
+    ],
+    [
+     -542.22,
+     752.22
+    ],
+    [
+     -540.47,
+     754.5
+    ],
+    [
+     -539.37,
+     757.15
+    ]
+   ],
+   "start": 535.0,
+   "end": 538.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail Control Key 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail Control Key 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail Control Key 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "CPR Release Handle",
+   "points": [
+    [
+     -650.0,
+     -485.0
+    ],
+    [
+     -646.17,
+     -484.24
+    ],
+    [
+     -642.93,
+     -482.07
+    ],
+    [
+     -640.76,
+     -478.83
+    ],
+    [
+     -640.0,
+     -475.0
+    ],
+    [
+     -640.0,
+     -465.0
+    ],
+    [
+     -640.76,
+     -461.17
+    ],
+    [
+     -642.93,
+     -457.93
+    ],
+    [
+     -646.17,
+     -455.76
+    ],
+    [
+     -650.0,
+     -455.0
+    ],
+    [
+     -790.0,
+     -455.0
+    ],
+    [
+     -793.83,
+     -455.76
+    ],
+    [
+     -797.07,
+     -457.93
+    ],
+    [
+     -799.24,
+     -461.17
+    ],
+    [
+     -800.0,
+     -465.0
+    ],
+    [
+     -800.0,
+     -475.0
+    ],
+    [
+     -799.24,
+     -478.83
+    ],
+    [
+     -797.07,
+     -482.07
+    ],
+    [
+     -793.83,
+     -484.24
+    ],
+    [
+     -790.0,
+     -485.0
+    ]
+   ],
+   "start": 430,
+   "end": 480
+  },
+  {
+   "op": "set_subcategory",
+   "name": "CPR Release Handle",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CPR Release Handle",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CPR Release Handle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed Perimeter",
+   "points": [
+    [
+     -1100,
+     -1700
+    ],
+    [
+     2300,
+     -1700
+    ],
+    [
+     2300,
+     1700
+    ],
+    [
+     -1100,
+     1700
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed Perimeter",
+   "subcategory": "Clearance Operation"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed Perimeter",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Base Cover",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Nurse Call",
+   "domain": "electrical",
+   "system": "NurseCall",
+   "solid": "Base Cover",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Nurse Call/Voltage",
+   "connector": "Nurse Call",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Nurse Call/Apparent Load",
+   "connector": "Nurse Call",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Bed_ICU_Electric.png"
+  }
+ ],
+ "values": {
+  "Overall 2200 x 1000 mm": {
+   "value": "2200x1000",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Platform height 450 to 850 mm": {
+   "value": "450-850",
+   "source_status": "assumed",
+   "source": "typical ICU bed range"
+  },
+  "Castors 150 mm, central brake": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Clear perimeter 1200 mm": {
+   "value": 1200,
+   "source_status": "assumed",
+   "source": "HBN 04-02 critical care bed space"
+  }
+ }
+}

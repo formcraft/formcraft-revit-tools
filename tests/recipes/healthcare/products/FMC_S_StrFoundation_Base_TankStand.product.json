@@ -1,0 +1,435 @@
+{
+ "family": "FMC_S_StrFoundation_Base_TankStand",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Foundation for a steel water-tank tower: four pads with pedestals tied by ground beams, base plates and holding-down bolts",
+ "ifc": "IfcFooting",
+ "keynote": "C.PLN_01",
+ "types": [
+  {
+   "name": "3x3_RC",
+   "desc": "base for a 3 x 3 m tower (legs at 2.4 m)"
+  },
+  {
+   "name": "4x4_RC",
+   "desc": "base for a 4 x 4 m tower"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "blind": "FMC_Concrete_Blinding_C15",
+  "galv": "FMC_Metal_ColdFormed_Galvanised"
+ },
+ "parts": [
+  {
+   "n": "Pad Front",
+   "shape": "box",
+   "at": [
+    -1700,
+    -1700,
+    -1000,
+    -700,
+    -700,
+    -600
+   ],
+   "mat": "conc",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Blinding Front",
+   "shape": "box",
+   "at": [
+    -1750,
+    -1750,
+    -1050,
+    -650,
+    -650,
+    -1000
+   ],
+   "mat": "blind",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Pedestal Front",
+   "shape": "prism",
+   "pts": [
+    [
+     -1385,
+     -1400
+    ],
+    [
+     -1015,
+     -1400
+    ],
+    [
+     -1000,
+     -1385
+    ],
+    [
+     -1000,
+     -1015
+    ],
+    [
+     -1015,
+     -1000
+    ],
+    [
+     -1385,
+     -1000
+    ],
+    [
+     -1400,
+     -1015
+    ],
+    [
+     -1400,
+     -1385
+    ]
+   ],
+   "z": [
+    -600,
+    300
+   ],
+   "mat": "conc",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Base Plate Front",
+   "shape": "box",
+   "at": [
+    -1350,
+    -1350,
+    300,
+    -1050,
+    -1050,
+    320
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "HD Bolt Front A",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1300,
+    -1300
+   ],
+   "r": 10,
+   "z": [
+    320,
+    380
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "HD Bolt Front B",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1100,
+    -1100
+   ],
+   "r": 10,
+   "z": [
+    320,
+    380
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "Pad Back",
+   "shape": "box",
+   "at": [
+    -1700,
+    700,
+    -1000,
+    -700,
+    1700,
+    -600
+   ],
+   "mat": "conc",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Blinding Back",
+   "shape": "box",
+   "at": [
+    -1750,
+    650,
+    -1050,
+    -650,
+    1750,
+    -1000
+   ],
+   "mat": "blind",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Pedestal Back",
+   "shape": "prism",
+   "pts": [
+    [
+     -1385,
+     1000
+    ],
+    [
+     -1015,
+     1000
+    ],
+    [
+     -1000,
+     1015
+    ],
+    [
+     -1000,
+     1385
+    ],
+    [
+     -1015,
+     1400
+    ],
+    [
+     -1385,
+     1400
+    ],
+    [
+     -1400,
+     1385
+    ],
+    [
+     -1400,
+     1015
+    ]
+   ],
+   "z": [
+    -600,
+    300
+   ],
+   "mat": "conc",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Base Plate Back",
+   "shape": "box",
+   "at": [
+    -1350,
+    1050,
+    300,
+    -1050,
+    1350,
+    320
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "HD Bolt Back A",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1300,
+    1100
+   ],
+   "r": 10,
+   "z": [
+    320,
+    380
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "HD Bolt Back B",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1100,
+    1300
+   ],
+   "r": 10,
+   "z": [
+    320,
+    380
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2400,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "Ground Beam Front",
+   "shape": "box",
+   "at": [
+    -1000,
+    -1315,
+    -400,
+    1000,
+    -1085,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Ground Beam Back",
+   "shape": "box",
+   "at": [
+    -1000,
+    1085,
+    -400,
+    1000,
+    1315,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Ground Beam Left",
+   "shape": "box",
+   "at": [
+    -1315,
+    -1000,
+    -400,
+    -1085,
+    1000,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Ground Beam Right",
+   "shape": "box",
+   "at": [
+    1085,
+    -1000,
+    -400,
+    1315,
+    1000,
+    0
+   ],
+   "mat": "conc"
+  }
+ ],
+ "reference": {
+  "query": "str foundation base tank stand structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+base+tank+stand+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Legs at 2400 mm centres (geometry)": {
+   "value": 2400,
+   "source_status": "assumed",
+   "source": "matches FMC_S_GenericModel_TankStand_Steel"
+  },
+  "Pads 1000 x 1000 x 400 mm at 1000 deep": {
+   "value": "1000x1000x400",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Pedestals 400 x 400, 300 above ground": {
+   "value": "400x400 +300",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Ground beams 230 x 400 mm": {
+   "value": "230x400",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Ground at z = 0: four pads on blinding, chamfered pedestals 300 above ground, tie beams, base plates and two HD bolts per leg (Fine). Tank mass (water full) to the engineer."
+}

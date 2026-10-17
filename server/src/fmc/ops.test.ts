@@ -285,3 +285,12 @@ test("load_family: released or staged families, shared nested hardware flagged",
   assert.deepEqual(opsProblems(b, dict, "D:\\Kit\\04_Families"), []);
   assert.equal((b[1] as any).shared, true);
 });
+
+test("set_type_image takes a png or jpg inside the kit's families folder", () => {
+  const ok = OPS.parse([{ op: "add_type", name: "60_O2" }, { op: "set_type_image", name: "Type image", path: "D:\\Kit\\04_Families\\_Staging\\P\\_Images\\FMC_P_X.png", type: "60_O2" }]);
+  assert.deepEqual(splitProblems(opsProblems(ok, dict, "D:\\Kit\\04_Families")).errors, []);
+  const bad = OPS.parse([{ op: "set_type_image", name: "Type image", path: "C:\\Users\\Someone\\Downloads\\x.gif" }]);
+  const all = splitProblems(opsProblems(bad, dict, "D:\\Kit\\04_Families")).errors.join(" | ");
+  assert.match(all, /takes a \.png or \.jpg/);
+  assert.match(all, /isn't inside the kit's families folder/);
+});

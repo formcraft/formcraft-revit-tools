@@ -1,0 +1,616 @@
+{
+ "family": "FMC_C_SiteFurniture_Incinerator_MedicalWaste",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Dual-chamber medical waste incinerator envelope: primary chamber with loading and ash doors, secondary chamber, burners, 9 m stainless stack with rain cap, control panel, day tank, on a plinth",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "Z.WST_00",
+ "types": [
+  {
+   "name": "50kgh_DualChamber",
+   "desc": "about 50 kg/h envelope",
+   "values": {
+    "Apparent Load": 2500
+   }
+  },
+  {
+   "name": "100kgh_DualChamber",
+   "desc": "about 100 kg/h envelope",
+   "values": {
+    "Apparent Load": 4000
+   }
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "steel": "FMC_Metal_StructuralSteel_S275",
+  "paint": "FMC_Metal_SteelLTZ_Painted",
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "gi": "FMC_Metal_GI_Pipe",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "parts": [
+  {
+   "n": "Base Plinth",
+   "shape": "box",
+   "at": [
+    -1500,
+    -1100,
+    0,
+    2100,
+    1100,
+    200
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Primary Chamber",
+   "shape": "box",
+   "at": [
+    -1000,
+    -700,
+    200,
+    600,
+    700,
+    1800
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Loading Door",
+   "shape": "fbox",
+   "at": [
+    -750,
+    -740,
+    950,
+    150,
+    -700,
+    1650
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Door Hinge",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -770,
+    -720
+   ],
+   "r": 20,
+   "z": [
+    1000,
+    1150
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     380
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Locking Wheel",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    1300
+   ],
+   "profile": [
+    [
+     70,
+     -760
+    ],
+    [
+     85,
+     -760
+    ],
+    [
+     85,
+     -745
+    ],
+    [
+     70,
+     -745
+    ]
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 24
+  },
+  {
+   "n": "Wheel Hub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    1300
+   ],
+   "r": 20,
+   "y": [
+    -770,
+    -740
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Ash Door",
+   "shape": "fbox",
+   "at": [
+    -650,
+    -730,
+    330,
+    50,
+    -700,
+    780
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Ash Door Handle",
+   "shape": "fbox",
+   "at": [
+    -20,
+    -750,
+    500,
+    10,
+    -730,
+    620
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "Sight Glass",
+   "shape": "fbox",
+   "at": [
+    250,
+    -705,
+    1400,
+    330,
+    -700,
+    1480
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Saddle",
+   "shape": "box",
+   "at": [
+    -850,
+    -350,
+    1800,
+    -650,
+    350,
+    1900
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Secondary Chamber",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    2300
+   ],
+   "r": 450,
+   "x": [
+    -1000,
+    900
+   ],
+   "mat": "paint",
+   "seg": 32
+  },
+  {
+   "n": "Secondary End Cap",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    2300
+   ],
+   "r": 430,
+   "x": [
+    900,
+    950
+   ],
+   "mat": "paint",
+   "seg": 32
+  },
+  {
+   "n": "Primary Burner",
+   "shape": "box",
+   "at": [
+    -1250,
+    -150,
+    900,
+    -1000,
+    150,
+    1150
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Burner Fan",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    1025
+   ],
+   "r": 90,
+   "x": [
+    -1350,
+    -1250
+   ],
+   "mat": "grey",
+   "seg": 20
+  },
+  {
+   "n": "Secondary Burner",
+   "shape": "box",
+   "at": [
+    -1250,
+    -150,
+    2200,
+    -1000,
+    150,
+    2450
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Secondary Burner Fan",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    2325
+   ],
+   "r": 90,
+   "x": [
+    -1350,
+    -1250
+   ],
+   "mat": "grey",
+   "seg": 20
+  },
+  {
+   "n": "Stack Base",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    700,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     2700
+    ],
+    [
+     300,
+     2700
+    ],
+    [
+     300,
+     2740
+    ],
+    [
+     180,
+     2900
+    ],
+    [
+     0,
+     2900
+    ]
+   ],
+   "mat": "paint",
+   "seg": 32
+  },
+  {
+   "n": "Stack",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    700,
+    0
+   ],
+   "r": 175,
+   "z": [
+    2740,
+    9000
+   ],
+   "mat": "ss",
+   "seg": 32
+  },
+  {
+   "n": "Stack Flange",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    700,
+    0
+   ],
+   "profile": [
+    [
+     175,
+     5500
+    ],
+    [
+     210,
+     5500
+    ],
+    [
+     210,
+     5530
+    ],
+    [
+     175,
+     5530
+    ]
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Sampling Port",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    700,
+    7000
+   ],
+   "r": 40,
+   "y": [
+    -260,
+    -170
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Rain Cap",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    700,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     9150
+    ],
+    [
+     320,
+     9080
+    ],
+    [
+     320,
+     9060
+    ],
+    [
+     0,
+     9120
+    ]
+   ],
+   "mat": "ss",
+   "seg": 32
+  },
+  {
+   "n": "Rain Cap Stay",
+   "shape": "box",
+   "at": [
+    690,
+    -180,
+    9000,
+    710,
+    180,
+    9080
+   ],
+   "mat": "ss",
+   "lod": "f"
+  },
+  {
+   "n": "Control Panel",
+   "shape": "box",
+   "at": [
+    1100,
+    -900,
+    600,
+    1600,
+    -650,
+    1600
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Panel Door",
+   "shape": "fbox",
+   "at": [
+    1120,
+    -910,
+    620,
+    1580,
+    -900,
+    1580
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Panel Lamp",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1200,
+    1500
+   ],
+   "r": 12,
+   "y": [
+    -916,
+    -910
+   ],
+   "mat": "ledg",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Panel Lamp Red",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1250,
+    1500
+   ],
+   "r": 12,
+   "y": [
+    -916,
+    -910
+   ],
+   "mat": "ledr",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Panel Stand",
+   "shape": "box",
+   "at": [
+    1100,
+    -900,
+    200,
+    1150,
+    -650,
+    600
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 2,
+    "d": [
+     450,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Day Tank",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    500,
+    1000
+   ],
+   "r": 300,
+   "x": [
+    1100,
+    1900
+   ],
+   "mat": "paint",
+   "seg": 24
+  },
+  {
+   "n": "Day Tank Stand",
+   "shape": "box",
+   "at": [
+    1150,
+    300,
+    200,
+    1200,
+    700,
+    700
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 2,
+    "d": [
+     650,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fuel Line",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1050,
+    1000
+   ],
+   "r": 10,
+   "y": [
+    -150,
+    300
+   ],
+   "mat": "gi",
+   "lod": "f",
+   "seg": 8
+  }
+ ],
+ "reference": {
+  "query": "site furniture incinerator medical waste site hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=site+furniture+incinerator+medical+waste+site+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Envelope 3600 x 2200 on plinth, stack 9 m (50 kg/h)": {
+   "value": "3600x2200 / 9000",
+   "source_status": "assumed",
+   "source": "typical dual-chamber unit; vendor to confirm"
+  },
+  "Stack height from the EIA": {
+   "value": "EIA",
+   "source_status": "assumed",
+   "source": "by others (NEMA EIA); not decided here"
+  },
+  "Supply 240 V, 2.5 kVA (50 kg/h)": {
+   "value": "240V 2.5kVA",
+   "source_status": "assumed",
+   "source": "typical burner/fan load; vendor to confirm"
+  },
+  "Secondary chamber 2 s at 1100 C": {
+   "value": "2s 1100C",
+   "source_status": "assumed",
+   "source": "WHO/Stockholm guidance; vendor to confirm"
+  }
+ },
+ "about": "Ground at z = 0: plinth, primary chamber with loading door, hinges, locking wheel, ash door and sight glass, saddled secondary chamber, two burners with fans, stack base, stack with flange, sampling port and rain cap, control panel with lamps, day tank on stand. Power on the panel.",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 2500
+ },
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Control Panel",
+   "side": "front"
+  }
+ ]
+}

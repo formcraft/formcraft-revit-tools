@@ -1,0 +1,961 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_E_SecurityDevice_CCTV_Camera_Dome",
+ "template": "Metric Generic Model.rft",
+ "about": "Dome camera: base, trim ring, clear bubble, camera ball with lens and IR LEDs, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: security device cctv camera dome security devices hospital; images: https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+dome+security+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Security Devices"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "150_Ceiling"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/FMC_Cost_Unit",
+   "type": "150_Ceiling",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/FMC_Geometry_Stage",
+   "type": "150_Ceiling",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/IfcExportAs",
+   "type": "150_Ceiling",
+   "param": "IfcExportAs",
+   "value": "IfcSensor"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/Description",
+   "type": "150_Ceiling",
+   "param": "Description",
+   "value": "IP dome camera, ceiling surface mount, vandal-resistant 150 mm dome, IR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/Keynote",
+   "type": "150_Ceiling",
+   "param": "Keynote",
+   "value": "E.ICT_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/FMC_Keynote_Code",
+   "type": "150_Ceiling",
+   "param": "FMC_Keynote_Code",
+   "value": "E.ICT_05"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pc",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Pc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -75,
+     -75
+    ],
+    [
+     75,
+     -75
+    ],
+    [
+     75,
+     75
+    ],
+    [
+     -75,
+     75
+    ]
+   ],
+   "start": -81,
+   "end": 15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Base",
+   "profile": [
+    [
+     0,
+     -30
+    ],
+    [
+     70,
+     -30
+    ],
+    [
+     75,
+     -20
+    ],
+    [
+     75,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Dome Bubble",
+   "profile": [
+    [
+     55,
+     -30
+    ],
+    [
+     55,
+     -45
+    ],
+    [
+     48,
+     -60
+    ],
+    [
+     36,
+     -72
+    ],
+    [
+     20,
+     -79
+    ],
+    [
+     0,
+     -81
+    ],
+    [
+     0,
+     -30
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Pc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dome Bubble",
+   "param": "Pc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dome Bubble",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Camera Ball",
+   "profile": [
+    [
+     0,
+     -32
+    ],
+    [
+     40,
+     -32
+    ],
+    [
+     40,
+     -50
+    ],
+    [
+     32,
+     -62
+    ],
+    [
+     18,
+     -70
+    ],
+    [
+     0,
+     -72
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Camera Ball",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Camera Ball",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lens",
+   "points": [
+    [
+     10.0,
+     -56.0
+    ],
+    [
+     9.66,
+     -53.41
+    ],
+    [
+     8.66,
+     -51.0
+    ],
+    [
+     7.07,
+     -48.93
+    ],
+    [
+     5.0,
+     -47.34
+    ],
+    [
+     2.59,
+     -46.34
+    ],
+    [
+     0.0,
+     -46.0
+    ],
+    [
+     -2.59,
+     -46.34
+    ],
+    [
+     -5.0,
+     -47.34
+    ],
+    [
+     -7.07,
+     -48.93
+    ],
+    [
+     -8.66,
+     -51.0
+    ],
+    [
+     -9.66,
+     -53.41
+    ],
+    [
+     -10.0,
+     -56.0
+    ],
+    [
+     -9.66,
+     -58.59
+    ],
+    [
+     -8.66,
+     -61.0
+    ],
+    [
+     -7.07,
+     -63.07
+    ],
+    [
+     -5.0,
+     -64.66
+    ],
+    [
+     -2.59,
+     -65.66
+    ],
+    [
+     -0.0,
+     -66.0
+    ],
+    [
+     2.59,
+     -65.66
+    ],
+    [
+     5.0,
+     -64.66
+    ],
+    [
+     7.07,
+     -63.07
+    ],
+    [
+     8.66,
+     -61.0
+    ],
+    [
+     9.66,
+     -58.59
+    ]
+   ],
+   "start": 36,
+   "end": 44,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lens",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lens",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lens",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IR LED 1",
+   "points": [
+    [
+     -15.0,
+     -56.0
+    ],
+    [
+     -15.1,
+     -55.22
+    ],
+    [
+     -15.4,
+     -54.5
+    ],
+    [
+     -15.88,
+     -53.88
+    ],
+    [
+     -16.5,
+     -53.4
+    ],
+    [
+     -17.22,
+     -53.1
+    ],
+    [
+     -18.0,
+     -53.0
+    ],
+    [
+     -18.78,
+     -53.1
+    ],
+    [
+     -19.5,
+     -53.4
+    ],
+    [
+     -20.12,
+     -53.88
+    ],
+    [
+     -20.6,
+     -54.5
+    ],
+    [
+     -20.9,
+     -55.22
+    ],
+    [
+     -21.0,
+     -56.0
+    ],
+    [
+     -20.9,
+     -56.78
+    ],
+    [
+     -20.6,
+     -57.5
+    ],
+    [
+     -20.12,
+     -58.12
+    ],
+    [
+     -19.5,
+     -58.6
+    ],
+    [
+     -18.78,
+     -58.9
+    ],
+    [
+     -18.0,
+     -59.0
+    ],
+    [
+     -17.22,
+     -58.9
+    ],
+    [
+     -16.5,
+     -58.6
+    ],
+    [
+     -15.88,
+     -58.12
+    ],
+    [
+     -15.4,
+     -57.5
+    ],
+    [
+     -15.1,
+     -56.78
+    ]
+   ],
+   "start": 36,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IR LED 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IR LED 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IR LED 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "IR LED 2",
+   "points": [
+    [
+     21.0,
+     -56.0
+    ],
+    [
+     20.9,
+     -55.22
+    ],
+    [
+     20.6,
+     -54.5
+    ],
+    [
+     20.12,
+     -53.88
+    ],
+    [
+     19.5,
+     -53.4
+    ],
+    [
+     18.78,
+     -53.1
+    ],
+    [
+     18.0,
+     -53.0
+    ],
+    [
+     17.22,
+     -53.1
+    ],
+    [
+     16.5,
+     -53.4
+    ],
+    [
+     15.88,
+     -53.88
+    ],
+    [
+     15.4,
+     -54.5
+    ],
+    [
+     15.1,
+     -55.22
+    ],
+    [
+     15.0,
+     -56.0
+    ],
+    [
+     15.1,
+     -56.78
+    ],
+    [
+     15.4,
+     -57.5
+    ],
+    [
+     15.88,
+     -58.12
+    ],
+    [
+     16.5,
+     -58.6
+    ],
+    [
+     17.22,
+     -58.9
+    ],
+    [
+     18.0,
+     -59.0
+    ],
+    [
+     18.78,
+     -58.9
+    ],
+    [
+     19.5,
+     -58.6
+    ],
+    [
+     20.12,
+     -58.12
+    ],
+    [
+     20.6,
+     -57.5
+    ],
+    [
+     20.9,
+     -56.78
+    ]
+   ],
+   "start": 36,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "IR LED 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "IR LED 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "IR LED 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trim Ring",
+   "profile": [
+    [
+     55,
+     -31
+    ],
+    [
+     72,
+     -31
+    ],
+    [
+     72,
+     -30
+    ],
+    [
+     55,
+     -30
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trim Ring",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trim Ring",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Entry",
+   "points": [
+    [
+     46.0,
+     0.0
+    ],
+    [
+     45.8,
+     1.55
+    ],
+    [
+     45.2,
+     3.0
+    ],
+    [
+     44.24,
+     4.24
+    ],
+    [
+     43.0,
+     5.2
+    ],
+    [
+     41.55,
+     5.8
+    ],
+    [
+     40.0,
+     6.0
+    ],
+    [
+     38.45,
+     5.8
+    ],
+    [
+     37.0,
+     5.2
+    ],
+    [
+     35.76,
+     4.24
+    ],
+    [
+     34.8,
+     3.0
+    ],
+    [
+     34.2,
+     1.55
+    ],
+    [
+     34.0,
+     0.0
+    ],
+    [
+     34.2,
+     -1.55
+    ],
+    [
+     34.8,
+     -3.0
+    ],
+    [
+     35.76,
+     -4.24
+    ],
+    [
+     37.0,
+     -5.2
+    ],
+    [
+     38.45,
+     -5.8
+    ],
+    [
+     40.0,
+     -6.0
+    ],
+    [
+     41.55,
+     -5.8
+    ],
+    [
+     43.0,
+     -5.2
+    ],
+    [
+     44.24,
+     -4.24
+    ],
+    [
+     45.2,
+     -3.0
+    ],
+    [
+     45.8,
+     -1.55
+    ]
+   ],
+   "start": 0,
+   "end": 15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Entry",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Entry",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Entry",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Security",
+   "domain": "electrical",
+   "system": "Security",
+   "solid": "Base",
+   "side": "top"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\E\\_Images\\FMC_E_SecurityDevice_CCTV_Camera_Dome.png"
+  }
+ ],
+ "values": {
+  "Dome 150 mm dia x 81 mm": {
+   "value": "150x81",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "4 MP, IR 30 m, IK10, PoE": {
+   "value": "4MP IK10",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Coverage per security survey": {
+   "value": "survey",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

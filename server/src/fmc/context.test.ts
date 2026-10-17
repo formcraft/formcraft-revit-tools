@@ -163,7 +163,7 @@ test("overview: kit, counts, open documents, the project manifest, AI-use state 
   assert.equal(o.kit.version, "2.2");
   assert.equal(o.kit.revision, "r4");
   assert.equal(o.counts.family_specs, 44);
-  assert.equal(o.counts.profile_recipes, 7);
+  assert.ok(o.counts.profile_recipes >= 7, "the kit fixture's seven, plus any in the repo's own recipe folders");
   assert.ok(o.counts.recipes > 7, "the repo's door and window recipes too");
   assert.equal(o.counts.design_movements, 4);
   assert.equal(o.counts.materials, 8);

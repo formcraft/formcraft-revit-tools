@@ -1,0 +1,239 @@
+{
+ "family": "FMC_LP_LP_EquipotentialBar_Theatre",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Supplementary equipotential bonding bar 16-way for group 2 locations (theatre), copper bar in an open-fronted stainless tray (clear cover by others)",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "X.BND_01",
+ "types": [
+  {
+   "name": "16-way_Group2"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 300
+ },
+ "materials": {
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "black": "FMC_Plastic_ABS_Black",
+  "copper": "FMC_Metal_CopperTape_20x3",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "gy": "FMC_Plastic_CableCore_GreenYellow"
+ },
+ "reference": {
+  "query": "lp lp equipotential bar theatre lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+equipotential+bar+theatre+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Plate",
+   "shape": "fbox",
+   "at": [
+    -220,
+    -10,
+    0,
+    220,
+    0,
+    160
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Tray Top",
+   "shape": "fbox",
+   "at": [
+    -220,
+    -80,
+    150,
+    220,
+    -10,
+    160
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Tray Bottom",
+   "shape": "fbox",
+   "at": [
+    -220,
+    -80,
+    0,
+    220,
+    -10,
+    10
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Tray Side",
+   "shape": "fbox",
+   "at": [
+    -220,
+    -80,
+    10,
+    -210,
+    -10,
+    150
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     430,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Insulator",
+   "shape": "box",
+   "at": [
+    -190,
+    -50,
+    50,
+    -160,
+    -10,
+    110
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 4,
+   "repeat": {
+    "n": 2,
+    "d": [
+     350,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Bonding Bar",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -60,
+    60,
+    200,
+    -50,
+    100
+   ],
+   "mat": "copper",
+   "lod": "mf",
+   "r": 2
+  },
+  {
+   "n": "Terminal Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -180,
+    80
+   ],
+   "r": 4,
+   "y": [
+    -70,
+    -60
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 16,
+    "d": [
+     24,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "GY Label",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -11,
+    120,
+    150,
+    -10,
+    140
+   ],
+   "mat": "gy",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Fixing Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -190,
+    135
+   ],
+   "r": 3,
+   "y": [
+    -11,
+    -10
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     380,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Bonding Lead",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -180,
+    -40
+   ],
+   "r": 4,
+   "z": [
+    -200,
+    0
+   ],
+   "mat": "gy",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Box 440 x 160 x 80 mm": {
+   "value": "440x160x80",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "16 terminals, R < 0.2 ohm to any exposed part": {
+   "value": "0.2 ohm",
+   "source_status": "assumed",
+   "source": "BS 7671 710 / HTM 06-01"
+  },
+  "Height 300 mm": {
+   "value": 300,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "EBB: stainless back plate and tray with screws, two insulators, copper bonding bar with 16 terminal screws, green/yellow label, bonding leads below. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

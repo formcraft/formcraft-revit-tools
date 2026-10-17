@@ -1,0 +1,275 @@
+{
+ "family": "FMC_A_Window_Hopper_HighLevel_Vent",
+ "category": "Windows",
+ "template": "Metric Window.rft",
+ "desc": "High-level hopper vent for WCs, stores and labs: aluminium frame, bottom-hinged inward-opening sash with obscured glass, side cheeks, top catch with pull ring, board and cill",
+ "ifc": "IfcWindow",
+ "keynote": "G.CAS_02",
+ "types": [
+  {
+   "name": "600x450_Hopper",
+   "values": {
+    "Width": 600.0,
+    "Height": 450.0
+   }
+  },
+  {
+   "name": "900x450_Hopper",
+   "values": {
+    "Width": 900.0,
+    "Height": 450.0
+   }
+  }
+ ],
+ "type_values": {
+  "Sill Height": 1800
+ },
+ "materials": {
+  "powder_coat": "FMC_Metal_Aluminium_PowderCoated",
+  "frosted": "FMC_Glass_Frosted",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
+  "quartz": "FMC_Stone_Quartz_Engineered_White",
+  "precast": "FMC_Concrete_Precast_Painted"
+ },
+ "parts": [
+  {
+   "n": "Outer Frame Stile",
+   "shape": "box",
+   "mat": "powder_coat",
+   "at": [
+    -300.0,
+    -20,
+    1800,
+    -265.0,
+    20,
+    2250
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     565.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Outer Frame Rail",
+   "shape": "box",
+   "mat": "powder_coat",
+   "at": [
+    -265.0,
+    -20,
+    1800,
+    265.0,
+    20,
+    1835
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     415
+    ]
+   }
+  },
+  {
+   "n": "Hopper Sash Stile",
+   "shape": "box",
+   "mat": "powder_coat",
+   "at": [
+    -265.0,
+    -28,
+    1835,
+    -235.0,
+    0,
+    2215
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     500.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Hopper Sash Rail",
+   "shape": "box",
+   "mat": "powder_coat",
+   "at": [
+    -235.0,
+    -28,
+    1835,
+    235.0,
+    0,
+    1865
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     350
+    ]
+   }
+  },
+  {
+   "n": "Obscured Glass",
+   "shape": "fbox",
+   "mat": "frosted",
+   "at": [
+    -235.0,
+    -18,
+    1865,
+    235.0,
+    -12,
+    2185
+   ]
+  },
+  {
+   "n": "Side Cheek",
+   "shape": "right",
+   "mat": "powder_coat",
+   "pts": [
+    [
+     -28,
+     1835
+    ],
+    [
+     -28,
+     2215
+    ],
+    [
+     -140,
+     2215
+    ]
+   ],
+   "x": [
+    -265.0,
+    -261.0
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     526,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Hopper Catch",
+   "shape": "box",
+   "mat": "chrome",
+   "at": [
+    -40,
+    -45,
+    2185,
+    40,
+    -28,
+    2205
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Catch Pull Ring",
+   "shape": "box",
+   "mat": "chrome",
+   "at": [
+    -6,
+    -60,
+    2135,
+    6,
+    -45,
+    2205
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Bottom Hinge",
+   "shape": "cyl",
+   "mat": "aluminium",
+   "c": [
+    -28,
+    1840
+   ],
+   "x": [
+    -245.0,
+    245.0
+   ],
+   "r": 5,
+   "lod": "f",
+   "axis": "x",
+   "seg": 16
+  },
+  {
+   "n": "Window Board",
+   "shape": "box",
+   "mat": "quartz",
+   "at": [
+    -320.0,
+    -125,
+    1775,
+    320.0,
+    -20,
+    1800
+   ],
+   "r": 6
+  },
+  {
+   "n": "External Cill",
+   "shape": "right",
+   "mat": "precast",
+   "pts": [
+    [
+     30,
+     1800
+    ],
+    [
+     150,
+     1770
+    ],
+    [
+     150,
+     1740
+    ],
+    [
+     30,
+     1740
+    ]
+   ],
+   "x": [
+    -360.0,
+    360.0
+   ]
+  }
+ ],
+ "reference": {
+  "query": "window hopper high level vent windows hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=window+hopper+high+level+vent+windows+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 600 x 450 mm, sill 1800": {
+   "value": "600x450",
+   "source_status": "assumed",
+   "source": "type 1; typical hospital window, HBN / HTM 55; confirm with the supplier"
+  },
+  "Opens inward about 30 degrees on side cheeks": {
+   "value": 30,
+   "source_status": "assumed",
+   "source": "typical hopper"
+  },
+  "Obscured glass": {
+   "value": "obscured",
+   "source_status": "assumed",
+   "source": "WC privacy"
+  }
+ },
+ "about": "Hopper vent modelled as a product: aluminium frame, inward hopper sash with frosted glass, triangular side cheeks, bottom hinge rod, top catch with pull ring, quartz board inside and precast cill outside. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

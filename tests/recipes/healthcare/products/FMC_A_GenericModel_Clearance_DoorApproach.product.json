@@ -1,0 +1,57 @@
+{
+ "family": "FMC_A_GenericModel_Clearance_DoorApproach",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Latch-side door approach clearance 450 x 1500 beside the leading edge, pull side (non-plotting)",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "",
+ "types": [
+  {
+   "name": "450_LatchSide",
+   "desc": "Latch-side approach zone 450 x 1500 mm"
+  },
+  {
+   "name": "600_LatchSide",
+   "desc": "Latch-side approach zone 600 x 1500 mm (bed passage doors)"
+  }
+ ],
+ "materials": {
+  "clearance_accessibility": "FMC_Glass_Clear"
+ },
+ "parts": [
+  {
+   "n": "Approach Zone",
+   "shape": "box",
+   "at": [
+    0,
+    -1500,
+    0,
+    450,
+    0,
+    10
+   ],
+   "mat": "clearance_accessibility",
+   "lod": "mf"
+  }
+ ],
+ "reference": {
+  "query": "clearance door approach generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=clearance+door+approach+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Latch side 450 mm (600 type)": {
+   "value": 450,
+   "source_status": "assumed",
+   "source": "ADA 404.2.4 front approach, pull side 455 mm; BS 8300-2 300 mm nib minimum"
+  },
+  "Depth 1500 mm": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "ADA 404.2.4 (1525 mm) / BS 8300-2"
+  }
+ },
+ "about": "Approach zone from the door's leading edge (x = 0) toward the latch side, from the wall face (y = 0) 1500 deep, 10 mm high, on Clearance Accessibility. The 600 type is set by the nesting family; geometry is the 450 type.",
+ "shared": true,
+ "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
+}

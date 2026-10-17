@@ -1,0 +1,302 @@
+{
+ "family": "FMC_E_ElecFixture_TV_Patient_Arm",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Patient entertainment TV 22 in on a wall-mounted articulated arm, with handset and clip",
+ "ifc": "IfcAudioVisualAppliance",
+ "keynote": "E.ICT_01",
+ "types": [
+  {
+   "name": "22in_Arm"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 40,
+  "Default Elevation": 1700
+ },
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "black": "FMC_Plastic_ABS_Black",
+  "screen": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "tv patient arm electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=tv+patient+arm+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Wall Plate",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -15,
+    0,
+    60,
+    0,
+    200
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 8
+  },
+  {
+   "n": "Wall Pivot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -40
+   ],
+   "r": 25,
+   "z": [
+    20,
+    180
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Arm 1",
+   "shape": "box",
+   "at": [
+    -12,
+    -340,
+    80,
+    12,
+    -40,
+    120
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "Elbow",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -340
+   ],
+   "r": 25,
+   "z": [
+    60,
+    140
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Arm 2",
+   "shape": "box",
+   "at": [
+    -12,
+    -620,
+    80,
+    12,
+    -340,
+    120
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "Head Pivot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -620
+   ],
+   "r": 22,
+   "z": [
+    40,
+    160
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Tilt Bracket",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -655,
+    40,
+    60,
+    -640,
+    160
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Tilt Hub",
+   "shape": "box",
+   "at": [
+    -15,
+    -640,
+    85,
+    15,
+    -620,
+    115
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "TV Back",
+   "shape": "fbox",
+   "at": [
+    -260,
+    -690,
+    -60,
+    260,
+    -655,
+    260
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "TV Bezel",
+   "shape": "fbox",
+   "at": [
+    -265,
+    -700,
+    -65,
+    265,
+    -690,
+    265
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Screen",
+   "shape": "fbox",
+   "at": [
+    -250,
+    -702,
+    -45,
+    250,
+    -700,
+    245
+   ],
+   "mat": "screen",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Power LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    230,
+    -57
+   ],
+   "r": 2,
+   "y": [
+    -702,
+    -700
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Handset",
+   "shape": "fbox",
+   "at": [
+    270,
+    -730,
+    20,
+    300,
+    -705,
+    140
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 8
+  },
+  {
+   "n": "Handset Clip",
+   "shape": "fbox",
+   "at": [
+    265,
+    -705,
+    50,
+    300,
+    -690,
+    110
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Cable Duct",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -8
+   ],
+   "r": 6,
+   "z": [
+    -100,
+    0
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Wall Plate",
+   "side": "back"
+  },
+  {
+   "n": "TV",
+   "domain": "electrical",
+   "system": "Communication",
+   "part": "Wall Plate",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Screen 22 in (530 x 330 mm)": {
+   "value": "22in",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Arm reach 700 mm": {
+   "value": 700,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Wall plate at 1700 mm": {
+   "value": 1700,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 40 VA": {
+   "value": 40,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Patient TV: wall plate and pivot, two arm links with elbow and head pivot, tilt bracket and hub, TV back, bezel, screen, power LED, handset with clip, cable duct. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

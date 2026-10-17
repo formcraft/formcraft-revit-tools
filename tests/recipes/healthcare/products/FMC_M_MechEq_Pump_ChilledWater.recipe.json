@@ -1,0 +1,1999 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_Pump_ChilledWater",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: baseplate, scroll volute with foot, flanged end suction and top discharge, motor adapter, finned motor with cowl and feet, terminal box with gland, gauge cock, vent, lifting eye. CHW pipe connectors are not in the record (E only). Reference: query: pump chilled water mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=pump+chilled+water+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "5ls_EndSuction"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Cost_Unit",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Geometry_Stage",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/IfcExportAs",
+   "type": "5ls_EndSuction",
+   "param": "IfcExportAs",
+   "value": "IfcPump"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/Description",
+   "type": "5ls_EndSuction",
+   "param": "Description",
+   "value": "Chilled water pump 5 l/s, close-coupled end-suction, cast-iron volute, flanged suction and discharge, TEFC motor on a common baseplate"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/Keynote",
+   "type": "5ls_EndSuction",
+   "param": "Keynote",
+   "value": "H.CHW_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Keynote_Code",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Keynote_Code",
+   "value": "H.CHW_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Code_Description",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Code_Description",
+   "value": "Pump ChilledWater: CHW pump"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Code_Group",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Code_Group",
+   "value": "H.CHW"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/FMC_Role_Code",
+   "type": "5ls_EndSuction",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/Voltage",
+   "type": "5ls_EndSuction",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/Apparent Load",
+   "type": "5ls_EndSuction",
+   "param": "Apparent Load",
+   "value": 2800
+  },
+  {
+   "op": "set_type_value",
+   "name": "5ls_EndSuction/Number of Poles",
+   "type": "5ls_EndSuction",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pcg",
+   "color": [
+    158,
+    164,
+    170
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pcg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -560,
+     -220
+    ],
+    [
+     400,
+     -220
+    ],
+    [
+     400,
+     220
+    ],
+    [
+     -560,
+     220
+    ]
+   ],
+   "start": 0,
+   "end": 700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Baseplate",
+   "points": [
+    [
+     -560,
+     -220
+    ],
+    [
+     400,
+     -220
+    ],
+    [
+     400,
+     220
+    ],
+    [
+     -560,
+     220
+    ]
+   ],
+   "start": 0,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baseplate",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baseplate",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baseplate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Volute Foot",
+   "points": [
+    [
+     -440,
+     -100
+    ],
+    [
+     -320,
+     -100
+    ],
+    [
+     -320,
+     100
+    ],
+    [
+     -440,
+     100
+    ]
+   ],
+   "start": 60,
+   "end": 210
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Volute Foot",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Volute Foot",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Volute Foot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Volute",
+   "points": [
+    [
+     150,
+     350
+    ],
+    [
+     147.84,
+     310.39
+    ],
+    [
+     135.2,
+     271.94
+    ],
+    [
+     112.55,
+     237.45
+    ],
+    [
+     81.11,
+     209.51
+    ],
+    [
+     42.78,
+     190.35
+    ],
+    [
+     0.0,
+     181.67
+    ],
+    [
+     -44.36,
+     184.45
+    ],
+    [
+     -87.22,
+     198.93
+    ],
+    [
+     -125.51,
+     224.49
+    ],
+    [
+     -156.37,
+     259.72
+    ],
+    [
+     -177.35,
+     302.48
+    ],
+    [
+     -186.67,
+     350.0
+    ],
+    [
+     -183.26,
+     399.1
+    ],
+    [
+     -166.95,
+     446.39
+    ],
+    [
+     -138.48,
+     488.48
+    ],
+    [
+     -99.44,
+     522.24
+    ],
+    [
+     -52.27,
+     545.06
+    ],
+    [
+     -0.0,
+     555.0
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     150,
+     625
+    ]
+   ],
+   "start": -440,
+   "end": -310,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Volute",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Volute",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Volute",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Suction Nozzle",
+   "points": [
+    [
+     55.0,
+     350.0
+    ],
+    [
+     53.13,
+     364.24
+    ],
+    [
+     47.63,
+     377.5
+    ],
+    [
+     38.89,
+     388.89
+    ],
+    [
+     27.5,
+     397.63
+    ],
+    [
+     14.24,
+     403.13
+    ],
+    [
+     0.0,
+     405.0
+    ],
+    [
+     -14.24,
+     403.13
+    ],
+    [
+     -27.5,
+     397.63
+    ],
+    [
+     -38.89,
+     388.89
+    ],
+    [
+     -47.63,
+     377.5
+    ],
+    [
+     -53.13,
+     364.24
+    ],
+    [
+     -55.0,
+     350.0
+    ],
+    [
+     -53.13,
+     335.76
+    ],
+    [
+     -47.63,
+     322.5
+    ],
+    [
+     -38.89,
+     311.11
+    ],
+    [
+     -27.5,
+     302.37
+    ],
+    [
+     -14.24,
+     296.87
+    ],
+    [
+     -0.0,
+     295.0
+    ],
+    [
+     14.24,
+     296.87
+    ],
+    [
+     27.5,
+     302.37
+    ],
+    [
+     38.89,
+     311.11
+    ],
+    [
+     47.63,
+     322.5
+    ],
+    [
+     53.13,
+     335.76
+    ]
+   ],
+   "start": -530,
+   "end": -440,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Suction Nozzle",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Nozzle",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Nozzle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Suction Flange",
+   "profile": [
+    [
+     0,
+     -550
+    ],
+    [
+     95,
+     -550
+    ],
+    [
+     95,
+     -530
+    ],
+    [
+     0,
+     -530
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Flange",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Flange",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Nozzle",
+   "points": [
+    [
+     -333.0,
+     75.0
+    ],
+    [
+     -334.43,
+     85.87
+    ],
+    [
+     -338.63,
+     96.0
+    ],
+    [
+     -345.3,
+     104.7
+    ],
+    [
+     -354.0,
+     111.37
+    ],
+    [
+     -364.13,
+     115.57
+    ],
+    [
+     -375.0,
+     117.0
+    ],
+    [
+     -385.87,
+     115.57
+    ],
+    [
+     -396.0,
+     111.37
+    ],
+    [
+     -404.7,
+     104.7
+    ],
+    [
+     -411.37,
+     96.0
+    ],
+    [
+     -415.57,
+     85.87
+    ],
+    [
+     -417.0,
+     75.0
+    ],
+    [
+     -415.57,
+     64.13
+    ],
+    [
+     -411.37,
+     54.0
+    ],
+    [
+     -404.7,
+     45.3
+    ],
+    [
+     -396.0,
+     38.63
+    ],
+    [
+     -385.87,
+     34.43
+    ],
+    [
+     -375.0,
+     33.0
+    ],
+    [
+     -364.13,
+     34.43
+    ],
+    [
+     -354.0,
+     38.63
+    ],
+    [
+     -345.3,
+     45.3
+    ],
+    [
+     -338.63,
+     54.0
+    ],
+    [
+     -334.43,
+     64.13
+    ]
+   ],
+   "start": 600,
+   "end": 680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Nozzle",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Nozzle",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Nozzle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Discharge Flange",
+   "profile": [
+    [
+     0,
+     680
+    ],
+    [
+     80,
+     680
+    ],
+    [
+     80,
+     700
+    ],
+    [
+     0,
+     700
+    ]
+   ],
+   "axis_at": [
+    -375,
+    75
+   ],
+   "axis": "z",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Flange",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Flange",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Adapter",
+   "profile": [
+    [
+     0,
+     -310
+    ],
+    [
+     125,
+     -310
+    ],
+    [
+     105,
+     -200
+    ],
+    [
+     0,
+     -200
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Adapter",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Adapter",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Motor",
+   "points": [
+    [
+     135.0,
+     350.0
+    ],
+    [
+     130.4,
+     384.94
+    ],
+    [
+     116.91,
+     417.5
+    ],
+    [
+     95.46,
+     445.46
+    ],
+    [
+     67.5,
+     466.91
+    ],
+    [
+     34.94,
+     480.4
+    ],
+    [
+     0.0,
+     485.0
+    ],
+    [
+     -34.94,
+     480.4
+    ],
+    [
+     -67.5,
+     466.91
+    ],
+    [
+     -95.46,
+     445.46
+    ],
+    [
+     -116.91,
+     417.5
+    ],
+    [
+     -130.4,
+     384.94
+    ],
+    [
+     -135.0,
+     350.0
+    ],
+    [
+     -130.4,
+     315.06
+    ],
+    [
+     -116.91,
+     282.5
+    ],
+    [
+     -95.46,
+     254.54
+    ],
+    [
+     -67.5,
+     233.09
+    ],
+    [
+     -34.94,
+     219.6
+    ],
+    [
+     -0.0,
+     215.0
+    ],
+    [
+     34.94,
+     219.6
+    ],
+    [
+     67.5,
+     233.09
+    ],
+    [
+     95.46,
+     254.54
+    ],
+    [
+     116.91,
+     282.5
+    ],
+    [
+     130.4,
+     315.06
+    ]
+   ],
+   "start": -200,
+   "end": 250,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Motor",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 1",
+   "profile": [
+    [
+     135,
+     -170
+    ],
+    [
+     145,
+     -170
+    ],
+    [
+     145,
+     -160
+    ],
+    [
+     135,
+     -160
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 1",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 2",
+   "profile": [
+    [
+     135,
+     -105
+    ],
+    [
+     145,
+     -105
+    ],
+    [
+     145,
+     -95
+    ],
+    [
+     135,
+     -95
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 2",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 3",
+   "profile": [
+    [
+     135,
+     -40
+    ],
+    [
+     145,
+     -40
+    ],
+    [
+     145,
+     -30
+    ],
+    [
+     135,
+     -30
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 3",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 4",
+   "profile": [
+    [
+     135,
+     25
+    ],
+    [
+     145,
+     25
+    ],
+    [
+     145,
+     35
+    ],
+    [
+     135,
+     35
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 4",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 5",
+   "profile": [
+    [
+     135,
+     90
+    ],
+    [
+     145,
+     90
+    ],
+    [
+     145,
+     100
+    ],
+    [
+     135,
+     100
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 5",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 6",
+   "profile": [
+    [
+     135,
+     155
+    ],
+    [
+     145,
+     155
+    ],
+    [
+     145,
+     165
+    ],
+    [
+     135,
+     165
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 6",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan Cowl",
+   "profile": [
+    [
+     0,
+     250
+    ],
+    [
+     140,
+     250
+    ],
+    [
+     140,
+     310
+    ],
+    [
+     100,
+     335
+    ],
+    [
+     0,
+     340
+    ]
+   ],
+   "axis_at": [
+    0,
+    350
+   ],
+   "axis": "x",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan Cowl",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan Cowl",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Motor Feet",
+   "points": [
+    [
+     -160,
+     -120
+    ],
+    [
+     200,
+     -120
+    ],
+    [
+     200,
+     120
+    ],
+    [
+     -160,
+     120
+    ]
+   ],
+   "start": 60,
+   "end": 225
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Motor Feet",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Feet",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Feet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Box",
+   "points": [
+    [
+     -40,
+     -60
+    ],
+    [
+     80,
+     -60
+    ],
+    [
+     80,
+     60
+    ],
+    [
+     -40,
+     60
+    ]
+   ],
+   "start": 485,
+   "end": 565
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Box",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Box",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Gland",
+   "points": [
+    [
+     90.0,
+     0.0
+    ],
+    [
+     89.66,
+     2.59
+    ],
+    [
+     88.66,
+     5.0
+    ],
+    [
+     87.07,
+     7.07
+    ],
+    [
+     85.0,
+     8.66
+    ],
+    [
+     82.59,
+     9.66
+    ],
+    [
+     80.0,
+     10.0
+    ],
+    [
+     77.41,
+     9.66
+    ],
+    [
+     75.0,
+     8.66
+    ],
+    [
+     72.93,
+     7.07
+    ],
+    [
+     71.34,
+     5.0
+    ],
+    [
+     70.34,
+     2.59
+    ],
+    [
+     70.0,
+     0.0
+    ],
+    [
+     70.34,
+     -2.59
+    ],
+    [
+     71.34,
+     -5.0
+    ],
+    [
+     72.93,
+     -7.07
+    ],
+    [
+     75.0,
+     -8.66
+    ],
+    [
+     77.41,
+     -9.66
+    ],
+    [
+     80.0,
+     -10.0
+    ],
+    [
+     82.59,
+     -9.66
+    ],
+    [
+     85.0,
+     -8.66
+    ],
+    [
+     87.07,
+     -7.07
+    ],
+    [
+     88.66,
+     -5.0
+    ],
+    [
+     89.66,
+     -2.59
+    ]
+   ],
+   "start": 525,
+   "end": 545
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Gland",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Gland",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Gland",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gauge Cock",
+   "points": [
+    [
+     -369.0,
+     650.0
+    ],
+    [
+     -369.2,
+     651.55
+    ],
+    [
+     -369.8,
+     653.0
+    ],
+    [
+     -370.76,
+     654.24
+    ],
+    [
+     -372.0,
+     655.2
+    ],
+    [
+     -373.45,
+     655.8
+    ],
+    [
+     -375.0,
+     656.0
+    ],
+    [
+     -376.55,
+     655.8
+    ],
+    [
+     -378.0,
+     655.2
+    ],
+    [
+     -379.24,
+     654.24
+    ],
+    [
+     -380.2,
+     653.0
+    ],
+    [
+     -380.8,
+     651.55
+    ],
+    [
+     -381.0,
+     650.0
+    ],
+    [
+     -380.8,
+     648.45
+    ],
+    [
+     -380.2,
+     647.0
+    ],
+    [
+     -379.24,
+     645.76
+    ],
+    [
+     -378.0,
+     644.8
+    ],
+    [
+     -376.55,
+     644.2
+    ],
+    [
+     -375.0,
+     644.0
+    ],
+    [
+     -373.45,
+     644.2
+    ],
+    [
+     -372.0,
+     644.8
+    ],
+    [
+     -370.76,
+     645.76
+    ],
+    [
+     -369.8,
+     647.0
+    ],
+    [
+     -369.2,
+     648.45
+    ]
+   ],
+   "start": -33,
+   "end": -15,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gauge Cock",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gauge Cock",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gauge Cock",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lifting Eye",
+   "profile": [
+    [
+     14,
+     480
+    ],
+    [
+     20,
+     480
+    ],
+    [
+     20,
+     520
+    ],
+    [
+     14,
+     520
+    ]
+   ],
+   "axis_at": [
+    180,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lifting Eye",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lifting Eye",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Terminal Box",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_Pump_ChilledWater.png"
+  }
+ ],
+ "values": {
+  "Flow 5 l/s at 200 kPa": {
+   "value": "5l/s@200kPa",
+   "source_status": "assumed",
+   "source": "record basis, head assumed"
+  },
+  "Suction DN65, discharge DN50": {
+   "value": "DN65/DN50",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Motor 2.2 kW, 415 V 3-phase": {
+   "value": 2200,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Baseplate 960 x 440 mm": {
+   "value": "960x440",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

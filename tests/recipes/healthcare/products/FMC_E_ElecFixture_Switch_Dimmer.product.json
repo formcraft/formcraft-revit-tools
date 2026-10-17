@@ -1,0 +1,229 @@
+{
+ "family": "FMC_E_ElecFixture_Switch_Dimmer",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Rotary push-on/off LED dimmer, 1 gang, trailing edge, 86 x 86",
+ "ifc": "IfcSwitchingDevice",
+ "keynote": "E.SOC_11",
+ "types": [
+  {
+   "name": "400W_1G"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 0,
+  "Default Elevation": 1000
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "switch dimmer electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=switch+dimmer+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -40.0,
+    0,
+    3,
+    40.0,
+    35,
+    83
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Plate",
+   "shape": "fbox",
+   "at": [
+    -43.0,
+    -7,
+    0,
+    43.0,
+    0,
+    86
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Plate Face",
+   "shape": "fbox",
+   "at": [
+    -41.0,
+    -9.5,
+    2,
+    41.0,
+    -7,
+    84
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 5
+  },
+  {
+   "n": "Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -32.0,
+    43.0
+   ],
+   "r": 3.2,
+   "y": [
+    -10.5,
+    -9.5
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     64,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Knob Skirt",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    43
+   ],
+   "profile": [
+    [
+     0,
+     -9.5
+    ],
+    [
+     19,
+     -9.5
+    ],
+    [
+     19,
+     -12
+    ],
+    [
+     0,
+     -12
+    ]
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Knob",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    43
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     16,
+     -12
+    ],
+    [
+     16,
+     -24
+    ],
+    [
+     13,
+     -27
+    ],
+    [
+     0,
+     -27
+    ]
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Knob Pointer",
+   "shape": "fbox",
+   "at": [
+    -1.5,
+    -27.3,
+    47,
+    1.5,
+    -27,
+    56
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Scale Mark",
+   "shape": "fbox",
+   "at": [
+    -25,
+    -9.8,
+    62,
+    -21,
+    -9.5,
+    66
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Scale Mark Max",
+   "shape": "fbox",
+   "at": [
+    21,
+    -9.8,
+    62,
+    25,
+    -9.5,
+    66
+   ],
+   "mat": "grey",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Plate 86 x 86 mm, box 35 mm": {
+   "value": "86x86",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "LED load 5-150 W / 400 W incandescent": {
+   "value": "400W",
+   "source_status": "assumed",
+   "source": "typical trailing-edge dimmer"
+  },
+  "Height 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Dimmer: plate, rotary knob with skirt and pointer, min/max marks, screws, steel box. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

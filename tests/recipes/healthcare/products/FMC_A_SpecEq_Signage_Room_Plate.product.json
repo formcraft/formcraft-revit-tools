@@ -1,0 +1,225 @@
+{
+ "family": "FMC_A_SpecEq_Signage_Room_Plate",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Room identification plate 300 x 100 with tactile name and number and Grade 2 braille strip, contrasting colours",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "A.SGN_00",
+ "types": [
+  {
+   "name": "300x100_Braille",
+   "desc": "Room ID plate 300 x 100 mm, tactile text and braille"
+  },
+  {
+   "name": "300x200_Braille",
+   "desc": "Room ID plate 300 x 200 mm, tactile text, braille and pictogram"
+  }
+ ],
+ "materials": {
+  "blue": "FMC_Plastic_ABS_Blue",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "parts": [
+  {
+   "n": "Back Plate",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -4,
+    0,
+    150,
+    0,
+    100
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Face",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -8,
+    5,
+    145,
+    -4,
+    95
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Number Panel",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -9,
+    60,
+    -80,
+    -8,
+    95
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Number Text",
+   "shape": "fbox",
+   "at": [
+    -135,
+    -11,
+    68,
+    -90,
+    -9,
+    88
+   ],
+   "mat": "blue",
+   "lod": "f"
+  },
+  {
+   "n": "Name Text",
+   "shape": "fbox",
+   "at": [
+    -65,
+    -11,
+    70,
+    120,
+    -9,
+    86
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Name Text Line 2",
+   "shape": "fbox",
+   "at": [
+    -65,
+    -11,
+    52,
+    60,
+    -9,
+    62
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Braille Strip",
+   "shape": "fbox",
+   "at": [
+    -65,
+    -9,
+    14,
+    135,
+    -8,
+    34
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Braille Dot 0",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -58,
+    19
+   ],
+   "r": 1.5,
+   "y": [
+    -10,
+    -9
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 28,
+    "d": [
+     7,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Braille Dot 1",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -58,
+    25
+   ],
+   "r": 1.5,
+   "y": [
+    -10,
+    -9
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 28,
+    "d": [
+     7,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fixing Pad",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -130,
+    50
+   ],
+   "r": 8,
+   "y": [
+    -5,
+    -4
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     260,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "signage room plate specialty equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=signage+room+plate+specialty+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Plate 300 x 100 mm": {
+   "value": "300x100",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Centre 1400-1700 mm on the latch side": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "BS 8300-2 / HTM 65"
+  },
+  "Tactile text 1 mm raised, braille strip": {
+   "value": 1,
+   "source_status": "assumed",
+   "source": "BS 8300-2"
+  }
+ },
+ "about": "Room plate modelled as a generic product: back plate and face, number panel, raised name text, braille strip with two rows of dots, fixing pads. Default Elevation 1450 (bottom). Room name and number come from the room in the project (label in the tag).",
+ "type_values": {
+  "Default Elevation": 1450
+ }
+}
