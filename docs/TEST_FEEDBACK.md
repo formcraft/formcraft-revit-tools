@@ -92,6 +92,8 @@ file not on Z:, no .rte in 06_Templates; 21 pass). Background only: the user kep
 | New F-055 #160 | Screenshots don't zoom to the family: a 90 x 120 mm outlet is a few pixels at the level line | Fixed – retest (this push) |
 | New F-056 #161 | `report` gives counts only: no solid boxes, no connector system, size, origin or facing | Fixed – retest (this push) |
 | New F-057 #162 | A family saved with `fmc_doc` has no recipe, so Gate A skips code checks; no way to send a recipe from chat | Fixed – retest (this push) |
+| QE4 result | Category switch Mechanical → Medical Equipment keeps 2 connectors; in Project1 (rolled back) a power circuit connects, a piping system is refused ("not Mechanical Equipment, Plumbing Equipment or Plumbing Fixture"). Rule: MedEq carries power/data, pipes and gases via a nested service point | Recorded (kit change request) |
+| Wave 1 | 11 healthcare recipes built through `fmc_recipe build` and Gate A **Pass** (O2, vacuum, basin, socket, TPN board, detector, sprinkler, grab rail 4 types with dimension sides kept, sanitiser, exam couch, UCV canopy) | Done |
 | New F-058 #163 | Gate A Fail for the right reason only (no keynote: kit gap QH2); name, size, type names, flex Pass; the rest Not checked, said so | Open (pass record; closes when the keynote exists) |
 
 ### Run 9 · 2026-10-15 · pilot PC · Revit 2025.4 · field review of the Ogala Residence LOD 400 build
