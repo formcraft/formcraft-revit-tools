@@ -1,0 +1,206 @@
+{
+ "family": "FMC_E_LightFixture_Panel_600_General",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Recessed LED panel 600 x 600 for lay-in grid, slim aluminium edge, opal diffuser, separate driver",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.LED_07",
+ "types": [
+  {
+   "name": "600x600_General",
+   "values": {}
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 36
+ },
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "opal": "FMC_Plastic_ABS_White",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "white": "FMC_Plastic_ABS_White",
+  "black": "FMC_Plastic_ABS_Black",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "light fixture panel 600 general lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+panel+600+general+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Edge Frame",
+   "shape": "box",
+   "at": [
+    -298,
+    -298,
+    -10,
+    298,
+    298,
+    0
+   ],
+   "mat": "alu",
+   "lod": "mf"
+  },
+  {
+   "n": "Diffuser",
+   "shape": "box",
+   "at": [
+    -285,
+    -285,
+    -10.5,
+    285,
+    285,
+    -9.5
+   ],
+   "mat": "opal",
+   "lod": "mf"
+  },
+  {
+   "n": "Back Tray",
+   "shape": "box",
+   "at": [
+    -290,
+    -290,
+    0,
+    290,
+    290,
+    12
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Driver Box",
+   "shape": "box",
+   "at": [
+    -90,
+    -40,
+    12,
+    90,
+    40,
+    42
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Flex Lead",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    27
+   ],
+   "r": 4,
+   "x": [
+    90,
+    160
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Plug",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    27
+   ],
+   "profile": [
+    [
+     0,
+     160
+    ],
+    [
+     10,
+     160
+    ],
+    [
+     10,
+     190
+    ],
+    [
+     0,
+     190
+    ]
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Safety Wire Lug",
+   "shape": "box",
+   "at": [
+    -280,
+    -10,
+    12,
+    -265,
+    10,
+    20
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     545,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Diffuser Edge Line",
+   "shape": "box",
+   "at": [
+    -290,
+    -290,
+    -10.6,
+    290,
+    -286,
+    -10.5
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     576,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Driver Box",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Panel 595 x 595 x 10 mm + driver": {
+   "value": "595x595",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "36 W, 3600 lm, 4000 K, UGR < 19": {
+   "value": "36W",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Exposed grid ceiling": {
+   "value": "grid",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "LED panel: aluminium edge frame, opal diffuser, back tray, driver box with flex lead and plug, safety-wire lugs. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

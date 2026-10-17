@@ -1,0 +1,523 @@
+{
+ "family": "FMC_A_Door_AutomaticSliding_Isolation",
+ "category": "Doors",
+ "template": "Metric Door.rft",
+ "desc": "Automatic sliding isolation-suite door: glazed leaf over a laminate kick panel in an aluminium edge frame, perimeter gasket, wave sensor, interlock status lamps linked to the anteroom door",
+ "ifc": "IfcDoor",
+ "keynote": "D.AUT_02",
+ "types": [
+  {
+   "name": "1200x2100_Isolation",
+   "values": {
+    "Width": 1200.0,
+    "Height": 2100.0
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 200
+ },
+ "materials": {
+  "frame": "FMC_Metal_Steel_EpoxyCoated_White",
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "laminate": "FMC_Plastic_Laminate_HPL",
+  "glass": "FMC_Glass_Clear",
+  "seal": "FMC_Rubber_Black",
+  "led_green": "FMC_Plastic_LED_Green",
+  "black": "FMC_Plastic_ABS_Black",
+  "led_red": "FMC_Plastic_LED_Red",
+  "sign_yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "parts": [
+  {
+   "n": "Opening Lining Jamb",
+   "shape": "box",
+   "mat": "frame",
+   "at": [
+    -600.0,
+    -70,
+    0,
+    -570.0,
+    70,
+    2100
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     1170,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Opening Lining Head",
+   "shape": "box",
+   "mat": "frame",
+   "at": [
+    -570.0,
+    -70,
+    2070,
+    570.0,
+    70,
+    2100
+   ]
+  },
+  {
+   "n": "Face Frame Stile",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    -645.0,
+    -80,
+    0,
+    -600.0,
+    -70,
+    2145
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     1245.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Face Frame Rail",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    -600.0,
+    -80,
+    2100,
+    600.0,
+    -70,
+    45
+   ],
+   "repeat": {
+    "n": 1,
+    "d": [
+     0,
+     0,
+     2100
+    ]
+   }
+  },
+  {
+   "n": "Track Box",
+   "shape": "right",
+   "mat": "aluminium",
+   "pts": [
+    [
+     -88.0,
+     2170.0
+    ],
+    [
+     -79.0,
+     2172.4
+    ],
+    [
+     -72.4,
+     2179.0
+    ],
+    [
+     -70.0,
+     2188.0
+    ],
+    [
+     -70.0,
+     2372.0
+    ],
+    [
+     -72.4,
+     2381.0
+    ],
+    [
+     -79.0,
+     2387.6
+    ],
+    [
+     -88.0,
+     2390.0
+    ],
+    [
+     -157.0,
+     2390.0
+    ],
+    [
+     -166.0,
+     2387.6
+    ],
+    [
+     -172.6,
+     2381.0
+    ],
+    [
+     -175.0,
+     2372.0
+    ],
+    [
+     -175.0,
+     2188.0
+    ],
+    [
+     -172.6,
+     2179.0
+    ],
+    [
+     -166.0,
+     2172.4
+    ],
+    [
+     -157.0,
+     2170.0
+    ]
+   ],
+   "x": [
+    -680.0,
+    2000.0
+   ]
+  },
+  {
+   "n": "Track Box End Cap",
+   "shape": "fbox",
+   "mat": "grey",
+   "at": [
+    -686.0,
+    -177,
+    2168,
+    -680.0,
+    -70,
+    2392
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     2686,
+     0,
+     0
+    ]
+   },
+   "r": 14
+  },
+  {
+   "n": "Floor Guide",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    680.0,
+    -105,
+    0,
+    740.0,
+    -80,
+    40
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Leaf Edge Stile",
+   "shape": "box",
+   "mat": "aluminium",
+   "at": [
+    -660.0,
+    -135,
+    10,
+    -635.0,
+    -85,
+    2160
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     1295.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Leaf Edge Rail",
+   "shape": "box",
+   "mat": "aluminium",
+   "at": [
+    -635.0,
+    -135,
+    10,
+    635.0,
+    -85,
+    35
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     2125
+    ]
+   }
+  },
+  {
+   "n": "Leaf Mid Rail",
+   "shape": "box",
+   "mat": "aluminium",
+   "at": [
+    -635.0,
+    -135,
+    215,
+    635.0,
+    -85,
+    335
+   ]
+  },
+  {
+   "n": "Leaf Kick Panel",
+   "shape": "fbox",
+   "mat": "laminate",
+   "at": [
+    -635.0,
+    -132,
+    35,
+    635.0,
+    -88,
+    215
+   ]
+  },
+  {
+   "n": "Leaf Glass",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -635.0,
+    -115.0,
+    335,
+    635.0,
+    -105.0,
+    2135
+   ]
+  },
+  {
+   "n": "Leaf Gasket Stile",
+   "shape": "box",
+   "mat": "seal",
+   "at": [
+    -650.0,
+    -85,
+    20,
+    -640.0,
+    -80,
+    2150
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1290.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Leaf Gasket Rail",
+   "shape": "box",
+   "mat": "seal",
+   "at": [
+    -640.0,
+    -85,
+    20,
+    640.0,
+    -80,
+    30
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     2120
+    ]
+   }
+  },
+  {
+   "n": "Pull Handle",
+   "shape": "right",
+   "mat": "stainless",
+   "pts": [
+    [
+     -135,
+     850
+    ],
+    [
+     -135,
+     875
+    ],
+    [
+     -175,
+     875
+    ],
+    [
+     -175,
+     1425
+    ],
+    [
+     -135,
+     1425
+    ],
+    [
+     -135,
+     1450
+    ],
+    [
+     -200,
+     1450
+    ],
+    [
+     -200,
+     850
+    ]
+   ],
+   "x": [
+    -631.0,
+    -605.0
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Wave Sensor Plate",
+   "shape": "cyl",
+   "mat": "stainless",
+   "c": [
+    -800.0,
+    1050
+   ],
+   "y": [
+    -95,
+    -70
+   ],
+   "r": 42,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Wave Sensor Lens",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    -800.0,
+    1050
+   ],
+   "y": [
+    -101,
+    -95
+   ],
+   "r": 24,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Interlock Status Panel",
+   "shape": "fbox",
+   "mat": "black",
+   "at": [
+    -90,
+    -177,
+    2240,
+    90,
+    -175,
+    2320
+   ],
+   "lod": "f",
+   "r": 8
+  },
+  {
+   "n": "Interlock Lamp Red",
+   "shape": "cyl",
+   "mat": "led_red",
+   "c": [
+    -40,
+    2280
+   ],
+   "y": [
+    -183,
+    -177
+   ],
+   "r": 14,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Interlock Lamp Green",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    40,
+    2280
+   ],
+   "y": [
+    -183,
+    -177
+   ],
+   "r": 14,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Isolation Sign",
+   "shape": "fbox",
+   "mat": "sign_yellow",
+   "at": [
+    450.0,
+    -136.5,
+    1500,
+    630.0,
+    -135,
+    1680
+   ],
+   "lod": "f",
+   "r": 6
+  }
+ ],
+ "reference": {
+  "query": "door automatic sliding isolation doors hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=door+automatic+sliding+isolation+doors+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 1200 x 2100 mm": {
+   "value": "1200x2100",
+   "source_status": "assumed",
+   "source": "clear opening, type 1; HBN 04-01 isolation suite"
+  },
+  "Operator load 200 VA": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical operator, engineer confirms"
+  },
+  "Interlock with anteroom door": {
+   "value": "interlocked",
+   "source_status": "assumed",
+   "source": "HBN 04-01 Supplement 1 isolation suites"
+  }
+ },
+ "about": "Isolation sliding door modelled as a product: opening lining, stainless face frame, rounded track box with end caps, aluminium leaf frame with mid rail, glass upper and laminate kick panel, perimeter gasket, bar pull, wave sensor, red/green interlock lamps on a status panel, isolation sign. Geometry drawn at the first type's size; brand, model and supplier open for review.",
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Track Box",
+   "side": "top"
+  }
+ ]
+}

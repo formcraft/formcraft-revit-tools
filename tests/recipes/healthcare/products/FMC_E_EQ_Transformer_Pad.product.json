@@ -1,0 +1,506 @@
+{
+ "family": "FMC_E_EQ_Transformer_Pad",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Ground-mounted oil-filled distribution transformer 11/0.415 kV on a concrete plinth: radiators, conservator, HV and LV bushings",
+ "ifc": "IfcTransformer",
+ "keynote": "E.TRF_00",
+ "types": [
+  {
+   "name": "500kVA_11kV",
+   "values": {
+    "Apparent Load": 500000
+   }
+  },
+  {
+   "name": "1000kVA_11kV",
+   "values": {
+    "Apparent Load": 1000000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 500000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "conc": "FMC_Concrete_C25",
+  "struct": "FMC_Metal_StructuralSteel_S275",
+  "green_steel": "FMC_Metal_SteelLTZ_Painted",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "china": "FMC_Ceramic_VitreousChina_White",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "brass": "FMC_Metal_Brass_Polished"
+ },
+ "reference": {
+  "query": "transformer pad electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=transformer+pad+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -1100,
+    -900,
+    0,
+    1100,
+    900,
+    200
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Skid",
+   "shape": "box",
+   "at": [
+    -900,
+    -500,
+    200,
+    900,
+    -380,
+    300
+   ],
+   "mat": "struct",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     880,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Tank",
+   "shape": "box",
+   "at": [
+    -750,
+    -450,
+    300,
+    750,
+    450,
+    1700
+   ],
+   "mat": "green_steel",
+   "lod": "mf",
+   "r": 20
+  },
+  {
+   "n": "Tank Cover",
+   "shape": "box",
+   "at": [
+    -780,
+    -480,
+    1700,
+    780,
+    480,
+    1740
+   ],
+   "mat": "green_steel",
+   "lod": "mf",
+   "r": 20
+  },
+  {
+   "n": "Radiator Fin",
+   "shape": "fbox",
+   "at": [
+    -640,
+    -760,
+    420,
+    -610,
+    -450,
+    1560
+   ],
+   "mat": "green_steel",
+   "lod": "mf",
+   "repeat": {
+    "n": 14,
+    "d": [
+     92,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Radiator Fin Rear",
+   "shape": "fbox",
+   "at": [
+    -640,
+    450,
+    420,
+    -610,
+    760,
+    1560
+   ],
+   "mat": "green_steel",
+   "lod": "mf",
+   "repeat": {
+    "n": 14,
+    "d": [
+     92,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Radiator Header",
+   "shape": "box",
+   "at": [
+    -650,
+    -760,
+    1560,
+    650,
+    -450,
+    1600
+   ],
+   "mat": "green_steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     1210,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Conservator",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    300,
+    2050
+   ],
+   "r": 170,
+   "x": [
+    -600,
+    400
+   ],
+   "mat": "green_steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Conservator Bracket",
+   "shape": "box",
+   "at": [
+    -450,
+    260,
+    1740,
+    -400,
+    340,
+    1900
+   ],
+   "mat": "green_steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     650,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Breather",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    500,
+    300
+   ],
+   "r": 30,
+   "z": [
+    1880,
+    2050
+   ],
+   "mat": "pc",
+   "lod": "f"
+  },
+  {
+   "n": "HV Bushing",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -300,
+    -200
+   ],
+   "profile": [
+    [
+     0,
+     1740
+    ],
+    [
+     45,
+     1740
+    ],
+    [
+     45,
+     1780
+    ],
+    [
+     35,
+     1800
+    ],
+    [
+     45,
+     1820
+    ],
+    [
+     35,
+     1840
+    ],
+    [
+     45,
+     1860
+    ],
+    [
+     35,
+     1880
+    ],
+    [
+     45,
+     1900
+    ],
+    [
+     20,
+     1930
+    ],
+    [
+     10,
+     1990
+    ],
+    [
+     0,
+     1990
+    ]
+   ],
+   "mat": "china",
+   "lod": "mf",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "LV Bushing",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -375,
+    150
+   ],
+   "profile": [
+    [
+     0,
+     1740
+    ],
+    [
+     35,
+     1740
+    ],
+    [
+     35,
+     1800
+    ],
+    [
+     25,
+     1830
+    ],
+    [
+     12,
+     1880
+    ],
+    [
+     0,
+     1880
+    ]
+   ],
+   "mat": "china",
+   "lod": "mf",
+   "repeat": {
+    "n": 4,
+    "d": [
+     250,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rating Plate",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -451,
+    1200,
+    150,
+    -450,
+    1400
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Lifting Lug",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    1760
+   ],
+   "profile": [
+    [
+     20,
+     -760
+    ],
+    [
+     40,
+     -760
+    ],
+    [
+     40,
+     -740
+    ],
+    [
+     20,
+     -740
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Earth Terminal",
+   "shape": "fbox",
+   "at": [
+    500,
+    -455,
+    420,
+    580,
+    -450,
+    480
+   ],
+   "mat": "brass",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Drain Valve",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -500,
+    380
+   ],
+   "r": 25,
+   "y": [
+    -480,
+    -450
+   ],
+   "mat": "brass",
+   "lod": "f"
+  },
+  {
+   "n": "Oil Level Gauge",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -300,
+    2100
+   ],
+   "r": 50,
+   "x": [
+    -620,
+    -600
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Thermometer Pocket",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    500,
+    -250
+   ],
+   "r": 25,
+   "z": [
+    1740,
+    1800
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "LV Out",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Tank Cover",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Envelope 2200 x 1800 x 2200 mm with plinth": {
+   "value": "2200x1800x2200",
+   "source_status": "assumed",
+   "source": "typical 500-1000 kVA ONAN; utility (UMEME) GA governs"
+  },
+  "11 / 0.415 kV, Dyn11": {
+   "value": "11/0.415 kV",
+   "source_status": "assumed",
+   "source": "UMEME distribution practice"
+  },
+  "Rating 500 / 1000 kVA": {
+   "value": "kVA",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Clearance 1500 mm to fence": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "utility practice, to confirm"
+  }
+ },
+ "about": "Transformer: concrete plinth, skids, tank and cover, front and rear radiator banks with headers, conservator on brackets with breather and oil gauge, three HV and four LV porcelain bushings, rating plate, lifting lugs, earth terminal, drain valve, thermometer pocket. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open.",
+ "clearances": [
+  {
+   "n": "Fence Clearance",
+   "shape": "box",
+   "at": [
+    -2600,
+    -2400,
+    0,
+    2600,
+    2400,
+    2200
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}

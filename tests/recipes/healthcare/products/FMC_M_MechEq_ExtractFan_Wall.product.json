@@ -1,0 +1,241 @@
+{
+ "family": "FMC_M_MechEq_ExtractFan_Wall",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Wall extract fan 150 to 250 mm, through-wall, white louvred fascia, sleeve, back-draught shutter and external cowl, pull-cord switch",
+ "ifc": "IfcFan",
+ "keynote": "H.FAN_06",
+ "types": [
+  {
+   "name": "150_Wall",
+   "values": {
+    "Apparent Load": 30
+   }
+  },
+  {
+   "name": "250_Wall",
+   "values": {
+    "Apparent Load": 60
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 60,
+  "Default Elevation": 2200
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledg": "FMC_Plastic_LED_Green",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "extract fan wall mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=extract+fan+wall+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Fascia",
+   "shape": "fbox",
+   "at": [
+    -170,
+    -30,
+    0,
+    170,
+    0,
+    340
+   ],
+   "mat": "white",
+   "r": 26
+  },
+  {
+   "n": "Grille Recess",
+   "shape": "fbox",
+   "at": [
+    -145,
+    -32,
+    25,
+    145,
+    -30,
+    315
+   ],
+   "mat": "black",
+   "r": 16
+  },
+  {
+   "n": "Louvre Slat",
+   "shape": "fbox",
+   "at": [
+    -140,
+    -40,
+    36,
+    140,
+    -32,
+    46
+   ],
+   "mat": "white",
+   "r": 3,
+   "repeat": {
+    "n": 12,
+    "d": [
+     0,
+     0,
+     23
+    ]
+   }
+  },
+  {
+   "n": "Run LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    130,
+    22
+   ],
+   "r": 4,
+   "y": [
+    -32,
+    -30
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Screw Cover",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -150,
+    170
+   ],
+   "r": 6,
+   "y": [
+    -32,
+    -30
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Wall Sleeve",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    170
+   ],
+   "r": 128,
+   "y": [
+    0,
+    230
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Backdraught Shutter",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    170
+   ],
+   "r": 128,
+   "y": [
+    230,
+    236
+   ],
+   "mat": "mgrey",
+   "lod": "f"
+  },
+  {
+   "n": "External Cowl",
+   "shape": "fbox",
+   "at": [
+    -150,
+    236,
+    20,
+    150,
+    266,
+    320
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "r": 12
+  },
+  {
+   "n": "Pull Cord",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    150,
+    -15
+   ],
+   "r": 1.5,
+   "z": [
+    -420,
+    0
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Cord Toggle",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    150,
+    -15
+   ],
+   "r": 7,
+   "z": [
+    -440,
+    -420
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Wall Sleeve",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Fascia 340 x 340 mm (250)": {
+   "value": "340x340",
+   "source_status": "assumed",
+   "source": "typical 250 mm window/wall fan"
+  },
+  "Sleeve 256 dia through 230 wall": {
+   "value": "256/230",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 30 / 60 VA": {
+   "value": "30/60",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounting height 2200 mm": {
+   "value": 2200,
+   "source_status": "assumed",
+   "source": "high-level wall practice"
+  }
+ },
+ "about": "Modelled as a generic product: rounded fascia with louvre slats over a dark recess, run LED, screw covers, wall sleeve with back-draught shutter and external cowl, pull cord."
+}

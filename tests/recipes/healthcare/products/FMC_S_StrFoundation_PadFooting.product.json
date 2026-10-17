@@ -1,0 +1,118 @@
+{
+ "family": "FMC_S_StrFoundation_PadFooting",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete pad footing on 50 mm blinding, top at the column base",
+ "ifc": "IfcFooting",
+ "keynote": "C.PAD_02",
+ "types": [
+  {
+   "name": "1500x1500_RC",
+   "desc": "pad 1500 x 1500 x 500"
+  },
+  {
+   "name": "2000x2000_RC",
+   "desc": "pad 2000 x 2000 x 600"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "blind": "FMC_Concrete_Blinding_C15",
+  "white": "FMC_Paint_RoadMarking_White"
+ },
+ "parts": [
+  {
+   "n": "Blinding",
+   "shape": "box",
+   "at": [
+    -800,
+    -800,
+    -550,
+    800,
+    800,
+    -500
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Pad",
+   "shape": "box",
+   "at": [
+    -750,
+    -750,
+    -500,
+    750,
+    750,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Setting-out Mark X",
+   "shape": "box",
+   "at": [
+    -750,
+    -6,
+    0,
+    -650,
+    6,
+    1
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Setting-out Mark Y",
+   "shape": "box",
+   "at": [
+    -6,
+    -750,
+    0,
+    6,
+    -650,
+    1
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     1400,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "str foundation pad footing structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+pad+footing+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Pad 1500 x 1500 x 500 mm (geometry)": {
+   "value": "1500x1500x500",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Blinding 50 mm C15, 50 mm projection": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Concrete grade and cover from the kit": {
+   "value": "C30 / kit cover",
+   "source_status": "assumed",
+   "source": "FMC kit rulebook; engineer to confirm"
+  }
+ },
+ "about": "Pad footing with top at z = 0 (the column base): pad, blinding, grid setting-out marks (Fine). Depth and reinforcement by the engineer."
+}

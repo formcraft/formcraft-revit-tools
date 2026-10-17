@@ -1,0 +1,1913 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_MedEq_Centrifuge_Bench",
+ "template": "Metric Generic Model.rft",
+ "about": "Centrifuge modelled as a generic product: rounded body with sloped front, round domed lid with window and rear hinge, control panel with display, start, stop and lid-release keys, side vents, mains switch and 4 feet. Sits on a bench top (z = 0). Water, drainage, gases and extract reach this item via the nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold pipe or duct connectors). Reference: query: centrifuge bench medical equipment hospital; images: https://www.google.com/search?tbm=isch&q=centrifuge+bench+medical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Medical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "600x600_Benchtop"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Cost_Unit",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Geometry_Stage",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/IfcExportAs",
+   "type": "600x600_Benchtop",
+   "param": "IfcExportAs",
+   "value": "IfcMedicalDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/Description",
+   "type": "600x600_Benchtop",
+   "param": "Description",
+   "value": "Bench-top centrifuge, refrigerated class, 600 x 600, round hinged lid with window, sloped control panel with display and start/stop keys"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/Keynote",
+   "type": "600x600_Benchtop",
+   "param": "Keynote",
+   "value": "Z.LAB_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Keynote_Code",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Keynote_Code",
+   "value": "Z.LAB_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Code_Description",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Code_Description",
+   "value": "Centrifuge Bench: Bench centrifuge"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Code_Group",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Code_Group",
+   "value": "Z.LAB"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/FMC_Role_Code",
+   "type": "600x600_Benchtop",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/Voltage",
+   "type": "600x600_Benchtop",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "600x600_Benchtop/Apparent Load",
+   "type": "600x600_Benchtop",
+   "param": "Apparent Load",
+   "value": 1000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Body",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Body Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "Body Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Lid",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Lid Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Lid Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clear",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Clear Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Clear Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Green",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Green Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Green Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -300,
+     -600.0
+    ],
+    [
+     302,
+     -600.0
+    ],
+    [
+     302,
+     -25
+    ],
+    [
+     -300,
+     -25
+    ]
+   ],
+   "start": 0,
+   "end": 384
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Body",
+   "points": [
+    [
+     -30.0,
+     55.0
+    ],
+    [
+     -32.78,
+     41.11
+    ],
+    [
+     -41.11,
+     32.78
+    ],
+    [
+     -55.0,
+     30.0
+    ],
+    [
+     -575.0,
+     30.0
+    ],
+    [
+     -588.89,
+     32.78
+    ],
+    [
+     -597.22,
+     41.11
+    ],
+    [
+     -600.0,
+     55.0
+    ],
+    [
+     -600.0,
+     125.0
+    ],
+    [
+     -598.37,
+     141.14
+    ],
+    [
+     -593.49,
+     156.23
+    ],
+    [
+     -585.36,
+     170.27
+    ],
+    [
+     -484.64,
+     309.73
+    ],
+    [
+     -473.73,
+     320.99
+    ],
+    [
+     -460.52,
+     327.75
+    ],
+    [
+     -445.0,
+     330.0
+    ],
+    [
+     -55.0,
+     330.0
+    ],
+    [
+     -41.11,
+     327.22
+    ],
+    [
+     -32.78,
+     318.89
+    ],
+    [
+     -30.0,
+     305.0
+    ]
+   ],
+   "start": -300,
+   "end": 300,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Body",
+   "subcategory": "Body"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Body",
+   "param": "Body Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot 1",
+   "points": [
+    [
+     -218.0,
+     -560.0
+    ],
+    [
+     -219.67,
+     -551.58
+    ],
+    [
+     -224.44,
+     -544.44
+    ],
+    [
+     -231.58,
+     -539.67
+    ],
+    [
+     -240.0,
+     -538.0
+    ],
+    [
+     -248.42,
+     -539.67
+    ],
+    [
+     -255.56,
+     -544.44
+    ],
+    [
+     -260.33,
+     -551.58
+    ],
+    [
+     -262.0,
+     -560.0
+    ],
+    [
+     -260.33,
+     -568.42
+    ],
+    [
+     -255.56,
+     -575.56
+    ],
+    [
+     -248.42,
+     -580.33
+    ],
+    [
+     -240.0,
+     -582.0
+    ],
+    [
+     -231.58,
+     -580.33
+    ],
+    [
+     -224.44,
+     -575.56
+    ],
+    [
+     -219.67,
+     -568.42
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot 2",
+   "points": [
+    [
+     262.0,
+     -560.0
+    ],
+    [
+     260.33,
+     -551.58
+    ],
+    [
+     255.56,
+     -544.44
+    ],
+    [
+     248.42,
+     -539.67
+    ],
+    [
+     240.0,
+     -538.0
+    ],
+    [
+     231.58,
+     -539.67
+    ],
+    [
+     224.44,
+     -544.44
+    ],
+    [
+     219.67,
+     -551.58
+    ],
+    [
+     218.0,
+     -560.0
+    ],
+    [
+     219.67,
+     -568.42
+    ],
+    [
+     224.44,
+     -575.56
+    ],
+    [
+     231.58,
+     -580.33
+    ],
+    [
+     240.0,
+     -582.0
+    ],
+    [
+     248.42,
+     -580.33
+    ],
+    [
+     255.56,
+     -575.56
+    ],
+    [
+     260.33,
+     -568.42
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Back 1",
+   "points": [
+    [
+     -218.0,
+     -70.0
+    ],
+    [
+     -219.67,
+     -61.58
+    ],
+    [
+     -224.44,
+     -54.44
+    ],
+    [
+     -231.58,
+     -49.67
+    ],
+    [
+     -240.0,
+     -48.0
+    ],
+    [
+     -248.42,
+     -49.67
+    ],
+    [
+     -255.56,
+     -54.44
+    ],
+    [
+     -260.33,
+     -61.58
+    ],
+    [
+     -262.0,
+     -70.0
+    ],
+    [
+     -260.33,
+     -78.42
+    ],
+    [
+     -255.56,
+     -85.56
+    ],
+    [
+     -248.42,
+     -90.33
+    ],
+    [
+     -240.0,
+     -92.0
+    ],
+    [
+     -231.58,
+     -90.33
+    ],
+    [
+     -224.44,
+     -85.56
+    ],
+    [
+     -219.67,
+     -78.42
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Back 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Back 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Back 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Back 2",
+   "points": [
+    [
+     262.0,
+     -70.0
+    ],
+    [
+     260.33,
+     -61.58
+    ],
+    [
+     255.56,
+     -54.44
+    ],
+    [
+     248.42,
+     -49.67
+    ],
+    [
+     240.0,
+     -48.0
+    ],
+    [
+     231.58,
+     -49.67
+    ],
+    [
+     224.44,
+     -54.44
+    ],
+    [
+     219.67,
+     -61.58
+    ],
+    [
+     218.0,
+     -70.0
+    ],
+    [
+     219.67,
+     -78.42
+    ],
+    [
+     224.44,
+     -85.56
+    ],
+    [
+     231.58,
+     -90.33
+    ],
+    [
+     240.0,
+     -92.0
+    ],
+    [
+     248.42,
+     -90.33
+    ],
+    [
+     255.56,
+     -85.56
+    ],
+    [
+     260.33,
+     -78.42
+    ]
+   ],
+   "start": 0,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Back 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Back 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Back 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lid",
+   "profile": [
+    [
+     0,
+     330
+    ],
+    [
+     215,
+     330
+    ],
+    [
+     215,
+     345
+    ],
+    [
+     195,
+     372
+    ],
+    [
+     0,
+     380
+    ]
+   ],
+   "axis_at": [
+    0,
+    -250
+   ],
+   "axis": "z",
+   "subcategory": "Lid"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lid",
+   "param": "Lid Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lid",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lid Window",
+   "points": [
+    [
+     80.0,
+     -250.0
+    ],
+    [
+     77.27,
+     -229.29
+    ],
+    [
+     69.28,
+     -210.0
+    ],
+    [
+     56.57,
+     -193.43
+    ],
+    [
+     40.0,
+     -180.72
+    ],
+    [
+     20.71,
+     -172.73
+    ],
+    [
+     0.0,
+     -170.0
+    ],
+    [
+     -20.71,
+     -172.73
+    ],
+    [
+     -40.0,
+     -180.72
+    ],
+    [
+     -56.57,
+     -193.43
+    ],
+    [
+     -69.28,
+     -210.0
+    ],
+    [
+     -77.27,
+     -229.29
+    ],
+    [
+     -80.0,
+     -250.0
+    ],
+    [
+     -77.27,
+     -270.71
+    ],
+    [
+     -69.28,
+     -290.0
+    ],
+    [
+     -56.57,
+     -306.57
+    ],
+    [
+     -40.0,
+     -319.28
+    ],
+    [
+     -20.71,
+     -327.27
+    ],
+    [
+     -0.0,
+     -330.0
+    ],
+    [
+     20.71,
+     -327.27
+    ],
+    [
+     40.0,
+     -319.28
+    ],
+    [
+     56.57,
+     -306.57
+    ],
+    [
+     69.28,
+     -290.0
+    ],
+    [
+     77.27,
+     -270.71
+    ]
+   ],
+   "start": 379,
+   "end": 384
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lid Window",
+   "subcategory": "Clear"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lid Window",
+   "param": "Clear Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lid Window",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lid Hinge",
+   "points": [
+    [
+     -60,
+     -50
+    ],
+    [
+     60,
+     -50
+    ],
+    [
+     60,
+     -25
+    ],
+    [
+     -60,
+     -25
+    ]
+   ],
+   "start": 330,
+   "end": 360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lid Hinge",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lid Hinge",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lid Hinge",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel",
+   "points": [
+    [
+     -589.6,
+     164.4
+    ],
+    [
+     -480.4,
+     315.6
+    ],
+    [
+     -482.83,
+     317.36
+    ],
+    [
+     -592.03,
+     166.16
+    ]
+   ],
+   "start": -260,
+   "end": 260,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Display",
+   "points": [
+    [
+     -561.0,
+     204.0
+    ],
+    [
+     -496.0,
+     294.0
+    ],
+    [
+     -500.05,
+     296.93
+    ],
+    [
+     -565.05,
+     206.93
+    ]
+   ],
+   "start": -220,
+   "end": 40,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Display",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Display",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Display",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Display Readout",
+   "points": [
+    [
+     -548.0,
+     222.0
+    ],
+    [
+     -509.0,
+     276.0
+    ],
+    [
+     -513.86,
+     279.51
+    ],
+    [
+     -552.86,
+     225.51
+    ]
+   ],
+   "start": -200,
+   "end": 10,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Display Readout",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Display Readout",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Display Readout",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Start Key",
+   "points": [
+    [
+     -561.0,
+     204.0
+    ],
+    [
+     -528.5,
+     249.0
+    ],
+    [
+     -533.36,
+     252.51
+    ],
+    [
+     -565.86,
+     207.51
+    ]
+   ],
+   "start": 80,
+   "end": 140,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Start Key",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Start Key",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Start Key",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Key",
+   "points": [
+    [
+     -561.0,
+     204.0
+    ],
+    [
+     -528.5,
+     249.0
+    ],
+    [
+     -533.36,
+     252.51
+    ],
+    [
+     -565.86,
+     207.51
+    ]
+   ],
+   "start": 160,
+   "end": 220,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Key",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Key",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Key",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Lid Release Key",
+   "points": [
+    [
+     -519.4,
+     261.6
+    ],
+    [
+     -496.0,
+     294.0
+    ],
+    [
+     -500.86,
+     297.51
+    ],
+    [
+     -524.26,
+     265.11
+    ]
+   ],
+   "start": 80,
+   "end": 220,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lid Release Key",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lid Release Key",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lid Release Key",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 1",
+   "points": [
+    [
+     -450,
+     120
+    ],
+    [
+     -150,
+     120
+    ],
+    [
+     -150,
+     126
+    ],
+    [
+     -450,
+     126
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 2",
+   "points": [
+    [
+     -450,
+     140
+    ],
+    [
+     -150,
+     140
+    ],
+    [
+     -150,
+     146
+    ],
+    [
+     -450,
+     146
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 3",
+   "points": [
+    [
+     -450,
+     160
+    ],
+    [
+     -150,
+     160
+    ],
+    [
+     -150,
+     166
+    ],
+    [
+     -450,
+     166
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 4",
+   "points": [
+    [
+     -450,
+     180
+    ],
+    [
+     -150,
+     180
+    ],
+    [
+     -150,
+     186
+    ],
+    [
+     -450,
+     186
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 4",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 4",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 5",
+   "points": [
+    [
+     -450,
+     200
+    ],
+    [
+     -150,
+     200
+    ],
+    [
+     -150,
+     206
+    ],
+    [
+     -450,
+     206
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 5",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 5",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Vent Slat 6",
+   "points": [
+    [
+     -450,
+     220
+    ],
+    [
+     -150,
+     220
+    ],
+    [
+     -150,
+     226
+    ],
+    [
+     -450,
+     226
+    ]
+   ],
+   "start": 300,
+   "end": 302,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Vent Slat 6",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Vent Slat 6",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Vent Slat 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mains Switch",
+   "points": [
+    [
+     200,
+     80
+    ],
+    [
+     240,
+     80
+    ],
+    [
+     240,
+     130
+    ],
+    [
+     200,
+     130
+    ]
+   ],
+   "start": 27,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mains Switch",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mains Switch",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mains Switch",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Body",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_MedEq_Centrifuge_Bench.png"
+  }
+ ],
+ "values": {
+  "Footprint 600 x 600 mm": {
+   "value": "600x600",
+   "source_status": "assumed",
+   "source": "record size"
+  },
+  "Height 380 mm, 760 mm with lid open": {
+   "value": 380,
+   "source_status": "assumed",
+   "source": "typical refrigerated bench centrifuge"
+  },
+  "Supply 240 V, 1000 VA": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical refrigerated bench centrifuge"
+  }
+ }
+}

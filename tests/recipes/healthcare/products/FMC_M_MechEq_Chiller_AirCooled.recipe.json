@@ -1,0 +1,4347 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_Chiller_AirCooled",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW connectors are not in the record (E only). Reference: query: chiller air cooled mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=chiller+air+cooled+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "200kW_AirCooled"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Cost_Unit",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Geometry_Stage",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/IfcExportAs",
+   "type": "200kW_AirCooled",
+   "param": "IfcExportAs",
+   "value": "IfcChiller"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/Description",
+   "type": "200kW_AirCooled",
+   "param": "Description",
+   "value": "Air-cooled scroll chiller 200 to 400 kW, V-coil with top fans, compressors under the coils, insulated evaporator with CHW nozzles, end electrical bay"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/Keynote",
+   "type": "200kW_AirCooled",
+   "param": "Keynote",
+   "value": "H.CHW_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Keynote_Code",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Keynote_Code",
+   "value": "H.CHW_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Code_Description",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Code_Description",
+   "value": "Chiller AirCooled: Air-cooled chiller"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Code_Group",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Code_Group",
+   "value": "H.CHW"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/FMC_Role_Code",
+   "type": "200kW_AirCooled",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/Voltage",
+   "type": "200kW_AirCooled",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/Apparent Load",
+   "type": "200kW_AirCooled",
+   "param": "Apparent Load",
+   "value": 85000
+  },
+  {
+   "op": "set_type_value",
+   "name": "200kW_AirCooled/Number of Poles",
+   "type": "200kW_AirCooled",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_type",
+   "name": "400kW_AirCooled"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Cost_Unit",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Geometry_Stage",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/IfcExportAs",
+   "type": "400kW_AirCooled",
+   "param": "IfcExportAs",
+   "value": "IfcChiller"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/Description",
+   "type": "400kW_AirCooled",
+   "param": "Description",
+   "value": "Air-cooled scroll chiller 200 to 400 kW, V-coil with top fans, compressors under the coils, insulated evaporator with CHW nozzles, end electrical bay"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/Keynote",
+   "type": "400kW_AirCooled",
+   "param": "Keynote",
+   "value": "H.CHW_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Keynote_Code",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Keynote_Code",
+   "value": "H.CHW_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Code_Description",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Code_Description",
+   "value": "Chiller AirCooled: Air-cooled chiller"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Code_Group",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Code_Group",
+   "value": "H.CHW"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/FMC_Role_Code",
+   "type": "400kW_AirCooled",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/Voltage",
+   "type": "400kW_AirCooled",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/Apparent Load",
+   "type": "400kW_AirCooled",
+   "param": "Apparent Load",
+   "value": 170000
+  },
+  {
+   "op": "set_type_value",
+   "name": "400kW_AirCooled/Number of Poles",
+   "type": "400kW_AirCooled",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epw",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epw Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epw Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    200,
+    16,
+    46
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Alu",
+   "color": [
+    192,
+    192,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Alu Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_Anodised_Silver",
+   "param": "Alu Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Enamel",
+   "color": [
+    31,
+    35,
+    38
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Enamel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Paint_Gloss_Enamel",
+   "param": "Enamel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Copper_Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Lag",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Lag Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Insulation_Elastomeric_Black",
+   "param": "Lag Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Gi",
+   "color": [
+    158,
+    163,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Gi Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_GI_Pipe",
+   "param": "Gi Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Maintenance",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1880,
+     -1130
+    ],
+    [
+     1800,
+     -1130
+    ],
+    [
+     1800,
+     1100
+    ],
+    [
+     -1880,
+     1100
+    ]
+   ],
+   "start": 0,
+   "end": 2414.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame",
+   "points": [
+    [
+     -1800,
+     -1100
+    ],
+    [
+     1800,
+     -1100
+    ],
+    [
+     1800,
+     1100
+    ],
+    [
+     -1800,
+     1100
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Electrical Bay",
+   "points": [
+    [
+     1200,
+     -1100
+    ],
+    [
+     1800,
+     -1100
+    ],
+    [
+     1800,
+     1100
+    ],
+    [
+     1200,
+     1100
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Electrical Bay",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Electrical Bay",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Electrical Bay",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Door Left",
+   "points": [
+    [
+     1489.0,
+     400.0
+    ],
+    [
+     1491.3,
+     400.46
+    ],
+    [
+     1493.24,
+     401.76
+    ],
+    [
+     1494.54,
+     403.7
+    ],
+    [
+     1495.0,
+     406.0
+    ],
+    [
+     1495.0,
+     2144.0
+    ],
+    [
+     1494.54,
+     2146.3
+    ],
+    [
+     1493.24,
+     2148.24
+    ],
+    [
+     1491.3,
+     2149.54
+    ],
+    [
+     1489.0,
+     2150.0
+    ],
+    [
+     1226.0,
+     2150.0
+    ],
+    [
+     1223.7,
+     2149.54
+    ],
+    [
+     1221.76,
+     2148.24
+    ],
+    [
+     1220.46,
+     2146.3
+    ],
+    [
+     1220.0,
+     2144.0
+    ],
+    [
+     1220.0,
+     406.0
+    ],
+    [
+     1220.46,
+     403.7
+    ],
+    [
+     1221.76,
+     401.76
+    ],
+    [
+     1223.7,
+     400.46
+    ],
+    [
+     1226.0,
+     400.0
+    ]
+   ],
+   "start": 1100,
+   "end": 1112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Door Left",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Door Left",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Door Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Door Right",
+   "points": [
+    [
+     1774.0,
+     400.0
+    ],
+    [
+     1776.3,
+     400.46
+    ],
+    [
+     1778.24,
+     401.76
+    ],
+    [
+     1779.54,
+     403.7
+    ],
+    [
+     1780.0,
+     406.0
+    ],
+    [
+     1780.0,
+     2144.0
+    ],
+    [
+     1779.54,
+     2146.3
+    ],
+    [
+     1778.24,
+     2148.24
+    ],
+    [
+     1776.3,
+     2149.54
+    ],
+    [
+     1774.0,
+     2150.0
+    ],
+    [
+     1511.0,
+     2150.0
+    ],
+    [
+     1508.7,
+     2149.54
+    ],
+    [
+     1506.76,
+     2148.24
+    ],
+    [
+     1505.46,
+     2146.3
+    ],
+    [
+     1505.0,
+     2144.0
+    ],
+    [
+     1505.0,
+     406.0
+    ],
+    [
+     1505.46,
+     403.7
+    ],
+    [
+     1506.76,
+     401.76
+    ],
+    [
+     1508.7,
+     400.46
+    ],
+    [
+     1511.0,
+     400.0
+    ]
+   ],
+   "start": 1100,
+   "end": 1112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Door Right",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Door Right",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Door Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle Left",
+   "points": [
+    [
+     1476.0,
+     1150.0
+    ],
+    [
+     1477.53,
+     1150.3
+    ],
+    [
+     1478.83,
+     1151.17
+    ],
+    [
+     1479.7,
+     1152.47
+    ],
+    [
+     1480.0,
+     1154.0
+    ],
+    [
+     1480.0,
+     1296.0
+    ],
+    [
+     1479.7,
+     1297.53
+    ],
+    [
+     1478.83,
+     1298.83
+    ],
+    [
+     1477.53,
+     1299.7
+    ],
+    [
+     1476.0,
+     1300.0
+    ],
+    [
+     1464.0,
+     1300.0
+    ],
+    [
+     1462.47,
+     1299.7
+    ],
+    [
+     1461.17,
+     1298.83
+    ],
+    [
+     1460.3,
+     1297.53
+    ],
+    [
+     1460.0,
+     1296.0
+    ],
+    [
+     1460.0,
+     1154.0
+    ],
+    [
+     1460.3,
+     1152.47
+    ],
+    [
+     1461.17,
+     1151.17
+    ],
+    [
+     1462.47,
+     1150.3
+    ],
+    [
+     1464.0,
+     1150.0
+    ]
+   ],
+   "start": 1112,
+   "end": 1130,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle Left",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle Left",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle Left",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle Right",
+   "points": [
+    [
+     1536.0,
+     1150.0
+    ],
+    [
+     1537.53,
+     1150.3
+    ],
+    [
+     1538.83,
+     1151.17
+    ],
+    [
+     1539.7,
+     1152.47
+    ],
+    [
+     1540.0,
+     1154.0
+    ],
+    [
+     1540.0,
+     1296.0
+    ],
+    [
+     1539.7,
+     1297.53
+    ],
+    [
+     1538.83,
+     1298.83
+    ],
+    [
+     1537.53,
+     1299.7
+    ],
+    [
+     1536.0,
+     1300.0
+    ],
+    [
+     1524.0,
+     1300.0
+    ],
+    [
+     1522.47,
+     1299.7
+    ],
+    [
+     1521.17,
+     1298.83
+    ],
+    [
+     1520.3,
+     1297.53
+    ],
+    [
+     1520.0,
+     1296.0
+    ],
+    [
+     1520.0,
+     1154.0
+    ],
+    [
+     1520.3,
+     1152.47
+    ],
+    [
+     1521.17,
+     1151.17
+    ],
+    [
+     1522.47,
+     1150.3
+    ],
+    [
+     1524.0,
+     1150.0
+    ]
+   ],
+   "start": 1112,
+   "end": 1130,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle Right",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle Right",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle Right",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HMI Display",
+   "points": [
+    [
+     1436.0,
+     1500.0
+    ],
+    [
+     1437.53,
+     1500.3
+    ],
+    [
+     1438.83,
+     1501.17
+    ],
+    [
+     1439.7,
+     1502.47
+    ],
+    [
+     1440.0,
+     1504.0
+    ],
+    [
+     1440.0,
+     1606.0
+    ],
+    [
+     1439.7,
+     1607.53
+    ],
+    [
+     1438.83,
+     1608.83
+    ],
+    [
+     1437.53,
+     1609.7
+    ],
+    [
+     1436.0,
+     1610.0
+    ],
+    [
+     1294.0,
+     1610.0
+    ],
+    [
+     1292.47,
+     1609.7
+    ],
+    [
+     1291.17,
+     1608.83
+    ],
+    [
+     1290.3,
+     1607.53
+    ],
+    [
+     1290.0,
+     1606.0
+    ],
+    [
+     1290.0,
+     1504.0
+    ],
+    [
+     1290.3,
+     1502.47
+    ],
+    [
+     1291.17,
+     1501.17
+    ],
+    [
+     1292.47,
+     1500.3
+    ],
+    [
+     1294.0,
+     1500.0
+    ]
+   ],
+   "start": 1112,
+   "end": 1116,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HMI Display",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HMI Display",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HMI Display",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Main Isolator",
+   "points": [
+    [
+     1676.0,
+     1550.0
+    ],
+    [
+     1677.53,
+     1550.3
+    ],
+    [
+     1678.83,
+     1551.17
+    ],
+    [
+     1679.7,
+     1552.47
+    ],
+    [
+     1680.0,
+     1554.0
+    ],
+    [
+     1680.0,
+     1646.0
+    ],
+    [
+     1679.7,
+     1647.53
+    ],
+    [
+     1678.83,
+     1648.83
+    ],
+    [
+     1677.53,
+     1649.7
+    ],
+    [
+     1676.0,
+     1650.0
+    ],
+    [
+     1604.0,
+     1650.0
+    ],
+    [
+     1602.47,
+     1649.7
+    ],
+    [
+     1601.17,
+     1648.83
+    ],
+    [
+     1600.3,
+     1647.53
+    ],
+    [
+     1600.0,
+     1646.0
+    ],
+    [
+     1600.0,
+     1554.0
+    ],
+    [
+     1600.3,
+     1552.47
+    ],
+    [
+     1601.17,
+     1551.17
+    ],
+    [
+     1602.47,
+     1550.3
+    ],
+    [
+     1604.0,
+     1550.0
+    ]
+   ],
+   "start": 1112,
+   "end": 1124,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Main Isolator",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Main Isolator",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Main Isolator",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Coil Front",
+   "points": [
+    [
+     -1100,
+     2250
+    ],
+    [
+     -1040,
+     2250
+    ],
+    [
+     -240,
+     880
+    ],
+    [
+     -300,
+     880
+    ]
+   ],
+   "start": -1780,
+   "end": 1200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coil Front",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coil Front",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coil Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Coil Rear",
+   "points": [
+    [
+     1100,
+     2250
+    ],
+    [
+     1040,
+     2250
+    ],
+    [
+     240,
+     880
+    ],
+    [
+     300,
+     880
+    ]
+   ],
+   "start": -1780,
+   "end": 1200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coil Rear",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coil Rear",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coil Rear",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "V End Panel Left",
+   "points": [
+    [
+     -1040,
+     2250
+    ],
+    [
+     1040,
+     2250
+    ],
+    [
+     240,
+     880
+    ],
+    [
+     -240,
+     880
+    ]
+   ],
+   "start": -1800,
+   "end": -1780,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "V End Panel Left",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "V End Panel Left",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "V End Panel Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "V End Panel Right",
+   "points": [
+    [
+     -1040,
+     2250
+    ],
+    [
+     1040,
+     2250
+    ],
+    [
+     240,
+     880
+    ],
+    [
+     -240,
+     880
+    ]
+   ],
+   "start": 1180,
+   "end": 1200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "V End Panel Right",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "V End Panel Right",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "V End Panel Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "V Floor",
+   "points": [
+    [
+     -1780,
+     -300
+    ],
+    [
+     1200,
+     -300
+    ],
+    [
+     1200,
+     300
+    ],
+    [
+     -1780,
+     300
+    ]
+   ],
+   "start": 860,
+   "end": 880
+  },
+  {
+   "op": "set_subcategory",
+   "name": "V Floor",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "V Floor",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "V Floor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan Deck",
+   "points": [
+    [
+     -1800,
+     -1100
+    ],
+    [
+     1200,
+     -1100
+    ],
+    [
+     1200,
+     1100
+    ],
+    [
+     -1800,
+     1100
+    ]
+   ],
+   "start": 2250,
+   "end": 2280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan Deck",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan Deck",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan Deck",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Front 1",
+   "points": [
+    [
+     -1800,
+     -1100
+    ],
+    [
+     -1740,
+     -1100
+    ],
+    [
+     -1740,
+     -1040
+    ],
+    [
+     -1800,
+     -1040
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Front 1",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Front 1",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Front 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Front 2",
+   "points": [
+    [
+     -330,
+     -1100
+    ],
+    [
+     -270,
+     -1100
+    ],
+    [
+     -270,
+     -1040
+    ],
+    [
+     -330,
+     -1040
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Front 2",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Front 2",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Front 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Front 3",
+   "points": [
+    [
+     1140,
+     -1100
+    ],
+    [
+     1200,
+     -1100
+    ],
+    [
+     1200,
+     -1040
+    ],
+    [
+     1140,
+     -1040
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Front 3",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Front 3",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Front 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Rear 1",
+   "points": [
+    [
+     -1800,
+     1040
+    ],
+    [
+     -1740,
+     1040
+    ],
+    [
+     -1740,
+     1100
+    ],
+    [
+     -1800,
+     1100
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Rear 1",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Rear 1",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Rear 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Rear 2",
+   "points": [
+    [
+     -330,
+     1040
+    ],
+    [
+     -270,
+     1040
+    ],
+    [
+     -270,
+     1100
+    ],
+    [
+     -330,
+     1100
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Rear 2",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Rear 2",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Rear 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Rear 3",
+   "points": [
+    [
+     1140,
+     1040
+    ],
+    [
+     1200,
+     1040
+    ],
+    [
+     1200,
+     1100
+    ],
+    [
+     1140,
+     1100
+    ]
+   ],
+   "start": 150,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Rear 3",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Rear 3",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Rear 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor 1",
+   "points": [
+    [
+     -990.0,
+     -650.0
+    ],
+    [
+     -995.45,
+     -608.59
+    ],
+    [
+     -1011.44,
+     -570.0
+    ],
+    [
+     -1036.86,
+     -536.86
+    ],
+    [
+     -1070.0,
+     -511.44
+    ],
+    [
+     -1108.59,
+     -495.45
+    ],
+    [
+     -1150.0,
+     -490.0
+    ],
+    [
+     -1191.41,
+     -495.45
+    ],
+    [
+     -1230.0,
+     -511.44
+    ],
+    [
+     -1263.14,
+     -536.86
+    ],
+    [
+     -1288.56,
+     -570.0
+    ],
+    [
+     -1304.55,
+     -608.59
+    ],
+    [
+     -1310.0,
+     -650.0
+    ],
+    [
+     -1304.55,
+     -691.41
+    ],
+    [
+     -1288.56,
+     -730.0
+    ],
+    [
+     -1263.14,
+     -763.14
+    ],
+    [
+     -1230.0,
+     -788.56
+    ],
+    [
+     -1191.41,
+     -804.55
+    ],
+    [
+     -1150.0,
+     -810.0
+    ],
+    [
+     -1108.59,
+     -804.55
+    ],
+    [
+     -1070.0,
+     -788.56
+    ],
+    [
+     -1036.86,
+     -763.14
+    ],
+    [
+     -1011.44,
+     -730.0
+    ],
+    [
+     -995.45,
+     -691.41
+    ]
+   ],
+   "start": 180,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor 1",
+   "subcategory": "Enamel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor 1",
+   "param": "Enamel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor 2",
+   "points": [
+    [
+     -240.0,
+     -650.0
+    ],
+    [
+     -245.45,
+     -608.59
+    ],
+    [
+     -261.44,
+     -570.0
+    ],
+    [
+     -286.86,
+     -536.86
+    ],
+    [
+     -320.0,
+     -511.44
+    ],
+    [
+     -358.59,
+     -495.45
+    ],
+    [
+     -400.0,
+     -490.0
+    ],
+    [
+     -441.41,
+     -495.45
+    ],
+    [
+     -480.0,
+     -511.44
+    ],
+    [
+     -513.14,
+     -536.86
+    ],
+    [
+     -538.56,
+     -570.0
+    ],
+    [
+     -554.55,
+     -608.59
+    ],
+    [
+     -560.0,
+     -650.0
+    ],
+    [
+     -554.55,
+     -691.41
+    ],
+    [
+     -538.56,
+     -730.0
+    ],
+    [
+     -513.14,
+     -763.14
+    ],
+    [
+     -480.0,
+     -788.56
+    ],
+    [
+     -441.41,
+     -804.55
+    ],
+    [
+     -400.0,
+     -810.0
+    ],
+    [
+     -358.59,
+     -804.55
+    ],
+    [
+     -320.0,
+     -788.56
+    ],
+    [
+     -286.86,
+     -763.14
+    ],
+    [
+     -261.44,
+     -730.0
+    ],
+    [
+     -245.45,
+     -691.41
+    ]
+   ],
+   "start": 180,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor 2",
+   "subcategory": "Enamel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor 2",
+   "param": "Enamel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Compressor Dome 1",
+   "profile": [
+    [
+     0,
+     760
+    ],
+    [
+     160,
+     760
+    ],
+    [
+     130,
+     830
+    ],
+    [
+     70,
+     860
+    ],
+    [
+     0,
+     866
+    ]
+   ],
+   "axis_at": [
+    -1150,
+    -650
+   ],
+   "axis": "z",
+   "subcategory": "Enamel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Dome 1",
+   "param": "Enamel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Dome 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Compressor Dome 2",
+   "profile": [
+    [
+     0,
+     760
+    ],
+    [
+     160,
+     760
+    ],
+    [
+     130,
+     830
+    ],
+    [
+     70,
+     860
+    ],
+    [
+     0,
+     866
+    ]
+   ],
+   "axis_at": [
+    -400,
+    -650
+   ],
+   "axis": "z",
+   "subcategory": "Enamel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Dome 2",
+   "param": "Enamel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Dome 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Suction Header",
+   "points": [
+    [
+     -610.0,
+     900.0
+    ],
+    [
+     -611.36,
+     910.35
+    ],
+    [
+     -615.36,
+     920.0
+    ],
+    [
+     -621.72,
+     928.28
+    ],
+    [
+     -630.0,
+     934.64
+    ],
+    [
+     -639.65,
+     938.64
+    ],
+    [
+     -650.0,
+     940.0
+    ],
+    [
+     -660.35,
+     938.64
+    ],
+    [
+     -670.0,
+     934.64
+    ],
+    [
+     -678.28,
+     928.28
+    ],
+    [
+     -684.64,
+     920.0
+    ],
+    [
+     -688.64,
+     910.35
+    ],
+    [
+     -690.0,
+     900.0
+    ],
+    [
+     -688.64,
+     889.65
+    ],
+    [
+     -684.64,
+     880.0
+    ],
+    [
+     -678.28,
+     871.72
+    ],
+    [
+     -670.0,
+     865.36
+    ],
+    [
+     -660.35,
+     861.36
+    ],
+    [
+     -650.0,
+     860.0
+    ],
+    [
+     -639.65,
+     861.36
+    ],
+    [
+     -630.0,
+     865.36
+    ],
+    [
+     -621.72,
+     871.72
+    ],
+    [
+     -615.36,
+     880.0
+    ],
+    [
+     -611.36,
+     889.65
+    ]
+   ],
+   "start": -1250,
+   "end": -300,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Suction Header",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Suction Header",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Suction Header",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Evaporator",
+   "points": [
+    [
+     860.0,
+     520.0
+    ],
+    [
+     851.14,
+     587.29
+    ],
+    [
+     825.17,
+     650.0
+    ],
+    [
+     783.85,
+     703.85
+    ],
+    [
+     730.0,
+     745.17
+    ],
+    [
+     667.29,
+     771.14
+    ],
+    [
+     600.0,
+     780.0
+    ],
+    [
+     532.71,
+     771.14
+    ],
+    [
+     470.0,
+     745.17
+    ],
+    [
+     416.15,
+     703.85
+    ],
+    [
+     374.83,
+     650.0
+    ],
+    [
+     348.86,
+     587.29
+    ],
+    [
+     340.0,
+     520.0
+    ],
+    [
+     348.86,
+     452.71
+    ],
+    [
+     374.83,
+     390.0
+    ],
+    [
+     416.15,
+     336.15
+    ],
+    [
+     470.0,
+     294.83
+    ],
+    [
+     532.71,
+     268.86
+    ],
+    [
+     600.0,
+     260.0
+    ],
+    [
+     667.29,
+     268.86
+    ],
+    [
+     730.0,
+     294.83
+    ],
+    [
+     783.85,
+     336.15
+    ],
+    [
+     825.17,
+     390.0
+    ],
+    [
+     851.14,
+     452.71
+    ]
+   ],
+   "start": -1600,
+   "end": 900,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Evaporator",
+   "subcategory": "Lag"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Evaporator",
+   "param": "Lag Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Evaporator",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "CHW Inlet",
+   "points": [
+    [
+     575.0,
+     520.0
+    ],
+    [
+     572.44,
+     539.41
+    ],
+    [
+     564.95,
+     557.5
+    ],
+    [
+     553.03,
+     573.03
+    ],
+    [
+     537.5,
+     584.95
+    ],
+    [
+     519.41,
+     592.44
+    ],
+    [
+     500.0,
+     595.0
+    ],
+    [
+     480.59,
+     592.44
+    ],
+    [
+     462.5,
+     584.95
+    ],
+    [
+     446.97,
+     573.03
+    ],
+    [
+     435.05,
+     557.5
+    ],
+    [
+     427.56,
+     539.41
+    ],
+    [
+     425.0,
+     520.0
+    ],
+    [
+     427.56,
+     500.59
+    ],
+    [
+     435.05,
+     482.5
+    ],
+    [
+     446.97,
+     466.97
+    ],
+    [
+     462.5,
+     455.05
+    ],
+    [
+     480.59,
+     447.56
+    ],
+    [
+     500.0,
+     445.0
+    ],
+    [
+     519.41,
+     447.56
+    ],
+    [
+     537.5,
+     455.05
+    ],
+    [
+     553.03,
+     466.97
+    ],
+    [
+     564.95,
+     482.5
+    ],
+    [
+     572.44,
+     500.59
+    ]
+   ],
+   "start": -1880,
+   "end": -1600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "CHW Inlet",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CHW Inlet",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CHW Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "CHW Outlet",
+   "points": [
+    [
+     795.0,
+     520.0
+    ],
+    [
+     792.44,
+     539.41
+    ],
+    [
+     784.95,
+     557.5
+    ],
+    [
+     773.03,
+     573.03
+    ],
+    [
+     757.5,
+     584.95
+    ],
+    [
+     739.41,
+     592.44
+    ],
+    [
+     720.0,
+     595.0
+    ],
+    [
+     700.59,
+     592.44
+    ],
+    [
+     682.5,
+     584.95
+    ],
+    [
+     666.97,
+     573.03
+    ],
+    [
+     655.05,
+     557.5
+    ],
+    [
+     647.56,
+     539.41
+    ],
+    [
+     645.0,
+     520.0
+    ],
+    [
+     647.56,
+     500.59
+    ],
+    [
+     655.05,
+     482.5
+    ],
+    [
+     666.97,
+     466.97
+    ],
+    [
+     682.5,
+     455.05
+    ],
+    [
+     700.59,
+     447.56
+    ],
+    [
+     720.0,
+     445.0
+    ],
+    [
+     739.41,
+     447.56
+    ],
+    [
+     757.5,
+     455.05
+    ],
+    [
+     773.03,
+     466.97
+    ],
+    [
+     784.95,
+     482.5
+    ],
+    [
+     792.44,
+     500.59
+    ]
+   ],
+   "start": -1880,
+   "end": -1600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "CHW Outlet",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CHW Outlet",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CHW Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "CHW Inlet Flange",
+   "profile": [
+    [
+     75,
+     -1880
+    ],
+    [
+     115,
+     -1880
+    ],
+    [
+     115,
+     -1860
+    ],
+    [
+     75,
+     -1860
+    ]
+   ],
+   "axis_at": [
+    500,
+    520
+   ],
+   "axis": "x",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CHW Inlet Flange",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CHW Inlet Flange",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "CHW Outlet Flange",
+   "profile": [
+    [
+     75,
+     -1880
+    ],
+    [
+     115,
+     -1880
+    ],
+    [
+     115,
+     -1860
+    ],
+    [
+     75,
+     -1860
+    ]
+   ],
+   "axis_at": [
+    720,
+    520
+   ],
+   "axis": "x",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CHW Outlet Flange",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CHW Outlet Flange",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 1 Shroud",
+   "profile": [
+    [
+     420,
+     2280
+    ],
+    [
+     434,
+     2280
+    ],
+    [
+     434,
+     2406.0
+    ],
+    [
+     420,
+     2406.0
+    ]
+   ],
+   "axis_at": [
+    -1300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Shroud",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Shroud",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 1 Guard Outer",
+   "profile": [
+    [
+     412,
+     2406.0
+    ],
+    [
+     424,
+     2406.0
+    ],
+    [
+     424,
+     2414.0
+    ],
+    [
+     412,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    -1300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Guard Outer",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Guard Outer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 1 Guard Inner",
+   "profile": [
+    [
+     205.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2414.0
+    ],
+    [
+     205.0,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    -1300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Guard Inner",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Guard Inner",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 1 Guard Bar",
+   "points": [
+    [
+     -1720,
+     -4
+    ],
+    [
+     -880,
+     -4
+    ],
+    [
+     -880,
+     4
+    ],
+    [
+     -1720,
+     4
+    ]
+   ],
+   "start": 2406.0,
+   "end": 2414.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 1 Guard Bar",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Guard Bar",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Guard Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 1 Hub",
+   "points": [
+    [
+     -1232.8,
+     0.0
+    ],
+    [
+     -1235.09,
+     17.39
+    ],
+    [
+     -1241.8,
+     33.6
+    ],
+    [
+     -1252.48,
+     47.52
+    ],
+    [
+     -1266.4,
+     58.2
+    ],
+    [
+     -1282.61,
+     64.91
+    ],
+    [
+     -1300.0,
+     67.2
+    ],
+    [
+     -1317.39,
+     64.91
+    ],
+    [
+     -1333.6,
+     58.2
+    ],
+    [
+     -1347.52,
+     47.52
+    ],
+    [
+     -1358.2,
+     33.6
+    ],
+    [
+     -1364.91,
+     17.39
+    ],
+    [
+     -1367.2,
+     0.0
+    ],
+    [
+     -1364.91,
+     -17.39
+    ],
+    [
+     -1358.2,
+     -33.6
+    ],
+    [
+     -1347.52,
+     -47.52
+    ],
+    [
+     -1333.6,
+     -58.2
+    ],
+    [
+     -1317.39,
+     -64.91
+    ],
+    [
+     -1300.0,
+     -67.2
+    ],
+    [
+     -1282.61,
+     -64.91
+    ],
+    [
+     -1266.4,
+     -58.2
+    ],
+    [
+     -1252.48,
+     -47.52
+    ],
+    [
+     -1241.8,
+     -33.6
+    ],
+    [
+     -1235.09,
+     -17.39
+    ]
+   ],
+   "start": 2324.1,
+   "end": 2374.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 1 Hub",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Hub",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 1 Blade 1",
+   "points": [
+    [
+     -1147.38,
+     359.55
+    ],
+    [
+     -1222.13,
+     382.76
+    ],
+    [
+     -1300.0,
+     390.6
+    ],
+    [
+     -1377.87,
+     382.76
+    ],
+    [
+     -1452.62,
+     359.55
+    ],
+    [
+     -1327.12,
+     56.86
+    ],
+    [
+     -1302.75,
+     62.94
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 1 Blade 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Blade 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Blade 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 1 Blade 2",
+   "points": [
+    [
+     -1687.69,
+     -47.6
+    ],
+    [
+     -1670.42,
+     -123.94
+    ],
+    [
+     -1638.27,
+     -195.3
+    ],
+    [
+     -1592.54,
+     -258.82
+    ],
+    [
+     -1535.07,
+     -311.95
+    ],
+    [
+     -1335.68,
+     -51.92
+    ],
+    [
+     -1353.13,
+     -33.85
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 1 Blade 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Blade 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Blade 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 1 Blade 3",
+   "points": [
+    [
+     -1064.93,
+     -311.95
+    ],
+    [
+     -1007.46,
+     -258.82
+    ],
+    [
+     -961.73,
+     -195.3
+    ],
+    [
+     -929.58,
+     -123.94
+    ],
+    [
+     -912.31,
+     -47.6
+    ],
+    [
+     -1237.19,
+     -4.94
+    ],
+    [
+     -1244.12,
+     -29.09
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 1 Blade 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 1 Blade 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 1 Blade 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 2 Shroud",
+   "profile": [
+    [
+     420,
+     2280
+    ],
+    [
+     434,
+     2280
+    ],
+    [
+     434,
+     2406.0
+    ],
+    [
+     420,
+     2406.0
+    ]
+   ],
+   "axis_at": [
+    -300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Shroud",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Shroud",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 2 Guard Outer",
+   "profile": [
+    [
+     412,
+     2406.0
+    ],
+    [
+     424,
+     2406.0
+    ],
+    [
+     424,
+     2414.0
+    ],
+    [
+     412,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    -300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Guard Outer",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Guard Outer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 2 Guard Inner",
+   "profile": [
+    [
+     205.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2414.0
+    ],
+    [
+     205.0,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    -300,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Guard Inner",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Guard Inner",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 2 Guard Bar",
+   "points": [
+    [
+     -720,
+     -4
+    ],
+    [
+     120,
+     -4
+    ],
+    [
+     120,
+     4
+    ],
+    [
+     -720,
+     4
+    ]
+   ],
+   "start": 2406.0,
+   "end": 2414.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 2 Guard Bar",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Guard Bar",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Guard Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 2 Hub",
+   "points": [
+    [
+     -232.8,
+     0.0
+    ],
+    [
+     -235.09,
+     17.39
+    ],
+    [
+     -241.8,
+     33.6
+    ],
+    [
+     -252.48,
+     47.52
+    ],
+    [
+     -266.4,
+     58.2
+    ],
+    [
+     -282.61,
+     64.91
+    ],
+    [
+     -300.0,
+     67.2
+    ],
+    [
+     -317.39,
+     64.91
+    ],
+    [
+     -333.6,
+     58.2
+    ],
+    [
+     -347.52,
+     47.52
+    ],
+    [
+     -358.2,
+     33.6
+    ],
+    [
+     -364.91,
+     17.39
+    ],
+    [
+     -367.2,
+     0.0
+    ],
+    [
+     -364.91,
+     -17.39
+    ],
+    [
+     -358.2,
+     -33.6
+    ],
+    [
+     -347.52,
+     -47.52
+    ],
+    [
+     -333.6,
+     -58.2
+    ],
+    [
+     -317.39,
+     -64.91
+    ],
+    [
+     -300.0,
+     -67.2
+    ],
+    [
+     -282.61,
+     -64.91
+    ],
+    [
+     -266.4,
+     -58.2
+    ],
+    [
+     -252.48,
+     -47.52
+    ],
+    [
+     -241.8,
+     -33.6
+    ],
+    [
+     -235.09,
+     -17.39
+    ]
+   ],
+   "start": 2324.1,
+   "end": 2374.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 2 Hub",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Hub",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 2 Blade 1",
+   "points": [
+    [
+     -147.38,
+     359.55
+    ],
+    [
+     -222.13,
+     382.76
+    ],
+    [
+     -300.0,
+     390.6
+    ],
+    [
+     -377.87,
+     382.76
+    ],
+    [
+     -452.62,
+     359.55
+    ],
+    [
+     -327.12,
+     56.86
+    ],
+    [
+     -302.75,
+     62.94
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 2 Blade 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Blade 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Blade 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 2 Blade 2",
+   "points": [
+    [
+     -687.69,
+     -47.6
+    ],
+    [
+     -670.42,
+     -123.94
+    ],
+    [
+     -638.27,
+     -195.3
+    ],
+    [
+     -592.54,
+     -258.82
+    ],
+    [
+     -535.07,
+     -311.95
+    ],
+    [
+     -335.68,
+     -51.92
+    ],
+    [
+     -353.13,
+     -33.85
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 2 Blade 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Blade 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Blade 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 2 Blade 3",
+   "points": [
+    [
+     -64.93,
+     -311.95
+    ],
+    [
+     -7.46,
+     -258.82
+    ],
+    [
+     38.27,
+     -195.3
+    ],
+    [
+     70.42,
+     -123.94
+    ],
+    [
+     87.69,
+     -47.6
+    ],
+    [
+     -237.19,
+     -4.94
+    ],
+    [
+     -244.12,
+     -29.09
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 2 Blade 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 2 Blade 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 2 Blade 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 3 Shroud",
+   "profile": [
+    [
+     420,
+     2280
+    ],
+    [
+     434,
+     2280
+    ],
+    [
+     434,
+     2406.0
+    ],
+    [
+     420,
+     2406.0
+    ]
+   ],
+   "axis_at": [
+    700,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Shroud",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Shroud",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 3 Guard Outer",
+   "profile": [
+    [
+     412,
+     2406.0
+    ],
+    [
+     424,
+     2406.0
+    ],
+    [
+     424,
+     2414.0
+    ],
+    [
+     412,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    700,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Guard Outer",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Guard Outer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan 3 Guard Inner",
+   "profile": [
+    [
+     205.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2406.0
+    ],
+    [
+     215.0,
+     2414.0
+    ],
+    [
+     205.0,
+     2414.0
+    ]
+   ],
+   "axis_at": [
+    700,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Guard Inner",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Guard Inner",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 3 Guard Bar",
+   "points": [
+    [
+     280,
+     -4
+    ],
+    [
+     1120,
+     -4
+    ],
+    [
+     1120,
+     4
+    ],
+    [
+     280,
+     4
+    ]
+   ],
+   "start": 2406.0,
+   "end": 2414.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 3 Guard Bar",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Guard Bar",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Guard Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 3 Hub",
+   "points": [
+    [
+     767.2,
+     0.0
+    ],
+    [
+     764.91,
+     17.39
+    ],
+    [
+     758.2,
+     33.6
+    ],
+    [
+     747.52,
+     47.52
+    ],
+    [
+     733.6,
+     58.2
+    ],
+    [
+     717.39,
+     64.91
+    ],
+    [
+     700.0,
+     67.2
+    ],
+    [
+     682.61,
+     64.91
+    ],
+    [
+     666.4,
+     58.2
+    ],
+    [
+     652.48,
+     47.52
+    ],
+    [
+     641.8,
+     33.6
+    ],
+    [
+     635.09,
+     17.39
+    ],
+    [
+     632.8,
+     0.0
+    ],
+    [
+     635.09,
+     -17.39
+    ],
+    [
+     641.8,
+     -33.6
+    ],
+    [
+     652.48,
+     -47.52
+    ],
+    [
+     666.4,
+     -58.2
+    ],
+    [
+     682.61,
+     -64.91
+    ],
+    [
+     700.0,
+     -67.2
+    ],
+    [
+     717.39,
+     -64.91
+    ],
+    [
+     733.6,
+     -58.2
+    ],
+    [
+     747.52,
+     -47.52
+    ],
+    [
+     758.2,
+     -33.6
+    ],
+    [
+     764.91,
+     -17.39
+    ]
+   ],
+   "start": 2324.1,
+   "end": 2374.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 3 Hub",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Hub",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 3 Blade 1",
+   "points": [
+    [
+     852.62,
+     359.55
+    ],
+    [
+     777.87,
+     382.76
+    ],
+    [
+     700.0,
+     390.6
+    ],
+    [
+     622.13,
+     382.76
+    ],
+    [
+     547.38,
+     359.55
+    ],
+    [
+     672.88,
+     56.86
+    ],
+    [
+     697.25,
+     62.94
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 3 Blade 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Blade 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Blade 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 3 Blade 2",
+   "points": [
+    [
+     312.31,
+     -47.6
+    ],
+    [
+     329.58,
+     -123.94
+    ],
+    [
+     361.73,
+     -195.3
+    ],
+    [
+     407.46,
+     -258.82
+    ],
+    [
+     464.93,
+     -311.95
+    ],
+    [
+     664.32,
+     -51.92
+    ],
+    [
+     646.87,
+     -33.85
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 3 Blade 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Blade 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Blade 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fan 3 Blade 3",
+   "points": [
+    [
+     935.07,
+     -311.95
+    ],
+    [
+     992.54,
+     -258.82
+    ],
+    [
+     1038.27,
+     -195.3
+    ],
+    [
+     1070.42,
+     -123.94
+    ],
+    [
+     1087.69,
+     -47.6
+    ],
+    [
+     762.81,
+     -4.94
+    ],
+    [
+     755.88,
+     -29.09
+    ]
+   ],
+   "start": 2343.0,
+   "end": 2348.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fan 3 Blade 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan 3 Blade 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan 3 Blade 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Coil Airflow Space",
+   "points": [
+    [
+     -1800,
+     -2600
+    ],
+    [
+     1800,
+     -2600
+    ],
+    [
+     1800,
+     -1100
+    ],
+    [
+     -1800,
+     -1100
+    ]
+   ],
+   "start": 0,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coil Airflow Space",
+   "subcategory": "Clearance Maintenance"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coil Airflow Space",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Electrical Bay",
+   "side": "right"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_Chiller_AirCooled.png"
+  }
+ ],
+ "values": {
+  "Unit 3600 x 2200 x 2400 mm (200 kW)": {
+   "value": "3600x2200x2400",
+   "source_status": "assumed",
+   "source": "typical 200 kW air-cooled scroll chiller"
+  },
+  "Cooling 200 / 400 kW": {
+   "value": "200/400kW",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 85 / 170 kVA, 415 V 3-phase": {
+   "value": "85/170kVA",
+   "source_status": "assumed",
+   "source": "EER about 2.9, engineer confirms"
+  },
+  "Clearance 1500 mm sides, open above": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "manufacturer practice"
+  }
+ }
+}

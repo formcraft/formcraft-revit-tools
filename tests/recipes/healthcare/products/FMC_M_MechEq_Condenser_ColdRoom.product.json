@@ -1,0 +1,723 @@
+{
+ "family": "FMC_M_MechEq_Condenser_ColdRoom",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Cold room air-cooled condensing unit 2 to 5 kW, open-frame compressor and receiver, fan and finned coil housing, filter drier, sight glass, electrical box",
+ "ifc": "IfcCondenser",
+ "keynote": "H.CLD_00",
+ "types": [
+  {
+   "name": "2kW_CondUnit",
+   "values": {
+    "Apparent Load": 1500,
+    "Voltage": 240,
+    "Number of Poles": 1
+   }
+  },
+  {
+   "name": "5kW_CondUnit",
+   "values": {
+    "Apparent Load": 3500,
+    "Voltage": 415,
+    "Number of Poles": 3
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 1500,
+  "Number of Poles": 1
+ },
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "black": "FMC_Plastic_ABS_Black",
+  "brass": "FMC_Metal_Brass_Polished",
+  "copper": "FMC_Metal_Copper_Pipe",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "enamel": "FMC_Paint_Gloss_Enamel",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "glass": "FMC_Glass_Clear",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "rubber": "FMC_Rubber_Black"
+ },
+ "reference": {
+  "query": "condenser cold room mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=condenser+cold+room+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base Plate",
+   "shape": "box",
+   "at": [
+    -500,
+    -300,
+    0,
+    500,
+    300,
+    30
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Rubber Foot Front",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -450,
+    -250
+   ],
+   "r": 20,
+   "z": [
+    -15,
+    0
+   ],
+   "mat": "rubber",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rubber Foot Rear",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -450,
+    250
+   ],
+   "r": 20,
+   "z": [
+    -15,
+    0
+   ],
+   "mat": "rubber",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Coil Housing",
+   "shape": "box",
+   "at": [
+    0,
+    -300,
+    30,
+    500,
+    300,
+    700
+   ],
+   "mat": "epw",
+   "r": 6
+  },
+  {
+   "n": "Coil",
+   "shape": "box",
+   "at": [
+    10,
+    300,
+    60,
+    490,
+    306,
+    680
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Coil Guard Bar",
+   "shape": "box",
+   "at": [
+    10,
+    306,
+    90,
+    490,
+    310,
+    96
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     0,
+     100
+    ]
+   }
+  },
+  {
+   "n": "Compressor Mount",
+   "shape": "box",
+   "at": [
+    -420,
+    -200,
+    30,
+    -120,
+    100,
+    50
+   ],
+   "mat": "rubber"
+  },
+  {
+   "n": "Compressor",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -270,
+    -50
+   ],
+   "r": 120,
+   "z": [
+    50,
+    330
+   ],
+   "mat": "enamel"
+  },
+  {
+   "n": "Compressor Dome",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -270,
+    -50
+   ],
+   "profile": [
+    [
+     0,
+     330
+    ],
+    [
+     120,
+     330
+    ],
+    [
+     100,
+     385
+    ],
+    [
+     55,
+     405
+    ],
+    [
+     0,
+     410
+    ]
+   ],
+   "mat": "enamel"
+  },
+  {
+   "n": "Compressor Terminal Cover",
+   "shape": "box",
+   "at": [
+    -310,
+    -185,
+    230,
+    -230,
+    -160,
+    300
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Receiver",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    180,
+    110
+   ],
+   "r": 65,
+   "x": [
+    -470,
+    -60
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Filter Drier",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -80,
+    300
+   ],
+   "r": 22,
+   "x": [
+    -380,
+    -180
+   ],
+   "mat": "copper"
+  },
+  {
+   "n": "Sight Glass",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -80,
+    300
+   ],
+   "r": 14,
+   "x": [
+    -170,
+    -140
+   ],
+   "mat": "glass",
+   "lod": "f"
+  },
+  {
+   "n": "Suction Line",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -200,
+    -50
+   ],
+   "r": 11,
+   "z": [
+    400,
+    520
+   ],
+   "mat": "copper"
+  },
+  {
+   "n": "Suction Riser",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -50,
+    520
+   ],
+   "r": 11,
+   "x": [
+    -200,
+    0
+   ],
+   "mat": "copper"
+  },
+  {
+   "n": "Discharge Line",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -120,
+    40
+   ],
+   "r": 8,
+   "z": [
+    200,
+    460
+   ],
+   "mat": "copper"
+  },
+  {
+   "n": "Discharge Riser",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    40,
+    460
+   ],
+   "r": 8,
+   "x": [
+    -120,
+    0
+   ],
+   "mat": "copper"
+  },
+  {
+   "n": "Service Valve",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -440,
+    120
+   ],
+   "r": 12,
+   "y": [
+    -330,
+    -300
+   ],
+   "mat": "brass",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     90,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Electrical Box",
+   "shape": "box",
+   "at": [
+    -200,
+    -300,
+    430,
+    -20,
+    -220,
+    650
+   ],
+   "mat": "grey",
+   "r": 4
+  },
+  {
+   "n": "HP LP Switch",
+   "shape": "fbox",
+   "at": [
+    -180,
+    -310,
+    360,
+    -110,
+    -300,
+    410
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Opening",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    250,
+    380
+   ],
+   "r": 205,
+   "y": [
+    -301.5,
+    -300
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Fan Bezel",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    250,
+    380
+   ],
+   "profile": [
+    [
+     205,
+     -308
+    ],
+    [
+     223,
+     -308
+    ],
+    [
+     223,
+     -300
+    ],
+    [
+     205,
+     -300
+    ]
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Fan Hub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    250,
+    380
+   ],
+   "r": 36.9,
+   "y": [
+    -318,
+    -301.5
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Fan Blade 1",
+   "shape": "front",
+   "pts": [
+    [
+     329.71,
+     550.93
+    ],
+    [
+     290.82,
+     564.13
+    ],
+    [
+     250.0,
+     568.6
+    ],
+    [
+     209.18,
+     564.13
+    ],
+    [
+     170.29,
+     550.93
+    ],
+    [
+     235.36,
+     409.35
+    ],
+    [
+     249.14,
+     412.79
+    ]
+   ],
+   "y": [
+    -307,
+    -304
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Blade 2",
+   "shape": "front",
+   "pts": [
+    [
+     79.07,
+     459.71
+    ],
+    [
+     65.87,
+     420.82
+    ],
+    [
+     61.4,
+     380.0
+    ],
+    [
+     65.87,
+     339.18
+    ],
+    [
+     79.07,
+     300.29
+    ],
+    [
+     220.65,
+     365.36
+    ],
+    [
+     217.21,
+     379.14
+    ]
+   ],
+   "y": [
+    -307,
+    -304
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Blade 3",
+   "shape": "front",
+   "pts": [
+    [
+     170.29,
+     209.07
+    ],
+    [
+     209.18,
+     195.87
+    ],
+    [
+     250.0,
+     191.4
+    ],
+    [
+     290.82,
+     195.87
+    ],
+    [
+     329.71,
+     209.07
+    ],
+    [
+     264.64,
+     350.65
+    ],
+    [
+     250.86,
+     347.21
+    ]
+   ],
+   "y": [
+    -307,
+    -304
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Blade 4",
+   "shape": "front",
+   "pts": [
+    [
+     420.93,
+     300.29
+    ],
+    [
+     434.13,
+     339.18
+    ],
+    [
+     438.6,
+     380.0
+    ],
+    [
+     434.13,
+     420.82
+    ],
+    [
+     420.93,
+     459.71
+    ],
+    [
+     279.35,
+     394.64
+    ],
+    [
+     282.79,
+     380.86
+    ]
+   ],
+   "y": [
+    -307,
+    -304
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Guard Outer",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    250,
+    380
+   ],
+   "profile": [
+    [
+     199,
+     -316
+    ],
+    [
+     207,
+     -316
+    ],
+    [
+     207,
+     -312
+    ],
+    [
+     199,
+     -312
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Guard Inner",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    250,
+    380
+   ],
+   "profile": [
+    [
+     58.5,
+     -316
+    ],
+    [
+     64.5,
+     -316
+    ],
+    [
+     64.5,
+     -312
+    ],
+    [
+     58.5,
+     -312
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Guard Bar H",
+   "shape": "fbox",
+   "at": [
+    45,
+    -315,
+    377,
+    455,
+    -312,
+    383
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Fan Guard Bar V",
+   "shape": "fbox",
+   "at": [
+    247,
+    -315,
+    175,
+    253,
+    -312,
+    585
+   ],
+   "mat": "dark",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Electrical Box",
+   "side": "front"
+  }
+ ],
+ "values": {
+  "Unit 1000 x 600 x 700 mm": {
+   "value": "1000x600x700",
+   "source_status": "assumed",
+   "source": "typical 2-5 kW condensing unit"
+  },
+  "Refrigeration 2 / 5 kW at -10 C evap": {
+   "value": "2/5kW",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 1.5 kVA 240 V / 3.5 kVA 415 V": {
+   "value": "1.5/3.5kVA",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: base plate on rubber feet, compressor with dome and terminal cover on a mount, receiver, filter drier and sight glass, copper risers, service valves, coil housing with front fan and guard, rear coil with bars, electrical box and pressure switch."
+}

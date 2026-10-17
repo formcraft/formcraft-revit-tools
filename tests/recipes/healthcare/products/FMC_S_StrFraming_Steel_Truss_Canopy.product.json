@@ -1,0 +1,216 @@
+{
+ "family": "FMC_S_StrFraming_Steel_Truss_Canopy",
+ "category": "Structural Framing",
+ "template": "Metric Generic Model.rft",
+ "desc": "Ambulance canopy truss, Warren girder of square hollow sections, painted, with bearing plates and purlin cleats",
+ "ifc": "IfcMember",
+ "keynote": "A.CAN_02",
+ "types": [
+  {
+   "name": "6000_Truss",
+   "desc": "canopy truss 6.0 m span"
+  },
+  {
+   "name": "9000_Truss",
+   "desc": "canopy truss 9.0 m span"
+  }
+ ],
+ "materials": {
+  "paint": "FMC_Metal_SteelLTZ_Painted"
+ },
+ "parts": [
+  {
+   "n": "Bottom Chord",
+   "shape": "box",
+   "at": [
+    -3000.0,
+    -40,
+    0,
+    3000.0,
+    40,
+    80
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Top Chord",
+   "shape": "box",
+   "at": [
+    -3000.0,
+    -40,
+    620,
+    3000.0,
+    40,
+    700
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Vertical",
+   "shape": "box",
+   "at": [
+    -3000.0,
+    -30,
+    80,
+    -2940.0,
+    30,
+    620
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 7,
+    "d": [
+     990,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Diagonal Up",
+   "shape": "front",
+   "pts": [
+    [
+     -2940.0,
+     80
+    ],
+    [
+     -2855.0,
+     80
+    ],
+    [
+     -2010.0,
+     620
+    ],
+    [
+     -2095.0,
+     620
+    ]
+   ],
+   "y": [
+    -30,
+    30
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1980,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Diagonal Down",
+   "shape": "front",
+   "pts": [
+    [
+     -1950.0,
+     620
+    ],
+    [
+     -1865.0,
+     620
+    ],
+    [
+     -1020.0,
+     80
+    ],
+    [
+     -1105.0,
+     80
+    ]
+   ],
+   "y": [
+    -30,
+    30
+   ],
+   "mat": "paint",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1980,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Bearing Plate Left",
+   "shape": "box",
+   "at": [
+    -3000.0,
+    -100,
+    -15,
+    -2800.0,
+    100,
+    0
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Bearing Plate Right",
+   "shape": "box",
+   "at": [
+    2800.0,
+    -100,
+    -15,
+    3000.0,
+    100,
+    0
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Purlin Cleat",
+   "shape": "fbox",
+   "at": [
+    -2980.0,
+    -5,
+    700,
+    -2880.0,
+    5,
+    790
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 7,
+    "d": [
+     975,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "str framing steel truss canopy structural framing hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+framing+steel+truss+canopy+structural+framing+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Span 6000 mm (geometry)": {
+   "value": 6000,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Depth 700 mm": {
+   "value": 700,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm; span/depth about 9"
+  },
+  "Chords SHS 80x80, webs SHS 60x60": {
+   "value": "SHS 80/60",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Purlin cleats at 975 mm": {
+   "value": 975,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Warren truss: SHS chords, seven verticals, six diagonals alternating, bearing plates at both ends and purlin cleats on the top chord (Fine). Reference at underside of bearing plates."
+}

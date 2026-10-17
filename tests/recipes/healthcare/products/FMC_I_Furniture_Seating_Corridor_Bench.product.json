@@ -1,0 +1,260 @@
+{
+ "family": "FMC_I_Furniture_Seating_Corridor_Bench",
+ "category": "Furniture",
+ "desc": "Backless corridor bench, antimicrobial vinyl seat pad on a ply seat board, steel sled frames with cross bars and glides",
+ "ifc": "IfcFurniture",
+ "keynote": "F.SEA_01",
+ "types": [
+  {
+   "name": "1200_Backless",
+   "desc": "Backless corridor bench 1200 x 440, antimicrobial vinyl, steel frame"
+  },
+  {
+   "name": "1800_Backless",
+   "desc": "Backless corridor bench 1800 x 440, antimicrobial vinyl, steel frame"
+  }
+ ],
+ "materials": {
+  "vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue",
+  "board": "FMC_Board_Plywood_Marine18",
+  "frame": "FMC_Metal_Aluminium_PowderCoated",
+  "rubber": "FMC_Rubber_Black",
+  "arm": "FMC_Plastic_ABS_Black"
+ },
+ "parts": [
+  {
+   "n": "Seat Pad",
+   "shape": "box",
+   "at": [
+    -600.0,
+    -220,
+    400,
+    600.0,
+    220,
+    460
+   ],
+   "mat": "vinyl",
+   "r": 40
+  },
+  {
+   "n": "Seat Board",
+   "shape": "box",
+   "at": [
+    -585.0,
+    -205,
+    380,
+    585.0,
+    205,
+    400
+   ],
+   "mat": "board"
+  },
+  {
+   "n": "Seat Rail",
+   "shape": "box",
+   "at": [
+    -560.0,
+    -190,
+    340,
+    560.0,
+    -150,
+    380
+   ],
+   "mat": "frame",
+   "r": 6,
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     340,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Leg Frame",
+   "shape": "front",
+   "pts": [
+    [
+     -540.0,
+     0
+    ],
+    [
+     -480.0,
+     0
+    ],
+    [
+     -460.0,
+     380
+    ],
+    [
+     -520.0,
+     380
+    ]
+   ],
+   "y": [
+    -190,
+    -150
+   ],
+   "mat": "frame",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     340,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Leg Frame Right",
+   "shape": "front",
+   "pts": [
+    [
+     480.0,
+     0
+    ],
+    [
+     540.0,
+     0
+    ],
+    [
+     520.0,
+     380
+    ],
+    [
+     460.0,
+     380
+    ]
+   ],
+   "y": [
+    -190,
+    -150
+   ],
+   "mat": "frame",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     340,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Leg Cross Bar",
+   "shape": "box",
+   "at": [
+    -520.0,
+    -190,
+    120,
+    -480.0,
+    190,
+    150
+   ],
+   "mat": "frame",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Glide",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -510.0,
+    -170
+   ],
+   "r": 16,
+   "z": [
+    -0.1,
+    6
+   ],
+   "mat": "rubber",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1020,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Glide Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -510.0,
+    170
+   ],
+   "r": 16,
+   "z": [
+    -0.1,
+    6
+   ],
+   "mat": "rubber",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1020,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Piping Front",
+   "shape": "fbox",
+   "at": [
+    -580.0,
+    -224,
+    425,
+    580.0,
+    -220,
+    435
+   ],
+   "mat": "arm",
+   "lod": "f"
+  },
+  {
+   "n": "Piping Back",
+   "shape": "fbox",
+   "at": [
+    -580.0,
+    220,
+    425,
+    580.0,
+    224,
+    435
+   ],
+   "mat": "arm",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "furniture seating corridor bench furniture hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=furniture+seating+corridor+bench+furniture+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Length 1200 / 1800 mm, depth 440 mm": {
+   "value": "1200/1800x440",
+   "source_status": "assumed",
+   "source": "record types; typical bench depth"
+  },
+  "Seat height 460 mm": {
+   "value": 460,
+   "source_status": "assumed",
+   "source": "BS EN 16139 / HBN 00-04 rest-stop seating"
+  }
+ },
+ "about": "Bench modelled as a generic product: upholstered vinyl seat pad with piping on a ply board, seat rails, tapered sled leg frames with cross bars and glides. Geometry is drawn at the 1200_Backless type; the other types share it until a parametric pass."
+}

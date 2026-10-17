@@ -22,6 +22,38 @@ _mat_cache = None
 STAGING = os.environ.get("FMC_STAGING", r"D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2\04_Families\_Staging")
 OPEN = {"FMC_Manufacturer": "dc399f41-0c78-566b-bf6a-94cdba78e4fa", "FMC_Model_Number": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"}
 
+KIT_ROOT = os.environ.get("FMC_KIT", "/home/claude/kitdata/FMC_Kit_v2.2")
+CAT_OST = {"Medical Equipment": "OST_MedicalEquipment", "Mechanical Equipment": "OST_MechanicalEquipment", "Doors": "OST_Doors", "Windows": "OST_Windows",
+           "Plumbing Fixtures": "OST_PlumbingFixtures", "Plumbing Equipment": "OST_PlumbingEquipment", "Electrical Fixtures": "OST_ElectricalFixtures",
+           "Electrical Equipment": "OST_ElectricalEquipment", "Lighting Fixtures": "OST_LightingFixtures", "Lighting Devices": "OST_LightingDevices",
+           "Specialty Equipment": "OST_SpecialityEquipment", "Furniture": "OST_Furniture", "Casework": "OST_Casework", "Generic Models": "OST_GenericModel",
+           "Structural Foundations": "OST_StructuralFoundation", "Structural Columns": "OST_StructuralColumns", "Structural Framing": "OST_StructuralFraming",
+           "Structural Connections": "OST_StructConnections", "Sprinklers": "OST_Sprinklers", "Air Terminals": "OST_DuctTerminal", "Duct Accessories": "OST_DuctAccessory",
+           "Pipe Accessories": "OST_PipeAccessory", "Fire Alarm Devices": "OST_FireAlarmDevices", "Communication Devices": "OST_CommunicationDevices",
+           "Data Devices": "OST_DataDevices", "Security Devices": "OST_SecurityDevices", "Nurse Call Devices": "OST_NurseCallDevices", "Site": "OST_Site", "Planting": "OST_Planting"}
+TEMPLATE_CAT = {"Metric Mechanical Equipment.rft": "Mechanical Equipment", "Metric Door.rft": "Doors", "Metric Window.rft": "Windows",
+                "Metric Generic Model.rft": "Generic Models", "Metric Furniture.rft": "Furniture", "Metric Casework.rft": "Casework"}
+# Medical Equipment has no bindings in the kit yet (KIT_CHANGE_REQUEST 17 Oct, 2): it takes Specialty Equipment's set meanwhile
+CAT_PROXY = {"OST_MedicalEquipment": "OST_SpecialityEquipment", "OST_PlumbingEquipment": "OST_PlumbingFixtures", "OST_CommunicationDevices": "OST_FireAlarmDevices",
+             "OST_NurseCallDevices": "OST_FireAlarmDevices", "OST_StructConnections": "OST_StructuralFraming"}
+_kit = {}
+def kit_params(category):
+    """Every kit shared parameter bound to the family's category (FMC_Master_Data params: guid, binding, categories)."""
+    if 'p' not in _kit:
+        try: _kit['p'] = json.load(open(os.path.join(KIT_ROOT, '03_Master_Data', 'FMC_Master_Data.json'), encoding='utf-8'))['params']
+        except Exception: _kit['p'] = {}
+    ost = CAT_OST.get(category, "OST_GenericModel"); ost = ost if any(ost in p.get('categories', []) for p in _kit['p'].values()) else CAT_PROXY.get(ost, "OST_GenericModel")
+    return {n: p for n, p in _kit['p'].items() if p.get('binding') in ('Type', 'Instance') and ost in p.get('categories', [])}
+def keynote_text(code):
+    if 'k' not in _kit:
+        _kit['k'] = {}
+        try:
+            for line in open(os.path.join(KIT_ROOT, '02_Keynotes', 'FMC_Keynotes.txt'), encoding='utf-8', errors='ignore'):
+                c = line.rstrip('\n').split('\t')
+                if len(c) >= 2: _kit['k'][c[0]] = (c[1], c[2] if len(c) > 2 else '')
+        except Exception: pass
+    return _kit['k'].get(code, ('', ''))
+
 def kit_materials():
     global _mat_cache
     if _mat_cache is None:
@@ -106,15 +138,25 @@ def compile_product(prod, kn_lookup=None):
     if prod.get('shared'): ops.append({"op": "set_family_params", "name": "family", "shared": True})
     for prm, typ, grp in (("Voltage", "Voltage", "Electrical"), ("Number of Poles", "NumberOfPoles", "Electrical"), ("Apparent Load", "ApparentPower", "ElectricalLoads")):
         if prm in prod.get('type_values', {}): ops.append({"op": "add_family_param", "name": prm, "type": typ, "group": grp})
-    for n, g in GUID.items(): ops.append({"op": "add_shared_param", "name": n, "guid": g})
-    # open for review: brand and model stay blank until the owner's own photos (supplier: kit change request FMC_Supplier)
-    for n, g in OPEN.items(): ops.append({"op": "add_shared_param", "name": n, "guid": g})
+    cat = prod.get('category') or TEMPLATE_CAT.get(prod.get('template', 'Metric Generic Model.rft'), 'Generic Models')
+    kp = kit_params(cat)
+    for n, g in list(GUID.items()) + list(OPEN.items()):
+        kp.setdefault(n, {"guid": g, "binding": "Instance" if n == "FMC_Geometry_Stage" else "Type"})
+    # owner, 17 Oct: every shared parameter the kit binds to this category, as the kit binds it (SPR-005/006/016/021);
+    # brand and model stay blank for review (supplier: kit change request FMC_Supplier)
+    for n, p in kp.items(): ops.append({"op": "add_shared_param", "name": n, "guid": p['guid'], "instance": p['binding'] == 'Instance'})
     kn = prod.get('keynote') or (kn_lookup or {}).get(prod['family'], '')
     ref = prod.get('reference', {})
     for t in prod['types']:
         tn = t['name']; ops.append({"op": "add_type", "name": tn})
         tv = {"FMC_Cost_Unit": prod.get('cost_unit', 'nr'), "FMC_Geometry_Stage": "G4", "IfcExportAs": prod['ifc'], "Description": t.get('desc', prod['desc'])}
-        if kn: tv.update({"Keynote": kn, "FMC_Keynote_Code": kn})
+        if kn:
+            tv.update({"Keynote": kn, "FMC_Keynote_Code": kn})
+            txt, grp = keynote_text(kn)
+            if txt and "FMC_Code_Description" in kp: tv["FMC_Code_Description"] = txt
+            if grp and "FMC_Code_Group" in kp: tv["FMC_Code_Group"] = grp
+        if "FMC_Role_Code" in kp: tv["FMC_Role_Code"] = prod['family'].split('_')[1]
+        if "IfcExportType" in kp and prod.get('ifc_type'): tv["IfcExportType"] = prod['ifc_type']
         if ref.get('photo') or ref.get('url'): tv['URL'] = ref.get('photo') or ref['url']
         tv.update(prod.get('type_values', {})); tv.update(t.get('values', {}))
         ops += [{"op": "set_type_value", "name": f"{tn}/{k}", "type": tn, "param": k, "value": v} for k, v in tv.items()]

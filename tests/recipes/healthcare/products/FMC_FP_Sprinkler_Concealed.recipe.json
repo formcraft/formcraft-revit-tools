@@ -1,0 +1,749 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_Sprinkler_Concealed",
+ "template": "Metric Generic Model.rft",
+ "about": "Concealed sprinkler modelled as a generic product: flat white cover plate with retainer flange flush to the ceiling (z = 0), threaded support cup, wrench boss, brass body and thread. Reference: query: sprinkler concealed sprinklers hospital; images: https://www.google.com/search?tbm=isch&q=sprinkler+concealed+sprinklers+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Sprinklers"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "K80_Concealed"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/FMC_Cost_Unit",
+   "type": "K80_Concealed",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/FMC_Geometry_Stage",
+   "type": "K80_Concealed",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/IfcExportAs",
+   "type": "K80_Concealed",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/Description",
+   "type": "K80_Concealed",
+   "param": "Description",
+   "value": "Concealed pendent sprinkler K80 (5.6K), 68 C, push-on white cover plate 83 mm, threaded support cup"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/Keynote",
+   "type": "K80_Concealed",
+   "param": "Keynote",
+   "value": "V.SPR_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_Concealed/FMC_Keynote_Code",
+   "type": "K80_Concealed",
+   "param": "FMC_Keynote_Code",
+   "value": "V.SPR_06"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epw",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epw Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epw Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -41.5,
+     -43
+    ],
+    [
+     41.5,
+     -43
+    ],
+    [
+     41.5,
+     43
+    ],
+    [
+     -41.5,
+     43
+    ]
+   ],
+   "start": -6,
+   "end": 86
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Cover Plate",
+   "profile": [
+    [
+     0,
+     -6
+    ],
+    [
+     40,
+     -6
+    ],
+    [
+     41.5,
+     -4.5
+    ],
+    [
+     41.5,
+     -3
+    ],
+    [
+     0,
+     -3
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Plate",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Retainer Flange",
+   "profile": [
+    [
+     30,
+     -3
+    ],
+    [
+     37,
+     -3
+    ],
+    [
+     37,
+     0
+    ],
+    [
+     30,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Retainer Flange",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Retainer Flange",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Support Cup",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     33,
+     0
+    ],
+    [
+     33,
+     46
+    ],
+    [
+     28,
+     50
+    ],
+    [
+     0,
+     50
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Support Cup",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Support Cup",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cup Thread Rib 1",
+   "profile": [
+    [
+     33,
+     8
+    ],
+    [
+     34.5,
+     8
+    ],
+    [
+     34.5,
+     12
+    ],
+    [
+     33,
+     12
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cup Thread Rib 1",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cup Thread Rib 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cup Thread Rib 2",
+   "profile": [
+    [
+     33,
+     20
+    ],
+    [
+     34.5,
+     20
+    ],
+    [
+     34.5,
+     24
+    ],
+    [
+     33,
+     24
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cup Thread Rib 2",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cup Thread Rib 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cup Thread Rib 3",
+   "profile": [
+    [
+     33,
+     32
+    ],
+    [
+     34.5,
+     32
+    ],
+    [
+     34.5,
+     36
+    ],
+    [
+     33,
+     36
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cup Thread Rib 3",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cup Thread Rib 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wrench Boss",
+   "points": [
+    [
+     13.0,
+     -9.0
+    ],
+    [
+     13.77,
+     -8.85
+    ],
+    [
+     14.41,
+     -8.41
+    ],
+    [
+     14.85,
+     -7.77
+    ],
+    [
+     15.0,
+     -7.0
+    ],
+    [
+     15.0,
+     7.0
+    ],
+    [
+     14.85,
+     7.77
+    ],
+    [
+     14.41,
+     8.41
+    ],
+    [
+     13.77,
+     8.85
+    ],
+    [
+     13.0,
+     9.0
+    ],
+    [
+     -13.0,
+     9.0
+    ],
+    [
+     -13.77,
+     8.85
+    ],
+    [
+     -14.41,
+     8.41
+    ],
+    [
+     -14.85,
+     7.77
+    ],
+    [
+     -15.0,
+     7.0
+    ],
+    [
+     -15.0,
+     -7.0
+    ],
+    [
+     -14.85,
+     -7.77
+    ],
+    [
+     -14.41,
+     -8.41
+    ],
+    [
+     -13.77,
+     -8.85
+    ],
+    [
+     -13.0,
+     -9.0
+    ]
+   ],
+   "start": 50,
+   "end": 58
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wrench Boss",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wrench Boss",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wrench Boss",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Body",
+   "profile": [
+    [
+     0,
+     58
+    ],
+    [
+     12,
+     58
+    ],
+    [
+     12,
+     72
+    ],
+    [
+     0,
+     72
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Body",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Thread Inlet",
+   "profile": [
+    [
+     0,
+     72
+    ],
+    [
+     10,
+     72
+    ],
+    [
+     10,
+     86
+    ],
+    [
+     0,
+     86
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thread Inlet",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thread Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Solder Tab 1",
+   "points": [
+    [
+     -2,
+     -43
+    ],
+    [
+     2,
+     -43
+    ],
+    [
+     2,
+     -40
+    ],
+    [
+     -2,
+     -40
+    ]
+   ],
+   "start": -5,
+   "end": -3
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Solder Tab 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Solder Tab 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Solder Tab 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Solder Tab 2",
+   "points": [
+    [
+     -2,
+     40
+    ],
+    [
+     2,
+     40
+    ],
+    [
+     2,
+     43
+    ],
+    [
+     -2,
+     43
+    ]
+   ],
+   "start": -5,
+   "end": -3
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Solder Tab 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Solder Tab 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Solder Tab 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Thread Inlet",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_Sprinkler_Concealed.png"
+  }
+ ],
+ "values": {
+  "K-factor 5.6 (K80)": {
+   "value": "K80",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Cover plate 83 mm": {
+   "value": 83,
+   "source_status": "assumed",
+   "source": "typical concealed cover plate"
+  },
+  "Plate release 57 C, bulb 68 C": {
+   "value": "57C/68C",
+   "source_status": "assumed",
+   "source": "typical concealed pendent pairing"
+  },
+  "Cup depth 50 mm above ceiling": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

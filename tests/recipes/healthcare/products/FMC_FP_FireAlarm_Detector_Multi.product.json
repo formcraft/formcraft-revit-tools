@@ -1,0 +1,338 @@
+{
+ "family": "FMC_FP_FireAlarm_Detector_Multi",
+ "category": "Fire Alarm Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "Addressable multi-sensor detector (optical smoke + heat) with mounting base, 100 mm diameter, 62 mm high",
+ "ifc": "IfcSensor",
+ "keynote": "V.FAL_03",
+ "types": [
+  {
+   "name": "optical-heat_Multi"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledr": "FMC_Plastic_LED_Red",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "detector multi fire alarm devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=detector+multi+fire+alarm+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     51,
+     -12
+    ],
+    [
+     51,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Head",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -46
+    ],
+    [
+     38,
+     -46
+    ],
+    [
+     46,
+     -42
+    ],
+    [
+     50,
+     -34
+    ],
+    [
+     50,
+     -12
+    ],
+    [
+     0,
+     -12
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Smoke Inlet Band",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     47,
+     -32
+    ],
+    [
+     50.5,
+     -32
+    ],
+    [
+     50.5,
+     -20
+    ],
+    [
+     47,
+     -20
+    ]
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Inlet Bar",
+   "shape": "box",
+   "at": [
+    -51,
+    -2,
+    -32,
+    -46,
+    2,
+    -20
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     97,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Post X",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -13,
+    0
+   ],
+   "r": 2.5,
+   "z": [
+    -60,
+    -46
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     26,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Post Y",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -13
+   ],
+   "r": 2.5,
+   "z": [
+    -60,
+    -46
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     26,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     10,
+     -63
+    ],
+    [
+     15.5,
+     -63
+    ],
+    [
+     15.5,
+     -60
+    ],
+    [
+     10,
+     -60
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Thermistor",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -58
+    ],
+    [
+     3,
+     -58
+    ],
+    [
+     3,
+     -46
+    ],
+    [
+     0,
+     -46
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "LED",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -32
+   ],
+   "r": 4,
+   "z": [
+    -47.5,
+    -46
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  },
+  {
+   "n": "LED Opposite",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    32
+   ],
+   "r": 4,
+   "z": [
+    -47.5,
+    -46
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  }
+ ],
+ "values": {
+  "Diameter 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Height 63 mm with base": {
+   "value": 63,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Optical + heat, BS EN 54-7 and 54-5": {
+   "value": "EN 54-7/-5",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Coverage radius 7500 mm (smoke mode)": {
+   "value": 7500,
+   "source_status": "assumed",
+   "source": "BS 5839-1 point smoke detector, flat ceiling"
+  }
+ },
+ "about": "Multi-sensor modelled as a generic product: base, domed head with smoke-inlet band and bars, thermistor in a guard at the centre, twin LEDs; hangs below the ceiling (z = 0).",
+ "connectors": [
+  {
+   "n": "Fire Alarm",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "part": "Base",
+   "side": "top"
+  }
+ ],
+ "clearances": [
+  {
+   "n": "Coverage",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -70
+    ],
+    [
+     7500,
+     -70
+    ],
+    [
+     7500,
+     -65
+    ],
+    [
+     0,
+     -65
+    ]
+   ],
+   "sub": "Coverage"
+  }
+ ]
+}

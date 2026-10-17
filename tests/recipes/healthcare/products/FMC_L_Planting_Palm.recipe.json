@@ -1,0 +1,2448 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_L_Planting_Palm",
+ "template": "Metric Generic Model.rft",
+ "about": "Palm modelled as a generic product: mulch ring, root boss, tall trunk with twelve leaf-scar rings, crown shaft, four arching fronds on the main axes and four diagonal fronds in three drooping segments, a skirt of old frond bases, two spear fronds, two fruit clusters. Geometry drawn for 6m_Palm; the other types share it (sizes in the values). Reference: query: planting palm planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+palm+planting+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Planting"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Botanical_Name",
+   "guid": "92a0ab90-e543-57c6-a940-c3b1aa34ec75",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Name",
+   "guid": "1b5f0a82-221c-5216-98d8-77903d31405a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Planting_Size",
+   "guid": "6b6409ef-63f2-54e1-ae6b-1d3d465b7a64",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Plant_Spread_mm",
+   "guid": "83ffa9f4-9a93-546d-a66e-99642f2dfb56",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Plant_Spacing_mm",
+   "guid": "6128f8ac-6988-58db-ae3b-2101706d31cd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "6m_Palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Cost_Unit",
+   "type": "6m_Palm",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Geometry_Stage",
+   "type": "6m_Palm",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/IfcExportAs",
+   "type": "6m_Palm",
+   "param": "IfcExportAs",
+   "value": "IfcGeographicElement"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/Description",
+   "type": "6m_Palm",
+   "param": "Description",
+   "value": "Palm (e.g. Phoenix / Royal palm type), 6 m or 9 m clear trunk with leaf-scar rings, crown shaft, arching fronds, fruit clusters"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/Keynote",
+   "type": "6m_Palm",
+   "param": "Keynote",
+   "value": "L.TRE_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Keynote_Code",
+   "type": "6m_Palm",
+   "param": "FMC_Keynote_Code",
+   "value": "L.TRE_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Code_Description",
+   "type": "6m_Palm",
+   "param": "FMC_Code_Description",
+   "value": "Palm: Palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Code_Group",
+   "type": "6m_Palm",
+   "param": "FMC_Code_Group",
+   "value": "L.TRE"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Palm/FMC_Role_Code",
+   "type": "6m_Palm",
+   "param": "FMC_Role_Code",
+   "value": "L"
+  },
+  {
+   "op": "add_type",
+   "name": "9m_Palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Cost_Unit",
+   "type": "9m_Palm",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Geometry_Stage",
+   "type": "9m_Palm",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/IfcExportAs",
+   "type": "9m_Palm",
+   "param": "IfcExportAs",
+   "value": "IfcGeographicElement"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/Description",
+   "type": "9m_Palm",
+   "param": "Description",
+   "value": "Palm (e.g. Phoenix / Royal palm type), 6 m or 9 m clear trunk with leaf-scar rings, crown shaft, arching fronds, fruit clusters"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/Keynote",
+   "type": "9m_Palm",
+   "param": "Keynote",
+   "value": "L.TRE_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Keynote_Code",
+   "type": "9m_Palm",
+   "param": "FMC_Keynote_Code",
+   "value": "L.TRE_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Code_Description",
+   "type": "9m_Palm",
+   "param": "FMC_Code_Description",
+   "value": "Palm: Palm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Code_Group",
+   "type": "9m_Palm",
+   "param": "FMC_Code_Group",
+   "value": "L.TRE"
+  },
+  {
+   "op": "set_type_value",
+   "name": "9m_Palm/FMC_Role_Code",
+   "type": "9m_Palm",
+   "param": "FMC_Role_Code",
+   "value": "L"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mulch",
+   "color": [
+    90,
+    62,
+    40
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mulch Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plant_Mulch_Bark",
+   "param": "Mulch Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Bark",
+   "color": [
+    142,
+    90,
+    52
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Timber_Mugavu",
+   "param": "Bark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Leaf2",
+   "color": [
+    85,
+    127,
+    58
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leaf2 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plant_Hedge_Duranta",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Leaf3",
+   "color": [
+    92,
+    138,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leaf3 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plant_Grass_Paspalum",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Leaf1",
+   "color": [
+    79,
+    127,
+    47
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leaf1 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plant_Grass_Kikuyu",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Flower",
+   "color": [
+    193,
+    68,
+    46
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Flower Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Kitenge_Print",
+   "param": "Flower Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -2550.0,
+     -2650.0
+    ],
+    [
+     2650.0,
+     -2650.0
+    ],
+    [
+     2650.0,
+     2600.0
+    ],
+    [
+     -2550.0,
+     2600.0
+    ]
+   ],
+   "start": 0,
+   "end": 6344.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Mulch Ring",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     500,
+     0
+    ],
+    [
+     500,
+     40
+    ],
+    [
+     0,
+     40
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Mulch"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mulch Ring",
+   "param": "Mulch Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mulch Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Root Boss",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     230,
+     0
+    ],
+    [
+     180,
+     120
+    ],
+    [
+     0,
+     120
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Root Boss",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Root Boss",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk",
+   "profile": [
+    [
+     0,
+     120
+    ],
+    [
+     175,
+     120
+    ],
+    [
+     150,
+     2500
+    ],
+    [
+     140,
+     5000
+    ],
+    [
+     150,
+     5300
+    ],
+    [
+     0,
+     5300
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 1",
+   "profile": [
+    [
+     140,
+     400
+    ],
+    [
+     166,
+     400
+    ],
+    [
+     166,
+     440
+    ],
+    [
+     140,
+     440
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 1",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 2",
+   "profile": [
+    [
+     140,
+     800
+    ],
+    [
+     166,
+     800
+    ],
+    [
+     166,
+     840
+    ],
+    [
+     140,
+     840
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 2",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 3",
+   "profile": [
+    [
+     140,
+     1200
+    ],
+    [
+     166,
+     1200
+    ],
+    [
+     166,
+     1240
+    ],
+    [
+     140,
+     1240
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 3",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 4",
+   "profile": [
+    [
+     140,
+     1600
+    ],
+    [
+     166,
+     1600
+    ],
+    [
+     166,
+     1640
+    ],
+    [
+     140,
+     1640
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 4",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 5",
+   "profile": [
+    [
+     140,
+     2000
+    ],
+    [
+     166,
+     2000
+    ],
+    [
+     166,
+     2040
+    ],
+    [
+     140,
+     2040
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 5",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 6",
+   "profile": [
+    [
+     140,
+     2400
+    ],
+    [
+     166,
+     2400
+    ],
+    [
+     166,
+     2440
+    ],
+    [
+     140,
+     2440
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 6",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 7",
+   "profile": [
+    [
+     140,
+     2800
+    ],
+    [
+     166,
+     2800
+    ],
+    [
+     166,
+     2840
+    ],
+    [
+     140,
+     2840
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 7",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 8",
+   "profile": [
+    [
+     140,
+     3200
+    ],
+    [
+     166,
+     3200
+    ],
+    [
+     166,
+     3240
+    ],
+    [
+     140,
+     3240
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 8",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 9",
+   "profile": [
+    [
+     140,
+     3600
+    ],
+    [
+     166,
+     3600
+    ],
+    [
+     166,
+     3640
+    ],
+    [
+     140,
+     3640
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 9",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 10",
+   "profile": [
+    [
+     140,
+     4000
+    ],
+    [
+     166,
+     4000
+    ],
+    [
+     166,
+     4040
+    ],
+    [
+     140,
+     4040
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 10",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 11",
+   "profile": [
+    [
+     140,
+     4400
+    ],
+    [
+     166,
+     4400
+    ],
+    [
+     166,
+     4440
+    ],
+    [
+     140,
+     4440
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 11",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk Ring 12",
+   "profile": [
+    [
+     140,
+     4800
+    ],
+    [
+     166,
+     4800
+    ],
+    [
+     166,
+     4840
+    ],
+    [
+     140,
+     4840
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk Ring 12",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk Ring 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Crown Shaft",
+   "profile": [
+    [
+     0,
+     5300
+    ],
+    [
+     170,
+     5300
+    ],
+    [
+     190,
+     5500
+    ],
+    [
+     160,
+     5750
+    ],
+    [
+     0,
+     5800
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Crown Shaft",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Crown Shaft",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 1 Inner",
+   "points": [
+    [
+     55.2,
+     157.0
+    ],
+    [
+     537.4,
+     876.8
+    ],
+    [
+     749.5,
+     749.5
+    ],
+    [
+     876.8,
+     537.4
+    ],
+    [
+     157.0,
+     55.2
+    ]
+   ],
+   "start": 5860,
+   "end": 5900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 1 Inner",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 1 Inner",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 1 Inner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 1 Mid",
+   "points": [
+    [
+     509.1,
+     763.7
+    ],
+    [
+     1060.7,
+     1484.9
+    ],
+    [
+     1315.2,
+     1315.2
+    ],
+    [
+     1484.9,
+     1060.7
+    ],
+    [
+     763.7,
+     509.1
+    ]
+   ],
+   "start": 5700,
+   "end": 5740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 1 Mid",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 1 Mid",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 1 Mid",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 1 Tip",
+   "points": [
+    [
+     1130.0,
+     1274.2
+    ],
+    [
+     1718.3,
+     1958.7
+    ],
+    [
+     1838.5,
+     1838.5
+    ],
+    [
+     1958.7,
+     1718.3
+    ],
+    [
+     1274.2,
+     1130.0
+    ]
+   ],
+   "start": 5320,
+   "end": 5360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 1 Tip",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 1 Tip",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 1 Tip",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 2 Inner",
+   "points": [
+    [
+     -157.0,
+     55.2
+    ],
+    [
+     -876.8,
+     537.4
+    ],
+    [
+     -749.5,
+     749.5
+    ],
+    [
+     -537.4,
+     876.8
+    ],
+    [
+     -55.2,
+     157.0
+    ]
+   ],
+   "start": 5860,
+   "end": 5900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 2 Inner",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 2 Inner",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 2 Inner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 2 Mid",
+   "points": [
+    [
+     -763.7,
+     509.1
+    ],
+    [
+     -1484.9,
+     1060.7
+    ],
+    [
+     -1315.2,
+     1315.2
+    ],
+    [
+     -1060.7,
+     1484.9
+    ],
+    [
+     -509.1,
+     763.7
+    ]
+   ],
+   "start": 5700,
+   "end": 5740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 2 Mid",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 2 Mid",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 2 Mid",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 2 Tip",
+   "points": [
+    [
+     -1274.2,
+     1130.0
+    ],
+    [
+     -1958.7,
+     1718.3
+    ],
+    [
+     -1838.5,
+     1838.5
+    ],
+    [
+     -1718.3,
+     1958.7
+    ],
+    [
+     -1130.0,
+     1274.2
+    ]
+   ],
+   "start": 5320,
+   "end": 5360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 2 Tip",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 2 Tip",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 2 Tip",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 3 Inner",
+   "points": [
+    [
+     -55.2,
+     -157.0
+    ],
+    [
+     -537.4,
+     -876.8
+    ],
+    [
+     -749.5,
+     -749.5
+    ],
+    [
+     -876.8,
+     -537.4
+    ],
+    [
+     -157.0,
+     -55.2
+    ]
+   ],
+   "start": 5860,
+   "end": 5900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 3 Inner",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 3 Inner",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 3 Inner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 3 Mid",
+   "points": [
+    [
+     -509.1,
+     -763.7
+    ],
+    [
+     -1060.7,
+     -1484.9
+    ],
+    [
+     -1315.2,
+     -1315.2
+    ],
+    [
+     -1484.9,
+     -1060.7
+    ],
+    [
+     -763.7,
+     -509.1
+    ]
+   ],
+   "start": 5700,
+   "end": 5740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 3 Mid",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 3 Mid",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 3 Mid",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 3 Tip",
+   "points": [
+    [
+     -1130.0,
+     -1274.2
+    ],
+    [
+     -1718.3,
+     -1958.7
+    ],
+    [
+     -1838.5,
+     -1838.5
+    ],
+    [
+     -1958.7,
+     -1718.3
+    ],
+    [
+     -1274.2,
+     -1130.0
+    ]
+   ],
+   "start": 5320,
+   "end": 5360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 3 Tip",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 3 Tip",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 3 Tip",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 4 Inner",
+   "points": [
+    [
+     157.0,
+     -55.2
+    ],
+    [
+     876.8,
+     -537.4
+    ],
+    [
+     749.5,
+     -749.5
+    ],
+    [
+     537.4,
+     -876.8
+    ],
+    [
+     55.2,
+     -157.0
+    ]
+   ],
+   "start": 5860,
+   "end": 5900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 4 Inner",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 4 Inner",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 4 Inner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 4 Mid",
+   "points": [
+    [
+     763.7,
+     -509.1
+    ],
+    [
+     1484.9,
+     -1060.7
+    ],
+    [
+     1315.2,
+     -1315.2
+    ],
+    [
+     1060.7,
+     -1484.9
+    ],
+    [
+     509.1,
+     -763.7
+    ]
+   ],
+   "start": 5700,
+   "end": 5740
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 4 Mid",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 4 Mid",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 4 Mid",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond 4 Tip",
+   "points": [
+    [
+     1274.2,
+     -1130.0
+    ],
+    [
+     1958.7,
+     -1718.3
+    ],
+    [
+     1838.5,
+     -1838.5
+    ],
+    [
+     1718.3,
+     -1958.7
+    ],
+    [
+     1130.0,
+     -1274.2
+    ]
+   ],
+   "start": 5320,
+   "end": 5360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond 4 Tip",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond 4 Tip",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond 4 Tip",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond East",
+   "points": [
+    [
+     150.0,
+     5815.0
+    ],
+    [
+     462.5,
+     5971.5
+    ],
+    [
+     775.0,
+     6079.2
+    ],
+    [
+     1087.5,
+     6099.8
+    ],
+    [
+     1400.0,
+     5997.4
+    ],
+    [
+     1712.5,
+     5821.9
+    ],
+    [
+     2025.0,
+     5590.8
+    ],
+    [
+     2337.5,
+     5312.0
+    ],
+    [
+     2650.0,
+     4990.5
+    ],
+    [
+     2650.0,
+     4969.5
+    ],
+    [
+     2337.5,
+     5284.8
+    ],
+    [
+     2025.0,
+     5557.5
+    ],
+    [
+     1712.5,
+     5782.6
+    ],
+    [
+     1400.0,
+     5951.9
+    ],
+    [
+     1087.5,
+     6048.2
+    ],
+    [
+     775.0,
+     6021.4
+    ],
+    [
+     462.5,
+     5907.7
+    ],
+    [
+     150.0,
+     5745.0
+    ]
+   ],
+   "start": -170,
+   "end": 170,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond East",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond East",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond East",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond West",
+   "points": [
+    [
+     -150.0,
+     5795.0
+    ],
+    [
+     -450.0,
+     5940.9
+    ],
+    [
+     -750.0,
+     6041.1
+    ],
+    [
+     -1050.0,
+     6059.6
+    ],
+    [
+     -1350.0,
+     5952.7
+    ],
+    [
+     -1650.0,
+     5769.3
+    ],
+    [
+     -1950.0,
+     5527.8
+    ],
+    [
+     -2250.0,
+     5236.4
+    ],
+    [
+     -2550.0,
+     4900.5
+    ],
+    [
+     -2550.0,
+     4879.5
+    ],
+    [
+     -2250.0,
+     5209.3
+    ],
+    [
+     -1950.0,
+     5494.5
+    ],
+    [
+     -1650.0,
+     5729.9
+    ],
+    [
+     -1350.0,
+     5907.2
+    ],
+    [
+     -1050.0,
+     6007.9
+    ],
+    [
+     -750.0,
+     5983.4
+    ],
+    [
+     -450.0,
+     5877.0
+    ],
+    [
+     -150.0,
+     5725.0
+    ]
+   ],
+   "start": -170,
+   "end": 170,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond West",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond West",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond West",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond North",
+   "points": [
+    [
+     150.0,
+     5825.0
+    ],
+    [
+     456.2,
+     5992.2
+    ],
+    [
+     762.5,
+     6107.2
+    ],
+    [
+     1068.8,
+     6130.1
+    ],
+    [
+     1375.0,
+     6032.2
+    ],
+    [
+     1681.2,
+     5864.6
+    ],
+    [
+     1987.5,
+     5643.8
+    ],
+    [
+     2293.8,
+     5377.5
+    ],
+    [
+     2600.0,
+     5070.5
+    ],
+    [
+     2600.0,
+     5049.5
+    ],
+    [
+     2293.8,
+     5350.4
+    ],
+    [
+     1987.5,
+     5610.5
+    ],
+    [
+     1681.2,
+     5825.2
+    ],
+    [
+     1375.0,
+     5986.7
+    ],
+    [
+     1068.8,
+     6078.5
+    ],
+    [
+     762.5,
+     6049.4
+    ],
+    [
+     456.2,
+     5928.3
+    ],
+    [
+     150.0,
+     5755.0
+    ]
+   ],
+   "start": -170,
+   "end": 170,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond North",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond North",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond North",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frond South",
+   "points": [
+    [
+     -150.0,
+     5805.0
+    ],
+    [
+     -462.5,
+     5940.3
+    ],
+    [
+     -775.0,
+     6033.1
+    ],
+    [
+     -1087.5,
+     6049.6
+    ],
+    [
+     -1400.0,
+     5942.7
+    ],
+    [
+     -1712.5,
+     5759.3
+    ],
+    [
+     -2025.0,
+     5517.8
+    ],
+    [
+     -2337.5,
+     5226.4
+    ],
+    [
+     -2650.0,
+     4890.5
+    ],
+    [
+     -2650.0,
+     4869.5
+    ],
+    [
+     -2337.5,
+     5199.3
+    ],
+    [
+     -2025.0,
+     5484.5
+    ],
+    [
+     -1712.5,
+     5719.9
+    ],
+    [
+     -1400.0,
+     5897.2
+    ],
+    [
+     -1087.5,
+     5997.9
+    ],
+    [
+     -775.0,
+     5975.4
+    ],
+    [
+     -462.5,
+     5876.4
+    ],
+    [
+     -150.0,
+     5735.0
+    ]
+   ],
+   "start": -170,
+   "end": 170,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frond South",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frond South",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frond South",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Old Frond Skirt",
+   "profile": [
+    [
+     160,
+     5300
+    ],
+    [
+     420,
+     5050
+    ],
+    [
+     440,
+     5120
+    ],
+    [
+     190,
+     5420
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Old Frond Skirt",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Old Frond Skirt",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spear Frond East",
+   "points": [
+    [
+     -53.8,
+     5744.8
+    ],
+    [
+     446.2,
+     6344.8
+    ],
+    [
+     553.8,
+     6255.2
+    ],
+    [
+     53.8,
+     5655.2
+    ]
+   ],
+   "start": -20,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spear Frond East",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spear Frond East",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spear Frond East",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Spear Frond North",
+   "points": [
+    [
+     -54.2,
+     5655.7
+    ],
+    [
+     -504.2,
+     6205.7
+    ],
+    [
+     -395.8,
+     6294.3
+    ],
+    [
+     54.2,
+     5744.3
+    ]
+   ],
+   "start": -20,
+   "end": 20,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spear Frond North",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spear Frond North",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spear Frond North",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fruit Cluster East",
+   "profile": [
+    [
+     0.0,
+     5200.0
+    ],
+    [
+     43.3,
+     5206.1
+    ],
+    [
+     82.3,
+     5223.9
+    ],
+    [
+     113.3,
+     5251.5
+    ],
+    [
+     133.1,
+     5286.4
+    ],
+    [
+     140.0,
+     5325.0
+    ],
+    [
+     133.1,
+     5363.6
+    ],
+    [
+     113.3,
+     5398.5
+    ],
+    [
+     82.3,
+     5426.1
+    ],
+    [
+     43.3,
+     5443.9
+    ],
+    [
+     0.0,
+     5450.0
+    ]
+   ],
+   "axis_at": [
+    240,
+    60
+   ],
+   "axis": "z",
+   "subcategory": "Flower"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fruit Cluster East",
+   "param": "Flower Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fruit Cluster East",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fruit Cluster West",
+   "profile": [
+    [
+     0.0,
+     5220.0
+    ],
+    [
+     40.2,
+     5225.6
+    ],
+    [
+     76.4,
+     5242.0
+    ],
+    [
+     105.2,
+     5267.4
+    ],
+    [
+     123.6,
+     5299.5
+    ],
+    [
+     130.0,
+     5335.0
+    ],
+    [
+     123.6,
+     5370.5
+    ],
+    [
+     105.2,
+     5402.6
+    ],
+    [
+     76.4,
+     5428.0
+    ],
+    [
+     40.2,
+     5444.4
+    ],
+    [
+     0.0,
+     5450.0
+    ]
+   ],
+   "axis_at": [
+    -220,
+    -80
+   ],
+   "axis": "z",
+   "subcategory": "Flower"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fruit Cluster West",
+   "param": "Flower Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fruit Cluster West",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_Planting_Palm.png"
+  }
+ ],
+ "values": {
+  "6 m overall, crown spread 5.4 m": {
+   "value": "6000/5400",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "9 m overall": {
+   "value": 9000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Trunk 300 to 350 mm diameter": {
+   "value": 330,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

@@ -1,0 +1,289 @@
+{
+ "family": "FMC_A_SpecEq_Signage_Hanging_Wayfinding",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Suspended corridor wayfinding sign 1200 x 300, double-sided, aluminium frame, edge-lit LED, cable suspension",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "A.SGN_01",
+ "types": [
+  {
+   "name": "1200x300_Hanging",
+   "desc": "Hanging wayfinding sign 1200 x 300 mm, double sided, edge-lit"
+  },
+  {
+   "name": "1800x300_Hanging",
+   "desc": "Hanging wayfinding sign 1800 x 300 mm, double sided, edge-lit"
+  }
+ ],
+ "materials": {
+  "alupc": "FMC_Metal_Aluminium_PowderCoated",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "led": "FMC_Plastic_LED_Blue",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "white": "FMC_Plastic_ABS_White",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "parts": [
+  {
+   "n": "Ceiling Rose",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -450,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     35,
+     -12
+    ],
+    [
+     35,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Suspension Cable",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -450,
+    0
+   ],
+   "r": 2,
+   "z": [
+    -600,
+    -12
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cable Gripper",
+   "shape": "box",
+   "at": [
+    -460,
+    -10,
+    -630,
+    -440,
+    10,
+    -600
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Sign Frame",
+   "shape": "box",
+   "at": [
+    -600,
+    -25,
+    -930,
+    600,
+    25,
+    -630
+   ],
+   "mat": "alupc",
+   "lod": "mf",
+   "r": 8
+  },
+  {
+   "n": "Face Front",
+   "shape": "fbox",
+   "at": [
+    -585,
+    -27,
+    -915,
+    585,
+    -25,
+    -645
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Face Back",
+   "shape": "fbox",
+   "at": [
+    -585,
+    25,
+    -915,
+    585,
+    27,
+    -645
+   ],
+   "mat": "blue",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Arrow",
+   "shape": "front",
+   "pts": [
+    [
+     -560,
+     -780
+    ],
+    [
+     -480,
+     -700
+    ],
+    [
+     -480,
+     -750
+    ],
+    [
+     -400,
+     -750
+    ],
+    [
+     -400,
+     -810
+    ],
+    [
+     -480,
+     -810
+    ],
+    [
+     -480,
+     -860
+    ]
+   ],
+   "y": [
+    -29,
+    -27
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Text Line 1",
+   "shape": "fbox",
+   "at": [
+    -360,
+    -29,
+    -740,
+    300,
+    -27,
+    -700
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Text Line 2",
+   "shape": "fbox",
+   "at": [
+    -360,
+    -29,
+    -830,
+    120,
+    -27,
+    -790
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Department Colour Band",
+   "shape": "fbox",
+   "at": [
+    440,
+    -29,
+    -900,
+    570,
+    -27,
+    -660
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "LED Edge",
+   "shape": "box",
+   "at": [
+    -600,
+    -20,
+    -932,
+    600,
+    20,
+    -930
+   ],
+   "mat": "led",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "signage hanging wayfinding specialty equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=signage+hanging+wayfinding+specialty+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Sign 1200 x 300 x 50 mm": {
+   "value": "1200x300x50",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Underside 2100 mm min above floor": {
+   "value": 2100,
+   "source_status": "assumed",
+   "source": "HTM 65 / BS 8300-2"
+  },
+  "LED 240 V, 30 VA": {
+   "value": 30,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Hanging sign modelled as a generic product below the ceiling (z = 0): roses, cables and grippers, aluminium frame, two faces, arrow, text, department colour band, LED edge. Hangs 630 mm below the ceiling.",
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Ceiling Rose 1",
+   "side": "top"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 30
+ }
+}

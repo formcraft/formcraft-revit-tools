@@ -1,0 +1,2213 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Door_RFShielded_MRI",
+ "template": "Metric Door.rft",
+ "about": "RF door modelled as a product: stainless frame and face frame, stainless leaf with copper edges, copper fingerstock in the jamb and head rebate, raised copper threshold, vision with copper RF mesh, three heavy hinges, vertical cam-latch bar handles both faces, MR warning sign. Placeholder geometry: replace with the MRI vendor's envelope. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door rfshielded mri doors hospital; images: https://www.google.com/search?tbm=isch&q=door+rfshielded+mri+doors+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Doors"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "1200x2100_RFShield"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/FMC_Cost_Unit",
+   "type": "1200x2100_RFShield",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/FMC_Geometry_Stage",
+   "type": "1200x2100_RFShield",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/IfcExportAs",
+   "type": "1200x2100_RFShield",
+   "param": "IfcExportAs",
+   "value": "IfcDoor"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/Description",
+   "type": "1200x2100_RFShield",
+   "param": "Description",
+   "value": "RF-shielded MRI doorset (placeholder to vendor envelope): 80 mm stainless leaf, copper fingerstock in the frame rebate and threshold, mesh-shielded vision panel, cam latch bar handles, MR warning sign"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/Keynote",
+   "type": "1200x2100_RFShield",
+   "param": "Keynote",
+   "value": "D.SHD_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/FMC_Keynote_Code",
+   "type": "1200x2100_RFShield",
+   "param": "FMC_Keynote_Code",
+   "value": "D.SHD_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/Width",
+   "type": "1200x2100_RFShield",
+   "param": "Width",
+   "value": 1200.0
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_RFShield/Height",
+   "type": "1200x2100_RFShield",
+   "param": "Height",
+   "value": 2100.0
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Stainless",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Stainless Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Glass",
+   "color": [
+    191,
+    217,
+    230
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Clear",
+   "param": "Glass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_CopperTape_20x3",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -660.0,
+     -100.0
+    ],
+    [
+     660.0,
+     -100.0
+    ],
+    [
+     660.0,
+     100.0
+    ],
+    [
+     -660.0,
+     100.0
+    ]
+   ],
+   "start": 0,
+   "end": 2160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1",
+   "points": [
+    [
+     -543.0,
+     -70.0
+    ],
+    [
+     -541.5,
+     -69.6
+    ],
+    [
+     -540.4,
+     -68.5
+    ],
+    [
+     -540.0,
+     -67.0
+    ],
+    [
+     -540.0,
+     67.0
+    ],
+    [
+     -540.4,
+     68.5
+    ],
+    [
+     -541.5,
+     69.6
+    ],
+    [
+     -543.0,
+     70.0
+    ],
+    [
+     -597.0,
+     70.0
+    ],
+    [
+     -598.5,
+     69.6
+    ],
+    [
+     -599.6,
+     68.5
+    ],
+    [
+     -600.0,
+     67.0
+    ],
+    [
+     -600.0,
+     -67.0
+    ],
+    [
+     -599.6,
+     -68.5
+    ],
+    [
+     -598.5,
+     -69.6
+    ],
+    [
+     -597.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 2",
+   "points": [
+    [
+     597.0,
+     -70.0
+    ],
+    [
+     598.5,
+     -69.6
+    ],
+    [
+     599.6,
+     -68.5
+    ],
+    [
+     600.0,
+     -67.0
+    ],
+    [
+     600.0,
+     67.0
+    ],
+    [
+     599.6,
+     68.5
+    ],
+    [
+     598.5,
+     69.6
+    ],
+    [
+     597.0,
+     70.0
+    ],
+    [
+     543.0,
+     70.0
+    ],
+    [
+     541.5,
+     69.6
+    ],
+    [
+     540.4,
+     68.5
+    ],
+    [
+     540.0,
+     67.0
+    ],
+    [
+     540.0,
+     -67.0
+    ],
+    [
+     540.4,
+     -68.5
+    ],
+    [
+     541.5,
+     -69.6
+    ],
+    [
+     543.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head",
+   "points": [
+    [
+     67.0,
+     2040.0
+    ],
+    [
+     68.5,
+     2040.4
+    ],
+    [
+     69.6,
+     2041.5
+    ],
+    [
+     70.0,
+     2043.0
+    ],
+    [
+     70.0,
+     2097.0
+    ],
+    [
+     69.6,
+     2098.5
+    ],
+    [
+     68.5,
+     2099.6
+    ],
+    [
+     67.0,
+     2100.0
+    ],
+    [
+     -67.0,
+     2100.0
+    ],
+    [
+     -68.5,
+     2099.6
+    ],
+    [
+     -69.6,
+     2098.5
+    ],
+    [
+     -70.0,
+     2097.0
+    ],
+    [
+     -70.0,
+     2043.0
+    ],
+    [
+     -69.6,
+     2041.5
+    ],
+    [
+     -68.5,
+     2040.4
+    ],
+    [
+     -67.0,
+     2040.0
+    ]
+   ],
+   "start": -600.0,
+   "end": 600.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 1",
+   "points": [
+    [
+     -527.0,
+     40.0
+    ],
+    [
+     -526.23,
+     40.15
+    ],
+    [
+     -525.59,
+     40.59
+    ],
+    [
+     -525.15,
+     41.23
+    ],
+    [
+     -525.0,
+     42.0
+    ],
+    [
+     -525.0,
+     62.0
+    ],
+    [
+     -525.15,
+     62.77
+    ],
+    [
+     -525.59,
+     63.41
+    ],
+    [
+     -526.23,
+     63.85
+    ],
+    [
+     -527.0,
+     64.0
+    ],
+    [
+     -538.0,
+     64.0
+    ],
+    [
+     -538.77,
+     63.85
+    ],
+    [
+     -539.41,
+     63.41
+    ],
+    [
+     -539.85,
+     62.77
+    ],
+    [
+     -540.0,
+     62.0
+    ],
+    [
+     -540.0,
+     42.0
+    ],
+    [
+     -539.85,
+     41.23
+    ],
+    [
+     -539.41,
+     40.59
+    ],
+    [
+     -538.77,
+     40.15
+    ],
+    [
+     -538.0,
+     40.0
+    ]
+   ],
+   "start": 0,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Jamb 2",
+   "points": [
+    [
+     538.0,
+     40.0
+    ],
+    [
+     538.77,
+     40.15
+    ],
+    [
+     539.41,
+     40.59
+    ],
+    [
+     539.85,
+     41.23
+    ],
+    [
+     540.0,
+     42.0
+    ],
+    [
+     540.0,
+     62.0
+    ],
+    [
+     539.85,
+     62.77
+    ],
+    [
+     539.41,
+     63.41
+    ],
+    [
+     538.77,
+     63.85
+    ],
+    [
+     538.0,
+     64.0
+    ],
+    [
+     527.0,
+     64.0
+    ],
+    [
+     526.23,
+     63.85
+    ],
+    [
+     525.59,
+     63.41
+    ],
+    [
+     525.15,
+     62.77
+    ],
+    [
+     525.0,
+     62.0
+    ],
+    [
+     525.0,
+     42.0
+    ],
+    [
+     525.15,
+     41.23
+    ],
+    [
+     525.59,
+     40.59
+    ],
+    [
+     526.23,
+     40.15
+    ],
+    [
+     527.0,
+     40.0
+    ]
+   ],
+   "start": 0,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Jamb 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Jamb 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Jamb 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stop Head",
+   "points": [
+    [
+     -525.0,
+     40.0
+    ],
+    [
+     525.0,
+     40.0
+    ],
+    [
+     525.0,
+     64
+    ],
+    [
+     -525.0,
+     64
+    ]
+   ],
+   "start": 2025,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stop Head",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stop Head",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stop Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Face Frame 1",
+   "points": [
+    [
+     -660.0,
+     0
+    ],
+    [
+     -600.0,
+     0
+    ],
+    [
+     -600.0,
+     2160
+    ],
+    [
+     -660.0,
+     2160
+    ]
+   ],
+   "start": 70,
+   "end": 80,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Face Frame 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Face Frame 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Face Frame 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Face Frame 2",
+   "points": [
+    [
+     600.0,
+     0
+    ],
+    [
+     660.0,
+     0
+    ],
+    [
+     660.0,
+     2160
+    ],
+    [
+     600.0,
+     2160
+    ]
+   ],
+   "start": 70,
+   "end": 80,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Face Frame 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Face Frame 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Face Frame 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Face Frame Head",
+   "points": [
+    [
+     -600.0,
+     2100
+    ],
+    [
+     600.0,
+     2100
+    ],
+    [
+     600.0,
+     2160
+    ],
+    [
+     -600.0,
+     2160
+    ]
+   ],
+   "start": 70,
+   "end": 80,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Face Frame Head",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Face Frame Head",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Face Frame Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Glass",
+   "points": [
+    [
+     -150.0,
+     1200
+    ],
+    [
+     150.0,
+     1200
+    ],
+    [
+     150.0,
+     1600
+    ],
+    [
+     -150.0,
+     1600
+    ]
+   ],
+   "start": -6,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Glass",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Glass",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Glass",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Bead Side 1",
+   "points": [
+    [
+     -123.0,
+     -46.0
+    ],
+    [
+     -121.5,
+     -45.6
+    ],
+    [
+     -120.4,
+     -44.5
+    ],
+    [
+     -120.0,
+     -43.0
+    ],
+    [
+     -120.0,
+     43.0
+    ],
+    [
+     -120.4,
+     44.5
+    ],
+    [
+     -121.5,
+     45.6
+    ],
+    [
+     -123.0,
+     46.0
+    ],
+    [
+     -147.0,
+     46.0
+    ],
+    [
+     -148.5,
+     45.6
+    ],
+    [
+     -149.6,
+     44.5
+    ],
+    [
+     -150.0,
+     43.0
+    ],
+    [
+     -150.0,
+     -43.0
+    ],
+    [
+     -149.6,
+     -44.5
+    ],
+    [
+     -148.5,
+     -45.6
+    ],
+    [
+     -147.0,
+     -46.0
+    ]
+   ],
+   "start": 1200,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Bead Side 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Bead Side 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Bead Side 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Bead Side 2",
+   "points": [
+    [
+     147.0,
+     -46.0
+    ],
+    [
+     148.5,
+     -45.6
+    ],
+    [
+     149.6,
+     -44.5
+    ],
+    [
+     150.0,
+     -43.0
+    ],
+    [
+     150.0,
+     43.0
+    ],
+    [
+     149.6,
+     44.5
+    ],
+    [
+     148.5,
+     45.6
+    ],
+    [
+     147.0,
+     46.0
+    ],
+    [
+     123.0,
+     46.0
+    ],
+    [
+     121.5,
+     45.6
+    ],
+    [
+     120.4,
+     44.5
+    ],
+    [
+     120.0,
+     43.0
+    ],
+    [
+     120.0,
+     -43.0
+    ],
+    [
+     120.4,
+     -44.5
+    ],
+    [
+     121.5,
+     -45.6
+    ],
+    [
+     123.0,
+     -46.0
+    ]
+   ],
+   "start": 1200,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Bead Side 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Bead Side 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Bead Side 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Bead Rail 1",
+   "points": [
+    [
+     -120.0,
+     -46.0
+    ],
+    [
+     120.0,
+     -46.0
+    ],
+    [
+     120.0,
+     46.0
+    ],
+    [
+     -120.0,
+     46.0
+    ]
+   ],
+   "start": 1200,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Bead Rail 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Bead Rail 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Bead Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Bead Rail 2",
+   "points": [
+    [
+     -120.0,
+     -46.0
+    ],
+    [
+     120.0,
+     -46.0
+    ],
+    [
+     120.0,
+     46.0
+    ],
+    [
+     -120.0,
+     46.0
+    ]
+   ],
+   "start": 1570,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Bead Rail 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Bead Rail 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Bead Rail 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 1",
+   "points": [
+    [
+     -537.0,
+     -40.0
+    ],
+    [
+     -531.0,
+     -40.0
+    ],
+    [
+     -531.0,
+     40.0
+    ],
+    [
+     -537.0,
+     40.0
+    ]
+   ],
+   "start": 8,
+   "end": 2037
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 1",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 1",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lipping 2",
+   "points": [
+    [
+     531.0,
+     -40.0
+    ],
+    [
+     537.0,
+     -40.0
+    ],
+    [
+     537.0,
+     40.0
+    ],
+    [
+     531.0,
+     40.0
+    ]
+   ],
+   "start": 8,
+   "end": 2037
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lipping 2",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lipping 2",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lipping 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lower",
+   "points": [
+    [
+     -531.0,
+     8
+    ],
+    [
+     531.0,
+     8
+    ],
+    [
+     531.0,
+     1600
+    ],
+    [
+     150.0,
+     1600
+    ],
+    [
+     150.0,
+     1200
+    ],
+    [
+     -150.0,
+     1200
+    ],
+    [
+     -150.0,
+     1600
+    ],
+    [
+     -531.0,
+     1600
+    ]
+   ],
+   "start": -40.0,
+   "end": 40.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lower",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lower",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lower",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Upper",
+   "points": [
+    [
+     -531.0,
+     1600
+    ],
+    [
+     531.0,
+     1600
+    ],
+    [
+     531.0,
+     2037
+    ],
+    [
+     -531.0,
+     2037
+    ]
+   ],
+   "start": -40.0,
+   "end": 40.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Upper",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Upper",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Upper",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Vision Mesh",
+   "points": [
+    [
+     -120.0,
+     1230
+    ],
+    [
+     120.0,
+     1230
+    ],
+    [
+     120.0,
+     1570
+    ],
+    [
+     -120.0,
+     1570
+    ]
+   ],
+   "start": 6,
+   "end": 7,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Vision Mesh",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Vision Mesh",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Vision Mesh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fingerstock Jamb 1",
+   "points": [
+    [
+     -540.0,
+     -36.0
+    ],
+    [
+     -537.0,
+     -36.0
+    ],
+    [
+     -537.0,
+     36.0
+    ],
+    [
+     -540.0,
+     36.0
+    ]
+   ],
+   "start": 0,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fingerstock Jamb 1",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fingerstock Jamb 1",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fingerstock Jamb 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fingerstock Jamb 2",
+   "points": [
+    [
+     537.0,
+     -36.0
+    ],
+    [
+     540.0,
+     -36.0
+    ],
+    [
+     540.0,
+     36.0
+    ],
+    [
+     537.0,
+     36.0
+    ]
+   ],
+   "start": 0,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fingerstock Jamb 2",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fingerstock Jamb 2",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fingerstock Jamb 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fingerstock Head",
+   "points": [
+    [
+     -540.0,
+     -36.0
+    ],
+    [
+     540.0,
+     -36.0
+    ],
+    [
+     540.0,
+     36.0
+    ],
+    [
+     -540.0,
+     36.0
+    ]
+   ],
+   "start": 2037,
+   "end": 2040
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fingerstock Head",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fingerstock Head",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fingerstock Head",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "RF Threshold",
+   "points": [
+    [
+     -540.0,
+     -70.0
+    ],
+    [
+     540.0,
+     -70.0
+    ],
+    [
+     540.0,
+     70.0
+    ],
+    [
+     -540.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RF Threshold",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RF Threshold",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RF Threshold",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1",
+   "points": [
+    [
+     -526.5,
+     -40.0
+    ],
+    [
+     -527.41,
+     -35.41
+    ],
+    [
+     -530.01,
+     -31.51
+    ],
+    [
+     -533.91,
+     -28.91
+    ],
+    [
+     -538.5,
+     -28.0
+    ],
+    [
+     -543.09,
+     -28.91
+    ],
+    [
+     -546.99,
+     -31.51
+    ],
+    [
+     -549.59,
+     -35.41
+    ],
+    [
+     -550.5,
+     -40.0
+    ],
+    [
+     -549.59,
+     -44.59
+    ],
+    [
+     -546.99,
+     -48.49
+    ],
+    [
+     -543.09,
+     -51.09
+    ],
+    [
+     -538.5,
+     -52.0
+    ],
+    [
+     -533.91,
+     -51.09
+    ],
+    [
+     -530.01,
+     -48.49
+    ],
+    [
+     -527.41,
+     -44.59
+    ]
+   ],
+   "start": 250.0,
+   "end": 350.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 2",
+   "points": [
+    [
+     -526.5,
+     -40.0
+    ],
+    [
+     -527.41,
+     -35.41
+    ],
+    [
+     -530.01,
+     -31.51
+    ],
+    [
+     -533.91,
+     -28.91
+    ],
+    [
+     -538.5,
+     -28.0
+    ],
+    [
+     -543.09,
+     -28.91
+    ],
+    [
+     -546.99,
+     -31.51
+    ],
+    [
+     -549.59,
+     -35.41
+    ],
+    [
+     -550.5,
+     -40.0
+    ],
+    [
+     -549.59,
+     -44.59
+    ],
+    [
+     -546.99,
+     -48.49
+    ],
+    [
+     -543.09,
+     -51.09
+    ],
+    [
+     -538.5,
+     -52.0
+    ],
+    [
+     -533.91,
+     -51.09
+    ],
+    [
+     -530.01,
+     -48.49
+    ],
+    [
+     -527.41,
+     -44.59
+    ]
+   ],
+   "start": 968.5,
+   "end": 1068.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 3",
+   "points": [
+    [
+     -526.5,
+     -40.0
+    ],
+    [
+     -527.41,
+     -35.41
+    ],
+    [
+     -530.01,
+     -31.51
+    ],
+    [
+     -533.91,
+     -28.91
+    ],
+    [
+     -538.5,
+     -28.0
+    ],
+    [
+     -543.09,
+     -28.91
+    ],
+    [
+     -546.99,
+     -31.51
+    ],
+    [
+     -549.59,
+     -35.41
+    ],
+    [
+     -550.5,
+     -40.0
+    ],
+    [
+     -549.59,
+     -44.59
+    ],
+    [
+     -546.99,
+     -48.49
+    ],
+    [
+     -543.09,
+     -51.09
+    ],
+    [
+     -538.5,
+     -52.0
+    ],
+    [
+     -533.91,
+     -51.09
+    ],
+    [
+     -530.01,
+     -48.49
+    ],
+    [
+     -527.41,
+     -44.59
+    ]
+   ],
+   "start": 1687.0,
+   "end": 1787.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 3",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 3",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Bar",
+   "points": [
+    [
+     447.0,
+     -100.0
+    ],
+    [
+     477.0,
+     -100.0
+    ],
+    [
+     477.0,
+     -75.0
+    ],
+    [
+     447.0,
+     -75.0
+    ]
+   ],
+   "start": 900,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Bar",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Bar",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Stand 1",
+   "points": [
+    [
+     447.0,
+     -80.0
+    ],
+    [
+     477.0,
+     -80.0
+    ],
+    [
+     477.0,
+     -40.0
+    ],
+    [
+     447.0,
+     -40.0
+    ]
+   ],
+   "start": 900,
+   "end": 930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Stand 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Stand 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Stand 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Stand 2",
+   "points": [
+    [
+     447.0,
+     -80.0
+    ],
+    [
+     477.0,
+     -80.0
+    ],
+    [
+     477.0,
+     -40.0
+    ],
+    [
+     447.0,
+     -40.0
+    ]
+   ],
+   "start": 1270,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Stand 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Stand 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Stand 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Bar Inside",
+   "points": [
+    [
+     447.0,
+     75.0
+    ],
+    [
+     477.0,
+     75.0
+    ],
+    [
+     477.0,
+     100.0
+    ],
+    [
+     447.0,
+     100.0
+    ]
+   ],
+   "start": 900,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Bar Inside",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Bar Inside",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Bar Inside",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Stand Inside 1",
+   "points": [
+    [
+     447.0,
+     40.0
+    ],
+    [
+     477.0,
+     40.0
+    ],
+    [
+     477.0,
+     80.0
+    ],
+    [
+     447.0,
+     80.0
+    ]
+   ],
+   "start": 900,
+   "end": 930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Stand Inside 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Stand Inside 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Stand Inside 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Latch Handle Stand Inside 2",
+   "points": [
+    [
+     447.0,
+     40.0
+    ],
+    [
+     477.0,
+     40.0
+    ],
+    [
+     477.0,
+     80.0
+    ],
+    [
+     447.0,
+     80.0
+    ]
+   ],
+   "start": 1270,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Latch Handle Stand Inside 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Latch Handle Stand Inside 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Latch Handle Stand Inside 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MR Warning Sign",
+   "points": [
+    [
+     86.0,
+     1700.0
+    ],
+    [
+     87.53,
+     1700.3
+    ],
+    [
+     88.83,
+     1701.17
+    ],
+    [
+     89.7,
+     1702.47
+    ],
+    [
+     90.0,
+     1704.0
+    ],
+    [
+     90.0,
+     1876.0
+    ],
+    [
+     89.7,
+     1877.53
+    ],
+    [
+     88.83,
+     1878.83
+    ],
+    [
+     87.53,
+     1879.7
+    ],
+    [
+     86.0,
+     1880.0
+    ],
+    [
+     -86.0,
+     1880.0
+    ],
+    [
+     -87.53,
+     1879.7
+    ],
+    [
+     -88.83,
+     1878.83
+    ],
+    [
+     -89.7,
+     1877.53
+    ],
+    [
+     -90.0,
+     1876.0
+    ],
+    [
+     -90.0,
+     1704.0
+    ],
+    [
+     -89.7,
+     1702.47
+    ],
+    [
+     -88.83,
+     1701.17
+    ],
+    [
+     -87.53,
+     1700.3
+    ],
+    [
+     -86.0,
+     1700.0
+    ]
+   ],
+   "start": 40.0,
+   "end": 41.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MR Warning Sign",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MR Warning Sign",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MR Warning Sign",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_Door_RFShielded_MRI.png"
+  }
+ ],
+ "values": {
+  "Opening 1200 x 2100 mm": {
+   "value": "1200x2100",
+   "source_status": "assumed",
+   "source": "vendor envelope placeholder, type 1; MRI supplier confirms"
+  },
+  "RF attenuation 100 dB (10-130 MHz)": {
+   "value": "100 dB",
+   "source_status": "assumed",
+   "source": "typical MRI RF cage, vendor confirms"
+  },
+  "Leaf 80 mm": {
+   "value": 80,
+   "source_status": "assumed",
+   "source": "typical RF door"
+  },
+  "Frame face 60 mm": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "RF door frame, vendor confirms"
+  }
+ }
+}

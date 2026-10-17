@@ -1,0 +1,268 @@
+{
+ "family": "FMC_S_StrFraming_Steel_LiftingBeam_LiftShaft",
+ "category": "Structural Framing",
+ "template": "Metric Generic Model.rft",
+ "desc": "Lift-shaft lifting beam, UB on padstones with a centre lifting lug, shackle and SWL marking",
+ "ifc": "IfcBeam",
+ "keynote": "M.UBM_02",
+ "types": [
+  {
+   "name": "152UB_Lifting"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "steel": "FMC_Metal_StructuralSteel_S275",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "paint": "FMC_Metal_SteelLTZ_Painted",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "parts": [
+  {
+   "n": "Beam",
+   "shape": "right",
+   "pts": [
+    [
+     -44.35,
+     -152.4
+    ],
+    [
+     44.35,
+     -152.4
+    ],
+    [
+     44.35,
+     -144.7
+    ],
+    [
+     2.25,
+     -144.7
+    ],
+    [
+     2.25,
+     -7.7
+    ],
+    [
+     44.35,
+     -7.7
+    ],
+    [
+     44.35,
+     0.0
+    ],
+    [
+     -44.35,
+     0.0
+    ],
+    [
+     -44.35,
+     -7.7
+    ],
+    [
+     -2.25,
+     -7.7
+    ],
+    [
+     -2.25,
+     -144.7
+    ],
+    [
+     -44.35,
+     -144.7
+    ]
+   ],
+   "x": [
+    -1200,
+    1200
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Bearing Plate Left",
+   "shape": "box",
+   "at": [
+    -1200,
+    -75,
+    -162.4,
+    -1000,
+    75,
+    -152.4
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Bearing Plate Right",
+   "shape": "box",
+   "at": [
+    1000,
+    -75,
+    -162.4,
+    1200,
+    75,
+    -152.4
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Padstone Left",
+   "shape": "box",
+   "at": [
+    -1200,
+    -150,
+    -312.4,
+    -950,
+    150,
+    -162.4
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Padstone Right",
+   "shape": "box",
+   "at": [
+    950,
+    -150,
+    -312.4,
+    1200,
+    150,
+    -162.4
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Lifting Lug",
+   "shape": "front",
+   "pts": [
+    [
+     -60,
+     -152.4
+    ],
+    [
+     60,
+     -152.4
+    ],
+    [
+     60,
+     -200
+    ],
+    [
+     55.43,
+     -222.96
+    ],
+    [
+     42.43,
+     -242.43
+    ],
+    [
+     22.96,
+     -255.43
+    ],
+    [
+     0.0,
+     -260.0
+    ],
+    [
+     -22.96,
+     -255.43
+    ],
+    [
+     -42.43,
+     -242.43
+    ],
+    [
+     -55.43,
+     -222.96
+    ],
+    [
+     -60,
+     -200
+    ]
+   ],
+   "y": [
+    -8,
+    8
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Shackle",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -215
+   ],
+   "profile": [
+    [
+     18,
+     -9
+    ],
+    [
+     27,
+     -9
+    ],
+    [
+     27,
+     9
+    ],
+    [
+     18,
+     9
+    ]
+   ],
+   "mat": "galv",
+   "seg": 24
+  },
+  {
+   "n": "SWL Label",
+   "shape": "fbox",
+   "at": [
+    -300,
+    -3.75,
+    -110,
+    300,
+    -2.25,
+    -45
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "SWL Label Back",
+   "shape": "fbox",
+   "at": [
+    -300,
+    2.25,
+    -110,
+    300,
+    3.75,
+    -45
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "str framing steel lifting beam lift shaft structural framing hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+framing+steel+lifting+beam+lift+shaft+structural+framing+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Section 152x89x16 UB (geometry)": {
+   "value": "152.4x88.7x4.5x7.7",
+   "source_status": "assumed",
+   "source": "BS 4-1 section table, from knowledge; section by engineer"
+  },
+  "Span 2000 mm clear": {
+   "value": 2000,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Safe working load from the lift supplier": {
+   "value": "SWL by lift supplier",
+   "source_status": "assumed",
+   "source": "lift installer data; test and mark per LOLER/BS EN 81-20"
+  }
+ },
+ "about": "Lifting beam with top at z = 0: painted UB bearing on steel plates and concrete padstones, lifting lug and shackle at mid-span, SWL plates both sides (Fine)."
+}

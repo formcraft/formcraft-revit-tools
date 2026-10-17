@@ -1,0 +1,3190 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_ExtractFan_Wall",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: rounded fascia with louvre slats over a dark recess, run LED, screw covers, wall sleeve with back-draught shutter and external cowl, pull cord. Reference: query: extract fan wall mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=extract+fan+wall+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "150_Wall"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Cost_Unit",
+   "type": "150_Wall",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Geometry_Stage",
+   "type": "150_Wall",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/IfcExportAs",
+   "type": "150_Wall",
+   "param": "IfcExportAs",
+   "value": "IfcFan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/Description",
+   "type": "150_Wall",
+   "param": "Description",
+   "value": "Wall extract fan 150 to 250 mm, through-wall, white louvred fascia, sleeve, back-draught shutter and external cowl, pull-cord switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/Keynote",
+   "type": "150_Wall",
+   "param": "Keynote",
+   "value": "H.FAN_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Keynote_Code",
+   "type": "150_Wall",
+   "param": "FMC_Keynote_Code",
+   "value": "H.FAN_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Code_Description",
+   "type": "150_Wall",
+   "param": "FMC_Code_Description",
+   "value": "ExtractFan Wall: Wall extract fan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Code_Group",
+   "type": "150_Wall",
+   "param": "FMC_Code_Group",
+   "value": "H.FAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/FMC_Role_Code",
+   "type": "150_Wall",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/Voltage",
+   "type": "150_Wall",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/Apparent Load",
+   "type": "150_Wall",
+   "param": "Apparent Load",
+   "value": 30
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Wall/Default Elevation",
+   "type": "150_Wall",
+   "param": "Default Elevation",
+   "value": 2200
+  },
+  {
+   "op": "add_type",
+   "name": "250_Wall"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Cost_Unit",
+   "type": "250_Wall",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Geometry_Stage",
+   "type": "250_Wall",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/IfcExportAs",
+   "type": "250_Wall",
+   "param": "IfcExportAs",
+   "value": "IfcFan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/Description",
+   "type": "250_Wall",
+   "param": "Description",
+   "value": "Wall extract fan 150 to 250 mm, through-wall, white louvred fascia, sleeve, back-draught shutter and external cowl, pull-cord switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/Keynote",
+   "type": "250_Wall",
+   "param": "Keynote",
+   "value": "H.FAN_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Keynote_Code",
+   "type": "250_Wall",
+   "param": "FMC_Keynote_Code",
+   "value": "H.FAN_06"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Code_Description",
+   "type": "250_Wall",
+   "param": "FMC_Code_Description",
+   "value": "ExtractFan Wall: Wall extract fan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Code_Group",
+   "type": "250_Wall",
+   "param": "FMC_Code_Group",
+   "value": "H.FAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/FMC_Role_Code",
+   "type": "250_Wall",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/Voltage",
+   "type": "250_Wall",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/Apparent Load",
+   "type": "250_Wall",
+   "param": "Apparent Load",
+   "value": 60
+  },
+  {
+   "op": "set_type_value",
+   "name": "250_Wall/Default Elevation",
+   "type": "250_Wall",
+   "param": "Default Elevation",
+   "value": 2200
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -170.0,
+     -40
+    ],
+    [
+     170.0,
+     -40
+    ],
+    [
+     170.0,
+     266
+    ],
+    [
+     -170.0,
+     266
+    ]
+   ],
+   "start": -440,
+   "end": 340.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Fascia",
+   "points": [
+    [
+     144.0,
+     0.0
+    ],
+    [
+     153.95,
+     1.98
+    ],
+    [
+     162.38,
+     7.62
+    ],
+    [
+     168.02,
+     16.05
+    ],
+    [
+     170.0,
+     26.0
+    ],
+    [
+     170.0,
+     314.0
+    ],
+    [
+     168.02,
+     323.95
+    ],
+    [
+     162.38,
+     332.38
+    ],
+    [
+     153.95,
+     338.02
+    ],
+    [
+     144.0,
+     340.0
+    ],
+    [
+     -144.0,
+     340.0
+    ],
+    [
+     -153.95,
+     338.02
+    ],
+    [
+     -162.38,
+     332.38
+    ],
+    [
+     -168.02,
+     323.95
+    ],
+    [
+     -170.0,
+     314.0
+    ],
+    [
+     -170.0,
+     26.0
+    ],
+    [
+     -168.02,
+     16.05
+    ],
+    [
+     -162.38,
+     7.62
+    ],
+    [
+     -153.95,
+     1.98
+    ],
+    [
+     -144.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grille Recess",
+   "points": [
+    [
+     129.0,
+     25.0
+    ],
+    [
+     135.12,
+     26.22
+    ],
+    [
+     140.31,
+     29.69
+    ],
+    [
+     143.78,
+     34.88
+    ],
+    [
+     145.0,
+     41.0
+    ],
+    [
+     145.0,
+     299.0
+    ],
+    [
+     143.78,
+     305.12
+    ],
+    [
+     140.31,
+     310.31
+    ],
+    [
+     135.12,
+     313.78
+    ],
+    [
+     129.0,
+     315.0
+    ],
+    [
+     -129.0,
+     315.0
+    ],
+    [
+     -135.12,
+     313.78
+    ],
+    [
+     -140.31,
+     310.31
+    ],
+    [
+     -143.78,
+     305.12
+    ],
+    [
+     -145.0,
+     299.0
+    ],
+    [
+     -145.0,
+     41.0
+    ],
+    [
+     -143.78,
+     34.88
+    ],
+    [
+     -140.31,
+     29.69
+    ],
+    [
+     -135.12,
+     26.22
+    ],
+    [
+     -129.0,
+     25.0
+    ]
+   ],
+   "start": 30,
+   "end": 32,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grille Recess",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grille Recess",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grille Recess",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 1",
+   "points": [
+    [
+     137.0,
+     36.0
+    ],
+    [
+     138.15,
+     36.23
+    ],
+    [
+     139.12,
+     36.88
+    ],
+    [
+     139.77,
+     37.85
+    ],
+    [
+     140.0,
+     39.0
+    ],
+    [
+     140.0,
+     43.0
+    ],
+    [
+     139.77,
+     44.15
+    ],
+    [
+     139.12,
+     45.12
+    ],
+    [
+     138.15,
+     45.77
+    ],
+    [
+     137.0,
+     46.0
+    ],
+    [
+     -137.0,
+     46.0
+    ],
+    [
+     -138.15,
+     45.77
+    ],
+    [
+     -139.12,
+     45.12
+    ],
+    [
+     -139.77,
+     44.15
+    ],
+    [
+     -140.0,
+     43.0
+    ],
+    [
+     -140.0,
+     39.0
+    ],
+    [
+     -139.77,
+     37.85
+    ],
+    [
+     -139.12,
+     36.88
+    ],
+    [
+     -138.15,
+     36.23
+    ],
+    [
+     -137.0,
+     36.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 2",
+   "points": [
+    [
+     137.0,
+     59.0
+    ],
+    [
+     138.15,
+     59.23
+    ],
+    [
+     139.12,
+     59.88
+    ],
+    [
+     139.77,
+     60.85
+    ],
+    [
+     140.0,
+     62.0
+    ],
+    [
+     140.0,
+     66.0
+    ],
+    [
+     139.77,
+     67.15
+    ],
+    [
+     139.12,
+     68.12
+    ],
+    [
+     138.15,
+     68.77
+    ],
+    [
+     137.0,
+     69.0
+    ],
+    [
+     -137.0,
+     69.0
+    ],
+    [
+     -138.15,
+     68.77
+    ],
+    [
+     -139.12,
+     68.12
+    ],
+    [
+     -139.77,
+     67.15
+    ],
+    [
+     -140.0,
+     66.0
+    ],
+    [
+     -140.0,
+     62.0
+    ],
+    [
+     -139.77,
+     60.85
+    ],
+    [
+     -139.12,
+     59.88
+    ],
+    [
+     -138.15,
+     59.23
+    ],
+    [
+     -137.0,
+     59.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 3",
+   "points": [
+    [
+     137.0,
+     82.0
+    ],
+    [
+     138.15,
+     82.23
+    ],
+    [
+     139.12,
+     82.88
+    ],
+    [
+     139.77,
+     83.85
+    ],
+    [
+     140.0,
+     85.0
+    ],
+    [
+     140.0,
+     89.0
+    ],
+    [
+     139.77,
+     90.15
+    ],
+    [
+     139.12,
+     91.12
+    ],
+    [
+     138.15,
+     91.77
+    ],
+    [
+     137.0,
+     92.0
+    ],
+    [
+     -137.0,
+     92.0
+    ],
+    [
+     -138.15,
+     91.77
+    ],
+    [
+     -139.12,
+     91.12
+    ],
+    [
+     -139.77,
+     90.15
+    ],
+    [
+     -140.0,
+     89.0
+    ],
+    [
+     -140.0,
+     85.0
+    ],
+    [
+     -139.77,
+     83.85
+    ],
+    [
+     -139.12,
+     82.88
+    ],
+    [
+     -138.15,
+     82.23
+    ],
+    [
+     -137.0,
+     82.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 4",
+   "points": [
+    [
+     137.0,
+     105.0
+    ],
+    [
+     138.15,
+     105.23
+    ],
+    [
+     139.12,
+     105.88
+    ],
+    [
+     139.77,
+     106.85
+    ],
+    [
+     140.0,
+     108.0
+    ],
+    [
+     140.0,
+     112.0
+    ],
+    [
+     139.77,
+     113.15
+    ],
+    [
+     139.12,
+     114.12
+    ],
+    [
+     138.15,
+     114.77
+    ],
+    [
+     137.0,
+     115.0
+    ],
+    [
+     -137.0,
+     115.0
+    ],
+    [
+     -138.15,
+     114.77
+    ],
+    [
+     -139.12,
+     114.12
+    ],
+    [
+     -139.77,
+     113.15
+    ],
+    [
+     -140.0,
+     112.0
+    ],
+    [
+     -140.0,
+     108.0
+    ],
+    [
+     -139.77,
+     106.85
+    ],
+    [
+     -139.12,
+     105.88
+    ],
+    [
+     -138.15,
+     105.23
+    ],
+    [
+     -137.0,
+     105.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 5",
+   "points": [
+    [
+     137.0,
+     128.0
+    ],
+    [
+     138.15,
+     128.23
+    ],
+    [
+     139.12,
+     128.88
+    ],
+    [
+     139.77,
+     129.85
+    ],
+    [
+     140.0,
+     131.0
+    ],
+    [
+     140.0,
+     135.0
+    ],
+    [
+     139.77,
+     136.15
+    ],
+    [
+     139.12,
+     137.12
+    ],
+    [
+     138.15,
+     137.77
+    ],
+    [
+     137.0,
+     138.0
+    ],
+    [
+     -137.0,
+     138.0
+    ],
+    [
+     -138.15,
+     137.77
+    ],
+    [
+     -139.12,
+     137.12
+    ],
+    [
+     -139.77,
+     136.15
+    ],
+    [
+     -140.0,
+     135.0
+    ],
+    [
+     -140.0,
+     131.0
+    ],
+    [
+     -139.77,
+     129.85
+    ],
+    [
+     -139.12,
+     128.88
+    ],
+    [
+     -138.15,
+     128.23
+    ],
+    [
+     -137.0,
+     128.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 5",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 5",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 6",
+   "points": [
+    [
+     137.0,
+     151.0
+    ],
+    [
+     138.15,
+     151.23
+    ],
+    [
+     139.12,
+     151.88
+    ],
+    [
+     139.77,
+     152.85
+    ],
+    [
+     140.0,
+     154.0
+    ],
+    [
+     140.0,
+     158.0
+    ],
+    [
+     139.77,
+     159.15
+    ],
+    [
+     139.12,
+     160.12
+    ],
+    [
+     138.15,
+     160.77
+    ],
+    [
+     137.0,
+     161.0
+    ],
+    [
+     -137.0,
+     161.0
+    ],
+    [
+     -138.15,
+     160.77
+    ],
+    [
+     -139.12,
+     160.12
+    ],
+    [
+     -139.77,
+     159.15
+    ],
+    [
+     -140.0,
+     158.0
+    ],
+    [
+     -140.0,
+     154.0
+    ],
+    [
+     -139.77,
+     152.85
+    ],
+    [
+     -139.12,
+     151.88
+    ],
+    [
+     -138.15,
+     151.23
+    ],
+    [
+     -137.0,
+     151.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 6",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 6",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 7",
+   "points": [
+    [
+     137.0,
+     174.0
+    ],
+    [
+     138.15,
+     174.23
+    ],
+    [
+     139.12,
+     174.88
+    ],
+    [
+     139.77,
+     175.85
+    ],
+    [
+     140.0,
+     177.0
+    ],
+    [
+     140.0,
+     181.0
+    ],
+    [
+     139.77,
+     182.15
+    ],
+    [
+     139.12,
+     183.12
+    ],
+    [
+     138.15,
+     183.77
+    ],
+    [
+     137.0,
+     184.0
+    ],
+    [
+     -137.0,
+     184.0
+    ],
+    [
+     -138.15,
+     183.77
+    ],
+    [
+     -139.12,
+     183.12
+    ],
+    [
+     -139.77,
+     182.15
+    ],
+    [
+     -140.0,
+     181.0
+    ],
+    [
+     -140.0,
+     177.0
+    ],
+    [
+     -139.77,
+     175.85
+    ],
+    [
+     -139.12,
+     174.88
+    ],
+    [
+     -138.15,
+     174.23
+    ],
+    [
+     -137.0,
+     174.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 7",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 7",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 8",
+   "points": [
+    [
+     137.0,
+     197.0
+    ],
+    [
+     138.15,
+     197.23
+    ],
+    [
+     139.12,
+     197.88
+    ],
+    [
+     139.77,
+     198.85
+    ],
+    [
+     140.0,
+     200.0
+    ],
+    [
+     140.0,
+     204.0
+    ],
+    [
+     139.77,
+     205.15
+    ],
+    [
+     139.12,
+     206.12
+    ],
+    [
+     138.15,
+     206.77
+    ],
+    [
+     137.0,
+     207.0
+    ],
+    [
+     -137.0,
+     207.0
+    ],
+    [
+     -138.15,
+     206.77
+    ],
+    [
+     -139.12,
+     206.12
+    ],
+    [
+     -139.77,
+     205.15
+    ],
+    [
+     -140.0,
+     204.0
+    ],
+    [
+     -140.0,
+     200.0
+    ],
+    [
+     -139.77,
+     198.85
+    ],
+    [
+     -139.12,
+     197.88
+    ],
+    [
+     -138.15,
+     197.23
+    ],
+    [
+     -137.0,
+     197.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 8",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 8",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 9",
+   "points": [
+    [
+     137.0,
+     220.0
+    ],
+    [
+     138.15,
+     220.23
+    ],
+    [
+     139.12,
+     220.88
+    ],
+    [
+     139.77,
+     221.85
+    ],
+    [
+     140.0,
+     223.0
+    ],
+    [
+     140.0,
+     227.0
+    ],
+    [
+     139.77,
+     228.15
+    ],
+    [
+     139.12,
+     229.12
+    ],
+    [
+     138.15,
+     229.77
+    ],
+    [
+     137.0,
+     230.0
+    ],
+    [
+     -137.0,
+     230.0
+    ],
+    [
+     -138.15,
+     229.77
+    ],
+    [
+     -139.12,
+     229.12
+    ],
+    [
+     -139.77,
+     228.15
+    ],
+    [
+     -140.0,
+     227.0
+    ],
+    [
+     -140.0,
+     223.0
+    ],
+    [
+     -139.77,
+     221.85
+    ],
+    [
+     -139.12,
+     220.88
+    ],
+    [
+     -138.15,
+     220.23
+    ],
+    [
+     -137.0,
+     220.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 9",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 9",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 9",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 10",
+   "points": [
+    [
+     137.0,
+     243.0
+    ],
+    [
+     138.15,
+     243.23
+    ],
+    [
+     139.12,
+     243.88
+    ],
+    [
+     139.77,
+     244.85
+    ],
+    [
+     140.0,
+     246.0
+    ],
+    [
+     140.0,
+     250.0
+    ],
+    [
+     139.77,
+     251.15
+    ],
+    [
+     139.12,
+     252.12
+    ],
+    [
+     138.15,
+     252.77
+    ],
+    [
+     137.0,
+     253.0
+    ],
+    [
+     -137.0,
+     253.0
+    ],
+    [
+     -138.15,
+     252.77
+    ],
+    [
+     -139.12,
+     252.12
+    ],
+    [
+     -139.77,
+     251.15
+    ],
+    [
+     -140.0,
+     250.0
+    ],
+    [
+     -140.0,
+     246.0
+    ],
+    [
+     -139.77,
+     244.85
+    ],
+    [
+     -139.12,
+     243.88
+    ],
+    [
+     -138.15,
+     243.23
+    ],
+    [
+     -137.0,
+     243.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 10",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 10",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 10",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 11",
+   "points": [
+    [
+     137.0,
+     266.0
+    ],
+    [
+     138.15,
+     266.23
+    ],
+    [
+     139.12,
+     266.88
+    ],
+    [
+     139.77,
+     267.85
+    ],
+    [
+     140.0,
+     269.0
+    ],
+    [
+     140.0,
+     273.0
+    ],
+    [
+     139.77,
+     274.15
+    ],
+    [
+     139.12,
+     275.12
+    ],
+    [
+     138.15,
+     275.77
+    ],
+    [
+     137.0,
+     276.0
+    ],
+    [
+     -137.0,
+     276.0
+    ],
+    [
+     -138.15,
+     275.77
+    ],
+    [
+     -139.12,
+     275.12
+    ],
+    [
+     -139.77,
+     274.15
+    ],
+    [
+     -140.0,
+     273.0
+    ],
+    [
+     -140.0,
+     269.0
+    ],
+    [
+     -139.77,
+     267.85
+    ],
+    [
+     -139.12,
+     266.88
+    ],
+    [
+     -138.15,
+     266.23
+    ],
+    [
+     -137.0,
+     266.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 11",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 11",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 11",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Slat 12",
+   "points": [
+    [
+     137.0,
+     289.0
+    ],
+    [
+     138.15,
+     289.23
+    ],
+    [
+     139.12,
+     289.88
+    ],
+    [
+     139.77,
+     290.85
+    ],
+    [
+     140.0,
+     292.0
+    ],
+    [
+     140.0,
+     296.0
+    ],
+    [
+     139.77,
+     297.15
+    ],
+    [
+     139.12,
+     298.12
+    ],
+    [
+     138.15,
+     298.77
+    ],
+    [
+     137.0,
+     299.0
+    ],
+    [
+     -137.0,
+     299.0
+    ],
+    [
+     -138.15,
+     298.77
+    ],
+    [
+     -139.12,
+     298.12
+    ],
+    [
+     -139.77,
+     297.15
+    ],
+    [
+     -140.0,
+     296.0
+    ],
+    [
+     -140.0,
+     292.0
+    ],
+    [
+     -139.77,
+     290.85
+    ],
+    [
+     -139.12,
+     289.88
+    ],
+    [
+     -138.15,
+     289.23
+    ],
+    [
+     -137.0,
+     289.0
+    ]
+   ],
+   "start": 32,
+   "end": 40,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Slat 12",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Slat 12",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Slat 12",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Run LED",
+   "points": [
+    [
+     134.0,
+     22.0
+    ],
+    [
+     133.86,
+     23.04
+    ],
+    [
+     133.46,
+     24.0
+    ],
+    [
+     132.83,
+     24.83
+    ],
+    [
+     132.0,
+     25.46
+    ],
+    [
+     131.04,
+     25.86
+    ],
+    [
+     130.0,
+     26.0
+    ],
+    [
+     128.96,
+     25.86
+    ],
+    [
+     128.0,
+     25.46
+    ],
+    [
+     127.17,
+     24.83
+    ],
+    [
+     126.54,
+     24.0
+    ],
+    [
+     126.14,
+     23.04
+    ],
+    [
+     126.0,
+     22.0
+    ],
+    [
+     126.14,
+     20.96
+    ],
+    [
+     126.54,
+     20.0
+    ],
+    [
+     127.17,
+     19.17
+    ],
+    [
+     128.0,
+     18.54
+    ],
+    [
+     128.96,
+     18.14
+    ],
+    [
+     130.0,
+     18.0
+    ],
+    [
+     131.04,
+     18.14
+    ],
+    [
+     132.0,
+     18.54
+    ],
+    [
+     132.83,
+     19.17
+    ],
+    [
+     133.46,
+     20.0
+    ],
+    [
+     133.86,
+     20.96
+    ]
+   ],
+   "start": 30,
+   "end": 32,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Run LED",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Run LED",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Run LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cover 1",
+   "points": [
+    [
+     -144.0,
+     170.0
+    ],
+    [
+     -144.2,
+     171.55
+    ],
+    [
+     -144.8,
+     173.0
+    ],
+    [
+     -145.76,
+     174.24
+    ],
+    [
+     -147.0,
+     175.2
+    ],
+    [
+     -148.45,
+     175.8
+    ],
+    [
+     -150.0,
+     176.0
+    ],
+    [
+     -151.55,
+     175.8
+    ],
+    [
+     -153.0,
+     175.2
+    ],
+    [
+     -154.24,
+     174.24
+    ],
+    [
+     -155.2,
+     173.0
+    ],
+    [
+     -155.8,
+     171.55
+    ],
+    [
+     -156.0,
+     170.0
+    ],
+    [
+     -155.8,
+     168.45
+    ],
+    [
+     -155.2,
+     167.0
+    ],
+    [
+     -154.24,
+     165.76
+    ],
+    [
+     -153.0,
+     164.8
+    ],
+    [
+     -151.55,
+     164.2
+    ],
+    [
+     -150.0,
+     164.0
+    ],
+    [
+     -148.45,
+     164.2
+    ],
+    [
+     -147.0,
+     164.8
+    ],
+    [
+     -145.76,
+     165.76
+    ],
+    [
+     -144.8,
+     167.0
+    ],
+    [
+     -144.2,
+     168.45
+    ]
+   ],
+   "start": 30,
+   "end": 32,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cover 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cover 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cover 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cover 2",
+   "points": [
+    [
+     156.0,
+     170.0
+    ],
+    [
+     155.8,
+     171.55
+    ],
+    [
+     155.2,
+     173.0
+    ],
+    [
+     154.24,
+     174.24
+    ],
+    [
+     153.0,
+     175.2
+    ],
+    [
+     151.55,
+     175.8
+    ],
+    [
+     150.0,
+     176.0
+    ],
+    [
+     148.45,
+     175.8
+    ],
+    [
+     147.0,
+     175.2
+    ],
+    [
+     145.76,
+     174.24
+    ],
+    [
+     144.8,
+     173.0
+    ],
+    [
+     144.2,
+     171.55
+    ],
+    [
+     144.0,
+     170.0
+    ],
+    [
+     144.2,
+     168.45
+    ],
+    [
+     144.8,
+     167.0
+    ],
+    [
+     145.76,
+     165.76
+    ],
+    [
+     147.0,
+     164.8
+    ],
+    [
+     148.45,
+     164.2
+    ],
+    [
+     150.0,
+     164.0
+    ],
+    [
+     151.55,
+     164.2
+    ],
+    [
+     153.0,
+     164.8
+    ],
+    [
+     154.24,
+     165.76
+    ],
+    [
+     155.2,
+     167.0
+    ],
+    [
+     155.8,
+     168.45
+    ]
+   ],
+   "start": 30,
+   "end": 32,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cover 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cover 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cover 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Sleeve",
+   "points": [
+    [
+     128.0,
+     170.0
+    ],
+    [
+     123.64,
+     203.13
+    ],
+    [
+     110.85,
+     234.0
+    ],
+    [
+     90.51,
+     260.51
+    ],
+    [
+     64.0,
+     280.85
+    ],
+    [
+     33.13,
+     293.64
+    ],
+    [
+     0.0,
+     298.0
+    ],
+    [
+     -33.13,
+     293.64
+    ],
+    [
+     -64.0,
+     280.85
+    ],
+    [
+     -90.51,
+     260.51
+    ],
+    [
+     -110.85,
+     234.0
+    ],
+    [
+     -123.64,
+     203.13
+    ],
+    [
+     -128.0,
+     170.0
+    ],
+    [
+     -123.64,
+     136.87
+    ],
+    [
+     -110.85,
+     106.0
+    ],
+    [
+     -90.51,
+     79.49
+    ],
+    [
+     -64.0,
+     59.15
+    ],
+    [
+     -33.13,
+     46.36
+    ],
+    [
+     -0.0,
+     42.0
+    ],
+    [
+     33.13,
+     46.36
+    ],
+    [
+     64.0,
+     59.15
+    ],
+    [
+     90.51,
+     79.49
+    ],
+    [
+     110.85,
+     106.0
+    ],
+    [
+     123.64,
+     136.87
+    ]
+   ],
+   "start": -230,
+   "end": 0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Sleeve",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Sleeve",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Sleeve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backdraught Shutter",
+   "points": [
+    [
+     128.0,
+     170.0
+    ],
+    [
+     123.64,
+     203.13
+    ],
+    [
+     110.85,
+     234.0
+    ],
+    [
+     90.51,
+     260.51
+    ],
+    [
+     64.0,
+     280.85
+    ],
+    [
+     33.13,
+     293.64
+    ],
+    [
+     0.0,
+     298.0
+    ],
+    [
+     -33.13,
+     293.64
+    ],
+    [
+     -64.0,
+     280.85
+    ],
+    [
+     -90.51,
+     260.51
+    ],
+    [
+     -110.85,
+     234.0
+    ],
+    [
+     -123.64,
+     203.13
+    ],
+    [
+     -128.0,
+     170.0
+    ],
+    [
+     -123.64,
+     136.87
+    ],
+    [
+     -110.85,
+     106.0
+    ],
+    [
+     -90.51,
+     79.49
+    ],
+    [
+     -64.0,
+     59.15
+    ],
+    [
+     -33.13,
+     46.36
+    ],
+    [
+     -0.0,
+     42.0
+    ],
+    [
+     33.13,
+     46.36
+    ],
+    [
+     64.0,
+     59.15
+    ],
+    [
+     90.51,
+     79.49
+    ],
+    [
+     110.85,
+     106.0
+    ],
+    [
+     123.64,
+     136.87
+    ]
+   ],
+   "start": -236,
+   "end": -230,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backdraught Shutter",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backdraught Shutter",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backdraught Shutter",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "External Cowl",
+   "points": [
+    [
+     138.0,
+     20.0
+    ],
+    [
+     142.59,
+     20.91
+    ],
+    [
+     146.49,
+     23.51
+    ],
+    [
+     149.09,
+     27.41
+    ],
+    [
+     150.0,
+     32.0
+    ],
+    [
+     150.0,
+     308.0
+    ],
+    [
+     149.09,
+     312.59
+    ],
+    [
+     146.49,
+     316.49
+    ],
+    [
+     142.59,
+     319.09
+    ],
+    [
+     138.0,
+     320.0
+    ],
+    [
+     -138.0,
+     320.0
+    ],
+    [
+     -142.59,
+     319.09
+    ],
+    [
+     -146.49,
+     316.49
+    ],
+    [
+     -149.09,
+     312.59
+    ],
+    [
+     -150.0,
+     308.0
+    ],
+    [
+     -150.0,
+     32.0
+    ],
+    [
+     -149.09,
+     27.41
+    ],
+    [
+     -146.49,
+     23.51
+    ],
+    [
+     -142.59,
+     20.91
+    ],
+    [
+     -138.0,
+     20.0
+    ]
+   ],
+   "start": -266,
+   "end": -236,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "External Cowl",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "External Cowl",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "External Cowl",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Cord",
+   "points": [
+    [
+     151.5,
+     -15.0
+    ],
+    [
+     151.45,
+     -14.61
+    ],
+    [
+     151.3,
+     -14.25
+    ],
+    [
+     151.06,
+     -13.94
+    ],
+    [
+     150.75,
+     -13.7
+    ],
+    [
+     150.39,
+     -13.55
+    ],
+    [
+     150.0,
+     -13.5
+    ],
+    [
+     149.61,
+     -13.55
+    ],
+    [
+     149.25,
+     -13.7
+    ],
+    [
+     148.94,
+     -13.94
+    ],
+    [
+     148.7,
+     -14.25
+    ],
+    [
+     148.55,
+     -14.61
+    ],
+    [
+     148.5,
+     -15.0
+    ],
+    [
+     148.55,
+     -15.39
+    ],
+    [
+     148.7,
+     -15.75
+    ],
+    [
+     148.94,
+     -16.06
+    ],
+    [
+     149.25,
+     -16.3
+    ],
+    [
+     149.61,
+     -16.45
+    ],
+    [
+     150.0,
+     -16.5
+    ],
+    [
+     150.39,
+     -16.45
+    ],
+    [
+     150.75,
+     -16.3
+    ],
+    [
+     151.06,
+     -16.06
+    ],
+    [
+     151.3,
+     -15.75
+    ],
+    [
+     151.45,
+     -15.39
+    ]
+   ],
+   "start": -420,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Cord",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Cord",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Cord",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cord Toggle",
+   "points": [
+    [
+     157.0,
+     -15.0
+    ],
+    [
+     156.76,
+     -13.19
+    ],
+    [
+     156.06,
+     -11.5
+    ],
+    [
+     154.95,
+     -10.05
+    ],
+    [
+     153.5,
+     -8.94
+    ],
+    [
+     151.81,
+     -8.24
+    ],
+    [
+     150.0,
+     -8.0
+    ],
+    [
+     148.19,
+     -8.24
+    ],
+    [
+     146.5,
+     -8.94
+    ],
+    [
+     145.05,
+     -10.05
+    ],
+    [
+     143.94,
+     -11.5
+    ],
+    [
+     143.24,
+     -13.19
+    ],
+    [
+     143.0,
+     -15.0
+    ],
+    [
+     143.24,
+     -16.81
+    ],
+    [
+     143.94,
+     -18.5
+    ],
+    [
+     145.05,
+     -19.95
+    ],
+    [
+     146.5,
+     -21.06
+    ],
+    [
+     148.19,
+     -21.76
+    ],
+    [
+     150.0,
+     -22.0
+    ],
+    [
+     151.81,
+     -21.76
+    ],
+    [
+     153.5,
+     -21.06
+    ],
+    [
+     154.95,
+     -19.95
+    ],
+    [
+     156.06,
+     -18.5
+    ],
+    [
+     156.76,
+     -16.81
+    ]
+   ],
+   "start": -440,
+   "end": -420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cord Toggle",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cord Toggle",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cord Toggle",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Wall Sleeve",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_ExtractFan_Wall.png"
+  }
+ ],
+ "values": {
+  "Fascia 340 x 340 mm (250)": {
+   "value": "340x340",
+   "source_status": "assumed",
+   "source": "typical 250 mm window/wall fan"
+  },
+  "Sleeve 256 dia through 230 wall": {
+   "value": "256/230",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 30 / 60 VA": {
+   "value": "30/60",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounting height 2200 mm": {
+   "value": 2200,
+   "source_status": "assumed",
+   "source": "high-level wall practice"
+  }
+ }
+}

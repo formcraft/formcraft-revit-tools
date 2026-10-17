@@ -1,0 +1,251 @@
+{
+ "family": "FMC_E_ElecFixture_FusedSpur",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Switched fused connection unit 13 A, BS 1363-4, with neon and flex outlet, 86 x 86",
+ "ifc": "IfcSwitchingDevice",
+ "keynote": "E.SOC_09",
+ "types": [
+  {
+   "name": "13A_SwitchedNeon"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 1000,
+  "Default Elevation": 1000
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "white": "FMC_Plastic_ABS_White",
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "red": "FMC_Plastic_LED_Red"
+ },
+ "reference": {
+  "query": "fused spur electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=fused+spur+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -40.0,
+    0,
+    3,
+    40.0,
+    35,
+    83
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Plate",
+   "shape": "fbox",
+   "at": [
+    -43.0,
+    -7,
+    0,
+    43.0,
+    0,
+    86
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Plate Face",
+   "shape": "fbox",
+   "at": [
+    -41.0,
+    -9.5,
+    2,
+    41.0,
+    -7,
+    84
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 5
+  },
+  {
+   "n": "Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -32.0,
+    43.0
+   ],
+   "r": 3.2,
+   "y": [
+    -10.5,
+    -9.5
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     64,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fuse Carrier",
+   "shape": "fbox",
+   "at": [
+    -26,
+    -13,
+    50,
+    2,
+    -9.5,
+    72
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Fuse Carrier Slot",
+   "shape": "fbox",
+   "at": [
+    -16,
+    -13.3,
+    59,
+    -8,
+    -13,
+    63
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "FUSE Legend",
+   "shape": "fbox",
+   "at": [
+    -24,
+    -9.8,
+    74,
+    0,
+    -9.5,
+    78
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Neon",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    20,
+    30
+   ],
+   "r": 3.5,
+   "y": [
+    -11,
+    -9.5
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Flex Outlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    10
+   ],
+   "r": 5,
+   "y": [
+    -11,
+    -9.5
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Rocker Surround S",
+   "shape": "fbox",
+   "at": [
+    15.0,
+    -10.5,
+    47.0,
+    29.0,
+    -9.5,
+    73.0
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 1.5
+  },
+  {
+   "n": "Rocker S",
+   "shape": "fbox",
+   "at": [
+    16.0,
+    -13,
+    49.0,
+    28.0,
+    -10.5,
+    71.0
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 1.5
+  },
+  {
+   "n": "Rocker Mark S",
+   "shape": "fbox",
+   "at": [
+    20,
+    -13.3,
+    65.0,
+    24,
+    -13,
+    69.0
+   ],
+   "mat": "red",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Plate 86 x 86 mm": {
+   "value": "86x86",
+   "source_status": "assumed",
+   "source": "BS 4662 single box"
+  },
+  "Fuse 13 A (BS 1362)": {
+   "value": "13A",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Load 1000 VA": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "design allowance"
+  },
+  "Height 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Fused spur: plate with fuse carrier and slot, legend, red neon, flex outlet, double-pole rocker with mark, screws, steel box. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

@@ -1,0 +1,251 @@
+{
+ "family": "FMC_E_SecurityDevice_CCTV_Camera_Dome",
+ "category": "Security Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "IP dome camera, ceiling surface mount, vandal-resistant 150 mm dome, IR",
+ "ifc": "IfcSensor",
+ "keynote": "E.ICT_05",
+ "types": [
+  {
+   "name": "150_Ceiling"
+  }
+ ],
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "black": "FMC_Plastic_ABS_Black",
+  "screen": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "security device cctv camera dome security devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+dome+security+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -30
+    ],
+    [
+     70,
+     -30
+    ],
+    [
+     75,
+     -20
+    ],
+    [
+     75,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Dome Bubble",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     55,
+     -30
+    ],
+    [
+     55,
+     -45
+    ],
+    [
+     48,
+     -60
+    ],
+    [
+     36,
+     -72
+    ],
+    [
+     20,
+     -79
+    ],
+    [
+     0,
+     -81
+    ],
+    [
+     0,
+     -30
+    ]
+   ],
+   "mat": "pc",
+   "lod": "mf"
+  },
+  {
+   "n": "Camera Ball",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -32
+    ],
+    [
+     40,
+     -32
+    ],
+    [
+     40,
+     -50
+    ],
+    [
+     32,
+     -62
+    ],
+    [
+     18,
+     -70
+    ],
+    [
+     0,
+     -72
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Lens",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -56
+   ],
+   "r": 10,
+   "y": [
+    -44,
+    -36
+   ],
+   "mat": "screen",
+   "lod": "f"
+  },
+  {
+   "n": "IR LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -18,
+    -56
+   ],
+   "r": 3,
+   "y": [
+    -40,
+    -36
+   ],
+   "mat": "red",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     36,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Trim Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     55,
+     -31
+    ],
+    [
+     72,
+     -31
+    ],
+    [
+     72,
+     -30
+    ],
+    [
+     55,
+     -30
+    ]
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Cable Entry",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    40,
+    0
+   ],
+   "r": 6,
+   "z": [
+    0,
+    15
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Security",
+   "domain": "electrical",
+   "system": "Security",
+   "part": "Base",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Dome 150 mm dia x 81 mm": {
+   "value": "150x81",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "4 MP, IR 30 m, IK10, PoE": {
+   "value": "4MP IK10",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Coverage per security survey": {
+   "value": "survey",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Dome camera: base, trim ring, clear bubble, camera ball with lens and IR LEDs, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

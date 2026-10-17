@@ -396,9 +396,9 @@ p = [B('Cabinet', [-300, -250, 0, 300, 0, 800], 'epw', 4),
      B('Rain Hood', [-330, -300, 800, 330, 10, 830], 'epw', 0),
      F('Door', [-295, -260, 5, 295, -250, 795], 'epw', 6),
      F('Meter Window', [-260, -261, 450, 260, -259, 720], 'pc', 6, 'f'),
-     F('Meter Body', [-230, -258, 480, -90, -252, 700], 'mgrey', 6, rep=(3, 165, 0, 0)),
-     F('Meter LCD', [-210, -259, 620, -110, -258, 670], 'screen', 2, 'f', rep=(3, 165, 0, 0)),
-     C('Meter Pulse LED', 'y', [-160, 590], 4, [-259.5, -258], 'red', 'f', rep=(3, 165, 0, 0)),
+     F('Meter Body', [-230, -268, 480, -90, -261, 700], 'mgrey', 6, rep=(3, 165, 0, 0)),
+     F('Meter LCD', [-210, -269, 620, -110, -268, 670], 'screen', 2, 'f', rep=(3, 165, 0, 0)),
+     C('Meter Pulse LED', 'y', [-160, 590], 4, [-269.5, -268], 'red', 'f', rep=(3, 165, 0, 0)),
      F('Cut-out Fuse', [-120, -258, 120, 120, -252, 300], 'black', 4, 'f'),
      F('Fuse Carrier', [-40, -265, 170, 40, -258, 260], 'grey', 4, 'f'),
      F('Hasp', [255, -275, 380, 280, -260, 430], 'chrome', 3, 'f'),
@@ -423,7 +423,8 @@ p = [B('Mounting Bracket', [-250, -15, 150, 250, 0, 550], 'steel'),
      C('Comms LED', 'y', [160, 600], 6, [-260, -258], 'ledblue', 'f'),
      F('Heatsink Fin', [-322, -230, 60, -300, -35, 640], 'alu', 0, rep=(2, 622, 0, 0)),
      B('Heatsink Fin Back', [-322, -200, 60, 322, -175, 640], 'alu', 0, 'f', rep=(3, 0, 50, 0)),
-     F('Fan Grille', [-200, -252, 80, -60, -250, 220], 'black', 70, 'f', rep=(2, 260, 0, 0)),
+     F('Vent Grille', [-200, -252, 80, 200, -250, 220], 'black', 8, 'f'),
+     F('Vent Slat', [-195, -253, 92, 195, -252, 98], 'mgrey', 0, 'f', rep=(6, 0, 0, 20)),
      T('DC Switch', 'z', [200, -150], [[0, 0], [35, 0], [35, -15], [0, -15]], 'black'),
      F('DC Switch Handle', [185, -175, -40, 215, -125, -15], 'redabs', 3, 'f'),
      C('DC Connector', 'z', [-220, -150], 9, [-30, 0], 'black', 'f', rep=(6, 40, 0, 0)),
@@ -433,27 +434,27 @@ add('FMC_E_EQ_Inverter_Solar', 'Grid-tie / hybrid solar inverter, 3-phase, wall 
     'IfcElectricFlowTreatmentDevice', [('10kW_3Ph', {"Apparent Load": 10000}), ('50kW_3Ph', {"Apparent Load": 50000})], p,
     {"Body 600 x 700 x 250 mm": A("600x700x250", "typical 10-50 kW string inverter; 50 kW body larger, supplier GA"), "Output 10 / 50 kW, 415 V": A("kW", "type name"),
      "Bottom at 1000 mm, 500 mm free space above and below": A(1000, "inverter installation practice")},
-    "Inverter: wall bracket, body, front panel with display band, LCD and status/fault/comms LEDs, side and rear heatsink fins, fan grilles, DC isolator with red handle, DC connector row, AC and comms glands underneath.",
+    "Inverter: wall bracket, body, front panel with display band, LCD and status/fault/comms LEDs, side and rear heatsink fins, vent grille with slats, DC isolator with red handle, DC connector row, AC and comms glands underneath.",
     tv=etv(415, 10000, True, 1000), conns=[PWR('AC Gland', 'bottom', 'AC Out')])
 
 # 13 Battery bank: 3 LFP racks, each 600 x 600 x 2000, 10 modules + BMS
 p = [B('Rack Frame', [-930, -600, 0, -330, 0, 2000], 'steel', 0, rep=(3, 630, 0, 0)),
      B('Rack Plinth', [-930, -600, 0, 960, 0, 60], 'black'),
-     F('Module', [-910, -610, 100, -350, -600, 250], 'mgrey', 4, rep=(10, 0, 0, 160)),
-     F('Module Rack 2', [-280, -610, 100, 280, -600, 250], 'mgrey', 4, rep=(10, 0, 0, 160)),
-     F('Module Rack 3', [350, -610, 100, 910, -600, 250], 'mgrey', 4, rep=(10, 0, 0, 160)),
-     F('Module Handle', [-900, -625, 150, -880, -610, 210], 'black', 4, 'f', rep=(10, 0, 0, 160)),
-     F('Module Handle Rack 2', [-270, -625, 150, -250, -610, 210], 'black', 4, 'f', rep=(10, 0, 0, 160)),
-     F('Module Handle Rack 3', [360, -625, 150, 380, -610, 210], 'black', 4, 'f', rep=(10, 0, 0, 160)),
+     F('Module', [-910, -610, 100, -350, -600, 260], 'mgrey', 4, rep=(9, 0, 0, 178)),
+     F('Module Rack 2', [-280, -610, 100, 280, -600, 260], 'mgrey', 4, rep=(9, 0, 0, 178)),
+     F('Module Rack 3', [350, -610, 100, 910, -600, 260], 'mgrey', 4, rep=(9, 0, 0, 178)),
+     F('Module Handle', [-900, -625, 150, -880, -610, 220], 'black', 4, 'f', rep=(9, 0, 0, 178)),
+     F('Module Handle Rack 2', [-270, -625, 150, -250, -610, 220], 'black', 4, 'f', rep=(9, 0, 0, 178)),
+     F('Module Handle Rack 3', [360, -625, 150, 380, -610, 220], 'black', 4, 'f', rep=(9, 0, 0, 178)),
      F('BMS Unit', [-910, -612, 1720, 910, -600, 1960], 'black', 6),
      F('BMS Display', [-200, -614, 1780, 100, -612, 1920], 'screen', 3, 'f'),
      C('BMS LED', 'y', [200, 1880], 6, [-615, -612], 'green', 'f', rep=(4, 40, 0, 0)),
      F('Breaker Handle', [600, -630, 1790, 640, -612, 1890], 'redabs', 4, 'f')]
-add('FMC_E_EQ_BatteryBank', 'Lithium (LFP) battery bank 100 kWh, three 19 in racks of 10 modules with BMS and DC breaker',
+add('FMC_E_EQ_BatteryBank', 'Lithium (LFP) battery bank 100 kWh, three 19 in racks of 9 modules with BMS and DC breaker',
     'IfcElectricFlowStorageDevice', [('100kWh_LFP', {"Apparent Load": 50000})], p,
     {"Envelope 1890 x 600 x 2000 mm": A("1890x600x2000", "typical 3-rack LFP bank"), "Energy 100 kWh, LFP": A("100kWh", "type name"),
      "Front access 1000 mm, ventilated room": A(1000, "battery room practice")},
-    "Battery bank: three rack frames on a plinth, 30 battery modules with handles, BMS unit with display and LEDs, red DC breaker handle.",
+    "Battery bank: three rack frames on a plinth, 27 battery modules with handles, BMS unit with display and LEDs, red DC breaker handle.",
     tv=etv(415, 50000, True), conns=[PWR('BMS Unit', 'top', 'DC Link')], clear=[clear_front(-930, 960, 625, 2000)])
 
 # 14 Rotary isolator: wall IP66, 150 x 200 x 120
@@ -583,8 +584,10 @@ p += [T('Call Button Ring', 'y', [-40, 43], disc(20, -9.5, -11), 'yellow', 'f'),
       C('Pillow Call Button', 'y', [120, 160], 9, [-49, -45], 'redabs', 'f'),
       F('Pillow Grille', [108, -46, 60, 132, -45, 120], 'grey', 6, 'f'),
       C('Pillow Light Button', 'y', [120, 135], 6, [-48, -45], 'yellow', 'f'),
-      C('Lead', 'z', [120, -33], 4, [-150, 30], 'grey', 'f'),
-      C('Lead Loop', 'x', [-33, -150], 4, [47, 120], 'grey', 'f')]
+      C('Lead Drop', 'z', [120, -33], 4, [-80, 30], 'grey', 'f'),
+      C('Lead Run', 'x', [-33, -80], 4, [47, 124], 'grey', 'f'),
+      C('Lead Rise', 'z', [47, -33], 4, [-84, 43], 'grey', 'f'),
+      C('Lead Plug', 'y', [47, 43], 7, [-33, -15], 'black', 'f')]
 add('FMC_E_ElecFixture_NurseCall_BedheadUnit', 'Nurse call bedhead unit: call button with reassurance LED, cancel, pillow speaker socket; pillow speaker handset in a holster',
     'IfcAlarm', [('146x86_Standard', {}), ('146x86_WithPillow', {})], p,
     {"Plate 146 x 86 mm": A("146x86"), "Call, cancel, reassurance LED, pillow socket": A("HTM 08-03", "HTM 08-03 bedhead call point"),
@@ -623,11 +626,15 @@ add('FMC_E_ElecFixture_NurseCall_OverDoorLight', 'Nurse call over-door indicator
     "Over-door light: base and rim, two domed lenses (red and clear) with grey rings, label, screws.",
     tv={"Default Elevation": 2150}, conns=[ELV('NurseCall', 'Base')])
 
+def slab(s0, s1, o0, o1, A=(-235, 60), B=(-40, 180)):
+    L = math.hypot(B[0] - A[0], B[1] - A[1]); d = ((B[0] - A[0]) / L, (B[1] - A[1]) / L); n = (-d[1], d[0])
+    P = lambda s, o: [round(A[0] + d[0] * s + n[0] * o, 2), round(A[1] + d[1] * s + n[1] * o, 2)]
+    return [P(s0, o0), P(s1, o0), P(s1, o1), P(s0, o1)]
 # 25 Master station: desk console 300 x 240, tilted touch screen, handset
 p = [PZ('Console Base', [[-170, -240], [170, -240], [170, 0], [-170, 0]], [0, 30], 'mgrey'),
      RT('Console Body', [[-235, 30], [0, 30], [0, 180], [-40, 180], [-235, 60]], [-170, 170], 'mgrey'),
-     RT('Screen Bezel', [[-228, 62], [-42, 177], [-38, 171], [-224, 56]], [-120, 150], 'black'),
-     RT('Touch Screen', [[-216, 70], [-56, 169], [-53, 165], [-213, 66]], [-110, 140], 'screen', 'f'),
+     RT('Screen Bezel', slab(10, 219, 0, 4), [-120, 150], 'black'),
+     RT('Touch Screen', slab(20, 209, 4, 5), [-110, 140], 'screen', 'f'),
      RT('Handset Cradle', [[-200, 30], [-20, 30], [-20, 110], [-200, 60]], [-230, -170], 'mgrey'),
      RT('Handset', [[-210, 64], [-10, 114], [-10, 134], [-210, 84]], [-220, -180], 'black'),
      C('Speaker Grille', 'z', [0, -20], 4, [180, 181], 'black', 'f', rep=(5, 0, 0, 0)),
@@ -989,22 +996,27 @@ add('FMC_E_LightFixture_Bedhead_Reading_Ward', 'Ward bedhead luminaire 1200: ind
     "Bedhead luminaire: extruded body with opal uplight diffuser, downlight louvre with blades, white fascia, end plates, adjustable reading light (arm, neck, head, lens), amber night light, control panel with buttons.",
     tv=etv(240, 60, False, 1650), conns=[PWR('Body')])
 
+def arc_band(cy, cz, r0, r1, a0=0, a1=180, n=16):
+    """Side outline (y, z) of a bent tube: band between radii r0 and r1 around (cy, cz), angles in degrees."""
+    out = [[round(cy + r1 * math.cos(math.radians(a0 + (a1 - a0) * k / n)), 1), round(cz + r1 * math.sin(math.radians(a0 + (a1 - a0) * k / n)), 1)] for k in range(n + 1)]
+    inn = [[round(cy + r0 * math.cos(math.radians(a0 + (a1 - a0) * k / n)), 1), round(cz + r0 * math.sin(math.radians(a0 + (a1 - a0) * k / n)), 1)] for k in range(n, -1, -1)]
+    return out + inn
 # 44 Examination light on wall arm
 p = [F('Wall Plate', [-50, -12, 0, 50, 0, 140], 'white', 10),
      C('Wall Pivot', 'z', [0, -35], 18, [10, 130], 'white'),
      C('Arm', 'y', [0, 70], 12, [-500, -35], 'white'),
      C('Elbow', 'z', [0, -500], 16, [50, 90], 'white'),
-     T('Gooseneck Seg', 'z', [0, -500], ring(0, 9, 90, 120), 'chrome', 'f', rep=(6, 0, -20, 28)),
-     C('Head Yoke', 'y', [0, 290], 10, [-650, -600], 'chrome'),
-     T('Head', 'z', [0, -680], [[0, 340], [20, 340], [75, 300], [85, 270], [0, 270]], 'white'),
-     T('Head Lens', 'z', [0, -680], disc(70, 268, 270), 'opal'),
-     T('LED Ring', 'z', [0, -680], ring(30, 45, 267, 268), 'yellow', 'f'),
-     C('Handle', 'z', [0, -680], 12, [210, 268], 'mgrey'),
-     C('Switch', 'y', [40, 320], 7, [-660, -650], 'grey', 'f')]
+     C('Gooseneck Riser', 'z', [0, -500], 8, [90, 300], 'chrome'),
+     RT('Gooseneck Bend', arc_band(-590, 300, 82, 98), [-8, 8], 'chrome'),
+     T('Head', 'z', [0, -680], [[0, 300], [20, 300], [75, 260], [85, 230], [0, 230]], 'white'),
+     T('Head Lens', 'z', [0, -680], disc(70, 228, 230), 'opal'),
+     T('LED Ring', 'z', [0, -680], ring(30, 45, 227, 228), 'yellow', 'f'),
+     C('Handle', 'z', [0, -680], 12, [170, 228], 'mgrey'),
+     C('Switch', 'x', [-680, 250], 7, [55, 72], 'grey', 'f')]
 add('FMC_E_LightFixture_Examination_Wall_Arm', 'LED examination light on a wall-mounted swing arm with gooseneck, 50 000 lux head, centre handle', 'IfcLightFixture',
     ['700_WallArm'], p,
     {"Arm reach 700 mm, head 170 mm": A("700/170"), "50 000 lux at 0.5 m, CRI > 90": A("50000lux"), "Wall plate at 1600 mm": A(1600), "Load 20 VA": A(20)},
-    "Exam light: wall plate and pivot, swing arm, elbow, gooseneck segments, yoke, head with opal lens and LED ring, centre handle, switch.",
+    "Exam light: wall plate and pivot, swing arm, elbow, gooseneck riser and bend, head with opal lens and LED ring, centre handle, switch.",
     tv=etv(240, 20, False, 1600), conns=[PWR('Wall Plate')])
 
 # 45 Mobile examination light, 5-star base
@@ -1019,20 +1031,21 @@ for k in range(5):
 p += [C('Column', 'z', [0, 0], 18, [110, 1250], 'white'),
       F('Power Unit', [-45, -40, 700, 45, -18, 850], 'white', 8),
       C('Power Switch', 'y', [0, 820], 6, [-43, -40], 'green', 'f'),
-      T('Gooseneck Seg', 'z', [0, 0], ring(0, 9, 1250, 1290), 'chrome', 'f', rep=(6, 0, -30, 38)),
-      T('Head', 'z', [0, -220], [[0, 1550], [20, 1550], [75, 1510], [85, 1480], [0, 1480]], 'white'),
-      T('Head Lens', 'z', [0, -220], disc(70, 1478, 1480), 'opal'),
-      T('LED Ring', 'z', [0, -220], ring(30, 45, 1477, 1478), 'yellow', 'f'),
-      C('Handle', 'z', [0, -220], 12, [1420, 1478], 'mgrey'),
-      C('Neck Link', 'y', [0, 1500], 9, [-200, -150], 'chrome')]
-add('FMC_E_LightFixture_Examination_Mobile', 'Mobile LED examination light on a 5-castor base with column, gooseneck and head', 'IfcLightFixture', ['1550_Stand'], p,
-    {"Base 600 dia, height 1550 mm": A("600x1550"), "50 000 lux at 0.5 m": A("50000lux"), "Load 20 VA": A(20)},
-    "Mobile exam light: hub, five legs with castors, column, power unit with switch, gooseneck segments, head with opal lens, LED ring and handle.",
+      C('Gooseneck Riser', 'z', [0, 0], 8, [1250, 1600], 'chrome'),
+      RT('Gooseneck Bend', arc_band(-110, 1600, 102, 118), [-8, 8], 'chrome'),
+      T('Head', 'z', [0, -220], [[0, 1600], [20, 1600], [75, 1560], [85, 1530], [0, 1530]], 'white'),
+      T('Head Lens', 'z', [0, -220], disc(70, 1528, 1530), 'opal'),
+      T('LED Ring', 'z', [0, -220], ring(30, 45, 1527, 1528), 'yellow', 'f'),
+      C('Handle', 'z', [0, -220], 12, [1470, 1528], 'mgrey')]
+add('FMC_E_LightFixture_Examination_Mobile', 'Mobile LED examination light on a 5-castor base with column, gooseneck and head', 'IfcLightFixture', ['1720_Stand'], p,
+    {"Base 600 dia, height 1720 mm": A("600x1550"), "50 000 lux at 0.5 m": A("50000lux"), "Load 20 VA": A(20)},
+    "Mobile exam light: hub, five legs with castors, column, power unit with switch, gooseneck riser and bend, head with opal lens, LED ring and handle.",
     tv=etv(240, 20), conns=[PWR('Power Unit')], cat='Lighting Fixtures')
 
 # 46 Operating light, ceiling, double dome (main 700, satellite 600)
-p = [B('Unistrut Channel', [-400, -21, 300, 400, 21, 341], 'galv', rep=(2, 0, 300, 0)),
-     C('Threaded Rod', 'z', [-300, -150], 6, [0, 300], 'galv', 'f', rep=(2, 600, 0, 0)),
+p = [B('Unistrut Channel', [-400, -171, 300, 400, -129, 341], 'galv', rep=(2, 0, 300, 0)),
+     C('Threaded Rod', 'z', [-150, -150], 6, [20, 300], 'galv', 'mf', rep=(2, 300, 0, 0)),
+     C('Threaded Rod Rear', 'z', [-150, 150], 6, [20, 300], 'galv', 'mf', rep=(2, 300, 0, 0)),
      B('Mounting Plate', [-200, -200, 0, 200, 200, 20], 'steel'),
      T('Ceiling Cover', 'z', [0, 0], [[0, 0], [250, 0], [250, -15], [200, -40], [0, -40]], 'white'),
      C('Central Axis', 'z', [0, 0], 50, [-400, -40], 'white'),
@@ -1089,15 +1102,23 @@ p = [F('Header Box', [-200, -60, 200, 200, 0, 250], 'white', 6),
      F('Blade', [-190, -34, 0, 190, -26, 200], 'pc', 4),
      F('Legend Panel', [-180, -35, 10, 180, -34, 190], 'green', 3),
      F('Legend Panel Rear', [-180, -26, 10, 180, -25, 190], 'green', 3, 'f'),
-     FR('Running Man Body', [[-150, 40], [-125, 40], [-115, 150], [-140, 150]], [-35.5, -35], 'white', 'f'),
-     T('Running Man Head', 'y', [-118, 165], disc(12, -35, -35.5), 'white', 'f'),
-     FR('Door Frame', [[-100, 30], [-40, 30], [-40, 170], [-100, 170]], [-35.3, -35.1], 'white', 'f'),
+     FR('Man Torso', [[-138, 92], [-124, 92], [-106, 146], [-120, 150]], [-35.5, -35], 'white', 'f'),
+     T('Man Head', 'y', [-104, 166], disc(11, -35, -35.5), 'white', 'f'),
+     FR('Man Thigh Front', [[-130, 96], [-120, 90], [-96, 58], [-108, 52]], [-35.5, -35], 'white', 'f'),
+     FR('Man Shin Front', [[-108, 52], [-96, 58], [-92, 32], [-104, 30]], [-35.5, -35], 'white', 'f'),
+     FR('Man Thigh Back', [[-136, 98], [-128, 88], [-152, 70], [-160, 80]], [-35.5, -35], 'white', 'f'),
+     FR('Man Shin Back', [[-160, 80], [-152, 70], [-170, 54], [-178, 62]], [-35.5, -35], 'white', 'f'),
+     FR('Man Arm Front', [[-114, 138], [-88, 120], [-84, 128], [-108, 146]], [-35.5, -35], 'white', 'f'),
+     FR('Man Arm Back', [[-118, 136], [-122, 144], [-152, 128], [-148, 120]], [-35.5, -35], 'white', 'f'),
+     FR('Door Left', [[-74, 30], [-68, 30], [-68, 170], [-74, 170]], [-35.5, -35], 'white', 'f'),
+     FR('Door Right', [[-20, 30], [-14, 30], [-14, 170], [-20, 170]], [-35.5, -35], 'white', 'f'),
+     FR('Door Head', [[-74, 164], [-14, 164], [-14, 170], [-74, 170]], [-35.5, -35], 'white', 'f'),
      FR('Arrow', [[20, 90], [90, 90], [90, 60], [150, 100], [90, 140], [90, 110], [20, 110]], [-35.5, -35], 'white', 'f'),
      C('Charge LED', 'y', [180, 225], 3, [-61, -60], 'green', 'f')]
 add('FMC_E_LightFixture_ExitSign_Illuminated', 'Illuminated exit sign, edge-lit acrylic blade under a header box, ISO 7010 running-man legend with arrow, maintained 3 h', 'IfcLightFixture',
     [('380x250_Single', {}), ('380x250_Double', {})], p,
     {"Blade 380 x 200 mm, viewing distance 24 m": A("380x200", "BS 5266-1 / ISO 7010"), "Maintained 3 h": A("3h"), "Bottom at 2100 mm": A(2100)},
-    "Exit sign: header box with charge LED, clear blade, green legend panels front and rear, white running man, door and arrow.",
+    "Exit sign: header box with charge LED, clear blade, green legend panels front and rear, white running-man pictogram (torso, head, legs, arms), door outline and arrow.",
     tv=etv(240, 3, False, 2100), conns=[PWR('Header Box', 'top')])
 
 # 50 IP65 round bulkhead
@@ -1259,17 +1280,18 @@ p = [F('Back Plate', [-280, -6, 0, 280, 0, 120], 'grey', 4),
      C('Terminal Bolt', 'y', [-200, 65], 5, [-62, -50], 'chrome', 'f', rep=(12, 36, 0, 0)),
      F('Disconnect Link', [180, -56, 35, 260, -50, 95], 'copper', 2, 'f'),
      C('Link Bolt', 'y', [200, 65], 6, [-64, -56], 'chrome', 'f', rep=(2, 40, 0, 0)),
-     F('Label', [-120, -7, 98, 120, -6, 115], 'gy', 2, 'f'),
-     F('Clear Cover', [-275, -70, 25, 275, -68, 110], 'pc', 4, 'f')]
-add('FMC_LP_LP_EarthBar_Main', 'Main earthing terminal bar 12-way, copper on insulators with disconnect link, backplate and clear cover', 'IfcDiscreteAccessory', ['12-way_Copper'], p,
+     F('Label', [-120, -7, 98, 120, -6, 115], 'gy', 2, 'f')]
+add('FMC_LP_LP_EarthBar_Main', 'Main earthing terminal bar 12-way, copper on insulators with disconnect link, on a backplate', 'IfcDiscreteAccessory', ['12-way_Copper'], p,
     {"Bar 540 x 50 x 10 mm": A("540x50x10"), "12 terminals M10, disconnect link for test": A("12-way", "BS 7671 542.4"), "Height 500 mm": A(500)},
-    "MET bar: grey backplate, two insulators, copper bar with 12 terminal bolts, disconnect link with bolts, green/yellow label, clear cover.",
+    "MET bar: grey backplate, two insulators, copper bar with 12 terminal bolts, disconnect link with bolts, green/yellow label.",
     tv={"Default Elevation": 500}, cat='Electrical Fixtures')
 
 # 60 SPD Type 1 TPN in IP65 enclosure
 p = [B('Enclosure', [-150, -150, 0, 150, 0, 300], 'grey', 6),
-     F('Cover', [-147, -160, 3, 147, -150, 297], 'grey', 6),
-     F('Window', [-120, -161, 80, 120, -159, 240], 'pc', 4, 'f'),
+     F('Cover Top', [-147, -160, 240, 147, -150, 297], 'grey', 6),
+     F('Cover Bottom', [-147, -160, 3, 147, -150, 80], 'grey', 6),
+     F('Cover Side', [-147, -160, 80, -120, -150, 240], 'grey', 0, rep=(2, 267, 0, 0)),
+     F('Window Seal', [-120, -152, 80, 120, -150, 84], 'black', 0, 'f', rep=(2, 0, 0, 156)),
      F('DIN Rail', [-120, -110, 150, 120, -100, 185], 'galv', 0, 'f'),
      F('SPD Module', [-110, -158, 110, -74, -110, 225], 'mgrey', 3, rep=(4, 36, 0, 0)),
      F('Status Flag', [-100, -159, 180, -84, -158, 192], 'green', 1, 'f', rep=(4, 36, 0, 0)),
@@ -1281,7 +1303,7 @@ p = [B('Enclosure', [-150, -150, 0, 150, 0, 300], 'grey', 6),
      C('Cable Gland', 'z', [-60, -75], 14, [-25, 0], 'black', 'f', rep=(3, 60, 0, 0))]
 add('FMC_LP_LP_SPD_Type1', 'Type 1 surge protective device TPN (3+1), Iimp 25 kA per pole, in an IP65 enclosure with window, at the intake', 'IfcProtectiveDevice', ['TPN_T1'], p,
     {"Enclosure 300 x 300 x 160 mm": A("300x300x160"), "Iimp 25 kA/pole, Up < 2.5 kV": A("25kA", "BS EN 61643-11 Type 1"), "Next to MSB, leads < 0.5 m": A(500, "BS 7671 534")},
-    "SPD Type 1: grey enclosure and cover with window, DIN rail, four SPD modules with green status flags, terminal rows, remote signalling contact, screws, glands.",
+    "SPD Type 1: grey enclosure, cover frame round the window opening (glazing not drawn), DIN rail, four SPD modules with green status flags, terminal rows, remote signalling contact, screws, glands.",
     tv=etv(415, 0, True, 1400), conns=[PWR('Enclosure', 'top', 'Supply')], cat='Electrical Equipment')
 
 # 61 SPD Type 2: DIN modular, plug-in cartridges (bare device inside a DB)
@@ -1301,18 +1323,20 @@ add('FMC_LP_LP_SPD_Type2', 'Type 2 surge protective device, DIN-rail modular wit
     tv=etv(415, 0, True, 1400), conns=[PWR('Base', 'top', 'Supply')], cat='Electrical Equipment')
 
 # 62 Theatre supplementary equipotential bonding bar, 16-way
-p = [B('Enclosure', [-220, -80, 0, 220, 0, 160], 'ss', 4),
-     F('Clear Cover', [-215, -90, 5, 215, -80, 155], 'pc', 4, 'f'),
+p = [F('Back Plate', [-220, -10, 0, 220, 0, 160], 'ss', 4),
+     F('Tray Top', [-220, -80, 150, 220, -10, 160], 'ss', 0),
+     F('Tray Bottom', [-220, -80, 0, 220, -10, 10], 'ss', 0),
+     F('Tray Side', [-220, -80, 10, -210, -10, 150], 'ss', 0, rep=(2, 430, 0, 0)),
      B('Insulator', [-190, -50, 50, -160, -10, 110], 'black', 4, rep=(2, 350, 0, 0)),
      F('Bonding Bar', [-200, -60, 60, 200, -50, 100], 'copper', 2),
      C('Terminal Screw', 'y', [-180, 80], 4, [-70, -60], 'chrome', 'f', rep=(16, 24, 0, 0)),
-     F('GY Label', [-150, -81, 125, 150, -80, 145], 'gy', 2, 'f'),
-     C('Cover Screw', 'y', [-205, 140], 3, [-92, -90], 'ss', 'f', rep=(2, 410, 0, 0)),
+     F('GY Label', [-150, -11, 120, 150, -10, 140], 'gy', 2, 'f'),
+     C('Fixing Screw', 'y', [-190, 135], 3, [-11, -10], 'ss', 'f', rep=(2, 380, 0, 0)),
      C('Bonding Lead', 'z', [-180, -40], 4, [-200, 0], 'gy', 'f', rep=(4, 120, 0, 0))]
-add('FMC_LP_LP_EquipotentialBar_Theatre', 'Supplementary equipotential bonding bar 16-way for group 2 locations (theatre), copper bar in stainless box with clear cover', 'IfcDiscreteAccessory',
+add('FMC_LP_LP_EquipotentialBar_Theatre', 'Supplementary equipotential bonding bar 16-way for group 2 locations (theatre), copper bar in an open-fronted stainless tray (clear cover by others)', 'IfcDiscreteAccessory',
     ['16-way_Group2'], p,
     {"Box 440 x 160 x 80 mm": A("440x160x80"), "16 terminals, R < 0.2 ohm to any exposed part": A("0.2 ohm", "BS 7671 710 / HTM 06-01"), "Height 300 mm": A(300)},
-    "EBB: stainless box with clear cover and screws, two insulators, copper bonding bar with 16 terminal screws, green/yellow label, bonding leads below.",
+    "EBB: stainless back plate and tray with screws, two insulators, copper bonding bar with 16 terminal screws, green/yellow label, bonding leads below.",
     tv={"Default Elevation": 300}, cat='Electrical Fixtures')
 
 # 63 Conductor clip (tape type shown)
@@ -1344,6 +1368,14 @@ add('FMC_LP_LP_RingEarth_Conductor', 'Ring earth electrode: 25 x 3 bare copper t
     cat='Generic Models')
 
 # =============================================================== build
+BELOW = {'FMC_E_Comms_WiFi_AccessPoint', 'FMC_E_Comms_PA_Speaker_Ceiling', 'FMC_E_SecurityDevice_CCTV_Camera_Dome', 'FMC_E_LightFixture_Panel_600_Cleanroom_IP65',
+         'FMC_E_LightFixture_Panel_600_General', 'FMC_E_LightFixture_Downlight_LED', 'FMC_E_LightFixture_Batten_LED', 'FMC_E_LightFixture_OperatingLight_Ceiling'}
+def type_image_below(prod, path, size=600):
+    """Same as fp.render_type_image but the camera looks up (elevation -25) at a ceiling product."""
+    from PIL import Image
+    T, C_, I, n = fp._tris(prod, 'f')
+    im = Image.fromarray((fp._view(T, C_, I, -35, -25, size * 2, size * 2) * 255).astype('uint8'))
+    im.resize((size, size), Image.LANCZOS).save(path); return path
 SKIPPED = []   # no Profiles in this batch
 
 def build(prod):
@@ -1360,8 +1392,12 @@ def build(prod):
     json.dump(prod, open(os.path.join(HERE, f + '.product.json'), 'w'), indent=1)
     r = fp.compile_product(prod)
     json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
-    fp.render(prod, os.path.join(HERE, f + '.preview.png'))
-    fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
+    if f in BELOW:   # ceiling products: the room sees them from below, so preview and Type Image look up at them
+        fp.render(prod, os.path.join(HERE, f + '.preview.png'), views=(('3D from below', -35, -25), ('3D', -35, 22), ('Front', 0, 0), ('Plan from below', 0, -89.9)))
+        type_image_below(prod, os.path.join(HERE, f + '.png'), 600)
+    else:
+        fp.render(prod, os.path.join(HERE, f + '.preview.png'))
+        fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
     return f, n, len(r['ops'])
 
 KITM = set(open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read().split())

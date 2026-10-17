@@ -1,0 +1,242 @@
+{
+ "family": "FMC_I_Furniture_Seating_Modular_Lounge",
+ "category": "Furniture",
+ "desc": "Modular reception lounge seating, 3-seat module 1800 wide, wipe-clean upholstered seat and back cushions on a plinth base",
+ "ifc": "IfcFurniture",
+ "keynote": "F.SEA_03",
+ "types": [
+  {
+   "name": "1800_Straight",
+   "desc": "Modular lounge seating, straight 3-seat module 1800 x 700"
+  },
+  {
+   "name": "1800_Curved",
+   "desc": "Modular lounge seating, curved 3-seat module, 45 degree arc, outer length 1800"
+  }
+ ],
+ "materials": {
+  "fab": "FMC_Fabric_Vinyl_Upholstery_Blue",
+  "fab2": "FMC_Fabric_Mattress_PU_Blue",
+  "plinthm": "FMC_Metal_Aluminium_PowderCoated",
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "parts": [
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -880,
+    -330,
+    20,
+    880,
+    330,
+    120
+   ],
+   "mat": "plinthm",
+   "r": 10
+  },
+  {
+   "n": "Base",
+   "shape": "box",
+   "at": [
+    -900,
+    -350,
+    120,
+    900,
+    350,
+    300
+   ],
+   "mat": "fab2",
+   "r": 20
+  },
+  {
+   "n": "Seat Cushion",
+   "shape": "box",
+   "at": [
+    -890,
+    -360,
+    300,
+    -300,
+    220,
+    440
+   ],
+   "mat": "fab",
+   "r": 40,
+   "repeat": {
+    "n": 3,
+    "d": [
+     593.3,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Back Cushion",
+   "shape": "right",
+   "pts": [
+    [
+     200,
+     300
+    ],
+    [
+     350,
+     300
+    ],
+    [
+     350,
+     820
+    ],
+    [
+     250,
+     800
+    ]
+   ],
+   "x": [
+    -890,
+    -300
+   ],
+   "mat": "fab",
+   "repeat": {
+    "n": 3,
+    "d": [
+     593.3,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Back Shell",
+   "shape": "box",
+   "at": [
+    -900,
+    340,
+    120,
+    900,
+    360,
+    830
+   ],
+   "mat": "fab2",
+   "r": 10
+  },
+  {
+   "n": "Seam",
+   "shape": "box",
+   "at": [
+    -302,
+    -362,
+    300,
+    -298,
+    220,
+    440
+   ],
+   "mat": "plinthm",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     593.3,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Foot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -850,
+    -300
+   ],
+   "r": 18,
+   "z": [
+    0,
+    20
+   ],
+   "mat": "plinthm",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1700,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Foot Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -850,
+    300
+   ],
+   "r": 18,
+   "z": [
+    0,
+    20
+   ],
+   "mat": "plinthm",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1700,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Power Module",
+   "shape": "box",
+   "at": [
+    -60,
+    -366,
+    200,
+    60,
+    -350,
+    260
+   ],
+   "mat": "black",
+   "r": 6,
+   "lod": "f"
+  },
+  {
+   "n": "USB Port",
+   "shape": "fbox",
+   "at": [
+    -40,
+    -368,
+    220,
+    40,
+    -366,
+    240
+   ],
+   "mat": "grey",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "furniture seating modular lounge furniture hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=furniture+seating+modular+lounge+furniture+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Module 1800 x 700 mm, 3 seats": {
+   "value": "1800x700",
+   "source_status": "assumed",
+   "source": "typical modular lounge module"
+  },
+  "Seat height 440 mm, back 830 mm": {
+   "value": "440/830",
+   "source_status": "assumed",
+   "source": "typical soft seating"
+  }
+ },
+ "about": "Lounge module modelled as a generic product: powder-coated plinth and feet, upholstered base, 3 seat cushions and inclined back cushions with seams, back shell, front power and USB module. Geometry is drawn at the 1800_Straight type; the other types share it until a parametric pass."
+}

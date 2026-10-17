@@ -101,8 +101,14 @@ jobs:
         run: npm ci
       - working-directory: server
         run: npm run build
+      # Failing tests as annotations: the job log isn't always reachable from where the failure is fixed (17 Oct)
       - working-directory: server
-        run: npm test
+        run: |
+          npm test 2>&1 | Tee-Object -FilePath test-output.log
+          if ($LASTEXITCODE -ne 0) {
+            Select-String -Path test-output.log -Pattern '^\s*not ok|AssertionError|Error \[|expected|actual:|error TS' | Select-Object -First 40 | ForEach-Object { Write-Output "::error::$($_.Line.Trim())" }
+            exit 1
+          }
 
   addin:
     name: Add-in and command set (Revit 2025)

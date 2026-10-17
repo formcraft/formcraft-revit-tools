@@ -1,0 +1,276 @@
+{
+ "family": "FMC_E_LightFixture_Floodlight",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "LED floodlight on a U yoke, die-cast housing with rear fins, glass front, IP66",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.EXL_02",
+ "types": [
+  {
+   "name": "100W_IP66",
+   "values": {
+    "Apparent Load": 100
+   }
+  },
+  {
+   "name": "200W_IP66",
+   "values": {
+    "Apparent Load": 200
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 100,
+  "Default Elevation": 4500
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "glass": "FMC_Glass_Clear",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "black": "FMC_Plastic_ABS_Black"
+ },
+ "reference": {
+  "query": "light fixture floodlight lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+floodlight+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Wall Plate",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -10,
+    120,
+    50,
+    0,
+    200
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Yoke Arm",
+   "shape": "box",
+   "at": [
+    -180,
+    -60,
+    150,
+    -165,
+    -10,
+    170
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     345,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Yoke Base",
+   "shape": "box",
+   "at": [
+    -180,
+    -60,
+    150,
+    180,
+    -10,
+    170
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Housing",
+   "shape": "fbox",
+   "at": [
+    -165,
+    -100,
+    0,
+    165,
+    -60,
+    260
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "r": 15
+  },
+  {
+   "n": "Heatsink Fin",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -60,
+    15,
+    -142,
+    -20,
+    245
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "repeat": {
+    "n": 14,
+    "d": [
+     22,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Front Glass",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -102,
+    15,
+    150,
+    -100,
+    245
+   ],
+   "mat": "glass",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "LED Chip",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -103,
+    40,
+    -96,
+    -102,
+    64
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     44,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "LED Chip Row 2",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -103,
+    118,
+    -96,
+    -102,
+    142
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     44,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "LED Chip Row 3",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -103,
+    196,
+    -96,
+    -102,
+    220
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     44,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Pivot Knob",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -80,
+    160
+   ],
+   "r": 14,
+   "x": [
+    -195,
+    -180
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     375,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cable Gland",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -80
+   ],
+   "r": 9,
+   "z": [
+    -25,
+    0
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Wall Plate",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Housing 330 x 260 x 100 mm (200 W larger)": {
+   "value": "330x260x100",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "100 / 200 W, IP66": {
+   "value": "W",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounting height 4-6 m": {
+   "value": 4500,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Floodlight: wall plate, U yoke with pivot knobs, housing with rear heatsink fins, glass front, three rows of LED chips, cable gland. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

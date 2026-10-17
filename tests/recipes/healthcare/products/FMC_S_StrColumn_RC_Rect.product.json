@@ -1,0 +1,235 @@
+{
+ "family": "FMC_S_StrColumn_RC_Rect",
+ "category": "Structural Columns",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete column, square, 20 mm chamfered arrises, 75 mm kicker, fair-faced with plugged tie holes",
+ "ifc": "IfcColumn",
+ "keynote": "C.COL_04",
+ "types": [
+  {
+   "name": "300x300_RC",
+   "desc": "RC column 300 x 300"
+  },
+  {
+   "name": "400x400_RC",
+   "desc": "RC column 400 x 400"
+  },
+  {
+   "name": "500x500_RC",
+   "desc": "RC column 500 x 500"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "mortar": "FMC_Masonry_Mortar_1to4"
+ },
+ "parts": [
+  {
+   "n": "Kicker",
+   "shape": "prism",
+   "pts": [
+    [
+     -130.0,
+     -150.0
+    ],
+    [
+     130.0,
+     -150.0
+    ],
+    [
+     150.0,
+     -130.0
+    ],
+    [
+     150.0,
+     130.0
+    ],
+    [
+     130.0,
+     150.0
+    ],
+    [
+     -130.0,
+     150.0
+    ],
+    [
+     -150.0,
+     130.0
+    ],
+    [
+     -150.0,
+     -130.0
+    ]
+   ],
+   "z": [
+    0,
+    75
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Shaft",
+   "shape": "prism",
+   "pts": [
+    [
+     -130.0,
+     -150.0
+    ],
+    [
+     130.0,
+     -150.0
+    ],
+    [
+     150.0,
+     -130.0
+    ],
+    [
+     150.0,
+     130.0
+    ],
+    [
+     130.0,
+     150.0
+    ],
+    [
+     -130.0,
+     150.0
+    ],
+    [
+     -150.0,
+     130.0
+    ],
+    [
+     -150.0,
+     -130.0
+    ]
+   ],
+   "z": [
+    75,
+    3000
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Tie Hole Plug Front",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    600
+   ],
+   "r": 12,
+   "y": [
+    -151.0,
+    -145.0
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     700
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Tie Hole Plug Side",
+   "shape": "right",
+   "pts": [
+    [
+     12.0,
+     600.0
+    ],
+    [
+     10.39,
+     606.0
+    ],
+    [
+     6.0,
+     610.39
+    ],
+    [
+     0.0,
+     612.0
+    ],
+    [
+     -6.0,
+     610.39
+    ],
+    [
+     -10.39,
+     606.0
+    ],
+    [
+     -12.0,
+     600.0
+    ],
+    [
+     -10.39,
+     594.0
+    ],
+    [
+     -6.0,
+     589.61
+    ],
+    [
+     -0.0,
+     588.0
+    ],
+    [
+     6.0,
+     589.61
+    ],
+    [
+     10.39,
+     594.0
+    ]
+   ],
+   "x": [
+    -151.0,
+    -145.0
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     700
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "str column rc rect structural columns hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+column+rc+rect+structural+columns+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Section 300 x 300 mm (smallest type)": {
+   "value": "300x300",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Chamfer 20 mm": {
+   "value": 20,
+   "source_status": "assumed",
+   "source": "typical formwork fillet"
+  },
+  "Kicker 75 mm": {
+   "value": 75,
+   "source_status": "assumed",
+   "source": "typical construction practice"
+  },
+  "Concrete grade and cover from the kit": {
+   "value": "C30 / kit cover",
+   "source_status": "assumed",
+   "source": "FMC kit rulebook; engineer to confirm"
+  }
+ },
+ "about": "RC column modelled as cast: 75 mm kicker, chamfered shaft, plugged formwork tie holes (Fine). Reinforcement is detailed by the engineer, not modelled. Geometry shows the 300 type; 3000 high."
+}

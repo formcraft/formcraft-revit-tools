@@ -1,0 +1,214 @@
+{
+ "family": "FMC_FP_FireAlarm_Interface_Module",
+ "category": "Fire Alarm Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "Addressable fire alarm interface module (input or relay output) in a surface back box, 150 x 150 x 45, LEDs, address switch, glands",
+ "ifc": "IfcAlarm",
+ "keynote": "V.FAL_07",
+ "types": [
+  {
+   "name": "Input_Module"
+  },
+  {
+   "name": "Output_Module"
+  }
+ ],
+ "materials": {
+  "blue": "FMC_Plastic_ABS_Blue",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "white": "FMC_Plastic_ABS_White",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "interface module fire alarm devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=interface+module+fire+alarm+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -75,
+    -35,
+    0,
+    75,
+    0,
+    150
+   ],
+   "r": 6,
+   "mat": "white"
+  },
+  {
+   "n": "Cover",
+   "shape": "fbox",
+   "at": [
+    -72,
+    -45,
+    3,
+    72,
+    -35,
+    147
+   ],
+   "r": 8,
+   "mat": "white"
+  },
+  {
+   "n": "Label Window",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -46,
+    100,
+    50,
+    -45,
+    130
+   ],
+   "r": 3,
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "LED Status",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -40,
+    75
+   ],
+   "r": 3,
+   "y": [
+    -46,
+    -45
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "LED Active",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -20,
+    75
+   ],
+   "r": 3,
+   "y": [
+    -46,
+    -45
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  },
+  {
+   "n": "Address Switch",
+   "shape": "fbox",
+   "at": [
+    0,
+    -46,
+    66,
+    50,
+    -45,
+    84
+   ],
+   "r": 1,
+   "mat": "blue",
+   "lod": "f"
+  },
+  {
+   "n": "Cable Gland",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -50,
+    -18
+   ],
+   "r": 8,
+   "z": [
+    -14,
+    0
+   ],
+   "mat": "grey",
+   "repeat": {
+    "n": 3,
+    "d": [
+     50,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cover Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -62,
+    14
+   ],
+   "r": 3,
+   "y": [
+    -46,
+    -45
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     124,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Terminal Warning",
+   "shape": "fbox",
+   "at": [
+    -40,
+    -46,
+    22,
+    40,
+    -45,
+    40
+   ],
+   "r": 2,
+   "mat": "yellow",
+   "lod": "f"
+  }
+ ],
+ "values": {
+  "Box 150 x 150 x 45 mm": {
+   "value": "150x150x45",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Input monitored / output 1 A volt-free relay": {
+   "value": "1A relay",
+   "source_status": "assumed",
+   "source": "type names"
+  },
+  "Height 1800 mm beside the plant it controls": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Interface module modelled as a generic product: back box and cover, label window, status and active LEDs, address switch, cable glands, screws, terminal warning label. Used for AHU shutdown and lift recall. Geometry drawn for Input_Module; the other types share it (sizes in the values).",
+ "type_values": {
+  "Default Elevation": 1800
+ },
+ "connectors": [
+  {
+   "n": "Loop",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ]
+}

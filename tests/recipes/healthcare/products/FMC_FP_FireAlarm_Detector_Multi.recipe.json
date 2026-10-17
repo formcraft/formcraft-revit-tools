@@ -1,0 +1,1314 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireAlarm_Detector_Multi",
+ "template": "Metric Generic Model.rft",
+ "about": "Multi-sensor modelled as a generic product: base, domed head with smoke-inlet band and bars, thermistor in a guard at the centre, twin LEDs; hangs below the ceiling (z = 0). Reference: query: detector multi fire alarm devices hospital; images: https://www.google.com/search?tbm=isch&q=detector+multi+fire+alarm+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Fire Alarm Devices"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "optical-heat_Multi"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/FMC_Cost_Unit",
+   "type": "optical-heat_Multi",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/FMC_Geometry_Stage",
+   "type": "optical-heat_Multi",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/IfcExportAs",
+   "type": "optical-heat_Multi",
+   "param": "IfcExportAs",
+   "value": "IfcSensor"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/Description",
+   "type": "optical-heat_Multi",
+   "param": "Description",
+   "value": "Addressable multi-sensor detector (optical smoke + heat) with mounting base, 100 mm diameter, 62 mm high"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/Keynote",
+   "type": "optical-heat_Multi",
+   "param": "Keynote",
+   "value": "V.FAL_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "optical-heat_Multi/FMC_Keynote_Code",
+   "type": "optical-heat_Multi",
+   "param": "FMC_Keynote_Code",
+   "value": "V.FAL_03"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coverage",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -51,
+     -51
+    ],
+    [
+     51,
+     -51
+    ],
+    [
+     51,
+     51
+    ],
+    [
+     -51,
+     51
+    ]
+   ],
+   "start": -63,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Base",
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     51,
+     -12
+    ],
+    [
+     51,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Head",
+   "profile": [
+    [
+     0,
+     -46
+    ],
+    [
+     38,
+     -46
+    ],
+    [
+     46,
+     -42
+    ],
+    [
+     50,
+     -34
+    ],
+    [
+     50,
+     -12
+    ],
+    [
+     0,
+     -12
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Smoke Inlet Band",
+   "profile": [
+    [
+     47,
+     -32
+    ],
+    [
+     50.5,
+     -32
+    ],
+    [
+     50.5,
+     -20
+    ],
+    [
+     47,
+     -20
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Smoke Inlet Band",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Smoke Inlet Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Bar 1",
+   "points": [
+    [
+     -51,
+     -2
+    ],
+    [
+     -46,
+     -2
+    ],
+    [
+     -46,
+     2
+    ],
+    [
+     -51,
+     2
+    ]
+   ],
+   "start": -32,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Bar 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Bar 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Bar 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Bar 2",
+   "points": [
+    [
+     46,
+     -2
+    ],
+    [
+     51,
+     -2
+    ],
+    [
+     51,
+     2
+    ],
+    [
+     46,
+     2
+    ]
+   ],
+   "start": -32,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Bar 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Bar 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Bar 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Thermistor Guard Post X 1",
+   "points": [
+    [
+     -10.5,
+     0.0
+    ],
+    [
+     -10.59,
+     0.65
+    ],
+    [
+     -10.83,
+     1.25
+    ],
+    [
+     -11.23,
+     1.77
+    ],
+    [
+     -11.75,
+     2.17
+    ],
+    [
+     -12.35,
+     2.41
+    ],
+    [
+     -13.0,
+     2.5
+    ],
+    [
+     -13.65,
+     2.41
+    ],
+    [
+     -14.25,
+     2.17
+    ],
+    [
+     -14.77,
+     1.77
+    ],
+    [
+     -15.17,
+     1.25
+    ],
+    [
+     -15.41,
+     0.65
+    ],
+    [
+     -15.5,
+     0.0
+    ],
+    [
+     -15.41,
+     -0.65
+    ],
+    [
+     -15.17,
+     -1.25
+    ],
+    [
+     -14.77,
+     -1.77
+    ],
+    [
+     -14.25,
+     -2.17
+    ],
+    [
+     -13.65,
+     -2.41
+    ],
+    [
+     -13.0,
+     -2.5
+    ],
+    [
+     -12.35,
+     -2.41
+    ],
+    [
+     -11.75,
+     -2.17
+    ],
+    [
+     -11.23,
+     -1.77
+    ],
+    [
+     -10.83,
+     -1.25
+    ],
+    [
+     -10.59,
+     -0.65
+    ]
+   ],
+   "start": -60,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Thermistor Guard Post X 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor Guard Post X 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor Guard Post X 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Thermistor Guard Post X 2",
+   "points": [
+    [
+     15.5,
+     0.0
+    ],
+    [
+     15.41,
+     0.65
+    ],
+    [
+     15.17,
+     1.25
+    ],
+    [
+     14.77,
+     1.77
+    ],
+    [
+     14.25,
+     2.17
+    ],
+    [
+     13.65,
+     2.41
+    ],
+    [
+     13.0,
+     2.5
+    ],
+    [
+     12.35,
+     2.41
+    ],
+    [
+     11.75,
+     2.17
+    ],
+    [
+     11.23,
+     1.77
+    ],
+    [
+     10.83,
+     1.25
+    ],
+    [
+     10.59,
+     0.65
+    ],
+    [
+     10.5,
+     0.0
+    ],
+    [
+     10.59,
+     -0.65
+    ],
+    [
+     10.83,
+     -1.25
+    ],
+    [
+     11.23,
+     -1.77
+    ],
+    [
+     11.75,
+     -2.17
+    ],
+    [
+     12.35,
+     -2.41
+    ],
+    [
+     13.0,
+     -2.5
+    ],
+    [
+     13.65,
+     -2.41
+    ],
+    [
+     14.25,
+     -2.17
+    ],
+    [
+     14.77,
+     -1.77
+    ],
+    [
+     15.17,
+     -1.25
+    ],
+    [
+     15.41,
+     -0.65
+    ]
+   ],
+   "start": -60,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Thermistor Guard Post X 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor Guard Post X 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor Guard Post X 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Thermistor Guard Post Y 1",
+   "points": [
+    [
+     2.5,
+     -13.0
+    ],
+    [
+     2.41,
+     -12.35
+    ],
+    [
+     2.17,
+     -11.75
+    ],
+    [
+     1.77,
+     -11.23
+    ],
+    [
+     1.25,
+     -10.83
+    ],
+    [
+     0.65,
+     -10.59
+    ],
+    [
+     0.0,
+     -10.5
+    ],
+    [
+     -0.65,
+     -10.59
+    ],
+    [
+     -1.25,
+     -10.83
+    ],
+    [
+     -1.77,
+     -11.23
+    ],
+    [
+     -2.17,
+     -11.75
+    ],
+    [
+     -2.41,
+     -12.35
+    ],
+    [
+     -2.5,
+     -13.0
+    ],
+    [
+     -2.41,
+     -13.65
+    ],
+    [
+     -2.17,
+     -14.25
+    ],
+    [
+     -1.77,
+     -14.77
+    ],
+    [
+     -1.25,
+     -15.17
+    ],
+    [
+     -0.65,
+     -15.41
+    ],
+    [
+     -0.0,
+     -15.5
+    ],
+    [
+     0.65,
+     -15.41
+    ],
+    [
+     1.25,
+     -15.17
+    ],
+    [
+     1.77,
+     -14.77
+    ],
+    [
+     2.17,
+     -14.25
+    ],
+    [
+     2.41,
+     -13.65
+    ]
+   ],
+   "start": -60,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Thermistor Guard Post Y 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor Guard Post Y 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor Guard Post Y 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Thermistor Guard Post Y 2",
+   "points": [
+    [
+     2.5,
+     13.0
+    ],
+    [
+     2.41,
+     13.65
+    ],
+    [
+     2.17,
+     14.25
+    ],
+    [
+     1.77,
+     14.77
+    ],
+    [
+     1.25,
+     15.17
+    ],
+    [
+     0.65,
+     15.41
+    ],
+    [
+     0.0,
+     15.5
+    ],
+    [
+     -0.65,
+     15.41
+    ],
+    [
+     -1.25,
+     15.17
+    ],
+    [
+     -1.77,
+     14.77
+    ],
+    [
+     -2.17,
+     14.25
+    ],
+    [
+     -2.41,
+     13.65
+    ],
+    [
+     -2.5,
+     13.0
+    ],
+    [
+     -2.41,
+     12.35
+    ],
+    [
+     -2.17,
+     11.75
+    ],
+    [
+     -1.77,
+     11.23
+    ],
+    [
+     -1.25,
+     10.83
+    ],
+    [
+     -0.65,
+     10.59
+    ],
+    [
+     -0.0,
+     10.5
+    ],
+    [
+     0.65,
+     10.59
+    ],
+    [
+     1.25,
+     10.83
+    ],
+    [
+     1.77,
+     11.23
+    ],
+    [
+     2.17,
+     11.75
+    ],
+    [
+     2.41,
+     12.35
+    ]
+   ],
+   "start": -60,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Thermistor Guard Post Y 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor Guard Post Y 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor Guard Post Y 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Thermistor Guard Ring",
+   "profile": [
+    [
+     10,
+     -63
+    ],
+    [
+     15.5,
+     -63
+    ],
+    [
+     15.5,
+     -60
+    ],
+    [
+     10,
+     -60
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor Guard Ring",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor Guard Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Thermistor",
+   "profile": [
+    [
+     0,
+     -58
+    ],
+    [
+     3,
+     -58
+    ],
+    [
+     3,
+     -46
+    ],
+    [
+     0,
+     -46
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermistor",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermistor",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED",
+   "points": [
+    [
+     4.0,
+     -32.0
+    ],
+    [
+     3.86,
+     -30.96
+    ],
+    [
+     3.46,
+     -30.0
+    ],
+    [
+     2.83,
+     -29.17
+    ],
+    [
+     2.0,
+     -28.54
+    ],
+    [
+     1.04,
+     -28.14
+    ],
+    [
+     0.0,
+     -28.0
+    ],
+    [
+     -1.04,
+     -28.14
+    ],
+    [
+     -2.0,
+     -28.54
+    ],
+    [
+     -2.83,
+     -29.17
+    ],
+    [
+     -3.46,
+     -30.0
+    ],
+    [
+     -3.86,
+     -30.96
+    ],
+    [
+     -4.0,
+     -32.0
+    ],
+    [
+     -3.86,
+     -33.04
+    ],
+    [
+     -3.46,
+     -34.0
+    ],
+    [
+     -2.83,
+     -34.83
+    ],
+    [
+     -2.0,
+     -35.46
+    ],
+    [
+     -1.04,
+     -35.86
+    ],
+    [
+     -0.0,
+     -36.0
+    ],
+    [
+     1.04,
+     -35.86
+    ],
+    [
+     2.0,
+     -35.46
+    ],
+    [
+     2.83,
+     -34.83
+    ],
+    [
+     3.46,
+     -34.0
+    ],
+    [
+     3.86,
+     -33.04
+    ]
+   ],
+   "start": -47.5,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED Opposite",
+   "points": [
+    [
+     4.0,
+     32.0
+    ],
+    [
+     3.86,
+     33.04
+    ],
+    [
+     3.46,
+     34.0
+    ],
+    [
+     2.83,
+     34.83
+    ],
+    [
+     2.0,
+     35.46
+    ],
+    [
+     1.04,
+     35.86
+    ],
+    [
+     0.0,
+     36.0
+    ],
+    [
+     -1.04,
+     35.86
+    ],
+    [
+     -2.0,
+     35.46
+    ],
+    [
+     -2.83,
+     34.83
+    ],
+    [
+     -3.46,
+     34.0
+    ],
+    [
+     -3.86,
+     33.04
+    ],
+    [
+     -4.0,
+     32.0
+    ],
+    [
+     -3.86,
+     30.96
+    ],
+    [
+     -3.46,
+     30.0
+    ],
+    [
+     -2.83,
+     29.17
+    ],
+    [
+     -2.0,
+     28.54
+    ],
+    [
+     -1.04,
+     28.14
+    ],
+    [
+     -0.0,
+     28.0
+    ],
+    [
+     1.04,
+     28.14
+    ],
+    [
+     2.0,
+     28.54
+    ],
+    [
+     2.83,
+     29.17
+    ],
+    [
+     3.46,
+     30.0
+    ],
+    [
+     3.86,
+     30.96
+    ]
+   ],
+   "start": -47.5,
+   "end": -46
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED Opposite",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED Opposite",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED Opposite",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Coverage",
+   "profile": [
+    [
+     0,
+     -70
+    ],
+    [
+     7500,
+     -70
+    ],
+    [
+     7500,
+     -65
+    ],
+    [
+     0,
+     -65
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Coverage"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coverage",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Fire Alarm",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "solid": "Base",
+   "side": "top"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireAlarm_Detector_Multi.png"
+  }
+ ],
+ "values": {
+  "Diameter 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Height 63 mm with base": {
+   "value": 63,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Optical + heat, BS EN 54-7 and 54-5": {
+   "value": "EN 54-7/-5",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Coverage radius 7500 mm (smoke mode)": {
+   "value": 7500,
+   "source_status": "assumed",
+   "source": "BS 5839-1 point smoke detector, flat ceiling"
+  }
+ }
+}

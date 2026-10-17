@@ -1,0 +1,687 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_SpecEq_WallProtection_CrashRail",
+ "template": "Metric Generic Model.rft",
+ "about": "Crash rail modelled as a generic product: a 2400 mm sample run of aluminium retainer, cushion and curved PVC cover (profile extruded along x), end caps, brackets. Bottom at z = 0; Default Elevation 300. Reference: query: wall protection crash rail specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=wall+protection+crash+rail+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Specialty Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "200_Horizontal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/FMC_Cost_Unit",
+   "type": "200_Horizontal",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/FMC_Geometry_Stage",
+   "type": "200_Horizontal",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/IfcExportAs",
+   "type": "200_Horizontal",
+   "param": "IfcExportAs",
+   "value": "IfcCovering"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/Description",
+   "type": "200_Horizontal",
+   "param": "Description",
+   "value": "Crash rail 200 mm high, 38 mm projection, horizontal run"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/Keynote",
+   "type": "200_Horizontal",
+   "param": "Keynote",
+   "value": "I.WPR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/FMC_Keynote_Code",
+   "type": "200_Horizontal",
+   "param": "FMC_Keynote_Code",
+   "value": "I.WPR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Horizontal/Default Elevation",
+   "type": "200_Horizontal",
+   "param": "Default Elevation",
+   "value": 300
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Alu",
+   "color": [
+    192,
+    192,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Alu Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_Anodised_Silver",
+   "param": "Alu Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1230,
+     -38
+    ],
+    [
+     1230,
+     -38
+    ],
+    [
+     1230,
+     0
+    ],
+    [
+     -1230,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Retainer",
+   "points": [
+    [
+     0,
+     20
+    ],
+    [
+     -12,
+     20
+    ],
+    [
+     -12,
+     180
+    ],
+    [
+     0,
+     180
+    ]
+   ],
+   "start": -1200,
+   "end": 1200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Retainer",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Retainer",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Retainer",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bumper Cushion",
+   "points": [
+    [
+     -12,
+     35
+    ],
+    [
+     -22,
+     35
+    ],
+    [
+     -22,
+     165
+    ],
+    [
+     -12,
+     165
+    ]
+   ],
+   "start": -1200,
+   "end": 1200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bumper Cushion",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bumper Cushion",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bumper Cushion",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover",
+   "points": [
+    [
+     -12,
+     0
+    ],
+    [
+     -28,
+     10
+    ],
+    [
+     -34,
+     40
+    ],
+    [
+     -36,
+     100
+    ],
+    [
+     -34,
+     160
+    ],
+    [
+     -28,
+     190
+    ],
+    [
+     -12,
+     200
+    ]
+   ],
+   "start": -1195,
+   "end": 1195,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Face Insert",
+   "points": [
+    [
+     -36,
+     80
+    ],
+    [
+     -38,
+     82
+    ],
+    [
+     -38,
+     118
+    ],
+    [
+     -36,
+     120
+    ]
+   ],
+   "start": -1195,
+   "end": 1195,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Face Insert",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Face Insert",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Face Insert",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -28,
+     10
+    ],
+    [
+     -38,
+     100
+    ],
+    [
+     -28,
+     190
+    ],
+    [
+     0,
+     200
+    ]
+   ],
+   "start": -1230,
+   "end": -1195,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap Right",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -28,
+     10
+    ],
+    [
+     -38,
+     100
+    ],
+    [
+     -28,
+     190
+    ],
+    [
+     0,
+     200
+    ]
+   ],
+   "start": 1195,
+   "end": 1230,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap Right",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap Right",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket 1",
+   "points": [
+    [
+     -1000,
+     25
+    ],
+    [
+     -940,
+     25
+    ],
+    [
+     -940,
+     175
+    ],
+    [
+     -1000,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket 1",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket 1",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket 2",
+   "points": [
+    [
+     -367,
+     25
+    ],
+    [
+     -307,
+     25
+    ],
+    [
+     -307,
+     175
+    ],
+    [
+     -367,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket 2",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket 2",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket 3",
+   "points": [
+    [
+     266,
+     25
+    ],
+    [
+     326,
+     25
+    ],
+    [
+     326,
+     175
+    ],
+    [
+     266,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket 3",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket 3",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket 4",
+   "points": [
+    [
+     899,
+     25
+    ],
+    [
+     959,
+     25
+    ],
+    [
+     959,
+     175
+    ],
+    [
+     899,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket 4",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket 4",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_WallProtection_CrashRail.png"
+  }
+ ],
+ "values": {
+  "Height 200 mm, projection 38 mm": {
+   "value": "200x38",
+   "source_status": "assumed",
+   "source": "record profile 200x30 class"
+  },
+  "Bottom at 300 mm (trolley/bed height)": {
+   "value": 300,
+   "source_status": "assumed",
+   "source": "HBN 00-04 / HTM practice"
+  },
+  "Brackets at 600-800 mm centres": {
+   "value": 633,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

@@ -1,0 +1,1705 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireProt_Signage_FireAction",
+ "template": "Metric Generic Model.rft",
+ "about": "Fire action notice modelled as a generic product: blue plate, white header, pictogram panels with fire symbol, text lines for discover/alarm/assembly, screw caps. Reference: query: fire prot signage fire action fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+signage+fire+action+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Specialty Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "A4_FireAction"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/FMC_Cost_Unit",
+   "type": "A4_FireAction",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/FMC_Geometry_Stage",
+   "type": "A4_FireAction",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/IfcExportAs",
+   "type": "A4_FireAction",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/Description",
+   "type": "A4_FireAction",
+   "param": "Description",
+   "value": "Fire action notice A4 (210 x 297), rigid plastic, blue with white text and fire pictogram, screw caps"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/Keynote",
+   "type": "A4_FireAction",
+   "param": "Keynote",
+   "value": "A.SGN_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/FMC_Keynote_Code",
+   "type": "A4_FireAction",
+   "param": "FMC_Keynote_Code",
+   "value": "A.SGN_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "A4_FireAction/Default Elevation",
+   "type": "A4_FireAction",
+   "param": "Default Elevation",
+   "value": 1350
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -105.0,
+     -6
+    ],
+    [
+     105.0,
+     -6
+    ],
+    [
+     105.0,
+     0
+    ],
+    [
+     -105.0,
+     0
+    ]
+   ],
+   "start": 0.0,
+   "end": 297.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Sign Plate",
+   "points": [
+    [
+     101.0,
+     0.0
+    ],
+    [
+     102.53,
+     0.3
+    ],
+    [
+     103.83,
+     1.17
+    ],
+    [
+     104.7,
+     2.47
+    ],
+    [
+     105.0,
+     4.0
+    ],
+    [
+     105.0,
+     293.0
+    ],
+    [
+     104.7,
+     294.53
+    ],
+    [
+     103.83,
+     295.83
+    ],
+    [
+     102.53,
+     296.7
+    ],
+    [
+     101.0,
+     297.0
+    ],
+    [
+     -101.0,
+     297.0
+    ],
+    [
+     -102.53,
+     296.7
+    ],
+    [
+     -103.83,
+     295.83
+    ],
+    [
+     -104.7,
+     294.53
+    ],
+    [
+     -105.0,
+     293.0
+    ],
+    [
+     -105.0,
+     4.0
+    ],
+    [
+     -104.7,
+     2.47
+    ],
+    [
+     -103.83,
+     1.17
+    ],
+    [
+     -102.53,
+     0.3
+    ],
+    [
+     -101.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sign Plate",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sign Plate",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sign Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Header Text",
+   "points": [
+    [
+     -80,
+     262
+    ],
+    [
+     80,
+     262
+    ],
+    [
+     80,
+     284
+    ],
+    [
+     -80,
+     284
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Header Text",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Header Text",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Header Text",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pictogram Panel",
+   "points": [
+    [
+     -53.0,
+     190.0
+    ],
+    [
+     -51.85,
+     190.23
+    ],
+    [
+     -50.88,
+     190.88
+    ],
+    [
+     -50.23,
+     191.85
+    ],
+    [
+     -50.0,
+     193.0
+    ],
+    [
+     -50.0,
+     237.0
+    ],
+    [
+     -50.23,
+     238.15
+    ],
+    [
+     -50.88,
+     239.12
+    ],
+    [
+     -51.85,
+     239.77
+    ],
+    [
+     -53.0,
+     240.0
+    ],
+    [
+     -92.0,
+     240.0
+    ],
+    [
+     -93.15,
+     239.77
+    ],
+    [
+     -94.12,
+     239.12
+    ],
+    [
+     -94.77,
+     238.15
+    ],
+    [
+     -95.0,
+     237.0
+    ],
+    [
+     -95.0,
+     193.0
+    ],
+    [
+     -94.77,
+     191.85
+    ],
+    [
+     -94.12,
+     190.88
+    ],
+    [
+     -93.15,
+     190.23
+    ],
+    [
+     -92.0,
+     190.0
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pictogram Panel",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pictogram Panel",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pictogram Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Symbol",
+   "points": [
+    [
+     -64.0,
+     200.0
+    ],
+    [
+     -63.23,
+     200.15
+    ],
+    [
+     -62.59,
+     200.59
+    ],
+    [
+     -62.15,
+     201.23
+    ],
+    [
+     -62.0,
+     202.0
+    ],
+    [
+     -62.0,
+     226.0
+    ],
+    [
+     -62.15,
+     226.77
+    ],
+    [
+     -62.59,
+     227.41
+    ],
+    [
+     -63.23,
+     227.85
+    ],
+    [
+     -64.0,
+     228.0
+    ],
+    [
+     -80.0,
+     228.0
+    ],
+    [
+     -80.77,
+     227.85
+    ],
+    [
+     -81.41,
+     227.41
+    ],
+    [
+     -81.85,
+     226.77
+    ],
+    [
+     -82.0,
+     226.0
+    ],
+    [
+     -82.0,
+     202.0
+    ],
+    [
+     -81.85,
+     201.23
+    ],
+    [
+     -81.41,
+     200.59
+    ],
+    [
+     -80.77,
+     200.15
+    ],
+    [
+     -80.0,
+     200.0
+    ]
+   ],
+   "start": 4,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Symbol",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Symbol",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Symbol",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Discover 1",
+   "points": [
+    [
+     -40,
+     200
+    ],
+    [
+     95,
+     200
+    ],
+    [
+     95,
+     205
+    ],
+    [
+     -40,
+     205
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Discover 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Discover 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Discover 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Discover 2",
+   "points": [
+    [
+     -40,
+     211
+    ],
+    [
+     95,
+     211
+    ],
+    [
+     95,
+     216
+    ],
+    [
+     -40,
+     216
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Discover 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Discover 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Discover 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Discover 3",
+   "points": [
+    [
+     -40,
+     222
+    ],
+    [
+     95,
+     222
+    ],
+    [
+     95,
+     227
+    ],
+    [
+     -40,
+     227
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Discover 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Discover 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Discover 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Discover 4",
+   "points": [
+    [
+     -40,
+     233
+    ],
+    [
+     95,
+     233
+    ],
+    [
+     95,
+     238
+    ],
+    [
+     -40,
+     238
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Discover 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Discover 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Discover 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pictogram Alarm",
+   "points": [
+    [
+     -53.0,
+     115.0
+    ],
+    [
+     -51.85,
+     115.23
+    ],
+    [
+     -50.88,
+     115.88
+    ],
+    [
+     -50.23,
+     116.85
+    ],
+    [
+     -50.0,
+     118.0
+    ],
+    [
+     -50.0,
+     162.0
+    ],
+    [
+     -50.23,
+     163.15
+    ],
+    [
+     -50.88,
+     164.12
+    ],
+    [
+     -51.85,
+     164.77
+    ],
+    [
+     -53.0,
+     165.0
+    ],
+    [
+     -92.0,
+     165.0
+    ],
+    [
+     -93.15,
+     164.77
+    ],
+    [
+     -94.12,
+     164.12
+    ],
+    [
+     -94.77,
+     163.15
+    ],
+    [
+     -95.0,
+     162.0
+    ],
+    [
+     -95.0,
+     118.0
+    ],
+    [
+     -94.77,
+     116.85
+    ],
+    [
+     -94.12,
+     115.88
+    ],
+    [
+     -93.15,
+     115.23
+    ],
+    [
+     -92.0,
+     115.0
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pictogram Alarm",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pictogram Alarm",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pictogram Alarm",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Alarm 1",
+   "points": [
+    [
+     -40,
+     120
+    ],
+    [
+     95,
+     120
+    ],
+    [
+     95,
+     125
+    ],
+    [
+     -40,
+     125
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Alarm 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Alarm 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Alarm 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Alarm 2",
+   "points": [
+    [
+     -40,
+     131
+    ],
+    [
+     95,
+     131
+    ],
+    [
+     95,
+     136
+    ],
+    [
+     -40,
+     136
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Alarm 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Alarm 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Alarm 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Alarm 3",
+   "points": [
+    [
+     -40,
+     142
+    ],
+    [
+     95,
+     142
+    ],
+    [
+     95,
+     147
+    ],
+    [
+     -40,
+     147
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Alarm 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Alarm 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Alarm 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Alarm 4",
+   "points": [
+    [
+     -40,
+     153
+    ],
+    [
+     95,
+     153
+    ],
+    [
+     95,
+     158
+    ],
+    [
+     -40,
+     158
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Alarm 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Alarm 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Alarm 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Assembly 1",
+   "points": [
+    [
+     -95,
+     40
+    ],
+    [
+     95,
+     40
+    ],
+    [
+     95,
+     45
+    ],
+    [
+     -95,
+     45
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Assembly 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Assembly 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Assembly 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Assembly 2",
+   "points": [
+    [
+     -95,
+     54
+    ],
+    [
+     95,
+     54
+    ],
+    [
+     95,
+     59
+    ],
+    [
+     -95,
+     59
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Assembly 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Assembly 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Assembly 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Assembly 3",
+   "points": [
+    [
+     -95,
+     68
+    ],
+    [
+     95,
+     68
+    ],
+    [
+     95,
+     73
+    ],
+    [
+     -95,
+     73
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Assembly 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Assembly 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Assembly 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Text Line Assembly 4",
+   "points": [
+    [
+     -95,
+     82
+    ],
+    [
+     95,
+     82
+    ],
+    [
+     95,
+     87
+    ],
+    [
+     -95,
+     87
+    ]
+   ],
+   "start": 3,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Text Line Assembly 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Text Line Assembly 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Text Line Assembly 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cap 1",
+   "points": [
+    [
+     -87.0,
+     284.0
+    ],
+    [
+     -87.17,
+     285.29
+    ],
+    [
+     -87.67,
+     286.5
+    ],
+    [
+     -88.46,
+     287.54
+    ],
+    [
+     -89.5,
+     288.33
+    ],
+    [
+     -90.71,
+     288.83
+    ],
+    [
+     -92.0,
+     289.0
+    ],
+    [
+     -93.29,
+     288.83
+    ],
+    [
+     -94.5,
+     288.33
+    ],
+    [
+     -95.54,
+     287.54
+    ],
+    [
+     -96.33,
+     286.5
+    ],
+    [
+     -96.83,
+     285.29
+    ],
+    [
+     -97.0,
+     284.0
+    ],
+    [
+     -96.83,
+     282.71
+    ],
+    [
+     -96.33,
+     281.5
+    ],
+    [
+     -95.54,
+     280.46
+    ],
+    [
+     -94.5,
+     279.67
+    ],
+    [
+     -93.29,
+     279.17
+    ],
+    [
+     -92.0,
+     279.0
+    ],
+    [
+     -90.71,
+     279.17
+    ],
+    [
+     -89.5,
+     279.67
+    ],
+    [
+     -88.46,
+     280.46
+    ],
+    [
+     -87.67,
+     281.5
+    ],
+    [
+     -87.17,
+     282.71
+    ]
+   ],
+   "start": 6,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cap 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cap 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cap 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cap 2",
+   "points": [
+    [
+     97.0,
+     284.0
+    ],
+    [
+     96.83,
+     285.29
+    ],
+    [
+     96.33,
+     286.5
+    ],
+    [
+     95.54,
+     287.54
+    ],
+    [
+     94.5,
+     288.33
+    ],
+    [
+     93.29,
+     288.83
+    ],
+    [
+     92.0,
+     289.0
+    ],
+    [
+     90.71,
+     288.83
+    ],
+    [
+     89.5,
+     288.33
+    ],
+    [
+     88.46,
+     287.54
+    ],
+    [
+     87.67,
+     286.5
+    ],
+    [
+     87.17,
+     285.29
+    ],
+    [
+     87.0,
+     284.0
+    ],
+    [
+     87.17,
+     282.71
+    ],
+    [
+     87.67,
+     281.5
+    ],
+    [
+     88.46,
+     280.46
+    ],
+    [
+     89.5,
+     279.67
+    ],
+    [
+     90.71,
+     279.17
+    ],
+    [
+     92.0,
+     279.0
+    ],
+    [
+     93.29,
+     279.17
+    ],
+    [
+     94.5,
+     279.67
+    ],
+    [
+     95.54,
+     280.46
+    ],
+    [
+     96.33,
+     281.5
+    ],
+    [
+     96.83,
+     282.71
+    ]
+   ],
+   "start": 6,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cap 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cap 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cap 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cap Low 1",
+   "points": [
+    [
+     -87.0,
+     13.0
+    ],
+    [
+     -87.17,
+     14.29
+    ],
+    [
+     -87.67,
+     15.5
+    ],
+    [
+     -88.46,
+     16.54
+    ],
+    [
+     -89.5,
+     17.33
+    ],
+    [
+     -90.71,
+     17.83
+    ],
+    [
+     -92.0,
+     18.0
+    ],
+    [
+     -93.29,
+     17.83
+    ],
+    [
+     -94.5,
+     17.33
+    ],
+    [
+     -95.54,
+     16.54
+    ],
+    [
+     -96.33,
+     15.5
+    ],
+    [
+     -96.83,
+     14.29
+    ],
+    [
+     -97.0,
+     13.0
+    ],
+    [
+     -96.83,
+     11.71
+    ],
+    [
+     -96.33,
+     10.5
+    ],
+    [
+     -95.54,
+     9.46
+    ],
+    [
+     -94.5,
+     8.67
+    ],
+    [
+     -93.29,
+     8.17
+    ],
+    [
+     -92.0,
+     8.0
+    ],
+    [
+     -90.71,
+     8.17
+    ],
+    [
+     -89.5,
+     8.67
+    ],
+    [
+     -88.46,
+     9.46
+    ],
+    [
+     -87.67,
+     10.5
+    ],
+    [
+     -87.17,
+     11.71
+    ]
+   ],
+   "start": 6,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cap Low 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cap Low 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cap Low 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Cap Low 2",
+   "points": [
+    [
+     97.0,
+     13.0
+    ],
+    [
+     96.83,
+     14.29
+    ],
+    [
+     96.33,
+     15.5
+    ],
+    [
+     95.54,
+     16.54
+    ],
+    [
+     94.5,
+     17.33
+    ],
+    [
+     93.29,
+     17.83
+    ],
+    [
+     92.0,
+     18.0
+    ],
+    [
+     90.71,
+     17.83
+    ],
+    [
+     89.5,
+     17.33
+    ],
+    [
+     88.46,
+     16.54
+    ],
+    [
+     87.67,
+     15.5
+    ],
+    [
+     87.17,
+     14.29
+    ],
+    [
+     87.0,
+     13.0
+    ],
+    [
+     87.17,
+     11.71
+    ],
+    [
+     87.67,
+     10.5
+    ],
+    [
+     88.46,
+     9.46
+    ],
+    [
+     89.5,
+     8.67
+    ],
+    [
+     90.71,
+     8.17
+    ],
+    [
+     92.0,
+     8.0
+    ],
+    [
+     93.29,
+     8.17
+    ],
+    [
+     94.5,
+     8.67
+    ],
+    [
+     95.54,
+     9.46
+    ],
+    [
+     96.33,
+     10.5
+    ],
+    [
+     96.83,
+     11.71
+    ]
+   ],
+   "start": 6,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Cap Low 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Cap Low 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Cap Low 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireProt_Signage_FireAction.png"
+  }
+ ],
+ "values": {
+  "A4 210 x 297 mm": {
+   "value": "210x297",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "To ISO 7010 / BS 5499": {
+   "value": "ISO 7010",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Centre at about 1500 mm beside call points": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

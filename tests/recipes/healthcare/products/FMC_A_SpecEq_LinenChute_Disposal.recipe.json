@@ -1,0 +1,1843 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_SpecEq_LinenChute_Disposal",
+ "template": "Metric Generic Model.rft",
+ "about": "Chute modelled as a generic product: one storey of 600 stainless chute behind the wall line (y = 0) with joint band and floor collar, throat, intake frame, tilted hopper door with pull handle and hinge, fire and use labels, interlock panel with lamps and key. Reference: query: linen chute disposal specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=linen+chute+disposal+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Specialty Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "600_FireRated"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/FMC_Cost_Unit",
+   "type": "600_FireRated",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/FMC_Geometry_Stage",
+   "type": "600_FireRated",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/IfcExportAs",
+   "type": "600_FireRated",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/Description",
+   "type": "600_FireRated",
+   "param": "Description",
+   "value": "Linen/waste chute 600 mm dia, FD60 hopper intake door, interlock"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/Keynote",
+   "type": "600_FireRated",
+   "param": "Keynote",
+   "value": "A.EQP_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_FireRated/FMC_Keynote_Code",
+   "type": "600_FireRated",
+   "param": "FMC_Keynote_Code",
+   "value": "A.EQP_01"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ss",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ss Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Ss Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Green",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Green Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Green Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    167,
+    172,
+    175
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_ColdFormed_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -380.0,
+     -114.0
+    ],
+    [
+     520.0,
+     -114.0
+    ],
+    [
+     520.0,
+     800
+    ],
+    [
+     -380.0,
+     800
+    ]
+   ],
+   "start": 0,
+   "end": 3000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Chute Tube",
+   "points": [
+    [
+     300.0,
+     420.0
+    ],
+    [
+     289.78,
+     497.65
+    ],
+    [
+     259.81,
+     570.0
+    ],
+    [
+     212.13,
+     632.13
+    ],
+    [
+     150.0,
+     679.81
+    ],
+    [
+     77.65,
+     709.78
+    ],
+    [
+     0.0,
+     720.0
+    ],
+    [
+     -77.65,
+     709.78
+    ],
+    [
+     -150.0,
+     679.81
+    ],
+    [
+     -212.13,
+     632.13
+    ],
+    [
+     -259.81,
+     570.0
+    ],
+    [
+     -289.78,
+     497.65
+    ],
+    [
+     -300.0,
+     420.0
+    ],
+    [
+     -289.78,
+     342.35
+    ],
+    [
+     -259.81,
+     270.0
+    ],
+    [
+     -212.13,
+     207.87
+    ],
+    [
+     -150.0,
+     160.19
+    ],
+    [
+     -77.65,
+     130.22
+    ],
+    [
+     -0.0,
+     120.0
+    ],
+    [
+     77.65,
+     130.22
+    ],
+    [
+     150.0,
+     160.19
+    ],
+    [
+     212.13,
+     207.87
+    ],
+    [
+     259.81,
+     270.0
+    ],
+    [
+     289.78,
+     342.35
+    ]
+   ],
+   "start": 0,
+   "end": 3000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chute Tube",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chute Tube",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chute Tube",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Chute Joint Band",
+   "profile": [
+    [
+     300,
+     2400
+    ],
+    [
+     312,
+     2400
+    ],
+    [
+     312,
+     2460
+    ],
+    [
+     300,
+     2460
+    ]
+   ],
+   "axis_at": [
+    0,
+    420
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chute Joint Band",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chute Joint Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Throat",
+   "points": [
+    [
+     -280,
+     0
+    ],
+    [
+     280,
+     0
+    ],
+    [
+     280,
+     170
+    ],
+    [
+     -280,
+     170
+    ]
+   ],
+   "start": 760,
+   "end": 1440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Throat",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Throat",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Throat",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Frame",
+   "points": [
+    [
+     370.0,
+     700.0
+    ],
+    [
+     373.83,
+     700.76
+    ],
+    [
+     377.07,
+     702.93
+    ],
+    [
+     379.24,
+     706.17
+    ],
+    [
+     380.0,
+     710.0
+    ],
+    [
+     380.0,
+     1510.0
+    ],
+    [
+     379.24,
+     1513.83
+    ],
+    [
+     377.07,
+     1517.07
+    ],
+    [
+     373.83,
+     1519.24
+    ],
+    [
+     370.0,
+     1520.0
+    ],
+    [
+     -370.0,
+     1520.0
+    ],
+    [
+     -373.83,
+     1519.24
+    ],
+    [
+     -377.07,
+     1517.07
+    ],
+    [
+     -379.24,
+     1513.83
+    ],
+    [
+     -380.0,
+     1510.0
+    ],
+    [
+     -380.0,
+     710.0
+    ],
+    [
+     -379.24,
+     706.17
+    ],
+    [
+     -377.07,
+     702.93
+    ],
+    [
+     -373.83,
+     700.76
+    ],
+    [
+     -370.0,
+     700.0
+    ]
+   ],
+   "start": 0,
+   "end": 45,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Frame",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Frame",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Shadow",
+   "points": [
+    [
+     -330,
+     760
+    ],
+    [
+     330,
+     760
+    ],
+    [
+     330,
+     1460
+    ],
+    [
+     -330,
+     1460
+    ]
+   ],
+   "start": 45,
+   "end": 46,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Shadow",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Shadow",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Shadow",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hopper Door",
+   "points": [
+    [
+     -47,
+     770
+    ],
+    [
+     -60,
+     770
+    ],
+    [
+     -60,
+     1450
+    ],
+    [
+     -47,
+     1450
+    ]
+   ],
+   "start": -320,
+   "end": 320,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hopper Door",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hopper Door",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hopper Door",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Handle",
+   "points": [
+    [
+     -86.0,
+     1360.0
+    ],
+    [
+     -86.48,
+     1363.62
+    ],
+    [
+     -87.88,
+     1367.0
+    ],
+    [
+     -90.1,
+     1369.9
+    ],
+    [
+     -93.0,
+     1372.12
+    ],
+    [
+     -96.38,
+     1373.52
+    ],
+    [
+     -100.0,
+     1374.0
+    ],
+    [
+     -103.62,
+     1373.52
+    ],
+    [
+     -107.0,
+     1372.12
+    ],
+    [
+     -109.9,
+     1369.9
+    ],
+    [
+     -112.12,
+     1367.0
+    ],
+    [
+     -113.52,
+     1363.62
+    ],
+    [
+     -114.0,
+     1360.0
+    ],
+    [
+     -113.52,
+     1356.38
+    ],
+    [
+     -112.12,
+     1353.0
+    ],
+    [
+     -109.9,
+     1350.1
+    ],
+    [
+     -107.0,
+     1347.88
+    ],
+    [
+     -103.62,
+     1346.48
+    ],
+    [
+     -100.0,
+     1346.0
+    ],
+    [
+     -96.38,
+     1346.48
+    ],
+    [
+     -93.0,
+     1347.88
+    ],
+    [
+     -90.1,
+     1350.1
+    ],
+    [
+     -87.88,
+     1353.0
+    ],
+    [
+     -86.48,
+     1356.38
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Handle",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Handle",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Handle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Stand 1",
+   "points": [
+    [
+     -170.0,
+     1360.0
+    ],
+    [
+     -170.34,
+     1362.59
+    ],
+    [
+     -171.34,
+     1365.0
+    ],
+    [
+     -172.93,
+     1367.07
+    ],
+    [
+     -175.0,
+     1368.66
+    ],
+    [
+     -177.41,
+     1369.66
+    ],
+    [
+     -180.0,
+     1370.0
+    ],
+    [
+     -182.59,
+     1369.66
+    ],
+    [
+     -185.0,
+     1368.66
+    ],
+    [
+     -187.07,
+     1367.07
+    ],
+    [
+     -188.66,
+     1365.0
+    ],
+    [
+     -189.66,
+     1362.59
+    ],
+    [
+     -190.0,
+     1360.0
+    ],
+    [
+     -189.66,
+     1357.41
+    ],
+    [
+     -188.66,
+     1355.0
+    ],
+    [
+     -187.07,
+     1352.93
+    ],
+    [
+     -185.0,
+     1351.34
+    ],
+    [
+     -182.59,
+     1350.34
+    ],
+    [
+     -180.0,
+     1350.0
+    ],
+    [
+     -177.41,
+     1350.34
+    ],
+    [
+     -175.0,
+     1351.34
+    ],
+    [
+     -172.93,
+     1352.93
+    ],
+    [
+     -171.34,
+     1355.0
+    ],
+    [
+     -170.34,
+     1357.41
+    ]
+   ],
+   "start": 60,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Stand 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Stand 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Stand 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Stand 2",
+   "points": [
+    [
+     190.0,
+     1360.0
+    ],
+    [
+     189.66,
+     1362.59
+    ],
+    [
+     188.66,
+     1365.0
+    ],
+    [
+     187.07,
+     1367.07
+    ],
+    [
+     185.0,
+     1368.66
+    ],
+    [
+     182.59,
+     1369.66
+    ],
+    [
+     180.0,
+     1370.0
+    ],
+    [
+     177.41,
+     1369.66
+    ],
+    [
+     175.0,
+     1368.66
+    ],
+    [
+     172.93,
+     1367.07
+    ],
+    [
+     171.34,
+     1365.0
+    ],
+    [
+     170.34,
+     1362.59
+    ],
+    [
+     170.0,
+     1360.0
+    ],
+    [
+     170.34,
+     1357.41
+    ],
+    [
+     171.34,
+     1355.0
+    ],
+    [
+     172.93,
+     1352.93
+    ],
+    [
+     175.0,
+     1351.34
+    ],
+    [
+     177.41,
+     1350.34
+    ],
+    [
+     180.0,
+     1350.0
+    ],
+    [
+     182.59,
+     1350.34
+    ],
+    [
+     185.0,
+     1351.34
+    ],
+    [
+     187.07,
+     1352.93
+    ],
+    [
+     188.66,
+     1355.0
+    ],
+    [
+     189.66,
+     1357.41
+    ]
+   ],
+   "start": 60,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Stand 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Stand 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Stand 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge",
+   "points": [
+    [
+     -43.0,
+     775.0
+    ],
+    [
+     -43.41,
+     778.11
+    ],
+    [
+     -44.61,
+     781.0
+    ],
+    [
+     -46.51,
+     783.49
+    ],
+    [
+     -49.0,
+     785.39
+    ],
+    [
+     -51.89,
+     786.59
+    ],
+    [
+     -55.0,
+     787.0
+    ],
+    [
+     -58.11,
+     786.59
+    ],
+    [
+     -61.0,
+     785.39
+    ],
+    [
+     -63.49,
+     783.49
+    ],
+    [
+     -65.39,
+     781.0
+    ],
+    [
+     -66.59,
+     778.11
+    ],
+    [
+     -67.0,
+     775.0
+    ],
+    [
+     -66.59,
+     771.89
+    ],
+    [
+     -65.39,
+     769.0
+    ],
+    [
+     -63.49,
+     766.51
+    ],
+    [
+     -61.0,
+     764.61
+    ],
+    [
+     -58.11,
+     763.41
+    ],
+    [
+     -55.0,
+     763.0
+    ],
+    [
+     -51.89,
+     763.41
+    ],
+    [
+     -49.0,
+     764.61
+    ],
+    [
+     -46.51,
+     766.51
+    ],
+    [
+     -44.61,
+     769.0
+    ],
+    [
+     -43.41,
+     771.89
+    ]
+   ],
+   "start": -310,
+   "end": 310,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fire Rating Label",
+   "points": [
+    [
+     -120,
+     1050
+    ],
+    [
+     120,
+     1050
+    ],
+    [
+     120,
+     1090
+    ],
+    [
+     -120,
+     1090
+    ]
+   ],
+   "start": 60,
+   "end": 62,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fire Rating Label",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fire Rating Label",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fire Rating Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Use Label",
+   "points": [
+    [
+     196.0,
+     1170.0
+    ],
+    [
+     197.53,
+     1170.3
+    ],
+    [
+     198.83,
+     1171.17
+    ],
+    [
+     199.7,
+     1172.47
+    ],
+    [
+     200.0,
+     1174.0
+    ],
+    [
+     200.0,
+     1256.0
+    ],
+    [
+     199.7,
+     1257.53
+    ],
+    [
+     198.83,
+     1258.83
+    ],
+    [
+     197.53,
+     1259.7
+    ],
+    [
+     196.0,
+     1260.0
+    ],
+    [
+     -196.0,
+     1260.0
+    ],
+    [
+     -197.53,
+     1259.7
+    ],
+    [
+     -198.83,
+     1258.83
+    ],
+    [
+     -199.7,
+     1257.53
+    ],
+    [
+     -200.0,
+     1256.0
+    ],
+    [
+     -200.0,
+     1174.0
+    ],
+    [
+     -199.7,
+     1172.47
+    ],
+    [
+     -198.83,
+     1171.17
+    ],
+    [
+     -197.53,
+     1170.3
+    ],
+    [
+     -196.0,
+     1170.0
+    ]
+   ],
+   "start": 60,
+   "end": 62,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Use Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Use Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Use Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Interlock Panel",
+   "points": [
+    [
+     514.0,
+     1250.0
+    ],
+    [
+     516.3,
+     1250.46
+    ],
+    [
+     518.24,
+     1251.76
+    ],
+    [
+     519.54,
+     1253.7
+    ],
+    [
+     520.0,
+     1256.0
+    ],
+    [
+     520.0,
+     1394.0
+    ],
+    [
+     519.54,
+     1396.3
+    ],
+    [
+     518.24,
+     1398.24
+    ],
+    [
+     516.3,
+     1399.54
+    ],
+    [
+     514.0,
+     1400.0
+    ],
+    [
+     426.0,
+     1400.0
+    ],
+    [
+     423.7,
+     1399.54
+    ],
+    [
+     421.76,
+     1398.24
+    ],
+    [
+     420.46,
+     1396.3
+    ],
+    [
+     420.0,
+     1394.0
+    ],
+    [
+     420.0,
+     1256.0
+    ],
+    [
+     420.46,
+     1253.7
+    ],
+    [
+     421.76,
+     1251.76
+    ],
+    [
+     423.7,
+     1250.46
+    ],
+    [
+     426.0,
+     1250.0
+    ]
+   ],
+   "start": 0,
+   "end": 14,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Interlock Panel",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Interlock Panel",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Interlock Panel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Interlock Lamp",
+   "points": [
+    [
+     480.0,
+     1360.0
+    ],
+    [
+     479.66,
+     1362.59
+    ],
+    [
+     478.66,
+     1365.0
+    ],
+    [
+     477.07,
+     1367.07
+    ],
+    [
+     475.0,
+     1368.66
+    ],
+    [
+     472.59,
+     1369.66
+    ],
+    [
+     470.0,
+     1370.0
+    ],
+    [
+     467.41,
+     1369.66
+    ],
+    [
+     465.0,
+     1368.66
+    ],
+    [
+     462.93,
+     1367.07
+    ],
+    [
+     461.34,
+     1365.0
+    ],
+    [
+     460.34,
+     1362.59
+    ],
+    [
+     460.0,
+     1360.0
+    ],
+    [
+     460.34,
+     1357.41
+    ],
+    [
+     461.34,
+     1355.0
+    ],
+    [
+     462.93,
+     1352.93
+    ],
+    [
+     465.0,
+     1351.34
+    ],
+    [
+     467.41,
+     1350.34
+    ],
+    [
+     470.0,
+     1350.0
+    ],
+    [
+     472.59,
+     1350.34
+    ],
+    [
+     475.0,
+     1351.34
+    ],
+    [
+     477.07,
+     1352.93
+    ],
+    [
+     478.66,
+     1355.0
+    ],
+    [
+     479.66,
+     1357.41
+    ]
+   ],
+   "start": 14,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Interlock Lamp",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Interlock Lamp",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Interlock Lamp",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Interlock Lamp Red",
+   "points": [
+    [
+     480.0,
+     1320.0
+    ],
+    [
+     479.66,
+     1322.59
+    ],
+    [
+     478.66,
+     1325.0
+    ],
+    [
+     477.07,
+     1327.07
+    ],
+    [
+     475.0,
+     1328.66
+    ],
+    [
+     472.59,
+     1329.66
+    ],
+    [
+     470.0,
+     1330.0
+    ],
+    [
+     467.41,
+     1329.66
+    ],
+    [
+     465.0,
+     1328.66
+    ],
+    [
+     462.93,
+     1327.07
+    ],
+    [
+     461.34,
+     1325.0
+    ],
+    [
+     460.34,
+     1322.59
+    ],
+    [
+     460.0,
+     1320.0
+    ],
+    [
+     460.34,
+     1317.41
+    ],
+    [
+     461.34,
+     1315.0
+    ],
+    [
+     462.93,
+     1312.93
+    ],
+    [
+     465.0,
+     1311.34
+    ],
+    [
+     467.41,
+     1310.34
+    ],
+    [
+     470.0,
+     1310.0
+    ],
+    [
+     472.59,
+     1310.34
+    ],
+    [
+     475.0,
+     1311.34
+    ],
+    [
+     477.07,
+     1312.93
+    ],
+    [
+     478.66,
+     1315.0
+    ],
+    [
+     479.66,
+     1317.41
+    ]
+   ],
+   "start": 14,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Interlock Lamp Red",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Interlock Lamp Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Interlock Lamp Red",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Key Switch",
+   "points": [
+    [
+     482.0,
+     1280.0
+    ],
+    [
+     481.59,
+     1283.11
+    ],
+    [
+     480.39,
+     1286.0
+    ],
+    [
+     478.49,
+     1288.49
+    ],
+    [
+     476.0,
+     1290.39
+    ],
+    [
+     473.11,
+     1291.59
+    ],
+    [
+     470.0,
+     1292.0
+    ],
+    [
+     466.89,
+     1291.59
+    ],
+    [
+     464.0,
+     1290.39
+    ],
+    [
+     461.51,
+     1288.49
+    ],
+    [
+     459.61,
+     1286.0
+    ],
+    [
+     458.41,
+     1283.11
+    ],
+    [
+     458.0,
+     1280.0
+    ],
+    [
+     458.41,
+     1276.89
+    ],
+    [
+     459.61,
+     1274.0
+    ],
+    [
+     461.51,
+     1271.51
+    ],
+    [
+     464.0,
+     1269.61
+    ],
+    [
+     466.89,
+     1268.41
+    ],
+    [
+     470.0,
+     1268.0
+    ],
+    [
+     473.11,
+     1268.41
+    ],
+    [
+     476.0,
+     1269.61
+    ],
+    [
+     478.49,
+     1271.51
+    ],
+    [
+     480.39,
+     1274.0
+    ],
+    [
+     481.59,
+     1276.89
+    ]
+   ],
+   "start": 14,
+   "end": 22,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Key Switch",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Key Switch",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Key Switch",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Floor Collar",
+   "profile": [
+    [
+     300,
+     0
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     380,
+     40
+    ],
+    [
+     300,
+     40
+    ]
+   ],
+   "axis_at": [
+    0,
+    420
+   ],
+   "axis": "z",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Collar",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_LinenChute_Disposal.png"
+  }
+ ],
+ "values": {
+  "Chute 600 mm dia": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "record type"
+  },
+  "Intake door FD60, self-closing, bottom-hinged hopper": {
+   "value": "FD60",
+   "source_status": "assumed",
+   "source": "HTM 05-02 / BS 476-22"
+  },
+  "Intake sill 760 mm": {
+   "value": 760,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

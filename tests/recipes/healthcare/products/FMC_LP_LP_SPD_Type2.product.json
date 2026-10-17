@@ -1,0 +1,242 @@
+{
+ "family": "FMC_LP_LP_SPD_Type2",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Type 2 surge protective device, DIN-rail modular with plug-in cartridges and status windows, in final DBs",
+ "ifc": "IfcProtectiveDevice",
+ "keynote": "X.SPD_01",
+ "types": [
+  {
+   "name": "TPN_T2",
+   "values": {}
+  },
+  {
+   "name": "SPN_T2",
+   "values": {
+    "Voltage": 240,
+    "Number of Poles": 1
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 0,
+  "Number of Poles": 3,
+  "Default Elevation": 1400
+ },
+ "materials": {
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White",
+  "green": "FMC_Plastic_LED_Green",
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "lp lp spd type 2 lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+spd+type+2+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "DIN Rail",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -7.5,
+    30,
+    60,
+    0,
+    65
+   ],
+   "mat": "galv",
+   "lod": "mf"
+  },
+  {
+   "n": "Base",
+   "shape": "fbox",
+   "at": [
+    -36,
+    -50,
+    0,
+    36,
+    -7.5,
+    90
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 2
+  },
+  {
+   "n": "Cartridge",
+   "shape": "fbox",
+   "at": [
+    -35,
+    -68,
+    12,
+    -19,
+    -50,
+    78
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 2,
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Indicator Window",
+   "shape": "fbox",
+   "at": [
+    -31,
+    -68.5,
+    62,
+    -23,
+    -68,
+    72
+   ],
+   "mat": "green",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Release Slot",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -68.5,
+    18,
+    -24,
+    -68,
+    22
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Terminal Screw",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -27,
+    -40
+   ],
+   "r": 3,
+   "z": [
+    90,
+    92
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Terminal Screw Bottom",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -27,
+    -40
+   ],
+   "r": 3,
+   "z": [
+    -2,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Remote Contact Pins",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -30,
+    -6,
+    30,
+    -20,
+    0
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Rating Label",
+   "shape": "fbox",
+   "at": [
+    -34,
+    -50.5,
+    82,
+    34,
+    -50,
+    88
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Base",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "4 modules x 18 mm, 90 mm high": {
+   "value": "72x90x68",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "In 20 kA, Imax 40 kA, Up < 1.5 kV": {
+   "value": "20/40kA",
+   "source_status": "assumed",
+   "source": "BS EN 61643-11 Type 2"
+  },
+  "In each DB, BS 7671 534": {
+   "value": "BS 7671 534",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "SPD Type 2: DIN rail, base, four plug-in cartridges with green indicator windows and release slots, top and bottom terminal screws, remote contact pins, label. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

@@ -1,0 +1,513 @@
+{
+ "family": "FMC_A_GenericModel_Ramp_Stretcher_External",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "External stretcher ramp 1:12, 2000 wide between kerbs, 500 rise over 6000 going plus 1800 top landing, upstand kerbs, stainless handrails at 1000 and 600 both sides with 300 extensions, contrasting nosings, channel drain",
+ "ifc": "IfcRamp",
+ "keynote": "T.RMP_00",
+ "types": [
+  {
+   "name": "1in12_Ramp",
+   "desc": "External stretcher ramp 1:12, 500 mm rise, 1800 mm wide clear"
+  },
+  {
+   "name": "1in15_Ramp",
+   "desc": "External stretcher ramp 1:15, 500 mm rise, 1800 mm wide clear"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "precast": "FMC_Concrete_Precast_Painted",
+  "safety": "FMC_Plastic_ABS_MedicalGrey",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "parts": [
+  {
+   "n": "Ramp Slab",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     -150
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     6000,
+     500
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     7800,
+     -150
+    ]
+   ],
+   "x": [
+    -1000,
+    1000
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Kerb Left",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     6000,
+     600
+    ],
+    [
+     7800,
+     600
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "x": [
+    -1000,
+    -900
+   ],
+   "mat": "precast",
+   "lod": "mf"
+  },
+  {
+   "n": "Kerb Right",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     6000,
+     600
+    ],
+    [
+     7800,
+     600
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "x": [
+    900,
+    1000
+   ],
+   "mat": "precast",
+   "lod": "mf"
+  },
+  {
+   "n": "Contrast Strip",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     60,
+     8
+    ],
+    [
+     60,
+     5
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Landing Strip",
+   "shape": "right",
+   "pts": [
+    [
+     5940,
+     495
+    ],
+    [
+     5940,
+     498
+    ],
+    [
+     6000,
+     503
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Post",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -950,
+    300
+   ],
+   "r": 24,
+   "z": [
+    125,
+    1125
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     1500,
+     125
+    ]
+   }
+  },
+  {
+   "n": "Post Right",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    950,
+    300
+   ],
+   "r": 24,
+   "z": [
+    125,
+    1125
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     1500,
+     125
+    ]
+   }
+  },
+  {
+   "n": "Landing Post",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -950,
+    6900
+   ],
+   "r": 24,
+   "z": [
+    600,
+    1600
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Handrail Upper",
+   "shape": "right",
+   "pts": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     6000,
+     1525
+    ],
+    [
+     7800,
+     1525
+    ],
+    [
+     7800,
+     1475
+    ],
+    [
+     6000,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "x": [
+    -975,
+    -925
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Handrail Upper Right",
+   "shape": "right",
+   "pts": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     6000,
+     1525
+    ],
+    [
+     7800,
+     1525
+    ],
+    [
+     7800,
+     1475
+    ],
+    [
+     6000,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "x": [
+    925,
+    975
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Handrail Lower",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     6000,
+     1125
+    ],
+    [
+     7800,
+     1125
+    ],
+    [
+     7800,
+     1075
+    ],
+    [
+     6000,
+     1075
+    ]
+   ],
+   "x": [
+    -970,
+    -930
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Handrail Lower Right",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     6000,
+     1125
+    ],
+    [
+     7800,
+     1125
+    ],
+    [
+     7800,
+     1075
+    ],
+    [
+     6000,
+     1075
+    ]
+   ],
+   "x": [
+    930,
+    970
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Rail End Return",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -950,
+    -300
+   ],
+   "r": 25,
+   "z": [
+    700,
+    1025
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Anti Slip Finish",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     6000,
+     502
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "safety",
+   "lod": "f"
+  },
+  {
+   "n": "Channel Drain",
+   "shape": "box",
+   "at": [
+    -1000,
+    -150,
+    -100,
+    1000,
+    -50,
+    0
+   ],
+   "mat": "ss",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "ramp stretcher external generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=ramp+stretcher+external+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Gradient 1:12, going 6000 mm, rise 500 mm": {
+   "value": "1:12",
+   "source_status": "assumed",
+   "source": "Approved Document M table 2"
+  },
+  "Clear width 1800 mm between handrails": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "stretcher/bed passing"
+  },
+  "Landing 1800 mm": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "Approved Document M"
+  },
+  "Handrails 1000 and 600 mm, 300 extensions": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "Approved Document M / BS 8300-1"
+  }
+ },
+ "about": "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, contrast strips, stainless posts following the slope (repeat with rise), upper and lower handrails with 300 extensions, end returns, anti-slip finish, channel drain at the foot. Geometry is the 1:12 type."
+}
