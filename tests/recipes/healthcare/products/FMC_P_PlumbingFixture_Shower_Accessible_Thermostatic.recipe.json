@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingFixture_Shower_Accessible_Thermostatic",
  "template": "Metric Generic Model.rft",
- "about": "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs, grab rail, linear drain with slots and outlet; level-access area as clearance. Reference: query: shower accessible thermostatic plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=shower+accessible+thermostatic+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Shower set modelled as a generic product: bar valve with temperature handle, stop button and long flow lever, unions, hose, riser rail with slider and handset, fold-down seat with slots, bracket and legs beside the valve, grab rail, linear drain with slots and outlet on a safety-vinyl floor former that ties the set together; level-access area as clearance. Reference: query: shower accessible thermostatic plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=shower+accessible+thermostatic+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://product-explorer.specifiedby.com/trade-washrooms/doc-m-shower-pack-with-tmv3-thermostatic-shower-kit?sm=1; photo_title: Doc M Shower Pack with TMV3 Thermostatic Shower Kit; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -364,6 +364,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "TMV3_Wall/URL",
+   "type": "TMV3_Wall",
+   "param": "URL",
+   "value": "https://product-explorer.specifiedby.com/trade-washrooms/doc-m-shower-pack-with-tmv3-thermostatic-shower-kit?sm=1"
+  },
+  {
    "op": "add_subcategory",
    "name": "Chrome",
    "color": [
@@ -425,6 +432,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_Grey",
    "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Safety Floor",
+   "color": [
+    142,
+    149,
+    155
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Safety Floor Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Vinyl_SafetyFloor_Grey",
+   "param": "Safety Floor Material"
   },
   {
    "op": "add_subcategory",
@@ -535,19 +563,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1050.0,
-     -480.0
+     -1000,
+     -1200
     ],
     [
-     950,
-     -480.0
+     450,
+     -1200
     ],
     [
-     950,
+     450,
      0
     ],
     [
-     -1050.0,
+     -1000,
      0
     ]
    ],
@@ -2142,6 +2170,47 @@
   },
   {
    "op": "extrusion",
+   "name": "Floor Former",
+   "points": [
+    [
+     -1000,
+     -1200
+    ],
+    [
+     450,
+     -1200
+    ],
+    [
+     450,
+     0
+    ],
+    [
+     -1000,
+     0
+    ]
+   ],
+   "start": -32,
+   "end": -2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Floor Former",
+   "subcategory": "Safety Floor"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Former",
+   "param": "Safety Floor Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Former",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
    "name": "Slider",
    "points": [
     [
@@ -2411,83 +2480,83 @@
    "name": "Seat",
    "points": [
     [
-     -625.0,
+     -475.0,
      -480.0
     ],
     [
-     -615.43,
+     -465.43,
      -478.1
     ],
     [
-     -607.32,
+     -457.32,
      -472.68
     ],
     [
-     -601.9,
+     -451.9,
      -464.57
     ],
     [
-     -600.0,
+     -450.0,
      -455.0
     ],
     [
-     -600.0,
+     -450.0,
      -75.0
     ],
     [
-     -601.9,
+     -451.9,
      -65.43
     ],
     [
-     -607.32,
+     -457.32,
      -57.32
     ],
     [
-     -615.43,
+     -465.43,
      -51.9
     ],
     [
-     -625.0,
+     -475.0,
      -50.0
     ],
     [
-     -1025.0,
+     -875.0,
      -50.0
     ],
     [
-     -1034.57,
+     -884.57,
      -51.9
     ],
     [
-     -1042.68,
+     -892.68,
      -57.32
     ],
     [
-     -1048.1,
+     -898.1,
      -65.43
     ],
     [
-     -1050.0,
+     -900.0,
      -75.0
     ],
     [
-     -1050.0,
+     -900.0,
      -455.0
     ],
     [
-     -1048.1,
+     -898.1,
      -464.57
     ],
     [
-     -1042.68,
+     -892.68,
      -472.68
     ],
     [
-     -1034.57,
+     -884.57,
      -478.1
     ],
     [
-     -1025.0,
+     -875.0,
      -480.0
     ]
    ],
@@ -2516,19 +2585,19 @@
    "name": "Seat Slot 1",
    "points": [
     [
-     -1020,
+     -870,
      -460
     ],
     [
-     -630,
+     -480,
      -460
     ],
     [
-     -630,
+     -480,
      -450
     ],
     [
-     -1020,
+     -870,
      -450
     ]
    ],
@@ -2557,19 +2626,19 @@
    "name": "Seat Slot 2",
    "points": [
     [
-     -1020,
+     -870,
      -390
     ],
     [
-     -630,
+     -480,
      -390
     ],
     [
-     -630,
+     -480,
      -380
     ],
     [
-     -1020,
+     -870,
      -380
     ]
    ],
@@ -2598,19 +2667,19 @@
    "name": "Seat Slot 3",
    "points": [
     [
-     -1020,
+     -870,
      -320
     ],
     [
-     -630,
+     -480,
      -320
     ],
     [
-     -630,
+     -480,
      -310
     ],
     [
-     -1020,
+     -870,
      -310
     ]
    ],
@@ -2639,19 +2708,19 @@
    "name": "Seat Slot 4",
    "points": [
     [
-     -1020,
+     -870,
      -250
     ],
     [
-     -630,
+     -480,
      -250
     ],
     [
-     -630,
+     -480,
      -240
     ],
     [
-     -1020,
+     -870,
      -240
     ]
    ],
@@ -2680,19 +2749,19 @@
    "name": "Seat Slot 5",
    "points": [
     [
-     -1020,
+     -870,
      -180
     ],
     [
-     -630,
+     -480,
      -180
     ],
     [
-     -630,
+     -480,
      -170
     ],
     [
-     -1020,
+     -870,
      -170
     ]
    ],
@@ -2721,19 +2790,19 @@
    "name": "Seat Slot 6",
    "points": [
     [
-     -1020,
+     -870,
      -110
     ],
     [
-     -630,
+     -480,
      -110
     ],
     [
-     -630,
+     -480,
      -100
     ],
     [
-     -1020,
+     -870,
      -100
     ]
    ],
@@ -2762,83 +2831,83 @@
    "name": "Seat Bracket",
    "points": [
     [
-     -660.0,
+     -510.0,
      380.0
     ],
     [
-     -656.17,
+     -506.17,
      380.76
     ],
     [
-     -652.93,
+     -502.93,
      382.93
     ],
     [
-     -650.76,
+     -500.76,
      386.17
     ],
     [
-     -650.0,
+     -500.0,
      390.0
     ],
     [
-     -650.0,
+     -500.0,
      550.0
     ],
     [
-     -650.76,
+     -500.76,
      553.83
     ],
     [
-     -652.93,
+     -502.93,
      557.07
     ],
     [
-     -656.17,
+     -506.17,
      559.24
     ],
     [
-     -660.0,
+     -510.0,
      560.0
     ],
     [
-     -990.0,
+     -840.0,
      560.0
     ],
     [
-     -993.83,
+     -843.83,
      559.24
     ],
     [
-     -997.07,
+     -847.07,
      557.07
     ],
     [
-     -999.24,
+     -849.24,
      553.83
     ],
     [
-     -1000.0,
+     -850.0,
      550.0
     ],
     [
-     -1000.0,
+     -850.0,
      390.0
     ],
     [
-     -999.24,
+     -849.24,
      386.17
     ],
     [
-     -997.07,
+     -847.07,
      382.93
     ],
     [
-     -993.83,
+     -843.83,
      380.76
     ],
     [
-     -990.0,
+     -840.0,
      380.0
     ]
    ],
@@ -2868,19 +2937,19 @@
    "name": "Seat Leg 1",
    "points": [
     [
-     -1030,
+     -880,
      -470
     ],
     [
-     -1005,
+     -855,
      -470
     ],
     [
-     -1005,
+     -855,
      -445
     ],
     [
-     -1030,
+     -880,
      -445
     ]
    ],
@@ -2909,19 +2978,19 @@
    "name": "Seat Leg 2",
    "points": [
     [
-     -635,
+     -485,
      -470
     ],
     [
-     -610,
+     -460,
      -470
     ],
     [
-     -610,
+     -460,
      -445
     ],
     [
-     -635,
+     -485,
      -445
     ]
    ],
@@ -3319,11 +3388,11 @@
      -160
     ],
     [
-     950,
+     400,
      -160
     ],
     [
-     950,
+     400,
      -60
     ],
     [
@@ -3397,19 +3466,19 @@
    "name": "Drain Slot 2",
    "points": [
     [
-     -854,
+     -856,
      -140
     ],
     [
-     -844,
+     -846,
      -140
     ],
     [
-     -844,
+     -846,
      -80
     ],
     [
-     -854,
+     -856,
      -80
     ]
    ],
@@ -3438,19 +3507,19 @@
    "name": "Drain Slot 3",
    "points": [
     [
-     -778,
+     -782,
      -140
     ],
     [
-     -768,
+     -772,
      -140
     ],
     [
-     -768,
+     -772,
      -80
     ],
     [
-     -778,
+     -782,
      -80
     ]
    ],
@@ -3479,19 +3548,19 @@
    "name": "Drain Slot 4",
    "points": [
     [
-     -702,
+     -708,
      -140
     ],
     [
-     -692,
+     -698,
      -140
     ],
     [
-     -692,
+     -698,
      -80
     ],
     [
-     -702,
+     -708,
      -80
     ]
    ],
@@ -3520,19 +3589,19 @@
    "name": "Drain Slot 5",
    "points": [
     [
-     -626,
+     -634,
      -140
     ],
     [
-     -616,
+     -624,
      -140
     ],
     [
-     -616,
+     -624,
      -80
     ],
     [
-     -626,
+     -634,
      -80
     ]
    ],
@@ -3560,21 +3629,21 @@
    "op": "extrusion",
    "name": "Drain Slot 6",
    "points": [
+    [
+     -560,
+     -140
+    ],
     [
      -550,
      -140
     ],
     [
-     -540,
-     -140
-    ],
-    [
-     -540,
-     -80
-    ],
-    [
      -550,
      -80
+    ],
+    [
+     -560,
+     -80
     ]
    ],
    "start": -1,
@@ -3602,19 +3671,19 @@
    "name": "Drain Slot 7",
    "points": [
     [
-     -474,
+     -486,
      -140
     ],
     [
-     -464,
+     -476,
      -140
     ],
     [
-     -464,
+     -476,
      -80
     ],
     [
-     -474,
+     -486,
      -80
     ]
    ],
@@ -3643,19 +3712,19 @@
    "name": "Drain Slot 8",
    "points": [
     [
-     -398,
+     -412,
      -140
     ],
     [
-     -388,
+     -402,
      -140
     ],
     [
-     -388,
+     -402,
      -80
     ],
     [
-     -398,
+     -412,
      -80
     ]
    ],
@@ -3684,19 +3753,19 @@
    "name": "Drain Slot 9",
    "points": [
     [
-     -322,
+     -338,
      -140
     ],
     [
-     -312,
+     -328,
      -140
     ],
     [
-     -312,
+     -328,
      -80
     ],
     [
-     -322,
+     -338,
      -80
     ]
    ],
@@ -3725,19 +3794,19 @@
    "name": "Drain Slot 10",
    "points": [
     [
-     -246,
+     -264,
      -140
     ],
     [
-     -236,
+     -254,
      -140
     ],
     [
-     -236,
+     -254,
      -80
     ],
     [
-     -246,
+     -264,
      -80
     ]
    ],
@@ -3766,19 +3835,19 @@
    "name": "Drain Slot 11",
    "points": [
     [
-     -170,
+     -190,
      -140
     ],
     [
-     -160,
+     -180,
      -140
     ],
     [
-     -160,
+     -180,
      -80
     ],
     [
-     -170,
+     -190,
      -80
     ]
    ],
@@ -3807,19 +3876,19 @@
    "name": "Drain Slot 12",
    "points": [
     [
-     -94,
+     -116,
      -140
     ],
     [
-     -84,
+     -106,
      -140
     ],
     [
-     -84,
+     -106,
      -80
     ],
     [
-     -94,
+     -116,
      -80
     ]
    ],
@@ -3848,19 +3917,19 @@
    "name": "Drain Slot 13",
    "points": [
     [
-     -18,
+     -42,
      -140
     ],
     [
-     -8,
+     -32,
      -140
     ],
     [
-     -8,
+     -32,
      -80
     ],
     [
-     -18,
+     -42,
      -80
     ]
    ],
@@ -3889,19 +3958,19 @@
    "name": "Drain Slot 14",
    "points": [
     [
-     58,
+     32,
      -140
     ],
     [
-     68,
+     42,
      -140
     ],
     [
-     68,
+     42,
      -80
     ],
     [
-     58,
+     32,
      -80
     ]
    ],
@@ -3930,19 +3999,19 @@
    "name": "Drain Slot 15",
    "points": [
     [
-     134,
+     106,
      -140
     ],
     [
-     144,
+     116,
      -140
     ],
     [
-     144,
+     116,
      -80
     ],
     [
-     134,
+     106,
      -80
     ]
    ],
@@ -3971,19 +4040,19 @@
    "name": "Drain Slot 16",
    "points": [
     [
-     210,
+     180,
      -140
     ],
     [
-     220,
+     190,
      -140
     ],
     [
-     220,
+     190,
      -80
     ],
     [
-     210,
+     180,
      -80
     ]
    ],
@@ -4012,19 +4081,19 @@
    "name": "Drain Slot 17",
    "points": [
     [
-     286,
+     254,
      -140
     ],
     [
-     296,
+     264,
      -140
     ],
     [
-     296,
+     264,
      -80
     ],
     [
-     286,
+     254,
      -80
     ]
    ],
@@ -4053,19 +4122,19 @@
    "name": "Drain Slot 18",
    "points": [
     [
-     362,
+     328,
      -140
     ],
     [
-     372,
+     338,
      -140
     ],
     [
-     372,
+     338,
      -80
     ],
     [
-     362,
+     328,
      -80
     ]
    ],
@@ -4085,293 +4154,6 @@
   {
    "op": "set_visibility",
    "name": "Drain Slot 18",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 19",
-   "points": [
-    [
-     438,
-     -140
-    ],
-    [
-     448,
-     -140
-    ],
-    [
-     448,
-     -80
-    ],
-    [
-     438,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 19",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 19",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 19",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 20",
-   "points": [
-    [
-     514,
-     -140
-    ],
-    [
-     524,
-     -140
-    ],
-    [
-     524,
-     -80
-    ],
-    [
-     514,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 20",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 20",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 20",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 21",
-   "points": [
-    [
-     590,
-     -140
-    ],
-    [
-     600,
-     -140
-    ],
-    [
-     600,
-     -80
-    ],
-    [
-     590,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 21",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 21",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 21",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 22",
-   "points": [
-    [
-     666,
-     -140
-    ],
-    [
-     676,
-     -140
-    ],
-    [
-     676,
-     -80
-    ],
-    [
-     666,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 22",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 22",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 22",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 23",
-   "points": [
-    [
-     742,
-     -140
-    ],
-    [
-     752,
-     -140
-    ],
-    [
-     752,
-     -80
-    ],
-    [
-     742,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 23",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 23",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 23",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 24",
-   "points": [
-    [
-     818,
-     -140
-    ],
-    [
-     828,
-     -140
-    ],
-    [
-     828,
-     -80
-    ],
-    [
-     818,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 24",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 24",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 24",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Slot 25",
-   "points": [
-    [
-     894,
-     -140
-    ],
-    [
-     904,
-     -140
-    ],
-    [
-     904,
-     -80
-    ],
-    [
-     894,
-     -80
-    ]
-   ],
-   "start": -1,
-   "end": 0.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Slot 25",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Slot 25",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Slot 25",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -4381,99 +4163,99 @@
    "name": "Drain Outlet",
    "points": [
     [
-     725.0,
+     275.0,
      -110.0
     ],
     [
-     724.15,
+     274.15,
      -103.53
     ],
     [
-     721.65,
+     271.65,
      -97.5
     ],
     [
-     717.68,
+     267.68,
      -92.32
     ],
     [
-     712.5,
+     262.5,
      -88.35
     ],
     [
-     706.47,
+     256.47,
      -85.85
     ],
     [
-     700.0,
+     250.0,
      -85.0
     ],
     [
-     693.53,
+     243.53,
      -85.85
     ],
     [
-     687.5,
+     237.5,
      -88.35
     ],
     [
-     682.32,
+     232.32,
      -92.32
     ],
     [
-     678.35,
+     228.35,
      -97.5
     ],
     [
-     675.85,
+     225.85,
      -103.53
     ],
     [
-     675.0,
+     225.0,
      -110.0
     ],
     [
-     675.85,
+     225.85,
      -116.47
     ],
     [
-     678.35,
+     228.35,
      -122.5
     ],
     [
-     682.32,
+     232.32,
      -127.68
     ],
     [
-     687.5,
+     237.5,
      -131.65
     ],
     [
-     693.53,
+     243.53,
      -134.15
     ],
     [
-     700.0,
+     250.0,
      -135.0
     ],
     [
-     706.47,
+     256.47,
      -134.15
     ],
     [
-     712.5,
+     262.5,
      -131.65
     ],
     [
-     717.68,
+     267.68,
      -127.68
     ],
     [
-     721.65,
+     271.65,
      -122.5
     ],
     [
-     724.15,
+     274.15,
      -116.47
     ]
    ],
