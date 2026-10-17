@@ -1,0 +1,565 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_Sprinkler_Pendent_Standard",
+ "template": "Metric Generic Model.rft",
+ "about": "Sprinkler sized from a Tyco spec sheet: body, wrench boss, frame arms, glass bulb, 89 mm deflector, chrome escutcheon at the ceiling (z = 0). Reference: query: sprinkler pendent standard sprinklers hospital; images: https://www.google.com/search?tbm=isch&q=sprinkler+pendent+standard+sprinklers+hospital; basis: generic product; brand, model and supplier open for review; photo: https://prosystemitalia.com/gb/903-sprinkler-pendent-standard-response-rti-80; datasheet: https://cdn.shopify.com/s/files/1/2233/5109/files/Ty4133_Spec_Sheet.pdf",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Sprinklers"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "K80_68C"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Cost_Unit",
+   "type": "K80_68C",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Geometry_Stage",
+   "type": "K80_68C",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/IfcExportAs",
+   "type": "K80_68C",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/Description",
+   "type": "K80_68C",
+   "param": "Description",
+   "value": "Pendent sprinkler K80 (5.6K), 3 mm 68 C bulb, 1/2 in thread, natural brass, recessed chrome escutcheon"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/Keynote",
+   "type": "K80_68C",
+   "param": "Keynote",
+   "value": "V.SPR_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Keynote_Code",
+   "type": "K80_68C",
+   "param": "FMC_Keynote_Code",
+   "value": "V.SPR_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/URL",
+   "type": "K80_68C",
+   "param": "URL",
+   "value": "https://prosystemitalia.com/gb/903-sprinkler-pendent-standard-response-rti-80"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Bulb",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Bulb Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Bulb Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -44.5,
+     -44.5
+    ],
+    [
+     44.5,
+     -44.5
+    ],
+    [
+     44.5,
+     44.5
+    ],
+    [
+     -44.5,
+     44.5
+    ]
+   ],
+   "start": -60,
+   "end": 11
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Escutcheon",
+   "profile": [
+    [
+     11,
+     -6
+    ],
+    [
+     36,
+     -2
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     11,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Escutcheon",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Escutcheon",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Body",
+   "profile": [
+    [
+     0,
+     -14
+    ],
+    [
+     11,
+     -14
+    ],
+    [
+     11,
+     11
+    ],
+    [
+     0,
+     11
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Body",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wrench Boss",
+   "points": [
+    [
+     -13,
+     -8
+    ],
+    [
+     13,
+     -8
+    ],
+    [
+     13,
+     8
+    ],
+    [
+     -13,
+     8
+    ]
+   ],
+   "start": -20,
+   "end": -14
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wrench Boss",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wrench Boss",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wrench Boss",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Arm 1",
+   "points": [
+    [
+     -11,
+     -2.5
+    ],
+    [
+     -7,
+     -2.5
+    ],
+    [
+     -7,
+     2.5
+    ],
+    [
+     -11,
+     2.5
+    ]
+   ],
+   "start": -52,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Arm 1",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Arm 1",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Arm 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Arm 2",
+   "points": [
+    [
+     7,
+     -2.5
+    ],
+    [
+     11,
+     -2.5
+    ],
+    [
+     11,
+     2.5
+    ],
+    [
+     7,
+     2.5
+    ]
+   ],
+   "start": -52,
+   "end": -20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Arm 2",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Arm 2",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Arm 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head",
+   "points": [
+    [
+     -11,
+     -2.5
+    ],
+    [
+     11,
+     -2.5
+    ],
+    [
+     11,
+     2.5
+    ],
+    [
+     -11,
+     2.5
+    ]
+   ],
+   "start": -56,
+   "end": -52
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bulb",
+   "profile": [
+    [
+     0,
+     -52
+    ],
+    [
+     1.5,
+     -50
+    ],
+    [
+     1.5,
+     -24
+    ],
+    [
+     0,
+     -22
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Bulb"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bulb",
+   "param": "Bulb Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bulb",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Deflector",
+   "profile": [
+    [
+     0,
+     -60
+    ],
+    [
+     44.5,
+     -59
+    ],
+    [
+     44.5,
+     -57
+    ],
+    [
+     0,
+     -57
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Deflector",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Body",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Deflector 89 mm": {
+   "value": 89,
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "K-factor 5.6 (K80)": {
+   "value": "5.6K",
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "Bulb 3 mm": {
+   "value": 3,
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "1/2 in NPT thread": {
+   "value": "1/2 NPT",
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "Length 60 mm": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "5.6K pendent figure callout 55.6/60.3 mm"
+  }
+ }
+}

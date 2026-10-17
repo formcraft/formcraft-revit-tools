@@ -95,6 +95,7 @@ file not on Z:, no .rte in 06_Templates; 21 pass). Background only: the user kep
 | QE4 result | Category switch Mechanical → Medical Equipment keeps 2 connectors; in Project1 (rolled back) a power circuit connects, a piping system is refused ("not Mechanical Equipment, Plumbing Equipment or Plumbing Fixture"). Rule: MedEq carries power/data, pipes and gases via a nested service point | Recorded (kit change request) |
 | Wave 1 | 11 healthcare recipes built through `fmc_recipe build` and Gate A **Pass** (O2, vacuum, basin, socket, TPN board, detector, sprinkler, grab rail 4 types with dimension sides kept, sanitiser, exam couch, UCV canopy) | Done |
 | New F-058 #163 | Gate A Fail for the right reason only (no keynote: kit gap QH2); name, size, type names, flex Pass; the rest Not checked, said so | Open (pass record; closes when the keynote exists) |
+| New F-059 #165 | Extrusion `view` ignored: front sketches drawn in plan, outlets lie flat; revolutions always vertical | Fixed – retest (this push: `sketch`, `axis`) |
 
 ### Run 9 · 2026-10-15 · pilot PC · Revit 2025.4 · field review of the Ogala Residence LOD 400 build
 

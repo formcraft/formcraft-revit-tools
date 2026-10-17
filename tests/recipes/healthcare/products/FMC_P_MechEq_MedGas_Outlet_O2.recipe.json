@@ -1,0 +1,995 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_MechEq_MedGas_Outlet_O2",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Terminal unit modelled as a generic product: square fascia, gas identification ring, chrome collar and release ring, label strip, screws, steel back box. Reference: query: medical gas outlet o2 mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+outlet+o2+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://us.gcegroup.com/products/mediunit-bsi-type; datasheet: https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf",
+ "ops": [
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "BS5682_O2"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/FMC_Cost_Unit",
+   "type": "BS5682_O2",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/FMC_Geometry_Stage",
+   "type": "BS5682_O2",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/IfcExportAs",
+   "type": "BS5682_O2",
+   "param": "IfcExportAs",
+   "value": "IfcFlowTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/Description",
+   "type": "BS5682_O2",
+   "param": "Description",
+   "value": "Oxygen terminal unit, BS 5682 probe, wall mounted, flush back box"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/Keynote",
+   "type": "BS5682_O2",
+   "param": "Keynote",
+   "value": "P.MGO_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/FMC_Keynote_Code",
+   "type": "BS5682_O2",
+   "param": "FMC_Keynote_Code",
+   "value": "P.MGO_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/URL",
+   "type": "BS5682_O2",
+   "param": "URL",
+   "value": "https://us.gcegroup.com/products/mediunit-bsi-type"
+  },
+  {
+   "op": "set_type_value",
+   "name": "BS5682_O2/Default Elevation",
+   "type": "BS5682_O2",
+   "param": "Default Elevation",
+   "value": 1400
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "O2White",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "O2White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "O2White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -50.0,
+     -28
+    ],
+    [
+     50.0,
+     -28
+    ],
+    [
+     50.0,
+     55
+    ],
+    [
+     -50.0,
+     55
+    ]
+   ],
+   "start": 0.0,
+   "end": 100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Box",
+   "points": [
+    [
+     -45,
+     0
+    ],
+    [
+     45,
+     0
+    ],
+    [
+     45,
+     55
+    ],
+    [
+     -45,
+     55
+    ]
+   ],
+   "start": 5,
+   "end": 95
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Box",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Box",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fascia",
+   "points": [
+    [
+     42.0,
+     0.0
+    ],
+    [
+     45.06,
+     0.61
+    ],
+    [
+     47.66,
+     2.34
+    ],
+    [
+     49.39,
+     4.94
+    ],
+    [
+     50.0,
+     8.0
+    ],
+    [
+     50.0,
+     92.0
+    ],
+    [
+     49.39,
+     95.06
+    ],
+    [
+     47.66,
+     97.66
+    ],
+    [
+     45.06,
+     99.39
+    ],
+    [
+     42.0,
+     100.0
+    ],
+    [
+     -42.0,
+     100.0
+    ],
+    [
+     -45.06,
+     99.39
+    ],
+    [
+     -47.66,
+     97.66
+    ],
+    [
+     -49.39,
+     95.06
+    ],
+    [
+     -50.0,
+     92.0
+    ],
+    [
+     -50.0,
+     8.0
+    ],
+    [
+     -49.39,
+     4.94
+    ],
+    [
+     -47.66,
+     2.34
+    ],
+    [
+     -45.06,
+     0.61
+    ],
+    [
+     -42.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fascia Face",
+   "points": [
+    [
+     40.0,
+     3.0
+    ],
+    [
+     42.68,
+     3.53
+    ],
+    [
+     44.95,
+     5.05
+    ],
+    [
+     46.47,
+     7.32
+    ],
+    [
+     47.0,
+     10.0
+    ],
+    [
+     47.0,
+     90.0
+    ],
+    [
+     46.47,
+     92.68
+    ],
+    [
+     44.95,
+     94.95
+    ],
+    [
+     42.68,
+     96.47
+    ],
+    [
+     40.0,
+     97.0
+    ],
+    [
+     -40.0,
+     97.0
+    ],
+    [
+     -42.68,
+     96.47
+    ],
+    [
+     -44.95,
+     94.95
+    ],
+    [
+     -46.47,
+     92.68
+    ],
+    [
+     -47.0,
+     90.0
+    ],
+    [
+     -47.0,
+     10.0
+    ],
+    [
+     -46.47,
+     7.32
+    ],
+    [
+     -44.95,
+     5.05
+    ],
+    [
+     -42.68,
+     3.53
+    ],
+    [
+     -40.0,
+     3.0
+    ]
+   ],
+   "start": 10,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fascia Face",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fascia Face",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fascia Face",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Gas Ring",
+   "profile": [
+    [
+     19,
+     12
+    ],
+    [
+     27,
+     12
+    ],
+    [
+     27,
+     16
+    ],
+    [
+     19,
+     16
+    ]
+   ],
+   "axis_at": [
+    0,
+    55
+   ],
+   "axis": "y",
+   "subcategory": "O2White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gas Ring",
+   "param": "O2White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gas Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Socket Collar",
+   "profile": [
+    [
+     0,
+     10
+    ],
+    [
+     19,
+     10
+    ],
+    [
+     19,
+     24
+    ],
+    [
+     15,
+     26
+    ],
+    [
+     6,
+     26
+    ],
+    [
+     6,
+     22
+    ],
+    [
+     0,
+     22
+    ]
+   ],
+   "axis_at": [
+    0,
+    55
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Release Ring",
+   "profile": [
+    [
+     14,
+     24
+    ],
+    [
+     17,
+     24
+    ],
+    [
+     17,
+     28
+    ],
+    [
+     14,
+     28
+    ]
+   ],
+   "axis_at": [
+    0,
+    55
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Release Ring",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Release Ring",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label Strip",
+   "points": [
+    [
+     28.0,
+     14.0
+    ],
+    [
+     28.77,
+     14.15
+    ],
+    [
+     29.41,
+     14.59
+    ],
+    [
+     29.85,
+     15.23
+    ],
+    [
+     30.0,
+     16.0
+    ],
+    [
+     30.0,
+     24.0
+    ],
+    [
+     29.85,
+     24.77
+    ],
+    [
+     29.41,
+     25.41
+    ],
+    [
+     28.77,
+     25.85
+    ],
+    [
+     28.0,
+     26.0
+    ],
+    [
+     -28.0,
+     26.0
+    ],
+    [
+     -28.77,
+     25.85
+    ],
+    [
+     -29.41,
+     25.41
+    ],
+    [
+     -29.85,
+     24.77
+    ],
+    [
+     -30.0,
+     24.0
+    ],
+    [
+     -30.0,
+     16.0
+    ],
+    [
+     -29.85,
+     15.23
+    ],
+    [
+     -29.41,
+     14.59
+    ],
+    [
+     -28.77,
+     14.15
+    ],
+    [
+     -28.0,
+     14.0
+    ]
+   ],
+   "start": 12,
+   "end": 12.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label Strip",
+   "subcategory": "O2White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Strip",
+   "param": "O2White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw 1",
+   "points": [
+    [
+     -37.5,
+     90.0
+    ],
+    [
+     -37.59,
+     90.65
+    ],
+    [
+     -37.83,
+     91.25
+    ],
+    [
+     -38.23,
+     91.77
+    ],
+    [
+     -38.75,
+     92.17
+    ],
+    [
+     -39.35,
+     92.41
+    ],
+    [
+     -40.0,
+     92.5
+    ],
+    [
+     -40.65,
+     92.41
+    ],
+    [
+     -41.25,
+     92.17
+    ],
+    [
+     -41.77,
+     91.77
+    ],
+    [
+     -42.17,
+     91.25
+    ],
+    [
+     -42.41,
+     90.65
+    ],
+    [
+     -42.5,
+     90.0
+    ],
+    [
+     -42.41,
+     89.35
+    ],
+    [
+     -42.17,
+     88.75
+    ],
+    [
+     -41.77,
+     88.23
+    ],
+    [
+     -41.25,
+     87.83
+    ],
+    [
+     -40.65,
+     87.59
+    ],
+    [
+     -40.0,
+     87.5
+    ],
+    [
+     -39.35,
+     87.59
+    ],
+    [
+     -38.75,
+     87.83
+    ],
+    [
+     -38.23,
+     88.23
+    ],
+    [
+     -37.83,
+     88.75
+    ],
+    [
+     -37.59,
+     89.35
+    ]
+   ],
+   "start": 12,
+   "end": 12.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw 2",
+   "points": [
+    [
+     42.5,
+     90.0
+    ],
+    [
+     42.41,
+     90.65
+    ],
+    [
+     42.17,
+     91.25
+    ],
+    [
+     41.77,
+     91.77
+    ],
+    [
+     41.25,
+     92.17
+    ],
+    [
+     40.65,
+     92.41
+    ],
+    [
+     40.0,
+     92.5
+    ],
+    [
+     39.35,
+     92.41
+    ],
+    [
+     38.75,
+     92.17
+    ],
+    [
+     38.23,
+     91.77
+    ],
+    [
+     37.83,
+     91.25
+    ],
+    [
+     37.59,
+     90.65
+    ],
+    [
+     37.5,
+     90.0
+    ],
+    [
+     37.59,
+     89.35
+    ],
+    [
+     37.83,
+     88.75
+    ],
+    [
+     38.23,
+     88.23
+    ],
+    [
+     38.75,
+     87.83
+    ],
+    [
+     39.35,
+     87.59
+    ],
+    [
+     40.0,
+     87.5
+    ],
+    [
+     40.65,
+     87.59
+    ],
+    [
+     41.25,
+     87.83
+    ],
+    [
+     41.77,
+     88.23
+    ],
+    [
+     42.17,
+     88.75
+    ],
+    [
+     42.41,
+     89.35
+    ]
+   ],
+   "start": 12,
+   "end": 12.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "O2",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "Back Box",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Probe to BS 5682": {
+   "value": "BS 5682",
+   "source_status": "verified",
+   "source": "BS 5682:2015 probes and terminal units"
+  },
+  "Fascia 100 x 100 mm": {
+   "value": "100x100",
+   "source_status": "assumed",
+   "source": "square wall plate (Dr\u00e4ger lists square plates; size not published)"
+  },
+  "Gas identification colour": {
+   "value": "o2white",
+   "source_status": "verified",
+   "source": "HTM 02-01 / BS 1710 gas identification"
+  },
+  "Mounting height 1400 mm": {
+   "value": 1400,
+   "source_status": "assumed",
+   "source": "bedhead practice"
+  }
+ }
+}

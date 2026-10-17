@@ -1,0 +1,226 @@
+{
+ "family": "FMC_FP_Sprinkler_Pendent_Standard",
+ "category": "Sprinklers",
+ "desc": "Pendent sprinkler K80 (5.6K), 3 mm 68 C bulb, 1/2 in thread, natural brass, recessed chrome escutcheon",
+ "ifc": "IfcFireSuppressionTerminal",
+ "keynote": "V.SPR_04",
+ "types": [
+  {
+   "name": "K80_68C"
+  }
+ ],
+ "materials": {
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "bulb": "FMC_Plastic_LED_Red"
+ },
+ "reference": {
+  "query": "sprinkler pendent standard sprinklers hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=sprinkler+pendent+standard+sprinklers+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://prosystemitalia.com/gb/903-sprinkler-pendent-standard-response-rti-80",
+  "datasheet": "https://cdn.shopify.com/s/files/1/2233/5109/files/Ty4133_Spec_Sheet.pdf"
+ },
+ "parts": [
+  {
+   "n": "Escutcheon",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     11,
+     -6
+    ],
+    [
+     36,
+     -2
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     11,
+     0
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Body",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -14
+    ],
+    [
+     11,
+     -14
+    ],
+    [
+     11,
+     11
+    ],
+    [
+     0,
+     11
+    ]
+   ],
+   "mat": "brass"
+  },
+  {
+   "n": "Wrench Boss",
+   "shape": "box",
+   "at": [
+    -13,
+    -8,
+    -20,
+    13,
+    8,
+    -14
+   ],
+   "mat": "brass",
+   "lod": "f"
+  },
+  {
+   "n": "Frame Arm",
+   "shape": "box",
+   "at": [
+    -11,
+    -2.5,
+    -52,
+    -7,
+    2.5,
+    -20
+   ],
+   "mat": "brass",
+   "repeat": {
+    "n": 2,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Frame Head",
+   "shape": "box",
+   "at": [
+    -11,
+    -2.5,
+    -56,
+    11,
+    2.5,
+    -52
+   ],
+   "mat": "brass"
+  },
+  {
+   "n": "Bulb",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -52
+    ],
+    [
+     1.5,
+     -50
+    ],
+    [
+     1.5,
+     -24
+    ],
+    [
+     0,
+     -22
+    ]
+   ],
+   "mat": "bulb",
+   "lod": "f"
+  },
+  {
+   "n": "Deflector",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -60
+    ],
+    [
+     44.5,
+     -59
+    ],
+    [
+     44.5,
+     -57
+    ],
+    [
+     0,
+     -57
+    ]
+   ],
+   "mat": "brass"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "part": "Body",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Deflector 89 mm": {
+   "value": 89,
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "K-factor 5.6 (K80)": {
+   "value": "5.6K",
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "Bulb 3 mm": {
+   "value": 3,
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "1/2 in NPT thread": {
+   "value": "1/2 NPT",
+   "source_status": "verified",
+   "source": "Tyco TY3231 spec sheet"
+  },
+  "Length 60 mm": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "5.6K pendent figure callout 55.6/60.3 mm"
+  }
+ },
+ "about": "Sprinkler sized from a Tyco spec sheet: body, wrench boss, frame arms, glass bulb, 89 mm deflector, chrome escutcheon at the ceiling (z = 0)."
+}

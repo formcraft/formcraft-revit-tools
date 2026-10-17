@@ -1,0 +1,199 @@
+{
+ "family": "FMC_E_EQ_DB_Final_TPN",
+ "category": "Electrical Equipment",
+ "desc": "TPN distribution board, 12 ways per phase, 415 V, surface, white steel, glazed door, 100 A main switch",
+ "ifc": "IfcElectricDistributionBoard",
+ "keynote": "E.DBD_06",
+ "types": [
+  {
+   "name": "12Way_TPN"
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Number of Poles": 3,
+  "Default Elevation": 1400
+ },
+ "materials": {
+  "steel": "FMC_Metal_Steel_EpoxyCoated_White",
+  "window": "FMC_Plastic_Polycarbonate_Clear",
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "red": "FMC_Plastic_LED_Red",
+  "black": "FMC_Plastic_ABS_Black"
+ },
+ "reference": {
+  "query": "distribution board final TPN electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=distribution+board+final+TPN+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://hager.com/uk/products/h/jk112bg-125a-12-way-tpn-board-glazed",
+  "datasheet": "https://sparksdirect.co.uk/schneider-12-way-250a-tpn-distribution-board-for-surface-mounting-ip3x-ik05-schneider-sea9bpn12-acti-9-isobar-p-b-no-incomer"
+ },
+ "parts": [
+  {
+   "n": "Enclosure",
+   "shape": "box",
+   "at": [
+    -225,
+    -140,
+    0,
+    225,
+    0,
+    650
+   ],
+   "r": 6,
+   "mat": "steel"
+  },
+  {
+   "n": "Door",
+   "shape": "fbox",
+   "at": [
+    -215,
+    -150,
+    15,
+    215,
+    -140,
+    635
+   ],
+   "r": 6,
+   "mat": "steel"
+  },
+  {
+   "n": "Door Window",
+   "shape": "fbox",
+   "at": [
+    -170,
+    -151,
+    300,
+    170,
+    -149,
+    560
+   ],
+   "r": 4,
+   "mat": "window",
+   "lod": "f"
+  },
+  {
+   "n": "Breaker Row",
+   "shape": "fbox",
+   "at": [
+    -160,
+    -152,
+    330,
+    160,
+    -150,
+    380
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     70
+    ]
+   }
+  },
+  {
+   "n": "Main Switch",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -153,
+    200,
+    60,
+    -150,
+    280
+   ],
+   "r": 4,
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Main Switch Handle",
+   "shape": "fbox",
+   "at": [
+    -15,
+    -165,
+    225,
+    15,
+    -153,
+    255
+   ],
+   "r": 3,
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Handle",
+   "shape": "fbox",
+   "at": [
+    185,
+    -165,
+    290,
+    200,
+    -150,
+    360
+   ],
+   "r": 4,
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Gland Plate",
+   "shape": "box",
+   "at": [
+    -180,
+    -120,
+    650,
+    180,
+    -20,
+    660
+   ],
+   "mat": "grey"
+  }
+ ],
+ "clearances": [
+  {
+   "n": "Working Space",
+   "shape": "box",
+   "at": [
+    -225,
+    -1150,
+    -1400,
+    225,
+    -150,
+    600
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Enclosure",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "12 ways TPN, 100 A main switch": {
+   "value": "12way 100A",
+   "source_status": "verified",
+   "source": "Sparks Direct listing SEA9BPN12"
+  },
+  "Enclosure 450 x 650 x 150 mm": {
+   "value": "450x650x150",
+   "source_status": "assumed",
+   "source": "size not published on the listing"
+  },
+  "Working space 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "BS 7671 / practice"
+  }
+ },
+ "about": "Board modelled as a generic product: steel enclosure, door with window, three rows of breakers, red main switch handle, door handle, gland plate."
+}
