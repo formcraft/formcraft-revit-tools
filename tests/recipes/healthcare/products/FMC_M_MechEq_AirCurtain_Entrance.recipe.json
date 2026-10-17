@@ -1,0 +1,2359 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_AirCurtain_Entrance",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: curved white casing with grey end caps, front intake grille with slats, discharge slot with vanes on the underside, control panel with LED, wall brackets. Reference: query: air curtain entrance mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=air+curtain+entrance+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "1500_Ambient"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Cost_Unit",
+   "type": "1500_Ambient",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Geometry_Stage",
+   "type": "1500_Ambient",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/IfcExportAs",
+   "type": "1500_Ambient",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Description",
+   "type": "1500_Ambient",
+   "param": "Description",
+   "value": "Entrance air curtain 1500 to 2000 mm, over-door wall mounted, ambient, white casing, front intake grille, downward discharge slot with vanes"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Keynote",
+   "type": "1500_Ambient",
+   "param": "Keynote",
+   "value": "H.FAN_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Keynote_Code",
+   "type": "1500_Ambient",
+   "param": "FMC_Keynote_Code",
+   "value": "H.FAN_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Code_Description",
+   "type": "1500_Ambient",
+   "param": "FMC_Code_Description",
+   "value": "AirCurtain Entrance: Air curtain"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Code_Group",
+   "type": "1500_Ambient",
+   "param": "FMC_Code_Group",
+   "value": "H.FAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/FMC_Role_Code",
+   "type": "1500_Ambient",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Voltage",
+   "type": "1500_Ambient",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Apparent Load",
+   "type": "1500_Ambient",
+   "param": "Apparent Load",
+   "value": 250
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Ambient/Default Elevation",
+   "type": "1500_Ambient",
+   "param": "Default Elevation",
+   "value": 2200
+  },
+  {
+   "op": "add_type",
+   "name": "2000_Ambient"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Cost_Unit",
+   "type": "2000_Ambient",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Geometry_Stage",
+   "type": "2000_Ambient",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/IfcExportAs",
+   "type": "2000_Ambient",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Description",
+   "type": "2000_Ambient",
+   "param": "Description",
+   "value": "Entrance air curtain 1500 to 2000 mm, over-door wall mounted, ambient, white casing, front intake grille, downward discharge slot with vanes"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Keynote",
+   "type": "2000_Ambient",
+   "param": "Keynote",
+   "value": "H.FAN_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Keynote_Code",
+   "type": "2000_Ambient",
+   "param": "FMC_Keynote_Code",
+   "value": "H.FAN_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Code_Description",
+   "type": "2000_Ambient",
+   "param": "FMC_Code_Description",
+   "value": "AirCurtain Entrance: Air curtain"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Code_Group",
+   "type": "2000_Ambient",
+   "param": "FMC_Code_Group",
+   "value": "H.FAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/FMC_Role_Code",
+   "type": "2000_Ambient",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Voltage",
+   "type": "2000_Ambient",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Apparent Load",
+   "type": "2000_Ambient",
+   "param": "Apparent Load",
+   "value": 350
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000_Ambient/Default Elevation",
+   "type": "2000_Ambient",
+   "param": "Default Elevation",
+   "value": 2200
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mgrey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mgrey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -750,
+     -258
+    ],
+    [
+     750,
+     -258
+    ],
+    [
+     750,
+     0
+    ],
+    [
+     -750,
+     0
+    ]
+   ],
+   "start": -14,
+   "end": 220
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Casing",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "start": -740,
+   "end": 740,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Casing",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Casing",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Casing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap Left",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "start": -750,
+   "end": -740,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap Left",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap Left",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap Right",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     220
+    ],
+    [
+     -200,
+     220
+    ],
+    [
+     -240,
+     195
+    ],
+    [
+     -250,
+     130
+    ],
+    [
+     -238,
+     45
+    ],
+    [
+     -205,
+     0
+    ]
+   ],
+   "start": 740,
+   "end": 750,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap Right",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap Right",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Slot",
+   "points": [
+    [
+     -700,
+     -190
+    ],
+    [
+     700,
+     -190
+    ],
+    [
+     700,
+     -110
+    ],
+    [
+     -700,
+     -110
+    ]
+   ],
+   "start": -4,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Slot",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Slot",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Slot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 1",
+   "points": [
+    [
+     -690.0,
+     -186
+    ],
+    [
+     -686.0,
+     -186
+    ],
+    [
+     -686.0,
+     -114
+    ],
+    [
+     -690.0,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 2",
+   "points": [
+    [
+     -598.3,
+     -186
+    ],
+    [
+     -594.3,
+     -186
+    ],
+    [
+     -594.3,
+     -114
+    ],
+    [
+     -598.3,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 3",
+   "points": [
+    [
+     -506.6,
+     -186
+    ],
+    [
+     -502.6,
+     -186
+    ],
+    [
+     -502.6,
+     -114
+    ],
+    [
+     -506.6,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 4",
+   "points": [
+    [
+     -414.9,
+     -186
+    ],
+    [
+     -410.9,
+     -186
+    ],
+    [
+     -410.9,
+     -114
+    ],
+    [
+     -414.9,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 5",
+   "points": [
+    [
+     -323.2,
+     -186
+    ],
+    [
+     -319.2,
+     -186
+    ],
+    [
+     -319.2,
+     -114
+    ],
+    [
+     -323.2,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 6",
+   "points": [
+    [
+     -231.5,
+     -186
+    ],
+    [
+     -227.5,
+     -186
+    ],
+    [
+     -227.5,
+     -114
+    ],
+    [
+     -231.5,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 7",
+   "points": [
+    [
+     -139.79999999999995,
+     -186
+    ],
+    [
+     -135.79999999999995,
+     -186
+    ],
+    [
+     -135.79999999999995,
+     -114
+    ],
+    [
+     -139.79999999999995,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 8",
+   "points": [
+    [
+     -48.10000000000002,
+     -186
+    ],
+    [
+     -44.10000000000002,
+     -186
+    ],
+    [
+     -44.10000000000002,
+     -114
+    ],
+    [
+     -48.10000000000002,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 9",
+   "points": [
+    [
+     43.60000000000002,
+     -186
+    ],
+    [
+     47.60000000000002,
+     -186
+    ],
+    [
+     47.60000000000002,
+     -114
+    ],
+    [
+     43.60000000000002,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 10",
+   "points": [
+    [
+     135.30000000000007,
+     -186
+    ],
+    [
+     139.30000000000007,
+     -186
+    ],
+    [
+     139.30000000000007,
+     -114
+    ],
+    [
+     135.30000000000007,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 11",
+   "points": [
+    [
+     227.0,
+     -186
+    ],
+    [
+     231.0,
+     -186
+    ],
+    [
+     231.0,
+     -114
+    ],
+    [
+     227.0,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 12",
+   "points": [
+    [
+     318.70000000000005,
+     -186
+    ],
+    [
+     322.70000000000005,
+     -186
+    ],
+    [
+     322.70000000000005,
+     -114
+    ],
+    [
+     318.70000000000005,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 13",
+   "points": [
+    [
+     410.4000000000001,
+     -186
+    ],
+    [
+     414.4000000000001,
+     -186
+    ],
+    [
+     414.4000000000001,
+     -114
+    ],
+    [
+     410.4000000000001,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 13",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 13",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 13",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 14",
+   "points": [
+    [
+     502.10000000000014,
+     -186
+    ],
+    [
+     506.10000000000014,
+     -186
+    ],
+    [
+     506.10000000000014,
+     -114
+    ],
+    [
+     502.10000000000014,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 14",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 14",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 14",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 15",
+   "points": [
+    [
+     593.8,
+     -186
+    ],
+    [
+     597.8,
+     -186
+    ],
+    [
+     597.8,
+     -114
+    ],
+    [
+     593.8,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 15",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 15",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 15",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Discharge Vane 16",
+   "points": [
+    [
+     685.5,
+     -186
+    ],
+    [
+     689.5,
+     -186
+    ],
+    [
+     689.5,
+     -114
+    ],
+    [
+     685.5,
+     -114
+    ]
+   ],
+   "start": -14,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Discharge Vane 16",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Discharge Vane 16",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Discharge Vane 16",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Grille",
+   "points": [
+    [
+     694.0,
+     55.0
+    ],
+    [
+     696.3,
+     55.46
+    ],
+    [
+     698.24,
+     56.76
+    ],
+    [
+     699.54,
+     58.7
+    ],
+    [
+     700.0,
+     61.0
+    ],
+    [
+     700.0,
+     179.0
+    ],
+    [
+     699.54,
+     181.3
+    ],
+    [
+     698.24,
+     183.24
+    ],
+    [
+     696.3,
+     184.54
+    ],
+    [
+     694.0,
+     185.0
+    ],
+    [
+     -694.0,
+     185.0
+    ],
+    [
+     -696.3,
+     184.54
+    ],
+    [
+     -698.24,
+     183.24
+    ],
+    [
+     -699.54,
+     181.3
+    ],
+    [
+     -700.0,
+     179.0
+    ],
+    [
+     -700.0,
+     61.0
+    ],
+    [
+     -699.54,
+     58.7
+    ],
+    [
+     -698.24,
+     56.76
+    ],
+    [
+     -696.3,
+     55.46
+    ],
+    [
+     -694.0,
+     55.0
+    ]
+   ],
+   "start": 251,
+   "end": 253,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Grille",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Grille",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Grille",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 1",
+   "points": [
+    [
+     -700,
+     62.0
+    ],
+    [
+     700,
+     62.0
+    ],
+    [
+     700,
+     70.0
+    ],
+    [
+     -700,
+     70.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 2",
+   "points": [
+    [
+     -700,
+     77.5
+    ],
+    [
+     700,
+     77.5
+    ],
+    [
+     700,
+     85.5
+    ],
+    [
+     -700,
+     85.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 3",
+   "points": [
+    [
+     -700,
+     93.0
+    ],
+    [
+     700,
+     93.0
+    ],
+    [
+     700,
+     101.0
+    ],
+    [
+     -700,
+     101.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 3",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 3",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 4",
+   "points": [
+    [
+     -700,
+     108.5
+    ],
+    [
+     700,
+     108.5
+    ],
+    [
+     700,
+     116.5
+    ],
+    [
+     -700,
+     116.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 4",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 4",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 5",
+   "points": [
+    [
+     -700,
+     124.0
+    ],
+    [
+     700,
+     124.0
+    ],
+    [
+     700,
+     132.0
+    ],
+    [
+     -700,
+     132.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 5",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 5",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 6",
+   "points": [
+    [
+     -700,
+     139.5
+    ],
+    [
+     700,
+     139.5
+    ],
+    [
+     700,
+     147.5
+    ],
+    [
+     -700,
+     147.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 6",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 6",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 7",
+   "points": [
+    [
+     -700,
+     155.0
+    ],
+    [
+     700,
+     155.0
+    ],
+    [
+     700,
+     163.0
+    ],
+    [
+     -700,
+     163.0
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 7",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 7",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Intake Slat 8",
+   "points": [
+    [
+     -700,
+     170.5
+    ],
+    [
+     700,
+     170.5
+    ],
+    [
+     700,
+     178.5
+    ],
+    [
+     -700,
+     178.5
+    ]
+   ],
+   "start": 253,
+   "end": 258,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Intake Slat 8",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Intake Slat 8",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Intake Slat 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel",
+   "points": [
+    [
+     696.0,
+     192.0
+    ],
+    [
+     697.53,
+     192.3
+    ],
+    [
+     698.83,
+     193.17
+    ],
+    [
+     699.7,
+     194.47
+    ],
+    [
+     700.0,
+     196.0
+    ],
+    [
+     700.0,
+     210.0
+    ],
+    [
+     699.7,
+     211.53
+    ],
+    [
+     698.83,
+     212.83
+    ],
+    [
+     697.53,
+     213.7
+    ],
+    [
+     696.0,
+     214.0
+    ],
+    [
+     524.0,
+     214.0
+    ],
+    [
+     522.47,
+     213.7
+    ],
+    [
+     521.17,
+     212.83
+    ],
+    [
+     520.3,
+     211.53
+    ],
+    [
+     520.0,
+     210.0
+    ],
+    [
+     520.0,
+     196.0
+    ],
+    [
+     520.3,
+     194.47
+    ],
+    [
+     521.17,
+     193.17
+    ],
+    [
+     522.47,
+     192.3
+    ],
+    [
+     524.0,
+     192.0
+    ]
+   ],
+   "start": 250,
+   "end": 254,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Run LED",
+   "points": [
+    [
+     683.0,
+     203.0
+    ],
+    [
+     682.9,
+     203.78
+    ],
+    [
+     682.6,
+     204.5
+    ],
+    [
+     682.12,
+     205.12
+    ],
+    [
+     681.5,
+     205.6
+    ],
+    [
+     680.78,
+     205.9
+    ],
+    [
+     680.0,
+     206.0
+    ],
+    [
+     679.22,
+     205.9
+    ],
+    [
+     678.5,
+     205.6
+    ],
+    [
+     677.88,
+     205.12
+    ],
+    [
+     677.4,
+     204.5
+    ],
+    [
+     677.1,
+     203.78
+    ],
+    [
+     677.0,
+     203.0
+    ],
+    [
+     677.1,
+     202.22
+    ],
+    [
+     677.4,
+     201.5
+    ],
+    [
+     677.88,
+     200.88
+    ],
+    [
+     678.5,
+     200.4
+    ],
+    [
+     679.22,
+     200.1
+    ],
+    [
+     680.0,
+     200.0
+    ],
+    [
+     680.78,
+     200.1
+    ],
+    [
+     681.5,
+     200.4
+    ],
+    [
+     682.12,
+     200.88
+    ],
+    [
+     682.6,
+     201.5
+    ],
+    [
+     682.9,
+     202.22
+    ]
+   ],
+   "start": 254,
+   "end": 256,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Run LED",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Run LED",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Run LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mounting Bracket 1",
+   "points": [
+    [
+     -600,
+     -10
+    ],
+    [
+     -560,
+     -10
+    ],
+    [
+     -560,
+     0
+    ],
+    [
+     -600,
+     0
+    ]
+   ],
+   "start": 40,
+   "end": 200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mounting Bracket 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mounting Bracket 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mounting Bracket 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mounting Bracket 2",
+   "points": [
+    [
+     560,
+     -10
+    ],
+    [
+     600,
+     -10
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     560,
+     0
+    ]
+   ],
+   "start": 40,
+   "end": 200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mounting Bracket 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mounting Bracket 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mounting Bracket 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Mounting Bracket 1",
+   "side": "back"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AirCurtain_Entrance.png"
+  }
+ ],
+ "values": {
+  "Length 1500 / 2000 mm, 250 deep, 220 high": {
+   "value": "1500/2000x250x220",
+   "source_status": "assumed",
+   "source": "typical over-door air curtain"
+  },
+  "Discharge velocity 8 m/s": {
+   "value": 8,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 250 / 350 VA (ambient)": {
+   "value": "250/350",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Fixed 100 mm above door head": {
+   "value": 2200,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

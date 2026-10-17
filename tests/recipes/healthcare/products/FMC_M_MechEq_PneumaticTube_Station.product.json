@@ -1,0 +1,406 @@
+{
+ "family": "FMC_M_MechEq_PneumaticTube_Station",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Pneumatic tube system station, wall mounted, 110 mm tube riser, keypad and display, glazed send door, receiving basket with carrier",
+ "ifc": "IfcTransportElement",
+ "keynote": "Z.PTS_00",
+ "types": [
+  {
+   "name": "110_Single"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 50,
+  "Default Elevation": 800
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "ledb": "FMC_Plastic_LED_Blue",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "pneumatic tube station mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=pneumatic+tube+station+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Plate",
+   "shape": "fbox",
+   "at": [
+    -250,
+    -10,
+    0,
+    250,
+    0,
+    1000
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Station Body",
+   "shape": "fbox",
+   "at": [
+    -220,
+    -260,
+    250,
+    220,
+    -10,
+    860
+   ],
+   "mat": "mgrey",
+   "r": 20
+  },
+  {
+   "n": "Tube Riser",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -135
+   ],
+   "r": 55,
+   "z": [
+    860,
+    2000
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Tube Coupling",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    -135
+   ],
+   "profile": [
+    [
+     55,
+     860
+    ],
+    [
+     63,
+     860
+    ],
+    [
+     63,
+     900
+    ],
+    [
+     55,
+     900
+    ]
+   ],
+   "mat": "dark",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     600
+    ]
+   }
+  },
+  {
+   "n": "Door Frame",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -266,
+    500,
+    150,
+    -260,
+    800
+   ],
+   "mat": "black",
+   "r": 14
+  },
+  {
+   "n": "Door Window",
+   "shape": "fbox",
+   "at": [
+    -125,
+    -268,
+    525,
+    125,
+    -266,
+    775
+   ],
+   "mat": "pc",
+   "r": 10
+  },
+  {
+   "n": "Keypad Panel",
+   "shape": "fbox",
+   "at": [
+    -180,
+    -266,
+    300,
+    180,
+    -260,
+    470
+   ],
+   "mat": "black",
+   "r": 8
+  },
+  {
+   "n": "Display",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -268,
+    410,
+    30,
+    -266,
+    455
+   ],
+   "mat": "ledb",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Key Top",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -270,
+    360,
+    -120,
+    -266,
+    390
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 4,
+   "repeat": {
+    "n": 4,
+    "d": [
+     45,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Key Bottom",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -270,
+    318,
+    -120,
+    -266,
+    348
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 4,
+   "repeat": {
+    "n": 4,
+    "d": [
+     45,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Status LED Ready",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    80,
+    440
+   ],
+   "r": 6,
+   "y": [
+    -268,
+    -266
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Status LED Busy",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    120,
+    440
+   ],
+   "r": 6,
+   "y": [
+    -268,
+    -266
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  },
+  {
+   "n": "Basket Floor",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -300,
+    0,
+    200,
+    -20,
+    15
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Basket Front",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -300,
+    15,
+    200,
+    -290,
+    110
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Basket Side Left",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -290,
+    15,
+    -190,
+    -20,
+    110
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Basket Side Right",
+   "shape": "fbox",
+   "at": [
+    190,
+    -290,
+    15,
+    200,
+    -20,
+    110
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Carrier",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -160,
+    85
+   ],
+   "r": 55,
+   "x": [
+    -150,
+    150
+   ],
+   "mat": "blue"
+  },
+  {
+   "n": "Carrier Cap Left",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    -160,
+    85
+   ],
+   "profile": [
+    [
+     0,
+     -165
+    ],
+    [
+     58,
+     -165
+    ],
+    [
+     58,
+     -150
+    ],
+    [
+     0,
+     -150
+    ]
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Carrier Cap Right",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    -160,
+    85
+   ],
+   "profile": [
+    [
+     0,
+     150
+    ],
+    [
+     58,
+     150
+    ],
+    [
+     58,
+     165
+    ],
+    [
+     0,
+     165
+    ]
+   ],
+   "mat": "black"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Back Plate",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Tube 110 mm": {
+   "value": 110,
+   "source_status": "assumed",
+   "source": "common hospital PTS tube"
+  },
+  "Station 440 x 260 x 610 mm, basket 400 wide": {
+   "value": "440x260x610",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 50 VA": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Keypad at 1200 to 1400 mm": {
+   "value": "1200-1400",
+   "source_status": "assumed",
+   "source": "accessible controls practice"
+  }
+ },
+ "about": "Modelled as a generic product: stainless back plate, grey station body, tube riser with couplings to the ceiling, glazed door, keypad with keys, display and LEDs, open receiving basket with a blue carrier."
+}

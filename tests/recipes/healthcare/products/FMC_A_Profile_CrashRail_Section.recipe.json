@@ -1,0 +1,80 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Profile_CrashRail_Section",
+ "template": "Metric Profile.rft",
+ "about": "Crash rail: 200 mm vinyl-faced buffer over an aluminium retainer, 25 mm deep. A 2D profile for sweeps (rails, coving, nosings); never scheduled.",
+ "ops": [
+  {
+   "op": "add_type",
+   "name": "200x25_Vinyl"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200x25_Vinyl/Description",
+   "type": "200x25_Vinyl",
+   "param": "Description",
+   "value": "Crash rail: 200 mm vinyl-faced buffer over an aluminium retainer, 25 mm deep"
+  },
+  {
+   "op": "profile_lines",
+   "name": "Section",
+   "start": [
+    0,
+    0
+   ],
+   "segments": [
+    {
+     "to": [
+      5,
+      0
+     ]
+    },
+    {
+     "to": [
+      25,
+      12
+     ]
+    },
+    {
+     "to": [
+      25,
+      188
+     ]
+    },
+    {
+     "to": [
+      5,
+      200
+     ]
+    },
+    {
+     "to": [
+      0,
+      200
+     ]
+    },
+    {
+     "to": [
+      0,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "values": {
+  "Height 200 mm": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical bed/trolley crash rail"
+  },
+  "Projection 25 mm": {
+   "value": 25,
+   "source_status": "assumed",
+   "source": "typical"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "profile family: used inside sweeps, never scheduled"
+ }
+}

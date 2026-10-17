@@ -255,14 +255,20 @@ def mesh(g, seg=32):
     return tris
 
 # ---------------------------------------------------------------- preview (z-buffer renderer, numpy + PIL)
+import re as _re
+GLASS_TAG = 100000
+GLASS_RE = _re.compile(r'Glass|Glazing|Polycarbonate_Clear|Acrylic_Clear|Perspex', _re.I)
+
 def _tris(prod, lod):
     import numpy as np
     kit = kit_materials(); mats = prod.get('materials', {})
     T, C, I = [], [], []
     parts = [p for p in expand(prod['parts']) if not p.get('void') and lod in p.get('lod', 'mf')]
     for i, p in enumerate(parts):
-        rgb = np.array(hexrgb(kit.get(mats.get(p.get('mat'), ''), {}).get('graphics', {}).get('shaded'))) / 255.0
-        for t in mesh(norm(p), p.get('seg', 32)): T.append(t); C.append(rgb); I.append(i)
+        mname = mats.get(p.get('mat'), '')
+        rgb = np.array(hexrgb(kit.get(mname, {}).get('graphics', {}).get('shaded'))) / 255.0
+        tag = i + GLASS_TAG if GLASS_RE.search(mname or '') else i   # see-through parts are drawn after the solids, blended
+        for t in mesh(norm(p), p.get('seg', 32)): T.append(t); C.append(rgb); I.append(tag)
     return np.array(T, float), np.array(C, float), np.array(I), len(parts)
 
 def _view(T, C, I, az, el, W, H, persp=False):
@@ -282,7 +288,21 @@ def _view(T, C, I, az, el, W, H, persp=False):
     spec = np.clip(np.abs(n @ (L1 - f) / np.linalg.norm(L1 - f)), 0, 1) ** 24 * 0.25
     col = np.clip(C * lam[:, None] + spec[:, None], 0, 1)
     zb = np.full((H, W), np.inf); img = np.ones((H, W, 3)); idb = np.full((H, W), -1)
+    glass = I >= GLASS_TAG
+    def raster(k):
+        x0, x1 = int(max(0, np.floor(sx[k].min()))), int(min(W - 1, np.ceil(sx[k].max())))
+        y0, y1 = int(max(0, np.floor(sy[k].min()))), int(min(H - 1, np.ceil(sy[k].max())))
+        if x1 < x0 or y1 < y0: return None
+        xs, ys = np.meshgrid(np.arange(x0, x1 + 1) + 0.5, np.arange(y0, y1 + 1) + 0.5)
+        (ax_, bx, cx), (ay, by, cy) = sx[k], sy[k]
+        d = (by - cy) * (ax_ - cx) + (cx - bx) * (ay - cy)
+        if abs(d) < 1e-9: return None
+        w0 = ((by - cy) * (xs - cx) + (cx - bx) * (ys - cy)) / d; w1 = ((cy - ay) * (xs - cx) + (ax_ - cx) * (ys - cy)) / d; w2 = 1 - w0 - w1
+        m = (w0 >= -1e-6) & (w1 >= -1e-6) & (w2 >= -1e-6)
+        if not m.any(): return None
+        return x0, x1, y0, y1, m, w0 * Z[k, 0] + w1 * Z[k, 1] + w2 * Z[k, 2]
     for k in range(len(T)):
+        if glass[k]: continue
         x0, x1 = int(max(0, np.floor(sx[k].min()))), int(min(W - 1, np.ceil(sx[k].max())))
         y0, y1 = int(max(0, np.floor(sy[k].min()))), int(min(H - 1, np.ceil(sy[k].max())))
         if x1 < x0 or y1 < y0: continue
@@ -304,6 +324,15 @@ def _view(T, C, I, az, el, W, H, persp=False):
         jump = (a1 != b1) | (np.abs(np.nan_to_num(za, posinf=1e9) - np.nan_to_num(zb2, posinf=1e9)) > span * 0.01)
         edge[:H - dy, :W - dx] |= jump
     img[edge] = img[edge] * 0.35 + 0.08
+    # glass: a light tint over what is behind it, never hiding it (Revit draws glazing transparent too)
+    gl = np.zeros((H, W), bool)
+    for k in np.nonzero(glass)[0]:
+        r_ = raster(k)
+        if r_ is None: continue
+        x0, x1, y0, y1, m, z = r_
+        upd = m & (z < zb[y0:y1 + 1, x0:x1 + 1] - 1e-6) & ~gl[y0:y1 + 1, x0:x1 + 1]
+        blk = img[y0:y1 + 1, x0:x1 + 1]; blk[upd] = blk[upd] * 0.72 + np.array([0.62, 0.78, 0.86]) * 0.28
+        gl[y0:y1 + 1, x0:x1 + 1] |= upd
     return img
 
 def render(prod, path, lod='f', views=(('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9)), W=520, H=420):

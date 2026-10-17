@@ -1,0 +1,183 @@
+{
+ "family": "FMC_M_DuctAccessory_Sensor_TempHumidity",
+ "category": "Duct Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Room temperature and humidity sensor, surface wall mounted, white vented housing, status LED, top conduit entry",
+ "ifc": "IfcSensor",
+ "keynote": "H.CTL_01",
+ "types": [
+  {
+   "name": "85x85_Wall"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1500
+ },
+ "materials": {
+  "ledg": "FMC_Plastic_LED_Green",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "duct accessory sensor temp humidity duct accessories hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=duct+accessory+sensor+temp+humidity+duct+accessories+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "fbox",
+   "at": [
+    -42,
+    -10,
+    0,
+    42,
+    0,
+    85
+   ],
+   "mat": "white",
+   "r": 6
+  },
+  {
+   "n": "Cover",
+   "shape": "fbox",
+   "at": [
+    -41,
+    -30,
+    2,
+    41,
+    -10,
+    83
+   ],
+   "mat": "white",
+   "r": 12
+  },
+  {
+   "n": "Vent Slot Bottom",
+   "shape": "fbox",
+   "at": [
+    -28,
+    -31,
+    8,
+    28,
+    -30,
+    11
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "r": 1,
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     6
+    ]
+   }
+  },
+  {
+   "n": "Vent Slot Top",
+   "shape": "fbox",
+   "at": [
+    -28,
+    -31,
+    56,
+    28,
+    -30,
+    59
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "r": 1,
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     6
+    ]
+   }
+  },
+  {
+   "n": "Status LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    30,
+    45
+   ],
+   "r": 2.5,
+   "y": [
+    -31,
+    -30
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Conduit Entry",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -5
+   ],
+   "r": 9,
+   "z": [
+    85,
+    100
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Vent Side Left",
+   "shape": "box",
+   "at": [
+    -43,
+    -26,
+    20,
+    -41,
+    -14,
+    24
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     0,
+     18
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "part": "Base",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Housing 85 x 85 x 30 mm": {
+   "value": "85x85x30",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Accuracy 0.3 C, 2 % RH": {
+   "value": "0.3C/2%RH",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounting height 1500 mm": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "BMS practice, away from draughts"
+  }
+ },
+ "about": "Modelled as a generic product: base and rounded cover with front and side vent slots, status LED, conduit entry."
+}

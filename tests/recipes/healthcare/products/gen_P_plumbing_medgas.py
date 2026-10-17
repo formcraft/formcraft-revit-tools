@@ -797,8 +797,7 @@ parts = [C("Body", 'x', (0, 0), 26, (-55, 55), 'brass'),
          C("Adjusting Screw", 'z', (0, 0), 7, (142, 170), 'chrome'),
          C("Strainer Cap", 'z', (0, 0), 22, (-70, -38), 'brass', seg=6),
          C("Gauge Boss", 'y', (0, 0), 9, (-60, -25), 'brass'),
-         B("Flow Arrow", (-30, -27, -6, 30, -26, 6), 'black', 'f')] + gauge("Gauge", 0, -60, 0, 32, stem=False)
-parts[-1]['n'] = "Gauge Needle"
+         B("Flow Arrow", (-30, -27, -6, 30, -26, 6), 'black', lod='f')] + gauge("Gauge", 0, -60, 0, 32, stem=False)
 add(f, "Pressure reducing valve, bronze, spring-loaded with adjusting screw, integral strainer, outlet pressure gauge, union ends (DN25 drawn)",
     "IfcValve", ["25_PRV", "50_PRV"], parts,
     [CW("Inlet Tail", 'left', 'Inlet', 'In', 25), CW("Outlet Tail", 'right', 'Outlet', 'Out', 25)],

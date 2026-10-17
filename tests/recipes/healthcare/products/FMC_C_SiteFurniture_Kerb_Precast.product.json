@@ -1,0 +1,265 @@
+{
+ "family": "FMC_C_SiteFurniture_Kerb_Precast",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Precast concrete half-battered kerb on a concrete bed and haunch, with transition and dropped kerb for crossings",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "T.KRB_03",
+ "types": [
+  {
+   "name": "125x255_Straight",
+   "desc": "half-battered kerb 125 x 255, 125 upstand"
+  },
+  {
+   "name": "125x255_Dropped",
+   "desc": "dropped kerb, 25 upstand, with transitions"
+  }
+ ],
+ "materials": {
+  "blind": "FMC_Concrete_Blinding_C15",
+  "mortar": "FMC_Masonry_Mortar_1to4",
+  "kerb": "FMC_Concrete_Kerb_Precast"
+ },
+ "parts": [
+  {
+   "n": "Straight Kerb",
+   "shape": "right",
+   "pts": [
+    [
+     -62.5,
+     -130
+    ],
+    [
+     62.5,
+     -130
+    ],
+    [
+     62.5,
+     125
+    ],
+    [
+     -37.5,
+     125
+    ],
+    [
+     -62.5,
+     100
+    ]
+   ],
+   "x": [
+    -1830,
+    -920
+   ],
+   "mat": "kerb",
+   "repeat": {
+    "n": 2,
+    "d": [
+     915,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Transition Kerb",
+   "shape": "front",
+   "pts": [
+    [
+     0,
+     -130
+    ],
+    [
+     910,
+     -130
+    ],
+    [
+     910,
+     20
+    ],
+    [
+     0,
+     125
+    ]
+   ],
+   "y": [
+    -62.5,
+    62.5
+   ],
+   "mat": "kerb"
+  },
+  {
+   "n": "Dropped Kerb",
+   "shape": "right",
+   "pts": [
+    [
+     -62.5,
+     -130
+    ],
+    [
+     62.5,
+     -130
+    ],
+    [
+     62.5,
+     20
+    ],
+    [
+     -37.5,
+     20
+    ],
+    [
+     -62.5,
+     -5
+    ]
+   ],
+   "x": [
+    915,
+    1825
+   ],
+   "mat": "kerb"
+  },
+  {
+   "n": "Concrete Bed",
+   "shape": "box",
+   "at": [
+    -1830,
+    -150,
+    -280,
+    1825,
+    212.5,
+    -130
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Concrete Haunch",
+   "shape": "right",
+   "pts": [
+    [
+     62.5,
+     -130
+    ],
+    [
+     212.5,
+     -130
+    ],
+    [
+     62.5,
+     20
+    ]
+   ],
+   "x": [
+    -1830,
+    1825
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Joint Mortar",
+   "shape": "right",
+   "pts": [
+    [
+     -62.5,
+     -130
+    ],
+    [
+     62.5,
+     -130
+    ],
+    [
+     62.5,
+     125
+    ],
+    [
+     -62.5,
+     125
+    ]
+   ],
+   "x": [
+    -920,
+    -915
+   ],
+   "mat": "mortar",
+   "lod": "f"
+  },
+  {
+   "n": "Joint Mortar 2",
+   "shape": "right",
+   "pts": [
+    [
+     -62.5,
+     -130
+    ],
+    [
+     62.5,
+     -130
+    ],
+    [
+     62.5,
+     125
+    ],
+    [
+     -62.5,
+     125
+    ]
+   ],
+   "x": [
+    -5,
+    0
+   ],
+   "mat": "mortar",
+   "lod": "f"
+  },
+  {
+   "n": "Joint Mortar 3",
+   "shape": "right",
+   "pts": [
+    [
+     -62.5,
+     -130
+    ],
+    [
+     62.5,
+     -130
+    ],
+    [
+     62.5,
+     20
+    ],
+    [
+     -62.5,
+     20
+    ]
+   ],
+   "x": [
+    910,
+    915
+   ],
+   "mat": "mortar",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "site furniture kerb precast site hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=site+furniture+kerb+precast+site+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Kerb 125 x 255 x 915 mm, HB2 profile": {
+   "value": "125x255x915",
+   "source_status": "assumed",
+   "source": "typical BS EN 1340 HB2"
+  },
+  "Upstand 125 mm, dropped 25 mm": {
+   "value": "125 / 25",
+   "source_status": "assumed",
+   "source": "typical; accessible crossing max 6 mm in some codes, designer to confirm"
+  },
+  "Bed 150 mm C15 with haunch": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical"
+  }
+ },
+ "about": "Road at z = 0, run along x: two straight kerbs, a transition kerb and a dropped kerb with mortar joints (Fine), concrete bed and back haunch. Tactile paving is the footway's family."
+}

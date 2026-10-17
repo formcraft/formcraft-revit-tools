@@ -1,0 +1,321 @@
+{
+ "family": "FMC_C_Structure_Catchpit_Stormwater",
+ "category": "Pipe Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Stormwater catch pit with silt trap, galvanised bar grating on angle frame, U-channel inlets and outlet pipe",
+ "ifc": "IfcDistributionChamberElement",
+ "keynote": "T.DRN_04",
+ "types": [
+  {
+   "name": "900x900_Catchpit"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "pre": "FMC_Concrete_Manhole_Precast",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey"
+ },
+ "parts": [
+  {
+   "n": "Pit Wall Front",
+   "shape": "box",
+   "at": [
+    -600,
+    -600,
+    -1200,
+    600,
+    -450,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Pit Wall Back",
+   "shape": "box",
+   "at": [
+    -600,
+    450,
+    -1200,
+    600,
+    600,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Pit Wall Left",
+   "shape": "box",
+   "at": [
+    -600,
+    -450,
+    -1200,
+    -450,
+    450,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Pit Wall Right",
+   "shape": "box",
+   "at": [
+    450,
+    -450,
+    -1200,
+    600,
+    450,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Base",
+   "shape": "box",
+   "at": [
+    -650,
+    -650,
+    -1350,
+    650,
+    650,
+    -1200
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Frame Angle Front",
+   "shape": "box",
+   "at": [
+    -450,
+    -450,
+    -50,
+    450,
+    -400,
+    0
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Frame Angle Back",
+   "shape": "box",
+   "at": [
+    -450,
+    400,
+    -50,
+    450,
+    450,
+    0
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Frame Angle Left",
+   "shape": "box",
+   "at": [
+    -450,
+    -400,
+    -50,
+    -400,
+    400,
+    0
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Frame Angle Right",
+   "shape": "box",
+   "at": [
+    400,
+    -400,
+    -50,
+    450,
+    400,
+    0
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Grating Bar",
+   "shape": "box",
+   "at": [
+    -397,
+    -400,
+    -40,
+    -392,
+    400,
+    0
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 17,
+    "d": [
+     49,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Grating Cross Rod",
+   "shape": "box",
+   "at": [
+    -400,
+    -305,
+    -8,
+    400,
+    -297,
+    0
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     300,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Inlet Channel Left",
+   "shape": "right",
+   "pts": [
+    [
+     -225,
+     -375
+    ],
+    [
+     225,
+     -375
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     150,
+     0
+    ],
+    [
+     150,
+     -300
+    ],
+    [
+     -150,
+     -300
+    ],
+    [
+     -150,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "x": [
+    -1200,
+    -600
+   ],
+   "mat": "pre"
+  },
+  {
+   "n": "Inlet Channel Front",
+   "shape": "front",
+   "pts": [
+    [
+     -225,
+     -375
+    ],
+    [
+     225,
+     -375
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     150,
+     0
+    ],
+    [
+     150,
+     -300
+    ],
+    [
+     -150,
+     -300
+    ],
+    [
+     -150,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "y": [
+    -1200,
+    -600
+   ],
+   "mat": "pre"
+  },
+  {
+   "n": "Outlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -700
+   ],
+   "r": 100,
+   "x": [
+    590,
+    950
+   ],
+   "mat": "upvc"
+  }
+ ],
+ "reference": {
+  "query": "structure catchpit stormwater structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+catchpit+stormwater+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Internal 900 x 900 mm": {
+   "value": "900x900",
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Silt trap 500 mm below outlet invert": {
+   "value": 500,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Grating 40 x 5 bars at 49 mm": {
+   "value": "40x5 at 49",
+   "source_status": "assumed",
+   "source": "typical bar grating; load class by location"
+  },
+  "Outlet 200 mm": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "drainage design"
+  }
+ },
+ "about": "Ground at z = 0: concrete walls and base, galvanised angle frame, 17 bearing bars and cross rods, two precast U-channel inlets, outlet pipe stub with connector; the silt trap is the depth below the outlet.",
+ "connectors": [
+  {
+   "n": "SAN Out",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Outlet Pipe",
+   "side": "right",
+   "diameter": 200,
+   "flow": "Out"
+  }
+ ]
+}

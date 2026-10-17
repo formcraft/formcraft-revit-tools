@@ -1,0 +1,271 @@
+{
+ "family": "FMC_C_Structure_Drain_UChannel_Covered",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Precast concrete U-channel surface drain with rebated seats, precast cover slabs with lifting slots and a galvanised grating section",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "T.DRN_06",
+ "types": [
+  {
+   "name": "300_Covered",
+   "desc": "300 mm wide channel"
+  },
+  {
+   "name": "450_Covered",
+   "desc": "450 mm wide channel"
+  },
+  {
+   "name": "600_Covered",
+   "desc": "600 mm wide channel"
+  }
+ ],
+ "materials": {
+  "blind": "FMC_Concrete_Blinding_C15",
+  "pre": "FMC_Concrete_Manhole_Precast",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "black": "FMC_Plastic_ABS_Black"
+ },
+ "parts": [
+  {
+   "n": "Channel Unit",
+   "shape": "right",
+   "pts": [
+    [
+     -225,
+     0
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     225,
+     375
+    ],
+    [
+     175,
+     375
+    ],
+    [
+     175,
+     325
+    ],
+    [
+     150,
+     325
+    ],
+    [
+     150,
+     75
+    ],
+    [
+     -150,
+     75
+    ],
+    [
+     -150,
+     325
+    ],
+    [
+     -175,
+     325
+    ],
+    [
+     -175,
+     375
+    ],
+    [
+     -225,
+     375
+    ]
+   ],
+   "x": [
+    -1500,
+    -505
+   ],
+   "mat": "pre",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1005,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Blinding",
+   "shape": "box",
+   "at": [
+    -1500,
+    -275,
+    -50,
+    1515,
+    275,
+    0
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Cover Slab",
+   "shape": "box",
+   "at": [
+    -1500,
+    -174,
+    325,
+    -1005,
+    174,
+    375
+   ],
+   "mat": "pre",
+   "repeat": {
+    "n": 2,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Lifting Slot",
+   "shape": "box",
+   "at": [
+    -1300,
+    -60,
+    375,
+    -1210,
+    -40,
+    376
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Lifting Slot Back",
+   "shape": "box",
+   "at": [
+    -1300,
+    40,
+    375,
+    -1210,
+    60,
+    376
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Grating Frame Front",
+   "shape": "box",
+   "at": [
+    -500,
+    -174,
+    340,
+    505,
+    -160,
+    375
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Grating Frame Back",
+   "shape": "box",
+   "at": [
+    -500,
+    160,
+    340,
+    505,
+    174,
+    375
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Grating Bar",
+   "shape": "box",
+   "at": [
+    -480,
+    -160,
+    345,
+    -475,
+    160,
+    375
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 20,
+    "d": [
+     50,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cover Slab Far",
+   "shape": "box",
+   "at": [
+    510,
+    -174,
+    325,
+    1005,
+    174,
+    375
+   ],
+   "mat": "pre",
+   "repeat": {
+    "n": 2,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "structure drain uchannel covered structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+drain+uchannel+covered+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Internal 300 x 250, walls 75 mm (geometry)": {
+   "value": "300x250 t75",
+   "source_status": "assumed",
+   "source": "typical precast U-drain"
+  },
+  "Units 1000 long, 3 shown": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Covers 50 mm in a 25 x 50 rebate": {
+   "value": "50 / 25x50",
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Grating every third cover": {
+   "value": "1 in 3",
+   "source_status": "assumed",
+   "source": "typical for inlets; designer to confirm"
+  }
+ },
+ "about": "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and 20 bars."
+}

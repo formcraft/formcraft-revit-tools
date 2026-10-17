@@ -1,0 +1,257 @@
+{
+ "family": "FMC_M_AirTerminal_Diffuser_Linear_Slot",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "Linear slot diffuser 1200 to 1500 mm, 2 slot, white aluminium profiles with pattern controllers, insulated plenum with top spigot",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_01",
+ "types": [
+  {
+   "name": "1200_2Slot"
+  },
+  {
+   "name": "1500_2Slot"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2700
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_Duct_Galvanised",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey"
+ },
+ "reference": {
+  "query": "diffuser linear slot air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=diffuser+linear+slot+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Frame Front",
+   "shape": "box",
+   "at": [
+    -750,
+    -75,
+    -15,
+    750,
+    -55,
+    0
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Frame Rear",
+   "shape": "box",
+   "at": [
+    -750,
+    55,
+    -15,
+    750,
+    75,
+    0
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Divider",
+   "shape": "box",
+   "at": [
+    -750,
+    -8,
+    -18,
+    750,
+    8,
+    0
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "End Cap",
+   "shape": "box",
+   "at": [
+    -760,
+    -75,
+    -16,
+    -750,
+    75,
+    0
+   ],
+   "mat": "epw",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1510,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Slot Throat",
+   "shape": "box",
+   "at": [
+    -750,
+    -55,
+    -6,
+    750,
+    55,
+    -1
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Pattern Controller Front",
+   "shape": "box",
+   "at": [
+    -735,
+    -50,
+    -13,
+    -705,
+    -14,
+    -6
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 12,
+    "d": [
+     125,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Pattern Controller Rear",
+   "shape": "box",
+   "at": [
+    -735,
+    14,
+    -13,
+    -705,
+    50,
+    -6
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 12,
+    "d": [
+     125,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Plenum Box",
+   "shape": "box",
+   "at": [
+    -740,
+    -110,
+    0,
+    740,
+    110,
+    250
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 100,
+   "z": [
+    250,
+    350
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot Bead",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     99,
+     290
+    ],
+    [
+     105,
+     290
+    ],
+    [
+     105,
+     300
+    ],
+    [
+     99,
+     300
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Hanger Lug",
+   "shape": "box",
+   "at": [
+    -600,
+    -125,
+    200,
+    -560,
+    -110,
+    240
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1160,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "part": "Spigot",
+   "side": "top",
+   "flow": "In",
+   "diameter": 200
+  }
+ ],
+ "values": {
+  "Length 1200 / 1500 mm, face 150 mm": {
+   "value": "1200/1500x150",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Slot 20 mm x 2": {
+   "value": "2x20",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Spigot 200 mm": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs."
+}

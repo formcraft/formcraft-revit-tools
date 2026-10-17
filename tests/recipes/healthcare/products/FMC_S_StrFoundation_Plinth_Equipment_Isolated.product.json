@@ -1,0 +1,390 @@
+{
+ "family": "FMC_S_StrFoundation_Plinth_Equipment_Isolated",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Isolated equipment plinth: inertia block set into the slab with a 25 mm isolation joint all round, chamfered upstand and cast-in anchor bolts",
+ "ifc": "IfcFooting",
+ "keynote": "C.PLN_00",
+ "types": [
+  {
+   "name": "MRI_Isolated",
+   "desc": "MRI isolated plinth; mass and size from the scanner vendor"
+  },
+  {
+   "name": "CT_Isolated",
+   "desc": "CT isolated plinth; from the vendor"
+  },
+  {
+   "name": "Generator_Isolated",
+   "desc": "generator inertia base; from the generator vendor"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "blind": "FMC_Concrete_Blinding_C15",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "black": "FMC_Plastic_ABS_Black",
+  "filler": "FMC_Board_SoftBoard_Ceiling"
+ },
+ "parts": [
+  {
+   "n": "Blinding",
+   "shape": "box",
+   "at": [
+    -2150,
+    -950,
+    -500,
+    2150,
+    950,
+    -450
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Inertia Block",
+   "shape": "box",
+   "at": [
+    -2100,
+    -900,
+    -450,
+    2100,
+    900,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Plinth Upstand",
+   "shape": "prism",
+   "pts": [
+    [
+     -1980,
+     -800
+    ],
+    [
+     1980,
+     -800
+    ],
+    [
+     2000,
+     -780
+    ],
+    [
+     2000,
+     780
+    ],
+    [
+     1980,
+     800
+    ],
+    [
+     -1980,
+     800
+    ],
+    [
+     -2000,
+     780
+    ],
+    [
+     -2000,
+     -780
+    ]
+   ],
+   "z": [
+    0,
+    150
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Isolation Joint Front",
+   "shape": "box",
+   "at": [
+    -2125,
+    -925,
+    -450,
+    2125,
+    -900,
+    0
+   ],
+   "mat": "filler"
+  },
+  {
+   "n": "Isolation Joint Back",
+   "shape": "box",
+   "at": [
+    -2125,
+    900,
+    -450,
+    2125,
+    925,
+    0
+   ],
+   "mat": "filler"
+  },
+  {
+   "n": "Isolation Joint Left",
+   "shape": "box",
+   "at": [
+    -2125,
+    -900,
+    -450,
+    -2100,
+    900,
+    0
+   ],
+   "mat": "filler"
+  },
+  {
+   "n": "Isolation Joint Right",
+   "shape": "box",
+   "at": [
+    2100,
+    -900,
+    -450,
+    2125,
+    900,
+    0
+   ],
+   "mat": "filler"
+  },
+  {
+   "n": "Joint Sealant Front",
+   "shape": "box",
+   "at": [
+    -2125,
+    -925,
+    -15,
+    2125,
+    -900,
+    0.5
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Joint Sealant Back",
+   "shape": "box",
+   "at": [
+    -2125,
+    900,
+    -15,
+    2125,
+    925,
+    0.5
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Anchor Bolt Front",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1500,
+    -600
+   ],
+   "r": 10,
+   "z": [
+    150,
+    230
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Anchor Nut Front",
+   "shape": "prism",
+   "pts": [
+    [
+     -1485.0,
+     -591.34
+    ],
+    [
+     -1500.0,
+     -582.68
+    ],
+    [
+     -1515.0,
+     -591.34
+    ],
+    [
+     -1515.0,
+     -608.66
+    ],
+    [
+     -1500.0,
+     -617.32
+    ],
+    [
+     -1485.0,
+     -608.66
+    ]
+   ],
+   "z": [
+    156,
+    172
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Anchor Washer Front",
+   "shape": "box",
+   "at": [
+    -1525,
+    -625,
+    150,
+    -1475,
+    -575,
+    156
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Anchor Bolt Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1500,
+    600
+   ],
+   "r": 10,
+   "z": [
+    150,
+    230
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Anchor Nut Back",
+   "shape": "prism",
+   "pts": [
+    [
+     -1485.0,
+     608.66
+    ],
+    [
+     -1500.0,
+     617.32
+    ],
+    [
+     -1515.0,
+     608.66
+    ],
+    [
+     -1515.0,
+     591.34
+    ],
+    [
+     -1500.0,
+     582.68
+    ],
+    [
+     -1485.0,
+     591.34
+    ]
+   ],
+   "z": [
+    156,
+    172
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Anchor Washer Back",
+   "shape": "box",
+   "at": [
+    -1525,
+    575,
+    150,
+    -1475,
+    625,
+    156
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "str foundation plinth equipment isolated structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+plinth+equipment+isolated+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Inertia block 4200 x 1800 x 450 mm (geometry)": {
+   "value": "4200x1800x450",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm; mass ratio from the equipment vendor"
+  },
+  "Isolation joint 25 mm": {
+   "value": 25,
+   "source_status": "assumed",
+   "source": "typical vibration break"
+  },
+  "Upstand 150 mm": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical plinth"
+  },
+  "Equipment mass and anchor pattern from the vendor": {
+   "value": "vendor",
+   "source_status": "assumed",
+   "source": "vendor installation drawing; engineer to confirm"
+  }
+ },
+ "about": "Floor at z = 0: inertia block below floor on blinding, isolation filler and sealant around it, chamfered upstand, six anchor bolts with washers and nuts (Fine). Geometry shows the generator type."
+}

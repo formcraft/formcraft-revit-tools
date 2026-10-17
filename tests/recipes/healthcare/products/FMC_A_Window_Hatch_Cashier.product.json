@@ -1,0 +1,413 @@
+{
+ "family": "FMC_A_Window_Hatch_Cashier",
+ "category": "Windows",
+ "template": "Metric Window.rft",
+ "desc": "Cashier and records window: security glazing in a steel lining with beads, round speech grille, stainless deal tray through the wall, shelves both sides, sign",
+ "ifc": "IfcWindow",
+ "keynote": "G.HAT_02",
+ "types": [
+  {
+   "name": "900x600_Cashier",
+   "values": {
+    "Width": 900.0,
+    "Height": 600.0
+   }
+  }
+ ],
+ "type_values": {
+  "Sill Height": 1000
+ },
+ "materials": {
+  "frame": "FMC_Metal_Steel_EpoxyCoated_White",
+  "fire_glass": "FMC_Glass_Laminated",
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "laminate": "FMC_Plastic_Laminate_HPL",
+  "sign_blue": "FMC_Plastic_ABS_Blue"
+ },
+ "parts": [
+  {
+   "n": "Screen Lining Lower",
+   "shape": "front",
+   "mat": "frame",
+   "pts": [
+    [
+     -450.0,
+     1000
+    ],
+    [
+     450.0,
+     1000
+    ],
+    [
+     450.0,
+     1560
+    ],
+    [
+     410.0,
+     1560
+    ],
+    [
+     410.0,
+     1100
+    ],
+    [
+     -410.0,
+     1100
+    ],
+    [
+     -410.0,
+     1560
+    ],
+    [
+     -450.0,
+     1560
+    ]
+   ],
+   "y": [
+    -70,
+    70
+   ]
+  },
+  {
+   "n": "Screen Lining Upper",
+   "shape": "front",
+   "mat": "frame",
+   "pts": [
+    [
+     -450.0,
+     1560
+    ],
+    [
+     450.0,
+     1560
+    ],
+    [
+     450.0,
+     1600
+    ],
+    [
+     -450.0,
+     1600
+    ]
+   ],
+   "y": [
+    -70,
+    70
+   ]
+  },
+  {
+   "n": "Security Glass",
+   "shape": "fbox",
+   "mat": "fire_glass",
+   "at": [
+    -410.0,
+    -6,
+    1100,
+    410.0,
+    6,
+    1560
+   ]
+  },
+  {
+   "n": "Bead Side",
+   "shape": "prism",
+   "mat": "frame",
+   "pts": [
+    [
+     -397.0,
+     -22.0
+    ],
+    [
+     -395.5,
+     -21.6
+    ],
+    [
+     -394.4,
+     -20.5
+    ],
+    [
+     -394.0,
+     -19.0
+    ],
+    [
+     -394.0,
+     19.0
+    ],
+    [
+     -394.4,
+     20.5
+    ],
+    [
+     -395.5,
+     21.6
+    ],
+    [
+     -397.0,
+     22.0
+    ],
+    [
+     -407.0,
+     22.0
+    ],
+    [
+     -408.5,
+     21.6
+    ],
+    [
+     -409.6,
+     20.5
+    ],
+    [
+     -410.0,
+     19.0
+    ],
+    [
+     -410.0,
+     -19.0
+    ],
+    [
+     -409.6,
+     -20.5
+    ],
+    [
+     -408.5,
+     -21.6
+    ],
+    [
+     -407.0,
+     -22.0
+    ]
+   ],
+   "z": [
+    1100,
+    1560
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     804.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Bead Rail",
+   "shape": "box",
+   "mat": "frame",
+   "at": [
+    -394.0,
+    -22,
+    1100,
+    394.0,
+    22,
+    1116
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     444
+    ]
+   }
+  },
+  {
+   "n": "Speech Grille",
+   "shape": "turn",
+   "mat": "stainless",
+   "c": [
+    0,
+    1350
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     70,
+     -12
+    ],
+    [
+     70,
+     12
+    ],
+    [
+     0,
+     12
+    ]
+   ],
+   "axis": "y",
+   "seg": 40
+  },
+  {
+   "n": "Speech Grille Ring",
+   "shape": "turn",
+   "mat": "chrome",
+   "c": [
+    0,
+    1350
+   ],
+   "profile": [
+    [
+     70,
+     -14
+    ],
+    [
+     80,
+     -14
+    ],
+    [
+     80,
+     14
+    ],
+    [
+     70,
+     14
+    ]
+   ],
+   "lod": "f",
+   "axis": "y",
+   "seg": 40
+  },
+  {
+   "n": "Deal Tray",
+   "shape": "right",
+   "mat": "stainless",
+   "pts": [
+    [
+     -270,
+     1100
+    ],
+    [
+     -270,
+     1040
+    ],
+    [
+     270,
+     1040
+    ],
+    [
+     270,
+     1100
+    ],
+    [
+     255,
+     1100
+    ],
+    [
+     255,
+     1055
+    ],
+    [
+     -255,
+     1055
+    ],
+    [
+     -255,
+     1100
+    ]
+   ],
+   "x": [
+    -200,
+    200
+   ]
+  },
+  {
+   "n": "Counter Shelf",
+   "shape": "box",
+   "mat": "laminate",
+   "at": [
+    -510.0,
+    -370,
+    1070,
+    -200,
+    -70,
+    1100
+   ],
+   "r": 6
+  },
+  {
+   "n": "Counter Shelf Right",
+   "shape": "box",
+   "mat": "laminate",
+   "at": [
+    200,
+    -370,
+    1070,
+    510.0,
+    -70,
+    1100
+   ],
+   "r": 6
+  },
+  {
+   "n": "Staff Shelf",
+   "shape": "box",
+   "mat": "laminate",
+   "at": [
+    -510.0,
+    70,
+    1070,
+    -200,
+    370,
+    1100
+   ],
+   "r": 6
+  },
+  {
+   "n": "Staff Shelf Right",
+   "shape": "box",
+   "mat": "laminate",
+   "at": [
+    200,
+    70,
+    1070,
+    510.0,
+    370,
+    1100
+   ],
+   "r": 6
+  },
+  {
+   "n": "Cashier Sign",
+   "shape": "fbox",
+   "mat": "sign_blue",
+   "at": [
+    -160,
+    -72,
+    1630,
+    160,
+    -70,
+    1720
+   ],
+   "lod": "f",
+   "r": 6
+  }
+ ],
+ "reference": {
+  "query": "window hatch cashier windows hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=window+hatch+cashier+windows+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 900 x 600 mm, sill 1000": {
+   "value": "900x600",
+   "source_status": "assumed",
+   "source": "type 1; reception / cashier practice"
+  },
+  "Security glass 11.5 mm laminated": {
+   "value": "11.5 lam",
+   "source_status": "assumed",
+   "source": "EN 356 P6B typical, security confirms"
+  },
+  "Deal tray 400 mm wide": {
+   "value": 400,
+   "source_status": "assumed",
+   "source": "typical"
+  }
+ },
+ "about": "Cashier window modelled as a product: lining around the glazing (open slot below for the tray), laminated glass with beads, round stainless speech grille with chrome ring, dished deal tray through the wall, laminate shelves on the public and staff sides, sign. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

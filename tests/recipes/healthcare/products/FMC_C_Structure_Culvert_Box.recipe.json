@@ -1,0 +1,1477 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_C_Structure_Culvert_Box",
+ "template": "Metric Generic Model.rft",
+ "about": "Invert slab underside at z = 0, flow along y: three precast units (two halves each, haunched inside) on bedding, headwalls, four wingwalls, aprons with cut-off walls, outlet stone pitching (Fine). Reference: query: structure culvert box structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+culvert+box+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Site"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Compaction_Pct_MDD",
+   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_CBR_Pct",
+   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Layer_Thickness_mm",
+   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "900x600_Precast"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Cost_Unit",
+   "type": "900x600_Precast",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Geometry_Stage",
+   "type": "900x600_Precast",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/IfcExportAs",
+   "type": "900x600_Precast",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/Description",
+   "type": "900x600_Precast",
+   "param": "Description",
+   "value": "internal 900 wide x 600 high"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/Keynote",
+   "type": "900x600_Precast",
+   "param": "Keynote",
+   "value": "T.CUL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Keynote_Code",
+   "type": "900x600_Precast",
+   "param": "FMC_Keynote_Code",
+   "value": "T.CUL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Code_Description",
+   "type": "900x600_Precast",
+   "param": "FMC_Code_Description",
+   "value": "Culvert Box: Box culvert"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Code_Group",
+   "type": "900x600_Precast",
+   "param": "FMC_Code_Group",
+   "value": "T.CUL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x600_Precast/FMC_Role_Code",
+   "type": "900x600_Precast",
+   "param": "FMC_Role_Code",
+   "value": "C"
+  },
+  {
+   "op": "add_type",
+   "name": "1200x900_Precast"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Cost_Unit",
+   "type": "1200x900_Precast",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Geometry_Stage",
+   "type": "1200x900_Precast",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/IfcExportAs",
+   "type": "1200x900_Precast",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/Description",
+   "type": "1200x900_Precast",
+   "param": "Description",
+   "value": "internal 1200 x 900"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/Keynote",
+   "type": "1200x900_Precast",
+   "param": "Keynote",
+   "value": "T.CUL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Keynote_Code",
+   "type": "1200x900_Precast",
+   "param": "FMC_Keynote_Code",
+   "value": "T.CUL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Code_Description",
+   "type": "1200x900_Precast",
+   "param": "FMC_Code_Description",
+   "value": "Culvert Box: Box culvert"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Code_Group",
+   "type": "1200x900_Precast",
+   "param": "FMC_Code_Group",
+   "value": "T.CUL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x900_Precast/FMC_Role_Code",
+   "type": "1200x900_Precast",
+   "param": "FMC_Role_Code",
+   "value": "C"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pre",
+   "color": [
+    178,
+    175,
+    167
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pre Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Manhole_Precast",
+   "param": "Pre Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "C20",
+   "color": [
+    184,
+    182,
+    174
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "C20 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C20",
+   "param": "C20 Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pitch",
+   "color": [
+    134,
+    127,
+    116
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pitch Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Stone_Pitching",
+   "param": "Pitch Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blind",
+   "color": [
+    175,
+    173,
+    165
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blind Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Blinding_C15",
+   "param": "Blind Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1900,
+     -2465
+    ],
+    [
+     1900,
+     -2465
+    ],
+    [
+     1900,
+     3300
+    ],
+    [
+     -1900,
+     3300
+    ]
+   ],
+   "start": -450,
+   "end": 1300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Left Half 1",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -600,
+     0
+    ],
+    [
+     -600,
+     900
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     -350,
+     750
+    ],
+    [
+     -450,
+     650
+    ],
+    [
+     -450,
+     250
+    ],
+    [
+     -350,
+     150
+    ],
+    [
+     0,
+     150
+    ]
+   ],
+   "start": 510,
+   "end": 1515,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Left Half 1",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Left Half 1",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Left Half 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Left Half 2",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -600,
+     0
+    ],
+    [
+     -600,
+     900
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     -350,
+     750
+    ],
+    [
+     -450,
+     650
+    ],
+    [
+     -450,
+     250
+    ],
+    [
+     -350,
+     150
+    ],
+    [
+     0,
+     150
+    ]
+   ],
+   "start": -500,
+   "end": 505,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Left Half 2",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Left Half 2",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Left Half 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Left Half 3",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -600,
+     0
+    ],
+    [
+     -600,
+     900
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     -350,
+     750
+    ],
+    [
+     -450,
+     650
+    ],
+    [
+     -450,
+     250
+    ],
+    [
+     -350,
+     150
+    ],
+    [
+     0,
+     150
+    ]
+   ],
+   "start": -1510,
+   "end": -505,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Left Half 3",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Left Half 3",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Left Half 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Right Half 1",
+   "points": [
+    [
+     0,
+     150
+    ],
+    [
+     350,
+     150
+    ],
+    [
+     450,
+     250
+    ],
+    [
+     450,
+     650
+    ],
+    [
+     350,
+     750
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     600,
+     900
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "start": 510,
+   "end": 1515,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Right Half 1",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Right Half 1",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Right Half 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Right Half 2",
+   "points": [
+    [
+     0,
+     150
+    ],
+    [
+     350,
+     150
+    ],
+    [
+     450,
+     250
+    ],
+    [
+     450,
+     650
+    ],
+    [
+     350,
+     750
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     600,
+     900
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "start": -500,
+   "end": 505,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Right Half 2",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Right Half 2",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Right Half 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unit Right Half 3",
+   "points": [
+    [
+     0,
+     150
+    ],
+    [
+     350,
+     150
+    ],
+    [
+     450,
+     250
+    ],
+    [
+     450,
+     650
+    ],
+    [
+     350,
+     750
+    ],
+    [
+     0,
+     750
+    ],
+    [
+     0,
+     900
+    ],
+    [
+     600,
+     900
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "start": -1510,
+   "end": -505,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unit Right Half 3",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unit Right Half 3",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unit Right Half 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headwall Inlet",
+   "points": [
+    [
+     -1100,
+     0
+    ],
+    [
+     -600,
+     0
+    ],
+    [
+     -600,
+     900
+    ],
+    [
+     600,
+     900
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     1100,
+     0
+    ],
+    [
+     1100,
+     1300
+    ],
+    [
+     -1100,
+     1300
+    ]
+   ],
+   "start": 1515,
+   "end": 1765,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headwall Inlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headwall Inlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headwall Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headwall Outlet",
+   "points": [
+    [
+     -1100,
+     0
+    ],
+    [
+     -600,
+     0
+    ],
+    [
+     -600,
+     900
+    ],
+    [
+     600,
+     900
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     1100,
+     0
+    ],
+    [
+     1100,
+     1300
+    ],
+    [
+     -1100,
+     1300
+    ]
+   ],
+   "start": -1765,
+   "end": -1515,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headwall Outlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headwall Outlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headwall Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Inlet Left",
+   "points": [
+    [
+     -1100,
+     -1765
+    ],
+    [
+     -850,
+     -1765
+    ],
+    [
+     -1550,
+     -2465
+    ],
+    [
+     -1800,
+     -2465
+    ]
+   ],
+   "start": 0,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Inlet Left",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Inlet Left",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Inlet Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Inlet Right",
+   "points": [
+    [
+     850,
+     -1765
+    ],
+    [
+     1100,
+     -1765
+    ],
+    [
+     1800,
+     -2465
+    ],
+    [
+     1550,
+     -2465
+    ]
+   ],
+   "start": 0,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Inlet Right",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Inlet Right",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Inlet Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Outlet Left",
+   "points": [
+    [
+     -1100,
+     1765
+    ],
+    [
+     -1800,
+     2465
+    ],
+    [
+     -1550,
+     2465
+    ],
+    [
+     -850,
+     1765
+    ]
+   ],
+   "start": 0,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Outlet Left",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Outlet Left",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Outlet Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Outlet Right",
+   "points": [
+    [
+     1100,
+     1765
+    ],
+    [
+     850,
+     1765
+    ],
+    [
+     1550,
+     2465
+    ],
+    [
+     1800,
+     2465
+    ]
+   ],
+   "start": 0,
+   "end": 1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Outlet Right",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Outlet Right",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Outlet Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Apron Inlet",
+   "points": [
+    [
+     -1100,
+     -1765
+    ],
+    [
+     1100,
+     -1765
+    ],
+    [
+     1550,
+     -2465
+    ],
+    [
+     -1550,
+     -2465
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Apron Inlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Apron Inlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Apron Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Apron Outlet",
+   "points": [
+    [
+     -1100,
+     1765
+    ],
+    [
+     -1550,
+     2465
+    ],
+    [
+     1550,
+     2465
+    ],
+    [
+     1100,
+     1765
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Apron Outlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Apron Outlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Apron Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cut-off Wall Inlet",
+   "points": [
+    [
+     -1550,
+     -2465
+    ],
+    [
+     1550,
+     -2465
+    ],
+    [
+     1550,
+     -2265
+    ],
+    [
+     -1550,
+     -2265
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cut-off Wall Inlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cut-off Wall Inlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cut-off Wall Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cut-off Wall Outlet",
+   "points": [
+    [
+     -1550,
+     2265
+    ],
+    [
+     1550,
+     2265
+    ],
+    [
+     1550,
+     2465
+    ],
+    [
+     -1550,
+     2465
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cut-off Wall Outlet",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cut-off Wall Outlet",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cut-off Wall Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stone Pitching",
+   "points": [
+    [
+     -1550,
+     2465
+    ],
+    [
+     -1900,
+     3300
+    ],
+    [
+     1900,
+     3300
+    ],
+    [
+     1550,
+     2465
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stone Pitching",
+   "subcategory": "Pitch"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stone Pitching",
+   "param": "Pitch Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stone Pitching",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bedding",
+   "points": [
+    [
+     -650,
+     -1515
+    ],
+    [
+     650,
+     -1515
+    ],
+    [
+     650,
+     1515
+    ],
+    [
+     -650,
+     1515
+    ]
+   ],
+   "start": -150,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bedding",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bedding",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bedding",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_Culvert_Box.png"
+  }
+ ],
+ "values": {
+  "Internal 900 x 600, walls 150 mm (geometry)": {
+   "value": "900x600 t150",
+   "source_status": "assumed",
+   "source": "typical precast box; hydraulic size by the engineer"
+  },
+  "Units 1000 long, 3 shown": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical precast unit"
+  },
+  "Wingwalls splayed 45 degrees": {
+   "value": 45,
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Cover and loading by the engineer": {
+   "value": "by engineer",
+   "source_status": "assumed",
+   "source": "engineer to confirm"
+  }
+ }
+}

@@ -1,0 +1,243 @@
+{
+ "family": "FMC_M_AirTerminal_Louvre_External",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "External weather louvre 600 x 600 to 1200 x 600, drainable inclined blades, centre mullion, bird mesh, drainage sill and drip, wall sleeve",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_07",
+ "types": [
+  {
+   "name": "600x600_Weather"
+  },
+  {
+   "name": "1200x600_Weather"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2400
+ },
+ "materials": {
+  "galv": "FMC_Metal_Duct_Galvanised",
+  "mesh": "FMC_Plastic_InsectMesh_Fibreglass",
+  "pcg": "FMC_Metal_Aluminium_PowderCoated"
+ },
+ "reference": {
+  "query": "louvre external air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=louvre+external+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Frame Top",
+   "shape": "fbox",
+   "at": [
+    -600,
+    -100,
+    550,
+    600,
+    0,
+    600
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Frame Bottom",
+   "shape": "fbox",
+   "at": [
+    -600,
+    -100,
+    0,
+    600,
+    0,
+    50
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Frame Left",
+   "shape": "fbox",
+   "at": [
+    -600,
+    -100,
+    50,
+    -550,
+    0,
+    550
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Frame Right",
+   "shape": "fbox",
+   "at": [
+    550,
+    -100,
+    50,
+    600,
+    0,
+    550
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Mullion",
+   "shape": "fbox",
+   "at": [
+    -15,
+    -100,
+    50,
+    15,
+    0,
+    550
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Blade",
+   "shape": "right",
+   "pts": [
+    [
+     -98,
+     0
+    ],
+    [
+     -90,
+     0
+    ],
+    [
+     -90,
+     10
+    ],
+    [
+     -12,
+     54
+    ],
+    [
+     -12,
+     66
+    ],
+    [
+     -98,
+     18
+    ]
+   ],
+   "x": [
+    -550,
+    550
+   ],
+   "mat": "pcg",
+   "repeat": {
+    "n": 11,
+    "d": [
+     0,
+     0,
+     47
+    ]
+   }
+  },
+  {
+   "n": "Bird Mesh",
+   "shape": "fbox",
+   "at": [
+    -550,
+    -6,
+    50,
+    550,
+    -4,
+    550
+   ],
+   "mat": "mesh"
+  },
+  {
+   "n": "Drainage Sill",
+   "shape": "box",
+   "at": [
+    -610,
+    -150,
+    -15,
+    610,
+    0,
+    0
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Drip Lip",
+   "shape": "fbox",
+   "at": [
+    -610,
+    -156,
+    -35,
+    610,
+    -150,
+    0
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Wall Sleeve",
+   "shape": "box",
+   "at": [
+    -550,
+    0,
+    50,
+    550,
+    250,
+    550
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Fixing Lug",
+   "shape": "fbox",
+   "at": [
+    -620,
+    -40,
+    100,
+    -600,
+    0,
+    140
+   ],
+   "mat": "pcg",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1220,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Intake",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "part": "Wall Sleeve",
+   "side": "back",
+   "flow": "Out",
+   "width": 1100,
+   "height": 500
+  }
+ ],
+ "values": {
+  "Face 1200 x 600 mm, 100 deep": {
+   "value": "1200x600x100",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Blade pitch 47 mm, 45 deg": {
+   "value": 47,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Free area 50 %, class B rain defence at 1 m/s": {
+   "value": "50%",
+   "source_status": "assumed",
+   "source": "EN 13030 class, typical"
+  }
+ },
+ "about": "Modelled as a generic product: powder-coated frame and mullion, drainable blades with lips, bird mesh behind, projecting sill with drip, galvanised sleeve into the wall, fixing lugs. External face toward -y."
+}

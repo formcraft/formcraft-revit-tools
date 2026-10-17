@@ -1,0 +1,100 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Profile_Handrail_Hospital_Section",
+ "template": "Metric Profile.rft",
+ "about": "Combined handrail and buffer, 140 mm high, 45 mm projection, hand-grip top. A 2D profile for sweeps (rails, coving, nosings); never scheduled.",
+ "ops": [
+  {
+   "op": "add_type",
+   "name": "140x45_Handrail"
+  },
+  {
+   "op": "set_type_value",
+   "name": "140x45_Handrail/Description",
+   "type": "140x45_Handrail",
+   "param": "Description",
+   "value": "Combined handrail and buffer, 140 mm high, 45 mm projection, hand-grip top"
+  },
+  {
+   "op": "profile_lines",
+   "name": "Section",
+   "start": [
+    0,
+    0
+   ],
+   "segments": [
+    {
+     "to": [
+      15,
+      0
+     ]
+    },
+    {
+     "to": [
+      40,
+      15
+     ]
+    },
+    {
+     "to": [
+      45,
+      40
+     ]
+    },
+    {
+     "to": [
+      45,
+      100
+     ]
+    },
+    {
+     "to": [
+      40,
+      125
+     ],
+     "through": [
+      44,
+      114
+     ]
+    },
+    {
+     "to": [
+      15,
+      140
+     ],
+     "through": [
+      30,
+      136
+     ]
+    },
+    {
+     "to": [
+      0,
+      140
+     ]
+    },
+    {
+     "to": [
+      0,
+      0
+     ]
+    }
+   ]
+  }
+ ],
+ "values": {
+  "Height 140 mm": {
+   "value": 140,
+   "source_status": "assumed",
+   "source": "typical hospital handrail-buffer"
+  },
+  "Grip 45 mm": {
+   "value": 45,
+   "source_status": "assumed",
+   "source": "BS 8300: 32-50 mm grip"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "profile family: used inside sweeps, never scheduled"
+ }
+}

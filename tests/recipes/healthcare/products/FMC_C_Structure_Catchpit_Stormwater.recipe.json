@@ -1,0 +1,1712 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_C_Structure_Catchpit_Stormwater",
+ "template": "Metric Generic Model.rft",
+ "about": "Ground at z = 0: concrete walls and base, galvanised angle frame, 17 bearing bars and cross rods, two precast U-channel inlets, outlet pipe stub with connector; the silt trap is the depth below the outlet. Reference: query: structure catchpit stormwater structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+catchpit+stormwater+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Pipe Accessories"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "900x900_Catchpit"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/FMC_Cost_Unit",
+   "type": "900x900_Catchpit",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/FMC_Geometry_Stage",
+   "type": "900x900_Catchpit",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/IfcExportAs",
+   "type": "900x900_Catchpit",
+   "param": "IfcExportAs",
+   "value": "IfcDistributionChamberElement"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/Description",
+   "type": "900x900_Catchpit",
+   "param": "Description",
+   "value": "Stormwater catch pit with silt trap, galvanised bar grating on angle frame, U-channel inlets and outlet pipe"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/Keynote",
+   "type": "900x900_Catchpit",
+   "param": "Keynote",
+   "value": "T.DRN_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x900_Catchpit/FMC_Keynote_Code",
+   "type": "900x900_Catchpit",
+   "param": "FMC_Keynote_Code",
+   "value": "T.DRN_04"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    167,
+    172,
+    175
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_ColdFormed_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pre",
+   "color": [
+    178,
+    175,
+    167
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pre Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Manhole_Precast",
+   "param": "Pre Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upvc",
+   "color": [
+    74,
+    77,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upvc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1200,
+     -1200
+    ],
+    [
+     950,
+     -1200
+    ],
+    [
+     950,
+     650
+    ],
+    [
+     -1200,
+     650
+    ]
+   ],
+   "start": -1350,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Pit Wall Front",
+   "points": [
+    [
+     -600,
+     -600
+    ],
+    [
+     600,
+     -600
+    ],
+    [
+     600,
+     -450
+    ],
+    [
+     -600,
+     -450
+    ]
+   ],
+   "start": -1200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pit Wall Front",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pit Wall Front",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pit Wall Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pit Wall Back",
+   "points": [
+    [
+     -600,
+     450
+    ],
+    [
+     600,
+     450
+    ],
+    [
+     600,
+     600
+    ],
+    [
+     -600,
+     600
+    ]
+   ],
+   "start": -1200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pit Wall Back",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pit Wall Back",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pit Wall Back",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pit Wall Left",
+   "points": [
+    [
+     -600,
+     -450
+    ],
+    [
+     -450,
+     -450
+    ],
+    [
+     -450,
+     450
+    ],
+    [
+     -600,
+     450
+    ]
+   ],
+   "start": -1200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pit Wall Left",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pit Wall Left",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pit Wall Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pit Wall Right",
+   "points": [
+    [
+     450,
+     -450
+    ],
+    [
+     600,
+     -450
+    ],
+    [
+     600,
+     450
+    ],
+    [
+     450,
+     450
+    ]
+   ],
+   "start": -1200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pit Wall Right",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pit Wall Right",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pit Wall Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base",
+   "points": [
+    [
+     -650,
+     -650
+    ],
+    [
+     650,
+     -650
+    ],
+    [
+     650,
+     650
+    ],
+    [
+     -650,
+     650
+    ]
+   ],
+   "start": -1350,
+   "end": -1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Angle Front",
+   "points": [
+    [
+     -450,
+     -450
+    ],
+    [
+     450,
+     -450
+    ],
+    [
+     450,
+     -400
+    ],
+    [
+     -450,
+     -400
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Angle Front",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Angle Front",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Angle Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Angle Back",
+   "points": [
+    [
+     -450,
+     400
+    ],
+    [
+     450,
+     400
+    ],
+    [
+     450,
+     450
+    ],
+    [
+     -450,
+     450
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Angle Back",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Angle Back",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Angle Back",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Angle Left",
+   "points": [
+    [
+     -450,
+     -400
+    ],
+    [
+     -400,
+     -400
+    ],
+    [
+     -400,
+     400
+    ],
+    [
+     -450,
+     400
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Angle Left",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Angle Left",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Angle Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Angle Right",
+   "points": [
+    [
+     400,
+     -400
+    ],
+    [
+     450,
+     -400
+    ],
+    [
+     450,
+     400
+    ],
+    [
+     400,
+     400
+    ]
+   ],
+   "start": -50,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Angle Right",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Angle Right",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Angle Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 1",
+   "points": [
+    [
+     -397,
+     -400
+    ],
+    [
+     -392,
+     -400
+    ],
+    [
+     -392,
+     400
+    ],
+    [
+     -397,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 2",
+   "points": [
+    [
+     -348,
+     -400
+    ],
+    [
+     -343,
+     -400
+    ],
+    [
+     -343,
+     400
+    ],
+    [
+     -348,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 3",
+   "points": [
+    [
+     -299,
+     -400
+    ],
+    [
+     -294,
+     -400
+    ],
+    [
+     -294,
+     400
+    ],
+    [
+     -299,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 4",
+   "points": [
+    [
+     -250,
+     -400
+    ],
+    [
+     -245,
+     -400
+    ],
+    [
+     -245,
+     400
+    ],
+    [
+     -250,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 5",
+   "points": [
+    [
+     -201,
+     -400
+    ],
+    [
+     -196,
+     -400
+    ],
+    [
+     -196,
+     400
+    ],
+    [
+     -201,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 6",
+   "points": [
+    [
+     -152,
+     -400
+    ],
+    [
+     -147,
+     -400
+    ],
+    [
+     -147,
+     400
+    ],
+    [
+     -152,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 7",
+   "points": [
+    [
+     -103,
+     -400
+    ],
+    [
+     -98,
+     -400
+    ],
+    [
+     -98,
+     400
+    ],
+    [
+     -103,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 7",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 7",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 8",
+   "points": [
+    [
+     -54,
+     -400
+    ],
+    [
+     -49,
+     -400
+    ],
+    [
+     -49,
+     400
+    ],
+    [
+     -54,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 8",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 8",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 9",
+   "points": [
+    [
+     -5,
+     -400
+    ],
+    [
+     0,
+     -400
+    ],
+    [
+     0,
+     400
+    ],
+    [
+     -5,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 9",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 9",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 9",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 10",
+   "points": [
+    [
+     44,
+     -400
+    ],
+    [
+     49,
+     -400
+    ],
+    [
+     49,
+     400
+    ],
+    [
+     44,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 10",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 10",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 10",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 11",
+   "points": [
+    [
+     93,
+     -400
+    ],
+    [
+     98,
+     -400
+    ],
+    [
+     98,
+     400
+    ],
+    [
+     93,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 11",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 11",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 11",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 12",
+   "points": [
+    [
+     142,
+     -400
+    ],
+    [
+     147,
+     -400
+    ],
+    [
+     147,
+     400
+    ],
+    [
+     142,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 12",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 12",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 12",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 13",
+   "points": [
+    [
+     191,
+     -400
+    ],
+    [
+     196,
+     -400
+    ],
+    [
+     196,
+     400
+    ],
+    [
+     191,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 13",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 13",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 13",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 14",
+   "points": [
+    [
+     240,
+     -400
+    ],
+    [
+     245,
+     -400
+    ],
+    [
+     245,
+     400
+    ],
+    [
+     240,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 14",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 14",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 14",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 15",
+   "points": [
+    [
+     289,
+     -400
+    ],
+    [
+     294,
+     -400
+    ],
+    [
+     294,
+     400
+    ],
+    [
+     289,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 15",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 15",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 15",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 16",
+   "points": [
+    [
+     338,
+     -400
+    ],
+    [
+     343,
+     -400
+    ],
+    [
+     343,
+     400
+    ],
+    [
+     338,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 16",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 16",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 16",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Bar 17",
+   "points": [
+    [
+     387,
+     -400
+    ],
+    [
+     392,
+     -400
+    ],
+    [
+     392,
+     400
+    ],
+    [
+     387,
+     400
+    ]
+   ],
+   "start": -40,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Bar 17",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Bar 17",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Bar 17",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Cross Rod 1",
+   "points": [
+    [
+     -400,
+     -305
+    ],
+    [
+     400,
+     -305
+    ],
+    [
+     400,
+     -297
+    ],
+    [
+     -400,
+     -297
+    ]
+   ],
+   "start": -8,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Cross Rod 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Cross Rod 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Cross Rod 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Cross Rod 2",
+   "points": [
+    [
+     -400,
+     -5
+    ],
+    [
+     400,
+     -5
+    ],
+    [
+     400,
+     3
+    ],
+    [
+     -400,
+     3
+    ]
+   ],
+   "start": -8,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Cross Rod 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Cross Rod 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Cross Rod 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grating Cross Rod 3",
+   "points": [
+    [
+     -400,
+     295
+    ],
+    [
+     400,
+     295
+    ],
+    [
+     400,
+     303
+    ],
+    [
+     -400,
+     303
+    ]
+   ],
+   "start": -8,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grating Cross Rod 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grating Cross Rod 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grating Cross Rod 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Channel Left",
+   "points": [
+    [
+     -225,
+     -375
+    ],
+    [
+     225,
+     -375
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     150,
+     0
+    ],
+    [
+     150,
+     -300
+    ],
+    [
+     -150,
+     -300
+    ],
+    [
+     -150,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "start": -1200,
+   "end": -600,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Channel Left",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Channel Left",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Channel Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Channel Front",
+   "points": [
+    [
+     -225,
+     -375
+    ],
+    [
+     225,
+     -375
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     150,
+     0
+    ],
+    [
+     150,
+     -300
+    ],
+    [
+     -150,
+     -300
+    ],
+    [
+     -150,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "start": 600,
+   "end": 1200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Channel Front",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Channel Front",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Channel Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe",
+   "points": [
+    [
+     100.0,
+     -700.0
+    ],
+    [
+     96.59,
+     -674.12
+    ],
+    [
+     86.6,
+     -650.0
+    ],
+    [
+     70.71,
+     -629.29
+    ],
+    [
+     50.0,
+     -613.4
+    ],
+    [
+     25.88,
+     -603.41
+    ],
+    [
+     0.0,
+     -600.0
+    ],
+    [
+     -25.88,
+     -603.41
+    ],
+    [
+     -50.0,
+     -613.4
+    ],
+    [
+     -70.71,
+     -629.29
+    ],
+    [
+     -86.6,
+     -650.0
+    ],
+    [
+     -96.59,
+     -674.12
+    ],
+    [
+     -100.0,
+     -700.0
+    ],
+    [
+     -96.59,
+     -725.88
+    ],
+    [
+     -86.6,
+     -750.0
+    ],
+    [
+     -70.71,
+     -770.71
+    ],
+    [
+     -50.0,
+     -786.6
+    ],
+    [
+     -25.88,
+     -796.59
+    ],
+    [
+     -0.0,
+     -800.0
+    ],
+    [
+     25.88,
+     -796.59
+    ],
+    [
+     50.0,
+     -786.6
+    ],
+    [
+     70.71,
+     -770.71
+    ],
+    [
+     86.6,
+     -750.0
+    ],
+    [
+     96.59,
+     -725.88
+    ]
+   ],
+   "start": 590,
+   "end": 950,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "SAN Out",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Outlet Pipe",
+   "side": "right",
+   "diameter": 200,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_Catchpit_Stormwater.png"
+  }
+ ],
+ "values": {
+  "Internal 900 x 900 mm": {
+   "value": "900x900",
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Silt trap 500 mm below outlet invert": {
+   "value": 500,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Grating 40 x 5 bars at 49 mm": {
+   "value": "40x5 at 49",
+   "source_status": "assumed",
+   "source": "typical bar grating; load class by location"
+  },
+  "Outlet 200 mm": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "drainage design"
+  }
+ }
+}

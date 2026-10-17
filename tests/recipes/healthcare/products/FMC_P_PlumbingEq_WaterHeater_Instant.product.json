@@ -1,0 +1,260 @@
+{
+ "family": "FMC_P_PlumbingEq_WaterHeater_Instant",
+ "category": "Plumbing Equipment",
+ "desc": "Instantaneous electric water heater, wall-mounted 230 x 88 x 330 mm, digital temperature display, pressure type, 15 mm compression connections",
+ "ifc": "IfcElectricFlowStorageDevice",
+ "keynote": "P.HWS_00",
+ "types": [
+  {
+   "name": "3kW_Instant",
+   "values": {
+    "Apparent Load": 3000
+   }
+  },
+  {
+   "name": "6kW_Instant",
+   "values": {
+    "Apparent Load": 6000
+   }
+  }
+ ],
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "black": "FMC_Plastic_ABS_Black",
+  "led_blue": "FMC_Plastic_LED_Blue",
+  "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "led_green": "FMC_Plastic_LED_Green",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "brass": "FMC_Metal_Brass_Polished"
+ },
+ "reference": {
+  "query": "water heater instant plumbing equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=water+heater+instant+plumbing+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -115,
+    -80,
+    1300,
+    115,
+    0,
+    1630
+   ],
+   "mat": "white",
+   "r": 20
+  },
+  {
+   "n": "Front Cover",
+   "shape": "fbox",
+   "at": [
+    -110,
+    -88,
+    1308,
+    110,
+    -80,
+    1622
+   ],
+   "mat": "white",
+   "r": 18
+  },
+  {
+   "n": "Display",
+   "shape": "fbox",
+   "at": [
+    -60,
+    -90,
+    1510,
+    60,
+    -88,
+    1560
+   ],
+   "mat": "black",
+   "r": 4,
+   "lod": "f"
+  },
+  {
+   "n": "Display Digits",
+   "shape": "fbox",
+   "at": [
+    -40,
+    -91,
+    1522,
+    40,
+    -90,
+    1548
+   ],
+   "mat": "led_blue",
+   "lod": "f"
+  },
+  {
+   "n": "Temp Knob",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    1440
+   ],
+   "r": 30,
+   "y": [
+    -104,
+    -88
+   ],
+   "mat": "medical_grey"
+  },
+  {
+   "n": "Knob Grip",
+   "shape": "box",
+   "at": [
+    -4,
+    -108,
+    1415,
+    4,
+    -104,
+    1465
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Power LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    70,
+    1380
+   ],
+   "r": 4,
+   "y": [
+    -90,
+    -88
+   ],
+   "mat": "led_green",
+   "lod": "f"
+  },
+  {
+   "n": "Cold Stub",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -45,
+    -40
+   ],
+   "r": 9,
+   "z": [
+    1240,
+    1300
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Hot Stub",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    45,
+    -40
+   ],
+   "r": 9,
+   "z": [
+    1240,
+    1300
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Union Nut",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -45,
+    -40
+   ],
+   "r": 14,
+   "z": [
+    1270,
+    1288
+   ],
+   "mat": "brass",
+   "seg": 6,
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     90,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cable Gland",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -30
+   ],
+   "r": 10,
+   "z": [
+    1270,
+    1300
+   ],
+   "mat": "grey"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Cold Stub",
+   "side": "bottom",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "HW",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "part": "Hot Stub",
+   "side": "bottom",
+   "diameter": 15,
+   "flow": "Out"
+  },
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Cable Gland",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "230 x 88 x 330 mm": {
+   "value": "230x88x330",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "3 kW / 6 kW at 240 V": {
+   "value": "3/6 kW",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Mounted at 1300 mm (over sink)": {
+   "value": 1300,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Instant heater modelled as a generic product: body and cover, display with digits, temperature knob, power LED, cold and hot stubs with hex union nuts, cable gland.",
+ "template": "Metric Generic Model.rft",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 3000
+ }
+}

@@ -1,0 +1,325 @@
+{
+ "family": "FMC_P_PlumbingEq_Tank_Underground_Rainwater",
+ "category": "Plumbing Equipment",
+ "desc": "Underground rainwater harvesting tank 20 m3, ribbed HDPE horizontal cylinder 2500 dia x 4800 mm, access turret and filter turret with covers at grade, inlet, overflow and pump delivery",
+ "ifc": "IfcTank",
+ "keynote": "P.TNK_03",
+ "types": [
+  {
+   "name": "20m3_Underground"
+  },
+  {
+   "name": "50m3_Underground"
+  }
+ ],
+ "materials": {
+  "hdpe": "FMC_Plastic_HDPE_PE100_Black",
+  "painted_steel": "FMC_Metal_SteelLTZ_Painted",
+  "black": "FMC_Plastic_ABS_Black",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "concrete": "FMC_Concrete_Precast_Painted"
+ },
+ "reference": {
+  "query": "tank underground rainwater plumbing equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=tank+underground+rainwater+plumbing+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Tank Body",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -1750
+   ],
+   "r": 1250,
+   "x": [
+    -2200,
+    2200
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "End Cap L",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -1750
+   ],
+   "profile": [
+    [
+     0,
+     -2400
+    ],
+    [
+     800,
+     -2350
+    ],
+    [
+     1250,
+     -2200
+    ],
+    [
+     0,
+     -2200
+    ]
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "End Cap R",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -1750
+   ],
+   "profile": [
+    [
+     0,
+     2200
+    ],
+    [
+     1250,
+     2200
+    ],
+    [
+     800,
+     2350
+    ],
+    [
+     0,
+     2400
+    ]
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "Rib",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -1750
+   ],
+   "profile": [
+    [
+     1250,
+     -1900
+    ],
+    [
+     1300,
+     -1900
+    ],
+    [
+     1300,
+     -1840
+    ],
+    [
+     1250,
+     -1840
+    ]
+   ],
+   "mat": "hdpe",
+   "lod": "f",
+   "repeat": {
+    "n": 8,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Access Turret",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 350,
+   "z": [
+    -560,
+    -70
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "Manhole Cover",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 380,
+   "z": [
+    -70,
+    0
+   ],
+   "mat": "painted_steel"
+  },
+  {
+   "n": "Cover Keyhole",
+   "shape": "box",
+   "at": [
+    -120,
+    -10,
+    -1,
+    -90,
+    10,
+    0.5
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     210,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Filter Turret",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1500,
+    0
+   ],
+   "r": 250,
+   "z": [
+    -560,
+    -70
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "Filter Cover",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1500,
+    0
+   ],
+   "r": 280,
+   "z": [
+    -70,
+    0
+   ],
+   "mat": "painted_steel"
+  },
+  {
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -350
+   ],
+   "r": 55,
+   "x": [
+    -2700,
+    -1750
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Overflow Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -600
+   ],
+   "r": 55,
+   "x": [
+    1750,
+    2700
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Delivery Pipe",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    200,
+    -350
+   ],
+   "r": 20,
+   "y": [
+    0,
+    600
+   ],
+   "mat": "hdpe"
+  },
+  {
+   "n": "Bedding Slab",
+   "shape": "box",
+   "at": [
+    -2600,
+    -1500,
+    -3100,
+    2600,
+    1500,
+    -3000
+   ],
+   "mat": "concrete"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Rainwater In",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Inlet Pipe",
+   "side": "left",
+   "diameter": 110,
+   "flow": "In"
+  },
+  {
+   "n": "Overflow",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Overflow Pipe",
+   "side": "right",
+   "diameter": 110,
+   "flow": "Out"
+  },
+  {
+   "n": "Delivery",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Delivery Pipe",
+   "side": "back",
+   "diameter": 40,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "2500 dia x 4800 mm, 20 m3": {
+   "value": "2500x4800",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Cover at finished ground (z = 0)": {
+   "value": 0,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Bedding slab 100 mm C20": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "BS 8515 rainwater harvesting"
+  }
+ },
+ "about": "Rainwater tank modelled as a generic product: ribbed cylinder with domed end caps, access turret and cover with keyholes, filter turret and cover, inlet, overflow, delivery pipe and bedding slab, all below ground (z = 0). 20 m3 drawn; 50 m3 shares it.",
+ "template": "Metric Generic Model.rft"
+}
