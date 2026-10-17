@@ -1325,7 +1325,7 @@ def pendant(fam, desc, types, gases, arms, shelves, head_h, extra_parts, vals, a
               B("Handle", (xh - 120, -260, z - 180 - head_h, xh + 120, -230, z - 160 - head_h), 'chrome', r=8)]
     ztop = z - 200
     for i, g in enumerate(gases):
-        parts += tu(g, xh - 100 + (i % 3) * 100, ztop - 60 - (i // 3) * 110, g, y0=-210)
+        parts += tu(g if gases.count(g) == 1 else f"{g} {gases[:i + 1].count(g)}", xh - 100 + (i % 3) * 100, ztop - 60 - (i // 3) * 110, g, y0=-210)
     zs = ztop - 60 - ((len(gases) - 1) // 3) * 110 - 170
     parts += socket("Socket A", xh - 75, zs, y0=-210) + socket("Socket B", xh - 75, zs - 110, y0=-210, switch='red')
     parts += [F("Nurse Call", (xh + 20, -219, zs - 40, xh + 140, -210, zs + 40), 'white', r=5),
