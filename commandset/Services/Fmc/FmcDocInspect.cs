@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -218,5 +219,33 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         private static string Safe(string s) => string.Concat((s ?? "").Select(c => Path.GetInvalidFileNameChars().Contains(c) || c == ' ' ? '_' : c));
+        /// <summary>
+        /// set_type_image (owner, 17 Oct): the product picture becomes Revit's built-in Type Image, so it shows in Type
+        /// Properties, in schedules (image field) and in legends beside the legend components. The image is imported
+        /// into the family (no link to the file), and a second run reloads it, so a better render replaces the old one.
+        /// </summary>
+        public static (string, string) SetTypeImage(Document doc, JObject op)
+        {
+            if (!doc.IsFamilyDocument) throw new InvalidOperationException("set_type_image works in a family");
+            string path = op.Value<string>("path"), only = op.Value<string>("type");
+            if (!System.IO.File.Exists(path)) throw new InvalidOperationException("No file " + path);
+            string file = System.IO.Path.GetFileName(path);
+            var opts = new ImageTypeOptions(path, false, ImageTypeSource.Import);
+            ImageType img = new FilteredElementCollector(doc).OfClass(typeof(ImageType)).Cast<ImageType>()
+                .FirstOrDefault(i => string.Equals(System.IO.Path.GetFileName(i.Path ?? ""), file, StringComparison.OrdinalIgnoreCase));
+            string what = img == null ? "create" : "update";
+            if (img == null) img = ImageType.Create(doc, opts); else img.ReloadFrom(opts);
+            FamilyManager fm = doc.FamilyManager;
+            FamilyParameter fp = fm.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_IMAGE)
+                ?? throw new InvalidOperationException("This family has no Type Image parameter (Revit 2020+ model families have it)");
+            int n = 0;
+            foreach (FamilyType t in fm.Types)
+            {
+                if (!string.IsNullOrEmpty(only) && t.Name != only) continue;
+                fm.CurrentType = t; fm.Set(fp, img.Id); n++;
+            }
+            if (n == 0) throw new InvalidOperationException("No type " + only);
+            return (what, file + " is the Type Image of " + n + " type(s)");
+        }
     }
 }

@@ -271,3 +271,16 @@ page; a datasheet, if one was used, is only a source of sizes.
 Loop: write the parts model, then run `python3 ../tools/fmc_parts.py X.product.json X.recipe.json` (or
 `healthcare/products/make_products.py`). Compare the preview with the photo, adjust, then build with `fmc_recipe`
 (stepwise above 8 KB) and run Gate A.
+
+### Type Image and legends
+
+Every product recipe ends with `set_type_image`. It imports a 3D picture of the product (`render_type_image`, 800 px)
+into the family as Revit's built-in **Type Image**, for every type. The picture then shows in Type Properties, in
+schedules (image field) and in legends next to the legend components (plan, front and side, drawn by Revit from the
+family's own geometry). Pictures live in `04_Families\_Staging\<Role>\_Images\`. A second run reloads the picture, so a
+better render replaces the old one.
+
+### Owner review before sale
+
+The board's 3D viewer shows every product model with **✓ Pass test / ✗ Needs work** and a note. The tick is saved
+with the Inbox decisions as `REV-<family>`. A family is offered for sale only after it passes this review and Gate A.

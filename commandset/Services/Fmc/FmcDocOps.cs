@@ -147,6 +147,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "array": return FmcDocRecipe.MakeArray(doc, op);
                 case "delete_template_element": return FmcDocRecipe.DeleteTemplateElement(doc, op);
                 case "set_default_size": return FmcDocRecipe.SetDefaultSize(doc, op);
+                case "set_type_image": return FmcDocInspect.SetTypeImage(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }

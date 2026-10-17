@@ -177,5 +177,6 @@ for prod in map(generic, P):
     r = fp.compile_product(prod)
     json.dump(r, open(os.path.join(HERE, prod['family'] + '.recipe.json'), 'w'), indent=1)
     fp.render(prod, os.path.join(HERE, prod['family'] + '.preview.png'))
+    fp.render_type_image(prod, os.path.join(HERE, prod['family'] + '.png'))
     out.append((prod['family'], len(r['ops'])))
 print(out)

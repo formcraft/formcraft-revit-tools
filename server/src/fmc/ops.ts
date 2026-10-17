@@ -157,6 +157,10 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_default_size"), name: z.string().min(1).describe("identity, e.g. Default size"),
     type: z.string().optional().describe("the type to make current (made when missing); default: the template's current type"),
     values: z.record(mm.positive()).describe("Length parameter → mm, e.g. { \"Width\": 900, \"Height\": 2100 }") }),
+  // Owner, 17 Oct: the product picture as Revit's built-in Type Image (Type Properties, schedules, legends).
+  z.object({ op: z.literal("set_type_image"), name: z.string().min(1).describe("identity, e.g. Type image"),
+    path: z.string().min(1).describe("a .png or .jpg in the kit's families folder, e.g. 04_Families\\_Staging\\<Role>\\_Images\\<family>.png"),
+    type: z.string().optional().describe("one type; default: every type") }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
@@ -412,6 +416,16 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         }
         if (o.type) types.add(o.type);
         break;
+      case "set_type_image": {
+        const file = o.path.replace(/\//g, "\\");
+        if (!/\.(png|jpe?g)$/i.test(file)) p.push(`${at}: set_type_image takes a .png or .jpg`);
+        if (familiesRoot) {
+          const root = familiesRoot.replace(/\//g, "\\").replace(/\\+$/, "").toLowerCase() + "\\";
+          if (!file.toLowerCase().startsWith(root) || file.includes("..")) p.push(`${at}: ${o.path} isn't inside the kit's families folder (${familiesRoot})`);
+        }
+        if (o.type && !types.has(o.type)) p.push(`${at}: ${mayExist("type", o.type)}`);
+        break;
+      }
       case "set_subcategory":
         if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
         if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);

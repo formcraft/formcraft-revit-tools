@@ -12,12 +12,14 @@ Part shapes
   turn   axis=z c=[x,y] profile=[[r,z],...]         turned part (revolution); axis=y profile [[r,y],...]; axis=x [[r,x],...]
 Common keys: n (name, unique), mat (key in materials), lod ('c','m','f' combined; default 'mf'), void (cut), repeat {n, d:[dx,dy,dz]}
 """
+import os
 import json, math, os, sys, copy
 
 KIT_MATERIALS = os.environ.get('FMC_MATERIALS', '/mnt/user-data/outputs/kit/m1/FMC_Materials.json')
 GUID = {'FMC_Keynote_Code': '2d089b32-0589-516b-8952-9f6afad95971', 'FMC_Cost_Unit': '6f0f6197-4d1e-5601-afd7-98d436c0bd40',
         'FMC_Geometry_Stage': '27c3be4d-9757-51ba-aa96-6c7a3a061025', 'IfcExportAs': 'bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7'}
 _mat_cache = None
+STAGING = os.environ.get("FMC_STAGING", r"D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2\04_Families\_Staging")
 OPEN = {"FMC_Manufacturer": "dc399f41-0c78-566b-bf6a-94cdba78e4fa", "FMC_Model_Number": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"}
 
 def kit_materials():
@@ -154,6 +156,9 @@ def compile_product(prod, kn_lookup=None):
                 if prm in prod.get('type_values', {}):
                     ops.append({"op": "link_connector_param", "name": f"{c['n']}/{prm}", "connector": c['n'], "connector_param": prm, "param": prm})
     for n in prod.get('nested', []): ops += n
+    # owner, 17 Oct: the 3D picture is the Type Image (Type Properties, schedules, legends); render_type_image makes it
+    role = prod['family'].split('_')[1]
+    ops.append({"op": "set_type_image", "name": "Type image", "path": f"{STAGING}\\{role}\\_Images\\{prod['family']}.png"})
     about = prod.get('about', '')
     if ref:
         about += ' Reference: ' + '; '.join(f"{k}: {v}" for k, v in ref.items() if v)
@@ -272,6 +277,13 @@ def render(prod, path, lod='f', views=(('3D', -35, 22), ('Front', 0, 0), ('Side'
     ref = prod.get('reference', {})
     ImageDraw.Draw(sheet).text((10, 10), f"{prod['family']}  -  {n} parts at {lod.upper()}  -  ref: {ref.get('query', ref.get('basis', ''))}", fill=(20, 24, 30))
     sheet.save(path); return path
+
+def render_type_image(prod, path, lod='f', size=800):
+    """The Type Image: one 3D view, rendered at twice the size and scaled down for clean edges, on white."""
+    from PIL import Image
+    T, C, I, n = _tris(prod, lod)
+    im = Image.fromarray((_view(T, C, I, -35, 22, size * 2, size * 2) * 255).astype('uint8'))
+    im.resize((size, size), Image.LANCZOS).save(path); return path
 
 if __name__ == '__main__':
     prod = json.load(open(sys.argv[1]))
