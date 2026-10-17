@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_MechEq_MedGas_AirPlant",
  "category": "Mechanical Equipment",
- "desc": "Medical air compressor plant, duplex: two compressors with motors on a base frame, air receiver, twin-tower desiccant dryers, filters and dew-point monitor, control panel",
+ "desc": "Medical air compressor plant, duplex or triplex: compressors with motors on a base frame, air receiver, twin-tower desiccant dryers, filters and dew-point monitor, control panel",
  "ifc": "IfcUnitaryEquipment",
  "keynote": "P.MGP_04",
  "types": [
@@ -14,7 +14,7 @@
  ],
  "materials": {
   "painted_steel": "FMC_Metal_SteelLTZ_Painted",
-  "blue": "FMC_Plastic_ABS_Blue",
+  "motor_blue": "FMC_Metal_Steel_Painted_MotorBlue",
   "black": "FMC_Plastic_ABS_Black",
   "grey": "FMC_Plastic_ABS_Grey",
   "galvanised": "FMC_Metal_GI_Pipe",
@@ -23,20 +23,24 @@
   "copper": "FMC_Metal_Copper_Pipe",
   "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
   "white": "FMC_Plastic_ABS_White",
+  "display": "FMC_Glass_Display_Black",
   "led_green": "FMC_Plastic_LED_Green",
-  "yellow": "FMC_Plastic_ABS_Yellow",
+  "led_amber": "FMC_Plastic_LED_Amber",
   "led_red": "FMC_Plastic_LED_Red",
+  "yellow": "FMC_Plastic_ABS_Yellow",
   "red": "FMC_Plastic_FireHoseReel_Red"
  },
  "reference": {
   "query": "medical gas air plant mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+air+plant+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.atlascopco.com/en-au/compressors/products/medical-gas-equipment/sf-med-oil-free-scroll",
+  "photo_title": "Atlas Copco SF MED oil-free scroll medical air",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
-   "n": "Base Frame",
-   "shape": "box",
+   "n": "Base Frame Duplex",
    "at": [
     -1300,
     -650,
@@ -45,31 +49,35 @@
     650,
     120
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box",
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
    "n": "Pump A Motor",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "motor_blue",
    "r": 150,
+   "shape": "cyl",
    "x": [
     -1101.0,
     -650
-   ],
-   "mat": "blue"
+   ]
   },
   {
    "n": "Pump A Fan Cowl",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "motor_blue",
    "profile": [
     [
      0,
@@ -92,16 +100,17 @@
      -1101.0
     ]
    ],
-   "mat": "blue"
+   "shape": "turn"
   },
   {
    "n": "Pump A Cowl Grille",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      0,
@@ -120,12 +129,10 @@
      -1200
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "Pump A Terminal Box",
-   "shape": "box",
    "at": [
     -952.5,
     -317.5,
@@ -134,17 +141,19 @@
     -182.5,
     547.5
    ],
-   "mat": "blue",
-   "r": 4
+   "mat": "motor_blue",
+   "r": 4,
+   "shape": "box"
   },
   {
    "n": "Pump A Fin",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "lod": "f",
+   "mat": "motor_blue",
    "profile": [
     [
      150,
@@ -163,20 +172,18 @@
      -1056.5
     ]
    ],
-   "mat": "blue",
-   "lod": "f",
    "repeat": {
-    "n": 3,
     "d": [
      128.33333333333334,
      0,
      0
-    ]
-   }
+    ],
+    "n": 3
+   },
+   "shape": "turn"
   },
   {
    "n": "Pump A Foot",
-   "shape": "box",
    "at": [
     -1062.5,
     -377.5,
@@ -185,34 +192,34 @@
     -122.5,
     247.5
    ],
-   "mat": "blue",
+   "mat": "motor_blue",
    "repeat": {
-    "n": 2,
     "d": [
      275.0,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "box"
   },
   {
    "n": "Pump A Body",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "grey",
    "r": 170,
+   "shape": "cyl",
    "x": [
     -650,
     -350
-   ],
-   "mat": "grey"
+   ]
   },
   {
    "n": "Pump A Base",
-   "shape": "box",
    "at": [
     -1200,
     -420,
@@ -221,61 +228,62 @@
     -80,
     160
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box"
   },
   {
    "n": "Pump A Exhaust",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -500,
     -250
    ],
+   "mat": "galvanised",
    "r": 25,
+   "shape": "cyl",
    "z": [
     500,
     1200
-   ],
-   "mat": "galvanised"
+   ]
   },
   {
    "n": "Pump A Isolator",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -500,
     150
    ],
+   "mat": "brass",
    "r": 30,
+   "shape": "cyl",
    "z": [
     400,
     470
-   ],
-   "mat": "brass"
+   ]
   },
   {
    "n": "Pump B Motor",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "motor_blue",
    "r": 150,
+   "shape": "cyl",
    "x": [
     -101.0,
     350
-   ],
-   "mat": "blue"
+   ]
   },
   {
    "n": "Pump B Fan Cowl",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "motor_blue",
    "profile": [
     [
      0,
@@ -298,16 +306,17 @@
      -101.0
     ]
    ],
-   "mat": "blue"
+   "shape": "turn"
   },
   {
    "n": "Pump B Cowl Grille",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      0,
@@ -326,12 +335,10 @@
      -200
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "Pump B Terminal Box",
-   "shape": "box",
    "at": [
     47.5,
     -317.5,
@@ -340,17 +347,19 @@
     -182.5,
     547.5
    ],
-   "mat": "blue",
-   "r": 4
+   "mat": "motor_blue",
+   "r": 4,
+   "shape": "box"
   },
   {
    "n": "Pump B Fin",
-   "shape": "turn",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "lod": "f",
+   "mat": "motor_blue",
    "profile": [
     [
      150,
@@ -369,20 +378,18 @@
      -56.5
     ]
    ],
-   "mat": "blue",
-   "lod": "f",
    "repeat": {
-    "n": 3,
     "d": [
      128.33333333333334,
      0,
      0
-    ]
-   }
+    ],
+    "n": 3
+   },
+   "shape": "turn"
   },
   {
    "n": "Pump B Foot",
-   "shape": "box",
    "at": [
     -62.5,
     -377.5,
@@ -391,34 +398,34 @@
     -122.5,
     247.5
    ],
-   "mat": "blue",
+   "mat": "motor_blue",
    "repeat": {
-    "n": 2,
     "d": [
      275.0,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "box"
   },
   {
    "n": "Pump B Body",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -250,
     330
    ],
+   "mat": "grey",
    "r": 170,
+   "shape": "cyl",
    "x": [
     350,
     650
-   ],
-   "mat": "grey"
+   ]
   },
   {
    "n": "Pump B Base",
-   "shape": "box",
    "at": [
     -200,
     -420,
@@ -427,61 +434,65 @@
     -80,
     160
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box"
   },
   {
    "n": "Pump B Exhaust",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     500,
     -250
    ],
+   "mat": "galvanised",
    "r": 25,
+   "shape": "cyl",
    "z": [
     500,
     1200
-   ],
-   "mat": "galvanised"
+   ]
   },
   {
    "n": "Pump B Isolator",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     500,
     150
    ],
+   "mat": "brass",
    "r": 30,
+   "shape": "cyl",
    "z": [
     400,
     470
-   ],
-   "mat": "brass"
+   ]
   },
   {
-   "n": "Receiver Shell",
-   "shape": "cyl",
+   "n": "Receiver Shell Duplex",
    "axis": "z",
    "c": [
     900,
     150
    ],
+   "mat": "epoxy_white",
    "r": 350,
+   "shape": "cyl",
    "z": [
     240,
     1780
    ],
-   "mat": "epoxy_white"
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
-   "n": "Receiver Top Head",
-   "shape": "turn",
+   "n": "Receiver Top Head Duplex",
    "axis": "z",
    "c": [
     900,
     150
    ],
+   "mat": "epoxy_white",
    "profile": [
     [
      0,
@@ -504,16 +515,19 @@
      1900
     ]
    ],
-   "mat": "epoxy_white"
+   "shape": "turn",
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
-   "n": "Receiver Bottom Head",
-   "shape": "turn",
+   "n": "Receiver Bottom Head Duplex",
    "axis": "z",
    "c": [
     900,
     150
    ],
+   "mat": "epoxy_white",
    "profile": [
     [
      0,
@@ -536,16 +550,20 @@
      240
     ]
    ],
-   "mat": "epoxy_white"
+   "shape": "turn",
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
-   "n": "Receiver Band",
-   "shape": "turn",
+   "n": "Receiver Band Duplex",
    "axis": "z",
    "c": [
     900,
     150
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      350,
@@ -564,32 +582,38 @@
      1248.0
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn",
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
-   "n": "Plant Header",
-   "shape": "cyl",
+   "n": "Plant Header Duplex",
    "axis": "x",
    "c": [
     150,
     1000
    ],
+   "mat": "copper",
    "r": 25,
+   "shape": "cyl",
    "x": [
     -1200,
     900
    ],
-   "mat": "copper"
+   "only": [
+    "Duplex_Air"
+   ]
   },
   {
    "n": "Header Band",
-   "shape": "turn",
    "axis": "x",
    "c": [
     150,
     1000
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      25,
@@ -608,57 +632,55 @@
      -260
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "Plant Connection",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -1200,
     150
    ],
+   "mat": "copper",
    "r": 25,
+   "shape": "cyl",
    "z": [
     1000,
     1500
-   ],
-   "mat": "copper"
+   ]
   },
   {
    "n": "Dryer Tower A",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -350,
     480
    ],
+   "mat": "aluminium",
    "r": 90,
+   "shape": "cyl",
    "z": [
     120,
     1500
-   ],
-   "mat": "aluminium"
+   ]
   },
   {
    "n": "Dryer Tower B",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -100,
     480
    ],
+   "mat": "aluminium",
    "r": 90,
+   "shape": "cyl",
    "z": [
     120,
     1500
-   ],
-   "mat": "aluminium"
+   ]
   },
   {
    "n": "Dryer Head",
-   "shape": "box",
    "at": [
     -460,
     400,
@@ -668,26 +690,26 @@
     1600
    ],
    "mat": "grey",
-   "r": 10
+   "r": 10,
+   "shape": "box"
   },
   {
    "n": "Filter Bowl",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     200,
     480
    ],
+   "mat": "aluminium",
    "r": 45,
+   "shape": "cyl",
    "z": [
     900,
     1250
-   ],
-   "mat": "aluminium"
+   ]
   },
   {
    "n": "Dewpoint Monitor",
-   "shape": "box",
    "at": [
     300,
     440,
@@ -697,11 +719,11 @@
     1300
    ],
    "mat": "white",
-   "r": 6
+   "r": 6,
+   "shape": "box"
   },
   {
    "n": "Control Panel Enclosure",
-   "shape": "box",
    "at": [
     -1250,
     300,
@@ -711,11 +733,11 @@
     1900
    ],
    "mat": "epoxy_white",
-   "r": 4
+   "r": 4,
+   "shape": "box"
   },
   {
    "n": "Control Panel Door",
-   "shape": "fbox",
    "at": [
     -1242,
     294,
@@ -724,13 +746,13 @@
     300,
     1892
    ],
+   "lod": "f",
    "mat": "epoxy_white",
    "r": 4,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Control Panel Screen",
-   "shape": "fbox",
    "at": [
     -1130.0,
     292,
@@ -739,61 +761,61 @@
     294,
     1816.0
    ],
-   "mat": "black",
+   "lod": "f",
+   "mat": "display",
    "r": 3,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Control Panel LED 1",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -1130.0,
     1588.0
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 8,
+   "shape": "cyl",
    "y": [
     290,
     294
-   ],
-   "mat": "led_green",
-   "lod": "f"
+   ]
   },
   {
    "n": "Control Panel LED 2",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -1058.0,
     1588.0
    ],
+   "lod": "f",
+   "mat": "led_amber",
    "r": 8,
+   "shape": "cyl",
    "y": [
     290,
     294
-   ],
-   "mat": "yellow",
-   "lod": "f"
+   ]
   },
   {
    "n": "Control Panel LED 3",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -986.0,
     1588.0
    ],
+   "lod": "f",
+   "mat": "led_red",
    "r": 8,
+   "shape": "cyl",
    "y": [
     290,
     294
-   ],
-   "mat": "led_red",
-   "lod": "f"
+   ]
   },
   {
    "n": "Control Panel Isolator Plate",
-   "shape": "fbox",
    "at": [
     -818.0,
     292,
@@ -802,12 +824,12 @@
     294,
     1528.0
    ],
+   "lod": "f",
    "mat": "yellow",
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Control Panel Isolator Handle",
-   "shape": "fbox",
    "at": [
     -770.0,
     274,
@@ -816,13 +838,13 @@
     292,
     1516.0
    ],
+   "lod": "f",
    "mat": "red",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Control Panel Door Handle",
-   "shape": "fbox",
    "at": [
     -1190.0,
     278,
@@ -831,13 +853,13 @@
     294,
     1528.0
    ],
+   "lod": "f",
    "mat": "black",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Panel Stand",
-   "shape": "box",
    "at": [
     -1000,
     400,
@@ -846,7 +868,398 @@
     480,
     1300
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box"
+  },
+  {
+   "n": "Base Frame Triplex",
+   "at": [
+    -1300,
+    -650,
+    0,
+    2300,
+    650,
+    120
+   ],
+   "mat": "painted_steel",
+   "shape": "box",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Motor",
+   "axis": "x",
+   "c": [
+    -250,
+    330
+   ],
+   "mat": "motor_blue",
+   "r": 150,
+   "shape": "cyl",
+   "x": [
+    899.0,
+    1350
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Fan Cowl",
+   "axis": "x",
+   "c": [
+    -250,
+    330
+   ],
+   "mat": "motor_blue",
+   "profile": [
+    [
+     0,
+     800
+    ],
+    [
+     135.0,
+     800
+    ],
+    [
+     154,
+     827.5
+    ],
+    [
+     154,
+     899.0
+    ],
+    [
+     0,
+     899.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Cowl Grille",
+   "axis": "x",
+   "c": [
+    -250,
+    330
+   ],
+   "lod": "f",
+   "mat": "black",
+   "profile": [
+    [
+     0,
+     798
+    ],
+    [
+     90.0,
+     798
+    ],
+    [
+     90.0,
+     800
+    ],
+    [
+     0,
+     800
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Terminal Box",
+   "at": [
+    1047.5,
+    -317.5,
+    475,
+    1212.5,
+    -182.5,
+    547.5
+   ],
+   "mat": "motor_blue",
+   "r": 4,
+   "shape": "box",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Fin",
+   "axis": "x",
+   "c": [
+    -250,
+    330
+   ],
+   "lod": "f",
+   "mat": "motor_blue",
+   "profile": [
+    [
+     150,
+     937.5
+    ],
+    [
+     155,
+     937.5
+    ],
+    [
+     155,
+     943.5
+    ],
+    [
+     150,
+     943.5
+    ]
+   ],
+   "repeat": {
+    "d": [
+     128.33333333333334,
+     0,
+     0
+    ],
+    "n": 3
+   },
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Foot",
+   "at": [
+    937.5,
+    -377.5,
+    172,
+    981.5,
+    -122.5,
+    247.5
+   ],
+   "mat": "motor_blue",
+   "repeat": {
+    "d": [
+     275.0,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "box",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Body",
+   "axis": "x",
+   "c": [
+    -250,
+    330
+   ],
+   "mat": "grey",
+   "r": 170,
+   "shape": "cyl",
+   "x": [
+    1350,
+    1650
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Base",
+   "at": [
+    800,
+    -420,
+    120,
+    1650,
+    -80,
+    160
+   ],
+   "mat": "painted_steel",
+   "shape": "box",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Exhaust",
+   "axis": "z",
+   "c": [
+    1500,
+    -250
+   ],
+   "mat": "galvanised",
+   "r": 25,
+   "shape": "cyl",
+   "z": [
+    500,
+    1200
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Pump C Isolator",
+   "axis": "z",
+   "c": [
+    1500,
+    150
+   ],
+   "mat": "brass",
+   "r": 30,
+   "shape": "cyl",
+   "z": [
+    400,
+    470
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Receiver Shell Triplex",
+   "axis": "z",
+   "c": [
+    1900,
+    150
+   ],
+   "mat": "epoxy_white",
+   "r": 350,
+   "shape": "cyl",
+   "z": [
+    240,
+    1780
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Receiver Top Head Triplex",
+   "axis": "z",
+   "c": [
+    1900,
+    150
+   ],
+   "mat": "epoxy_white",
+   "profile": [
+    [
+     0,
+     1780
+    ],
+    [
+     350,
+     1780
+    ],
+    [
+     297.5,
+     1858.0
+    ],
+    [
+     140.0,
+     1900
+    ],
+    [
+     0,
+     1900
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Receiver Bottom Head Triplex",
+   "axis": "z",
+   "c": [
+    1900,
+    150
+   ],
+   "mat": "epoxy_white",
+   "profile": [
+    [
+     0,
+     120
+    ],
+    [
+     140.0,
+     120
+    ],
+    [
+     297.5,
+     198.0
+    ],
+    [
+     350,
+     240
+    ],
+    [
+     0,
+     240
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Receiver Band Triplex",
+   "axis": "z",
+   "c": [
+    1900,
+    150
+   ],
+   "lod": "f",
+   "mat": "black",
+   "profile": [
+    [
+     350,
+     1188.0
+    ],
+    [
+     352,
+     1188.0
+    ],
+    [
+     352,
+     1248.0
+    ],
+    [
+     350,
+     1248.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "Triplex_Air"
+   ]
+  },
+  {
+   "n": "Plant Header Triplex",
+   "axis": "x",
+   "c": [
+    150,
+    1000
+   ],
+   "mat": "copper",
+   "r": 25,
+   "shape": "cyl",
+   "x": [
+    -1200,
+    1900
+   ],
+   "only": [
+    "Triplex_Air"
+   ]
   }
  ],
  "connectors": [
@@ -868,13 +1281,13 @@
   }
  ],
  "values": {
-  "Base 2600 x 1300 mm": {
-   "value": "2600x1300",
+  "Base 2700 / 3700 x 1300 mm": {
+   "value": "2700x1300",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
-  "Duplex compressors, twin-tower dryers": {
-   "value": "2 x 100 %",
+  "Duplex or triplex compressors, twin-tower dryers": {
+   "value": "2 x 100 % / 3 x 50 %",
    "source_status": "assumed",
    "source": "HTM 02-01 medical air plant"
   },
@@ -884,7 +1297,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "Air plant modelled as a generic product: base frame, two compressor sets (finned motor, fan cowl, terminal box, feet, grey compressor body, base, intake, isolator), receiver with black band, header, plant connection, twin dryer towers with head, filter bowl, dew-point monitor, control panel on a stand. Duplex drawn; triplex shares it.",
+ "about": "Air plant modelled as a generic product: base frame, compressor sets (finned motor, fan cowl, terminal box, feet, grey compressor body, base, intake, isolator), receiver with black band, header, plant connection, twin dryer towers with head, filter bowl, dew-point monitor, control panel on a stand. Per type: duplex has two compressor sets, triplex a third, with the frame, header and receiver moving 1000 mm to the right; dryers, panel and connection are shared.",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Voltage": 415,

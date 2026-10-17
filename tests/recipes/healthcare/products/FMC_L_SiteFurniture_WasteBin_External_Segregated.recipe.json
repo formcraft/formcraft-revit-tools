@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_L_SiteFurniture_WasteBin_External_Segregated",
  "template": "Metric Generic Model.rft",
- "about": "Waste station modelled as a generic product: concrete base, three posts, curved rain hood with fascia and coloured stream signs, hanging rail, two tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings. Geometry drawn for 2-bin_Segregated; the other types share it (sizes in the values). Reference: query: site furniture waste bin external segregated site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+waste+bin+external+segregated+site+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Waste station modelled as a generic product: concrete base, posts, curved rain hood with fascia and coloured stream signs, hanging rail, tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings; the 2-bin and 3-bin types each have their own frame and bins (Show parameters). Reference: query: site furniture waste bin external segregated site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+waste+bin+external+segregated+site+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.vepabins.nl/en/webshop/product/11394219-phoenix-outdoor-waste-bin-3x50-liter-grijs-blauw-oranje; photo_title: Phoenix outdoor waste bin 3x50 litre (Vepa Bins); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -290,7 +290,7 @@
    "name": "2-bin_Segregated/Description",
    "type": "2-bin_Segregated",
    "param": "Description",
-   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
+   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin (plus organic green), 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
   },
   {
    "op": "set_type_value",
@@ -328,6 +328,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "2-bin_Segregated/URL",
+   "type": "2-bin_Segregated",
+   "param": "URL",
+   "value": "https://www.vepabins.nl/en/webshop/product/11394219-phoenix-outdoor-waste-bin-3x50-liter-grijs-blauw-oranje"
+  },
+  {
    "op": "add_type",
    "name": "3-bin_Segregated"
   },
@@ -357,7 +364,7 @@
    "name": "3-bin_Segregated/Description",
    "type": "3-bin_Segregated",
    "param": "Description",
-   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
+   "value": "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin (plus organic green), 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood"
   },
   {
    "op": "set_type_value",
@@ -393,6 +400,13 @@
    "type": "3-bin_Segregated",
    "param": "FMC_Role_Code",
    "value": "L"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-bin_Segregated/URL",
+   "type": "3-bin_Segregated",
+   "param": "URL",
+   "value": "https://www.vepabins.nl/en/webshop/product/11394219-phoenix-outdoor-waste-bin-3x50-liter-grijs-blauw-oranje"
   },
   {
    "op": "add_subcategory",
@@ -522,6 +536,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Green",
+   "color": [
+    62,
+    142,
+    65
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Green Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_PPR_Green",
+   "param": "Green Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -535,19 +570,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -680,
+     -995,
      -340
     ],
     [
-     680,
+     995,
      -340
     ],
     [
-     680,
+     995,
      330
     ],
     [
-     -680,
+     -995,
      330
     ]
    ],
@@ -568,7 +603,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Base Slab",
+   "name": "Base Slab 2-bin",
    "points": [
     [
      -680,
@@ -592,24 +627,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Slab",
+   "name": "Base Slab 2-bin",
    "subcategory": "Concg"
   },
   {
    "op": "set_material_param",
-   "name": "Base Slab",
+   "name": "Base Slab 2-bin",
    "param": "Concg Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Slab",
+   "name": "Base Slab 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post 1",
+   "name": "Post 2-bin 1",
    "points": [
     [
      -600.0,
@@ -713,24 +748,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 1",
+   "name": "Post 2-bin 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Post 1",
+   "name": "Post 2-bin 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 1",
+   "name": "Post 2-bin 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post 2",
+   "name": "Post 2-bin 2",
    "points": [
     [
      30.0,
@@ -834,24 +869,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 2",
+   "name": "Post 2-bin 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Post 2",
+   "name": "Post 2-bin 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 2",
+   "name": "Post 2-bin 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post 3",
+   "name": "Post 2-bin 3",
    "points": [
     [
      660.0,
@@ -955,24 +990,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 3",
+   "name": "Post 2-bin 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Post 3",
+   "name": "Post 2-bin 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 3",
+   "name": "Post 2-bin 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rain Hood",
+   "name": "Rain Hood 2-bin",
    "points": [
     [
      -330,
@@ -1025,24 +1060,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rain Hood",
+   "name": "Rain Hood 2-bin",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Rain Hood",
+   "name": "Rain Hood 2-bin",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rain Hood",
+   "name": "Rain Hood 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hood Fascia",
+   "name": "Hood Fascia 2-bin",
    "points": [
     [
      -680,
@@ -1066,24 +1101,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hood Fascia",
+   "name": "Hood Fascia 2-bin",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Hood Fascia",
+   "name": "Hood Fascia 2-bin",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hood Fascia",
+   "name": "Hood Fascia 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hanging Rail",
+   "name": "Hanging Rail 2-bin",
    "points": [
     [
      -660,
@@ -1107,24 +1142,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hanging Rail",
+   "name": "Hanging Rail 2-bin",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Hanging Rail",
+   "name": "Hanging Rail 2-bin",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hanging Rail",
+   "name": "Hanging Rail 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Body General",
+   "name": "Bin Body General 2-bin",
    "profile": [
     [
      0,
@@ -1144,7 +1179,7 @@
     ]
    ],
    "axis_at": [
-    -315,
+    -315.0,
     0
    ],
    "axis": "z",
@@ -1152,19 +1187,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Body General",
+   "name": "Bin Body General 2-bin",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Body General",
+   "name": "Bin Body General 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Rim General",
+   "name": "Bin Rim General 2-bin",
    "profile": [
     [
      250,
@@ -1184,7 +1219,7 @@
     ]
    ],
    "axis_at": [
-    -315,
+    -315.0,
     0
    ],
    "axis": "z",
@@ -1192,19 +1227,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Rim General",
+   "name": "Bin Rim General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Rim General",
+   "name": "Bin Rim General 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Lid General",
+   "name": "Bin Lid General 2-bin",
    "profile": [
     [
      0,
@@ -1228,7 +1263,7 @@
     ]
    ],
    "axis_at": [
-    -315,
+    -315.0,
     0
    ],
    "axis": "z",
@@ -1236,19 +1271,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Lid General",
+   "name": "Bin Lid General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Lid General",
+   "name": "Bin Lid General 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Aperture General",
+   "name": "Aperture General 2-bin",
    "points": [
     [
      -230.0,
@@ -1336,24 +1371,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Aperture General",
+   "name": "Aperture General 2-bin",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Aperture General",
+   "name": "Aperture General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Aperture General",
+   "name": "Aperture General 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Stream Band General",
+   "name": "Stream Band General 2-bin",
    "profile": [
     [
      244,
@@ -1373,7 +1408,7 @@
     ]
    ],
    "axis_at": [
-    -315,
+    -315.0,
     0
    ],
    "axis": "z",
@@ -1381,34 +1416,34 @@
   },
   {
    "op": "set_material_param",
-   "name": "Stream Band General",
+   "name": "Stream Band General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stream Band General",
+   "name": "Stream Band General 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bin Bracket General",
+   "name": "Bin Bracket General 2-bin",
    "points": [
     [
-     -355,
+     -355.0,
      230
     ],
     [
-     -275,
+     -275.0,
      230
     ],
     [
-     -275,
+     -275.0,
      260
     ],
     [
-     -355,
+     -355.0,
      260
     ]
    ],
@@ -1417,24 +1452,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bin Bracket General",
+   "name": "Bin Bracket General 2-bin",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bin Bracket General",
+   "name": "Bin Bracket General 2-bin",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Bracket General",
+   "name": "Bin Bracket General 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stream Sign General",
+   "name": "Stream Sign General 2-bin",
    "points": [
     [
      -168.0,
@@ -1523,24 +1558,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stream Sign General",
+   "name": "Stream Sign General 2-bin",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Stream Sign General",
+   "name": "Stream Sign General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stream Sign General",
+   "name": "Stream Sign General 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Base Ring General",
+   "name": "Base Ring General 2-bin",
    "profile": [
     [
      205,
@@ -1560,7 +1595,7 @@
     ]
    ],
    "axis_at": [
-    -315,
+    -315.0,
     0
    ],
    "axis": "z",
@@ -1568,19 +1603,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Base Ring General",
+   "name": "Base Ring General 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Ring General",
+   "name": "Base Ring General 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Body Recycling",
+   "name": "Bin Body Recycling 2-bin",
    "profile": [
     [
      0,
@@ -1600,7 +1635,7 @@
     ]
    ],
    "axis_at": [
-    315,
+    315.0,
     0
    ],
    "axis": "z",
@@ -1608,19 +1643,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Body Recycling",
+   "name": "Bin Body Recycling 2-bin",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Body Recycling",
+   "name": "Bin Body Recycling 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Rim Recycling",
+   "name": "Bin Rim Recycling 2-bin",
    "profile": [
     [
      250,
@@ -1640,7 +1675,7 @@
     ]
    ],
    "axis_at": [
-    315,
+    315.0,
     0
    ],
    "axis": "z",
@@ -1648,19 +1683,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Rim Recycling",
+   "name": "Bin Rim Recycling 2-bin",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Rim Recycling",
+   "name": "Bin Rim Recycling 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Bin Lid Recycling",
+   "name": "Bin Lid Recycling 2-bin",
    "profile": [
     [
      0,
@@ -1684,7 +1719,7 @@
     ]
    ],
    "axis_at": [
-    315,
+    315.0,
     0
    ],
    "axis": "z",
@@ -1692,19 +1727,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Bin Lid Recycling",
+   "name": "Bin Lid Recycling 2-bin",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Lid Recycling",
+   "name": "Bin Lid Recycling 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Aperture Recycling",
+   "name": "Aperture Recycling 2-bin",
    "points": [
     [
      400.0,
@@ -1792,24 +1827,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Aperture Recycling",
+   "name": "Aperture Recycling 2-bin",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Aperture Recycling",
+   "name": "Aperture Recycling 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Aperture Recycling",
+   "name": "Aperture Recycling 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Stream Band Recycling",
+   "name": "Stream Band Recycling 2-bin",
    "profile": [
     [
      244,
@@ -1829,7 +1864,7 @@
     ]
    ],
    "axis_at": [
-    315,
+    315.0,
     0
    ],
    "axis": "z",
@@ -1837,34 +1872,34 @@
   },
   {
    "op": "set_material_param",
-   "name": "Stream Band Recycling",
+   "name": "Stream Band Recycling 2-bin",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stream Band Recycling",
+   "name": "Stream Band Recycling 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bin Bracket Recycling",
+   "name": "Bin Bracket Recycling 2-bin",
    "points": [
     [
-     275,
+     275.0,
      230
     ],
     [
-     355,
+     355.0,
      230
     ],
     [
-     355,
+     355.0,
      260
     ],
     [
-     275,
+     275.0,
      260
     ]
    ],
@@ -1873,24 +1908,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bin Bracket Recycling",
+   "name": "Bin Bracket Recycling 2-bin",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Bin Bracket Recycling",
+   "name": "Bin Bracket Recycling 2-bin",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bin Bracket Recycling",
+   "name": "Bin Bracket Recycling 2-bin",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stream Sign Recycling",
+   "name": "Stream Sign Recycling 2-bin",
    "points": [
     [
      462.0,
@@ -1979,24 +2014,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stream Sign Recycling",
+   "name": "Stream Sign Recycling 2-bin",
    "subcategory": "Blue"
   },
   {
    "op": "set_material_param",
-   "name": "Stream Sign Recycling",
+   "name": "Stream Sign Recycling 2-bin",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stream Sign Recycling",
+   "name": "Stream Sign Recycling 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Base Ring Recycling",
+   "name": "Base Ring Recycling 2-bin",
    "profile": [
     [
      205,
@@ -2016,7 +2051,7 @@
     ]
    ],
    "axis_at": [
-    315,
+    315.0,
     0
    ],
    "axis": "z",
@@ -2024,15 +2059,2430 @@
   },
   {
    "op": "set_material_param",
-   "name": "Base Ring Recycling",
+   "name": "Base Ring Recycling 2-bin",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Ring Recycling",
+   "name": "Base Ring Recycling 2-bin",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Slab 3-bin",
+   "points": [
+    [
+     -995,
+     -330
+    ],
+    [
+     995,
+     -330
+    ],
+    [
+     995,
+     330
+    ],
+    [
+     -995,
+     330
+    ]
+   ],
+   "start": 0,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Slab 3-bin",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Slab 3-bin",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Slab 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 3-bin 1",
+   "points": [
+    [
+     -915.0,
+     280.0
+    ],
+    [
+     -916.02,
+     287.76
+    ],
+    [
+     -919.02,
+     295.0
+    ],
+    [
+     -923.79,
+     301.21
+    ],
+    [
+     -930.0,
+     305.98
+    ],
+    [
+     -937.24,
+     308.98
+    ],
+    [
+     -945.0,
+     310.0
+    ],
+    [
+     -952.76,
+     308.98
+    ],
+    [
+     -960.0,
+     305.98
+    ],
+    [
+     -966.21,
+     301.21
+    ],
+    [
+     -970.98,
+     295.0
+    ],
+    [
+     -973.98,
+     287.76
+    ],
+    [
+     -975.0,
+     280.0
+    ],
+    [
+     -973.98,
+     272.24
+    ],
+    [
+     -970.98,
+     265.0
+    ],
+    [
+     -966.21,
+     258.79
+    ],
+    [
+     -960.0,
+     254.02
+    ],
+    [
+     -952.76,
+     251.02
+    ],
+    [
+     -945.0,
+     250.0
+    ],
+    [
+     -937.24,
+     251.02
+    ],
+    [
+     -930.0,
+     254.02
+    ],
+    [
+     -923.79,
+     258.79
+    ],
+    [
+     -919.02,
+     265.0
+    ],
+    [
+     -916.02,
+     272.24
+    ]
+   ],
+   "start": 60,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 3-bin 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 3-bin 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 3-bin 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 3-bin 2",
+   "points": [
+    [
+     -285.0,
+     280.0
+    ],
+    [
+     -286.02,
+     287.76
+    ],
+    [
+     -289.02,
+     295.0
+    ],
+    [
+     -293.79,
+     301.21
+    ],
+    [
+     -300.0,
+     305.98
+    ],
+    [
+     -307.24,
+     308.98
+    ],
+    [
+     -315.0,
+     310.0
+    ],
+    [
+     -322.76,
+     308.98
+    ],
+    [
+     -330.0,
+     305.98
+    ],
+    [
+     -336.21,
+     301.21
+    ],
+    [
+     -340.98,
+     295.0
+    ],
+    [
+     -343.98,
+     287.76
+    ],
+    [
+     -345.0,
+     280.0
+    ],
+    [
+     -343.98,
+     272.24
+    ],
+    [
+     -340.98,
+     265.0
+    ],
+    [
+     -336.21,
+     258.79
+    ],
+    [
+     -330.0,
+     254.02
+    ],
+    [
+     -322.76,
+     251.02
+    ],
+    [
+     -315.0,
+     250.0
+    ],
+    [
+     -307.24,
+     251.02
+    ],
+    [
+     -300.0,
+     254.02
+    ],
+    [
+     -293.79,
+     258.79
+    ],
+    [
+     -289.02,
+     265.0
+    ],
+    [
+     -286.02,
+     272.24
+    ]
+   ],
+   "start": 60,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 3-bin 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 3-bin 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 3-bin 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 3-bin 3",
+   "points": [
+    [
+     345.0,
+     280.0
+    ],
+    [
+     343.98,
+     287.76
+    ],
+    [
+     340.98,
+     295.0
+    ],
+    [
+     336.21,
+     301.21
+    ],
+    [
+     330.0,
+     305.98
+    ],
+    [
+     322.76,
+     308.98
+    ],
+    [
+     315.0,
+     310.0
+    ],
+    [
+     307.24,
+     308.98
+    ],
+    [
+     300.0,
+     305.98
+    ],
+    [
+     293.79,
+     301.21
+    ],
+    [
+     289.02,
+     295.0
+    ],
+    [
+     286.02,
+     287.76
+    ],
+    [
+     285.0,
+     280.0
+    ],
+    [
+     286.02,
+     272.24
+    ],
+    [
+     289.02,
+     265.0
+    ],
+    [
+     293.79,
+     258.79
+    ],
+    [
+     300.0,
+     254.02
+    ],
+    [
+     307.24,
+     251.02
+    ],
+    [
+     315.0,
+     250.0
+    ],
+    [
+     322.76,
+     251.02
+    ],
+    [
+     330.0,
+     254.02
+    ],
+    [
+     336.21,
+     258.79
+    ],
+    [
+     340.98,
+     265.0
+    ],
+    [
+     343.98,
+     272.24
+    ]
+   ],
+   "start": 60,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 3-bin 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 3-bin 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 3-bin 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 3-bin 4",
+   "points": [
+    [
+     975.0,
+     280.0
+    ],
+    [
+     973.98,
+     287.76
+    ],
+    [
+     970.98,
+     295.0
+    ],
+    [
+     966.21,
+     301.21
+    ],
+    [
+     960.0,
+     305.98
+    ],
+    [
+     952.76,
+     308.98
+    ],
+    [
+     945.0,
+     310.0
+    ],
+    [
+     937.24,
+     308.98
+    ],
+    [
+     930.0,
+     305.98
+    ],
+    [
+     923.79,
+     301.21
+    ],
+    [
+     919.02,
+     295.0
+    ],
+    [
+     916.02,
+     287.76
+    ],
+    [
+     915.0,
+     280.0
+    ],
+    [
+     916.02,
+     272.24
+    ],
+    [
+     919.02,
+     265.0
+    ],
+    [
+     923.79,
+     258.79
+    ],
+    [
+     930.0,
+     254.02
+    ],
+    [
+     937.24,
+     251.02
+    ],
+    [
+     945.0,
+     250.0
+    ],
+    [
+     952.76,
+     251.02
+    ],
+    [
+     960.0,
+     254.02
+    ],
+    [
+     966.21,
+     258.79
+    ],
+    [
+     970.98,
+     265.0
+    ],
+    [
+     973.98,
+     272.24
+    ]
+   ],
+   "start": 60,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 3-bin 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 3-bin 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 3-bin 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rain Hood 3-bin",
+   "points": [
+    [
+     -330,
+     1200
+    ],
+    [
+     -330.0,
+     1200.0
+    ],
+    [
+     -304.9,
+     1242.1
+    ],
+    [
+     -233.3,
+     1277.8
+    ],
+    [
+     -126.3,
+     1301.6
+    ],
+    [
+     -0.0,
+     1310.0
+    ],
+    [
+     126.3,
+     1301.6
+    ],
+    [
+     233.3,
+     1277.8
+    ],
+    [
+     304.9,
+     1242.1
+    ],
+    [
+     330.0,
+     1200.0
+    ],
+    [
+     330,
+     1200
+    ]
+   ],
+   "start": -995,
+   "end": 995,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rain Hood 3-bin",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Hood 3-bin",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Hood 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hood Fascia 3-bin",
+   "points": [
+    [
+     -995,
+     -336
+    ],
+    [
+     995,
+     -336
+    ],
+    [
+     995,
+     -326
+    ],
+    [
+     -995,
+     -326
+    ]
+   ],
+   "start": 1170,
+   "end": 1210
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hood Fascia 3-bin",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hood Fascia 3-bin",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hood Fascia 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanging Rail 3-bin",
+   "points": [
+    [
+     -975,
+     250
+    ],
+    [
+     975,
+     250
+    ],
+    [
+     975,
+     310
+    ],
+    [
+     -975,
+     310
+    ]
+   ],
+   "start": 880,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanging Rail 3-bin",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanging Rail 3-bin",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanging Rail 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Body General 3-bin",
+   "profile": [
+    [
+     0,
+     150
+    ],
+    [
+     225,
+     150
+    ],
+    [
+     250,
+     1000
+    ],
+    [
+     0,
+     1000
+    ]
+   ],
+   "axis_at": [
+    -630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Body General 3-bin",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Body General 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Rim General 3-bin",
+   "profile": [
+    [
+     250,
+     1000
+    ],
+    [
+     262,
+     1000
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     250,
+     1022
+    ]
+   ],
+   "axis_at": [
+    -630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Rim General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Rim General 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Lid General 3-bin",
+   "profile": [
+    [
+     0,
+     1022
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     240,
+     1062
+    ],
+    [
+     150,
+     1080
+    ],
+    [
+     0,
+     1088
+    ]
+   ],
+   "axis_at": [
+    -630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Lid General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Lid General 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Aperture General 3-bin",
+   "points": [
+    [
+     -545.0,
+     -262.0
+    ],
+    [
+     -541.17,
+     -261.24
+    ],
+    [
+     -537.93,
+     -259.07
+    ],
+    [
+     -535.76,
+     -255.83
+    ],
+    [
+     -535.0,
+     -252.0
+    ],
+    [
+     -535.0,
+     -160.0
+    ],
+    [
+     -535.76,
+     -156.17
+    ],
+    [
+     -537.93,
+     -152.93
+    ],
+    [
+     -541.17,
+     -150.76
+    ],
+    [
+     -545.0,
+     -150.0
+    ],
+    [
+     -715.0,
+     -150.0
+    ],
+    [
+     -718.83,
+     -150.76
+    ],
+    [
+     -722.07,
+     -152.93
+    ],
+    [
+     -724.24,
+     -156.17
+    ],
+    [
+     -725.0,
+     -160.0
+    ],
+    [
+     -725.0,
+     -252.0
+    ],
+    [
+     -724.24,
+     -255.83
+    ],
+    [
+     -722.07,
+     -259.07
+    ],
+    [
+     -718.83,
+     -261.24
+    ],
+    [
+     -715.0,
+     -262.0
+    ]
+   ],
+   "start": 1024,
+   "end": 1066
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Aperture General 3-bin",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Aperture General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Aperture General 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stream Band General 3-bin",
+   "profile": [
+    [
+     244,
+     700
+    ],
+    [
+     248.5,
+     700
+    ],
+    [
+     248.5,
+     800
+    ],
+    [
+     244,
+     800
+    ]
+   ],
+   "axis_at": [
+    -630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Band General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Band General 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bin Bracket General 3-bin",
+   "points": [
+    [
+     -670.0,
+     230
+    ],
+    [
+     -590.0,
+     230
+    ],
+    [
+     -590.0,
+     260
+    ],
+    [
+     -670.0,
+     260
+    ]
+   ],
+   "start": 860,
+   "end": 940
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bin Bracket General 3-bin",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Bracket General 3-bin",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Bracket General 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stream Sign General 3-bin",
+   "points": [
+    [
+     -483.0,
+     1172.0
+    ],
+    [
+     -481.85,
+     1172.23
+    ],
+    [
+     -480.88,
+     1172.88
+    ],
+    [
+     -480.23,
+     1173.85
+    ],
+    [
+     -480.0,
+     1175.0
+    ],
+    [
+     -480.0,
+     1205.0
+    ],
+    [
+     -480.23,
+     1206.15
+    ],
+    [
+     -480.88,
+     1207.12
+    ],
+    [
+     -481.85,
+     1207.77
+    ],
+    [
+     -483.0,
+     1208.0
+    ],
+    [
+     -777.0,
+     1208.0
+    ],
+    [
+     -778.15,
+     1207.77
+    ],
+    [
+     -779.12,
+     1207.12
+    ],
+    [
+     -779.77,
+     1206.15
+    ],
+    [
+     -780.0,
+     1205.0
+    ],
+    [
+     -780.0,
+     1175.0
+    ],
+    [
+     -779.77,
+     1173.85
+    ],
+    [
+     -779.12,
+     1172.88
+    ],
+    [
+     -778.15,
+     1172.23
+    ],
+    [
+     -777.0,
+     1172.0
+    ]
+   ],
+   "start": 336,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stream Sign General 3-bin",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Sign General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Sign General 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Base Ring General 3-bin",
+   "profile": [
+    [
+     205,
+     150
+    ],
+    [
+     228,
+     150
+    ],
+    [
+     228,
+     175
+    ],
+    [
+     205,
+     175
+    ]
+   ],
+   "axis_at": [
+    -630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Ring General 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Ring General 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Body Recycling 3-bin",
+   "profile": [
+    [
+     0,
+     150
+    ],
+    [
+     225,
+     150
+    ],
+    [
+     250,
+     1000
+    ],
+    [
+     0,
+     1000
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Body Recycling 3-bin",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Body Recycling 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Rim Recycling 3-bin",
+   "profile": [
+    [
+     250,
+     1000
+    ],
+    [
+     262,
+     1000
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     250,
+     1022
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Rim Recycling 3-bin",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Rim Recycling 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Lid Recycling 3-bin",
+   "profile": [
+    [
+     0,
+     1022
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     240,
+     1062
+    ],
+    [
+     150,
+     1080
+    ],
+    [
+     0,
+     1088
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Lid Recycling 3-bin",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Lid Recycling 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Aperture Recycling 3-bin",
+   "points": [
+    [
+     85.0,
+     -262.0
+    ],
+    [
+     88.83,
+     -261.24
+    ],
+    [
+     92.07,
+     -259.07
+    ],
+    [
+     94.24,
+     -255.83
+    ],
+    [
+     95.0,
+     -252.0
+    ],
+    [
+     95.0,
+     -160.0
+    ],
+    [
+     94.24,
+     -156.17
+    ],
+    [
+     92.07,
+     -152.93
+    ],
+    [
+     88.83,
+     -150.76
+    ],
+    [
+     85.0,
+     -150.0
+    ],
+    [
+     -85.0,
+     -150.0
+    ],
+    [
+     -88.83,
+     -150.76
+    ],
+    [
+     -92.07,
+     -152.93
+    ],
+    [
+     -94.24,
+     -156.17
+    ],
+    [
+     -95.0,
+     -160.0
+    ],
+    [
+     -95.0,
+     -252.0
+    ],
+    [
+     -94.24,
+     -255.83
+    ],
+    [
+     -92.07,
+     -259.07
+    ],
+    [
+     -88.83,
+     -261.24
+    ],
+    [
+     -85.0,
+     -262.0
+    ]
+   ],
+   "start": 1024,
+   "end": 1066
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Aperture Recycling 3-bin",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Aperture Recycling 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Aperture Recycling 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stream Band Recycling 3-bin",
+   "profile": [
+    [
+     244,
+     700
+    ],
+    [
+     248.5,
+     700
+    ],
+    [
+     248.5,
+     800
+    ],
+    [
+     244,
+     800
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Band Recycling 3-bin",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Band Recycling 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bin Bracket Recycling 3-bin",
+   "points": [
+    [
+     -40.0,
+     230
+    ],
+    [
+     40.0,
+     230
+    ],
+    [
+     40.0,
+     260
+    ],
+    [
+     -40.0,
+     260
+    ]
+   ],
+   "start": 860,
+   "end": 940
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bin Bracket Recycling 3-bin",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Bracket Recycling 3-bin",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Bracket Recycling 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stream Sign Recycling 3-bin",
+   "points": [
+    [
+     147.0,
+     1172.0
+    ],
+    [
+     148.15,
+     1172.23
+    ],
+    [
+     149.12,
+     1172.88
+    ],
+    [
+     149.77,
+     1173.85
+    ],
+    [
+     150.0,
+     1175.0
+    ],
+    [
+     150.0,
+     1205.0
+    ],
+    [
+     149.77,
+     1206.15
+    ],
+    [
+     149.12,
+     1207.12
+    ],
+    [
+     148.15,
+     1207.77
+    ],
+    [
+     147.0,
+     1208.0
+    ],
+    [
+     -147.0,
+     1208.0
+    ],
+    [
+     -148.15,
+     1207.77
+    ],
+    [
+     -149.12,
+     1207.12
+    ],
+    [
+     -149.77,
+     1206.15
+    ],
+    [
+     -150.0,
+     1205.0
+    ],
+    [
+     -150.0,
+     1175.0
+    ],
+    [
+     -149.77,
+     1173.85
+    ],
+    [
+     -149.12,
+     1172.88
+    ],
+    [
+     -148.15,
+     1172.23
+    ],
+    [
+     -147.0,
+     1172.0
+    ]
+   ],
+   "start": 336,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stream Sign Recycling 3-bin",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Sign Recycling 3-bin",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Sign Recycling 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Base Ring Recycling 3-bin",
+   "profile": [
+    [
+     205,
+     150
+    ],
+    [
+     228,
+     150
+    ],
+    [
+     228,
+     175
+    ],
+    [
+     205,
+     175
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Ring Recycling 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Ring Recycling 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Body Organic 3-bin",
+   "profile": [
+    [
+     0,
+     150
+    ],
+    [
+     225,
+     150
+    ],
+    [
+     250,
+     1000
+    ],
+    [
+     0,
+     1000
+    ]
+   ],
+   "axis_at": [
+    630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Body Organic 3-bin",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Body Organic 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Rim Organic 3-bin",
+   "profile": [
+    [
+     250,
+     1000
+    ],
+    [
+     262,
+     1000
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     250,
+     1022
+    ]
+   ],
+   "axis_at": [
+    630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Rim Organic 3-bin",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Rim Organic 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bin Lid Organic 3-bin",
+   "profile": [
+    [
+     0,
+     1022
+    ],
+    [
+     262,
+     1022
+    ],
+    [
+     240,
+     1062
+    ],
+    [
+     150,
+     1080
+    ],
+    [
+     0,
+     1088
+    ]
+   ],
+   "axis_at": [
+    630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Lid Organic 3-bin",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Lid Organic 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Aperture Organic 3-bin",
+   "points": [
+    [
+     715.0,
+     -262.0
+    ],
+    [
+     718.83,
+     -261.24
+    ],
+    [
+     722.07,
+     -259.07
+    ],
+    [
+     724.24,
+     -255.83
+    ],
+    [
+     725.0,
+     -252.0
+    ],
+    [
+     725.0,
+     -160.0
+    ],
+    [
+     724.24,
+     -156.17
+    ],
+    [
+     722.07,
+     -152.93
+    ],
+    [
+     718.83,
+     -150.76
+    ],
+    [
+     715.0,
+     -150.0
+    ],
+    [
+     545.0,
+     -150.0
+    ],
+    [
+     541.17,
+     -150.76
+    ],
+    [
+     537.93,
+     -152.93
+    ],
+    [
+     535.76,
+     -156.17
+    ],
+    [
+     535.0,
+     -160.0
+    ],
+    [
+     535.0,
+     -252.0
+    ],
+    [
+     535.76,
+     -255.83
+    ],
+    [
+     537.93,
+     -259.07
+    ],
+    [
+     541.17,
+     -261.24
+    ],
+    [
+     545.0,
+     -262.0
+    ]
+   ],
+   "start": 1024,
+   "end": 1066
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Aperture Organic 3-bin",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Aperture Organic 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Aperture Organic 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stream Band Organic 3-bin",
+   "profile": [
+    [
+     244,
+     700
+    ],
+    [
+     248.5,
+     700
+    ],
+    [
+     248.5,
+     800
+    ],
+    [
+     244,
+     800
+    ]
+   ],
+   "axis_at": [
+    630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Band Organic 3-bin",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Band Organic 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bin Bracket Organic 3-bin",
+   "points": [
+    [
+     590.0,
+     230
+    ],
+    [
+     670.0,
+     230
+    ],
+    [
+     670.0,
+     260
+    ],
+    [
+     590.0,
+     260
+    ]
+   ],
+   "start": 860,
+   "end": 940
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bin Bracket Organic 3-bin",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bin Bracket Organic 3-bin",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bin Bracket Organic 3-bin",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stream Sign Organic 3-bin",
+   "points": [
+    [
+     777.0,
+     1172.0
+    ],
+    [
+     778.15,
+     1172.23
+    ],
+    [
+     779.12,
+     1172.88
+    ],
+    [
+     779.77,
+     1173.85
+    ],
+    [
+     780.0,
+     1175.0
+    ],
+    [
+     780.0,
+     1205.0
+    ],
+    [
+     779.77,
+     1206.15
+    ],
+    [
+     779.12,
+     1207.12
+    ],
+    [
+     778.15,
+     1207.77
+    ],
+    [
+     777.0,
+     1208.0
+    ],
+    [
+     483.0,
+     1208.0
+    ],
+    [
+     481.85,
+     1207.77
+    ],
+    [
+     480.88,
+     1207.12
+    ],
+    [
+     480.23,
+     1206.15
+    ],
+    [
+     480.0,
+     1205.0
+    ],
+    [
+     480.0,
+     1175.0
+    ],
+    [
+     480.23,
+     1173.85
+    ],
+    [
+     480.88,
+     1172.88
+    ],
+    [
+     481.85,
+     1172.23
+    ],
+    [
+     483.0,
+     1172.0
+    ]
+   ],
+   "start": 336,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stream Sign Organic 3-bin",
+   "subcategory": "Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stream Sign Organic 3-bin",
+   "param": "Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stream Sign Organic 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Base Ring Organic 3-bin",
+   "profile": [
+    [
+     205,
+     150
+    ],
+    [
+     228,
+     150
+    ],
+    [
+     228,
+     175
+    ],
+    [
+     205,
+     175
+    ]
+   ],
+   "axis_at": [
+    630.0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Ring Organic 3-bin",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Ring Organic 3-bin",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2-bin_Segregated",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-bin_Segregated/Show 2-bin_Segregated",
+   "type": "2-bin_Segregated",
+   "param": "Show 2-bin_Segregated",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-bin_Segregated/Show 2-bin_Segregated",
+   "type": "3-bin_Segregated",
+   "param": "Show 2-bin_Segregated",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 2-bin/Visible",
+   "solid": "Base Slab 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 2-bin 1/Visible",
+   "solid": "Post 2-bin 1",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 2-bin 2/Visible",
+   "solid": "Post 2-bin 2",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 2-bin 3/Visible",
+   "solid": "Post 2-bin 3",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Hood 2-bin/Visible",
+   "solid": "Rain Hood 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hood Fascia 2-bin/Visible",
+   "solid": "Hood Fascia 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanging Rail 2-bin/Visible",
+   "solid": "Hanging Rail 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Body General 2-bin/Visible",
+   "solid": "Bin Body General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Rim General 2-bin/Visible",
+   "solid": "Bin Rim General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Lid General 2-bin/Visible",
+   "solid": "Bin Lid General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aperture General 2-bin/Visible",
+   "solid": "Aperture General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Band General 2-bin/Visible",
+   "solid": "Stream Band General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Bracket General 2-bin/Visible",
+   "solid": "Bin Bracket General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Sign General 2-bin/Visible",
+   "solid": "Stream Sign General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Ring General 2-bin/Visible",
+   "solid": "Base Ring General 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Body Recycling 2-bin/Visible",
+   "solid": "Bin Body Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Rim Recycling 2-bin/Visible",
+   "solid": "Bin Rim Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Lid Recycling 2-bin/Visible",
+   "solid": "Bin Lid Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aperture Recycling 2-bin/Visible",
+   "solid": "Aperture Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Band Recycling 2-bin/Visible",
+   "solid": "Stream Band Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Bracket Recycling 2-bin/Visible",
+   "solid": "Bin Bracket Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Sign Recycling 2-bin/Visible",
+   "solid": "Stream Sign Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Ring Recycling 2-bin/Visible",
+   "solid": "Base Ring Recycling 2-bin",
+   "param": "Show 2-bin_Segregated"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3-bin_Segregated",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-bin_Segregated/Show 3-bin_Segregated",
+   "type": "2-bin_Segregated",
+   "param": "Show 3-bin_Segregated",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3-bin_Segregated/Show 3-bin_Segregated",
+   "type": "3-bin_Segregated",
+   "param": "Show 3-bin_Segregated",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Slab 3-bin/Visible",
+   "solid": "Base Slab 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 3-bin 1/Visible",
+   "solid": "Post 3-bin 1",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 3-bin 2/Visible",
+   "solid": "Post 3-bin 2",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 3-bin 3/Visible",
+   "solid": "Post 3-bin 3",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 3-bin 4/Visible",
+   "solid": "Post 3-bin 4",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Hood 3-bin/Visible",
+   "solid": "Rain Hood 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hood Fascia 3-bin/Visible",
+   "solid": "Hood Fascia 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanging Rail 3-bin/Visible",
+   "solid": "Hanging Rail 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Body General 3-bin/Visible",
+   "solid": "Bin Body General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Rim General 3-bin/Visible",
+   "solid": "Bin Rim General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Lid General 3-bin/Visible",
+   "solid": "Bin Lid General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aperture General 3-bin/Visible",
+   "solid": "Aperture General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Band General 3-bin/Visible",
+   "solid": "Stream Band General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Bracket General 3-bin/Visible",
+   "solid": "Bin Bracket General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Sign General 3-bin/Visible",
+   "solid": "Stream Sign General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Ring General 3-bin/Visible",
+   "solid": "Base Ring General 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Body Recycling 3-bin/Visible",
+   "solid": "Bin Body Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Rim Recycling 3-bin/Visible",
+   "solid": "Bin Rim Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Lid Recycling 3-bin/Visible",
+   "solid": "Bin Lid Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aperture Recycling 3-bin/Visible",
+   "solid": "Aperture Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Band Recycling 3-bin/Visible",
+   "solid": "Stream Band Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Bracket Recycling 3-bin/Visible",
+   "solid": "Bin Bracket Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Sign Recycling 3-bin/Visible",
+   "solid": "Stream Sign Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Ring Recycling 3-bin/Visible",
+   "solid": "Base Ring Recycling 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Body Organic 3-bin/Visible",
+   "solid": "Bin Body Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Rim Organic 3-bin/Visible",
+   "solid": "Bin Rim Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Lid Organic 3-bin/Visible",
+   "solid": "Bin Lid Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Aperture Organic 3-bin/Visible",
+   "solid": "Aperture Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Band Organic 3-bin/Visible",
+   "solid": "Stream Band Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bin Bracket Organic 3-bin/Visible",
+   "solid": "Bin Bracket Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stream Sign Organic 3-bin/Visible",
+   "solid": "Stream Sign Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Ring Organic 3-bin/Visible",
+   "solid": "Base Ring Organic 3-bin",
+   "param": "Show 3-bin_Segregated"
   },
   {
    "op": "set_type_image",

@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_PlumbingEq_Calorifier",
  "category": "Plumbing Equipment",
- "desc": "Steam-heated calorifier, vertical copper-lined cylinder with aluminium-clad insulation, steam coil, manhole, safety valve, thermometer and gauge (1000 l drawn)",
+ "desc": "Steam-heated calorifier, vertical copper-lined cylinder with aluminium-clad insulation, steam coil, manhole, safety valve, thermometer and gauge",
  "ifc": "IfcTank",
  "keynote": "P.HWS_03",
  "types": [
@@ -16,6 +16,7 @@
   "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
   "painted_steel": "FMC_Metal_SteelLTZ_Painted",
   "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "ductile_iron": "FMC_Metal_DuctileIron_Black",
   "chrome": "FMC_Metal_Chrome_Polished",
   "steel": "FMC_Metal_StructuralSteel_S275",
   "copper": "FMC_Metal_Copper_Pipe",
@@ -26,32 +27,38 @@
  "reference": {
   "query": "calorifier plumbing equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=calorifier+plumbing+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://hamworthy-heating.com/Products/Hot-water-heaters/Powerstock-calorifier",
+  "photo_title": "Hamworthy Powerstock glass lined calorifier",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
-   "n": "Shell Shell",
-   "shape": "cyl",
+   "n": "Shell Shell 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "aluminium",
    "r": 520,
+   "shape": "cyl",
    "z": [
     470,
     1930
    ],
-   "mat": "aluminium"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Shell Top Head",
-   "shape": "turn",
+   "n": "Shell Top Head 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "aluminium",
    "profile": [
     [
      0,
@@ -74,16 +81,19 @@
      2050
     ]
    ],
-   "mat": "aluminium"
+   "shape": "turn",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Shell Bottom Head",
-   "shape": "turn",
+   "n": "Shell Bottom Head 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "aluminium",
    "profile": [
     [
      0,
@@ -106,11 +116,13 @@
      470
     ]
    ],
-   "mat": "aluminium"
+   "shape": "turn",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Leg",
-   "shape": "box",
+   "n": "Leg 1000L",
    "at": [
     -420,
     -420,
@@ -121,17 +133,20 @@
    ],
    "mat": "painted_steel",
    "repeat": {
-    "n": 2,
     "d": [
      780,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "box",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Leg Back",
-   "shape": "box",
+   "n": "Leg Back 1000L",
    "at": [
     -420,
     360,
@@ -142,22 +157,27 @@
    ],
    "mat": "painted_steel",
    "repeat": {
-    "n": 2,
     "d": [
      780,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "box",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Cladding Band",
-   "shape": "turn",
+   "n": "Cladding Band 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "lod": "f",
+   "mat": "stainless",
    "profile": [
     [
      520,
@@ -176,80 +196,91 @@
      715
     ]
    ],
-   "mat": "stainless",
-   "lod": "f",
    "repeat": {
-    "n": 3,
     "d": [
      0,
      0,
      450
-    ]
-   }
+    ],
+    "n": 3
+   },
+   "shape": "turn",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Manhole",
-   "shape": "cyl",
+   "n": "Manhole 1000L",
    "axis": "y",
    "c": [
     0,
     800
    ],
+   "mat": "painted_steel",
    "r": 210,
+   "shape": "cyl",
    "y": [
     -560,
     -520
    ],
-   "mat": "painted_steel"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Manhole Cover",
-   "shape": "cyl",
+   "n": "Manhole Cover 1000L",
    "axis": "y",
    "c": [
     0,
     800
    ],
+   "mat": "ductile_iron",
    "r": 180,
+   "shape": "cyl",
    "y": [
     -580,
     -560
    ],
-   "mat": "painted_steel"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Manhole Bolt",
-   "shape": "cyl",
+   "n": "Manhole Bolt 1000L",
    "axis": "y",
    "c": [
     -150,
     800
    ],
-   "r": 9,
-   "y": [
-    -590,
-    -580
-   ],
-   "mat": "chrome",
-   "seg": 6,
    "lod": "f",
+   "mat": "chrome",
+   "r": 9,
    "repeat": {
-    "n": 2,
     "d": [
      300,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "seg": 6,
+   "shape": "cyl",
+   "y": [
+    -590,
+    -580
+   ],
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Coil Flange",
-   "shape": "turn",
+   "n": "Coil Flange 1000L",
    "axis": "x",
    "c": [
     0,
     600
    ],
+   "mat": "painted_steel",
    "profile": [
     [
      0,
@@ -268,76 +299,91 @@
      560
     ]
    ],
-   "mat": "painted_steel"
+   "shape": "turn",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Steam Inlet",
-   "shape": "cyl",
+   "n": "Steam Inlet 1000L",
    "axis": "x",
    "c": [
     60,
     700
    ],
+   "mat": "steel",
    "r": 30,
+   "shape": "cyl",
    "x": [
     560,
     720
    ],
-   "mat": "steel"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Condensate Outlet",
-   "shape": "cyl",
+   "n": "Condensate Outlet 1000L",
    "axis": "x",
    "c": [
     -60,
     500
    ],
+   "mat": "steel",
    "r": 20,
+   "shape": "cyl",
    "x": [
     560,
     720
    ],
-   "mat": "steel"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Cold Inlet",
-   "shape": "cyl",
+   "n": "Cold Inlet 1000L",
    "axis": "x",
    "c": [
     0,
     450
    ],
+   "mat": "copper",
    "r": 40,
+   "shape": "cyl",
    "x": [
     -700,
     -520
    ],
-   "mat": "copper"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Hot Outlet",
-   "shape": "cyl",
+   "n": "Hot Outlet 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "copper",
    "r": 40,
+   "shape": "cyl",
    "z": [
     2030,
     2180
    ],
-   "mat": "copper"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Hot Outlet Flange",
-   "shape": "turn",
+   "n": "Hot Outlet Flange 1000L",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "copper",
    "profile": [
     [
      0,
@@ -356,88 +402,105 @@
      2170
     ]
    ],
-   "mat": "copper"
+   "shape": "turn",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Secondary Return",
-   "shape": "cyl",
+   "n": "Secondary Return 1000L",
    "axis": "x",
    "c": [
     0,
     1400
    ],
+   "mat": "copper",
    "r": 25,
+   "shape": "cyl",
    "x": [
     -700,
     -520
    ],
-   "mat": "copper"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Safety Valve",
-   "shape": "cyl",
+   "n": "Safety Valve 1000L",
    "axis": "z",
    "c": [
     250,
     0
    ],
+   "mat": "brass",
    "r": 20,
+   "shape": "cyl",
    "z": [
     1980,
     2150
    ],
-   "mat": "brass"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Thermostat Pocket",
-   "shape": "cyl",
+   "n": "Thermostat Pocket 1000L",
    "axis": "y",
    "c": [
     300,
     1500
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 15,
+   "shape": "cyl",
    "y": [
     -600,
     -490
    ],
-   "mat": "brass",
-   "lod": "f"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Thermometer Case",
-   "shape": "cyl",
+   "n": "Thermometer Case 1000L",
    "axis": "y",
    "c": [
     -200,
     1600
    ],
+   "mat": "chrome",
    "r": 50,
+   "shape": "cyl",
    "y": [
     -545,
     -520
    ],
-   "mat": "chrome"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Thermometer Dial",
-   "shape": "cyl",
+   "n": "Thermometer Dial 1000L",
    "axis": "y",
    "c": [
     -200,
     1600
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 46,
+   "shape": "cyl",
    "y": [
     -547,
     -545
    ],
-   "mat": "white",
-   "lod": "f"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Thermometer Needle",
-   "shape": "box",
+   "n": "Thermometer Needle 1000L",
    "at": [
     -201.5,
     -549,
@@ -446,59 +509,71 @@
     -547,
     1602
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Thermometer Stem",
-   "shape": "cyl",
+   "n": "Thermometer Stem 1000L",
    "axis": "z",
    "c": [
     -200,
     -532
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 6,
+   "shape": "cyl",
    "z": [
     1520,
     1552
    ],
-   "mat": "brass",
-   "lod": "f"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Pressure Gauge Case",
-   "shape": "cyl",
+   "n": "Pressure Gauge Case 1000L",
    "axis": "y",
    "c": [
     200,
     1600
    ],
+   "mat": "chrome",
    "r": 50,
+   "shape": "cyl",
    "y": [
     -545,
     -520
    ],
-   "mat": "chrome"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Pressure Gauge Dial",
-   "shape": "cyl",
+   "n": "Pressure Gauge Dial 1000L",
    "axis": "y",
    "c": [
     200,
     1600
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 46,
+   "shape": "cyl",
    "y": [
     -547,
     -545
    ],
-   "mat": "white",
-   "lod": "f"
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Pressure Gauge Needle",
-   "shape": "box",
+   "n": "Pressure Gauge Needle 1000L",
    "at": [
     198.5,
     -549,
@@ -507,24 +582,606 @@
     -547,
     1602
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "1000L_Calorifier"
+   ]
   },
   {
-   "n": "Pressure Gauge Stem",
-   "shape": "cyl",
+   "n": "Pressure Gauge Stem 1000L",
    "axis": "z",
    "c": [
     200,
     -532
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 6,
+   "shape": "cyl",
    "z": [
     1520,
     1552
    ],
+   "only": [
+    "1000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Shell Shell 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "mat": "aluminium",
+   "r": 655.2,
+   "shape": "cyl",
+   "z": [
+    592.2,
+    2431.8
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Shell Top Head 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "mat": "aluminium",
+   "profile": [
+    [
+     0.0,
+     2431.8
+    ],
+    [
+     655.2,
+     2431.8
+    ],
+    [
+     556.9,
+     2530.1
+    ],
+    [
+     262.1,
+     2583.0
+    ],
+    [
+     0.0,
+     2583.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Shell Bottom Head 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "mat": "aluminium",
+   "profile": [
+    [
+     0.0,
+     441.0
+    ],
+    [
+     262.1,
+     441.0
+    ],
+    [
+     556.9,
+     539.3
+    ],
+    [
+     655.2,
+     592.2
+    ],
+    [
+     0.0,
+     592.2
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Leg 2000L",
+   "at": [
+    -529.2,
+    -529.2,
+    0.0,
+    -453.6,
+    -453.6,
+    630.0
+   ],
+   "mat": "painted_steel",
+   "repeat": {
+    "d": [
+     982.8,
+     0.0,
+     0.0
+    ],
+    "n": 2
+   },
+   "shape": "box",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Leg Back 2000L",
+   "at": [
+    -529.2,
+    453.6,
+    0.0,
+    -453.6,
+    529.2,
+    630.0
+   ],
+   "mat": "painted_steel",
+   "repeat": {
+    "d": [
+     982.8,
+     0.0,
+     0.0
+    ],
+    "n": 2
+   },
+   "shape": "box",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Cladding Band 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "lod": "f",
+   "mat": "stainless",
+   "profile": [
+    [
+     655.2,
+     882.0
+    ],
+    [
+     660.2,
+     882.0
+    ],
+    [
+     660.2,
+     900.9
+    ],
+    [
+     655.2,
+     900.9
+    ]
+   ],
+   "repeat": {
+    "d": [
+     0.0,
+     0.0,
+     567.0
+    ],
+    "n": 3
+   },
+   "shape": "turn",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Manhole 2000L",
+   "axis": "y",
+   "c": [
+    0.0,
+    1008.0
+   ],
+   "mat": "painted_steel",
+   "r": 264.6,
+   "shape": "cyl",
+   "y": [
+    -705.6,
+    -655.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Manhole Cover 2000L",
+   "axis": "y",
+   "c": [
+    0.0,
+    1008.0
+   ],
+   "mat": "ductile_iron",
+   "r": 226.8,
+   "shape": "cyl",
+   "y": [
+    -730.8,
+    -705.6
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Manhole Bolt 2000L",
+   "axis": "y",
+   "c": [
+    -189.0,
+    1008.0
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 11.3,
+   "repeat": {
+    "d": [
+     378.0,
+     0.0,
+     0.0
+    ],
+    "n": 2
+   },
+   "seg": 6,
+   "shape": "cyl",
+   "y": [
+    -743.4,
+    -730.8
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Coil Flange 2000L",
+   "axis": "x",
+   "c": [
+    0.0,
+    756.0
+   ],
+   "mat": "painted_steel",
+   "profile": [
+    [
+     0.0,
+     655.2
+    ],
+    [
+     252.0,
+     655.2
+    ],
+    [
+     252.0,
+     705.6
+    ],
+    [
+     0.0,
+     705.6
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Steam Inlet 2000L",
+   "axis": "x",
+   "c": [
+    75.6,
+    882.0
+   ],
+   "mat": "steel",
+   "r": 37.8,
+   "shape": "cyl",
+   "x": [
+    705.6,
+    907.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Condensate Outlet 2000L",
+   "axis": "x",
+   "c": [
+    -75.6,
+    630.0
+   ],
+   "mat": "steel",
+   "r": 25.2,
+   "shape": "cyl",
+   "x": [
+    705.6,
+    907.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Cold Inlet 2000L",
+   "axis": "x",
+   "c": [
+    0.0,
+    567.0
+   ],
+   "mat": "copper",
+   "r": 50.4,
+   "shape": "cyl",
+   "x": [
+    -882.0,
+    -655.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Hot Outlet 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "mat": "copper",
+   "r": 50.4,
+   "shape": "cyl",
+   "z": [
+    2557.8,
+    2746.8
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Hot Outlet Flange 2000L",
+   "axis": "z",
+   "c": [
+    0.0,
+    0.0
+   ],
+   "mat": "copper",
+   "profile": [
+    [
+     0.0,
+     2709.0
+    ],
+    [
+     100.8,
+     2709.0
+    ],
+    [
+     100.8,
+     2734.2
+    ],
+    [
+     0.0,
+     2734.2
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Secondary Return 2000L",
+   "axis": "x",
+   "c": [
+    0.0,
+    1764.0
+   ],
+   "mat": "copper",
+   "r": 31.5,
+   "shape": "cyl",
+   "x": [
+    -882.0,
+    -655.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Safety Valve 2000L",
+   "axis": "z",
+   "c": [
+    315.0,
+    0.0
+   ],
    "mat": "brass",
-   "lod": "f"
+   "r": 25.2,
+   "shape": "cyl",
+   "z": [
+    2494.8,
+    2709.0
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Thermostat Pocket 2000L",
+   "axis": "y",
+   "c": [
+    378.0,
+    1890.0
+   ],
+   "lod": "f",
+   "mat": "brass",
+   "r": 18.9,
+   "shape": "cyl",
+   "y": [
+    -756.0,
+    -617.4
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Thermometer Case 2000L",
+   "axis": "y",
+   "c": [
+    -252.0,
+    2016.0
+   ],
+   "mat": "chrome",
+   "r": 63.0,
+   "shape": "cyl",
+   "y": [
+    -686.7,
+    -655.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Thermometer Dial 2000L",
+   "axis": "y",
+   "c": [
+    -252.0,
+    2016.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 58.0,
+   "shape": "cyl",
+   "y": [
+    -689.2,
+    -686.7
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Thermometer Needle 2000L",
+   "at": [
+    -253.9,
+    -691.7,
+    2013.5,
+    -214.2,
+    -689.2,
+    2018.5
+   ],
+   "lod": "f",
+   "mat": "black",
+   "shape": "box",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Thermometer Stem 2000L",
+   "axis": "z",
+   "c": [
+    -252.0,
+    -670.3
+   ],
+   "lod": "f",
+   "mat": "brass",
+   "r": 7.6,
+   "shape": "cyl",
+   "z": [
+    1915.2,
+    1955.5
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Pressure Gauge Case 2000L",
+   "axis": "y",
+   "c": [
+    252.0,
+    2016.0
+   ],
+   "mat": "chrome",
+   "r": 63.0,
+   "shape": "cyl",
+   "y": [
+    -686.7,
+    -655.2
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Pressure Gauge Dial 2000L",
+   "axis": "y",
+   "c": [
+    252.0,
+    2016.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 58.0,
+   "shape": "cyl",
+   "y": [
+    -689.2,
+    -686.7
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Pressure Gauge Needle 2000L",
+   "at": [
+    250.1,
+    -691.7,
+    2013.5,
+    289.8,
+    -689.2,
+    2018.5
+   ],
+   "lod": "f",
+   "mat": "black",
+   "shape": "box",
+   "only": [
+    "2000L_Calorifier"
+   ]
+  },
+  {
+   "n": "Pressure Gauge Stem 2000L",
+   "axis": "z",
+   "c": [
+    252.0,
+    -670.3
+   ],
+   "lod": "f",
+   "mat": "brass",
+   "r": 7.6,
+   "shape": "cyl",
+   "z": [
+    1915.2,
+    1955.5
+   ],
+   "only": [
+    "2000L_Calorifier"
+   ]
   }
  ],
  "connectors": [
@@ -532,7 +1189,7 @@
    "n": "CW",
    "domain": "pipe",
    "system": "DomesticColdWater",
-   "part": "Cold Inlet",
+   "part": "Cold Inlet 1000L",
    "side": "left",
    "diameter": 15,
    "flow": "In"
@@ -541,7 +1198,7 @@
    "n": "HW",
    "domain": "pipe",
    "system": "DomesticHotWater",
-   "part": "Hot Outlet",
+   "part": "Hot Outlet 1000L",
    "side": "top",
    "diameter": 50,
    "flow": "Out"
@@ -550,7 +1207,7 @@
    "n": "HWS Return",
    "domain": "pipe",
    "system": "DomesticHotWater",
-   "part": "Secondary Return",
+   "part": "Secondary Return 1000L",
    "side": "left",
    "diameter": 32,
    "flow": "In"
@@ -559,7 +1216,7 @@
    "n": "Steam",
    "domain": "pipe",
    "system": "Other",
-   "part": "Steam Inlet",
+   "part": "Steam Inlet 1000L",
    "side": "right",
    "diameter": 25,
    "flow": "In"
@@ -568,7 +1225,7 @@
    "n": "Condensate",
    "domain": "pipe",
    "system": "Other",
-   "part": "Condensate Outlet",
+   "part": "Condensate Outlet 1000L",
    "side": "right",
    "diameter": 20,
    "flow": "Out"
@@ -591,6 +1248,6 @@
    "source": "HTM 04-01 Legionella control"
   }
  },
- "about": "Calorifier modelled as a generic product: clad shell with dished heads, four legs, cladding bands, manhole with cover and bolts, coil flange, steam and condensate stubs, cold inlet, hot outlet with flange, secondary return, safety valve, thermostat pocket, thermometer and gauge. 1000 l drawn; 2000 l shares it.",
+ "about": "Calorifier modelled as a generic product: clad shell with dished heads, four legs, cladding bands, manhole with cover and bolts, coil flange, steam and condensate stubs, cold inlet, hot outlet with flange, secondary return, safety valve, thermostat pocket, thermometer and gauge. Per type: 2000 l is the 1000 l vessel scaled 1.26 (1310 dia x 2750 mm).",
  "template": "Metric Generic Model.rft"
 }

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_Tank_Underground_Rainwater",
  "template": "Metric Generic Model.rft",
- "about": "Rainwater tank modelled as a generic product: ribbed cylinder with domed end caps, access turret and cover with keyholes, filter turret and cover, inlet, overflow, delivery pipe and bedding slab, all below ground (z = 0). 20 m3 drawn; 50 m3 shares it. Reference: query: tank underground rainwater plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=tank+underground+rainwater+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Rainwater tank modelled as a generic product: ribbed cylinder with domed end caps, access turret and cover with keyholes, filter turret and cover, inlet, overflow, delivery pipe and bedding slab, all below ground (z = 0). Per type: 50 m3 is 3330 dia x 6400 mm, cover still at grade. Reference: query: tank underground rainwater plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=tank+underground+rainwater+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://kingfisherdirect.co.uk/rainwater-harvesting-underground-tank-11500-litre; photo_title: Rainwater Harvesting Underground Tank 11500 Litre; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -121,6 +121,13 @@
    "value": "P.TNK_03"
   },
   {
+   "op": "set_type_value",
+   "name": "20m3_Underground/URL",
+   "type": "20m3_Underground",
+   "param": "URL",
+   "value": "https://kingfisherdirect.co.uk/rainwater-harvesting-underground-tank-11500-litre"
+  },
+  {
    "op": "add_type",
    "name": "50m3_Underground"
   },
@@ -167,6 +174,13 @@
    "value": "P.TNK_03"
   },
   {
+   "op": "set_type_value",
+   "name": "50m3_Underground/URL",
+   "type": "50m3_Underground",
+   "param": "URL",
+   "value": "https://kingfisherdirect.co.uk/rainwater-harvesting-underground-tank-11500-litre"
+  },
+  {
    "op": "add_subcategory",
    "name": "Hdpe",
    "color": [
@@ -189,24 +203,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Painted Steel",
+   "name": "Ductile Iron",
    "color": [
-    61,
-    70,
-    80
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Painted Steel Material",
+   "name": "Ductile Iron Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Painted Steel Material"
+   "name": "FMC_Metal_DuctileIron_Black",
+   "param": "Ductile Iron Material"
   },
   {
    "op": "add_subcategory",
@@ -286,24 +300,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -2700,
-     -1500
+     -3591.0,
+     -1995.0
     ],
     [
-     2700,
-     -1500
+     3591.0,
+     -1995.0
     ],
     [
-     2700,
-     1500
+     3591.0,
+     1995.0
     ],
     [
-     -2700,
-     1500
+     -3591.0,
+     1995.0
     ]
    ],
-   "start": -3100,
-   "end": 0.5
+   "start": -4123.0,
+   "end": 0.7
   },
   {
    "op": "set_subcategory",
@@ -319,7 +333,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Tank Body",
+   "name": "Tank Body 20m3",
    "points": [
     [
      1250.0,
@@ -424,24 +438,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tank Body",
+   "name": "Tank Body 20m3",
    "subcategory": "Hdpe"
   },
   {
    "op": "set_material_param",
-   "name": "Tank Body",
+   "name": "Tank Body 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tank Body",
+   "name": "Tank Body 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "End Cap L",
+   "name": "End Cap L 20m3",
    "profile": [
     [
      0,
@@ -469,19 +483,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "End Cap L",
+   "name": "End Cap L 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Cap L",
+   "name": "End Cap L 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "End Cap R",
+   "name": "End Cap R 20m3",
    "profile": [
     [
      0,
@@ -509,19 +523,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "End Cap R",
+   "name": "End Cap R 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Cap R",
+   "name": "End Cap R 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 1",
+   "name": "Rib 20m3 1",
    "profile": [
     [
      1250,
@@ -549,19 +563,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 1",
+   "name": "Rib 20m3 1",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 1",
+   "name": "Rib 20m3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 2",
+   "name": "Rib 20m3 2",
    "profile": [
     [
      1250,
@@ -589,19 +603,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 2",
+   "name": "Rib 20m3 2",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 2",
+   "name": "Rib 20m3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 3",
+   "name": "Rib 20m3 3",
    "profile": [
     [
      1250,
@@ -629,19 +643,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 3",
+   "name": "Rib 20m3 3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 3",
+   "name": "Rib 20m3 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 4",
+   "name": "Rib 20m3 4",
    "profile": [
     [
      1250,
@@ -669,19 +683,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 4",
+   "name": "Rib 20m3 4",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 4",
+   "name": "Rib 20m3 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 5",
+   "name": "Rib 20m3 5",
    "profile": [
     [
      1250,
@@ -709,19 +723,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 5",
+   "name": "Rib 20m3 5",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 5",
+   "name": "Rib 20m3 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 6",
+   "name": "Rib 20m3 6",
    "profile": [
     [
      1250,
@@ -749,19 +763,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 6",
+   "name": "Rib 20m3 6",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 6",
+   "name": "Rib 20m3 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 7",
+   "name": "Rib 20m3 7",
    "profile": [
     [
      1250,
@@ -789,19 +803,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 7",
+   "name": "Rib 20m3 7",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 7",
+   "name": "Rib 20m3 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Rib 8",
+   "name": "Rib 20m3 8",
    "profile": [
     [
      1250,
@@ -829,19 +843,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Rib 8",
+   "name": "Rib 20m3 8",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rib 8",
+   "name": "Rib 20m3 8",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Access Turret",
+   "name": "Access Turret 20m3",
    "points": [
     [
      350.0,
@@ -945,24 +959,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Access Turret",
+   "name": "Access Turret 20m3",
    "subcategory": "Hdpe"
   },
   {
    "op": "set_material_param",
-   "name": "Access Turret",
+   "name": "Access Turret 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Access Turret",
+   "name": "Access Turret 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Manhole Cover",
+   "name": "Manhole Cover 20m3",
    "points": [
     [
      380.0,
@@ -1066,24 +1080,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Manhole Cover",
-   "subcategory": "Painted Steel"
+   "name": "Manhole Cover 20m3",
+   "subcategory": "Ductile Iron"
   },
   {
    "op": "set_material_param",
-   "name": "Manhole Cover",
-   "param": "Painted Steel Material"
+   "name": "Manhole Cover 20m3",
+   "param": "Ductile Iron Material"
   },
   {
    "op": "set_visibility",
-   "name": "Manhole Cover",
+   "name": "Manhole Cover 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cover Keyhole 1",
+   "name": "Cover Keyhole 20m3 1",
    "points": [
     [
      -120,
@@ -1107,24 +1121,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cover Keyhole 1",
+   "name": "Cover Keyhole 20m3 1",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Cover Keyhole 1",
+   "name": "Cover Keyhole 20m3 1",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cover Keyhole 1",
+   "name": "Cover Keyhole 20m3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cover Keyhole 2",
+   "name": "Cover Keyhole 20m3 2",
    "points": [
     [
      90,
@@ -1148,24 +1162,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cover Keyhole 2",
+   "name": "Cover Keyhole 20m3 2",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Cover Keyhole 2",
+   "name": "Cover Keyhole 20m3 2",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cover Keyhole 2",
+   "name": "Cover Keyhole 20m3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Filter Turret",
+   "name": "Filter Turret 20m3",
    "points": [
     [
      -1250.0,
@@ -1269,24 +1283,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Filter Turret",
+   "name": "Filter Turret 20m3",
    "subcategory": "Hdpe"
   },
   {
    "op": "set_material_param",
-   "name": "Filter Turret",
+   "name": "Filter Turret 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Filter Turret",
+   "name": "Filter Turret 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Filter Cover",
+   "name": "Filter Cover 20m3",
    "points": [
     [
      -1220.0,
@@ -1390,24 +1404,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Filter Cover",
-   "subcategory": "Painted Steel"
+   "name": "Filter Cover 20m3",
+   "subcategory": "Ductile Iron"
   },
   {
    "op": "set_material_param",
-   "name": "Filter Cover",
-   "param": "Painted Steel Material"
+   "name": "Filter Cover 20m3",
+   "param": "Ductile Iron Material"
   },
   {
    "op": "set_visibility",
-   "name": "Filter Cover",
+   "name": "Filter Cover 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Inlet Pipe",
+   "name": "Inlet Pipe 20m3",
    "points": [
     [
      55.0,
@@ -1512,24 +1526,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Inlet Pipe",
+   "name": "Inlet Pipe 20m3",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Inlet Pipe",
+   "name": "Inlet Pipe 20m3",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Inlet Pipe",
+   "name": "Inlet Pipe 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Overflow Pipe",
+   "name": "Overflow Pipe 20m3",
    "points": [
     [
      55.0,
@@ -1634,24 +1648,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Overflow Pipe",
+   "name": "Overflow Pipe 20m3",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Overflow Pipe",
+   "name": "Overflow Pipe 20m3",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Overflow Pipe",
+   "name": "Overflow Pipe 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Delivery Pipe",
+   "name": "Delivery Pipe 20m3",
    "points": [
     [
      220.0,
@@ -1756,24 +1770,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Delivery Pipe",
+   "name": "Delivery Pipe 20m3",
    "subcategory": "Hdpe"
   },
   {
    "op": "set_material_param",
-   "name": "Delivery Pipe",
+   "name": "Delivery Pipe 20m3",
    "param": "Hdpe Material"
   },
   {
    "op": "set_visibility",
-   "name": "Delivery Pipe",
+   "name": "Delivery Pipe 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bedding Slab",
+   "name": "Bedding Slab 20m3",
    "points": [
     [
      -2600,
@@ -1797,27 +1811,1814 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bedding Slab",
+   "name": "Bedding Slab 20m3",
    "subcategory": "Concrete"
   },
   {
    "op": "set_material_param",
-   "name": "Bedding Slab",
+   "name": "Bedding Slab 20m3",
    "param": "Concrete Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bedding Slab",
+   "name": "Bedding Slab 20m3",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Body 50m3",
+   "points": [
+    [
+     1662.5,
+     -2327.5
+    ],
+    [
+     1605.85,
+     -1897.21
+    ],
+    [
+     1439.77,
+     -1496.25
+    ],
+    [
+     1175.57,
+     -1151.93
+    ],
+    [
+     831.25,
+     -887.73
+    ],
+    [
+     430.29,
+     -721.65
+    ],
+    [
+     0.0,
+     -665.0
+    ],
+    [
+     -430.29,
+     -721.65
+    ],
+    [
+     -831.25,
+     -887.73
+    ],
+    [
+     -1175.57,
+     -1151.93
+    ],
+    [
+     -1439.77,
+     -1496.25
+    ],
+    [
+     -1605.85,
+     -1897.21
+    ],
+    [
+     -1662.5,
+     -2327.5
+    ],
+    [
+     -1605.85,
+     -2757.79
+    ],
+    [
+     -1439.77,
+     -3158.75
+    ],
+    [
+     -1175.57,
+     -3503.07
+    ],
+    [
+     -831.25,
+     -3767.27
+    ],
+    [
+     -430.29,
+     -3933.35
+    ],
+    [
+     -0.0,
+     -3990.0
+    ],
+    [
+     430.29,
+     -3933.35
+    ],
+    [
+     831.25,
+     -3767.27
+    ],
+    [
+     1175.57,
+     -3503.07
+    ],
+    [
+     1439.77,
+     -3158.75
+    ],
+    [
+     1605.85,
+     -2757.79
+    ]
+   ],
+   "start": -2926.0,
+   "end": 2926.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Body 50m3",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Body 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Body 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap L 50m3",
+   "profile": [
+    [
+     0.0,
+     -3192.0
+    ],
+    [
+     1064.0,
+     -3125.5
+    ],
+    [
+     1662.5,
+     -2926.0
+    ],
+    [
+     0.0,
+     -2926.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap L 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap L 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "End Cap R 50m3",
+   "profile": [
+    [
+     0.0,
+     2926.0
+    ],
+    [
+     1662.5,
+     2926.0
+    ],
+    [
+     1064.0,
+     3125.5
+    ],
+    [
+     0.0,
+     3192.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap R 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap R 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 1",
+   "profile": [
+    [
+     1662.5,
+     -2527.0
+    ],
+    [
+     1729.0,
+     -2527.0
+    ],
+    [
+     1729.0,
+     -2447.2
+    ],
+    [
+     1662.5,
+     -2447.2
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 1",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 2",
+   "profile": [
+    [
+     1662.5,
+     -1862.0
+    ],
+    [
+     1729.0,
+     -1862.0
+    ],
+    [
+     1729.0,
+     -1782.1999999999998
+    ],
+    [
+     1662.5,
+     -1782.1999999999998
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 2",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 3",
+   "profile": [
+    [
+     1662.5,
+     -1197.0
+    ],
+    [
+     1729.0,
+     -1197.0
+    ],
+    [
+     1729.0,
+     -1117.1999999999998
+    ],
+    [
+     1662.5,
+     -1117.1999999999998
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 4",
+   "profile": [
+    [
+     1662.5,
+     -532.0
+    ],
+    [
+     1729.0,
+     -532.0
+    ],
+    [
+     1729.0,
+     -452.1999999999998
+    ],
+    [
+     1662.5,
+     -452.1999999999998
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 4",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 5",
+   "profile": [
+    [
+     1662.5,
+     133.0
+    ],
+    [
+     1729.0,
+     133.0
+    ],
+    [
+     1729.0,
+     212.80000000000018
+    ],
+    [
+     1662.5,
+     212.80000000000018
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 5",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 6",
+   "profile": [
+    [
+     1662.5,
+     798.0
+    ],
+    [
+     1729.0,
+     798.0
+    ],
+    [
+     1729.0,
+     877.8000000000002
+    ],
+    [
+     1662.5,
+     877.8000000000002
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 6",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 7",
+   "profile": [
+    [
+     1662.5,
+     1463.0
+    ],
+    [
+     1729.0,
+     1463.0
+    ],
+    [
+     1729.0,
+     1542.8000000000002
+    ],
+    [
+     1662.5,
+     1542.8000000000002
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 7",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rib 50m3 8",
+   "profile": [
+    [
+     1662.5,
+     2128.0
+    ],
+    [
+     1729.0,
+     2128.0
+    ],
+    [
+     1729.0,
+     2207.8
+    ],
+    [
+     1662.5,
+     2207.8
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    -2327.5
+   ],
+   "axis": "x",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rib 50m3 8",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rib 50m3 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Access Turret 50m3",
+   "points": [
+    [
+     465.5,
+     0.0
+    ],
+    [
+     449.64,
+     120.48
+    ],
+    [
+     403.13,
+     232.75
+    ],
+    [
+     329.16,
+     329.16
+    ],
+    [
+     232.75,
+     403.13
+    ],
+    [
+     120.48,
+     449.64
+    ],
+    [
+     0.0,
+     465.5
+    ],
+    [
+     -120.48,
+     449.64
+    ],
+    [
+     -232.75,
+     403.13
+    ],
+    [
+     -329.16,
+     329.16
+    ],
+    [
+     -403.13,
+     232.75
+    ],
+    [
+     -449.64,
+     120.48
+    ],
+    [
+     -465.5,
+     0.0
+    ],
+    [
+     -449.64,
+     -120.48
+    ],
+    [
+     -403.13,
+     -232.75
+    ],
+    [
+     -329.16,
+     -329.16
+    ],
+    [
+     -232.75,
+     -403.13
+    ],
+    [
+     -120.48,
+     -449.64
+    ],
+    [
+     -0.0,
+     -465.5
+    ],
+    [
+     120.48,
+     -449.64
+    ],
+    [
+     232.75,
+     -403.13
+    ],
+    [
+     329.16,
+     -329.16
+    ],
+    [
+     403.13,
+     -232.75
+    ],
+    [
+     449.64,
+     -120.48
+    ]
+   ],
+   "start": -744.8,
+   "end": -93.1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Access Turret 50m3",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Access Turret 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Access Turret 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Manhole Cover 50m3",
+   "points": [
+    [
+     505.4,
+     0.0
+    ],
+    [
+     488.18,
+     130.81
+    ],
+    [
+     437.69,
+     252.7
+    ],
+    [
+     357.37,
+     357.37
+    ],
+    [
+     252.7,
+     437.69
+    ],
+    [
+     130.81,
+     488.18
+    ],
+    [
+     0.0,
+     505.4
+    ],
+    [
+     -130.81,
+     488.18
+    ],
+    [
+     -252.7,
+     437.69
+    ],
+    [
+     -357.37,
+     357.37
+    ],
+    [
+     -437.69,
+     252.7
+    ],
+    [
+     -488.18,
+     130.81
+    ],
+    [
+     -505.4,
+     0.0
+    ],
+    [
+     -488.18,
+     -130.81
+    ],
+    [
+     -437.69,
+     -252.7
+    ],
+    [
+     -357.37,
+     -357.37
+    ],
+    [
+     -252.7,
+     -437.69
+    ],
+    [
+     -130.81,
+     -488.18
+    ],
+    [
+     -0.0,
+     -505.4
+    ],
+    [
+     130.81,
+     -488.18
+    ],
+    [
+     252.7,
+     -437.69
+    ],
+    [
+     357.37,
+     -357.37
+    ],
+    [
+     437.69,
+     -252.7
+    ],
+    [
+     488.18,
+     -130.81
+    ]
+   ],
+   "start": -93.1,
+   "end": 0.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Manhole Cover 50m3",
+   "subcategory": "Ductile Iron"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Manhole Cover 50m3",
+   "param": "Ductile Iron Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Manhole Cover 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Keyhole 50m3 1",
+   "points": [
+    [
+     -159.6,
+     -13.3
+    ],
+    [
+     -119.7,
+     -13.3
+    ],
+    [
+     -119.7,
+     13.3
+    ],
+    [
+     -159.6,
+     13.3
+    ]
+   ],
+   "start": -1.3,
+   "end": 0.7
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Keyhole 50m3 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Keyhole 50m3 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Keyhole 50m3 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Keyhole 50m3 2",
+   "points": [
+    [
+     119.70000000000002,
+     -13.3
+    ],
+    [
+     159.60000000000002,
+     -13.3
+    ],
+    [
+     159.60000000000002,
+     13.3
+    ],
+    [
+     119.70000000000002,
+     13.3
+    ]
+   ],
+   "start": -1.3,
+   "end": 0.7
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Keyhole 50m3 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Keyhole 50m3 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Keyhole 50m3 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Turret 50m3",
+   "points": [
+    [
+     -1662.5,
+     0.0
+    ],
+    [
+     -1673.83,
+     86.06
+    ],
+    [
+     -1707.05,
+     166.25
+    ],
+    [
+     -1759.89,
+     235.11
+    ],
+    [
+     -1828.75,
+     287.95
+    ],
+    [
+     -1908.94,
+     321.17
+    ],
+    [
+     -1995.0,
+     332.5
+    ],
+    [
+     -2081.06,
+     321.17
+    ],
+    [
+     -2161.25,
+     287.95
+    ],
+    [
+     -2230.11,
+     235.11
+    ],
+    [
+     -2282.95,
+     166.25
+    ],
+    [
+     -2316.17,
+     86.06
+    ],
+    [
+     -2327.5,
+     0.0
+    ],
+    [
+     -2316.17,
+     -86.06
+    ],
+    [
+     -2282.95,
+     -166.25
+    ],
+    [
+     -2230.11,
+     -235.11
+    ],
+    [
+     -2161.25,
+     -287.95
+    ],
+    [
+     -2081.06,
+     -321.17
+    ],
+    [
+     -1995.0,
+     -332.5
+    ],
+    [
+     -1908.94,
+     -321.17
+    ],
+    [
+     -1828.75,
+     -287.95
+    ],
+    [
+     -1759.89,
+     -235.11
+    ],
+    [
+     -1707.05,
+     -166.25
+    ],
+    [
+     -1673.83,
+     -86.06
+    ]
+   ],
+   "start": -744.8,
+   "end": -93.1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Turret 50m3",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Turret 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Turret 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Cover 50m3",
+   "points": [
+    [
+     -1622.6,
+     0.0
+    ],
+    [
+     -1635.29,
+     96.38
+    ],
+    [
+     -1672.49,
+     186.2
+    ],
+    [
+     -1731.67,
+     263.33
+    ],
+    [
+     -1808.8,
+     322.51
+    ],
+    [
+     -1898.62,
+     359.71
+    ],
+    [
+     -1995.0,
+     372.4
+    ],
+    [
+     -2091.38,
+     359.71
+    ],
+    [
+     -2181.2,
+     322.51
+    ],
+    [
+     -2258.33,
+     263.33
+    ],
+    [
+     -2317.51,
+     186.2
+    ],
+    [
+     -2354.71,
+     96.38
+    ],
+    [
+     -2367.4,
+     0.0
+    ],
+    [
+     -2354.71,
+     -96.38
+    ],
+    [
+     -2317.51,
+     -186.2
+    ],
+    [
+     -2258.33,
+     -263.33
+    ],
+    [
+     -2181.2,
+     -322.51
+    ],
+    [
+     -2091.38,
+     -359.71
+    ],
+    [
+     -1995.0,
+     -372.4
+    ],
+    [
+     -1898.62,
+     -359.71
+    ],
+    [
+     -1808.8,
+     -322.51
+    ],
+    [
+     -1731.67,
+     -263.33
+    ],
+    [
+     -1672.49,
+     -186.2
+    ],
+    [
+     -1635.29,
+     -96.38
+    ]
+   ],
+   "start": -93.1,
+   "end": 0.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Cover 50m3",
+   "subcategory": "Ductile Iron"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Cover 50m3",
+   "param": "Ductile Iron Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Cover 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Pipe 50m3",
+   "points": [
+    [
+     73.2,
+     -465.5
+    ],
+    [
+     70.71,
+     -446.55
+    ],
+    [
+     63.39,
+     -428.9
+    ],
+    [
+     51.76,
+     -413.74
+    ],
+    [
+     36.6,
+     -402.11
+    ],
+    [
+     18.95,
+     -394.79
+    ],
+    [
+     0.0,
+     -392.3
+    ],
+    [
+     -18.95,
+     -394.79
+    ],
+    [
+     -36.6,
+     -402.11
+    ],
+    [
+     -51.76,
+     -413.74
+    ],
+    [
+     -63.39,
+     -428.9
+    ],
+    [
+     -70.71,
+     -446.55
+    ],
+    [
+     -73.2,
+     -465.5
+    ],
+    [
+     -70.71,
+     -484.45
+    ],
+    [
+     -63.39,
+     -502.1
+    ],
+    [
+     -51.76,
+     -517.26
+    ],
+    [
+     -36.6,
+     -528.89
+    ],
+    [
+     -18.95,
+     -536.21
+    ],
+    [
+     -0.0,
+     -538.7
+    ],
+    [
+     18.95,
+     -536.21
+    ],
+    [
+     36.6,
+     -528.89
+    ],
+    [
+     51.76,
+     -517.26
+    ],
+    [
+     63.39,
+     -502.1
+    ],
+    [
+     70.71,
+     -484.45
+    ]
+   ],
+   "start": -3591.0,
+   "end": -2327.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Pipe 50m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Pipe 50m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Pipe 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Overflow Pipe 50m3",
+   "points": [
+    [
+     73.2,
+     -798.0
+    ],
+    [
+     70.71,
+     -779.05
+    ],
+    [
+     63.39,
+     -761.4
+    ],
+    [
+     51.76,
+     -746.24
+    ],
+    [
+     36.6,
+     -734.61
+    ],
+    [
+     18.95,
+     -727.29
+    ],
+    [
+     0.0,
+     -724.8
+    ],
+    [
+     -18.95,
+     -727.29
+    ],
+    [
+     -36.6,
+     -734.61
+    ],
+    [
+     -51.76,
+     -746.24
+    ],
+    [
+     -63.39,
+     -761.4
+    ],
+    [
+     -70.71,
+     -779.05
+    ],
+    [
+     -73.2,
+     -798.0
+    ],
+    [
+     -70.71,
+     -816.95
+    ],
+    [
+     -63.39,
+     -834.6
+    ],
+    [
+     -51.76,
+     -849.76
+    ],
+    [
+     -36.6,
+     -861.39
+    ],
+    [
+     -18.95,
+     -868.71
+    ],
+    [
+     -0.0,
+     -871.2
+    ],
+    [
+     18.95,
+     -868.71
+    ],
+    [
+     36.6,
+     -861.39
+    ],
+    [
+     51.76,
+     -849.76
+    ],
+    [
+     63.39,
+     -834.6
+    ],
+    [
+     70.71,
+     -816.95
+    ]
+   ],
+   "start": 2327.5,
+   "end": 3591.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Overflow Pipe 50m3",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Overflow Pipe 50m3",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Overflow Pipe 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Delivery Pipe 50m3",
+   "points": [
+    [
+     292.6,
+     -465.5
+    ],
+    [
+     291.69,
+     -458.62
+    ],
+    [
+     289.04,
+     -452.2
+    ],
+    [
+     284.81,
+     -446.69
+    ],
+    [
+     279.3,
+     -442.46
+    ],
+    [
+     272.88,
+     -439.81
+    ],
+    [
+     266.0,
+     -438.9
+    ],
+    [
+     259.12,
+     -439.81
+    ],
+    [
+     252.7,
+     -442.46
+    ],
+    [
+     247.19,
+     -446.69
+    ],
+    [
+     242.96,
+     -452.2
+    ],
+    [
+     240.31,
+     -458.62
+    ],
+    [
+     239.4,
+     -465.5
+    ],
+    [
+     240.31,
+     -472.38
+    ],
+    [
+     242.96,
+     -478.8
+    ],
+    [
+     247.19,
+     -484.31
+    ],
+    [
+     252.7,
+     -488.54
+    ],
+    [
+     259.12,
+     -491.19
+    ],
+    [
+     266.0,
+     -492.1
+    ],
+    [
+     272.88,
+     -491.19
+    ],
+    [
+     279.3,
+     -488.54
+    ],
+    [
+     284.81,
+     -484.31
+    ],
+    [
+     289.04,
+     -478.8
+    ],
+    [
+     291.69,
+     -472.38
+    ]
+   ],
+   "start": -798.0,
+   "end": -0.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Delivery Pipe 50m3",
+   "subcategory": "Hdpe"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Delivery Pipe 50m3",
+   "param": "Hdpe Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Delivery Pipe 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bedding Slab 50m3",
+   "points": [
+    [
+     -3458.0,
+     -1995.0
+    ],
+    [
+     3458.0,
+     -1995.0
+    ],
+    [
+     3458.0,
+     1995.0
+    ],
+    [
+     -3458.0,
+     1995.0
+    ]
+   ],
+   "start": -4123.0,
+   "end": -3990.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bedding Slab 50m3",
+   "subcategory": "Concrete"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bedding Slab 50m3",
+   "param": "Concrete Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bedding Slab 50m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 20m3_Underground",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_Underground/Show 20m3_Underground",
+   "type": "20m3_Underground",
+   "param": "Show 20m3_Underground",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_Underground/Show 20m3_Underground",
+   "type": "50m3_Underground",
+   "param": "Show 20m3_Underground",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Body 20m3/Visible",
+   "solid": "Tank Body 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap L 20m3/Visible",
+   "solid": "End Cap L 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 20m3/Visible",
+   "solid": "End Cap R 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 1/Visible",
+   "solid": "Rib 20m3 1",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 2/Visible",
+   "solid": "Rib 20m3 2",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 3/Visible",
+   "solid": "Rib 20m3 3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 4/Visible",
+   "solid": "Rib 20m3 4",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 5/Visible",
+   "solid": "Rib 20m3 5",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 6/Visible",
+   "solid": "Rib 20m3 6",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 7/Visible",
+   "solid": "Rib 20m3 7",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 20m3 8/Visible",
+   "solid": "Rib 20m3 8",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Turret 20m3/Visible",
+   "solid": "Access Turret 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Manhole Cover 20m3/Visible",
+   "solid": "Manhole Cover 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Keyhole 20m3 1/Visible",
+   "solid": "Cover Keyhole 20m3 1",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Keyhole 20m3 2/Visible",
+   "solid": "Cover Keyhole 20m3 2",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Turret 20m3/Visible",
+   "solid": "Filter Turret 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Cover 20m3/Visible",
+   "solid": "Filter Cover 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Pipe 20m3/Visible",
+   "solid": "Inlet Pipe 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow Pipe 20m3/Visible",
+   "solid": "Overflow Pipe 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Delivery Pipe 20m3/Visible",
+   "solid": "Delivery Pipe 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bedding Slab 20m3/Visible",
+   "solid": "Bedding Slab 20m3",
+   "param": "Show 20m3_Underground"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 50m3_Underground",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_Underground/Show 50m3_Underground",
+   "type": "20m3_Underground",
+   "param": "Show 50m3_Underground",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_Underground/Show 50m3_Underground",
+   "type": "50m3_Underground",
+   "param": "Show 50m3_Underground",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Body 50m3/Visible",
+   "solid": "Tank Body 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap L 50m3/Visible",
+   "solid": "End Cap L 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 50m3/Visible",
+   "solid": "End Cap R 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 1/Visible",
+   "solid": "Rib 50m3 1",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 2/Visible",
+   "solid": "Rib 50m3 2",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 3/Visible",
+   "solid": "Rib 50m3 3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 4/Visible",
+   "solid": "Rib 50m3 4",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 5/Visible",
+   "solid": "Rib 50m3 5",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 6/Visible",
+   "solid": "Rib 50m3 6",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 7/Visible",
+   "solid": "Rib 50m3 7",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rib 50m3 8/Visible",
+   "solid": "Rib 50m3 8",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Access Turret 50m3/Visible",
+   "solid": "Access Turret 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Manhole Cover 50m3/Visible",
+   "solid": "Manhole Cover 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Keyhole 50m3 1/Visible",
+   "solid": "Cover Keyhole 50m3 1",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Keyhole 50m3 2/Visible",
+   "solid": "Cover Keyhole 50m3 2",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Turret 50m3/Visible",
+   "solid": "Filter Turret 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Cover 50m3/Visible",
+   "solid": "Filter Cover 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Pipe 50m3/Visible",
+   "solid": "Inlet Pipe 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow Pipe 50m3/Visible",
+   "solid": "Overflow Pipe 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Delivery Pipe 50m3/Visible",
+   "solid": "Delivery Pipe 50m3",
+   "param": "Show 50m3_Underground"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bedding Slab 50m3/Visible",
+   "solid": "Bedding Slab 50m3",
+   "param": "Show 50m3_Underground"
   },
   {
    "op": "add_connector",
    "name": "Rainwater In",
    "domain": "pipe",
    "system": "Sanitary",
-   "solid": "Inlet Pipe",
+   "solid": "Inlet Pipe 20m3",
    "side": "left",
    "diameter": 110,
    "flow": "In"
@@ -1827,7 +3628,7 @@
    "name": "Overflow",
    "domain": "pipe",
    "system": "Sanitary",
-   "solid": "Overflow Pipe",
+   "solid": "Overflow Pipe 20m3",
    "side": "right",
    "diameter": 110,
    "flow": "Out"
@@ -1837,7 +3638,7 @@
    "name": "Delivery",
    "domain": "pipe",
    "system": "DomesticColdWater",
-   "solid": "Delivery Pipe",
+   "solid": "Delivery Pipe 20m3",
    "side": "back",
    "diameter": 40,
    "flow": "Out"

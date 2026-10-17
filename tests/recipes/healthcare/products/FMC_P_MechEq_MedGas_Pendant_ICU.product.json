@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_MechEq_MedGas_Pendant_ICU",
  "category": "Mechanical Equipment",
- "desc": "ICU ceiling pendant, single articulated arm 900 mm on a Unistrut frame, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails",
+ "desc": "ICU ceiling pendant on a Unistrut frame, single (900 mm) or double (900 + 700 mm) articulated arm, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails",
  "ifc": "IfcFlowTerminal",
  "keynote": "E.BHU_01",
  "types": [
@@ -29,17 +29,20 @@
  "reference": {
   "query": "medical gas pendant ICU mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+pendant+ICU+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.beaconmedaes.com/en-uk/products/medical/medical-supply-units/ceiling-pendant",
+  "photo_title": "BeaconMedaes ceiling pendant",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
    "n": "Ceiling Flange",
-   "shape": "turn",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "epoxy_white",
    "profile": [
     [
      0,
@@ -58,16 +61,16 @@
      0
     ]
    ],
-   "mat": "epoxy_white"
+   "shape": "turn"
   },
   {
    "n": "Canopy",
-   "shape": "turn",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "epoxy_white",
    "profile": [
     [
      0,
@@ -90,106 +93,105 @@
      -30
     ]
    ],
-   "mat": "epoxy_white"
+   "shape": "turn"
   },
   {
    "n": "Gas Inlet O2",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -120,
     60
    ],
+   "lod": "f",
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     0,
     120
-   ],
-   "mat": "copper",
-   "lod": "f"
+   ]
   },
   {
    "n": "Gas Inlet VAC",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -60,
     120
    ],
+   "lod": "f",
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     0,
     120
-   ],
-   "mat": "copper",
-   "lod": "f"
+   ]
   },
   {
    "n": "Gas Inlet MA4",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     60,
     120
    ],
+   "lod": "f",
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     0,
     120
-   ],
-   "mat": "copper",
-   "lod": "f"
+   ]
   },
   {
    "n": "Power Inlet",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     120,
     60
    ],
+   "lod": "f",
+   "mat": "grey",
    "r": 14,
+   "shape": "cyl",
    "z": [
     0,
     120
-   ],
-   "mat": "grey",
-   "lod": "f"
+   ]
   },
   {
    "n": "Data Inlet",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     120,
     -60
    ],
+   "lod": "f",
+   "mat": "grey",
    "r": 14,
+   "shape": "cyl",
    "z": [
     0,
     120
-   ],
-   "mat": "grey",
-   "lod": "f"
+   ]
   },
   {
    "n": "Joint 1",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     0,
     0
    ],
+   "mat": "medical_grey",
    "r": 95,
+   "shape": "cyl",
    "z": [
     -490,
     -380
-   ],
-   "mat": "medical_grey"
+   ]
   },
   {
    "n": "Arm 1",
-   "shape": "box",
    "at": [
     0,
     -85,
@@ -199,26 +201,29 @@
     -490
    ],
    "mat": "epoxy_white",
-   "r": 60
+   "r": 60,
+   "shape": "box"
   },
   {
-   "n": "Head Joint",
-   "shape": "cyl",
+   "n": "Head Joint 900",
    "axis": "z",
    "c": [
     900,
     0
    ],
+   "mat": "medical_grey",
    "r": 95,
+   "shape": "cyl",
    "z": [
     -730,
     -610
    ],
-   "mat": "medical_grey"
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Brake Handle",
-   "shape": "box",
+   "n": "Brake Handle 900",
    "at": [
     870,
     -160,
@@ -228,11 +233,14 @@
     -670
    ],
    "mat": "black",
-   "r": 8
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Service Head",
-   "shape": "box",
+   "n": "Service Head 900",
    "at": [
     740,
     -210,
@@ -242,40 +250,47 @@
     -730
    ],
    "mat": "epoxy_white",
-   "r": 40
+   "r": 40,
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Corner Rail",
-   "shape": "cyl",
+   "n": "Corner Rail 900",
    "axis": "z",
    "c": [
     730,
     -215
    ],
-   "r": 10,
-   "z": [
-    -1960,
-    -750
-   ],
-   "mat": "chrome",
    "lod": "f",
+   "mat": "chrome",
+   "r": 10,
    "repeat": {
-    "n": 2,
     "d": [
      340,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "cyl",
+   "z": [
+    -1960,
+    -750
+   ],
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Head Base",
-   "shape": "turn",
+   "n": "Head Base 900",
    "axis": "z",
    "c": [
     900,
     0
    ],
+   "mat": "medical_grey",
    "profile": [
     [
      0,
@@ -294,11 +309,13 @@
      -1980
     ]
    ],
-   "mat": "medical_grey"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Handle",
-   "shape": "box",
+   "n": "Handle 900",
    "at": [
     780,
     -260,
@@ -308,11 +325,14 @@
     -2020
    ],
    "mat": "chrome",
-   "r": 8
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 1 Fascia",
-   "shape": "fbox",
+   "n": "O2 1 Fascia 900",
    "at": [
     755.0,
     -220,
@@ -322,16 +342,20 @@
     -825.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 1 Ring",
-   "shape": "turn",
+   "n": "O2 1 Ring 900",
    "axis": "y",
    "c": [
     800,
     -864
    ],
+   "mat": "white",
    "profile": [
     [
      16,
@@ -350,16 +374,19 @@
      -224
     ]
    ],
-   "mat": "white"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 1 Collar",
-   "shape": "turn",
+   "n": "O2 1 Collar 900",
    "axis": "y",
    "c": [
     800,
     -864
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -390,11 +417,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 1 Label",
-   "shape": "fbox",
+   "n": "O2 1 Label 900",
    "at": [
     773.0,
     -220.6,
@@ -403,13 +432,16 @@
     -220,
     -897.0
    ],
+   "lod": "f",
    "mat": "black",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 2 Fascia",
-   "shape": "fbox",
+   "n": "O2 2 Fascia 900",
    "at": [
     855.0,
     -220,
@@ -419,16 +451,20 @@
     -825.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 2 Ring",
-   "shape": "turn",
+   "n": "O2 2 Ring 900",
    "axis": "y",
    "c": [
     900,
     -864
    ],
+   "mat": "white",
    "profile": [
     [
      16,
@@ -447,16 +483,19 @@
      -224
     ]
    ],
-   "mat": "white"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 2 Collar",
-   "shape": "turn",
+   "n": "O2 2 Collar 900",
    "axis": "y",
    "c": [
     900,
     -864
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -487,11 +526,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "O2 2 Label",
-   "shape": "fbox",
+   "n": "O2 2 Label 900",
    "at": [
     873.0,
     -220.6,
@@ -500,13 +541,16 @@
     -220,
     -897.0
    ],
+   "lod": "f",
    "mat": "black",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 1 Fascia",
-   "shape": "fbox",
+   "n": "VAC 1 Fascia 900",
    "at": [
     955.0,
     -220,
@@ -516,16 +560,20 @@
     -825.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 1 Ring",
-   "shape": "turn",
+   "n": "VAC 1 Ring 900",
    "axis": "y",
    "c": [
     1000,
     -864
    ],
+   "mat": "yellow",
    "profile": [
     [
      16,
@@ -544,16 +592,19 @@
      -224
     ]
    ],
-   "mat": "yellow"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 1 Collar",
-   "shape": "turn",
+   "n": "VAC 1 Collar 900",
    "axis": "y",
    "c": [
     1000,
     -864
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -584,11 +635,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 1 Label",
-   "shape": "fbox",
+   "n": "VAC 1 Label 900",
    "at": [
     973.0,
     -220.6,
@@ -597,13 +650,16 @@
     -220,
     -897.0
    ],
+   "lod": "f",
    "mat": "yellow",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 2 Fascia",
-   "shape": "fbox",
+   "n": "VAC 2 Fascia 900",
    "at": [
     755.0,
     -220,
@@ -613,16 +669,20 @@
     -935.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 2 Ring",
-   "shape": "turn",
+   "n": "VAC 2 Ring 900",
    "axis": "y",
    "c": [
     800,
     -974
    ],
+   "mat": "yellow",
    "profile": [
     [
      16,
@@ -641,16 +701,19 @@
      -224
     ]
    ],
-   "mat": "yellow"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 2 Collar",
-   "shape": "turn",
+   "n": "VAC 2 Collar 900",
    "axis": "y",
    "c": [
     800,
     -974
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -681,11 +744,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "VAC 2 Label",
-   "shape": "fbox",
+   "n": "VAC 2 Label 900",
    "at": [
     773.0,
     -220.6,
@@ -694,13 +759,16 @@
     -220,
     -1007.0
    ],
+   "lod": "f",
    "mat": "yellow",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 1 Fascia",
-   "shape": "fbox",
+   "n": "MA4 1 Fascia 900",
    "at": [
     855.0,
     -220,
@@ -710,16 +778,20 @@
     -935.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 1 Ring",
-   "shape": "turn",
+   "n": "MA4 1 Ring 900",
    "axis": "y",
    "c": [
     900,
     -974
    ],
+   "mat": "black",
    "profile": [
     [
      16,
@@ -738,16 +810,19 @@
      -224
     ]
    ],
-   "mat": "black"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 1 Collar",
-   "shape": "turn",
+   "n": "MA4 1 Collar 900",
    "axis": "y",
    "c": [
     900,
     -974
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -778,11 +853,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 1 Label",
-   "shape": "fbox",
+   "n": "MA4 1 Label 900",
    "at": [
     873.0,
     -220.6,
@@ -791,13 +868,16 @@
     -220,
     -1007.0
    ],
+   "lod": "f",
    "mat": "white",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 2 Fascia",
-   "shape": "fbox",
+   "n": "MA4 2 Fascia 900",
    "at": [
     955.0,
     -220,
@@ -807,16 +887,20 @@
     -935.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 2 Ring",
-   "shape": "turn",
+   "n": "MA4 2 Ring 900",
    "axis": "y",
    "c": [
     1000,
     -974
    ],
+   "mat": "black",
    "profile": [
     [
      16,
@@ -835,16 +919,19 @@
      -224
     ]
    ],
-   "mat": "black"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 2 Collar",
-   "shape": "turn",
+   "n": "MA4 2 Collar 900",
    "axis": "y",
    "c": [
     1000,
     -974
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -875,11 +962,13 @@
      -230
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "MA4 2 Label",
-   "shape": "fbox",
+   "n": "MA4 2 Label 900",
    "at": [
     973.0,
     -220.6,
@@ -888,13 +977,16 @@
     -220,
     -1007.0
    ],
+   "lod": "f",
    "mat": "white",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket A Plate",
-   "shape": "fbox",
+   "n": "Socket A Plate 900",
    "at": [
     752,
     -219,
@@ -904,11 +996,14 @@
     -1107
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket A Face",
-   "shape": "fbox",
+   "n": "Socket A Face 900",
    "at": [
     763,
     -220,
@@ -917,21 +1012,24 @@
     -219,
     -1135
    ],
+   "lod": "f",
    "mat": "black",
    "r": 3,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket A Rocker",
-   "shape": "fbox",
+   "n": "Socket A Rocker 900",
    "at": [
     779,
     -223,
@@ -940,21 +1038,24 @@
     -219,
     -1114
    ],
+   "lod": "f",
    "mat": "white",
    "r": 2,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket B Plate",
-   "shape": "fbox",
+   "n": "Socket B Plate 900",
    "at": [
     752,
     -219,
@@ -964,11 +1065,14 @@
     -1217
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket B Face",
-   "shape": "fbox",
+   "n": "Socket B Face 900",
    "at": [
     763,
     -220,
@@ -977,21 +1081,24 @@
     -219,
     -1245
    ],
+   "lod": "f",
    "mat": "black",
    "r": 3,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Socket B Rocker",
-   "shape": "fbox",
+   "n": "Socket B Rocker 900",
    "at": [
     779,
     -223,
@@ -1000,21 +1107,24 @@
     -219,
     -1224
    ],
+   "lod": "f",
    "mat": "red",
    "r": 2,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Nurse Call",
-   "shape": "fbox",
+   "n": "Nurse Call 900",
    "at": [
     920,
     -219,
@@ -1024,27 +1134,33 @@
     -1110
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Call LED",
-   "shape": "cyl",
+   "n": "Call LED 900",
    "axis": "y",
    "c": [
     980,
     -1140
    ],
+   "lod": "f",
+   "mat": "led_red",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -222,
     -219
    ],
-   "mat": "led_red",
-   "lod": "f"
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Shelf 1",
-   "shape": "box",
+   "n": "Shelf 1 900",
    "at": [
     570,
     -460,
@@ -1054,11 +1170,14 @@
     -1385
    ],
    "mat": "laminate",
-   "r": 20
+   "r": 20,
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Shelf Rail 1",
-   "shape": "box",
+   "n": "Shelf Rail 1 900",
    "at": [
     570,
     -470,
@@ -1067,12 +1186,15 @@
     -455,
     -1370
    ],
+   "lod": "f",
    "mat": "chrome",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Shelf 2",
-   "shape": "box",
+   "n": "Shelf 2 900",
    "at": [
     570,
     -460,
@@ -1082,11 +1204,14 @@
     -1645
    ],
    "mat": "laminate",
-   "r": 20
+   "r": 20,
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Shelf Rail 2",
-   "shape": "box",
+   "n": "Shelf Rail 2 900",
    "at": [
     570,
     -470,
@@ -1095,39 +1220,1144 @@
     -455,
     -1630
    ],
+   "lod": "f",
    "mat": "chrome",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Infusion Pole",
-   "shape": "cyl",
+   "n": "Infusion Pole 900",
    "axis": "z",
    "c": [
     1100,
     -150
    ],
+   "mat": "chrome",
    "r": 12,
+   "shape": "cyl",
    "z": [
     -1910,
     -690
    ],
-   "mat": "chrome"
+   "only": [
+    "900_SingleArm"
+   ]
   },
   {
-   "n": "Status LED",
-   "shape": "cyl",
+   "n": "Status LED 900",
    "axis": "y",
    "c": [
     1020,
     -750
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -213,
     -210
    ],
+   "only": [
+    "900_SingleArm"
+   ]
+  },
+  {
+   "n": "Joint 2",
+   "axis": "z",
+   "c": [
+    900,
+    0
+   ],
+   "mat": "medical_grey",
+   "r": 95,
+   "shape": "cyl",
+   "z": [
+    -720,
+    -610
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Arm 2",
+   "at": [
+    900,
+    -85,
+    -840,
+    1600,
+    85,
+    -720
+   ],
+   "mat": "epoxy_white",
+   "r": 60,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Head Joint 1600",
+   "axis": "z",
+   "c": [
+    1600,
+    0
+   ],
+   "mat": "medical_grey",
+   "r": 95,
+   "shape": "cyl",
+   "z": [
+    -960,
+    -840
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Brake Handle 1600",
+   "at": [
+    1570,
+    -160,
+    -940,
+    1630,
+    -95,
+    -900
+   ],
+   "mat": "black",
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Service Head 1600",
+   "at": [
+    1440,
+    -210,
+    -2210,
+    1760,
+    210,
+    -960
+   ],
+   "mat": "epoxy_white",
+   "r": 40,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Corner Rail 1600",
+   "axis": "z",
+   "c": [
+    1430,
+    -215
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "r": 10,
+   "repeat": {
+    "d": [
+     340,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "cyl",
+   "z": [
+    -2190,
+    -980
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Head Base 1600",
+   "axis": "z",
+   "c": [
+    1600,
+    0
+   ],
+   "mat": "medical_grey",
+   "profile": [
+    [
+     0,
+     -2240
+    ],
+    [
+     150,
+     -2240
+    ],
+    [
+     190,
+     -2210
+    ],
+    [
+     0,
+     -2210
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Handle 1600",
+   "at": [
+    1480,
+    -260,
+    -2270,
+    1720,
+    -230,
+    -2250
+   ],
+   "mat": "chrome",
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 1 Fascia 1600",
+   "at": [
+    1455.0,
+    -220,
+    -1145.0,
+    1545.0,
+    -210,
+    -1055.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 1 Ring 1600",
+   "axis": "y",
+   "c": [
+    1500,
+    -1094
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 1 Collar 1600",
+   "axis": "y",
+   "c": [
+    1500,
+    -1094
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 1 Label 1600",
+   "at": [
+    1473.0,
+    -220.6,
+    -1137.0,
+    1527.0,
+    -220,
+    -1127.0
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 2 Fascia 1600",
+   "at": [
+    1555.0,
+    -220,
+    -1145.0,
+    1645.0,
+    -210,
+    -1055.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 2 Ring 1600",
+   "axis": "y",
+   "c": [
+    1600,
+    -1094
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 2 Collar 1600",
+   "axis": "y",
+   "c": [
+    1600,
+    -1094
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "O2 2 Label 1600",
+   "at": [
+    1573.0,
+    -220.6,
+    -1137.0,
+    1627.0,
+    -220,
+    -1127.0
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 1 Fascia 1600",
+   "at": [
+    1655.0,
+    -220,
+    -1145.0,
+    1745.0,
+    -210,
+    -1055.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 1 Ring 1600",
+   "axis": "y",
+   "c": [
+    1700,
+    -1094
+   ],
+   "mat": "yellow",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 1 Collar 1600",
+   "axis": "y",
+   "c": [
+    1700,
+    -1094
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 1 Label 1600",
+   "at": [
+    1673.0,
+    -220.6,
+    -1137.0,
+    1727.0,
+    -220,
+    -1127.0
+   ],
+   "lod": "f",
+   "mat": "yellow",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 2 Fascia 1600",
+   "at": [
+    1455.0,
+    -220,
+    -1255.0,
+    1545.0,
+    -210,
+    -1165.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 2 Ring 1600",
+   "axis": "y",
+   "c": [
+    1500,
+    -1204
+   ],
+   "mat": "yellow",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 2 Collar 1600",
+   "axis": "y",
+   "c": [
+    1500,
+    -1204
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "VAC 2 Label 1600",
+   "at": [
+    1473.0,
+    -220.6,
+    -1247.0,
+    1527.0,
+    -220,
+    -1237.0
+   ],
+   "lod": "f",
+   "mat": "yellow",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 1 Fascia 1600",
+   "at": [
+    1555.0,
+    -220,
+    -1255.0,
+    1645.0,
+    -210,
+    -1165.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 1 Ring 1600",
+   "axis": "y",
+   "c": [
+    1600,
+    -1204
+   ],
+   "mat": "black",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 1 Collar 1600",
+   "axis": "y",
+   "c": [
+    1600,
+    -1204
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 1 Label 1600",
+   "at": [
+    1573.0,
+    -220.6,
+    -1247.0,
+    1627.0,
+    -220,
+    -1237.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 2 Fascia 1600",
+   "at": [
+    1655.0,
+    -220,
+    -1255.0,
+    1745.0,
+    -210,
+    -1165.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 2 Ring 1600",
+   "axis": "y",
+   "c": [
+    1700,
+    -1204
+   ],
+   "mat": "black",
+   "profile": [
+    [
+     16,
+     -220
+    ],
+    [
+     24,
+     -220
+    ],
+    [
+     24,
+     -224
+    ],
+    [
+     16,
+     -224
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 2 Collar 1600",
+   "axis": "y",
+   "c": [
+    1700,
+    -1204
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -220
+    ],
+    [
+     16,
+     -220
+    ],
+    [
+     16,
+     -232
+    ],
+    [
+     13,
+     -234
+    ],
+    [
+     5,
+     -234
+    ],
+    [
+     5,
+     -230
+    ],
+    [
+     0,
+     -230
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "MA4 2 Label 1600",
+   "at": [
+    1673.0,
+    -220.6,
+    -1247.0,
+    1727.0,
+    -220,
+    -1237.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket A Plate 1600",
+   "at": [
+    1452,
+    -219,
+    -1423,
+    1598,
+    -210,
+    -1337
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket A Face 1600",
+   "at": [
+    1463,
+    -220,
+    -1405,
+    1505,
+    -219,
+    -1365
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 3,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket A Rocker 1600",
+   "at": [
+    1479,
+    -223,
+    -1358,
+    1495,
+    -219,
+    -1344
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 2,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket B Plate 1600",
+   "at": [
+    1452,
+    -219,
+    -1533,
+    1598,
+    -210,
+    -1447
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket B Face 1600",
+   "at": [
+    1463,
+    -220,
+    -1515,
+    1505,
+    -219,
+    -1475
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 3,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Socket B Rocker 1600",
+   "at": [
+    1479,
+    -223,
+    -1468,
+    1495,
+    -219,
+    -1454
+   ],
+   "lod": "f",
+   "mat": "red",
+   "r": 2,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Nurse Call 1600",
+   "at": [
+    1620,
+    -219,
+    -1420,
+    1740,
+    -210,
+    -1340
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Call LED 1600",
+   "axis": "y",
+   "c": [
+    1680,
+    -1370
+   ],
+   "lod": "f",
+   "mat": "led_red",
+   "r": 8,
+   "shape": "cyl",
+   "y": [
+    -222,
+    -219
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Shelf 1 1600",
+   "at": [
+    1270,
+    -460,
+    -1640,
+    1930,
+    0,
+    -1615
+   ],
+   "mat": "laminate",
+   "r": 20,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Shelf Rail 1 1600",
+   "at": [
+    1270,
+    -470,
+    -1655,
+    1930,
+    -455,
+    -1600
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Shelf 2 1600",
+   "at": [
+    1270,
+    -460,
+    -1900,
+    1930,
+    0,
+    -1875
+   ],
+   "mat": "laminate",
+   "r": 20,
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Shelf Rail 2 1600",
+   "at": [
+    1270,
+    -470,
+    -1915,
+    1930,
+    -455,
+    -1860
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "shape": "box",
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Infusion Pole 1600",
+   "axis": "z",
+   "c": [
+    1800,
+    -150
+   ],
+   "mat": "chrome",
+   "r": 12,
+   "shape": "cyl",
+   "z": [
+    -2140,
+    -920
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
+  },
+  {
+   "n": "Status LED 1600",
+   "axis": "y",
+   "c": [
+    1720,
+    -980
+   ],
+   "lod": "f",
    "mat": "led_green",
-   "lod": "f"
+   "r": 8,
+   "shape": "cyl",
+   "y": [
+    -213,
+    -210
+   ],
+   "only": [
+    "1600_DoubleArm"
+   ]
   }
  ],
  "connectors": [
@@ -1174,7 +2404,7 @@
   }
  ],
  "values": {
-  "Arm reach 900 mm, rotation 330 degrees": {
+  "Arm reach 900 / 1600 mm, rotation 330 degrees": {
    "value": "900/330",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
@@ -1190,7 +2420,7 @@
    "source": "HTM 02-01 / supplier fixing detail"
   }
  },
- "about": "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Single arm drawn; double arm shares it.",
+ "about": "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm(s) with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Per type: one arm with the head at 900 mm, or two arms with the head at 1600 mm; ceiling parts and connectors are shared.",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Voltage": 240,

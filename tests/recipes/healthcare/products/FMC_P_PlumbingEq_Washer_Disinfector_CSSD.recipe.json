@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_Washer_Disinfector_CSSD",
  "template": "Metric Generic Model.rft",
- "about": "Washer-disinfector modelled as a generic product: cabinet, load and unload faces (door frame and glass, kick plate, control panel, touchscreen, LED and stop button), wall flange for the barrier wall (y = 0), service duct, vapour condenser, rack rail, drain. Double-door drawn; single-door shares it. Reference: query: washer disinfector cssd plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=washer+disinfector+cssd+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Washer-disinfector modelled as a generic product: cabinet, load and unload faces (door frame and glass, kick plate, control panel, touchscreen, LED and stop button), wall flange for the barrier wall (y = 0), service duct, vapour condenser, rack rail, drain. Per type: the double-door (pass-through) type adds the clean-side door, panel and touchscreen; the single-door type has a plain rear. Reference: query: washer disinfector cssd plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=washer+disinfector+cssd+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.belimed.com/de/products/washer-disinfectors/wd-200; photo_title: Belimed WD 200 washer-disinfector; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -140,6 +140,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1000_SingleDoor/URL",
+   "type": "1000_SingleDoor",
+   "param": "URL",
+   "value": "https://www.belimed.com/de/products/washer-disinfectors/wd-200"
+  },
+  {
+   "op": "set_type_value",
    "name": "1000_SingleDoor/Voltage",
    "type": "1000_SingleDoor",
    "param": "Voltage",
@@ -204,6 +211,13 @@
    "type": "1000_DoubleDoor",
    "param": "FMC_Keynote_Code",
    "value": "Z.STE_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000_DoubleDoor/URL",
+   "type": "1000_DoubleDoor",
+   "param": "URL",
+   "value": "https://www.belimed.com/de/products/washer-disinfectors/wd-200"
   },
   {
    "op": "set_type_value",
@@ -312,24 +326,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Black",
+   "name": "Display",
    "color": [
-    30,
-    31,
-    34
+    17,
+    22,
+    28
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Black Material",
+   "name": "Display Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
   },
   {
    "op": "add_subcategory",
@@ -997,12 +1011,12 @@
   {
    "op": "set_subcategory",
    "name": "Load Touchscreen",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Load Touchscreen",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
@@ -1253,6 +1267,436 @@
    "name": "Load Stop Button",
    "coarse": false,
    "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Flange",
+   "points": [
+    [
+     -560,
+     0
+    ],
+    [
+     560,
+     0
+    ],
+    [
+     560,
+     2000
+    ],
+    [
+     -560,
+     2000
+    ]
+   ],
+   "start": -20,
+   "end": 20,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Flange",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Flange",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Flange",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Service Duct",
+   "points": [
+    [
+     444.0,
+     -300.0
+    ],
+    [
+     446.3,
+     -299.54
+    ],
+    [
+     448.24,
+     -298.24
+    ],
+    [
+     449.54,
+     -296.3
+    ],
+    [
+     450.0,
+     -294.0
+    ],
+    [
+     450.0,
+     294.0
+    ],
+    [
+     449.54,
+     296.3
+    ],
+    [
+     448.24,
+     298.24
+    ],
+    [
+     446.3,
+     299.54
+    ],
+    [
+     444.0,
+     300.0
+    ],
+    [
+     -444.0,
+     300.0
+    ],
+    [
+     -446.3,
+     299.54
+    ],
+    [
+     -448.24,
+     298.24
+    ],
+    [
+     -449.54,
+     296.3
+    ],
+    [
+     -450.0,
+     294.0
+    ],
+    [
+     -450.0,
+     -294.0
+    ],
+    [
+     -449.54,
+     -296.3
+    ],
+    [
+     -448.24,
+     -298.24
+    ],
+    [
+     -446.3,
+     -299.54
+    ],
+    [
+     -444.0,
+     -300.0
+    ]
+   ],
+   "start": 1950,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Service Duct",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Service Duct",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Service Duct",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vapour Condenser",
+   "points": [
+    [
+     380.0,
+     0.0
+    ],
+    [
+     377.27,
+     20.71
+    ],
+    [
+     369.28,
+     40.0
+    ],
+    [
+     356.57,
+     56.57
+    ],
+    [
+     340.0,
+     69.28
+    ],
+    [
+     320.71,
+     77.27
+    ],
+    [
+     300.0,
+     80.0
+    ],
+    [
+     279.29,
+     77.27
+    ],
+    [
+     260.0,
+     69.28
+    ],
+    [
+     243.43,
+     56.57
+    ],
+    [
+     230.72,
+     40.0
+    ],
+    [
+     222.73,
+     20.71
+    ],
+    [
+     220.0,
+     0.0
+    ],
+    [
+     222.73,
+     -20.71
+    ],
+    [
+     230.72,
+     -40.0
+    ],
+    [
+     243.43,
+     -56.57
+    ],
+    [
+     260.0,
+     -69.28
+    ],
+    [
+     279.29,
+     -77.27
+    ],
+    [
+     300.0,
+     -80.0
+    ],
+    [
+     320.71,
+     -77.27
+    ],
+    [
+     340.0,
+     -69.28
+    ],
+    [
+     356.57,
+     -56.57
+    ],
+    [
+     369.28,
+     -40.0
+    ],
+    [
+     377.27,
+     -20.71
+    ]
+   ],
+   "start": 2100,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vapour Condenser",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vapour Condenser",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vapour Condenser",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rack Rail",
+   "points": [
+    [
+     -330,
+     -340
+    ],
+    [
+     330,
+     -340
+    ],
+    [
+     330,
+     -330
+    ],
+    [
+     -330,
+     -330
+    ]
+   ],
+   "start": 1000,
+   "end": 1010
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rack Rail",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rack Rail",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rack Rail",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drain Spigot",
+   "points": [
+    [
+     40.0,
+     200.0
+    ],
+    [
+     38.64,
+     210.35
+    ],
+    [
+     34.64,
+     220.0
+    ],
+    [
+     28.28,
+     228.28
+    ],
+    [
+     20.0,
+     234.64
+    ],
+    [
+     10.35,
+     238.64
+    ],
+    [
+     0.0,
+     240.0
+    ],
+    [
+     -10.35,
+     238.64
+    ],
+    [
+     -20.0,
+     234.64
+    ],
+    [
+     -28.28,
+     228.28
+    ],
+    [
+     -34.64,
+     220.0
+    ],
+    [
+     -38.64,
+     210.35
+    ],
+    [
+     -40.0,
+     200.0
+    ],
+    [
+     -38.64,
+     189.65
+    ],
+    [
+     -34.64,
+     180.0
+    ],
+    [
+     -28.28,
+     171.72
+    ],
+    [
+     -20.0,
+     165.36
+    ],
+    [
+     -10.35,
+     161.36
+    ],
+    [
+     -0.0,
+     160.0
+    ],
+    [
+     10.35,
+     161.36
+    ],
+    [
+     20.0,
+     165.36
+    ],
+    [
+     28.28,
+     171.72
+    ],
+    [
+     34.64,
+     180.0
+    ],
+    [
+     38.64,
+     189.65
+    ]
+   ],
+   "start": -80,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain Spigot",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain Spigot",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Spigot",
+   "coarse": false,
+   "medium": true,
    "fine": true
   },
   {
@@ -1707,12 +2151,12 @@
   {
    "op": "set_subcategory",
    "name": "Unload Touchscreen",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Unload Touchscreen",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
@@ -1966,434 +2410,66 @@
    "fine": true
   },
   {
-   "op": "extrusion",
-   "name": "Wall Flange",
-   "points": [
-    [
-     -560,
-     0
-    ],
-    [
-     560,
-     0
-    ],
-    [
-     560,
-     2000
-    ],
-    [
-     -560,
-     2000
-    ]
-   ],
-   "start": -20,
-   "end": 20,
-   "sketch": "front"
+   "op": "add_family_param",
+   "name": "Show 1000_DoubleDoor",
+   "type": "YesNo",
+   "group": "Graphics"
   },
   {
-   "op": "set_subcategory",
-   "name": "Wall Flange",
-   "subcategory": "Stainless"
+   "op": "set_type_value",
+   "name": "1000_SingleDoor/Show 1000_DoubleDoor",
+   "type": "1000_SingleDoor",
+   "param": "Show 1000_DoubleDoor",
+   "value": false
   },
   {
-   "op": "set_material_param",
-   "name": "Wall Flange",
-   "param": "Stainless Material"
+   "op": "set_type_value",
+   "name": "1000_DoubleDoor/Show 1000_DoubleDoor",
+   "type": "1000_DoubleDoor",
+   "param": "Show 1000_DoubleDoor",
+   "value": true
   },
   {
-   "op": "set_visibility",
-   "name": "Wall Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
+   "op": "set_visible_param",
+   "name": "Unload Door Frame/Visible",
+   "solid": "Unload Door Frame",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "extrusion",
-   "name": "Service Duct",
-   "points": [
-    [
-     444.0,
-     -300.0
-    ],
-    [
-     446.3,
-     -299.54
-    ],
-    [
-     448.24,
-     -298.24
-    ],
-    [
-     449.54,
-     -296.3
-    ],
-    [
-     450.0,
-     -294.0
-    ],
-    [
-     450.0,
-     294.0
-    ],
-    [
-     449.54,
-     296.3
-    ],
-    [
-     448.24,
-     298.24
-    ],
-    [
-     446.3,
-     299.54
-    ],
-    [
-     444.0,
-     300.0
-    ],
-    [
-     -444.0,
-     300.0
-    ],
-    [
-     -446.3,
-     299.54
-    ],
-    [
-     -448.24,
-     298.24
-    ],
-    [
-     -449.54,
-     296.3
-    ],
-    [
-     -450.0,
-     294.0
-    ],
-    [
-     -450.0,
-     -294.0
-    ],
-    [
-     -449.54,
-     -296.3
-    ],
-    [
-     -448.24,
-     -298.24
-    ],
-    [
-     -446.3,
-     -299.54
-    ],
-    [
-     -444.0,
-     -300.0
-    ]
-   ],
-   "start": 1950,
-   "end": 2100
+   "op": "set_visible_param",
+   "name": "Unload Door Glass/Visible",
+   "solid": "Unload Door Glass",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "set_subcategory",
-   "name": "Service Duct",
-   "subcategory": "Stainless"
+   "op": "set_visible_param",
+   "name": "Unload Kick Plate/Visible",
+   "solid": "Unload Kick Plate",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "set_material_param",
-   "name": "Service Duct",
-   "param": "Stainless Material"
+   "op": "set_visible_param",
+   "name": "Unload Control Panel/Visible",
+   "solid": "Unload Control Panel",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "set_visibility",
-   "name": "Service Duct",
-   "coarse": false,
-   "medium": true,
-   "fine": true
+   "op": "set_visible_param",
+   "name": "Unload Touchscreen/Visible",
+   "solid": "Unload Touchscreen",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "extrusion",
-   "name": "Vapour Condenser",
-   "points": [
-    [
-     380.0,
-     0.0
-    ],
-    [
-     377.27,
-     20.71
-    ],
-    [
-     369.28,
-     40.0
-    ],
-    [
-     356.57,
-     56.57
-    ],
-    [
-     340.0,
-     69.28
-    ],
-    [
-     320.71,
-     77.27
-    ],
-    [
-     300.0,
-     80.0
-    ],
-    [
-     279.29,
-     77.27
-    ],
-    [
-     260.0,
-     69.28
-    ],
-    [
-     243.43,
-     56.57
-    ],
-    [
-     230.72,
-     40.0
-    ],
-    [
-     222.73,
-     20.71
-    ],
-    [
-     220.0,
-     0.0
-    ],
-    [
-     222.73,
-     -20.71
-    ],
-    [
-     230.72,
-     -40.0
-    ],
-    [
-     243.43,
-     -56.57
-    ],
-    [
-     260.0,
-     -69.28
-    ],
-    [
-     279.29,
-     -77.27
-    ],
-    [
-     300.0,
-     -80.0
-    ],
-    [
-     320.71,
-     -77.27
-    ],
-    [
-     340.0,
-     -69.28
-    ],
-    [
-     356.57,
-     -56.57
-    ],
-    [
-     369.28,
-     -40.0
-    ],
-    [
-     377.27,
-     -20.71
-    ]
-   ],
-   "start": 2100,
-   "end": 2250
+   "op": "set_visible_param",
+   "name": "Unload Status LED/Visible",
+   "solid": "Unload Status LED",
+   "param": "Show 1000_DoubleDoor"
   },
   {
-   "op": "set_subcategory",
-   "name": "Vapour Condenser",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vapour Condenser",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vapour Condenser",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rack Rail",
-   "points": [
-    [
-     -330,
-     -340
-    ],
-    [
-     330,
-     -340
-    ],
-    [
-     330,
-     -330
-    ],
-    [
-     -330,
-     -330
-    ]
-   ],
-   "start": 1000,
-   "end": 1010
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rack Rail",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rack Rail",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rack Rail",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drain Spigot",
-   "points": [
-    [
-     40.0,
-     200.0
-    ],
-    [
-     38.64,
-     210.35
-    ],
-    [
-     34.64,
-     220.0
-    ],
-    [
-     28.28,
-     228.28
-    ],
-    [
-     20.0,
-     234.64
-    ],
-    [
-     10.35,
-     238.64
-    ],
-    [
-     0.0,
-     240.0
-    ],
-    [
-     -10.35,
-     238.64
-    ],
-    [
-     -20.0,
-     234.64
-    ],
-    [
-     -28.28,
-     228.28
-    ],
-    [
-     -34.64,
-     220.0
-    ],
-    [
-     -38.64,
-     210.35
-    ],
-    [
-     -40.0,
-     200.0
-    ],
-    [
-     -38.64,
-     189.65
-    ],
-    [
-     -34.64,
-     180.0
-    ],
-    [
-     -28.28,
-     171.72
-    ],
-    [
-     -20.0,
-     165.36
-    ],
-    [
-     -10.35,
-     161.36
-    ],
-    [
-     -0.0,
-     160.0
-    ],
-    [
-     10.35,
-     161.36
-    ],
-    [
-     20.0,
-     165.36
-    ],
-    [
-     28.28,
-     171.72
-    ],
-    [
-     34.64,
-     180.0
-    ],
-    [
-     38.64,
-     189.65
-    ]
-   ],
-   "start": -80,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drain Spigot",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Spigot",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Spigot",
-   "coarse": false,
-   "medium": true,
-   "fine": true
+   "op": "set_visible_param",
+   "name": "Unload Stop Button/Visible",
+   "solid": "Unload Stop Button",
+   "param": "Show 1000_DoubleDoor"
   },
   {
    "op": "add_connector",
