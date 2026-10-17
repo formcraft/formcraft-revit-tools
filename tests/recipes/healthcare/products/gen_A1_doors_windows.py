@@ -230,11 +230,11 @@ def HC002():
     d.closer(-d.xi, 1, "Master Closer").closer(d.xi, -1, "Slave Closer")
     d.kick(m0, m1, 300, "Master Kick Plate").kick(s0, s1, 300, "Slave Kick Plate")
     d.add(box("Flush Bolt", [s0 - 1.5, -9, d.Hl - 200, s0, 9, d.Hl - 20], 'stainless', 'f', rep=(2, [0, 0, -(d.Hl - 200 - d.z0 - 20)])))
-    d.add(fbox("Bed Impact Plate", [m0 + 15, -d.t / 2 - 1.5, 750, s1 - 15, -d.t / 2, 950], 'stainless', 'f', r=3, rep=(2, [0, d.t + 1.5, 0])))
+    d.add(fbox("Bed Impact Plate", [m0 + 15, -d.t / 2 - 1.5, 560, s1 - 15, -d.t / 2, 760], 'stainless', 'f', r=3, rep=(2, [0, d.t + 1.5, 0])))
     d.seals()
     return make("FMC_A_Door_LeafAndHalf_BedPassage", "LeafAndHalf", "Leaf-and-half bed-passage doorset: unequal HPL leaves (2/3 + 1/3), vision panels, lever on the master leaf, flush bolts on the slave leaf, two closers, kick and bed-impact plates",
                 d.p, {"Opening 1500 x 2100 mm": A("1500x2100", "frame outside size, type 1; " + D_SRC), "Master leaf about 2/3 of the pair": A("2/3", "HBN 00-04 bed passage practice"),
-                      "Clear width with both leaves open about 1340 mm": A(1340, "bed + attendant passage, HBN 00-04 (Gate A checks clear width)"), "Impact plate 750-950 mm": A("750-950", "bed bumper height, HTM 58")},
+                      "Clear width with both leaves open about 1340 mm": A(1340, "bed + attendant passage, HBN 00-04 (Gate A checks clear width)"), "Impact plate 560-760 mm": A("560-760", "bed bumper height, HTM 58")},
                 "Bed-passage leaf-and-half modelled as a product: frame with stops and architraves, master and slave leaves each with lipping and beaded vision panel, lever and escutcheons, hinges on both jambs, two closers, flush bolts top and bottom on the slave leaf, kick plates and a stainless bed-impact band across both leaves.")
 
 def pair_fire(fam, variant, W, H, t, vp_w, vp_c, vp_d, desc, values, about, buffer=False, hold_open=False, glass='fire_glass', push_pull=True, seal_name="Intumescent Seal", sign=True):
@@ -247,7 +247,8 @@ def pair_fire(fam, variant, W, H, t, vp_w, vp_c, vp_d, desc, values, about, buff
     if push_pull:
         d.push(L1 - 115, L1 - 40, n="Left Push Plate").push(R0 + 40, R0 + 115, n="Right Push Plate")
         d.pull(L1 - 80, n="Left Pull Handle").pull(R0 + 80, n="Right Pull Handle")
-    if sign: d.sign(L0 + (L1 - L0) / 2, 1750 if vp_d < 1700 else 1450, "Left Fire Door Sign").sign(R0 + (R1_ - R0) / 2, 1750 if vp_d < 1700 else 1450, "Right Fire Door Sign")
+    sz = vp_d + 110 if vp_d + 170 < d.Hl else vp_c - 110
+    if sign: d.sign(L0 + (L1 - L0) / 2, sz, "Left Fire Door Sign").sign(R0 + (R1_ - R0) / 2, sz, "Right Fire Door Sign")
     d.add(box("Door Coordinator", [-d.xi + 120, t / 2 + 2, d.Hs - 28, d.xi - 120, t / 2 + 30, d.Hs], 'aluminium', 'f'))
     d.add(box("Meeting Edge Seal", [-1.5, -t / 2 + 6, d.z0, 1.5, -t / 2 + 16, d.Hl], 'intumescent', 'f'))
     d.seals(seal_name, 'intumescent')
@@ -256,7 +257,7 @@ def pair_fire(fam, variant, W, H, t, vp_w, vp_c, vp_d, desc, values, about, buff
 
 @reg
 def HC003():
-    d = pair_fire("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", 1800, 2100, 54, 200, 800, 1650, "", {}, "", buffer=True)
+    d = pair_fire("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", 1800, 2100, 54, 200, 980, 1650, "", {}, "", buffer=True)
     return make("FMC_A_Door_Double_BedPassage_FD60", "FD60S-Pair", "FD60S double bed-passage doorset: equal 54 mm leaves, fire-glazed vision panels, intumescent and smoke seals, coordinator, two closers, push and pull handles, bed buffer rails, fire signs",
                 d.p, {"Opening 1800 x 2100 mm": A("1800x2100", "frame outside size, type 1; " + D_SRC), "Fire resistance FD60S (60 min, smoke)": A("FD60S", "BS 476-22 / EN 1634-1 tested doorset, certifier confirms"),
                       "Leaf 54 mm": A(54, "typical FD60 leaf"), "Bed buffer rail 800-900 mm": A("800-900", "HTM 58 bed protection")},
@@ -269,7 +270,7 @@ def HC004():
     for side, a, b in (("Left", L0, L1), ("Right", R0, R1_)):
         c = (a + b) / 2
         d.leaf(f"{side} Leaf", a, b, [d.porthole(f"{side} Porthole", c, 1450, 150)])
-        d.add(fbox(f"{side} Push Plate", [c - 60 if side == "Left" else c - 60, -d.t / 2 - 2, 1000, c + 60, -d.t / 2, 1250], 'stainless', 'f', r=8, rep=(2, [0, d.t + 2, 0])))
+        d.add(fbox(f"{side} Push Plate", [c - 110, -d.t / 2 - 2, 950, c + 110, -d.t / 2, 1150], 'stainless', 'f', r=8, rep=(2, [0, d.t + 2, 0])))
         d.kick(a, b, 400, f"{side} Kick Plate")
         fx = a + 40 if side == "Left" else b - 40
         d.add(box(f"{side} Floor Spring Cover", [fx - 40, -50, 0, fx + 160 if side == "Left" else fx + 40, 50, 2], 'stainless', 'f') if side == "Left" else
@@ -398,8 +399,8 @@ def HC008():
     d.leaf("Leaf", x0, x1, [vh], layers=[("Skin Room", 'laminate', [-t / 2, -2]), ("Lead Lining", 'lead', [-2, 2]), ("Skin Corridor", 'laminate', [2, t / 2])])
     d.lever(x1 - 68).forend(x1).hinges(-d.xi + 1.5, 4, r=8).closer(-d.xi, big=True).kick(x0, x1).seals()
     zt = d.Hs + 8 + 70
-    d.add(fbox("Warning Light Housing", [-200, d.d2 + 12, zt + 40, 200, d.d2 + 92, zt + 190], 'white', r=10),
-          fbox("Warning Light Lens", [-180, d.d2 + 92, zt + 55, 180, d.d2 + 95, zt + 175], 'led_red', 'f', r=8),
+    d.add(fbox("Warning Light Housing", [-200, d.d2, zt + 40, 200, d.d2 + 80, zt + 190], 'white', r=10),
+          fbox("Warning Light Lens", [-180, d.d2 + 80, zt + 55, 180, d.d2 + 83, zt + 175], 'led_red', 'f', r=8),
           fbox("Radiation Sign", [cx - 75, t / 2, 1700, cx + 75, t / 2 + 1.5, 1850], 'sign_yellow', 'f', r=4))
     return make("FMC_A_Door_LeadLined_Xray", "Pb2", "Lead-lined X-ray room doorset: 54 mm leaf with 2 mm Pb core between HPL skins, lead-glass vision panel in a stainless bead, heavy hinges and closer, illuminated X-RAY warning light over the corridor face, radiation sign",
                 d.p, {"Opening 1026 x 2100 mm": A("1026x2100", "frame outside size, type 1; " + D_SRC), "Lead lining 2 mm Pb": A(2, "typical diagnostic X-ray, radiation protection adviser confirms"),
@@ -434,7 +435,7 @@ def HC010():
           fbox("RF Face Frame Head", [-W / 2, -d.d2 - 10, H, W / 2, -d.d2, H + 60], 'stainless'))
     vh = d.vision("RF Vision", cx - 150, cx + 150, 1200, 1600, 'glass', 'stainless', bw=30, proud=6, gl=6)
     d.leaf("Leaf", x0, x1, [vh], mat='stainless', lip='copper', lw=6)
-    d.add(fbox("RF Vision Mesh", [cx - 120, -7, 1230, cx + 120, -6, 1570], 'copper', 'f'))
+    d.add(fbox("RF Vision Mesh", [cx - 120, -7, 1230, cx + 120, -6, 1570], 'mesh', 'f'))
     d.add(box("Fingerstock Jamb", [-d.xi, -t / 2 + 4, 0, -d.xi + 3, t / 2 - 4, d.Hs], 'copper', 'f', rep=(2, [2 * d.xi - 3, 0, 0])),
           box("Fingerstock Head", [-d.xi, -t / 2 + 4, d.Hs - 3, d.xi, t / 2 - 4, d.Hs], 'copper', 'f'),
           box("RF Threshold", [-d.xi, -t / 2 - 30, 0, d.xi, t / 2 + 30, d.z0], 'copper', 'f'))
@@ -661,21 +662,21 @@ def HC022():
 def HC023():
     W, H = 926, 2100; d = Door(W, H).frame()
     x0, x1 = -d.xi + 3, d.xi - 3; cx = (x0 + x1) / 2; t = d.t
-    ga, gb = cx - 200, cx + 200              # transfer grille 400 x 180 just above the 900 mm protection plate
-    d.leaf("Leaf", x0, x1, [hrect(ga, gb, 960, 1140)])
-    d.add(fbox("Transfer Grille Frame", [ga - 20, -t / 2 - 6, 940, gb + 20, t / 2 + 6, 960], 'aluminium', 'f', rep=(2, [0, 0, 200])))
-    d.add(box("Transfer Grille Stile", [ga - 20, -t / 2 - 6, 960, ga, t / 2 + 6, 1140], 'aluminium', 'f', rep=(2, [gb - ga + 20, 0, 0])),
-          right("Transfer Grille Blade", [(-t / 2 - 2, 968), (-t / 2 + 2, 964), (t / 2 + 2, 990), (t / 2 - 2, 994)], [ga, gb], 'aluminium', 'f', rep=(6, [0, 0, 28])))
+    ga, gb = cx - 200, cx + 200              # transfer grille 400 x 180 just above the 600 mm protection plate
+    d.leaf("Leaf", x0, x1, [hrect(ga, gb, 650, 830)])
+    d.add(fbox("Transfer Grille Frame", [ga - 20, -t / 2 - 6, 630, gb + 20, t / 2 + 6, 650], 'aluminium', 'f', rep=(2, [0, 0, 200])))
+    d.add(box("Transfer Grille Stile", [ga - 20, -t / 2 - 6, 650, ga, t / 2 + 6, 830], 'aluminium', 'f', rep=(2, [gb - ga + 20, 0, 0])),
+          right("Transfer Grille Blade", [(-t / 2 - 2, 658), (-t / 2 + 2, 654), (t / 2 + 2, 680), (t / 2 - 2, 684)], [ga, gb], 'aluminium', 'f', rep=(6, [0, 0, 28])))
     d.lever(x1 - 68).forend(x1).hinges(-d.xi + 1.5, 3).closer(-d.xi)
-    d.kick(x0, x1, 900, "Protection Plate")
+    d.kick(x0, x1, 600, "Protection Plate")
     d.add(fbox("Room Sign", [cx - 110, -t / 2 - 1.5, 1450, cx + 110, -t / 2, 1560], 'white', 'f', r=4),
           fbox("Room Sign Band", [cx - 110, -t / 2 - 2, 1530, cx + 110, -t / 2 - 1.5, 1560], 'sign_blue', 'f'),
           fbox("Push Plate", [x1 - 115, t / 2, 1200, x1 - 40, t / 2 + 2, 1500], 'stainless', 'f', r=6))
     d.seals()
-    return make("FMC_A_Door_Sluice_Single", "Sluice", "Sluice / dirty utility doorset: HPL leaf without vision, transfer grille, stainless protection plates to 900 mm both faces, lever, closer, push plate, room sign",
-                d.p, {"Opening 926 x 2100 mm": A("926x2100", "frame outside size, type 1; HBN 00-09 / HTM 58"), "Protection plate 900 mm both faces": A(900, "trolley and cleaning impact, HTM 58"),
+    return make("FMC_A_Door_Sluice_Single", "Sluice", "Sluice / dirty utility doorset: HPL leaf without vision, transfer grille, stainless protection plates to 600 mm both faces, lever, closer, push plate, room sign",
+                d.p, {"Opening 926 x 2100 mm": A("926x2100", "frame outside size, type 1; HBN 00-09 / HTM 58"), "Protection plate 600 mm both faces": A(600, "trolley and cleaning impact, HTM 58"),
                      "Transfer grille 400 x 180 mm": A("400x180", "make-up air for the extracted sluice, HTM 03-01")},
-                "Sluice doorset modelled as a product: frame with stops and architraves, HPL leaf with lipping built around a transfer grille (frame, stiles and angled blades through the leaf), lever, hinges, closer, stainless protection plates to 900 both faces, push plate, room sign with colour band, seals.")
+                "Sluice doorset modelled as a product: frame with stops and architraves, HPL leaf with lipping built around a transfer grille (frame, stiles and angled blades through the leaf), lever, hinges, closer, stainless protection plates to 600 both faces, push plate, room sign with colour band, seals.")
 
 @reg
 def HC024():
