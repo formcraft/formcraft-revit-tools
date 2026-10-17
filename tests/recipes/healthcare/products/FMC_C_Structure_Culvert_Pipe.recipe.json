@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_Culvert_Pipe",
  "template": "Metric Generic Model.rft",
- "about": "Bed underside at z = 0, flow along y: four ogee pipes with joint collars (Fine), bed and haunch, headwalls in two halves round the pipe, four wingwalls, aprons, outlet pitching. Reference: query: structure culvert pipe structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+culvert+pipe+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Bed underside at z = 0, flow along y: four ogee pipes with joint collars (Fine), bed and haunch wedges, headwalls cut round the pipe by voids with the pipe ends showing, four wingwalls, aprons, outlet pitching. Each type has its own pipe and headworks. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure culvert pipe structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+culvert+pipe+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://civilmart.com.au/products/stormwater-drainage/headwalls/; photo_title: Concrete Headwalls for pipe culverts (Civilmart); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -328,6 +328,13 @@
    "value": "C"
   },
   {
+   "op": "set_type_value",
+   "name": "600_Ogee/URL",
+   "type": "600_Ogee",
+   "param": "URL",
+   "value": "https://civilmart.com.au/products/stormwater-drainage/headwalls/"
+  },
+  {
    "op": "add_type",
    "name": "900_Ogee"
   },
@@ -393,6 +400,13 @@
    "type": "900_Ogee",
    "param": "FMC_Role_Code",
    "value": "C"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Ogee/URL",
+   "type": "900_Ogee",
+   "param": "URL",
+   "value": "https://civilmart.com.au/products/stormwater-drainage/headwalls/"
   },
   {
    "op": "add_subcategory",
@@ -472,24 +486,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1900,
+     -2065,
      -2950
     ],
     [
-     1900,
+     2065,
      -2950
     ],
     [
-     1900,
+     2065,
      3800
     ],
     [
-     -1900,
+     -2065,
      3800
     ]
    ],
    "start": 0,
-   "end": 1300
+   "end": 1630
   },
   {
    "op": "set_subcategory",
@@ -505,7 +519,7 @@
   },
   {
    "op": "revolution",
-   "name": "Pipe 1",
+   "name": "Pipe 600 1",
    "profile": [
     [
      300,
@@ -533,19 +547,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe 1",
+   "name": "Pipe 600 1",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe 1",
+   "name": "Pipe 600 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pipe 2",
+   "name": "Pipe 600 2",
    "profile": [
     [
      300,
@@ -573,19 +587,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe 2",
+   "name": "Pipe 600 2",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe 2",
+   "name": "Pipe 600 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pipe 3",
+   "name": "Pipe 600 3",
    "profile": [
     [
      300,
@@ -613,19 +627,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe 3",
+   "name": "Pipe 600 3",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe 3",
+   "name": "Pipe 600 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pipe 4",
+   "name": "Pipe 600 4",
    "profile": [
     [
      300,
@@ -653,19 +667,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe 4",
+   "name": "Pipe 600 4",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe 4",
+   "name": "Pipe 600 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Ogee Joint 1",
+   "name": "Ogee Joint 600 1",
    "profile": [
     [
      375,
@@ -693,19 +707,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Ogee Joint 1",
+   "name": "Ogee Joint 600 1",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ogee Joint 1",
+   "name": "Ogee Joint 600 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Ogee Joint 2",
+   "name": "Ogee Joint 600 2",
    "profile": [
     [
      375,
@@ -733,19 +747,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Ogee Joint 2",
+   "name": "Ogee Joint 600 2",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ogee Joint 2",
+   "name": "Ogee Joint 600 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Ogee Joint 3",
+   "name": "Ogee Joint 600 3",
    "profile": [
     [
      375,
@@ -773,19 +787,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Ogee Joint 3",
+   "name": "Ogee Joint 600 3",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ogee Joint 3",
+   "name": "Ogee Joint 600 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Concrete Bed",
+   "name": "Concrete Bed 600",
    "points": [
     [
      -525,
@@ -809,36 +823,36 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Concrete Bed",
+   "name": "Concrete Bed 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Concrete Bed",
+   "name": "Concrete Bed 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Concrete Bed",
+   "name": "Concrete Bed 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Haunch Left",
+   "name": "Haunch Left 600",
    "points": [
     [
      -525,
      150
     ],
     [
-     -215,
+     -213.75,
      150
     ],
     [
      -525,
-     470
+     468.75
     ]
    ],
    "start": -2000,
@@ -847,24 +861,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Haunch Left",
+   "name": "Haunch Left 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Haunch Left",
+   "name": "Haunch Left 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Haunch Left",
+   "name": "Haunch Left 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Haunch Right",
+   "name": "Haunch Right 600",
    "points": [
     [
      525,
@@ -872,10 +886,10 @@
     ],
     [
      525,
-     470
+     468.75
     ],
     [
-     215,
+     213.75,
      150
     ]
    ],
@@ -885,24 +899,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Haunch Right",
+   "name": "Haunch Right 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Haunch Right",
+   "name": "Haunch Right 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Haunch Right",
+   "name": "Haunch Right 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Headwall Inlet",
+   "name": "Headwall Inlet 600",
    "points": [
     [
      -1100,
@@ -926,24 +940,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Headwall Inlet",
+   "name": "Headwall Inlet 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Headwall Inlet",
+   "name": "Headwall Inlet 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Headwall Inlet",
+   "name": "Headwall Inlet 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Headwall Outlet",
+   "name": "Headwall Outlet 600",
    "points": [
     [
      -1100,
@@ -967,24 +981,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Headwall Outlet",
+   "name": "Headwall Outlet 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Headwall Outlet",
+   "name": "Headwall Outlet 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Headwall Outlet",
+   "name": "Headwall Outlet 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "void_extrusion",
-   "name": "Pipe Opening Inlet",
+   "name": "Pipe Opening Inlet 600",
    "points": [
     [
      375.0,
@@ -1089,7 +1103,7 @@
   },
   {
    "op": "void_extrusion",
-   "name": "Pipe Opening Outlet",
+   "name": "Pipe Opening Outlet 600",
    "points": [
     [
      375.0,
@@ -1194,7 +1208,7 @@
   },
   {
    "op": "revolution",
-   "name": "Pipe Inlet End",
+   "name": "Pipe Inlet End 600",
    "profile": [
     [
      300,
@@ -1222,19 +1236,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe Inlet End",
+   "name": "Pipe Inlet End 600",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe Inlet End",
+   "name": "Pipe Inlet End 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pipe Outlet End",
+   "name": "Pipe Outlet End 600",
    "profile": [
     [
      300,
@@ -1262,19 +1276,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pipe Outlet End",
+   "name": "Pipe Outlet End 600",
    "param": "Ogee Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pipe Outlet End",
+   "name": "Pipe Outlet End 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wingwall Inlet Left",
+   "name": "Wingwall Inlet Left 600",
    "points": [
     [
      -1100,
@@ -1294,28 +1308,28 @@
     ]
    ],
    "start": 0,
-   "end": 1000
+   "end": 900
   },
   {
    "op": "set_subcategory",
-   "name": "Wingwall Inlet Left",
+   "name": "Wingwall Inlet Left 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Wingwall Inlet Left",
+   "name": "Wingwall Inlet Left 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wingwall Inlet Left",
+   "name": "Wingwall Inlet Left 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wingwall Inlet Right",
+   "name": "Wingwall Inlet Right 600",
    "points": [
     [
      850,
@@ -1335,28 +1349,28 @@
     ]
    ],
    "start": 0,
-   "end": 1000
+   "end": 900
   },
   {
    "op": "set_subcategory",
-   "name": "Wingwall Inlet Right",
+   "name": "Wingwall Inlet Right 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Wingwall Inlet Right",
+   "name": "Wingwall Inlet Right 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wingwall Inlet Right",
+   "name": "Wingwall Inlet Right 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wingwall Outlet Left",
+   "name": "Wingwall Outlet Left 600",
    "points": [
     [
      -1100,
@@ -1376,28 +1390,28 @@
     ]
    ],
    "start": 0,
-   "end": 1000
+   "end": 900
   },
   {
    "op": "set_subcategory",
-   "name": "Wingwall Outlet Left",
+   "name": "Wingwall Outlet Left 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Wingwall Outlet Left",
+   "name": "Wingwall Outlet Left 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wingwall Outlet Left",
+   "name": "Wingwall Outlet Left 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wingwall Outlet Right",
+   "name": "Wingwall Outlet Right 600",
    "points": [
     [
      1100,
@@ -1417,28 +1431,28 @@
     ]
    ],
    "start": 0,
-   "end": 1000
+   "end": 900
   },
   {
    "op": "set_subcategory",
-   "name": "Wingwall Outlet Right",
+   "name": "Wingwall Outlet Right 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Wingwall Outlet Right",
+   "name": "Wingwall Outlet Right 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wingwall Outlet Right",
+   "name": "Wingwall Outlet Right 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Apron Inlet",
+   "name": "Apron Inlet 600",
    "points": [
     [
      -1100,
@@ -1462,24 +1476,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Apron Inlet",
+   "name": "Apron Inlet 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Apron Inlet",
+   "name": "Apron Inlet 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Apron Inlet",
+   "name": "Apron Inlet 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Apron Outlet",
+   "name": "Apron Outlet 600",
    "points": [
     [
      -1100,
@@ -1503,24 +1517,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Apron Outlet",
+   "name": "Apron Outlet 600",
    "subcategory": "C20"
   },
   {
    "op": "set_material_param",
-   "name": "Apron Outlet",
+   "name": "Apron Outlet 600",
    "param": "C20 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Apron Outlet",
+   "name": "Apron Outlet 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stone Pitching",
+   "name": "Stone Pitching 600",
    "points": [
     [
      -1550,
@@ -1544,20 +1558,1392 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stone Pitching",
+   "name": "Stone Pitching 600",
    "subcategory": "Pitch"
   },
   {
    "op": "set_material_param",
-   "name": "Stone Pitching",
+   "name": "Stone Pitching 600",
    "param": "Pitch Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stone Pitching",
+   "name": "Stone Pitching 600",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe 900 1",
+   "profile": [
+    [
+     450,
+     2000
+    ],
+    [
+     540,
+     2000
+    ],
+    [
+     540,
+     1000
+    ],
+    [
+     450,
+     1000
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe 900 1",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe 900 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe 900 2",
+   "profile": [
+    [
+     450,
+     1000
+    ],
+    [
+     540,
+     1000
+    ],
+    [
+     540,
+     0
+    ],
+    [
+     450,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe 900 2",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe 900 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe 900 3",
+   "profile": [
+    [
+     450,
+     0
+    ],
+    [
+     540,
+     0
+    ],
+    [
+     540,
+     -1000
+    ],
+    [
+     450,
+     -1000
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe 900 3",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe 900 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe 900 4",
+   "profile": [
+    [
+     450,
+     -1000
+    ],
+    [
+     540,
+     -1000
+    ],
+    [
+     540,
+     -2000
+    ],
+    [
+     450,
+     -2000
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe 900 4",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe 900 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Ogee Joint 900 1",
+   "profile": [
+    [
+     540,
+     1050
+    ],
+    [
+     565,
+     1050
+    ],
+    [
+     565,
+     950
+    ],
+    [
+     540,
+     950
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ogee Joint 900 1",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ogee Joint 900 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Ogee Joint 900 2",
+   "profile": [
+    [
+     540,
+     50
+    ],
+    [
+     565,
+     50
+    ],
+    [
+     565,
+     -50
+    ],
+    [
+     540,
+     -50
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ogee Joint 900 2",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ogee Joint 900 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Ogee Joint 900 3",
+   "profile": [
+    [
+     540,
+     -950
+    ],
+    [
+     565,
+     -950
+    ],
+    [
+     565,
+     -1050
+    ],
+    [
+     540,
+     -1050
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ogee Joint 900 3",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ogee Joint 900 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Concrete Bed 900",
+   "points": [
+    [
+     -690,
+     -2000
+    ],
+    [
+     690,
+     -2000
+    ],
+    [
+     690,
+     2000
+    ],
+    [
+     -690,
+     2000
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Concrete Bed 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Concrete Bed 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Concrete Bed 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Haunch Left 900",
+   "points": [
+    [
+     -690,
+     150
+    ],
+    [
+     -307.8,
+     150
+    ],
+    [
+     -690,
+     609.0
+    ]
+   ],
+   "start": -2000,
+   "end": 2000,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Haunch Left 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Haunch Left 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Haunch Left 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Haunch Right 900",
+   "points": [
+    [
+     690,
+     150
+    ],
+    [
+     690,
+     609.0
+    ],
+    [
+     307.8,
+     150
+    ]
+   ],
+   "start": -2000,
+   "end": 2000,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Haunch Right 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Haunch Right 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Haunch Right 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headwall Inlet 900",
+   "points": [
+    [
+     -1265,
+     -2250
+    ],
+    [
+     1265,
+     -2250
+    ],
+    [
+     1265,
+     -2000
+    ],
+    [
+     -1265,
+     -2000
+    ]
+   ],
+   "start": 0,
+   "end": 1630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headwall Inlet 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headwall Inlet 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headwall Inlet 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Headwall Outlet 900",
+   "points": [
+    [
+     -1265,
+     2000
+    ],
+    [
+     1265,
+     2000
+    ],
+    [
+     1265,
+     2250
+    ],
+    [
+     -1265,
+     2250
+    ]
+   ],
+   "start": 0,
+   "end": 1630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Headwall Outlet 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Headwall Outlet 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Headwall Outlet 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Pipe Opening Inlet 900",
+   "points": [
+    [
+     540.0,
+     690.0
+    ],
+    [
+     521.6,
+     829.76
+    ],
+    [
+     467.65,
+     960.0
+    ],
+    [
+     381.84,
+     1071.84
+    ],
+    [
+     270.0,
+     1157.65
+    ],
+    [
+     139.76,
+     1211.6
+    ],
+    [
+     0.0,
+     1230.0
+    ],
+    [
+     -139.76,
+     1211.6
+    ],
+    [
+     -270.0,
+     1157.65
+    ],
+    [
+     -381.84,
+     1071.84
+    ],
+    [
+     -467.65,
+     960.0
+    ],
+    [
+     -521.6,
+     829.76
+    ],
+    [
+     -540.0,
+     690.0
+    ],
+    [
+     -521.6,
+     550.24
+    ],
+    [
+     -467.65,
+     420.0
+    ],
+    [
+     -381.84,
+     308.16
+    ],
+    [
+     -270.0,
+     222.35
+    ],
+    [
+     -139.76,
+     168.4
+    ],
+    [
+     -0.0,
+     150.0
+    ],
+    [
+     139.76,
+     168.4
+    ],
+    [
+     270.0,
+     222.35
+    ],
+    [
+     381.84,
+     308.16
+    ],
+    [
+     467.65,
+     420.0
+    ],
+    [
+     521.6,
+     550.24
+    ]
+   ],
+   "start": 1999,
+   "end": 2251,
+   "sketch": "front"
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Pipe Opening Outlet 900",
+   "points": [
+    [
+     540.0,
+     690.0
+    ],
+    [
+     521.6,
+     829.76
+    ],
+    [
+     467.65,
+     960.0
+    ],
+    [
+     381.84,
+     1071.84
+    ],
+    [
+     270.0,
+     1157.65
+    ],
+    [
+     139.76,
+     1211.6
+    ],
+    [
+     0.0,
+     1230.0
+    ],
+    [
+     -139.76,
+     1211.6
+    ],
+    [
+     -270.0,
+     1157.65
+    ],
+    [
+     -381.84,
+     1071.84
+    ],
+    [
+     -467.65,
+     960.0
+    ],
+    [
+     -521.6,
+     829.76
+    ],
+    [
+     -540.0,
+     690.0
+    ],
+    [
+     -521.6,
+     550.24
+    ],
+    [
+     -467.65,
+     420.0
+    ],
+    [
+     -381.84,
+     308.16
+    ],
+    [
+     -270.0,
+     222.35
+    ],
+    [
+     -139.76,
+     168.4
+    ],
+    [
+     -0.0,
+     150.0
+    ],
+    [
+     139.76,
+     168.4
+    ],
+    [
+     270.0,
+     222.35
+    ],
+    [
+     381.84,
+     308.16
+    ],
+    [
+     467.65,
+     420.0
+    ],
+    [
+     521.6,
+     550.24
+    ]
+   ],
+   "start": -2251,
+   "end": -1999,
+   "sketch": "front"
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe Inlet End 900",
+   "profile": [
+    [
+     450,
+     2280
+    ],
+    [
+     540,
+     2280
+    ],
+    [
+     540,
+     2000
+    ],
+    [
+     450,
+     2000
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe Inlet End 900",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe Inlet End 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pipe Outlet End 900",
+   "profile": [
+    [
+     450,
+     -2000
+    ],
+    [
+     540,
+     -2000
+    ],
+    [
+     540,
+     -2280
+    ],
+    [
+     450,
+     -2280
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "y",
+   "subcategory": "Ogee"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pipe Outlet End 900",
+   "param": "Ogee Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pipe Outlet End 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Inlet Left 900",
+   "points": [
+    [
+     -1265,
+     -2250
+    ],
+    [
+     -1015,
+     -2250
+    ],
+    [
+     -1715,
+     -2950
+    ],
+    [
+     -1965,
+     -2950
+    ]
+   ],
+   "start": 0,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Inlet Left 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Inlet Left 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Inlet Left 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Inlet Right 900",
+   "points": [
+    [
+     1015,
+     -2250
+    ],
+    [
+     1265,
+     -2250
+    ],
+    [
+     1965,
+     -2950
+    ],
+    [
+     1715,
+     -2950
+    ]
+   ],
+   "start": 0,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Inlet Right 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Inlet Right 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Inlet Right 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Outlet Left 900",
+   "points": [
+    [
+     -1265,
+     2250
+    ],
+    [
+     -1965,
+     2950
+    ],
+    [
+     -1715,
+     2950
+    ],
+    [
+     -1015,
+     2250
+    ]
+   ],
+   "start": 0,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Outlet Left 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Outlet Left 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Outlet Left 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wingwall Outlet Right 900",
+   "points": [
+    [
+     1265,
+     2250
+    ],
+    [
+     1015,
+     2250
+    ],
+    [
+     1715,
+     2950
+    ],
+    [
+     1965,
+     2950
+    ]
+   ],
+   "start": 0,
+   "end": 1230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wingwall Outlet Right 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wingwall Outlet Right 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wingwall Outlet Right 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Apron Inlet 900",
+   "points": [
+    [
+     -1265,
+     -2250
+    ],
+    [
+     1265,
+     -2250
+    ],
+    [
+     1715,
+     -2950
+    ],
+    [
+     -1715,
+     -2950
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Apron Inlet 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Apron Inlet 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Apron Inlet 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Apron Outlet 900",
+   "points": [
+    [
+     -1265,
+     2250
+    ],
+    [
+     -1715,
+     2950
+    ],
+    [
+     1715,
+     2950
+    ],
+    [
+     1265,
+     2250
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Apron Outlet 900",
+   "subcategory": "C20"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Apron Outlet 900",
+   "param": "C20 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Apron Outlet 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stone Pitching 900",
+   "points": [
+    [
+     -1715,
+     2950
+    ],
+    [
+     -2065,
+     3800
+    ],
+    [
+     2065,
+     3800
+    ],
+    [
+     1715,
+     2950
+    ]
+   ],
+   "start": 0,
+   "end": 100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stone Pitching 900",
+   "subcategory": "Pitch"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stone Pitching 900",
+   "param": "Pitch Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stone Pitching 900",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_Ogee",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ogee/Show 600_Ogee",
+   "type": "600_Ogee",
+   "param": "Show 600_Ogee",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Ogee/Show 600_Ogee",
+   "type": "900_Ogee",
+   "param": "Show 600_Ogee",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 600 1/Visible",
+   "solid": "Pipe 600 1",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 600 2/Visible",
+   "solid": "Pipe 600 2",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 600 3/Visible",
+   "solid": "Pipe 600 3",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 600 4/Visible",
+   "solid": "Pipe 600 4",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 600 1/Visible",
+   "solid": "Ogee Joint 600 1",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 600 2/Visible",
+   "solid": "Ogee Joint 600 2",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 600 3/Visible",
+   "solid": "Ogee Joint 600 3",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Concrete Bed 600/Visible",
+   "solid": "Concrete Bed 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Haunch Left 600/Visible",
+   "solid": "Haunch Left 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Haunch Right 600/Visible",
+   "solid": "Haunch Right 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Headwall Inlet 600/Visible",
+   "solid": "Headwall Inlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Headwall Outlet 600/Visible",
+   "solid": "Headwall Outlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Opening Inlet 600/Visible",
+   "solid": "Pipe Opening Inlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Opening Outlet 600/Visible",
+   "solid": "Pipe Opening Outlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Inlet End 600/Visible",
+   "solid": "Pipe Inlet End 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Outlet End 600/Visible",
+   "solid": "Pipe Outlet End 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Inlet Left 600/Visible",
+   "solid": "Wingwall Inlet Left 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Inlet Right 600/Visible",
+   "solid": "Wingwall Inlet Right 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Outlet Left 600/Visible",
+   "solid": "Wingwall Outlet Left 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Outlet Right 600/Visible",
+   "solid": "Wingwall Outlet Right 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Apron Inlet 600/Visible",
+   "solid": "Apron Inlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Apron Outlet 600/Visible",
+   "solid": "Apron Outlet 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stone Pitching 600/Visible",
+   "solid": "Stone Pitching 600",
+   "param": "Show 600_Ogee"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_Ogee",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ogee/Show 900_Ogee",
+   "type": "600_Ogee",
+   "param": "Show 900_Ogee",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Ogee/Show 900_Ogee",
+   "type": "900_Ogee",
+   "param": "Show 900_Ogee",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 900 1/Visible",
+   "solid": "Pipe 900 1",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 900 2/Visible",
+   "solid": "Pipe 900 2",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 900 3/Visible",
+   "solid": "Pipe 900 3",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe 900 4/Visible",
+   "solid": "Pipe 900 4",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 900 1/Visible",
+   "solid": "Ogee Joint 900 1",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 900 2/Visible",
+   "solid": "Ogee Joint 900 2",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ogee Joint 900 3/Visible",
+   "solid": "Ogee Joint 900 3",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Concrete Bed 900/Visible",
+   "solid": "Concrete Bed 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Haunch Left 900/Visible",
+   "solid": "Haunch Left 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Haunch Right 900/Visible",
+   "solid": "Haunch Right 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Headwall Inlet 900/Visible",
+   "solid": "Headwall Inlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Headwall Outlet 900/Visible",
+   "solid": "Headwall Outlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Opening Inlet 900/Visible",
+   "solid": "Pipe Opening Inlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Opening Outlet 900/Visible",
+   "solid": "Pipe Opening Outlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Inlet End 900/Visible",
+   "solid": "Pipe Inlet End 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pipe Outlet End 900/Visible",
+   "solid": "Pipe Outlet End 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Inlet Left 900/Visible",
+   "solid": "Wingwall Inlet Left 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Inlet Right 900/Visible",
+   "solid": "Wingwall Inlet Right 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Outlet Left 900/Visible",
+   "solid": "Wingwall Outlet Left 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wingwall Outlet Right 900/Visible",
+   "solid": "Wingwall Outlet Right 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Apron Inlet 900/Visible",
+   "solid": "Apron Inlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Apron Outlet 900/Visible",
+   "solid": "Apron Outlet 900",
+   "param": "Show 900_Ogee"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stone Pitching 900/Visible",
+   "solid": "Stone Pitching 900",
+   "param": "Show 900_Ogee"
   },
   {
    "op": "set_type_image",
@@ -1566,17 +2952,17 @@
   }
  ],
  "values": {
-  "Pipe 600 internal, 75 wall (geometry)": {
-   "value": "600 t75",
+  "Pipes 600 (75 wall) and 900 (90 wall) internal (one per type)": {
+   "value": "600/900",
    "source_status": "assumed",
-   "source": "typical Uganda ogee concrete pipe; hydraulic size by the engineer"
+   "source": "typical Uganda ogee concrete pipes; hydraulic size by the engineer"
   },
   "Pipes 1000 long, 4 shown": {
    "value": 1000,
    "source_status": "assumed",
    "source": "typical"
   },
-  "Bed and haunch C20 to pipe centreline": {
+  "Bed 150 and haunch C20": {
    "value": "C20",
    "source_status": "assumed",
    "source": "typical class B bedding; engineer to confirm"

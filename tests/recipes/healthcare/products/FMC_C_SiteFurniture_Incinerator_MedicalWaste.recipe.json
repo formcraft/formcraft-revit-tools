@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_SiteFurniture_Incinerator_MedicalWaste",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Ground at z = 0: plinth, primary chamber with loading door, hinges, locking wheel, ash door and sight glass, saddled secondary chamber, two burners with fans, stack base, stack with flange, sampling port and rain cap, control panel with lamps, day tank on stand. Power on the panel. Reference: query: site furniture incinerator medical waste site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+incinerator+medical+waste+site+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: plinth, primary chamber with loading door, hinges, locking wheel, ash door and sight glass, saddled secondary chamber, two burners with fans, stack base, stack with flange, sampling port and rain cap, control panel with lamps, day tank on stand. Power on the panel. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: site furniture incinerator medical waste site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+incinerator+medical+waste+site+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.medicalexpo.com/prod/inciner8-ltd/product-115640-796100.html; photo_title: Hospital incinerator I8-M80 (Inciner8); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -437,6 +437,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "50kgh_DualChamber/URL",
+   "type": "50kgh_DualChamber",
+   "param": "URL",
+   "value": "https://www.medicalexpo.com/prod/inciner8-ltd/product-115640-796100.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "50kgh_DualChamber/Voltage",
    "type": "50kgh_DualChamber",
    "param": "Voltage",
@@ -518,6 +525,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "100kgh_DualChamber/URL",
+   "type": "100kgh_DualChamber",
+   "param": "URL",
+   "value": "https://www.medicalexpo.com/prod/inciner8-ltd/product-115640-796100.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "100kgh_DualChamber/Voltage",
    "type": "100kgh_DualChamber",
    "param": "Voltage",
@@ -529,90 +543,6 @@
    "type": "100kgh_DualChamber",
    "param": "Apparent Load",
    "value": 4000
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Paint",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Paint Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Paint Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
   },
   {
    "op": "add_subcategory",
@@ -634,27 +564,6 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_Grey",
    "param": "Grey Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
   },
   {
    "op": "add_subcategory",
@@ -700,6 +609,111 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Paint",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Paint Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Paint Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    110,
+    110,
+    110
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StructuralSteel_S275",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ss",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ss Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Ss Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Gi",
    "color": [
     158,
@@ -734,24 +748,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1500,
-     -1100
+     -1800.0,
+     -1320.0
     ],
     [
-     2100,
-     -1100
+     2520.0,
+     -1320.0
     ],
     [
-     2100,
-     1100
+     2520.0,
+     1320.0
     ],
     [
-     -1500,
-     1100
+     -1800.0,
+     1320.0
     ]
    ],
-   "start": 0,
-   "end": 9150
+   "start": 0.0,
+   "end": 10980.0
   },
   {
    "op": "set_subcategory",
@@ -764,1592 +778,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Plinth",
-   "points": [
-    [
-     -1500,
-     -1100
-    ],
-    [
-     2100,
-     -1100
-    ],
-    [
-     2100,
-     1100
-    ],
-    [
-     -1500,
-     1100
-    ]
-   ],
-   "start": 0,
-   "end": 200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Plinth",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Plinth",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Plinth",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Primary Chamber",
-   "points": [
-    [
-     -1000,
-     -700
-    ],
-    [
-     600,
-     -700
-    ],
-    [
-     600,
-     700
-    ],
-    [
-     -1000,
-     700
-    ]
-   ],
-   "start": 200,
-   "end": 1800
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Primary Chamber",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Primary Chamber",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Primary Chamber",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Loading Door",
-   "points": [
-    [
-     -750,
-     950
-    ],
-    [
-     150,
-     950
-    ],
-    [
-     150,
-     1650
-    ],
-    [
-     -750,
-     1650
-    ]
-   ],
-   "start": 700,
-   "end": 740,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Loading Door",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Loading Door",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Loading Door",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Hinge 1",
-   "points": [
-    [
-     -750.0,
-     -720.0
-    ],
-    [
-     -752.68,
-     -710.0
-    ],
-    [
-     -760.0,
-     -702.68
-    ],
-    [
-     -770.0,
-     -700.0
-    ],
-    [
-     -780.0,
-     -702.68
-    ],
-    [
-     -787.32,
-     -710.0
-    ],
-    [
-     -790.0,
-     -720.0
-    ],
-    [
-     -787.32,
-     -730.0
-    ],
-    [
-     -780.0,
-     -737.32
-    ],
-    [
-     -770.0,
-     -740.0
-    ],
-    [
-     -760.0,
-     -737.32
-    ],
-    [
-     -752.68,
-     -730.0
-    ]
-   ],
-   "start": 1000,
-   "end": 1150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Hinge 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Hinge 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Hinge 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Hinge 2",
-   "points": [
-    [
-     -750.0,
-     -720.0
-    ],
-    [
-     -752.68,
-     -710.0
-    ],
-    [
-     -760.0,
-     -702.68
-    ],
-    [
-     -770.0,
-     -700.0
-    ],
-    [
-     -780.0,
-     -702.68
-    ],
-    [
-     -787.32,
-     -710.0
-    ],
-    [
-     -790.0,
-     -720.0
-    ],
-    [
-     -787.32,
-     -730.0
-    ],
-    [
-     -780.0,
-     -737.32
-    ],
-    [
-     -770.0,
-     -740.0
-    ],
-    [
-     -760.0,
-     -737.32
-    ],
-    [
-     -752.68,
-     -730.0
-    ]
-   ],
-   "start": 1380,
-   "end": 1530
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Hinge 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Hinge 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Hinge 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Locking Wheel",
-   "profile": [
-    [
-     70,
-     760
-    ],
-    [
-     85,
-     760
-    ],
-    [
-     85,
-     745
-    ],
-    [
-     70,
-     745
-    ]
-   ],
-   "axis_at": [
-    0,
-    1300
-   ],
-   "axis": "y",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Locking Wheel",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Locking Wheel",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Wheel Hub",
-   "points": [
-    [
-     20.0,
-     1300.0
-    ],
-    [
-     17.32,
-     1310.0
-    ],
-    [
-     10.0,
-     1317.32
-    ],
-    [
-     0.0,
-     1320.0
-    ],
-    [
-     -10.0,
-     1317.32
-    ],
-    [
-     -17.32,
-     1310.0
-    ],
-    [
-     -20.0,
-     1300.0
-    ],
-    [
-     -17.32,
-     1290.0
-    ],
-    [
-     -10.0,
-     1282.68
-    ],
-    [
-     -0.0,
-     1280.0
-    ],
-    [
-     10.0,
-     1282.68
-    ],
-    [
-     17.32,
-     1290.0
-    ]
-   ],
-   "start": 740,
-   "end": 770,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Wheel Hub",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Wheel Hub",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Wheel Hub",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ash Door",
-   "points": [
-    [
-     -650,
-     330
-    ],
-    [
-     50,
-     330
-    ],
-    [
-     50,
-     780
-    ],
-    [
-     -650,
-     780
-    ]
-   ],
-   "start": 700,
-   "end": 730,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ash Door",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ash Door",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ash Door",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ash Door Handle",
-   "points": [
-    [
-     -20,
-     500
-    ],
-    [
-     10,
-     500
-    ],
-    [
-     10,
-     620
-    ],
-    [
-     -20,
-     620
-    ]
-   ],
-   "start": 730,
-   "end": 750,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ash Door Handle",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ash Door Handle",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ash Door Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sight Glass",
-   "points": [
-    [
-     250,
-     1400
-    ],
-    [
-     330,
-     1400
-    ],
-    [
-     330,
-     1480
-    ],
-    [
-     250,
-     1480
-    ]
-   ],
-   "start": 700,
-   "end": 705,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sight Glass",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sight Glass",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sight Glass",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Saddle 1",
-   "points": [
-    [
-     -850,
-     -350
-    ],
-    [
-     -650,
-     -350
-    ],
-    [
-     -650,
-     350
-    ],
-    [
-     -850,
-     350
-    ]
-   ],
-   "start": 1800,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Saddle 1",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Saddle 1",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Saddle 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Saddle 2",
-   "points": [
-    [
-     450,
-     -350
-    ],
-    [
-     650,
-     -350
-    ],
-    [
-     650,
-     350
-    ],
-    [
-     450,
-     350
-    ]
-   ],
-   "start": 1800,
-   "end": 1900
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Saddle 2",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Saddle 2",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Saddle 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Secondary Chamber",
-   "points": [
-    [
-     450.0,
-     2300.0
-    ],
-    [
-     441.35,
-     2387.79
-    ],
-    [
-     415.75,
-     2472.21
-    ],
-    [
-     374.16,
-     2550.01
-    ],
-    [
-     318.2,
-     2618.2
-    ],
-    [
-     250.01,
-     2674.16
-    ],
-    [
-     172.21,
-     2715.75
-    ],
-    [
-     87.79,
-     2741.35
-    ],
-    [
-     0.0,
-     2750.0
-    ],
-    [
-     -87.79,
-     2741.35
-    ],
-    [
-     -172.21,
-     2715.75
-    ],
-    [
-     -250.01,
-     2674.16
-    ],
-    [
-     -318.2,
-     2618.2
-    ],
-    [
-     -374.16,
-     2550.01
-    ],
-    [
-     -415.75,
-     2472.21
-    ],
-    [
-     -441.35,
-     2387.79
-    ],
-    [
-     -450.0,
-     2300.0
-    ],
-    [
-     -441.35,
-     2212.21
-    ],
-    [
-     -415.75,
-     2127.79
-    ],
-    [
-     -374.16,
-     2049.99
-    ],
-    [
-     -318.2,
-     1981.8
-    ],
-    [
-     -250.01,
-     1925.84
-    ],
-    [
-     -172.21,
-     1884.25
-    ],
-    [
-     -87.79,
-     1858.65
-    ],
-    [
-     -0.0,
-     1850.0
-    ],
-    [
-     87.79,
-     1858.65
-    ],
-    [
-     172.21,
-     1884.25
-    ],
-    [
-     250.01,
-     1925.84
-    ],
-    [
-     318.2,
-     1981.8
-    ],
-    [
-     374.16,
-     2049.99
-    ],
-    [
-     415.75,
-     2127.79
-    ],
-    [
-     441.35,
-     2212.21
-    ]
-   ],
-   "start": -1000,
-   "end": 900,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Secondary Chamber",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Secondary Chamber",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Secondary Chamber",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Secondary End Cap",
-   "points": [
-    [
-     430.0,
-     2300.0
-    ],
-    [
-     421.74,
-     2383.89
-    ],
-    [
-     397.27,
-     2464.55
-    ],
-    [
-     357.53,
-     2538.9
-    ],
-    [
-     304.06,
-     2604.06
-    ],
-    [
-     238.9,
-     2657.53
-    ],
-    [
-     164.55,
-     2697.27
-    ],
-    [
-     83.89,
-     2721.74
-    ],
-    [
-     0.0,
-     2730.0
-    ],
-    [
-     -83.89,
-     2721.74
-    ],
-    [
-     -164.55,
-     2697.27
-    ],
-    [
-     -238.9,
-     2657.53
-    ],
-    [
-     -304.06,
-     2604.06
-    ],
-    [
-     -357.53,
-     2538.9
-    ],
-    [
-     -397.27,
-     2464.55
-    ],
-    [
-     -421.74,
-     2383.89
-    ],
-    [
-     -430.0,
-     2300.0
-    ],
-    [
-     -421.74,
-     2216.11
-    ],
-    [
-     -397.27,
-     2135.45
-    ],
-    [
-     -357.53,
-     2061.1
-    ],
-    [
-     -304.06,
-     1995.94
-    ],
-    [
-     -238.9,
-     1942.47
-    ],
-    [
-     -164.55,
-     1902.73
-    ],
-    [
-     -83.89,
-     1878.26
-    ],
-    [
-     -0.0,
-     1870.0
-    ],
-    [
-     83.89,
-     1878.26
-    ],
-    [
-     164.55,
-     1902.73
-    ],
-    [
-     238.9,
-     1942.47
-    ],
-    [
-     304.06,
-     1995.94
-    ],
-    [
-     357.53,
-     2061.1
-    ],
-    [
-     397.27,
-     2135.45
-    ],
-    [
-     421.74,
-     2216.11
-    ]
-   ],
-   "start": 900,
-   "end": 950,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Secondary End Cap",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Secondary End Cap",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Secondary End Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Primary Burner",
-   "points": [
-    [
-     -1250,
-     -150
-    ],
-    [
-     -1000,
-     -150
-    ],
-    [
-     -1000,
-     150
-    ],
-    [
-     -1250,
-     150
-    ]
-   ],
-   "start": 900,
-   "end": 1150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Primary Burner",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Primary Burner",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Primary Burner",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Burner Fan",
-   "points": [
-    [
-     90.0,
-     1025.0
-    ],
-    [
-     85.6,
-     1052.81
-    ],
-    [
-     72.81,
-     1077.9
-    ],
-    [
-     52.9,
-     1097.81
-    ],
-    [
-     27.81,
-     1110.6
-    ],
-    [
-     0.0,
-     1115.0
-    ],
-    [
-     -27.81,
-     1110.6
-    ],
-    [
-     -52.9,
-     1097.81
-    ],
-    [
-     -72.81,
-     1077.9
-    ],
-    [
-     -85.6,
-     1052.81
-    ],
-    [
-     -90.0,
-     1025.0
-    ],
-    [
-     -85.6,
-     997.19
-    ],
-    [
-     -72.81,
-     972.1
-    ],
-    [
-     -52.9,
-     952.19
-    ],
-    [
-     -27.81,
-     939.4
-    ],
-    [
-     -0.0,
-     935.0
-    ],
-    [
-     27.81,
-     939.4
-    ],
-    [
-     52.9,
-     952.19
-    ],
-    [
-     72.81,
-     972.1
-    ],
-    [
-     85.6,
-     997.19
-    ]
-   ],
-   "start": -1350,
-   "end": -1250,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Burner Fan",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Burner Fan",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Burner Fan",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Secondary Burner",
-   "points": [
-    [
-     -1250,
-     -150
-    ],
-    [
-     -1000,
-     -150
-    ],
-    [
-     -1000,
-     150
-    ],
-    [
-     -1250,
-     150
-    ]
-   ],
-   "start": 2200,
-   "end": 2450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Secondary Burner",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Secondary Burner",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Secondary Burner",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Secondary Burner Fan",
-   "points": [
-    [
-     90.0,
-     2325.0
-    ],
-    [
-     85.6,
-     2352.81
-    ],
-    [
-     72.81,
-     2377.9
-    ],
-    [
-     52.9,
-     2397.81
-    ],
-    [
-     27.81,
-     2410.6
-    ],
-    [
-     0.0,
-     2415.0
-    ],
-    [
-     -27.81,
-     2410.6
-    ],
-    [
-     -52.9,
-     2397.81
-    ],
-    [
-     -72.81,
-     2377.9
-    ],
-    [
-     -85.6,
-     2352.81
-    ],
-    [
-     -90.0,
-     2325.0
-    ],
-    [
-     -85.6,
-     2297.19
-    ],
-    [
-     -72.81,
-     2272.1
-    ],
-    [
-     -52.9,
-     2252.19
-    ],
-    [
-     -27.81,
-     2239.4
-    ],
-    [
-     -0.0,
-     2235.0
-    ],
-    [
-     27.81,
-     2239.4
-    ],
-    [
-     52.9,
-     2252.19
-    ],
-    [
-     72.81,
-     2272.1
-    ],
-    [
-     85.6,
-     2297.19
-    ]
-   ],
-   "start": -1350,
-   "end": -1250,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Secondary Burner Fan",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Secondary Burner Fan",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Secondary Burner Fan",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Stack Base",
-   "profile": [
-    [
-     0,
-     2700
-    ],
-    [
-     300,
-     2700
-    ],
-    [
-     300,
-     2740
-    ],
-    [
-     180,
-     2900
-    ],
-    [
-     0,
-     2900
-    ]
-   ],
-   "axis_at": [
-    700,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Paint"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stack Base",
-   "param": "Paint Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stack Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stack",
-   "points": [
-    [
-     875.0,
-     0.0
-    ],
-    [
-     871.64,
-     34.14
-    ],
-    [
-     861.68,
-     66.97
-    ],
-    [
-     845.51,
-     97.22
-    ],
-    [
-     823.74,
-     123.74
-    ],
-    [
-     797.22,
-     145.51
-    ],
-    [
-     766.97,
-     161.68
-    ],
-    [
-     734.14,
-     171.64
-    ],
-    [
-     700.0,
-     175.0
-    ],
-    [
-     665.86,
-     171.64
-    ],
-    [
-     633.03,
-     161.68
-    ],
-    [
-     602.78,
-     145.51
-    ],
-    [
-     576.26,
-     123.74
-    ],
-    [
-     554.49,
-     97.22
-    ],
-    [
-     538.32,
-     66.97
-    ],
-    [
-     528.36,
-     34.14
-    ],
-    [
-     525.0,
-     0.0
-    ],
-    [
-     528.36,
-     -34.14
-    ],
-    [
-     538.32,
-     -66.97
-    ],
-    [
-     554.49,
-     -97.22
-    ],
-    [
-     576.26,
-     -123.74
-    ],
-    [
-     602.78,
-     -145.51
-    ],
-    [
-     633.03,
-     -161.68
-    ],
-    [
-     665.86,
-     -171.64
-    ],
-    [
-     700.0,
-     -175.0
-    ],
-    [
-     734.14,
-     -171.64
-    ],
-    [
-     766.97,
-     -161.68
-    ],
-    [
-     797.22,
-     -145.51
-    ],
-    [
-     823.74,
-     -123.74
-    ],
-    [
-     845.51,
-     -97.22
-    ],
-    [
-     861.68,
-     -66.97
-    ],
-    [
-     871.64,
-     -34.14
-    ]
-   ],
-   "start": 2740,
-   "end": 9000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stack",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stack",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stack",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Stack Flange",
-   "profile": [
-    [
-     175,
-     5500
-    ],
-    [
-     210,
-     5500
-    ],
-    [
-     210,
-     5530
-    ],
-    [
-     175,
-     5530
-    ]
-   ],
-   "axis_at": [
-    700,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stack Flange",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stack Flange",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sampling Port",
-   "points": [
-    [
-     740.0,
-     7000.0
-    ],
-    [
-     734.64,
-     7020.0
-    ],
-    [
-     720.0,
-     7034.64
-    ],
-    [
-     700.0,
-     7040.0
-    ],
-    [
-     680.0,
-     7034.64
-    ],
-    [
-     665.36,
-     7020.0
-    ],
-    [
-     660.0,
-     7000.0
-    ],
-    [
-     665.36,
-     6980.0
-    ],
-    [
-     680.0,
-     6965.36
-    ],
-    [
-     700.0,
-     6960.0
-    ],
-    [
-     720.0,
-     6965.36
-    ],
-    [
-     734.64,
-     6980.0
-    ]
-   ],
-   "start": 170,
-   "end": 260,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sampling Port",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sampling Port",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sampling Port",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Rain Cap",
-   "profile": [
-    [
-     0,
-     9150
-    ],
-    [
-     320,
-     9080
-    ],
-    [
-     320,
-     9060
-    ],
-    [
-     0,
-     9120
-    ]
-   ],
-   "axis_at": [
-    700,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rain Cap",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rain Cap",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rain Cap Stay",
-   "points": [
-    [
-     690,
-     -180
-    ],
-    [
-     710,
-     -180
-    ],
-    [
-     710,
-     180
-    ],
-    [
-     690,
-     180
-    ]
-   ],
-   "start": 9000,
-   "end": 9080
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rain Cap Stay",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rain Cap Stay",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rain Cap Stay",
-   "coarse": false,
-   "medium": false,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -2666,7 +1094,1593 @@
   },
   {
    "op": "extrusion",
-   "name": "Day Tank",
+   "name": "Base Plinth 50kgh",
+   "points": [
+    [
+     -1500.0,
+     -1100.0
+    ],
+    [
+     2100.0,
+     -1100.0
+    ],
+    [
+     2100.0,
+     1100.0
+    ],
+    [
+     -1500.0,
+     1100.0
+    ]
+   ],
+   "start": 0.0,
+   "end": 200.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plinth 50kgh",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plinth 50kgh",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plinth 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Primary Chamber 50kgh",
+   "points": [
+    [
+     -1000.0,
+     -700.0
+    ],
+    [
+     600.0,
+     -700.0
+    ],
+    [
+     600.0,
+     700.0
+    ],
+    [
+     -1000.0,
+     700.0
+    ]
+   ],
+   "start": 200.0,
+   "end": 1800.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Primary Chamber 50kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Primary Chamber 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Primary Chamber 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Loading Door 50kgh",
+   "points": [
+    [
+     -750.0,
+     950.0
+    ],
+    [
+     150.0,
+     950.0
+    ],
+    [
+     150.0,
+     1650.0
+    ],
+    [
+     -750.0,
+     1650.0
+    ]
+   ],
+   "start": 700.0,
+   "end": 740.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Loading Door 50kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Loading Door 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Loading Door 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Hinge 50kgh 1",
+   "points": [
+    [
+     -750.0,
+     -720.0
+    ],
+    [
+     -752.68,
+     -710.0
+    ],
+    [
+     -760.0,
+     -702.68
+    ],
+    [
+     -770.0,
+     -700.0
+    ],
+    [
+     -780.0,
+     -702.68
+    ],
+    [
+     -787.32,
+     -710.0
+    ],
+    [
+     -790.0,
+     -720.0
+    ],
+    [
+     -787.32,
+     -730.0
+    ],
+    [
+     -780.0,
+     -737.32
+    ],
+    [
+     -770.0,
+     -740.0
+    ],
+    [
+     -760.0,
+     -737.32
+    ],
+    [
+     -752.68,
+     -730.0
+    ]
+   ],
+   "start": 1000.0,
+   "end": 1150.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Hinge 50kgh 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Hinge 50kgh 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Hinge 50kgh 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Hinge 50kgh 2",
+   "points": [
+    [
+     -750.0,
+     -720.0
+    ],
+    [
+     -752.68,
+     -710.0
+    ],
+    [
+     -760.0,
+     -702.68
+    ],
+    [
+     -770.0,
+     -700.0
+    ],
+    [
+     -780.0,
+     -702.68
+    ],
+    [
+     -787.32,
+     -710.0
+    ],
+    [
+     -790.0,
+     -720.0
+    ],
+    [
+     -787.32,
+     -730.0
+    ],
+    [
+     -780.0,
+     -737.32
+    ],
+    [
+     -770.0,
+     -740.0
+    ],
+    [
+     -760.0,
+     -737.32
+    ],
+    [
+     -752.68,
+     -730.0
+    ]
+   ],
+   "start": 1380.0,
+   "end": 1530.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Hinge 50kgh 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Hinge 50kgh 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Hinge 50kgh 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Locking Wheel 50kgh",
+   "profile": [
+    [
+     70.0,
+     760.0
+    ],
+    [
+     85.0,
+     760.0
+    ],
+    [
+     85.0,
+     745.0
+    ],
+    [
+     70.0,
+     745.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    1300.0
+   ],
+   "axis": "y",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Locking Wheel 50kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Locking Wheel 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Hub 50kgh",
+   "points": [
+    [
+     20.0,
+     1300.0
+    ],
+    [
+     17.32,
+     1310.0
+    ],
+    [
+     10.0,
+     1317.32
+    ],
+    [
+     0.0,
+     1320.0
+    ],
+    [
+     -10.0,
+     1317.32
+    ],
+    [
+     -17.32,
+     1310.0
+    ],
+    [
+     -20.0,
+     1300.0
+    ],
+    [
+     -17.32,
+     1290.0
+    ],
+    [
+     -10.0,
+     1282.68
+    ],
+    [
+     -0.0,
+     1280.0
+    ],
+    [
+     10.0,
+     1282.68
+    ],
+    [
+     17.32,
+     1290.0
+    ]
+   ],
+   "start": 740.0,
+   "end": 770.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Hub 50kgh",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Hub 50kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Hub 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ash Door 50kgh",
+   "points": [
+    [
+     -650.0,
+     330.0
+    ],
+    [
+     50.0,
+     330.0
+    ],
+    [
+     50.0,
+     780.0
+    ],
+    [
+     -650.0,
+     780.0
+    ]
+   ],
+   "start": 700.0,
+   "end": 730.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ash Door 50kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ash Door 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ash Door 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ash Door Handle 50kgh",
+   "points": [
+    [
+     -20.0,
+     500.0
+    ],
+    [
+     10.0,
+     500.0
+    ],
+    [
+     10.0,
+     620.0
+    ],
+    [
+     -20.0,
+     620.0
+    ]
+   ],
+   "start": 730.0,
+   "end": 750.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ash Door Handle 50kgh",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ash Door Handle 50kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ash Door Handle 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sight Glass 50kgh",
+   "points": [
+    [
+     250.0,
+     1400.0
+    ],
+    [
+     330.0,
+     1400.0
+    ],
+    [
+     330.0,
+     1480.0
+    ],
+    [
+     250.0,
+     1480.0
+    ]
+   ],
+   "start": 700.0,
+   "end": 705.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sight Glass 50kgh",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sight Glass 50kgh",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sight Glass 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Saddle 50kgh 1",
+   "points": [
+    [
+     -850.0,
+     -350.0
+    ],
+    [
+     -650.0,
+     -350.0
+    ],
+    [
+     -650.0,
+     350.0
+    ],
+    [
+     -850.0,
+     350.0
+    ]
+   ],
+   "start": 1800.0,
+   "end": 1900.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Saddle 50kgh 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Saddle 50kgh 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Saddle 50kgh 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Saddle 50kgh 2",
+   "points": [
+    [
+     450.0,
+     -350.0
+    ],
+    [
+     650.0,
+     -350.0
+    ],
+    [
+     650.0,
+     350.0
+    ],
+    [
+     450.0,
+     350.0
+    ]
+   ],
+   "start": 1800.0,
+   "end": 1900.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Saddle 50kgh 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Saddle 50kgh 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Saddle 50kgh 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Chamber 50kgh",
+   "points": [
+    [
+     450.0,
+     2300.0
+    ],
+    [
+     441.35,
+     2387.79
+    ],
+    [
+     415.75,
+     2472.21
+    ],
+    [
+     374.16,
+     2550.01
+    ],
+    [
+     318.2,
+     2618.2
+    ],
+    [
+     250.01,
+     2674.16
+    ],
+    [
+     172.21,
+     2715.75
+    ],
+    [
+     87.79,
+     2741.35
+    ],
+    [
+     0.0,
+     2750.0
+    ],
+    [
+     -87.79,
+     2741.35
+    ],
+    [
+     -172.21,
+     2715.75
+    ],
+    [
+     -250.01,
+     2674.16
+    ],
+    [
+     -318.2,
+     2618.2
+    ],
+    [
+     -374.16,
+     2550.01
+    ],
+    [
+     -415.75,
+     2472.21
+    ],
+    [
+     -441.35,
+     2387.79
+    ],
+    [
+     -450.0,
+     2300.0
+    ],
+    [
+     -441.35,
+     2212.21
+    ],
+    [
+     -415.75,
+     2127.79
+    ],
+    [
+     -374.16,
+     2049.99
+    ],
+    [
+     -318.2,
+     1981.8
+    ],
+    [
+     -250.01,
+     1925.84
+    ],
+    [
+     -172.21,
+     1884.25
+    ],
+    [
+     -87.79,
+     1858.65
+    ],
+    [
+     -0.0,
+     1850.0
+    ],
+    [
+     87.79,
+     1858.65
+    ],
+    [
+     172.21,
+     1884.25
+    ],
+    [
+     250.01,
+     1925.84
+    ],
+    [
+     318.2,
+     1981.8
+    ],
+    [
+     374.16,
+     2049.99
+    ],
+    [
+     415.75,
+     2127.79
+    ],
+    [
+     441.35,
+     2212.21
+    ]
+   ],
+   "start": -1000.0,
+   "end": 900.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Chamber 50kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Chamber 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Chamber 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary End Cap 50kgh",
+   "points": [
+    [
+     430.0,
+     2300.0
+    ],
+    [
+     421.74,
+     2383.89
+    ],
+    [
+     397.27,
+     2464.55
+    ],
+    [
+     357.53,
+     2538.9
+    ],
+    [
+     304.06,
+     2604.06
+    ],
+    [
+     238.9,
+     2657.53
+    ],
+    [
+     164.55,
+     2697.27
+    ],
+    [
+     83.89,
+     2721.74
+    ],
+    [
+     0.0,
+     2730.0
+    ],
+    [
+     -83.89,
+     2721.74
+    ],
+    [
+     -164.55,
+     2697.27
+    ],
+    [
+     -238.9,
+     2657.53
+    ],
+    [
+     -304.06,
+     2604.06
+    ],
+    [
+     -357.53,
+     2538.9
+    ],
+    [
+     -397.27,
+     2464.55
+    ],
+    [
+     -421.74,
+     2383.89
+    ],
+    [
+     -430.0,
+     2300.0
+    ],
+    [
+     -421.74,
+     2216.11
+    ],
+    [
+     -397.27,
+     2135.45
+    ],
+    [
+     -357.53,
+     2061.1
+    ],
+    [
+     -304.06,
+     1995.94
+    ],
+    [
+     -238.9,
+     1942.47
+    ],
+    [
+     -164.55,
+     1902.73
+    ],
+    [
+     -83.89,
+     1878.26
+    ],
+    [
+     -0.0,
+     1870.0
+    ],
+    [
+     83.89,
+     1878.26
+    ],
+    [
+     164.55,
+     1902.73
+    ],
+    [
+     238.9,
+     1942.47
+    ],
+    [
+     304.06,
+     1995.94
+    ],
+    [
+     357.53,
+     2061.1
+    ],
+    [
+     397.27,
+     2135.45
+    ],
+    [
+     421.74,
+     2216.11
+    ]
+   ],
+   "start": 900.0,
+   "end": 950.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary End Cap 50kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary End Cap 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary End Cap 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Primary Burner 50kgh",
+   "points": [
+    [
+     -1250.0,
+     -150.0
+    ],
+    [
+     -1000.0,
+     -150.0
+    ],
+    [
+     -1000.0,
+     150.0
+    ],
+    [
+     -1250.0,
+     150.0
+    ]
+   ],
+   "start": 900.0,
+   "end": 1150.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Primary Burner 50kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Primary Burner 50kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Primary Burner 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Burner Fan 50kgh",
+   "points": [
+    [
+     90.0,
+     1025.0
+    ],
+    [
+     85.6,
+     1052.81
+    ],
+    [
+     72.81,
+     1077.9
+    ],
+    [
+     52.9,
+     1097.81
+    ],
+    [
+     27.81,
+     1110.6
+    ],
+    [
+     0.0,
+     1115.0
+    ],
+    [
+     -27.81,
+     1110.6
+    ],
+    [
+     -52.9,
+     1097.81
+    ],
+    [
+     -72.81,
+     1077.9
+    ],
+    [
+     -85.6,
+     1052.81
+    ],
+    [
+     -90.0,
+     1025.0
+    ],
+    [
+     -85.6,
+     997.19
+    ],
+    [
+     -72.81,
+     972.1
+    ],
+    [
+     -52.9,
+     952.19
+    ],
+    [
+     -27.81,
+     939.4
+    ],
+    [
+     -0.0,
+     935.0
+    ],
+    [
+     27.81,
+     939.4
+    ],
+    [
+     52.9,
+     952.19
+    ],
+    [
+     72.81,
+     972.1
+    ],
+    [
+     85.6,
+     997.19
+    ]
+   ],
+   "start": -1350.0,
+   "end": -1250.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Burner Fan 50kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Burner Fan 50kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Burner Fan 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Burner 50kgh",
+   "points": [
+    [
+     -1250.0,
+     -150.0
+    ],
+    [
+     -1000.0,
+     -150.0
+    ],
+    [
+     -1000.0,
+     150.0
+    ],
+    [
+     -1250.0,
+     150.0
+    ]
+   ],
+   "start": 2200.0,
+   "end": 2450.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Burner 50kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Burner 50kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Burner 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Burner Fan 50kgh",
+   "points": [
+    [
+     90.0,
+     2325.0
+    ],
+    [
+     85.6,
+     2352.81
+    ],
+    [
+     72.81,
+     2377.9
+    ],
+    [
+     52.9,
+     2397.81
+    ],
+    [
+     27.81,
+     2410.6
+    ],
+    [
+     0.0,
+     2415.0
+    ],
+    [
+     -27.81,
+     2410.6
+    ],
+    [
+     -52.9,
+     2397.81
+    ],
+    [
+     -72.81,
+     2377.9
+    ],
+    [
+     -85.6,
+     2352.81
+    ],
+    [
+     -90.0,
+     2325.0
+    ],
+    [
+     -85.6,
+     2297.19
+    ],
+    [
+     -72.81,
+     2272.1
+    ],
+    [
+     -52.9,
+     2252.19
+    ],
+    [
+     -27.81,
+     2239.4
+    ],
+    [
+     -0.0,
+     2235.0
+    ],
+    [
+     27.81,
+     2239.4
+    ],
+    [
+     52.9,
+     2252.19
+    ],
+    [
+     72.81,
+     2272.1
+    ],
+    [
+     85.6,
+     2297.19
+    ]
+   ],
+   "start": -1350.0,
+   "end": -1250.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Burner Fan 50kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Burner Fan 50kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Burner Fan 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stack Base 50kgh",
+   "profile": [
+    [
+     0.0,
+     2700.0
+    ],
+    [
+     300.0,
+     2700.0
+    ],
+    [
+     300.0,
+     2740.0
+    ],
+    [
+     180.0,
+     2900.0
+    ],
+    [
+     0.0,
+     2900.0
+    ]
+   ],
+   "axis_at": [
+    700.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack Base 50kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack Base 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stack 50kgh",
+   "points": [
+    [
+     875.0,
+     0.0
+    ],
+    [
+     871.64,
+     34.14
+    ],
+    [
+     861.68,
+     66.97
+    ],
+    [
+     845.51,
+     97.22
+    ],
+    [
+     823.74,
+     123.74
+    ],
+    [
+     797.22,
+     145.51
+    ],
+    [
+     766.97,
+     161.68
+    ],
+    [
+     734.14,
+     171.64
+    ],
+    [
+     700.0,
+     175.0
+    ],
+    [
+     665.86,
+     171.64
+    ],
+    [
+     633.03,
+     161.68
+    ],
+    [
+     602.78,
+     145.51
+    ],
+    [
+     576.26,
+     123.74
+    ],
+    [
+     554.49,
+     97.22
+    ],
+    [
+     538.32,
+     66.97
+    ],
+    [
+     528.36,
+     34.14
+    ],
+    [
+     525.0,
+     0.0
+    ],
+    [
+     528.36,
+     -34.14
+    ],
+    [
+     538.32,
+     -66.97
+    ],
+    [
+     554.49,
+     -97.22
+    ],
+    [
+     576.26,
+     -123.74
+    ],
+    [
+     602.78,
+     -145.51
+    ],
+    [
+     633.03,
+     -161.68
+    ],
+    [
+     665.86,
+     -171.64
+    ],
+    [
+     700.0,
+     -175.0
+    ],
+    [
+     734.14,
+     -171.64
+    ],
+    [
+     766.97,
+     -161.68
+    ],
+    [
+     797.22,
+     -145.51
+    ],
+    [
+     823.74,
+     -123.74
+    ],
+    [
+     845.51,
+     -97.22
+    ],
+    [
+     861.68,
+     -66.97
+    ],
+    [
+     871.64,
+     -34.14
+    ]
+   ],
+   "start": 2740.0,
+   "end": 9000.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stack 50kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack 50kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stack Flange 50kgh",
+   "profile": [
+    [
+     175.0,
+     5500.0
+    ],
+    [
+     210.0,
+     5500.0
+    ],
+    [
+     210.0,
+     5530.0
+    ],
+    [
+     175.0,
+     5530.0
+    ]
+   ],
+   "axis_at": [
+    700.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack Flange 50kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack Flange 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sampling Port 50kgh",
+   "points": [
+    [
+     740.0,
+     7000.0
+    ],
+    [
+     734.64,
+     7020.0
+    ],
+    [
+     720.0,
+     7034.64
+    ],
+    [
+     700.0,
+     7040.0
+    ],
+    [
+     680.0,
+     7034.64
+    ],
+    [
+     665.36,
+     7020.0
+    ],
+    [
+     660.0,
+     7000.0
+    ],
+    [
+     665.36,
+     6980.0
+    ],
+    [
+     680.0,
+     6965.36
+    ],
+    [
+     700.0,
+     6960.0
+    ],
+    [
+     720.0,
+     6965.36
+    ],
+    [
+     734.64,
+     6980.0
+    ]
+   ],
+   "start": 170.0,
+   "end": 260.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sampling Port 50kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sampling Port 50kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sampling Port 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rain Cap 50kgh",
+   "profile": [
+    [
+     0.0,
+     9150.0
+    ],
+    [
+     320.0,
+     9080.0
+    ],
+    [
+     320.0,
+     9060.0
+    ],
+    [
+     0.0,
+     9120.0
+    ]
+   ],
+   "axis_at": [
+    700.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap 50kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap 50kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rain Cap Stay 50kgh",
+   "points": [
+    [
+     690.0,
+     -180.0
+    ],
+    [
+     710.0,
+     -180.0
+    ],
+    [
+     710.0,
+     180.0
+    ],
+    [
+     690.0,
+     180.0
+    ]
+   ],
+   "start": 9000.0,
+   "end": 9080.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rain Cap Stay 50kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap Stay 50kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap Stay 50kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Day Tank 50kgh",
    "points": [
     [
      800.0,
@@ -2765,112 +2779,112 @@
      922.35
     ]
    ],
-   "start": 1100,
-   "end": 1900,
+   "start": 1100.0,
+   "end": 1900.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Day Tank",
+   "name": "Day Tank 50kgh",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Day Tank",
+   "name": "Day Tank 50kgh",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Day Tank",
+   "name": "Day Tank 50kgh",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Day Tank Stand 1",
+   "name": "Day Tank Stand 50kgh 1",
    "points": [
     [
-     1150,
-     300
+     1150.0,
+     300.0
     ],
     [
-     1200,
-     300
+     1200.0,
+     300.0
     ],
     [
-     1200,
-     700
+     1200.0,
+     700.0
     ],
     [
-     1150,
-     700
+     1150.0,
+     700.0
     ]
    ],
-   "start": 200,
-   "end": 700
+   "start": 200.0,
+   "end": 700.0
   },
   {
    "op": "set_subcategory",
-   "name": "Day Tank Stand 1",
+   "name": "Day Tank Stand 50kgh 1",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Day Tank Stand 1",
+   "name": "Day Tank Stand 50kgh 1",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Day Tank Stand 1",
+   "name": "Day Tank Stand 50kgh 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Day Tank Stand 2",
+   "name": "Day Tank Stand 50kgh 2",
    "points": [
     [
-     1800,
-     300
+     1800.0,
+     300.0
     ],
     [
-     1850,
-     300
+     1850.0,
+     300.0
     ],
     [
-     1850,
-     700
+     1850.0,
+     700.0
     ],
     [
-     1800,
-     700
+     1800.0,
+     700.0
     ]
    ],
-   "start": 200,
-   "end": 700
+   "start": 200.0,
+   "end": 700.0
   },
   {
    "op": "set_subcategory",
-   "name": "Day Tank Stand 2",
+   "name": "Day Tank Stand 50kgh 2",
    "subcategory": "Paint"
   },
   {
    "op": "set_material_param",
-   "name": "Day Tank Stand 2",
+   "name": "Day Tank Stand 50kgh 2",
    "param": "Paint Material"
   },
   {
    "op": "set_visibility",
-   "name": "Day Tank Stand 2",
+   "name": "Day Tank Stand 50kgh 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fuel Line",
+   "name": "Fuel Line 50kgh",
    "points": [
     [
      -1040.0,
@@ -2905,26 +2919,2250 @@
      992.93
     ]
    ],
-   "start": -300,
-   "end": 150,
+   "start": -300.0,
+   "end": 150.0,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Fuel Line",
+   "name": "Fuel Line 50kgh",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Fuel Line",
+   "name": "Fuel Line 50kgh",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fuel Line",
+   "name": "Fuel Line 50kgh",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plinth 100kgh",
+   "points": [
+    [
+     -1800.0,
+     -1320.0
+    ],
+    [
+     2520.0,
+     -1320.0
+    ],
+    [
+     2520.0,
+     1320.0
+    ],
+    [
+     -1800.0,
+     1320.0
+    ]
+   ],
+   "start": 0.0,
+   "end": 240.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plinth 100kgh",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plinth 100kgh",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plinth 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Primary Chamber 100kgh",
+   "points": [
+    [
+     -1200.0,
+     -840.0
+    ],
+    [
+     720.0,
+     -840.0
+    ],
+    [
+     720.0,
+     840.0
+    ],
+    [
+     -1200.0,
+     840.0
+    ]
+   ],
+   "start": 240.0,
+   "end": 2160.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Primary Chamber 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Primary Chamber 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Primary Chamber 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Loading Door 100kgh",
+   "points": [
+    [
+     -900.0,
+     1140.0
+    ],
+    [
+     180.0,
+     1140.0
+    ],
+    [
+     180.0,
+     1980.0
+    ],
+    [
+     -900.0,
+     1980.0
+    ]
+   ],
+   "start": 840.0,
+   "end": 888.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Loading Door 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Loading Door 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Loading Door 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Hinge 100kgh 1",
+   "points": [
+    [
+     -900.0,
+     -864.0
+    ],
+    [
+     -903.22,
+     -852.0
+    ],
+    [
+     -912.0,
+     -843.22
+    ],
+    [
+     -924.0,
+     -840.0
+    ],
+    [
+     -936.0,
+     -843.22
+    ],
+    [
+     -944.78,
+     -852.0
+    ],
+    [
+     -948.0,
+     -864.0
+    ],
+    [
+     -944.78,
+     -876.0
+    ],
+    [
+     -936.0,
+     -884.78
+    ],
+    [
+     -924.0,
+     -888.0
+    ],
+    [
+     -912.0,
+     -884.78
+    ],
+    [
+     -903.22,
+     -876.0
+    ]
+   ],
+   "start": 1200.0,
+   "end": 1380.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Hinge 100kgh 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Hinge 100kgh 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Hinge 100kgh 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Hinge 100kgh 2",
+   "points": [
+    [
+     -900.0,
+     -864.0
+    ],
+    [
+     -903.22,
+     -852.0
+    ],
+    [
+     -912.0,
+     -843.22
+    ],
+    [
+     -924.0,
+     -840.0
+    ],
+    [
+     -936.0,
+     -843.22
+    ],
+    [
+     -944.78,
+     -852.0
+    ],
+    [
+     -948.0,
+     -864.0
+    ],
+    [
+     -944.78,
+     -876.0
+    ],
+    [
+     -936.0,
+     -884.78
+    ],
+    [
+     -924.0,
+     -888.0
+    ],
+    [
+     -912.0,
+     -884.78
+    ],
+    [
+     -903.22,
+     -876.0
+    ]
+   ],
+   "start": 1656.0,
+   "end": 1836.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Hinge 100kgh 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Hinge 100kgh 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Hinge 100kgh 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Locking Wheel 100kgh",
+   "profile": [
+    [
+     84.0,
+     912.0
+    ],
+    [
+     102.0,
+     912.0
+    ],
+    [
+     102.0,
+     894.0
+    ],
+    [
+     84.0,
+     894.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    1560.0
+   ],
+   "axis": "y",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Locking Wheel 100kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Locking Wheel 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wheel Hub 100kgh",
+   "points": [
+    [
+     24.0,
+     1560.0
+    ],
+    [
+     20.78,
+     1572.0
+    ],
+    [
+     12.0,
+     1580.78
+    ],
+    [
+     0.0,
+     1584.0
+    ],
+    [
+     -12.0,
+     1580.78
+    ],
+    [
+     -20.78,
+     1572.0
+    ],
+    [
+     -24.0,
+     1560.0
+    ],
+    [
+     -20.78,
+     1548.0
+    ],
+    [
+     -12.0,
+     1539.22
+    ],
+    [
+     -0.0,
+     1536.0
+    ],
+    [
+     12.0,
+     1539.22
+    ],
+    [
+     20.78,
+     1548.0
+    ]
+   ],
+   "start": 888.0,
+   "end": 924.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wheel Hub 100kgh",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wheel Hub 100kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wheel Hub 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ash Door 100kgh",
+   "points": [
+    [
+     -780.0,
+     396.0
+    ],
+    [
+     60.0,
+     396.0
+    ],
+    [
+     60.0,
+     936.0
+    ],
+    [
+     -780.0,
+     936.0
+    ]
+   ],
+   "start": 840.0,
+   "end": 876.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ash Door 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ash Door 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ash Door 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ash Door Handle 100kgh",
+   "points": [
+    [
+     -24.0,
+     600.0
+    ],
+    [
+     12.0,
+     600.0
+    ],
+    [
+     12.0,
+     744.0
+    ],
+    [
+     -24.0,
+     744.0
+    ]
+   ],
+   "start": 876.0,
+   "end": 900.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ash Door Handle 100kgh",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ash Door Handle 100kgh",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ash Door Handle 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sight Glass 100kgh",
+   "points": [
+    [
+     300.0,
+     1680.0
+    ],
+    [
+     396.0,
+     1680.0
+    ],
+    [
+     396.0,
+     1776.0
+    ],
+    [
+     300.0,
+     1776.0
+    ]
+   ],
+   "start": 840.0,
+   "end": 846.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sight Glass 100kgh",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sight Glass 100kgh",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sight Glass 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Saddle 100kgh 1",
+   "points": [
+    [
+     -1020.0,
+     -420.0
+    ],
+    [
+     -780.0,
+     -420.0
+    ],
+    [
+     -780.0,
+     420.0
+    ],
+    [
+     -1020.0,
+     420.0
+    ]
+   ],
+   "start": 2160.0,
+   "end": 2280.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Saddle 100kgh 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Saddle 100kgh 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Saddle 100kgh 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Saddle 100kgh 2",
+   "points": [
+    [
+     540.0,
+     -420.0
+    ],
+    [
+     780.0,
+     -420.0
+    ],
+    [
+     780.0,
+     420.0
+    ],
+    [
+     540.0,
+     420.0
+    ]
+   ],
+   "start": 2160.0,
+   "end": 2280.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Saddle 100kgh 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Saddle 100kgh 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Saddle 100kgh 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Chamber 100kgh",
+   "points": [
+    [
+     540.0,
+     2760.0
+    ],
+    [
+     529.62,
+     2865.35
+    ],
+    [
+     498.89,
+     2966.65
+    ],
+    [
+     448.99,
+     3060.01
+    ],
+    [
+     381.84,
+     3141.84
+    ],
+    [
+     300.01,
+     3208.99
+    ],
+    [
+     206.65,
+     3258.89
+    ],
+    [
+     105.35,
+     3289.62
+    ],
+    [
+     0.0,
+     3300.0
+    ],
+    [
+     -105.35,
+     3289.62
+    ],
+    [
+     -206.65,
+     3258.89
+    ],
+    [
+     -300.01,
+     3208.99
+    ],
+    [
+     -381.84,
+     3141.84
+    ],
+    [
+     -448.99,
+     3060.01
+    ],
+    [
+     -498.89,
+     2966.65
+    ],
+    [
+     -529.62,
+     2865.35
+    ],
+    [
+     -540.0,
+     2760.0
+    ],
+    [
+     -529.62,
+     2654.65
+    ],
+    [
+     -498.89,
+     2553.35
+    ],
+    [
+     -448.99,
+     2459.99
+    ],
+    [
+     -381.84,
+     2378.16
+    ],
+    [
+     -300.01,
+     2311.01
+    ],
+    [
+     -206.65,
+     2261.11
+    ],
+    [
+     -105.35,
+     2230.38
+    ],
+    [
+     -0.0,
+     2220.0
+    ],
+    [
+     105.35,
+     2230.38
+    ],
+    [
+     206.65,
+     2261.11
+    ],
+    [
+     300.01,
+     2311.01
+    ],
+    [
+     381.84,
+     2378.16
+    ],
+    [
+     448.99,
+     2459.99
+    ],
+    [
+     498.89,
+     2553.35
+    ],
+    [
+     529.62,
+     2654.65
+    ]
+   ],
+   "start": -1200.0,
+   "end": 1080.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Chamber 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Chamber 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Chamber 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary End Cap 100kgh",
+   "points": [
+    [
+     516.0,
+     2760.0
+    ],
+    [
+     506.09,
+     2860.67
+    ],
+    [
+     476.72,
+     2957.46
+    ],
+    [
+     429.04,
+     3046.67
+    ],
+    [
+     364.87,
+     3124.87
+    ],
+    [
+     286.67,
+     3189.04
+    ],
+    [
+     197.46,
+     3236.72
+    ],
+    [
+     100.67,
+     3266.09
+    ],
+    [
+     0.0,
+     3276.0
+    ],
+    [
+     -100.67,
+     3266.09
+    ],
+    [
+     -197.46,
+     3236.72
+    ],
+    [
+     -286.67,
+     3189.04
+    ],
+    [
+     -364.87,
+     3124.87
+    ],
+    [
+     -429.04,
+     3046.67
+    ],
+    [
+     -476.72,
+     2957.46
+    ],
+    [
+     -506.09,
+     2860.67
+    ],
+    [
+     -516.0,
+     2760.0
+    ],
+    [
+     -506.09,
+     2659.33
+    ],
+    [
+     -476.72,
+     2562.54
+    ],
+    [
+     -429.04,
+     2473.33
+    ],
+    [
+     -364.87,
+     2395.13
+    ],
+    [
+     -286.67,
+     2330.96
+    ],
+    [
+     -197.46,
+     2283.28
+    ],
+    [
+     -100.67,
+     2253.91
+    ],
+    [
+     -0.0,
+     2244.0
+    ],
+    [
+     100.67,
+     2253.91
+    ],
+    [
+     197.46,
+     2283.28
+    ],
+    [
+     286.67,
+     2330.96
+    ],
+    [
+     364.87,
+     2395.13
+    ],
+    [
+     429.04,
+     2473.33
+    ],
+    [
+     476.72,
+     2562.54
+    ],
+    [
+     506.09,
+     2659.33
+    ]
+   ],
+   "start": 1080.0,
+   "end": 1140.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary End Cap 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary End Cap 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary End Cap 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Primary Burner 100kgh",
+   "points": [
+    [
+     -1500.0,
+     -180.0
+    ],
+    [
+     -1200.0,
+     -180.0
+    ],
+    [
+     -1200.0,
+     180.0
+    ],
+    [
+     -1500.0,
+     180.0
+    ]
+   ],
+   "start": 1080.0,
+   "end": 1380.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Primary Burner 100kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Primary Burner 100kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Primary Burner 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Burner Fan 100kgh",
+   "points": [
+    [
+     108.0,
+     1230.0
+    ],
+    [
+     102.71,
+     1263.37
+    ],
+    [
+     87.37,
+     1293.48
+    ],
+    [
+     63.48,
+     1317.37
+    ],
+    [
+     33.37,
+     1332.71
+    ],
+    [
+     0.0,
+     1338.0
+    ],
+    [
+     -33.37,
+     1332.71
+    ],
+    [
+     -63.48,
+     1317.37
+    ],
+    [
+     -87.37,
+     1293.48
+    ],
+    [
+     -102.71,
+     1263.37
+    ],
+    [
+     -108.0,
+     1230.0
+    ],
+    [
+     -102.71,
+     1196.63
+    ],
+    [
+     -87.37,
+     1166.52
+    ],
+    [
+     -63.48,
+     1142.63
+    ],
+    [
+     -33.37,
+     1127.29
+    ],
+    [
+     -0.0,
+     1122.0
+    ],
+    [
+     33.37,
+     1127.29
+    ],
+    [
+     63.48,
+     1142.63
+    ],
+    [
+     87.37,
+     1166.52
+    ],
+    [
+     102.71,
+     1196.63
+    ]
+   ],
+   "start": -1620.0,
+   "end": -1500.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Burner Fan 100kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Burner Fan 100kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Burner Fan 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Burner 100kgh",
+   "points": [
+    [
+     -1500.0,
+     -180.0
+    ],
+    [
+     -1200.0,
+     -180.0
+    ],
+    [
+     -1200.0,
+     180.0
+    ],
+    [
+     -1500.0,
+     180.0
+    ]
+   ],
+   "start": 2640.0,
+   "end": 2940.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Burner 100kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Burner 100kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Burner 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Secondary Burner Fan 100kgh",
+   "points": [
+    [
+     108.0,
+     2790.0
+    ],
+    [
+     102.71,
+     2823.37
+    ],
+    [
+     87.37,
+     2853.48
+    ],
+    [
+     63.48,
+     2877.37
+    ],
+    [
+     33.37,
+     2892.71
+    ],
+    [
+     0.0,
+     2898.0
+    ],
+    [
+     -33.37,
+     2892.71
+    ],
+    [
+     -63.48,
+     2877.37
+    ],
+    [
+     -87.37,
+     2853.48
+    ],
+    [
+     -102.71,
+     2823.37
+    ],
+    [
+     -108.0,
+     2790.0
+    ],
+    [
+     -102.71,
+     2756.63
+    ],
+    [
+     -87.37,
+     2726.52
+    ],
+    [
+     -63.48,
+     2702.63
+    ],
+    [
+     -33.37,
+     2687.29
+    ],
+    [
+     -0.0,
+     2682.0
+    ],
+    [
+     33.37,
+     2687.29
+    ],
+    [
+     63.48,
+     2702.63
+    ],
+    [
+     87.37,
+     2726.52
+    ],
+    [
+     102.71,
+     2756.63
+    ]
+   ],
+   "start": -1620.0,
+   "end": -1500.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Secondary Burner Fan 100kgh",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Secondary Burner Fan 100kgh",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Secondary Burner Fan 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stack Base 100kgh",
+   "profile": [
+    [
+     0.0,
+     3240.0
+    ],
+    [
+     360.0,
+     3240.0
+    ],
+    [
+     360.0,
+     3288.0
+    ],
+    [
+     216.0,
+     3480.0
+    ],
+    [
+     0.0,
+     3480.0
+    ]
+   ],
+   "axis_at": [
+    840.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack Base 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack Base 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stack 100kgh",
+   "points": [
+    [
+     1050.0,
+     0.0
+    ],
+    [
+     1045.96,
+     40.97
+    ],
+    [
+     1034.01,
+     80.36
+    ],
+    [
+     1014.61,
+     116.67
+    ],
+    [
+     988.49,
+     148.49
+    ],
+    [
+     956.67,
+     174.61
+    ],
+    [
+     920.36,
+     194.01
+    ],
+    [
+     880.97,
+     205.96
+    ],
+    [
+     840.0,
+     210.0
+    ],
+    [
+     799.03,
+     205.96
+    ],
+    [
+     759.64,
+     194.01
+    ],
+    [
+     723.33,
+     174.61
+    ],
+    [
+     691.51,
+     148.49
+    ],
+    [
+     665.39,
+     116.67
+    ],
+    [
+     645.99,
+     80.36
+    ],
+    [
+     634.04,
+     40.97
+    ],
+    [
+     630.0,
+     0.0
+    ],
+    [
+     634.04,
+     -40.97
+    ],
+    [
+     645.99,
+     -80.36
+    ],
+    [
+     665.39,
+     -116.67
+    ],
+    [
+     691.51,
+     -148.49
+    ],
+    [
+     723.33,
+     -174.61
+    ],
+    [
+     759.64,
+     -194.01
+    ],
+    [
+     799.03,
+     -205.96
+    ],
+    [
+     840.0,
+     -210.0
+    ],
+    [
+     880.97,
+     -205.96
+    ],
+    [
+     920.36,
+     -194.01
+    ],
+    [
+     956.67,
+     -174.61
+    ],
+    [
+     988.49,
+     -148.49
+    ],
+    [
+     1014.61,
+     -116.67
+    ],
+    [
+     1034.01,
+     -80.36
+    ],
+    [
+     1045.96,
+     -40.97
+    ]
+   ],
+   "start": 3288.0,
+   "end": 10800.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stack 100kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack 100kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Stack Flange 100kgh",
+   "profile": [
+    [
+     210.0,
+     6600.0
+    ],
+    [
+     252.0,
+     6600.0
+    ],
+    [
+     252.0,
+     6636.0
+    ],
+    [
+     210.0,
+     6636.0
+    ]
+   ],
+   "axis_at": [
+    840.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stack Flange 100kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stack Flange 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Sampling Port 100kgh",
+   "points": [
+    [
+     888.0,
+     8400.0
+    ],
+    [
+     881.57,
+     8424.0
+    ],
+    [
+     864.0,
+     8441.57
+    ],
+    [
+     840.0,
+     8448.0
+    ],
+    [
+     816.0,
+     8441.57
+    ],
+    [
+     798.43,
+     8424.0
+    ],
+    [
+     792.0,
+     8400.0
+    ],
+    [
+     798.43,
+     8376.0
+    ],
+    [
+     816.0,
+     8358.43
+    ],
+    [
+     840.0,
+     8352.0
+    ],
+    [
+     864.0,
+     8358.43
+    ],
+    [
+     881.57,
+     8376.0
+    ]
+   ],
+   "start": 204.0,
+   "end": 312.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Sampling Port 100kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sampling Port 100kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sampling Port 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rain Cap 100kgh",
+   "profile": [
+    [
+     0.0,
+     10980.0
+    ],
+    [
+     384.0,
+     10896.0
+    ],
+    [
+     384.0,
+     10872.0
+    ],
+    [
+     0.0,
+     10944.0
+    ]
+   ],
+   "axis_at": [
+    840.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap 100kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rain Cap Stay 100kgh",
+   "points": [
+    [
+     828.0,
+     -216.0
+    ],
+    [
+     852.0,
+     -216.0
+    ],
+    [
+     852.0,
+     216.0
+    ],
+    [
+     828.0,
+     216.0
+    ]
+   ],
+   "start": 10800.0,
+   "end": 10896.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rain Cap Stay 100kgh",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap Stay 100kgh",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap Stay 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Day Tank 100kgh",
+   "points": [
+    [
+     960.0,
+     1200.0
+    ],
+    [
+     947.73,
+     1293.17
+    ],
+    [
+     911.77,
+     1380.0
+    ],
+    [
+     854.56,
+     1454.56
+    ],
+    [
+     780.0,
+     1511.77
+    ],
+    [
+     693.17,
+     1547.73
+    ],
+    [
+     600.0,
+     1560.0
+    ],
+    [
+     506.83,
+     1547.73
+    ],
+    [
+     420.0,
+     1511.77
+    ],
+    [
+     345.44,
+     1454.56
+    ],
+    [
+     288.23,
+     1380.0
+    ],
+    [
+     252.27,
+     1293.17
+    ],
+    [
+     240.0,
+     1200.0
+    ],
+    [
+     252.27,
+     1106.83
+    ],
+    [
+     288.23,
+     1020.0
+    ],
+    [
+     345.44,
+     945.44
+    ],
+    [
+     420.0,
+     888.23
+    ],
+    [
+     506.83,
+     852.27
+    ],
+    [
+     600.0,
+     840.0
+    ],
+    [
+     693.17,
+     852.27
+    ],
+    [
+     780.0,
+     888.23
+    ],
+    [
+     854.56,
+     945.44
+    ],
+    [
+     911.77,
+     1020.0
+    ],
+    [
+     947.73,
+     1106.83
+    ]
+   ],
+   "start": 1320.0,
+   "end": 2280.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Day Tank 100kgh",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Day Tank 100kgh",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Day Tank 100kgh",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Day Tank Stand 100kgh 1",
+   "points": [
+    [
+     1380.0,
+     360.0
+    ],
+    [
+     1440.0,
+     360.0
+    ],
+    [
+     1440.0,
+     840.0
+    ],
+    [
+     1380.0,
+     840.0
+    ]
+   ],
+   "start": 240.0,
+   "end": 840.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Day Tank Stand 100kgh 1",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Day Tank Stand 100kgh 1",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Day Tank Stand 100kgh 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Day Tank Stand 100kgh 2",
+   "points": [
+    [
+     2160.0,
+     360.0
+    ],
+    [
+     2220.0,
+     360.0
+    ],
+    [
+     2220.0,
+     840.0
+    ],
+    [
+     2160.0,
+     840.0
+    ]
+   ],
+   "start": 240.0,
+   "end": 840.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Day Tank Stand 100kgh 2",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Day Tank Stand 100kgh 2",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Day Tank Stand 100kgh 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fuel Line 100kgh",
+   "points": [
+    [
+     -1248.0,
+     1200.0
+    ],
+    [
+     -1251.51,
+     1208.49
+    ],
+    [
+     -1260.0,
+     1212.0
+    ],
+    [
+     -1268.49,
+     1208.49
+    ],
+    [
+     -1272.0,
+     1200.0
+    ],
+    [
+     -1268.49,
+     1191.51
+    ],
+    [
+     -1260.0,
+     1188.0
+    ],
+    [
+     -1251.51,
+     1191.51
+    ]
+   ],
+   "start": -360.0,
+   "end": 180.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fuel Line 100kgh",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fuel Line 100kgh",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fuel Line 100kgh",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 50kgh_DualChamber",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50kgh_DualChamber/Show 50kgh_DualChamber",
+   "type": "50kgh_DualChamber",
+   "param": "Show 50kgh_DualChamber",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "100kgh_DualChamber/Show 50kgh_DualChamber",
+   "type": "100kgh_DualChamber",
+   "param": "Show 50kgh_DualChamber",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plinth 50kgh/Visible",
+   "solid": "Base Plinth 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Primary Chamber 50kgh/Visible",
+   "solid": "Primary Chamber 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Loading Door 50kgh/Visible",
+   "solid": "Loading Door 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Hinge 50kgh 1/Visible",
+   "solid": "Door Hinge 50kgh 1",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Hinge 50kgh 2/Visible",
+   "solid": "Door Hinge 50kgh 2",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Locking Wheel 50kgh/Visible",
+   "solid": "Locking Wheel 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Hub 50kgh/Visible",
+   "solid": "Wheel Hub 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ash Door 50kgh/Visible",
+   "solid": "Ash Door 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ash Door Handle 50kgh/Visible",
+   "solid": "Ash Door Handle 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sight Glass 50kgh/Visible",
+   "solid": "Sight Glass 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Saddle 50kgh 1/Visible",
+   "solid": "Saddle 50kgh 1",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Saddle 50kgh 2/Visible",
+   "solid": "Saddle 50kgh 2",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Chamber 50kgh/Visible",
+   "solid": "Secondary Chamber 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary End Cap 50kgh/Visible",
+   "solid": "Secondary End Cap 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Primary Burner 50kgh/Visible",
+   "solid": "Primary Burner 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Burner Fan 50kgh/Visible",
+   "solid": "Burner Fan 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Burner 50kgh/Visible",
+   "solid": "Secondary Burner 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Burner Fan 50kgh/Visible",
+   "solid": "Secondary Burner Fan 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack Base 50kgh/Visible",
+   "solid": "Stack Base 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack 50kgh/Visible",
+   "solid": "Stack 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack Flange 50kgh/Visible",
+   "solid": "Stack Flange 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sampling Port 50kgh/Visible",
+   "solid": "Sampling Port 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap 50kgh/Visible",
+   "solid": "Rain Cap 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap Stay 50kgh/Visible",
+   "solid": "Rain Cap Stay 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank 50kgh/Visible",
+   "solid": "Day Tank 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank Stand 50kgh 1/Visible",
+   "solid": "Day Tank Stand 50kgh 1",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank Stand 50kgh 2/Visible",
+   "solid": "Day Tank Stand 50kgh 2",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fuel Line 50kgh/Visible",
+   "solid": "Fuel Line 50kgh",
+   "param": "Show 50kgh_DualChamber"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 100kgh_DualChamber",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50kgh_DualChamber/Show 100kgh_DualChamber",
+   "type": "50kgh_DualChamber",
+   "param": "Show 100kgh_DualChamber",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "100kgh_DualChamber/Show 100kgh_DualChamber",
+   "type": "100kgh_DualChamber",
+   "param": "Show 100kgh_DualChamber",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plinth 100kgh/Visible",
+   "solid": "Base Plinth 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Primary Chamber 100kgh/Visible",
+   "solid": "Primary Chamber 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Loading Door 100kgh/Visible",
+   "solid": "Loading Door 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Hinge 100kgh 1/Visible",
+   "solid": "Door Hinge 100kgh 1",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Hinge 100kgh 2/Visible",
+   "solid": "Door Hinge 100kgh 2",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Locking Wheel 100kgh/Visible",
+   "solid": "Locking Wheel 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wheel Hub 100kgh/Visible",
+   "solid": "Wheel Hub 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ash Door 100kgh/Visible",
+   "solid": "Ash Door 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ash Door Handle 100kgh/Visible",
+   "solid": "Ash Door Handle 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sight Glass 100kgh/Visible",
+   "solid": "Sight Glass 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Saddle 100kgh 1/Visible",
+   "solid": "Saddle 100kgh 1",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Saddle 100kgh 2/Visible",
+   "solid": "Saddle 100kgh 2",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Chamber 100kgh/Visible",
+   "solid": "Secondary Chamber 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary End Cap 100kgh/Visible",
+   "solid": "Secondary End Cap 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Primary Burner 100kgh/Visible",
+   "solid": "Primary Burner 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Burner Fan 100kgh/Visible",
+   "solid": "Burner Fan 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Burner 100kgh/Visible",
+   "solid": "Secondary Burner 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Secondary Burner Fan 100kgh/Visible",
+   "solid": "Secondary Burner Fan 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack Base 100kgh/Visible",
+   "solid": "Stack Base 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack 100kgh/Visible",
+   "solid": "Stack 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stack Flange 100kgh/Visible",
+   "solid": "Stack Flange 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sampling Port 100kgh/Visible",
+   "solid": "Sampling Port 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap 100kgh/Visible",
+   "solid": "Rain Cap 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap Stay 100kgh/Visible",
+   "solid": "Rain Cap Stay 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank 100kgh/Visible",
+   "solid": "Day Tank 100kgh",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank Stand 100kgh 1/Visible",
+   "solid": "Day Tank Stand 100kgh 1",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Day Tank Stand 100kgh 2/Visible",
+   "solid": "Day Tank Stand 100kgh 2",
+   "param": "Show 100kgh_DualChamber"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fuel Line 100kgh/Visible",
+   "solid": "Fuel Line 100kgh",
+   "param": "Show 100kgh_DualChamber"
   },
   {
    "op": "add_connector",
@@ -2955,10 +5193,10 @@
   }
  ],
  "values": {
-  "Envelope 3600 x 2200 on plinth, stack 9 m (50 kg/h)": {
+  "Envelope 3600 x 2200, stack 9 m (50 kg/h); about 1.2 x for 100 kg/h": {
    "value": "3600x2200 / 9000",
    "source_status": "assumed",
-   "source": "typical dual-chamber unit; vendor to confirm"
+   "source": "typical dual-chamber units; vendor to confirm"
   },
   "Stack height from the EIA": {
    "value": "EIA",
