@@ -155,6 +155,51 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["types"] = new JArray(fm.Types.Cast<FamilyType>().Select(t => t.Name).Where(n => !string.IsNullOrWhiteSpace(n))),
                 ["type_keynotes"] = typeKeynotes,
                 ["parameters"] = parameters,
+                ["legend"] = LegendFacts(doc),
+            };
+        }
+
+        /// <summary>
+        /// What a legend component, plan or elevation can show (owner, 18 Oct: legend elevations were blank). For every
+        /// solid form: whether it is shown in plan, front/back and left/right views and at which detail levels, and its
+        /// subcategory's line colour. The server fails the check on views with nothing in them or lines too light to see.
+        /// </summary>
+        private static JObject LegendFacts(Document doc)
+        {
+            int solids = 0, plan = 0, front = 0, side = 0;
+            var front_at = new JObject { ["coarse"] = 0, ["medium"] = 0, ["fine"] = 0 };
+            var light = new SortedSet<string>();
+            var lines = new JObject();
+            foreach (GenericForm g in new FilteredElementCollector(doc).OfClass(typeof(GenericForm)).Cast<GenericForm>())
+            {
+                if (!g.IsSolid) continue;
+                solids++;
+                FamilyElementVisibility v = g.GetVisibility();
+                if (v == null) { plan++; front++; side++; foreach (var k in new[] { "coarse", "medium", "fine" }) front_at[k] = (int)front_at[k] + 1; continue; }
+                if (v.IsShownInTopBottom) plan++;
+                if (v.IsShownInFrontBack) front++;
+                if (v.IsShownInLeftRight) side++;
+                if (v.IsShownInFrontBack)
+                {
+                    if (v.IsShownInCoarse) front_at["coarse"] = (int)front_at["coarse"] + 1;
+                    if (v.IsShownInMedium) front_at["medium"] = (int)front_at["medium"] + 1;
+                    if (v.IsShownInFine) front_at["fine"] = (int)front_at["fine"] + 1;
+                }
+                Category c = g.Subcategory ?? doc.OwnerFamily?.FamilyCategory;
+                if (c == null) continue;
+                Color col = c.LineColor;
+                if (col == null || !col.IsValid) continue;
+                string name = g.Subcategory?.Name ?? "(family category)";
+                // clearance and coverage zones are analysis volumes in their own colour, not product lines
+                if (name.StartsWith("Clearance", StringComparison.OrdinalIgnoreCase) || name.StartsWith("Coverage", StringComparison.OrdinalIgnoreCase)) continue;
+                lines[name] = new JArray(col.Red, col.Green, col.Blue);
+                double lum = (0.2126 * col.Red + 0.7152 * col.Green + 0.0722 * col.Blue) / 255.0;
+                if (lum > 0.6) light.Add(name);
+            }
+            return new JObject
+            {
+                ["solids"] = solids, ["plan"] = plan, ["front"] = front, ["side"] = side,
+                ["front_at"] = front_at, ["light_lines"] = new JArray(light), ["line_colours"] = lines,
             };
         }
 

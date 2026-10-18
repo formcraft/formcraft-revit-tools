@@ -21,6 +21,14 @@ export interface ScannedFamily {
   shared_guids: string[];
   /** Only known for a file opened on its own (inspect): size, imported CAD, nested families. */
   size_mb?: number; imported_cad?: number; nested?: number;
+  /** Only for a file opened on its own: what legend components, plans and elevations can show (owner, 18 Oct). */
+  legend?: LegendFacts;
+}
+
+export interface LegendFacts {
+  solids: number; plan: number; front: number; side: number;
+  front_at?: { coarse: number; medium: number; fine: number };
+  light_lines?: string[];
 }
 
 export const CHECKS = [
@@ -29,7 +37,26 @@ export const CHECKS = [
   "Keynote set",
   "File size under 2 MB, no imported CAD",
   "Type names [KeySize]_[Variant]",
+  "Legend views show the family (plan, front, side; dark lines)",
 ];
+
+/** Legend components show the family's plan, front and side, at the legend view's detail level, in its line colours. */
+export function legendCheck(l: LegendFacts | undefined): FamilyCheck {
+  if (!l) return { check: CHECKS[5], state: "na", detail: "Checked when the family file is opened (Bring in, Gate A)", fixable: false };
+  const why: string[] = [];
+  if (!l.solids) why.push("no solid geometry");
+  else {
+    if (!l.plan) why.push("nothing shown in plan");
+    if (!l.front) why.push("nothing shown in front/back elevations");
+    if (!l.side) why.push("nothing shown in left/right elevations");
+    const at = l.front_at;
+    if (at) { const empty = (["coarse", "medium", "fine"] as const).filter((k) => !at[k]); if (empty.length && l.front) why.push(`front elevation empty at ${empty.join(", ")}`); }
+  }
+  const light = l.light_lines ?? [];
+  if (light.length) why.push(`lines too light to see on a white sheet (construction issues print black, Manual 9.14): ${light.slice(0, 5).join(", ")}${light.length > 5 ? "…" : ""}`);
+  return { check: CHECKS[5], state: why.length ? "fail" : "pass", fixable: true,
+    detail: why.length ? why.join("; ") : `${l.solids} solids: ${l.plan} in plan, ${l.front} front, ${l.side} side; every detail level shows the front` };
+}
 
 const LIBRARY_NAME = /^FMC_([A-Z]{1,2})_([A-Za-z0-9]+)_([A-Za-z0-9]+(_[A-Za-z0-9]+)*)$/;
 const TYPE_NAME = /^[A-Za-z0-9.x×-]+_[A-Za-z0-9-]+$/;
@@ -81,10 +108,12 @@ export function checkFamily(f: ScannedFamily, specs: Map<string, FamilySpec>, ki
   checks.push({ check: CHECKS[4], state: badTypes.length ? "fail" : "pass",
     detail: badTypes.length ? `${badTypes.length} don't: ${badTypes.slice(0, 3).map((t) => t.name).join(", ")}` : `${f.types.length} types`, fixable: false });
 
+  checks.push(legendCheck(f.legend));
+
   const applicable = checks.filter((c) => c.state !== "na");
   const failed = applicable.filter((c) => c.state === "fail");
   const score = applicable.length ? Math.round((100 * (applicable.length - failed.length)) / applicable.length) : 0;
-  const unknown = checks.some((c) => c.state === "na" && !c.check.startsWith("File size"));
+  const unknown = checks.some((c) => c.state === "na" && !c.check.startsWith("File size") && c.check !== CHECKS[5]);
   const state = failed.length === 0 && !unknown ? "Compliant" : failed.every((c) => c.fixable) && !unknown ? "Fixable" : "Needs a person";
   const next = state === "Compliant" ? "Nothing: it meets the Families rulebook"
     : state === "Fixable" ? "Bring it in again: rename, add the kit's parameters and set the keynote in one pass"

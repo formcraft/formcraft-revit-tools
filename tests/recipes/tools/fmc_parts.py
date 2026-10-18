@@ -187,11 +187,13 @@ def compile_product(prod, kn_lookup=None):
     for m in used:
         kitname = mats[m]
         col = hexrgb(kit.get(kitname, {}).get('graphics', {}).get('shaded'))
-        ops.append({"op": "add_subcategory", "name": title(m), "color": col, "line_weight_projection": 1})
+        # owner, 18 Oct: legend elevations were blank. Lines are black (construction issues print black, Manual 9.14);
+        # the material keeps the colour. Lines in the material's colour vanished on a white legend for light finishes.
+        ops.append({"op": "add_subcategory", "name": title(m), "color": LINE_BLACK, "line_weight_projection": 1})
         if kitname in kit or not kit:
             ops += [{"op": "add_family_param", "name": f"{title(m)} Material", "type": "Material", "group": "Materials"},
                     {"op": "add_material", "name": kitname, "param": f"{title(m)} Material"}]
-    ops.append({"op": "add_subcategory", "name": "Coarse Envelope", "color": [120, 130, 140], "line_weight_projection": 2})
+    ops.append({"op": "add_subcategory", "name": "Coarse Envelope", "color": LINE_BLACK, "line_weight_projection": 2})
     for c in prod.get('clearances', []): ops.append({"op": "add_subcategory", "name": c['sub'], "color": [111, 168, 220], "line_weight_projection": 1})
     # coarse envelope = bounds of all solid parts
     lo, hi = [1e9] * 3, [-1e9] * 3
@@ -240,7 +242,32 @@ def compile_product(prod, kn_lookup=None):
         about += ' Reference: ' + '; '.join(f"{k}: {v}" for k, v in ref.items() if v)
     r = {"schema": "fmc-recipe/0.1", "family": prod['family'], "template": prod.get('template', 'Metric Generic Model.rft'), "about": about.strip(), "ops": ops, "values": values}
     if prod.get('keynote_exempt'): r['checks'] = {"keynote_exempt": prod['keynote_exempt']}
+    bad = legend_problems(r, {c['sub'] for c in prod.get('clearances', [])})
+    if bad: raise ValueError(f"{prod['family']}: legend views would be empty or unreadable: {'; '.join(bad)}")
     return r
+
+LINE_BLACK = [0, 0, 0]
+
+def legend_problems(recipe, zones=()):
+    """The legend check before Revit (owner, 18 Oct): every solid shows in plan, front/back and left/right; each detail
+    level shows something; no subcategory has lines too light to see on a white sheet. Gate A checks the saved file too."""
+    ops = recipe.get('ops', [])
+    out = []
+    for o in ops:
+        if o.get('op') == 'add_subcategory' and not o['name'].startswith('Clearance') and o['name'] not in zones:
+            r, g, b = (o.get('color') or [0, 0, 0])[:3]
+            if (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6: out.append(f"light lines on {o['name']}")
+    vis = [o for o in ops if o.get('op') == 'set_visibility']
+    solids = {o['name'] for o in ops if o.get('op') in ('extrusion', 'revolution', 'blend', 'sweep') and not o.get('void')}
+    shown = {o['name']: o for o in vis}
+    for n in solids:
+        v = shown.get(n, {})
+        off = [k for k in ('plan_rcp', 'front_back', 'left_right') if v.get(k) is False]
+        if off: out.append(f"{n} hidden in {', '.join(off)}")
+    if solids:
+        for lvl in ('coarse', 'medium', 'fine'):
+            if not any(shown.get(n, {}).get(lvl, True) for n in solids): out.append(f"nothing shown at {lvl}")
+    return out
 
 def solid_ops(p, g, sub, matparam, lod):
     name, void = p['n'], p.get('void')
@@ -261,7 +288,8 @@ def solid_ops(p, g, sub, matparam, lod):
         if sub and not void: ops.append({"op": "set_subcategory", "name": name, "subcategory": sub})
     if void: return ops
     if matparam: ops.append({"op": "set_material_param", "name": name, "param": matparam})
-    ops.append({"op": "set_visibility", "name": name, "coarse": 'c' in lod, "medium": 'm' in lod, "fine": 'f' in lod})
+    ops.append({"op": "set_visibility", "name": name, "coarse": 'c' in lod, "medium": 'm' in lod, "fine": 'f' in lod,
+                "plan_rcp": True, "front_back": True, "left_right": True})
     return ops
 
 def mesh(g, seg=32):

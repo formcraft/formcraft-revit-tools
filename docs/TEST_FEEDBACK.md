@@ -80,6 +80,12 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 
 ## Test runs
 
+### Owner review · 2026-10-18 · built hospital families · legend components
+
+| Id | Result | State |
+|---|---|---|
+| New F-065 #173 | Legend components show blank front and side elevations. The cause: subcategory line colours were the material colours, so 617 of 3,184 are too light for a white sheet. | Fixed – retest (PR #166: black lines, explicit plan/front/side visibility, a legend check in the compiler and in Gate A) |
+
 ### Run 10 · 2026-10-17 · pilot PC · Revit 2025.4 · build `e5b4188` · family editor, healthcare pilot
 
 **`fmc_selftest`: Fix first** (1 fail: no AI-use rulebook, which blocks AI modelling only; 2 warn: annotation standard

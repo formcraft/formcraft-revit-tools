@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  legendCheck,
   ScannedFamily, categoryTokens, checkFamily, nameOk, nextKeynoteCode, parseKeynotes, searchKeynotes, standardName, summarise,
 } from "./library.js";
 import { FamilySpec, parseSharedParameters } from "./specs.js";
@@ -75,4 +76,16 @@ test("keynotes: parse, search and the next free code in a group", () => {
   assert.deepEqual(searchKeynotes(all, "twin").map((k) => k.code), ["E.SOC_00"]);
   assert.equal(nextKeynoteCode(all, "E.SOC"), "E.SOC_04");
   assert.equal(nextKeynoteCode(all, "E.LED"), "E.LED_00");
+});
+
+test("owner 18 Oct: legend views must show the family in plan, front and side with dark lines", () => {
+  assert.equal(legendCheck(undefined).state, "na");
+  const good = legendCheck({ solids: 9, plan: 9, front: 9, side: 9, front_at: { coarse: 1, medium: 8, fine: 9 }, light_lines: [] });
+  assert.equal(good.state, "pass");
+  const white = legendCheck({ solids: 9, plan: 9, front: 9, side: 9, front_at: { coarse: 1, medium: 8, fine: 9 }, light_lines: ["White"] });
+  assert.equal(white.state, "fail"); assert.match(white.detail, /too light.*White/);
+  const blank = legendCheck({ solids: 3, plan: 3, front: 0, side: 3, front_at: { coarse: 0, medium: 0, fine: 0 } });
+  assert.equal(blank.state, "fail"); assert.match(blank.detail, /front\/back/);
+  const coarse = legendCheck({ solids: 3, plan: 3, front: 3, side: 3, front_at: { coarse: 0, medium: 3, fine: 3 } });
+  assert.match(coarse.detail, /empty at coarse/);
 });

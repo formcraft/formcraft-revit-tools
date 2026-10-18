@@ -126,7 +126,7 @@ export async function runFmcLibrary(args: FmcLibraryArgs) {
       return (v["Keynote"] ?? "").trim() || (Object.entries(v).find(([n, x]) => n !== "Keynote" && /keynote/i.test(n) && x.trim())?.[1] ?? "").trim();
     };
     const scanned: ScannedFamily = {
-      name: facts.name, category: facts.category, size_mb: facts.size_mb, imported_cad: facts.imported_cad, nested: facts.nested,
+      name: facts.name, category: facts.category, size_mb: facts.size_mb, imported_cad: facts.imported_cad, nested: facts.nested, legend: facts.legend,
       types: (facts.types ?? []).map((t: string) => ({ name: t, keynote: keynoteOf(t) })),
       shared_guids: (facts.parameters ?? []).filter((p: any) => p.shared).map((p: any) => p.guid),
     };
