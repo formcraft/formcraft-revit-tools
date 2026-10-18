@@ -23,7 +23,7 @@ test("H0: each app is installed when its program exists, running when its proces
   assert.equal(by.navisworks.installed, false);
   assert.deepEqual([by.robot.connector.built, by.robot.connector.note], [true, "built"]);
   assert.equal(by.rhino.running, true);
-  assert.match(by.rhino.connector.note, /not built yet \(plan step H1\)/);
+  assert.match(by.rhino.connector.note, /not installed: it travels with the next build/, "H1 built: installed with the next build");
   assert.match(by.powerbi.connector.note, /not built yet \(plan step H2\)/);
 });
 

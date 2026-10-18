@@ -39,6 +39,13 @@ if (Test-Path (Join-Path $navis 'Formcraft.Navis.dll')) {
     New-Item -ItemType Directory -Force (Join-Path $next 'navis') | Out-Null
     Copy-Item $navis (Join-Path $next 'navis') -Recurse
 }
+# The Rhino add-in (connectors/rhino), built where Rhino 8 is installed: the updater installs it as a Rhino package
+# when Rhino is closed.
+$rhino = Join-Path $repo 'connectors\rhino\bin\Release\Formcraft.Rhino'
+if (Test-Path (Join-Path $rhino 'Formcraft.Rhino.rhp')) {
+    New-Item -ItemType Directory -Force (Join-Path $next 'rhino') | Out-Null
+    Copy-Item $rhino (Join-Path $next 'rhino') -Recurse
+}
 
 # The updater itself travels with the build, so a merged change to fmc-update.ps1 reaches the PC without a manual step.
 New-Item -ItemType Directory -Force (Join-Path $next 'updater') | Out-Null

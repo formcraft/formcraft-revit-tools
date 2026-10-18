@@ -38,7 +38,7 @@ export const APPS: AppDef[] = [
     exe: "C:\\Program Files\\Autodesk\\Robot Structural Analysis Professional 2025\\Exe\\robot.exe", process: "robot.exe",
     tools: ["fmc_robot"], connector: ["<server>\\robot\\fmc-robot.exe"] },
   { id: "rhino", name: "Rhino 8", kind: "bridge", exe: "C:\\Program Files\\Rhino 8\\System\\Rhino.exe", process: "Rhino.exe",
-    tools: ["fmc_rhino"], connector: [], planned: "H1" },
+    tools: ["fmc_rhino"], connector: ["McNeel\\Rhinoceros\\packages\\8.0\\Formcraft.Rhino\\1.0.0\\Formcraft.Rhino.rhp"] },
   { id: "powerbi", name: "Power BI Desktop", kind: "gateway", exe: "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe", process: "PBIDesktop.exe",
     tools: ["fmc_powerbi"], connector: [], planned: "H2" },
 ];

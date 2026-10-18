@@ -1,0 +1,351 @@
+{
+  "family": "FMC_X_Smoke_Parts",
+  "envelope": [
+    3000,
+    1500,
+    2200
+  ],
+  "parts": [
+    {
+      "name": "Castor_Wheel",
+      "op": "revolve",
+      "origin": [
+        0,
+        0,
+        62.5
+      ],
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "corner_radius": 2,
+      "profile": [
+        [
+          0,
+          -16
+        ],
+        [
+          48,
+          -16
+        ],
+        [
+          58,
+          -14
+        ],
+        [
+          62.5,
+          -8
+        ],
+        [
+          62.5,
+          8
+        ],
+        [
+          58,
+          14
+        ],
+        [
+          48,
+          16
+        ],
+        [
+          0,
+          16
+        ]
+      ],
+      "subcategory": "FMC_Castors",
+      "material": "FMC_Rubber_Black",
+      "visibility": "fine"
+    },
+    {
+      "name": "Fork_L",
+      "op": "box_rounded",
+      "size": [
+        6,
+        54,
+        92
+      ],
+      "center": [
+        -22,
+        0,
+        92
+      ],
+      "radius": 2
+    },
+    {
+      "name": "Fork_R",
+      "op": "box_rounded",
+      "size": [
+        6,
+        54,
+        92
+      ],
+      "center": [
+        22,
+        0,
+        92
+      ],
+      "radius": 2
+    },
+    {
+      "name": "Fork_Top",
+      "op": "box_rounded",
+      "size": [
+        50,
+        54,
+        12
+      ],
+      "center": [
+        0,
+        0,
+        138
+      ],
+      "radius": 2
+    },
+    {
+      "name": "Castor_Fork",
+      "op": "boolean",
+      "kind": "union",
+      "parts": [
+        "Fork_L",
+        "Fork_R",
+        "Fork_Top"
+      ],
+      "subcategory": "FMC_Castors",
+      "material": "FMC_Steel_Stainless_Brushed"
+    },
+    {
+      "name": "Castor_Stem",
+      "op": "extrude",
+      "origin": [
+        0,
+        0,
+        144
+      ],
+      "profile": {
+        "circle": 11
+      },
+      "height": 40,
+      "subcategory": "FMC_Castors",
+      "material": "FMC_Steel_Stainless_Brushed"
+    },
+    {
+      "name": "Castor_Ring",
+      "op": "torus",
+      "center": [
+        0,
+        0,
+        148
+      ],
+      "major": 16,
+      "minor": 4,
+      "subcategory": "FMC_Castors",
+      "material": "FMC_Plastic_Grey"
+    },
+    {
+      "name": "Grip_Rail",
+      "op": "pipe",
+      "path": [
+        [
+          -400,
+          0,
+          0
+        ],
+        [
+          -400,
+          0,
+          80
+        ],
+        [
+          400,
+          0,
+          80
+        ],
+        [
+          400,
+          0,
+          0
+        ]
+      ],
+      "corner_radius": 60,
+      "radius": 14,
+      "caps": "round",
+      "move": [
+        0,
+        0,
+        600
+      ],
+      "subcategory": "FMC_Handles",
+      "material": "FMC_Steel_Stainless_Brushed"
+    },
+    {
+      "name": "Panel_Body",
+      "op": "box_rounded",
+      "size": [
+        300,
+        30,
+        160
+      ],
+      "radius": 6,
+      "move": [
+        0,
+        -500,
+        700
+      ]
+    },
+    {
+      "name": "Panel_Window",
+      "op": "extrude",
+      "origin": [
+        0,
+        -530,
+        780
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "profile": {
+        "rounded_rect": [
+          180,
+          70,
+          6
+        ]
+      },
+      "height": 20
+    },
+    {
+      "name": "Control_Panel",
+      "op": "boolean",
+      "kind": "difference",
+      "parts": [
+        "Panel_Body",
+        "Panel_Window"
+      ],
+      "subcategory": "FMC_Controls",
+      "material": "FMC_Plastic_White_Gloss"
+    },
+    {
+      "name": "Light_Dome_Solid",
+      "op": "revolve",
+      "smooth": true,
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          350,
+          0
+        ],
+        [
+          342,
+          40
+        ],
+        [
+          300,
+          92
+        ],
+        [
+          200,
+          132
+        ],
+        [
+          60,
+          150
+        ],
+        [
+          0,
+          150
+        ]
+      ],
+      "move": [
+        1200,
+        0,
+        1800
+      ]
+    },
+    {
+      "name": "Light_Head",
+      "op": "shell",
+      "of": "Light_Dome_Solid",
+      "thickness": 4,
+      "open": [
+        "-z"
+      ],
+      "subcategory": "FMC_Light_Heads",
+      "material": "FMC_Plastic_White_Gloss"
+    },
+    {
+      "name": "Vaporiser_Knob",
+      "op": "loft",
+      "sections": [
+        {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "profile": {
+            "circle": 15
+          }
+        },
+        {
+          "origin": [
+            0,
+            0,
+            30
+          ],
+          "profile": {
+            "ellipse": [
+              20,
+              14
+            ]
+          }
+        },
+        {
+          "origin": [
+            0,
+            0,
+            60
+          ],
+          "profile": {
+            "circle": 15
+          }
+        }
+      ],
+      "move": [
+        -900,
+        0,
+        900
+      ],
+      "subcategory": "FMC_Controls",
+      "material": "FMC_Plastic_Blue"
+    },
+    {
+      "name": "Block_Raw",
+      "op": "box_rounded",
+      "size": [
+        100,
+        60,
+        40
+      ],
+      "move": [
+        -900,
+        -400,
+        0
+      ]
+    },
+    {
+      "name": "Base_Block",
+      "op": "fillet",
+      "of": "Block_Raw",
+      "radius": 10,
+      "edges": "vertical",
+      "subcategory": "FMC_Frame",
+      "material": "FMC_Steel_Powder_White"
+    }
+  ]
+}

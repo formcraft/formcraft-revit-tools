@@ -56,6 +56,7 @@ function RunningServers {
 }
 function RevitRunning { [bool](Get-Process -Name 'Revit' -ErrorAction SilentlyContinue) }
 function NavisRunning { [bool](Get-Process -Name 'Roamer' -ErrorAction SilentlyContinue) }
+function RhinoRunning { [bool](Get-Process -Name 'Rhino' -ErrorAction SilentlyContinue) }
 
 # The Formcraft add-in for Navisworks Manage 2025, per user (no admin rights). Navisworks locks it while open.
 $navisNext    = Join-Path $root 'navis-next'
@@ -73,6 +74,26 @@ function InstallNavis {
     if (Test-Path $target) { Remove-Item $target -Recurse -Force }
     Move-Item $navisNext $target
     Log "Installed the Navisworks add-in into $target"
+}
+
+# The Formcraft add-in for Rhino 8, per user, as a Rhino package (Rhino loads every package at start). Rhino locks it
+# while open.
+$rhinoNext    = Join-Path $root 'rhino-next'
+$rhinoPackage = Join-Path $env:APPDATA 'McNeel\Rhinoceros\packages\8.0\Formcraft.Rhino'
+
+function InstallRhino {
+    $stamp = Get-Date -Format 'yyyy-MM-dd_HHmm'
+    $target = Join-Path $rhinoPackage '1.0.0'
+    if (Test-Path $target) {
+        $backup = Join-Path $backups ("{0}_rhino" -f $stamp)
+        New-Item -ItemType Directory -Force $backup | Out-Null
+        Copy-Item $target $backup -Recurse -Force
+        Remove-Item $target -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force $rhinoPackage | Out-Null
+    Move-Item $rhinoNext $target
+    Set-Content -Path (Join-Path $rhinoPackage 'manifest.txt') -Value '1.0.0' -NoNewline -Encoding ascii
+    Log "Installed the Rhino add-in into $target"
 }
 
 function Install {
@@ -106,6 +127,11 @@ function Install {
     if (Test-Path (Join-Path $next 'navis\Formcraft.Navis')) {
         if (Test-Path $navisNext) { Remove-Item $navisNext -Recurse -Force }
         Copy-Item (Join-Path $next 'navis\Formcraft.Navis') $navisNext -Recurse
+    }
+    # The Rhino add-in waits in Staging\rhino-next and goes in when Rhino is closed (InstallRhino).
+    if (Test-Path (Join-Path $next 'rhino\Formcraft.Rhino')) {
+        if (Test-Path $rhinoNext) { Remove-Item $rhinoNext -Recurse -Force }
+        Copy-Item (Join-Path $next 'rhino\Formcraft.Rhino') $rhinoNext -Recurse
     }
 
     $stale = @()
@@ -160,6 +186,9 @@ try {
         }
         if ((Test-Path $navisNext) -and -not (NavisRunning)) {
             try { InstallNavis } catch { Log ("Navisworks add-in install failed: {0}" -f $_.Exception.Message) }
+        }
+        if ((Test-Path $rhinoNext) -and -not (RhinoRunning)) {
+            try { InstallRhino } catch { Log ("Rhino add-in install failed: {0}" -f $_.Exception.Message) }
         }
         if ($Once -or $script:restart) { break }
         Start-Sleep -Seconds $PollSeconds
