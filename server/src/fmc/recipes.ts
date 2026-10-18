@@ -1,3 +1,4 @@
+import { hostNeeds } from "./opsgeom.js";
 import path from "node:path";
 import { z } from "zod";
 import { OP } from "./ops.js";
@@ -237,6 +238,47 @@ export interface GateInputs {
   tokenCategories?: Map<string, string> | null;
   /** F-045: the dimension sides the build's own flex recorded (FMC_Recipe_Builds.json), when the gate can't flex the file now. */
   recordedSides?: RecordedSides | null;
+  /** F-061: the register's Host (null: not in the register, or no Host column). */
+  registerHost?: string | null;
+  /** F-061: fmc_family_host_test in Revit (null when it couldn't run; hostTestError says why). */
+  hostTest?: HostTestResult | null;
+  hostTestError?: string;
+}
+
+/** What fmc_family_host_test answers: placement type, and whether the placed family followed its host. */
+export interface HostTestResult {
+  host?: string; placement?: string; placed?: boolean; state?: string; detail?: string;
+  moved_mm?: number; expected_mm?: number; followed?: boolean; host_kept?: boolean; upright?: boolean;
+  connectors?: Array<{ domain: string; points: string; dot: number }>;
+}
+
+/** F-061: which host fmc_family_host_test should make for a register Host (null: no host test needed). */
+export function hostTestKind(registerHost: string | null | undefined): "wall" | "ceiling" | null {
+  const needs = registerHost ? hostNeeds(registerHost) : null;
+  if (!needs) return null;
+  return needs.includes("ceiling") && !needs.includes("wall") ? "ceiling" : "wall";
+}
+
+/** F-061: the two host lines of Gate A, from the register's Host and the host test in Revit. */
+export function hostLines(registerHost: string | null | undefined, test: HostTestResult | null | undefined, testError = ""): GateLine[] {
+  const placeCheck = "Hosts as the register says", testCheck = "Host test";
+  if (!registerHost) return [{ check: placeCheck, state: "Not checked", detail: "The register gives no Host for this family" }];
+  const needs = hostNeeds(registerHost);
+  if (!needs) return [{ check: placeCheck, state: "Pass", detail: `The register's host is "${registerHost}": an unhosted family is fine` }];
+  if (!test || !test.placement) {
+    const why = testError || "the host test gave no answer";
+    return [{ check: placeCheck, state: "Not checked", detail: `The register's host is "${registerHost}"; the placement couldn't be read: ${why}` },
+      { check: testCheck, state: "Not checked", detail: why }];
+  }
+  const p = test.placement;
+  const hosts = p === "WorkPlaneBased" ? ["face"] : p === "OneLevelBasedHosted" ? ["wall", "ceiling", "floor", "roof"] : [];
+  const fits = hosts.some((h) => needs.includes(h as never));
+  const said = p === "WorkPlaneBased" ? "face based" : p === "OneLevelBasedHosted" ? "hosted" : `${p} (unhosted)`;
+  const place: GateLine = { check: placeCheck, state: fits ? "Pass" : "Fail",
+    detail: fits ? `The register's host is "${registerHost}" and the family is ${said}`
+      : `The register's host is "${registerHost}", but the family is ${said}, so it can't be placed there: build it on a face based template` };
+  const state: GateState = test.state === "Pass" ? "Pass" : test.state === "Fail" ? "Fail" : "Not checked";
+  return [place, { check: testCheck, state, detail: test.detail || (state === "Pass" ? "Placed, followed its host" : "no detail") }];
 }
 
 /** What a build's flex said about labelled dimension sides, kept in its build record (F-045). */
@@ -400,6 +442,8 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
         : assumed.length ? `Assumed (the reviewer accepts them): ${assumed.join(", ")}${ea.length ? `; East African, not local: ${ea.join(", ")}` : ""}`
         : ea.length ? `East African, not local: ${ea.join(", ")}` : `${Object.keys(recipe.values).length || "No"} values recorded, all verified` });
   }
+  // F-061: the family hosts the way the register says, and a placed one follows its host
+  lines.push(...hostLines(inputs.registerHost, inputs.hostTest, inputs.hostTestError));
   lines.push({ check: "Tag, schedule and legend; Coarse, Medium and Fine", state: "Not checked", detail: "Run the load test in the role's chain-test project (fmc_family load_test)" });
   return { verdict: lines.some((l) => l.state === "Fail") ? "Fail" : "Pass", lines, ...(fc.follows.length ? { follows: fc.follows } : {}) };
 }
