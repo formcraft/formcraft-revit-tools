@@ -49,6 +49,7 @@ import { FMC_CASEWORK_SHAPE, runFmcCasework } from "../tools/fmc_casework.js";
 import { FMC_CEILING_SHAPE, runFmcCeiling } from "../tools/fmc_ceiling.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { askLogFile, askStatus, readApiKey, runAsk } from "./ask.js";
+import { annotateInvalidOp } from "./buildinfo.js";
 
 type Reply = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
 
@@ -207,7 +208,8 @@ async function main() {
     const msg = e instanceof z.ZodError
       ? "Bad arguments: " + e.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")
       : e instanceof Error ? e.message : String(e);
-    print({ error: msg }, true);
+    // F-042: an invalid op names the build that refused it
+    print({ error: annotateInvalidOp(msg) }, true);
   }
 }
 

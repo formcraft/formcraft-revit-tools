@@ -47,6 +47,11 @@ export interface GuardConfig {
   materials_file: string;
   /** The kit's annotation standard (FMC_Annotation_Standard.json), read by Drawings › Annotate */
   annotation_standard_file: string;
+  /**
+   * F-046: an fmc_doc session idle for longer than this (hours) is stale: fmc_doc list and background say so, and
+   * fmc_recipe cleanup closes it without saving (dry run first). Never a document in a Revit window or one the person opened.
+   */
+  session_idle_hours: number;
 }
 
 export const DEFAULT_CONFIG: GuardConfig = {
@@ -65,6 +70,7 @@ export const DEFAULT_CONFIG: GuardConfig = {
   rulebooks_dir: "Z:\\00_Standards\\03_Master_Data\\FMC_Rulebook", // kit r4: the rulebooks live with the master data
   materials_file: "Z:\\00_Standards\\07_Materials\\FMC_Materials.json",
   annotation_standard_file: "Z:\\00_Standards\\03_Master_Data\\FMC_Annotation_Standard.json",
+  session_idle_hours: 12,
 };
 
 /** Tools that change the model. They are refused on live project models. */

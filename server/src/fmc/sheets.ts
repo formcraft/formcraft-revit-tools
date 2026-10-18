@@ -9,6 +9,16 @@ export interface ModelSheet { id: number; number: string; name: string; views: n
 
 const norm = (s: string) => s.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
 
+/**
+ * F-043 (issue #144): the issue sets in one register cell. The kit's register joins them with "+"
+ * (PERMIT+TENDER+CONSTRUCTION); hand-made registers use ; , / | & or "and". Each set is matched on its own.
+ */
+export const SET_SEPARATORS = /\s*(?:[+;,/|&]|\band\b)\s*/i;
+
+export function splitSets(cell: string): string[] {
+  return [...new Set(cell.split(SET_SEPARATORS).map((s) => s.trim().toUpperCase()).filter(Boolean))];
+}
+
 export function parseRegister(rows: string[][]): { sheets: RegisterSheet[]; problems: string[] } {
   const problems: string[] = [];
   const headerAt = rows.findIndex((r) => r.some((c) => ["number", "sheetnumber", "sheetno"].includes(norm(c))));
@@ -27,17 +37,21 @@ export function parseRegister(rows: string[][]): { sheets: RegisterSheet[]; prob
     sheets.push({
       number, name: cName >= 0 ? (r[cName] ?? "").trim() : "",
       role: (cRole >= 0 ? r[cRole] ?? "" : number.split("-")[0]).trim().toUpperCase(),
-      sets: cSets >= 0 ? (r[cSets] ?? "").split(/[;,/|]/).map((s) => s.trim().toUpperCase()).filter(Boolean) : [],
+      sets: cSets >= 0 ? splitSets(r[cSets] ?? "") : [],
     });
   }
   return { sheets, problems };
 }
 
-/** The sheets the register plans for this issue set and these roles (a sheet with no sets listed is in every set). */
+/**
+ * The sheets the register plans for this issue set and these roles, by membership: a sheet is in PERMIT when PERMIT is
+ * one of its sets (PERMIT+TENDER+CONSTRUCTION is). An issue_set naming several ("PERMIT+TENDER") takes a sheet in any
+ * of them. A sheet with no sets listed is in every set.
+ */
 export function planned(register: RegisterSheet[], issueSet: string, roles: string[]): RegisterSheet[] {
-  const set = issueSet.toUpperCase();
+  const wanted = splitSets(issueSet);
   const r = new Set(roles.map((x) => x.toUpperCase()));
-  return register.filter((s) => (!s.sets.length || s.sets.includes(set)) && (!r.size || r.has(s.role)));
+  return register.filter((s) => (!s.sets.length || !wanted.length || wanted.some((w) => s.sets.includes(w))) && (!r.size || r.has(s.role)));
 }
 
 export interface SheetDiff { number: string; difference: "Missing" | "Extra" | "Name differs"; register_name: string; model_name: string; id?: number }

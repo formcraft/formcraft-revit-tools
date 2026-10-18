@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerTools } from "./tools/register.js";
+import { annotateInvalidOpErrors, registerTools } from "./tools/register.js";
+import { RUNNING_BUILD } from "./fmc/buildinfo.js";
 import { enableSoftTimeout } from "./utils/SocketClient.js";
 import { installContextNudges, registerContextPrompts, registerContextResources, serverOptions } from "./fmc/mcp_context.js";
 
@@ -20,6 +21,9 @@ async function main() {
   installContextNudges(server);
   // 注册工具
   await registerTools(server);
+  // F-042: the build this process runs is read once, now; an "invalid op" refusal names it (and a newer one on disk).
+  console.error(`Formcraft server build ${RUNNING_BUILD.commit} (built ${RUNNING_BUILD.built || "?"})`);
+  if (!annotateInvalidOpErrors(server)) console.error("F-042: couldn't hook tools/call errors; invalid-op refusals won't name the build");
   // The kit as MCP resources and prompts, where the SDK has them.
   const resources = registerContextResources(server);
   const prompts = registerContextPrompts(server);

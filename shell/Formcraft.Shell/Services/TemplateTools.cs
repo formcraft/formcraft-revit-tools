@@ -168,9 +168,14 @@ namespace Formcraft.Shell.Services
             var r = new AuditResult { Ok = true, Message = "Audited " + Path.GetFileName(templatePath) + "." };
             r.Lines.Add(new AuditLine("Shared parameters vs FMC_SharedParameters.txt", "Must", "2 differ", "Same name, different GUID: FMC_Asset_Tag, FMC_Room_Code"));
             r.Lines.Add(new AuditLine("View templates and filters", "Pass", "Pass", "40 view templates · 22 filters"));
+            // F-044: the sample follows the server's audit: both ways, and a check that can't run says Not checked
+            r.Lines.Add(new AuditLine("Kit parameters in the template (FMC_Master_Data.json)", "Must", "10 missing", "170 of 180 present; missing FMC_Building_Class, FMC_GFA_m2…"));
             if (brand != null) r.Lines.Add(new AuditLine("Fonts vs the brand pack (" + brand.Name + ")", "Should", "1 off-brand", "Text Generic 2.5: Times New Roman"));
+            else r.Lines.Add(new AuditLine("Fonts vs the brand pack", "Advice", "Not checked", "The kit has no font pack (06_Templates\\FMC_BrandPacks.json): a kit change request"));
             r.Lines.Add(new AuditLine("Text and dimension styles", "Advice", "14 + 6", "14 text types, 6 dimension types"));
-            r.Lines.Add(new AuditLine("Title blocks and schedules", "Pass", "Pass", "2 title block types · 12 schedules"));
+            r.Lines.Add(new AuditLine("Title blocks vs the Family Register", "Must", "4 kit title blocks missing", "missing FMC_TitleBlock (P1), FMC_TB_Panel_ProjectData (P1)…; loaded instead: A1 metric, A0 metric"));
+            r.Lines.Add(new AuditLine("Legends vs the sheet register", "Should", "2 missing", "8 of 10; missing LG_Z_Abbreviations, LG_Z_Symbols"));
+            r.Lines.Add(new AuditLine("Materials: the kit's FMC_ materials", "Should", "None from the kit", "158 materials, none of the kit's 167"));
             r.Lines.Add(new AuditLine("Size, unused families, warnings", "Advice", "38 MB · 12 unused", "38 MB · 12 of 60 families unused · 4 warnings"));
             return Task.FromResult(r);
         }

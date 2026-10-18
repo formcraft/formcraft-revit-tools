@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
 import { documentTarget, revitTarget } from "../fmc/target.js";
+import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
 
 export const REVIT_ARG = z.string().optional()
   .describe("Which Revit, when two or more are open: a project or document name, a pid or a port (fmc_revit list shows them). Leave out with one Revit.");
@@ -31,6 +32,28 @@ export function withRevitTarget(server: McpServer) {
     }
     return original(...a);
   };
+}
+
+/**
+ * F-042 (issue #143): every tools/call answer that refuses an "invalid op" (the SDK's argument check of a zod
+ * discriminated union, "Invalid discriminator value", or a tool's own) names the build this process runs, and says
+ * to restart the Claude app when a newer build is installed on disk. Call after the tools are registered (the SDK
+ * installs its tools/call handler with the first tool). Returns false when the SDK's handler table isn't there.
+ */
+export function annotateInvalidOpErrors(server: McpServer): boolean {
+  const low = (server as unknown as { server?: { _requestHandlers?: Map<string, (req: unknown, extra: unknown) => Promise<unknown>> } }).server;
+  const handlers = low?._requestHandlers;
+  const original = handlers?.get("tools/call");
+  if (!handlers || !original) return false;
+  handlers.set("tools/call", async (req: unknown, extra: unknown) => {
+    try {
+      return annotateToolResult(await original(req, extra));
+    } catch (error) {
+      if (error instanceof Error && isInvalidOpMessage(error.message)) error.message = annotateInvalidOp(error.message);
+      throw error;
+    }
+  });
+  return true;
 }
 
 export async function registerTools(server: McpServer) {

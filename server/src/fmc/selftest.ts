@@ -6,6 +6,7 @@
  */
 import path from "node:path";
 import { GuardConfig } from "./policy.js";
+import { BuildStamp, buildDrift, restartAdvice } from "./buildinfo.js";
 
 const win = path.win32;
 
@@ -122,6 +123,24 @@ export function aiRulebookLine(r: { book: unknown; file: string; section: string
       `(schema fmc-aiuse/0.1: bands, groups, limits; the proposal is docs/kit-proposals/FMC_Rulebook_AIUse.json) to ${rulebooksDir}, ` +
       `or the same as an "ai_use" section in FMC_Rulebook_ClaudeUse.json: a kit change request (rule 7).`,
   };
+}
+
+/**
+ * F-042 (issue #143): the build this process runs (read into memory at startup) against build-info.json on disk now.
+ * The updater replaces the files, but the Claude app's MCP server keeps running the code it started with (old tools,
+ * old ops refused as "invalid discriminator"), so a difference is a Fail with the restart that fixes it.
+ */
+export function runningBuildLine(running: BuildStamp, disk: BuildStamp): Line {
+  const check = "Running server is the installed build";
+  if (disk.commit === "unknown")
+    return { area: "Server", check, state: "Warn", detail: `No build-info.json on disk beside the server: can't compare with the running build ${running.commit}` };
+  if (running.commit === "unknown")
+    return { area: "Server", check, state: "Warn", detail: `The running server has no build stamp (started without build-info.json); ${disk.commit} is installed. ${restartAdvice(disk)}` };
+  if (buildDrift(running, disk))
+    return { area: "Server", check, state: "Fail",
+      detail: `This process runs ${running.commit} (built ${running.built || "?"}), but ${disk.commit} (built ${disk.built || "?"}) is installed: ` +
+        `tools and ops added since are missing or refused as invalid. ${restartAdvice(disk)}.` };
+  return { area: "Server", check, state: "Pass", detail: `${running.commit} running and installed` };
 }
 
 export function summary(lines: Line[]) {

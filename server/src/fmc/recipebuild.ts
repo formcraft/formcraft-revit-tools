@@ -120,6 +120,8 @@ export interface BuildRecord {
   chunks: ChunkRecord[];
   failed_op?: { op: number | null; text: string };
   result?: unknown;
+  /** F-045: what the build's own flex said about labelled dimension sides (recipes.ts RecordedSides), for a later gate. */
+  sides?: { at: string; dimension_sides: { checked: number; unrecorded: number }; wrong: Array<{ type: string; a: string; b: string; label?: string; axis: string; drawn: number; now_mm: number }> } | null;
 }
 
 export function buildsFile(reportsDir: string) { return path.join(reportsDir, "FMC_Recipe_Builds.json"); }
