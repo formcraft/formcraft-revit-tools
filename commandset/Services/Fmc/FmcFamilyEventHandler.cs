@@ -179,6 +179,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                 fam.SaveAs(target, FmcPreview.Options(fam, overwrite, backups, target));
                 result["saved"] = target;
+                string image = FmcPreview.ExportPng(fam, target, out string imageWhy);
+                result["image"] = image.Length > 0 ? image : "none: " + imageWhy;
                 result["types"] = fm.Types.Size;
                 result["shared_parameters_added"] = sharedAdded;
                 result["connectors_created"] = connectorsMade;

@@ -1,5 +1,5 @@
 /**
- * One family, three levels (docs/PLAN_ENGINEERING_HUB.md; owner's choice, 18 Oct): Coarse is the envelope (LOD 200),
+ * One family, three levels (docs/PLAN_ENGINEERING_HUB.md; owner's choice, 18 Oct): Coarse is the envelope (LOD 100; owner, 19 Oct),
  * Medium the native recipe body (LOD 300), Fine the same body drawn smooth in Rhino (LOD 400).
  *
  * This reads a recipe's native solids (point extrusions, revolutions, sweeps) and writes each one's smooth twin as a
@@ -59,7 +59,8 @@ export function recipeTwins(ops: Op[]): Twins {
   for (const o of ops) {
     if (!["extrusion", "revolution", "sweep"].includes(o.op)) continue;
     const solid = String(o.name);
-    const sc = subcat.get(solid)?.subcategory as string | undefined;
+    // a subcategory given in its own op, or on the solid op itself (revolution, sweep and blend take one)
+    const sc = (subcat.get(solid)?.subcategory ?? o.subcategory) as string | undefined;
     if (KEEP_NATIVE.test(solid) || (sc && KEEP_NATIVE.test(sc))) { kept.push({ solid, why: "stays native (envelope, clearance or connector)" }); continue; }
     const v = vis.get(solid);
     if (v && v.fine === false) { kept.push({ solid, why: "not shown on Fine" }); continue; }
@@ -135,4 +136,78 @@ export function materialCheck(ops: Op[], map: TwinMap[]): { same: number; differ
     else out.same++;
   }
   return out;
+}
+
+/** An axis box in world millimetres: [min x, min y, min z], [max x, max y, max z]. */
+export interface Box { min: number[]; max: number[] }
+
+/**
+ * The family's Coarse envelope (F-067): the extrusion named "Coarse Envelope" between four planes, from start (or its
+ * start_plane) to end (or its end_plane). Plane positions come from the recipe's add_ref_plane ops: a plan line with a
+ * fixed x is an x plane, with a fixed y a y plane; a line drawn in an elevation with a fixed height is a z plane. The
+ * template's own centre planes and level are at 0. Null when the recipe has no such envelope or a plane can't be found.
+ */
+export function envelopeBox(ops: Op[]): Box | null {
+  const env = ops.find((o) => o.op === "extrusion" && /coarse envelope/i.test(String(o.name)) && Array.isArray(o.rect));
+  if (!env) return null;
+  const at = new Map<string, { axis: "x" | "y" | "z"; v: number }>([
+    ["Center (Left/Right)", { axis: "x", v: 0 }], ["Center (Front/Back)", { axis: "y", v: 0 }],
+    ["Ref. Level", { axis: "z", v: 0 }], ["Reference Plane", { axis: "z", v: 0 }],
+  ]);
+  for (const o of ops) {
+    if (o.op !== "add_ref_plane" || !Array.isArray(o.from) || !Array.isArray(o.to)) continue;
+    const [a, b] = [o.from as number[], o.to as number[]];
+    const elevation = typeof o.view === "string" && !/plan|level/i.test(o.view);
+    if (elevation) { if (a[1] === b[1]) at.set(o.name, { axis: "z", v: a[1] }); }
+    else if (a[0] === b[0]) at.set(o.name, { axis: "x", v: a[0] });
+    else if (a[1] === b[1]) at.set(o.name, { axis: "y", v: a[1] });
+  }
+  const sides = (env.rect as string[]).map((n) => at.get(n));
+  if (sides.some((s) => !s)) return null;
+  const xs = sides.filter((s) => s!.axis === "x").map((s) => s!.v), ys = sides.filter((s) => s!.axis === "y").map((s) => s!.v);
+  if (xs.length !== 2 || ys.length !== 2) return null;
+  const z0 = env.start_plane && at.get(env.start_plane)?.axis === "z" ? at.get(env.start_plane)!.v : Number(env.start ?? 0);
+  const z1 = env.end_plane && at.get(env.end_plane)?.axis === "z" ? at.get(env.end_plane)!.v : Number(env.end ?? 1000);
+  return { min: [Math.min(...xs), Math.min(...ys), Math.min(z0, z1)], max: [Math.max(...xs), Math.max(...ys), Math.max(z0, z1)] };
+}
+
+/** How far a part's box reaches outside the envelope, per side, in mm (0 when it sits inside). */
+export function outsideBy(part: Box, env: Box): number {
+  let worst = 0;
+  for (let i = 0; i < 3; i++) worst = Math.max(worst, env.min[i] - part.min[i], part.max[i] - env.max[i]);
+  return Math.round(worst * 10) / 10;
+}
+
+/** Past the envelope by more than this: reported (rails and handles may reach a little past a tight envelope). */
+export const ENVELOPE_WARN_MM = 15;
+/** Past it by more than this: the twin is wrong (F-067: the body was 345–1110 mm off its envelope). */
+export const ENVELOPE_ERROR_MM = 150;
+/** More than this share of twins wrong: the recipe's body is off its envelope, and nothing is written. */
+export const ENVELOPE_FAMILY_SHARE = 0.2;
+
+export interface EnvelopeVerdict { box: Box | null; errors: Array<{ part: string; by: number }>; warnings: Array<{ part: string; by: number }>; family_off: boolean }
+
+/** Each twin's real box (Rhino's facts) against the family's Coarse envelope. */
+export function envelopeVerdict(ops: Op[], parts: Array<{ name: string; bbox_min: number[]; bbox_max: number[] }>): EnvelopeVerdict {
+  const box = envelopeBox(ops);
+  const v: EnvelopeVerdict = { box, errors: [], warnings: [], family_off: false };
+  if (!box) return v;
+  for (const p of parts) {
+    const by = outsideBy({ min: p.bbox_min, max: p.bbox_max }, box);
+    if (by > ENVELOPE_ERROR_MM) v.errors.push({ part: p.name, by });
+    else if (by > ENVELOPE_WARN_MM) v.warnings.push({ part: p.name, by });
+  }
+  v.family_off = parts.length > 0 && v.errors.length / parts.length > ENVELOPE_FAMILY_SHARE;
+  return v;
+}
+
+/**
+ * Solids shown only when the family is Open: their switch is Open, or a formula switch that needs Open (and(..., Open)).
+ * They reach past the closed envelope by design, so the envelope check leaves them out.
+ */
+export function openOnlySolids(ops: Op[]): Set<string> {
+  const formula = new Map(ops.filter((o) => o.op === "set_formula").map((o) => [String(o.name), String(o.formula)]));
+  // the switch is Open itself, or its formula uses Open other than as not(Open)
+  const needsOpen = (p: string) => p === "Open" || /\bOpen\b/.test((formula.get(p) ?? "").replace(/not\(\s*Open\s*\)/g, ""));
+  return new Set(ops.filter((o) => o.op === "set_visible_param" && needsOpen(String(o.param))).map((o) => String(o.solid)));
 }

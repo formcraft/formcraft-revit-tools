@@ -182,7 +182,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                 throw new InvalidOperationException(path + " exists: pass overwrite (a person decided) or save under another name.");
             var options = FmcPreview.Options(s.Doc, Parameters.Value<bool?>("overwrite") == true, backups, path);
             s.Doc.SaveAs(path, options);
-            return new JObject { ["saved"] = path, ["title"] = s.Doc.Title };
+            var saved = new JObject { ["saved"] = path, ["title"] = s.Doc.Title };
+            if (s.Doc.IsFamilyDocument)
+            {
+                string image = FmcPreview.ExportPng(s.Doc, path, out string why);
+                saved["image"] = image.Length > 0 ? image : "none: " + why;
+            }
+            return saved;
         }
 
         /// <summary>

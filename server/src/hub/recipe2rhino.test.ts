@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { OP } from "../fmc/ops.js";
 import { RHINO_PART } from "./rhino.js";
-import { materialCheck, partName, recipeTwins, to3d, withTwins } from "./recipe2rhino.js";
+import { envelopeBox, envelopeVerdict, materialCheck, outsideBy, partName, recipeTwins, to3d, withTwins } from "./recipe2rhino.js";
 
 const recipe = [
   { op: "add_material", name: "FMC_Rubber_Black", param: "Rubber Material" },
@@ -74,4 +74,27 @@ test("LOD 400: the recipe gets import_part ops on Fine only, and each native sol
 
 test("LOD 400: import_part reads only .3dm parts from a _Rhino staging folder", () => {
   assert.equal(OP.safeParse({ op: "import_part", name: "X Fine", file: "D:\\K\\_Rhino\\F\\X.3dm" }).success, true);
+});
+
+test("F-067: the Coarse envelope comes from the recipe's planes, and a body off its envelope is refused", () => {
+  const ops = [
+    { op: "add_ref_plane", name: "Left", from: [-510, -3000], to: [-510, 3000] },
+    { op: "add_ref_plane", name: "Right", from: [510, -3000], to: [510, 3000] },
+    { op: "add_ref_plane", name: "Front", from: [-3000, -2200], to: [3000, -2200] },
+    { op: "add_ref_plane", name: "Top", from: [-3000, 1148], to: [3000, 1148], view: "Front" },
+    { op: "extrusion", name: "Coarse Envelope", rect: ["Left", "Right", "Front", "Center (Front/Back)"], start: 0, end: 1000, end_plane: "Top" },
+  ];
+  const box = envelopeBox(ops)!;
+  assert.deepEqual(box, { min: [-510, -2200, 0], max: [510, 0, 1148] }, "end_plane wins over end");
+  assert.equal(outsideBy({ min: [-100, -1000, 0], max: [100, -500, 600] }, box), 0);
+  const part = (name: string, dy: number) => ({ name, bbox_min: [-400, -2100 + dy, 0], bbox_max: [400, -100 + dy, 900] });
+  const ok = envelopeVerdict(ops, [part("Rail", 60), part("Deck", 0)]);
+  assert.deepEqual([ok.errors.length, ok.warnings.length, ok.family_off], [0, 0, false], "a body moved 60 mm still sits inside this envelope");
+  const rail = envelopeVerdict(ops, [{ name: "Rail", bbox_min: [-560, -2000, 0], bbox_max: [400, -100, 900] }]);
+  assert.deepEqual(rail.warnings, [{ part: "Rail", by: 50 }], "a rail 50 mm past the side: a warning only");
+  // the 18 Oct bed: the body drawn 1.1 m off
+  const off = envelopeVerdict(ops, [part("A", 1100), part("B", 1100), part("C", 0)]);
+  assert.equal(off.errors.length, 2);
+  assert.equal(off.family_off, true);
+  assert.equal(envelopeBox([{ op: "extrusion", name: "Body", points: [[0, 0], [1, 0], [1, 1]] }]), null, "no envelope: not checked");
 });
