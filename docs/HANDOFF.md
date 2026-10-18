@@ -12,12 +12,23 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 18 Oct · Rhino connector (H1): `fmc_rhino`
+- **Rhino now has a Formcraft connector.** `fmc_rhino status` first. The add-in loads when Rhino starts (or drag
+  `Formcraft.Rhino.rhp` onto an open Rhino once). It builds parts in its own memory, never in the person's drawing.
+- **The flow for a detailed family:** `new_doc` (family) → `part` (the parts, all or none) → `check` (with the type's
+  `envelope`) → `render` (a dry run, then `dry_run=false`) → `export_parts` → the parts are in
+  `_Staging\_Rhino\<family>\` with `parts.json`. The vocabulary and the rules: `docs/HUB.md`, "Rhino".
+- **Every part needs** `subcategory`, `material` and `visibility` (fine for LOD 400 detail). Origin = where Revit
+  places it (castors at their floor point, a light head at its yoke).
+- **Next on this side:** `fmc_doc import_part` (Rhino parts into the family as forms) and the `rhino_parts` block in
+  recipes. Write the four detailed recipes' part sets as `fmc_rhino part` calls now; they carry over unchanged.
+
 ### 18 Oct · the engineering hub (H0, #181) and the job system (#175–#177)
 - **One MCP server for every app.** `fmc_apps list` shows each app (Revit 2025, Navisworks Manage 2025, Robot 2025,
   Rhino 8, Power BI Desktop): installed, running, connector built, on or off, and its tools. `fmc_selftest` has the same
   as **Apps** lines. How it works: `docs/HUB.md`. Plan and steps: `docs/PLAN_ENGINEERING_HUB.md`.
-- **Rhino has no connector yet** (step H1). McNeel's Rhino MCP plug-in is not used; Formcraft builds its own
-  (`fmc_rhino`). Until H1 is staged, nothing in chat can drive Rhino. Don't ask the owner to install other Rhino MCPs.
+- **Rhino:** Formcraft's own connector, `fmc_rhino` (see the H1 entry above). Don't ask the owner to install other
+  Rhino MCPs.
 - **Apps can be switched off** (`fmc_apps switch`), and their tools then don't load; a switch takes effect when the
   Claude app restarts. If a tool is missing, check `fmc_apps list` before calling it broken.
 - **Long jobs:** a call made while Revit is busy now queues (#176) instead of being refused. Follow every job with
