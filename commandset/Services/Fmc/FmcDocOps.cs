@@ -138,6 +138,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "blend": return FmcDocLod.MakeBlend(doc, op);
                 case "symbolic_lines": return FmcDocRecipe.SymbolicLines(doc, op);
                 case "lock_face": return FmcDocLod.LockFace(doc, op);
+                case "name_template_plane": return FmcDocPlanes.NameTemplatePlane(doc, op);
                 case "add_eq_dimension": return FmcDocLod.EqDimension(doc, op);
                 case "load_family": return FmcDocLod.LoadFamily(doc, op);
                 case "place_nested": return FmcDocLod.PlaceNested(doc, op);
