@@ -19,7 +19,7 @@ import { csvRow } from "./fmc_sheets.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
 import { readDb } from "./fmc_material.js";
-import { batchId, planBatch, readBatchResults, recipeRevision } from "../fmc/batch.js";
+import { batchId, planBatch, readBatchResults, recipeRevision } from "../fmc/recipebatch.js";
 import { localIso } from "../fmc/jobs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 
