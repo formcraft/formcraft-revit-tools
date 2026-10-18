@@ -16,7 +16,7 @@ function Rhino([hashtable]$a) {
     $r = ($out -join "`n") | ConvertFrom-Json
     $state = if ($ok) { 'ok  ' } else { 'FAIL' }
     $note = if ($r.problems) { " problems: $($r.problems -join ' | ')" } elseif ($r.error) { " $($r.error)" } elseif ($r.reasons) { " $($r.reasons -join ' | ')" } else { '' }
-    "$state $($a.action)$note"
+    Write-Host "$state $($a.action)$note"
     if (-not $ok) { exit 1 }
     return $r
 }
