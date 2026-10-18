@@ -1,3 +1,4 @@
+import { expandSkeletons } from "./ops.js";
 import { hostNeeds } from "./opsgeom.js";
 import path from "node:path";
 import { z } from "zod";
@@ -127,7 +128,7 @@ export interface FollowParam { param: string; low_mm: number; high_mm: number; s
  */
 export function followParams(recipe: Recipe): FollowParam[] {
   const tv = typeValues(recipe);
-  const labelled = new Set((recipe.ops as Array<Record<string, any>>).filter((o) => o.op === "add_dimension" && o.label).map((o) => String(o.label)));
+  const labelled = new Set((expandSkeletons(recipe.ops) as Array<Record<string, any>>).filter((o) => o.op === "add_dimension" && o.label).map((o) => String(o.label)));
   const out: FollowParam[] = [];
   const names = new Set<string>(["Width", "Height", ...labelled]);
   for (const p of names) {

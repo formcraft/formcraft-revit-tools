@@ -81,13 +81,15 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
-    start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
+    start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to (the start moves onto it first, F-064)"),
+    end_plane: z.string().optional().describe("a level reference plane, or a level such as Upper Ref. Level, the top goes onto and is locked to (the end moves onto it first)"),
     view: z.string().optional(),
     sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
-    start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
+    start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to"),
+    end_plane: z.string().optional().describe("a level reference plane, or a level, the top goes onto and is locked to"),
     view: z.string().optional(),
     sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("set_material_param"), name: z.string().min(1).describe("the solid"), param: z.string().min(1) }),
@@ -131,6 +133,16 @@ export const OP = z.discriminatedUnion("op", [
       max: z.number().int().min(2).max(12).describe("how many sets are drawn; the ones above the count are hidden") }).optional()
       .describe("per-leaf repeats: the set is drawn for k = 1..max with {k} in plane names replaced by k, and set k shows when count_param > k - 1"),
     subcategory: z.string().min(1).describe("Plan Swing, Elevation Swing, Hidden Lines…"), ...visibility }),
+  z.object({ op: z.literal("name_template_plane"), name: z.string().min(1).describe("the name to give it"),
+    axis: z.enum(["x", "y", "z"]).describe("the axis the plane is square to: x for a plane across Left/Right, z for a level plane"),
+    at_mm: z.number().describe("where it is along that axis, mm"), tolerance_mm: z.number().positive().optional() }),
+  z.object({ op: z.literal("skeleton"), name: z.string().min(1),
+    width: z.object({ param: z.string().min(1), mm: z.number().positive() }), depth: z.object({ param: z.string().min(1), mm: z.number().positive() }),
+    height: z.object({ param: z.string().min(1), mm: z.number().positive() }),
+    mounting: z.object({ param: z.string().min(1), mm: z.number().min(0) }).optional().describe("an instance height of the bottom above the base"),
+    base: z.string().optional().describe("the level plane height starts from (default Ref. Level)"),
+    planes: z.object({ left: z.string(), right: z.string(), front: z.string(), back: z.string(), bottom: z.string(), top: z.string() }).partial().optional(),
+    type: z.string().optional().describe("the type the default size goes to") }),
   z.object({ op: z.literal("lock_face"), name: z.string().min(1).describe("<solid>/<plane>"), solid: z.string().min(1), plane: z.string().min(1),
     view: z.enum(VIEWS).default("plan").describe("plan for vertical planes, front for level planes") }),
   z.object({ op: z.literal("add_eq_dimension"), name: z.string().min(1), planes: z.array(z.string().min(1)).min(3)
@@ -182,6 +194,44 @@ export const OP = z.discriminatedUnion("op", [
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
+
+type SkeletonOp = Extract<Op, { op: "skeleton" }>;
+
+/**
+ * F-062 #3: a skeleton op becomes the ops it stands for: Width, Depth and Height parameters, the default size first
+ * (F-026), Left/Right and Front/Back planes with labelled dimensions and an equality about the centre planes, a Top
+ * plane (and a Bottom one at an instance mounting height), each labelled. Every other op passes through.
+ */
+export function expandSkeletons<T extends { op: string }>(ops: T[]): T[] {
+  return ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o]));
+}
+
+function skeletonOps(s: SkeletonOp): Array<Record<string, unknown>> {
+  const n = { left: "Left", right: "Right", front: "Front", back: "Back", bottom: "Bottom", top: "Top", ...(s.planes ?? {}) };
+  const base = s.base ?? "Ref. Level";
+  const w = s.width.mm / 2, d = s.depth.mm / 2, m = s.mounting?.mm ?? 0, h = s.height.mm;
+  const far = 3000;
+  const out: Array<Record<string, unknown>> = [];
+  for (const p of [s.width, s.depth, s.height]) out.push({ op: "add_family_param", name: p.param, type: "Length", instance: false, group: "Dimensions" });
+  if (s.mounting) out.push({ op: "add_family_param", name: s.mounting.param, type: "Length", instance: true, group: "Dimensions" });
+  out.push({ op: "set_default_size", name: `${s.name} size`, values: { [s.width.param]: s.width.mm, [s.depth.param]: s.depth.mm, [s.height.param]: s.height.mm },
+    ...(s.type ? { type: s.type } : {}) });
+  out.push({ op: "add_ref_plane", name: n.left, from: [-w, -far], to: [-w, far] }, { op: "add_ref_plane", name: n.right, from: [w, -far], to: [w, far] },
+    { op: "add_ref_plane", name: n.front, from: [-far, -d], to: [far, -d] }, { op: "add_ref_plane", name: n.back, from: [-far, d], to: [far, d] });
+  out.push({ op: "add_dimension", name: s.width.param, between: [n.left, n.right], label: s.width.param, offset: 300 },
+    { op: "add_eq_dimension", name: `${s.name} EQ width`, planes: [n.left, "Center (Left/Right)", n.right], offset: 600 },
+    { op: "add_dimension", name: s.depth.param, between: [n.front, n.back], label: s.depth.param, offset: 300 },
+    { op: "add_eq_dimension", name: `${s.name} EQ depth`, planes: [n.front, "Center (Front/Back)", n.back], offset: 600 });
+  let bottom = base;
+  if (s.mounting) {
+    out.push({ op: "add_ref_plane", name: n.bottom, from: [-far, m], to: [far, m], view: "Front" },
+      { op: "add_dimension", name: s.mounting.param, between: [base, n.bottom], label: s.mounting.param, view: "Front", offset: 300 });
+    bottom = n.bottom;
+  }
+  out.push({ op: "add_ref_plane", name: n.top, from: [-far, m + h], to: [far, m + h], view: "Front" },
+    { op: "add_dimension", name: s.height.param, between: [bottom, n.top], label: s.height.param, view: "Front", offset: 300 });
+  return out;
+}
 
 // ---- profile loops ----------------------------------------------------------------------------------------------------
 
@@ -369,6 +419,7 @@ const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : 
  */
 export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null,
   opts: OpsCheckOptions = {}): string[] {
+  ops = expandSkeletons(ops);
   const p: string[] = [];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
@@ -437,7 +488,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       case "void_extrusion":
         if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
-        for (const pl of [...(o.rect ?? []), ...(o.end_plane ? [o.end_plane] : [])])
+        for (const pl of [...(o.rect ?? []), ...(o.start_plane ? [o.start_plane] : []), ...(o.end_plane ? [o.end_plane] : [])])
           if (!planes.has(pl)) p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         solids.add(o.name);
         break;
@@ -458,6 +509,9 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "add_ref_plane":
         if (o.from[0] === o.to[0] && o.from[1] === o.to[1]) p.push(`${at}: from and to are the same point`);
+        planes.add(o.name);
+        break;
+      case "name_template_plane":
         planes.add(o.name);
         break;
       case "set_type_value":

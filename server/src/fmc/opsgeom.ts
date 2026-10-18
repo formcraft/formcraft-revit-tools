@@ -87,7 +87,7 @@ export function geometryProblems(ops: Op[]): string[] {
         for (const x of shortEdges(o.points, true)) p.push(`${at}: ${x}`);
         // F-064: a solid thinner than the short-curve tolerance has edges Revit can't draw; it fails as it's made
         const depth = Math.abs(Number(o.end ?? 1000) - Number(o.start ?? 0));
-        if (depth > 0 && depth < MIN_EDGE_MM)
+        if (depth > 0 && depth < MIN_EDGE_MM && !o.start_plane && !o.end_plane)
           p.push(`${at}: start ${o.start ?? 0} and end ${o.end ?? 1000} make it ${fmt(depth)} mm thick, under Revit's ${fmt(MIN_EDGE_MM)} mm short-curve tolerance: ` +
             "Revit refuses it. Make it at least 0.8 mm (or leave the part out at this size)");
         solids.set(o.name, o);
@@ -129,7 +129,8 @@ export function geometryProblems(ops: Op[]): string[] {
           const near = Math.min(...d);
           p.push(`${at}: ${lead}no edge of "${o.solid}" lies on "${o.plane}" (the nearest is ${fmt(near)} mm off), so Revit has no face to lock. ` +
             (near <= NEAR_PLANE_MM ? "Snap the outline's points to the plane" : "Lock it to the plane its side is drawn on"));
-        } else if (o.view === "front" && isElevation(pl.view) && pl.from[1] === pl.to[1] && sketchedInPlan && (s.op === "extrusion" || s.op === "void_extrusion")) {
+        } else if (o.view === "front" && isElevation(pl.view) && pl.from[1] === pl.to[1] && sketchedInPlan && (s.op === "extrusion" || s.op === "void_extrusion")
+          && s.start_plane !== o.plane && s.end_plane !== o.plane) {
           const level = pl.from[1];
           const ends = [Number(s.start ?? 0), Number(s.end ?? 1000)];
           const d = ends.map((z) => Math.abs(z - level));

@@ -110,8 +110,29 @@ namespace RevitMCPCommandSet.Services.Fmc
             made.StartOffset = start; made.EndOffset = end;
             Name(made, name);
 
+            // F-064 #7 / F-062: start_plane and end_plane (a reference plane or a level, e.g. Upper Ref. Level) move the end
+            // onto the plane before it is locked, so a lock never fails on a face a fraction of a millimetre off.
+            var snapped = new List<string>();
+            var ends = new List<(string Name, bool Top, EndTarget Target)>();
+            foreach (var (key, isTop) in new[] { ("start_plane", false), ("end_plane", true) })
+            {
+                string n = op.Value<string>(key);
+                if (string.IsNullOrEmpty(n)) continue;
+                EndTarget t = FindEndTarget(doc, n);
+                double off = t.Point.DotProduct(normal);
+                double was = isTop ? made.EndOffset : made.StartOffset;
+                if (Math.Abs(was - off) > 1e-9)
+                {
+                    if (isTop) made.EndOffset = off; else made.StartOffset = off;
+                    snapped.Add($"{(isTop ? "end" : "start")} {Math.Round(ToMm(was), 2)} → {Math.Round(ToMm(off), 2)} mm on {n}");
+                }
+                ends.Add((n, isTop, t));
+            }
+            if (made.EndOffset <= made.StartOffset) throw new InvalidOperationException($"{name}: its ends meet or cross once moved onto their planes");
+
             // Lock each side to its plane (in plan), and the top to a level plane in an elevation when one is named.
             var locked = new List<string>();
+            var unlocked = new List<string>();
             doc.Regenerate();
             if (sides != null)
             {
@@ -119,18 +140,41 @@ namespace RevitMCPCommandSet.Services.Fmc
                 foreach (ReferencePlane side in sides)
                     if (LockFace(doc, plan, made, side.GetReference(), side.Normal)) locked.Add(side.Name);
             }
-            string top = op.Value<string>("end_plane");
-            if (!string.IsNullOrEmpty(top))
+            if (ends.Count > 0)
             {
-                ReferencePlane tp = Plane(doc, top);
-                View front = ViewNamed(doc, "Front", ViewType.Elevation);
-                if (LockFace(doc, front, made, tp.GetReference(), XYZ.BasisZ)) locked.Add(top);
+                // ends of a plan sketch are level planes, seen in Front; ends of a front or right sketch are vertical, seen in plan
+                View endView = sk == "plan" ? ViewNamed(doc, "Front", ViewType.Elevation) : ViewNamed(doc, op.Value<string>("view") ?? "Ref. Level", ViewType.FloorPlan);
+                foreach (var e in ends)
+                    if (LockFace(doc, endView, made, e.Target.Ref, normal, e.Target.Point)) locked.Add(e.Name);
+                    // as before, a lock that doesn't take doesn't stop the build; it is reported (it used to be silent)
+                    else unlocked.Add($"warning: its {(e.Top ? "end" : "start")} sits on {e.Name} but couldn't be locked to it in {endView.Name}");
             }
-            return ("create", (isVoid ? "void" : "solid") + (sk != "plan" ? ", sketched " + sk : "") + (locked.Count > 0 ? ", locked to " + string.Join(", ", locked) : ""));
+            return ("create", (isVoid ? "void" : "solid") + (sk != "plan" ? ", sketched " + sk : "") + (locked.Count > 0 ? ", locked to " + string.Join(", ", locked) : "")
+                + (snapped.Count > 0 ? "; snapped " + string.Join(", ", snapped) : "") + (unlocked.Count > 0 ? "; " + string.Join("; ", unlocked) : ""));
         }
 
+        /// <summary>Where an extrusion end goes: a reference plane by name, or a level (the column template's Upper Ref. Level).</summary>
+        internal readonly struct EndTarget
+        {
+            public EndTarget(Reference r, XYZ p, string kind) { Ref = r; Point = p; Kind = kind; }
+            public Reference Ref { get; }
+            public XYZ Point { get; }
+            public string Kind { get; }
+        }
+
+        internal static EndTarget FindEndTarget(Document doc, string name)
+        {
+            var rp = new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(p => p.Name == name);
+            if (rp != null) return new EndTarget(rp.GetReference(), rp.BubbleEnd, "plane");
+            var lv = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().FirstOrDefault(l => l.Name == name);
+            if (lv != null) return new EndTarget(lv.GetPlaneReference(), new XYZ(0, 0, lv.ProjectElevation), "level");
+            throw new InvalidOperationException("No reference plane or level named " + name);
+        }
+
+        private static double ToMm(double feet) => UnitUtils.ConvertFromInternalUnits(feet, UnitTypeId.Millimeters);
+
         /// <summary>Aligns and locks the solid's planar face that faces the same way as the plane and lies on it.</summary>
-        internal static bool LockFace(Document doc, View view, GenericForm form, Reference planeRef, XYZ normal)
+        internal static bool LockFace(Document doc, View view, GenericForm form, Reference planeRef, XYZ normal, XYZ planePoint = null)
         {
             var options = new Options { ComputeReferences = true, View = view, IncludeNonVisibleObjects = true };
             foreach (GeometryObject g in form.get_Geometry(options))
@@ -141,7 +185,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (!(f is PlanarFace pf) || f.Reference == null) continue;
                     if (!pf.FaceNormal.IsAlmostEqualTo(normal) && !pf.FaceNormal.IsAlmostEqualTo(normal.Negate())) continue;
                     Element pe = doc.GetElement(planeRef);
-                    if (pe is ReferencePlane rp && Math.Abs((pf.Origin - rp.BubbleEnd).DotProduct(rp.Normal)) > 1e-6) continue;
+                    if (planePoint != null) { if (Math.Abs((pf.Origin - planePoint).DotProduct(normal)) > 1e-6) continue; }
+                    else if (pe is ReferencePlane rp && Math.Abs((pf.Origin - rp.BubbleEnd).DotProduct(rp.Normal)) > 1e-6) continue;
                     try
                     {
                         Dimension a = doc.FamilyCreate.NewAlignment(view, planeRef, f.Reference);

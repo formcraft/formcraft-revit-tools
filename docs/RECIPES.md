@@ -282,6 +282,28 @@ Exterior, Interior and Head on Ref. Level. Metric Window.rft adds Sill.
 (the template's 150 mm host wall), so exterior is **+y**, not −y as some recipe notes said. Read the side from the
 template's Exterior plane rather than assuming it. The recipes' geometry is unchanged by this note.
 
+## Skeletons, end planes and template planes (F-062)
+Ops that make a product model follow its sizes instead of keeping a fixed shape.
+
+- **`skeleton`**: one op for the size frame most families need. It adds the Width, Depth and Height parameters (type),
+  sets the default size first (F-026), draws Left/Right and Front/Back planes with labelled dimensions and an equality
+  about the centre planes, and a Top plane with a labelled Height from the base (Ref. Level unless `base` names
+  another). With `mounting` it adds an instance Mounting Height and a Bottom plane, and Height runs from Bottom to Top.
+  Plane names can be changed with `planes`. The server sends the ops it stands for, so `check`, `batch` and Gate A's
+  follow check see them. Then a solid sits on it: `rect: ["Left", "Right", "Front", "Back"]`,
+  `start_plane: "Bottom"`, `end_plane: "Top"`.
+- **`start_plane` / `end_plane`** on an extrusion: the bottom or top goes **onto** the plane and is locked to it. The
+  end moves onto the plane first, so a lock no longer fails on a face a fraction of a millimetre off (F-064 #7). The op's
+  result says what it snapped. Either may name a **level**, such as the structural column template's Upper Ref. Level,
+  so a column follows its top level. A lock that still doesn't take is reported as a warning, as it used to pass silently.
+- **`name_template_plane`**: names a template plane that has none ("Reference Plane"), found by the axis it is square to
+  and where it is, e.g. `{ "op": "name_template_plane", "name": "Frame Head", "axis": "z", "at_mm": 2100 }` for Metric
+  Door.rft's head. Then recipes can dimension and lock to it. Two unnamed planes at that place, or none, is an error
+  that lists the planes it saw.
+
+Not yet: a revolution whose axis and radius follow planes. You allowed curved parts to stay fixed and vary by type
+(18 Oct), so revolutions keep fixed profiles per type for now.
+
 ## What `check` stops before Revit (F-061, F-064)
 These rules come from builds that failed overnight on 17–18 Oct. An error stops the build; a warning is passed on.
 

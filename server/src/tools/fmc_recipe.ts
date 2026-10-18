@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
-import { WARNING, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
+import { WARNING, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
 import { hostTemplateProblem } from "../fmc/opsgeom.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
@@ -201,7 +201,8 @@ function prepareRecipe(recipe: Recipe, config: GuardConfig, dictionary: ReturnTy
   const hostProblem = hostTemplateProblem(recipe.family, win.basename(template), registerHost(config, recipe.family));
   if (hostProblem) notes.push(`${WARNING} ${hostProblem}`);
   // load_family paths are relative to the kit's family roots on this PC (the recipe works on any PC)
-  const families = resolveFamilyPaths(recipe.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
+  // F-062: a skeleton op is sent as the ops it stands for
+  const families = resolveFamilyPaths(expandSkeletons(recipe.ops), familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
   notes.push(...families.notes);
   const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
   return { template, planes, errors, notes, families, target, materials };
