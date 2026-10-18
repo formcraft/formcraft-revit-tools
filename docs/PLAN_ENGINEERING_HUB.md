@@ -55,7 +55,7 @@ Long operations use the shared job system. No connector writes outside staging a
 ## Steps (one PR each, the owner's yes before each)
 | # | Step | Delivers |
 |---|---|---|
-| H0 | **The hub's foundation** | The connector contract; `apps\<app>.json`; `fmc_apps` (list, status, switch on/off); per-app tool loading; Revit, Navisworks and Robot reporting through it; Rhino and Power BI detected; `fmc_selftest` lines |
+| H0 | **The hub's foundation** (built, docs/HUB.md) | The connector contract; `apps\<app>.json`; `fmc_apps` (list, status, switch on/off); per-app tool loading; Revit, Navisworks and Robot reporting through it; Rhino and Power BI detected; `fmc_selftest` lines |
 | H1 | **Rhino connector** | A RhinoCommon plug-in bridge and `fmc_rhino`: status, open a staging file, list layers and objects, massing and surface operations, export (3DM, IFC, SAT) to staging; read-only first |
 | H2 | **Power BI gateway** | Formcraft's project data as a tidy model (QA, reviews, issues, quantities, activity counts, never per person); the hub passes allowed Modeling-MCP operations on to Microsoft's server for that model |
 | H3 | **Cross-app operations** | Rhino geometry into a Revit staging project (DirectShape) or a recipe part; a Rhino or Revit frame to Robot; Navisworks clash → the Revit elements |

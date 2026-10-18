@@ -3,7 +3,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { z } from "zod";
-import { documentTarget, revitTarget } from "../fmc/target.js";
+import { documentTarget, revitTarget } from "../fmc/target.js";
+import { appStatuses, realProbe, toolsOff } from "../hub/apps.js";
 import { annotateInvalidOp, annotateToolResult, isInvalidOpMessage } from "../fmc/buildinfo.js";
 
 export const REVIT_ARG = z.string().optional()
@@ -86,10 +87,19 @@ export async function registerTools(server: McpServer) {
   // Revit the call goes to. The wrapper strips it before the tool sees its arguments and runs the call in that context.
   withRevitTarget(server);
 
+  // The engineering hub (H0): an app's tools load only while the app is switched on (fmc_apps; by default every
+  // installed app is on, and Revit always), so an app nobody uses costs no tokens.
+  let appOff = new Set<string>();
+  try { appOff = toolsOff(appStatuses(realProbe(path.resolve(__dirname, "..", "..")))); } catch { /* the hub can't tell: load everything */ }
+
   // 动态导入并注册每个工具
   for (const file of toolFiles) {
     if (profile === "fmc" && hiddenInFmcProfile.has(file.replace(/\.(ts|js)$/, ""))) {
       console.error(`FMC profile: skipped ${file}`);
+      continue;
+    }
+    if (appOff.has(file.replace(/\.(ts|js)$/, ""))) {
+      console.error(`Hub: ${file} skipped (its app is switched off: fmc_apps)`);
       continue;
     }
     try {
