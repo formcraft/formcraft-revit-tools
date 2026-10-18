@@ -1,3 +1,4 @@
+import { exchangeRoot, link, loadIdentity, saveIdentity, writePackage } from "../hub/exchange.js";
 import fs from "node:fs";
 import path from "node:path";
 import { execFile } from "node:child_process";
@@ -49,6 +50,7 @@ export const FMC_ROBOT_SHAPE = {
   engineer: z.string().optional().describe("send: the engineer whose run this is"),
   run: z.string().optional().default("").describe("calculate, results: the run (FEA-yyyymmdd-hhmm)"),
   folder: z.string().optional().default("").describe("Where runs are kept; default <reports_dir>\\Robot"),
+  project_folder: z.string().optional().default("").describe("The project: its 01_WIP\\_Exchange keeps the identity map and the exchange packages (the hub, X0)"),
   dry_run: z.boolean().optional().default(true),
 };
 
@@ -120,7 +122,8 @@ export async function runFmcRobot(args: FmcRobotArgs) {
         bars: model.bars.map((b) => ({ n: b.n, id: b.id })) };
       fs.writeFileSync(win.join(dir, `${run}.json`), JSON.stringify(file, null, 2));
       log(config, "robot_send", false, rtd, "sent", `${model.bars.length} bars, ${form.cases.length} cases, by ${form.engineer}`);
-      return reply({ ...summary, robot: sent, next: "In Robot the engineer adds the loads, combinations and code; then calculate and results" });
+      const hub = recordSend(config, args.project_folder, file, members);
+      return reply({ ...summary, robot: sent, hub, next: "In Robot the engineer adds the loads, combinations and code; then calculate and results" });
     }
 
     if (!args.run) return reply({ refused: true, reasons: ["Name the run (fmc_robot status lists them)"] }, true);
@@ -139,6 +142,7 @@ export async function runFmcRobot(args: FmcRobotArgs) {
     const { rows, unknown } = mapResults(runFile.bars, (r.bars ?? []) as BarResult[], args.run);
     const written = (await withRevitConnection((c) => c.sendRaw("fmc_fea_write", { results: rows, dry_run: dry }, 300000))) as Record<string, unknown>;
     log(config, "robot_results", dry, runFile.rtd, dry ? "dry run" : `${written.values_set ?? 0} values`, `${rows.length} members`);
+    if (!dry) recordResults(config, args.project_folder, runFile, rows, written);
     return reply({ run: args.run, model: runFile.model, engineer: runFile.engineer, cases: r.cases, members: rows.length, not_mapped: unknown, revit: written,
       note: "Utilisation and the approval are the engineer's: FMC_FEA_Approval_Ref is never written",
       ...(dry ? { next: "Run again with dry_run=false to write these values into the model" } : {}) });
@@ -147,6 +151,37 @@ export async function runFmcRobot(args: FmcRobotArgs) {
     log(config, "robot_" + args.action, dry, dir, "error", msg);
     return reply({ error: msg }, true);
   }
+}
+
+/**
+ * The hub (X0): each Robot bar is linked to its Revit element in the project's identity map, and the hand-over is kept as
+ * an exchange package (revit → robot). A hub problem never stops the Robot work: it is reported instead.
+ */
+function recordSend(config: GuardConfig, projectFolder: string, file: RunFile, members: Member[]) {
+  try {
+    const root = exchangeRoot(projectFolder ? expandEnv(projectFolder) : undefined, expandEnv(config.reports_dir));
+    const map = loadIdentity(root);
+    const byId = new Map(members.map((m) => [m.id, m]));
+    for (const b of file.bars) {
+      const m = byId.get(b.id);
+      const fmc = link(map, "revit", m?.unique_id || String(b.id), { kind: m?.kind, name: m?.mark || m?.section, file: file.model });
+      link(map, "robot", `${file.run}#${b.n}`, { fmc, file: file.rtd });
+    }
+    saveIdentity(root, map);
+    const pkg = writePackage(root, { from: "revit", to: "robot", what: `analytical model ${file.run}`, files: [{ name: `${file.run}.json`, text: JSON.stringify(file, null, 2) }],
+      source: { model: file.model, rtd: file.rtd, engineer: file.engineer } });
+    return { exchange: root, package: pkg.manifest.id, linked: file.bars.length };
+  } catch (e) {
+    return { error: `the hub couldn't record this send: ${e instanceof Error ? e.message : String(e)}` };
+  }
+}
+
+function recordResults(config: GuardConfig, projectFolder: string, runFile: RunFile, rows: unknown[], written: Record<string, unknown>) {
+  try {
+    const root = exchangeRoot(projectFolder ? expandEnv(projectFolder) : undefined, expandEnv(config.reports_dir));
+    writePackage(root, { from: "robot", to: "revit", what: `results ${runFile.run}`, files: [{ name: `${runFile.run}_results.json`, text: JSON.stringify({ rows, revit: written }, null, 2) }],
+      source: { model: runFile.model, rtd: runFile.rtd } });
+  } catch { /* the results are written in Revit either way */ }
 }
 
 export function registerFmcRobotTool(server: McpServer) {

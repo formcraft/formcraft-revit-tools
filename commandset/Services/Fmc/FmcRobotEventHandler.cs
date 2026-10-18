@@ -97,6 +97,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 members.Add(new JObject
                 {
                     ["id"] = m.Id.Value,
+                    ["unique_id"] = m.UniqueId, // the hub's identity map keeps Revit elements by UniqueId (it survives sessions)
                     ["kind"] = column ? "column" : "beam",
                     ["start"] = new JArray(Math.Round(a.X * FeetToMm, 1), Math.Round(a.Y * FeetToMm, 1), Math.Round(a.Z * FeetToMm, 1)),
                     ["end"] = new JArray(Math.Round(b.X * FeetToMm, 1), Math.Round(b.Y * FeetToMm, 1), Math.Round(b.Z * FeetToMm, 1)),
