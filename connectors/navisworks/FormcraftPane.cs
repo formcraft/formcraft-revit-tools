@@ -28,8 +28,11 @@ namespace Formcraft.Navis
             tests.Columns.Add("New / Active", 90);
             tests.Columns.Add("Last run", 120);
             var refresh = new Button { Dock = DockStyle.Bottom, Height = 32, Text = "Refresh" };
+            // R5: the selected clash test's open clashes into the project's review register, beside the marks made in Revit
+            var send = new Button { Dock = DockStyle.Bottom, Height = 32, Text = "Send clashes to review", Enabled = false };
+            tests.SelectedIndexChanged += (s, e) => send.Enabled = tests.SelectedItems.Count == 1;
             var note = new Label { Dock = DockStyle.Bottom, Height = 36, Padding = new Padding(8, 4, 8, 4), ForeColor = Color.DimGray,
-                Text = "Read-only. Fixes go back to the Revit model through a person's yes." };
+                Text = "Read-only. Clashes go to the project's review register (Send); fixes go back to the Revit model through a person's yes." };
 
             void Fill()
             {
@@ -52,12 +55,31 @@ namespace Formcraft.Navis
             }
 
             refresh.Click += (s, e) => Fill();
+            send.Click += async (s, e) =>
+            {
+                if (tests.SelectedItems.Count != 1) return;
+                string test = tests.SelectedItems[0].Text;
+                string folder = NavisReview.ProjectFolder(NwApp.ActiveDocument?.FileName ?? "");
+                if (folder.Length == 0) { MessageBox.Show("Save the Navisworks file inside the project folder (the one with 01_WIP): the tickets go to its review register.", "Formcraft"); return; }
+                send.Enabled = false;
+                note.Text = "Sending " + test + " to the review register…";
+                try
+                {
+                    JObject r = await NavisReview.SendAsync(test, folder);
+                    note.Text = r["error"] != null ? "Not sent: " + r.Value<string>("error")
+                        : r["reasons"] != null ? "Not sent: " + string.Join(" ", r["reasons"].Select(x => x.ToString()))
+                        : $"{test}: {(r["added"] as JArray)?.Count ?? 0} new tickets, {r.Value<int?>("skipped") ?? 0} skipped (resolved, or ticketed already). Open them in Revit's Review board.";
+                }
+                catch (Exception ex) { note.Text = "Not sent: " + ex.Message; }
+                finally { send.Enabled = tests.SelectedItems.Count == 1; }
+            };
             var panel = new Panel { Dock = DockStyle.Fill };
             panel.Controls.Add(tests);
             panel.Controls.Add(models);
             panel.Controls.Add(bridge);
             panel.Controls.Add(note);
             panel.Controls.Add(refresh);
+            panel.Controls.Add(send);
             panel.HandleCreated += (s, e) => Fill();
             return panel;
         }
