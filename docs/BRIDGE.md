@@ -14,9 +14,9 @@ Every call is a **job**; its id is the JSON-RPC request id.
 | When | What happens |
 |---|---|
 | The answer comes within the limit (`FMC_SOFT_TIMEOUT_MS`, 50 s; the MCP client cuts a call at about 60 s) | The tool shows the answer. Nothing is recorded. |
-| The limit passes | The tool answers `[FMC-JOB-RUNNING] … still running in Revit (not failed). Job <id>` (send_code: `{"status": "running", "job": …}`). The server records `running` in `%APPDATA%\Formcraft\FMC_Jobs.jsonl` and keeps waiting (up to `FMC_JOB_MAX_MS`, 35 min). |
-| The job finishes later | Its answer goes to `%APPDATA%\Formcraft\FMC_LateResults.jsonl` with `job`. |
-| Revit itself | The add-in writes `running` (after 20 s) and `finished` lines, the dialogs it saw and any cancel to `%APPDATA%\Formcraft\FMC_Jobs_Revit.jsonl`, so a job's end is known even if the MCP server that sent it has gone. |
+| The limit passes | The tool answers `[FMC-JOB-RUNNING] … still running in Revit (not failed). Job <id>` (send_code: `{"status": "running", "job": …}`). The server records `running` in `%APPDATA%\Formcraft\FMC_Jobs.jsonl` and keeps waiting: up to `FMC_JOB_MAX_MS` (35 min), then for as long as Revit's heartbeats for the job are under 3 min old (F-064). |
+| The job finishes later | Its answer goes to `%APPDATA%\Formcraft\FMC_LateResults.jsonl` with `job`, from the server and from Revit itself (`"from": "revit"`), so it is kept even when the server stopped waiting or was restarted (F-064). |
+| Revit itself | The add-in writes `running` (after 20 s), a `heartbeat` every minute and `finished` lines, the dialogs it saw and any cancel to `%APPDATA%\Formcraft\FMC_Jobs_Revit.jsonl`, so a job's end is known even if the MCP server that sent it has gone. |
 
 `fmc_job` reads the three files:
 
@@ -31,6 +31,12 @@ Every call is a **job**; its id is the JSON-RPC request id.
   `fmc_doc` and `fmc_recipe` builds don't check it yet (they can call `FmcAiJob.ThrowIfCancelled()` between ops).
 
 The AI never sends a "still running" call again: it follows the job.
+
+**Long jobs (F-064).** While any command is in flight the add-in tells Windows the system is in use (every 30 s), so the
+PC doesn't sleep in the middle of a batch; the screen may still turn off. send_code waits up to 12 h for its script
+(`FMC_SEND_CODE_MAX_MS` overrides). A job the server stopped waiting for stays `running` in `fmc_job` while heartbeats
+come. Times in the files are UTC (`…Z`); `fmc_job` also gives each one in this PC's local time with its offset
+(`local`, e.g. `2026-10-18T09:03:47+03:00`), so they line up with other logs.
 
 ## send_code_to_revit (F-031, F-033, F-034, F-035)
 
@@ -62,7 +68,7 @@ The AI never sends a "still running" call again: it follows the job.
 | `FMC-CODE-USINGS` | A `usings` entry isn't a namespace | |
 | `FMC-CODE-PARAMS` / `FMC-CODE-TOO-LARGE` | No code / over the size limit | |
 | `FMC-CODE-BUSY` | Another script is still waiting or running (one at a time); nothing was run | |
-| `FMC-CODE-TIMEOUT` | Revit's API thread didn't run or finish the script in 30 min | |
+| `FMC-CODE-TIMEOUT` | Revit's API thread didn't run or finish the script in 12 h (`FMC_SEND_CODE_MAX_MS`) | |
 
 The other upstream tools' messages are English too, with `[FMC-BRIDGE-TIMEOUT]` and `[FMC-TOOL-FAILED]`.
 

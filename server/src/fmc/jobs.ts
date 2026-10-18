@@ -9,6 +9,10 @@
  * - FMC_LateResults.jsonl: the final answer of a job that answered after its tool had replied (with `job`);
  * - FMC_Jobs_Revit.jsonl: what Revit itself saw (running, finished, dialog, cancelled), written by the add-in.
  *
+ * F-064: Revit writes a "heartbeat" line every minute while a job runs, and writes a long job's result to the late-results
+ * file itself. A job keeps "running" while its heartbeats come, even after this server stopped waiting for it, and the
+ * server keeps waiting past its limit while they are fresh.
+ *
  * Cancel is a request, never a kill: a file %APPDATA%\Formcraft\jobs\cancel\<job> that the add-in checks before the job
  * starts, at its cancel checks and before send_code commits. Revit is never closed or interrupted.
  */
@@ -69,7 +73,9 @@ export interface JobView {
   /** One line a person can read. */
   summary: string;
   cancel_requested?: string;
-  revit?: { running_since?: string; finished?: string; ms?: number; ok?: boolean; error?: string };
+  revit?: { running_since?: string; heartbeat_at?: string; finished?: string; ms?: number; ok?: boolean; error?: string };
+  /** The same times in this PC's local time with its offset, for a person reading them beside other logs (F-064). */
+  local?: { started?: string; heartbeat?: string; finished?: string; result?: string };
   dialogs: Array<{ at: string; dialog_id: string; message: string; answer: string }>;
   result_at?: string;
   has_result: boolean;
@@ -110,6 +116,7 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
     const j = get(e.job, String(e.started ?? e.at ?? ""), e.command);
     j.revit ??= {};
     if (e.event === "running") j.revit.running_since = String(e.started ?? e.at ?? "");
+    if (e.event === "heartbeat" || e.event === "running") j.revit.heartbeat_at = String(e.at ?? "");
     if (e.event === "finished") Object.assign(j.revit, { finished: String(e.at ?? ""), ms: e.ms, ok: e.ok, error: e.error });
     if (e.event === "cancelled") j.revit_cancelled = String(e.at ?? "");
     if (e.event === "dialog") j.dialogs.push({ at: String(e.at ?? ""), dialog_id: String(e.dialog_id ?? ""), message: String(e.message ?? ""), answer: String(e.answer ?? "") });
@@ -141,11 +148,44 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
       j.summary = `Revit ended it at ${j.revit.finished} (${j.revit.ok === false ? `failed: ${j.revit.error ?? ""}` : "answered"}), ` +
         "but this server didn't receive the answer (the MCP server was restarted?): check the model or the staging folder before running it again";
     }
+    else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up) {
+      j.state = "running";
+      j.summary = `Still running in Revit: last heartbeat at ${j.revit.heartbeat_at} (this server stopped waiting at ${j.gave_up}; Revit keeps the answer)`;
+    }
     else if (j.gave_up) { j.state = "no_answer"; j.summary = `No answer from Revit by ${j.gave_up}: Revit may still be busy, or blocked by a dialog`; }
     else if (openDialog) { j.state = "waiting_for_dialog"; j.summary = `Revit shows a dialog waiting for a person: ${last.dialog_id} "${last.message}"`; }
-    else { j.state = "running"; j.summary = `Still running in Revit since ${j.revit?.running_since ?? j.started}${j.cancel_requested ? " (cancel requested)" : ""}`; }
+    else {
+      j.state = "running";
+      j.summary = `Still running in Revit since ${j.revit?.running_since ?? j.started}` +
+        (j.revit?.heartbeat_at ? `, last heartbeat ${j.revit.heartbeat_at}` : "") + (j.cancel_requested ? " (cancel requested)" : "");
+    }
+    j.local = { started: localIso(j.started), heartbeat: localIso(j.revit?.heartbeat_at), finished: localIso(j.revit?.finished), result: localIso(j.result_at) };
   }
   return [...jobs.values()].sort((a, b) => (b.started || "").localeCompare(a.started || "")).map(view);
+}
+
+/** An ISO time in this PC's local time with its offset, e.g. 2026-10-18T09:03:47+03:00 (undefined in, undefined out). */
+export function localIso(iso: string | undefined, offsetMinutes?: number): string | undefined {
+  if (!iso) return undefined;
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return undefined;
+  const off = offsetMinutes ?? -new Date(t).getTimezoneOffset();
+  const d = new Date(t + off * 60000);
+  const p = (n: number) => String(n).padStart(2, "0");
+  const sign = off >= 0 ? "+" : "-", a = Math.abs(off);
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}T${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}` +
+    `${sign}${p(Math.floor(a / 60))}:${p(a % 60)}`;
+}
+
+/** When Revit last said this job is alive (a running or heartbeat line), in ms since 1970; 0 when it never did. */
+export function lastHeartbeatMs(job: string, env: NodeJS.ProcessEnv = process.env): number {
+  let last = 0;
+  for (const e of readJsonLines(jobFiles(env).revit, 2000)) {
+    if (e?.job !== job || (e.event !== "heartbeat" && e.event !== "running")) continue;
+    const t = Date.parse(String(e.at ?? ""));
+    if (Number.isFinite(t) && t > last) last = t;
+  }
+  return last;
 }
 
 function view(j: Acc): JobView {

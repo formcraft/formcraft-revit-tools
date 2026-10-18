@@ -1,7 +1,7 @@
 import * as net from "net";
 import fs from "fs";
 import path from "path";
-import { appendJobEvent, jobFiles } from "../fmc/jobs.js";
+import { appendJobEvent, jobFiles, lastHeartbeatMs } from "../fmc/jobs.js";
 import { WRITE_COMMANDS, liveLockVerdict, loadConfig } from "../fmc/policy.js";
 import { documentTarget } from "../fmc/target.js";
 import { aiGate } from "../fmc/aigate.js";
@@ -202,6 +202,8 @@ export class RevitClientConnection {
             if (!this.responseCallbacks.has(requestId)) return;
             const max = jobMaxMs();
             if (stillRunning && !extended && max > timeoutMs) { hard(max - timeoutMs, true); return; }
+            // F-064: no fixed cap: while Revit's heartbeats for this job are fresh, keep waiting (Revit keeps the answer anyway)
+            if (stillRunning && Date.now() - lastHeartbeatMs(requestId) < HEARTBEAT_FRESH_MS) { hard(HEARTBEAT_FRESH_MS, true); return; }
             this.responseCallbacks.delete(requestId);
             if (!settled) { settled = true; reject(new Error(`[FMC-BRIDGE-TIMEOUT] Revit didn't answer ${command} in ${Math.round(timeoutMs / 1000)} s (job ${requestId}).`)); }
             else appendJobEvent({ job: requestId, event: "gave_up", command, after_s: Math.round((Date.now() - Date.parse(started)) / 1000) });
@@ -227,7 +229,10 @@ export function softTimeoutMs(): number {
   return Number.isFinite(v) && v >= 0 ? v : 50000;
 }
 
-/** How long a job that answered "still running" is waited for (ms): FMC_JOB_MAX_MS, default 35 min (send_code's own limit is 30). */
+/** A heartbeat younger than this (ms) means the job is still alive in Revit (Revit writes one a minute). */
+export const HEARTBEAT_FRESH_MS = 3 * 60 * 1000;
+
+/** How long a job that answered "still running" is waited for before heartbeats decide (ms): FMC_JOB_MAX_MS, default 35 min. */
 export function jobMaxMs(): number {
   const v = Number(process.env.FMC_JOB_MAX_MS);
   return Number.isFinite(v) && v > 0 ? v : 35 * 60 * 1000;

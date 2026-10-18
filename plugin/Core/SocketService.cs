@@ -317,7 +317,7 @@ namespace revit_mcp_plugin.Core
                     using (RevitWake.Busy())
                         result = command.Execute(parameters, request.Id);
 
-                    job.Done(true);
+                    job.Done(true, null, result);
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
                     return CreateSuccessResponse(request.Id, result);
                 }
