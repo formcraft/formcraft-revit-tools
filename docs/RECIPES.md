@@ -193,6 +193,29 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
    passed gate and never overwrites a released family. This is never an MCP tool: hard rule 2 keeps tools out of
    `04_Families\<Role>`, and release is a person's act, like a sync.
 
+## Many recipes in one job: `fmc_recipe batch` (F-063)
+For a pack, not one family at a time. Give `recipe_files` (recipe files, or files that hold an array of recipes, like the
+chat's `batch_<Role>.json`) or a `folder`.
+1. **Dry run first** (the default). Every recipe is checked as `fmc_recipe check` checks it. The plan lists what will be
+   built, what is skipped and what is invalid with the reason. A family already staged from the same recipe revision
+   (a hash of its template and ops) with Gate A passed is skipped, unless `rebuild` is `true` or names it. `max` limits
+   how many this run builds.
+2. **`dry_run: false`** writes a manifest (`<reports>\Batches\<batch>.json`) and sends one Revit job,
+   `fmc_recipe_batch`. For each family it starts from the template, applies the ops (the engine's own runner, one
+   transaction group), flexes every type and size parameter, moves an older staged file and its `.recipe.json` /
+   `.gate.json` to `<Role>\_Archive` with a time stamp (nothing is deleted), saves to staging with the recipe beside it,
+   and closes it. Each family writes one line to `<staging>\_Batch\<batch>.jsonl`: ok or the error, seconds, ops
+   created, updated and skipped (with each skipped op and why), flex, and local time with offset. `seconds` stops it
+   starting new families after that long; `fmc_job cancel` stops it between families. What was built stays built.
+3. While it runs: `fmc_recipe batch_status batch=<batch>` reads the results file, and `fmc_job status` follows the job.
+   The job keeps the PC awake, writes heartbeats and keeps its result (BRIDGE.md › Long jobs).
+4. **`fmc_recipe batch_gate batch=<batch>`** runs Gate A on what was built, as many families as fit in one call. Run
+   it again until nothing is left. Each verdict is added to the results file.
+
+On 18 Oct a dry run over the healthcare pack's batch files planned 577 families to build (374,224 ops), skipped 1 and
+found 17 invalid, all for one material missing from the kit's library (a kit change request). A whole pack is a big
+manifest: building one discipline's file at a time, or using `max`, keeps each job short enough to follow.
+
 ## Big recipes: stepwise builds (F-029)
 Revit's bridge reads one request of up to 8 KB. The LOD 400 doors and windows are 23–44 KB of ops, so a build that
 sent them all in one `fmc_doc apply` never reached Revit. That is why the Ogala build stopped before op 1.

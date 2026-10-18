@@ -583,5 +583,14 @@
     "status": "Built, Revit check due",
     "ref": "F-064",
     "note": "Revit writes a heartbeat a minute and keeps long results itself; the server waits while heartbeats are fresh; Windows kept from sleeping during a command; send_code waits up to 12 h; fmc_job shows local times with offsets; a command that arrives while another runs is queued in the add-in (fmc_job: queued), and fmc_document_info answers from its last reading while Revit is busy"
+  },
+  {
+    "id": "F66",
+    "area": "Engine",
+    "group": "Families",
+    "feature": "Batch family builds (fmc_recipe batch)",
+    "status": "Built, Revit check due",
+    "ref": "F-063, F-064",
+    "note": "Every recipe checked first; skip what is staged, passed and current; one Revit job builds the rest with archive-then-save and a results line per family; batch_status and batch_gate. Dry run on the healthcare pack: 577 to build, 17 invalid (one kit material missing)"
   }
 ]
