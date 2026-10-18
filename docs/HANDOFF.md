@@ -12,9 +12,23 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · pictures on every save, the LOD labels in Gate A (F-066 #189, QS01, QS10)
+- **Every family the builder saves** (`fmc_recipe batch`, `build`, `fmc_doc save`) gets the "FMC Preview" view as its
+  preview picture, with reference planes and lines, levels, dimensions, connector glyphs and the Clearance and Coarse
+  subcategories hidden, and the same view as `<Role>\_Images\<family>_3d.png` (1024 px) beside the `.rfa`. The batch
+  line and the save answer carry `image` (a path, or "none: why"). `fmc_doc screenshot` hides the same aids (QS10). The
+  face-based host plate is not hidden yet: say in Run 12 whether it shows.
+- **Gate A has a "Levels of detail" line** (QS01): Coarse box LOD 100; standard family LOD 200 on Medium and Fine;
+  detailed family LOD 300 on Medium and LOD 400 on Fine (Rhino twins; a detailed family without them is a Warn).
+- **Found by the new line:** the standard doors show their whole body on Coarse (no envelope box), e.g.
+  `FMC_A_Door_FlushSingle_Hygienic`: a Warn. Decide whether a door's Coarse is a box (LOD 100) or the simplified door
+  Revit users expect; the check follows your answer.
+- **F-067 (#191, PR #193):** `batch_DET_LOD400.json` is remade from the fixed recipes; `twins` refuses a body off its
+  envelope. Build from the remade file.
+
 ### 19 Oct · the four detailed families at LOD 400: build them (queue P00, QD01–QD05)
 - **Ready to build:** `_Staging\_Batch\batch_DET_LOD400.json` holds all four, each one family with three levels:
-  Coarse = the envelope (LOD 200), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in
+  Coarse = the envelope (LOD 100), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in
   Rhino (LOD 400: 210 twins in all, every one closed and checked). Made by `fmc_rhino twins` from `batch_DET.json`;
   the server's recipe check passes (4 valid, 4,820 ops).
 - **It needs this build in Revit** (`import_part`, and the preview fix): close Revit once after the PR merges.
