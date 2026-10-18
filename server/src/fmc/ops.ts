@@ -59,6 +59,12 @@ export const GROUPS = ["Dimensions", "Constraints", "Data", "Text", "Materials",
 export const REFERENCES = ["NotAReference", "WeakReference", "StrongReference", "Left", "CenterLeftRight", "Right", "Front", "CenterFrontBack",
   "Back", "Bottom", "CenterElevation", "Top"] as const;
 
+/** QS03: a host plane, or a host plane and which of the component's references sits on it. */
+const NESTED_REFS = ["Left", "CenterLeftRight", "Right", "Front", "CenterFrontBack", "Back", "Bottom", "CenterElevation", "Top"] as const;
+const lockTo = z.union([z.string().min(1), z.object({ plane: z.string().min(1), ref: z.enum(NESTED_REFS),
+  at: z.number().optional().describe("where that reference sits in the component, mm from its origin along its own axis (default 0)") })]);
+export const lockPlane = (l: string | { plane: string } | undefined) => (typeof l === "string" ? l : l?.plane);
+
 export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_category"), name: z.string().min(1).describe("Revit category name, e.g. Generic Models, or OST_ name") }),
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
@@ -154,7 +160,12 @@ export const OP = z.discriminatedUnion("op", [
     shared: z.boolean().optional().describe("true for a shared nested family (handles, hinges, locks) that schedules on its own: the load checks the family is shared") }),
   z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
     at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
-    params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
+    params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)"),
+    // QS03: a component rides the host's planes. Its own Center (Left/Right), Center (Front/Back) and bottom (a plane
+    // marked Bottom in the component) are moved onto these host planes and locked, so it moves with the host's sizes.
+    lock: z.object({ x: lockTo.optional().describe("host plane for the component's Center (Left/Right), or { plane, ref: Left | Right }"),
+      y: lockTo.optional().describe("host plane for its Center (Front/Back), or { plane, ref: Front | Back }"),
+      z: lockTo.optional().describe("host plane or level for its Bottom, or { plane, ref: CenterElevation | Top }") }).optional() }),
   // Profiles, switches and kit materials (FAM-040): profile families drawn as data, a Yes/No parameter that shows or
   // hides a solid, and materials made from the kit's library with their textures.
   z.object({ op: z.literal("profile_lines"), name: z.string().min(1).describe("one name for the loop"),
@@ -426,7 +437,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const p: string[] = [];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
-  const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>();
+  const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>(), nested = new Set<string>();
   const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
   const typedParam = (want: string) => (n: string, at: string) => {
@@ -475,7 +486,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "set_visible_param":
         if (o.name !== `${o.solid}/Visible`) p.push(`${at}: name must be "${o.solid}/Visible"`);
-        if (!solids.has(o.solid) && !lines.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
+        if (!solids.has(o.solid) && !lines.has(o.solid) && !nested.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
         if (!params.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
         else if (paramTypes.has(o.param) && paramTypes.get(o.param) !== "YesNo")
           p.push(`${at}: "${o.param}" is ${paramTypes.get(o.param)}: Visible takes a Yes/No parameter`);
@@ -650,7 +661,9 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       }
       case "place_nested":
+        nested.add(o.name);
         if (!families.has(o.family)) p.push(`${at}: ${mayExist("family", o.family)}`);
+        for (const pl of Object.values(o.lock ?? {}).map(lockPlane)) if (pl && !planes.has(pl)) p.push(`${at}: lock plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         for (const hp of Object.values(o.params)) if (!params.has(hp)) p.push(`${at}: ${mayExist("parameter", hp)}`);
         break;
       case "add_dimension":

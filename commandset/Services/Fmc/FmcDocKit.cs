@@ -81,7 +81,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             FamilyManager fm = doc.FamilyManager;
             FamilyParameter fp = fm.get_Parameter(param) ?? throw new InvalidOperationException("No parameter " + param);
             if (fp.Definition.GetDataType() != SpecTypeId.Boolean.YesNo) throw new InvalidOperationException(param + " isn't a Yes/No parameter");
-            var items = FmcDocLod.AllNamed(doc, solid).Where(e => e is GenericForm || e is CurveElement).ToList();
+            var items = FmcDocLod.AllNamed(doc, solid).Where(e => e is GenericForm || e is CurveElement || e is FamilyInstance).ToList();
             if (items.Count == 0) throw new InvalidOperationException("Nothing named " + solid);
             int changed = 0;
             foreach (Element e in items)

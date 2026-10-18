@@ -7,7 +7,7 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
-import { ENVELOPE_ERROR_MM, envelopeVerdict, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
+import { ENVELOPE_ERROR_MM, envelopeVerdict, openOnlySolids, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
 import { OP } from "../fmc/ops.js";
 
 const win = path.win32;
@@ -181,7 +181,10 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   }
   const facts = (((await call("rhino_facts")).facts ?? []) as PartFacts[]);
   // F-067: every twin's real box against the family's Coarse envelope, so a body drawn off its envelope can't pass
-  const env = envelopeVerdict(recipe.ops, facts);
+  // a part shown only when the family is Open (an open door or hatch) reaches past the closed envelope by design
+  const openOnly = openOnlySolids(recipe.ops);
+  const openParts = new Set(t.map.filter((m) => openOnly.has(m.solid)).map((m) => m.part));
+  const env = envelopeVerdict(recipe.ops, facts.filter((f) => !openParts.has(f.name)));
   const offEnvelope = new Map(env.errors.map((e) => [e.part, e.by]));
   const good: PartFacts[] = [];
   for (const f of facts) {

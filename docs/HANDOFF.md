@@ -12,6 +12,44 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · the 14-family sample: what is ready to build, what is still the chat's
+- **Ready (QS03 generator, all recipe-checked):** `_Staging\_Batch\batch_QS03_SAMPLE_LOD400.json`, 14 recipes in build
+  order: 7 components (`FMC_A_Part_LeverRose`, `ButtHinge`, `OverheadCloser`, `PullHandle`, `RadiationWarningLight`,
+  `BlindKnob`, `SpeechGrille`, each with its Rhino twins on Fine), then 7 families:
+  - both doors (`_Detailed`): components on the door's planes, **`Open`** swings the leaf 90° in; the X-ray door has the
+    D-bar pull outside and the warning light box with the radiation sign over the head;
+  - the observation window (**`Open`** raises the integral blind), the pharmacy hatch (**`Open`** slides the hatch panel
+    up; speech grille; roller-shutter box), the laboratory window (PassHatch type: stainless pass box, **`Open`** drops
+    its inner door); each with a 500 mm working-zone clearance and **`Show Clearance`**;
+  - the generator (**`Open`** swings both side doors out; 44 twins) and the fire pump set (40 twins), each with
+    **`Show Clearance`** on its maintenance zone.
+- **The operating light** (`batch_DET_LOD400.json`) now shows its **light path**: a beam from each lens to a 250 mm
+  field 1 m away (IEC 60601-2-41 distance), on the Light Path subcategory, **`Show Light Path`** (the satellite's only on
+  the double type). The distance and field are assumed: confirm or correct them.
+- **Material swap:** the windows' blind uses `FMC_Plastic_ABS_White` until the kit has `FMC_Fabric_Blind_Venetian_White`
+  (requested in `FMC_Material_Requests.csv`).
+- **Still the chat's (not generated here):** the **laminar-flow canopy**, the **bedhead panel** and the **steriliser**
+  are drawn only with boxes (their round parts as three-box crosses, every face on its own per-type plane). Their LOD 300
+  needs true round parts (outlets, collars, the light boss, spigots, the chamber barrel) at each type's real centre and
+  radius: please regenerate them from the product generator (pgen), which knows those values; then
+  `fmc_rhino twins` gives their LOD 400 and the steriliser gets its sliding doors and `Open`.
+- **Build:** this batch after the PRs merge and Revit has restarted; flex-test every type with `Open` Yes and No, the
+  host tests for the doors and windows, then the pictures (they are written beside each `.rfa` now).
+
+### 19 Oct · QS03 proof: the hygienic door with components, Open and clearance (build and flex-test it)
+- **Batch:** `_Staging\_Batch\batch_QS03_DOOR_LOD400.json`, in order: `FMC_A_Part_LeverRose`, `FMC_A_Part_ButtHinge`,
+  `FMC_A_Part_OverheadCloser` (each Medium = native shape, Fine = its Rhino twins), then
+  `FMC_A_Door_FlushSingle_Hygienic_Detailed`, which loads them from `A\` and nests them on its planes (`place_nested`
+  with `lock`). Needs this build in Revit (close Revit after the PR merges).
+- **Check in Revit, every type (0926, 1026, 1126):**
+  1. the levers sit on the roses both faces, pointing to the hinge; 3 hinges on the hinge edge; the closer on the
+     interior face under the head; and they **move with Width and Height** (flex);
+  2. **`Open` = Yes** shows the leaf swung 90° to the interior (a plain slab in this first version) and hides the
+     closed leaf, levers and closer; `Open` = No the reverse; the hinges stay;
+  3. the clearance zones show with `Show Clearance` (all three levels); the door still cuts the wall;
+  4. Coarse shows no hardware, Medium the native parts, Fine the smooth twins.
+- **Report** each lock's note from the build answer ("x locked to Rose L", or "not locked: why"); a failed lock is the
+  first thing to fix before the other nine get the same treatment.
 ### 19 Oct · pictures on every save, the LOD labels in Gate A (F-066 #189, QS01, QS10)
 - **Every family the builder saves** (`fmc_recipe batch`, `build`, `fmc_doc save`) gets the "FMC Preview" view as its
   preview picture, with reference planes and lines, levels, dimensions, connector glyphs and the Clearance and Coarse

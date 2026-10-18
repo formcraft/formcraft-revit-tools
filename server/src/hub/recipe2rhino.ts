@@ -59,7 +59,8 @@ export function recipeTwins(ops: Op[]): Twins {
   for (const o of ops) {
     if (!["extrusion", "revolution", "sweep"].includes(o.op)) continue;
     const solid = String(o.name);
-    const sc = subcat.get(solid)?.subcategory as string | undefined;
+    // a subcategory given in its own op, or on the solid op itself (revolution, sweep and blend take one)
+    const sc = (subcat.get(solid)?.subcategory ?? o.subcategory) as string | undefined;
     if (KEEP_NATIVE.test(solid) || (sc && KEEP_NATIVE.test(sc))) { kept.push({ solid, why: "stays native (envelope, clearance or connector)" }); continue; }
     const v = vis.get(solid);
     if (v && v.fine === false) { kept.push({ solid, why: "not shown on Fine" }); continue; }
@@ -182,4 +183,15 @@ export function envelopeVerdict(ops: Op[], parts: Array<{ name: string; bbox_min
   }
   v.family_off = parts.length > 0 && v.errors.length / parts.length > ENVELOPE_FAMILY_SHARE;
   return v;
+}
+
+/**
+ * Solids shown only when the family is Open: their switch is Open, or a formula switch that needs Open (and(..., Open)).
+ * They reach past the closed envelope by design, so the envelope check leaves them out.
+ */
+export function openOnlySolids(ops: Op[]): Set<string> {
+  const formula = new Map(ops.filter((o) => o.op === "set_formula").map((o) => [String(o.name), String(o.formula)]));
+  // the switch is Open itself, or its formula uses Open other than as not(Open)
+  const needsOpen = (p: string) => p === "Open" || /\bOpen\b/.test((formula.get(p) ?? "").replace(/not\(\s*Open\s*\)/g, ""));
+  return new Set(ops.filter((o) => o.op === "set_visible_param" && needsOpen(String(o.param))).map((o) => String(o.solid)));
 }
