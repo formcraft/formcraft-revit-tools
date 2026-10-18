@@ -98,7 +98,7 @@ function readRecipe(file: string): { recipe: Recipe | null; problems: string[] }
 }
 
 /** The register's host for a family (the Host column; null: not in the register, no Host column or no register). */
-function registerHost(cfg: GuardConfig, family: string): string | null {
+export function registerHost(cfg: GuardConfig, family: string): string | null {
   try {
     const file = win.join(win.dirname(expandEnv(cfg.specs_path)), "FMC_Family_Register.csv");
     const rows = fs.readFileSync(file, "utf8").replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim()).map(csvRow);

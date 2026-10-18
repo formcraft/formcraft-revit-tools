@@ -186,8 +186,16 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
    - the IFC class
    - the value sources
 
-   Tags, schedules, legends and detail levels need the family placed in the role's chain-test project
-   (`fmc_family load_test`), so they show as **Not checked**, never as passed.
+   Tags, schedules, legends and detail levels need the family placed in the role's chain-test project, so they show as
+   **Not checked**, never as passed.
+5. **Chain test** (`fmc_legend chain role=<Role>`, F-064 #6): a role's chain-test project made from its template
+   (`06_Templates\_Staging\FMC_<Role>_Template_v2.2.rte`). Every staged family of the role is loaded and one instance of
+   each type placed on the host the register gives (wall face, ceiling underside, or the level). Each is keynote-tagged
+   when the template has a keynote tag. A keynote legend and a type schedule per category (Family and Type, Type Mark,
+   Keynote, Count) go on a sheet with the template's title block. Saved to `04_Families\_ChainTests\FMC_ChainTest_<Role>.rvt`
+   (an older one goes to `_Archive`). The dry run lists the families, their hosts and those **not in the register**: the
+   host comes only from the register, so a family it doesn't list goes on the level. On 18 Oct, 66 of role E's 116 staged
+   families weren't in the register: a kit change request.
 4. **Release or send back:** in the pane (Families › Quality and release), by a person, with a reviewer and a note. A
    release moves the family to `04_Families\<Role>` and adds a row to `04_Families\FMC_Release_Log.csv`. It needs a
    passed gate and never overwrites a released family. This is never an MCP tool: hard rule 2 keeps tools out of
