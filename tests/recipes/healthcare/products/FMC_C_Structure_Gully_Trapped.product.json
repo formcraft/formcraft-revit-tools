@@ -1,0 +1,343 @@
+{
+ "family": "FMC_C_Structure_Gully_Trapped",
+ "category": "Pipe Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Trapped road gully: precast gully pot on concrete bed with haunch, brick seating, ductile-iron hinged grating and frame, 150 outlet",
+ "ifc": "IfcDistributionChamberElement",
+ "keynote": "T.DRN_05",
+ "types": [
+  {
+   "name": "450x450_Trapped"
+  }
+ ],
+ "materials": {
+  "c20": "FMC_Concrete_C20",
+  "pre": "FMC_Concrete_Manhole_Precast",
+  "ci": "FMC_Metal_BurglarBar_Steel",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "brick": "FMC_Masonry_BurntClayBrick_Common",
+  "rubber": "FMC_Rubber_Black"
+ },
+ "parts": [
+  {
+   "n": "Gully Pot",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -900
+    ],
+    [
+     265,
+     -900
+    ],
+    [
+     265,
+     -150
+    ],
+    [
+     225,
+     -150
+    ],
+    [
+     225,
+     -860
+    ],
+    [
+     0,
+     -860
+    ]
+   ],
+   "mat": "pre",
+   "seg": 40
+  },
+  {
+   "n": "Concrete Bed",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 400,
+   "z": [
+    -1050,
+    -900
+   ],
+   "mat": "c20",
+   "seg": 40
+  },
+  {
+   "n": "Concrete Haunch",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     265,
+     -300
+    ],
+    [
+     420,
+     -300
+    ],
+    [
+     420,
+     -150
+    ],
+    [
+     265,
+     -150
+    ]
+   ],
+   "mat": "c20",
+   "seg": 40
+  },
+  {
+   "n": "Seating Front",
+   "shape": "box",
+   "at": [
+    -300,
+    -300,
+    -150,
+    300,
+    -230,
+    -100
+   ],
+   "mat": "brick"
+  },
+  {
+   "n": "Seating Back",
+   "shape": "box",
+   "at": [
+    -300,
+    230,
+    -150,
+    300,
+    300,
+    -100
+   ],
+   "mat": "brick"
+  },
+  {
+   "n": "Seating Left",
+   "shape": "box",
+   "at": [
+    -300,
+    -230,
+    -150,
+    -230,
+    230,
+    -100
+   ],
+   "mat": "brick"
+  },
+  {
+   "n": "Seating Right",
+   "shape": "box",
+   "at": [
+    230,
+    -230,
+    -150,
+    300,
+    230,
+    -100
+   ],
+   "mat": "brick"
+  },
+  {
+   "n": "Frame Front",
+   "shape": "box",
+   "at": [
+    -280,
+    -280,
+    -100,
+    280,
+    -225,
+    0
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Frame Back",
+   "shape": "box",
+   "at": [
+    -280,
+    225,
+    -100,
+    280,
+    280,
+    0
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Frame Left",
+   "shape": "box",
+   "at": [
+    -280,
+    -225,
+    -100,
+    -225,
+    225,
+    0
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Frame Right",
+   "shape": "box",
+   "at": [
+    225,
+    -225,
+    -100,
+    280,
+    225,
+    0
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Grating Bar",
+   "shape": "box",
+   "at": [
+    -220,
+    -220,
+    -40,
+    -200,
+    220,
+    0.5
+   ],
+   "mat": "ci",
+   "repeat": {
+    "n": 9,
+    "d": [
+     52,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Grating Rim",
+   "shape": "box",
+   "at": [
+    -222,
+    -222,
+    -40,
+    222,
+    -205,
+    0.5
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Grating Rim Back",
+   "shape": "box",
+   "at": [
+    -222,
+    205,
+    -40,
+    222,
+    222,
+    0.5
+   ],
+   "mat": "ci"
+  },
+  {
+   "n": "Hinge Lug",
+   "shape": "box",
+   "at": [
+    -150,
+    222,
+    -30,
+    -100,
+    240,
+    0
+   ],
+   "mat": "ci",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     250,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Outlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -450
+   ],
+   "r": 75,
+   "x": [
+    255,
+    600
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Rodding Stopper",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    180,
+    0
+   ],
+   "r": 35,
+   "z": [
+    -470,
+    -430
+   ],
+   "mat": "rubber",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "structure gully trapped structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+gully+trapped+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Gully pot 450 dia x 750 deep": {
+   "value": "450x750",
+   "source_status": "assumed",
+   "source": "typical precast road gully (BS 5911-6)"
+  },
+  "Grating 450 x 450 D400": {
+   "value": "450x450 D400",
+   "source_status": "assumed",
+   "source": "BS EN 124; carriageway"
+  },
+  "Outlet 150 mm, trap seal 85 mm": {
+   "value": "150 / 85",
+   "source_status": "assumed",
+   "source": "typical"
+  }
+ },
+ "about": "Road surface at z = 0: frame (four bars), slotted grating with rims and hinge lugs, brick seating course, gully pot, concrete bed and haunch, rodding stopper (Fine), outlet stub with connector.",
+ "connectors": [
+  {
+   "n": "SAN Out",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Outlet Pipe",
+   "side": "right",
+   "diameter": 150,
+   "flow": "Out"
+  }
+ ]
+}

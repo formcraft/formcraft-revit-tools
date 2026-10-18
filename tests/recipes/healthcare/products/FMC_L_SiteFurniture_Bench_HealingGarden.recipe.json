@@ -1,0 +1,4368 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_L_SiteFurniture_Bench_HealingGarden",
+ "template": "Metric Generic Model.rft",
+ "about": "Bench modelled as a generic product: three steel frames (front legs rising into the arm supports, rear legs, back supports, seat rails, feet), six hardwood seat slats with bolt heads at each frame, four raked back slats, timber armrests. Geometry drawn for 1500_Bench; the other types share it (sizes in the values). Reference: query: site furniture bench healing garden site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+bench+healing+garden+site+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Site"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Compaction_Pct_MDD",
+   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_CBR_Pct",
+   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Layer_Thickness_mm",
+   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "1500_Bench"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Cost_Unit",
+   "type": "1500_Bench",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Geometry_Stage",
+   "type": "1500_Bench",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/IfcExportAs",
+   "type": "1500_Bench",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/Description",
+   "type": "1500_Bench",
+   "param": "Description",
+   "value": "Healing-garden bench 1500 / 1800 with backrest and armrests to help standing, hardwood slats on powder-coated steel frames, seat 460, arms 675"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/Keynote",
+   "type": "1500_Bench",
+   "param": "Keynote",
+   "value": "L.FUR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Keynote_Code",
+   "type": "1500_Bench",
+   "param": "FMC_Keynote_Code",
+   "value": "L.FUR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Code_Description",
+   "type": "1500_Bench",
+   "param": "FMC_Code_Description",
+   "value": "Bench HealingGarden: Garden bench with armrests to help standing"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Code_Group",
+   "type": "1500_Bench",
+   "param": "FMC_Code_Group",
+   "value": "L.FUR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_Bench/FMC_Role_Code",
+   "type": "1500_Bench",
+   "param": "FMC_Role_Code",
+   "value": "L"
+  },
+  {
+   "op": "add_type",
+   "name": "1800_Bench"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Cost_Unit",
+   "type": "1800_Bench",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Geometry_Stage",
+   "type": "1800_Bench",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/IfcExportAs",
+   "type": "1800_Bench",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/Description",
+   "type": "1800_Bench",
+   "param": "Description",
+   "value": "Healing-garden bench 1500 / 1800 with backrest and armrests to help standing, hardwood slats on powder-coated steel frames, seat 460, arms 675"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/Keynote",
+   "type": "1800_Bench",
+   "param": "Keynote",
+   "value": "L.FUR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Keynote_Code",
+   "type": "1800_Bench",
+   "param": "FMC_Keynote_Code",
+   "value": "L.FUR_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Code_Description",
+   "type": "1800_Bench",
+   "param": "FMC_Code_Description",
+   "value": "Bench HealingGarden: Garden bench with armrests to help standing"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Code_Group",
+   "type": "1800_Bench",
+   "param": "FMC_Code_Group",
+   "value": "L.FUR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1800_Bench/FMC_Role_Code",
+   "type": "1800_Bench",
+   "param": "FMC_Role_Code",
+   "value": "L"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Timber",
+   "color": [
+    138,
+    98,
+    54
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Timber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Timber_Mvule",
+   "param": "Timber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ss",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ss Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Ss Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -760.0,
+     -330.0
+    ],
+    [
+     760.0,
+     -330.0
+    ],
+    [
+     760.0,
+     324.5
+    ],
+    [
+     -760.0,
+     324.5
+    ]
+   ],
+   "start": -1.4,
+   "end": 885.1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Leg Left",
+   "points": [
+    [
+     -275.0,
+     0.6
+    ],
+    [
+     -260.0,
+     640.6
+    ],
+    [
+     -210.0,
+     639.4
+    ],
+    [
+     -225.0,
+     -0.6
+    ]
+   ],
+   "start": -735,
+   "end": -705,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Leg Left",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Leg Left",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Leg Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rear Leg Left",
+   "points": [
+    [
+     205.0,
+     -1.4
+    ],
+    [
+     180.0,
+     438.6
+    ],
+    [
+     230.0,
+     441.4
+    ],
+    [
+     255.0,
+     1.4
+    ]
+   ],
+   "start": -735,
+   "end": -705,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rear Leg Left",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rear Leg Left",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rear Leg Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Support Left",
+   "points": [
+    [
+     180.5,
+     425.1
+    ],
+    [
+     275.5,
+     885.1
+    ],
+    [
+     324.5,
+     874.9
+    ],
+    [
+     229.5,
+     414.9
+    ]
+   ],
+   "start": -735,
+   "end": -705,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Support Left",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Support Left",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Support Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Rail Left",
+   "points": [
+    [
+     -290.4,
+     435.0
+    ],
+    [
+     229.6,
+     445.0
+    ],
+    [
+     230.4,
+     405.0
+    ],
+    [
+     -289.6,
+     395.0
+    ]
+   ],
+   "start": -735,
+   "end": -705,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Rail Left",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Rail Left",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Rail Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Left",
+   "points": [
+    [
+     -740,
+     -280
+    ],
+    [
+     -700,
+     -280
+    ],
+    [
+     -700,
+     -215
+    ],
+    [
+     -740,
+     -215
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Left",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Left",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Left",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Armrest Left",
+   "points": [
+    [
+     -698.0,
+     -330.0
+    ],
+    [
+     -691.11,
+     -328.63
+    ],
+    [
+     -685.27,
+     -324.73
+    ],
+    [
+     -681.37,
+     -318.89
+    ],
+    [
+     -680.0,
+     -312.0
+    ],
+    [
+     -680.0,
+     112.0
+    ],
+    [
+     -681.37,
+     118.89
+    ],
+    [
+     -685.27,
+     124.73
+    ],
+    [
+     -691.11,
+     128.63
+    ],
+    [
+     -698.0,
+     130.0
+    ],
+    [
+     -742.0,
+     130.0
+    ],
+    [
+     -748.89,
+     128.63
+    ],
+    [
+     -754.73,
+     124.73
+    ],
+    [
+     -758.63,
+     118.89
+    ],
+    [
+     -760.0,
+     112.0
+    ],
+    [
+     -760.0,
+     -312.0
+    ],
+    [
+     -758.63,
+     -318.89
+    ],
+    [
+     -754.73,
+     -324.73
+    ],
+    [
+     -748.89,
+     -328.63
+    ],
+    [
+     -742.0,
+     -330.0
+    ]
+   ],
+   "start": 640,
+   "end": 675
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Armrest Left",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Armrest Left",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Armrest Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Leg Right",
+   "points": [
+    [
+     -275.0,
+     0.6
+    ],
+    [
+     -260.0,
+     640.6
+    ],
+    [
+     -210.0,
+     639.4
+    ],
+    [
+     -225.0,
+     -0.6
+    ]
+   ],
+   "start": 705,
+   "end": 735,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Leg Right",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Leg Right",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Leg Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rear Leg Right",
+   "points": [
+    [
+     205.0,
+     -1.4
+    ],
+    [
+     180.0,
+     438.6
+    ],
+    [
+     230.0,
+     441.4
+    ],
+    [
+     255.0,
+     1.4
+    ]
+   ],
+   "start": 705,
+   "end": 735,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rear Leg Right",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rear Leg Right",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rear Leg Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Support Right",
+   "points": [
+    [
+     180.5,
+     425.1
+    ],
+    [
+     275.5,
+     885.1
+    ],
+    [
+     324.5,
+     874.9
+    ],
+    [
+     229.5,
+     414.9
+    ]
+   ],
+   "start": 705,
+   "end": 735,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Support Right",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Support Right",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Support Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Rail Right",
+   "points": [
+    [
+     -290.4,
+     435.0
+    ],
+    [
+     229.6,
+     445.0
+    ],
+    [
+     230.4,
+     405.0
+    ],
+    [
+     -289.6,
+     395.0
+    ]
+   ],
+   "start": 705,
+   "end": 735,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Rail Right",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Rail Right",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Rail Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Right",
+   "points": [
+    [
+     700,
+     -280
+    ],
+    [
+     740,
+     -280
+    ],
+    [
+     740,
+     -215
+    ],
+    [
+     700,
+     -215
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Right",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Right",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Right",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Armrest Right",
+   "points": [
+    [
+     742.0,
+     -330.0
+    ],
+    [
+     748.89,
+     -328.63
+    ],
+    [
+     754.73,
+     -324.73
+    ],
+    [
+     758.63,
+     -318.89
+    ],
+    [
+     760.0,
+     -312.0
+    ],
+    [
+     760.0,
+     112.0
+    ],
+    [
+     758.63,
+     118.89
+    ],
+    [
+     754.73,
+     124.73
+    ],
+    [
+     748.89,
+     128.63
+    ],
+    [
+     742.0,
+     130.0
+    ],
+    [
+     698.0,
+     130.0
+    ],
+    [
+     691.11,
+     128.63
+    ],
+    [
+     685.27,
+     124.73
+    ],
+    [
+     681.37,
+     118.89
+    ],
+    [
+     680.0,
+     112.0
+    ],
+    [
+     680.0,
+     -312.0
+    ],
+    [
+     681.37,
+     -318.89
+    ],
+    [
+     685.27,
+     -324.73
+    ],
+    [
+     691.11,
+     -328.63
+    ],
+    [
+     698.0,
+     -330.0
+    ]
+   ],
+   "start": 640,
+   "end": 675
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Armrest Right",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Armrest Right",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Armrest Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Leg Centre",
+   "points": [
+    [
+     -275.0,
+     0.9
+    ],
+    [
+     -260.0,
+     440.9
+    ],
+    [
+     -210.0,
+     439.1
+    ],
+    [
+     -225.0,
+     -0.9
+    ]
+   ],
+   "start": -15,
+   "end": 15,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Leg Centre",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Leg Centre",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Leg Centre",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rear Leg Centre",
+   "points": [
+    [
+     205.0,
+     -1.4
+    ],
+    [
+     180.0,
+     438.6
+    ],
+    [
+     230.0,
+     441.4
+    ],
+    [
+     255.0,
+     1.4
+    ]
+   ],
+   "start": -15,
+   "end": 15,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rear Leg Centre",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rear Leg Centre",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rear Leg Centre",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Support Centre",
+   "points": [
+    [
+     180.5,
+     425.1
+    ],
+    [
+     275.5,
+     885.1
+    ],
+    [
+     324.5,
+     874.9
+    ],
+    [
+     229.5,
+     414.9
+    ]
+   ],
+   "start": -15,
+   "end": 15,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Support Centre",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Support Centre",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Support Centre",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Rail Centre",
+   "points": [
+    [
+     -290.4,
+     435.0
+    ],
+    [
+     229.6,
+     445.0
+    ],
+    [
+     230.4,
+     405.0
+    ],
+    [
+     -289.6,
+     395.0
+    ]
+   ],
+   "start": -15,
+   "end": 15,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Rail Centre",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Rail Centre",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Rail Centre",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Centre",
+   "points": [
+    [
+     -20,
+     -280
+    ],
+    [
+     20,
+     -280
+    ],
+    [
+     20,
+     -215
+    ],
+    [
+     -20,
+     -215
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Centre",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Centre",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Centre",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 1",
+   "points": [
+    [
+     744.0,
+     -305.0
+    ],
+    [
+     746.3,
+     -304.54
+    ],
+    [
+     748.24,
+     -303.24
+    ],
+    [
+     749.54,
+     -301.3
+    ],
+    [
+     750.0,
+     -299.0
+    ],
+    [
+     750.0,
+     -241.0
+    ],
+    [
+     749.54,
+     -238.7
+    ],
+    [
+     748.24,
+     -236.76
+    ],
+    [
+     746.3,
+     -235.46
+    ],
+    [
+     744.0,
+     -235.0
+    ],
+    [
+     -744.0,
+     -235.0
+    ],
+    [
+     -746.3,
+     -235.46
+    ],
+    [
+     -748.24,
+     -236.76
+    ],
+    [
+     -749.54,
+     -238.7
+    ],
+    [
+     -750.0,
+     -241.0
+    ],
+    [
+     -750.0,
+     -299.0
+    ],
+    [
+     -749.54,
+     -301.3
+    ],
+    [
+     -748.24,
+     -303.24
+    ],
+    [
+     -746.3,
+     -304.54
+    ],
+    [
+     -744.0,
+     -305.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 1",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 1",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 2",
+   "points": [
+    [
+     744.0,
+     -217.0
+    ],
+    [
+     746.3,
+     -216.54
+    ],
+    [
+     748.24,
+     -215.24
+    ],
+    [
+     749.54,
+     -213.3
+    ],
+    [
+     750.0,
+     -211.0
+    ],
+    [
+     750.0,
+     -153.0
+    ],
+    [
+     749.54,
+     -150.7
+    ],
+    [
+     748.24,
+     -148.76
+    ],
+    [
+     746.3,
+     -147.46
+    ],
+    [
+     744.0,
+     -147.0
+    ],
+    [
+     -744.0,
+     -147.0
+    ],
+    [
+     -746.3,
+     -147.46
+    ],
+    [
+     -748.24,
+     -148.76
+    ],
+    [
+     -749.54,
+     -150.7
+    ],
+    [
+     -750.0,
+     -153.0
+    ],
+    [
+     -750.0,
+     -211.0
+    ],
+    [
+     -749.54,
+     -213.3
+    ],
+    [
+     -748.24,
+     -215.24
+    ],
+    [
+     -746.3,
+     -216.54
+    ],
+    [
+     -744.0,
+     -217.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 2",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 2",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 3",
+   "points": [
+    [
+     744.0,
+     -129.0
+    ],
+    [
+     746.3,
+     -128.54
+    ],
+    [
+     748.24,
+     -127.24
+    ],
+    [
+     749.54,
+     -125.3
+    ],
+    [
+     750.0,
+     -123.0
+    ],
+    [
+     750.0,
+     -65.0
+    ],
+    [
+     749.54,
+     -62.7
+    ],
+    [
+     748.24,
+     -60.76
+    ],
+    [
+     746.3,
+     -59.46
+    ],
+    [
+     744.0,
+     -59.0
+    ],
+    [
+     -744.0,
+     -59.0
+    ],
+    [
+     -746.3,
+     -59.46
+    ],
+    [
+     -748.24,
+     -60.76
+    ],
+    [
+     -749.54,
+     -62.7
+    ],
+    [
+     -750.0,
+     -65.0
+    ],
+    [
+     -750.0,
+     -123.0
+    ],
+    [
+     -749.54,
+     -125.3
+    ],
+    [
+     -748.24,
+     -127.24
+    ],
+    [
+     -746.3,
+     -128.54
+    ],
+    [
+     -744.0,
+     -129.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 3",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 3",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 4",
+   "points": [
+    [
+     744.0,
+     -41.0
+    ],
+    [
+     746.3,
+     -40.54
+    ],
+    [
+     748.24,
+     -39.24
+    ],
+    [
+     749.54,
+     -37.3
+    ],
+    [
+     750.0,
+     -35.0
+    ],
+    [
+     750.0,
+     23.0
+    ],
+    [
+     749.54,
+     25.3
+    ],
+    [
+     748.24,
+     27.24
+    ],
+    [
+     746.3,
+     28.54
+    ],
+    [
+     744.0,
+     29.0
+    ],
+    [
+     -744.0,
+     29.0
+    ],
+    [
+     -746.3,
+     28.54
+    ],
+    [
+     -748.24,
+     27.24
+    ],
+    [
+     -749.54,
+     25.3
+    ],
+    [
+     -750.0,
+     23.0
+    ],
+    [
+     -750.0,
+     -35.0
+    ],
+    [
+     -749.54,
+     -37.3
+    ],
+    [
+     -748.24,
+     -39.24
+    ],
+    [
+     -746.3,
+     -40.54
+    ],
+    [
+     -744.0,
+     -41.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 4",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 4",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 5",
+   "points": [
+    [
+     744.0,
+     47.0
+    ],
+    [
+     746.3,
+     47.46
+    ],
+    [
+     748.24,
+     48.76
+    ],
+    [
+     749.54,
+     50.7
+    ],
+    [
+     750.0,
+     53.0
+    ],
+    [
+     750.0,
+     111.0
+    ],
+    [
+     749.54,
+     113.3
+    ],
+    [
+     748.24,
+     115.24
+    ],
+    [
+     746.3,
+     116.54
+    ],
+    [
+     744.0,
+     117.0
+    ],
+    [
+     -744.0,
+     117.0
+    ],
+    [
+     -746.3,
+     116.54
+    ],
+    [
+     -748.24,
+     115.24
+    ],
+    [
+     -749.54,
+     113.3
+    ],
+    [
+     -750.0,
+     111.0
+    ],
+    [
+     -750.0,
+     53.0
+    ],
+    [
+     -749.54,
+     50.7
+    ],
+    [
+     -748.24,
+     48.76
+    ],
+    [
+     -746.3,
+     47.46
+    ],
+    [
+     -744.0,
+     47.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 5",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 5",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Slat 6",
+   "points": [
+    [
+     744.0,
+     135.0
+    ],
+    [
+     746.3,
+     135.46
+    ],
+    [
+     748.24,
+     136.76
+    ],
+    [
+     749.54,
+     138.7
+    ],
+    [
+     750.0,
+     141.0
+    ],
+    [
+     750.0,
+     199.0
+    ],
+    [
+     749.54,
+     201.3
+    ],
+    [
+     748.24,
+     203.24
+    ],
+    [
+     746.3,
+     204.54
+    ],
+    [
+     744.0,
+     205.0
+    ],
+    [
+     -744.0,
+     205.0
+    ],
+    [
+     -746.3,
+     204.54
+    ],
+    [
+     -748.24,
+     203.24
+    ],
+    [
+     -749.54,
+     201.3
+    ],
+    [
+     -750.0,
+     199.0
+    ],
+    [
+     -750.0,
+     141.0
+    ],
+    [
+     -749.54,
+     138.7
+    ],
+    [
+     -748.24,
+     136.76
+    ],
+    [
+     -746.3,
+     135.46
+    ],
+    [
+     -744.0,
+     135.0
+    ]
+   ],
+   "start": 435,
+   "end": 462
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Slat 6",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Slat 6",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Slat 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Slat 1",
+   "points": [
+    [
+     205.0,
+     500.0
+    ],
+    [
+     221.5,
+     578.3
+    ],
+    [
+     194.1,
+     584.1
+    ],
+    [
+     177.6,
+     505.8
+    ]
+   ],
+   "start": -750,
+   "end": 750,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Slat 1",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Slat 1",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Slat 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Slat 2",
+   "points": [
+    [
+     225.7,
+     597.8
+    ],
+    [
+     242.2,
+     676.0999999999999
+    ],
+    [
+     214.79999999999998,
+     681.9
+    ],
+    [
+     198.29999999999998,
+     603.6
+    ]
+   ],
+   "start": -750,
+   "end": 750,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Slat 2",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Slat 2",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Slat 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Slat 3",
+   "points": [
+    [
+     246.4,
+     695.6
+    ],
+    [
+     262.9,
+     773.9
+    ],
+    [
+     235.5,
+     779.7
+    ],
+    [
+     219.0,
+     701.4
+    ]
+   ],
+   "start": -750,
+   "end": 750,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Slat 3",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Slat 3",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Slat 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Slat 4",
+   "points": [
+    [
+     267.1,
+     793.4
+    ],
+    [
+     283.6,
+     871.6999999999999
+    ],
+    [
+     256.2,
+     877.5
+    ],
+    [
+     239.7,
+     799.2
+    ]
+   ],
+   "start": -750,
+   "end": 750,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Slat 4",
+   "subcategory": "Timber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Slat 4",
+   "param": "Timber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Slat 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 1",
+   "points": [
+    [
+     -715.0,
+     -270.0
+    ],
+    [
+     -715.17,
+     -268.71
+    ],
+    [
+     -715.67,
+     -267.5
+    ],
+    [
+     -716.46,
+     -266.46
+    ],
+    [
+     -717.5,
+     -265.67
+    ],
+    [
+     -718.71,
+     -265.17
+    ],
+    [
+     -720.0,
+     -265.0
+    ],
+    [
+     -721.29,
+     -265.17
+    ],
+    [
+     -722.5,
+     -265.67
+    ],
+    [
+     -723.54,
+     -266.46
+    ],
+    [
+     -724.33,
+     -267.5
+    ],
+    [
+     -724.83,
+     -268.71
+    ],
+    [
+     -725.0,
+     -270.0
+    ],
+    [
+     -724.83,
+     -271.29
+    ],
+    [
+     -724.33,
+     -272.5
+    ],
+    [
+     -723.54,
+     -273.54
+    ],
+    [
+     -722.5,
+     -274.33
+    ],
+    [
+     -721.29,
+     -274.83
+    ],
+    [
+     -720.0,
+     -275.0
+    ],
+    [
+     -718.71,
+     -274.83
+    ],
+    [
+     -717.5,
+     -274.33
+    ],
+    [
+     -716.46,
+     -273.54
+    ],
+    [
+     -715.67,
+     -272.5
+    ],
+    [
+     -715.17,
+     -271.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 2",
+   "points": [
+    [
+     -715.0,
+     -182.0
+    ],
+    [
+     -715.17,
+     -180.71
+    ],
+    [
+     -715.67,
+     -179.5
+    ],
+    [
+     -716.46,
+     -178.46
+    ],
+    [
+     -717.5,
+     -177.67
+    ],
+    [
+     -718.71,
+     -177.17
+    ],
+    [
+     -720.0,
+     -177.0
+    ],
+    [
+     -721.29,
+     -177.17
+    ],
+    [
+     -722.5,
+     -177.67
+    ],
+    [
+     -723.54,
+     -178.46
+    ],
+    [
+     -724.33,
+     -179.5
+    ],
+    [
+     -724.83,
+     -180.71
+    ],
+    [
+     -725.0,
+     -182.0
+    ],
+    [
+     -724.83,
+     -183.29
+    ],
+    [
+     -724.33,
+     -184.5
+    ],
+    [
+     -723.54,
+     -185.54
+    ],
+    [
+     -722.5,
+     -186.33
+    ],
+    [
+     -721.29,
+     -186.83
+    ],
+    [
+     -720.0,
+     -187.0
+    ],
+    [
+     -718.71,
+     -186.83
+    ],
+    [
+     -717.5,
+     -186.33
+    ],
+    [
+     -716.46,
+     -185.54
+    ],
+    [
+     -715.67,
+     -184.5
+    ],
+    [
+     -715.17,
+     -183.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 3",
+   "points": [
+    [
+     -715.0,
+     -94.0
+    ],
+    [
+     -715.17,
+     -92.71
+    ],
+    [
+     -715.67,
+     -91.5
+    ],
+    [
+     -716.46,
+     -90.46
+    ],
+    [
+     -717.5,
+     -89.67
+    ],
+    [
+     -718.71,
+     -89.17
+    ],
+    [
+     -720.0,
+     -89.0
+    ],
+    [
+     -721.29,
+     -89.17
+    ],
+    [
+     -722.5,
+     -89.67
+    ],
+    [
+     -723.54,
+     -90.46
+    ],
+    [
+     -724.33,
+     -91.5
+    ],
+    [
+     -724.83,
+     -92.71
+    ],
+    [
+     -725.0,
+     -94.0
+    ],
+    [
+     -724.83,
+     -95.29
+    ],
+    [
+     -724.33,
+     -96.5
+    ],
+    [
+     -723.54,
+     -97.54
+    ],
+    [
+     -722.5,
+     -98.33
+    ],
+    [
+     -721.29,
+     -98.83
+    ],
+    [
+     -720.0,
+     -99.0
+    ],
+    [
+     -718.71,
+     -98.83
+    ],
+    [
+     -717.5,
+     -98.33
+    ],
+    [
+     -716.46,
+     -97.54
+    ],
+    [
+     -715.67,
+     -96.5
+    ],
+    [
+     -715.17,
+     -95.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 4",
+   "points": [
+    [
+     -715.0,
+     -6.0
+    ],
+    [
+     -715.17,
+     -4.71
+    ],
+    [
+     -715.67,
+     -3.5
+    ],
+    [
+     -716.46,
+     -2.46
+    ],
+    [
+     -717.5,
+     -1.67
+    ],
+    [
+     -718.71,
+     -1.17
+    ],
+    [
+     -720.0,
+     -1.0
+    ],
+    [
+     -721.29,
+     -1.17
+    ],
+    [
+     -722.5,
+     -1.67
+    ],
+    [
+     -723.54,
+     -2.46
+    ],
+    [
+     -724.33,
+     -3.5
+    ],
+    [
+     -724.83,
+     -4.71
+    ],
+    [
+     -725.0,
+     -6.0
+    ],
+    [
+     -724.83,
+     -7.29
+    ],
+    [
+     -724.33,
+     -8.5
+    ],
+    [
+     -723.54,
+     -9.54
+    ],
+    [
+     -722.5,
+     -10.33
+    ],
+    [
+     -721.29,
+     -10.83
+    ],
+    [
+     -720.0,
+     -11.0
+    ],
+    [
+     -718.71,
+     -10.83
+    ],
+    [
+     -717.5,
+     -10.33
+    ],
+    [
+     -716.46,
+     -9.54
+    ],
+    [
+     -715.67,
+     -8.5
+    ],
+    [
+     -715.17,
+     -7.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 5",
+   "points": [
+    [
+     -715.0,
+     82.0
+    ],
+    [
+     -715.17,
+     83.29
+    ],
+    [
+     -715.67,
+     84.5
+    ],
+    [
+     -716.46,
+     85.54
+    ],
+    [
+     -717.5,
+     86.33
+    ],
+    [
+     -718.71,
+     86.83
+    ],
+    [
+     -720.0,
+     87.0
+    ],
+    [
+     -721.29,
+     86.83
+    ],
+    [
+     -722.5,
+     86.33
+    ],
+    [
+     -723.54,
+     85.54
+    ],
+    [
+     -724.33,
+     84.5
+    ],
+    [
+     -724.83,
+     83.29
+    ],
+    [
+     -725.0,
+     82.0
+    ],
+    [
+     -724.83,
+     80.71
+    ],
+    [
+     -724.33,
+     79.5
+    ],
+    [
+     -723.54,
+     78.46
+    ],
+    [
+     -722.5,
+     77.67
+    ],
+    [
+     -721.29,
+     77.17
+    ],
+    [
+     -720.0,
+     77.0
+    ],
+    [
+     -718.71,
+     77.17
+    ],
+    [
+     -717.5,
+     77.67
+    ],
+    [
+     -716.46,
+     78.46
+    ],
+    [
+     -715.67,
+     79.5
+    ],
+    [
+     -715.17,
+     80.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Left 6",
+   "points": [
+    [
+     -715.0,
+     170.0
+    ],
+    [
+     -715.17,
+     171.29
+    ],
+    [
+     -715.67,
+     172.5
+    ],
+    [
+     -716.46,
+     173.54
+    ],
+    [
+     -717.5,
+     174.33
+    ],
+    [
+     -718.71,
+     174.83
+    ],
+    [
+     -720.0,
+     175.0
+    ],
+    [
+     -721.29,
+     174.83
+    ],
+    [
+     -722.5,
+     174.33
+    ],
+    [
+     -723.54,
+     173.54
+    ],
+    [
+     -724.33,
+     172.5
+    ],
+    [
+     -724.83,
+     171.29
+    ],
+    [
+     -725.0,
+     170.0
+    ],
+    [
+     -724.83,
+     168.71
+    ],
+    [
+     -724.33,
+     167.5
+    ],
+    [
+     -723.54,
+     166.46
+    ],
+    [
+     -722.5,
+     165.67
+    ],
+    [
+     -721.29,
+     165.17
+    ],
+    [
+     -720.0,
+     165.0
+    ],
+    [
+     -718.71,
+     165.17
+    ],
+    [
+     -717.5,
+     165.67
+    ],
+    [
+     -716.46,
+     166.46
+    ],
+    [
+     -715.67,
+     167.5
+    ],
+    [
+     -715.17,
+     168.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Left 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Left 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Left 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 1",
+   "points": [
+    [
+     725.0,
+     -270.0
+    ],
+    [
+     724.83,
+     -268.71
+    ],
+    [
+     724.33,
+     -267.5
+    ],
+    [
+     723.54,
+     -266.46
+    ],
+    [
+     722.5,
+     -265.67
+    ],
+    [
+     721.29,
+     -265.17
+    ],
+    [
+     720.0,
+     -265.0
+    ],
+    [
+     718.71,
+     -265.17
+    ],
+    [
+     717.5,
+     -265.67
+    ],
+    [
+     716.46,
+     -266.46
+    ],
+    [
+     715.67,
+     -267.5
+    ],
+    [
+     715.17,
+     -268.71
+    ],
+    [
+     715.0,
+     -270.0
+    ],
+    [
+     715.17,
+     -271.29
+    ],
+    [
+     715.67,
+     -272.5
+    ],
+    [
+     716.46,
+     -273.54
+    ],
+    [
+     717.5,
+     -274.33
+    ],
+    [
+     718.71,
+     -274.83
+    ],
+    [
+     720.0,
+     -275.0
+    ],
+    [
+     721.29,
+     -274.83
+    ],
+    [
+     722.5,
+     -274.33
+    ],
+    [
+     723.54,
+     -273.54
+    ],
+    [
+     724.33,
+     -272.5
+    ],
+    [
+     724.83,
+     -271.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 2",
+   "points": [
+    [
+     725.0,
+     -182.0
+    ],
+    [
+     724.83,
+     -180.71
+    ],
+    [
+     724.33,
+     -179.5
+    ],
+    [
+     723.54,
+     -178.46
+    ],
+    [
+     722.5,
+     -177.67
+    ],
+    [
+     721.29,
+     -177.17
+    ],
+    [
+     720.0,
+     -177.0
+    ],
+    [
+     718.71,
+     -177.17
+    ],
+    [
+     717.5,
+     -177.67
+    ],
+    [
+     716.46,
+     -178.46
+    ],
+    [
+     715.67,
+     -179.5
+    ],
+    [
+     715.17,
+     -180.71
+    ],
+    [
+     715.0,
+     -182.0
+    ],
+    [
+     715.17,
+     -183.29
+    ],
+    [
+     715.67,
+     -184.5
+    ],
+    [
+     716.46,
+     -185.54
+    ],
+    [
+     717.5,
+     -186.33
+    ],
+    [
+     718.71,
+     -186.83
+    ],
+    [
+     720.0,
+     -187.0
+    ],
+    [
+     721.29,
+     -186.83
+    ],
+    [
+     722.5,
+     -186.33
+    ],
+    [
+     723.54,
+     -185.54
+    ],
+    [
+     724.33,
+     -184.5
+    ],
+    [
+     724.83,
+     -183.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 3",
+   "points": [
+    [
+     725.0,
+     -94.0
+    ],
+    [
+     724.83,
+     -92.71
+    ],
+    [
+     724.33,
+     -91.5
+    ],
+    [
+     723.54,
+     -90.46
+    ],
+    [
+     722.5,
+     -89.67
+    ],
+    [
+     721.29,
+     -89.17
+    ],
+    [
+     720.0,
+     -89.0
+    ],
+    [
+     718.71,
+     -89.17
+    ],
+    [
+     717.5,
+     -89.67
+    ],
+    [
+     716.46,
+     -90.46
+    ],
+    [
+     715.67,
+     -91.5
+    ],
+    [
+     715.17,
+     -92.71
+    ],
+    [
+     715.0,
+     -94.0
+    ],
+    [
+     715.17,
+     -95.29
+    ],
+    [
+     715.67,
+     -96.5
+    ],
+    [
+     716.46,
+     -97.54
+    ],
+    [
+     717.5,
+     -98.33
+    ],
+    [
+     718.71,
+     -98.83
+    ],
+    [
+     720.0,
+     -99.0
+    ],
+    [
+     721.29,
+     -98.83
+    ],
+    [
+     722.5,
+     -98.33
+    ],
+    [
+     723.54,
+     -97.54
+    ],
+    [
+     724.33,
+     -96.5
+    ],
+    [
+     724.83,
+     -95.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 4",
+   "points": [
+    [
+     725.0,
+     -6.0
+    ],
+    [
+     724.83,
+     -4.71
+    ],
+    [
+     724.33,
+     -3.5
+    ],
+    [
+     723.54,
+     -2.46
+    ],
+    [
+     722.5,
+     -1.67
+    ],
+    [
+     721.29,
+     -1.17
+    ],
+    [
+     720.0,
+     -1.0
+    ],
+    [
+     718.71,
+     -1.17
+    ],
+    [
+     717.5,
+     -1.67
+    ],
+    [
+     716.46,
+     -2.46
+    ],
+    [
+     715.67,
+     -3.5
+    ],
+    [
+     715.17,
+     -4.71
+    ],
+    [
+     715.0,
+     -6.0
+    ],
+    [
+     715.17,
+     -7.29
+    ],
+    [
+     715.67,
+     -8.5
+    ],
+    [
+     716.46,
+     -9.54
+    ],
+    [
+     717.5,
+     -10.33
+    ],
+    [
+     718.71,
+     -10.83
+    ],
+    [
+     720.0,
+     -11.0
+    ],
+    [
+     721.29,
+     -10.83
+    ],
+    [
+     722.5,
+     -10.33
+    ],
+    [
+     723.54,
+     -9.54
+    ],
+    [
+     724.33,
+     -8.5
+    ],
+    [
+     724.83,
+     -7.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 5",
+   "points": [
+    [
+     725.0,
+     82.0
+    ],
+    [
+     724.83,
+     83.29
+    ],
+    [
+     724.33,
+     84.5
+    ],
+    [
+     723.54,
+     85.54
+    ],
+    [
+     722.5,
+     86.33
+    ],
+    [
+     721.29,
+     86.83
+    ],
+    [
+     720.0,
+     87.0
+    ],
+    [
+     718.71,
+     86.83
+    ],
+    [
+     717.5,
+     86.33
+    ],
+    [
+     716.46,
+     85.54
+    ],
+    [
+     715.67,
+     84.5
+    ],
+    [
+     715.17,
+     83.29
+    ],
+    [
+     715.0,
+     82.0
+    ],
+    [
+     715.17,
+     80.71
+    ],
+    [
+     715.67,
+     79.5
+    ],
+    [
+     716.46,
+     78.46
+    ],
+    [
+     717.5,
+     77.67
+    ],
+    [
+     718.71,
+     77.17
+    ],
+    [
+     720.0,
+     77.0
+    ],
+    [
+     721.29,
+     77.17
+    ],
+    [
+     722.5,
+     77.67
+    ],
+    [
+     723.54,
+     78.46
+    ],
+    [
+     724.33,
+     79.5
+    ],
+    [
+     724.83,
+     80.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Right 6",
+   "points": [
+    [
+     725.0,
+     170.0
+    ],
+    [
+     724.83,
+     171.29
+    ],
+    [
+     724.33,
+     172.5
+    ],
+    [
+     723.54,
+     173.54
+    ],
+    [
+     722.5,
+     174.33
+    ],
+    [
+     721.29,
+     174.83
+    ],
+    [
+     720.0,
+     175.0
+    ],
+    [
+     718.71,
+     174.83
+    ],
+    [
+     717.5,
+     174.33
+    ],
+    [
+     716.46,
+     173.54
+    ],
+    [
+     715.67,
+     172.5
+    ],
+    [
+     715.17,
+     171.29
+    ],
+    [
+     715.0,
+     170.0
+    ],
+    [
+     715.17,
+     168.71
+    ],
+    [
+     715.67,
+     167.5
+    ],
+    [
+     716.46,
+     166.46
+    ],
+    [
+     717.5,
+     165.67
+    ],
+    [
+     718.71,
+     165.17
+    ],
+    [
+     720.0,
+     165.0
+    ],
+    [
+     721.29,
+     165.17
+    ],
+    [
+     722.5,
+     165.67
+    ],
+    [
+     723.54,
+     166.46
+    ],
+    [
+     724.33,
+     167.5
+    ],
+    [
+     724.83,
+     168.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Right 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Right 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Right 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 1",
+   "points": [
+    [
+     5.0,
+     -270.0
+    ],
+    [
+     4.83,
+     -268.71
+    ],
+    [
+     4.33,
+     -267.5
+    ],
+    [
+     3.54,
+     -266.46
+    ],
+    [
+     2.5,
+     -265.67
+    ],
+    [
+     1.29,
+     -265.17
+    ],
+    [
+     0.0,
+     -265.0
+    ],
+    [
+     -1.29,
+     -265.17
+    ],
+    [
+     -2.5,
+     -265.67
+    ],
+    [
+     -3.54,
+     -266.46
+    ],
+    [
+     -4.33,
+     -267.5
+    ],
+    [
+     -4.83,
+     -268.71
+    ],
+    [
+     -5.0,
+     -270.0
+    ],
+    [
+     -4.83,
+     -271.29
+    ],
+    [
+     -4.33,
+     -272.5
+    ],
+    [
+     -3.54,
+     -273.54
+    ],
+    [
+     -2.5,
+     -274.33
+    ],
+    [
+     -1.29,
+     -274.83
+    ],
+    [
+     -0.0,
+     -275.0
+    ],
+    [
+     1.29,
+     -274.83
+    ],
+    [
+     2.5,
+     -274.33
+    ],
+    [
+     3.54,
+     -273.54
+    ],
+    [
+     4.33,
+     -272.5
+    ],
+    [
+     4.83,
+     -271.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 2",
+   "points": [
+    [
+     5.0,
+     -182.0
+    ],
+    [
+     4.83,
+     -180.71
+    ],
+    [
+     4.33,
+     -179.5
+    ],
+    [
+     3.54,
+     -178.46
+    ],
+    [
+     2.5,
+     -177.67
+    ],
+    [
+     1.29,
+     -177.17
+    ],
+    [
+     0.0,
+     -177.0
+    ],
+    [
+     -1.29,
+     -177.17
+    ],
+    [
+     -2.5,
+     -177.67
+    ],
+    [
+     -3.54,
+     -178.46
+    ],
+    [
+     -4.33,
+     -179.5
+    ],
+    [
+     -4.83,
+     -180.71
+    ],
+    [
+     -5.0,
+     -182.0
+    ],
+    [
+     -4.83,
+     -183.29
+    ],
+    [
+     -4.33,
+     -184.5
+    ],
+    [
+     -3.54,
+     -185.54
+    ],
+    [
+     -2.5,
+     -186.33
+    ],
+    [
+     -1.29,
+     -186.83
+    ],
+    [
+     -0.0,
+     -187.0
+    ],
+    [
+     1.29,
+     -186.83
+    ],
+    [
+     2.5,
+     -186.33
+    ],
+    [
+     3.54,
+     -185.54
+    ],
+    [
+     4.33,
+     -184.5
+    ],
+    [
+     4.83,
+     -183.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 3",
+   "points": [
+    [
+     5.0,
+     -94.0
+    ],
+    [
+     4.83,
+     -92.71
+    ],
+    [
+     4.33,
+     -91.5
+    ],
+    [
+     3.54,
+     -90.46
+    ],
+    [
+     2.5,
+     -89.67
+    ],
+    [
+     1.29,
+     -89.17
+    ],
+    [
+     0.0,
+     -89.0
+    ],
+    [
+     -1.29,
+     -89.17
+    ],
+    [
+     -2.5,
+     -89.67
+    ],
+    [
+     -3.54,
+     -90.46
+    ],
+    [
+     -4.33,
+     -91.5
+    ],
+    [
+     -4.83,
+     -92.71
+    ],
+    [
+     -5.0,
+     -94.0
+    ],
+    [
+     -4.83,
+     -95.29
+    ],
+    [
+     -4.33,
+     -96.5
+    ],
+    [
+     -3.54,
+     -97.54
+    ],
+    [
+     -2.5,
+     -98.33
+    ],
+    [
+     -1.29,
+     -98.83
+    ],
+    [
+     -0.0,
+     -99.0
+    ],
+    [
+     1.29,
+     -98.83
+    ],
+    [
+     2.5,
+     -98.33
+    ],
+    [
+     3.54,
+     -97.54
+    ],
+    [
+     4.33,
+     -96.5
+    ],
+    [
+     4.83,
+     -95.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 4",
+   "points": [
+    [
+     5.0,
+     -6.0
+    ],
+    [
+     4.83,
+     -4.71
+    ],
+    [
+     4.33,
+     -3.5
+    ],
+    [
+     3.54,
+     -2.46
+    ],
+    [
+     2.5,
+     -1.67
+    ],
+    [
+     1.29,
+     -1.17
+    ],
+    [
+     0.0,
+     -1.0
+    ],
+    [
+     -1.29,
+     -1.17
+    ],
+    [
+     -2.5,
+     -1.67
+    ],
+    [
+     -3.54,
+     -2.46
+    ],
+    [
+     -4.33,
+     -3.5
+    ],
+    [
+     -4.83,
+     -4.71
+    ],
+    [
+     -5.0,
+     -6.0
+    ],
+    [
+     -4.83,
+     -7.29
+    ],
+    [
+     -4.33,
+     -8.5
+    ],
+    [
+     -3.54,
+     -9.54
+    ],
+    [
+     -2.5,
+     -10.33
+    ],
+    [
+     -1.29,
+     -10.83
+    ],
+    [
+     -0.0,
+     -11.0
+    ],
+    [
+     1.29,
+     -10.83
+    ],
+    [
+     2.5,
+     -10.33
+    ],
+    [
+     3.54,
+     -9.54
+    ],
+    [
+     4.33,
+     -8.5
+    ],
+    [
+     4.83,
+     -7.29
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 5",
+   "points": [
+    [
+     5.0,
+     82.0
+    ],
+    [
+     4.83,
+     83.29
+    ],
+    [
+     4.33,
+     84.5
+    ],
+    [
+     3.54,
+     85.54
+    ],
+    [
+     2.5,
+     86.33
+    ],
+    [
+     1.29,
+     86.83
+    ],
+    [
+     0.0,
+     87.0
+    ],
+    [
+     -1.29,
+     86.83
+    ],
+    [
+     -2.5,
+     86.33
+    ],
+    [
+     -3.54,
+     85.54
+    ],
+    [
+     -4.33,
+     84.5
+    ],
+    [
+     -4.83,
+     83.29
+    ],
+    [
+     -5.0,
+     82.0
+    ],
+    [
+     -4.83,
+     80.71
+    ],
+    [
+     -4.33,
+     79.5
+    ],
+    [
+     -3.54,
+     78.46
+    ],
+    [
+     -2.5,
+     77.67
+    ],
+    [
+     -1.29,
+     77.17
+    ],
+    [
+     -0.0,
+     77.0
+    ],
+    [
+     1.29,
+     77.17
+    ],
+    [
+     2.5,
+     77.67
+    ],
+    [
+     3.54,
+     78.46
+    ],
+    [
+     4.33,
+     79.5
+    ],
+    [
+     4.83,
+     80.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 5",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 5",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slat Bolt Centre 6",
+   "points": [
+    [
+     5.0,
+     170.0
+    ],
+    [
+     4.83,
+     171.29
+    ],
+    [
+     4.33,
+     172.5
+    ],
+    [
+     3.54,
+     173.54
+    ],
+    [
+     2.5,
+     174.33
+    ],
+    [
+     1.29,
+     174.83
+    ],
+    [
+     0.0,
+     175.0
+    ],
+    [
+     -1.29,
+     174.83
+    ],
+    [
+     -2.5,
+     174.33
+    ],
+    [
+     -3.54,
+     173.54
+    ],
+    [
+     -4.33,
+     172.5
+    ],
+    [
+     -4.83,
+     171.29
+    ],
+    [
+     -5.0,
+     170.0
+    ],
+    [
+     -4.83,
+     168.71
+    ],
+    [
+     -4.33,
+     167.5
+    ],
+    [
+     -3.54,
+     166.46
+    ],
+    [
+     -2.5,
+     165.67
+    ],
+    [
+     -1.29,
+     165.17
+    ],
+    [
+     -0.0,
+     165.0
+    ],
+    [
+     1.29,
+     165.17
+    ],
+    [
+     2.5,
+     165.67
+    ],
+    [
+     3.54,
+     166.46
+    ],
+    [
+     4.33,
+     167.5
+    ],
+    [
+     4.83,
+     168.71
+    ]
+   ],
+   "start": 462,
+   "end": 465
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slat Bolt Centre 6",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slat Bolt Centre 6",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slat Bolt Centre 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\L\\_Images\\FMC_L_SiteFurniture_Bench_HealingGarden.png"
+  }
+ ],
+ "values": {
+  "Seat height 460 mm, arm height 675 mm": {
+   "value": "460/675",
+   "source_status": "assumed",
+   "source": "inclusive seating guidance (BS 8300 / HBN 00-03 garden practice)"
+  },
+  "Length 1500 / 1800 mm, depth 640 mm": {
+   "value": "1500-1800x640",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Hardwood slats 70 x 27 mm": {
+   "value": "70x27",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Armrests extend to the seat front to push up on": {
+   "value": "forward arms",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

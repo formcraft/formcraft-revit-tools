@@ -256,8 +256,9 @@ namespace Formcraft.Shell.Tests
                 p.Vm.Templates.Rebuild();
                 return (a, List().Rows.Select(r => r.Label + "=" + r.Status).ToList());
             });
-            await Assert.That(all).IsEqualTo(6);
-            await Assert.That(must).IsEquivalentTo(new[] { "Shared parameters vs FMC_SharedParameters.txt=2 differ" });
+            await Assert.That(all).IsEqualTo(9);
+            await Assert.That(must).IsEquivalentTo(new[] { "Shared parameters vs FMC_SharedParameters.txt=2 differ",
+                "Kit parameters in the template (FMC_Master_Data.json)=10 missing", "Title blocks vs the Family Register=4 kit title blocks missing" });
         }
 
         [Test]

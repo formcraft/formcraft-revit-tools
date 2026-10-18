@@ -1,0 +1,266 @@
+{
+ "family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Sealed IP65 cleanroom LED panel, flanged, front-maintained, gasketed opal diffuser, stainless retaining screws",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.LED_06",
+ "types": [
+  {
+   "name": "600x600_IP65",
+   "values": {
+    "Apparent Load": 40
+   }
+  },
+  {
+   "name": "1200x600_IP65",
+   "values": {
+    "Apparent Load": 60
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 40
+ },
+ "materials": {
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "rubber": "FMC_Rubber_Black",
+  "opal": "FMC_Plastic_ABS_White",
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "black": "FMC_Plastic_ABS_Black",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "galv": "FMC_Metal_ColdFormed_Galvanised"
+ },
+ "reference": {
+  "query": "light fixture panel 600 cleanroom ip65 lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+panel+600+cleanroom+ip65+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Flange",
+   "shape": "box",
+   "at": [
+    -310,
+    -310,
+    -12,
+    310,
+    310,
+    0
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Gasket",
+   "shape": "box",
+   "at": [
+    -300,
+    -300,
+    -13,
+    300,
+    300,
+    -12
+   ],
+   "mat": "rubber",
+   "lod": "f"
+  },
+  {
+   "n": "Diffuser",
+   "shape": "box",
+   "at": [
+    -280,
+    -280,
+    -14,
+    280,
+    280,
+    -12.5
+   ],
+   "mat": "opal",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -290,
+    -290,
+    0,
+    290,
+    290,
+    80
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Driver Box",
+   "shape": "box",
+   "at": [
+    -120,
+    -50,
+    80,
+    120,
+    50,
+    120
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Cable Gland",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    100
+   ],
+   "r": 8,
+   "x": [
+    120,
+    140
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Retaining Screw",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -298,
+    -298
+   ],
+   "r": 4,
+   "z": [
+    -15,
+    -12
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     596,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Retaining Screw Rear",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -298,
+    298
+   ],
+   "r": 4,
+   "z": [
+    -15,
+    -12
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     596,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Retaining Screw Mid",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -298
+   ],
+   "r": 4,
+   "z": [
+    -15,
+    -12
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     596,
+     0
+    ]
+   }
+  },
+  {
+   "n": "LED Board",
+   "shape": "box",
+   "at": [
+    -260,
+    -260,
+    20,
+    260,
+    260,
+    25
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Suspension Lug",
+   "shape": "box",
+   "at": [
+    -300,
+    -20,
+    60,
+    -290,
+    20,
+    80
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     590,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Driver Box",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Flange 620 x 620 mm, body 80 mm": {
+   "value": "620x620x80",
+   "source_status": "assumed",
+   "source": "1200 x 600 type is twice as long; geometry shows 600 x 600"
+  },
+  "IP65 room side, 40 W, 4000 lm": {
+   "value": "IP65 40W",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Cleanroom / theatre ceiling, HTM 03-01": {
+   "value": "HTM 03-01",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Cleanroom panel: white flange with gasket and opal diffuser below the ceiling, recessed body, LED board, driver box with gland, eight stainless retaining screws, suspension lugs. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

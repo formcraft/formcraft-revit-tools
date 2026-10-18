@@ -1,0 +1,213 @@
+{
+ "family": "FMC_M_AirTerminal_Grille_Return",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "Return air grille 300 x 300 to 600 x 300, fixed 45 degree blades, white aluminium, flanged frame, plenum box with round spigot",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_03",
+ "types": [
+  {
+   "name": "300x300_Return"
+  },
+  {
+   "name": "600x300_Return"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2400
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_Duct_Galvanised"
+ },
+ "reference": {
+  "query": "grille return air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=grille+return+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Frame Top",
+   "shape": "fbox",
+   "at": [
+    -325,
+    -12,
+    300,
+    325,
+    0,
+    325
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Frame Bottom",
+   "shape": "fbox",
+   "at": [
+    -325,
+    -12,
+    -25,
+    325,
+    0,
+    0
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Frame Left",
+   "shape": "fbox",
+   "at": [
+    -325,
+    -12,
+    0,
+    -300,
+    0,
+    300
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Frame Right",
+   "shape": "fbox",
+   "at": [
+    300,
+    -12,
+    0,
+    325,
+    0,
+    300
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Plenum Opening",
+   "shape": "fbox",
+   "at": [
+    -300,
+    0,
+    0,
+    300,
+    2,
+    300
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Blade",
+   "shape": "right",
+   "pts": [
+    [
+     -1,
+     4
+    ],
+    [
+     -13,
+     16
+    ],
+    [
+     -13,
+     20
+    ],
+    [
+     -1,
+     8
+    ]
+   ],
+   "x": [
+    -300,
+    300
+   ],
+   "mat": "epw",
+   "repeat": {
+    "n": 14,
+    "d": [
+     0,
+     0,
+     20.5
+    ]
+   }
+  },
+  {
+   "n": "Plenum Box",
+   "shape": "box",
+   "at": [
+    -300,
+    2,
+    0,
+    300,
+    250,
+    300
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    150
+   ],
+   "r": 125,
+   "y": [
+    250,
+    320
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Fixing Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -312,
+    150
+   ],
+   "r": 4,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     624,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Return",
+   "domain": "duct",
+   "system": "ExhaustAir",
+   "part": "Spigot",
+   "side": "back",
+   "flow": "Out",
+   "diameter": 250
+  }
+ ],
+ "values": {
+  "Neck 600 x 300 mm, face 650 x 350": {
+   "value": "600x300",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Blades 45 deg at 20 mm pitch": {
+   "value": 20,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Face velocity 2 m/s max": {
+   "value": 2,
+   "source_status": "assumed",
+   "source": "CIBSE Guide B practice"
+  }
+ },
+ "about": "Modelled as a generic product: flanged frame, fixed 45-degree blades over a dark opening, plenum box behind the wall face (y = 0) with round spigot, fixing screws."
+}

@@ -1,0 +1,244 @@
+{
+ "family": "FMC_S_GenericModel_Opening_RadiationShielded_Sleeve",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Lead-lined through-wall sleeve for a shielded room: steel sleeve, lead lining and lapping collars on both faces, sealant and warning label",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "M.FIX_04",
+ "types": [
+  {
+   "name": "100dia_Lead",
+   "desc": "100 mm bore sleeve"
+  },
+  {
+   "name": "150dia_Lead",
+   "desc": "150 mm bore sleeve"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "lead": "FMC_Metal_StructuralSteel_S275",
+  "gi": "FMC_Metal_GI_Pipe"
+ },
+ "parts": [
+  {
+   "n": "Sleeve Tube",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     50,
+     -140
+    ],
+    [
+     54,
+     -140
+    ],
+    [
+     54,
+     140
+    ],
+    [
+     50,
+     140
+    ]
+   ],
+   "mat": "gi",
+   "seg": 32
+  },
+  {
+   "n": "Lead Lining",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     54,
+     -115
+    ],
+    [
+     57,
+     -115
+    ],
+    [
+     57,
+     115
+    ],
+    [
+     54,
+     115
+    ]
+   ],
+   "mat": "lead",
+   "seg": 32
+  },
+  {
+   "n": "Lead Collar Front",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     54,
+     -118
+    ],
+    [
+     110,
+     -118
+    ],
+    [
+     110,
+     -115
+    ],
+    [
+     54,
+     -115
+    ]
+   ],
+   "mat": "lead",
+   "seg": 32
+  },
+  {
+   "n": "Lead Collar Back",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     54,
+     115
+    ],
+    [
+     110,
+     115
+    ],
+    [
+     110,
+     118
+    ],
+    [
+     54,
+     118
+    ]
+   ],
+   "mat": "lead",
+   "seg": 32
+  },
+  {
+   "n": "Sealant Ring Front",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     54,
+     -124
+    ],
+    [
+     62,
+     -124
+    ],
+    [
+     62,
+     -118
+    ],
+    [
+     54,
+     -118
+    ]
+   ],
+   "mat": "black",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Sealant Ring Back",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     54,
+     118
+    ],
+    [
+     62,
+     118
+    ],
+    [
+     62,
+     124
+    ],
+    [
+     54,
+     124
+    ]
+   ],
+   "mat": "black",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Radiation Label",
+   "shape": "fbox",
+   "at": [
+    -25,
+    -119.5,
+    72,
+    25,
+    -118,
+    102
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "opening radiation shielded sleeve generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=opening+radiation+shielded+sleeve+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Bore 100 mm (geometry)": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "service size"
+  },
+  "Lead code and lap from the RPA shielding report": {
+   "value": "RPA report",
+   "source_status": "assumed",
+   "source": "radiation protection adviser; not decided here"
+  },
+  "Collar lap 60 mm beyond sleeve": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "typical; RPA to confirm"
+  },
+  "Wall 230 mm (sleeve 280 long)": {
+   "value": 230,
+   "source_status": "assumed",
+   "source": "typical wall"
+  }
+ },
+ "about": "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision."
+}

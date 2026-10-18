@@ -1,0 +1,2042 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_PlumbingEq_WaterHeater_Storage",
+ "template": "Metric Generic Model.rft",
+ "about": "Storage heater modelled as a generic product: cylinder with dished heads, wall brackets, thermostat cover with knob and LED, rating label, inlet and outlet, P&T valve with discharge, drain cock, cable gland. 100 l drawn; 50 and 200 l share it. Reference: query: water heater storage plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=water+heater+storage+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Plumbing Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cover_Level_m",
+   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Invert_In_m",
+   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Invert_Out_m",
+   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "50L_Storage"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/FMC_Cost_Unit",
+   "type": "50L_Storage",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/FMC_Geometry_Stage",
+   "type": "50L_Storage",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/IfcExportAs",
+   "type": "50L_Storage",
+   "param": "IfcExportAs",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/Description",
+   "type": "50L_Storage",
+   "param": "Description",
+   "value": "Electric storage water heater (unvented), vertical wall-mounted cylinder 450 mm dia, thermostat cover, P&T relief valve, 15 mm connections (100 l drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/Keynote",
+   "type": "50L_Storage",
+   "param": "Keynote",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/FMC_Keynote_Code",
+   "type": "50L_Storage",
+   "param": "FMC_Keynote_Code",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/Voltage",
+   "type": "50L_Storage",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "50L_Storage/Apparent Load",
+   "type": "50L_Storage",
+   "param": "Apparent Load",
+   "value": 3000
+  },
+  {
+   "op": "add_type",
+   "name": "100L_Storage"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/FMC_Cost_Unit",
+   "type": "100L_Storage",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/FMC_Geometry_Stage",
+   "type": "100L_Storage",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/IfcExportAs",
+   "type": "100L_Storage",
+   "param": "IfcExportAs",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/Description",
+   "type": "100L_Storage",
+   "param": "Description",
+   "value": "Electric storage water heater (unvented), vertical wall-mounted cylinder 450 mm dia, thermostat cover, P&T relief valve, 15 mm connections (100 l drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/Keynote",
+   "type": "100L_Storage",
+   "param": "Keynote",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/FMC_Keynote_Code",
+   "type": "100L_Storage",
+   "param": "FMC_Keynote_Code",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/Voltage",
+   "type": "100L_Storage",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "100L_Storage/Apparent Load",
+   "type": "100L_Storage",
+   "param": "Apparent Load",
+   "value": 3000
+  },
+  {
+   "op": "add_type",
+   "name": "200L_Storage"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/FMC_Cost_Unit",
+   "type": "200L_Storage",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/FMC_Geometry_Stage",
+   "type": "200L_Storage",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/IfcExportAs",
+   "type": "200L_Storage",
+   "param": "IfcExportAs",
+   "value": "IfcElectricFlowStorageDevice"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/Description",
+   "type": "200L_Storage",
+   "param": "Description",
+   "value": "Electric storage water heater (unvented), vertical wall-mounted cylinder 450 mm dia, thermostat cover, P&T relief valve, 15 mm connections (100 l drawn)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/Keynote",
+   "type": "200L_Storage",
+   "param": "Keynote",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/FMC_Keynote_Code",
+   "type": "200L_Storage",
+   "param": "FMC_Keynote_Code",
+   "value": "P.HWS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/Voltage",
+   "type": "200L_Storage",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "200L_Storage/Apparent Load",
+   "type": "200L_Storage",
+   "param": "Apparent Load",
+   "value": 3000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epoxy White",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epoxy White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Painted Steel",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Painted Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Medical Grey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Medical Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Copper_Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -225.0,
+     -490
+    ],
+    [
+     280.0,
+     -490
+    ],
+    [
+     280.0,
+     0
+    ],
+    [
+     -225.0,
+     0
+    ]
+   ],
+   "start": 820,
+   "end": 1800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Shell",
+   "points": [
+    [
+     225.0,
+     -240.0
+    ],
+    [
+     217.33,
+     -181.77
+    ],
+    [
+     194.86,
+     -127.5
+    ],
+    [
+     159.1,
+     -80.9
+    ],
+    [
+     112.5,
+     -45.14
+    ],
+    [
+     58.23,
+     -22.67
+    ],
+    [
+     0.0,
+     -15.0
+    ],
+    [
+     -58.23,
+     -22.67
+    ],
+    [
+     -112.5,
+     -45.14
+    ],
+    [
+     -159.1,
+     -80.9
+    ],
+    [
+     -194.86,
+     -127.5
+    ],
+    [
+     -217.33,
+     -181.77
+    ],
+    [
+     -225.0,
+     -240.0
+    ],
+    [
+     -217.33,
+     -298.23
+    ],
+    [
+     -194.86,
+     -352.5
+    ],
+    [
+     -159.1,
+     -399.1
+    ],
+    [
+     -112.5,
+     -434.86
+    ],
+    [
+     -58.23,
+     -457.33
+    ],
+    [
+     -0.0,
+     -465.0
+    ],
+    [
+     58.23,
+     -457.33
+    ],
+    [
+     112.5,
+     -434.86
+    ],
+    [
+     159.1,
+     -399.1
+    ],
+    [
+     194.86,
+     -352.5
+    ],
+    [
+     217.33,
+     -298.23
+    ]
+   ],
+   "start": 978.75,
+   "end": 1721.25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Shell",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Shell",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Shell",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Tank Top Head",
+   "profile": [
+    [
+     0,
+     1721.25
+    ],
+    [
+     225,
+     1721.25
+    ],
+    [
+     191.25,
+     1772.4375
+    ],
+    [
+     90.0,
+     1800
+    ],
+    [
+     0,
+     1800
+    ]
+   ],
+   "axis_at": [
+    0,
+    -240
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Top Head",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Top Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Tank Bottom Head",
+   "profile": [
+    [
+     0,
+     900
+    ],
+    [
+     90.0,
+     900
+    ],
+    [
+     191.25,
+     951.1875
+    ],
+    [
+     225,
+     978.75
+    ],
+    [
+     0,
+     978.75
+    ]
+   ],
+   "axis_at": [
+    0,
+    -240
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Bottom Head",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Bottom Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket 1",
+   "points": [
+    [
+     -120,
+     1050
+    ],
+    [
+     120,
+     1050
+    ],
+    [
+     120,
+     1090
+    ],
+    [
+     -120,
+     1090
+    ]
+   ],
+   "start": 0,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket 1",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket 1",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket 2",
+   "points": [
+    [
+     -120,
+     1600
+    ],
+    [
+     120,
+     1600
+    ],
+    [
+     120,
+     1640
+    ],
+    [
+     -120,
+     1640
+    ]
+   ],
+   "start": 0,
+   "end": 30,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket 2",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket 2",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Arm 1",
+   "points": [
+    [
+     -15,
+     -60
+    ],
+    [
+     15,
+     -60
+    ],
+    [
+     15,
+     -30
+    ],
+    [
+     -15,
+     -30
+    ]
+   ],
+   "start": 1050,
+   "end": 1090
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Arm 1",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Arm 1",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Arm 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Arm 2",
+   "points": [
+    [
+     -15,
+     -60
+    ],
+    [
+     15,
+     -60
+    ],
+    [
+     15,
+     -30
+    ],
+    [
+     -15,
+     -30
+    ]
+   ],
+   "start": 1600,
+   "end": 1640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Arm 2",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Arm 2",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Arm 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Thermostat Cover",
+   "points": [
+    [
+     70.0,
+     960.0
+    ],
+    [
+     77.65,
+     961.52
+    ],
+    [
+     84.14,
+     965.86
+    ],
+    [
+     88.48,
+     972.35
+    ],
+    [
+     90.0,
+     980.0
+    ],
+    [
+     90.0,
+     1060.0
+    ],
+    [
+     88.48,
+     1067.65
+    ],
+    [
+     84.14,
+     1074.14
+    ],
+    [
+     77.65,
+     1078.48
+    ],
+    [
+     70.0,
+     1080.0
+    ],
+    [
+     -70.0,
+     1080.0
+    ],
+    [
+     -77.65,
+     1078.48
+    ],
+    [
+     -84.14,
+     1074.14
+    ],
+    [
+     -88.48,
+     1067.65
+    ],
+    [
+     -90.0,
+     1060.0
+    ],
+    [
+     -90.0,
+     980.0
+    ],
+    [
+     -88.48,
+     972.35
+    ],
+    [
+     -84.14,
+     965.86
+    ],
+    [
+     -77.65,
+     961.52
+    ],
+    [
+     -70.0,
+     960.0
+    ]
+   ],
+   "start": 440,
+   "end": 475,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Thermostat Cover",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Thermostat Cover",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Thermostat Cover",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Temp Knob",
+   "points": [
+    [
+     -12.0,
+     1020.0
+    ],
+    [
+     -12.61,
+     1024.66
+    ],
+    [
+     -14.41,
+     1029.0
+    ],
+    [
+     -17.27,
+     1032.73
+    ],
+    [
+     -21.0,
+     1035.59
+    ],
+    [
+     -25.34,
+     1037.39
+    ],
+    [
+     -30.0,
+     1038.0
+    ],
+    [
+     -34.66,
+     1037.39
+    ],
+    [
+     -39.0,
+     1035.59
+    ],
+    [
+     -42.73,
+     1032.73
+    ],
+    [
+     -45.59,
+     1029.0
+    ],
+    [
+     -47.39,
+     1024.66
+    ],
+    [
+     -48.0,
+     1020.0
+    ],
+    [
+     -47.39,
+     1015.34
+    ],
+    [
+     -45.59,
+     1011.0
+    ],
+    [
+     -42.73,
+     1007.27
+    ],
+    [
+     -39.0,
+     1004.41
+    ],
+    [
+     -34.66,
+     1002.61
+    ],
+    [
+     -30.0,
+     1002.0
+    ],
+    [
+     -25.34,
+     1002.61
+    ],
+    [
+     -21.0,
+     1004.41
+    ],
+    [
+     -17.27,
+     1007.27
+    ],
+    [
+     -14.41,
+     1011.0
+    ],
+    [
+     -12.61,
+     1015.34
+    ]
+   ],
+   "start": 475,
+   "end": 490,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Temp Knob",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Temp Knob",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Temp Knob",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Heating LED",
+   "points": [
+    [
+     46.0,
+     1020.0
+    ],
+    [
+     45.8,
+     1021.55
+    ],
+    [
+     45.2,
+     1023.0
+    ],
+    [
+     44.24,
+     1024.24
+    ],
+    [
+     43.0,
+     1025.2
+    ],
+    [
+     41.55,
+     1025.8
+    ],
+    [
+     40.0,
+     1026.0
+    ],
+    [
+     38.45,
+     1025.8
+    ],
+    [
+     37.0,
+     1025.2
+    ],
+    [
+     35.76,
+     1024.24
+    ],
+    [
+     34.8,
+     1023.0
+    ],
+    [
+     34.2,
+     1021.55
+    ],
+    [
+     34.0,
+     1020.0
+    ],
+    [
+     34.2,
+     1018.45
+    ],
+    [
+     34.8,
+     1017.0
+    ],
+    [
+     35.76,
+     1015.76
+    ],
+    [
+     37.0,
+     1014.8
+    ],
+    [
+     38.45,
+     1014.2
+    ],
+    [
+     40.0,
+     1014.0
+    ],
+    [
+     41.55,
+     1014.2
+    ],
+    [
+     43.0,
+     1014.8
+    ],
+    [
+     44.24,
+     1015.76
+    ],
+    [
+     45.2,
+     1017.0
+    ],
+    [
+     45.8,
+     1018.45
+    ]
+   ],
+   "start": 475,
+   "end": 478,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Heating LED",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Heating LED",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Heating LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rating Label",
+   "points": [
+    [
+     -70,
+     1500
+    ],
+    [
+     70,
+     1500
+    ],
+    [
+     70,
+     1600
+    ],
+    [
+     -70,
+     1600
+    ]
+   ],
+   "start": 464,
+   "end": 466,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rating Label",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rating Label",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rating Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cold Inlet",
+   "points": [
+    [
+     -69.0,
+     -240.0
+    ],
+    [
+     -69.37,
+     -237.15
+    ],
+    [
+     -70.47,
+     -234.5
+    ],
+    [
+     -72.22,
+     -232.22
+    ],
+    [
+     -74.5,
+     -230.47
+    ],
+    [
+     -77.15,
+     -229.37
+    ],
+    [
+     -80.0,
+     -229.0
+    ],
+    [
+     -82.85,
+     -229.37
+    ],
+    [
+     -85.5,
+     -230.47
+    ],
+    [
+     -87.78,
+     -232.22
+    ],
+    [
+     -89.53,
+     -234.5
+    ],
+    [
+     -90.63,
+     -237.15
+    ],
+    [
+     -91.0,
+     -240.0
+    ],
+    [
+     -90.63,
+     -242.85
+    ],
+    [
+     -89.53,
+     -245.5
+    ],
+    [
+     -87.78,
+     -247.78
+    ],
+    [
+     -85.5,
+     -249.53
+    ],
+    [
+     -82.85,
+     -250.63
+    ],
+    [
+     -80.0,
+     -251.0
+    ],
+    [
+     -77.15,
+     -250.63
+    ],
+    [
+     -74.5,
+     -249.53
+    ],
+    [
+     -72.22,
+     -247.78
+    ],
+    [
+     -70.47,
+     -245.5
+    ],
+    [
+     -69.37,
+     -242.85
+    ]
+   ],
+   "start": 820,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cold Inlet",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cold Inlet",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cold Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hot Outlet",
+   "points": [
+    [
+     91.0,
+     -240.0
+    ],
+    [
+     90.63,
+     -237.15
+    ],
+    [
+     89.53,
+     -234.5
+    ],
+    [
+     87.78,
+     -232.22
+    ],
+    [
+     85.5,
+     -230.47
+    ],
+    [
+     82.85,
+     -229.37
+    ],
+    [
+     80.0,
+     -229.0
+    ],
+    [
+     77.15,
+     -229.37
+    ],
+    [
+     74.5,
+     -230.47
+    ],
+    [
+     72.22,
+     -232.22
+    ],
+    [
+     70.47,
+     -234.5
+    ],
+    [
+     69.37,
+     -237.15
+    ],
+    [
+     69.0,
+     -240.0
+    ],
+    [
+     69.37,
+     -242.85
+    ],
+    [
+     70.47,
+     -245.5
+    ],
+    [
+     72.22,
+     -247.78
+    ],
+    [
+     74.5,
+     -249.53
+    ],
+    [
+     77.15,
+     -250.63
+    ],
+    [
+     80.0,
+     -251.0
+    ],
+    [
+     82.85,
+     -250.63
+    ],
+    [
+     85.5,
+     -249.53
+    ],
+    [
+     87.78,
+     -247.78
+    ],
+    [
+     89.53,
+     -245.5
+    ],
+    [
+     90.63,
+     -242.85
+    ]
+   ],
+   "start": 820,
+   "end": 920
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hot Outlet",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hot Outlet",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hot Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "PT Relief Valve",
+   "points": [
+    [
+     -228.0,
+     1700.0
+    ],
+    [
+     -228.41,
+     1703.11
+    ],
+    [
+     -229.61,
+     1706.0
+    ],
+    [
+     -231.51,
+     1708.49
+    ],
+    [
+     -234.0,
+     1710.39
+    ],
+    [
+     -236.89,
+     1711.59
+    ],
+    [
+     -240.0,
+     1712.0
+    ],
+    [
+     -243.11,
+     1711.59
+    ],
+    [
+     -246.0,
+     1710.39
+    ],
+    [
+     -248.49,
+     1708.49
+    ],
+    [
+     -250.39,
+     1706.0
+    ],
+    [
+     -251.59,
+     1703.11
+    ],
+    [
+     -252.0,
+     1700.0
+    ],
+    [
+     -251.59,
+     1696.89
+    ],
+    [
+     -250.39,
+     1694.0
+    ],
+    [
+     -248.49,
+     1691.51
+    ],
+    [
+     -246.0,
+     1689.61
+    ],
+    [
+     -243.11,
+     1688.41
+    ],
+    [
+     -240.0,
+     1688.0
+    ],
+    [
+     -236.89,
+     1688.41
+    ],
+    [
+     -234.0,
+     1689.61
+    ],
+    [
+     -231.51,
+     1691.51
+    ],
+    [
+     -229.61,
+     1694.0
+    ],
+    [
+     -228.41,
+     1696.89
+    ]
+   ],
+   "start": 215,
+   "end": 270,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "PT Relief Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "PT Relief Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PT Relief Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Relief Discharge",
+   "points": [
+    [
+     280.0,
+     -240.0
+    ],
+    [
+     279.66,
+     -237.41
+    ],
+    [
+     278.66,
+     -235.0
+    ],
+    [
+     277.07,
+     -232.93
+    ],
+    [
+     275.0,
+     -231.34
+    ],
+    [
+     272.59,
+     -230.34
+    ],
+    [
+     270.0,
+     -230.0
+    ],
+    [
+     267.41,
+     -230.34
+    ],
+    [
+     265.0,
+     -231.34
+    ],
+    [
+     262.93,
+     -232.93
+    ],
+    [
+     261.34,
+     -235.0
+    ],
+    [
+     260.34,
+     -237.41
+    ],
+    [
+     260.0,
+     -240.0
+    ],
+    [
+     260.34,
+     -242.59
+    ],
+    [
+     261.34,
+     -245.0
+    ],
+    [
+     262.93,
+     -247.07
+    ],
+    [
+     265.0,
+     -248.66
+    ],
+    [
+     267.41,
+     -249.66
+    ],
+    [
+     270.0,
+     -250.0
+    ],
+    [
+     272.59,
+     -249.66
+    ],
+    [
+     275.0,
+     -248.66
+    ],
+    [
+     277.07,
+     -247.07
+    ],
+    [
+     278.66,
+     -245.0
+    ],
+    [
+     279.66,
+     -242.59
+    ]
+   ],
+   "start": 1300,
+   "end": 1700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Relief Discharge",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Relief Discharge",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Relief Discharge",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drain Cock",
+   "points": [
+    [
+     8.0,
+     -300.0
+    ],
+    [
+     7.73,
+     -297.93
+    ],
+    [
+     6.93,
+     -296.0
+    ],
+    [
+     5.66,
+     -294.34
+    ],
+    [
+     4.0,
+     -293.07
+    ],
+    [
+     2.07,
+     -292.27
+    ],
+    [
+     0.0,
+     -292.0
+    ],
+    [
+     -2.07,
+     -292.27
+    ],
+    [
+     -4.0,
+     -293.07
+    ],
+    [
+     -5.66,
+     -294.34
+    ],
+    [
+     -6.93,
+     -296.0
+    ],
+    [
+     -7.73,
+     -297.93
+    ],
+    [
+     -8.0,
+     -300.0
+    ],
+    [
+     -7.73,
+     -302.07
+    ],
+    [
+     -6.93,
+     -304.0
+    ],
+    [
+     -5.66,
+     -305.66
+    ],
+    [
+     -4.0,
+     -306.93
+    ],
+    [
+     -2.07,
+     -307.73
+    ],
+    [
+     -0.0,
+     -308.0
+    ],
+    [
+     2.07,
+     -307.73
+    ],
+    [
+     4.0,
+     -306.93
+    ],
+    [
+     5.66,
+     -305.66
+    ],
+    [
+     6.93,
+     -304.0
+    ],
+    [
+     7.73,
+     -302.07
+    ]
+   ],
+   "start": 840,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain Cock",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain Cock",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Cock",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cable Gland",
+   "points": [
+    [
+     9.0,
+     -440.0
+    ],
+    [
+     8.69,
+     -437.67
+    ],
+    [
+     7.79,
+     -435.5
+    ],
+    [
+     6.36,
+     -433.64
+    ],
+    [
+     4.5,
+     -432.21
+    ],
+    [
+     2.33,
+     -431.31
+    ],
+    [
+     0.0,
+     -431.0
+    ],
+    [
+     -2.33,
+     -431.31
+    ],
+    [
+     -4.5,
+     -432.21
+    ],
+    [
+     -6.36,
+     -433.64
+    ],
+    [
+     -7.79,
+     -435.5
+    ],
+    [
+     -8.69,
+     -437.67
+    ],
+    [
+     -9.0,
+     -440.0
+    ],
+    [
+     -8.69,
+     -442.33
+    ],
+    [
+     -7.79,
+     -444.5
+    ],
+    [
+     -6.36,
+     -446.36
+    ],
+    [
+     -4.5,
+     -447.79
+    ],
+    [
+     -2.33,
+     -448.69
+    ],
+    [
+     -0.0,
+     -449.0
+    ],
+    [
+     2.33,
+     -448.69
+    ],
+    [
+     4.5,
+     -447.79
+    ],
+    [
+     6.36,
+     -446.36
+    ],
+    [
+     7.79,
+     -444.5
+    ],
+    [
+     8.69,
+     -442.33
+    ]
+   ],
+   "start": 930,
+   "end": 970
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cable Gland",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cable Gland",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cable Gland",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Cold Inlet",
+   "side": "bottom",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "HW",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "solid": "Hot Outlet",
+   "side": "bottom",
+   "diameter": 15,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Thermostat Cover",
+   "side": "bottom"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_WaterHeater_Storage.png"
+  }
+ ],
+ "values": {
+  "100 l drawn: 450 dia x 900 mm": {
+   "value": "450x900",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "3 kW, 240 V": {
+   "value": 3000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Bottom at 900 mm": {
+   "value": 900,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

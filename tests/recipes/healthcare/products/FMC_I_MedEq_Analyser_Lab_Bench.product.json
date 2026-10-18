@@ -1,0 +1,453 @@
+{
+ "family": "FMC_I_MedEq_Analyser_Lab_Bench",
+ "category": "Medical Equipment",
+ "desc": "Bench-top clinical chemistry analyser, 900 x 700 footprint, sample rack loader, reagent carousel under a clear hood, touch-screen monitor, front service doors",
+ "ifc": "IfcMedicalDevice",
+ "keynote": "Z.LAB_00",
+ "types": [
+  {
+   "name": "900x700_Benchtop"
+  }
+ ],
+ "materials": {
+  "body": "FMC_Plastic_ABS_MedicalGrey",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "white": "FMC_Plastic_ABS_White",
+  "clear": "FMC_Plastic_Polycarbonate_Clear",
+  "black": "FMC_Plastic_ABS_Black",
+  "screen": "FMC_Plastic_LED_Blue",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "cap": "FMC_Plastic_LED_Red"
+ },
+ "parts": [
+  {
+   "n": "Lower Body",
+   "shape": "box",
+   "at": [
+    -450,
+    -700,
+    20,
+    450,
+    0,
+    430
+   ],
+   "mat": "body",
+   "r": 20
+  },
+  {
+   "n": "Upper Housing",
+   "shape": "box",
+   "at": [
+    -450,
+    -480,
+    430,
+    450,
+    0,
+    720
+   ],
+   "mat": "body",
+   "r": 20
+  },
+  {
+   "n": "Hood",
+   "shape": "right",
+   "pts": [
+    [
+     -480,
+     720
+    ],
+    [
+     -480,
+     600
+    ],
+    [
+     -700,
+     440
+    ],
+    [
+     -700,
+     430
+    ],
+    [
+     -470,
+     430
+    ],
+    [
+     -470,
+     720
+    ]
+   ],
+   "x": [
+    -430,
+    120
+   ],
+   "mat": "clear"
+  },
+  {
+   "n": "Deck",
+   "shape": "box",
+   "at": [
+    -440,
+    -690,
+    430,
+    440,
+    -480,
+    440
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Sample Rack",
+   "shape": "box",
+   "at": [
+    -420,
+    -660,
+    440,
+    -390,
+    -520,
+    520
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 5,
+    "d": [
+     45,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Sample Tube Caps",
+   "shape": "box",
+   "at": [
+    -418,
+    -655,
+    520,
+    -392,
+    -525,
+    535
+   ],
+   "mat": "cap",
+   "lod": "f",
+   "repeat": {
+    "n": 5,
+    "d": [
+     45,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Reagent Carousel",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -120,
+    -590
+   ],
+   "profile": [
+    [
+     0,
+     440
+    ],
+    [
+     95,
+     440
+    ],
+    [
+     95,
+     470
+    ],
+    [
+     0,
+     470
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Reagent Bottle",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -170,
+    -590
+   ],
+   "r": 18,
+   "z": [
+    470,
+    520
+   ],
+   "mat": "cap",
+   "seg": 12,
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     33,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Front Panel Door",
+   "shape": "fbox",
+   "at": [
+    -430,
+    -703,
+    60,
+    130,
+    -700,
+    410
+   ],
+   "mat": "grey",
+   "r": 8
+  },
+  {
+   "n": "Door Grip",
+   "shape": "box",
+   "at": [
+    60,
+    -715,
+    200,
+    100,
+    -703,
+    280
+   ],
+   "mat": "black",
+   "r": 4,
+   "lod": "f"
+  },
+  {
+   "n": "Status Light Bar",
+   "shape": "fbox",
+   "at": [
+    -440,
+    -704,
+    415,
+    440,
+    -700,
+    425
+   ],
+   "mat": "blue",
+   "lod": "f"
+  },
+  {
+   "n": "Monitor Arm",
+   "shape": "box",
+   "at": [
+    270,
+    -560,
+    720,
+    300,
+    -520,
+    900
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Monitor",
+   "shape": "fbox",
+   "at": [
+    150,
+    -620,
+    880,
+    430,
+    -560,
+    1080
+   ],
+   "mat": "black",
+   "r": 10
+  },
+  {
+   "n": "Touch Screen",
+   "shape": "fbox",
+   "at": [
+    165,
+    -622,
+    895,
+    415,
+    -620,
+    1065
+   ],
+   "mat": "screen",
+   "r": 6,
+   "lod": "f"
+  },
+  {
+   "n": "Bottle Bay",
+   "shape": "fbox",
+   "at": [
+    160,
+    -703,
+    60,
+    440,
+    -700,
+    410
+   ],
+   "mat": "grey",
+   "r": 8
+  },
+  {
+   "n": "Reservoir Cap",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    230,
+    360
+   ],
+   "r": 18,
+   "y": [
+    -708,
+    -703
+   ],
+   "mat": "blue",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     70,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Side Vent Slat",
+   "shape": "right",
+   "pts": [
+    [
+     -400,
+     150
+    ],
+    [
+     -100,
+     150
+    ],
+    [
+     -100,
+     158
+    ],
+    [
+     -400,
+     158
+    ]
+   ],
+   "x": [
+    450,
+    453
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 10,
+    "d": [
+     0,
+     0,
+     18
+    ]
+   }
+  },
+  {
+   "n": "Foot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -410,
+    -660
+   ],
+   "r": 20,
+   "z": [
+    0,
+    20
+   ],
+   "mat": "black",
+   "seg": 16,
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     820,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Foot Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -410,
+    -40
+   ],
+   "r": 20,
+   "z": [
+    0,
+    20
+   ],
+   "mat": "black",
+   "seg": 16,
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     820,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "analyser lab bench medical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=analyser+lab+bench+medical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Footprint 900 x 700 mm": {
+   "value": "900x700",
+   "source_status": "assumed",
+   "source": "record size"
+  },
+  "Height 1080 mm with monitor": {
+   "value": 1080,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Supply 240 V, 1500 VA": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "typical bench analyser with cooler"
+  },
+  "Bench load about 150 kg": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical mid-size bench analyser; check bench rating"
+  }
+ },
+ "about": "Analyser modelled as a generic product: medical-grey lower body and upper housing, clear sloped hood over the reagent carousel and bottles, sample racks with tube caps on the loading deck, front doors with grip and bottle bay, status light bar, touch-screen monitor on an arm, side vents and feet. Sits on a bench top (z = 0). Water, drainage, gases and extract reach this item via the nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold pipe or duct connectors).",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 1500
+ },
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Upper Housing",
+   "side": "back"
+  },
+  {
+   "n": "LIS Data",
+   "domain": "electrical",
+   "system": "Data",
+   "part": "Upper Housing",
+   "side": "top"
+  }
+ ]
+}

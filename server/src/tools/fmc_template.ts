@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -5,7 +6,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, isInside, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
-import { BrandPack, TemplateFacts, auditTemplate } from "../fmc/template.js";
+import { BrandPack, TemplateFacts, TemplateRef, auditTemplate, roleCopyLine } from "../fmc/template.js";
+import { csvRow, readRegisterFile } from "./fmc_sheets.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
 import { BaseRecipe, LAYERS, Layer, baseRecipe, expectedNames, layerPayload, table } from "../fmc/templatekit.js";
 
@@ -28,9 +30,13 @@ function reply(body: object, isError = false) {
 }
 
 export const FMC_TEMPLATE_DESCRIPTION =
-  "Formcraft templates: audit reads a .rte (opened in the background if needed) and checks it against the kit: shared " +
-    "parameters by GUID against FMC_SharedParameters.txt, view templates and filters, fonts against a brand pack, title " +
-    "blocks, browser organisation, size, unused families and warnings (Must, Should, Advice). recipe (read-only) reads the " +
+  "Formcraft templates: audit reads a .rte (opened in the background if needed) and checks it against the kit both ways: " +
+    "shared parameters by GUID against FMC_SharedParameters.txt and the kit's project parameters (FMC_Master_Data.json) " +
+    "missing from it, view templates and filters, stock view templates and schedules the kit doesn't add, fonts against " +
+    "the brand pack, the kit's title blocks (FMC_TB_*, Family Register), legends the sheet register places, panel " +
+    "schedule templates, materials (kit FMC_ materials, broken textures, unused, duplicates), role copies identical to " +
+    "Base, browser organisation, size, unused families and warnings (Must, Should, Advice). A check that can't run says " +
+    "Not checked and why, never Pass. recipe (read-only) reads the " +
     "kit (FMC_Revit_Kit.xlsx and FMC_Master_Data.json) into the base template's layers, with every reading it had to make " +
     "listed. build applies the layers to a template in a staging folder (creating it from seed_path first if asked, " +
     "then optional role copies that never overwrite); it is a dry run unless dry_run is false. compare lists what the " +
@@ -44,7 +50,7 @@ export const FMC_TEMPLATE_SHAPE = {
   brand: z.object({ name: z.string(), main_font: z.string(), title_font: z.string().optional() }).optional()
     .describe("The brand pack (from the kit): fonts for text and dimension types"),
   dry_run: z.boolean().optional().default(true),
-  kit_folder: z.string().optional().default("").describe("recipe, build, compare: the Formcraft kit folder"),
+  kit_folder: z.string().optional().default("").describe("recipe, build, compare, audit: the Formcraft kit folder (audit: default, the kit the guard's specs_path is in)"),
   layers: z.array(z.enum(LAYERS)).optional().default([]).describe("build: the layers to apply (default: all, in order)"),
   seed_path: z.string().optional().default("").describe("build: a Revit template to start from when template_path doesn't exist yet"),
   role_copies: z.boolean().optional().default(false).describe("build: copy the finished template to FMC_<Role>_Template_<version>.rte for each kit role, never overwriting"),
@@ -64,6 +70,88 @@ export function loadRecipe(kit: string): { recipe: BaseRecipe | null; problems: 
   try { const k = JSON.parse(fs.readFileSync(win.join(kit, "FMC_Kit.json"), "utf8")); kitName = `FMC_Kit ${k.kit ?? ""} ${k.revision ?? ""}`.replace(/\s+/g, " ").trim(); } catch { /* the name is cosmetic */ }
   const roles = [...new Set(table(sheets.get("Sheet_Register")).map((r) => r["Role"]).filter(Boolean))];
   return { recipe: baseRecipe(kitName, sheets, data), problems: [], roles };
+}
+
+/** The kit folder: the one given, else the one the guard's specs_path sits in (<kit>\03_Master_Data\FMC_Family_Specs.json). */
+export function kitFolderFor(given: string, config: GuardConfig): string {
+  return given.trim() || win.dirname(win.dirname(expandEnv(config.specs_path)));
+}
+
+/**
+ * LG_<Role>_* legends the sheet register places (its Placed column): the General ones (LG_Z_*) in every template, a
+ * role's own (LG_E_*) in that role's template. The Base template is checked for the General ones.
+ */
+export function registerLegends(rows: string[][], role: string): string[] {
+  const cPlaced = (rows[0] ?? []).map((h) => h.trim().toLowerCase()).indexOf("placed");
+  if (cPlaced < 0) return [];
+  const roles = new Set(["Z", role.toUpperCase()].filter(Boolean));
+  const out = new Set<string>();
+  for (const r of rows.slice(1))
+    for (const m of (r[cPlaced] ?? "").matchAll(/\bLG_([A-Z]{1,2})_[A-Za-z0-9_]+/g)) if (roles.has(m[1])) out.add(m[0]);
+  return [...out];
+}
+
+/**
+ * F-044: everything the audit compares a template with, read from the kit now (rule 7). Each source that can't be read
+ * leaves its lines Not checked, with the reason. The brand pack: the one passed, else the kit's only pack.
+ */
+export function loadAuditRef(kitFolder: string, config: GuardConfig, target: string, brandArg: BrandPack | null): { ref: TemplateRef; brand: BrandPack | null } {
+  const md = path.join(kitFolder, "03_Master_Data");
+  const problems: NonNullable<TemplateRef["problems"]> = {};
+  const ref: TemplateRef = { problems, exists: (p) => fs.existsSync(p) };
+  const role = /^FMC_([A-Z]{1,2})_Template_/i.exec(win.basename(target))?.[1]?.toUpperCase() ?? "";
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(md, "FMC_Master_Data.json"), "utf8").replace(/^﻿/, ""));
+    ref.projectParameters = Object.keys(data?.params ?? {});
+    if (!ref.projectParameters.length) { ref.projectParameters = null; problems.projectParameters = "FMC_Master_Data.json lists no params"; }
+  } catch { problems.projectParameters = `Not readable: ${path.join(md, "FMC_Master_Data.json")}`; }
+  try {
+    const rows = fs.readFileSync(path.join(md, "FMC_Family_Register.csv"), "utf8").replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim()).map(csvRow);
+    const head = rows[0].map((h) => h.trim().toLowerCase());
+    const [cFam, cCat, cPri] = ["family", "category", "priority"].map((h) => head.indexOf(h));
+    ref.titleBlocks = rows.slice(1).filter((r) => (r[cCat] ?? "").trim().toLowerCase() === "title blocks").map((r) => ({ family: r[cFam].trim(), priority: (r[cPri] ?? "").trim() }));
+    if (!ref.titleBlocks.length) { ref.titleBlocks = null; problems.titleBlocks = "The Family Register lists no Title Blocks"; }
+  } catch { problems.titleBlocks = `Not readable: ${path.join(md, "FMC_Family_Register.csv")}`; }
+  try {
+    ref.legends = registerLegends(readRegisterFile(path.join(md, "FMC_Sheet_Register.csv")), role);
+    if (!ref.legends.length) { ref.legends = null; problems.legends = "The sheet register places no LG_ legends"; }
+  } catch { problems.legends = `Not readable: ${path.join(md, "FMC_Sheet_Register.csv")}`; }
+  const materialsFile = fs.existsSync(expandEnv(config.materials_file)) ? expandEnv(config.materials_file) : path.join(kitFolder, "07_Materials", "FMC_Materials.json");
+  try {
+    ref.materials = (JSON.parse(fs.readFileSync(materialsFile, "utf8").replace(/^﻿/, "")).materials ?? []).map((m: { name?: string }) => String(m.name ?? "")).filter(Boolean);
+    if (!ref.materials!.length) { ref.materials = null; problems.materials = `${materialsFile} lists no materials`; }
+  } catch { problems.materials = `Not readable: ${materialsFile}`; }
+  try {
+    const sheets = readXlsxSheets(fs.readFileSync(path.join(md, "FMC_Revit_Kit.xlsx")));
+    const col = (tab: string, c: string) => table(sheets.get(tab)).map((r) => r[c]).filter(Boolean);
+    ref.panelTemplates = col("Panel_Schedules", "Template");
+    ref.schedules = col("Schedules", "Name");
+    ref.viewTemplates = col("View_Templates", "Name");
+    if (!ref.panelTemplates.length) { ref.panelTemplates = null; problems.panelTemplates = "FMC_Revit_Kit.xlsx has no Panel_Schedules rows"; }
+    if (!ref.schedules.length) { ref.schedules = null; problems.schedules = "FMC_Revit_Kit.xlsx has no Schedules rows"; }
+    if (!ref.viewTemplates.length) ref.viewTemplates = null;
+  } catch {
+    const p = `Not readable: ${path.join(md, "FMC_Revit_Kit.xlsx")}`;
+    problems.panelTemplates = p; problems.schedules = p;
+  }
+  let brand = brandArg;
+  if (!brand) {
+    const packsFile = path.join(kitFolder, "06_Templates", "FMC_BrandPacks.json");
+    let packs: BrandPack[] = [];
+    try { packs = (JSON.parse(fs.readFileSync(packsFile, "utf8").replace(/^﻿/, "")).packs ?? []).filter((p: BrandPack) => p?.name && p?.main_font); } catch { packs = []; }
+    if (packs.length === 1) brand = packs[0];
+    else ref.brandNote = packs.length
+      ? `The kit has ${packs.length} brand packs (${packs.map((p) => p.name).join(", ")}): pass the one this template takes (brand)`
+      : `The kit has no font pack (${packsFile} is missing or empty): fonts can't be checked; a kit change request`;
+  }
+  // Role copies: the .rte files beside it, compared byte for byte with Base
+  try {
+    const dir = win.dirname(target);
+    const files = fs.readdirSync(dir).filter((f) => /^FMC_(Base|[A-Z]{1,2})_Template_.+\.rte$/i.test(f))
+      .map((f) => ({ name: f, hash: createHash("sha256").update(fs.readFileSync(path.join(dir, f))).digest("hex") }));
+    ref.roleCopy = roleCopyLine(win.basename(target), files);
+  } catch { ref.roleCopy = null; }
+  return { ref, brand };
 }
 
 async function runRecipeTools(args: FmcTemplateArgs, config: GuardConfig) {
@@ -164,9 +252,13 @@ export async function runFmcTemplate(args: FmcTemplateArgs) {
       const facts = (await withRevitConnection((c) => c.sendRaw("fmc_template_audit", { template_path: target }, 300000))) as TemplateFacts;
       let kit = null;
       try { kit = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { kit = null; }
-      const lines = auditTemplate(facts, kit, (args.brand as BrandPack) ?? null);
+      // F-044: both ways against the kit; what can't be checked says why
+      const kitFolder = kitFolderFor(args.kit_folder, config);
+      const { ref, brand } = loadAuditRef(kitFolder, config, target, (args.brand as BrandPack) ?? null);
+      const lines = auditTemplate(facts, kit, brand, ref);
       log(config, "template_audit", false, target, "done", lines.filter((l) => l.severity !== "Pass").map((l) => `${l.area}: ${l.status}`).join(" | "));
-      return reply({ audited: target, title: facts.title, lines });
+      return reply({ audited: target, title: facts.title, kit_folder: kitFolder, lines,
+        not_checked: lines.filter((l) => l.status === "Not checked").length });
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       log(config, "template_audit", false, target, "error", msg);

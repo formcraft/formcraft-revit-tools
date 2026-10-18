@@ -1,0 +1,251 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_Sprinkler_Pendent_Standard",
+ "template": "Metric Generic Model.rft",
+ "about": "Wave 1: pendent sprinkler; wet fire-protection pipe connector, turned parts by revolution.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Sprinklers"
+  },
+  {
+   "op": "add_type",
+   "name": "K80_68C"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/Keynote",
+   "type": "K80_68C",
+   "param": "Keynote",
+   "value": "V.SPR_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Keynote_Code",
+   "type": "K80_68C",
+   "param": "FMC_Keynote_Code",
+   "value": "V.SPR_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Cost_Unit",
+   "type": "K80_68C",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/FMC_Geometry_Stage",
+   "type": "K80_68C",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/IfcExportAs",
+   "type": "K80_68C",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "K80_68C/Description",
+   "type": "K80_68C",
+   "param": "Description",
+   "value": "Pendent sprinkler K80, 68 C glass bulb, chrome"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Body",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Deflector",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "revolution",
+   "name": "Coarse Envelope",
+   "profile": [
+    [
+     0,
+     -60
+    ],
+    [
+     30,
+     -60
+    ],
+    [
+     30,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Body",
+   "profile": [
+    [
+     0,
+     -10
+    ],
+    [
+     12,
+     -10
+    ],
+    [
+     12,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "subcategory": "Body"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Frame",
+   "profile": [
+    [
+     6,
+     -45
+    ],
+    [
+     10,
+     -45
+    ],
+    [
+     10,
+     -10
+    ],
+    [
+     6,
+     -10
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "subcategory": "Body"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Deflector",
+   "profile": [
+    [
+     0,
+     -50
+    ],
+    [
+     28,
+     -50
+    ],
+    [
+     28,
+     -47
+    ],
+    [
+     0,
+     -47
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "subcategory": "Deflector"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Deflector",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Body",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "K-factor 80": {
+   "value": "80",
+   "source_status": "assumed",
+   "source": "BS EN 12259-1 standard response"
+  },
+  "15 mm inlet": {
+   "value": "15",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

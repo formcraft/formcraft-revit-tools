@@ -1,0 +1,286 @@
+{
+ "family": "FMC_M_AirTerminal_HEPA_TerminalFilter",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "Terminal HEPA filter box 600 x 600, H14 gel-seal filter, white housing with side spigot and damper, perforated diffuser face, DOP test and injection ports",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_06",
+ "types": [
+  {
+   "name": "600x600_H14"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2700
+ },
+ "materials": {
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_Duct_Galvanised",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey"
+ },
+ "reference": {
+  "query": "HEPA terminal filter air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=HEPA+terminal+filter+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Housing",
+   "shape": "box",
+   "at": [
+    -290,
+    -290,
+    0,
+    290,
+    290,
+    350
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Face Frame",
+   "shape": "box",
+   "at": [
+    -297,
+    -297,
+    -15,
+    297,
+    297,
+    0
+   ],
+   "mat": "epw",
+   "r": 2
+  },
+  {
+   "n": "Perforated Face",
+   "shape": "box",
+   "at": [
+    -268,
+    -268,
+    -18,
+    268,
+    268,
+    -15
+   ],
+   "mat": "mgrey"
+  },
+  {
+   "n": "Perforation Row",
+   "shape": "box",
+   "at": [
+    -250,
+    -251,
+    -19,
+    250,
+    -248,
+    -18
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 24,
+    "d": [
+     0,
+     21.7,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Face Fixing",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -255,
+    -255
+   ],
+   "r": 6,
+   "z": [
+    -21,
+    -18
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     510,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "DOP Test Port",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    230,
+    230
+   ],
+   "r": 10,
+   "z": [
+    -24,
+    -18
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Side Spigot",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    200
+   ],
+   "r": 125,
+   "x": [
+    -380,
+    -290
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot Bead",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    200
+   ],
+   "profile": [
+    [
+     124,
+     -350
+    ],
+    [
+     130,
+     -350
+    ],
+    [
+     130,
+     -340
+    ],
+    [
+     124,
+     -340
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Damper Shaft",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    200
+   ],
+   "r": 6,
+   "x": [
+    -300,
+    -290
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Damper Quadrant",
+   "shape": "box",
+   "at": [
+    -292,
+    -40,
+    280,
+    -290,
+    40,
+    330
+   ],
+   "mat": "dark",
+   "lod": "f"
+  },
+  {
+   "n": "Aerosol Injection Port",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -150,
+    120
+   ],
+   "r": 8,
+   "x": [
+    290,
+    310
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Pressure Test Port",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    150,
+    150
+   ],
+   "r": 8,
+   "z": [
+    350,
+    372
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Hanger Lug Right",
+   "shape": "box",
+   "at": [
+    290,
+    -20,
+    300,
+    310,
+    20,
+    340
+   ],
+   "mat": "galv",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "part": "Side Spigot",
+   "side": "left",
+   "flow": "In",
+   "diameter": 250
+  }
+ ],
+ "values": {
+  "Face 595 x 595 mm, housing 350 deep": {
+   "value": "595x595x350",
+   "source_status": "assumed",
+   "source": "typical terminal HEPA box for 600 grid"
+  },
+  "Filter H14 (EN 1822), 99.995 % MPPS": {
+   "value": "H14",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Flow 0.15 m3/s at 0.45 m/s face": {
+   "value": 0.15,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Spigot 250 mm": {
+   "value": 250,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: housing with side spigot, bead, damper shaft and quadrant, face frame and perforated face (rows of perforations), face fixings, DOP test port, aerosol injection and pressure test ports, hanger lug."
+}

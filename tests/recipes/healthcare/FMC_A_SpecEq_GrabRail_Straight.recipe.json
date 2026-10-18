@@ -1,0 +1,422 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_SpecEq_GrabRail_Straight",
+ "template": "Metric Generic Model.rft",
+ "about": "Wave 1: grab rail; one length parameter flexes the rail between locked planes; 4 types.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Specialty Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rail Length",
+   "type": "Length"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Rail Left",
+   "from": [
+    -300,
+    -500
+   ],
+   "to": [
+    -300,
+    500
+   ],
+   "is_reference": "Left"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Rail Right",
+   "from": [
+    300,
+    -500
+   ],
+   "to": [
+    300,
+    500
+   ],
+   "is_reference": "Right"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Rail Front",
+   "from": [
+    -800,
+    -80
+   ],
+   "to": [
+    800,
+    -80
+   ],
+   "is_reference": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Wall Face",
+   "from": [
+    -800,
+    0
+   ],
+   "to": [
+    800,
+    0
+   ],
+   "is_reference": "Back"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Rail Length",
+   "between": [
+    "Rail Left",
+    "Rail Right"
+   ],
+   "label": "Rail Length"
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "Rail EQ",
+   "planes": [
+    "Rail Left",
+    "Center (Left/Right)",
+    "Rail Right"
+   ]
+  },
+  {
+   "op": "add_type",
+   "name": "300_SS"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Keynote",
+   "type": "300_SS",
+   "param": "Keynote",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Keynote_Code",
+   "type": "300_SS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Cost_Unit",
+   "type": "300_SS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/FMC_Geometry_Stage",
+   "type": "300_SS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/IfcExportAs",
+   "type": "300_SS",
+   "param": "IfcExportAs",
+   "value": "IfcDiscreteAccessory"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Description",
+   "type": "300_SS",
+   "param": "Description",
+   "value": "Straight grab rail 300 mm, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Rail Length",
+   "type": "300_SS",
+   "param": "Rail Length",
+   "value": 300
+  },
+  {
+   "op": "set_type_value",
+   "name": "300_SS/Default Elevation",
+   "type": "300_SS",
+   "param": "Default Elevation",
+   "value": 800
+  },
+  {
+   "op": "add_type",
+   "name": "450_SS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Keynote",
+   "type": "450_SS",
+   "param": "Keynote",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/FMC_Keynote_Code",
+   "type": "450_SS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/FMC_Cost_Unit",
+   "type": "450_SS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/FMC_Geometry_Stage",
+   "type": "450_SS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/IfcExportAs",
+   "type": "450_SS",
+   "param": "IfcExportAs",
+   "value": "IfcDiscreteAccessory"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Description",
+   "type": "450_SS",
+   "param": "Description",
+   "value": "Straight grab rail 450 mm, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Rail Length",
+   "type": "450_SS",
+   "param": "Rail Length",
+   "value": 450
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_SS/Default Elevation",
+   "type": "450_SS",
+   "param": "Default Elevation",
+   "value": 800
+  },
+  {
+   "op": "add_type",
+   "name": "600_SS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Keynote",
+   "type": "600_SS",
+   "param": "Keynote",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/FMC_Keynote_Code",
+   "type": "600_SS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/FMC_Cost_Unit",
+   "type": "600_SS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/FMC_Geometry_Stage",
+   "type": "600_SS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/IfcExportAs",
+   "type": "600_SS",
+   "param": "IfcExportAs",
+   "value": "IfcDiscreteAccessory"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Description",
+   "type": "600_SS",
+   "param": "Description",
+   "value": "Straight grab rail 600 mm, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Rail Length",
+   "type": "600_SS",
+   "param": "Rail Length",
+   "value": 600
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_SS/Default Elevation",
+   "type": "600_SS",
+   "param": "Default Elevation",
+   "value": 800
+  },
+  {
+   "op": "add_type",
+   "name": "900_SS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Keynote",
+   "type": "900_SS",
+   "param": "Keynote",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Keynote_Code",
+   "type": "900_SS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.SAC_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Cost_Unit",
+   "type": "900_SS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/FMC_Geometry_Stage",
+   "type": "900_SS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/IfcExportAs",
+   "type": "900_SS",
+   "param": "IfcExportAs",
+   "value": "IfcDiscreteAccessory"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Description",
+   "type": "900_SS",
+   "param": "Description",
+   "value": "Straight grab rail 900 mm, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Rail Length",
+   "type": "900_SS",
+   "param": "Rail Length",
+   "value": 900
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SS/Default Elevation",
+   "type": "900_SS",
+   "param": "Default Elevation",
+   "value": 800
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rail",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Fixing",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail",
+   "rect": [
+    "Rail Left",
+    "Rail Right",
+    "Rail Front",
+    "Wall Face"
+   ],
+   "start": 784,
+   "end": 816
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail",
+   "subcategory": "Rail"
+  },
+  {
+   "op": "extrusion",
+   "name": "Fixing L",
+   "points": [
+    [
+     -310,
+     -80
+    ],
+    [
+     -250,
+     -80
+    ],
+    [
+     -250,
+     0
+    ],
+    [
+     -310,
+     0
+    ]
+   ],
+   "start": 770,
+   "end": 830
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fixing L",
+   "subcategory": "Fixing"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fixing L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  }
+ ],
+ "values": {
+  "32 mm diameter, 50 mm clear of wall": {
+   "value": "32",
+   "source_status": "assumed",
+   "source": "BS 8300-2 basis"
+  },
+  "Mounting height 800 mm": {
+   "value": "800",
+   "source_status": "assumed",
+   "source": "BS 8300-2 basis"
+  }
+ }
+}

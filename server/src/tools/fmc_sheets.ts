@@ -61,7 +61,8 @@ export const FMC_SHEETS_DESCRIPTION =
 export const FMC_SHEETS_SHAPE = {
   action: z.enum(["compare", "create", "rename"]),
   register: z.string().describe("Absolute path of the project's sheet register (.xlsx or .csv)"),
-  issue_set: z.string().optional().default("PERMIT"),
+  issue_set: z.string().optional().default("PERMIT")
+    .describe("The issue set; a sheet is in it when it is one of the sheet's sets (the register's PERMIT+TENDER+CONSTRUCTION is in PERMIT). Several (PERMIT+TENDER) take a sheet in any of them"),
   roles: z.array(z.string()).optional().default([]),
   fields: z.array(z.string()).optional().describe("compare: sheet parameters to count as title block fields"),
   title_block: z.string().optional().describe("create: title block type name (default: the first loaded)"),

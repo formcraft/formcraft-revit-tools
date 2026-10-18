@@ -1,0 +1,239 @@
+{
+ "family": "FMC_E_LightFixture_Bollard_Light",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "LED bollard 900 mm, 200 dia aluminium body, 360 deg louvred opal window, flanged base",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.EXL_01",
+ "types": [
+  {
+   "name": "900_LED"
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 15
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "opal": "FMC_Plastic_ABS_White",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "reference": {
+  "query": "light fixture bollard light lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+bollard+light+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base Flange",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     110,
+     0
+    ],
+    [
+     110,
+     15
+    ],
+    [
+     0,
+     15
+    ]
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Body",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     15
+    ],
+    [
+     100,
+     15
+    ],
+    [
+     100,
+     720
+    ],
+    [
+     0,
+     720
+    ]
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Light Window",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     720
+    ],
+    [
+     95,
+     720
+    ],
+    [
+     95,
+     840
+    ],
+    [
+     0,
+     840
+    ]
+   ],
+   "mat": "opal",
+   "lod": "mf"
+  },
+  {
+   "n": "Louvre Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     95,
+     735
+    ],
+    [
+     102,
+     735
+    ],
+    [
+     102,
+     743
+    ],
+    [
+     95,
+     743
+    ]
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     25
+    ]
+   }
+  },
+  {
+   "n": "Cap",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     840
+    ],
+    [
+     110,
+     840
+    ],
+    [
+     110,
+     870
+    ],
+    [
+     90,
+     895
+    ],
+    [
+     0,
+     900
+    ]
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Access Door",
+   "shape": "fbox",
+   "at": [
+    -40,
+    -101,
+    150,
+    40,
+    -99,
+    400
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "Door Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    380
+   ],
+   "r": 4,
+   "y": [
+    -103,
+    -100
+   ],
+   "mat": "ss",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Base Flange",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "Height 900 mm, 200 dia": {
+   "value": "900x200",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "LED 15 W, IP65": {
+   "value": "15W",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Bollard: base flange, dark body with access door and screw, opal light window with four louvre rings, domed cap. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

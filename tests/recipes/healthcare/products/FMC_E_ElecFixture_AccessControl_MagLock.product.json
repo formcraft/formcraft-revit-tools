@@ -1,0 +1,221 @@
+{
+ "family": "FMC_E_ElecFixture_AccessControl_MagLock",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Electromagnetic lock 600 lb (270 kg), surface mounted at the door head with L-bracket and armature plate, LED status",
+ "ifc": "IfcActuator",
+ "keynote": "E.SEC_01",
+ "types": [
+  {
+   "name": "600lb_12-24V"
+  }
+ ],
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "black": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red",
+  "rubber": "FMC_Rubber_Black"
+ },
+ "reference": {
+  "query": "access control mag lock electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=access+control+mag+lock+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Head Bracket",
+   "shape": "box",
+   "at": [
+    -140,
+    -60,
+    -6,
+    140,
+    0,
+    0
+   ],
+   "mat": "alu",
+   "lod": "mf"
+  },
+  {
+   "n": "Bracket Upstand",
+   "shape": "box",
+   "at": [
+    -140,
+    -6,
+    -6,
+    140,
+    0,
+    40
+   ],
+   "mat": "alu",
+   "lod": "f"
+  },
+  {
+   "n": "Magnet Body",
+   "shape": "box",
+   "at": [
+    -125,
+    -55,
+    -48,
+    125,
+    -6,
+    -6
+   ],
+   "mat": "alu",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Magnet Face",
+   "shape": "box",
+   "at": [
+    -120,
+    -60,
+    -45,
+    120,
+    -55,
+    -9
+   ],
+   "mat": "chrome",
+   "lod": "mf",
+   "r": 1
+  },
+  {
+   "n": "End Cap",
+   "shape": "box",
+   "at": [
+    -131,
+    -55,
+    -48,
+    -125,
+    -6,
+    -6
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     256,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Status LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    100,
+    -27
+   ],
+   "r": 3,
+   "y": [
+    -61,
+    -55
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Armature Plate",
+   "shape": "box",
+   "at": [
+    -90,
+    -72,
+    -45,
+    90,
+    -60,
+    -9
+   ],
+   "mat": "chrome",
+   "lod": "mf",
+   "r": 2
+  },
+  {
+   "n": "Sex Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -50,
+    -27
+   ],
+   "r": 5,
+   "y": [
+    -80,
+    -72
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     100,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Armature Spacer",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -27
+   ],
+   "r": 7,
+   "y": [
+    -80,
+    -72
+   ],
+   "mat": "rubber",
+   "lod": "f"
+  },
+  {
+   "n": "Cable Entry",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -100,
+    -30
+   ],
+   "r": 4,
+   "z": [
+    0,
+    30
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Security",
+   "domain": "electrical",
+   "system": "Security",
+   "part": "Head Bracket",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Magnet 250 x 49 x 42 mm": {
+   "value": "250x49x42",
+   "source_status": "assumed",
+   "source": "typical 600 lb mag-lock"
+  },
+  "Holding force 600 lb, 12/24 V DC": {
+   "value": "600lb",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Fail-safe, released by fire alarm": {
+   "value": "fail-safe",
+   "source_status": "assumed",
+   "source": "BS 7273-4"
+  }
+ },
+ "about": "Mag-lock: L bracket on the head, aluminium magnet body with end caps and chrome face, status LED, armature plate with sex bolts and spacer, cable entry; underside of head at z = 0. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

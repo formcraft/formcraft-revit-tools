@@ -1,13 +1,12 @@
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { configPath, expandEnv, loadConfig } from "../fmc/policy.js";
 import { label, notListening, readInstances, revitPort } from "../fmc/connect.js";
-import { AddinFacts, Line, PathProbe, aiRulebookLine, guardPaths, kitLayout, revitLines, summary } from "../fmc/selftest.js";
+import { AddinFacts, Line, PathProbe, aiRulebookLine, guardPaths, kitLayout, revitLines, runningBuildLine, summary } from "../fmc/selftest.js";
 import { loadRulebook } from "../fmc/aiuse_io.js";
+import { BuildStamp, RUNNING_BUILD, diskBuild } from "../fmc/buildinfo.js";
 
 const probe: PathProbe = {
   exists: (p) => fs.existsSync(p),
@@ -15,18 +14,17 @@ const probe: PathProbe = {
   list: (p) => { try { return fs.readdirSync(p); } catch { return []; } },
 };
 
-/** This server build's stamp (scripts/build-info.mjs writes build/build-info.json). */
-export function serverBuild(): { commit: string; built: string } {
-  try {
-    const here = path.dirname(fileURLToPath(import.meta.url));
-    return JSON.parse(fs.readFileSync(path.join(here, "..", "build-info.json"), "utf8"));
-  } catch {
-    return { commit: "unknown", built: "" };
-  }
+/**
+ * The build this server process runs: build/build-info.json as it was when the process started (F-042). The updater
+ * can replace the file while the Claude app keeps the old process running, so the file is not re-read here.
+ */
+export function serverBuild(): BuildStamp {
+  return RUNNING_BUILD;
 }
 
 export const FMC_SELFTEST_DESCRIPTION =
-  "Formcraft self-test: run it first in every test run. One read-only call checks, link by link: the AI connection to " +
+  "Formcraft self-test: run it first in every test run. One read-only call checks, link by link: the server build this " +
+    "process runs against the build installed on disk (a difference means the Claude app must be restarted), the AI connection to " +
     "Revit, the add-in build in Revit against this server's build, every command known to Revit, whether Revit may be " +
     "closed for an install (only new, unchanged documents open), the guard's paths and the kit's layout (FMC_Kit.json, " +
     "rulebooks in 03_Master_Data\\FMC_Rulebook, the _Staging folders, templates). Each line is Pass, Warn, Fail or Info; " +
@@ -40,6 +38,7 @@ export type FmcSelftestArgs = z.infer<z.ZodObject<typeof FMC_SELFTEST_SHAPE>>;
 
 export async function runFmcSelftest(args: FmcSelftestArgs) {
   const server = serverBuild();
+  const onDisk = diskBuild();
   let facts: AddinFacts | null = null;
   let failure = notListening(revitPort());
   try { facts = (await withRevitConnection((c) => c.sendRaw("fmc_selftest_facts", {}, 15000))) as AddinFacts; }
@@ -55,7 +54,8 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
   const lines: Line[] = [
     { area: "Revit", check: "Revits open", state: "Info",
       detail: open.length ? open.map(label).join("; ") + (open.length > 1 ? ". Pass revit to say which one a call (and this self-test) goes to" : "") : "None announced (an older add-in, or the AI connection is off)" },
-    { area: "Server", check: "Server build", state: server.commit === "unknown" ? "Warn" : "Info", detail: `${server.commit} · built ${server.built}` },
+    { area: "Server", check: "Server build", state: server.commit === "unknown" ? "Warn" : "Info", detail: `${server.commit} · built ${server.built} (running, read at startup)` },
+    runningBuildLine(server, onDisk),
     ...revitLines(facts, server, failure),
     { area: "Guard", check: "fmc_guard.json", state: problem ? "Fail" : "Pass", detail: problem ?? configPath() },
     ...guardPaths(config, probe, (p) => expandEnv(p)),
@@ -63,7 +63,7 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
     ...kitLayout((facts?.kit_folder || args.kit_folder || "").trim(), probe),
   ];
   const s = summary(lines);
-  const text = { ...s, lines, server, addin: facts?.addin ?? null, documents: facts?.documents ?? [] };
+  const text = { ...s, lines, server, server_on_disk: onDisk, addin: facts?.addin ?? null, documents: facts?.documents ?? [] };
   return { content: [{ type: "text" as const, text: JSON.stringify(text, null, 2) }], isError: false };
 }
 

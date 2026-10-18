@@ -1,0 +1,234 @@
+{
+ "family": "FMC_S_GenericModel_Embed_Plate",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Cast-in steel plate with four headed shear studs, face flush with the concrete",
+ "ifc": "IfcPlate",
+ "keynote": "M.FIX_01",
+ "types": [
+  {
+   "name": "200x200_Plate",
+   "desc": "embed plate 200 x 200 x 12, 4 studs"
+  },
+  {
+   "name": "300x300_Plate",
+   "desc": "embed plate 300 x 300 x 15, 4 studs"
+  }
+ ],
+ "materials": {
+  "steel": "FMC_Metal_StructuralSteel_S275",
+  "white": "FMC_Paint_RoadMarking_White"
+ },
+ "parts": [
+  {
+   "n": "Plate",
+   "shape": "fbox",
+   "at": [
+    -100,
+    0,
+    0,
+    100,
+    12,
+    200
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Stud Low",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    40
+   ],
+   "r": 8,
+   "y": [
+    12,
+    112
+   ],
+   "mat": "steel",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Stud High",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    160
+   ],
+   "r": 8,
+   "y": [
+    12,
+    112
+   ],
+   "mat": "steel",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Stud Head Low",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    40
+   ],
+   "r": 16,
+   "y": [
+    112,
+    122
+   ],
+   "mat": "steel",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 16
+  },
+  {
+   "n": "Stud Head High",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    160
+   ],
+   "r": 16,
+   "y": [
+    112,
+    122
+   ],
+   "mat": "steel",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 16
+  },
+  {
+   "n": "Weld Collar Low",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    40
+   ],
+   "r": 11,
+   "y": [
+    12,
+    16
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 16
+  },
+  {
+   "n": "Weld Collar High",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -60,
+    160
+   ],
+   "r": 11,
+   "y": [
+    12,
+    16
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   },
+   "seg": 16
+  },
+  {
+   "n": "Centre Mark",
+   "shape": "fbox",
+   "at": [
+    -1,
+    -0.5,
+    20,
+    1,
+    0,
+    180
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Centre Mark H",
+   "shape": "fbox",
+   "at": [
+    -80,
+    -0.5,
+    99,
+    80,
+    0,
+    101
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "embed plate generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=embed+plate+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Plate 200 x 200 x 12 mm (geometry)": {
+   "value": "200x200x12",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Studs 4 x 16 dia x 100": {
+   "value": "4x16x100",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Load from the attached item": {
+   "value": "by others",
+   "source_status": "assumed",
+   "source": "engineer to confirm"
+  }
+ },
+ "about": "Face at y = 0 flush with the concrete face; studs run back into the concrete (+y): plate, four headed studs with weld collars, centre marks (Fine)."
+}

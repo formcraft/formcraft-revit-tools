@@ -1,0 +1,6208 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_MechEq_MedGas_Pendant_ICU",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "ICU pendant modelled as a generic product: ceiling flange, canopy, gas, power and data inlets above the ceiling (z > 0), arm with joints and brake, service head with corner rails, base and handle, six terminal units, two twin sockets, nurse call, two shelves with rails, infusion pole, status LED. Single arm drawn; double arm shares it. Reference: query: medical gas pendant ICU mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+pendant+ICU+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "900_SingleArm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Cost_Unit",
+   "type": "900_SingleArm",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Geometry_Stage",
+   "type": "900_SingleArm",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/IfcExportAs",
+   "type": "900_SingleArm",
+   "param": "IfcExportAs",
+   "value": "IfcFlowTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/Description",
+   "type": "900_SingleArm",
+   "param": "Description",
+   "value": "ICU ceiling pendant, single articulated arm 900 mm on a Unistrut frame, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/Keynote",
+   "type": "900_SingleArm",
+   "param": "Keynote",
+   "value": "E.BHU_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Keynote_Code",
+   "type": "900_SingleArm",
+   "param": "FMC_Keynote_Code",
+   "value": "E.BHU_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Code_Description",
+   "type": "900_SingleArm",
+   "param": "FMC_Code_Description",
+   "value": "MedGas Pendant ICU: ICU pendant"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Code_Group",
+   "type": "900_SingleArm",
+   "param": "FMC_Code_Group",
+   "value": "E.BHU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/FMC_Role_Code",
+   "type": "900_SingleArm",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/Voltage",
+   "type": "900_SingleArm",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_SingleArm/Apparent Load",
+   "type": "900_SingleArm",
+   "param": "Apparent Load",
+   "value": 3000
+  },
+  {
+   "op": "add_type",
+   "name": "1600_DoubleArm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Cost_Unit",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Geometry_Stage",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/IfcExportAs",
+   "type": "1600_DoubleArm",
+   "param": "IfcExportAs",
+   "value": "IfcFlowTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/Description",
+   "type": "1600_DoubleArm",
+   "param": "Description",
+   "value": "ICU ceiling pendant, single articulated arm 900 mm on a Unistrut frame, service head with O2, vacuum and medical air terminals, sockets, nurse call, two equipment shelves and rails"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/Keynote",
+   "type": "1600_DoubleArm",
+   "param": "Keynote",
+   "value": "E.BHU_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Keynote_Code",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Keynote_Code",
+   "value": "E.BHU_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Code_Description",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Code_Description",
+   "value": "MedGas Pendant ICU: ICU pendant"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Code_Group",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Code_Group",
+   "value": "E.BHU"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/FMC_Role_Code",
+   "type": "1600_DoubleArm",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/Voltage",
+   "type": "1600_DoubleArm",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600_DoubleArm/Apparent Load",
+   "type": "1600_DoubleArm",
+   "param": "Apparent Load",
+   "value": 3000
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Epoxy White",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Epoxy White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Copper_Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Medical Grey",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Medical Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    181,
+    18,
+    27
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_FireHoseReel_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Laminate",
+   "color": [
+    217,
+    211,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Laminate Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Laminate_HPL",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Green",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Green Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -260,
+     -470
+    ],
+    [
+     1230.0,
+     -470
+    ],
+    [
+     1230.0,
+     260
+    ],
+    [
+     -260,
+     260
+    ]
+   ],
+   "start": -2040,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Ceiling Flange",
+   "profile": [
+    [
+     0,
+     -30
+    ],
+    [
+     260,
+     -30
+    ],
+    [
+     260,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ceiling Flange",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ceiling Flange",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy",
+   "profile": [
+    [
+     0,
+     -380
+    ],
+    [
+     140,
+     -380
+    ],
+    [
+     200,
+     -60
+    ],
+    [
+     220,
+     -30
+    ],
+    [
+     0,
+     -30
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gas Inlet O2",
+   "points": [
+    [
+     -109.0,
+     60.0
+    ],
+    [
+     -109.37,
+     62.85
+    ],
+    [
+     -110.47,
+     65.5
+    ],
+    [
+     -112.22,
+     67.78
+    ],
+    [
+     -114.5,
+     69.53
+    ],
+    [
+     -117.15,
+     70.63
+    ],
+    [
+     -120.0,
+     71.0
+    ],
+    [
+     -122.85,
+     70.63
+    ],
+    [
+     -125.5,
+     69.53
+    ],
+    [
+     -127.78,
+     67.78
+    ],
+    [
+     -129.53,
+     65.5
+    ],
+    [
+     -130.63,
+     62.85
+    ],
+    [
+     -131.0,
+     60.0
+    ],
+    [
+     -130.63,
+     57.15
+    ],
+    [
+     -129.53,
+     54.5
+    ],
+    [
+     -127.78,
+     52.22
+    ],
+    [
+     -125.5,
+     50.47
+    ],
+    [
+     -122.85,
+     49.37
+    ],
+    [
+     -120.0,
+     49.0
+    ],
+    [
+     -117.15,
+     49.37
+    ],
+    [
+     -114.5,
+     50.47
+    ],
+    [
+     -112.22,
+     52.22
+    ],
+    [
+     -110.47,
+     54.5
+    ],
+    [
+     -109.37,
+     57.15
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gas Inlet O2",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gas Inlet O2",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gas Inlet O2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gas Inlet VAC",
+   "points": [
+    [
+     -49.0,
+     120.0
+    ],
+    [
+     -49.37,
+     122.85
+    ],
+    [
+     -50.47,
+     125.5
+    ],
+    [
+     -52.22,
+     127.78
+    ],
+    [
+     -54.5,
+     129.53
+    ],
+    [
+     -57.15,
+     130.63
+    ],
+    [
+     -60.0,
+     131.0
+    ],
+    [
+     -62.85,
+     130.63
+    ],
+    [
+     -65.5,
+     129.53
+    ],
+    [
+     -67.78,
+     127.78
+    ],
+    [
+     -69.53,
+     125.5
+    ],
+    [
+     -70.63,
+     122.85
+    ],
+    [
+     -71.0,
+     120.0
+    ],
+    [
+     -70.63,
+     117.15
+    ],
+    [
+     -69.53,
+     114.5
+    ],
+    [
+     -67.78,
+     112.22
+    ],
+    [
+     -65.5,
+     110.47
+    ],
+    [
+     -62.85,
+     109.37
+    ],
+    [
+     -60.0,
+     109.0
+    ],
+    [
+     -57.15,
+     109.37
+    ],
+    [
+     -54.5,
+     110.47
+    ],
+    [
+     -52.22,
+     112.22
+    ],
+    [
+     -50.47,
+     114.5
+    ],
+    [
+     -49.37,
+     117.15
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gas Inlet VAC",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gas Inlet VAC",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gas Inlet VAC",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gas Inlet MA4",
+   "points": [
+    [
+     71.0,
+     120.0
+    ],
+    [
+     70.63,
+     122.85
+    ],
+    [
+     69.53,
+     125.5
+    ],
+    [
+     67.78,
+     127.78
+    ],
+    [
+     65.5,
+     129.53
+    ],
+    [
+     62.85,
+     130.63
+    ],
+    [
+     60.0,
+     131.0
+    ],
+    [
+     57.15,
+     130.63
+    ],
+    [
+     54.5,
+     129.53
+    ],
+    [
+     52.22,
+     127.78
+    ],
+    [
+     50.47,
+     125.5
+    ],
+    [
+     49.37,
+     122.85
+    ],
+    [
+     49.0,
+     120.0
+    ],
+    [
+     49.37,
+     117.15
+    ],
+    [
+     50.47,
+     114.5
+    ],
+    [
+     52.22,
+     112.22
+    ],
+    [
+     54.5,
+     110.47
+    ],
+    [
+     57.15,
+     109.37
+    ],
+    [
+     60.0,
+     109.0
+    ],
+    [
+     62.85,
+     109.37
+    ],
+    [
+     65.5,
+     110.47
+    ],
+    [
+     67.78,
+     112.22
+    ],
+    [
+     69.53,
+     114.5
+    ],
+    [
+     70.63,
+     117.15
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gas Inlet MA4",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gas Inlet MA4",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gas Inlet MA4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Power Inlet",
+   "points": [
+    [
+     134.0,
+     60.0
+    ],
+    [
+     133.52,
+     63.62
+    ],
+    [
+     132.12,
+     67.0
+    ],
+    [
+     129.9,
+     69.9
+    ],
+    [
+     127.0,
+     72.12
+    ],
+    [
+     123.62,
+     73.52
+    ],
+    [
+     120.0,
+     74.0
+    ],
+    [
+     116.38,
+     73.52
+    ],
+    [
+     113.0,
+     72.12
+    ],
+    [
+     110.1,
+     69.9
+    ],
+    [
+     107.88,
+     67.0
+    ],
+    [
+     106.48,
+     63.62
+    ],
+    [
+     106.0,
+     60.0
+    ],
+    [
+     106.48,
+     56.38
+    ],
+    [
+     107.88,
+     53.0
+    ],
+    [
+     110.1,
+     50.1
+    ],
+    [
+     113.0,
+     47.88
+    ],
+    [
+     116.38,
+     46.48
+    ],
+    [
+     120.0,
+     46.0
+    ],
+    [
+     123.62,
+     46.48
+    ],
+    [
+     127.0,
+     47.88
+    ],
+    [
+     129.9,
+     50.1
+    ],
+    [
+     132.12,
+     53.0
+    ],
+    [
+     133.52,
+     56.38
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Power Inlet",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Power Inlet",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Power Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Data Inlet",
+   "points": [
+    [
+     134.0,
+     -60.0
+    ],
+    [
+     133.52,
+     -56.38
+    ],
+    [
+     132.12,
+     -53.0
+    ],
+    [
+     129.9,
+     -50.1
+    ],
+    [
+     127.0,
+     -47.88
+    ],
+    [
+     123.62,
+     -46.48
+    ],
+    [
+     120.0,
+     -46.0
+    ],
+    [
+     116.38,
+     -46.48
+    ],
+    [
+     113.0,
+     -47.88
+    ],
+    [
+     110.1,
+     -50.1
+    ],
+    [
+     107.88,
+     -53.0
+    ],
+    [
+     106.48,
+     -56.38
+    ],
+    [
+     106.0,
+     -60.0
+    ],
+    [
+     106.48,
+     -63.62
+    ],
+    [
+     107.88,
+     -67.0
+    ],
+    [
+     110.1,
+     -69.9
+    ],
+    [
+     113.0,
+     -72.12
+    ],
+    [
+     116.38,
+     -73.52
+    ],
+    [
+     120.0,
+     -74.0
+    ],
+    [
+     123.62,
+     -73.52
+    ],
+    [
+     127.0,
+     -72.12
+    ],
+    [
+     129.9,
+     -69.9
+    ],
+    [
+     132.12,
+     -67.0
+    ],
+    [
+     133.52,
+     -63.62
+    ]
+   ],
+   "start": 0,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Data Inlet",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Data Inlet",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Data Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Joint 1",
+   "points": [
+    [
+     95.0,
+     0.0
+    ],
+    [
+     91.76,
+     24.59
+    ],
+    [
+     82.27,
+     47.5
+    ],
+    [
+     67.18,
+     67.18
+    ],
+    [
+     47.5,
+     82.27
+    ],
+    [
+     24.59,
+     91.76
+    ],
+    [
+     0.0,
+     95.0
+    ],
+    [
+     -24.59,
+     91.76
+    ],
+    [
+     -47.5,
+     82.27
+    ],
+    [
+     -67.18,
+     67.18
+    ],
+    [
+     -82.27,
+     47.5
+    ],
+    [
+     -91.76,
+     24.59
+    ],
+    [
+     -95.0,
+     0.0
+    ],
+    [
+     -91.76,
+     -24.59
+    ],
+    [
+     -82.27,
+     -47.5
+    ],
+    [
+     -67.18,
+     -67.18
+    ],
+    [
+     -47.5,
+     -82.27
+    ],
+    [
+     -24.59,
+     -91.76
+    ],
+    [
+     -0.0,
+     -95.0
+    ],
+    [
+     24.59,
+     -91.76
+    ],
+    [
+     47.5,
+     -82.27
+    ],
+    [
+     67.18,
+     -67.18
+    ],
+    [
+     82.27,
+     -47.5
+    ],
+    [
+     91.76,
+     -24.59
+    ]
+   ],
+   "start": -490,
+   "end": -380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Joint 1",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Joint 1",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Joint 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm 1",
+   "points": [
+    [
+     840.0,
+     -85.0
+    ],
+    [
+     862.96,
+     -80.43
+    ],
+    [
+     882.43,
+     -67.43
+    ],
+    [
+     895.43,
+     -47.96
+    ],
+    [
+     900.0,
+     -25.0
+    ],
+    [
+     900.0,
+     25.0
+    ],
+    [
+     895.43,
+     47.96
+    ],
+    [
+     882.43,
+     67.43
+    ],
+    [
+     862.96,
+     80.43
+    ],
+    [
+     840.0,
+     85.0
+    ],
+    [
+     60.0,
+     85.0
+    ],
+    [
+     37.04,
+     80.43
+    ],
+    [
+     17.57,
+     67.43
+    ],
+    [
+     4.57,
+     47.96
+    ],
+    [
+     0.0,
+     25.0
+    ],
+    [
+     0.0,
+     -25.0
+    ],
+    [
+     4.57,
+     -47.96
+    ],
+    [
+     17.57,
+     -67.43
+    ],
+    [
+     37.04,
+     -80.43
+    ],
+    [
+     60.0,
+     -85.0
+    ]
+   ],
+   "start": -610,
+   "end": -490
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm 1",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm 1",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Joint",
+   "points": [
+    [
+     995.0,
+     0.0
+    ],
+    [
+     991.76,
+     24.59
+    ],
+    [
+     982.27,
+     47.5
+    ],
+    [
+     967.18,
+     67.18
+    ],
+    [
+     947.5,
+     82.27
+    ],
+    [
+     924.59,
+     91.76
+    ],
+    [
+     900.0,
+     95.0
+    ],
+    [
+     875.41,
+     91.76
+    ],
+    [
+     852.5,
+     82.27
+    ],
+    [
+     832.82,
+     67.18
+    ],
+    [
+     817.73,
+     47.5
+    ],
+    [
+     808.24,
+     24.59
+    ],
+    [
+     805.0,
+     0.0
+    ],
+    [
+     808.24,
+     -24.59
+    ],
+    [
+     817.73,
+     -47.5
+    ],
+    [
+     832.82,
+     -67.18
+    ],
+    [
+     852.5,
+     -82.27
+    ],
+    [
+     875.41,
+     -91.76
+    ],
+    [
+     900.0,
+     -95.0
+    ],
+    [
+     924.59,
+     -91.76
+    ],
+    [
+     947.5,
+     -82.27
+    ],
+    [
+     967.18,
+     -67.18
+    ],
+    [
+     982.27,
+     -47.5
+    ],
+    [
+     991.76,
+     -24.59
+    ]
+   ],
+   "start": -730,
+   "end": -610
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Joint",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Joint",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Joint",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Brake Handle",
+   "points": [
+    [
+     922.0,
+     -160.0
+    ],
+    [
+     925.06,
+     -159.39
+    ],
+    [
+     927.66,
+     -157.66
+    ],
+    [
+     929.39,
+     -155.06
+    ],
+    [
+     930.0,
+     -152.0
+    ],
+    [
+     930.0,
+     -103.0
+    ],
+    [
+     929.39,
+     -99.94
+    ],
+    [
+     927.66,
+     -97.34
+    ],
+    [
+     925.06,
+     -95.61
+    ],
+    [
+     922.0,
+     -95.0
+    ],
+    [
+     878.0,
+     -95.0
+    ],
+    [
+     874.94,
+     -95.61
+    ],
+    [
+     872.34,
+     -97.34
+    ],
+    [
+     870.61,
+     -99.94
+    ],
+    [
+     870.0,
+     -103.0
+    ],
+    [
+     870.0,
+     -152.0
+    ],
+    [
+     870.61,
+     -155.06
+    ],
+    [
+     872.34,
+     -157.66
+    ],
+    [
+     874.94,
+     -159.39
+    ],
+    [
+     878.0,
+     -160.0
+    ]
+   ],
+   "start": -710,
+   "end": -670
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Brake Handle",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Brake Handle",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Brake Handle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Service Head",
+   "points": [
+    [
+     1020.0,
+     -210.0
+    ],
+    [
+     1035.31,
+     -206.96
+    ],
+    [
+     1048.28,
+     -198.28
+    ],
+    [
+     1056.96,
+     -185.31
+    ],
+    [
+     1060.0,
+     -170.0
+    ],
+    [
+     1060.0,
+     170.0
+    ],
+    [
+     1056.96,
+     185.31
+    ],
+    [
+     1048.28,
+     198.28
+    ],
+    [
+     1035.31,
+     206.96
+    ],
+    [
+     1020.0,
+     210.0
+    ],
+    [
+     780.0,
+     210.0
+    ],
+    [
+     764.69,
+     206.96
+    ],
+    [
+     751.72,
+     198.28
+    ],
+    [
+     743.04,
+     185.31
+    ],
+    [
+     740.0,
+     170.0
+    ],
+    [
+     740.0,
+     -170.0
+    ],
+    [
+     743.04,
+     -185.31
+    ],
+    [
+     751.72,
+     -198.28
+    ],
+    [
+     764.69,
+     -206.96
+    ],
+    [
+     780.0,
+     -210.0
+    ]
+   ],
+   "start": -1980,
+   "end": -730
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Service Head",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Service Head",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Service Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Corner Rail 1",
+   "points": [
+    [
+     740.0,
+     -215.0
+    ],
+    [
+     739.66,
+     -212.41
+    ],
+    [
+     738.66,
+     -210.0
+    ],
+    [
+     737.07,
+     -207.93
+    ],
+    [
+     735.0,
+     -206.34
+    ],
+    [
+     732.59,
+     -205.34
+    ],
+    [
+     730.0,
+     -205.0
+    ],
+    [
+     727.41,
+     -205.34
+    ],
+    [
+     725.0,
+     -206.34
+    ],
+    [
+     722.93,
+     -207.93
+    ],
+    [
+     721.34,
+     -210.0
+    ],
+    [
+     720.34,
+     -212.41
+    ],
+    [
+     720.0,
+     -215.0
+    ],
+    [
+     720.34,
+     -217.59
+    ],
+    [
+     721.34,
+     -220.0
+    ],
+    [
+     722.93,
+     -222.07
+    ],
+    [
+     725.0,
+     -223.66
+    ],
+    [
+     727.41,
+     -224.66
+    ],
+    [
+     730.0,
+     -225.0
+    ],
+    [
+     732.59,
+     -224.66
+    ],
+    [
+     735.0,
+     -223.66
+    ],
+    [
+     737.07,
+     -222.07
+    ],
+    [
+     738.66,
+     -220.0
+    ],
+    [
+     739.66,
+     -217.59
+    ]
+   ],
+   "start": -1960,
+   "end": -750
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Corner Rail 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Corner Rail 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Corner Rail 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Corner Rail 2",
+   "points": [
+    [
+     1080.0,
+     -215.0
+    ],
+    [
+     1079.66,
+     -212.41
+    ],
+    [
+     1078.66,
+     -210.0
+    ],
+    [
+     1077.07,
+     -207.93
+    ],
+    [
+     1075.0,
+     -206.34
+    ],
+    [
+     1072.59,
+     -205.34
+    ],
+    [
+     1070.0,
+     -205.0
+    ],
+    [
+     1067.41,
+     -205.34
+    ],
+    [
+     1065.0,
+     -206.34
+    ],
+    [
+     1062.93,
+     -207.93
+    ],
+    [
+     1061.34,
+     -210.0
+    ],
+    [
+     1060.34,
+     -212.41
+    ],
+    [
+     1060.0,
+     -215.0
+    ],
+    [
+     1060.34,
+     -217.59
+    ],
+    [
+     1061.34,
+     -220.0
+    ],
+    [
+     1062.93,
+     -222.07
+    ],
+    [
+     1065.0,
+     -223.66
+    ],
+    [
+     1067.41,
+     -224.66
+    ],
+    [
+     1070.0,
+     -225.0
+    ],
+    [
+     1072.59,
+     -224.66
+    ],
+    [
+     1075.0,
+     -223.66
+    ],
+    [
+     1077.07,
+     -222.07
+    ],
+    [
+     1078.66,
+     -220.0
+    ],
+    [
+     1079.66,
+     -217.59
+    ]
+   ],
+   "start": -1960,
+   "end": -750
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Corner Rail 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Corner Rail 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Corner Rail 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Head Base",
+   "profile": [
+    [
+     0,
+     -2010
+    ],
+    [
+     150,
+     -2010
+    ],
+    [
+     190,
+     -1980
+    ],
+    [
+     0,
+     -1980
+    ]
+   ],
+   "axis_at": [
+    900,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Base",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle",
+   "points": [
+    [
+     1012.0,
+     -260.0
+    ],
+    [
+     1015.06,
+     -259.39
+    ],
+    [
+     1017.66,
+     -257.66
+    ],
+    [
+     1019.39,
+     -255.06
+    ],
+    [
+     1020.0,
+     -252.0
+    ],
+    [
+     1020.0,
+     -238.0
+    ],
+    [
+     1019.39,
+     -234.94
+    ],
+    [
+     1017.66,
+     -232.34
+    ],
+    [
+     1015.06,
+     -230.61
+    ],
+    [
+     1012.0,
+     -230.0
+    ],
+    [
+     788.0,
+     -230.0
+    ],
+    [
+     784.94,
+     -230.61
+    ],
+    [
+     782.34,
+     -232.34
+    ],
+    [
+     780.61,
+     -234.94
+    ],
+    [
+     780.0,
+     -238.0
+    ],
+    [
+     780.0,
+     -252.0
+    ],
+    [
+     780.61,
+     -255.06
+    ],
+    [
+     782.34,
+     -257.66
+    ],
+    [
+     784.94,
+     -259.39
+    ],
+    [
+     788.0,
+     -260.0
+    ]
+   ],
+   "start": -2040,
+   "end": -2020
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 1 Fascia",
+   "points": [
+    [
+     838.0,
+     -915.0
+    ],
+    [
+     840.68,
+     -914.47
+    ],
+    [
+     842.95,
+     -912.95
+    ],
+    [
+     844.47,
+     -910.68
+    ],
+    [
+     845.0,
+     -908.0
+    ],
+    [
+     845.0,
+     -832.0
+    ],
+    [
+     844.47,
+     -829.32
+    ],
+    [
+     842.95,
+     -827.05
+    ],
+    [
+     840.68,
+     -825.53
+    ],
+    [
+     838.0,
+     -825.0
+    ],
+    [
+     762.0,
+     -825.0
+    ],
+    [
+     759.32,
+     -825.53
+    ],
+    [
+     757.05,
+     -827.05
+    ],
+    [
+     755.53,
+     -829.32
+    ],
+    [
+     755.0,
+     -832.0
+    ],
+    [
+     755.0,
+     -908.0
+    ],
+    [
+     755.53,
+     -910.68
+    ],
+    [
+     757.05,
+     -912.95
+    ],
+    [
+     759.32,
+     -914.47
+    ],
+    [
+     762.0,
+     -915.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 1 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 1 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 1 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "O2 1 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    800,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 1 Ring",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 1 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "O2 1 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    800,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 1 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 1 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 1 Label",
+   "points": [
+    [
+     825.0,
+     -907.0
+    ],
+    [
+     825.77,
+     -906.85
+    ],
+    [
+     826.41,
+     -906.41
+    ],
+    [
+     826.85,
+     -905.77
+    ],
+    [
+     827.0,
+     -905.0
+    ],
+    [
+     827.0,
+     -899.0
+    ],
+    [
+     826.85,
+     -898.23
+    ],
+    [
+     826.41,
+     -897.59
+    ],
+    [
+     825.77,
+     -897.15
+    ],
+    [
+     825.0,
+     -897.0
+    ],
+    [
+     775.0,
+     -897.0
+    ],
+    [
+     774.23,
+     -897.15
+    ],
+    [
+     773.59,
+     -897.59
+    ],
+    [
+     773.15,
+     -898.23
+    ],
+    [
+     773.0,
+     -899.0
+    ],
+    [
+     773.0,
+     -905.0
+    ],
+    [
+     773.15,
+     -905.77
+    ],
+    [
+     773.59,
+     -906.41
+    ],
+    [
+     774.23,
+     -906.85
+    ],
+    [
+     775.0,
+     -907.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 1 Label",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 1 Label",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 1 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 2 Fascia",
+   "points": [
+    [
+     938.0,
+     -915.0
+    ],
+    [
+     940.68,
+     -914.47
+    ],
+    [
+     942.95,
+     -912.95
+    ],
+    [
+     944.47,
+     -910.68
+    ],
+    [
+     945.0,
+     -908.0
+    ],
+    [
+     945.0,
+     -832.0
+    ],
+    [
+     944.47,
+     -829.32
+    ],
+    [
+     942.95,
+     -827.05
+    ],
+    [
+     940.68,
+     -825.53
+    ],
+    [
+     938.0,
+     -825.0
+    ],
+    [
+     862.0,
+     -825.0
+    ],
+    [
+     859.32,
+     -825.53
+    ],
+    [
+     857.05,
+     -827.05
+    ],
+    [
+     855.53,
+     -829.32
+    ],
+    [
+     855.0,
+     -832.0
+    ],
+    [
+     855.0,
+     -908.0
+    ],
+    [
+     855.53,
+     -910.68
+    ],
+    [
+     857.05,
+     -912.95
+    ],
+    [
+     859.32,
+     -914.47
+    ],
+    [
+     862.0,
+     -915.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 2 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 2 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 2 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "O2 2 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    900,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 2 Ring",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 2 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "O2 2 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    900,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 2 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 2 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "O2 2 Label",
+   "points": [
+    [
+     925.0,
+     -907.0
+    ],
+    [
+     925.77,
+     -906.85
+    ],
+    [
+     926.41,
+     -906.41
+    ],
+    [
+     926.85,
+     -905.77
+    ],
+    [
+     927.0,
+     -905.0
+    ],
+    [
+     927.0,
+     -899.0
+    ],
+    [
+     926.85,
+     -898.23
+    ],
+    [
+     926.41,
+     -897.59
+    ],
+    [
+     925.77,
+     -897.15
+    ],
+    [
+     925.0,
+     -897.0
+    ],
+    [
+     875.0,
+     -897.0
+    ],
+    [
+     874.23,
+     -897.15
+    ],
+    [
+     873.59,
+     -897.59
+    ],
+    [
+     873.15,
+     -898.23
+    ],
+    [
+     873.0,
+     -899.0
+    ],
+    [
+     873.0,
+     -905.0
+    ],
+    [
+     873.15,
+     -905.77
+    ],
+    [
+     873.59,
+     -906.41
+    ],
+    [
+     874.23,
+     -906.85
+    ],
+    [
+     875.0,
+     -907.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "O2 2 Label",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "O2 2 Label",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "O2 2 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC 1 Fascia",
+   "points": [
+    [
+     1038.0,
+     -915.0
+    ],
+    [
+     1040.68,
+     -914.47
+    ],
+    [
+     1042.95,
+     -912.95
+    ],
+    [
+     1044.47,
+     -910.68
+    ],
+    [
+     1045.0,
+     -908.0
+    ],
+    [
+     1045.0,
+     -832.0
+    ],
+    [
+     1044.47,
+     -829.32
+    ],
+    [
+     1042.95,
+     -827.05
+    ],
+    [
+     1040.68,
+     -825.53
+    ],
+    [
+     1038.0,
+     -825.0
+    ],
+    [
+     962.0,
+     -825.0
+    ],
+    [
+     959.32,
+     -825.53
+    ],
+    [
+     957.05,
+     -827.05
+    ],
+    [
+     955.53,
+     -829.32
+    ],
+    [
+     955.0,
+     -832.0
+    ],
+    [
+     955.0,
+     -908.0
+    ],
+    [
+     955.53,
+     -910.68
+    ],
+    [
+     957.05,
+     -912.95
+    ],
+    [
+     959.32,
+     -914.47
+    ],
+    [
+     962.0,
+     -915.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC 1 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 1 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 1 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "VAC 1 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    1000,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 1 Ring",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 1 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "VAC 1 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    1000,
+    -864
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 1 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 1 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC 1 Label",
+   "points": [
+    [
+     1025.0,
+     -907.0
+    ],
+    [
+     1025.77,
+     -906.85
+    ],
+    [
+     1026.41,
+     -906.41
+    ],
+    [
+     1026.85,
+     -905.77
+    ],
+    [
+     1027.0,
+     -905.0
+    ],
+    [
+     1027.0,
+     -899.0
+    ],
+    [
+     1026.85,
+     -898.23
+    ],
+    [
+     1026.41,
+     -897.59
+    ],
+    [
+     1025.77,
+     -897.15
+    ],
+    [
+     1025.0,
+     -897.0
+    ],
+    [
+     975.0,
+     -897.0
+    ],
+    [
+     974.23,
+     -897.15
+    ],
+    [
+     973.59,
+     -897.59
+    ],
+    [
+     973.15,
+     -898.23
+    ],
+    [
+     973.0,
+     -899.0
+    ],
+    [
+     973.0,
+     -905.0
+    ],
+    [
+     973.15,
+     -905.77
+    ],
+    [
+     973.59,
+     -906.41
+    ],
+    [
+     974.23,
+     -906.85
+    ],
+    [
+     975.0,
+     -907.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC 1 Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 1 Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 1 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC 2 Fascia",
+   "points": [
+    [
+     838.0,
+     -1025.0
+    ],
+    [
+     840.68,
+     -1024.47
+    ],
+    [
+     842.95,
+     -1022.95
+    ],
+    [
+     844.47,
+     -1020.68
+    ],
+    [
+     845.0,
+     -1018.0
+    ],
+    [
+     845.0,
+     -942.0
+    ],
+    [
+     844.47,
+     -939.32
+    ],
+    [
+     842.95,
+     -937.05
+    ],
+    [
+     840.68,
+     -935.53
+    ],
+    [
+     838.0,
+     -935.0
+    ],
+    [
+     762.0,
+     -935.0
+    ],
+    [
+     759.32,
+     -935.53
+    ],
+    [
+     757.05,
+     -937.05
+    ],
+    [
+     755.53,
+     -939.32
+    ],
+    [
+     755.0,
+     -942.0
+    ],
+    [
+     755.0,
+     -1018.0
+    ],
+    [
+     755.53,
+     -1020.68
+    ],
+    [
+     757.05,
+     -1022.95
+    ],
+    [
+     759.32,
+     -1024.47
+    ],
+    [
+     762.0,
+     -1025.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC 2 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 2 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 2 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "VAC 2 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    800,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 2 Ring",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 2 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "VAC 2 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    800,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 2 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 2 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "VAC 2 Label",
+   "points": [
+    [
+     825.0,
+     -1017.0
+    ],
+    [
+     825.77,
+     -1016.85
+    ],
+    [
+     826.41,
+     -1016.41
+    ],
+    [
+     826.85,
+     -1015.77
+    ],
+    [
+     827.0,
+     -1015.0
+    ],
+    [
+     827.0,
+     -1009.0
+    ],
+    [
+     826.85,
+     -1008.23
+    ],
+    [
+     826.41,
+     -1007.59
+    ],
+    [
+     825.77,
+     -1007.15
+    ],
+    [
+     825.0,
+     -1007.0
+    ],
+    [
+     775.0,
+     -1007.0
+    ],
+    [
+     774.23,
+     -1007.15
+    ],
+    [
+     773.59,
+     -1007.59
+    ],
+    [
+     773.15,
+     -1008.23
+    ],
+    [
+     773.0,
+     -1009.0
+    ],
+    [
+     773.0,
+     -1015.0
+    ],
+    [
+     773.15,
+     -1015.77
+    ],
+    [
+     773.59,
+     -1016.41
+    ],
+    [
+     774.23,
+     -1016.85
+    ],
+    [
+     775.0,
+     -1017.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "VAC 2 Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "VAC 2 Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "VAC 2 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 1 Fascia",
+   "points": [
+    [
+     938.0,
+     -1025.0
+    ],
+    [
+     940.68,
+     -1024.47
+    ],
+    [
+     942.95,
+     -1022.95
+    ],
+    [
+     944.47,
+     -1020.68
+    ],
+    [
+     945.0,
+     -1018.0
+    ],
+    [
+     945.0,
+     -942.0
+    ],
+    [
+     944.47,
+     -939.32
+    ],
+    [
+     942.95,
+     -937.05
+    ],
+    [
+     940.68,
+     -935.53
+    ],
+    [
+     938.0,
+     -935.0
+    ],
+    [
+     862.0,
+     -935.0
+    ],
+    [
+     859.32,
+     -935.53
+    ],
+    [
+     857.05,
+     -937.05
+    ],
+    [
+     855.53,
+     -939.32
+    ],
+    [
+     855.0,
+     -942.0
+    ],
+    [
+     855.0,
+     -1018.0
+    ],
+    [
+     855.53,
+     -1020.68
+    ],
+    [
+     857.05,
+     -1022.95
+    ],
+    [
+     859.32,
+     -1024.47
+    ],
+    [
+     862.0,
+     -1025.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 1 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 1 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 1 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "MA4 1 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    900,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 1 Ring",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 1 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "MA4 1 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    900,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 1 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 1 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 1 Label",
+   "points": [
+    [
+     925.0,
+     -1017.0
+    ],
+    [
+     925.77,
+     -1016.85
+    ],
+    [
+     926.41,
+     -1016.41
+    ],
+    [
+     926.85,
+     -1015.77
+    ],
+    [
+     927.0,
+     -1015.0
+    ],
+    [
+     927.0,
+     -1009.0
+    ],
+    [
+     926.85,
+     -1008.23
+    ],
+    [
+     926.41,
+     -1007.59
+    ],
+    [
+     925.77,
+     -1007.15
+    ],
+    [
+     925.0,
+     -1007.0
+    ],
+    [
+     875.0,
+     -1007.0
+    ],
+    [
+     874.23,
+     -1007.15
+    ],
+    [
+     873.59,
+     -1007.59
+    ],
+    [
+     873.15,
+     -1008.23
+    ],
+    [
+     873.0,
+     -1009.0
+    ],
+    [
+     873.0,
+     -1015.0
+    ],
+    [
+     873.15,
+     -1015.77
+    ],
+    [
+     873.59,
+     -1016.41
+    ],
+    [
+     874.23,
+     -1016.85
+    ],
+    [
+     875.0,
+     -1017.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 1 Label",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 1 Label",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 1 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 2 Fascia",
+   "points": [
+    [
+     1038.0,
+     -1025.0
+    ],
+    [
+     1040.68,
+     -1024.47
+    ],
+    [
+     1042.95,
+     -1022.95
+    ],
+    [
+     1044.47,
+     -1020.68
+    ],
+    [
+     1045.0,
+     -1018.0
+    ],
+    [
+     1045.0,
+     -942.0
+    ],
+    [
+     1044.47,
+     -939.32
+    ],
+    [
+     1042.95,
+     -937.05
+    ],
+    [
+     1040.68,
+     -935.53
+    ],
+    [
+     1038.0,
+     -935.0
+    ],
+    [
+     962.0,
+     -935.0
+    ],
+    [
+     959.32,
+     -935.53
+    ],
+    [
+     957.05,
+     -937.05
+    ],
+    [
+     955.53,
+     -939.32
+    ],
+    [
+     955.0,
+     -942.0
+    ],
+    [
+     955.0,
+     -1018.0
+    ],
+    [
+     955.53,
+     -1020.68
+    ],
+    [
+     957.05,
+     -1022.95
+    ],
+    [
+     959.32,
+     -1024.47
+    ],
+    [
+     962.0,
+     -1025.0
+    ]
+   ],
+   "start": 210,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 2 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 2 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 2 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "MA4 2 Ring",
+   "profile": [
+    [
+     16,
+     220
+    ],
+    [
+     24,
+     220
+    ],
+    [
+     24,
+     224
+    ],
+    [
+     16,
+     224
+    ]
+   ],
+   "axis_at": [
+    1000,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 2 Ring",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 2 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "MA4 2 Collar",
+   "profile": [
+    [
+     0,
+     220
+    ],
+    [
+     16,
+     220
+    ],
+    [
+     16,
+     232
+    ],
+    [
+     13,
+     234
+    ],
+    [
+     5,
+     234
+    ],
+    [
+     5,
+     230
+    ],
+    [
+     0,
+     230
+    ]
+   ],
+   "axis_at": [
+    1000,
+    -974
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 2 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 2 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "MA4 2 Label",
+   "points": [
+    [
+     1025.0,
+     -1017.0
+    ],
+    [
+     1025.77,
+     -1016.85
+    ],
+    [
+     1026.41,
+     -1016.41
+    ],
+    [
+     1026.85,
+     -1015.77
+    ],
+    [
+     1027.0,
+     -1015.0
+    ],
+    [
+     1027.0,
+     -1009.0
+    ],
+    [
+     1026.85,
+     -1008.23
+    ],
+    [
+     1026.41,
+     -1007.59
+    ],
+    [
+     1025.77,
+     -1007.15
+    ],
+    [
+     1025.0,
+     -1007.0
+    ],
+    [
+     975.0,
+     -1007.0
+    ],
+    [
+     974.23,
+     -1007.15
+    ],
+    [
+     973.59,
+     -1007.59
+    ],
+    [
+     973.15,
+     -1008.23
+    ],
+    [
+     973.0,
+     -1009.0
+    ],
+    [
+     973.0,
+     -1015.0
+    ],
+    [
+     973.15,
+     -1015.77
+    ],
+    [
+     973.59,
+     -1016.41
+    ],
+    [
+     974.23,
+     -1016.85
+    ],
+    [
+     975.0,
+     -1017.0
+    ]
+   ],
+   "start": 220,
+   "end": 220.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "MA4 2 Label",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "MA4 2 Label",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "MA4 2 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket A Plate",
+   "points": [
+    [
+     893.0,
+     -1193.0
+    ],
+    [
+     894.91,
+     -1192.62
+    ],
+    [
+     896.54,
+     -1191.54
+    ],
+    [
+     897.62,
+     -1189.91
+    ],
+    [
+     898.0,
+     -1188.0
+    ],
+    [
+     898.0,
+     -1112.0
+    ],
+    [
+     897.62,
+     -1110.09
+    ],
+    [
+     896.54,
+     -1108.46
+    ],
+    [
+     894.91,
+     -1107.38
+    ],
+    [
+     893.0,
+     -1107.0
+    ],
+    [
+     757.0,
+     -1107.0
+    ],
+    [
+     755.09,
+     -1107.38
+    ],
+    [
+     753.46,
+     -1108.46
+    ],
+    [
+     752.38,
+     -1110.09
+    ],
+    [
+     752.0,
+     -1112.0
+    ],
+    [
+     752.0,
+     -1188.0
+    ],
+    [
+     752.38,
+     -1189.91
+    ],
+    [
+     753.46,
+     -1191.54
+    ],
+    [
+     755.09,
+     -1192.62
+    ],
+    [
+     757.0,
+     -1193.0
+    ]
+   ],
+   "start": 210,
+   "end": 219,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket A Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket A Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket A Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket A Face 1",
+   "points": [
+    [
+     802.0,
+     -1175.0
+    ],
+    [
+     803.15,
+     -1174.77
+    ],
+    [
+     804.12,
+     -1174.12
+    ],
+    [
+     804.77,
+     -1173.15
+    ],
+    [
+     805.0,
+     -1172.0
+    ],
+    [
+     805.0,
+     -1138.0
+    ],
+    [
+     804.77,
+     -1136.85
+    ],
+    [
+     804.12,
+     -1135.88
+    ],
+    [
+     803.15,
+     -1135.23
+    ],
+    [
+     802.0,
+     -1135.0
+    ],
+    [
+     766.0,
+     -1135.0
+    ],
+    [
+     764.85,
+     -1135.23
+    ],
+    [
+     763.88,
+     -1135.88
+    ],
+    [
+     763.23,
+     -1136.85
+    ],
+    [
+     763.0,
+     -1138.0
+    ],
+    [
+     763.0,
+     -1172.0
+    ],
+    [
+     763.23,
+     -1173.15
+    ],
+    [
+     763.88,
+     -1174.12
+    ],
+    [
+     764.85,
+     -1174.77
+    ],
+    [
+     766.0,
+     -1175.0
+    ]
+   ],
+   "start": 219,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket A Face 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket A Face 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket A Face 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket A Face 2",
+   "points": [
+    [
+     884.0,
+     -1175.0
+    ],
+    [
+     885.15,
+     -1174.77
+    ],
+    [
+     886.12,
+     -1174.12
+    ],
+    [
+     886.77,
+     -1173.15
+    ],
+    [
+     887.0,
+     -1172.0
+    ],
+    [
+     887.0,
+     -1138.0
+    ],
+    [
+     886.77,
+     -1136.85
+    ],
+    [
+     886.12,
+     -1135.88
+    ],
+    [
+     885.15,
+     -1135.23
+    ],
+    [
+     884.0,
+     -1135.0
+    ],
+    [
+     848.0,
+     -1135.0
+    ],
+    [
+     846.85,
+     -1135.23
+    ],
+    [
+     845.88,
+     -1135.88
+    ],
+    [
+     845.23,
+     -1136.85
+    ],
+    [
+     845.0,
+     -1138.0
+    ],
+    [
+     845.0,
+     -1172.0
+    ],
+    [
+     845.23,
+     -1173.15
+    ],
+    [
+     845.88,
+     -1174.12
+    ],
+    [
+     846.85,
+     -1174.77
+    ],
+    [
+     848.0,
+     -1175.0
+    ]
+   ],
+   "start": 219,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket A Face 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket A Face 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket A Face 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket A Rocker 1",
+   "points": [
+    [
+     793.0,
+     -1128.0
+    ],
+    [
+     793.77,
+     -1127.85
+    ],
+    [
+     794.41,
+     -1127.41
+    ],
+    [
+     794.85,
+     -1126.77
+    ],
+    [
+     795.0,
+     -1126.0
+    ],
+    [
+     795.0,
+     -1116.0
+    ],
+    [
+     794.85,
+     -1115.23
+    ],
+    [
+     794.41,
+     -1114.59
+    ],
+    [
+     793.77,
+     -1114.15
+    ],
+    [
+     793.0,
+     -1114.0
+    ],
+    [
+     781.0,
+     -1114.0
+    ],
+    [
+     780.23,
+     -1114.15
+    ],
+    [
+     779.59,
+     -1114.59
+    ],
+    [
+     779.15,
+     -1115.23
+    ],
+    [
+     779.0,
+     -1116.0
+    ],
+    [
+     779.0,
+     -1126.0
+    ],
+    [
+     779.15,
+     -1126.77
+    ],
+    [
+     779.59,
+     -1127.41
+    ],
+    [
+     780.23,
+     -1127.85
+    ],
+    [
+     781.0,
+     -1128.0
+    ]
+   ],
+   "start": 219,
+   "end": 223,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket A Rocker 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket A Rocker 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket A Rocker 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket A Rocker 2",
+   "points": [
+    [
+     875.0,
+     -1128.0
+    ],
+    [
+     875.77,
+     -1127.85
+    ],
+    [
+     876.41,
+     -1127.41
+    ],
+    [
+     876.85,
+     -1126.77
+    ],
+    [
+     877.0,
+     -1126.0
+    ],
+    [
+     877.0,
+     -1116.0
+    ],
+    [
+     876.85,
+     -1115.23
+    ],
+    [
+     876.41,
+     -1114.59
+    ],
+    [
+     875.77,
+     -1114.15
+    ],
+    [
+     875.0,
+     -1114.0
+    ],
+    [
+     863.0,
+     -1114.0
+    ],
+    [
+     862.23,
+     -1114.15
+    ],
+    [
+     861.59,
+     -1114.59
+    ],
+    [
+     861.15,
+     -1115.23
+    ],
+    [
+     861.0,
+     -1116.0
+    ],
+    [
+     861.0,
+     -1126.0
+    ],
+    [
+     861.15,
+     -1126.77
+    ],
+    [
+     861.59,
+     -1127.41
+    ],
+    [
+     862.23,
+     -1127.85
+    ],
+    [
+     863.0,
+     -1128.0
+    ]
+   ],
+   "start": 219,
+   "end": 223,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket A Rocker 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket A Rocker 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket A Rocker 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket B Plate",
+   "points": [
+    [
+     893.0,
+     -1303.0
+    ],
+    [
+     894.91,
+     -1302.62
+    ],
+    [
+     896.54,
+     -1301.54
+    ],
+    [
+     897.62,
+     -1299.91
+    ],
+    [
+     898.0,
+     -1298.0
+    ],
+    [
+     898.0,
+     -1222.0
+    ],
+    [
+     897.62,
+     -1220.09
+    ],
+    [
+     896.54,
+     -1218.46
+    ],
+    [
+     894.91,
+     -1217.38
+    ],
+    [
+     893.0,
+     -1217.0
+    ],
+    [
+     757.0,
+     -1217.0
+    ],
+    [
+     755.09,
+     -1217.38
+    ],
+    [
+     753.46,
+     -1218.46
+    ],
+    [
+     752.38,
+     -1220.09
+    ],
+    [
+     752.0,
+     -1222.0
+    ],
+    [
+     752.0,
+     -1298.0
+    ],
+    [
+     752.38,
+     -1299.91
+    ],
+    [
+     753.46,
+     -1301.54
+    ],
+    [
+     755.09,
+     -1302.62
+    ],
+    [
+     757.0,
+     -1303.0
+    ]
+   ],
+   "start": 210,
+   "end": 219,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket B Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket B Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket B Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket B Face 1",
+   "points": [
+    [
+     802.0,
+     -1285.0
+    ],
+    [
+     803.15,
+     -1284.77
+    ],
+    [
+     804.12,
+     -1284.12
+    ],
+    [
+     804.77,
+     -1283.15
+    ],
+    [
+     805.0,
+     -1282.0
+    ],
+    [
+     805.0,
+     -1248.0
+    ],
+    [
+     804.77,
+     -1246.85
+    ],
+    [
+     804.12,
+     -1245.88
+    ],
+    [
+     803.15,
+     -1245.23
+    ],
+    [
+     802.0,
+     -1245.0
+    ],
+    [
+     766.0,
+     -1245.0
+    ],
+    [
+     764.85,
+     -1245.23
+    ],
+    [
+     763.88,
+     -1245.88
+    ],
+    [
+     763.23,
+     -1246.85
+    ],
+    [
+     763.0,
+     -1248.0
+    ],
+    [
+     763.0,
+     -1282.0
+    ],
+    [
+     763.23,
+     -1283.15
+    ],
+    [
+     763.88,
+     -1284.12
+    ],
+    [
+     764.85,
+     -1284.77
+    ],
+    [
+     766.0,
+     -1285.0
+    ]
+   ],
+   "start": 219,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket B Face 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket B Face 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket B Face 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket B Face 2",
+   "points": [
+    [
+     884.0,
+     -1285.0
+    ],
+    [
+     885.15,
+     -1284.77
+    ],
+    [
+     886.12,
+     -1284.12
+    ],
+    [
+     886.77,
+     -1283.15
+    ],
+    [
+     887.0,
+     -1282.0
+    ],
+    [
+     887.0,
+     -1248.0
+    ],
+    [
+     886.77,
+     -1246.85
+    ],
+    [
+     886.12,
+     -1245.88
+    ],
+    [
+     885.15,
+     -1245.23
+    ],
+    [
+     884.0,
+     -1245.0
+    ],
+    [
+     848.0,
+     -1245.0
+    ],
+    [
+     846.85,
+     -1245.23
+    ],
+    [
+     845.88,
+     -1245.88
+    ],
+    [
+     845.23,
+     -1246.85
+    ],
+    [
+     845.0,
+     -1248.0
+    ],
+    [
+     845.0,
+     -1282.0
+    ],
+    [
+     845.23,
+     -1283.15
+    ],
+    [
+     845.88,
+     -1284.12
+    ],
+    [
+     846.85,
+     -1284.77
+    ],
+    [
+     848.0,
+     -1285.0
+    ]
+   ],
+   "start": 219,
+   "end": 220,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket B Face 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket B Face 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket B Face 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket B Rocker 1",
+   "points": [
+    [
+     793.0,
+     -1238.0
+    ],
+    [
+     793.77,
+     -1237.85
+    ],
+    [
+     794.41,
+     -1237.41
+    ],
+    [
+     794.85,
+     -1236.77
+    ],
+    [
+     795.0,
+     -1236.0
+    ],
+    [
+     795.0,
+     -1226.0
+    ],
+    [
+     794.85,
+     -1225.23
+    ],
+    [
+     794.41,
+     -1224.59
+    ],
+    [
+     793.77,
+     -1224.15
+    ],
+    [
+     793.0,
+     -1224.0
+    ],
+    [
+     781.0,
+     -1224.0
+    ],
+    [
+     780.23,
+     -1224.15
+    ],
+    [
+     779.59,
+     -1224.59
+    ],
+    [
+     779.15,
+     -1225.23
+    ],
+    [
+     779.0,
+     -1226.0
+    ],
+    [
+     779.0,
+     -1236.0
+    ],
+    [
+     779.15,
+     -1236.77
+    ],
+    [
+     779.59,
+     -1237.41
+    ],
+    [
+     780.23,
+     -1237.85
+    ],
+    [
+     781.0,
+     -1238.0
+    ]
+   ],
+   "start": 219,
+   "end": 223,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket B Rocker 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket B Rocker 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket B Rocker 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Socket B Rocker 2",
+   "points": [
+    [
+     875.0,
+     -1238.0
+    ],
+    [
+     875.77,
+     -1237.85
+    ],
+    [
+     876.41,
+     -1237.41
+    ],
+    [
+     876.85,
+     -1236.77
+    ],
+    [
+     877.0,
+     -1236.0
+    ],
+    [
+     877.0,
+     -1226.0
+    ],
+    [
+     876.85,
+     -1225.23
+    ],
+    [
+     876.41,
+     -1224.59
+    ],
+    [
+     875.77,
+     -1224.15
+    ],
+    [
+     875.0,
+     -1224.0
+    ],
+    [
+     863.0,
+     -1224.0
+    ],
+    [
+     862.23,
+     -1224.15
+    ],
+    [
+     861.59,
+     -1224.59
+    ],
+    [
+     861.15,
+     -1225.23
+    ],
+    [
+     861.0,
+     -1226.0
+    ],
+    [
+     861.0,
+     -1236.0
+    ],
+    [
+     861.15,
+     -1236.77
+    ],
+    [
+     861.59,
+     -1237.41
+    ],
+    [
+     862.23,
+     -1237.85
+    ],
+    [
+     863.0,
+     -1238.0
+    ]
+   ],
+   "start": 219,
+   "end": 223,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Socket B Rocker 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Socket B Rocker 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Socket B Rocker 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nurse Call",
+   "points": [
+    [
+     1035.0,
+     -1190.0
+    ],
+    [
+     1036.91,
+     -1189.62
+    ],
+    [
+     1038.54,
+     -1188.54
+    ],
+    [
+     1039.62,
+     -1186.91
+    ],
+    [
+     1040.0,
+     -1185.0
+    ],
+    [
+     1040.0,
+     -1115.0
+    ],
+    [
+     1039.62,
+     -1113.09
+    ],
+    [
+     1038.54,
+     -1111.46
+    ],
+    [
+     1036.91,
+     -1110.38
+    ],
+    [
+     1035.0,
+     -1110.0
+    ],
+    [
+     925.0,
+     -1110.0
+    ],
+    [
+     923.09,
+     -1110.38
+    ],
+    [
+     921.46,
+     -1111.46
+    ],
+    [
+     920.38,
+     -1113.09
+    ],
+    [
+     920.0,
+     -1115.0
+    ],
+    [
+     920.0,
+     -1185.0
+    ],
+    [
+     920.38,
+     -1186.91
+    ],
+    [
+     921.46,
+     -1188.54
+    ],
+    [
+     923.09,
+     -1189.62
+    ],
+    [
+     925.0,
+     -1190.0
+    ]
+   ],
+   "start": 210,
+   "end": 219,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nurse Call",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nurse Call",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nurse Call",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Call LED",
+   "points": [
+    [
+     988.0,
+     -1140.0
+    ],
+    [
+     987.73,
+     -1137.93
+    ],
+    [
+     986.93,
+     -1136.0
+    ],
+    [
+     985.66,
+     -1134.34
+    ],
+    [
+     984.0,
+     -1133.07
+    ],
+    [
+     982.07,
+     -1132.27
+    ],
+    [
+     980.0,
+     -1132.0
+    ],
+    [
+     977.93,
+     -1132.27
+    ],
+    [
+     976.0,
+     -1133.07
+    ],
+    [
+     974.34,
+     -1134.34
+    ],
+    [
+     973.07,
+     -1136.0
+    ],
+    [
+     972.27,
+     -1137.93
+    ],
+    [
+     972.0,
+     -1140.0
+    ],
+    [
+     972.27,
+     -1142.07
+    ],
+    [
+     973.07,
+     -1144.0
+    ],
+    [
+     974.34,
+     -1145.66
+    ],
+    [
+     976.0,
+     -1146.93
+    ],
+    [
+     977.93,
+     -1147.73
+    ],
+    [
+     980.0,
+     -1148.0
+    ],
+    [
+     982.07,
+     -1147.73
+    ],
+    [
+     984.0,
+     -1146.93
+    ],
+    [
+     985.66,
+     -1145.66
+    ],
+    [
+     986.93,
+     -1144.0
+    ],
+    [
+     987.73,
+     -1142.07
+    ]
+   ],
+   "start": 219,
+   "end": 222,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Call LED",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Call LED",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Call LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1",
+   "points": [
+    [
+     1210.0,
+     -460.0
+    ],
+    [
+     1217.65,
+     -458.48
+    ],
+    [
+     1224.14,
+     -454.14
+    ],
+    [
+     1228.48,
+     -447.65
+    ],
+    [
+     1230.0,
+     -440.0
+    ],
+    [
+     1230.0,
+     -20.0
+    ],
+    [
+     1228.48,
+     -12.35
+    ],
+    [
+     1224.14,
+     -5.86
+    ],
+    [
+     1217.65,
+     -1.52
+    ],
+    [
+     1210.0,
+     0.0
+    ],
+    [
+     590.0,
+     0.0
+    ],
+    [
+     582.35,
+     -1.52
+    ],
+    [
+     575.86,
+     -5.86
+    ],
+    [
+     571.52,
+     -12.35
+    ],
+    [
+     570.0,
+     -20.0
+    ],
+    [
+     570.0,
+     -440.0
+    ],
+    [
+     571.52,
+     -447.65
+    ],
+    [
+     575.86,
+     -454.14
+    ],
+    [
+     582.35,
+     -458.48
+    ],
+    [
+     590.0,
+     -460.0
+    ]
+   ],
+   "start": -1410,
+   "end": -1385
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Rail 1",
+   "points": [
+    [
+     570,
+     -470
+    ],
+    [
+     1230,
+     -470
+    ],
+    [
+     1230,
+     -455
+    ],
+    [
+     570,
+     -455
+    ]
+   ],
+   "start": -1425,
+   "end": -1370
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Rail 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Rail 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Rail 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 2",
+   "points": [
+    [
+     1210.0,
+     -460.0
+    ],
+    [
+     1217.65,
+     -458.48
+    ],
+    [
+     1224.14,
+     -454.14
+    ],
+    [
+     1228.48,
+     -447.65
+    ],
+    [
+     1230.0,
+     -440.0
+    ],
+    [
+     1230.0,
+     -20.0
+    ],
+    [
+     1228.48,
+     -12.35
+    ],
+    [
+     1224.14,
+     -5.86
+    ],
+    [
+     1217.65,
+     -1.52
+    ],
+    [
+     1210.0,
+     0.0
+    ],
+    [
+     590.0,
+     0.0
+    ],
+    [
+     582.35,
+     -1.52
+    ],
+    [
+     575.86,
+     -5.86
+    ],
+    [
+     571.52,
+     -12.35
+    ],
+    [
+     570.0,
+     -20.0
+    ],
+    [
+     570.0,
+     -440.0
+    ],
+    [
+     571.52,
+     -447.65
+    ],
+    [
+     575.86,
+     -454.14
+    ],
+    [
+     582.35,
+     -458.48
+    ],
+    [
+     590.0,
+     -460.0
+    ]
+   ],
+   "start": -1670,
+   "end": -1645
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 2",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 2",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf Rail 2",
+   "points": [
+    [
+     570,
+     -470
+    ],
+    [
+     1230,
+     -470
+    ],
+    [
+     1230,
+     -455
+    ],
+    [
+     570,
+     -455
+    ]
+   ],
+   "start": -1685,
+   "end": -1630
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf Rail 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf Rail 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf Rail 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Infusion Pole",
+   "points": [
+    [
+     1112.0,
+     -150.0
+    ],
+    [
+     1111.59,
+     -146.89
+    ],
+    [
+     1110.39,
+     -144.0
+    ],
+    [
+     1108.49,
+     -141.51
+    ],
+    [
+     1106.0,
+     -139.61
+    ],
+    [
+     1103.11,
+     -138.41
+    ],
+    [
+     1100.0,
+     -138.0
+    ],
+    [
+     1096.89,
+     -138.41
+    ],
+    [
+     1094.0,
+     -139.61
+    ],
+    [
+     1091.51,
+     -141.51
+    ],
+    [
+     1089.61,
+     -144.0
+    ],
+    [
+     1088.41,
+     -146.89
+    ],
+    [
+     1088.0,
+     -150.0
+    ],
+    [
+     1088.41,
+     -153.11
+    ],
+    [
+     1089.61,
+     -156.0
+    ],
+    [
+     1091.51,
+     -158.49
+    ],
+    [
+     1094.0,
+     -160.39
+    ],
+    [
+     1096.89,
+     -161.59
+    ],
+    [
+     1100.0,
+     -162.0
+    ],
+    [
+     1103.11,
+     -161.59
+    ],
+    [
+     1106.0,
+     -160.39
+    ],
+    [
+     1108.49,
+     -158.49
+    ],
+    [
+     1110.39,
+     -156.0
+    ],
+    [
+     1111.59,
+     -153.11
+    ]
+   ],
+   "start": -1910,
+   "end": -690
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Infusion Pole",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Infusion Pole",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Infusion Pole",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED",
+   "points": [
+    [
+     1028.0,
+     -750.0
+    ],
+    [
+     1027.73,
+     -747.93
+    ],
+    [
+     1026.93,
+     -746.0
+    ],
+    [
+     1025.66,
+     -744.34
+    ],
+    [
+     1024.0,
+     -743.07
+    ],
+    [
+     1022.07,
+     -742.27
+    ],
+    [
+     1020.0,
+     -742.0
+    ],
+    [
+     1017.93,
+     -742.27
+    ],
+    [
+     1016.0,
+     -743.07
+    ],
+    [
+     1014.34,
+     -744.34
+    ],
+    [
+     1013.07,
+     -746.0
+    ],
+    [
+     1012.27,
+     -747.93
+    ],
+    [
+     1012.0,
+     -750.0
+    ],
+    [
+     1012.27,
+     -752.07
+    ],
+    [
+     1013.07,
+     -754.0
+    ],
+    [
+     1014.34,
+     -755.66
+    ],
+    [
+     1016.0,
+     -756.93
+    ],
+    [
+     1017.93,
+     -757.73
+    ],
+    [
+     1020.0,
+     -758.0
+    ],
+    [
+     1022.07,
+     -757.73
+    ],
+    [
+     1024.0,
+     -756.93
+    ],
+    [
+     1025.66,
+     -755.66
+    ],
+    [
+     1026.93,
+     -754.0
+    ],
+    [
+     1027.73,
+     -752.07
+    ]
+   ],
+   "start": 210,
+   "end": 213,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "O2",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "Gas Inlet O2",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "VAC",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "Gas Inlet VAC",
+   "side": "top",
+   "diameter": 15,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "MA4",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "Gas Inlet MA4",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Power Inlet",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "solid": "Data Inlet",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Data/Voltage",
+   "connector": "Data",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Data/Apparent Load",
+   "connector": "Data",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_MechEq_MedGas_Pendant_ICU.png"
+  }
+ ],
+ "values": {
+  "Arm reach 900 mm, rotation 330 degrees": {
+   "value": "900/330",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Head 320 x 420 x 1250 mm": {
+   "value": "320x420x1250",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Ceiling fixing to Unistrut, about 300 kg load": {
+   "value": 300,
+   "source_status": "assumed",
+   "source": "HTM 02-01 / supplier fixing detail"
+  }
+ }
+}

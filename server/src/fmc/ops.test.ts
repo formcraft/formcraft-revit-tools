@@ -100,7 +100,7 @@ test("LOD 400 pack: bad input is refused", () => {
   assert.match(all, /start_deg and end_deg are the same/);
   assert.match(all, /can't cross its axis/);
   assert.match(all, /end \(5\) must be above start \(10\)/);
-  assert.match(all, /give points or arc/);
+  assert.match(all, /give points, lines or arc/);
   assert.match(all, /a plane is named twice/);
   assert.match(all, /isn't inside the kit's families folder/);
   assert.match(all, /name must be "S\/Left"/);
@@ -236,4 +236,128 @@ test("load_family: a path relative to the family roots passes and resolves on th
   const r = resolveFamilyPaths(OPS.parse([{ op: "load_family", name: "Q", path: "_Profiles\\Q.rfa" }, { op: "add_type", name: "T" }]), roots, () => false);
   assert.equal((r.ops[0] as { path?: string }).path, "D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q.rfa");
   assert.match(r.notes[0], /load_family Q: D:\\Kit\\04_Families\\_Staging\\_Profiles\\Q\.rfa isn't on this PC \(looked in .*\): build the profile first/);
+});
+
+test("array: copies by default, tied to an Integer count; linear takes exactly one way to space", () => {
+  const b = OPS.parse([
+    { op: "add_family_param", name: "Blade Count", type: "Integer" },
+    { op: "extrusion", name: "Blade", points: [[0, 0], [600, 0], [600, 20]], start: 100, end: 110 },
+    { op: "array", name: "Blades", solid: "Blade", direction: "z", count_param: "Blade Count", spacing_mm: 80 },
+    { op: "set_subcategory", name: "Blade #3", subcategory: "Frame" },
+  ]);
+  const { errors, notes } = splitProblems(opsProblems(b, dict));
+  assert.deepEqual(errors, []);
+  assert.equal(notes.length, 1); // the Frame subcategory; "Blade #3" is a copy the array makes
+  const a = b.find((o) => o.op === "array") as any;
+  assert.equal(a.mode, "copies");
+  assert.equal(a.max, 12);
+  const bad = OPS.parse([
+    { op: "add_family_param", name: "Gap", type: "Length" },
+    { op: "array", name: "A", solid: "S", direction: "x", count_param: "Gap", spacing_param: "Gap" },
+    { op: "array", name: "B", solid: "S", direction: "x", count_param: "N", mode: "linear", spacing_mm: 50, between: ["P1", "P2"] },
+    { op: "array", name: "C", solid: "C", direction: "y", count_param: "N", spacing_mm: 0 },
+  ]);
+  const all = splitProblems(opsProblems(bad, dict)).errors.join(" | ");
+  assert.match(all, /"Gap" is Length, not Integer/);
+  assert.match(all, /copies need spacing_mm/);
+  assert.match(all, /spacing_param needs mode "linear"/);
+  assert.match(all, /linear takes exactly one of spacing_mm, spacing_param or between/);
+  assert.match(all, /spacing_mm can't be 0/);
+  assert.match(all, /its own name, not the solid's/);
+  assert.throws(() => OPS.parse([{ op: "array", name: "A", solid: "S", direction: "w", count_param: "N" }]));
+  assert.throws(() => OPS.parse([{ op: "array", name: "A", solid: "S", direction: "x", count_param: "N", max: 51 }]));
+});
+
+test("symbolic_lines: the fixed form still works; plane ends, a labelled radius and per-leaf repeats are checked", () => {
+  const fixed = OPS.parse([{ op: "add_subcategory", name: "Plan Swing" },
+    { op: "symbolic_lines", name: "Swing", points: [[0, 0], [0, 900]], arc: { center: [0, 0], radius: 900, start_deg: 0, end_deg: 90 }, subcategory: "Plan Swing" }]);
+  assert.deepEqual(opsProblems(fixed, dict), []);
+  const leaves = OPS.parse([
+    { op: "add_subcategory", name: "Plan Swing" },
+    { op: "add_family_param", name: "Leaf Count", type: "Integer" },
+    { op: "add_family_param", name: "Leaf Width", type: "Length" },
+    { op: "add_ref_plane", name: "Leaf 1 Free", from: [0, -1000], to: [0, 1000] },
+    { op: "add_ref_plane", name: "Leaf 2 Free", from: [450, -1000], to: [450, 1000] },
+    { op: "add_ref_plane", name: "Swing", from: [-1000, 500], to: [1000, 500] },
+    { op: "add_ref_plane", name: "Face", from: [-1000, 0], to: [1000, 0] },
+    { op: "symbolic_lines", name: "Fold", subcategory: "Plan Swing", repeat: { count_param: "Leaf Count", max: 2 },
+      lines: [{ from: { planes: ["Leaf {k} Free", "Face"] }, to: { planes: ["Leaf {k} Free", "Swing"] } }],
+      arc: { center: { planes: ["Leaf {k} Free", "Face"] }, radius: 450, radius_param: "Leaf Width", start_deg: 90, end_deg: 180 } },
+  ]);
+  assert.deepEqual(opsProblems(leaves, dict), []);
+  const bad = OPS.parse([
+    { op: "add_family_param", name: "Leaf Count", type: "Length" },
+    { op: "symbolic_lines", name: "A", subcategory: "S", repeat: { count_param: "Leaf Count", max: 3 }, lines: [{ from: [0, 0], to: [0, 0] }] },
+    { op: "symbolic_lines", name: "B", subcategory: "S", lines: [{ from: { planes: ["P {k}", "Q"] }, to: { planes: ["Q", "P {k}"] } }] },
+    { op: "symbolic_lines", name: "C", subcategory: "S", arc: { center: { planes: ["P", "P"] }, radius: 10, start_deg: 0, end_deg: 90 } },
+  ]);
+  const all = splitProblems(opsProblems(bad, dict)).errors.join(" | ");
+  assert.match(all, /a repeat needs \{k\} in a plane name/);
+  assert.match(all, /repeat: "Leaf Count" is Length, not Integer/);
+  assert.match(all, /line 1 has no length/);
+  assert.match(all, /\{k\} in a plane name needs repeat/);
+  assert.match(all, /starts and ends on the same two planes/);
+  assert.match(all, /names the plane "P" twice/);
+  // With a repeat, each leaf's planes are expected: Leaf 3 Free isn't made, so it's a note.
+  const three = OPS.parse([{ op: "add_subcategory", name: "S" }, { op: "add_family_param", name: "N", type: "Integer" },
+    { op: "add_ref_plane", name: "Leaf 1 Free", from: [0, -1], to: [0, 1] }, { op: "add_ref_plane", name: "Leaf 2 Free", from: [1, -1], to: [1, 1] },
+    { op: "symbolic_lines", name: "F", subcategory: "S", repeat: { count_param: "N", max: 3 }, lines: [{ from: { planes: ["Leaf {k} Free", "Center (Front/Back)"] }, to: [5, 5] }] }]);
+  assert.deepEqual(splitProblems(opsProblems(three, dict)).notes.map((n) => n.match(/"([^"]+)"/)![1]), ["Leaf 3 Free"]);
+});
+
+test("delete_template_element: by kind, subcategory or name, never everything, never by id", () => {
+  const ok = OPS.parse([
+    { op: "delete_template_element", name: "Template frame", kind: "solid", subcategory: "Frame/Mullion" },
+    { op: "delete_template_element", name: "Swing lines", subcategory: "Plan Swing" },
+    { op: "delete_template_element", name: "Old voids", kind: "void" },
+  ]);
+  assert.deepEqual(opsProblems(ok, dict), []);
+  assert.equal((ok[0] as any).max, 10);
+  const all = OPS.parse([{ op: "delete_template_element", name: "Everything", category: "Doors" }]);
+  assert.match(splitProblems(opsProblems(all, dict)).errors[0], /say what goes/);
+  assert.throws(() => OPS.parse([{ op: "delete_template_element", name: "X", kind: "by_id" }]));
+  assert.equal("element_id" in OPS.parse([{ op: "delete_template_element", name: "X", kind: "solid", element_id: 1234 }])[0], false);
+});
+
+test("set_default_size: Length values before planes; a plane drawn first in a sized batch is a warning (F-026)", () => {
+  const good = OPS.parse([
+    { op: "set_default_size", name: "Default size", type: "0900x2100", values: { Width: 900, Height: 2100 } },
+    { op: "add_ref_plane", name: "Head Inner", from: [-500, 2060], to: [500, 2060], view: "Front" },
+    { op: "add_dimension", name: "Height", between: ["Ref. Level", "Head Inner"], label: "Height", view: "Front" },
+  ]);
+  assert.deepEqual(opsProblems(good, dict), []);
+  const late = OPS.parse([
+    { op: "add_ref_plane", name: "Head Inner", from: [-500, 2060], to: [500, 2060], view: "Front" },
+    { op: "set_default_size", name: "Default size", values: { Width: 900, Height: 2100 } },
+    { op: "set_type_value", name: "T/Height", type: "T", param: "Height", value: 2400 },
+  ]);
+  const { errors, notes } = splitProblems(opsProblems(late, dict));
+  assert.deepEqual(errors, []);
+  assert.match(notes.join(), /op 1 \(add_ref_plane Head Inner\): warning: \(F-026\) this plane is drawn before set_default_size \(op 2\)/);
+  const wrong = OPS.parse([{ op: "add_family_param", name: "Leaf Count", type: "Integer" },
+    { op: "set_default_size", name: "S", values: { "Leaf Count": 2, "Frame Depth": 100 } }]);
+  const p = splitProblems(opsProblems(wrong, dict));
+  assert.match(p.errors.join(), /"Leaf Count" is Integer: set_default_size sets Length parameters/);
+  assert.match(p.notes.join(), /parameter "Frame Depth"/);
+  assert.throws(() => OPS.parse([{ op: "set_default_size", name: "S", values: { Width: -5 } }]));
+});
+
+test("load_family: released or staged families, shared nested hardware flagged", () => {
+  const b = OPS.parse([
+    { op: "add_family_param", name: "Hardware Material", type: "Material" },
+    { op: "load_family", name: "FMC_A_Hardware_Lever", path: "D:\\Kit\\04_Families\\A\\FMC_A_Hardware_Lever.rfa", shared: true },
+    { op: "load_family", name: "FMC_A_Hardware_Hinge", path: "D:\\Kit\\04_Families\\_Staging\\A\\FMC_A_Hardware_Hinge.rfa", shared: true },
+    { op: "place_nested", name: "Lever", family: "FMC_A_Hardware_Lever", type: "Standard", params: { "Hardware Material": "Hardware Material" } },
+  ]);
+  assert.deepEqual(opsProblems(b, dict, "D:\\Kit\\04_Families"), []);
+  assert.equal((b[1] as any).shared, true);
+});
+
+test("set_type_image takes a png or jpg inside the kit's families folder", () => {
+  const ok = OPS.parse([{ op: "add_type", name: "60_O2" }, { op: "set_type_image", name: "Type image", path: "D:\\Kit\\04_Families\\_Staging\\P\\_Images\\FMC_P_X.png", type: "60_O2" }]);
+  assert.deepEqual(splitProblems(opsProblems(ok, dict, "D:\\Kit\\04_Families")).errors, []);
+  const bad = OPS.parse([{ op: "set_type_image", name: "Type image", path: "C:\\Users\\Someone\\Downloads\\x.gif" }]);
+  const all = splitProblems(opsProblems(bad, dict, "D:\\Kit\\04_Families")).errors.join(" | ");
+  assert.match(all, /takes a \.png or \.jpg/);
+  assert.match(all, /isn't inside the kit's families folder/);
 });

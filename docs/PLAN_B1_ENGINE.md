@@ -22,7 +22,9 @@ Claude / builder ── ops (JSON) ──► server: fmc_doc ──► validate 
 source, opened at); they never show in Revit's window. A session is only:
 - a new document from an `.rft` in `template_roots` (or, from B3, an FMC `.rft` in `04_Families\_FamilyTemplates`);
 - or a file in `_Staging` / `_ChainTests` (the live-model lock's library roots).
-Never a project model, never a workshared model. `close` discards unsaved changes; idle sessions close after 30 minutes.
+Never a project model, never a workshared model. `close` discards unsaved changes. Sessions are never closed silently (F-046): `list` and
+`background` mark a session idle longer than the guard's `session_idle_hours` (default 12) as stale, and
+`fmc_recipe cleanup` closes stale and left-over sessions without saving, after a dry run.
 
 **Apply and the dry run.** `apply` takes an ordered list of ops. Each op has a `name` (the thing it makes: a reference
 plane, parameter, type, solid, connector…), so it is idempotent:

@@ -91,15 +91,21 @@ namespace RevitMCPCommandSet.Services.Fmc
                 var c = new[] { new XYZ(x1, y1, 0), new XYZ(x2, y1, 0), new XYZ(x2, y2, 0), new XYZ(x1, y2, 0) };
                 for (int k = 0; k < 4; k++) loop.Append(Line.CreateBound(c[k], c[(k + 1) % 4]));
             }
-            else
+            // F-059: sketch "front" draws [x, z] in the front elevation with depth toward the viewer (-y); "right" draws
+            // [y, z] with depth along +x; "plan" (default) draws [x, y] with depth up (z). Before, every extrusion was in plan.
+            string sk = (op.Value<string>("sketch") ?? "plan").ToLowerInvariant();
+            if (rect != null && sk != "plan") throw new InvalidOperationException("rect (four planes) works with sketch plan only");
+            else if (rect == null)
             {
-                var pts = (op["points"] as JArray ?? new JArray()).Select(p => new XYZ(Mm(p[0].Value<double>()), Mm(p[1].Value<double>()), 0)).ToList();
+                var pts = (op["points"] as JArray ?? new JArray()).Select(p => sk == "front" ? new XYZ(Mm(p[0].Value<double>()), 0, Mm(p[1].Value<double>()))
+                    : sk == "right" ? new XYZ(0, Mm(p[0].Value<double>()), Mm(p[1].Value<double>())) : new XYZ(Mm(p[0].Value<double>()), Mm(p[1].Value<double>()), 0)).ToList();
                 if (pts.Count < 3) throw new InvalidOperationException("an extrusion needs rect (four planes) or at least three points");
                 for (int k = 0; k < pts.Count; k++) loop.Append(Line.CreateBound(pts[k], pts[(k + 1) % pts.Count]));
             }
             var profile = new CurveArrArray();
             profile.Append(loop);
-            SketchPlane sketch = SketchPlane.Create(doc, Autodesk.Revit.DB.Plane.CreateByNormalAndOrigin(XYZ.BasisZ, XYZ.Zero));
+            XYZ normal = sk == "front" ? XYZ.BasisY.Negate() : sk == "right" ? XYZ.BasisX : XYZ.BasisZ;
+            SketchPlane sketch = SketchPlane.Create(doc, Autodesk.Revit.DB.Plane.CreateByNormalAndOrigin(normal, XYZ.Zero));
             Extrusion made = doc.FamilyCreate.NewExtrusion(!isVoid, profile, sketch, end - start);
             made.StartOffset = start; made.EndOffset = end;
             Name(made, name);
@@ -120,7 +126,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 View front = ViewNamed(doc, "Front", ViewType.Elevation);
                 if (LockFace(doc, front, made, tp.GetReference(), XYZ.BasisZ)) locked.Add(top);
             }
-            return ("create", (isVoid ? "void" : "solid") + (locked.Count > 0 ? ", locked to " + string.Join(", ", locked) : ""));
+            return ("create", (isVoid ? "void" : "solid") + (sk != "plan" ? ", sketched " + sk : "") + (locked.Count > 0 ? ", locked to " + string.Join(", ", locked) : ""));
         }
 
         /// <summary>Aligns and locks the solid's planar face that faces the same way as the plane and lies on it.</summary>

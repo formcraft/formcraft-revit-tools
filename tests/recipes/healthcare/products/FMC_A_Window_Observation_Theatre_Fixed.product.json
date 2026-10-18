@@ -1,0 +1,186 @@
+{
+ "family": "FMC_A_Window_Observation_Theatre_Fixed",
+ "category": "Windows",
+ "template": "Metric Window.rft",
+ "desc": "Flush-glazed fixed theatre observation window: glass flush with both wall faces, stainless lining with rounded corners, sealed cavity, silicone joints, no ledges",
+ "ifc": "IfcWindow",
+ "keynote": "G.FIX_03",
+ "types": [
+  {
+   "name": "1200x900_FlushFixed",
+   "values": {
+    "Width": 1200.0,
+    "Height": 900.0
+   }
+  }
+ ],
+ "type_values": {
+  "Sill Height": 1000
+ },
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "glass": "FMC_Glass_Clear"
+ },
+ "parts": [
+  {
+   "n": "Flush Frame Below",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -600.0,
+    -100,
+    1000,
+    600.0,
+    100,
+    1050
+   ]
+  },
+  {
+   "n": "Flush Frame Left Of Opening",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -600.0,
+    -100,
+    1050,
+    -550.0,
+    100,
+    1850
+   ]
+  },
+  {
+   "n": "Flush Frame Right Of Opening",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    550.0,
+    -100,
+    1050,
+    600.0,
+    100,
+    1850
+   ]
+  },
+  {
+   "n": "Flush Frame Above",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -600.0,
+    -100,
+    1850,
+    600.0,
+    100,
+    1900
+   ]
+  },
+  {
+   "n": "Cavity Spacer Stile",
+   "shape": "box",
+   "mat": "grey",
+   "at": [
+    -550.0,
+    -92,
+    1050,
+    -538.0,
+    92,
+    1850
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1088.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cavity Spacer Rail",
+   "shape": "box",
+   "mat": "grey",
+   "at": [
+    -538.0,
+    -92,
+    1050,
+    538.0,
+    92,
+    1062
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     788
+    ]
+   }
+  },
+  {
+   "n": "Glass Theatre Side",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -550.0,
+    -100,
+    1050,
+    550.0,
+    -92,
+    1850
+   ]
+  },
+  {
+   "n": "Glass Corridor Side",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -550.0,
+    92,
+    1050,
+    550.0,
+    100,
+    1850
+   ]
+  },
+  {
+   "n": "Desiccant Breather",
+   "shape": "fbox",
+   "mat": "grey",
+   "at": [
+    470.0,
+    -91,
+    1052,
+    510.0,
+    -80,
+    1060
+   ],
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "window observation theatre fixed windows hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=window+observation+theatre+fixed+windows+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 1200 x 900 mm, sill 1000": {
+   "value": "1200x900",
+   "source_status": "assumed",
+   "source": "type 1; HBN 26 operating department"
+  },
+  "Flush both faces, R60 corners": {
+   "value": "flush",
+   "source_status": "assumed",
+   "source": "cleanable, no ledges, HTM 03-01 / HBN 26"
+  },
+  "Glazing 6.4 mm laminated each face, 200 mm wall": {
+   "value": "6.4 lam",
+   "source_status": "assumed",
+   "source": "typical theatre observation"
+  }
+ },
+ "about": "Theatre observation modelled as a product: stainless frame lining with a rounded opening (no frame proud of either face), two rounded panes flush with the theatre and corridor faces, cavity spacer, silicone joints, desiccant breather. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

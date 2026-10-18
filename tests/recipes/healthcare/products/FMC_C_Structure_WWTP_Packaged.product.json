@@ -1,0 +1,500 @@
+{
+ "family": "FMC_C_Structure_WWTP_Packaged",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Packaged wastewater treatment plant for hospital effluent: containerised steel tank with walkway, handrails and hatches, blower/control kiosk, ladder, on a concrete plinth",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "P.TRT_00",
+ "types": [
+  {
+   "name": "50m3d_Packaged",
+   "desc": "50 m3/day plant envelope",
+   "values": {
+    "Apparent Load": 5500
+   }
+  },
+  {
+   "name": "100m3d_Packaged",
+   "desc": "100 m3/day plant envelope",
+   "values": {
+    "Apparent Load": 9000
+   }
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "paint": "FMC_Metal_SteelLTZ_Painted",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "gi": "FMC_Metal_GI_Pipe",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "epoxy": "FMC_Metal_Steel_EpoxyCoated_White"
+ },
+ "parts": [
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -4800,
+    -1500,
+    0,
+    6300,
+    1500,
+    300
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Tank Body",
+   "shape": "box",
+   "at": [
+    -4500,
+    -1200,
+    300,
+    4500,
+    1200,
+    2900
+   ],
+   "mat": "paint"
+  },
+  {
+   "n": "Rib Front",
+   "shape": "box",
+   "at": [
+    -4030,
+    -1225,
+    300,
+    -3970,
+    -1200,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 9,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rib Back",
+   "shape": "box",
+   "at": [
+    -4030,
+    1200,
+    300,
+    -3970,
+    1225,
+    2900
+   ],
+   "mat": "paint",
+   "lod": "f",
+   "repeat": {
+    "n": 9,
+    "d": [
+     1000,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Walkway Grating",
+   "shape": "box",
+   "at": [
+    -4400,
+    -400,
+    2900,
+    4400,
+    400,
+    2940
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Rail Post Front",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -4000,
+    -400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 5,
+    "d": [
+     2000,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Rail Post Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -4000,
+    400
+   ],
+   "r": 20,
+   "z": [
+    2940,
+    4040
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 5,
+    "d": [
+     2000,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Top Rail",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -400,
+    4020
+   ],
+   "r": 20,
+   "x": [
+    -4000,
+    4000
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     800,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Knee Rail",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -400,
+    3500
+   ],
+   "r": 15,
+   "x": [
+    -4000,
+    4000
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     800,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Access Hatch",
+   "shape": "box",
+   "at": [
+    -3400,
+    -1050,
+    2900,
+    -2600,
+    -500,
+    2930
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 4,
+    "d": [
+     2000,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Blower Kiosk",
+   "shape": "box",
+   "at": [
+    4600,
+    -1000,
+    300,
+    6100,
+    1000,
+    2500
+   ],
+   "mat": "epoxy"
+  },
+  {
+   "n": "Kiosk Roof",
+   "shape": "box",
+   "at": [
+    4550,
+    -1050,
+    2500,
+    6150,
+    1050,
+    2560
+   ],
+   "mat": "epoxy"
+  },
+  {
+   "n": "Kiosk Louvre",
+   "shape": "fbox",
+   "at": [
+    5300,
+    -1010,
+    1800,
+    5950,
+    -1000,
+    1840
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 5,
+    "d": [
+     0,
+     0,
+     -80
+    ]
+   }
+  },
+  {
+   "n": "Control Panel",
+   "shape": "fbox",
+   "at": [
+    4700,
+    -1060,
+    900,
+    5200,
+    -1000,
+    1900
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Panel Handle",
+   "shape": "fbox",
+   "at": [
+    5150,
+    -1075,
+    1350,
+    5170,
+    -1060,
+    1450
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Panel Lamp Green",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    4800,
+    1800
+   ],
+   "r": 10,
+   "y": [
+    -1066,
+    -1060
+   ],
+   "mat": "ledg",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Panel Lamp Red",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    4840,
+    1800
+   ],
+   "r": 10,
+   "y": [
+    -1066,
+    -1060
+   ],
+   "mat": "ledr",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Air Main",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    700,
+    2300
+   ],
+   "r": 40,
+   "x": [
+    4500,
+    4600
+   ],
+   "mat": "gi",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Inlet Pipe",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    800,
+    2200
+   ],
+   "r": 80,
+   "x": [
+    -4900,
+    -4490
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Outlet Pipe",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    4000,
+    700
+   ],
+   "r": 80,
+   "y": [
+    -1500,
+    -1190
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Access Ladder Stile Left",
+   "shape": "box",
+   "at": [
+    -4660,
+    -260,
+    300,
+    -4640,
+    -240,
+    3900
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Access Ladder Stile Right",
+   "shape": "box",
+   "at": [
+    -4660,
+    240,
+    300,
+    -4640,
+    260,
+    3900
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Access Ladder Rung",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -4650,
+    600
+   ],
+   "r": 12,
+   "y": [
+    -250,
+    250
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 11,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   },
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "structure wwtp packaged structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+wwtp+packaged+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Envelope 9000 x 2400 x 2600 mm on 300 plinth (50 m3/d)": {
+   "value": "9000x2400x2600",
+   "source_status": "assumed",
+   "source": "typical packaged MBBR/SBR plant envelope; vendor to confirm"
+  },
+  "Supply 415 V 3-phase, 5.5 kVA (50 m3/d)": {
+   "value": "415V 5.5kVA",
+   "source_status": "assumed",
+   "source": "typical blower load; vendor to confirm"
+  },
+  "Effluent standard from NEMA permit": {
+   "value": "NEMA",
+   "source_status": "assumed",
+   "source": "by the process engineer"
+  }
+ },
+ "about": "Plant envelope on a plinth (ground z = 0): ribbed tank body, top walkway with posts and rails, four hatches, blower/control kiosk with louvres, panel, lamps and air main (Fine), end ladder, inlet and outlet stubs with connectors; power on the panel.",
+ "type_values": {
+  "Voltage": 415,
+  "Number of Poles": 3,
+  "Apparent Load": 5500
+ },
+ "connectors": [
+  {
+   "n": "SAN In",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Inlet Pipe",
+   "side": "left",
+   "diameter": 160,
+   "flow": "In"
+  },
+  {
+   "n": "SAN Out",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Outlet Pipe",
+   "side": "front",
+   "diameter": 160,
+   "flow": "Out"
+  },
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Control Panel",
+   "side": "front"
+  }
+ ]
+}

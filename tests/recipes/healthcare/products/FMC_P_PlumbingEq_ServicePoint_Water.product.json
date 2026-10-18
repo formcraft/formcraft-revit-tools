@@ -1,0 +1,126 @@
+{
+ "family": "FMC_P_PlumbingEq_ServicePoint_Water",
+ "category": "Plumbing Equipment",
+ "desc": "Water and drainage service point (CW, HW, waste) inside a Medical Equipment host",
+ "ifc": "IfcFlowTerminal",
+ "keynote": "",
+ "types": [
+  {
+   "name": "60_Water"
+  }
+ ],
+ "materials": {
+  "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "red": "FMC_Plastic_FireHoseReel_Red",
+  "grey": "FMC_Plastic_ABS_Grey"
+ },
+ "reference": {
+  "query": "service point water plumbing equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=service+point+water+plumbing+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.theswc.co.uk/Online-Shop/Products-by-Range/SanCeram/Chartham/Basin/Chartham-wall-hung-500-back-outlet-basin-CHWB107"
+ },
+ "parts": [
+  {
+   "n": "Point",
+   "shape": "box",
+   "at": [
+    -30,
+    -30,
+    0,
+    30,
+    30,
+    60
+   ],
+   "mat": "medical_grey"
+  },
+  {
+   "n": "CW Tag",
+   "shape": "fbox",
+   "at": [
+    -20,
+    30,
+    40,
+    20,
+    31,
+    52
+   ],
+   "mat": "blue",
+   "lod": "f"
+  },
+  {
+   "n": "HW Tag",
+   "shape": "box",
+   "at": [
+    -31,
+    -20,
+    40,
+    -30,
+    20,
+    52
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Waste Tag",
+   "shape": "fbox",
+   "at": [
+    -20,
+    -31,
+    4,
+    20,
+    -30,
+    16
+   ],
+   "mat": "grey",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Point",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "HW",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "part": "Point",
+   "side": "left",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Point",
+   "side": "bottom",
+   "diameter": 40,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Point 60 mm cube": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "symbolic connection point"
+  },
+  "Connectors CW, HW, Waste": {
+   "value": 3,
+   "source_status": "assumed",
+   "source": "Revit QE4: pipes refuse Medical Equipment hosts"
+  }
+ },
+ "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position; a 60 mm cube with BS 1710 / water identification tags (Fine only).",
+ "template": "Metric Generic Model.rft",
+ "shared": true,
+ "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
+}

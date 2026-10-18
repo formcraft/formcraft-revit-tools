@@ -1,0 +1,3048 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_PlumbingFixture_WC_Squat",
+ "template": "Metric Generic Model.rft",
+ "about": "Squat pan modelled as a generic product: flange and bowl sectors set into the floor (z = 0), pan floor and outlet, two ribbed footrests, trap and outlet, flush inlet and pipe, high-level cistern with lever and pull chain. Reference: query: wc squat plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=wc+squat+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Plumbing Fixtures"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Pipe_System",
+   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Discharge_Units",
+   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "600_Ceramic"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Cost_Unit",
+   "type": "600_Ceramic",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Geometry_Stage",
+   "type": "600_Ceramic",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/IfcExportAs",
+   "type": "600_Ceramic",
+   "param": "IfcExportAs",
+   "value": "IfcSanitaryTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/Description",
+   "type": "600_Ceramic",
+   "param": "Description",
+   "value": "Squat pan, vitreous china, set flush with the floor, ribbed footrests, high-level cistern with flush pipe and pull chain (Uganda public facilities)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/Keynote",
+   "type": "600_Ceramic",
+   "param": "Keynote",
+   "value": "P.WCS_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Keynote_Code",
+   "type": "600_Ceramic",
+   "param": "FMC_Keynote_Code",
+   "value": "P.WCS_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Code_Description",
+   "type": "600_Ceramic",
+   "param": "FMC_Code_Description",
+   "value": "WC Squat: Squat pan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Code_Group",
+   "type": "600_Ceramic",
+   "param": "FMC_Code_Group",
+   "value": "P.WCS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Ceramic/FMC_Role_Code",
+   "type": "600_Ceramic",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "China",
+   "color": [
+    255,
+    255,
+    255
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "China Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Ceramic_VitreousChina_White",
+   "param": "China Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upvc",
+   "color": [
+    74,
+    77,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upvc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -230.0,
+     -950.0
+    ],
+    [
+     230.0,
+     -950.0
+    ],
+    [
+     230.0,
+     0
+    ],
+    [
+     -230.0,
+     0
+    ]
+   ],
+   "start": -430.0,
+   "end": 2050.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 1",
+   "points": [
+    [
+     0.0,
+     -950.0
+    ],
+    [
+     146.6,
+     -946.6
+    ],
+    [
+     182.6,
+     -936.0
+    ],
+    [
+     204.9,
+     -917.3
+    ],
+    [
+     102.2,
+     -817.8
+    ],
+    [
+     74.6,
+     -851.8
+    ],
+    [
+     41.0,
+     -872.9
+    ],
+    [
+     0.0,
+     -880.0
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 2",
+   "points": [
+    [
+     204.9,
+     -917.3
+    ],
+    [
+     219.2,
+     -888.1
+    ],
+    [
+     227.4,
+     -841.2
+    ],
+    [
+     230.0,
+     -650.0
+    ],
+    [
+     140.0,
+     -650.0
+    ],
+    [
+     135.7,
+     -717.3
+    ],
+    [
+     122.8,
+     -772.5
+    ],
+    [
+     102.2,
+     -817.8
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 3",
+   "points": [
+    [
+     230.0,
+     -650.0
+    ],
+    [
+     227.4,
+     -458.8
+    ],
+    [
+     219.2,
+     -411.9
+    ],
+    [
+     204.9,
+     -382.7
+    ],
+    [
+     102.2,
+     -482.2
+    ],
+    [
+     122.8,
+     -527.5
+    ],
+    [
+     135.7,
+     -582.7
+    ],
+    [
+     140.0,
+     -650.0
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 4",
+   "points": [
+    [
+     204.9,
+     -382.7
+    ],
+    [
+     182.6,
+     -364.0
+    ],
+    [
+     146.6,
+     -353.4
+    ],
+    [
+     0.0,
+     -350.0
+    ],
+    [
+     0.0,
+     -420.0
+    ],
+    [
+     41.0,
+     -427.1
+    ],
+    [
+     74.6,
+     -448.2
+    ],
+    [
+     102.2,
+     -482.2
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 5",
+   "points": [
+    [
+     0.0,
+     -350.0
+    ],
+    [
+     -146.6,
+     -353.4
+    ],
+    [
+     -182.6,
+     -364.0
+    ],
+    [
+     -204.9,
+     -382.7
+    ],
+    [
+     -102.2,
+     -482.2
+    ],
+    [
+     -74.6,
+     -448.2
+    ],
+    [
+     -41.0,
+     -427.1
+    ],
+    [
+     0.0,
+     -420.0
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 6",
+   "points": [
+    [
+     -204.9,
+     -382.7
+    ],
+    [
+     -219.2,
+     -411.9
+    ],
+    [
+     -227.4,
+     -458.8
+    ],
+    [
+     -230.0,
+     -650.0
+    ],
+    [
+     -140.0,
+     -650.0
+    ],
+    [
+     -135.7,
+     -582.7
+    ],
+    [
+     -122.8,
+     -527.5
+    ],
+    [
+     -102.2,
+     -482.2
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 7",
+   "points": [
+    [
+     -230.0,
+     -650.0
+    ],
+    [
+     -227.4,
+     -841.2
+    ],
+    [
+     -219.2,
+     -888.1
+    ],
+    [
+     -204.9,
+     -917.3
+    ],
+    [
+     -102.2,
+     -817.8
+    ],
+    [
+     -122.8,
+     -772.5
+    ],
+    [
+     -135.7,
+     -717.3
+    ],
+    [
+     -140.0,
+     -650.0
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 7",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 7",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Flange 8",
+   "points": [
+    [
+     -204.9,
+     -917.3
+    ],
+    [
+     -182.6,
+     -936.0
+    ],
+    [
+     -146.6,
+     -946.6
+    ],
+    [
+     -0.0,
+     -950.0
+    ],
+    [
+     -0.0,
+     -880.0
+    ],
+    [
+     -41.0,
+     -872.9
+    ],
+    [
+     -74.6,
+     -851.8
+    ],
+    [
+     -102.2,
+     -817.8
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Flange 8",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Flange 8",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Flange 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 1",
+   "points": [
+    [
+     0.0,
+     -885.0
+    ],
+    [
+     77.2,
+     -856.2
+    ],
+    [
+     127.2,
+     -775.1
+    ],
+    [
+     65.8,
+     -713.9
+    ],
+    [
+     39.9,
+     -755.3
+    ],
+    [
+     0.0,
+     -770.0
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 2",
+   "points": [
+    [
+     127.2,
+     -775.1
+    ],
+    [
+     145.0,
+     -650.0
+    ],
+    [
+     127.2,
+     -524.9
+    ],
+    [
+     65.8,
+     -586.1
+    ],
+    [
+     75.0,
+     -650.0
+    ],
+    [
+     65.8,
+     -713.9
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 3",
+   "points": [
+    [
+     127.2,
+     -524.9
+    ],
+    [
+     77.2,
+     -443.8
+    ],
+    [
+     0.0,
+     -415.0
+    ],
+    [
+     0.0,
+     -530.0
+    ],
+    [
+     39.9,
+     -544.7
+    ],
+    [
+     65.8,
+     -586.1
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 4",
+   "points": [
+    [
+     0.0,
+     -415.0
+    ],
+    [
+     -77.2,
+     -443.8
+    ],
+    [
+     -127.2,
+     -524.9
+    ],
+    [
+     -65.8,
+     -586.1
+    ],
+    [
+     -39.9,
+     -544.7
+    ],
+    [
+     0.0,
+     -530.0
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 5",
+   "points": [
+    [
+     -127.2,
+     -524.9
+    ],
+    [
+     -145.0,
+     -650.0
+    ],
+    [
+     -127.2,
+     -775.1
+    ],
+    [
+     -65.8,
+     -713.9
+    ],
+    [
+     -75.0,
+     -650.0
+    ],
+    [
+     -65.8,
+     -586.1
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Bowl 6",
+   "points": [
+    [
+     -127.2,
+     -775.1
+    ],
+    [
+     -77.2,
+     -856.2
+    ],
+    [
+     -0.0,
+     -885.0
+    ],
+    [
+     -0.0,
+     -770.0
+    ],
+    [
+     -39.9,
+     -755.3
+    ],
+    [
+     -65.8,
+     -713.9
+    ]
+   ],
+   "start": -160,
+   "end": -15
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Bowl 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Bowl 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Bowl 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pan Floor",
+   "points": [
+    [
+     140.0,
+     -650.0
+    ],
+    [
+     135.7,
+     -582.7
+    ],
+    [
+     122.8,
+     -527.5
+    ],
+    [
+     102.2,
+     -482.2
+    ],
+    [
+     74.6,
+     -448.2
+    ],
+    [
+     41.0,
+     -427.1
+    ],
+    [
+     0.0,
+     -420.0
+    ],
+    [
+     -41.0,
+     -427.1
+    ],
+    [
+     -74.6,
+     -448.2
+    ],
+    [
+     -102.2,
+     -482.2
+    ],
+    [
+     -122.8,
+     -527.5
+    ],
+    [
+     -135.7,
+     -582.7
+    ],
+    [
+     -140.0,
+     -650.0
+    ],
+    [
+     -135.7,
+     -717.3
+    ],
+    [
+     -122.8,
+     -772.5
+    ],
+    [
+     -102.2,
+     -817.8
+    ],
+    [
+     -74.6,
+     -851.8
+    ],
+    [
+     -41.0,
+     -872.9
+    ],
+    [
+     -0.0,
+     -880.0
+    ],
+    [
+     41.0,
+     -872.9
+    ],
+    [
+     74.6,
+     -851.8
+    ],
+    [
+     102.2,
+     -817.8
+    ],
+    [
+     122.8,
+     -772.5
+    ],
+    [
+     135.7,
+     -717.3
+    ]
+   ],
+   "start": -175,
+   "end": -160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pan Floor",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pan Floor",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pan Floor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Hole",
+   "points": [
+    [
+     45.0,
+     -800.0
+    ],
+    [
+     43.47,
+     -788.35
+    ],
+    [
+     38.97,
+     -777.5
+    ],
+    [
+     31.82,
+     -768.18
+    ],
+    [
+     22.5,
+     -761.03
+    ],
+    [
+     11.65,
+     -756.53
+    ],
+    [
+     0.0,
+     -755.0
+    ],
+    [
+     -11.65,
+     -756.53
+    ],
+    [
+     -22.5,
+     -761.03
+    ],
+    [
+     -31.82,
+     -768.18
+    ],
+    [
+     -38.97,
+     -777.5
+    ],
+    [
+     -43.47,
+     -788.35
+    ],
+    [
+     -45.0,
+     -800.0
+    ],
+    [
+     -43.47,
+     -811.65
+    ],
+    [
+     -38.97,
+     -822.5
+    ],
+    [
+     -31.82,
+     -831.82
+    ],
+    [
+     -22.5,
+     -838.97
+    ],
+    [
+     -11.65,
+     -843.47
+    ],
+    [
+     -0.0,
+     -845.0
+    ],
+    [
+     11.65,
+     -843.47
+    ],
+    [
+     22.5,
+     -838.97
+    ],
+    [
+     31.82,
+     -831.82
+    ],
+    [
+     38.97,
+     -822.5
+    ],
+    [
+     43.47,
+     -811.65
+    ]
+   ],
+   "start": -161,
+   "end": -158
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Hole",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Hole",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Hole",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest 1",
+   "points": [
+    [
+     -170.0,
+     -770.0
+    ],
+    [
+     -162.35,
+     -768.48
+    ],
+    [
+     -155.86,
+     -764.14
+    ],
+    [
+     -151.52,
+     -757.65
+    ],
+    [
+     -150.0,
+     -750.0
+    ],
+    [
+     -150.0,
+     -570.0
+    ],
+    [
+     -151.52,
+     -562.35
+    ],
+    [
+     -155.86,
+     -555.86
+    ],
+    [
+     -162.35,
+     -551.52
+    ],
+    [
+     -170.0,
+     -550.0
+    ],
+    [
+     -195.0,
+     -550.0
+    ],
+    [
+     -202.65,
+     -551.52
+    ],
+    [
+     -209.14,
+     -555.86
+    ],
+    [
+     -213.48,
+     -562.35
+    ],
+    [
+     -215.0,
+     -570.0
+    ],
+    [
+     -215.0,
+     -750.0
+    ],
+    [
+     -213.48,
+     -757.65
+    ],
+    [
+     -209.14,
+     -764.14
+    ],
+    [
+     -202.65,
+     -768.48
+    ],
+    [
+     -195.0,
+     -770.0
+    ]
+   ],
+   "start": 0,
+   "end": 12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest 2",
+   "points": [
+    [
+     195.0,
+     -770.0
+    ],
+    [
+     202.65,
+     -768.48
+    ],
+    [
+     209.14,
+     -764.14
+    ],
+    [
+     213.48,
+     -757.65
+    ],
+    [
+     215.0,
+     -750.0
+    ],
+    [
+     215.0,
+     -570.0
+    ],
+    [
+     213.48,
+     -562.35
+    ],
+    [
+     209.14,
+     -555.86
+    ],
+    [
+     202.65,
+     -551.52
+    ],
+    [
+     195.0,
+     -550.0
+    ],
+    [
+     170.0,
+     -550.0
+    ],
+    [
+     162.35,
+     -551.52
+    ],
+    [
+     155.86,
+     -555.86
+    ],
+    [
+     151.52,
+     -562.35
+    ],
+    [
+     150.0,
+     -570.0
+    ],
+    [
+     150.0,
+     -750.0
+    ],
+    [
+     151.52,
+     -757.65
+    ],
+    [
+     155.86,
+     -764.14
+    ],
+    [
+     162.35,
+     -768.48
+    ],
+    [
+     170.0,
+     -770.0
+    ]
+   ],
+   "start": 0,
+   "end": 12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 1",
+   "points": [
+    [
+     -210,
+     -755
+    ],
+    [
+     -155,
+     -755
+    ],
+    [
+     -155,
+     -745
+    ],
+    [
+     -210,
+     -745
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 2",
+   "points": [
+    [
+     -210,
+     -715
+    ],
+    [
+     -155,
+     -715
+    ],
+    [
+     -155,
+     -705
+    ],
+    [
+     -210,
+     -705
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 3",
+   "points": [
+    [
+     -210,
+     -675
+    ],
+    [
+     -155,
+     -675
+    ],
+    [
+     -155,
+     -665
+    ],
+    [
+     -210,
+     -665
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 4",
+   "points": [
+    [
+     -210,
+     -635
+    ],
+    [
+     -155,
+     -635
+    ],
+    [
+     -155,
+     -625
+    ],
+    [
+     -210,
+     -625
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 5",
+   "points": [
+    [
+     -210,
+     -595
+    ],
+    [
+     -155,
+     -595
+    ],
+    [
+     -155,
+     -585
+    ],
+    [
+     -210,
+     -585
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib 6",
+   "points": [
+    [
+     -210,
+     -555
+    ],
+    [
+     -155,
+     -555
+    ],
+    [
+     -155,
+     -545
+    ],
+    [
+     -210,
+     -545
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 1",
+   "points": [
+    [
+     155,
+     -755
+    ],
+    [
+     210,
+     -755
+    ],
+    [
+     210,
+     -745
+    ],
+    [
+     155,
+     -745
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 2",
+   "points": [
+    [
+     155,
+     -715
+    ],
+    [
+     210,
+     -715
+    ],
+    [
+     210,
+     -705
+    ],
+    [
+     155,
+     -705
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 3",
+   "points": [
+    [
+     155,
+     -675
+    ],
+    [
+     210,
+     -675
+    ],
+    [
+     210,
+     -665
+    ],
+    [
+     155,
+     -665
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 4",
+   "points": [
+    [
+     155,
+     -635
+    ],
+    [
+     210,
+     -635
+    ],
+    [
+     210,
+     -625
+    ],
+    [
+     155,
+     -625
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 5",
+   "points": [
+    [
+     155,
+     -595
+    ],
+    [
+     210,
+     -595
+    ],
+    [
+     210,
+     -585
+    ],
+    [
+     155,
+     -585
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Footrest Rib R 6",
+   "points": [
+    [
+     155,
+     -555
+    ],
+    [
+     210,
+     -555
+    ],
+    [
+     210,
+     -545
+    ],
+    [
+     155,
+     -545
+    ]
+   ],
+   "start": 12,
+   "end": 16
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Footrest Rib R 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Footrest Rib R 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Footrest Rib R 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Trap",
+   "points": [
+    [
+     50.0,
+     -800.0
+    ],
+    [
+     48.3,
+     -787.06
+    ],
+    [
+     43.3,
+     -775.0
+    ],
+    [
+     35.36,
+     -764.64
+    ],
+    [
+     25.0,
+     -756.7
+    ],
+    [
+     12.94,
+     -751.7
+    ],
+    [
+     0.0,
+     -750.0
+    ],
+    [
+     -12.94,
+     -751.7
+    ],
+    [
+     -25.0,
+     -756.7
+    ],
+    [
+     -35.36,
+     -764.64
+    ],
+    [
+     -43.3,
+     -775.0
+    ],
+    [
+     -48.3,
+     -787.06
+    ],
+    [
+     -50.0,
+     -800.0
+    ],
+    [
+     -48.3,
+     -812.94
+    ],
+    [
+     -43.3,
+     -825.0
+    ],
+    [
+     -35.36,
+     -835.36
+    ],
+    [
+     -25.0,
+     -843.3
+    ],
+    [
+     -12.94,
+     -848.3
+    ],
+    [
+     -0.0,
+     -850.0
+    ],
+    [
+     12.94,
+     -848.3
+    ],
+    [
+     25.0,
+     -843.3
+    ],
+    [
+     35.36,
+     -835.36
+    ],
+    [
+     43.3,
+     -825.0
+    ],
+    [
+     48.3,
+     -812.94
+    ]
+   ],
+   "start": -420,
+   "end": -175
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Trap",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trap",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trap",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Trap Outlet",
+   "points": [
+    [
+     50.0,
+     -380.0
+    ],
+    [
+     48.3,
+     -367.06
+    ],
+    [
+     43.3,
+     -355.0
+    ],
+    [
+     35.36,
+     -344.64
+    ],
+    [
+     25.0,
+     -336.7
+    ],
+    [
+     12.94,
+     -331.7
+    ],
+    [
+     0.0,
+     -330.0
+    ],
+    [
+     -12.94,
+     -331.7
+    ],
+    [
+     -25.0,
+     -336.7
+    ],
+    [
+     -35.36,
+     -344.64
+    ],
+    [
+     -43.3,
+     -355.0
+    ],
+    [
+     -48.3,
+     -367.06
+    ],
+    [
+     -50.0,
+     -380.0
+    ],
+    [
+     -48.3,
+     -392.94
+    ],
+    [
+     -43.3,
+     -405.0
+    ],
+    [
+     -35.36,
+     -415.36
+    ],
+    [
+     -25.0,
+     -423.3
+    ],
+    [
+     -12.94,
+     -428.3
+    ],
+    [
+     -0.0,
+     -430.0
+    ],
+    [
+     12.94,
+     -428.3
+    ],
+    [
+     25.0,
+     -423.3
+    ],
+    [
+     35.36,
+     -415.36
+    ],
+    [
+     43.3,
+     -405.0
+    ],
+    [
+     48.3,
+     -392.94
+    ]
+   ],
+   "start": 0,
+   "end": 800,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Trap Outlet",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trap Outlet",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trap Outlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Inlet",
+   "points": [
+    [
+     20.0,
+     -30.0
+    ],
+    [
+     19.32,
+     -24.82
+    ],
+    [
+     17.32,
+     -20.0
+    ],
+    [
+     14.14,
+     -15.86
+    ],
+    [
+     10.0,
+     -12.68
+    ],
+    [
+     5.18,
+     -10.68
+    ],
+    [
+     0.0,
+     -10.0
+    ],
+    [
+     -5.18,
+     -10.68
+    ],
+    [
+     -10.0,
+     -12.68
+    ],
+    [
+     -14.14,
+     -15.86
+    ],
+    [
+     -17.32,
+     -20.0
+    ],
+    [
+     -19.32,
+     -24.82
+    ],
+    [
+     -20.0,
+     -30.0
+    ],
+    [
+     -19.32,
+     -35.18
+    ],
+    [
+     -17.32,
+     -40.0
+    ],
+    [
+     -14.14,
+     -44.14
+    ],
+    [
+     -10.0,
+     -47.32
+    ],
+    [
+     -5.18,
+     -49.32
+    ],
+    [
+     -0.0,
+     -50.0
+    ],
+    [
+     5.18,
+     -49.32
+    ],
+    [
+     10.0,
+     -47.32
+    ],
+    [
+     14.14,
+     -44.14
+    ],
+    [
+     17.32,
+     -40.0
+    ],
+    [
+     19.32,
+     -35.18
+    ]
+   ],
+   "start": 40,
+   "end": 350,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flush Inlet",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flush Inlet",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flush Inlet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Pipe",
+   "points": [
+    [
+     16.0,
+     -40.0
+    ],
+    [
+     15.45,
+     -35.86
+    ],
+    [
+     13.86,
+     -32.0
+    ],
+    [
+     11.31,
+     -28.69
+    ],
+    [
+     8.0,
+     -26.14
+    ],
+    [
+     4.14,
+     -24.55
+    ],
+    [
+     0.0,
+     -24.0
+    ],
+    [
+     -4.14,
+     -24.55
+    ],
+    [
+     -8.0,
+     -26.14
+    ],
+    [
+     -11.31,
+     -28.69
+    ],
+    [
+     -13.86,
+     -32.0
+    ],
+    [
+     -15.45,
+     -35.86
+    ],
+    [
+     -16.0,
+     -40.0
+    ],
+    [
+     -15.45,
+     -44.14
+    ],
+    [
+     -13.86,
+     -48.0
+    ],
+    [
+     -11.31,
+     -51.31
+    ],
+    [
+     -8.0,
+     -53.86
+    ],
+    [
+     -4.14,
+     -55.45
+    ],
+    [
+     -0.0,
+     -56.0
+    ],
+    [
+     4.14,
+     -55.45
+    ],
+    [
+     8.0,
+     -53.86
+    ],
+    [
+     11.31,
+     -51.31
+    ],
+    [
+     13.86,
+     -48.0
+    ],
+    [
+     15.45,
+     -44.14
+    ]
+   ],
+   "start": -30,
+   "end": 1800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flush Pipe",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flush Pipe",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flush Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cistern",
+   "points": [
+    [
+     205.0,
+     1800.0
+    ],
+    [
+     210.74,
+     1801.14
+    ],
+    [
+     215.61,
+     1804.39
+    ],
+    [
+     218.86,
+     1809.26
+    ],
+    [
+     220.0,
+     1815.0
+    ],
+    [
+     220.0,
+     2035.0
+    ],
+    [
+     218.86,
+     2040.74
+    ],
+    [
+     215.61,
+     2045.61
+    ],
+    [
+     210.74,
+     2048.86
+    ],
+    [
+     205.0,
+     2050.0
+    ],
+    [
+     -205.0,
+     2050.0
+    ],
+    [
+     -210.74,
+     2048.86
+    ],
+    [
+     -215.61,
+     2045.61
+    ],
+    [
+     -218.86,
+     2040.74
+    ],
+    [
+     -220.0,
+     2035.0
+    ],
+    [
+     -220.0,
+     1815.0
+    ],
+    [
+     -218.86,
+     1809.26
+    ],
+    [
+     -215.61,
+     1804.39
+    ],
+    [
+     -210.74,
+     1801.14
+    ],
+    [
+     -205.0,
+     1800.0
+    ]
+   ],
+   "start": 0,
+   "end": 170,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cistern",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cistern",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cistern",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cistern Lever",
+   "points": [
+    [
+     150,
+     -220
+    ],
+    [
+     170,
+     -220
+    ],
+    [
+     170,
+     -170
+    ],
+    [
+     150,
+     -170
+    ]
+   ],
+   "start": 2000,
+   "end": 2015
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cistern Lever",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cistern Lever",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cistern Lever",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Chain",
+   "points": [
+    [
+     163.0,
+     -215.0
+    ],
+    [
+     162.9,
+     -214.22
+    ],
+    [
+     162.6,
+     -213.5
+    ],
+    [
+     162.12,
+     -212.88
+    ],
+    [
+     161.5,
+     -212.4
+    ],
+    [
+     160.78,
+     -212.1
+    ],
+    [
+     160.0,
+     -212.0
+    ],
+    [
+     159.22,
+     -212.1
+    ],
+    [
+     158.5,
+     -212.4
+    ],
+    [
+     157.88,
+     -212.88
+    ],
+    [
+     157.4,
+     -213.5
+    ],
+    [
+     157.1,
+     -214.22
+    ],
+    [
+     157.0,
+     -215.0
+    ],
+    [
+     157.1,
+     -215.78
+    ],
+    [
+     157.4,
+     -216.5
+    ],
+    [
+     157.88,
+     -217.12
+    ],
+    [
+     158.5,
+     -217.6
+    ],
+    [
+     159.22,
+     -217.9
+    ],
+    [
+     160.0,
+     -218.0
+    ],
+    [
+     160.78,
+     -217.9
+    ],
+    [
+     161.5,
+     -217.6
+    ],
+    [
+     162.12,
+     -217.12
+    ],
+    [
+     162.6,
+     -216.5
+    ],
+    [
+     162.9,
+     -215.78
+    ]
+   ],
+   "start": 1500,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Chain",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Chain",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Chain",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pull Handle",
+   "profile": [
+    [
+     0,
+     1440
+    ],
+    [
+     14,
+     1440
+    ],
+    [
+     14,
+     1500
+    ],
+    [
+     0,
+     1500
+    ]
+   ],
+   "axis_at": [
+    160,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Handle",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Handle",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Cistern",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Trap Outlet",
+   "side": "back",
+   "diameter": 100,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_WC_Squat.png"
+  }
+ ],
+ "values": {
+  "Pan 600 x 460 mm": {
+   "value": "600x460",
+   "source_status": "assumed",
+   "source": "typical squat pan size, East Africa market"
+  },
+  "Top flush with finished floor": {
+   "value": 0,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Cistern at 1800 mm": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

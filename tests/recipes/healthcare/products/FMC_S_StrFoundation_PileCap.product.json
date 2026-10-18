@@ -1,0 +1,297 @@
+{
+ "family": "FMC_S_StrFoundation_PileCap",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Reinforced concrete pile cap with chamfered corners on blinding, with bored pile stubs",
+ "ifc": "IfcFooting",
+ "keynote": "C.PIL_00",
+ "types": [
+  {
+   "name": "2-Pile_RC",
+   "desc": "2-pile cap"
+  },
+  {
+   "name": "3-Pile_RC",
+   "desc": "3-pile cap"
+  },
+  {
+   "name": "4-Pile_RC",
+   "desc": "4-pile cap"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "blind": "FMC_Concrete_Blinding_C15",
+  "mortar": "FMC_Masonry_Mortar_1to4"
+ },
+ "parts": [
+  {
+   "n": "Cap",
+   "shape": "prism",
+   "pts": [
+    [
+     -1025,
+     -1050
+    ],
+    [
+     1025,
+     -1050
+    ],
+    [
+     1050,
+     -1025
+    ],
+    [
+     1050,
+     1025
+    ],
+    [
+     1025,
+     1050
+    ],
+    [
+     -1025,
+     1050
+    ],
+    [
+     -1050,
+     1025
+    ],
+    [
+     -1050,
+     -1025
+    ]
+   ],
+   "z": [
+    -900,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Blinding",
+   "shape": "box",
+   "at": [
+    -1100,
+    -1100,
+    -975,
+    1100,
+    1100,
+    -900
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Pile 1",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -675.0,
+    -675.0
+   ],
+   "r": 225,
+   "z": [
+    -2900,
+    -825
+   ],
+   "mat": "conc",
+   "seg": 32
+  },
+  {
+   "n": "Pile Cut-off Ring 1",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -675.0,
+    -675.0
+   ],
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Pile 2",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    675.0,
+    -675.0
+   ],
+   "r": 225,
+   "z": [
+    -2900,
+    -825
+   ],
+   "mat": "conc",
+   "seg": 32
+  },
+  {
+   "n": "Pile Cut-off Ring 2",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    675.0,
+    -675.0
+   ],
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Pile 3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -675.0,
+    675.0
+   ],
+   "r": 225,
+   "z": [
+    -2900,
+    -825
+   ],
+   "mat": "conc",
+   "seg": 32
+  },
+  {
+   "n": "Pile Cut-off Ring 3",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -675.0,
+    675.0
+   ],
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "seg": 32
+  },
+  {
+   "n": "Pile 4",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    675.0,
+    675.0
+   ],
+   "r": 225,
+   "z": [
+    -2900,
+    -825
+   ],
+   "mat": "conc",
+   "seg": 32
+  },
+  {
+   "n": "Pile Cut-off Ring 4",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    675.0,
+    675.0
+   ],
+   "profile": [
+    [
+     225,
+     -1000
+    ],
+    [
+     226,
+     -1000
+    ],
+    [
+     226,
+     -975
+    ],
+    [
+     225,
+     -975
+    ]
+   ],
+   "mat": "mortar",
+   "lod": "f",
+   "seg": 32
+  }
+ ],
+ "reference": {
+  "query": "str foundation pile cap structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+pile+cap+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "4-pile cap 2100 x 2100 x 900 (geometry)": {
+   "value": "2100x2100x900",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Piles 450 dia at 3D = 1350 mm": {
+   "value": "450 at 1350",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm; spacing 3 x diameter"
+  },
+  "Edge 150 mm beyond pile face": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Pile embedment 75 mm": {
+   "value": 75,
+   "source_status": "assumed",
+   "source": "typical practice"
+  }
+ },
+ "about": "Pile cap with top at z = 0: chamfered cap, blinding, four 450 pile stubs shown 2 m below the cap with the trimmed cut-off line (Fine). Geometry shows the 4-pile type; 2- and 3-pile layouts per the engineer."
+}

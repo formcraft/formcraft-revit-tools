@@ -1,0 +1,86 @@
+{
+ "family": "FMC_A_GenericModel_Clearance_BedSpace",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Acute bed clear zone: 1200 mm on both sides and at the foot of a 2200 x 1000 bed against the bedhead wall (non-plotting)",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "",
+ "types": [
+  {
+   "name": "1200_Perimeter",
+   "desc": "Bed clear zone 1200 mm on both sides and the foot of a 2200 x 1000 bed"
+  }
+ ],
+ "materials": {
+  "clearance_accessibility": "FMC_Glass_Clear"
+ },
+ "parts": [
+  {
+   "n": "Clear Zone Left",
+   "shape": "box",
+   "at": [
+    -1700,
+    -2200,
+    0,
+    -500,
+    0,
+    10
+   ],
+   "mat": "clearance_accessibility",
+   "lod": "mf"
+  },
+  {
+   "n": "Clear Zone Right",
+   "shape": "box",
+   "at": [
+    500,
+    -2200,
+    0,
+    1700,
+    0,
+    10
+   ],
+   "mat": "clearance_accessibility",
+   "lod": "mf"
+  },
+  {
+   "n": "Clear Zone Foot",
+   "shape": "box",
+   "at": [
+    -1700,
+    -3400,
+    0,
+    1700,
+    -2200,
+    10
+   ],
+   "mat": "clearance_accessibility",
+   "lod": "mf"
+  }
+ ],
+ "reference": {
+  "query": "clearance bed space generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=clearance+bed+space+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Perimeter 1200 mm sides and foot": {
+   "value": 1200,
+   "source_status": "assumed",
+   "source": "record type; HBN 04-01 bed-space clear zones"
+  },
+  "Bed footprint 2200 x 1000 mm": {
+   "value": "2200x1000",
+   "source_status": "assumed",
+   "source": "acute/ICU bed class"
+  },
+  "Zone 3400 x 3400 mm overall": {
+   "value": "3400x3400",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "U-shaped zone (three boxes) around the bed footprint (left open), bedhead wall at y = 0, 10 mm high, on Clearance Accessibility.",
+ "shared": true,
+ "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
+}

@@ -1,0 +1,263 @@
+{
+ "family": "FMC_E_EQ_DB_Final_SPN",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Final distribution board SPN 240 V, surface metal enclosure, smoked window door, single DIN row, 100 A main switch",
+ "ifc": "IfcElectricDistributionBoard",
+ "keynote": "E.DBD_07",
+ "types": [
+  {
+   "name": "8way_SPN",
+   "values": {
+    "Apparent Load": 15000
+   }
+  },
+  {
+   "name": "12way_SPN",
+   "values": {
+    "Apparent Load": 23000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 15000,
+  "Default Elevation": 1400
+ },
+ "materials": {
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "white": "FMC_Plastic_ABS_White",
+  "black": "FMC_Plastic_ABS_Black",
+  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "distribution board final spn electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=distribution+board+final+spn+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Enclosure",
+   "shape": "box",
+   "at": [
+    -180,
+    -100,
+    0,
+    180,
+    0,
+    400
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Door",
+   "shape": "fbox",
+   "at": [
+    -176,
+    -110,
+    10,
+    176,
+    -100,
+    390
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Door Window",
+   "shape": "fbox",
+   "at": [
+    -140,
+    -111,
+    150,
+    140,
+    -109,
+    300
+   ],
+   "mat": "pc",
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "DIN Cover Strip",
+   "shape": "fbox",
+   "at": [
+    -125,
+    -108,
+    195,
+    125,
+    -106,
+    255
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "MCB Toggle",
+   "shape": "fbox",
+   "at": [
+    -118,
+    -114,
+    215,
+    -106,
+    -108,
+    235
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 1,
+   "repeat": {
+    "n": 12,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Main Switch Toggle",
+   "shape": "fbox",
+   "at": [
+    92,
+    -115,
+    212,
+    118,
+    -108,
+    238
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Circuit Chart Holder",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -111,
+    60,
+    120,
+    -110,
+    120
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Door Catch",
+   "shape": "fbox",
+   "at": [
+    150,
+    -118,
+    180,
+    165,
+    -110,
+    260
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Knockout",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -120,
+    -55
+   ],
+   "r": 10,
+   "z": [
+    400,
+    402
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 5,
+    "d": [
+     60,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cover Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -160,
+    375
+   ],
+   "r": 3.5,
+   "y": [
+    -112,
+    -110
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     320,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Earth Symbol Label",
+   "shape": "fbox",
+   "at": [
+    -25,
+    -111,
+    330,
+    25,
+    -110,
+    360
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "r": 2
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Enclosure",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Enclosure 360 x 400 x 110 mm": {
+   "value": "360x400x110",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "8 or 12 ways SPN, 100 A main switch": {
+   "value": "8/12 way",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Mounting height 1400 mm (to bottom)": {
+   "value": 1400,
+   "source_status": "assumed",
+   "source": "BS 7671 accessible height practice"
+  }
+ },
+ "about": "SPN board: white steel enclosure, door with smoked window over the DIN cover strip and 12 MCB toggles, red main switch, circuit chart holder, catch, top knockouts, screws, label. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

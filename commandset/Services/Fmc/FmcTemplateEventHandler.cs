@@ -107,7 +107,10 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        /// <summary>The facts the audit needs; the server compares them with the kit.</summary>
+        /// <summary>
+        /// The facts the audit needs; the server compares them with the kit. F-044: the names of title block families,
+        /// schedules, view templates, legends, panel schedule templates and every material (used, textures), not only counts.
+        /// </summary>
         private JObject Audit(Document doc)
         {
             var shared = new JArray();
@@ -131,7 +134,25 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (!placedTypes.Contains(f.Id)) unused++;
             }
 
-            return new JObject
+            // F-044: names, so the server can check the template against the kit both ways (never a count passed as a check)
+            var titleBlockFamilies = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_TitleBlocks).WhereElementIsElementType()
+                .OfType<FamilySymbol>().Select(s => s.FamilyName).Distinct().OrderBy(n => n);
+            var schedules = views.OfType<ViewSchedule>().Where(v => !v.IsTemplate && !v.IsTitleblockRevisionSchedule && !v.IsInternalKeynoteSchedule);
+            var panelTemplates = new FilteredElementCollector(doc).OfClass(typeof(Autodesk.Revit.DB.Electrical.PanelScheduleTemplate)).Select(e => e.Name);
+            var materials = new JArray();
+            try
+            {
+                var used = FmcMaterialEventHandler.UsedMaterials(doc);
+                foreach (Material m in new FilteredElementCollector(doc).OfClass(typeof(Material)).Cast<Material>())
+                {
+                    IEnumerable<string> textures;
+                    try { textures = FmcMaterialEventHandler.Textures(doc, m).Select(ResolveTexture).ToList(); } catch (Exception) { textures = Enumerable.Empty<string>(); }
+                    materials.Add(new JObject { ["name"] = m.Name, ["used"] = used.Contains(m.Id.Value), ["textures"] = new JArray(textures) });
+                }
+            }
+            catch (Exception) { materials = null; /* the server says Not checked */ }
+
+            var result = new JObject
             {
                 ["title"] = doc.Title,
                 ["size_mb"] = Math.Round(new FileInfo(doc.PathName).Length / 1048576.0, 1),
@@ -146,7 +167,38 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ["families"] = families,
                 ["unused_families"] = unused,
                 ["warnings"] = doc.GetWarnings().Count,
+                ["title_block_families"] = new JArray(titleBlockFamilies),
+                ["schedule_names"] = new JArray(schedules.Select(v => v.Name)),
+                ["view_template_names"] = new JArray(views.Where(v => v.IsTemplate).Select(v => v.Name)),
+                ["legend_names"] = new JArray(views.Where(v => !v.IsTemplate && v.ViewType == ViewType.Legend).Select(v => v.Name)),
+                ["panel_schedule_templates"] = new JArray(panelTemplates),
             };
+            if (materials != null) result["materials"] = materials;
+            return result;
+        }
+
+        /// <summary>Autodesk's library textures are stored relative ("1\Mats\…"): resolved against the shared Textures folders; else as stored.</summary>
+        private static readonly string[] TextureRoots = new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86),
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles),
+            }
+            .Where(r => !string.IsNullOrEmpty(r)).Distinct()
+            .Select(r => Path.Combine(r, "Autodesk Shared", "Materials", "Textures")).ToArray();
+
+        private static string ResolveTexture(string stored)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(stored) || Path.IsPathRooted(stored)) return stored;
+                foreach (string root in TextureRoots)
+                {
+                    string full = Path.Combine(root, stored);
+                    if (File.Exists(full)) return full;
+                }
+            }
+            catch (Exception) { /* an odd path stays as stored, and the server reports it as not found */ }
+            return stored;
         }
 
         /// <summary>

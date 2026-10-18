@@ -1,0 +1,126 @@
+{
+ "family": "FMC_P_PlumbingEq_ServicePoint_MedGas",
+ "category": "Plumbing Equipment",
+ "desc": "Medical gas service point (O2, vacuum, medical air) inside a Medical Equipment host",
+ "ifc": "IfcFlowTerminal",
+ "keynote": "",
+ "types": [
+  {
+   "name": "60_MedGas"
+  }
+ ],
+ "materials": {
+  "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "black": "FMC_Plastic_ABS_Black"
+ },
+ "reference": {
+  "query": "service point medical gas plumbing equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=service+point+medical+gas+plumbing+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf"
+ },
+ "parts": [
+  {
+   "n": "Point",
+   "shape": "box",
+   "at": [
+    -30,
+    -30,
+    0,
+    30,
+    30,
+    60
+   ],
+   "mat": "medical_grey"
+  },
+  {
+   "n": "O2 Tag",
+   "shape": "fbox",
+   "at": [
+    -20,
+    30,
+    40,
+    20,
+    31,
+    52
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "VAC Tag",
+   "shape": "box",
+   "at": [
+    -31,
+    -20,
+    40,
+    -30,
+    20,
+    52
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "MA4 Tag",
+   "shape": "box",
+   "at": [
+    30,
+    -20,
+    40,
+    31,
+    20,
+    52
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "O2",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Point",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "VAC",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Point",
+   "side": "left",
+   "diameter": 15,
+   "flow": "Out"
+  },
+  {
+   "n": "MA4",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Point",
+   "side": "right",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Point 60 mm cube": {
+   "value": 60,
+   "source_status": "assumed",
+   "source": "symbolic connection point"
+  },
+  "Connectors O2, VAC, MA4": {
+   "value": 3,
+   "source_status": "assumed",
+   "source": "Revit QE4: pipes refuse Medical Equipment hosts"
+  }
+ },
+ "about": "Nested shared service point: carries the pipe connectors a Medical Equipment host cannot (Revit QE4 test, 17 Oct). Placed inside the host at the real outlet position; a 60 mm cube with BS 1710 / water identification tags (Fine only).",
+ "template": "Metric Generic Model.rft",
+ "shared": true,
+ "keynote_exempt": "nested service point, never scheduled; the host carries the keynote"
+}

@@ -1,0 +1,309 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_E_EQ_IPS_Theatre_IT",
+ "template": "Metric Generic Model.rft",
+ "about": "Wave 1: medical IT panel (group 2 locations); electrical equipment with load; 1 m working space.",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Electrical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_type",
+   "name": "8kVA_IT"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/Keynote",
+   "type": "8kVA_IT",
+   "param": "Keynote",
+   "value": "E.DBD_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/FMC_Keynote_Code",
+   "type": "8kVA_IT",
+   "param": "FMC_Keynote_Code",
+   "value": "E.DBD_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/FMC_Cost_Unit",
+   "type": "8kVA_IT",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/FMC_Geometry_Stage",
+   "type": "8kVA_IT",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/IfcExportAs",
+   "type": "8kVA_IT",
+   "param": "IfcExportAs",
+   "value": "IfcElectricDistributionBoard"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/Description",
+   "type": "8kVA_IT",
+   "param": "Description",
+   "value": "Medical IT isolated power panel 8 kVA, isolating transformer, insulation monitor, remote alarm (HTM 06-01 group 2)"
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/Voltage",
+   "type": "8kVA_IT",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/Apparent Load",
+   "type": "8kVA_IT",
+   "param": "Apparent Load",
+   "value": 8000
+  },
+  {
+   "op": "set_type_value",
+   "name": "8kVA_IT/Default Elevation",
+   "type": "8kVA_IT",
+   "param": "Default Elevation",
+   "value": 300
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Enclosure",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Door",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Maintenance",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -400,
+     -300
+    ],
+    [
+     400,
+     -300
+    ],
+    [
+     400,
+     0
+    ],
+    [
+     -400,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Enclosure",
+   "points": [
+    [
+     -400,
+     -290
+    ],
+    [
+     400,
+     -290
+    ],
+    [
+     400,
+     0
+    ],
+    [
+     -400,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 1200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Enclosure",
+   "subcategory": "Enclosure"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Enclosure",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door",
+   "points": [
+    [
+     -395,
+     -300
+    ],
+    [
+     395,
+     -300
+    ],
+    [
+     395,
+     -290
+    ],
+    [
+     -395,
+     -290
+    ]
+   ],
+   "start": 10,
+   "end": 1190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door",
+   "subcategory": "Door"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Working Space",
+   "points": [
+    [
+     -400,
+     -1300
+    ],
+    [
+     400,
+     -1300
+    ],
+    [
+     400,
+     -300
+    ],
+    [
+     -400,
+     -300
+    ]
+   ],
+   "start": -300,
+   "end": 1700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Working Space",
+   "subcategory": "Clearance Maintenance"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Working Space",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Enclosure",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Supply/Voltage",
+   "connector": "Supply",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Supply/Apparent Load",
+   "connector": "Supply",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  }
+ ],
+ "values": {
+  "Enclosure 800 x 1200 x 300 mm": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "8 kVA": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "per theatre, engineer confirms"
+  }
+ }
+}

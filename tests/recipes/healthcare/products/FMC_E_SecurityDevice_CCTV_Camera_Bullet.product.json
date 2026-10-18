@@ -1,0 +1,313 @@
+{
+ "family": "FMC_E_SecurityDevice_CCTV_Camera_Bullet",
+ "category": "Security Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "IP bullet camera, wall mounted on bracket with sun shield and IR",
+ "ifc": "IfcSensor",
+ "keynote": "E.ICT_06",
+ "types": [
+  {
+   "name": "80x280_Wall"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2700
+ },
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "screen": "FMC_Plastic_ABS_Black",
+  "black": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red"
+ },
+ "reference": {
+  "query": "security device cctv camera bullet security devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+bullet+security+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Wall Base",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     50,
+     0
+    ],
+    [
+     50,
+     -12
+    ],
+    [
+     20,
+     -20
+    ],
+    [
+     0,
+     -20
+    ]
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Arm",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "r": 12,
+   "y": [
+    -80,
+    -20
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Ball Joint",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -70
+    ],
+    [
+     14,
+     -72
+    ],
+    [
+     18,
+     -80
+    ],
+    [
+     14,
+     -88
+    ],
+    [
+     0,
+     -90
+    ]
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Bracket",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -88
+   ],
+   "r": 10,
+   "z": [
+    0,
+    30
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Body",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    40
+   ],
+   "r": 40,
+   "y": [
+    -260,
+    -60
+   ],
+   "mat": "white",
+   "lod": "mf"
+  },
+  {
+   "n": "Sun Shield",
+   "shape": "box",
+   "at": [
+    -46,
+    -290,
+    70,
+    46,
+    -60,
+    86
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 8
+  },
+  {
+   "n": "Front Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    40
+   ],
+   "profile": [
+    [
+     34,
+     -260
+    ],
+    [
+     40,
+     -260
+    ],
+    [
+     40,
+     -265
+    ],
+    [
+     34,
+     -265
+    ]
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Front Glass",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    40
+   ],
+   "profile": [
+    [
+     0,
+     -260
+    ],
+    [
+     34,
+     -260
+    ],
+    [
+     34,
+     -261
+    ],
+    [
+     0,
+     -261
+    ]
+   ],
+   "mat": "screen",
+   "lod": "f"
+  },
+  {
+   "n": "Lens",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    40
+   ],
+   "profile": [
+    [
+     0,
+     -261
+    ],
+    [
+     12,
+     -261
+    ],
+    [
+     12,
+     -262
+    ],
+    [
+     0,
+     -262
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "IR LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -22,
+    40
+   ],
+   "r": 4,
+   "y": [
+    -262,
+    -261
+   ],
+   "mat": "red",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     44,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cable Tail",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    10
+   ],
+   "r": 4,
+   "y": [
+    -80,
+    -60
+   ],
+   "mat": "black",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Security",
+   "domain": "electrical",
+   "system": "Security",
+   "part": "Wall Base",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Body 80 dia x 280 mm, sun shield": {
+   "value": "80x280",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "4 MP, IR 50 m, IP67, PoE": {
+   "value": "4MP IP67",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Height 2700-3000 mm": {
+   "value": 2700,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Bullet camera: round wall base, arm, ball joint and bracket, cylindrical body, sun shield, front ring and glass with lens and IR LEDs, cable tail. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

@@ -1,0 +1,3227 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Door_LeadLined_Sliding_CT",
+ "template": "Metric Door.rft",
+ "about": "Shielded sliding door modelled as a product: opening lining, stainless face frame, track box with end caps, leaf in a stainless edge frame with two HPL skins and a lead lining layer, lead-glass vision with beads, bar pull, kick plate, warning light on the track box, radiation sign, push button, floor guide. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door lead lined sliding ct doors hospital; images: https://www.google.com/search?tbm=isch&q=door+lead+lined+sliding+ct+doors+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Doors"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Resistance_Min",
+   "guid": "2f80614a-7f11-5b2a-91a6-a8431863183e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Acoustic_Rating_Rw",
+   "guid": "171b8d36-974e-58af-bc1f-5285962d6598",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_U_Value",
+   "guid": "e7d498c6-d835-546b-98f8-73069c1f0699",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Assembly_Mark",
+   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Ironmongery_Set",
+   "guid": "1f71895f-a957-5735-b684-00aa31d91721",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Glazing_Spec",
+   "guid": "0dbd1462-d156-50f3-9038-a0ed6baa5880",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Frame_Spec",
+   "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fanlight_Height_mm",
+   "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Vent_Type",
+   "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mosquito_Mesh",
+   "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Glazed_Area_m2",
+   "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Openable_Area_m2",
+   "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "1500x2100_Pb2-Sliding"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Cost_Unit",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Geometry_Stage",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/IfcExportAs",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "IfcExportAs",
+   "value": "IfcDoor"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Description",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Description",
+   "value": "Shielded automatic sliding door for CT and fluoroscopy: 70 mm leaf with lead core, lead-glass vision, stainless edge frame, heavy-duty track box with operator, X-RAY warning light, push button"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Keynote",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Keynote",
+   "value": "D.SHD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Keynote_Code",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Keynote_Code",
+   "value": "D.SHD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Code_Description",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Code_Description",
+   "value": "LeadLined Sliding CT: Shielded sliding door for CT and fluoroscopy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Code_Group",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Code_Group",
+   "value": "D.SHD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/FMC_Role_Code",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Voltage",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Apparent Load",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Apparent Load",
+   "value": 370
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Width",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Width",
+   "value": 1500.0
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_Pb2-Sliding/Height",
+   "type": "1500x2100_Pb2-Sliding",
+   "param": "Height",
+   "value": 2100.0
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Frame",
+   "color": [
+    237,
+    237,
+    232
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Frame Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_EpoxyCoated_White",
+   "param": "Frame Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Stainless",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Stainless Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Aluminium",
+   "color": [
+    192,
+    192,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Aluminium Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_Anodised_Silver",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Lead Glass",
+   "color": [
+    195,
+    220,
+    228
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Lead Glass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Laminated",
+   "param": "Lead Glass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Laminate",
+   "color": [
+    217,
+    211,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Laminate Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Laminate_HPL",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Lead",
+   "color": [
+    158,
+    164,
+    170
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Lead Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Lead Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Red",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Sign Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Sign Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Sign Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Green",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Green Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1012.0,
+     -220.5
+    ],
+    [
+     2456.0,
+     -220.5
+    ],
+    [
+     2456.0,
+     70
+    ],
+    [
+     -1012.0,
+     70
+    ]
+   ],
+   "start": 0,
+   "end": 2550.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Opening Lining Jamb 1",
+   "points": [
+    [
+     -750.0,
+     -70
+    ],
+    [
+     -720.0,
+     -70
+    ],
+    [
+     -720.0,
+     70
+    ],
+    [
+     -750.0,
+     70
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Opening Lining Jamb 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Opening Lining Jamb 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Opening Lining Jamb 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Opening Lining Jamb 2",
+   "points": [
+    [
+     720.0,
+     -70
+    ],
+    [
+     750.0,
+     -70
+    ],
+    [
+     750.0,
+     70
+    ],
+    [
+     720.0,
+     70
+    ]
+   ],
+   "start": 0,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Opening Lining Jamb 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Opening Lining Jamb 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Opening Lining Jamb 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Opening Lining Head",
+   "points": [
+    [
+     -720.0,
+     -70
+    ],
+    [
+     720.0,
+     -70
+    ],
+    [
+     720.0,
+     70
+    ],
+    [
+     -720.0,
+     70
+    ]
+   ],
+   "start": 2070,
+   "end": 2100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Opening Lining Head",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Opening Lining Head",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Opening Lining Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Face Frame Stile 1",
+   "points": [
+    [
+     -795.0,
+     -80
+    ],
+    [
+     -750.0,
+     -80
+    ],
+    [
+     -750.0,
+     -70
+    ],
+    [
+     -795.0,
+     -70
+    ]
+   ],
+   "start": 0,
+   "end": 2145
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Face Frame Stile 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Face Frame Stile 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Face Frame Stile 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Face Frame Stile 2",
+   "points": [
+    [
+     750.0,
+     -80
+    ],
+    [
+     795.0,
+     -80
+    ],
+    [
+     795.0,
+     -70
+    ],
+    [
+     750.0,
+     -70
+    ]
+   ],
+   "start": 0,
+   "end": 2145
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Face Frame Stile 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Face Frame Stile 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Face Frame Stile 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Face Frame Rail 1",
+   "points": [
+    [
+     -750.0,
+     -80
+    ],
+    [
+     750.0,
+     -80
+    ],
+    [
+     750.0,
+     -70
+    ],
+    [
+     -750.0,
+     -70
+    ]
+   ],
+   "start": 2100,
+   "end": 45
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Face Frame Rail 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Face Frame Rail 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Face Frame Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Track Box",
+   "points": [
+    [
+     -88.0,
+     2170.0
+    ],
+    [
+     -79.0,
+     2172.4
+    ],
+    [
+     -72.4,
+     2179.0
+    ],
+    [
+     -70.0,
+     2188.0
+    ],
+    [
+     -70.0,
+     2372.0
+    ],
+    [
+     -72.4,
+     2381.0
+    ],
+    [
+     -79.0,
+     2387.6
+    ],
+    [
+     -88.0,
+     2390.0
+    ],
+    [
+     -177.0,
+     2390.0
+    ],
+    [
+     -186.0,
+     2387.6
+    ],
+    [
+     -192.6,
+     2381.0
+    ],
+    [
+     -195.0,
+     2372.0
+    ],
+    [
+     -195.0,
+     2188.0
+    ],
+    [
+     -192.6,
+     2179.0
+    ],
+    [
+     -186.0,
+     2172.4
+    ],
+    [
+     -177.0,
+     2170.0
+    ]
+   ],
+   "start": -830.0,
+   "end": 2450.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Track Box",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Box",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Track Box End Cap 1",
+   "points": [
+    [
+     -832.99,
+     2168.0
+    ],
+    [
+     -831.85,
+     2168.23
+    ],
+    [
+     -830.88,
+     2168.88
+    ],
+    [
+     -830.23,
+     2169.85
+    ],
+    [
+     -830.0,
+     2170.99
+    ],
+    [
+     -830.0,
+     2389.01
+    ],
+    [
+     -830.23,
+     2390.15
+    ],
+    [
+     -830.88,
+     2391.12
+    ],
+    [
+     -831.85,
+     2391.77
+    ],
+    [
+     -832.99,
+     2392.0
+    ],
+    [
+     -833.01,
+     2392.0
+    ],
+    [
+     -834.15,
+     2391.77
+    ],
+    [
+     -835.12,
+     2391.12
+    ],
+    [
+     -835.77,
+     2390.15
+    ],
+    [
+     -836.0,
+     2389.01
+    ],
+    [
+     -836.0,
+     2170.99
+    ],
+    [
+     -835.77,
+     2169.85
+    ],
+    [
+     -835.12,
+     2168.88
+    ],
+    [
+     -834.15,
+     2168.23
+    ],
+    [
+     -833.01,
+     2168.0
+    ]
+   ],
+   "start": 70,
+   "end": 197,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Track Box End Cap 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Box End Cap 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Box End Cap 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Track Box End Cap 2",
+   "points": [
+    [
+     2453.01,
+     2168.0
+    ],
+    [
+     2454.15,
+     2168.23
+    ],
+    [
+     2455.12,
+     2168.88
+    ],
+    [
+     2455.77,
+     2169.85
+    ],
+    [
+     2456.0,
+     2170.99
+    ],
+    [
+     2456.0,
+     2389.01
+    ],
+    [
+     2455.77,
+     2390.15
+    ],
+    [
+     2455.12,
+     2391.12
+    ],
+    [
+     2454.15,
+     2391.77
+    ],
+    [
+     2453.01,
+     2392.0
+    ],
+    [
+     2452.99,
+     2392.0
+    ],
+    [
+     2451.85,
+     2391.77
+    ],
+    [
+     2450.88,
+     2391.12
+    ],
+    [
+     2450.23,
+     2390.15
+    ],
+    [
+     2450.0,
+     2389.01
+    ],
+    [
+     2450.0,
+     2170.99
+    ],
+    [
+     2450.23,
+     2169.85
+    ],
+    [
+     2450.88,
+     2168.88
+    ],
+    [
+     2451.85,
+     2168.23
+    ],
+    [
+     2452.99,
+     2168.0
+    ]
+   ],
+   "start": 70,
+   "end": 197,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Track Box End Cap 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Track Box End Cap 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Track Box End Cap 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Floor Guide",
+   "points": [
+    [
+     830.0,
+     -105
+    ],
+    [
+     890.0,
+     -105
+    ],
+    [
+     890.0,
+     -80
+    ],
+    [
+     830.0,
+     -80
+    ]
+   ],
+   "start": 0,
+   "end": 40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Floor Guide",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Guide",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Guide",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Edge Stile 1",
+   "points": [
+    [
+     -810.0,
+     -155
+    ],
+    [
+     -785.0,
+     -155
+    ],
+    [
+     -785.0,
+     -85
+    ],
+    [
+     -810.0,
+     -85
+    ]
+   ],
+   "start": 10,
+   "end": 2160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Edge Stile 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Edge Stile 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Edge Stile 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Edge Stile 2",
+   "points": [
+    [
+     785.0,
+     -155
+    ],
+    [
+     810.0,
+     -155
+    ],
+    [
+     810.0,
+     -85
+    ],
+    [
+     785.0,
+     -85
+    ]
+   ],
+   "start": 10,
+   "end": 2160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Edge Stile 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Edge Stile 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Edge Stile 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Edge Rail 1",
+   "points": [
+    [
+     -785.0,
+     -155
+    ],
+    [
+     785.0,
+     -155
+    ],
+    [
+     785.0,
+     -85
+    ],
+    [
+     -785.0,
+     -85
+    ]
+   ],
+   "start": 10,
+   "end": 35
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Edge Rail 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Edge Rail 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Edge Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Edge Rail 2",
+   "points": [
+    [
+     -785.0,
+     -155
+    ],
+    [
+     785.0,
+     -155
+    ],
+    [
+     785.0,
+     -85
+    ],
+    [
+     -785.0,
+     -85
+    ]
+   ],
+   "start": 2135,
+   "end": 2160
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Edge Rail 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Edge Rail 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Edge Rail 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vision Glass",
+   "points": [
+    [
+     -150.0,
+     1300
+    ],
+    [
+     150.0,
+     1300
+    ],
+    [
+     150.0,
+     1700
+    ],
+    [
+     -150.0,
+     1700
+    ]
+   ],
+   "start": 115.0,
+   "end": 125.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vision Glass",
+   "subcategory": "Lead Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vision Glass",
+   "param": "Lead Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vision Glass",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vision Bead Side 1",
+   "points": [
+    [
+     -132.0,
+     -160.0
+    ],
+    [
+     -130.0,
+     -159.5
+    ],
+    [
+     -128.5,
+     -158.0
+    ],
+    [
+     -128.0,
+     -156.0
+    ],
+    [
+     -128.0,
+     -87.0
+    ],
+    [
+     -128.5,
+     -85.0
+    ],
+    [
+     -130.0,
+     -83.5
+    ],
+    [
+     -132.0,
+     -83.0
+    ],
+    [
+     -146.0,
+     -83.0
+    ],
+    [
+     -148.0,
+     -83.5
+    ],
+    [
+     -149.5,
+     -85.0
+    ],
+    [
+     -150.0,
+     -87.0
+    ],
+    [
+     -150.0,
+     -156.0
+    ],
+    [
+     -149.5,
+     -158.0
+    ],
+    [
+     -148.0,
+     -159.5
+    ],
+    [
+     -146.0,
+     -160.0
+    ]
+   ],
+   "start": 1300,
+   "end": 1700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vision Bead Side 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vision Bead Side 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vision Bead Side 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vision Bead Side 2",
+   "points": [
+    [
+     146.0,
+     -160.0
+    ],
+    [
+     148.0,
+     -159.5
+    ],
+    [
+     149.5,
+     -158.0
+    ],
+    [
+     150.0,
+     -156.0
+    ],
+    [
+     150.0,
+     -87.0
+    ],
+    [
+     149.5,
+     -85.0
+    ],
+    [
+     148.0,
+     -83.5
+    ],
+    [
+     146.0,
+     -83.0
+    ],
+    [
+     132.0,
+     -83.0
+    ],
+    [
+     130.0,
+     -83.5
+    ],
+    [
+     128.5,
+     -85.0
+    ],
+    [
+     128.0,
+     -87.0
+    ],
+    [
+     128.0,
+     -156.0
+    ],
+    [
+     128.5,
+     -158.0
+    ],
+    [
+     130.0,
+     -159.5
+    ],
+    [
+     132.0,
+     -160.0
+    ]
+   ],
+   "start": 1300,
+   "end": 1700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vision Bead Side 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vision Bead Side 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vision Bead Side 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vision Bead Rail 1",
+   "points": [
+    [
+     -128.0,
+     -160
+    ],
+    [
+     128.0,
+     -160
+    ],
+    [
+     128.0,
+     -83
+    ],
+    [
+     -128.0,
+     -83
+    ]
+   ],
+   "start": 1300,
+   "end": 1322
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vision Bead Rail 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vision Bead Rail 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vision Bead Rail 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vision Bead Rail 2",
+   "points": [
+    [
+     -128.0,
+     -160
+    ],
+    [
+     128.0,
+     -160
+    ],
+    [
+     128.0,
+     -83
+    ],
+    [
+     -128.0,
+     -83
+    ]
+   ],
+   "start": 1678,
+   "end": 1700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vision Bead Rail 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vision Bead Rail 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vision Bead Rail 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Below",
+   "points": [
+    [
+     -785.0,
+     35
+    ],
+    [
+     785.0,
+     35
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     -785.0,
+     1300
+    ]
+   ],
+   "start": 122,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Below",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Below",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Below",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Left Of Opening",
+   "points": [
+    [
+     -785.0,
+     1300
+    ],
+    [
+     -150.0,
+     1300
+    ],
+    [
+     -150.0,
+     1700
+    ],
+    [
+     -785.0,
+     1700
+    ]
+   ],
+   "start": 122,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Left Of Opening",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Left Of Opening",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Left Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Right Of Opening",
+   "points": [
+    [
+     150.0,
+     1300
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     150.0,
+     1700
+    ]
+   ],
+   "start": 122,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Right Of Opening",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Right Of Opening",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Right Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Room Above",
+   "points": [
+    [
+     -785.0,
+     1700
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     785.0,
+     2135
+    ],
+    [
+     -785.0,
+     2135
+    ]
+   ],
+   "start": 122,
+   "end": 153,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Room Above",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Room Above",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Room Above",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Below",
+   "points": [
+    [
+     -785.0,
+     35
+    ],
+    [
+     785.0,
+     35
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     -785.0,
+     1300
+    ]
+   ],
+   "start": 118,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Below",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Below",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Below",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Left Of Opening",
+   "points": [
+    [
+     -785.0,
+     1300
+    ],
+    [
+     -150.0,
+     1300
+    ],
+    [
+     -150.0,
+     1700
+    ],
+    [
+     -785.0,
+     1700
+    ]
+   ],
+   "start": 118,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Left Of Opening",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Left Of Opening",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Left Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Right Of Opening",
+   "points": [
+    [
+     150.0,
+     1300
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     150.0,
+     1700
+    ]
+   ],
+   "start": 118,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Right Of Opening",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Right Of Opening",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Right Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Lead Lining Above",
+   "points": [
+    [
+     -785.0,
+     1700
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     785.0,
+     2135
+    ],
+    [
+     -785.0,
+     2135
+    ]
+   ],
+   "start": 118,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Lead Lining Above",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Lead Lining Above",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Lead Lining Above",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Wall Below",
+   "points": [
+    [
+     -785.0,
+     35
+    ],
+    [
+     785.0,
+     35
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     -785.0,
+     1300
+    ]
+   ],
+   "start": 87,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Wall Below",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Wall Below",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Wall Below",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Wall Left Of Opening",
+   "points": [
+    [
+     -785.0,
+     1300
+    ],
+    [
+     -150.0,
+     1300
+    ],
+    [
+     -150.0,
+     1700
+    ],
+    [
+     -785.0,
+     1700
+    ]
+   ],
+   "start": 87,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Wall Left Of Opening",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Wall Left Of Opening",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Wall Left Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Wall Right Of Opening",
+   "points": [
+    [
+     150.0,
+     1300
+    ],
+    [
+     785.0,
+     1300
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     150.0,
+     1700
+    ]
+   ],
+   "start": 87,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Wall Right Of Opening",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Wall Right Of Opening",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Wall Right Of Opening",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leaf Skin Wall Above",
+   "points": [
+    [
+     -785.0,
+     1700
+    ],
+    [
+     785.0,
+     1700
+    ],
+    [
+     785.0,
+     2135
+    ],
+    [
+     -785.0,
+     2135
+    ]
+   ],
+   "start": 87,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leaf Skin Wall Above",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leaf Skin Wall Above",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leaf Skin Wall Above",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Handle Bar",
+   "points": [
+    [
+     -752.5,
+     -208.0
+    ],
+    [
+     -753.45,
+     -203.22
+    ],
+    [
+     -756.16,
+     -199.16
+    ],
+    [
+     -760.22,
+     -196.45
+    ],
+    [
+     -765.0,
+     -195.5
+    ],
+    [
+     -769.78,
+     -196.45
+    ],
+    [
+     -773.84,
+     -199.16
+    ],
+    [
+     -776.55,
+     -203.22
+    ],
+    [
+     -777.5,
+     -208.0
+    ],
+    [
+     -776.55,
+     -212.78
+    ],
+    [
+     -773.84,
+     -216.84
+    ],
+    [
+     -769.78,
+     -219.55
+    ],
+    [
+     -765.0,
+     -220.5
+    ],
+    [
+     -760.22,
+     -219.55
+    ],
+    [
+     -756.16,
+     -216.84
+    ],
+    [
+     -753.45,
+     -212.78
+    ]
+   ],
+   "start": 800,
+   "end": 1500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Handle Bar",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Handle Bar",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Handle Bar",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Handle Standoff 1",
+   "points": [
+    [
+     -755.0,
+     840.0
+    ],
+    [
+     -756.34,
+     845.0
+    ],
+    [
+     -760.0,
+     848.66
+    ],
+    [
+     -765.0,
+     850.0
+    ],
+    [
+     -770.0,
+     848.66
+    ],
+    [
+     -773.66,
+     845.0
+    ],
+    [
+     -775.0,
+     840.0
+    ],
+    [
+     -773.66,
+     835.0
+    ],
+    [
+     -770.0,
+     831.34
+    ],
+    [
+     -765.0,
+     830.0
+    ],
+    [
+     -760.0,
+     831.34
+    ],
+    [
+     -756.34,
+     835.0
+    ]
+   ],
+   "start": 155,
+   "end": 208,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Handle Standoff 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Handle Standoff 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Handle Standoff 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pull Handle Standoff 2",
+   "points": [
+    [
+     -755.0,
+     1460.0
+    ],
+    [
+     -756.34,
+     1465.0
+    ],
+    [
+     -760.0,
+     1468.66
+    ],
+    [
+     -765.0,
+     1470.0
+    ],
+    [
+     -770.0,
+     1468.66
+    ],
+    [
+     -773.66,
+     1465.0
+    ],
+    [
+     -775.0,
+     1460.0
+    ],
+    [
+     -773.66,
+     1455.0
+    ],
+    [
+     -770.0,
+     1451.34
+    ],
+    [
+     -765.0,
+     1450.0
+    ],
+    [
+     -760.0,
+     1451.34
+    ],
+    [
+     -756.34,
+     1455.0
+    ]
+   ],
+   "start": 155,
+   "end": 208,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pull Handle Standoff 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pull Handle Standoff 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pull Handle Standoff 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kick Plate",
+   "points": [
+    [
+     782.0,
+     35.0
+    ],
+    [
+     783.15,
+     35.23
+    ],
+    [
+     784.12,
+     35.88
+    ],
+    [
+     784.77,
+     36.85
+    ],
+    [
+     785.0,
+     38.0
+    ],
+    [
+     785.0,
+     397.0
+    ],
+    [
+     784.77,
+     398.15
+    ],
+    [
+     784.12,
+     399.12
+    ],
+    [
+     783.15,
+     399.77
+    ],
+    [
+     782.0,
+     400.0
+    ],
+    [
+     -782.0,
+     400.0
+    ],
+    [
+     -783.15,
+     399.77
+    ],
+    [
+     -784.12,
+     399.12
+    ],
+    [
+     -784.77,
+     398.15
+    ],
+    [
+     -785.0,
+     397.0
+    ],
+    [
+     -785.0,
+     38.0
+    ],
+    [
+     -784.77,
+     36.85
+    ],
+    [
+     -784.12,
+     35.88
+    ],
+    [
+     -783.15,
+     35.23
+    ],
+    [
+     -782.0,
+     35.0
+    ]
+   ],
+   "start": 155,
+   "end": 156.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kick Plate",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kick Plate",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kick Plate",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Warning Light Housing",
+   "points": [
+    [
+     190.0,
+     2405.0
+    ],
+    [
+     193.83,
+     2405.76
+    ],
+    [
+     197.07,
+     2407.93
+    ],
+    [
+     199.24,
+     2411.17
+    ],
+    [
+     200.0,
+     2415.0
+    ],
+    [
+     200.0,
+     2540.0
+    ],
+    [
+     199.24,
+     2543.83
+    ],
+    [
+     197.07,
+     2547.07
+    ],
+    [
+     193.83,
+     2549.24
+    ],
+    [
+     190.0,
+     2550.0
+    ],
+    [
+     -190.0,
+     2550.0
+    ],
+    [
+     -193.83,
+     2549.24
+    ],
+    [
+     -197.07,
+     2547.07
+    ],
+    [
+     -199.24,
+     2543.83
+    ],
+    [
+     -200.0,
+     2540.0
+    ],
+    [
+     -200.0,
+     2415.0
+    ],
+    [
+     -199.24,
+     2411.17
+    ],
+    [
+     -197.07,
+     2407.93
+    ],
+    [
+     -193.83,
+     2405.76
+    ],
+    [
+     -190.0,
+     2405.0
+    ]
+   ],
+   "start": 70,
+   "end": 197,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Warning Light Housing",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Warning Light Housing",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Warning Light Housing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Warning Light Lens",
+   "points": [
+    [
+     172.0,
+     2420.0
+    ],
+    [
+     175.06,
+     2420.61
+    ],
+    [
+     177.66,
+     2422.34
+    ],
+    [
+     179.39,
+     2424.94
+    ],
+    [
+     180.0,
+     2428.0
+    ],
+    [
+     180.0,
+     2527.0
+    ],
+    [
+     179.39,
+     2530.06
+    ],
+    [
+     177.66,
+     2532.66
+    ],
+    [
+     175.06,
+     2534.39
+    ],
+    [
+     172.0,
+     2535.0
+    ],
+    [
+     -172.0,
+     2535.0
+    ],
+    [
+     -175.06,
+     2534.39
+    ],
+    [
+     -177.66,
+     2532.66
+    ],
+    [
+     -179.39,
+     2530.06
+    ],
+    [
+     -180.0,
+     2527.0
+    ],
+    [
+     -180.0,
+     2428.0
+    ],
+    [
+     -179.39,
+     2424.94
+    ],
+    [
+     -177.66,
+     2422.34
+    ],
+    [
+     -175.06,
+     2420.61
+    ],
+    [
+     -172.0,
+     2420.0
+    ]
+   ],
+   "start": 197,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Warning Light Lens",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Warning Light Lens",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Warning Light Lens",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiation Sign",
+   "points": [
+    [
+     746.0,
+     1450.0
+    ],
+    [
+     747.53,
+     1450.3
+    ],
+    [
+     748.83,
+     1451.17
+    ],
+    [
+     749.7,
+     1452.47
+    ],
+    [
+     750.0,
+     1454.0
+    ],
+    [
+     750.0,
+     1596.0
+    ],
+    [
+     749.7,
+     1597.53
+    ],
+    [
+     748.83,
+     1598.83
+    ],
+    [
+     747.53,
+     1599.7
+    ],
+    [
+     746.0,
+     1600.0
+    ],
+    [
+     594.0,
+     1600.0
+    ],
+    [
+     592.47,
+     1599.7
+    ],
+    [
+     591.17,
+     1598.83
+    ],
+    [
+     590.3,
+     1597.53
+    ],
+    [
+     590.0,
+     1596.0
+    ],
+    [
+     590.0,
+     1454.0
+    ],
+    [
+     590.3,
+     1452.47
+    ],
+    [
+     591.17,
+     1451.17
+    ],
+    [
+     592.47,
+     1450.3
+    ],
+    [
+     594.0,
+     1450.0
+    ]
+   ],
+   "start": 155,
+   "end": 156.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiation Sign",
+   "subcategory": "Sign Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiation Sign",
+   "param": "Sign Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiation Sign",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Push Button Plate",
+   "points": [
+    [
+     -928.0,
+     1050.0
+    ],
+    [
+     -929.43,
+     1060.87
+    ],
+    [
+     -933.63,
+     1071.0
+    ],
+    [
+     -940.3,
+     1079.7
+    ],
+    [
+     -949.0,
+     1086.37
+    ],
+    [
+     -959.13,
+     1090.57
+    ],
+    [
+     -970.0,
+     1092.0
+    ],
+    [
+     -980.87,
+     1090.57
+    ],
+    [
+     -991.0,
+     1086.37
+    ],
+    [
+     -999.7,
+     1079.7
+    ],
+    [
+     -1006.37,
+     1071.0
+    ],
+    [
+     -1010.57,
+     1060.87
+    ],
+    [
+     -1012.0,
+     1050.0
+    ],
+    [
+     -1010.57,
+     1039.13
+    ],
+    [
+     -1006.37,
+     1029.0
+    ],
+    [
+     -999.7,
+     1020.3
+    ],
+    [
+     -991.0,
+     1013.63
+    ],
+    [
+     -980.87,
+     1009.43
+    ],
+    [
+     -970.0,
+     1008.0
+    ],
+    [
+     -959.13,
+     1009.43
+    ],
+    [
+     -949.0,
+     1013.63
+    ],
+    [
+     -940.3,
+     1020.3
+    ],
+    [
+     -933.63,
+     1029.0
+    ],
+    [
+     -929.43,
+     1039.13
+    ]
+   ],
+   "start": 70,
+   "end": 95,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Push Button Plate",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Push Button Plate",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Push Button Plate",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Push Button",
+   "points": [
+    [
+     -944.0,
+     1050.0
+    ],
+    [
+     -944.89,
+     1056.73
+    ],
+    [
+     -947.48,
+     1063.0
+    ],
+    [
+     -951.62,
+     1068.38
+    ],
+    [
+     -957.0,
+     1072.52
+    ],
+    [
+     -963.27,
+     1075.11
+    ],
+    [
+     -970.0,
+     1076.0
+    ],
+    [
+     -976.73,
+     1075.11
+    ],
+    [
+     -983.0,
+     1072.52
+    ],
+    [
+     -988.38,
+     1068.38
+    ],
+    [
+     -992.52,
+     1063.0
+    ],
+    [
+     -995.11,
+     1056.73
+    ],
+    [
+     -996.0,
+     1050.0
+    ],
+    [
+     -995.11,
+     1043.27
+    ],
+    [
+     -992.52,
+     1037.0
+    ],
+    [
+     -988.38,
+     1031.62
+    ],
+    [
+     -983.0,
+     1027.48
+    ],
+    [
+     -976.73,
+     1024.89
+    ],
+    [
+     -970.0,
+     1024.0
+    ],
+    [
+     -963.27,
+     1024.89
+    ],
+    [
+     -957.0,
+     1027.48
+    ],
+    [
+     -951.62,
+     1031.62
+    ],
+    [
+     -947.48,
+     1037.0
+    ],
+    [
+     -944.89,
+     1043.27
+    ]
+   ],
+   "start": 95,
+   "end": 101,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Push Button",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Push Button",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Push Button",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Track Box",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_Door_LeadLined_Sliding_CT.png"
+  }
+ ],
+ "values": {
+  "Opening 1500 x 2100 mm": {
+   "value": "1500x2100",
+   "source_status": "assumed",
+   "source": "clear opening, type 1; HBN 06 imaging"
+  },
+  "Lead lining 2 mm Pb": {
+   "value": 2,
+   "source_status": "assumed",
+   "source": "typical CT room, radiation protection adviser confirms"
+  },
+  "Operator load 370 VA": {
+   "value": 370,
+   "source_status": "assumed",
+   "source": "heavy leaf operator, engineer confirms"
+  },
+  "Leaf about 70 mm, heavy": {
+   "value": 70,
+   "source_status": "assumed",
+   "source": "typical shielded sliding leaf"
+  }
+ }
+}

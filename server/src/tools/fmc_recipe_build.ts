@@ -1,5 +1,6 @@
 import fs from "node:fs";
-import { Recipe } from "../fmc/recipes.js";
+import { Recipe, recordSides } from "../fmc/recipes.js";
+import { markStale, readLedger, writeLedger } from "../fmc/doc.js";
 import {
   BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, ChunkRecord, applyEnvelope, isNoAnswer, isSessionGone, isStillQueued, opsHash,
   planChunks, progressPath, readBuilds, readProgress, rememberTemplatePlanes, renumberOpError, requestBytes, stoppedAt, writeBuild,
@@ -175,7 +176,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   if (rec.session && o.resume) {
     const rep = await d.doc({ action: "report", session: rec.session });
     if (!ok(rep) && isSessionGone(errorText(rep))) {
-      notes.push("The session of the build being resumed had closed (idle for 30 minutes, or Revit restarted)");
+      notes.push("The session of the build being resumed had closed (closed by fmc_recipe cleanup, or Revit restarted)");
       rec.session = "";
     }
   }
@@ -249,6 +250,8 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   }
   if (budget !== Infinity && now() - t0 > budget - 20000) return progressReply("ops applied", { next_step: "flex, save and Gate A" });
   const flex = await d.doc({ action: "flex", session: rec.session, ...(o.follow?.length ? { follow: o.follow } : {}) });
+  // F-045: the sides this flex saw stay in the build record, so a later gate that can't flex the file still has them
+  rec.sides = recordSides(flex, new Date(now()).toISOString());
   const saved = await d.doc({ action: "save", session: rec.session, path: o.target, overwrite: o.overwrite });
   if (!ok(saved)) return fail({ op: null, text: `save failed: ${errorText(saved)}` });
   fs.writeFileSync(o.target.replace(/\.rfa$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));
@@ -269,19 +272,34 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
  * documents in Revit. dry_run lists; dry_run false closes the ones this server's sessions opened, without saving.
  * A document the person opened (or that shows in a Revit window) is never closed (F-023: the add-in refuses too).
  */
-export async function cleanupBackground(dry: boolean, reportsDir: string, doc: BuildDeps["doc"]): Promise<BuildReply> {
+export async function cleanupBackground(dry: boolean, reportsDir: string, doc: BuildDeps["doc"], idleHours = 12, now: Date = new Date()): Promise<BuildReply> {
   const bg = await doc({ action: "background" });
   if (!ok(bg)) return { body: { refused: true, reasons: [errorText(bg)] }, isError: true };
+  const builds = Object.values(readBuilds(reportsDir));
   const opened = new Map<string, string>();
-  for (const b of Object.values(readBuilds(reportsDir))) for (const s of b.sessions ?? []) opened.set(s, b.family);
-  const sessions = (bg.sessions ?? []).map((s: any) => ({ ...s, build: opened.get(s.session) ?? "" }));
-  const closable = sessions.filter((s: any) => s.closable);
-  const stays = sessions.filter((s: any) => !s.closable);
+  for (const b of builds) for (const s of b.sessions ?? []) opened.set(s, b.family);
+  // F-046: the live session of a build that hasn't finished (running, or waiting for a resume) stays until it is stale
+  const inUse = new Map(builds.filter((b) => (b.state === "running" || b.state === "waiting") && b.session).map((b) => [b.session, b]));
+  type Row = Record<string, any> & { session: string; title?: string; closable?: boolean; stale: boolean; idle_hours: number | null; build: string };
+  const sessions: Row[] = markStale((bg.sessions ?? []) as Array<Record<string, any>>, now, idleHours).map((s) => ({ ...s, session: String(s.session), build: opened.get(String(s.session)) ?? "" }));
+  const closable = sessions.filter((s) => s.closable && (s.stale || !inUse.has(s.session)))
+    .map((s) => ({ ...s, why: s.stale ? `stale: idle ${s.idle_hours} h, over the ${idleHours} h limit` : s.build ? `left by the ${s.build} build` : "left open by an earlier call" }));
+  const stays = sessions.filter((s) => !closable.some((c) => c.session === s.session)).map((s) => s.closable
+    ? { ...s, reason: `in use by the ${inUse.get(s.session)!.family} build (${inUse.get(s.session)!.state}), idle ${s.idle_hours ?? "?"} h of ${idleHours} h: resume it, or it is closed once stale` }
+    : s);
+  // The server's ledger forgets sessions Revit no longer holds (closed, or Revit restarted) and the ones closed here
+  const ledger = readLedger(reportsDir);
+  const held = new Set(sessions.filter((s) => s.valid !== false).map((s) => String(s.session)));
+  const forget = Object.keys(ledger).filter((id) => !held.has(id));
   if (dry) return { body: {
-    dry_run: true, would_close: closable, stays_open: stays, other_background: bg.other_background ?? [],
+    dry_run: true, would_close: closable, stays_open: stays, other_background: bg.other_background ?? [], stale_after_hours: idleHours,
+    would_forget: forget,
     next: closable.length ? "Run again with dry_run=false to close these without saving" : "Nothing for a tool to close",
   }, isError: false };
   const closed = [];
-  for (const s of closable) closed.push({ session: s.session, title: s.title, ...(await doc({ action: "close", session: s.session })) });
-  return { body: { closed, stays_open: stays, other_background: bg.other_background ?? [] }, isError: false };
+  for (const s of closable) closed.push({ session: s.session, title: s.title, why: s.why, ...(await doc({ action: "close", session: s.session })) });
+  const after = readLedger(reportsDir);
+  for (const id of [...forget, ...closed.filter((c: any) => c.closed === true).map((c) => String(c.session))]) delete after[id];
+  try { writeLedger(reportsDir, after); } catch { /* the ledger is bookkeeping: the documents are closed */ }
+  return { body: { closed, stays_open: stays, other_background: bg.other_background ?? [], forgotten: forget, stale_after_hours: idleHours }, isError: false };
 }

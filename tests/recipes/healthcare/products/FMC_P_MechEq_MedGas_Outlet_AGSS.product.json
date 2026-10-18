@@ -1,0 +1,239 @@
+{
+ "family": "FMC_P_MechEq_MedGas_Outlet_AGSS",
+ "category": "Mechanical Equipment",
+ "desc": "Anaesthetic gas scavenging (AGSS) terminal unit, BS ISO 9170-2, 30 mm socket with flow indicator, wall or pendant mounted, flush back box",
+ "ifc": "IfcFlowTerminal",
+ "keynote": "P.MGO_04",
+ "types": [
+  {
+   "name": "ISO9170_AGSS"
+  }
+ ],
+ "materials": {
+  "painted_steel": "FMC_Metal_SteelLTZ_Painted",
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "polycarbonate": "FMC_Plastic_Polycarbonate_Clear",
+  "led_green": "FMC_Plastic_LED_Green",
+  "black": "FMC_Plastic_ABS_Black"
+ },
+ "reference": {
+  "query": "medical gas outlet agss mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=medical+gas+outlet+agss+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -45,
+    0,
+    0,
+    45,
+    70,
+    100
+   ],
+   "mat": "painted_steel"
+  },
+  {
+   "n": "Fascia",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -10,
+    0,
+    50,
+    0,
+    100
+   ],
+   "mat": "white",
+   "r": 8
+  },
+  {
+   "n": "Fascia Face",
+   "shape": "fbox",
+   "at": [
+    -47,
+    -12,
+    3,
+    47,
+    -10,
+    97
+   ],
+   "mat": "white",
+   "r": 7,
+   "lod": "f"
+  },
+  {
+   "n": "Gas Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    58
+   ],
+   "profile": [
+    [
+     24,
+     -12
+    ],
+    [
+     33,
+     -12
+    ],
+    [
+     33,
+     -16
+    ],
+    [
+     24,
+     -16
+    ]
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Socket Collar",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    58
+   ],
+   "profile": [
+    [
+     0,
+     -10
+    ],
+    [
+     24,
+     -10
+    ],
+    [
+     24,
+     -30
+    ],
+    [
+     20,
+     -32
+    ],
+    [
+     10,
+     -32
+    ],
+    [
+     10,
+     -26
+    ],
+    [
+     0,
+     -26
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Flow Indicator",
+   "shape": "fbox",
+   "at": [
+    25,
+    -13,
+    80,
+    42,
+    -12,
+    92
+   ],
+   "mat": "polycarbonate",
+   "r": 3,
+   "lod": "f"
+  },
+  {
+   "n": "Flow Indicator Ball",
+   "shape": "fbox",
+   "at": [
+    31,
+    -13.5,
+    83,
+    36,
+    -13,
+    88
+   ],
+   "mat": "led_green",
+   "lod": "f"
+  },
+  {
+   "n": "Label Strip",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -12.6,
+    14,
+    30,
+    -12,
+    26
+   ],
+   "mat": "black",
+   "r": 2,
+   "lod": "f"
+  },
+  {
+   "n": "Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -40,
+    90
+   ],
+   "r": 2.5,
+   "y": [
+    -12.8,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     80,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "AGSS",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Back Box",
+   "side": "back",
+   "diameter": 15,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Terminal to BS ISO 9170-2": {
+   "value": "ISO 9170-2",
+   "source_status": "assumed",
+   "source": "HTM 02-01 AGSS"
+  },
+  "Fascia 100 x 100 mm": {
+   "value": "100x100",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Flow 80 l/min extract": {
+   "value": 80,
+   "source_status": "assumed",
+   "source": "BS EN ISO 7396-2 high-flow AGSS"
+  }
+ },
+ "about": "AGSS terminal modelled as a generic product: fascia, larger 30 mm socket collar with identification ring, flow indicator window with ball, label, screws, deep back box.",
+ "template": "Metric Mechanical Equipment.rft",
+ "type_values": {
+  "Default Elevation": 1400
+ }
+}

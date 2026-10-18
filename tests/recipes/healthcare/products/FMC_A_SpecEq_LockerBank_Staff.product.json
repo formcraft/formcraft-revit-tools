@@ -1,0 +1,407 @@
+{
+ "family": "FMC_A_SpecEq_LockerBank_Staff",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Staff locker bank, 3 columns x 3 tiers, 900 x 450 x 1800 + sloping top, steel carcass, white doors with vents, cam locks, numbers",
+ "ifc": "IfcFurniture",
+ "keynote": "F.LOC_00",
+ "types": [
+  {
+   "name": "900x1800_3-Tier",
+   "desc": "Locker bank 3 columns x 3 tiers, 900 x 450 x 1800 mm, sloping top"
+  },
+  {
+   "name": "900x1800_6-Door",
+   "desc": "Locker bank 3 columns x 2 tiers (6 doors), 900 x 450 x 1800 mm, sloping top"
+  }
+ ],
+ "materials": {
+  "alupc": "FMC_Metal_Aluminium_PowderCoated",
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epoxy": "FMC_Metal_Steel_EpoxyCoated_White"
+ },
+ "parts": [
+  {
+   "n": "Carcass",
+   "shape": "box",
+   "at": [
+    -450,
+    -450,
+    100,
+    450,
+    0,
+    1800
+   ],
+   "mat": "alupc",
+   "lod": "mf"
+  },
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -440,
+    -420,
+    0,
+    440,
+    -10,
+    100
+   ],
+   "mat": "black",
+   "lod": "mf"
+  },
+  {
+   "n": "Sloping Top",
+   "shape": "right",
+   "pts": [
+    [
+     -450,
+     1800
+    ],
+    [
+     0,
+     1800
+    ],
+    [
+     0,
+     2050
+    ],
+    [
+     -30,
+     2050
+    ]
+   ],
+   "x": [
+    -450,
+    450
+   ],
+   "mat": "alupc",
+   "lod": "mf"
+  },
+  {
+   "n": "Divider Edge",
+   "shape": "box",
+   "at": [
+    -152,
+    -452,
+    100,
+    -148,
+    -450,
+    1800
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Door Tier 1",
+   "shape": "fbox",
+   "at": [
+    -445,
+    -455,
+    110,
+    -155,
+    -450,
+    663
+   ],
+   "mat": "epoxy",
+   "lod": "mf",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 4
+  },
+  {
+   "n": "Vent Tier 1",
+   "shape": "fbox",
+   "at": [
+    -380,
+    -457,
+    540,
+    -220,
+    -455,
+    610
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  },
+  {
+   "n": "Lock Tier 1",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -185,
+    410
+   ],
+   "r": 12,
+   "y": [
+    -465,
+    -455
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Number Tier 1",
+   "shape": "fbox",
+   "at": [
+    -350,
+    -457,
+    470,
+    -250,
+    -455,
+    510
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  },
+  {
+   "n": "Door Tier 2",
+   "shape": "fbox",
+   "at": [
+    -445,
+    -455,
+    673,
+    -155,
+    -450,
+    1226
+   ],
+   "mat": "epoxy",
+   "lod": "mf",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 4
+  },
+  {
+   "n": "Vent Tier 2",
+   "shape": "fbox",
+   "at": [
+    -380,
+    -457,
+    1103,
+    -220,
+    -455,
+    1173
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  },
+  {
+   "n": "Lock Tier 2",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -185,
+    973
+   ],
+   "r": 12,
+   "y": [
+    -465,
+    -455
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Number Tier 2",
+   "shape": "fbox",
+   "at": [
+    -350,
+    -457,
+    1033,
+    -250,
+    -455,
+    1073
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  },
+  {
+   "n": "Door Tier 3",
+   "shape": "fbox",
+   "at": [
+    -445,
+    -455,
+    1236,
+    -155,
+    -450,
+    1789
+   ],
+   "mat": "epoxy",
+   "lod": "mf",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 4
+  },
+  {
+   "n": "Vent Tier 3",
+   "shape": "fbox",
+   "at": [
+    -380,
+    -457,
+    1666,
+    -220,
+    -455,
+    1736
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  },
+  {
+   "n": "Lock Tier 3",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -185,
+    1536
+   ],
+   "r": 12,
+   "y": [
+    -465,
+    -455
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Number Tier 3",
+   "shape": "fbox",
+   "at": [
+    -350,
+    -457,
+    1596,
+    -250,
+    -455,
+    1636
+   ],
+   "mat": "black",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "r": 3
+  }
+ ],
+ "reference": {
+  "query": "locker bank staff specialty equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=locker+bank+staff+specialty+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "900 x 450 x 1800 mm + 250 sloping top": {
+   "value": "900x450x1800",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Column 300 mm, 3 tiers": {
+   "value": 300,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Plinth 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Locker bank modelled as a generic product: grey steel carcass on a black plinth, anti-dust sloping top, nine white doors with vent slots, cam locks and number plates. Back at y = 0; geometry is the 3-tier type."
+}

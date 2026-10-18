@@ -1,0 +1,822 @@
+{
+ "family": "FMC_M_MechEq_AHU_General",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "General supply / return AHU 1 to 3 m3/s, sectional casing: mixing box with return and fresh-air dampers, G4 panel and F7 bag filters, LPHW and CHW coils, plug fan with isolator, outlet",
+ "ifc": "IfcUnitaryEquipment",
+ "keynote": "H.AHU_01",
+ "types": [
+  {
+   "name": "1m3s_General",
+   "values": {
+    "Apparent Load": 6000
+   }
+  },
+  {
+   "name": "3m3s_General",
+   "values": {
+    "Apparent Load": 16000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 16000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_Duct_Galvanised",
+  "gi": "FMC_Metal_GI_Pipe",
+  "glass": "FMC_Glass_Clear",
+  "ledg": "FMC_Plastic_LED_Green",
+  "pcg": "FMC_Metal_Aluminium_PowderCoated",
+  "upvc": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+  "white": "FMC_Plastic_ABS_White",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "air handling unit general mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=air+handling+unit+general+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base Frame",
+   "shape": "box",
+   "at": [
+    -2875.0,
+    -950.0,
+    0,
+    2875.0,
+    950.0,
+    150
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Casing",
+   "shape": "box",
+   "at": [
+    -2875.0,
+    -950.0,
+    150,
+    2875.0,
+    950.0,
+    1850
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Door Mixing",
+   "shape": "fbox",
+   "at": [
+    -2830.0,
+    -962.0,
+    260,
+    -1920.0,
+    -950.0,
+    1740
+   ],
+   "mat": "epw",
+   "r": 8
+  },
+  {
+   "n": "Handle Mixing",
+   "shape": "fbox",
+   "at": [
+    -1990.0,
+    -992.0,
+    910.0,
+    -1960.0,
+    -962.0,
+    1090.0
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Hinge Mixing",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -2820.0,
+    -966.0
+   ],
+   "r": 9,
+   "z": [
+    320,
+    1680
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Return Neck",
+   "shape": "box",
+   "at": [
+    -2775.0,
+    -800.0,
+    1850,
+    -1975.0,
+    800.0,
+    2000
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Return Flange",
+   "shape": "box",
+   "at": [
+    -2795.0,
+    -820.0,
+    2000,
+    -1955.0,
+    820.0,
+    2015
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Fresh Air Neck",
+   "shape": "box",
+   "at": [
+    -2995.0,
+    -800.0,
+    300,
+    -2875.0,
+    800.0,
+    1700
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Fresh Air Blade",
+   "shape": "front",
+   "pts": [
+    [
+     -3025.0,
+     340
+    ],
+    [
+     -2980.0,
+     390
+    ],
+    [
+     -2980.0,
+     402
+    ],
+    [
+     -3025.0,
+     352
+    ]
+   ],
+   "y": [
+    -790.0,
+    790.0
+   ],
+   "mat": "alu",
+   "lod": "f",
+   "repeat": {
+    "n": 5,
+    "d": [
+     0,
+     0,
+     260.0
+    ]
+   }
+  },
+  {
+   "n": "Damper Actuator",
+   "shape": "box",
+   "at": [
+    -2985.0,
+    800.0,
+    400,
+    -2895.0,
+    890.0,
+    530
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Return Blade",
+   "shape": "box",
+   "at": [
+    -2765.0,
+    -790.0,
+    2016,
+    -2725.0,
+    790.0,
+    2022
+   ],
+   "mat": "alu",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     120,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Return Actuator",
+   "shape": "box",
+   "at": [
+    -1955.0,
+    690.0,
+    1860,
+    -1845.0,
+    790.0,
+    1980
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Door Panel Filter",
+   "shape": "fbox",
+   "at": [
+    -1830.0,
+    -962.0,
+    260,
+    -1470.0,
+    -950.0,
+    1740
+   ],
+   "mat": "epw",
+   "r": 8
+  },
+  {
+   "n": "Handle Panel Filter",
+   "shape": "fbox",
+   "at": [
+    -1540.0,
+    -992.0,
+    910.0,
+    -1510.0,
+    -962.0,
+    1090.0
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Hinge Panel Filter",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1820.0,
+    -966.0
+   ],
+   "r": 9,
+   "z": [
+    320,
+    1680
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Gauge Panel Filter",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1650.0,
+    1590
+   ],
+   "r": 55,
+   "y": [
+    -984.0,
+    -962.0
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Door Bag Filter",
+   "shape": "fbox",
+   "at": [
+    -1380.0,
+    -962.0,
+    260,
+    -670.0,
+    -950.0,
+    1740
+   ],
+   "mat": "epw",
+   "r": 8
+  },
+  {
+   "n": "Handle Bag Filter",
+   "shape": "fbox",
+   "at": [
+    -740.0,
+    -992.0,
+    910.0,
+    -710.0,
+    -962.0,
+    1090.0
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Hinge Bag Filter",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1370.0,
+    -966.0
+   ],
+   "r": 9,
+   "z": [
+    320,
+    1680
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Gauge Bag Filter",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -1025.0,
+    1590
+   ],
+   "r": 55,
+   "y": [
+    -984.0,
+    -962.0
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Header Plate Heating Coil",
+   "shape": "fbox",
+   "at": [
+    -535.0,
+    -956.0,
+    330,
+    -215.0,
+    -950.0,
+    1670
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Flow Heating Coil",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -445.0,
+    1530
+   ],
+   "r": 40,
+   "y": [
+    -1150.0,
+    -956.0
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Return Heating Coil",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -305.0,
+    470
+   ],
+   "r": 40,
+   "y": [
+    -1150.0,
+    -956.0
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Header Plate Cooling Coil",
+   "shape": "fbox",
+   "at": [
+    65.0,
+    -956.0,
+    330,
+    385.0,
+    -950.0,
+    1670
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Flow Cooling Coil",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    155.0,
+    1530
+   ],
+   "r": 40,
+   "y": [
+    -1150.0,
+    -956.0
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Return Cooling Coil",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    295.0,
+    470
+   ],
+   "r": 40,
+   "y": [
+    -1150.0,
+    -956.0
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Drain Stub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    485.0,
+    200
+   ],
+   "r": 20,
+   "y": [
+    -1080.0,
+    -950.0
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Drain Trap",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    485.0,
+    -1070.0
+   ],
+   "r": 24,
+   "z": [
+    20,
+    220
+   ],
+   "mat": "upvc"
+  },
+  {
+   "n": "Door Fan",
+   "shape": "fbox",
+   "at": [
+    620.0,
+    -962.0,
+    260,
+    1930.0,
+    -950.0,
+    1740
+   ],
+   "mat": "epw",
+   "r": 8
+  },
+  {
+   "n": "Handle Fan",
+   "shape": "fbox",
+   "at": [
+    1860.0,
+    -992.0,
+    910.0,
+    1890.0,
+    -962.0,
+    1090.0
+   ],
+   "mat": "black",
+   "r": 6
+  },
+  {
+   "n": "Hinge Fan",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    630.0,
+    -966.0
+   ],
+   "r": 9,
+   "z": [
+    320,
+    1680
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Window Fan",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1275.0,
+    1204.0
+   ],
+   "r": 120,
+   "y": [
+    -966.0,
+    -962.0
+   ],
+   "mat": "glass"
+  },
+  {
+   "n": "Isolator Fan",
+   "shape": "fbox",
+   "at": [
+    2000.0,
+    -1020.0,
+    1430,
+    2120.0,
+    -950.0,
+    1590
+   ],
+   "mat": "yellow",
+   "r": 6
+  },
+  {
+   "n": "Supply Neck",
+   "shape": "box",
+   "at": [
+    2075.0,
+    -800.0,
+    1850,
+    2775.0,
+    800.0,
+    2000
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Supply Flange",
+   "shape": "box",
+   "at": [
+    2055.0,
+    -820.0,
+    2000,
+    2795.0,
+    820.0,
+    2015
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Control Panel",
+   "shape": "fbox",
+   "at": [
+    2035.0,
+    -1210.0,
+    650,
+    2815.0,
+    -950.0,
+    1450
+   ],
+   "mat": "dark",
+   "r": 6
+  },
+  {
+   "n": "Control Panel Handle",
+   "shape": "fbox",
+   "at": [
+    2755.0,
+    -1235.0,
+    970,
+    2780.0,
+    -1210.0,
+    1130
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Panel Indicator",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    2095.0,
+    1370
+   ],
+   "r": 12,
+   "y": [
+    -1216.0,
+    -1210.0
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Section Joint 1",
+   "shape": "fbox",
+   "at": [
+    -2875.0,
+    -958.0,
+    150,
+    -2835.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 2",
+   "shape": "fbox",
+   "at": [
+    -1895.0,
+    -958.0,
+    150,
+    -1855.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 3",
+   "shape": "fbox",
+   "at": [
+    -1445.0,
+    -958.0,
+    150,
+    -1405.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 4",
+   "shape": "fbox",
+   "at": [
+    -645.0,
+    -958.0,
+    150,
+    -605.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 5",
+   "shape": "fbox",
+   "at": [
+    -145.0,
+    -958.0,
+    150,
+    -105.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 6",
+   "shape": "fbox",
+   "at": [
+    555.0,
+    -958.0,
+    150,
+    595.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 7",
+   "shape": "fbox",
+   "at": [
+    1955.0,
+    -958.0,
+    150,
+    1995.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Section Joint 8",
+   "shape": "fbox",
+   "at": [
+    2835.0,
+    -958.0,
+    150,
+    2875.0,
+    -950.0,
+    1850
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Lifting Lug",
+   "shape": "box",
+   "at": [
+    -2675.0,
+    -980.0,
+    40,
+    -2595.0,
+    -950.0,
+    110
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     1756.6666666666667,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Control Panel",
+   "side": "front"
+  },
+  {
+   "n": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "part": "Supply Flange",
+   "side": "top",
+   "flow": "Out",
+   "width": 700,
+   "height": 1600
+  },
+  {
+   "n": "Return",
+   "domain": "duct",
+   "system": "ExhaustAir",
+   "part": "Return Flange",
+   "side": "top",
+   "flow": "In",
+   "width": 800,
+   "height": 1600
+  },
+  {
+   "n": "Condensate",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Drain Trap",
+   "side": "bottom",
+   "diameter": 40,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Casing 5750 x 1900 x 1850 mm (3 m3/s)": {
+   "value": "5750x1900x1850",
+   "source_status": "assumed",
+   "source": "typical 3 m3/s AHU"
+  },
+  "Filters G4 + F7": {
+   "value": "G4/F7",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 6 / 16 kVA, 415 V 3-phase": {
+   "value": "6/16kVA",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Access side 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: base frame with lifting lugs, seven-section casing with joint strips, mixing box with bladed return damper on top and fresh-air damper on the end with actuators, filter doors with gauges, coil header plates with pipe connections, drain trap, fan door with window and yellow isolator, outlet spigot and control panel.",
+ "clearances": [
+  {
+   "n": "Access Side",
+   "shape": "box",
+   "at": [
+    -2875.0,
+    -2210.0,
+    0,
+    2875.0,
+    -1210.0,
+    1850
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}

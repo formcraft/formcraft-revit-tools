@@ -1,0 +1,262 @@
+{
+ "family": "FMC_P_PlumbingFixture_Basin_ClinicalHandwash",
+ "category": "Plumbing Fixtures",
+ "desc": "Clinical hand-wash basin 500 mm, vitreous china, no overflow, no tap holes, back outlet; wall-mounted elbow-lever mixer; HPL splashback",
+ "ifc": "IfcSanitaryTerminal",
+ "keynote": "P.BAS_02",
+ "types": [
+  {
+   "name": "500x420_Clinical"
+  }
+ ],
+ "materials": {
+  "china": "FMC_Ceramic_VitreousChina_White",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "hpl": "FMC_Plastic_Laminate_HPL"
+ },
+ "reference": {
+  "query": "basin clinical handwash plumbing fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=basin+clinical+handwash+plumbing+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.theswc.co.uk/Online-Shop/Products-by-Range/SanCeram/Chartham/Basin/Chartham-wall-hung-500-back-outlet-basin-CHWB107",
+  "datasheet": "https://cdn.source.thenbs.com/product/contour-21-clinical-basin/gCXqpN7PE9QVdC3iBgmsRN/eZb9Q7m9qzJnfZiF8EU2sR"
+ },
+ "parts": [
+  {
+   "n": "Basin Body",
+   "shape": "box",
+   "at": [
+    -250,
+    -420,
+    665,
+    250,
+    0,
+    850
+   ],
+   "r": 70,
+   "mat": "china"
+  },
+  {
+   "n": "Bowl",
+   "shape": "box",
+   "at": [
+    -205,
+    -380,
+    700,
+    205,
+    -60,
+    860
+   ],
+   "r": 60,
+   "void": true
+  },
+  {
+   "n": "Wall Flange",
+   "shape": "box",
+   "at": [
+    -230,
+    -15,
+    680,
+    230,
+    0,
+    850
+   ],
+   "mat": "china",
+   "lod": "f"
+  },
+  {
+   "n": "Waste",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -220
+   ],
+   "r": 24,
+   "z": [
+    699,
+    702
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Back Outlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    640
+   ],
+   "r": 20,
+   "y": [
+    -60,
+    0
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Splashback",
+   "shape": "fbox",
+   "at": [
+    -300,
+    -6,
+    850,
+    300,
+    0,
+    1250
+   ],
+   "r": 4,
+   "mat": "hpl"
+  },
+  {
+   "n": "Mixer Body",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    1010
+   ],
+   "r": 28,
+   "y": [
+    -75,
+    -6
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Spout",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    -190
+   ],
+   "profile": [
+    [
+     0,
+     900
+    ],
+    [
+     11,
+     900
+    ],
+    [
+     11,
+     1010
+    ],
+    [
+     0,
+     1010
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Spout Arm",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    1000
+   ],
+   "r": 11,
+   "y": [
+    -190,
+    -75
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Elbow Lever",
+   "shape": "box",
+   "at": [
+    28,
+    -60,
+    1004,
+    200,
+    -48,
+    1016
+   ],
+   "r": 5,
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Supply Tails",
+   "shape": "box",
+   "at": [
+    -60,
+    -6,
+    990,
+    60,
+    0,
+    1030
+   ],
+   "mat": "chrome",
+   "lod": "m"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Supply Tails",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "HW",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "part": "Mixer Body",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Back Outlet",
+   "side": "back",
+   "diameter": 40,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Width 500 mm": {
+   "value": 500,
+   "source_status": "verified",
+   "source": "NBS Source, Contour 21 clinical basin"
+  },
+  "Body height 185 mm": {
+   "value": 185,
+   "source_status": "verified",
+   "source": "NBS Source, Contour 21 clinical basin"
+  },
+  "Vitreous china, white, no tap holes, centre waste": {
+   "value": "china",
+   "source_status": "verified",
+   "source": "NBS Source, Contour 21 clinical basin"
+  },
+  "Projection 420 mm": {
+   "value": 420,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Rim height 850 mm": {
+   "value": 850,
+   "source_status": "assumed",
+   "source": "HBN 00-10 / accessible basin practice"
+  },
+  "Waste 40 mm": {
+   "value": 40,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Clinical basin sized from a Contour 21 datasheet: rounded bowl cut by a void, wall flange, back outlet, HPL splashback, wall mixer with elbow lever."
+}

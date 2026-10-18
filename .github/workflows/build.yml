@@ -14,10 +14,12 @@ concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Windows PowerShell 5.1 is on every Windows PC; PowerShell 7 (pwsh) isn't on the pilot PC
+# Windows PowerShell 5.1 is on every Windows PC; PowerShell 7 (pwsh) isn't on the pilot PC. Execution policy Bypass for
+# the step scripts only: a runner started by double-clicking run.cmd gets the machine's Restricted policy, and every step
+# then fails in under a second before running anything (17 Oct)
 defaults:
   run:
-    shell: powershell
+    shell: powershell -NoProfile -ExecutionPolicy Bypass -Command ". '{0}'"
 
 # On the self-hosted runner MSBuild's worker processes would outlive a job and keep files locked for the next one
 # (CS2012 on TouchKit.Core.dll, 14 Oct), so every build starts its own workers and ends them
@@ -99,8 +101,15 @@ jobs:
         run: npm ci
       - working-directory: server
         run: npm run build
+      # Failing tests as annotations: the job log isn't always reachable from where the failure is fixed (17 Oct)
       - working-directory: server
-        run: npm test
+        run: |
+          $ErrorActionPreference = 'Continue'
+          npm test 2>&1 | Tee-Object -FilePath test-output.log
+          if ($LASTEXITCODE -ne 0) {
+            Select-String -Path test-output.log -Pattern '^\s*not ok|AssertionError|Error \[|expected|actual:|error TS' | Select-Object -First 40 | ForEach-Object { Write-Output "::error::$($_.Line.Trim())" }
+            exit 1
+          }
 
   addin:
     name: Add-in and command set (Revit 2025)

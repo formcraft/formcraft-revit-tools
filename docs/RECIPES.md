@@ -40,6 +40,11 @@ recipe; version 0.1 adds value sources and code checks.
 | `profile_lines` | A profile family's closed loop (template `Metric Profile.rft`, category Profiles): detail lines and 3-point arcs in the Ref. Level plan, mm, x across and y up | 3.1: the `FMC_Profile_*` families that sweeps load |
 | `set_visible_param` | Ties a solid's (or sweep's) Visible to a Yes/No family parameter | One parameter switches which part shows |
 | `add_material` | A material from the kit's library (`07_Materials\FMC_Materials.json`) with its class, colour, keynote, description and textures; optionally the value of a Material parameter in every type | Rule 7: kit materials only, never made up |
+| `set_default_size` | Makes a type current (made when missing) and sets its Length parameters (Width, Height…) before any plane is drawn | F-026: planes drawn at the recipe's size, not the template's |
+| `delete_template_element` | Deletes what the template ships and the recipe replaces (Metric Door.rft's frame, panel and swing lines), matched by kind, category, subcategory or name, never by id | 3.3: one element per job, on its own subcategory |
+| `array` | Repeats a solid along x, y or z with the count tied to an Integer parameter (louvre blades, grille bars, joints) | 1.4: counts follow parameters |
+| `symbolic_lines`, parametric form | Line ends and arc centres on named planes (locked), the radius labelled with a parameter, sets repeated per leaf and shown by Leaf Count | 3.2: swings and fold symbols that follow Width and Leaf Count |
+| `load_family` with `shared: true` | Loads a shared nested family (handles, hinges, locks) from `04_Families\<Role>` (released) or `_Staging`; the load checks it is shared | 1.7: hardware that schedules on its own |
 
 ### Sweeps locked to planes (`path_planes`)
 The owner's standard for families is "fully parametric, no mistakes", so a trim, surround or swept frame follows
@@ -143,6 +148,10 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
   writes the profiles' `load_family` paths relative (`_Profiles\<family>.rfa`). `gen_windows.py` makes the window bases.
 
 ## The flow
+0. **From chat, inline (F-057):** `fmc_recipe check` and `build` take the recipe itself as `recipe` (a JSON object)
+   instead of `recipe_file`. The server keeps it in `<reports>\Recipes\<family>.recipe.json` and uses it like a file;
+   a real build saves it beside the staged family as always, so Gate A finds it. Healthcare pack recipes start in
+   `tests/recipes/healthcare/`.
 1. **Check:** `fmc_recipe check`, read-only. It validates the operations against the kit's parameter dictionary and
    shows where the family will be staged and released.
 2. **Build:** `fmc_recipe build`, a dry run first. It opens the template in the background, applies the operations,
@@ -241,3 +250,91 @@ Exterior, Interior and Head on Ref. Level. Metric Window.rft adds Sill.
 **Which side is exterior:** in Metric Door.rft the plane named **Exterior is at +75 mm Y** and Interior at −75 mm
 (the template's 150 mm host wall), so exterior is **+y**, not −y as some recipe notes said. Read the side from the
 template's Exterior plane rather than assuming it. The recipes' geometry is unchanged by this note.
+
+## Recipe ops from the field review (run 9)
+The Ogala LOD 400 review found that recipes flexed only in plan. These ops close the gaps it listed (`lock_face`,
+`set_visible_param` and `profile_lines` were already there). `tests/doc/FMC_A_Door_RecipeOps_Sample.ops.json` uses all
+of them on Metric Door.rft.
+
+```json
+{ "op": "set_default_size", "name": "Default size", "type": "1800x2100", "values": { "Width": 1800, "Height": 2100 } }
+{ "op": "delete_template_element", "name": "Template frame", "kind": "solid", "subcategory": "Frame/Mullion" }
+{ "op": "array", "name": "Grille bars", "solid": "Grille bar", "direction": "z", "count_param": "Bar Count", "spacing_mm": 150, "max": 12 }
+{ "op": "symbolic_lines", "name": "Fold swing", "subcategory": "Plan Swing", "repeat": { "count_param": "Leaf Count", "max": 3 },
+  "lines": [ { "from": { "planes": ["Leaf {k} Free", "Exterior"] }, "to": { "planes": ["Leaf {k} Free", "Leaf Swing"] } } ],
+  "arc": { "center": { "planes": ["Leaf {k} Free", "Exterior"] }, "radius": 600, "radius_param": "Leaf Width", "start_deg": 90, "end_deg": 180 } }
+{ "op": "load_family", "name": "FMC_A_Hardware_Lever", "path": "Z:\\00_Standards\\04_Families\\A\\FMC_A_Hardware_Lever.rfa", "shared": true }
+```
+
+- **set_default_size** goes first. It sets the current type's lengths, and with `type` it makes that type current
+  (and makes it if it's missing). A parameter with a formula, a reporting parameter or one that isn't a Length is
+  refused. `fmc_recipe check` warns (a note, not an error) when an `add_ref_plane` comes before `set_default_size` in a
+  batch that sizes Width or Height. This is the recipe side of F-026; the add-in still checks every labelled
+  dimension's sides after a batch and at flex.
+- **delete_template_element** needs a `kind`, a `subcategory` or an `element_name`; a category alone is refused. Kinds:
+  `solid`, `void`, `symbolic_line`, `model_line`, `detail_line`, `nested_family`, `opening`, `any`. Reference planes,
+  views, levels and the host wall are never matched, and neither is anything an op made. When nothing matches, the op
+  skips, so a second run changes nothing. More than `max` matches (10 by default) is refused, with the first five
+  named. The dry run lists what would go and the dimensions and locks that go with it. Only the background family
+  document being built is changed. Files are never deleted.
+- **array** has two modes:
+  - `copies` (the default) is the reliable one. It makes `max - 1` copies of the solid, `spacing_mm` apart, named
+    `<solid> #2` … `<solid> #max`. Copy k shows when `count_param > k - 1`, through a Yes/No parameter
+    `<array> Show k`. If the solid's Visible is already tied to a switch (a design-movement slot), the copies keep it:
+    `and(switch, count > k - 1)`. Each copy is locked again to the planes the solid is locked to across the array, so
+    copies follow Width like the solid does. The spacing is fixed; let the count follow the size with a formula such
+    as `rounddown((Height - 200 mm) / 150 mm)`. Copies above the count are hidden, not deleted.
+  - `linear` uses Revit's LinearArray, with the array's count labelled `count_param`. It takes exactly one of
+    `spacing_mm`, `spacing_param` (a dimension between members 1 and 2, labelled) or `between: [first, last]` (the
+    members spread between two planes, with the last one locked to the second plane). **Not yet confirmed in Revit**:
+    if Revit refuses it, the op fails with "use mode copies" and nothing is changed.
+- **symbolic_lines** keeps its fixed form (`points`, and an arc with a `[x, y]` centre). The parametric form works like
+  this:
+  - `lines` takes ends as `[x, y]` or `{planes: [a, b]}`. An end on planes is drawn where the planes cross and locked
+    to them. A line whose two ends share a plane is locked to that plane.
+  - An arc's `center` can be on planes too, and `radius_param` labels a radial dimension.
+  - `show_if` ties the set's Visible to a formula (through `Show <name>`).
+  - `repeat` draws the set for each leaf, k = 1..max, named `<name> #k`, with `{k}` in plane names replaced by k. Set
+    k shows when `count_param > k - 1`. The recipe makes each leaf's planes and drives them by formula, e.g.
+    `Leaf 2 Reach = Leaf Width * 2`.
+
+  The server checks the leaf planes, that a repeat uses `{k}`, and the parameter types. A lock or label that Revit
+  refuses is a warning on the op, and the lines stay. Flex shows whether they follow.
+- **Shared nested hardware.** `load_family` takes families from the kit's `04_Families` only: released
+  (`04_Families\<Role>`) or staged (`_Staging`). With `shared: true` the load checks that the family is shared and
+  refuses one that isn't (rebuild it with `set_family_params shared: true`). `place_nested` then places it and
+  associates its instance parameters with the host's, the same as for any nested family.
+
+**To confirm in the Revit retest:** LinearArray in a family with its count labelled; aligning symbolic line ends and arc
+centres to planes; the radial dimension labelled with a parameter; and whether Revit 2025 shows the Shared flag of a
+loaded family (if not, the op says so and the flag is checked by hand). Copies, switches, deletes and the default size
+use calls the engine already relies on.
+
+## Photo to family (parts models)
+
+`tests/recipes/tools/fmc_parts.py` turns a `*.product.json` parts model into a recipe and a four-view preview
+(3D, front, side, plan). A parts model lists named parts (box, fbox, prism, front, right, cyl, turn) with a kit material
+key and an LOD (c/m/f), plus connectors, clearances and sourced values. The compiler adds the kit parameters, one
+subcategory and material parameter per material, a Coarse envelope, and the connectors.
+
+**References are generic.** Each family gets a product photo page and an image-search link from `hc_refs.json`, built
+from its name and use. No brand is written. `FMC_Manufacturer` and `FMC_Model_Number` are added blank and filled at
+review from the owner's own photos. Supplier waits for the kit change request for `FMC_Supplier`. `URL` holds the photo
+page; a datasheet, if one was used, is only a source of sizes.
+
+Loop: write the parts model, then run `python3 ../tools/fmc_parts.py X.product.json X.recipe.json` (or
+`healthcare/products/make_products.py`). Compare the preview with the photo, adjust, then build with `fmc_recipe`
+(stepwise above 8 KB) and run Gate A.
+
+### Type Image and legends
+
+Every product recipe ends with `set_type_image`. It imports a 3D picture of the product (`render_type_image`, 800 px)
+into the family as Revit's built-in **Type Image**, for every type. The picture then shows in Type Properties, in
+schedules (image field) and in legends next to the legend components (plan, front and side, drawn by Revit from the
+family's own geometry). Pictures live in `04_Families\_Staging\<Role>\_Images\`. A second run reloads the picture, so a
+better render replaces the old one.
+
+### Owner review before sale
+
+The board's 3D viewer shows every product model with **✓ Pass test / ✗ Needs work** and a note. The tick is saved
+with the Inbox decisions as `REV-<family>`. A family is offered for sale only after it passes this review and Gate A.

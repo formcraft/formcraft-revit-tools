@@ -1,0 +1,377 @@
+{
+ "family": "FMC_A_Window_Viewing_Isolation",
+ "category": "Windows",
+ "template": "Metric Window.rft",
+ "desc": "Fixed viewing panel into an isolation room: stainless lining and beads, sealed double glazing with integral blind and slider, sloped sill with no ledge, intercom panel beside",
+ "ifc": "IfcWindow",
+ "keynote": "G.FIX_04",
+ "types": [
+  {
+   "name": "900x900_Viewing",
+   "values": {
+    "Width": 900.0,
+    "Height": 900.0
+   }
+  }
+ ],
+ "type_values": {
+  "Sill Height": 1000
+ },
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "glass": "FMC_Glass_Clear",
+  "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "led_green": "FMC_Plastic_LED_Green"
+ },
+ "parts": [
+  {
+   "n": "Frame Lining Below",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -450.0,
+    -70,
+    1000,
+    450.0,
+    70,
+    1050
+   ]
+  },
+  {
+   "n": "Frame Lining Left Of Opening",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -450.0,
+    -70,
+    1050,
+    -400.0,
+    70,
+    1850
+   ]
+  },
+  {
+   "n": "Frame Lining Right Of Opening",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    400.0,
+    -70,
+    1050,
+    450.0,
+    70,
+    1850
+   ]
+  },
+  {
+   "n": "Frame Lining Above",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -450.0,
+    -70,
+    1850,
+    450.0,
+    70,
+    1900
+   ]
+  },
+  {
+   "n": "Glass Room",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -400.0,
+    -24,
+    1050,
+    400.0,
+    -18,
+    1850
+   ]
+  },
+  {
+   "n": "Glass Corridor",
+   "shape": "fbox",
+   "mat": "glass",
+   "at": [
+    -400.0,
+    18,
+    1050,
+    400.0,
+    24,
+    1850
+   ]
+  },
+  {
+   "n": "Bead Side",
+   "shape": "prism",
+   "mat": "stainless",
+   "pts": [
+    [
+     -385.0,
+     -40.0
+    ],
+    [
+     -383.5,
+     -39.6
+    ],
+    [
+     -382.4,
+     -38.5
+    ],
+    [
+     -382.0,
+     -37.0
+    ],
+    [
+     -382.0,
+     37.0
+    ],
+    [
+     -382.4,
+     38.5
+    ],
+    [
+     -383.5,
+     39.6
+    ],
+    [
+     -385.0,
+     40.0
+    ],
+    [
+     -397.0,
+     40.0
+    ],
+    [
+     -398.5,
+     39.6
+    ],
+    [
+     -399.6,
+     38.5
+    ],
+    [
+     -400.0,
+     37.0
+    ],
+    [
+     -400.0,
+     -37.0
+    ],
+    [
+     -399.6,
+     -38.5
+    ],
+    [
+     -398.5,
+     -39.6
+    ],
+    [
+     -397.0,
+     -40.0
+    ]
+   ],
+   "z": [
+    1050,
+    1850
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     782.0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Bead Rail",
+   "shape": "box",
+   "mat": "stainless",
+   "at": [
+    -382.0,
+    -40,
+    1050,
+    382.0,
+    40,
+    1068
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     782
+    ]
+   }
+  },
+  {
+   "n": "Blind Headrail",
+   "shape": "box",
+   "mat": "aluminium",
+   "at": [
+    -382.0,
+    -10,
+    1780,
+    382.0,
+    10,
+    1832
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Blind Slat",
+   "shape": "fbox",
+   "mat": "white",
+   "at": [
+    -380.0,
+    -1,
+    1310,
+    380.0,
+    1,
+    1322
+   ],
+   "lod": "f",
+   "repeat": {
+    "n": 10,
+    "d": [
+     0,
+     0,
+     45
+    ]
+   }
+  },
+  {
+   "n": "Blind Control Track",
+   "shape": "fbox",
+   "mat": "aluminium",
+   "at": [
+    410.0,
+    -72,
+    1110,
+    422.0,
+    -70,
+    1790
+   ],
+   "lod": "f",
+   "r": 5
+  },
+  {
+   "n": "Blind Control Slider",
+   "shape": "fbox",
+   "mat": "white",
+   "at": [
+    406.0,
+    -80,
+    1670,
+    426.0,
+    -72,
+    1710
+   ],
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "Sloped Sill",
+   "shape": "right",
+   "mat": "stainless",
+   "pts": [
+    [
+     -95,
+     980
+    ],
+    [
+     -40,
+     980
+    ],
+    [
+     -40,
+     1050
+    ],
+    [
+     -95,
+     1000
+    ]
+   ],
+   "x": [
+    -450.0,
+    450.0
+   ]
+  },
+  {
+   "n": "Intercom Panel",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    510.0,
+    -73,
+    1300,
+    630.0,
+    -70,
+    1520
+   ],
+   "lod": "f",
+   "r": 8
+  },
+  {
+   "n": "Intercom Grille",
+   "shape": "cyl",
+   "mat": "grey",
+   "c": [
+    570.0,
+    1450
+   ],
+   "y": [
+    -76,
+    -73
+   ],
+   "r": 35,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Intercom Button",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    570.0,
+    1350
+   ],
+   "y": [
+    -79,
+    -73
+   ],
+   "r": 14,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  }
+ ],
+ "reference": {
+  "query": "window viewing isolation windows hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=window+viewing+isolation+windows+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 900 x 900 mm, sill 1000": {
+   "value": "900x900",
+   "source_status": "assumed",
+   "source": "type 1; HBN 04-01 Supplement 1"
+  },
+  "Sealed to hold the isolation pressure": {
+   "value": "sealed",
+   "source_status": "assumed",
+   "source": "HTM 03-01"
+  },
+  "Integral blind controlled from the corridor": {
+   "value": "integral blind",
+   "source_status": "assumed",
+   "source": "privacy with no dust trap"
+  }
+ },
+ "about": "Isolation viewing panel modelled as a product: stainless frame lining around the glazing, two panes, beads, integral blind with slider control on the corridor face, sloped stainless sill (no ledge), intercom plate with grille and call button. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

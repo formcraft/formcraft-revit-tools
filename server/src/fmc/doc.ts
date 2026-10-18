@@ -6,6 +6,7 @@
  * under a name the naming rules accept, with a build report beside the file.
  */
 import { createHash } from "node:crypto";
+import fs from "node:fs";
 import path from "node:path";
 import { GuardConfig, checkTemplatePath, checkWritePath, isInside } from "./policy.js";
 
@@ -31,7 +32,46 @@ export function saveProblems(target: string, cfg: GuardConfig): string[] {
   return checkWritePath(t, cfg).reasons;
 }
 
-export interface SessionRecord { id: string; source: string; opened: string; ops: Array<{ op: string; name: string; result: string }> }
+/** A session in the server's ledger; used is the last call that worked on it (older entries have only opened). */
+export interface SessionRecord { id: string; source: string; opened: string; used?: string; ops: Array<{ op: string; name: string; result: string }> }
+
+// ---------- F-046 (issue #147): sessions time out ----------
+
+export const LEDGER_FILE = "FMC_Doc_Sessions.json";
+/** The ledger beside the reports (reports_dir, expanded). path.join is win32 on the pilot PC. */
+export const ledgerPath = (reportsDir: string) => path.join(reportsDir, LEDGER_FILE);
+
+export function readLedger(reportsDir: string): Record<string, SessionRecord> {
+  try { return JSON.parse(fs.readFileSync(ledgerPath(reportsDir), "utf8")); } catch { return {}; }
+}
+
+export function writeLedger(reportsDir: string, l: Record<string, SessionRecord>) {
+  fs.mkdirSync(reportsDir, { recursive: true });
+  fs.writeFileSync(ledgerPath(reportsDir), JSON.stringify(l, null, 2));
+}
+
+/** The guard's idle limit in hours (session_idle_hours, default 12); a bad value falls back to 12. */
+export function idleLimit(cfg: Partial<GuardConfig>): number {
+  const h = Number(cfg.session_idle_hours);
+  return Number.isFinite(h) && h > 0 ? h : 12;
+}
+
+/** Hours since a time (ISO, or the add-in's local "s" format), one decimal; null when the time can't be read. */
+export function hoursSince(when: string | undefined, now: Date): number | null {
+  if (!when) return null;
+  const t = Date.parse(when);
+  return Number.isFinite(t) ? Math.max(0, Math.round((now.getTime() - t) / 360000) / 10) : null;
+}
+
+export interface StaleMark { idle_hours: number | null; stale: boolean; stale_after_hours: number }
+
+/** Marks each session with its idle time and whether it is stale (idle longer than the limit). Unknown idle is never stale. */
+export function markStale<T extends { used?: string; opened?: string; idle_minutes?: number }>(sessions: T[], now: Date, limitHours: number): Array<T & StaleMark> {
+  return sessions.map((s) => {
+    const idle = typeof s.idle_minutes === "number" && Number.isFinite(s.idle_minutes) ? Math.round(s.idle_minutes / 6) / 10 : hoursSince(s.used || s.opened, now);
+    return { ...s, idle_hours: idle, stale: idle != null && idle > limitHours, stale_after_hours: limitHours };
+  });
+}
 
 /** The build report beside each saved file: the same ops on the same kit give the same file (plan B1). */
 export function buildReport(s: SessionRecord, saved: string, report: Record<string, unknown>, kit: { kit?: string; revision?: string }, commit: string, now: Date) {

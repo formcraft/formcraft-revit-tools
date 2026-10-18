@@ -384,8 +384,9 @@ namespace Formcraft.Shell.ViewModels
             if (library.Count == 0) items.Add(new NoteSetting("The kit has no templates to audit.", ChipKind.Warn));
             else items.Add(new ChoiceSetting(_store, "templates.audittarget", "Template", library.Select(t => t.Name + " · " + t.Status.ToLowerInvariant()).ToArray(), dropdown: true));
             items.Add(new ReadOnlySetting("What the audit covers",
-                "Shared parameters vs FMC_SharedParameters.txt · view templates and filters · fonts vs the brand pack · text and dimension styles · " +
-                "title blocks and schedules · browser organisation · size, unused families, warnings"));
+                "Shared parameters both ways (FMC_SharedParameters.txt, FMC_Master_Data.json) · view templates and filters · fonts vs the brand pack · " +
+                "text and dimension styles · the kit's title blocks · legends · panel schedule templates · materials · stock schedules and view templates · " +
+                "role copies vs Base · browser organisation · size, unused families, warnings. What can't be checked says Not checked and why."));
             items.Add(new ButtonsSetting("", new[] { new SettingButton("Audit", AuditCommand, primary: true) }, "Read-only: the template is opened in the background and closed again."));
             if (_audit != null)
             {

@@ -78,3 +78,37 @@ test("xlsx: shared strings, inline strings, numbers and gaps", () => {
   });
   assert.deepEqual(readXlsx(buf), [["Number", "Name"], ["A-1001", "", "Plan & key", "12"], ["S-1001"]]);
 });
+
+test("F-043: the kit register's '+' issue sets are split and matched by membership (PERMIT is 77 sheets, not 4)", () => {
+  // The kit's header, first row and IssueSet distribution (03_Master_Data/FMC_Sheet_Register.csv, 194 sheets).
+  const header = csvRow("Role,Discipline,SheetNumber,SheetName,Series,Scale,Core,IssueSet,Placed");
+  const first = csvRow('Z,General,Z-0001,"Cover, Drawing Index & Project Directory",0xxx General,NTS,Core,PERMIT+TENDER+CONSTRUCTION+RECORD,Z10_Sheet_Index; FMC_TB_Panel_ProjectData; location map');
+  const mix: Array<[string, number]> = [
+    ["TENDER+CONSTRUCTION", 86], ["PERMIT+TENDER+CONSTRUCTION", 66], ["CONSTRUCTION", 24], ["PERMIT+TENDER+CONSTRUCTION+RECORD", 4],
+    ["TENDER", 5], ["PERMIT", 4], ["TENDER+CONSTRUCTION+RECORD", 2], ["PERMIT+TENDER", 2],
+  ];
+  const body: string[][] = [first];
+  let n = 2;
+  for (const [sets, count] of mix)
+    for (let i = 0; i < count; i++, n++) body.push(["A", "Architecture", `A-${1000 + n}`, `Sheet ${n}`, "1xxx", "1:100", "Core", sets, ""]);
+  const reg = parseRegister([header, ...body]);
+  assert.equal(reg.problems.length, 0);
+  assert.equal(reg.sheets.length, 194);
+  assert.deepEqual(reg.sheets[0].sets, ["PERMIT", "TENDER", "CONSTRUCTION", "RECORD"]);
+  assert.equal(reg.sheets[0].name, "Cover, Drawing Index & Project Directory");
+  assert.equal(planned(reg.sheets, "PERMIT", []).length, 77);
+  assert.equal(planned(reg.sheets, "permit", []).length, 77, "case doesn't matter");
+  assert.equal(planned(reg.sheets, "RECORD", []).length, 7);
+  assert.equal(planned(reg.sheets, "PERMIT+RECORD", []).length, 79, "several sets: a sheet in any of them");
+  assert.equal(planned(reg.sheets, "PERMIT", ["Z"]).length, 1);
+});
+
+test("F-043: other separators a register may use split the same way", () => {
+  const reg = parseRegister([
+    ["Number", "Name", "Role", "Issue sets"],
+    ["A-1001", "a", "A", "PERMIT & TENDER"], ["A-1002", "b", "A", "Tender and Construction"],
+    ["A-1003", "c", "A", "PERMIT | RECORD"], ["A-1004", "d", "A", "STANDARD"],
+  ]).sheets;
+  assert.deepEqual(reg.map((s) => s.sets), [["PERMIT", "TENDER"], ["TENDER", "CONSTRUCTION"], ["PERMIT", "RECORD"], ["STANDARD"]]);
+  assert.deepEqual(planned(reg, "TENDER", []).map((s) => s.number), ["A-1001", "A-1002"]);
+});

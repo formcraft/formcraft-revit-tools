@@ -1,0 +1,114 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_GenericModel_Clearance_TurningCircle",
+ "template": "Metric Generic Model.rft",
+ "about": "Wave 1: the shared turning-circle clearance (BS 8300); nested by toilets, wards and rooms; its subcategory is hidden in printed sets.",
+ "ops": [
+  {
+   "op": "set_family_params",
+   "name": "family",
+   "shared": true
+  },
+  {
+   "op": "add_type",
+   "name": "1500_TurningCircle"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_TurningCircle/FMC_Cost_Unit",
+   "type": "1500_TurningCircle",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_TurningCircle/FMC_Geometry_Stage",
+   "type": "1500_TurningCircle",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_TurningCircle/IfcExportAs",
+   "type": "1500_TurningCircle",
+   "param": "IfcExportAs",
+   "value": "IfcBuildingElementProxy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_TurningCircle/Description",
+   "type": "1500_TurningCircle",
+   "param": "Description",
+   "value": "Wheelchair turning circle 1500 mm, clearance solid (never printed)"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Accessibility",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "revolution",
+   "name": "Turning Circle",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     750,
+     0
+    ],
+    [
+     750,
+     10
+    ],
+    [
+     0,
+     10
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "subcategory": "Clearance Accessibility"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Turning Circle",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  }
+ ],
+ "values": {
+  "Diameter 1500 mm": {
+   "value": "see key",
+   "source_status": "assumed",
+   "source": "BS 8300-2"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "clearance solid, never scheduled or printed"
+ }
+}

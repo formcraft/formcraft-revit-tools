@@ -136,7 +136,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "void_sweep": return FmcDocLod.MakeSweep(doc, op, true);
                 case "revolution": return FmcDocLod.MakeRevolution(doc, op);
                 case "blend": return FmcDocLod.MakeBlend(doc, op);
-                case "symbolic_lines": return FmcDocLod.SymbolicLines(doc, op);
+                case "symbolic_lines": return FmcDocRecipe.SymbolicLines(doc, op);
                 case "lock_face": return FmcDocLod.LockFace(doc, op);
                 case "add_eq_dimension": return FmcDocLod.EqDimension(doc, op);
                 case "load_family": return FmcDocLod.LoadFamily(doc, op);
@@ -144,6 +144,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "profile_lines": return FmcDocKit.ProfileLines(doc, op);
                 case "set_visible_param": return FmcDocKit.VisibleParam(doc, op);
                 case "add_material": return FmcDocKit.AddMaterial(doc, op);
+                case "array": return FmcDocRecipe.MakeArray(doc, op);
+                case "delete_template_element": return FmcDocRecipe.DeleteTemplateElement(doc, op);
+                case "set_default_size": return FmcDocRecipe.SetDefaultSize(doc, op);
+                case "set_type_image": return FmcDocInspect.SetTypeImage(doc, op);
                 default: throw new InvalidOperationException("unknown op " + op.Value<string>("op"));
             }
         }

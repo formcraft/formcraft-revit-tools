@@ -1,0 +1,2027 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_S_StrColumn_Steel_CHS_Canopy",
+ "template": "Metric Generic Model.rft",
+ "about": "Canopy column modelled as erected: base plate, four radial gussets, HD bolts, painted CHS with yellow hazard bands (Fine), cap plate and fin plate with bolts for the truss. Reference: query: str column steel chs canopy structural columns hospital; images: https://www.google.com/search?tbm=isch&q=str+column+steel+chs+canopy+structural+columns+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Structural Columns"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Curing_Days",
+   "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Concrete_Grade",
+   "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Steel_Grade",
+   "guid": "d06222d0-07d6-5663-a7c4-a4e890b2c03f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Timber_Grade",
+   "guid": "b3e69a2f-fae9-5ecb-9cc7-c1094c669498",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rebar_Ratio_kg_m3",
+   "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Exposure_Class",
+   "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Formwork_Type",
+   "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Assembly_Mark",
+   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_FEA_NEd_kN",
+   "guid": "82797174-7d95-51e7-8b4c-dab3f933f323",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_FEA_MEd_kNm",
+   "guid": "942dde65-4c14-57d5-9c22-0fa86eb80a44",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_FEA_Utilisation",
+   "guid": "15c508ea-aa97-5d96-9a4c-22e2a1478eff",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_FEA_Run_Ref",
+   "guid": "588a69ec-2914-52f0-b627-633aea9bfbbb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_FEA_Approval_Ref",
+   "guid": "33b0427b-a395-5f9d-acca-0e36401d2456",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Member_Mark",
+   "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "114_CHS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Cost_Unit",
+   "type": "114_CHS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Geometry_Stage",
+   "type": "114_CHS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/IfcExportAs",
+   "type": "114_CHS",
+   "param": "IfcExportAs",
+   "value": "IfcColumn"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/Description",
+   "type": "114_CHS",
+   "param": "Description",
+   "value": "CHS 114.3 canopy column"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/Keynote",
+   "type": "114_CHS",
+   "param": "Keynote",
+   "value": "A.CAN_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Keynote_Code",
+   "type": "114_CHS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.CAN_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Code_Description",
+   "type": "114_CHS",
+   "param": "FMC_Code_Description",
+   "value": "Steel CHS Canopy: Canopy column"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Code_Group",
+   "type": "114_CHS",
+   "param": "FMC_Code_Group",
+   "value": "A.CAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "114_CHS/FMC_Role_Code",
+   "type": "114_CHS",
+   "param": "FMC_Role_Code",
+   "value": "S"
+  },
+  {
+   "op": "add_type",
+   "name": "168_CHS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Cost_Unit",
+   "type": "168_CHS",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Geometry_Stage",
+   "type": "168_CHS",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/IfcExportAs",
+   "type": "168_CHS",
+   "param": "IfcExportAs",
+   "value": "IfcColumn"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/Description",
+   "type": "168_CHS",
+   "param": "Description",
+   "value": "CHS 168.3 canopy column"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/Keynote",
+   "type": "168_CHS",
+   "param": "Keynote",
+   "value": "A.CAN_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Keynote_Code",
+   "type": "168_CHS",
+   "param": "FMC_Keynote_Code",
+   "value": "A.CAN_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Code_Description",
+   "type": "168_CHS",
+   "param": "FMC_Code_Description",
+   "value": "Steel CHS Canopy: Canopy column"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Code_Group",
+   "type": "168_CHS",
+   "param": "FMC_Code_Group",
+   "value": "A.CAN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "168_CHS/FMC_Role_Code",
+   "type": "168_CHS",
+   "param": "FMC_Role_Code",
+   "value": "S"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Paint",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Paint Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Paint Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    167,
+    172,
+    175
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_ColdFormed_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -175,
+     -175
+    ],
+    [
+     175,
+     -175
+    ],
+    [
+     175,
+     175
+    ],
+    [
+     -175,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 3720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate",
+   "points": [
+    [
+     -175,
+     -175
+    ],
+    [
+     175,
+     -175
+    ],
+    [
+     175,
+     175
+    ],
+    [
+     -175,
+     175
+    ]
+   ],
+   "start": 0,
+   "end": 20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column",
+   "points": [
+    [
+     84.15,
+     0.0
+    ],
+    [
+     82.87,
+     14.61
+    ],
+    [
+     79.08,
+     28.78
+    ],
+    [
+     72.88,
+     42.07
+    ],
+    [
+     64.46,
+     54.09
+    ],
+    [
+     54.09,
+     64.46
+    ],
+    [
+     42.08,
+     72.88
+    ],
+    [
+     28.78,
+     79.08
+    ],
+    [
+     14.61,
+     82.87
+    ],
+    [
+     0.0,
+     84.15
+    ],
+    [
+     -14.61,
+     82.87
+    ],
+    [
+     -28.78,
+     79.08
+    ],
+    [
+     -42.07,
+     72.88
+    ],
+    [
+     -54.09,
+     64.46
+    ],
+    [
+     -64.46,
+     54.09
+    ],
+    [
+     -72.88,
+     42.08
+    ],
+    [
+     -79.08,
+     28.78
+    ],
+    [
+     -82.87,
+     14.61
+    ],
+    [
+     -84.15,
+     0.0
+    ],
+    [
+     -82.87,
+     -14.61
+    ],
+    [
+     -79.08,
+     -28.78
+    ],
+    [
+     -72.88,
+     -42.08
+    ],
+    [
+     -64.46,
+     -54.09
+    ],
+    [
+     -54.09,
+     -64.46
+    ],
+    [
+     -42.08,
+     -72.88
+    ],
+    [
+     -28.78,
+     -79.08
+    ],
+    [
+     -14.61,
+     -82.87
+    ],
+    [
+     -0.0,
+     -84.15
+    ],
+    [
+     14.61,
+     -82.87
+    ],
+    [
+     28.78,
+     -79.08
+    ],
+    [
+     42.07,
+     -72.88
+    ],
+    [
+     54.09,
+     -64.46
+    ],
+    [
+     64.46,
+     -54.09
+    ],
+    [
+     72.88,
+     -42.07
+    ],
+    [
+     79.08,
+     -28.78
+    ],
+    [
+     82.87,
+     -14.61
+    ]
+   ],
+   "start": 20,
+   "end": 3500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hazard Band 1",
+   "profile": [
+    [
+     84.15,
+     300
+    ],
+    [
+     85.65,
+     300
+    ],
+    [
+     85.65,
+     450
+    ],
+    [
+     84.15,
+     450
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hazard Band 1",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hazard Band 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hazard Band 2",
+   "profile": [
+    [
+     84.15,
+     600
+    ],
+    [
+     85.65,
+     600
+    ],
+    [
+     85.65,
+     750
+    ],
+    [
+     84.15,
+     750
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hazard Band 2",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hazard Band 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hazard Band 3",
+   "profile": [
+    [
+     84.15,
+     900
+    ],
+    [
+     85.65,
+     900
+    ],
+    [
+     85.65,
+     1050
+    ],
+    [
+     84.15,
+     1050
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hazard Band 3",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hazard Band 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hazard Band 4",
+   "profile": [
+    [
+     84.15,
+     1200
+    ],
+    [
+     85.65,
+     1200
+    ],
+    [
+     85.65,
+     1350
+    ],
+    [
+     84.15,
+     1350
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hazard Band 4",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hazard Band 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cap Plate",
+   "points": [
+    [
+     -130,
+     -130
+    ],
+    [
+     130,
+     -130
+    ],
+    [
+     130,
+     130
+    ],
+    [
+     -130,
+     130
+    ]
+   ],
+   "start": 3500,
+   "end": 3520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cap Plate",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap Plate",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Truss Fin Plate",
+   "points": [
+    [
+     -6,
+     3520
+    ],
+    [
+     6,
+     3520
+    ],
+    [
+     6,
+     3720
+    ],
+    [
+     -6,
+     3720
+    ]
+   ],
+   "start": -100,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Truss Fin Plate",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Truss Fin Plate",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Truss Fin Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fin Bolt 1",
+   "points": [
+    [
+     10.0,
+     3580.0
+    ],
+    [
+     8.66,
+     3585.0
+    ],
+    [
+     5.0,
+     3588.66
+    ],
+    [
+     0.0,
+     3590.0
+    ],
+    [
+     -5.0,
+     3588.66
+    ],
+    [
+     -8.66,
+     3585.0
+    ],
+    [
+     -10.0,
+     3580.0
+    ],
+    [
+     -8.66,
+     3575.0
+    ],
+    [
+     -5.0,
+     3571.34
+    ],
+    [
+     -0.0,
+     3570.0
+    ],
+    [
+     5.0,
+     3571.34
+    ],
+    [
+     8.66,
+     3575.0
+    ]
+   ],
+   "start": -20,
+   "end": 20,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fin Bolt 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fin Bolt 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fin Bolt 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fin Bolt 2",
+   "points": [
+    [
+     10.0,
+     3660.0
+    ],
+    [
+     8.66,
+     3665.0
+    ],
+    [
+     5.0,
+     3668.66
+    ],
+    [
+     0.0,
+     3670.0
+    ],
+    [
+     -5.0,
+     3668.66
+    ],
+    [
+     -8.66,
+     3665.0
+    ],
+    [
+     -10.0,
+     3660.0
+    ],
+    [
+     -8.66,
+     3655.0
+    ],
+    [
+     -5.0,
+     3651.34
+    ],
+    [
+     -0.0,
+     3650.0
+    ],
+    [
+     5.0,
+     3651.34
+    ],
+    [
+     8.66,
+     3655.0
+    ]
+   ],
+   "start": -20,
+   "end": 20,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fin Bolt 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fin Bolt 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fin Bolt 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gusset X+",
+   "points": [
+    [
+     84.15,
+     20
+    ],
+    [
+     170,
+     20
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     84.15,
+     170
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gusset X+",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gusset X+",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gusset X+",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gusset X-",
+   "points": [
+    [
+     -84.15,
+     20
+    ],
+    [
+     -84.15,
+     170
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -170,
+     20
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gusset X-",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gusset X-",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gusset X-",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gusset Y+",
+   "points": [
+    [
+     84.15,
+     20
+    ],
+    [
+     84.15,
+     170
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     170,
+     20
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gusset Y+",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gusset Y+",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gusset Y+",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Gusset Y-",
+   "points": [
+    [
+     -84.15,
+     20
+    ],
+    [
+     -170,
+     20
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -84.15,
+     170
+    ]
+   ],
+   "start": -5,
+   "end": 5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Gusset Y-",
+   "subcategory": "Paint"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Gusset Y-",
+   "param": "Paint Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Gusset Y-",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 1 Washer",
+   "points": [
+    [
+     -145.0,
+     -145.0
+    ],
+    [
+     -105.0,
+     -145.0
+    ],
+    [
+     -105.0,
+     -105.0
+    ],
+    [
+     -145.0,
+     -105.0
+    ]
+   ],
+   "start": 20,
+   "end": 26
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 1 Washer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 1 Washer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 1 Washer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 1 Nut",
+   "points": [
+    [
+     -113.0,
+     -118.07
+    ],
+    [
+     -125.0,
+     -111.14
+    ],
+    [
+     -137.0,
+     -118.07
+    ],
+    [
+     -137.0,
+     -131.93
+    ],
+    [
+     -125.0,
+     -138.86
+    ],
+    [
+     -113.0,
+     -131.93
+    ]
+   ],
+   "start": 26,
+   "end": 38.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 1 Nut",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 1 Nut",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 1 Nut",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 1 Thread",
+   "points": [
+    [
+     -117.0,
+     -125.0
+    ],
+    [
+     -118.07,
+     -121.0
+    ],
+    [
+     -121.0,
+     -118.07
+    ],
+    [
+     -125.0,
+     -117.0
+    ],
+    [
+     -129.0,
+     -118.07
+    ],
+    [
+     -131.93,
+     -121.0
+    ],
+    [
+     -133.0,
+     -125.0
+    ],
+    [
+     -131.93,
+     -129.0
+    ],
+    [
+     -129.0,
+     -131.93
+    ],
+    [
+     -125.0,
+     -133.0
+    ],
+    [
+     -121.0,
+     -131.93
+    ],
+    [
+     -118.07,
+     -129.0
+    ]
+   ],
+   "start": 38.8,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 1 Thread",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 1 Thread",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 1 Thread",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 2 Washer",
+   "points": [
+    [
+     105.0,
+     -145.0
+    ],
+    [
+     145.0,
+     -145.0
+    ],
+    [
+     145.0,
+     -105.0
+    ],
+    [
+     105.0,
+     -105.0
+    ]
+   ],
+   "start": 20,
+   "end": 26
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 2 Washer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 2 Washer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 2 Washer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 2 Nut",
+   "points": [
+    [
+     137.0,
+     -118.07
+    ],
+    [
+     125.0,
+     -111.14
+    ],
+    [
+     113.0,
+     -118.07
+    ],
+    [
+     113.0,
+     -131.93
+    ],
+    [
+     125.0,
+     -138.86
+    ],
+    [
+     137.0,
+     -131.93
+    ]
+   ],
+   "start": 26,
+   "end": 38.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 2 Nut",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 2 Nut",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 2 Nut",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 2 Thread",
+   "points": [
+    [
+     133.0,
+     -125.0
+    ],
+    [
+     131.93,
+     -121.0
+    ],
+    [
+     129.0,
+     -118.07
+    ],
+    [
+     125.0,
+     -117.0
+    ],
+    [
+     121.0,
+     -118.07
+    ],
+    [
+     118.07,
+     -121.0
+    ],
+    [
+     117.0,
+     -125.0
+    ],
+    [
+     118.07,
+     -129.0
+    ],
+    [
+     121.0,
+     -131.93
+    ],
+    [
+     125.0,
+     -133.0
+    ],
+    [
+     129.0,
+     -131.93
+    ],
+    [
+     131.93,
+     -129.0
+    ]
+   ],
+   "start": 38.8,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 2 Thread",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 2 Thread",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 2 Thread",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 3 Washer",
+   "points": [
+    [
+     -145.0,
+     105.0
+    ],
+    [
+     -105.0,
+     105.0
+    ],
+    [
+     -105.0,
+     145.0
+    ],
+    [
+     -145.0,
+     145.0
+    ]
+   ],
+   "start": 20,
+   "end": 26
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 3 Washer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 3 Washer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 3 Washer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 3 Nut",
+   "points": [
+    [
+     -113.0,
+     131.93
+    ],
+    [
+     -125.0,
+     138.86
+    ],
+    [
+     -137.0,
+     131.93
+    ],
+    [
+     -137.0,
+     118.07
+    ],
+    [
+     -125.0,
+     111.14
+    ],
+    [
+     -113.0,
+     118.07
+    ]
+   ],
+   "start": 26,
+   "end": 38.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 3 Nut",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 3 Nut",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 3 Nut",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 3 Thread",
+   "points": [
+    [
+     -117.0,
+     125.0
+    ],
+    [
+     -118.07,
+     129.0
+    ],
+    [
+     -121.0,
+     131.93
+    ],
+    [
+     -125.0,
+     133.0
+    ],
+    [
+     -129.0,
+     131.93
+    ],
+    [
+     -131.93,
+     129.0
+    ],
+    [
+     -133.0,
+     125.0
+    ],
+    [
+     -131.93,
+     121.0
+    ],
+    [
+     -129.0,
+     118.07
+    ],
+    [
+     -125.0,
+     117.0
+    ],
+    [
+     -121.0,
+     118.07
+    ],
+    [
+     -118.07,
+     121.0
+    ]
+   ],
+   "start": 38.8,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 3 Thread",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 3 Thread",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 3 Thread",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 4 Washer",
+   "points": [
+    [
+     105.0,
+     105.0
+    ],
+    [
+     145.0,
+     105.0
+    ],
+    [
+     145.0,
+     145.0
+    ],
+    [
+     105.0,
+     145.0
+    ]
+   ],
+   "start": 20,
+   "end": 26
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 4 Washer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 4 Washer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 4 Washer",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 4 Nut",
+   "points": [
+    [
+     137.0,
+     131.93
+    ],
+    [
+     125.0,
+     138.86
+    ],
+    [
+     113.0,
+     131.93
+    ],
+    [
+     113.0,
+     118.07
+    ],
+    [
+     125.0,
+     111.14
+    ],
+    [
+     137.0,
+     118.07
+    ]
+   ],
+   "start": 26,
+   "end": 38.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 4 Nut",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 4 Nut",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 4 Nut",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt 4 Thread",
+   "points": [
+    [
+     133.0,
+     125.0
+    ],
+    [
+     131.93,
+     129.0
+    ],
+    [
+     129.0,
+     131.93
+    ],
+    [
+     125.0,
+     133.0
+    ],
+    [
+     121.0,
+     131.93
+    ],
+    [
+     118.07,
+     129.0
+    ],
+    [
+     117.0,
+     125.0
+    ],
+    [
+     118.07,
+     121.0
+    ],
+    [
+     121.0,
+     118.07
+    ],
+    [
+     125.0,
+     117.0
+    ],
+    [
+     129.0,
+     118.07
+    ],
+    [
+     131.93,
+     121.0
+    ]
+   ],
+   "start": 38.8,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt 4 Thread",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt 4 Thread",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt 4 Thread",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrColumn_Steel_CHS_Canopy.png"
+  }
+ ],
+ "values": {
+  "CHS 168.3 x 6.3 (geometry)": {
+   "value": "168.3x6.3",
+   "source_status": "assumed",
+   "source": "EN 10210 section, from knowledge; section choice by engineer"
+  },
+  "Height 3500 mm to cap plate": {
+   "value": 3500,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Base plate 350 x 350 x 20, 4 x M16": {
+   "value": "350x350x20 4xM16",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Hazard banding to 1500 mm": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "vehicle-impact visibility at ambulance set-down"
+  }
+ }
+}

@@ -1,0 +1,670 @@
+{
+ "family": "FMC_M_MechEq_Boiler_Steam_CSSD",
+ "category": "Mechanical Equipment",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Packaged steam generator 100 to 250 kg/h for CSSD and laundry, horizontal shell on skid, front burner, chimney, safety valves, gauge glass, feed pump, control panel",
+ "ifc": "IfcBoiler",
+ "keynote": "H.STM_00",
+ "types": [
+  {
+   "name": "100kgh_Steam",
+   "values": {
+    "Apparent Load": 3000
+   }
+  },
+  {
+   "name": "250kgh_Steam",
+   "values": {
+    "Apparent Load": 5000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 5000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "copper": "FMC_Metal_Copper_Pipe",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "gi": "FMC_Metal_GI_Pipe",
+  "glass": "FMC_Glass_Clear",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "mesh": "FMC_Plastic_InsectMesh_Fibreglass",
+  "pcg": "FMC_Metal_Aluminium_PowderCoated",
+  "red": "FMC_Metal_SprinklerPipe_RedPainted",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "steel": "FMC_Metal_StructuralSteel_S275",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "boiler steam cssd mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=boiler+steam+cssd+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Skid Frame",
+   "shape": "box",
+   "at": [
+    -1500,
+    -700,
+    0,
+    1500,
+    700,
+    150
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Boiler Saddle",
+   "shape": "box",
+   "at": [
+    -950,
+    -420,
+    150,
+    -780,
+    420,
+    460
+   ],
+   "mat": "dark",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1550,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Shell",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    950
+   ],
+   "profile": [
+    [
+     0,
+     -1260
+    ],
+    [
+     300,
+     -1230
+    ],
+    [
+     480,
+     -1160
+    ],
+    [
+     550,
+     -1060
+    ],
+    [
+     550,
+     960
+    ],
+    [
+     480,
+     1060
+    ],
+    [
+     300,
+     1130
+    ],
+    [
+     0,
+     1160
+    ]
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Cladding Band",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    950
+   ],
+   "profile": [
+    [
+     550,
+     -700
+    ],
+    [
+     556,
+     -700
+    ],
+    [
+     556,
+     -680
+    ],
+    [
+     550,
+     -680
+    ]
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     700,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Burner",
+   "shape": "box",
+   "at": [
+    1160,
+    -260,
+    760,
+    1460,
+    260,
+    1140
+   ],
+   "mat": "red",
+   "r": 30
+  },
+  {
+   "n": "Burner Fan Motor",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1310,
+    1140
+   ],
+   "r": 90,
+   "y": [
+    -420,
+    -260
+   ],
+   "mat": "red"
+  },
+  {
+   "n": "Burner Air Inlet",
+   "shape": "fbox",
+   "at": [
+    1210,
+    -268,
+    800,
+    1410,
+    -260,
+    900
+   ],
+   "mat": "mesh",
+   "lod": "f"
+  },
+  {
+   "n": "Smoke Box",
+   "shape": "box",
+   "at": [
+    -1400,
+    -380,
+    680,
+    -1240,
+    380,
+    1300
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Chimney",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -1320,
+    0
+   ],
+   "r": 150,
+   "z": [
+    1300,
+    2700
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Chimney Cap",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -1320,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     2700
+    ],
+    [
+     230,
+     2700
+    ],
+    [
+     230,
+     2720
+    ],
+    [
+     0,
+     2820
+    ]
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Control Panel",
+   "shape": "box",
+   "at": [
+    250,
+    -740,
+    750,
+    850,
+    -580,
+    1500
+   ],
+   "mat": "epw",
+   "r": 6
+  },
+  {
+   "n": "Panel Stand",
+   "shape": "box",
+   "at": [
+    300,
+    -720,
+    150,
+    800,
+    -620,
+    750
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Panel Handle",
+   "shape": "fbox",
+   "at": [
+    790,
+    -752,
+    1060,
+    810,
+    -740,
+    1200
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Panel Gauge",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    360,
+    1380
+   ],
+   "r": 45,
+   "y": [
+    -756,
+    -740
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     140,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Indicator Lamp",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    360,
+    1250
+   ],
+   "r": 12,
+   "y": [
+    -750,
+    -740
+   ],
+   "mat": "ledg",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     60,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Emergency Stop",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    740,
+    1400
+   ],
+   "r": 22,
+   "y": [
+    -760,
+    -740
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  },
+  {
+   "n": "Water Gauge Glass",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    1040,
+    -470
+   ],
+   "r": 15,
+   "z": [
+    880,
+    1260
+   ],
+   "mat": "glass"
+  },
+  {
+   "n": "Gauge Cock",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    1040,
+    900
+   ],
+   "r": 22,
+   "y": [
+    -500,
+    -440
+   ],
+   "mat": "brass",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     340
+    ]
+   }
+  },
+  {
+   "n": "Safety Valve",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -350,
+    0
+   ],
+   "r": 40,
+   "z": [
+    1490,
+    1700
+   ],
+   "mat": "brass",
+   "repeat": {
+    "n": 2,
+    "d": [
+     260,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Steam Stop Valve",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    350,
+    0
+   ],
+   "r": 60,
+   "z": [
+    1490,
+    1650
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Valve Handwheel",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    350,
+    0
+   ],
+   "profile": [
+    [
+     80,
+     1720
+    ],
+    [
+     95,
+     1720
+    ],
+    [
+     95,
+     1735
+    ],
+    [
+     80,
+     1735
+    ]
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Valve Spindle",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    350,
+    0
+   ],
+   "r": 10,
+   "z": [
+    1650,
+    1730
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Steam Outlet Flange",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    350,
+    0
+   ],
+   "r": 110,
+   "z": [
+    1650,
+    1675
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Pressure Gauge Siphon",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    100,
+    0
+   ],
+   "r": 10,
+   "z": [
+    1490,
+    1620
+   ],
+   "mat": "copper",
+   "lod": "f"
+  },
+  {
+   "n": "Steam Pressure Gauge",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    100,
+    1660
+   ],
+   "r": 60,
+   "y": [
+    -15,
+    15
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Feed Pump",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -580,
+    330
+   ],
+   "r": 90,
+   "x": [
+    -1000,
+    -650
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Feed Pump Motor",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -580,
+    330
+   ],
+   "r": 110,
+   "x": [
+    -650,
+    -300
+   ],
+   "mat": "pcg"
+  },
+  {
+   "n": "Feedwater Inlet",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -580,
+    330
+   ],
+   "r": 26,
+   "x": [
+    -1180,
+    -1000
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Blowdown Valve",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -200,
+    -300
+   ],
+   "r": 25,
+   "z": [
+    150,
+    420
+   ],
+   "mat": "brass",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Control Panel",
+   "side": "front"
+  },
+  {
+   "n": "Steam",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Steam Outlet Flange",
+   "side": "top",
+   "diameter": 50,
+   "flow": "Out"
+  },
+  {
+   "n": "Feedwater",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Feedwater Inlet",
+   "side": "left",
+   "diameter": 25,
+   "flow": "In"
+  }
+ ],
+ "values": {
+  "Output 100 / 250 kg/h at 8 bar": {
+   "value": "100/250kg/h",
+   "source_status": "assumed",
+   "source": "record basis, pressure typical for CSSD sterilisers (HTM 01-01)"
+  },
+  "Skid 3000 x 1400 mm, shell 1100 dia": {
+   "value": "3000x1400",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Steam outlet DN50": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Electrical load 3 / 5 kVA (burner, pump, controls)": {
+   "value": "3/5kVA",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Front burner withdrawal 1500 mm": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "manufacturer practice"
+  }
+ },
+ "about": "Modelled as a generic product: skid frame and saddles, clad horizontal shell with bands and dished ends, red front burner with fan motor, rear smoke box and chimney, control panel on a stand with gauges and lamps, gauge glass with cocks, twin safety valves, steam stop valve and outlet flange, pressure gauge, feed pump and motor, blowdown.",
+ "clearances": [
+  {
+   "n": "Burner Withdrawal",
+   "shape": "box",
+   "at": [
+    1460,
+    -700,
+    0,
+    2960,
+    700,
+    1600
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}

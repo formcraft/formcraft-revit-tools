@@ -1,0 +1,4302 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_PlumbingEq_Tank_Sectional_GRP",
+ "template": "Metric Generic Model.rft",
+ "about": "GRP tank modelled as a generic product: steel bearers, panel body, external flange grid (vertical, belt and roof ribs), divider line, two hatches with lids, two vent cowls, ladder, inlet, two outlets with handwheel valves, overflow, drain and level gauge. 20 m3 drawn; 50 m3 shares it. Reference: query: tank sectional grp plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=tank+sectional+grp+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Plumbing Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cover_Level_m",
+   "guid": "8ea739e9-8540-52b1-94c8-31f8c3b68946",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Invert_In_m",
+   "guid": "c6a9407b-775b-5907-ad76-c8a50d749eb7",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Invert_Out_m",
+   "guid": "dfc4212d-23c3-50c9-8f96-8111e5c21fa8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "20m3_GRP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/FMC_Cost_Unit",
+   "type": "20m3_GRP",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/FMC_Geometry_Stage",
+   "type": "20m3_GRP",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/IfcExportAs",
+   "type": "20m3_GRP",
+   "param": "IfcExportAs",
+   "value": "IfcTank"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/Description",
+   "type": "20m3_GRP",
+   "param": "Description",
+   "value": "Sectional GRP water tank 20 m3, 4000 x 2500 x 2000 mm on 1 m panels, divided into two compartments, steel bearers, roof hatches and vents, external ladder, valved outlets"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/Keynote",
+   "type": "20m3_GRP",
+   "param": "Keynote",
+   "value": "P.TNK_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3_GRP/FMC_Keynote_Code",
+   "type": "20m3_GRP",
+   "param": "FMC_Keynote_Code",
+   "value": "P.TNK_02"
+  },
+  {
+   "op": "add_type",
+   "name": "50m3_GRP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/FMC_Cost_Unit",
+   "type": "50m3_GRP",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/FMC_Geometry_Stage",
+   "type": "50m3_GRP",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/IfcExportAs",
+   "type": "50m3_GRP",
+   "param": "IfcExportAs",
+   "value": "IfcTank"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/Description",
+   "type": "50m3_GRP",
+   "param": "Description",
+   "value": "Sectional GRP water tank 20 m3, 4000 x 2500 x 2000 mm on 1 m panels, divided into two compartments, steel bearers, roof hatches and vents, external ladder, valved outlets"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/Keynote",
+   "type": "50m3_GRP",
+   "param": "Keynote",
+   "value": "P.TNK_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3_GRP/FMC_Keynote_Code",
+   "type": "50m3_GRP",
+   "param": "FMC_Keynote_Code",
+   "value": "P.TNK_02"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    110,
+    110,
+    110
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StructuralSteel_S275",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grp",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grp Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grp Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upvc",
+   "color": [
+    74,
+    77,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upvc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galvanised",
+   "color": [
+    158,
+    163,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galvanised Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_GI_Pipe",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Polycarbonate",
+   "color": [
+    221,
+    230,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Polycarbonate Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Polycarbonate_Clear",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    181,
+    18,
+    27
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_FireHoseReel_Red",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -2165.0,
+     -1500
+    ],
+    [
+     2250,
+     -1500
+    ],
+    [
+     2250,
+     1300
+    ],
+    [
+     -2165.0,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 2700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Beam 1",
+   "points": [
+    [
+     -2020,
+     -1300
+    ],
+    [
+     -1920,
+     -1300
+    ],
+    [
+     -1920,
+     1300
+    ],
+    [
+     -2020,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Beam 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Beam 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Beam 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Beam 2",
+   "points": [
+    [
+     -1035,
+     -1300
+    ],
+    [
+     -935,
+     -1300
+    ],
+    [
+     -935,
+     1300
+    ],
+    [
+     -1035,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Beam 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Beam 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Beam 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Beam 3",
+   "points": [
+    [
+     -50,
+     -1300
+    ],
+    [
+     50,
+     -1300
+    ],
+    [
+     50,
+     1300
+    ],
+    [
+     -50,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Beam 3",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Beam 3",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Beam 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Beam 4",
+   "points": [
+    [
+     935,
+     -1300
+    ],
+    [
+     1035,
+     -1300
+    ],
+    [
+     1035,
+     1300
+    ],
+    [
+     935,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Beam 4",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Beam 4",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Beam 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Beam 5",
+   "points": [
+    [
+     1920,
+     -1300
+    ],
+    [
+     2020,
+     -1300
+    ],
+    [
+     2020,
+     1300
+    ],
+    [
+     1920,
+     1300
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Beam 5",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Beam 5",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Beam 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Body",
+   "points": [
+    [
+     -2000,
+     -1250
+    ],
+    [
+     2000,
+     -1250
+    ],
+    [
+     2000,
+     1250
+    ],
+    [
+     -2000,
+     1250
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Body",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Body",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Front 1",
+   "points": [
+    [
+     -1015,
+     -1290
+    ],
+    [
+     -985,
+     -1290
+    ],
+    [
+     -985,
+     -1250
+    ],
+    [
+     -1015,
+     -1250
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Front 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Front 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Front 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Front 2",
+   "points": [
+    [
+     -15,
+     -1290
+    ],
+    [
+     15,
+     -1290
+    ],
+    [
+     15,
+     -1250
+    ],
+    [
+     -15,
+     -1250
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Front 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Front 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Front 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Front 3",
+   "points": [
+    [
+     985,
+     -1290
+    ],
+    [
+     1015,
+     -1290
+    ],
+    [
+     1015,
+     -1250
+    ],
+    [
+     985,
+     -1250
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Front 3",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Front 3",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Front 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Back 1",
+   "points": [
+    [
+     -1015,
+     1250
+    ],
+    [
+     -985,
+     1250
+    ],
+    [
+     -985,
+     1290
+    ],
+    [
+     -1015,
+     1290
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Back 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Back 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Back 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Back 2",
+   "points": [
+    [
+     -15,
+     1250
+    ],
+    [
+     15,
+     1250
+    ],
+    [
+     15,
+     1290
+    ],
+    [
+     -15,
+     1290
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Back 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Back 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Back 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Back 3",
+   "points": [
+    [
+     985,
+     1250
+    ],
+    [
+     1015,
+     1250
+    ],
+    [
+     1015,
+     1290
+    ],
+    [
+     985,
+     1290
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Back 3",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Back 3",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Back 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Side L 1",
+   "points": [
+    [
+     -2040,
+     -265
+    ],
+    [
+     -2000,
+     -265
+    ],
+    [
+     -2000,
+     -235
+    ],
+    [
+     -2040,
+     -235
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Side L 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Side L 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Side L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Side L 2",
+   "points": [
+    [
+     -2040,
+     735
+    ],
+    [
+     -2000,
+     735
+    ],
+    [
+     -2000,
+     765
+    ],
+    [
+     -2040,
+     765
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Side L 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Side L 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Side L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Side R 1",
+   "points": [
+    [
+     2000,
+     -265
+    ],
+    [
+     2040,
+     -265
+    ],
+    [
+     2040,
+     -235
+    ],
+    [
+     2000,
+     -235
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Side R 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Side R 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Side R 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Side R 2",
+   "points": [
+    [
+     2000,
+     735
+    ],
+    [
+     2040,
+     735
+    ],
+    [
+     2040,
+     765
+    ],
+    [
+     2000,
+     765
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Side R 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Side R 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Side R 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Belt Front",
+   "points": [
+    [
+     -2000,
+     -1290
+    ],
+    [
+     2000,
+     -1290
+    ],
+    [
+     2000,
+     -1250
+    ],
+    [
+     -2000,
+     -1250
+    ]
+   ],
+   "start": 1135,
+   "end": 1165
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Belt Front",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Belt Front",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Belt Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flange Belt Back",
+   "points": [
+    [
+     -2000,
+     1250
+    ],
+    [
+     2000,
+     1250
+    ],
+    [
+     2000,
+     1290
+    ],
+    [
+     -2000,
+     1290
+    ]
+   ],
+   "start": 1135,
+   "end": 1165
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flange Belt Back",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flange Belt Back",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flange Belt Back",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Rib 1",
+   "points": [
+    [
+     -1015,
+     -1250
+    ],
+    [
+     -985,
+     -1250
+    ],
+    [
+     -985,
+     1250
+    ],
+    [
+     -1015,
+     1250
+    ]
+   ],
+   "start": 2150,
+   "end": 2190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Rib 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Rib 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Rib 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Rib 2",
+   "points": [
+    [
+     -15,
+     -1250
+    ],
+    [
+     15,
+     -1250
+    ],
+    [
+     15,
+     1250
+    ],
+    [
+     -15,
+     1250
+    ]
+   ],
+   "start": 2150,
+   "end": 2190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Rib 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Rib 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Rib 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof Rib 3",
+   "points": [
+    [
+     985,
+     -1250
+    ],
+    [
+     1015,
+     -1250
+    ],
+    [
+     1015,
+     1250
+    ],
+    [
+     985,
+     1250
+    ]
+   ],
+   "start": 2150,
+   "end": 2190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof Rib 3",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof Rib 3",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof Rib 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Line Front",
+   "points": [
+    [
+     -25,
+     -1300
+    ],
+    [
+     25,
+     -1300
+    ],
+    [
+     25,
+     -1250
+    ],
+    [
+     -25,
+     -1250
+    ]
+   ],
+   "start": 150,
+   "end": 2150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Line Front",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Line Front",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Line Front",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider Line Roof",
+   "points": [
+    [
+     -25,
+     -1250
+    ],
+    [
+     25,
+     -1250
+    ],
+    [
+     25,
+     1250
+    ],
+    [
+     -25,
+     1250
+    ]
+   ],
+   "start": 2150,
+   "end": 2200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider Line Roof",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider Line Roof",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider Line Roof",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hatch 1",
+   "points": [
+    [
+     -1700,
+     -900
+    ],
+    [
+     -1100,
+     -900
+    ],
+    [
+     -1100,
+     -300
+    ],
+    [
+     -1700,
+     -300
+    ]
+   ],
+   "start": 2150,
+   "end": 2210
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hatch 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hatch 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hatch 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hatch 2",
+   "points": [
+    [
+     1100,
+     -900
+    ],
+    [
+     1700,
+     -900
+    ],
+    [
+     1700,
+     -300
+    ],
+    [
+     1100,
+     -300
+    ]
+   ],
+   "start": 2150,
+   "end": 2210
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hatch 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hatch 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hatch 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hatch Lid 1",
+   "points": [
+    [
+     -1710,
+     -910
+    ],
+    [
+     -1090,
+     -910
+    ],
+    [
+     -1090,
+     -290
+    ],
+    [
+     -1710,
+     -290
+    ]
+   ],
+   "start": 2210,
+   "end": 2230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hatch Lid 1",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hatch Lid 1",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hatch Lid 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hatch Lid 2",
+   "points": [
+    [
+     1090,
+     -910
+    ],
+    [
+     1710,
+     -910
+    ],
+    [
+     1710,
+     -290
+    ],
+    [
+     1090,
+     -290
+    ]
+   ],
+   "start": 2210,
+   "end": 2230
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hatch Lid 2",
+   "subcategory": "Grp"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hatch Lid 2",
+   "param": "Grp Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hatch Lid 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 1",
+   "points": [
+    [
+     -1370.0,
+     600.0
+    ],
+    [
+     -1371.02,
+     607.76
+    ],
+    [
+     -1374.02,
+     615.0
+    ],
+    [
+     -1378.79,
+     621.21
+    ],
+    [
+     -1385.0,
+     625.98
+    ],
+    [
+     -1392.24,
+     628.98
+    ],
+    [
+     -1400.0,
+     630.0
+    ],
+    [
+     -1407.76,
+     628.98
+    ],
+    [
+     -1415.0,
+     625.98
+    ],
+    [
+     -1421.21,
+     621.21
+    ],
+    [
+     -1425.98,
+     615.0
+    ],
+    [
+     -1428.98,
+     607.76
+    ],
+    [
+     -1430.0,
+     600.0
+    ],
+    [
+     -1428.98,
+     592.24
+    ],
+    [
+     -1425.98,
+     585.0
+    ],
+    [
+     -1421.21,
+     578.79
+    ],
+    [
+     -1415.0,
+     574.02
+    ],
+    [
+     -1407.76,
+     571.02
+    ],
+    [
+     -1400.0,
+     570.0
+    ],
+    [
+     -1392.24,
+     571.02
+    ],
+    [
+     -1385.0,
+     574.02
+    ],
+    [
+     -1378.79,
+     578.79
+    ],
+    [
+     -1374.02,
+     585.0
+    ],
+    [
+     -1371.02,
+     592.24
+    ]
+   ],
+   "start": 2150,
+   "end": 2350
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 1",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 1",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 2",
+   "points": [
+    [
+     1430.0,
+     600.0
+    ],
+    [
+     1428.98,
+     607.76
+    ],
+    [
+     1425.98,
+     615.0
+    ],
+    [
+     1421.21,
+     621.21
+    ],
+    [
+     1415.0,
+     625.98
+    ],
+    [
+     1407.76,
+     628.98
+    ],
+    [
+     1400.0,
+     630.0
+    ],
+    [
+     1392.24,
+     628.98
+    ],
+    [
+     1385.0,
+     625.98
+    ],
+    [
+     1378.79,
+     621.21
+    ],
+    [
+     1374.02,
+     615.0
+    ],
+    [
+     1371.02,
+     607.76
+    ],
+    [
+     1370.0,
+     600.0
+    ],
+    [
+     1371.02,
+     592.24
+    ],
+    [
+     1374.02,
+     585.0
+    ],
+    [
+     1378.79,
+     578.79
+    ],
+    [
+     1385.0,
+     574.02
+    ],
+    [
+     1392.24,
+     571.02
+    ],
+    [
+     1400.0,
+     570.0
+    ],
+    [
+     1407.76,
+     571.02
+    ],
+    [
+     1415.0,
+     574.02
+    ],
+    [
+     1421.21,
+     578.79
+    ],
+    [
+     1425.98,
+     585.0
+    ],
+    [
+     1428.98,
+     592.24
+    ]
+   ],
+   "start": 2150,
+   "end": 2350
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 2",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 2",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 1",
+   "profile": [
+    [
+     0,
+     2350
+    ],
+    [
+     70,
+     2350
+    ],
+    [
+     60,
+     2390
+    ],
+    [
+     0,
+     2410
+    ]
+   ],
+   "axis_at": [
+    -1400,
+    600
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 1",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 2",
+   "profile": [
+    [
+     0,
+     2350
+    ],
+    [
+     70,
+     2350
+    ],
+    [
+     60,
+     2390
+    ],
+    [
+     0,
+     2410
+    ]
+   ],
+   "axis_at": [
+    1400,
+    600
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 2",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Stile 1",
+   "points": [
+    [
+     -2135.0,
+     -200.0
+    ],
+    [
+     -2135.51,
+     -196.12
+    ],
+    [
+     -2137.01,
+     -192.5
+    ],
+    [
+     -2139.39,
+     -189.39
+    ],
+    [
+     -2142.5,
+     -187.01
+    ],
+    [
+     -2146.12,
+     -185.51
+    ],
+    [
+     -2150.0,
+     -185.0
+    ],
+    [
+     -2153.88,
+     -185.51
+    ],
+    [
+     -2157.5,
+     -187.01
+    ],
+    [
+     -2160.61,
+     -189.39
+    ],
+    [
+     -2162.99,
+     -192.5
+    ],
+    [
+     -2164.49,
+     -196.12
+    ],
+    [
+     -2165.0,
+     -200.0
+    ],
+    [
+     -2164.49,
+     -203.88
+    ],
+    [
+     -2162.99,
+     -207.5
+    ],
+    [
+     -2160.61,
+     -210.61
+    ],
+    [
+     -2157.5,
+     -212.99
+    ],
+    [
+     -2153.88,
+     -214.49
+    ],
+    [
+     -2150.0,
+     -215.0
+    ],
+    [
+     -2146.12,
+     -214.49
+    ],
+    [
+     -2142.5,
+     -212.99
+    ],
+    [
+     -2139.39,
+     -210.61
+    ],
+    [
+     -2137.01,
+     -207.5
+    ],
+    [
+     -2135.51,
+     -203.88
+    ]
+   ],
+   "start": 0,
+   "end": 2700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Stile 1",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Stile 1",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Stile 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Stile 2",
+   "points": [
+    [
+     -2135.0,
+     200.0
+    ],
+    [
+     -2135.51,
+     203.88
+    ],
+    [
+     -2137.01,
+     207.5
+    ],
+    [
+     -2139.39,
+     210.61
+    ],
+    [
+     -2142.5,
+     212.99
+    ],
+    [
+     -2146.12,
+     214.49
+    ],
+    [
+     -2150.0,
+     215.0
+    ],
+    [
+     -2153.88,
+     214.49
+    ],
+    [
+     -2157.5,
+     212.99
+    ],
+    [
+     -2160.61,
+     210.61
+    ],
+    [
+     -2162.99,
+     207.5
+    ],
+    [
+     -2164.49,
+     203.88
+    ],
+    [
+     -2165.0,
+     200.0
+    ],
+    [
+     -2164.49,
+     196.12
+    ],
+    [
+     -2162.99,
+     192.5
+    ],
+    [
+     -2160.61,
+     189.39
+    ],
+    [
+     -2157.5,
+     187.01
+    ],
+    [
+     -2153.88,
+     185.51
+    ],
+    [
+     -2150.0,
+     185.0
+    ],
+    [
+     -2146.12,
+     185.51
+    ],
+    [
+     -2142.5,
+     187.01
+    ],
+    [
+     -2139.39,
+     189.39
+    ],
+    [
+     -2137.01,
+     192.5
+    ],
+    [
+     -2135.51,
+     196.12
+    ]
+   ],
+   "start": 0,
+   "end": 2700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Stile 2",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Stile 2",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Stile 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 1",
+   "points": [
+    [
+     -2139.0,
+     300.0
+    ],
+    [
+     -2139.37,
+     302.85
+    ],
+    [
+     -2140.47,
+     305.5
+    ],
+    [
+     -2142.22,
+     307.78
+    ],
+    [
+     -2144.5,
+     309.53
+    ],
+    [
+     -2147.15,
+     310.63
+    ],
+    [
+     -2150.0,
+     311.0
+    ],
+    [
+     -2152.85,
+     310.63
+    ],
+    [
+     -2155.5,
+     309.53
+    ],
+    [
+     -2157.78,
+     307.78
+    ],
+    [
+     -2159.53,
+     305.5
+    ],
+    [
+     -2160.63,
+     302.85
+    ],
+    [
+     -2161.0,
+     300.0
+    ],
+    [
+     -2160.63,
+     297.15
+    ],
+    [
+     -2159.53,
+     294.5
+    ],
+    [
+     -2157.78,
+     292.22
+    ],
+    [
+     -2155.5,
+     290.47
+    ],
+    [
+     -2152.85,
+     289.37
+    ],
+    [
+     -2150.0,
+     289.0
+    ],
+    [
+     -2147.15,
+     289.37
+    ],
+    [
+     -2144.5,
+     290.47
+    ],
+    [
+     -2142.22,
+     292.22
+    ],
+    [
+     -2140.47,
+     294.5
+    ],
+    [
+     -2139.37,
+     297.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 1",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 1",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 2",
+   "points": [
+    [
+     -2139.0,
+     600.0
+    ],
+    [
+     -2139.37,
+     602.85
+    ],
+    [
+     -2140.47,
+     605.5
+    ],
+    [
+     -2142.22,
+     607.78
+    ],
+    [
+     -2144.5,
+     609.53
+    ],
+    [
+     -2147.15,
+     610.63
+    ],
+    [
+     -2150.0,
+     611.0
+    ],
+    [
+     -2152.85,
+     610.63
+    ],
+    [
+     -2155.5,
+     609.53
+    ],
+    [
+     -2157.78,
+     607.78
+    ],
+    [
+     -2159.53,
+     605.5
+    ],
+    [
+     -2160.63,
+     602.85
+    ],
+    [
+     -2161.0,
+     600.0
+    ],
+    [
+     -2160.63,
+     597.15
+    ],
+    [
+     -2159.53,
+     594.5
+    ],
+    [
+     -2157.78,
+     592.22
+    ],
+    [
+     -2155.5,
+     590.47
+    ],
+    [
+     -2152.85,
+     589.37
+    ],
+    [
+     -2150.0,
+     589.0
+    ],
+    [
+     -2147.15,
+     589.37
+    ],
+    [
+     -2144.5,
+     590.47
+    ],
+    [
+     -2142.22,
+     592.22
+    ],
+    [
+     -2140.47,
+     594.5
+    ],
+    [
+     -2139.37,
+     597.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 2",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 2",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 3",
+   "points": [
+    [
+     -2139.0,
+     900.0
+    ],
+    [
+     -2139.37,
+     902.85
+    ],
+    [
+     -2140.47,
+     905.5
+    ],
+    [
+     -2142.22,
+     907.78
+    ],
+    [
+     -2144.5,
+     909.53
+    ],
+    [
+     -2147.15,
+     910.63
+    ],
+    [
+     -2150.0,
+     911.0
+    ],
+    [
+     -2152.85,
+     910.63
+    ],
+    [
+     -2155.5,
+     909.53
+    ],
+    [
+     -2157.78,
+     907.78
+    ],
+    [
+     -2159.53,
+     905.5
+    ],
+    [
+     -2160.63,
+     902.85
+    ],
+    [
+     -2161.0,
+     900.0
+    ],
+    [
+     -2160.63,
+     897.15
+    ],
+    [
+     -2159.53,
+     894.5
+    ],
+    [
+     -2157.78,
+     892.22
+    ],
+    [
+     -2155.5,
+     890.47
+    ],
+    [
+     -2152.85,
+     889.37
+    ],
+    [
+     -2150.0,
+     889.0
+    ],
+    [
+     -2147.15,
+     889.37
+    ],
+    [
+     -2144.5,
+     890.47
+    ],
+    [
+     -2142.22,
+     892.22
+    ],
+    [
+     -2140.47,
+     894.5
+    ],
+    [
+     -2139.37,
+     897.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 3",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 3",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 4",
+   "points": [
+    [
+     -2139.0,
+     1200.0
+    ],
+    [
+     -2139.37,
+     1202.85
+    ],
+    [
+     -2140.47,
+     1205.5
+    ],
+    [
+     -2142.22,
+     1207.78
+    ],
+    [
+     -2144.5,
+     1209.53
+    ],
+    [
+     -2147.15,
+     1210.63
+    ],
+    [
+     -2150.0,
+     1211.0
+    ],
+    [
+     -2152.85,
+     1210.63
+    ],
+    [
+     -2155.5,
+     1209.53
+    ],
+    [
+     -2157.78,
+     1207.78
+    ],
+    [
+     -2159.53,
+     1205.5
+    ],
+    [
+     -2160.63,
+     1202.85
+    ],
+    [
+     -2161.0,
+     1200.0
+    ],
+    [
+     -2160.63,
+     1197.15
+    ],
+    [
+     -2159.53,
+     1194.5
+    ],
+    [
+     -2157.78,
+     1192.22
+    ],
+    [
+     -2155.5,
+     1190.47
+    ],
+    [
+     -2152.85,
+     1189.37
+    ],
+    [
+     -2150.0,
+     1189.0
+    ],
+    [
+     -2147.15,
+     1189.37
+    ],
+    [
+     -2144.5,
+     1190.47
+    ],
+    [
+     -2142.22,
+     1192.22
+    ],
+    [
+     -2140.47,
+     1194.5
+    ],
+    [
+     -2139.37,
+     1197.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 4",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 4",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 5",
+   "points": [
+    [
+     -2139.0,
+     1500.0
+    ],
+    [
+     -2139.37,
+     1502.85
+    ],
+    [
+     -2140.47,
+     1505.5
+    ],
+    [
+     -2142.22,
+     1507.78
+    ],
+    [
+     -2144.5,
+     1509.53
+    ],
+    [
+     -2147.15,
+     1510.63
+    ],
+    [
+     -2150.0,
+     1511.0
+    ],
+    [
+     -2152.85,
+     1510.63
+    ],
+    [
+     -2155.5,
+     1509.53
+    ],
+    [
+     -2157.78,
+     1507.78
+    ],
+    [
+     -2159.53,
+     1505.5
+    ],
+    [
+     -2160.63,
+     1502.85
+    ],
+    [
+     -2161.0,
+     1500.0
+    ],
+    [
+     -2160.63,
+     1497.15
+    ],
+    [
+     -2159.53,
+     1494.5
+    ],
+    [
+     -2157.78,
+     1492.22
+    ],
+    [
+     -2155.5,
+     1490.47
+    ],
+    [
+     -2152.85,
+     1489.37
+    ],
+    [
+     -2150.0,
+     1489.0
+    ],
+    [
+     -2147.15,
+     1489.37
+    ],
+    [
+     -2144.5,
+     1490.47
+    ],
+    [
+     -2142.22,
+     1492.22
+    ],
+    [
+     -2140.47,
+     1494.5
+    ],
+    [
+     -2139.37,
+     1497.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 5",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 5",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 6",
+   "points": [
+    [
+     -2139.0,
+     1800.0
+    ],
+    [
+     -2139.37,
+     1802.85
+    ],
+    [
+     -2140.47,
+     1805.5
+    ],
+    [
+     -2142.22,
+     1807.78
+    ],
+    [
+     -2144.5,
+     1809.53
+    ],
+    [
+     -2147.15,
+     1810.63
+    ],
+    [
+     -2150.0,
+     1811.0
+    ],
+    [
+     -2152.85,
+     1810.63
+    ],
+    [
+     -2155.5,
+     1809.53
+    ],
+    [
+     -2157.78,
+     1807.78
+    ],
+    [
+     -2159.53,
+     1805.5
+    ],
+    [
+     -2160.63,
+     1802.85
+    ],
+    [
+     -2161.0,
+     1800.0
+    ],
+    [
+     -2160.63,
+     1797.15
+    ],
+    [
+     -2159.53,
+     1794.5
+    ],
+    [
+     -2157.78,
+     1792.22
+    ],
+    [
+     -2155.5,
+     1790.47
+    ],
+    [
+     -2152.85,
+     1789.37
+    ],
+    [
+     -2150.0,
+     1789.0
+    ],
+    [
+     -2147.15,
+     1789.37
+    ],
+    [
+     -2144.5,
+     1790.47
+    ],
+    [
+     -2142.22,
+     1792.22
+    ],
+    [
+     -2140.47,
+     1794.5
+    ],
+    [
+     -2139.37,
+     1797.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 6",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 6",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 7",
+   "points": [
+    [
+     -2139.0,
+     2100.0
+    ],
+    [
+     -2139.37,
+     2102.85
+    ],
+    [
+     -2140.47,
+     2105.5
+    ],
+    [
+     -2142.22,
+     2107.78
+    ],
+    [
+     -2144.5,
+     2109.53
+    ],
+    [
+     -2147.15,
+     2110.63
+    ],
+    [
+     -2150.0,
+     2111.0
+    ],
+    [
+     -2152.85,
+     2110.63
+    ],
+    [
+     -2155.5,
+     2109.53
+    ],
+    [
+     -2157.78,
+     2107.78
+    ],
+    [
+     -2159.53,
+     2105.5
+    ],
+    [
+     -2160.63,
+     2102.85
+    ],
+    [
+     -2161.0,
+     2100.0
+    ],
+    [
+     -2160.63,
+     2097.15
+    ],
+    [
+     -2159.53,
+     2094.5
+    ],
+    [
+     -2157.78,
+     2092.22
+    ],
+    [
+     -2155.5,
+     2090.47
+    ],
+    [
+     -2152.85,
+     2089.37
+    ],
+    [
+     -2150.0,
+     2089.0
+    ],
+    [
+     -2147.15,
+     2089.37
+    ],
+    [
+     -2144.5,
+     2090.47
+    ],
+    [
+     -2142.22,
+     2092.22
+    ],
+    [
+     -2140.47,
+     2094.5
+    ],
+    [
+     -2139.37,
+     2097.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 7",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 7",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 8",
+   "points": [
+    [
+     -2139.0,
+     2400.0
+    ],
+    [
+     -2139.37,
+     2402.85
+    ],
+    [
+     -2140.47,
+     2405.5
+    ],
+    [
+     -2142.22,
+     2407.78
+    ],
+    [
+     -2144.5,
+     2409.53
+    ],
+    [
+     -2147.15,
+     2410.63
+    ],
+    [
+     -2150.0,
+     2411.0
+    ],
+    [
+     -2152.85,
+     2410.63
+    ],
+    [
+     -2155.5,
+     2409.53
+    ],
+    [
+     -2157.78,
+     2407.78
+    ],
+    [
+     -2159.53,
+     2405.5
+    ],
+    [
+     -2160.63,
+     2402.85
+    ],
+    [
+     -2161.0,
+     2400.0
+    ],
+    [
+     -2160.63,
+     2397.15
+    ],
+    [
+     -2159.53,
+     2394.5
+    ],
+    [
+     -2157.78,
+     2392.22
+    ],
+    [
+     -2155.5,
+     2390.47
+    ],
+    [
+     -2152.85,
+     2389.37
+    ],
+    [
+     -2150.0,
+     2389.0
+    ],
+    [
+     -2147.15,
+     2389.37
+    ],
+    [
+     -2144.5,
+     2390.47
+    ],
+    [
+     -2142.22,
+     2392.22
+    ],
+    [
+     -2140.47,
+     2394.5
+    ],
+    [
+     -2139.37,
+     2397.15
+    ]
+   ],
+   "start": -200,
+   "end": 200,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 8",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 8",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Pipe",
+   "points": [
+    [
+     25.0,
+     2000.0
+    ],
+    [
+     24.15,
+     2006.47
+    ],
+    [
+     21.65,
+     2012.5
+    ],
+    [
+     17.68,
+     2017.68
+    ],
+    [
+     12.5,
+     2021.65
+    ],
+    [
+     6.47,
+     2024.15
+    ],
+    [
+     0.0,
+     2025.0
+    ],
+    [
+     -6.47,
+     2024.15
+    ],
+    [
+     -12.5,
+     2021.65
+    ],
+    [
+     -17.68,
+     2017.68
+    ],
+    [
+     -21.65,
+     2012.5
+    ],
+    [
+     -24.15,
+     2006.47
+    ],
+    [
+     -25.0,
+     2000.0
+    ],
+    [
+     -24.15,
+     1993.53
+    ],
+    [
+     -21.65,
+     1987.5
+    ],
+    [
+     -17.68,
+     1982.32
+    ],
+    [
+     -12.5,
+     1978.35
+    ],
+    [
+     -6.47,
+     1975.85
+    ],
+    [
+     -0.0,
+     1975.0
+    ],
+    [
+     6.47,
+     1975.85
+    ],
+    [
+     12.5,
+     1978.35
+    ],
+    [
+     17.68,
+     1982.32
+    ],
+    [
+     21.65,
+     1987.5
+    ],
+    [
+     24.15,
+     1993.53
+    ]
+   ],
+   "start": 2000,
+   "end": 2250,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Pipe",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Pipe",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe 1",
+   "points": [
+    [
+     -960.0,
+     350.0
+    ],
+    [
+     -961.36,
+     360.35
+    ],
+    [
+     -965.36,
+     370.0
+    ],
+    [
+     -971.72,
+     378.28
+    ],
+    [
+     -980.0,
+     384.64
+    ],
+    [
+     -989.65,
+     388.64
+    ],
+    [
+     -1000.0,
+     390.0
+    ],
+    [
+     -1010.35,
+     388.64
+    ],
+    [
+     -1020.0,
+     384.64
+    ],
+    [
+     -1028.28,
+     378.28
+    ],
+    [
+     -1034.64,
+     370.0
+    ],
+    [
+     -1038.64,
+     360.35
+    ],
+    [
+     -1040.0,
+     350.0
+    ],
+    [
+     -1038.64,
+     339.65
+    ],
+    [
+     -1034.64,
+     330.0
+    ],
+    [
+     -1028.28,
+     321.72
+    ],
+    [
+     -1020.0,
+     315.36
+    ],
+    [
+     -1010.35,
+     311.36
+    ],
+    [
+     -1000.0,
+     310.0
+    ],
+    [
+     -989.65,
+     311.36
+    ],
+    [
+     -980.0,
+     315.36
+    ],
+    [
+     -971.72,
+     321.72
+    ],
+    [
+     -965.36,
+     330.0
+    ],
+    [
+     -961.36,
+     339.65
+    ]
+   ],
+   "start": 1290,
+   "end": 1500,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe 1",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe 1",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe 2",
+   "points": [
+    [
+     1040.0,
+     350.0
+    ],
+    [
+     1038.64,
+     360.35
+    ],
+    [
+     1034.64,
+     370.0
+    ],
+    [
+     1028.28,
+     378.28
+    ],
+    [
+     1020.0,
+     384.64
+    ],
+    [
+     1010.35,
+     388.64
+    ],
+    [
+     1000.0,
+     390.0
+    ],
+    [
+     989.65,
+     388.64
+    ],
+    [
+     980.0,
+     384.64
+    ],
+    [
+     971.72,
+     378.28
+    ],
+    [
+     965.36,
+     370.0
+    ],
+    [
+     961.36,
+     360.35
+    ],
+    [
+     960.0,
+     350.0
+    ],
+    [
+     961.36,
+     339.65
+    ],
+    [
+     965.36,
+     330.0
+    ],
+    [
+     971.72,
+     321.72
+    ],
+    [
+     980.0,
+     315.36
+    ],
+    [
+     989.65,
+     311.36
+    ],
+    [
+     1000.0,
+     310.0
+    ],
+    [
+     1010.35,
+     311.36
+    ],
+    [
+     1020.0,
+     315.36
+    ],
+    [
+     1028.28,
+     321.72
+    ],
+    [
+     1034.64,
+     330.0
+    ],
+    [
+     1038.64,
+     339.65
+    ]
+   ],
+   "start": 1290,
+   "end": 1500,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe 2",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe 2",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Overflow Pipe",
+   "points": [
+    [
+     -760.0,
+     1950.0
+    ],
+    [
+     -761.36,
+     1960.35
+    ],
+    [
+     -765.36,
+     1970.0
+    ],
+    [
+     -771.72,
+     1978.28
+    ],
+    [
+     -780.0,
+     1984.64
+    ],
+    [
+     -789.65,
+     1988.64
+    ],
+    [
+     -800.0,
+     1990.0
+    ],
+    [
+     -810.35,
+     1988.64
+    ],
+    [
+     -820.0,
+     1984.64
+    ],
+    [
+     -828.28,
+     1978.28
+    ],
+    [
+     -834.64,
+     1970.0
+    ],
+    [
+     -838.64,
+     1960.35
+    ],
+    [
+     -840.0,
+     1950.0
+    ],
+    [
+     -838.64,
+     1939.65
+    ],
+    [
+     -834.64,
+     1930.0
+    ],
+    [
+     -828.28,
+     1921.72
+    ],
+    [
+     -820.0,
+     1915.36
+    ],
+    [
+     -810.35,
+     1911.36
+    ],
+    [
+     -800.0,
+     1910.0
+    ],
+    [
+     -789.65,
+     1911.36
+    ],
+    [
+     -780.0,
+     1915.36
+    ],
+    [
+     -771.72,
+     1921.72
+    ],
+    [
+     -765.36,
+     1930.0
+    ],
+    [
+     -761.36,
+     1939.65
+    ]
+   ],
+   "start": 2000,
+   "end": 2250,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Overflow Pipe",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Overflow Pipe",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Overflow Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drain Valve",
+   "points": [
+    [
+     -1475.0,
+     250.0
+    ],
+    [
+     -1475.85,
+     256.47
+    ],
+    [
+     -1478.35,
+     262.5
+    ],
+    [
+     -1482.32,
+     267.68
+    ],
+    [
+     -1487.5,
+     271.65
+    ],
+    [
+     -1493.53,
+     274.15
+    ],
+    [
+     -1500.0,
+     275.0
+    ],
+    [
+     -1506.47,
+     274.15
+    ],
+    [
+     -1512.5,
+     271.65
+    ],
+    [
+     -1517.68,
+     267.68
+    ],
+    [
+     -1521.65,
+     262.5
+    ],
+    [
+     -1524.15,
+     256.47
+    ],
+    [
+     -1525.0,
+     250.0
+    ],
+    [
+     -1524.15,
+     243.53
+    ],
+    [
+     -1521.65,
+     237.5
+    ],
+    [
+     -1517.68,
+     232.32
+    ],
+    [
+     -1512.5,
+     228.35
+    ],
+    [
+     -1506.47,
+     225.85
+    ],
+    [
+     -1500.0,
+     225.0
+    ],
+    [
+     -1493.53,
+     225.85
+    ],
+    [
+     -1487.5,
+     228.35
+    ],
+    [
+     -1482.32,
+     232.32
+    ],
+    [
+     -1478.35,
+     237.5
+    ],
+    [
+     -1475.85,
+     243.53
+    ]
+   ],
+   "start": 1290,
+   "end": 1400,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Valve",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Level Gauge",
+   "points": [
+    [
+     1912.0,
+     -1300.0
+    ],
+    [
+     1911.59,
+     -1296.89
+    ],
+    [
+     1910.39,
+     -1294.0
+    ],
+    [
+     1908.49,
+     -1291.51
+    ],
+    [
+     1906.0,
+     -1289.61
+    ],
+    [
+     1903.11,
+     -1288.41
+    ],
+    [
+     1900.0,
+     -1288.0
+    ],
+    [
+     1896.89,
+     -1288.41
+    ],
+    [
+     1894.0,
+     -1289.61
+    ],
+    [
+     1891.51,
+     -1291.51
+    ],
+    [
+     1889.61,
+     -1294.0
+    ],
+    [
+     1888.41,
+     -1296.89
+    ],
+    [
+     1888.0,
+     -1300.0
+    ],
+    [
+     1888.41,
+     -1303.11
+    ],
+    [
+     1889.61,
+     -1306.0
+    ],
+    [
+     1891.51,
+     -1308.49
+    ],
+    [
+     1894.0,
+     -1310.39
+    ],
+    [
+     1896.89,
+     -1311.59
+    ],
+    [
+     1900.0,
+     -1312.0
+    ],
+    [
+     1903.11,
+     -1311.59
+    ],
+    [
+     1906.0,
+     -1310.39
+    ],
+    [
+     1908.49,
+     -1308.49
+    ],
+    [
+     1910.39,
+     -1306.0
+    ],
+    [
+     1911.59,
+     -1303.11
+    ]
+   ],
+   "start": 300,
+   "end": 2050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Level Gauge",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Level Gauge",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Level Gauge",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Outlet Valve 1 Rim",
+   "profile": [
+    [
+     61,
+     1420
+    ],
+    [
+     70,
+     1420
+    ],
+    [
+     70,
+     1430
+    ],
+    [
+     61,
+     1430
+    ]
+   ],
+   "axis_at": [
+    -1000,
+    350
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 1 Rim",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 1 Rim",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 1 Spoke A",
+   "points": [
+    [
+     -1065,
+     -1428
+    ],
+    [
+     -935,
+     -1428
+    ],
+    [
+     -935,
+     -1422
+    ],
+    [
+     -1065,
+     -1422
+    ]
+   ],
+   "start": 345,
+   "end": 355
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 1 Spoke A",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 1 Spoke A",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 1 Spoke A",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 1 Spoke B",
+   "points": [
+    [
+     -1005,
+     -1428
+    ],
+    [
+     -995,
+     -1428
+    ],
+    [
+     -995,
+     -1422
+    ],
+    [
+     -1005,
+     -1422
+    ]
+   ],
+   "start": 285,
+   "end": 415
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 1 Spoke B",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 1 Spoke B",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 1 Spoke B",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 1 Hub",
+   "points": [
+    [
+     -984.0,
+     350.0
+    ],
+    [
+     -984.55,
+     354.14
+    ],
+    [
+     -986.14,
+     358.0
+    ],
+    [
+     -988.69,
+     361.31
+    ],
+    [
+     -992.0,
+     363.86
+    ],
+    [
+     -995.86,
+     365.45
+    ],
+    [
+     -1000.0,
+     366.0
+    ],
+    [
+     -1004.14,
+     365.45
+    ],
+    [
+     -1008.0,
+     363.86
+    ],
+    [
+     -1011.31,
+     361.31
+    ],
+    [
+     -1013.86,
+     358.0
+    ],
+    [
+     -1015.45,
+     354.14
+    ],
+    [
+     -1016.0,
+     350.0
+    ],
+    [
+     -1015.45,
+     345.86
+    ],
+    [
+     -1013.86,
+     342.0
+    ],
+    [
+     -1011.31,
+     338.69
+    ],
+    [
+     -1008.0,
+     336.14
+    ],
+    [
+     -1004.14,
+     334.55
+    ],
+    [
+     -1000.0,
+     334.0
+    ],
+    [
+     -995.86,
+     334.55
+    ],
+    [
+     -992.0,
+     336.14
+    ],
+    [
+     -988.69,
+     338.69
+    ],
+    [
+     -986.14,
+     342.0
+    ],
+    [
+     -984.55,
+     345.86
+    ]
+   ],
+   "start": 1420,
+   "end": 1438,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 1 Hub",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 1 Hub",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 1 Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Outlet Valve 2 Rim",
+   "profile": [
+    [
+     61,
+     1420
+    ],
+    [
+     70,
+     1420
+    ],
+    [
+     70,
+     1430
+    ],
+    [
+     61,
+     1430
+    ]
+   ],
+   "axis_at": [
+    1000,
+    350
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 2 Rim",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 2 Rim",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 2 Spoke A",
+   "points": [
+    [
+     935,
+     -1428
+    ],
+    [
+     1065,
+     -1428
+    ],
+    [
+     1065,
+     -1422
+    ],
+    [
+     935,
+     -1422
+    ]
+   ],
+   "start": 345,
+   "end": 355
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 2 Spoke A",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 2 Spoke A",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 2 Spoke A",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 2 Spoke B",
+   "points": [
+    [
+     995,
+     -1428
+    ],
+    [
+     1005,
+     -1428
+    ],
+    [
+     1005,
+     -1422
+    ],
+    [
+     995,
+     -1422
+    ]
+   ],
+   "start": 285,
+   "end": 415
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 2 Spoke B",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 2 Spoke B",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 2 Spoke B",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Valve 2 Hub",
+   "points": [
+    [
+     1016.0,
+     350.0
+    ],
+    [
+     1015.45,
+     354.14
+    ],
+    [
+     1013.86,
+     358.0
+    ],
+    [
+     1011.31,
+     361.31
+    ],
+    [
+     1008.0,
+     363.86
+    ],
+    [
+     1004.14,
+     365.45
+    ],
+    [
+     1000.0,
+     366.0
+    ],
+    [
+     995.86,
+     365.45
+    ],
+    [
+     992.0,
+     363.86
+    ],
+    [
+     988.69,
+     361.31
+    ],
+    [
+     986.14,
+     358.0
+    ],
+    [
+     984.55,
+     354.14
+    ],
+    [
+     984.0,
+     350.0
+    ],
+    [
+     984.55,
+     345.86
+    ],
+    [
+     986.14,
+     342.0
+    ],
+    [
+     988.69,
+     338.69
+    ],
+    [
+     992.0,
+     336.14
+    ],
+    [
+     995.86,
+     334.55
+    ],
+    [
+     1000.0,
+     334.0
+    ],
+    [
+     1004.14,
+     334.55
+    ],
+    [
+     1008.0,
+     336.14
+    ],
+    [
+     1011.31,
+     338.69
+    ],
+    [
+     1013.86,
+     342.0
+    ],
+    [
+     1015.45,
+     345.86
+    ]
+   ],
+   "start": 1420,
+   "end": 1438,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Valve 2 Hub",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Valve 2 Hub",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Valve 2 Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Inlet",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Inlet Pipe",
+   "side": "right",
+   "diameter": 50,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Outlet A",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Outlet Pipe 1",
+   "side": "front",
+   "diameter": 80,
+   "flow": "Out"
+  },
+  {
+   "op": "add_connector",
+   "name": "Outlet B",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Outlet Pipe 2",
+   "side": "front",
+   "diameter": 80,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingEq_Tank_Sectional_GRP.png"
+  }
+ ],
+ "values": {
+  "4000 x 2500 x 2000 mm, 20 m3": {
+   "value": "4000x2500x2000",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Two compartments": {
+   "value": 2,
+   "source_status": "assumed",
+   "source": "HTM 04-01 divided storage for maintenance"
+  },
+  "Bearers 150 mm at 1 m": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

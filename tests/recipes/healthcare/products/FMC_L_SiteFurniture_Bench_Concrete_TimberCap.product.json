@@ -1,0 +1,233 @@
+{
+ "family": "FMC_L_SiteFurniture_Bench_Concrete_TimberCap",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Precast concrete bench 1800 / 2400 x 500, 455 high, with hardwood slat cap on battens, stainless fixings and skate stops, recessed shadow plinth",
+ "ifc": "IfcFurniture",
+ "keynote": "L.FUR_01",
+ "types": [
+  {
+   "name": "1800_Bench"
+  },
+  {
+   "name": "2400_Bench"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_Precast_Painted",
+  "concg": "FMC_Concrete_C30",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "timber": "FMC_Timber_Mvule"
+ },
+ "reference": {
+  "query": "site furniture bench concrete timber cap site hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=site+furniture+bench+concrete+timber+cap+site+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Shadow Plinth",
+   "shape": "box",
+   "at": [
+    -840,
+    -190,
+    0,
+    840,
+    190,
+    80
+   ],
+   "mat": "concg"
+  },
+  {
+   "n": "Precast Body",
+   "shape": "box",
+   "at": [
+    -900,
+    -250,
+    80,
+    900,
+    250,
+    400
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Arris Chamfer",
+   "shape": "box",
+   "at": [
+    -900,
+    -255,
+    395,
+    900,
+    -245,
+    405
+   ],
+   "mat": "conc",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     500,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Batten",
+   "shape": "box",
+   "at": [
+    -860,
+    -230,
+    400,
+    -820,
+    230,
+    420
+   ],
+   "mat": "timber",
+   "repeat": {
+    "n": 4,
+    "d": [
+     560,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Timber Slat",
+   "shape": "box",
+   "at": [
+    -900,
+    -245,
+    420,
+    900,
+    -175,
+    455
+   ],
+   "r": 6,
+   "mat": "timber",
+   "repeat": {
+    "n": 6,
+    "d": [
+     0,
+     82,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fixing Front Row",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -840,
+    -210
+   ],
+   "r": 5,
+   "z": [
+    455,
+    458
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     560,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fixing Back Row",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -840,
+    200
+   ],
+   "r": 5,
+   "z": [
+    455,
+    458
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     560,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Lifting Socket Cover",
+   "shape": "fbox",
+   "at": [
+    -700,
+    -252,
+    300,
+    -660,
+    -250,
+    340
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1360,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Skate Stop",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -300,
+    30
+   ],
+   "r": 14,
+   "z": [
+    455,
+    475
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     600,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "values": {
+  "1800 / 2400 x 500 mm, seat 455 mm": {
+   "value": "1800-2400x500x455",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Precast unit about 0.29 m3 (1800)": {
+   "value": 0.29,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Hardwood slats 70 x 35 mm": {
+   "value": "70x35",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Concrete bench modelled as a generic product: recessed shadow plinth, precast body with arris chamfers and lifting socket covers, timber battens, six slats with stainless fixings, two skate stops. Geometry drawn for 1800_Bench; the other types share it (sizes in the values)."
+}

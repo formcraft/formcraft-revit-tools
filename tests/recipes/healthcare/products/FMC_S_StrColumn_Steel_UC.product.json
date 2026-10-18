@@ -1,0 +1,552 @@
+{
+ "family": "FMC_S_StrColumn_Steel_UC",
+ "category": "Structural Columns",
+ "template": "Metric Generic Model.rft",
+ "desc": "Universal column, S275, on a 20 mm base plate with gussets, four holding-down bolts and a cap plate",
+ "ifc": "IfcColumn",
+ "keynote": "M.UCL_02",
+ "types": [
+  {
+   "name": "152UC_S275",
+   "desc": "UC 152x152 serial size"
+  },
+  {
+   "name": "203UC_S275",
+   "desc": "UC 203x203 serial size"
+  },
+  {
+   "name": "254UC_S275",
+   "desc": "UC 254x254 serial size"
+  }
+ ],
+ "materials": {
+  "mortar": "FMC_Masonry_Mortar_1to4",
+  "steel": "FMC_Metal_StructuralSteel_S275"
+ },
+ "parts": [
+  {
+   "n": "Grout Pad",
+   "shape": "box",
+   "at": [
+    -210,
+    -210,
+    0,
+    210,
+    210,
+    30
+   ],
+   "mat": "mortar"
+  },
+  {
+   "n": "Base Plate",
+   "shape": "box",
+   "at": [
+    -200,
+    -200,
+    30,
+    200,
+    200,
+    50
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Column",
+   "shape": "prism",
+   "pts": [
+    [
+     -101.8,
+     -101.6
+    ],
+    [
+     101.8,
+     -101.6
+    ],
+    [
+     101.8,
+     -90.6
+    ],
+    [
+     -101.8,
+     -90.6
+    ]
+   ],
+   "z": [
+    50,
+    3000
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Column Part 2",
+   "shape": "prism",
+   "pts": [
+    [
+     -3.6,
+     -90.6
+    ],
+    [
+     3.6,
+     -90.6
+    ],
+    [
+     3.6,
+     90.6
+    ],
+    [
+     -3.6,
+     90.6
+    ]
+   ],
+   "z": [
+    50,
+    3000
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Column Part 3",
+   "shape": "prism",
+   "pts": [
+    [
+     -101.8,
+     90.6
+    ],
+    [
+     101.8,
+     90.6
+    ],
+    [
+     101.8,
+     101.6
+    ],
+    [
+     -101.8,
+     101.6
+    ]
+   ],
+   "z": [
+    50,
+    3000
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Cap Plate",
+   "shape": "box",
+   "at": [
+    -125,
+    -125,
+    3000,
+    125,
+    125,
+    3015
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Gusset Front",
+   "shape": "right",
+   "pts": [
+    [
+     -101.6,
+     50
+    ],
+    [
+     -190,
+     50
+    ],
+    [
+     -190,
+     70
+    ],
+    [
+     -101.6,
+     200
+    ]
+   ],
+   "x": [
+    -6,
+    6
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Gusset Back",
+   "shape": "right",
+   "pts": [
+    [
+     101.6,
+     50
+    ],
+    [
+     101.6,
+     200
+    ],
+    [
+     190,
+     70
+    ],
+    [
+     190,
+     50
+    ]
+   ],
+   "x": [
+    -6,
+    6
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Stiffener Left",
+   "shape": "front",
+   "pts": [
+    [
+     -3.6,
+     50
+    ],
+    [
+     -3.6,
+     200
+    ],
+    [
+     -190,
+     70
+    ],
+    [
+     -190,
+     50
+    ]
+   ],
+   "y": [
+    -6,
+    6
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Stiffener Right",
+   "shape": "front",
+   "pts": [
+    [
+     3.6,
+     50
+    ],
+    [
+     190,
+     50
+    ],
+    [
+     190,
+     70
+    ],
+    [
+     3.6,
+     200
+    ]
+   ],
+   "y": [
+    -6,
+    6
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "HD Bolt 1 Washer",
+   "shape": "box",
+   "at": [
+    -175.0,
+    -175.0,
+    50,
+    -125.0,
+    -125.0,
+    56
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 1 Nut",
+   "shape": "prism",
+   "pts": [
+    [
+     -135.0,
+     -141.34
+    ],
+    [
+     -150.0,
+     -132.68
+    ],
+    [
+     -165.0,
+     -141.34
+    ],
+    [
+     -165.0,
+     -158.66
+    ],
+    [
+     -150.0,
+     -167.32
+    ],
+    [
+     -135.0,
+     -158.66
+    ]
+   ],
+   "z": [
+    56,
+    72.0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 1 Thread",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -150,
+    -150
+   ],
+   "r": 10.0,
+   "z": [
+    72.0,
+    110
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "HD Bolt 2 Washer",
+   "shape": "box",
+   "at": [
+    125.0,
+    -175.0,
+    50,
+    175.0,
+    -125.0,
+    56
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 2 Nut",
+   "shape": "prism",
+   "pts": [
+    [
+     165.0,
+     -141.34
+    ],
+    [
+     150.0,
+     -132.68
+    ],
+    [
+     135.0,
+     -141.34
+    ],
+    [
+     135.0,
+     -158.66
+    ],
+    [
+     150.0,
+     -167.32
+    ],
+    [
+     165.0,
+     -158.66
+    ]
+   ],
+   "z": [
+    56,
+    72.0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 2 Thread",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    150,
+    -150
+   ],
+   "r": 10.0,
+   "z": [
+    72.0,
+    110
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "HD Bolt 3 Washer",
+   "shape": "box",
+   "at": [
+    -175.0,
+    125.0,
+    50,
+    -125.0,
+    175.0,
+    56
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 3 Nut",
+   "shape": "prism",
+   "pts": [
+    [
+     -135.0,
+     158.66
+    ],
+    [
+     -150.0,
+     167.32
+    ],
+    [
+     -165.0,
+     158.66
+    ],
+    [
+     -165.0,
+     141.34
+    ],
+    [
+     -150.0,
+     132.68
+    ],
+    [
+     -135.0,
+     141.34
+    ]
+   ],
+   "z": [
+    56,
+    72.0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 3 Thread",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -150,
+    150
+   ],
+   "r": 10.0,
+   "z": [
+    72.0,
+    110
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "HD Bolt 4 Washer",
+   "shape": "box",
+   "at": [
+    125.0,
+    125.0,
+    50,
+    175.0,
+    175.0,
+    56
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 4 Nut",
+   "shape": "prism",
+   "pts": [
+    [
+     165.0,
+     158.66
+    ],
+    [
+     150.0,
+     167.32
+    ],
+    [
+     135.0,
+     158.66
+    ],
+    [
+     135.0,
+     141.34
+    ],
+    [
+     150.0,
+     132.68
+    ],
+    [
+     165.0,
+     141.34
+    ]
+   ],
+   "z": [
+    56,
+    72.0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  },
+  {
+   "n": "HD Bolt 4 Thread",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    150,
+    150
+   ],
+   "r": 10.0,
+   "z": [
+    72.0,
+    110
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "str column steel uc structural columns hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+column+steel+uc+structural+columns+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Section 203x203x46 UC (geometry)": {
+   "value": "203.2x203.6x7.2x11.0",
+   "source_status": "assumed",
+   "source": "BS 4-1 section table, from knowledge; section choice by engineer"
+  },
+  "Base plate 400 x 400 x 20 mm": {
+   "value": "400x400x20",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Holding-down bolts 4 x M20": {
+   "value": "4xM20",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Grade S275": {
+   "value": "S275",
+   "source_status": "assumed",
+   "source": "kit material; engineer to confirm"
+  }
+ },
+ "about": "UC modelled as erected: grout pad, base plate, I-section shaft, gussets and stiffeners, HD bolts with plate washers and nuts (Fine), cap plate. Geometry shows the 203 UC, 3000 high."
+}
