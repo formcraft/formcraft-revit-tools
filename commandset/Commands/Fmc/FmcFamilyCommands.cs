@@ -45,5 +45,13 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcLoadTestFamiliesCommand(UIApplication uiApp) : base(uiApp) { }
         public override string CommandName => "fmc_load_test_families";
         protected override string Action => "load_test";
+    }
+
+    /// <summary>F-061: Gate A's host test, in a new project that is never saved: place on a wall face or ceiling, move the host, check it follows.</summary>
+    public class FmcFamilyHostTestCommand : FmcFamilyCommandBase
+    {
+        public FmcFamilyHostTestCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_family_host_test";
+        protected override string Action => "host_test";
     }
 }

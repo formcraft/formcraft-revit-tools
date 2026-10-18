@@ -174,6 +174,14 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
      `path_planes`, `rect`, `end_plane` and `lock_face`. Each solid is reported as "follows Width/Height", and the
      gate result lists them all in `follows`. A solid that doesn't move when its governing parameter changes is a
      **Fail**. An add-in too old to report this is **Not checked**.
+   - **that it hosts as the register says (F-061).** The register's Host decides. A wall, ceiling or any face host
+     needs a face based family (or one hosted on that host); a family on an unhosted template **fails**. For such a
+     family Gate A also runs the **host test** (`fmc_family_host_test`). It opens a new project that is never saved,
+     places the family on a wall face or the underside of a ceiling the way a click does (face based: the reference
+     direction is Up × the face normal, so it lands upright), moves the host (wall 500 mm out, ceiling 300 mm up) and
+     checks that the family followed, kept its host, stayed upright and has no connector pointing out of the host into
+     the room. Then it closes the project without saving. A Host the register doesn't give, or no answer from Revit,
+     is **Not checked** with the reason.
    - code checks, such as a clear opening of at least 900 mm
    - the IFC class
    - the value sources
