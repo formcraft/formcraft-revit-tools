@@ -6,7 +6,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
-import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
+import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
+import { recipeTwins, withTwins } from "../hub/recipe2rhino.js";
+import { OP } from "../fmc/ops.js";
 
 const win = path.win32;
 
@@ -29,7 +31,10 @@ function reply(body: object, isError = false) {
 export const FMC_RHINO_DESCRIPTION =
   "Formcraft engineering hub: Rhino 8 (H1), the smooth fixed-shape parts of LOD 400 families (castors, grips, light " +
     "heads, knobs, canopies). Talks to the Formcraft bridge in the open Rhino; parts are built in the bridge's own memory, " +
-    "never in the person's drawing, and files are written with openNURBS, so it works whatever the licence state. " +
+    "never in the person's drawing, and files are written with openNURBS (Rhino must be licensed, or in its trial, to open). " +
+    "twins: a detailed family's recipe → the smooth Fine (LOD 400) twin of each native solid, built, checked, exported, " +
+    "rendered, and the recipe with import_part ops written to <staging>\\_Batch\\<family>_LOD400.json (a dry run builds and " +
+    "checks in Rhino's memory and writes nothing). " +
     "status: Rhino and the bridge. new_doc / open / save: a family's part set (files only in <staging>\\_Rhino). part: " +
     "build named closed solids from the vocabulary (box_rounded, extrude, revolve, pipe, loft, torus, sphere, shell, " +
     "boolean, fillet; mm; each with subcategory, material, visibility fine|medium_fine|all), all or none. check: the rules " +
@@ -38,7 +43,8 @@ export const FMC_RHINO_DESCRIPTION =
     "check passes. describe: the parts and their specs. remove: parts by name. Files: a dry run first.";
 
 export const FMC_RHINO_SHAPE = {
-  action: z.enum(["status", "describe", "new_doc", "open", "save", "part", "remove", "check", "render", "export_parts"]),
+  action: z.enum(["status", "describe", "new_doc", "open", "save", "part", "remove", "check", "render", "export_parts", "twins"]),
+  recipe_file: z.string().optional().default("").describe("twins: the recipe, or a batch file of recipes (the family picks one)"),
   family: z.string().optional().default("").describe("The kit family name the parts belong to (FMC_<role>_…)"),
   parts: z.array(z.record(z.string(), z.any())).optional().default([]).describe("part: the parts in order, each { name, op, …values, subcategory, material, visibility }"),
   names: z.array(z.string()).optional().default([]).describe("remove: part names; render, export_parts: only these parts"),
@@ -48,7 +54,7 @@ export const FMC_RHINO_SHAPE = {
   height: z.number().int().min(64).max(4000).optional().default(1200),
   replace: z.boolean().optional().default(false).describe("new_doc, open: replace parts already in the bridge for this family"),
   dry_run: z.boolean().optional().default(true).describe("save, render, export_parts: a dry run says what would be written"),
-  project_folder: z.string().optional().default("").describe("export_parts: the project whose exchange keeps the rhino → revit package (default <reports>\Exchange)"),
+  project_folder: z.string().optional().default("").describe("export_parts: the project whose exchange keeps the rhino → revit package (default <reports>\\Exchange)"),
 };
 
 export type FmcRhinoArgs = z.infer<z.ZodObject<typeof FMC_RHINO_SHAPE>>;
@@ -79,6 +85,7 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
 
   try {
     switch (args.action) {
+      case "twins": return reply(...(await twins(args, config, staging, where, call)));
       case "describe": return reply(await call("rhino_describe"));
       case "new_doc": return reply(await call("rhino_new_doc", { replace: args.replace }));
       case "remove": return reply(await call("rhino_remove", { names: args.names }));
@@ -148,6 +155,80 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
     log(config, "rhino_" + args.action, args.dry_run, args.family, "error", msg);
     return reply({ error: msg }, true);
   }
+}
+
+/**
+ * twins: a detailed family's Fine level (LOD 400) from its own recipe (hub/recipe2rhino.ts). Each native solid's smooth
+ * twin is built in Rhino one at a time (a twin that fails is reported and its native solid stays on Fine), checked,
+ * and, in a real run, exported, rendered and saved; the recipe with the import_part ops goes to
+ * <staging>\_Batch\<family>_LOD400.json for fmc_recipe batch (a dry run first, as always).
+ */
+async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, where: ReturnType<typeof rhinoPaths>,
+  call: (method: string, params?: object) => Promise<Record<string, any>>): Promise<[object, boolean]> {
+  if (!args.recipe_file) return [{ refused: true, reasons: ["Name the recipe_file (a recipe, or a batch file of recipes)"] }, true];
+  const file = expandEnv(args.recipe_file);
+  if (!fs.existsSync(file)) return [{ refused: true, reasons: [`No recipe at ${file}`] }, true];
+  const read = JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, ""));
+  const recipe = (Array.isArray(read) ? read : [read]).find((r: any) => r?.family === args.family);
+  if (!recipe || !Array.isArray(recipe.ops)) return [{ refused: true, reasons: [`${file} has no recipe for ${args.family}`] }, true];
+
+  const t = recipeTwins(recipe.ops);
+  await call("rhino_new_doc", { replace: true });
+  const failed: Array<{ part: string; solid: string; reason: string }> = [];
+  for (const p of t.parts) {
+    try { await call("rhino_part", { parts: [p] }); }
+    catch (e) { failed.push({ part: p.name, solid: t.map.find((m) => m.part === p.name)!.solid, reason: e instanceof Error ? e.message : String(e) }); }
+  }
+  const facts = (((await call("rhino_facts")).facts ?? []) as PartFacts[]);
+  const good: PartFacts[] = [];
+  for (const f of facts) {
+    const errors = partProblems([f]).filter(isError);
+    if (errors.length) failed.push({ part: f.name, solid: t.map.find((m) => m.part === f.name)?.solid ?? f.name, reason: errors.join("; ") });
+    else good.push(f);
+  }
+  const mesh = good.reduce((n, f) => n + (f.mesh_faces || 0), 0);
+  const out = win.join(staging, "_Batch", `${args.family}_LOD400.json`);
+  const summary = {
+    family: args.family, recipe: file, twins: t.parts.length, built_and_checked: good.length, failed, stays_native: t.kept.length,
+    kept: t.kept.slice(0, 40), mesh_faces: mesh,
+  };
+  if (args.dry_run) return [{ dry_run: true, ...summary, would_write: [where.parts, where.model, where.render, out], next: "Run again with dry_run=false" }, false];
+
+  for (const target of [where.manifest, where.model, where.render, out]) {
+    const v = checkWritePath(target, config, { checkName: false });
+    if (!v.ok) return [{ refused: true, reasons: v.reasons }, true];
+  }
+  const names = good.map((f) => f.name);
+  const ex = await call("rhino_export_parts", { folder: where.parts, parts: names });
+  const parts = ((ex.parts ?? []) as PartFacts[]).map((p) => ({ ...p, sha256: p.file && fs.existsSync(p.file) ? sha256(p.file) : "" }));
+  const manifest = { family: args.family, exported: new Date().toISOString(), from: "rhino", to: "revit", units: "mm", level: "Fine (LOD 400)",
+    note: "Smooth twins of the recipe's native solids, at the recipe's own coordinates (fmc_rhino twins)", parts };
+  fs.writeFileSync(where.manifest, JSON.stringify(manifest, null, 2));
+  await call("rhino_save", { path: where.model });
+  const renders: string[] = [];
+  for (const view of ["iso", "front", "back_iso"]) {
+    const png = rhinoPaths(staging, args.family, view).render;
+    await call("rhino_render", { path: png, view, width: 1600, height: 1200 });
+    renders.push(png);
+  }
+  const exported = new Map(parts.map((p) => [p.name, { file: p.file!, size_mm: partSize(p) }]));
+  const lod = withTwins(recipe.ops, t.map, exported);
+  const bad = lod.ops.filter((o) => o.op === "import_part").map((o) => OP.safeParse(o)).filter((r) => !r.success);
+  if (bad.length) return [{ error: "the import_part ops don't match the op schema", detail: bad.map((b) => b.error!.message).slice(0, 3) }, true];
+  const stamp = new Date().toISOString().slice(0, 10);
+  const next = { ...recipe, about: `${recipe.about ?? ""} · Fine (LOD 400): ${lod.twins} smooth Rhino twins of the native solids (fmc_rhino twins, ${stamp}); Medium keeps the native body`, ops: lod.ops };
+  fs.mkdirSync(win.dirname(out), { recursive: true });
+  fs.writeFileSync(out, JSON.stringify([next], null, 2));
+  log(config, "rhino_twins", false, out, "written", `${lod.twins} twins, ${failed.length} stay native`);
+  let hub: object;
+  try {
+    const root = exchangeRoot(args.project_folder ? expandEnv(args.project_folder) : undefined, expandEnv(config.reports_dir));
+    const pkg = writePackage(root, { from: "rhino", to: "revit", what: `Fine twins ${args.family}`, files: [{ name: "parts.json", text: JSON.stringify(manifest, null, 2) }],
+      source: { family: args.family, recipe: file, batch: out } });
+    hub = { exchange: root, package: pkg.manifest.id };
+  } catch (e) { hub = { error: e instanceof Error ? e.message : String(e) }; }
+  return [{ ...summary, twins_in_recipe: lod.twins, parts_folder: where.parts, renders, batch_file: out, hub,
+    next: `fmc_recipe batch recipe_files=["${out}"] (a dry run first), then batch_gate` }, false];
 }
 
 export function registerFmcRhinoTool(server: McpServer) {

@@ -162,6 +162,9 @@ export const OP = z.discriminatedUnion("op", [
     segments: z.array(z.object({ to: point, through: point.optional().describe("a point on the arc: the segment is a 3-point arc") }))
       .min(1).describe("each segment runs from the previous point to `to`; the last `to` must equal start (a closed loop)"),
     subcategory: z.string().optional() }),
+  z.object({ op: z.literal("import_part"), name: z.string().min(1).describe("the new form's name (set_subcategory etc. use it)"),
+    file: z.string().min(1).describe("a closed-solid .3dm under a _Rhino staging folder (fmc_rhino export_parts)"),
+    size_mm: z.array(z.number()).length(3).optional().describe("the part's size Rhino reported: Revit refuses a part that arrives another size (units)") }),
   z.object({ op: z.literal("set_visible_param"), name: z.string().min(1).describe("<solid>/Visible"), solid: z.string().min(1),
     param: z.string().min(1).describe("a Yes/No family parameter, e.g. one with a formula such as FMC_Design_Movement = 7") }),
   z.object({ op: z.literal("add_material"), name: z.string().min(1).describe("an FMC_ material in the kit's 07_Materials\\FMC_Materials.json"),
@@ -432,7 +435,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   };
   const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
   const solidAt = new Map<string, number>();
-  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend"]);
+  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part"]);
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
     const key = `${o.op}|${o.name.toLowerCase()}`;
@@ -465,6 +468,10 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         for (const x of profileLoopProblems(o.start, o.segments)) p.push(`${at}: ${x}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         lines.add(o.name);
+        break;
+      case "import_part":
+        if (!/\\_Rhino\\/i.test(o.file) || !/\.3dm$/i.test(o.file)) p.push(`${at}: file must be a .3dm under a _Rhino staging folder`);
+        solids.add(o.name);
         break;
       case "set_visible_param":
         if (o.name !== `${o.solid}/Visible`) p.push(`${at}: name must be "${o.solid}/Visible"`);

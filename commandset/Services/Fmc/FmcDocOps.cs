@@ -135,6 +135,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 case "sweep": return FmcDocLod.MakeSweep(doc, op, false);
                 case "void_sweep": return FmcDocLod.MakeSweep(doc, op, true);
                 case "revolution": return FmcDocLod.MakeRevolution(doc, op);
+                case "import_part": return FmcDocRhino.ImportPart(doc, op);
                 case "blend": return FmcDocLod.MakeBlend(doc, op);
                 case "symbolic_lines": return FmcDocRecipe.SymbolicLines(doc, op);
                 case "lock_face": return FmcDocLod.LockFace(doc, op);

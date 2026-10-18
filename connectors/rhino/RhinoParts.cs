@@ -29,7 +29,8 @@ namespace Formcraft.Rhino
         public const double Tol = 0.01;   // mm
         public const double AngTol = Math.PI / 180;
 
-        public static readonly string[] Ops = { "box_rounded", "extrude", "revolve", "pipe", "loft", "torus", "sphere", "shell", "boolean", "fillet" };
+        public static readonly string[] Ops = { "box_rounded", "extrude", "revolve", "pipe", "loft", "torus", "sphere", "shell", "boolean", "fillet",
+            "extrude_points", "revolve_loop", "sweep_path" };
 
         public static Part Build(JObject s, IDictionary<string, Part> parts, List<string> consumed)
         {
@@ -48,6 +49,9 @@ namespace Formcraft.Rhino
                 case "shell": b = Shell(s, parts, consumed); break;
                 case "boolean": b = Boolean(s, parts, consumed); break;
                 case "fillet": b = FilletOp(s, parts, consumed); break;
+                case "extrude_points": b = ExtrudePoints(s); break;
+                case "revolve_loop": b = RevolveLoop(s); break;
+                case "sweep_path": b = SweepPath(s); break;
                 default: throw new ArgumentException($"{name}: no operation \"{op}\" (one of {string.Join(", ", Ops)})");
             }
             if (b == null) throw new InvalidOperationException($"{name}: {op} made nothing: check its values");
@@ -207,6 +211,96 @@ namespace Formcraft.Rhino
         {
             Part of = Use(s, "of", parts, consumed);
             return FilletAll(of.Brep, Num(s, "radius"), (string)s["name"], s.Value<string>("edges") ?? "all");
+        }
+
+        // ---- the smooth twins of recipe solids (world millimetres, the recipe's own points) -----------------------------
+        // A detailed family's Fine level (LOD 400) is the same solid as its Medium one (LOD 300), drawn smooth: the recipe's
+        // points are kept, and the runs that sample an arc become the arc (RhinoFit). "fit": false keeps the polyline.
+
+        static List<Point3d> Points3d(JObject s, string key)
+        {
+            var a = s[key] as JArray ?? throw new ArgumentException($"{s["name"]}: {key} is required: [[x, y, z], …] in mm");
+            return a.Select(p => Pt(p, Point3d.Unset)).ToList();
+        }
+
+        static Curve FitOrPoly(JObject s, List<Point3d> pts, bool closed)
+        {
+            if (s.Value<bool?>("fit") == false) return closed ? new PolylineCurve(pts.Concat(new[] { pts[0] })) : new PolylineCurve(pts);
+            return RhinoFit.Fit(pts, closed);
+        }
+
+        /// <summary>A closed outline (world points on one plane) pushed along a vector: a recipe's point extrusion.</summary>
+        static Brep ExtrudePoints(JObject s)
+        {
+            var pts = Points3d(s, "points");
+            if (pts.Count < 3) throw new ArgumentException($"{s["name"]}: an outline needs three points or more");
+            Vector3d v = Vec(s["vector"], Vector3d.Unset);
+            double len = s["vector"] is JArray va ? new Vector3d((double)va[0], (double)va[1], va.Count > 2 ? (double)va[2] : 0).Length : 0;
+            if (!(len > Tol)) throw new ArgumentException($"{s["name"]}: vector is the extrusion [dx, dy, dz] in mm");
+            Curve c = FitOrPoly(s, pts, true);
+            Brep b = Surface.CreateExtrusion(c, v * len)?.ToBrep()?.CapPlanarHoles(Tol);
+            if (b == null) throw new InvalidOperationException($"{s["name"]}: the outline isn't flat or closed");
+            return b;
+        }
+
+        /// <summary>
+        /// A closed loop (world points) turned a full circle about an axis: a recipe's revolution. Edges of the loop that lie
+        /// on the axis are left out (they would make a surface of no area); the rest turns into a closed solid.
+        /// </summary>
+        static Brep RevolveLoop(JObject s)
+        {
+            var pts = Points3d(s, "loop");
+            Point3d o = Pt(s["origin"], Point3d.Origin);
+            Vector3d dir = Vec(s["axis"], Vector3d.ZAxis);
+            var axis = new Line(o, o + dir);
+            bool On(Point3d p) => axis.DistanceTo(p, false) < Tol * 10;
+            if (pts.Count > 2 && pts[0].DistanceTo(pts[pts.Count - 1]) < Tol) pts.RemoveAt(pts.Count - 1);
+            int n = pts.Count;
+            int cut = Enumerable.Range(0, n).FirstOrDefault(i => On(pts[i]) && On(pts[(i + 1) % n]) && pts[i].DistanceTo(pts[(i + 1) % n]) > Tol);
+            bool hasAxisEdge = On(pts[cut]) && On(pts[(cut + 1) % n]);
+            Curve prof;
+            if (hasAxisEdge)
+            {
+                // start just after the axis edge and end just before it: an open profile with both ends on the axis
+                var open = Enumerable.Range(0, n).Select(k => pts[(cut + 1 + k) % n]).ToList();
+                // more than one axis edge (e.g. a stepped spindle) stays as one profile: the inner axis points are kept
+                prof = FitOrPoly(s, open, false);
+            }
+            else prof = FitOrPoly(s, pts, true);
+            var rev = RevSurface.Create(prof, axis, 0, 2 * Math.PI);
+            Brep b = rev == null ? null : Brep.CreateFromRevSurface(rev, false, false);
+            if (b != null && !b.IsSolid) b = b.CapPlanarHoles(Tol) ?? b;
+            return b;
+        }
+
+        /// <summary>
+        /// A profile swept along a path (world points): a recipe's sweep. A round profile becomes a true pipe; another
+        /// keeps its shape, placed across the path at its start (x across the path, y up; on a path that starts vertical,
+        /// x and y are world X and Y), as the command set draws it.
+        /// </summary>
+        static Brep SweepPath(JObject s)
+        {
+            var path = Points3d(s, "path");
+            if (path.Count < 2) throw new ArgumentException($"{s["name"]}: a path needs two points or more");
+            Curve rail = FitOrPoly(s, path, false);
+            var prof2 = (s["profile"] as JArray ?? throw new ArgumentException($"{s["name"]}: profile is [[x, y], …] in mm")).Select(p => new Point3d((double)p[0], (double)p[1], 0)).ToList();
+            if (RhinoFit.IsRound(prof2, out Point3d c, out double r) && c.DistanceTo(Point3d.Origin) < r * 0.05)
+                return Single(Brep.CreatePipe(rail, r, false, PipeCapMode.Flat, false, Tol, AngTol), (string)s["name"], "pipe");
+            Vector3d dir = rail.TangentAtStart;
+            bool vertical = Math.Abs(dir * Vector3d.ZAxis) > 0.7;
+            Plane frame;
+            if (vertical) frame = new Plane(path[0], Vector3d.XAxis, Vector3d.YAxis);
+            else
+            {
+                Vector3d across = Vector3d.CrossProduct(dir, Vector3d.ZAxis); across.Unitize();
+                Vector3d up = Vector3d.CrossProduct(across, dir); up.Unitize();
+                frame = new Plane(path[0], across, up);
+            }
+            var shapePts = prof2.Select(p => frame.PointAt(p.X, p.Y)).ToList();
+            Curve shape = FitOrPoly(s, shapePts, true);
+            Brep[] made = Brep.CreateFromSweep(rail, shape, false, Tol);
+            Brep b = Single(made, (string)s["name"], "sweep");
+            return b.IsSolid ? b : b.CapPlanarHoles(Tol) ?? throw new InvalidOperationException($"{s["name"]}: the sweep's ends couldn't be capped");
         }
 
         // ---- helpers ---------------------------------------------------------------------------------------------------
