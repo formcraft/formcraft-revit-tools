@@ -12,6 +12,8 @@ namespace revit_mcp_plugin.Core
     /// working in another app) can wait a long time for that. While a command is in flight this posts WM_NULL to Revit's
     /// main window every 100 ms and asks Idling to fire again without delay, so the event runs in the background. With no
     /// command in flight it does nothing, so an idle Revit costs no CPU.
+    /// F-064: while a command is in flight it also tells Windows the system is in use (every 30 s), so the PC doesn't go to
+    /// sleep in the middle of a long job (an overnight batch was cut off by sleep on 17-18 Oct). The screen may still turn off.
     /// </summary>
     public static class RevitWake
     {
@@ -23,6 +25,11 @@ namespace revit_mcp_plugin.Core
 
         [DllImport("user32.dll")]
         private static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        private const uint ES_SYSTEM_REQUIRED = 0x00000001;
+        [DllImport("kernel32.dll")]
+        private static extern uint SetThreadExecutionState(uint esFlags);
+        private static long _lastAwakeTicks;
 
         /// <summary>Call once on the UI thread (OnStartup or the socket service's Initialize).</summary>
         public static void Initialize(UIApplication uiApp)
@@ -54,10 +61,21 @@ namespace revit_mcp_plugin.Core
 
         private static void Poke()
         {
-            if (_mainWindow != IntPtr.Zero && InFlight > 0)
+            if (InFlight <= 0) return;
+            if (_mainWindow != IntPtr.Zero)
             {
                 try { PostMessage(_mainWindow, WM_NULL, IntPtr.Zero, IntPtr.Zero); } catch { }
             }
+            KeepSystemAwake();
+        }
+
+        /// <summary>Resets Windows' sleep timer, at most every 30 s (any thread may call it; it holds no state).</summary>
+        public static void KeepSystemAwake()
+        {
+            long now = DateTime.UtcNow.Ticks, last = Interlocked.Read(ref _lastAwakeTicks);
+            if (now - last < TimeSpan.TicksPerSecond * 30) return;
+            Interlocked.Exchange(ref _lastAwakeTicks, now);
+            try { SetThreadExecutionState(ES_SYSTEM_REQUIRED); } catch { /* best effort */ }
         }
 
         private static void OnIdling(object sender, IdlingEventArgs e)

@@ -179,3 +179,36 @@ test("F-041: the AI-modeller rulebook: AIUse first, then the kit's ClaudeUse; a 
   assert.equal(pass.state, "Pass");
   assert.match(pass.detail, /Read FMC_Rulebook_ClaudeUse.json \(section ai_use\)/);
 });
+
+test("F-064: a job the server stopped waiting for stays running while Revit's heartbeats come; Revit's own result finishes it", async () => {
+  const { lastHeartbeatMs } = await import("./jobs.js");
+  const env = home();
+  const f = jobFiles(env);
+  line(f.server, { at: "2026-10-18T00:00:50Z", job: "777", event: "running", command: "send_code_to_revit", started: "2026-10-18T00:00:00Z" });
+  line(f.revit, { at: "2026-10-18T00:00:20Z", job: "777", command: "send_code_to_revit", event: "running", started: "2026-10-18T00:00:00Z" });
+  line(f.server, { at: "2026-10-18T00:35:00Z", job: "777", event: "gave_up", command: "send_code_to_revit", after_s: 2100 });
+  line(f.revit, { at: "2026-10-18T02:10:00Z", job: "777", command: "send_code_to_revit", event: "heartbeat", ms: 7800000 });
+  let j = findJob("777", env)!;
+  assert.equal(j.state, "running", "heartbeats after the server gave up: still running, not no_answer");
+  assert.match(j.summary, /last heartbeat at 2026-10-18T02:10:00Z \(this server stopped waiting at 2026-10-18T00:35:00Z; Revit keeps the answer\)/);
+  assert.equal(lastHeartbeatMs("777", env), Date.parse("2026-10-18T02:10:00Z"));
+  assert.equal(lastHeartbeatMs("nope", env), 0);
+  // Revit writes the result itself when the job ends
+  line(f.revit, { at: "2026-10-18T03:00:00Z", job: "777", command: "send_code_to_revit", event: "finished", ms: 10800000, ok: true });
+  line(f.late, { at: "2026-10-18T03:00:00Z", job: "777", command: "send_code_to_revit", from: "revit", result: { result: { success: true, result: "{\"built\":590}" } } });
+  j = findJob("777", env)!;
+  assert.equal(j.state, "finished");
+  assert.deepEqual(jobResult("777", env).result, { result: { success: true, result: "{\"built\":590}" } });
+});
+
+test("F-064: job times are shown in local time with the offset beside the UTC ones", async () => {
+  const { localIso } = await import("./jobs.js");
+  assert.equal(localIso("2026-10-18T06:03:47Z", 180), "2026-10-18T09:03:47+03:00");
+  assert.equal(localIso("2026-10-18T22:30:00.000Z", 180), "2026-10-19T01:30:00+03:00");
+  assert.equal(localIso("2026-10-18T06:03:47Z", -300), "2026-10-18T01:03:47-05:00");
+  assert.equal(localIso(undefined), undefined);
+  assert.equal(localIso("not a time"), undefined);
+  const env = home();
+  line(jobFiles(env).server, { at: "2026-10-18T00:00:50Z", job: "888", event: "running", command: "fmc_doc", started: "2026-10-18T00:00:00Z" });
+  assert.match(findJob("888", env)!.local!.started!, /^2026-10-1[78]T\d\d:00:00[+-]\d\d:\d\d$/);
+});

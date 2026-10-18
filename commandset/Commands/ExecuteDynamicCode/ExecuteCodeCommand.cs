@@ -13,8 +13,9 @@ namespace RevitMCPCommandSet.Commands.ExecuteDynamicCode
     /// </summary>
     public class ExecuteCodeCommand : ExternalEventCommandBase
     {
-        /// <summary>Longest a script may hold Revit's API thread before this command stops waiting (30 min).</summary>
-        public const int MaxWaitMs = 30 * 60 * 1000;
+        /// <summary>Longest a script may hold Revit's API thread before this command stops waiting: 12 h by default (F-064: a
+        /// batch of families runs for hours and its answer was lost at the old 30 min), FMC_SEND_CODE_MAX_MS overrides.</summary>
+        public static readonly int MaxWaitMs = int.TryParse(Environment.GetEnvironmentVariable("FMC_SEND_CODE_MAX_MS"), out int v) && v > 0 ? v : 12 * 60 * 60 * 1000;
 
         /// <summary>Largest script accepted, in characters (documented in docs/BRIDGE.md; the server checks it too).</summary>
         public const int MaxCodeChars = 1_000_000;
