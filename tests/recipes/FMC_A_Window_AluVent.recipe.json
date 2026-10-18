@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_Window_AluVent",
  "template": "Metric Window.rft",
- "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Surround sweeps (Ext face) from FMC_Profile_Surround_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (1200x1500) and don't flex with Width/Height until sweep paths can be locked to planes.",
+ "about": "LOD 400 Kampala aluminium window: 50x100 frame, casement (1 or 2 leaves, mullion by Leaf Count) or 2-track sliding leaves that overlap at the centre with interlock stiles, and a top-hung projected (PJ) vent over the transom. Height runs from the template Sill plane (z = 0) to Head; leaf top = Height - Fanlight Height. Casement vs sliding parts and the mesh are switched by Yes/No-driven offset formulas that collapse the part into the left jamb (Hide Offset / Hide Width). The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; frame centred on the wall. The vent's opening triangle is a symbolic line drawn for the default type and does not flex. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Surround sweeps (Ext face) from FMC_Profile_Surround_<Token>, each bound to Show_<Token>. Each sweep's path is locked to Left, Right, Head and Sill (path_planes) on Trim Face Ext, so the trims follow Width and Height in every type.",
  "ops": [
   {
    "op": "set_category",
@@ -1723,6 +1723,36 @@
    "value": 900
   },
   {
+   "op": "add_family_param",
+   "name": "Trim Face Offset",
+   "type": "Length",
+   "instance": false,
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Trim Face Ext",
+   "from": [
+    -2000,
+    -130.0
+   ],
+   "to": [
+    2000,
+    -130.0
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Trim Face Offset Ext",
+   "between": [
+    "Wall Centre",
+    "Trim Face Ext"
+   ],
+   "label": "Trim Face Offset",
+   "offset": 900
+  },
+  {
    "op": "add_shared_param",
    "name": "FMC_Design_Movement",
    "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
@@ -1764,7 +1794,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Greek",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Greek.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Greek.rfa"
   },
   {
    "op": "add_family_param",
@@ -1781,26 +1811,26 @@
   {
    "op": "sweep",
    "name": "Surround Greek Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Greek",
    "profile_type": "150x40",
    "subcategory": "Frame"
@@ -1826,7 +1856,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Roman",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Roman.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Roman.rfa"
   },
   {
    "op": "add_family_param",
@@ -1843,26 +1873,26 @@
   {
    "op": "sweep",
    "name": "Surround Roman Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Roman",
    "profile_type": "225x50",
    "subcategory": "Frame"
@@ -1888,7 +1918,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Romanesque",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Romanesque.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Romanesque.rfa"
   },
   {
    "op": "add_family_param",
@@ -1905,26 +1935,26 @@
   {
    "op": "sweep",
    "name": "Surround Romanesque Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Romanesque",
    "profile_type": "200x90",
    "subcategory": "Frame"
@@ -1950,7 +1980,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Gothic",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Gothic.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Gothic.rfa"
   },
   {
    "op": "add_family_param",
@@ -1967,26 +1997,26 @@
   {
    "op": "sweep",
    "name": "Surround Gothic Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Gothic",
    "profile_type": "155x60",
    "subcategory": "Frame"
@@ -2012,7 +2042,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Renaissance",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Renaissance.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Renaissance.rfa"
   },
   {
    "op": "add_family_param",
@@ -2029,26 +2059,26 @@
   {
    "op": "sweep",
    "name": "Surround Renaissance Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Renaissance",
    "profile_type": "190x40",
    "subcategory": "Frame"
@@ -2074,7 +2104,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Baroque",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Baroque.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Baroque.rfa"
   },
   {
    "op": "add_family_param",
@@ -2091,26 +2121,26 @@
   {
    "op": "sweep",
    "name": "Surround Baroque Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Baroque",
    "profile_type": "250x100",
    "subcategory": "Frame"
@@ -2136,7 +2166,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Georgian",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Georgian.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Georgian.rfa"
   },
   {
    "op": "add_family_param",
@@ -2153,26 +2183,26 @@
   {
    "op": "sweep",
    "name": "Surround Georgian Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Georgian",
    "profile_type": "159x35",
    "subcategory": "Frame"
@@ -2198,7 +2228,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_FederalAdam",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_FederalAdam.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_FederalAdam.rfa"
   },
   {
    "op": "add_family_param",
@@ -2215,26 +2245,26 @@
   {
    "op": "sweep",
    "name": "Surround FederalAdam Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_FederalAdam",
    "profile_type": "94x30",
    "subcategory": "Frame"
@@ -2260,7 +2290,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_GreekRevival",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_GreekRevival.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_GreekRevival.rfa"
   },
   {
    "op": "add_family_param",
@@ -2277,26 +2307,26 @@
   {
    "op": "sweep",
    "name": "Surround GreekRevival Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_GreekRevival",
    "profile_type": "180x40",
    "subcategory": "Frame"
@@ -2322,7 +2352,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Italianate",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Italianate.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Italianate.rfa"
   },
   {
    "op": "add_family_param",
@@ -2339,26 +2369,26 @@
   {
    "op": "sweep",
    "name": "Surround Italianate Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Italianate",
    "profile_type": "165x115",
    "subcategory": "Frame"
@@ -2384,7 +2414,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Victorian",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Victorian.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Victorian.rfa"
   },
   {
    "op": "add_family_param",
@@ -2401,26 +2431,26 @@
   {
    "op": "sweep",
    "name": "Surround Victorian Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Victorian",
    "profile_type": "151x36",
    "subcategory": "Frame"
@@ -2446,7 +2476,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_ArtsCrafts",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtsCrafts.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_ArtsCrafts.rfa"
   },
   {
    "op": "add_family_param",
@@ -2463,26 +2493,26 @@
   {
    "op": "sweep",
    "name": "Surround ArtsCrafts Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_ArtsCrafts",
    "profile_type": "150x40",
    "subcategory": "Frame"
@@ -2508,7 +2538,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_ArtNouveau",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtNouveau.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_ArtNouveau.rfa"
   },
   {
    "op": "add_family_param",
@@ -2525,26 +2555,26 @@
   {
    "op": "sweep",
    "name": "Surround ArtNouveau Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_ArtNouveau",
    "profile_type": "190x40",
    "subcategory": "Frame"
@@ -2570,7 +2600,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_ArtDeco",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_ArtDeco.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_ArtDeco.rfa"
   },
   {
    "op": "add_family_param",
@@ -2587,26 +2617,26 @@
   {
    "op": "sweep",
    "name": "Surround ArtDeco Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_ArtDeco",
    "profile_type": "100x50",
    "subcategory": "Frame"
@@ -2632,7 +2662,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Modernist",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Modernist.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Modernist.rfa"
   },
   {
    "op": "add_family_param",
@@ -2649,26 +2679,26 @@
   {
    "op": "sweep",
    "name": "Surround Modernist Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Modernist",
    "profile_type": "60x10",
    "subcategory": "Frame"
@@ -2694,7 +2724,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Brutalist",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Brutalist.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Brutalist.rfa"
   },
   {
    "op": "add_family_param",
@@ -2711,26 +2741,26 @@
   {
    "op": "sweep",
    "name": "Surround Brutalist Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Brutalist",
    "profile_type": "200x100",
    "subcategory": "Frame"
@@ -2756,7 +2786,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Contemporary",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Contemporary.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Contemporary.rfa"
   },
   {
    "op": "add_family_param",
@@ -2773,26 +2803,26 @@
   {
    "op": "sweep",
    "name": "Surround Contemporary Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Contemporary",
    "profile_type": "70x15",
    "subcategory": "Frame"
@@ -2818,7 +2848,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_SwahiliZanzibar",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_SwahiliZanzibar.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_SwahiliZanzibar.rfa"
   },
   {
    "op": "add_family_param",
@@ -2835,26 +2865,26 @@
   {
    "op": "sweep",
    "name": "Surround SwahiliZanzibar Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_SwahiliZanzibar",
    "profile_type": "185x100",
    "subcategory": "Frame"
@@ -2880,7 +2910,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_Islamic",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_Islamic.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_Islamic.rfa"
   },
   {
    "op": "add_family_param",
@@ -2897,26 +2927,26 @@
   {
    "op": "sweep",
    "name": "Surround Islamic Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_Islamic",
    "profile_type": "140x40",
    "subcategory": "Frame"
@@ -2942,7 +2972,7 @@
   {
    "op": "load_family",
    "name": "FMC_Profile_Surround_TropicalEastAfrican",
-   "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Surround_TropicalEastAfrican.rfa"
+   "path": "_Profiles\\FMC_Profile_Surround_TropicalEastAfrican.rfa"
   },
   {
    "op": "add_family_param",
@@ -2959,26 +2989,26 @@
   {
    "op": "sweep",
    "name": "Surround TropicalEastAfrican Ext",
-   "path": [
+   "path_planes": [
     [
-     -600.0,
-     800.0
+     "Left",
+     "Sill"
     ],
     [
-     -600.0,
-     2300.0
+     "Left",
+     "Head"
     ],
     [
-     600.0,
-     2300.0
+     "Right",
+     "Head"
     ],
     [
-     600.0,
-     800.0
+     "Right",
+     "Sill"
     ]
    ],
+   "path_host": "Trim Face Ext",
    "path_plane": "front",
-   "at": -130.0,
    "profile_family": "FMC_Profile_Surround_TropicalEastAfrican",
    "profile_type": "165x60",
    "subcategory": "Frame"
@@ -3024,6 +3054,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1200x1500_Casement-TopHung300/Trim Face Offset",
+   "type": "1200x1500_Casement-TopHung300",
+   "param": "Trim Face Offset",
+   "value": 130.0
+  },
+  {
+   "op": "set_type_value",
    "name": "1500x1500_Sliding-TopHung300/Keynote",
    "type": "1500x1500_Sliding-TopHung300",
    "param": "Keynote",
@@ -3042,6 +3079,13 @@
    "type": "1500x1500_Sliding-TopHung300",
    "param": "FMC_Design_Movement",
    "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x1500_Sliding-TopHung300/Trim Face Offset",
+   "type": "1500x1500_Sliding-TopHung300",
+   "param": "Trim Face Offset",
+   "value": 130.0
   },
   {
    "op": "set_type_value",
@@ -3066,6 +3110,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1800x1500_Sliding-TopHung300/Trim Face Offset",
+   "type": "1800x1500_Sliding-TopHung300",
+   "param": "Trim Face Offset",
+   "value": 130.0
+  },
+  {
+   "op": "set_type_value",
    "name": "0600x1200_Casement-Projected300/Keynote",
    "type": "0600x1200_Casement-Projected300",
    "param": "Keynote",
@@ -3087,6 +3138,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "0600x1200_Casement-Projected300/Trim Face Offset",
+   "type": "0600x1200_Casement-Projected300",
+   "param": "Trim Face Offset",
+   "value": 130.0
+  },
+  {
+   "op": "set_type_value",
    "name": "0600x0900_WC-PJ/Keynote",
    "type": "0600x0900_WC-PJ",
    "param": "Keynote",
@@ -3105,6 +3163,13 @@
    "type": "0600x0900_WC-PJ",
    "param": "FMC_Design_Movement",
    "value": 17
+  },
+  {
+   "op": "set_type_value",
+   "name": "0600x0900_WC-PJ/Trim Face Offset",
+   "type": "0600x0900_WC-PJ",
+   "param": "Trim Face Offset",
+   "value": 130.0
   }
  ],
  "values": {
@@ -3169,7 +3234,12 @@
   "Trim position": {
    "value": "jambs and head at the opening edge",
    "source_status": "assumed",
-   "source": "exterior wall face at y = -130 (230 wall + 15 plaster), as the sill"
+   "source": "exterior wall face at y = -130 (230 wall + 15 plaster), as the sill: Trim Face Ext, Trim Face Offset from Wall Centre"
+  },
+  "Trim Face Offset": {
+   "value": 130.0,
+   "source_status": "assumed",
+   "source": "230 wall + 15 plaster each side; set it per type for other walls"
   }
  },
  "checks": {

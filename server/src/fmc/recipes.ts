@@ -75,6 +75,135 @@ export function typeValues(recipe: Recipe): Map<string, Map<string, number | str
   return out;
 }
 
+// ---- size follow (flex: solids and sweeps move with Width, Height and the other size parameters) ----------------------
+
+/**
+ * The planes each family template drives with its own size parameters (Metric Door.rft and Metric Window.rft label
+ * Width across Left/Right and Height up to Head). The centre planes, Ref. Level and a window's Sill stay put.
+ */
+export const TEMPLATE_DRIVEN: Record<string, Record<string, string[]>> = {
+  "metric door.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Exterior: [], Interior: [] },
+  "metric window.rft": { Left: ["Width"], Right: ["Width"], Head: ["Height"], Sill: [], Exterior: [], Interior: [] },
+};
+const FIXED_PLANES = ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"];
+
+/**
+ * Which size parameters move each reference plane: the template's own (TEMPLATE_DRIVEN), a plane the recipe draws on a
+ * centre line or the level (0 across) stays put, and a labelled dimension from a plane we know carries that plane's
+ * parameters plus its label to the other one (Head Inner, Frame Width from Head: Height and Frame Width).
+ */
+export function planeParams(recipe: Recipe): Map<string, Set<string>> {
+  const m = new Map<string, Set<string>>();
+  for (const f of FIXED_PLANES) m.set(f, new Set());
+  for (const [pl, ps] of Object.entries(TEMPLATE_DRIVEN[win.basename(recipe.template).toLowerCase()] ?? {})) m.set(pl, new Set(ps));
+  const ops = recipe.ops as Array<Record<string, any>>;
+  for (const o of ops) {
+    if (o.op !== "add_ref_plane" || m.has(o.name)) continue;
+    const [a, b] = [o.from as number[], o.to as number[]];
+    // a line along an axis at 0: a plane on a centre line or on the level
+    if ((a[0] === 0 && b[0] === 0) || (a[1] === 0 && b[1] === 0)) m.set(o.name, new Set());
+  }
+  const dims = ops.filter((o) => o.op === "add_dimension" && o.label && Array.isArray(o.between));
+  for (let changed = true; changed;) {
+    changed = false;
+    for (const d of dims) {
+      const [a, b] = d.between as string[];
+      const from = m.has(a) && !m.has(b) ? a : m.has(b) && !m.has(a) ? b : null;
+      if (!from) continue;
+      m.set(from === a ? b : a, new Set([...m.get(from)!, String(d.label)]));
+      changed = true;
+    }
+  }
+  return m;
+}
+
+export interface FollowParam { param: string; low_mm: number; high_mm: number; stepped: boolean }
+
+/**
+ * The size parameters flex exercises: Width and Height, and every labelled parameter whose value differs between the
+ * types (Fanlight Height), each at its lowest and highest type value. A parameter every type gives the same value
+ * (a one-type family) is moved 10% up so it is still exercised (stepped).
+ */
+export function followParams(recipe: Recipe): FollowParam[] {
+  const tv = typeValues(recipe);
+  const labelled = new Set((recipe.ops as Array<Record<string, any>>).filter((o) => o.op === "add_dimension" && o.label).map((o) => String(o.label)));
+  const out: FollowParam[] = [];
+  const names = new Set<string>(["Width", "Height", ...labelled]);
+  for (const p of names) {
+    const vals = [...tv.values()].map((v) => v.get(p)).filter((v): v is number => typeof v === "number");
+    if (!vals.length) continue;
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    if (p !== "Width" && p !== "Height" && lo === hi) continue;
+    out.push(lo === hi ? { param: p, low_mm: lo, high_mm: Math.round((lo * 1.1) / 10) * 10, stepped: true } : { param: p, low_mm: lo, high_mm: hi, stepped: false });
+  }
+  return out;
+}
+
+/** The planes a solid or sweep is tied to by the recipe: path_planes and its host, rect and end_plane, lock_face. */
+export function solidPlanes(recipe: Recipe): Map<string, Set<string>> {
+  const out = new Map<string, Set<string>>();
+  const add = (s: string, pls: string[]) => { if (!out.has(s)) out.set(s, new Set()); for (const p of pls) out.get(s)!.add(p); };
+  for (const o of recipe.ops as Array<Record<string, any>>) {
+    if ((o.op === "sweep" || o.op === "void_sweep") && Array.isArray(o.path_planes)) add(o.name, (o.path_planes as string[][]).flat());
+    else if ((o.op === "extrusion" || o.op === "void_extrusion") && (o.rect || o.end_plane)) add(o.name, [...(o.rect ?? []), ...(o.end_plane ? [o.end_plane] : [])]);
+    else if (o.op === "lock_face") add(o.solid, [o.plane]);
+  }
+  return out;
+}
+
+/** Each solid's governing size parameters: the exercised parameters that move a plane it is tied to. */
+export function expectedFollows(recipe: Recipe, follow: FollowParam[] = followParams(recipe)): Map<string, string[]> {
+  const pp = planeParams(recipe);
+  const exercised = new Set(follow.map((f) => f.param));
+  const out = new Map<string, string[]>();
+  for (const [solid, pls] of solidPlanes(recipe)) {
+    const g = new Set<string>();
+    for (const pl of pls) for (const p of pp.get(pl) ?? []) if (exercised.has(p)) g.add(p);
+    if (g.size) out.set(solid, [...g].sort((a, b) => order(a) - order(b) || a.localeCompare(b)));
+  }
+  return out;
+}
+const order = (p: string) => (p === "Width" ? 0 : p === "Height" ? 1 : 2);
+
+/** fmc_doc flex's follow report: per size parameter the values used, per named solid the parameters it moved with. */
+export interface FlexFollow {
+  params: Array<{ param: string; low_mm?: number; high_mm?: number; type?: string; ok: boolean; error?: string }>;
+  elements: Array<{ name: string; kind?: string; moved: string[]; fixed: string[]; no_box?: boolean }>;
+}
+
+export interface FollowLine { solid: string; follows: string; governed_by: string; state: GateState }
+
+function followCheck(recipe: Recipe, follow: FlexFollow | undefined): { line: GateLine | null; follows: FollowLine[] } {
+  const expected = expectedFollows(recipe);
+  if (!expected.size) return { line: null, follows: [] };
+  const check = "Solids and sweeps follow the size parameters";
+  if (!follow) return { line: { check, state: "Not checked", detail: "This add-in's flex doesn't move the size parameters: update the add-in" }, follows: [] };
+  const okParams = new Set(follow.params.filter((p) => p.ok).map((p) => p.param));
+  const bad = follow.params.filter((p) => !p.ok);
+  const byName = new Map(follow.elements.map((e) => [e.name, e]));
+  const follows: FollowLine[] = [];
+  for (const [solid, gov] of expected) {
+    const e = byName.get(solid);
+    const tested = gov.filter((p) => okParams.has(p));
+    if (!e || e.no_box) { follows.push({ solid, follows: e ? "no bounding box" : "not in the family", governed_by: gov.join("/"), state: "Not checked" }); continue; }
+    const missed = tested.filter((p) => !e.moved.includes(p));
+    follows.push({ solid, follows: e.moved.length ? `follows ${e.moved.join("/")}` : "follows nothing", governed_by: gov.join("/"),
+      state: missed.length ? "Fail" : tested.length ? "Pass" : "Not checked" });
+  }
+  const failing = follows.filter((f) => f.state === "Fail");
+  const notChecked = follows.filter((f) => f.state === "Not checked");
+  const groups = new Map<string, string[]>();
+  for (const f of follows.filter((x) => x.state === "Pass")) { if (!groups.has(f.follows)) groups.set(f.follows, []); groups.get(f.follows)!.push(f.solid); }
+  const parts: string[] = [];
+  if (failing.length) parts.push(failing.slice(0, 4).map((f) => `${f.solid} ${f.follows}, but its planes move with ${f.governed_by}`).join("; ") +
+    (failing.length > 4 ? ` (and ${failing.length - 4} more)` : ""));
+  for (const [what, names] of groups) parts.push(`${what}: ${names.length} (${names.slice(0, 3).join(", ")}${names.length > 3 ? ", …" : ""})`);
+  if (bad.length) parts.push(`not moved: ${bad.map((b) => `${b.param}${b.error ? ` (${b.error})` : ""}`).join("; ")}`);
+  if (notChecked.length) parts.push(`not checked: ${notChecked.slice(0, 3).map((f) => `${f.solid} (${f.follows})`).join(", ")}${notChecked.length > 3 ? ", …" : ""}`);
+  const state: GateState = failing.length ? "Fail" : follows.some((f) => f.state === "Pass") && !bad.length ? "Pass" : "Not checked";
+  return { line: { check, state, detail: parts.join("; ") || "nothing to check" }, follows };
+}
+
 export type GateState = "Pass" | "Fail" | "Warn" | "Not checked";
 export interface GateLine { check: string; state: GateState; detail: string }
 
@@ -95,6 +224,8 @@ export interface GateInputs {
     ok?: boolean;
     types?: Array<{ type: string; ok: boolean; errors?: string[]; dimension_sides?: DimensionSide[] }>;
     dimension_sides?: { checked: number; unrecorded: number };
+    /** Each size parameter at its lowest and highest type value, and which named solids moved with it. */
+    follow?: FlexFollow;
     /** A flex call that failed (session gone, file open in a window) answers with an error, not types. */
     error?: string; refused?: boolean; reasons?: string[];
   } | null;
@@ -197,7 +328,7 @@ export function sidesLine(flex: GateInputs["flex"], flexUsable: boolean, flexErr
 const SIDE_WORDS: Record<string, [string, string]> = { z: ["above", "below"], x: ["to the right of (+x)", "to the left of (-x)"], y: ["on the +y side of", "on the -y side of"] };
 const side = (axis: string, sign: number) => (SIDE_WORDS[axis] ?? ["after", "before"])[sign > 0 ? 0 : 1];
 
-export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs): { verdict: "Pass" | "Fail"; lines: GateLine[] } {
+export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs): { verdict: "Pass" | "Fail"; lines: GateLine[]; follows?: FollowLine[] } {
   const lines: GateLine[] = [];
   // F-039: the recipe's kit parameters (add_shared_param, by GUID) are what the saved file must carry
   const expected = (recipe?.ops ?? []).filter((o) => o.op === "add_shared_param").map((o) => ({ name: o.name, guid: String((o as { guid?: string }).guid ?? "") }));
@@ -248,6 +379,10 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
   // F-039/F-026/F-045: a labelled dimension whose plane ended on the other side of its reference; on every gate
   lines.push(sidesLine(inputs.flex, flexUsable, flexError, inputs.recordedSides));
 
+  // Fully parametric: every solid and sweep tied to a plane that a size parameter moves must move with it
+  const fc = recipe && inputs.flex ? followCheck(recipe, inputs.flex.follow) : { line: null, follows: [] as FollowLine[] };
+  if (fc.line) lines.push(fc.line);
+
   if (!recipe) lines.push({ check: "Code checks and value sources", state: "Not checked", detail: "No recipe beside the family (.recipe.json)" });
   else {
     const min = recipe.checks.clear_opening_min_mm;
@@ -266,5 +401,5 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
         : ea.length ? `East African, not local: ${ea.join(", ")}` : `${Object.keys(recipe.values).length || "No"} values recorded, all verified` });
   }
   lines.push({ check: "Tag, schedule and legend; Coarse, Medium and Fine", state: "Not checked", detail: "Run the load test in the role's chain-test project (fmc_family load_test)" });
-  return { verdict: lines.some((l) => l.state === "Fail") ? "Fail" : "Pass", lines };
+  return { verdict: lines.some((l) => l.state === "Fail") ? "Fail" : "Pass", lines, ...(fc.follows.length ? { follows: fc.follows } : {}) };
 }

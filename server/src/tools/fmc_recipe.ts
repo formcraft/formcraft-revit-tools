@@ -4,11 +4,11 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
-import { opsProblems, splitProblems } from "../fmc/ops.js";
+import { familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { softTimeoutMs } from "../utils/SocketClient.js";
-import { RecordedSides, Recipe, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { RecordedSides, Recipe, followParams, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { SpecFile } from "../fmc/specs.js";
 import { idleLimit } from "../fmc/doc.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
@@ -133,7 +133,8 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   if (!flexResult) {
     const open = body(await runFmcDoc({ action: "open", file, template: "", session: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] }));
     if (open.session) {
-      flexResult = body(await runFmcDoc({ action: "flex", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] }));
+      const follow = recipe ? followParams(recipe) : [];
+      flexResult = body(await runFmcDoc({ action: "flex", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, follow, detail_level: "fine", style: "shaded", views: ["3d"] }));
       await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] });
     } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
@@ -178,17 +179,23 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     let dictionary = null;
     try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
     const materials = recipe.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
-    const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials));
+    const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
+    // F-038: the template's own planes (Left, Right, Exterior, Head…) aren't "not made earlier"; a sweep's path_planes
+    // must be one of them or made earlier (no fixed geometry by accident)
+    const planes = templatePlanes(template, expandEnv(config.reports_dir));
+    const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
+    const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials,
+      { libraryRoots, templatePlanes: planes.planes }));
+    // load_family paths are relative to the kit's family roots on this PC (the recipe works on any PC)
+    const families = resolveFamilyPaths(recipe.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
+    notes.push(...families.notes);
     const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
     const sources = Object.fromEntries(["verified", "EA", "assumed", "pending"].map((s) => [s, Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k)]));
-    const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
-    // F-038: the template's own planes (Left, Right, Exterior, Head…) aren't "not made earlier"
-    const planes = templatePlanes(template, expandEnv(config.reports_dir));
     const shown = dropTemplateNotes(notes, planes.planes);
     if (args.action === "check") {
       const envelope = requestBytes("fmc_doc_apply", applyEnvelope("00000000", expandEnv(config.shared_parameter_file)));
-      const bytes = envelope + Buffer.byteLength(JSON.stringify(recipe.ops), "utf8");
-      const chunks = planChunks(recipe.ops, args.chunk_size, CHUNK_BYTES, envelope);
+      const bytes = envelope + Buffer.byteLength(JSON.stringify(families.ops), "utf8");
+      const chunks = planChunks(families.ops, args.chunk_size, CHUNK_BYTES, envelope);
       return reply({ family: recipe.family, role: roleOf(recipe.family), template: recipe.template, ops: recipe.ops.length, errors, notes: shown.notes,
         template_planes: { planes: planes.planes, source: planes.source, notes_dropped: shown.dropped }, sources,
         bridge: { bytes, limit: BRIDGE_LIMIT_BYTES, fits_one_call: bytes <= BRIDGE_LIMIT_BYTES, stepwise_chunks: chunks.chunks.length,
@@ -206,7 +213,7 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     const r = await buildRecipe(recipe, {
       recipeFile, template, target, dry, overwrite: args.overwrite, stepwise: args.stepwise, chunkSize: args.chunk_size,
       resume: args.resume, reportsDir: expandEnv(config.reports_dir), sharedParameterFile: expandEnv(config.shared_parameter_file),
-      notes: shown.notes, sources,
+      notes: shown.notes, sources, ops: families.ops, follow: followParams(recipe),
     }, { doc: docCall, gate: (file, flex) => runGate(file, config, flex), budgetMs: soft > 0 ? Math.max(soft - 15000, 10000) : Infinity });
     const b = r.body as Record<string, any>;
     if (b.built || b.failed || b.dry_run) log(config, "recipe_build", dry, target, b.built ? b.gate?.verdict ?? "built" : b.failed ? "failed" : "dry run",

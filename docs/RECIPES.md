@@ -31,12 +31,12 @@ recipe; version 0.1 adds value sources and code checks.
 |---|---|---|
 | `add_subcategory` | An object subcategory with projection and cut line weights, colour and material | 3.3: Frame, Panel, Glass, Opening, Plan Swing, Elevation Swing, Hidden Lines, Clearance |
 | `set_subcategory` | Puts a solid or a line set on a subcategory | 3.3: every element on a named subcategory |
-| `sweep`, `void_sweep` | A swept solid or void along a polyline (plan, front or right), from points or a loaded `FMC_Profile_*` | 3.1: frames, profiles, rebates that cut correctly in section |
+| `sweep`, `void_sweep` | A swept solid or void along a path locked to named planes (`path_planes`, plan, front or right), from points or a loaded `FMC_Profile_*`. A fixed `path` of points still works but follows nothing, and no recipe in `tests/recipes` may use it | 3.1: frames, profiles, rebates that cut correctly in section; 1.4: locked to planes |
 | `revolution`, `blend` | Turned parts (roses, knobs, nozzles) and tapered parts | 2: G4 Fine geometry |
 | `symbolic_lines` | Lines or an arc in plan, front or right, per detail level, on a subcategory | 3.2: swing arcs in plan, opening lines in elevation |
 | `lock_face` | Aligns and locks a solid's face to a named plane | 1.4: faces locked to planes |
 | `add_eq_dimension` | An EQ dimension across three or more planes | 1.4: symmetry |
-| `load_family`, `place_nested` | Loads an `.rfa` from the kit's `04_Families` and places it, with parameters associated | 1.7: nested parts; 3.4: detail kit |
+| `load_family`, `place_nested` | Loads an `.rfa` by a path relative to the kit's family roots (e.g. `_Profiles\FMC_Profile_Architrave_Contemporary.rfa`) and places it, with parameters associated | 1.7: nested parts; 3.4: detail kit |
 | `profile_lines` | A profile family's closed loop (template `Metric Profile.rft`, category Profiles): detail lines and 3-point arcs in the Ref. Level plan, mm, x across and y up | 3.1: the `FMC_Profile_*` families that sweeps load |
 | `set_visible_param` | Ties a solid's (or sweep's) Visible to a Yes/No family parameter | One parameter switches which part shows |
 | `add_material` | A material from the kit's library (`07_Materials\FMC_Materials.json`) with its class, colour, keynote, description and textures; optionally the value of a Material parameter in every type | Rule 7: kit materials only, never made up |
@@ -45,6 +45,46 @@ recipe; version 0.1 adds value sources and code checks.
 | `array` | Repeats a solid along x, y or z with the count tied to an Integer parameter (louvre blades, grille bars, joints) | 1.4: counts follow parameters |
 | `symbolic_lines`, parametric form | Line ends and arc centres on named planes (locked), the radius labelled with a parameter, sets repeated per leaf and shown by Leaf Count | 3.2: swings and fold symbols that follow Width and Leaf Count |
 | `load_family` with `shared: true` | Loads a shared nested family (handles, hinges, locks) from `04_Families\<Role>` (released) or `_Staging`; the load checks it is shared | 1.7: hardware that schedules on its own |
+
+### Sweeps locked to planes (`path_planes`)
+The owner's standard for families is "fully parametric, no mistakes", so a trim, surround or swept frame follows
+Width, Height and Fanlight Height in every type, never only the first type's size.
+
+```json
+{ "op": "sweep", "name": "Surround Contemporary Ext", "path_plane": "front",
+  "path_planes": [["Left", "Sill"], ["Left", "Head"], ["Right", "Head"], ["Right", "Sill"]],
+  "path_host": "Trim Face Ext", "profile_family": "FMC_Profile_Surround_Contemporary", "profile_type": "70x15", "subcategory": "Frame" }
+{ "op": "sweep", "name": "Frame", "path_plane": "front", "profile": [[-20, -50], [20, -50], [20, 50], [-20, 50]],
+  "path_planes": [["Left", "Ref. Level"], ["Left", "Head"], ["Right", "Head"], ["Right", "Ref. Level"]],
+  "path_offsets": [20, -20, -20], "path_host": "Wall Centre" }
+```
+
+- **Corners.** Each corner is where two named reference planes (or a level, such as `Ref. Level`) cross the path plane.
+  Neighbouring corners share exactly one plane: the segment between them runs along it. A path whose last corner is
+  its first is closed.
+- **Locks.** Revit draws the path where the planes are now, then locks each segment to the plane it runs along (an
+  alignment) and each open end to its corner's other plane. So the sweep moves when Width, Height or any parameter
+  that drives those planes changes. A lock Revit won't make fails the op and names the planes. The sweep is never left
+  at fixed coordinates.
+- **`path_offsets`** (optional) gives one entry per segment: mm (a locked dimension) or a Length parameter's name (a
+  labelled dimension; `-Name` puts it on the other side). Positive is +x off a plane that is vertical in the view and up
+  off one that is horizontal. Two segments in a row along the same plane must keep the same offset.
+- **`path_host`** (optional) hosts the path sketch on a reference plane parallel to the path plane, such as the wall
+  face the trim sits on, so the sweep follows that plane too. Without it the path sits at `at`.
+- **Checks.** The server refuses a sweep with both `path` and `path_planes`, or neither; a corner that names one plane
+  twice; neighbours that don't share exactly one plane; the wrong number of offsets; and an offset parameter that isn't
+  a Length. In `fmc_recipe check` and `build`, every plane must be made earlier in the recipe or be one of the
+  template's planes (the table from #134, or the planes read on first open). Anything else is an error, not a note.
+- `server/src/fmc/recipes.test.ts` fails if any sweep in `tests/recipes` has a fixed `path`, so a trim that doesn't
+  follow the size can't come back.
+
+### Family paths that work on any PC
+`load_family` takes a path relative to the kit's family roots, such as `_Profiles\FMC_Profile_Architrave_Greek.rfa`.
+The server resolves it on the build PC before Revit sees it. It tries the guard's `family_staging_root`, then its
+parent `04_Families`, then each `library_roots` folder, and uses the first that holds the file. When none does, it
+uses the staging root and says the file isn't on this PC. So the same recipe builds where the kit is on `Z:` or `D:`.
+An absolute path must be inside those roots. If it isn't, the check is an error that names the fix: write it relative
+to the family staging root.
 
 ### Profiles, switches and kit materials
 
@@ -93,13 +133,19 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
   `Show_<Token>`. Changing one number swaps every trim in the project to the other set.
 - **Doors** take `Architrave` on both faces, **windows** `Surround` on the exterior face, along the jambs and head on
   the wall face. Default movement 17 (Contemporary). The sweeps sit on the Frame subcategory with `Trim Material`.
+- **The trims are parametric.** Each sweep uses `path_planes` on the family's own planes: Left, Right, the head (`Head`,
+  or `Frame Head` in the fanlight doors) and the sill or floor (`Sill`, `Floor`, or `Ref. Level` in the flush door).
+  The path is hosted on the face the trim sits on. The timber fanlight door uses `Frame Ext`/`Frame Int`, which Frame
+  Depth moves. The others use `Trim Face Ext`/`Trim Face Int`, drawn by the generator and placed from `Wall Centre` by
+  the type parameter `Trim Face Offset` (130: a 230 wall plus 15 plaster, assumed). The flush door's swept frame is on
+  `path_planes` too: 20 mm inside Left, Right and Head, on Wall Centre. The path locks replace its old face locks.
 - **Materials** come from `07_Materials/FMC_Materials.json` with `add_material` (one per material; a second parameter
   with the same material follows the first by formula), and each type gets its `Keynote` and `FMC_Keynote_Code` from
   codes that exist in `FMC_Keynotes.txt`. Choices are recorded in `values` as `assumed`.
-- `tests/recipes/_gen/gen_profile_slots.py --kit <kit>` adds all of this to the door and window recipes without
-  touching their geometry ops (it strips what it added before, so it can run again); `gen_windows.py` makes the window
-  bases. Known limit: sweep paths are points drawn at the first type's size, so trims don't flex with Width and Height
-  until a sweep path can be locked to reference planes.
+- `tests/recipes/_gen/gen_profile_slots.py --kit <kit>` adds all of this to the door and window recipes. It strips
+  what it added before, so it can run again. Apart from the flush door's frame sweep, it leaves the base geometry ops as
+  they are. It also keeps type 1 and its Width and Height before the first reference plane (size first, F-026), and it
+  writes the profiles' `load_family` paths relative (`_Profiles\<family>.rfa`). `gen_windows.py` makes the window bases.
 
 ## The flow
 0. **From chat, inline (F-057):** `fmc_recipe check` and `build` take the recipe itself as `recipe` (a JSON object)
@@ -120,6 +166,14 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
      the host wall.
    - that labelled dimensions keep their planes' sides (F-026): each dimension `add_dimension` labels records which
      side of its first plane the second was drawn on, and flex fails a type where it ended on the other side
+   - that solids and sweeps follow the size parameters. Flex moves Width, Height and every labelled parameter whose
+     value differs between types (such as Fanlight Height) from its lowest to its highest type value, on one type. A
+     one-type family is moved 10% up instead. Flex then compares each named solid's bounding box before and after. From
+     the recipe, the gate knows which parameters move each plane: the template's own (Left/Right by Width, Head by
+     Height), and labelled dimensions from there. So it knows which solids each parameter governs, through their
+     `path_planes`, `rect`, `end_plane` and `lock_face`. Each solid is reported as "follows Width/Height", and the
+     gate result lists them all in `follows`. A solid that doesn't move when its governing parameter changes is a
+     **Fail**. An add-in too old to report this is **Not checked**.
    - code checks, such as a clear opening of at least 900 mm
    - the IFC class
    - the value sources

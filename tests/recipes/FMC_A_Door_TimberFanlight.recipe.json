@@ -2,7 +2,7 @@
   "schema": "fmc-recipe/0.1",
   "family": "FMC_A_Door_TimberFanlight",
   "template": "Metric Door.rft",
-  "about": "LOD 400 timber door frame with transom and fanlight/vent over (Uganda everyday door). Height is the overall frame height; leaf top = Height - Fanlight Height. Type-dependent parts (louvres vs glass, mosquito mesh, raised panels) are switched by Yes/No-driven formulas that collapse the part into the left jamb when off, until the engine has a visibility-parameter op. The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; the leaf is flush with the interior face and swings in. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Architrave sweeps (Ext and Int faces) from FMC_Profile_Architrave_<Token>, each bound to Show_<Token>. Sweep paths are drawn at the first type's size (900x2400) and don't flex with Width/Height until sweep paths can be locked to planes. The plain architrave shows only when FMC_Design_Movement is outside 1-20.",
+  "about": "LOD 400 timber door frame with transom and fanlight/vent over (Uganda everyday door). Height is the overall frame height; leaf top = Height - Fanlight Height. Type-dependent parts (louvres vs glass, mosquito mesh, raised panels) are switched by Yes/No-driven formulas that collapse the part into the left jamb when off, until the engine has a visibility-parameter op. The recipe puts its outer face at -y, but the template's plane named Exterior is at +y (field review, 15 Oct): the Revit retest confirms which way the family faces in a wall; the leaf is flush with the interior face and swings in. Profile slot (gen_profile_slots.py): FMC_Design_Movement (1-20, default 17) shows one of 20 Architrave sweeps (Ext and Int faces) from FMC_Profile_Architrave_<Token>, each bound to Show_<Token>. Each sweep's path is locked to Left, Right, Frame Head and Floor (path_planes) on Frame Ext/Frame Int, so the trims follow Width and Height in every type. The plain architrave shows only when FMC_Design_Movement is outside 1-20.",
   "ops": [
     {
       "op": "set_category",
@@ -331,6 +331,24 @@
       "name": "Elevation Swing",
       "line_weight_projection": 1,
       "line_weight_cut": 1
+    },
+    {
+      "op": "add_type",
+      "name": "0900x2400_Flush-Vent300"
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Width",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Width",
+      "value": 900
+    },
+    {
+      "op": "set_type_value",
+      "name": "0900x2400_Flush-Vent300/Height",
+      "type": "0900x2400_Flush-Vent300",
+      "param": "Height",
+      "value": 2400
     },
     {
       "op": "add_ref_plane",
@@ -1276,24 +1294,6 @@
       "label": "Architrave Width",
       "view": "Exterior",
       "offset": 800
-    },
-    {
-      "op": "add_type",
-      "name": "0900x2400_Flush-Vent300"
-    },
-    {
-      "op": "set_type_value",
-      "name": "0900x2400_Flush-Vent300/Width",
-      "type": "0900x2400_Flush-Vent300",
-      "param": "Width",
-      "value": 900
-    },
-    {
-      "op": "set_type_value",
-      "name": "0900x2400_Flush-Vent300/Height",
-      "type": "0900x2400_Flush-Vent300",
-      "param": "Height",
-      "value": 2400
     },
     {
       "op": "set_type_value",
@@ -2677,7 +2677,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Greek",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Greek.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Greek.rfa"
     },
     {
       "op": "add_family_param",
@@ -2694,26 +2694,26 @@
     {
       "op": "sweep",
       "name": "Architrave Greek Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Greek",
       "profile_type": "110x22",
       "subcategory": "Frame"
@@ -2739,26 +2739,26 @@
     {
       "op": "sweep",
       "name": "Architrave Greek Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Greek",
       "profile_type": "110x22",
       "subcategory": "Frame"
@@ -2784,7 +2784,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Roman",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Roman.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Roman.rfa"
     },
     {
       "op": "add_family_param",
@@ -2801,26 +2801,26 @@
     {
       "op": "sweep",
       "name": "Architrave Roman Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Roman",
       "profile_type": "125x24",
       "subcategory": "Frame"
@@ -2846,26 +2846,26 @@
     {
       "op": "sweep",
       "name": "Architrave Roman Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Roman",
       "profile_type": "125x24",
       "subcategory": "Frame"
@@ -2891,7 +2891,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Romanesque",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Romanesque.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Romanesque.rfa"
     },
     {
       "op": "add_family_param",
@@ -2908,26 +2908,26 @@
     {
       "op": "sweep",
       "name": "Architrave Romanesque Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Romanesque",
       "profile_type": "150x26",
       "subcategory": "Frame"
@@ -2953,26 +2953,26 @@
     {
       "op": "sweep",
       "name": "Architrave Romanesque Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Romanesque",
       "profile_type": "150x26",
       "subcategory": "Frame"
@@ -2998,7 +2998,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Gothic",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Gothic.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Gothic.rfa"
     },
     {
       "op": "add_family_param",
@@ -3015,26 +3015,26 @@
     {
       "op": "sweep",
       "name": "Architrave Gothic Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Gothic",
       "profile_type": "115x26",
       "subcategory": "Frame"
@@ -3060,26 +3060,26 @@
     {
       "op": "sweep",
       "name": "Architrave Gothic Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Gothic",
       "profile_type": "115x26",
       "subcategory": "Frame"
@@ -3105,7 +3105,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Renaissance",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Renaissance.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Renaissance.rfa"
     },
     {
       "op": "add_family_param",
@@ -3122,26 +3122,26 @@
     {
       "op": "sweep",
       "name": "Architrave Renaissance Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Renaissance",
       "profile_type": "120x23",
       "subcategory": "Frame"
@@ -3167,26 +3167,26 @@
     {
       "op": "sweep",
       "name": "Architrave Renaissance Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Renaissance",
       "profile_type": "120x23",
       "subcategory": "Frame"
@@ -3212,7 +3212,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Baroque",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Baroque.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Baroque.rfa"
     },
     {
       "op": "add_family_param",
@@ -3229,26 +3229,26 @@
     {
       "op": "sweep",
       "name": "Architrave Baroque Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Baroque",
       "profile_type": "160x31",
       "subcategory": "Frame"
@@ -3274,26 +3274,26 @@
     {
       "op": "sweep",
       "name": "Architrave Baroque Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Baroque",
       "profile_type": "160x31",
       "subcategory": "Frame"
@@ -3319,7 +3319,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Georgian",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Georgian.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Georgian.rfa"
     },
     {
       "op": "add_family_param",
@@ -3336,26 +3336,26 @@
     {
       "op": "sweep",
       "name": "Architrave Georgian Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Georgian",
       "profile_type": "110x20",
       "subcategory": "Frame"
@@ -3381,26 +3381,26 @@
     {
       "op": "sweep",
       "name": "Architrave Georgian Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Georgian",
       "profile_type": "110x20",
       "subcategory": "Frame"
@@ -3426,7 +3426,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_FederalAdam",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_FederalAdam.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_FederalAdam.rfa"
     },
     {
       "op": "add_family_param",
@@ -3443,26 +3443,26 @@
     {
       "op": "sweep",
       "name": "Architrave FederalAdam Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_FederalAdam",
       "profile_type": "90x15",
       "subcategory": "Frame"
@@ -3488,26 +3488,26 @@
     {
       "op": "sweep",
       "name": "Architrave FederalAdam Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_FederalAdam",
       "profile_type": "90x15",
       "subcategory": "Frame"
@@ -3533,7 +3533,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_GreekRevival",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_GreekRevival.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_GreekRevival.rfa"
     },
     {
       "op": "add_family_param",
@@ -3550,26 +3550,26 @@
     {
       "op": "sweep",
       "name": "Architrave GreekRevival Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_GreekRevival",
       "profile_type": "170x18",
       "subcategory": "Frame"
@@ -3595,26 +3595,26 @@
     {
       "op": "sweep",
       "name": "Architrave GreekRevival Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_GreekRevival",
       "profile_type": "170x18",
       "subcategory": "Frame"
@@ -3640,7 +3640,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Italianate",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Italianate.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Italianate.rfa"
     },
     {
       "op": "add_family_param",
@@ -3657,26 +3657,26 @@
     {
       "op": "sweep",
       "name": "Architrave Italianate Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Italianate",
       "profile_type": "140x25",
       "subcategory": "Frame"
@@ -3702,26 +3702,26 @@
     {
       "op": "sweep",
       "name": "Architrave Italianate Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Italianate",
       "profile_type": "140x25",
       "subcategory": "Frame"
@@ -3747,7 +3747,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Victorian",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Victorian.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Victorian.rfa"
     },
     {
       "op": "add_family_param",
@@ -3764,26 +3764,26 @@
     {
       "op": "sweep",
       "name": "Architrave Victorian Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Victorian",
       "profile_type": "130x22",
       "subcategory": "Frame"
@@ -3809,26 +3809,26 @@
     {
       "op": "sweep",
       "name": "Architrave Victorian Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Victorian",
       "profile_type": "130x22",
       "subcategory": "Frame"
@@ -3854,7 +3854,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_ArtsCrafts",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtsCrafts.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_ArtsCrafts.rfa"
     },
     {
       "op": "add_family_param",
@@ -3871,26 +3871,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtsCrafts Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_ArtsCrafts",
       "profile_type": "120x20",
       "subcategory": "Frame"
@@ -3916,26 +3916,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtsCrafts Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_ArtsCrafts",
       "profile_type": "120x20",
       "subcategory": "Frame"
@@ -3961,7 +3961,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_ArtNouveau",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtNouveau.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_ArtNouveau.rfa"
     },
     {
       "op": "add_family_param",
@@ -3978,26 +3978,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtNouveau Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_ArtNouveau",
       "profile_type": "115x22",
       "subcategory": "Frame"
@@ -4023,26 +4023,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtNouveau Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_ArtNouveau",
       "profile_type": "115x22",
       "subcategory": "Frame"
@@ -4068,7 +4068,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_ArtDeco",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_ArtDeco.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_ArtDeco.rfa"
     },
     {
       "op": "add_family_param",
@@ -4085,26 +4085,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtDeco Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_ArtDeco",
       "profile_type": "110x20",
       "subcategory": "Frame"
@@ -4130,26 +4130,26 @@
     {
       "op": "sweep",
       "name": "Architrave ArtDeco Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_ArtDeco",
       "profile_type": "110x20",
       "subcategory": "Frame"
@@ -4175,7 +4175,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Modernist",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Modernist.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Modernist.rfa"
     },
     {
       "op": "add_family_param",
@@ -4192,26 +4192,26 @@
     {
       "op": "sweep",
       "name": "Architrave Modernist Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Modernist",
       "profile_type": "70x11",
       "subcategory": "Frame"
@@ -4237,26 +4237,26 @@
     {
       "op": "sweep",
       "name": "Architrave Modernist Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Modernist",
       "profile_type": "70x11",
       "subcategory": "Frame"
@@ -4282,7 +4282,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Brutalist",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Brutalist.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Brutalist.rfa"
     },
     {
       "op": "add_family_param",
@@ -4299,26 +4299,26 @@
     {
       "op": "sweep",
       "name": "Architrave Brutalist Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Brutalist",
       "profile_type": "200x33",
       "subcategory": "Frame"
@@ -4344,26 +4344,26 @@
     {
       "op": "sweep",
       "name": "Architrave Brutalist Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Brutalist",
       "profile_type": "200x33",
       "subcategory": "Frame"
@@ -4389,7 +4389,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Contemporary",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Contemporary.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Contemporary.rfa"
     },
     {
       "op": "add_family_param",
@@ -4406,26 +4406,26 @@
     {
       "op": "sweep",
       "name": "Architrave Contemporary Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Contemporary",
       "profile_type": "60x13",
       "subcategory": "Frame"
@@ -4451,26 +4451,26 @@
     {
       "op": "sweep",
       "name": "Architrave Contemporary Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Contemporary",
       "profile_type": "60x13",
       "subcategory": "Frame"
@@ -4496,7 +4496,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_SwahiliZanzibar",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_SwahiliZanzibar.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_SwahiliZanzibar.rfa"
     },
     {
       "op": "add_family_param",
@@ -4513,26 +4513,26 @@
     {
       "op": "sweep",
       "name": "Architrave SwahiliZanzibar Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_SwahiliZanzibar",
       "profile_type": "160x26",
       "subcategory": "Frame"
@@ -4558,26 +4558,26 @@
     {
       "op": "sweep",
       "name": "Architrave SwahiliZanzibar Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_SwahiliZanzibar",
       "profile_type": "160x26",
       "subcategory": "Frame"
@@ -4603,7 +4603,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_Islamic",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_Islamic.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_Islamic.rfa"
     },
     {
       "op": "add_family_param",
@@ -4620,26 +4620,26 @@
     {
       "op": "sweep",
       "name": "Architrave Islamic Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_Islamic",
       "profile_type": "120x22",
       "subcategory": "Frame"
@@ -4665,26 +4665,26 @@
     {
       "op": "sweep",
       "name": "Architrave Islamic Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_Islamic",
       "profile_type": "120x22",
       "subcategory": "Frame"
@@ -4710,7 +4710,7 @@
     {
       "op": "load_family",
       "name": "FMC_Profile_Architrave_TropicalEastAfrican",
-      "path": "Z:\\00_Standards\\04_Families\\_Staging\\_Profiles\\FMC_Profile_Architrave_TropicalEastAfrican.rfa"
+      "path": "_Profiles\\FMC_Profile_Architrave_TropicalEastAfrican.rfa"
     },
     {
       "op": "add_family_param",
@@ -4727,26 +4727,26 @@
     {
       "op": "sweep",
       "name": "Architrave TropicalEastAfrican Ext",
-      "path": [
+      "path_planes": [
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Ext",
       "path_plane": "front",
-      "at": -100.0,
       "profile_family": "FMC_Profile_Architrave_TropicalEastAfrican",
       "profile_type": "150x20",
       "subcategory": "Frame"
@@ -4772,26 +4772,26 @@
     {
       "op": "sweep",
       "name": "Architrave TropicalEastAfrican Int",
-      "path": [
+      "path_planes": [
         [
-          450.0,
-          0.0
+          "Right",
+          "Floor"
         ],
         [
-          450.0,
-          2400.0
+          "Right",
+          "Frame Head"
         ],
         [
-          -450.0,
-          2400.0
+          "Left",
+          "Frame Head"
         ],
         [
-          -450.0,
-          0.0
+          "Left",
+          "Floor"
         ]
       ],
+      "path_host": "Frame Int",
       "path_plane": "front",
-      "at": 100.0,
       "profile_family": "FMC_Profile_Architrave_TropicalEastAfrican",
       "profile_type": "150x20",
       "subcategory": "Frame"
@@ -5114,7 +5114,7 @@
     "Trim position": {
       "value": "jambs and head at the opening edge",
       "source_status": "assumed",
-      "source": "trim on the frame faces y = -/+100 (8 in frame = wall depth), where the plain 60x15 architrave sits"
+      "source": "trim on the frame faces Frame Ext/Int (y = -/+100, 8 in frame = wall depth, Frame Depth), where the plain 60x15 architrave sits"
     }
   },
   "checks": {
