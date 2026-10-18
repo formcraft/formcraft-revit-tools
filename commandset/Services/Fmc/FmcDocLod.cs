@@ -346,6 +346,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (Math.Abs(rot) > 1e-9) ElementTransformUtils.RotateElement(doc, inst.Id, Line.CreateBound(p, p + XYZ.BasisZ), Rad(rot));
                 FmcDocGeometry.Label(inst, name);
                 result = "create";
+                // QS03: lock a new component to the host's planes, so it moves with the host's sizes
+                if (op["lock"] is JObject lk) notes.AddRange(LockNested(doc, inst, lk));
             }
             FamilyManager fm = doc.FamilyManager;
             if (op["params"] is JObject map)
@@ -364,6 +366,56 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
             }
             return (result, string.Join("; ", notes));
+        }
+
+        /// <summary>
+        /// QS03: a nested component's Center (Left/Right), Center (Front/Back) and Bottom references moved onto host planes
+        /// (x, y) and a host plane or level (z), then locked. The component is drawn with its centre and bottom at its own
+        /// origin (its recipe marks those planes as references), so moving its origin onto the plane puts the reference there.
+        /// Which of its two centre references takes an x or y lock follows its rotation: the one facing the host plane.
+        /// </summary>
+        private static IEnumerable<string> LockNested(Document doc, FamilyInstance inst, JObject lk)
+        {
+            var notes = new List<string>();
+            View plan = ViewFor(doc, "plan"), front = ViewFor(doc, "front");
+            foreach (string axis in new[] { "x", "y", "z" })
+            {
+                string pn = lk.Value<string>(axis);
+                if (string.IsNullOrEmpty(pn)) continue;
+                Reference hostRef; XYZ hostPoint, hostNormal;
+                ReferencePlane rp = new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(r => r.Name == pn);
+                if (rp != null)
+                {
+                    Plane pl = rp.GetPlane();
+                    hostRef = rp.GetReference(); hostPoint = pl.Origin; hostNormal = pl.Normal.Normalize();
+                }
+                else
+                {
+                    Level lv = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().FirstOrDefault(l => l.Name == pn)
+                        ?? throw new InvalidOperationException("No reference plane or level " + pn + " to lock " + FmcDocGeometry.NameOf(inst) + " to");
+                    hostRef = lv.GetPlaneReference(); hostPoint = new XYZ(0, 0, lv.Elevation); hostNormal = XYZ.BasisZ;
+                }
+                Transform tr = inst.GetTransform();
+                FamilyInstanceReferenceType kind = axis == "z" ? FamilyInstanceReferenceType.Bottom
+                    : Math.Abs(tr.BasisX.DotProduct(hostNormal)) > 0.99 ? FamilyInstanceReferenceType.CenterLeftRight
+                    : Math.Abs(tr.BasisY.DotProduct(hostNormal)) > 0.99 ? FamilyInstanceReferenceType.CenterFrontBack
+                    : throw new InvalidOperationException(pn + " isn't parallel to either centre plane of " + FmcDocGeometry.NameOf(inst) + " (check rotate_deg)");
+                Reference ir = inst.GetReferences(kind).FirstOrDefault()
+                    ?? throw new InvalidOperationException(FmcDocGeometry.NameOf(inst) + " has no " + kind + " reference: mark that plane in the component's recipe");
+                double d = (hostPoint - tr.Origin).DotProduct(hostNormal);
+                if (Math.Abs(d) > 1e-9) { ElementTransformUtils.MoveElement(doc, inst.Id, hostNormal.Multiply(d)); doc.Regenerate(); }
+                try
+                {
+                    Dimension al = doc.FamilyCreate.NewAlignment(axis == "z" ? front : plan, hostRef, ir);
+                    if (al != null && !al.IsLocked) al.IsLocked = true;
+                    notes.Add(axis + " locked to " + pn);
+                }
+                catch (Exception e)
+                {
+                    notes.Add(axis + " on " + pn + " but not locked: " + e.Message);
+                }
+            }
+            return notes;
         }
     }
 }

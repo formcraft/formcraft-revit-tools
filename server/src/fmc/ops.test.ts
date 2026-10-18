@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { OPS, familyRoots, opsProblems, profileLoopProblems, resolveFamilyPath, resolveFamilyPaths, runningPlanes, splitProblems } from "./ops.js";
+import { OP, OPS, familyRoots, opsProblems, profileLoopProblems, resolveFamilyPath, resolveFamilyPaths, runningPlanes, splitProblems } from "./ops.js";
 import { SpParam } from "./specs.js";
 import { parseMaterialDb } from "./materials.js";
 
@@ -360,4 +360,16 @@ test("set_type_image takes a png or jpg inside the kit's families folder", () =>
   const all = splitProblems(opsProblems(bad, dict, "D:\\Kit\\04_Families")).errors.join(" | ");
   assert.match(all, /takes a \.png or \.jpg/);
   assert.match(all, /isn't inside the kit's families folder/);
+});
+
+test("QS03: a nested component can be locked to the host's planes, and an unknown lock plane is reported", () => {
+  const ok = OP.safeParse({ op: "place_nested", name: "Lever Ext", family: "FMC_A_Part_LeverRose", type: "Standard", lock: { x: "Lever Spindle", y: "Leaf Ext", z: "Lever Mid" } });
+  assert.equal(ok.success, true);
+  const p = opsProblems([
+    { op: "add_ref_plane", name: "Leaf Ext", from: [-1000, -20], to: [1000, -20] },
+    { op: "load_family", name: "FMC_A_Part_LeverRose", path: "D:\\K\\04_Families\\_Staging\\A\\FMC_A_Part_LeverRose.rfa" },
+    { op: "place_nested", name: "Lever Ext", family: "FMC_A_Part_LeverRose", type: "Standard", lock: { y: "Leaf Ext", z: "Lever Mid" } },
+  ].map((o) => OP.parse(o)), null);
+  assert.ok(p.some((x) => /lock plane "Lever Mid" isn't made earlier/.test(x)), p.join("\n"));
+  assert.ok(!p.some((x) => /lock plane "Leaf Ext"/.test(x)));
 });

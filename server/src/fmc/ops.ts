@@ -154,7 +154,12 @@ export const OP = z.discriminatedUnion("op", [
     shared: z.boolean().optional().describe("true for a shared nested family (handles, hinges, locks) that schedules on its own: the load checks the family is shared") }),
   z.object({ op: z.literal("place_nested"), name: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
     at: point3.default([0, 0, 0]), rotate_deg: z.number().default(0),
-    params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)") }),
+    params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)"),
+    // QS03: a component rides the host's planes. Its own Center (Left/Right), Center (Front/Back) and bottom (a plane
+    // marked Bottom in the component) are moved onto these host planes and locked, so it moves with the host's sizes.
+    lock: z.object({ x: z.string().min(1).optional().describe("host plane for the component's Center (Left/Right)"),
+      y: z.string().min(1).optional().describe("host plane for its Center (Front/Back)"),
+      z: z.string().min(1).optional().describe("host plane or level for its bottom") }).optional() }),
   // Profiles, switches and kit materials (FAM-040): profile families drawn as data, a Yes/No parameter that shows or
   // hides a solid, and materials made from the kit's library with their textures.
   z.object({ op: z.literal("profile_lines"), name: z.string().min(1).describe("one name for the loop"),
@@ -651,6 +656,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       }
       case "place_nested":
         if (!families.has(o.family)) p.push(`${at}: ${mayExist("family", o.family)}`);
+        for (const pl of Object.values(o.lock ?? {})) if (pl && !planes.has(pl)) p.push(`${at}: lock plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         for (const hp of Object.values(o.params)) if (!params.has(hp)) p.push(`${at}: ${mayExist("parameter", hp)}`);
         break;
       case "add_dimension":
