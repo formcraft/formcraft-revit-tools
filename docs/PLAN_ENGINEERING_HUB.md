@@ -38,9 +38,9 @@ Revit's own detail levels (the owner's choice, 18 Oct):
 |---|---|---|---|
 | Coarse | **LOD 100** | The envelope box: true overall size, clearance zones, connectors, symbols | The recipe engine (skeleton, simple solids) |
 | Medium | **LOD 200** (standard family) or **LOD 300** (detailed family) | LOD 200: the fully parametric, flex-tested body. LOD 300: accurate native geometry, real materials, frames and trims | The recipe engine (sweeps, profiles, kit materials) |
-| Fine | **LOD 200** (standard) or **LOD 400** (detailed) | LOD 400: the detailed body drawn smooth, curved castings, handles, fixings | **Rhino**, through the hub (`fmc_rhino twins`, `import_part`) |
+| Fine | **LOD 200** (standard) or **LOD 400 + Render** (detailed) | LOD 400 + Render: the detailed body drawn smooth for renders, curved castings, handles, fixings | **Rhino**, through the hub (`fmc_rhino twins`, `import_part`) |
 
-Labels: owner, 19 Oct (`docs/handoff/SAMPLE14_LOD_LADDER.md`, QS01); this replaces "Coarse = LOD 200" of 18 Oct. Gate A
+Labels: owner, 19 Oct (`docs/handoff/SAMPLE14_LOD_LADDER.md`, QS01); this replaces "Coarse = LOD 200" of 18 Oct. The Rhino-smooth Fine level is **LOD 400 + Render** (owner, 19 Oct; not "LOD 500+"). Gate A
 states the ladder each family carries ("Levels of detail", read from the recipe).
 
 How a LOD 400 part gets into a family:
