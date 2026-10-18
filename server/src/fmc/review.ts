@@ -20,7 +20,38 @@ export interface ReviewItem {
   sheet?: string;
   /** The revision cloud on the drawing, once drawn: its element id, view and revision. */
   cloud?: { id: number; view: string; revision: string };
+  // ---- Mark & Review (docs/PLAN_MARK_REVIEW.md, R1): a ticket is a review item with these too; all optional, so the
+  // register's older items and its other actions stay as they are
+  /** Who fixes it: the AI modeller, a named person, a discipline, or anyone who takes it. */
+  to?: "ai" | "person" | "discipline" | "anyone";
+  /** Where it is in the model. */
+  where?: Where;
+  /** The thread: the first note and every reply, typed or spoken. */
+  notes?: Note[];
+  /** Pictures kept beside the register (paths under 01_WIP\_Reviews\media\<id>\). */
+  pictures?: { raised?: string; before?: string; after?: string };
+  /** What the ticket came from and what it touches. */
+  source?: "mark" | "clash" | "review" | "bcf";
+  links?: { recipe_node?: string; clash?: { test: string; name: string; guid?: string }; family?: string };
+  /** The BCF topic's GUID, so a ticket sent out and back is the same ticket. */
+  guid?: string;
 }
+
+/** Where a ticket sits: elements (Revit UniqueIds, and in linked models), a point, the view, the camera, a section box. */
+export interface Where {
+  unique_ids: string[];
+  /** IFC GUIDs of the same elements (Revit writes them on export), for BCF readers that match by IFC. */
+  ifc_guids?: string[];
+  linked?: Array<{ link: string; unique_id: string }>;
+  /** A point in the model, mm (project coordinates), for a mark on a place rather than an element. */
+  point_mm?: number[];
+  view?: string;
+  camera?: { eye: number[]; direction: number[]; up: number[]; perspective: boolean; field_of_view?: number; scale?: number };
+  section_box?: { min: number[]; max: number[] };
+}
+
+/** A note in a ticket's thread: typed, or spoken (the audio file kept, its transcript beside it). */
+export interface Note { at: string; by: string; text: string; audio?: string; transcript?: string; transcribed_by?: string }
 /** One print of a sheet: for review (open items) or as revised (closed items and their solutions). */
 export interface PrintLine { sheet: string; kind: "For review" | "As revised"; at: string; by: string; revision: string; items: string[]; folder: string }
 export interface Register { project: string; items: ReviewItem[]; prints?: PrintLine[] }
