@@ -28,7 +28,7 @@ An app installed somewhere else can be pointed at with `FMC_APP_<ID>_EXE` (for e
 3. Its tool (`fmc_<app>`), with a dry run first, a stand-in for CI, and docs.
 
 ## How the apps talk: the exchange layer (X0)
-A project's exchange is `<project>_WIP\_Exchange` (or `<reports>\Exchange` with no project named):
+A project's exchange is `<project>\01_WIP\_Exchange` (or `<reports>\Exchange` with no project named):
 
 - **The identity map** (`FMC_Identity.json`): one Formcraft id (`FMC-…`) per element, mapped to its id in each app:
   Revit by UniqueId, a Robot run's bar as `<run>#<bar>`, and next Navisworks items and Rhino objects. `fmc_robot send`
@@ -46,5 +46,5 @@ A project's exchange is `<project>_WIP\_Exchange` (or `<reports>\Exchange` with
 Without AI, from a command line (or a scheduled task):
 
 ```
-node buildmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
+node build\fmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
 ```
