@@ -62,7 +62,7 @@ export function readJsonLines(file: string, max = 3000): any[] {
   return out;
 }
 
-export type JobState = "running" | "waiting_for_dialog" | "finished" | "failed" | "cancelled" | "no_answer";
+export type JobState = "queued" | "running" | "waiting_for_dialog" | "finished" | "failed" | "cancelled" | "no_answer";
 
 export interface JobView {
   job: string;
@@ -73,7 +73,7 @@ export interface JobView {
   /** One line a person can read. */
   summary: string;
   cancel_requested?: string;
-  revit?: { running_since?: string; heartbeat_at?: string; finished?: string; ms?: number; ok?: boolean; error?: string };
+  revit?: { queued_at?: string; ahead?: number; running_since?: string; heartbeat_at?: string; finished?: string; ms?: number; ok?: boolean; error?: string };
   /** The same times in this PC's local time with its offset, for a person reading them beside other logs (F-064). */
   local?: { started?: string; heartbeat?: string; finished?: string; result?: string };
   dialogs: Array<{ at: string; dialog_id: string; message: string; answer: string }>;
@@ -115,8 +115,10 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
     if (typeof e?.job !== "string" || !e.job) continue;
     const j = get(e.job, String(e.started ?? e.at ?? ""), e.command);
     j.revit ??= {};
-    if (e.event === "running") j.revit.running_since = String(e.started ?? e.at ?? "");
-    if (e.event === "heartbeat" || e.event === "running") j.revit.heartbeat_at = String(e.at ?? "");
+    // a job that waited in the queue starts when its "running" line is written (it carries queued_ms), not when it arrived
+    if (e.event === "running") j.revit.running_since = String(e.queued_ms !== undefined ? e.at : (e.started ?? e.at ?? ""));
+    if (e.event === "queued") { j.revit.queued_at = String(e.at ?? ""); j.revit.ahead = Number(e.ahead ?? 1); }
+    if (e.event === "heartbeat" || e.event === "running" || e.event === "queued") j.revit.heartbeat_at = String(e.at ?? "");
     if (e.event === "finished") Object.assign(j.revit, { finished: String(e.at ?? ""), ms: e.ms, ok: e.ok, error: e.error });
     if (e.event === "cancelled") j.revit_cancelled = String(e.at ?? "");
     if (e.event === "dialog") j.dialogs.push({ at: String(e.at ?? ""), dialog_id: String(e.dialog_id ?? ""), message: String(e.message ?? ""), answer: String(e.answer ?? "") });
@@ -147,6 +149,11 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env): JobView[] {
       j.state = j.revit.ok === false ? "failed" : "finished";
       j.summary = `Revit ended it at ${j.revit.finished} (${j.revit.ok === false ? `failed: ${j.revit.error ?? ""}` : "answered"}), ` +
         "but this server didn't receive the answer (the MCP server was restarted?): check the model or the staging folder before running it again";
+    }
+    else if (j.revit?.queued_at && !(j.revit.running_since && j.revit.running_since >= j.revit.queued_at) && !j.gave_up) {
+      j.state = "queued";
+      j.summary = `Waiting in Revit behind ${j.revit.ahead ?? 1} command(s) since ${j.revit.queued_at}` +
+        (j.revit.heartbeat_at && j.revit.heartbeat_at > j.revit.queued_at ? `, last heartbeat ${j.revit.heartbeat_at}` : "") + ": it starts when they end";
     }
     else if (j.gave_up && j.revit?.heartbeat_at && j.revit.heartbeat_at > j.gave_up) {
       j.state = "running";

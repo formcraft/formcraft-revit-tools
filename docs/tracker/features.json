@@ -579,9 +579,9 @@
     "id": "F65",
     "area": "Engine",
     "group": "Bridge",
-    "feature": "Long jobs: heartbeats, no fixed cap, PC kept awake",
+    "feature": "Long jobs: heartbeats, queue, no fixed cap, PC kept awake",
     "status": "Built, Revit check due",
     "ref": "F-064",
-    "note": "Revit writes a heartbeat a minute and keeps long results itself; the server waits while heartbeats are fresh; Windows kept from sleeping during a command; send_code waits up to 12 h; fmc_job shows local times with offsets"
+    "note": "Revit writes a heartbeat a minute and keeps long results itself; the server waits while heartbeats are fresh; Windows kept from sleeping during a command; send_code waits up to 12 h; fmc_job shows local times with offsets; a command that arrives while another runs is queued in the add-in (fmc_job: queued), and fmc_document_info answers from its last reading while Revit is busy"
   }
 ]

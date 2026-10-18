@@ -9,7 +9,7 @@ function reply(body: object, isError = false) {
 export const FMC_JOB_DESCRIPTION =
   "Jobs: every call to Revit is a job. A call still running when the bridge must answer (about 50 s) replies " +
     "[FMC-JOB-RUNNING] with a job id: it has not failed. list: recent long jobs, newest first (state: running, " +
-    "waiting_for_dialog, finished, failed, cancelled, no_answer). status: one job's state, times and any Revit dialog " +
+    "queued, waiting_for_dialog, finished, failed, cancelled, no_answer). status: one job's state, times and any Revit dialog " +
     "it waits on. result: its final answer (from FMC_LateResults.jsonl). cancel: asks Revit to stop the job at its next " +
     "check (before it starts, at a cancel check, or instead of send_code's commit, which rolls back); shows what will " +
     "happen first, and sends the request with confirm: true. Cancel never closes or interrupts Revit. Read-only " +

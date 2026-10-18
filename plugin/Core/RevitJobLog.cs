@@ -52,6 +52,22 @@ namespace revit_mcp_plugin.Core
             Write(new JObject { ["event"] = "running", ["started"] = _started.ToString("o") });
         }
 
+        /// <summary>F-064: the call waits behind another command (`ahead` commands before it). Written at once, so fmc_job shows
+        /// "queued"; heartbeats then follow as for any job.</summary>
+        public void Queued(int ahead)
+        {
+            if (Volatile.Read(ref _done) == 1) return;
+            Interlocked.Exchange(ref _running, 1);
+            Write(new JObject { ["event"] = "queued", ["started"] = _started.ToString("o"), ["ahead"] = ahead });
+        }
+
+        /// <summary>F-064: a queued call got Revit's API thread and starts now.</summary>
+        public void LeftQueue()
+        {
+            if (Volatile.Read(ref _done) == 1) return;
+            Write(new JObject { ["event"] = "running", ["started"] = _started.ToString("o"), ["queued_ms"] = (long)(DateTime.UtcNow - _started).TotalMilliseconds });
+        }
+
         /// <summary>The call ended (answered or failed); written only when it ran long enough to be a job. A long job's
         /// result (or error) also goes to FMC_LateResults.jsonl from here, so it is never lost (F-064).</summary>
         public void Done(bool ok, string error = null, object result = null)
