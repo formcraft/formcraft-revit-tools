@@ -3,7 +3,7 @@ import { Recipe, recordSides } from "../fmc/recipes.js";
 import { markStale, readLedger, writeLedger } from "../fmc/doc.js";
 import {
   BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, ChunkRecord, applyEnvelope, isNoAnswer, isSessionGone, isStillQueued, opsHash,
-  planChunks, progressPath, readBuilds, readProgress, rememberTemplatePlanes, renumberOpError, requestBytes, stoppedAt, writeBuild,
+  planChunks, progressPath, readBuilds, readProgress, rememberTemplatePlanes, renumberOpError, requestBytes, skippedOps, stoppedAt, writeBuild,
 } from "../fmc/recipebuild.js";
 
 /**
@@ -211,7 +211,8 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
     lastMs = now() - started;
     cr.ms = lastMs;
     if (ok(r)) {
-      Object.assign(cr, { state: "done", created: r.created ?? 0, updated: r.updated ?? 0, skipped: r.skipped ?? 0, warnings: (r.warnings ?? []).length });
+      Object.assign(cr, { state: "done", created: r.created ?? 0, updated: r.updated ?? 0, skipped: r.skipped ?? 0, warnings: (r.warnings ?? []).length,
+        skipped_ops: skippedOps(r, from - 1) });
       warnings.push(...(r.warnings ?? []).map(String));
       rec.last_good_op = to;
       rec.good_hash = opsHash(ops.slice(0, to));
@@ -235,15 +236,18 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   }
 
   // ---- every op is in: a dry run closes without saving; a build flexes, saves, closes and runs Gate A
-  const totals = rec.chunks.filter((c) => c.state === "done" && !c.replay)
-    .reduce((t, c) => ({ created: t.created + (c.created ?? 0), updated: t.updated + (c.updated ?? 0), skipped: t.skipped + (c.skipped ?? 0) }), { created: 0, updated: 0, skipped: 0 });
+  const done = rec.chunks.filter((c) => c.state === "done" && !c.replay);
+  const totals = done.reduce((t, c) => ({ created: t.created + (c.created ?? 0), updated: t.updated + (c.updated ?? 0), skipped: t.skipped + (c.skipped ?? 0) }),
+    { created: 0, updated: 0, skipped: 0 });
+  // F-061: name each skipped op and why, not only how many
+  const skipped_ops = done.flatMap((c) => c.skipped_ops ?? []);
   if (rec.dry_run) {
     const closed = await d.doc({ action: "close", session: rec.session });
     if (closed?.closed === true) rec.session = "";
     rec.state = "dry run done";
     save();
     return { body: {
-      dry_run: true, family: fam, build: rec.id, would_save: o.target, ...totals, chunks: rec.stepwise ? rec.chunks.length : undefined,
+      dry_run: true, family: fam, build: rec.id, would_save: o.target, ...totals, skipped_ops, chunks: rec.stepwise ? rec.chunks.length : undefined,
       warnings: warnings.slice(0, 30), notes, sources: o.sources, template_closed: !rec.session,
       next: `Run again with dry_run=false${rec.stepwise ? " and stepwise: true" : ""} to build, flex, save to staging and run Gate A`,
     }, isError: false };
@@ -262,7 +266,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   rec.result = { built: o.target, verdict: gate.verdict };
   save();
   return { body: {
-    built: o.target, build: rec.id, ...totals, warnings: warnings.slice(0, 30), flex: { ok: flex?.ok }, gate,
+    built: o.target, build: rec.id, ...totals, skipped_ops, warnings: warnings.slice(0, 30), flex: { ok: flex?.ok }, gate,
     next: gate.verdict === "Pass" ? "A reviewer releases it in the pane" : "Fix what fails and build again",
   }, isError: false };
 }

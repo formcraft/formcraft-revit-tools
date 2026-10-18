@@ -4,7 +4,8 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { parseSharedParameters } from "../fmc/specs.js";
-import { familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
+import { WARNING, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
+import { hostTemplateProblem } from "../fmc/opsgeom.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { softTimeoutMs } from "../utils/SocketClient.js";
@@ -79,6 +80,19 @@ export type FmcRecipeArgs = z.infer<z.ZodObject<typeof FMC_RECIPE_SHAPE>>;
 function readRecipe(file: string): { recipe: Recipe | null; problems: string[] } {
   if (!file || !fs.existsSync(file)) return { recipe: null, problems: [`Recipe not found: ${file || "(none)"}`] };
   return parseRecipe(fs.readFileSync(file, "utf8"));
+}
+
+/** The register's host for a family (the Host column; null: not in the register, no Host column or no register). */
+function registerHost(cfg: GuardConfig, family: string): string | null {
+  try {
+    const file = win.join(win.dirname(expandEnv(cfg.specs_path)), "FMC_Family_Register.csv");
+    const rows = fs.readFileSync(file, "utf8").replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim()).map(csvRow);
+    const head = rows[0]?.map((h) => h.trim().toLowerCase()) ?? [];
+    const cFam = Math.max(0, head.indexOf("family")), cHost = head.indexOf("host");
+    if (cHost < 0) return null;
+    for (const cells of rows.slice(1)) if ((cells[cFam] ?? "").trim() === family) return (cells[cHost] ?? "").trim() || null;
+  } catch { /* no register: not checked */ }
+  return null;
 }
 
 /** The register's category for a family (03_Master_Data\FMC_Family_Register.csv: Role,Family,Category,…; quoted cells read whole). */
@@ -185,7 +199,10 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     const planes = templatePlanes(template, expandEnv(config.reports_dir));
     const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
     const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials,
-      { libraryRoots, templatePlanes: planes.planes }));
+      { libraryRoots, templatePlanes: planes.planes, template: win.basename(template) }));
+    // F-061: a family the register hosts on a wall or ceiling face can't come from an unhosted template
+    const hostProblem = hostTemplateProblem(recipe.family, win.basename(template), registerHost(config, recipe.family));
+    if (hostProblem) notes.push(`${WARNING} ${hostProblem}`);
     // load_family paths are relative to the kit's family roots on this PC (the recipe works on any PC)
     const families = resolveFamilyPaths(recipe.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
     notes.push(...families.notes);
