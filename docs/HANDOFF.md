@@ -12,6 +12,21 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · QS03 proof: the hygienic door with components, Open and clearance (build and flex-test it)
+- **Batch:** `_Staging\_Batch\batch_QS03_DOOR_LOD400.json`, in order: `FMC_A_Part_LeverRose`, `FMC_A_Part_ButtHinge`,
+  `FMC_A_Part_OverheadCloser` (each Medium = native shape, Fine = its Rhino twins), then
+  `FMC_A_Door_FlushSingle_Hygienic_Detailed`, which loads them from `A\` and nests them on its planes (`place_nested`
+  with `lock`). Needs this build in Revit (close Revit after the PR merges).
+- **Check in Revit, every type (0926, 1026, 1126):**
+  1. the levers sit on the roses both faces, pointing to the hinge; 3 hinges on the hinge edge; the closer on the
+     interior face under the head; and they **move with Width and Height** (flex);
+  2. **`Open` = Yes** shows the leaf swung 90° to the interior (a plain slab in this first version) and hides the
+     closed leaf, levers and closer; `Open` = No the reverse; the hinges stay;
+  3. the clearance zones show with `Show Clearance` (all three levels); the door still cuts the wall;
+  4. Coarse shows no hardware, Medium the native parts, Fine the smooth twins.
+- **Report** each lock's note from the build answer ("x locked to Rose L", or "not locked: why"); a failed lock is the
+  first thing to fix before the other nine get the same treatment.
+
 ### 19 Oct · the four detailed families at LOD 400: build them (queue P00, QD01–QD05)
 - **Ready to build:** `_Staging\_Batch\batch_DET_LOD400.json` holds all four, each one family with three levels:
   Coarse = the envelope (LOD 200), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in

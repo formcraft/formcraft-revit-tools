@@ -437,7 +437,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   const p: string[] = [];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
-  const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>();
+  const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>(), nested = new Set<string>();
   const mayExist = (what: string, n: string) => `reference to ${what} "${n}" that isn't made earlier in this batch (it may exist in the file: then it's fine)`;
   const params = new Set<string>(), types = new Set<string>(), planes = new Set<string>(["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"]);
   const typedParam = (want: string) => (n: string, at: string) => {
@@ -486,7 +486,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "set_visible_param":
         if (o.name !== `${o.solid}/Visible`) p.push(`${at}: name must be "${o.solid}/Visible"`);
-        if (!solids.has(o.solid) && !lines.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
+        if (!solids.has(o.solid) && !lines.has(o.solid) && !nested.has(o.solid)) p.push(`${at}: ${mayExist("solid", o.solid)}`);
         if (!params.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
         else if (paramTypes.has(o.param) && paramTypes.get(o.param) !== "YesNo")
           p.push(`${at}: "${o.param}" is ${paramTypes.get(o.param)}: Visible takes a Yes/No parameter`);
@@ -661,6 +661,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       }
       case "place_nested":
+        nested.add(o.name);
         if (!families.has(o.family)) p.push(`${at}: ${mayExist("family", o.family)}`);
         for (const pl of Object.values(o.lock ?? {}).map(lockPlane)) if (pl && !planes.has(pl)) p.push(`${at}: lock plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         for (const hp of Object.values(o.params)) if (!params.has(hp)) p.push(`${at}: ${mayExist("parameter", hp)}`);
