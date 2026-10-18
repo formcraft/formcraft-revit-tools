@@ -5,6 +5,7 @@
  * elements the family template ships, matched by kind, category, subcategory or name (never an id), never one an op
  * made, in the background family document being built. Files are never deleted.
  */
+import { BUILTIN_PARAMS, OPENING_PARAMS, geometryProblems, isOpeningTemplate } from "./opsgeom.js";
 import path from "node:path";
 import { z } from "zod";
 import { isInside } from "./policy.js";
@@ -349,6 +350,8 @@ export interface OpsCheckOptions {
   libraryRoots?: string[];
   /** The template's own planes (recipe check and build): a path_planes plane that is neither made earlier nor one of these is an error. */
   templatePlanes?: string[];
+  /** The recipe's template (recipe check and build): a parameter a type sets must be added or one the template has (F-064). */
+  template?: string;
 }
 /** Marks a problem that is passed on as a note, not an error. */
 export const WARNING = "warning:";
@@ -377,14 +380,23 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
     else if (paramTypes.has(n) && paramTypes.get(n) !== want) p.push(`${at}: "${n}" is ${paramTypes.get(n)}, not ${want}`);
   };
   const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
+  const solidAt = new Map<string, number>();
+  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend"]);
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
     const key = `${o.op}|${o.name.toLowerCase()}`;
     if (seen.has(key)) p.push(`${at}: the same ${o.op} name twice in one batch`);
     seen.add(key);
+    // F-064: two solids with one name (an extrusion and a sweep, say) fail half way through a build
+    if (SOLID_OPS.has(o.op)) {
+      const before = solidAt.get(o.name.toLowerCase());
+      if (before !== undefined && ops[before].op !== o.op) p.push(`${at}: solid name "${o.name}" is already used by op ${before + 1} (${ops[before].op}): give each solid its own name`);
+      solidAt.set(o.name.toLowerCase(), i);
+    }
     switch (o.op) {
       case "add_shared_param": {
-        if (!dictionary) { p.push(`${at}: the kit's shared parameter file isn't readable`); break; }
+        // the parameter is added either way, so later ops that use it aren't reported as unknown
+        if (!dictionary) { p.push(`${at}: the kit's shared parameter file isn't readable`); params.add(o.name); break; }
         const d = [...dictionary.values()].find((x) => x.guid.toLowerCase() === o.guid.toLowerCase());
         if (!d) p.push(`${at}: GUID ${o.guid} isn't in FMC_SharedParameters.txt (shared parameters come only from the dictionary)`);
         else if (d.name !== o.name) p.push(`${at}: the dictionary names ${o.guid} "${d.name}", not "${o.name}"`);
@@ -450,6 +462,12 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "set_type_value":
         if (o.name !== `${o.type}/${o.param}`) p.push(`${at}: name must be "${o.type}/${o.param}"`);
+        // F-064: a value for a parameter the batch never adds failed mid-build. Built-ins every family has are fine,
+        // and Width/Height/Sill Height on the door and window templates; with the template known, anything else is an error.
+        if (!params.has(o.param) && !BUILTIN_PARAMS.has(o.param) && !(OPENING_PARAMS.has(o.param) && (isOpeningTemplate(opts.template) || !opts.template))) {
+          if (opts.template) p.push(`${at}: parameter "${o.param}" isn't added in this recipe (add_family_param or add_shared_param) and ${opts.template} doesn't have it`);
+          else if (!TEMPLATE_SIZE_PARAMS.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
+        }
         break;
       case "add_subcategory": subcats.add(o.name); break;
       case "sweep":
@@ -591,6 +609,8 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
     p.push(`op ${firstPlane + 1} (${o.op} ${o.name}): ${WARNING} (F-026) this plane is drawn before set_default_size (op ${firstSize + 1}), ` +
       "so it is placed at the template's default size and a labelled dimension can pull a plane to the other side. Put set_default_size with the first type's Width and Height first");
   }
+  // F-064: geometry Revit refuses mid-build (short dimensions and edges, a locked face just off its plane)
+  p.push(...geometryProblems(ops));
   // A plane named only in a warning is fine when the file has it; the hard errors are the ones above other than "may exist".
   return p;
 }

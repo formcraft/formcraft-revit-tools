@@ -251,6 +251,26 @@ Exterior, Interior and Head on Ref. Level. Metric Window.rft adds Sill.
 (the template's 150 mm host wall), so exterior is **+y**, not −y as some recipe notes said. Read the side from the
 template's Exterior plane rather than assuming it. The recipes' geometry is unchanged by this note.
 
+## What `check` stops before Revit (F-061, F-064)
+These rules come from builds that failed overnight on 17–18 Oct. An error stops the build; a warning is passed on.
+
+| Rule | Level | Why |
+|---|---|---|
+| Two planes closer than 1.5 mm can't be dimensioned | Error | Revit refuses the dimension |
+| A solid thinner than 0.78 mm (end − start) | Error | Revit's short-curve tolerance (0.00256 ft): the solid can't be made |
+| `lock_face` where no face of the solid lies on the plane | Error; a warning when a labelled dimension drives the plane | Revit locks only a face exactly on the plane. The engine regenerates first, so a dimension-driven plane may have moved onto the face |
+| `set_type_value` for a parameter the recipe never adds | Error (with the template known) | Built-ins are fine: Keynote, Description, URL, Default Elevation and the like on every family; Width, Height and Sill Height on the door and window templates |
+| One name for two solids (an extrusion and a sweep) | Error | The second op can't find its own solid |
+| An outline edge under 0.78 mm | Warning | 88 of the batch's families built with edges like this (rounded door stops) |
+| The register's Host needs a hosted template and the recipe's is unhosted | Warning | F-061: a socket on `Metric Generic Model.rft` can't be placed on a wall. Use `… face based.rft`, which hosts on walls and ceilings, linked ones too |
+
+**How they were checked:** against the overnight batch log. Of the 227 families the batch judged, the errors block none
+of the 224 that built and catch the one current failure of these kinds (a 0.5 mm diffuser). The other overnight
+failures were already fixed in their recipes, so the "catches failures" side rests on few cases.
+
+A build's result also names each **skipped op** and why (`skipped_ops`): "already as asked" when nothing needed
+changing, or the engine's reason.
+
 ## Recipe ops from the field review (run 9)
 The Ogala LOD 400 review found that recipes flexed only in plan. These ops close the gaps it listed (`lock_face`,
 `set_visible_param` and `profile_lines` were already there). `tests/doc/FMC_A_Door_RecipeOps_Sample.ops.json` uses all

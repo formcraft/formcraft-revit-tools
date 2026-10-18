@@ -107,6 +107,23 @@ export const isSessionGone = (msg: string) => /No open session/.test(msg);
 export interface ChunkRecord {
   from: number; to: number; state: "sent" | "done" | "failed" | "no answer" | "running in Revit";
   sent_at?: string; ms?: number; created?: number; updated?: number; skipped?: number; warnings?: number; replay?: boolean; error?: string;
+  /** F-061: which ops were skipped and why (the recipe's op numbers). */
+  skipped_ops?: SkippedOp[];
+}
+
+/** An op the engine left as it was: already as asked, or a reason it couldn't apply. */
+export interface SkippedOp { op: number; name: string; why: string }
+
+/** The skipped ops in an apply reply, numbered as in the recipe (the chunk starts after op `offset`). */
+export function skippedOps(reply: { ops?: unknown }, offset: number): SkippedOp[] {
+  const rows = Array.isArray(reply?.ops) ? reply.ops as Array<Record<string, unknown>> : [];
+  const out: SkippedOp[] = [];
+  rows.forEach((r, k) => {
+    if (r?.result !== "skip") return;
+    const detail = String(r.detail ?? "").trim();
+    out.push({ op: offset + k + 1, name: `${r.op ?? "op"} ${r.name ?? ""}`.trim(), why: detail || "already as asked (nothing to change)" });
+  });
+  return out;
 }
 
 export interface BuildRecord {
