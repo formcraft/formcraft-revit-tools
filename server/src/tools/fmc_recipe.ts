@@ -9,7 +9,8 @@ import { hostTemplateProblem } from "../fmc/opsgeom.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
 import { softTimeoutMs } from "../utils/SocketClient.js";
-import { RecordedSides, Recipe, followParams, gateA, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { HostTestResult, RecordedSides, Recipe, followParams, gateA, hostTestKind, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { SpecFile } from "../fmc/specs.js";
 import { idleLimit } from "../fmc/doc.js";
 import { readXlsxSheets } from "../fmc/xlsx.js";
@@ -152,8 +153,17 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
       await runFmcDoc({ action: "close", session: open.session, template: "", file: "", ops: [], dry_run: true, path: "", overwrite: false, detail_level: "fine", style: "shaded", views: ["3d"] });
     } else flexError = String(open.error ?? (open.reasons ?? []).join("; ") ?? "");
   }
+  // F-061: a family the register hosts on a wall or ceiling face is placed in a throw-away project and its host moved
+  const registerHostText = registerHost(cfg, family);
+  const kind = hostTestKind(registerHostText);
+  let hostTest: HostTestResult | null = null, hostTestError = "";
+  if (kind) {
+    try { hostTest = (await withRevitConnection((c) => c.sendRaw("fmc_family_host_test", { path: file, host: kind }, 180000))) as HostTestResult; }
+    catch (e) { hostTestError = e instanceof Error ? e.message : String(e); }
+  }
   const gate = gateA(family, recipe, { inspect: inspect.plan ?? null, inspectError, flex: flexResult as any, flexError, registerCategory: registerCategory(cfg, family),
-    specCategory: specCategory(cfg, family), tokenCategories: tokenCategories(cfg), recordedSides: recordedSides(cfg, family, file) });
+    specCategory: specCategory(cfg, family), tokenCategories: tokenCategories(cfg), recordedSides: recordedSides(cfg, family, file),
+    registerHost: registerHostText, hostTest, hostTestError });
   const result = { family, file, at: new Date().toISOString(), ...gate };
   try { fs.writeFileSync(file.replace(/\.rfa$/i, ".gate.json"), JSON.stringify(result, null, 2)); } catch { /* the gate still answers */ }
   return result;

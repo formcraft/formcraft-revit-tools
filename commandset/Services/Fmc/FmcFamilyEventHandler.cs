@@ -17,7 +17,7 @@ namespace RevitMCPCommandSet.Services.Fmc
     /// The MCP server resolves and checks every plan (template, save path, dictionary) before it arrives here.
     /// Anything the Revit API cannot do, or that fails, is reported per family, never skipped silently (Manual 17.2).
     /// </summary>
-    public class FmcFamilyEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
+    public partial class FmcFamilyEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
         public string Action { get; set; } = "";
@@ -41,6 +41,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 if (Action == "build") Result = Build(app);
                 else if (Action == "load_test") Result = LoadTest(app);
+                else if (Action == "host_test") Result = HostTest(app);
                 else Error = $"Unknown FMC family action '{Action}'";
             }
             catch (Exception ex) { Error = ex.Message; }
