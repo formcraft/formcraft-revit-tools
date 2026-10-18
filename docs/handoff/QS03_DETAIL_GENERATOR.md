@@ -17,7 +17,10 @@ the approach on 19 Oct and added two rules: everything that opens gets an open/c
    open leaf sits inside it. Families without a zone today get one: the three windows (500 mm working zone in front),
    the generator (1000 mm service zone around the canopy, doors open) and the fire pump set (1000 mm, the maintenance
    side). Values are marked `assumed` until the owner or an engineer confirms them (rule 5).
-5. **The ladder:** Coarse LOD 100 (envelope box), Medium LOD 300 (the native body plus the components), Fine LOD 400
+5. **Lighting shows its light path** (owner, later on 19 Oct): a beam from each lens to the light field at the working
+   distance, on the Light Path subcategory, with the instance switch **`Show Light Path`** (default Yes); the distance
+   and field are values an engineer confirms.
+6. **The ladder:** Coarse LOD 100 (envelope box), Medium LOD 300 (the native body plus the components), Fine LOD 400
    (the components' smooth Rhino twins), as Gate A's "Levels of detail" line reads it.
 
 ## What opens in the 10
