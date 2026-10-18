@@ -8,8 +8,8 @@ import { WARNING, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } 
 import { hostTemplateProblem } from "../fmc/opsgeom.js";
 import { BRIDGE_LIMIT_BYTES, BuildRecord, CHUNK_BYTES, DEFAULT_CHUNK_OPS, applyEnvelope, dropTemplateNotes, planChunks, readBuilds, requestBytes, templatePlanes } from "../fmc/recipebuild.js";
 import { buildRecipe, cleanupBackground } from "./fmc_recipe_build.js";
-import { softTimeoutMs } from "../utils/SocketClient.js";
-import { HostTestResult, RecordedSides, Recipe, followParams, gateA, hostTestKind, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
+import { JobStillRunning, softTimeoutMs } from "../utils/SocketClient.js";
+import { HostTestResult, RecordedSides, Recipe, followParams, gateA, hostTestKind, parseRecipe, releasePath, roleOf, stagingPath } from "../fmc/recipes.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { SpecFile } from "../fmc/specs.js";
 import { idleLimit } from "../fmc/doc.js";
@@ -19,6 +19,9 @@ import { csvRow } from "./fmc_sheets.js";
 import { runFmcDoc } from "./fmc_doc.js";
 import { runFmcLibrary } from "./fmc_library.js";
 import { readDb } from "./fmc_material.js";
+import { batchId, planBatch, readBatchResults, recipeRevision } from "../fmc/recipebatch.js";
+import { localIso } from "../fmc/jobs.js";
+import { resolveMaterial } from "../fmc/materials.js";
 
 const win = path.win32;
 
@@ -62,10 +65,14 @@ export const FMC_RECIPE_DESCRIPTION =
     "and the name's token, flex, labelled dimensions keeping their planes' sides (from the build's record when the file " +
     "can't be flexed), code checks (clear opening), IFC class and " +
     "value sources; tags, schedules and detail levels need the chain-test load test and are listed as not checked. Release " +
-    "to 04_Families is a person's act in the pane, never this tool.";
+    "to 04_Families is a person's act in the pane, never this tool. batch (F-063): many recipes (recipe_files, files holding " +
+    "an array, or a folder) checked first like check, then built in one Revit job one after another (apply, flex, the old " +
+    "staged file archived, saved to staging with its recipe); a family staged from the same recipe revision with Gate A " +
+    "passed is skipped unless rebuild names it; a dry run shows the plan; results go one line per family to " +
+    "<staging>\\_Batch\\<batch>.jsonl. batch_status reads them; batch_gate runs Gate A on what was built, as many as fit per call.";
 
 export const FMC_RECIPE_SHAPE = {
-  action: z.enum(["check", "build", "gate", "cleanup"]),
+  action: z.enum(["check", "build", "gate", "cleanup", "batch", "batch_status", "batch_gate"]),
   recipe_file: z.string().optional().default("").describe("check, build: the recipe (.json)"),
   recipe: z.record(z.string(), z.any()).optional().describe("check, build: the recipe itself, inline, instead of recipe_file (F-057). It is kept in <reports>\\Recipes\\<family>.recipe.json, and a real build saves it beside the staged family as always"),
   file: z.string().optional().default("").describe("gate: the staged family (.rfa); its recipe is read from <name>.recipe.json beside it"),
@@ -74,6 +81,13 @@ export const FMC_RECIPE_SHAPE = {
   stepwise: z.boolean().optional().default(false).describe("build: send the ops in chunks Revit's bridge can take, one TransactionGroup per chunk"),
   chunk_size: z.number().int().min(1).max(100).optional().default(DEFAULT_CHUNK_OPS).describe("build, stepwise: most ops per chunk (chunks also stay under the bridge's size)"),
   resume: z.boolean().optional().default(false).describe("build: carry on the last build of this recipe's family from its last good op"),
+  recipe_files: z.array(z.string()).optional().default([]).describe("batch: recipe files, or files holding an array of recipes"),
+  folder: z.string().optional().default("").describe("batch: a folder of recipe files (every .json in it)"),
+  rebuild: z.union([z.boolean(), z.array(z.string())]).optional().default(false)
+    .describe("batch: true rebuilds every family, or a list of families; otherwise one staged from the same recipe revision with Gate A passed is skipped"),
+  max: z.number().int().min(0).optional().default(0).describe("batch: build at most this many this run (0: all)"),
+  seconds: z.number().min(0).optional().default(0).describe("batch: stop starting new families after this many seconds (0: no limit)"),
+  batch: z.string().optional().default("").describe("batch_status, batch_gate: the batch (B-yyyymmdd-hhmm); batch: a name to use"),
 };
 
 export type FmcRecipeArgs = z.infer<z.ZodObject<typeof FMC_RECIPE_SHAPE>>;
@@ -169,6 +183,150 @@ export async function runGate(file: string, cfg: GuardConfig, flex: object | nul
   return result;
 }
 
+function readDictionary(config: GuardConfig) {
+  try { return parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { return null; }
+}
+
+/** What check and build both need from a recipe: its template and planes, the problems, the resolved family paths and the target. */
+function prepareRecipe(recipe: Recipe, config: GuardConfig, dictionary: ReturnType<typeof readDictionary>) {
+  const materials = recipe.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
+  const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
+  // F-038: the template's own planes (Left, Right, Exterior, Head…) aren't "not made earlier"; a sweep's path_planes
+  // must be one of them or made earlier (no fixed geometry by accident)
+  const planes = templatePlanes(template, expandEnv(config.reports_dir));
+  const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
+  const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials,
+    { libraryRoots, templatePlanes: planes.planes, template: win.basename(template) }));
+  // F-061: a family the register hosts on a wall or ceiling face can't come from an unhosted template
+  const hostProblem = hostTemplateProblem(recipe.family, win.basename(template), registerHost(config, recipe.family));
+  if (hostProblem) notes.push(`${WARNING} ${hostProblem}`);
+  // load_family paths are relative to the kit's family roots on this PC (the recipe works on any PC)
+  const families = resolveFamilyPaths(recipe.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
+  notes.push(...families.notes);
+  const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
+  return { template, planes, errors, notes, families, target, materials };
+}
+
+/** The recipes a batch names: recipe files, files holding an array of recipes (the chat's batch files), and a folder of either. */
+function batchRecipes(args: FmcRecipeArgs): { recipes: Array<{ recipe: Recipe; file: string }>; problems: string[] } {
+  const files = [...args.recipe_files];
+  if (args.folder.trim()) {
+    const dir = args.folder.trim();
+    if (!fs.existsSync(dir)) return { recipes: [], problems: [`Folder not found: ${dir}`] };
+    for (const f of fs.readdirSync(dir).sort()) if (/\.json$/i.test(f) && !/^batch_log|\.gate\.json$/i.test(f)) files.push(win.join(dir, f));
+  }
+  const recipes: Array<{ recipe: Recipe; file: string }> = [];
+  const problems: string[] = [];
+  for (const file of files) {
+    let raw: unknown;
+    try { raw = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); } catch (e) { problems.push(`${win.basename(file)}: not readable JSON`); continue; }
+    for (const one of Array.isArray(raw) ? raw : [raw]) {
+      const parsed = parseRecipe(JSON.stringify(one));
+      if (parsed.recipe) recipes.push({ recipe: parsed.recipe, file });
+      else problems.push(`${win.basename(file)}${Array.isArray(raw) ? ` (${String((one as { family?: string })?.family ?? "?")})` : ""}: ${parsed.problems.join("; ")}`);
+    }
+  }
+  return { recipes, problems };
+}
+
+function batchFolder(config: GuardConfig) { return win.join(expandEnv(config.family_staging_root), "_Batch"); }
+
+/**
+ * F-063 (QG4): fmc_recipe batch builds many recipes in one Revit job. Every recipe is checked first (the same checks as
+ * fmc_recipe check); families already staged from the same recipe revision with Gate A passed are skipped unless rebuild
+ * names them. A dry run shows the plan. The real run writes a manifest, and the add-in builds them one after another
+ * (apply, flex, archive the old staged file, save with the recipe), one line per family in _Batch\<batch>.jsonl.
+ * batch_status reads that file; batch_gate runs Gate A on what was built, as many as fit in one call each time.
+ */
+async function runBatchAction(args: FmcRecipeArgs, config: GuardConfig, dry: boolean) {
+  const folder = batchFolder(config);
+  if (args.action === "batch_status" || args.action === "batch_gate") {
+    if (!args.batch.trim()) return reply({ refused: true, reasons: ["Name the batch (B-yyyymmdd-hhmm): fmc_recipe batch gives it"] }, true);
+    const resultsFile = win.join(folder, `${args.batch.trim()}.jsonl`);
+    const r = readBatchResults(resultsFile);
+    if (!r.lines.length) return reply({ refused: true, reasons: [`No results yet in ${resultsFile}: the batch hasn't built a family, or the name is wrong (fmc_job status shows the job)`] }, true);
+    if (args.action === "batch_status")
+      return reply({ batch: args.batch, results_file: resultsFile, built: r.built, failed: r.failed, gated: r.gated, gate_passed: r.passed,
+        failures: r.lines.filter((l) => l.ok === false).map((l) => `${l.family}: ${l.error}`).slice(0, 40),
+        gate_fails: r.lines.filter((l) => l.gate === "Fail").map((l) => `${l.family}: ${(l.gate_fails ?? []).join("; ")}`).slice(0, 40),
+        next: r.gated < r.built ? `fmc_recipe batch_gate batch=${args.batch} runs Gate A on the ${r.built - r.gated} built and not yet gated` : "Every built family is gated" });
+    // batch_gate: as many as fit in this call (the client cuts a call at about a minute); run it again for the rest
+    const todo = r.lines.filter((l) => l.ok === true && !l.gate && typeof l.saved === "string");
+    const soft = softTimeoutMs();
+    const budget = soft > 0 ? Math.max(soft - 15000, 10000) : Infinity;
+    const started = Date.now();
+    const done: string[] = [];
+    for (const l of todo) {
+      if (Date.now() - started > budget) break;
+      const g = await runGate(String(l.saved), config);
+      const fails = g.lines.filter((x) => x.state === "Fail").map((x) => `${x.check}: ${x.detail}`.slice(0, 200));
+      fs.appendFileSync(resultsFile, JSON.stringify({ family: l.family, gate: g.verdict, gate_fails: fails, gate_at: localIso(new Date().toISOString()) }) + "\n");
+      done.push(`${l.family}: ${g.verdict}`);
+    }
+    const left = todo.length - done.length;
+    log(config, "recipe_batch_gate", false, resultsFile, `${done.length} gated`, `${left} left`);
+    return reply({ batch: args.batch, gated_now: done, left, next: left ? `Run batch_gate again for the ${left} left` : "Every built family is gated: batch_status shows the totals" });
+  }
+
+  // batch: check every recipe, plan, and (not a dry run) build them in one Revit job
+  const { recipes, problems } = batchRecipes(args);
+  if (!recipes.length) return reply({ refused: true, reasons: problems.length ? problems : ["Give recipe_files or a folder of recipes"] }, true);
+  const dictionary = readDictionary(config);
+  const invalid: string[] = [...problems];
+  const ready = new Map<string, { recipe: Recipe; prep: ReturnType<typeof prepareRecipe>; revision: string }>();
+  for (const { recipe } of recipes) {
+    const prep = prepareRecipe(recipe, config, dictionary);
+    const stop = [...prep.errors, ...(roleOf(recipe.family) ? [] : [`${recipe.family} doesn't follow FMC_<Role>_<Token>_<Description>`]),
+      ...(checkWritePath(prep.target, config).ok ? [] : checkWritePath(prep.target, config).reasons)];
+    if (stop.length) { invalid.push(`${recipe.family}: ${stop.slice(0, 3).join(" | ")}`); continue; }
+    ready.set(recipe.family, { recipe, prep, revision: recipeRevision(recipe) });
+  }
+  const staged = (target: string) => {
+    if (!fs.existsSync(target)) return { exists: false };
+    let revision: string | null = null, verdict: string | null = null;
+    try { const r = parseRecipe(fs.readFileSync(target.replace(/\.rfa$/i, ".recipe.json"), "utf8")).recipe; revision = r ? recipeRevision(r) : null; } catch { /* no recipe beside it */ }
+    try { verdict = JSON.parse(fs.readFileSync(target.replace(/\.rfa$/i, ".gate.json"), "utf8")).verdict ?? null; } catch { /* never gated */ }
+    return { exists: true, revision, verdict };
+  };
+  const plan = planBatch([...ready.values()].map((x) => ({ family: x.recipe.family, revision: x.revision, staged: staged(x.prep.target) })), args.rebuild);
+  const build = args.max > 0 ? plan.build.slice(0, args.max) : plan.build;
+  const id = args.batch.trim() || batchId();
+  const resultsFile = win.join(folder, `${id}.jsonl`);
+  const ops = build.reduce((t, f) => t + ready.get(f)!.recipe.ops.length, 0);
+  const summary = { batch: id, recipes: recipes.length, to_build: build.length, skipped: plan.skip.length, invalid: invalid.length, ops,
+    build: build.slice(0, 60), skip: plan.skip.slice(0, 30), invalid_detail: invalid.slice(0, 30), results_file: resultsFile };
+  if (dry) return reply({ dry_run: true, ...summary, next: build.length ? "Run again with dry_run=false to build them in one Revit job" : "Nothing to build" });
+  if (!build.length) return reply({ ...summary, next: "Nothing to build: every recipe is staged and passed, or invalid" });
+  if (!checkWritePath(resultsFile, config, { checkName: false }).ok) return reply({ refused: true, reasons: checkWritePath(resultsFile, config, { checkName: false }).reasons }, true);
+
+  // the manifest: every item with its ops resolved the way fmc_doc apply resolves them (family paths, kit materials)
+  const items = build.map((family) => {
+    const { recipe, prep, revision } = ready.get(family)!;
+    const resolved = prep.families.ops.map((o) => {
+      if (o.op !== "add_material" || !prep.materials) return o;
+      const m = prep.materials.materials.find((x) => x.name === o.name);
+      return m ? { ...o, material: resolveMaterial(m, expandEnv(config.materials_file), (f) => fs.existsSync(f)).material } : o;
+    });
+    return { family, revision, template: prep.template, target: prep.target, archive_dir: win.join(win.dirname(prep.target), "_Archive"),
+      ops: resolved, follow: followParams(recipe), recipe };
+  });
+  fs.mkdirSync(folder, { recursive: true });
+  const manifest = win.join(expandEnv(config.reports_dir), "Batches", `${id}.json`);
+  fs.mkdirSync(win.dirname(manifest), { recursive: true });
+  fs.writeFileSync(manifest, JSON.stringify({ batch: id, made: localIso(new Date().toISOString()), items }));
+  log(config, "recipe_batch", false, resultsFile, "sent", `${build.length} families, ${ops} ops`);
+  try {
+    const r = await withRevitConnection((c) => c.sendRaw("fmc_recipe_batch", { items_file: manifest, results_file: resultsFile,
+      shared_parameter_file: expandEnv(config.shared_parameter_file), max_seconds: args.seconds, max_backups: config.max_backups ?? 3 }, 12 * 60 * 60 * 1000));
+    return reply({ ...summary, revit: r, next: `fmc_recipe batch_gate batch=${id} runs Gate A on what was built (run it until nothing is left)` });
+  } catch (e) {
+    if (e instanceof JobStillRunning)
+      return reply({ ...summary, running: true, job: e.job, next: `It builds in Revit now (job ${e.job}). fmc_recipe batch_status batch=${id} shows progress; ` +
+        `fmc_job status follows the job; when it ends, fmc_recipe batch_gate batch=${id}` });
+    throw e;
+  }
+}
+
 export async function runFmcRecipe(args: FmcRecipeArgs) {
   const { config } = loadConfig();
   const dry = args.dry_run !== false;
@@ -188,6 +346,8 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
       return reply(r.body, r.isError);
     }
 
+    if (args.action === "batch" || args.action === "batch_status" || args.action === "batch_gate") return await runBatchAction(args, config, dry);
+
     // F-057: a recipe sent inline (from a chat with no folder on this PC) is kept in the reports folder and used like a file
     let recipeFile = args.recipe_file.trim();
     if (args.recipe && Object.keys(args.recipe).length) {
@@ -200,23 +360,7 @@ export async function runFmcRecipe(args: FmcRecipeArgs) {
     }
     const { recipe, problems } = readRecipe(recipeFile);
     if (!recipe) return reply({ refused: true, reasons: problems }, true);
-    let dictionary = null;
-    try { dictionary = parseSharedParameters(fs.readFileSync(expandEnv(config.shared_parameter_file), "utf8")); } catch { dictionary = null; }
-    const materials = recipe.ops.some((o) => o.op === "add_material") ? readDb(config) : undefined;
-    const template = win.isAbsolute(recipe.template) ? recipe.template : win.join(config.family_template_dir, recipe.template);
-    // F-038: the template's own planes (Left, Right, Exterior, Head…) aren't "not made earlier"; a sweep's path_planes
-    // must be one of them or made earlier (no fixed geometry by accident)
-    const planes = templatePlanes(template, expandEnv(config.reports_dir));
-    const libraryRoots = (config.library_roots ?? []).map((r) => expandEnv(r));
-    const { errors, notes } = splitProblems(opsProblems(recipe.ops, dictionary, win.dirname(expandEnv(config.family_staging_root)), materials,
-      { libraryRoots, templatePlanes: planes.planes, template: win.basename(template) }));
-    // F-061: a family the register hosts on a wall or ceiling face can't come from an unhosted template
-    const hostProblem = hostTemplateProblem(recipe.family, win.basename(template), registerHost(config, recipe.family));
-    if (hostProblem) notes.push(`${WARNING} ${hostProblem}`);
-    // load_family paths are relative to the kit's family roots on this PC (the recipe works on any PC)
-    const families = resolveFamilyPaths(recipe.ops, familyRoots(expandEnv(config.family_staging_root), libraryRoots), (f) => fs.existsSync(f));
-    notes.push(...families.notes);
-    const target = stagingPath(expandEnv(config.family_staging_root), recipe.family);
+    const { template, planes, errors, notes, families, target } = prepareRecipe(recipe, config, readDictionary(config));
     const sources = Object.fromEntries(["verified", "EA", "assumed", "pending"].map((s) => [s, Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k)]));
     const shown = dropTemplateNotes(notes, planes.planes);
     if (args.action === "check") {
