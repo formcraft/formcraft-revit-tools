@@ -5,6 +5,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { processAlive } from "../fmc/navis.js";
+import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
 
 const win = path.win32;
@@ -47,6 +48,7 @@ export const FMC_RHINO_SHAPE = {
   height: z.number().int().min(64).max(4000).optional().default(1200),
   replace: z.boolean().optional().default(false).describe("new_doc, open: replace parts already in the bridge for this family"),
   dry_run: z.boolean().optional().default(true).describe("save, render, export_parts: a dry run says what would be written"),
+  project_folder: z.string().optional().default("").describe("export_parts: the project whose exchange keeps the rhino → revit package (default <reports>\Exchange)"),
 };
 
 export type FmcRhinoArgs = z.infer<z.ZodObject<typeof FMC_RHINO_SHAPE>>;
@@ -126,8 +128,18 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
           note: "Each part is a closed solid in its own .3dm, its origin the point Revit places it at (fmc_doc import_part)", parts };
         fs.writeFileSync(where.manifest, JSON.stringify(manifest, null, 2));
         log(config, "rhino_export_parts", false, where.parts, "exported", `${parts.length} parts`);
+        // the hub (X0): the hand-over is kept as an exchange package; a hub problem never stops the export
+        let hub: object;
+        try {
+          const root = exchangeRoot(args.project_folder ? expandEnv(args.project_folder) : undefined, expandEnv(config.reports_dir));
+          const pkg = writePackage(root, { from: "rhino", to: "revit", what: `parts ${args.family}`, files: [{ name: "parts.json", text: JSON.stringify(manifest, null, 2) }],
+            source: { family: args.family, folder: where.parts } });
+          hub = { exchange: root, package: pkg.manifest.id };
+        } catch (e) {
+          hub = { error: `the hub couldn't record this export: ${e instanceof Error ? e.message : String(e)}` };
+        }
         return reply({ family: args.family, folder: where.parts, manifest: where.manifest, parts: parts.map((p) => ({ name: p.name, file: p.file, bytes: p.bytes })),
-          problems: partProblems(parts, args.envelope) });
+          problems: partProblems(parts, args.envelope), hub });
       }
     }
     return reply({ error: `Unknown action ${args.action}` }, true);

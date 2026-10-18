@@ -16,6 +16,8 @@ export interface Member {
   concrete_grade: string;
   steel_grade: string;
   mark?: string;
+  /** Revit's UniqueId: the hub's identity map keeps Revit elements by it (it survives sessions). */
+  unique_id?: string;
 }
 
 export interface RobotNode { n: number; x: number; y: number; z: number }
