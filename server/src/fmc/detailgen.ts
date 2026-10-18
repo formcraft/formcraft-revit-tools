@@ -33,7 +33,7 @@ export function roundedRect(w: number, h: number, r: number, cx = 0, cy = 0): Pt
 }
 
 /** The ops every component starts with: category, its material parameter and kit material, its subcategory, its reference planes. */
-function componentHead(category: string, subcategory: string, materialParam: string, material: string): Op[] {
+export function componentHead(category: string, subcategory: string, materialParam: string, material: string): Op[] {
   return [
     { op: "set_category", name: category },
     { op: "delete_template_element", name: "Template solids", kind: "solid" },
@@ -45,7 +45,7 @@ function componentHead(category: string, subcategory: string, materialParam: str
 }
 
 /** Each solid on the subcategory, with the material, shown on Medium and Fine (the twin takes Fine later). */
-function finish(solids: string[], subcategory: string, materialParam: string): Op[] {
+export function finish(solids: string[], subcategory: string, materialParam: string): Op[] {
   return solids.flatMap((s) => [
     { op: "set_subcategory", name: s, subcategory },
     { op: "set_material_param", name: s, param: materialParam },
@@ -53,8 +53,8 @@ function finish(solids: string[], subcategory: string, materialParam: string): O
   ]);
 }
 
-const PART_VALUES = { "Typical size": { value: "door hardware, catalogue average", source_status: "assumed", source: "typical hospital door hardware; confirm from the chosen product" } };
-const PART_CHECKS = { keynote_exempt: "nested hardware component: scheduled with its door, not on its own" };
+export const PART_VALUES = { "Typical size": { value: "door hardware, catalogue average", source_status: "assumed", source: "typical hospital door hardware; confirm from the chosen product" } };
+export const PART_CHECKS = { keynote_exempt: "nested hardware component: scheduled with its door, not on its own" };
 
 /** The components the generator knows, each a recipe for one small family. */
 export const COMPONENTS: Record<string, { family: (role: string) => string; recipe: (role: string) => RecipeLike }> = {
@@ -126,6 +126,49 @@ export const COMPONENTS: Record<string, { family: (role: string) => string; reci
         about: "Overhead closer with arm (QS03 component): body on the push face, arm to the frame head." };
     },
   },
+  /** A D-bar pull handle 300 mm between centres, on two standoffs; its middle at z = 0 (locked to the lever height). */
+  pull_handle: {
+    family: (role) => `FMC_${role}_Part_PullHandle`,
+    recipe: (role) => {
+      const sub = "Ironmongery", mat = "Ironmongery Material";
+      const ops: Op[] = [
+        ...componentHead("OST_GenericModel", sub, mat, "FMC_Metal_StainlessSteel_Brushed"),
+        { op: "add_ref_plane", name: "Axis", from: [-500, 0], to: [500, 0], view: "Front", is_reference: "CenterElevation" },
+        { op: "add_ref_plane", name: "Edge", from: [-26, -500], to: [-26, 500], is_reference: "Left" },
+        { op: "revolution", name: "Standoff Top", axis: "y", axis_at: [0, 150], profile: [[0, 0], [11, 0], [11, 3], [9, 5], [9, 55], [0, 55]] },
+        { op: "revolution", name: "Standoff Bottom", axis: "y", axis_at: [0, -150], profile: [[0, 0], [11, 0], [11, 3], [9, 5], [9, 55], [0, 55]] },
+        // the bar: 25 mm across, from 25 mm past the top standoff to 25 mm past the bottom one, with rounded ends
+        { op: "sweep", name: "Bar", path_plane: "right", at: 0, path: [[-67.5, -175], [-67.5, 175]], profile: circle(12.5) },
+        { op: "revolution", name: "Bar End Top", axis_at: [0, -67.5], profile: [[0, 175], [12.5, 175], [11, 181], [6, 186], [0, 187.5]] },
+        { op: "revolution", name: "Bar End Bottom", axis_at: [0, -67.5], profile: [[0, -187.5], [6, -186], [11, -181], [12.5, -175], [0, -175]] },
+        ...finish(["Standoff Top", "Standoff Bottom", "Bar", "Bar End Top", "Bar End Bottom"], sub, mat),
+      ];
+      return { schema: "fmc-recipe/0.1", family: `FMC_${role}_Part_PullHandle`, template: "Metric Generic Model.rft", ops, values: PART_VALUES, checks: PART_CHECKS,
+        about: "D-bar pull handle, 300 mm centres (QS03 component): on the pull face, nested on the door's planes." };
+    },
+  },
+  /** The "X-ray in use" warning light box with the yellow radiation sign beside it, above the door head; base at z = 0. */
+  warning_light: {
+    family: (role) => `FMC_${role}_Part_RadiationWarningLight`,
+    recipe: (role) => {
+      const sub = "Signage", mat = "Light Box Material", lens = "Lens Material", sign = "Sign Material";
+      const ops: Op[] = [
+        ...componentHead("OST_GenericModel", sub, mat, "FMC_Plastic_ABS_White"),
+        { op: "add_family_param", name: lens, type: "Material", group: "Materials" },
+        { op: "add_material", name: "FMC_Plastic_LED_Red", param: lens },
+        { op: "add_family_param", name: sign, type: "Material", group: "Materials" },
+        { op: "add_material", name: "FMC_Plastic_ABS_Yellow", param: sign },
+        { op: "add_ref_plane", name: "Base", from: [-500, 0], to: [500, 0], view: "Front", is_reference: "Bottom" },
+        // the box 300 × 120, 70 deep, 40 mm above the base; its lens across the front; the sign plate to its left
+        { op: "extrusion", name: "Light Box", sketch: "front", start: 0, end: 70, points: roundedRect(300, 120, 12, 0, 100) },
+        { op: "extrusion", name: "Lens", sketch: "front", start: 70, end: 76, points: roundedRect(270, 90, 8, 0, 100) },
+        { op: "extrusion", name: "Sign Plate", sketch: "front", start: 0, end: 3, points: roundedRect(200, 200, 10, -290, 140) },
+      ];
+      ops.push(...finish(["Light Box"], sub, mat), ...finish(["Lens"], sub, lens), ...finish(["Sign Plate"], sub, sign));
+      return { schema: "fmc-recipe/0.1", family: `FMC_${role}_Part_RadiationWarningLight`, template: "Metric Generic Model.rft", ops, values: PART_VALUES, checks: PART_CHECKS,
+        about: "Radiation warning light box 'X-ray in use' with the yellow trefoil sign plate (QS03 component): above an X-ray room door." };
+    },
+  },
 };
 
 // ---- the door ----------------------------------------------------------------------------------------------------
@@ -137,7 +180,7 @@ const DOOR_LEAF = /^(Leaf A|Leaf A (Below|Above|Left Of Opening|Right Of Opening
 const DOOR_LEAF_B = /^(Leaf B)$/;
 
 /** Removes ops about the named solids (their own op, subcategory, material, visibility, locks, switches). */
-function withoutSolids(ops: Op[], drop: (name: string) => boolean): Op[] {
+export function withoutSolids(ops: Op[], drop: (name: string) => boolean): Op[] {
   const dropped = new Set(ops.filter((o) => ["extrusion", "void_extrusion", "sweep", "revolution", "blend"].includes(o.op) && drop(String(o.name))).map((o) => String(o.name)));
   return ops.filter((o) => {
     if (dropped.has(String(o.name))) return false;
@@ -153,7 +196,14 @@ export interface DetailResult { recipe: RecipeLike; components: string[]; notes:
  * three hinges (and the pair leaf's when Pair), the overhead closer, nested on the door's planes; the switch Open
  * (instance, default No) that shows the leaf swung 90° to the interior, inside the clearance; clearance kept.
  */
-export function detailDoor(std: RecipeLike, componentPath: (family: string) => string): DetailResult {
+export interface DoorOptions {
+  /** A D-bar pull handle on the exterior (pull) face instead of the exterior lever (the X-ray door). */
+  pull?: boolean;
+  /** The radiation warning light box and sign above the head, centred on the door (the X-ray door). */
+  warning_light?: boolean;
+}
+
+export function detailDoor(std: RecipeLike, componentPath: (family: string) => string, opts: DoorOptions = {}): DetailResult {
   const role = (/^FMC_([A-Z]{1,2})_/.exec(std.family) ?? [])[1] ?? "A";
   const notes: string[] = [];
   const has = (pl: string) => std.ops.some((o) => o.op === "add_ref_plane" && o.name === pl);
@@ -171,10 +221,18 @@ export function detailDoor(std: RecipeLike, componentPath: (family: string) => s
     { op: "load_family", name: lever, path: componentPath(lever) },
     { op: "load_family", name: hinge, path: componentPath(hinge) },
     { op: "load_family", name: closer, path: componentPath(closer) },
+    ...(opts.pull ? [{ op: "load_family", name: COMPONENTS.pull_handle.family(role), path: componentPath(COMPONENTS.pull_handle.family(role)) }] : []),
+    ...(opts.warning_light ? [{ op: "load_family", name: COMPONENTS.warning_light.family(role), path: componentPath(COMPONENTS.warning_light.family(role)) },
+      // on the wall face above the architrave, centred on the door: it follows Width and Height, and stays when Open
+      { op: "place_nested", name: "Warning Light", family: COMPONENTS.warning_light.family(role), type: COMPONENTS.warning_light.family(role),
+        lock: { x: { plane: "Center (Left/Right)", ref: "CenterLeftRight" }, y: { plane: "Arch Ext", ref: "Back" }, z: { plane: "Arch Top", ref: "Bottom" } } }] : []),
     // the exterior lever stands out to -y from the exterior face, pointing to the hinge (-x); the interior one is turned
     // round (so it stands out to +y) and mirrored, so it points to the hinge too
-    { op: "place_nested", name: "Lever Ext", family: lever, type: "Arm Left",
-      lock: { x: { plane: "Rose L", ref: "Left", at: -26 }, y: { plane: "Leaf Ext", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } },
+    opts.pull
+      ? { op: "place_nested", name: "Lever Ext", family: COMPONENTS.pull_handle.family(role), type: COMPONENTS.pull_handle.family(role),
+        lock: { x: { plane: "Rose L", ref: "Left", at: -26 }, y: { plane: "Leaf Ext", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } }
+      : { op: "place_nested", name: "Lever Ext", family: lever, type: "Arm Left",
+        lock: { x: { plane: "Rose L", ref: "Left", at: -26 }, y: { plane: "Leaf Ext", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } },
     { op: "place_nested", name: "Lever Int", family: lever, type: "Arm Right", rotate_deg: 180,
       lock: { x: { plane: "Rose R", ref: "Left", at: -26 }, y: { plane: "Leaf Int", ref: "Back" }, z: { plane: "Lever Mid", ref: "CenterElevation" } } },
     { op: "place_nested", name: "Closer", family: closer, type: closer,
@@ -244,7 +302,7 @@ export function detailDoor(std: RecipeLike, componentPath: (family: string) => s
   return {
     recipe: { ...std, family: `${std.family}_Detailed`, ops: out,
       about: `Detailed door (QS03 generator, ${new Date().toISOString().slice(0, 10)}): ${std.family} with lever on rose both faces, 3 hinges (pair: 6), overhead closer as nested components locked to its planes; instance switch Open; clearance kept. Medium LOD 300; Fine LOD 400 after fmc_rhino twins of the components.` },
-    components: [lever, hinge, closer],
+    components: [lever, hinge, closer, ...(opts.pull ? [COMPONENTS.pull_handle.family(role)] : []), ...(opts.warning_light ? [COMPONENTS.warning_light.family(role)] : [])],
     notes,
   };
 }
