@@ -114,7 +114,12 @@ export async function runFmcReview(args: FmcReviewArgs) {
     if (args.action === "queue") {
       const q = queue(reg, args.to === "ai" ? { ai: true } : args.to === "discipline" ? { discipline: args.assignee } : { person: args.assignee || args.by });
       return reply({ file, for: args.to === "ai" ? AI_OWNER : args.assignee || args.by, count: q.length,
-        tickets: q.map((i) => ({ ...i, shown_status: shownStatus(i, today), media: win.join(win.dirname(file), "media", i.id) })),
+        // compact by default (tokens): one short line per ticket; the AI asks for a whole ticket (item) when it starts on it
+        tickets: q.map((i) => args.full ? { ...i, shown_status: shownStatus(i, today), media: win.join(win.dirname(file), "media", i.id) } : {
+          id: i.id, title: i.title, priority: i.priority, due: i.due, status: shownStatus(i, today), to: i.to, lead: i.lead,
+          note: (i.notes?.[i.notes.length - 1]?.text ?? i.description).slice(0, 160), notes: i.notes?.length ?? 0,
+          elements: (i.where?.unique_ids.length ?? 0) + (i.where?.linked?.length ?? 0), voice: (i.notes ?? []).some((n) => !!n.audio),
+          picture: !!i.pictures?.raised, source: i.source }),
         next: args.to === "ai" ? "Take the first ticket (take), make its fix as a dry run, and show it to the person who raised it" : undefined });
     }
     if (args.action === "prints")
