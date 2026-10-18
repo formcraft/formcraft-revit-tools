@@ -105,12 +105,6 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
-        private static readonly BuiltInCategory[] Clutter =
-        {
-            BuiltInCategory.OST_CLines, BuiltInCategory.OST_Levels, BuiltInCategory.OST_Dimensions, BuiltInCategory.OST_ReferenceLines,
-            BuiltInCategory.OST_SectionBox, BuiltInCategory.OST_GenericAnnotation,
-        };
-
         private static DisplayStyle Style(string s) => s switch
         {
             "hidden" => DisplayStyle.HLR, "wireframe" => DisplayStyle.Wireframe, "realistic" => DisplayStyle.Realistic, _ => DisplayStyle.ShadingWithEdges,
@@ -155,11 +149,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                         {
                             try { v.DetailLevel = Level(lvl); } catch (System.Exception e) { notes.Add($"{v.Name}: detail level {e.Message}"); }
                             try { v.DisplayStyle = Style(style); } catch (System.Exception e) { notes.Add($"{v.Name}: style {e.Message}"); }
-                            foreach (BuiltInCategory bic in Clutter)
-                            {
-                                Category cat = Category.GetCategory(doc, bic);
-                                if (cat != null && v.CanCategoryBeHidden(cat.Id)) { try { v.SetCategoryHidden(cat.Id, true); } catch (System.Exception) { } }
-                            }
+                            // QS10: the same aids hidden as in the preview: planes, levels, dimensions, connector glyphs, Clearance and Coarse
+                            FmcPreview.HideClutter(doc, v);
                             if (ext == null) continue;
                             if (v is View3D v3)
                             {

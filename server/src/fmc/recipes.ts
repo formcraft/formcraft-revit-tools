@@ -254,6 +254,42 @@ export interface HostTestResult {
 }
 
 /** F-061: which host fmc_family_host_test should make for a register Host (null: no host test needed). */
+/**
+ * The level-of-detail ladder (owner, 19 Oct; docs/handoff/SAMPLE14_LOD_LADDER.md, QS01): the Coarse envelope box is
+ * LOD 100; a standard family's body is LOD 200; a detailed family's native body on Medium is LOD 300; its smooth Rhino
+ * twins on Fine are LOD 400. Read from the recipe: what each detail level shows.
+ */
+export type LodLevel = "LOD 100" | "LOD 200" | "LOD 300" | "LOD 400" | "none";
+
+export function lodLadder(family: string, ops: Array<Record<string, any>>): { coarse: LodLevel; medium: LodLevel; fine: LodLevel } {
+  const SOLIDS = new Set(["extrusion", "revolution", "sweep", "blend", "import_part"]);
+  const vis = new Map<string, Record<string, any>>();
+  for (const o of ops) if (o.op === "set_visibility") vis.set(o.name, o);
+  const solids = ops.filter((o) => SOLIDS.has(o.op) && !/clearance|connector|^CN /i.test(String(o.name)));
+  const shows = (o: Record<string, any>, level: "coarse" | "medium" | "fine") => vis.get(o.name)?.[level] ?? true;
+  const envelope = (o: Record<string, any>) => /coarse envelope|envelope/i.test(String(o.name));
+  const detailed = /_Detailed$/.test(family);
+  const at = (level: "coarse" | "medium" | "fine"): LodLevel => {
+    const seen = solids.filter((o) => shows(o, level));
+    if (seen.length === 0) return "none";
+    if (seen.every(envelope)) return "LOD 100";
+    if (seen.some((o) => o.op === "import_part")) return "LOD 400";
+    return detailed ? "LOD 300" : "LOD 200";
+  };
+  return { coarse: at("coarse"), medium: at("medium"), fine: at("fine") };
+}
+
+export function lodLine(family: string, ops: Array<Record<string, any>>): GateLine {
+  const l = lodLadder(family, ops);
+  const detail = `Coarse ${l.coarse}, Medium ${l.medium}, Fine ${l.fine}`;
+  const want = /_Detailed$/.test(family) ? ["LOD 100", "LOD 300", "LOD 400"] : ["LOD 100", "LOD 200", "LOD 200"];
+  const got = [l.coarse, l.medium, l.fine];
+  if (got.includes("none")) return { check: "Levels of detail", state: "Fail", detail: `${detail}: a level shows nothing` };
+  const ok = got.every((g, i) => g === want[i] || (i === 2 && want[2] === "LOD 400" && g === "LOD 300"));
+  return { check: "Levels of detail", state: ok && !(want[2] === "LOD 400" && l.fine === "LOD 300") ? "Pass" : "Warn",
+    detail: ok && l.fine === "LOD 300" && want[2] === "LOD 400" ? `${detail}: no Rhino twins yet (fmc_rhino twins)` : ok ? detail : `${detail}; expected ${want.join(", ")}` };
+}
+
 export function hostTestKind(registerHost: string | null | undefined): "wall" | "ceiling" | null {
   const needs = registerHost ? hostNeeds(registerHost) : null;
   if (!needs) return null;
@@ -434,6 +470,7 @@ export function gateA(family: string, recipe: Recipe | null, inputs: GateInputs)
       const small = [...typeValues(recipe)].filter(([, v]) => typeof v.get(param) === "number" && (v.get(param) as number) < min).map(([t, v]) => `${t} ${v.get(param)} mm`);
       lines.push({ check: `Clear opening at least ${min} mm`, state: small.length ? "Fail" : "Pass", detail: small.length ? small.join(", ") : `every type's ${param} is ${min} mm or more` });
     }
+    lines.push(lodLine(recipe.family, recipe.ops as Array<Record<string, any>>));
     const ifc = (recipe.ops as Array<Record<string, any>>).some((o) => (o.op === "set_type_value" || o.op === "set_family_params") && /IfcExportAs/i.test(String(o.param ?? o.name ?? "")));
     lines.push({ check: "IFC class set", state: ifc ? "Pass" : "Warn", detail: ifc ? "IfcExportAs is set" : "IfcExportAs isn't set by the recipe (IFC export guesses the class)" });
     const by = (s: string) => Object.entries(recipe.values).filter(([, v]) => v.source_status === s).map(([k]) => k);

@@ -1,5 +1,5 @@
 /**
- * One family, three levels (docs/PLAN_ENGINEERING_HUB.md; owner's choice, 18 Oct): Coarse is the envelope (LOD 200),
+ * One family, three levels (docs/PLAN_ENGINEERING_HUB.md; owner's choice, 18 Oct): Coarse is the envelope (LOD 100; owner, 19 Oct),
  * Medium the native recipe body (LOD 300), Fine the same body drawn smooth in Rhino (LOD 400).
  *
  * This reads a recipe's native solids (point extrusions, revolutions, sweeps) and writes each one's smooth twin as a
