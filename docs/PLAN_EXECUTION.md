@@ -94,7 +94,7 @@ Each phase ends with a Revit run (the tester's protocol in `TESTING.md`) and a r
 | D | Data | Excel round trip (staging copies, dry run), kit tables via change requests, Power BI dashboards via Microsoft's authoring MCP | U34 | 3; Power BI licence |
 | 7 | Guided first project, then local permit packs | IDEAS 4 (guided first project) and 37 (permit packs) on top of the published templates | — | 6 |
 | N | Navisworks | Evaluate open-source Navisworks MCPs; connector; federate, clash matrix, nightly runs, Review; AI triage/fix within the policy | U35, U36 | Navisworks is being installed; can run in parallel with R after phase 1 |
-| H | Engineering hub (replaces RH, Rhino) | One MCP server for every app through a connector per app (docs/PLAN_ENGINEERING_HUB.md): the connector contract and `fmc_apps` (H0), build123d for exact parts (H1), Blender for concept and facades (H2–H3), into Revit only through staging (H4), the pane (H5). Same rules, log, jobs and AI policy for every app | Model › Concept, Settings › Apps | The owner's yes; Blender install for H2 |
+| H | Engineering hub (replaces RH) | One professional MCP server for Revit, Navisworks, Robot, Rhino and Power BI through a connector per app: add-in bridges, processes, and a gateway to Microsoft's Power BI Modeling MCP (docs/PLAN_ENGINEERING_HUB.md). H0 foundation and `fmc_apps`, H1 Rhino, H2 Power BI, H3 cross-app, H4 Navisworks next, H5 pane | Settings › Apps | The owner's yes; Rhino 8 and Power BI Desktop are installed on the pilot PC |
 | 8 | Later | B7 recipes from datasheets/photos, LOD 400 assemblies and shop sheets, Design Automation, Blender renders, Speckle | — | — |
 
 **In parallel:** shortcuts standard (IDEAS 10), CI e2e and the weekly smoke test, and branch clean-up.
@@ -122,4 +122,4 @@ AI batches above the policy threshold also wait for a person.
 6. Supplier visits for the Uganda gaps.
 7. A Power BI licence (Pro or Fabric), or skip D3 for now.
 8. Navisworks Manage: being installed (14 Oct), so N can run in parallel with R.
-9. The engineering hub (track H, docs/PLAN_ENGINEERING_HUB.md) instead of a paid Rhino: a yes on H0 first, then build123d (H1) or Blender (H2).
+9. The engineering hub (track H, docs/PLAN_ENGINEERING_HUB.md): a yes on H0 first, then Rhino (H1) and Power BI (H2); Rhino 8's licence state.
