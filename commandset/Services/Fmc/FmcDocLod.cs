@@ -170,12 +170,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 var pts = Points(op["profile"]);
                 if (pts.Count < 3) throw new InvalidOperationException("a profile needs three or more points");
-                // Local profile coordinates: x across the path, y up. Revit places a curve-loop profile on the plane
-                // perpendicular to the path at its start, so the loop is drawn in that plane.
-                XYZ up = Math.Abs(dir.DotProduct(XYZ.BasisZ)) > 0.99 ? XYZ.BasisY : XYZ.BasisZ;
-                XYZ across = up.CrossProduct(dir).Normalize();
-                up = dir.CrossProduct(across).Normalize();
-                var loop = pts.Select(p => start + across * Mm(p[0]) + up * Mm(p[1])).ToList();
+                // Local profile coordinates: x across the path, y up. Revit 2025 NewSweep refuses a curve-loop profile drawn
+                // on the plane across the path ("One of the conditions for the inputs was not satisfied", F-065): the loop
+                // must be drawn flat in XY at the origin, and Revit carries it to the path start itself. Measured 18 Oct:
+                // on a horizontal path Revit maps the loop's X to world up and its Y across the path; on a vertical path
+                // X and Y stay X and Y. So x/y swap on paths that don't start vertical.
+                bool vertical = Math.Abs(dir.DotProduct(XYZ.BasisZ)) > 0.7;
+                var loop = pts.Select(p => vertical ? new XYZ(Mm(p[0]), Mm(p[1]), 0) : new XYZ(Mm(p[1]), Mm(p[0]), 0)).ToList();
                 var arr = new CurveArrArray();
                 arr.Append(Polyline(loop, true));
                 profile = doc.Application.Create.NewCurveLoopsProfile(arr);
