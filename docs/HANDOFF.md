@@ -12,6 +12,13 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · QS03 plan agreed: components on planes, Open toggle, clearances shown
+- **Plan:** `docs/handoff/QS03_DETAIL_GENERATOR.md` (owner's yes, 19 Oct). Detail parts become small component families
+  nested on the host's planes (so doors and windows still cut and flex); everything that opens gets an instance
+  **`Open`** toggle; every family shows its clearance with **`Show Clearance`**. Claude Code builds D1–D4; the tester
+  builds and flex-tests with `Open` Yes and No (D5).
+- **Asked of the chat:** review `detail_specs.json` when it lands (D2), and confirm or correct the assumed clearance
+  depths for the windows (500 mm), the generator (1000 mm) and the fire pump set (1000 mm).
 ### 19 Oct · the 14-family sample: what is ready to build, what is still the chat's
 - **Ready (QS03 generator, all recipe-checked):** `_Staging\_Batch\batch_QS03_SAMPLE_LOD400.json`, 14 recipes in build
   order: 7 components (`FMC_A_Part_LeverRose`, `ButtHinge`, `OverheadCloser`, `PullHandle`, `RadiationWarningLight`,
