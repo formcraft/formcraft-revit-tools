@@ -20,6 +20,15 @@ namespace revit_mcp_plugin.Core
         private static SocketService _instance;
         private TcpListener _listener;
         private Thread _listenerThread;
+
+        // F-064: one command at a time on Revit's API thread. A command that arrives while another runs waits its turn here
+        // (recorded as "queued", with heartbeats) instead of timing out on its own external event and being refused.
+        private static readonly SemaphoreSlim ApiQueue = new SemaphoreSlim(1, 1);
+        private static int _waiting;
+        // The last fmc_document_info answer: given (marked cached) while another command holds Revit, whose UI is frozen
+        // then, so the active document can't change. The live-model lock reads it instead of timing out.
+        private static JToken _lastDocInfo;
+        private static DateTime _lastDocInfoAt;
         private bool _isRunning;
         private int _port = 8080;
         private UIApplication _uiApp;
@@ -310,12 +319,39 @@ namespace revit_mcp_plugin.Core
                 // the job's failures and dialogs). A call that runs long is recorded in FMC_Jobs_Revit.jsonl for fmc_job.
                 JObject parameters = request.GetParamsObject() ?? new JObject();
                 if (!string.IsNullOrEmpty(request.Id)) parameters["_fmcJob"] = request.Id;
+
+                // F-064: while another command holds Revit, the active document can't change: answer from the last reading
+                bool forDocument = parameters["document"] != null && parameters["document"].Type != JTokenType.Null;
+                if (request.Method == "fmc_document_info" && !forDocument && RevitWake.InFlight > 0 && _lastDocInfo is JObject cached)
+                {
+                    var answer = (JObject)cached.DeepClone();
+                    answer["cached"] = true;
+                    answer["cached_at"] = _lastDocInfoAt.ToString("o");
+                    answer["why_cached"] = "Revit is running another command, so its interface (and the active document) can't change until it ends";
+                    ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds, "cached: Revit busy");
+                    return CreateSuccessResponse(request.Id, answer);
+                }
+
                 var job = RevitJobLog.Watch(request.Id, request.Method);
+                bool entered = false;
                 try
                 {
+                    if (!ApiQueue.Wait(0))
+                    {
+                        int ahead = Interlocked.Increment(ref _waiting);
+                        job.Queued(ahead);
+                        try { ApiQueue.Wait(); } finally { Interlocked.Decrement(ref _waiting); }
+                        job.LeftQueue();
+                    }
+                    entered = true;
                     object result;
                     using (RevitWake.Busy())
                         result = command.Execute(parameters, request.Id);
+                    if (request.Method == "fmc_document_info" && !forDocument && result != null)
+                    {
+                        _lastDocInfo = result as JToken ?? JToken.FromObject(result);
+                        _lastDocInfoAt = DateTime.UtcNow;
+                    }
 
                     job.Done(true, null, result);
                     ActivityLog.Add(request.Method, true, watch.ElapsedMilliseconds);
@@ -326,6 +362,10 @@ namespace revit_mcp_plugin.Core
                     job.Done(false, ex.Message);
                     ActivityLog.Add(request.Method, false, watch.ElapsedMilliseconds, ex.Message);
                     return CreateErrorResponse(request.Id, JsonRPCErrorCodes.InternalError, ex.Message);
+                }
+                finally
+                {
+                    if (entered) ApiQueue.Release();
                 }
             }
             catch (JsonException)

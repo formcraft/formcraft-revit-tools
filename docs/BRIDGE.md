@@ -38,6 +38,13 @@ PC doesn't sleep in the middle of a batch; the screen may still turn off. send_c
 come. Times in the files are UTC (`…Z`); `fmc_job` also gives each one in this PC's local time with its offset
 (`local`, e.g. `2026-10-18T09:03:47+03:00`), so they line up with other logs.
 
+**One command at a time, queued (F-064).** Revit's API thread runs one command at a time. A command that arrives while
+another runs **waits its turn** in the add-in instead of timing out and being refused: `fmc_job` shows it as `queued`
+("waiting in Revit behind N command(s)"), with heartbeats, then `running` when it starts. Its result is kept like any
+long job's. While a command runs, `fmc_document_info` answers from its last reading (`"cached": true`, with the time and
+why): Revit's interface is frozen during a command, so the active document can't change, and the live-model lock reads
+it instead of refusing because Revit was busy. A call for a named `document` is never answered from the cache.
+
 ## send_code_to_revit (F-031, F-033, F-034, F-035)
 
 - **Size.** Scripts up to 1,000,000 characters (the server's schema and the add-in both check). The add-in now reads a

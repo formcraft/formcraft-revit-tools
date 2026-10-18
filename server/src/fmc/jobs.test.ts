@@ -212,3 +212,21 @@ test("F-064: job times are shown in local time with the offset beside the UTC on
   line(jobFiles(env).server, { at: "2026-10-18T00:00:50Z", job: "888", event: "running", command: "fmc_doc", started: "2026-10-18T00:00:00Z" });
   assert.match(findJob("888", env)!.local!.started!, /^2026-10-1[78]T\d\d:00:00[+-]\d\d:\d\d$/);
 });
+
+test("F-064: a command that arrives while another runs is queued in Revit, then runs, then finishes", () => {
+  const env = home();
+  const f = jobFiles(env);
+  line(f.server, { at: "2026-10-18T10:00:50Z", job: "901", event: "running", command: "fmc_recipe", started: "2026-10-18T10:00:00Z" });
+  line(f.revit, { at: "2026-10-18T10:00:00Z", job: "901", command: "fmc_doc", event: "queued", started: "2026-10-18T10:00:00Z", ahead: 1 });
+  line(f.revit, { at: "2026-10-18T10:01:00Z", job: "901", command: "fmc_doc", event: "heartbeat", ms: 60000 });
+  let j = findJob("901", env)!;
+  assert.equal(j.state, "queued");
+  assert.match(j.summary, /Waiting in Revit behind 1 command\(s\) since 2026-10-18T10:00:00Z, last heartbeat 2026-10-18T10:01:00Z: it starts when they end/);
+  line(f.revit, { at: "2026-10-18T10:20:00Z", job: "901", command: "fmc_doc", event: "running", started: "2026-10-18T10:00:00Z", queued_ms: 1200000 });
+  j = findJob("901", env)!;
+  assert.equal(j.state, "running");
+  assert.equal(j.revit!.running_since, "2026-10-18T10:20:00Z");
+  line(f.revit, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", event: "finished", ms: 1500000, ok: true });
+  line(f.late, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", from: "revit", result: { result: { ok: true } } });
+  assert.equal(findJob("901", env)!.state, "finished");
+});
