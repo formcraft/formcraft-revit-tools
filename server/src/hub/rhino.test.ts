@@ -77,6 +77,7 @@ test("H1: parts are checked for shape before they reach Rhino; family names foll
   assert.equal(RHINO_PART.safeParse({ name: "X", op: "script" }).success, false, "named operations only");
   assert.equal(familyNameProblem("FMC_I_MedEq_Bed_ICU_Electric_Detailed"), null);
   assert.match(familyNameProblem("bed")!, /isn't a kit family name/);
+  assert.equal(familyNameProblem("FMC_FP_MechEq_FirePump_Set"), null, "two-letter roles (FP) are kit roles too");
 });
 
 test("H1: Rhino files live in <staging>\\_Rhino, one folder of parts per family", () => {
