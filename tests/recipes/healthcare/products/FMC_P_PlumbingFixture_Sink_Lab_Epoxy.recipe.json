@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingFixture_Sink_Lab_Epoxy",
  "template": "Metric Generic Model.rft",
- "about": "Lab sink modelled as a generic product: resin worktop around the cut-out, square resin bowl (floor and four walls), polypropylene waste, dilution trap, gooseneck with serrated nozzle and wrist blades. Drawn at the 600 type; the 450 type shares it. Reference: query: sink lab epoxy plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+lab+epoxy+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Lab sink modelled as a generic product: resin worktop around the cut-out, square resin bowl (floor and four walls), polypropylene waste, dilution trap, gooseneck with serrated nozzle and wrist blades. Per type: 450 has a 450 x 450 mm bowl in a 675 mm worktop segment, 600 a 600 x 450 mm bowl in 900 mm; tap, drain and trap are shared. Reference: query: sink lab epoxy plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=sink+lab+epoxy+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://chemtops.com/epoxy-resin-sinks/; photo_title: ChemTops epoxy resin sinks; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -364,6 +364,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "450_Epoxy/URL",
+   "type": "450_Epoxy",
+   "param": "URL",
+   "value": "https://chemtops.com/epoxy-resin-sinks/"
+  },
+  {
    "op": "add_type",
    "name": "600_Epoxy"
   },
@@ -431,12 +438,19 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "600_Epoxy/URL",
+   "type": "600_Epoxy",
+   "param": "URL",
+   "value": "https://chemtops.com/epoxy-resin-sinks/"
+  },
+  {
    "op": "add_subcategory",
    "name": "Epoxy Resin",
    "color": [
-    30,
-    31,
-    34
+    42,
+    44,
+    46
    ],
    "line_weight_projection": 1
   },
@@ -448,7 +462,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
+   "name": "FMC_Plastic_EpoxyResin_Black",
    "param": "Epoxy Resin Material"
   },
   {
@@ -604,22 +618,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Worktop Front",
+   "name": "Worktop Front 450",
    "points": [
     [
-     -450,
+     -337.5,
      -750
     ],
     [
-     450,
+     337.5,
      -750
     ],
     [
-     450,
+     337.5,
      -600
     ],
     [
-     -450,
+     -337.5,
      -600
     ]
    ],
@@ -628,39 +642,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Front",
+   "name": "Worktop Front 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Front",
+   "name": "Worktop Front 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Front",
+   "name": "Worktop Front 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Back",
+   "name": "Worktop Back 450",
    "points": [
     [
-     -450,
+     -337.5,
      -150
     ],
     [
-     450,
+     337.5,
      -150
     ],
     [
-     450,
+     337.5,
      0
     ],
     [
-     -450,
+     -337.5,
      0
     ]
    ],
@@ -669,39 +683,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Back",
+   "name": "Worktop Back 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Back",
+   "name": "Worktop Back 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Back",
+   "name": "Worktop Back 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Strip 1",
+   "name": "Worktop Strip 1 450",
    "points": [
     [
-     -450,
+     -337.5,
      -600
     ],
     [
-     -300,
+     -225.0,
      -600
     ],
     [
-     -300,
+     -225.0,
      -150
     ],
     [
-     -450,
+     -337.5,
      -150
     ]
    ],
@@ -710,39 +724,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Strip 1",
+   "name": "Worktop Strip 1 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Strip 1",
+   "name": "Worktop Strip 1 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Strip 1",
+   "name": "Worktop Strip 1 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Strip 2",
+   "name": "Worktop Strip 2 450",
    "points": [
     [
-     300,
+     225.0,
      -600
     ],
     [
-     450,
+     337.5,
      -600
     ],
     [
-     450,
+     337.5,
      -150
     ],
     [
-     300,
+     225.0,
      -150
     ]
    ],
@@ -751,39 +765,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Strip 2",
+   "name": "Worktop Strip 2 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Strip 2",
+   "name": "Worktop Strip 2 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Strip 2",
+   "name": "Worktop Strip 2 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bowl Floor",
+   "name": "Bowl Floor 450",
    "points": [
     [
-     -320,
+     -240.0,
      -620
     ],
     [
-     320,
+     240.0,
      -620
     ],
     [
-     320,
+     240.0,
      -130
     ],
     [
-     -320,
+     -240.0,
      -130
     ]
    ],
@@ -792,39 +806,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bowl Floor",
+   "name": "Bowl Floor 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Bowl Floor",
+   "name": "Bowl Floor 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bowl Floor",
+   "name": "Bowl Floor 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bowl Front",
+   "name": "Bowl Front 450",
    "points": [
     [
-     -320,
+     -240.0,
      -620
     ],
     [
-     320,
+     240.0,
      -620
     ],
     [
-     320,
+     240.0,
      -600
     ],
     [
-     -320,
+     -240.0,
      -600
     ]
    ],
@@ -833,39 +847,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bowl Front",
+   "name": "Bowl Front 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Bowl Front",
+   "name": "Bowl Front 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bowl Front",
+   "name": "Bowl Front 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bowl Back",
+   "name": "Bowl Back 450",
    "points": [
     [
-     -320,
+     -240.0,
      -150
     ],
     [
-     320,
+     240.0,
      -150
     ],
     [
-     320,
+     240.0,
      -130
     ],
     [
-     -320,
+     -240.0,
      -130
     ]
    ],
@@ -874,39 +888,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bowl Back",
+   "name": "Bowl Back 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Bowl Back",
+   "name": "Bowl Back 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bowl Back",
+   "name": "Bowl Back 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bowl Left",
+   "name": "Bowl Left 450",
    "points": [
     [
-     -320,
+     -240.0,
      -600
     ],
     [
-     -300,
+     -225.0,
      -600
     ],
     [
-     -300,
+     -225.0,
      -150
     ],
     [
-     -320,
+     -240.0,
      -150
     ]
    ],
@@ -915,39 +929,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bowl Left",
+   "name": "Bowl Left 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Bowl Left",
+   "name": "Bowl Left 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bowl Left",
+   "name": "Bowl Left 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bowl Right",
+   "name": "Bowl Right 450",
    "points": [
     [
-     300,
+     225.0,
      -600
     ],
     [
-     320,
+     240.0,
      -600
     ],
     [
-     320,
+     240.0,
      -150
     ],
     [
-     300,
+     225.0,
      -150
     ]
    ],
@@ -956,39 +970,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bowl Right",
+   "name": "Bowl Right 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Bowl Right",
+   "name": "Bowl Right 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bowl Right",
+   "name": "Bowl Right 450",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Worktop Drip Edge",
+   "name": "Worktop Drip Edge 450",
    "points": [
     [
-     -450,
+     -337.5,
      860
     ],
     [
-     450,
+     337.5,
      860
     ],
     [
-     450,
+     337.5,
      900
     ],
     [
-     -450,
+     -337.5,
      900
     ]
    ],
@@ -998,17 +1012,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Worktop Drip Edge",
+   "name": "Worktop Drip Edge 450",
    "subcategory": "Epoxy Resin"
   },
   {
    "op": "set_material_param",
-   "name": "Worktop Drip Edge",
+   "name": "Worktop Drip Edge 450",
    "param": "Epoxy Resin Material"
   },
   {
    "op": "set_visibility",
-   "name": "Worktop Drip Edge",
+   "name": "Worktop Drip Edge 450",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -2636,6 +2650,577 @@
    ],
    "start": 590,
    "end": 621
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Front 600",
+   "points": [
+    [
+     -450,
+     -750
+    ],
+    [
+     450,
+     -750
+    ],
+    [
+     450,
+     -600
+    ],
+    [
+     -450,
+     -600
+    ]
+   ],
+   "start": 875,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Front 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Front 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Front 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Back 600",
+   "points": [
+    [
+     -450,
+     -150
+    ],
+    [
+     450,
+     -150
+    ],
+    [
+     450,
+     0
+    ],
+    [
+     -450,
+     0
+    ]
+   ],
+   "start": 875,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Back 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Back 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Back 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Strip 1 600",
+   "points": [
+    [
+     -450,
+     -600
+    ],
+    [
+     -300,
+     -600
+    ],
+    [
+     -300,
+     -150
+    ],
+    [
+     -450,
+     -150
+    ]
+   ],
+   "start": 875,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Strip 1 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Strip 1 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Strip 1 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Strip 2 600",
+   "points": [
+    [
+     300,
+     -600
+    ],
+    [
+     450,
+     -600
+    ],
+    [
+     450,
+     -150
+    ],
+    [
+     300,
+     -150
+    ]
+   ],
+   "start": 875,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Strip 2 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Strip 2 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Strip 2 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bowl Floor 600",
+   "points": [
+    [
+     -320,
+     -620
+    ],
+    [
+     320,
+     -620
+    ],
+    [
+     320,
+     -130
+    ],
+    [
+     -320,
+     -130
+    ]
+   ],
+   "start": 600,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bowl Floor 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Floor 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Floor 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bowl Front 600",
+   "points": [
+    [
+     -320,
+     -620
+    ],
+    [
+     320,
+     -620
+    ],
+    [
+     320,
+     -600
+    ],
+    [
+     -320,
+     -600
+    ]
+   ],
+   "start": 600,
+   "end": 875
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bowl Front 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Front 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Front 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bowl Back 600",
+   "points": [
+    [
+     -320,
+     -150
+    ],
+    [
+     320,
+     -150
+    ],
+    [
+     320,
+     -130
+    ],
+    [
+     -320,
+     -130
+    ]
+   ],
+   "start": 600,
+   "end": 875
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bowl Back 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Back 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Back 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bowl Left 600",
+   "points": [
+    [
+     -320,
+     -600
+    ],
+    [
+     -300,
+     -600
+    ],
+    [
+     -300,
+     -150
+    ],
+    [
+     -320,
+     -150
+    ]
+   ],
+   "start": 600,
+   "end": 875
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bowl Left 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Left 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Left 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bowl Right 600",
+   "points": [
+    [
+     300,
+     -600
+    ],
+    [
+     320,
+     -600
+    ],
+    [
+     320,
+     -150
+    ],
+    [
+     300,
+     -150
+    ]
+   ],
+   "start": 600,
+   "end": 875
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bowl Right 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Right 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Right 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Worktop Drip Edge 600",
+   "points": [
+    [
+     -450,
+     860
+    ],
+    [
+     450,
+     860
+    ],
+    [
+     450,
+     900
+    ],
+    [
+     -450,
+     900
+    ]
+   ],
+   "start": 750,
+   "end": 760,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Worktop Drip Edge 600",
+   "subcategory": "Epoxy Resin"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Worktop Drip Edge 600",
+   "param": "Epoxy Resin Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Worktop Drip Edge 600",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 450_Epoxy",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Epoxy/Show 450_Epoxy",
+   "type": "450_Epoxy",
+   "param": "Show 450_Epoxy",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Epoxy/Show 450_Epoxy",
+   "type": "600_Epoxy",
+   "param": "Show 450_Epoxy",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Front 450/Visible",
+   "solid": "Worktop Front 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Back 450/Visible",
+   "solid": "Worktop Back 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Strip 1 450/Visible",
+   "solid": "Worktop Strip 1 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Strip 2 450/Visible",
+   "solid": "Worktop Strip 2 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Floor 450/Visible",
+   "solid": "Bowl Floor 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Front 450/Visible",
+   "solid": "Bowl Front 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Back 450/Visible",
+   "solid": "Bowl Back 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Left 450/Visible",
+   "solid": "Bowl Left 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Right 450/Visible",
+   "solid": "Bowl Right 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Drip Edge 450/Visible",
+   "solid": "Worktop Drip Edge 450",
+   "param": "Show 450_Epoxy"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_Epoxy",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Epoxy/Show 600_Epoxy",
+   "type": "450_Epoxy",
+   "param": "Show 600_Epoxy",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Epoxy/Show 600_Epoxy",
+   "type": "600_Epoxy",
+   "param": "Show 600_Epoxy",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Front 600/Visible",
+   "solid": "Worktop Front 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Back 600/Visible",
+   "solid": "Worktop Back 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Strip 1 600/Visible",
+   "solid": "Worktop Strip 1 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Strip 2 600/Visible",
+   "solid": "Worktop Strip 2 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Floor 600/Visible",
+   "solid": "Bowl Floor 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Front 600/Visible",
+   "solid": "Bowl Front 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Back 600/Visible",
+   "solid": "Bowl Back 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Left 600/Visible",
+   "solid": "Bowl Left 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bowl Right 600/Visible",
+   "solid": "Bowl Right 600",
+   "param": "Show 600_Epoxy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Worktop Drip Edge 600/Visible",
+   "solid": "Worktop Drip Edge 600",
+   "param": "Show 600_Epoxy"
   },
   {
    "op": "add_connector",

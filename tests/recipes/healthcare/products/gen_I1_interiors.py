@@ -18,18 +18,14 @@ MATS = {
     "chrome": "FMC_Metal_Chrome_Polished", "alu": "FMC_Metal_Aluminium_Anodised_Silver",
     "mattress": "FMC_Fabric_Mattress_PU_Blue", "vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue", "rubber": "FMC_Rubber_Black",
     "castor": "FMC_Plastic_Nylon_CastorGrey", "clear": "FMC_Plastic_Polycarbonate_Clear",
-    "screen": "FMC_Plastic_ABS_Black",           # opaque stand-in; kit request FMC_Glass_Display_Black
-    "red": "FMC_Plastic_FireHoseReel_Red",      # nearest red plastic; kit request FMC_Plastic_ABS_Red
-    "sign": "FMC_Plastic_LED_Green",            # nearest safety green; kit request FMC_Plastic_Sign_SafetyGreen
+    "screen": "FMC_Glass_Display_Black",
+    "red": "FMC_Plastic_ABS_Red",
+    "sign": "FMC_Plastic_Sign_SafetyGreen",
     "ledg": "FMC_Plastic_LED_Green", "ledb": "FMC_Plastic_LED_Blue", "ledr": "FMC_Plastic_LED_Red",
     "hpl": "FMC_Plastic_Laminate_HPL", "wood": "FMC_Timber_Mahogany", "mel": "FMC_Board_Melamine_White",
     "china": "FMC_Ceramic_VitreousChina_White", "mirror": "FMC_Glass_Mirror",
 }
-MATERIALS_NEEDED = [
-    {"name": "FMC_Glass_Display_Black", "colour": "#11161D", "why": "screens of monitors, ventilators, scanners and bed panels; FMC_Plastic_ABS_Black used meanwhile"},
-    {"name": "FMC_Plastic_ABS_Red", "colour": "#C8202B", "why": "resuscitation trolley drawers, brake pedals, CPR release, shock button; FMC_Plastic_FireHoseReel_Red used meanwhile"},
-    {"name": "FMC_Plastic_Sign_SafetyGreen", "colour": "#00873D", "why": "AED location sign (ISO 7010 E010); FMC_Plastic_LED_Green used meanwhile"},
-]
+MATERIALS_NEEDED = []   # second pass: the kit now has all three requested materials
 
 # ------------------------------------------------------------------ part constructors
 def _p(n, shape, mat, lod=None, rep=None, **g):
@@ -66,6 +62,14 @@ def incl(hx, hz, ang, L, t0, t1, dirx=1):
     d = (dirx * c, s); nv = (-dirx * s, c) if dirx > 0 else (s, c)
     P = lambda a, t: [hx + d[0] * a + nv[0] * t, hz + d[1] * a + nv[1] * t]
     return [P(0, t0), P(L, t0), P(L, t1), P(0, t1)]
+def incl2(hx, hz, ang, s0, s1, t0, t1, dirx=1):
+    """Like incl, but from s0 to s1 along the slab."""
+    c, s = math.cos(math.radians(ang)), math.sin(math.radians(ang))
+    d = (dirx * c, s); nv = (-dirx * s, c) if dirx > 0 else (s, c)
+    P = lambda a, t: [hx + d[0] * a + nv[0] * t, hz + d[1] * a + nv[1] * t]
+    return [P(s0, t0), P(s1, t0), P(s1, t1), P(s0, t1)]
+def incl_pt(hx, hz, ang, a, t, dirx=1):
+    return incl2(hx, hz, ang, a, a, t, t, dirx)[0]
 def incl_end(hx, hz, ang, L, dirx=1):
     c, s = math.cos(math.radians(ang)), math.sin(math.radians(ang)); return hx + dirx * c * L, hz + s * L
 def rr(a0, b0, a1, b1, r=0): return fp.rrect(a0, b0, a1, b1, r)
@@ -181,13 +185,20 @@ def bed_electric(L, W, kind):
         return [fbox(nm, xa, -hy - 32, z0, xb, -hy - 10, z1, rail, r=55, rep=(2, 0, W + 42, 0)),
                 fbox(f"{nm} Grip Slot", xa + 90, -hy - 33.5, z1 - 95, xb - 90, -hy - 32, z1 - 45, "dark", r=22, lod="f", rep=(2, 0, W + 65.5, 0)),
                 box(f"{nm} Arm", xa + 100, -hy - 15, d0 + 20, xa + 140, hy + 15, z0 + 30, "grey", rep=(2, xb - xa - 240, 0, 0))]
-    P_ += rails("Head Rail", -hx + 140, -hx + 820, d0 + 150, d0 + 520) + rails("Foot Rail", 60, hx - 160, d0 + 150, d0 + 470)
+    # head rails ride on the backrest: inclined with it (30 deg), offsets measured from the mattress base plane
+    s0, s1, t0, t1 = 40, Lb - 40, 100, 450
+    P_ += [front("Head Rail", incl2(hinge, zb, 30, s0, s1, t0, t1, -1), -hy - 32, -hy - 10, rail, rep=(2, 0, W + 42, 0)),
+           front("Head Rail Grip Slot", incl2(hinge, zb, 30, s0 + 90, s1 - 90, t1 - 95, t1 - 45, -1), -hy - 33.5, -hy - 32, "dark", lod="f", rep=(2, 0, W + 65.5, 0)),
+           front("Head Rail Arm", incl2(hinge, zb, 30, s0 + 100, s0 + 140, -30, t0 + 30, -1), -hy - 15, hy + 15, "grey"),
+           front("Head Rail Arm 2", incl2(hinge, zb, 30, s1 - 140, s1 - 100, -30, t0 + 30, -1), -hy - 15, hy + 15, "grey")]
+    P_ += rails("Foot Rail", 60, hx - 160, d0 + 150, d0 + 470)
     P_ += iv_pole("IV Pole", -hx + 55, -hy + 75, d0 - 30, d0 + 1400)
     P_ += [fbox("Handset", 300, -hy - 52, d0 + 240, 370, -hy - 32, d0 + 410, "grey", r=20, lod="f"),
            fbox("Handset Keys", 312, -hy - 53.5, d0 + 280, 358, -hy - 52, d0 + 390, "white", r=6, lod="f")]
     if kind == 'icu':
-        P_ += [fbox("Rail Control Panel", -hx + 380, -hy - 35, d0 + 260, -hx + 620, -hy - 32, d0 + 360, "grey", r=12, lod="f"),
-               cyl("Rail Control Key", "y", [-hx + 415, d0 + 310], 11, [-hy - 38, -hy - 35], "white", "f", rep=(4, 45, 0, 0)),
+        kx, kz = incl_pt(hinge, zb, 30, Lb - 360, 210, -1); ca, sa = math.cos(math.radians(30)), math.sin(math.radians(30))
+        P_ += [front("Rail Control Panel", incl2(hinge, zb, 30, Lb - 380, Lb - 160, 160, 260, -1), -hy - 35, -hy - 32, "grey", lod="f"),
+               cyl("Rail Control Key", "y", [kx, kz], 11, [-hy - 38, -hy - 35], "white", "f", rep=(4, 45 * ca, 0, 45 * sa)),
                box("CPR Release Handle", -hx + 300, -hy + 15, d0 - 20, -hx + 460, -hy + 45, d0 + 30, "red", r=10)]
     if kind == 'bari':
         P_ += [box("Lifting Pole Socket", -hx - 60, -40, d0 - 60, -hx + 10, 40, d0 + 560, "frame", r=12),

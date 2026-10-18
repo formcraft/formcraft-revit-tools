@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Furniture_Sofa_Family_Room",
  "template": "Metric Generic Model.rft",
- "about": "Sofa modelled as a generic product: upholstered base, 2 seat and inclined back cushions, back, padded arms with timber front panels, 4 timber legs, Kitenge scatter cushion (Fine). Geometry is drawn at the 1500_2Seat type; the other types share it until a parametric pass. Reference: query: furniture sofa family room furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+sofa+family+room+furniture+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Sofa modelled as a generic product: upholstered base, 2 seat and inclined back cushions, back, padded arms with timber front panels, 4 timber legs, Kitenge scatter cushion (Fine). Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: furniture sofa family room furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+sofa+family+room+furniture+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.hermanmiller.com/products/healthcare/healthcare-sleep-seating/nemschoff-palisade-flop-sofa/; photo_title: Nemschoff Palisade Flop Sofa (Herman Miller); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -310,6 +310,13 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "1500_2Seat/URL",
+   "type": "1500_2Seat",
+   "param": "URL",
+   "value": "https://www.hermanmiller.com/products/healthcare/healthcare-sleep-seating/nemschoff-palisade-flop-sofa/"
+  },
+  {
    "op": "add_type",
    "name": "2100_3Seat"
   },
@@ -377,12 +384,19 @@
    "value": "I"
   },
   {
+   "op": "set_type_value",
+   "name": "2100_3Seat/URL",
+   "type": "2100_3Seat",
+   "param": "URL",
+   "value": "https://www.hermanmiller.com/products/healthcare/healthcare-sleep-seating/nemschoff-palisade-flop-sofa/"
+  },
+  {
    "op": "add_subcategory",
    "name": "Fab2",
    "color": [
-    91,
-    141,
-    184
+    122,
+    128,
+    135
    ],
    "line_weight_projection": 1
   },
@@ -394,16 +408,16 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Mattress_PU_Blue",
+   "name": "FMC_Fabric_Upholstery_WipeClean_Grey",
    "param": "Fab2 Material"
   },
   {
    "op": "add_subcategory",
    "name": "Fab",
    "color": [
-    58,
-    110,
-    165
+    122,
+    128,
+    135
    ],
    "line_weight_projection": 1
   },
@@ -415,7 +429,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "name": "FMC_Fabric_Upholstery_WipeClean_Grey",
    "param": "Fab Material"
   },
   {
@@ -475,19 +489,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -750.0,
+     -1050.0,
      -424
     ],
     [
-     750.0,
+     1050.0,
      -424
     ],
     [
-     750.0,
+     1050.0,
      400.0
     ],
     [
-     -750.0,
+     -1050.0,
      400.0
     ]
    ],
@@ -508,7 +522,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Base Frame",
+   "name": "Base Frame 2S",
    "points": [
     [
      590.0,
@@ -596,24 +610,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Frame",
+   "name": "Base Frame 2S",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Base Frame",
+   "name": "Base Frame 2S",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Frame",
+   "name": "Base Frame 2S",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion 2S 1",
    "points": [
     [
      -45.0,
@@ -701,103 +715,103 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion 2S 1",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion 2S 1",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Cushion 1",
+   "name": "Seat Cushion 2S 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion 2S 2",
    "points": [
     [
-     560.0,
+     555.0,
      -420.0
     ],
     [
-     575.31,
+     570.31,
      -416.96
     ],
     [
-     588.28,
+     583.28,
      -408.28
     ],
     [
-     596.96,
+     591.96,
      -395.31
     ],
     [
-     600.0,
+     595.0,
      -380.0
     ],
     [
-     600.0,
+     595.0,
      180.0
     ],
     [
-     596.96,
+     591.96,
      195.31
     ],
     [
-     588.28,
+     583.28,
      208.28
     ],
     [
-     575.31,
+     570.31,
      216.96
     ],
     [
-     560.0,
+     555.0,
      220.0
     ],
     [
-     45.0,
+     40.0,
      220.0
     ],
     [
-     29.69,
+     24.69,
      216.96
     ],
     [
-     16.72,
+     11.72,
      208.28
     ],
     [
-     8.04,
+     3.04,
      195.31
     ],
     [
-     5.0,
+     0.0,
      180.0
     ],
     [
-     5.0,
+     0.0,
      -380.0
     ],
     [
-     8.04,
+     3.04,
      -395.31
     ],
     [
-     16.72,
+     11.72,
      -408.28
     ],
     [
-     29.69,
+     24.69,
      -416.96
     ],
     [
-     45.0,
+     40.0,
      -420.0
     ]
    ],
@@ -806,24 +820,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion 2S 2",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion 2S 2",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Seat Cushion 2",
+   "name": "Seat Cushion 2S 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion 2S 1",
    "points": [
     [
      180,
@@ -848,24 +862,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion 2S 1",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion 2S 1",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Cushion 1",
+   "name": "Back Cushion 2S 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion 2S 2",
    "points": [
     [
      180,
@@ -884,30 +898,30 @@
      840
     ]
    ],
-   "start": 5.0,
-   "end": 600.0,
+   "start": 0.0,
+   "end": 595.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion 2S 2",
    "subcategory": "Fab"
   },
   {
    "op": "set_material_param",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion 2S 2",
    "param": "Fab Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back Cushion 2",
+   "name": "Back Cushion 2S 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Back",
+   "name": "Back 2S",
    "points": [
     [
      590.0,
@@ -995,24 +1009,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Back",
+   "name": "Back 2S",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Back",
+   "name": "Back 2S",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Back",
+   "name": "Back 2S",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Arm",
+   "name": "Arm 2S",
    "points": [
     [
      -650.0,
@@ -1100,24 +1114,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Arm",
+   "name": "Arm 2S",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Arm",
+   "name": "Arm 2S",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Arm",
+   "name": "Arm 2S",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Arm Right",
+   "name": "Arm Right 2S",
    "points": [
     [
      710.0,
@@ -1205,24 +1219,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Arm Right",
+   "name": "Arm Right 2S",
    "subcategory": "Fab2"
   },
   {
    "op": "set_material_param",
-   "name": "Arm Right",
+   "name": "Arm Right 2S",
    "param": "Fab2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Arm Right",
+   "name": "Arm Right 2S",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Arm Front Panel",
+   "name": "Arm Front Panel 2S",
    "points": [
     [
      -650.0,
@@ -1311,24 +1325,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Arm Front Panel",
+   "name": "Arm Front Panel 2S",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Arm Front Panel",
+   "name": "Arm Front Panel 2S",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Arm Front Panel",
+   "name": "Arm Front Panel 2S",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Arm Front Panel Right",
+   "name": "Arm Front Panel Right 2S",
    "points": [
     [
      710.0,
@@ -1417,24 +1431,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Arm Front Panel Right",
+   "name": "Arm Front Panel Right 2S",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Arm Front Panel Right",
+   "name": "Arm Front Panel Right 2S",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Arm Front Panel Right",
+   "name": "Arm Front Panel Right 2S",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg 1",
+   "name": "Leg 2S 1",
    "points": [
     [
      -690.0,
@@ -1522,24 +1536,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg 1",
+   "name": "Leg 2S 1",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Leg 1",
+   "name": "Leg 2S 1",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg 1",
+   "name": "Leg 2S 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg 2",
+   "name": "Leg 2S 2",
    "points": [
     [
      720.0,
@@ -1627,24 +1641,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg 2",
+   "name": "Leg 2S 2",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Leg 2",
+   "name": "Leg 2S 2",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg 2",
+   "name": "Leg 2S 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Back 1",
+   "name": "Leg Back 2S 1",
    "points": [
     [
      -690.0,
@@ -1732,24 +1746,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Back 1",
+   "name": "Leg Back 2S 1",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Back 1",
+   "name": "Leg Back 2S 1",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Back 1",
+   "name": "Leg Back 2S 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Back 2",
+   "name": "Leg Back 2S 2",
    "points": [
     [
      720.0,
@@ -1837,24 +1851,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Back 2",
+   "name": "Leg Back 2S 2",
    "subcategory": "Wood"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Back 2",
+   "name": "Leg Back 2S 2",
    "param": "Wood Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Back 2",
+   "name": "Leg Back 2S 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Scatter Cushion",
+   "name": "Scatter Cushion 2S",
    "points": [
     [
      -340.0,
@@ -1942,20 +1956,1850 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Scatter Cushion",
+   "name": "Scatter Cushion 2S",
    "subcategory": "Fab3"
   },
   {
    "op": "set_material_param",
-   "name": "Scatter Cushion",
+   "name": "Scatter Cushion 2S",
    "param": "Fab3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Scatter Cushion",
+   "name": "Scatter Cushion 2S",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame 3S",
+   "points": [
+    [
+     890.0,
+     -380.0
+    ],
+    [
+     897.65,
+     -378.48
+    ],
+    [
+     904.14,
+     -374.14
+    ],
+    [
+     908.48,
+     -367.65
+    ],
+    [
+     910.0,
+     -360.0
+    ],
+    [
+     910.0,
+     340.0
+    ],
+    [
+     908.48,
+     347.65
+    ],
+    [
+     904.14,
+     354.14
+    ],
+    [
+     897.65,
+     358.48
+    ],
+    [
+     890.0,
+     360.0
+    ],
+    [
+     -890.0,
+     360.0
+    ],
+    [
+     -897.65,
+     358.48
+    ],
+    [
+     -904.14,
+     354.14
+    ],
+    [
+     -908.48,
+     347.65
+    ],
+    [
+     -910.0,
+     340.0
+    ],
+    [
+     -910.0,
+     -360.0
+    ],
+    [
+     -908.48,
+     -367.65
+    ],
+    [
+     -904.14,
+     -374.14
+    ],
+    [
+     -897.65,
+     -378.48
+    ],
+    [
+     -890.0,
+     -380.0
+    ]
+   ],
+   "start": 130,
+   "end": 420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame 3S",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame 3S",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame 3S",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 3S 1",
+   "points": [
+    [
+     -345.0,
+     -420.0
+    ],
+    [
+     -329.69,
+     -416.96
+    ],
+    [
+     -316.72,
+     -408.28
+    ],
+    [
+     -308.04,
+     -395.31
+    ],
+    [
+     -305.0,
+     -380.0
+    ],
+    [
+     -305.0,
+     180.0
+    ],
+    [
+     -308.04,
+     195.31
+    ],
+    [
+     -316.72,
+     208.28
+    ],
+    [
+     -329.69,
+     216.96
+    ],
+    [
+     -345.0,
+     220.0
+    ],
+    [
+     -860.0,
+     220.0
+    ],
+    [
+     -875.31,
+     216.96
+    ],
+    [
+     -888.28,
+     208.28
+    ],
+    [
+     -896.96,
+     195.31
+    ],
+    [
+     -900.0,
+     180.0
+    ],
+    [
+     -900.0,
+     -380.0
+    ],
+    [
+     -896.96,
+     -395.31
+    ],
+    [
+     -888.28,
+     -408.28
+    ],
+    [
+     -875.31,
+     -416.96
+    ],
+    [
+     -860.0,
+     -420.0
+    ]
+   ],
+   "start": 420,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 3S 1",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 3S 1",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 3S 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 3S 2",
+   "points": [
+    [
+     255.0,
+     -420.0
+    ],
+    [
+     270.31,
+     -416.96
+    ],
+    [
+     283.28,
+     -408.28
+    ],
+    [
+     291.96,
+     -395.31
+    ],
+    [
+     295.0,
+     -380.0
+    ],
+    [
+     295.0,
+     180.0
+    ],
+    [
+     291.96,
+     195.31
+    ],
+    [
+     283.28,
+     208.28
+    ],
+    [
+     270.31,
+     216.96
+    ],
+    [
+     255.0,
+     220.0
+    ],
+    [
+     -260.0,
+     220.0
+    ],
+    [
+     -275.31,
+     216.96
+    ],
+    [
+     -288.28,
+     208.28
+    ],
+    [
+     -296.96,
+     195.31
+    ],
+    [
+     -300.0,
+     180.0
+    ],
+    [
+     -300.0,
+     -380.0
+    ],
+    [
+     -296.96,
+     -395.31
+    ],
+    [
+     -288.28,
+     -408.28
+    ],
+    [
+     -275.31,
+     -416.96
+    ],
+    [
+     -260.0,
+     -420.0
+    ]
+   ],
+   "start": 420,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 3S 2",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 3S 2",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 3S 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion 3S 3",
+   "points": [
+    [
+     855.0,
+     -420.0
+    ],
+    [
+     870.31,
+     -416.96
+    ],
+    [
+     883.28,
+     -408.28
+    ],
+    [
+     891.96,
+     -395.31
+    ],
+    [
+     895.0,
+     -380.0
+    ],
+    [
+     895.0,
+     180.0
+    ],
+    [
+     891.96,
+     195.31
+    ],
+    [
+     883.28,
+     208.28
+    ],
+    [
+     870.31,
+     216.96
+    ],
+    [
+     855.0,
+     220.0
+    ],
+    [
+     340.0,
+     220.0
+    ],
+    [
+     324.69,
+     216.96
+    ],
+    [
+     311.72,
+     208.28
+    ],
+    [
+     303.04,
+     195.31
+    ],
+    [
+     300.0,
+     180.0
+    ],
+    [
+     300.0,
+     -380.0
+    ],
+    [
+     303.04,
+     -395.31
+    ],
+    [
+     311.72,
+     -408.28
+    ],
+    [
+     324.69,
+     -416.96
+    ],
+    [
+     340.0,
+     -420.0
+    ]
+   ],
+   "start": 420,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion 3S 3",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion 3S 3",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion 3S 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 3S 1",
+   "points": [
+    [
+     180,
+     420
+    ],
+    [
+     360,
+     420
+    ],
+    [
+     380,
+     830
+    ],
+    [
+     250,
+     840
+    ]
+   ],
+   "start": -900.0,
+   "end": -305.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 3S 1",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 3S 1",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 3S 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 3S 2",
+   "points": [
+    [
+     180,
+     420
+    ],
+    [
+     360,
+     420
+    ],
+    [
+     380,
+     830
+    ],
+    [
+     250,
+     840
+    ]
+   ],
+   "start": -300.0,
+   "end": 295.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 3S 2",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 3S 2",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 3S 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Cushion 3S 3",
+   "points": [
+    [
+     180,
+     420
+    ],
+    [
+     360,
+     420
+    ],
+    [
+     380,
+     830
+    ],
+    [
+     250,
+     840
+    ]
+   ],
+   "start": 300.0,
+   "end": 895.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Cushion 3S 3",
+   "subcategory": "Fab"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Cushion 3S 3",
+   "param": "Fab Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Cushion 3S 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back 3S",
+   "points": [
+    [
+     890.0,
+     300.0
+    ],
+    [
+     897.65,
+     301.52
+    ],
+    [
+     904.14,
+     305.86
+    ],
+    [
+     908.48,
+     312.35
+    ],
+    [
+     910.0,
+     320.0
+    ],
+    [
+     910.0,
+     380.0
+    ],
+    [
+     908.48,
+     387.65
+    ],
+    [
+     904.14,
+     394.14
+    ],
+    [
+     897.65,
+     398.48
+    ],
+    [
+     890.0,
+     400.0
+    ],
+    [
+     -890.0,
+     400.0
+    ],
+    [
+     -897.65,
+     398.48
+    ],
+    [
+     -904.14,
+     394.14
+    ],
+    [
+     -908.48,
+     387.65
+    ],
+    [
+     -910.0,
+     380.0
+    ],
+    [
+     -910.0,
+     320.0
+    ],
+    [
+     -908.48,
+     312.35
+    ],
+    [
+     -904.14,
+     305.86
+    ],
+    [
+     -897.65,
+     301.52
+    ],
+    [
+     -890.0,
+     300.0
+    ]
+   ],
+   "start": 130,
+   "end": 820
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back 3S",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back 3S",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back 3S",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm 3S",
+   "points": [
+    [
+     -950.0,
+     -420.0
+    ],
+    [
+     -934.69,
+     -416.96
+    ],
+    [
+     -921.72,
+     -408.28
+    ],
+    [
+     -913.04,
+     -395.31
+    ],
+    [
+     -910.0,
+     -380.0
+    ],
+    [
+     -910.0,
+     360.0
+    ],
+    [
+     -913.04,
+     375.31
+    ],
+    [
+     -921.72,
+     388.28
+    ],
+    [
+     -934.69,
+     396.96
+    ],
+    [
+     -950.0,
+     400.0
+    ],
+    [
+     -1010.0,
+     400.0
+    ],
+    [
+     -1025.31,
+     396.96
+    ],
+    [
+     -1038.28,
+     388.28
+    ],
+    [
+     -1046.96,
+     375.31
+    ],
+    [
+     -1050.0,
+     360.0
+    ],
+    [
+     -1050.0,
+     -380.0
+    ],
+    [
+     -1046.96,
+     -395.31
+    ],
+    [
+     -1038.28,
+     -408.28
+    ],
+    [
+     -1025.31,
+     -416.96
+    ],
+    [
+     -1010.0,
+     -420.0
+    ]
+   ],
+   "start": 130,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm 3S",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm 3S",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm 3S",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Right 3S",
+   "points": [
+    [
+     1010.0,
+     -420.0
+    ],
+    [
+     1025.31,
+     -416.96
+    ],
+    [
+     1038.28,
+     -408.28
+    ],
+    [
+     1046.96,
+     -395.31
+    ],
+    [
+     1050.0,
+     -380.0
+    ],
+    [
+     1050.0,
+     360.0
+    ],
+    [
+     1046.96,
+     375.31
+    ],
+    [
+     1038.28,
+     388.28
+    ],
+    [
+     1025.31,
+     396.96
+    ],
+    [
+     1010.0,
+     400.0
+    ],
+    [
+     950.0,
+     400.0
+    ],
+    [
+     934.69,
+     396.96
+    ],
+    [
+     921.72,
+     388.28
+    ],
+    [
+     913.04,
+     375.31
+    ],
+    [
+     910.0,
+     360.0
+    ],
+    [
+     910.0,
+     -380.0
+    ],
+    [
+     913.04,
+     -395.31
+    ],
+    [
+     921.72,
+     -408.28
+    ],
+    [
+     934.69,
+     -416.96
+    ],
+    [
+     950.0,
+     -420.0
+    ]
+   ],
+   "start": 130,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Right 3S",
+   "subcategory": "Fab2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Right 3S",
+   "param": "Fab2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Right 3S",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Front Panel 3S",
+   "points": [
+    [
+     -950.0,
+     140.0
+    ],
+    [
+     -938.52,
+     142.28
+    ],
+    [
+     -928.79,
+     148.79
+    ],
+    [
+     -922.28,
+     158.52
+    ],
+    [
+     -920.0,
+     170.0
+    ],
+    [
+     -920.0,
+     600.0
+    ],
+    [
+     -922.28,
+     611.48
+    ],
+    [
+     -928.79,
+     621.21
+    ],
+    [
+     -938.52,
+     627.72
+    ],
+    [
+     -950.0,
+     630.0
+    ],
+    [
+     -1010.0,
+     630.0
+    ],
+    [
+     -1021.48,
+     627.72
+    ],
+    [
+     -1031.21,
+     621.21
+    ],
+    [
+     -1037.72,
+     611.48
+    ],
+    [
+     -1040.0,
+     600.0
+    ],
+    [
+     -1040.0,
+     170.0
+    ],
+    [
+     -1037.72,
+     158.52
+    ],
+    [
+     -1031.21,
+     148.79
+    ],
+    [
+     -1021.48,
+     142.28
+    ],
+    [
+     -1010.0,
+     140.0
+    ]
+   ],
+   "start": 420,
+   "end": 424,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Front Panel 3S",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Front Panel 3S",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Front Panel 3S",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Front Panel Right 3S",
+   "points": [
+    [
+     1010.0,
+     140.0
+    ],
+    [
+     1021.48,
+     142.28
+    ],
+    [
+     1031.21,
+     148.79
+    ],
+    [
+     1037.72,
+     158.52
+    ],
+    [
+     1040.0,
+     170.0
+    ],
+    [
+     1040.0,
+     600.0
+    ],
+    [
+     1037.72,
+     611.48
+    ],
+    [
+     1031.21,
+     621.21
+    ],
+    [
+     1021.48,
+     627.72
+    ],
+    [
+     1010.0,
+     630.0
+    ],
+    [
+     950.0,
+     630.0
+    ],
+    [
+     938.52,
+     627.72
+    ],
+    [
+     928.79,
+     621.21
+    ],
+    [
+     922.28,
+     611.48
+    ],
+    [
+     920.0,
+     600.0
+    ],
+    [
+     920.0,
+     170.0
+    ],
+    [
+     922.28,
+     158.52
+    ],
+    [
+     928.79,
+     148.79
+    ],
+    [
+     938.52,
+     142.28
+    ],
+    [
+     950.0,
+     140.0
+    ]
+   ],
+   "start": 420,
+   "end": 424,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Front Panel Right 3S",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Front Panel Right 3S",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Front Panel Right 3S",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg 3S 1",
+   "points": [
+    [
+     -990.0,
+     -400.0
+    ],
+    [
+     -986.17,
+     -399.24
+    ],
+    [
+     -982.93,
+     -397.07
+    ],
+    [
+     -980.76,
+     -393.83
+    ],
+    [
+     -980.0,
+     -390.0
+    ],
+    [
+     -980.0,
+     -360.0
+    ],
+    [
+     -980.76,
+     -356.17
+    ],
+    [
+     -982.93,
+     -352.93
+    ],
+    [
+     -986.17,
+     -350.76
+    ],
+    [
+     -990.0,
+     -350.0
+    ],
+    [
+     -1020.0,
+     -350.0
+    ],
+    [
+     -1023.83,
+     -350.76
+    ],
+    [
+     -1027.07,
+     -352.93
+    ],
+    [
+     -1029.24,
+     -356.17
+    ],
+    [
+     -1030.0,
+     -360.0
+    ],
+    [
+     -1030.0,
+     -390.0
+    ],
+    [
+     -1029.24,
+     -393.83
+    ],
+    [
+     -1027.07,
+     -397.07
+    ],
+    [
+     -1023.83,
+     -399.24
+    ],
+    [
+     -1020.0,
+     -400.0
+    ]
+   ],
+   "start": 0,
+   "end": 130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg 3S 1",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg 3S 1",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg 3S 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg 3S 2",
+   "points": [
+    [
+     1020.0,
+     -400.0
+    ],
+    [
+     1023.83,
+     -399.24
+    ],
+    [
+     1027.07,
+     -397.07
+    ],
+    [
+     1029.24,
+     -393.83
+    ],
+    [
+     1030.0,
+     -390.0
+    ],
+    [
+     1030.0,
+     -360.0
+    ],
+    [
+     1029.24,
+     -356.17
+    ],
+    [
+     1027.07,
+     -352.93
+    ],
+    [
+     1023.83,
+     -350.76
+    ],
+    [
+     1020.0,
+     -350.0
+    ],
+    [
+     990.0,
+     -350.0
+    ],
+    [
+     986.17,
+     -350.76
+    ],
+    [
+     982.93,
+     -352.93
+    ],
+    [
+     980.76,
+     -356.17
+    ],
+    [
+     980.0,
+     -360.0
+    ],
+    [
+     980.0,
+     -390.0
+    ],
+    [
+     980.76,
+     -393.83
+    ],
+    [
+     982.93,
+     -397.07
+    ],
+    [
+     986.17,
+     -399.24
+    ],
+    [
+     990.0,
+     -400.0
+    ]
+   ],
+   "start": 0,
+   "end": 130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg 3S 2",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg 3S 2",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg 3S 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Back 3S 1",
+   "points": [
+    [
+     -990.0,
+     330.0
+    ],
+    [
+     -986.17,
+     330.76
+    ],
+    [
+     -982.93,
+     332.93
+    ],
+    [
+     -980.76,
+     336.17
+    ],
+    [
+     -980.0,
+     340.0
+    ],
+    [
+     -980.0,
+     370.0
+    ],
+    [
+     -980.76,
+     373.83
+    ],
+    [
+     -982.93,
+     377.07
+    ],
+    [
+     -986.17,
+     379.24
+    ],
+    [
+     -990.0,
+     380.0
+    ],
+    [
+     -1020.0,
+     380.0
+    ],
+    [
+     -1023.83,
+     379.24
+    ],
+    [
+     -1027.07,
+     377.07
+    ],
+    [
+     -1029.24,
+     373.83
+    ],
+    [
+     -1030.0,
+     370.0
+    ],
+    [
+     -1030.0,
+     340.0
+    ],
+    [
+     -1029.24,
+     336.17
+    ],
+    [
+     -1027.07,
+     332.93
+    ],
+    [
+     -1023.83,
+     330.76
+    ],
+    [
+     -1020.0,
+     330.0
+    ]
+   ],
+   "start": 0,
+   "end": 130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Back 3S 1",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Back 3S 1",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Back 3S 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Back 3S 2",
+   "points": [
+    [
+     1020.0,
+     330.0
+    ],
+    [
+     1023.83,
+     330.76
+    ],
+    [
+     1027.07,
+     332.93
+    ],
+    [
+     1029.24,
+     336.17
+    ],
+    [
+     1030.0,
+     340.0
+    ],
+    [
+     1030.0,
+     370.0
+    ],
+    [
+     1029.24,
+     373.83
+    ],
+    [
+     1027.07,
+     377.07
+    ],
+    [
+     1023.83,
+     379.24
+    ],
+    [
+     1020.0,
+     380.0
+    ],
+    [
+     990.0,
+     380.0
+    ],
+    [
+     986.17,
+     379.24
+    ],
+    [
+     982.93,
+     377.07
+    ],
+    [
+     980.76,
+     373.83
+    ],
+    [
+     980.0,
+     370.0
+    ],
+    [
+     980.0,
+     340.0
+    ],
+    [
+     980.76,
+     336.17
+    ],
+    [
+     982.93,
+     332.93
+    ],
+    [
+     986.17,
+     330.76
+    ],
+    [
+     990.0,
+     330.0
+    ]
+   ],
+   "start": 0,
+   "end": 130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Back 3S 2",
+   "subcategory": "Wood"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Back 3S 2",
+   "param": "Wood Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Back 3S 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Scatter Cushion 3S",
+   "points": [
+    [
+     -640.0,
+     140.0
+    ],
+    [
+     -624.69,
+     143.04
+    ],
+    [
+     -611.72,
+     151.72
+    ],
+    [
+     -603.04,
+     164.69
+    ],
+    [
+     -600.0,
+     180.0
+    ],
+    [
+     -600.0,
+     220.0
+    ],
+    [
+     -603.04,
+     235.31
+    ],
+    [
+     -611.72,
+     248.28
+    ],
+    [
+     -624.69,
+     256.96
+    ],
+    [
+     -640.0,
+     260.0
+    ],
+    [
+     -840.0,
+     260.0
+    ],
+    [
+     -855.31,
+     256.96
+    ],
+    [
+     -868.28,
+     248.28
+    ],
+    [
+     -876.96,
+     235.31
+    ],
+    [
+     -880.0,
+     220.0
+    ],
+    [
+     -880.0,
+     180.0
+    ],
+    [
+     -876.96,
+     164.69
+    ],
+    [
+     -868.28,
+     151.72
+    ],
+    [
+     -855.31,
+     143.04
+    ],
+    [
+     -840.0,
+     140.0
+    ]
+   ],
+   "start": 500,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Scatter Cushion 3S",
+   "subcategory": "Fab3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Scatter Cushion 3S",
+   "param": "Fab3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Scatter Cushion 3S",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500_2Seat",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_2Seat/Show 1500_2Seat",
+   "type": "1500_2Seat",
+   "param": "Show 1500_2Seat",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2100_3Seat/Show 1500_2Seat",
+   "type": "2100_3Seat",
+   "param": "Show 1500_2Seat",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Frame 2S/Visible",
+   "solid": "Base Frame 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 2S 1/Visible",
+   "solid": "Seat Cushion 2S 1",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 2S 2/Visible",
+   "solid": "Seat Cushion 2S 2",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 2S 1/Visible",
+   "solid": "Back Cushion 2S 1",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 2S 2/Visible",
+   "solid": "Back Cushion 2S 2",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back 2S/Visible",
+   "solid": "Back 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm 2S/Visible",
+   "solid": "Arm 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Right 2S/Visible",
+   "solid": "Arm Right 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Front Panel 2S/Visible",
+   "solid": "Arm Front Panel 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Front Panel Right 2S/Visible",
+   "solid": "Arm Front Panel Right 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg 2S 1/Visible",
+   "solid": "Leg 2S 1",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg 2S 2/Visible",
+   "solid": "Leg 2S 2",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 2S 1/Visible",
+   "solid": "Leg Back 2S 1",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 2S 2/Visible",
+   "solid": "Leg Back 2S 2",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Scatter Cushion 2S/Visible",
+   "solid": "Scatter Cushion 2S",
+   "param": "Show 1500_2Seat"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2100_3Seat",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_2Seat/Show 2100_3Seat",
+   "type": "1500_2Seat",
+   "param": "Show 2100_3Seat",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2100_3Seat/Show 2100_3Seat",
+   "type": "2100_3Seat",
+   "param": "Show 2100_3Seat",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Frame 3S/Visible",
+   "solid": "Base Frame 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 3S 1/Visible",
+   "solid": "Seat Cushion 3S 1",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 3S 2/Visible",
+   "solid": "Seat Cushion 3S 2",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat Cushion 3S 3/Visible",
+   "solid": "Seat Cushion 3S 3",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 3S 1/Visible",
+   "solid": "Back Cushion 3S 1",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 3S 2/Visible",
+   "solid": "Back Cushion 3S 2",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Cushion 3S 3/Visible",
+   "solid": "Back Cushion 3S 3",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back 3S/Visible",
+   "solid": "Back 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm 3S/Visible",
+   "solid": "Arm 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Right 3S/Visible",
+   "solid": "Arm Right 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Front Panel 3S/Visible",
+   "solid": "Arm Front Panel 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Front Panel Right 3S/Visible",
+   "solid": "Arm Front Panel Right 3S",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg 3S 1/Visible",
+   "solid": "Leg 3S 1",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg 3S 2/Visible",
+   "solid": "Leg 3S 2",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 3S 1/Visible",
+   "solid": "Leg Back 3S 1",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 3S 2/Visible",
+   "solid": "Leg Back 3S 2",
+   "param": "Show 2100_3Seat"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Scatter Cushion 3S/Visible",
+   "solid": "Scatter Cushion 3S",
+   "param": "Show 2100_3Seat"
   },
   {
    "op": "set_type_image",

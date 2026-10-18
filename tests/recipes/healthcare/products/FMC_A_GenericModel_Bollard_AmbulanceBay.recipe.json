@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_GenericModel_Bollard_AmbulanceBay",
  "template": "Metric Generic Model.rft",
- "about": "Bollard modelled as a generic product: footing below ground (z < 0), painted tube with domed cap, reflective bands, ground collar, anchor bar; geometry is the 150 type. Reference: query: bollard ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=bollard+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Bollard modelled as a generic product: footing below ground (z < 0) and anchor bar shared; tube, domed cap, reflective bands and ground collar per type. Reference: query: bollard ambulance bay generic models hospital; images: https://www.google.com/search?tbm=isch&q=bollard+ambulance+bay+generic+models+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.marshalls.co.uk/landscaping/landscape-protection/bollards/steel-bollards; photo_title: Marshalls steel bollards; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,255 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Compaction_Pct_MDD",
+   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_CBR_Pct",
+   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Layer_Thickness_mm",
+   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -85,6 +307,34 @@
    "value": "T.BOL_00"
   },
   {
+   "op": "set_type_value",
+   "name": "150_Steel/FMC_Code_Description",
+   "type": "150_Steel",
+   "param": "FMC_Code_Description",
+   "value": "Bollard AmbulanceBay: Steel or concrete bollard"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Steel/FMC_Code_Group",
+   "type": "150_Steel",
+   "param": "FMC_Code_Group",
+   "value": "T.BOL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Steel/FMC_Role_Code",
+   "type": "150_Steel",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Steel/URL",
+   "type": "150_Steel",
+   "param": "URL",
+   "value": "https://www.marshalls.co.uk/landscaping/landscape-protection/bollards/steel-bollards"
+  },
+  {
    "op": "add_type",
    "name": "200_Steel"
   },
@@ -114,7 +364,7 @@
    "name": "200_Steel/Description",
    "type": "200_Steel",
    "param": "Description",
-   "value": "Steel bollard 200 mm dia, 1000 mm high, concrete filled"
+   "value": "Steel bollard 219 mm dia, 1000 mm high, concrete filled"
   },
   {
    "op": "set_type_value",
@@ -129,6 +379,34 @@
    "type": "200_Steel",
    "param": "FMC_Keynote_Code",
    "value": "T.BOL_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/FMC_Code_Description",
+   "type": "200_Steel",
+   "param": "FMC_Code_Description",
+   "value": "Bollard AmbulanceBay: Steel or concrete bollard"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/FMC_Code_Group",
+   "type": "200_Steel",
+   "param": "FMC_Code_Group",
+   "value": "T.BOL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/FMC_Role_Code",
+   "type": "200_Steel",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/URL",
+   "type": "200_Steel",
+   "param": "URL",
+   "value": "https://www.marshalls.co.uk/landscaping/landscape-protection/bollards/steel-bollards"
   },
   {
    "op": "add_subcategory",
@@ -150,6 +428,27 @@
    "op": "add_material",
    "name": "FMC_Concrete_C30",
    "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    110,
+    110,
+    110
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StructuralSteel_S275",
+   "param": "Steel Material"
   },
   {
    "op": "add_subcategory",
@@ -195,27 +494,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    110,
-    110,
-    110
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -230,19 +508,19 @@
    "points": [
     [
      -175.0,
-     -180
+     -175.0
     ],
     [
      175.0,
-     -180
+     -175.0
     ],
     [
      175.0,
-     180
+     175.0
     ],
     [
      -175.0,
-     180
+     175.0
     ]
    ],
    "start": -600,
@@ -383,7 +661,129 @@
   },
   {
    "op": "extrusion",
-   "name": "Body",
+   "name": "Rebar Anchor",
+   "points": [
+    [
+     8.0,
+     -400.0
+    ],
+    [
+     7.73,
+     -397.93
+    ],
+    [
+     6.93,
+     -396.0
+    ],
+    [
+     5.66,
+     -394.34
+    ],
+    [
+     4.0,
+     -393.07
+    ],
+    [
+     2.07,
+     -392.27
+    ],
+    [
+     0.0,
+     -392.0
+    ],
+    [
+     -2.07,
+     -392.27
+    ],
+    [
+     -4.0,
+     -393.07
+    ],
+    [
+     -5.66,
+     -394.34
+    ],
+    [
+     -6.93,
+     -396.0
+    ],
+    [
+     -7.73,
+     -397.93
+    ],
+    [
+     -8.0,
+     -400.0
+    ],
+    [
+     -7.73,
+     -402.07
+    ],
+    [
+     -6.93,
+     -404.0
+    ],
+    [
+     -5.66,
+     -405.66
+    ],
+    [
+     -4.0,
+     -406.93
+    ],
+    [
+     -2.07,
+     -407.73
+    ],
+    [
+     -0.0,
+     -408.0
+    ],
+    [
+     2.07,
+     -407.73
+    ],
+    [
+     4.0,
+     -406.93
+    ],
+    [
+     5.66,
+     -405.66
+    ],
+    [
+     6.93,
+     -404.0
+    ],
+    [
+     7.73,
+     -402.07
+    ]
+   ],
+   "start": -170,
+   "end": 170,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rebar Anchor",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rebar Anchor",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rebar Anchor",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Body 150",
    "points": [
     [
      76.0,
@@ -487,39 +887,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Body",
+   "name": "Body 150",
    "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Body",
+   "name": "Body 150",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Body",
+   "name": "Body 150",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Dome Cap",
+   "name": "Dome Cap 150",
    "profile": [
     [
      0,
      1050
     ],
     [
-     30,
+     30.400000000000002,
      1046
     ],
     [
-     55,
+     54.72,
      1035
     ],
     [
-     70,
+     69.92,
      1018
     ],
     [
@@ -544,19 +944,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Dome Cap",
+   "name": "Dome Cap 150",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dome Cap",
+   "name": "Dome Cap 150",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Reflective Band",
+   "name": "Reflective Band 150",
    "points": [
     [
      77.5,
@@ -660,24 +1060,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Reflective Band",
+   "name": "Reflective Band 150",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Reflective Band",
+   "name": "Reflective Band 150",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Reflective Band",
+   "name": "Reflective Band 150",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Reflective Band Lower",
+   "name": "Reflective Band Lower 150",
    "points": [
     [
      77.5,
@@ -781,24 +1181,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Reflective Band Lower",
+   "name": "Reflective Band Lower 150",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Reflective Band Lower",
+   "name": "Reflective Band Lower 150",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Reflective Band Lower",
+   "name": "Reflective Band Lower 150",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Ground Collar",
+   "name": "Ground Collar 150",
    "profile": [
     [
      76,
@@ -826,137 +1226,570 @@
   },
   {
    "op": "set_material_param",
-   "name": "Ground Collar",
+   "name": "Ground Collar 150",
    "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ground Collar",
+   "name": "Ground Collar 150",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rebar Anchor",
+   "name": "Body 200",
    "points": [
     [
-     8.0,
-     -400.0
+     110.0,
+     0.0
     ],
     [
-     7.73,
-     -397.93
+     106.25,
+     28.47
     ],
     [
-     6.93,
-     -396.0
+     95.26,
+     55.0
     ],
     [
-     5.66,
-     -394.34
+     77.78,
+     77.78
     ],
     [
-     4.0,
-     -393.07
+     55.0,
+     95.26
     ],
     [
-     2.07,
-     -392.27
+     28.47,
+     106.25
     ],
     [
      0.0,
-     -392.0
+     110.0
     ],
     [
-     -2.07,
-     -392.27
+     -28.47,
+     106.25
     ],
     [
-     -4.0,
-     -393.07
+     -55.0,
+     95.26
     ],
     [
-     -5.66,
-     -394.34
+     -77.78,
+     77.78
     ],
     [
-     -6.93,
-     -396.0
+     -95.26,
+     55.0
     ],
     [
-     -7.73,
-     -397.93
+     -106.25,
+     28.47
     ],
     [
-     -8.0,
-     -400.0
+     -110.0,
+     0.0
     ],
     [
-     -7.73,
-     -402.07
+     -106.25,
+     -28.47
     ],
     [
-     -6.93,
-     -404.0
+     -95.26,
+     -55.0
     ],
     [
-     -5.66,
-     -405.66
+     -77.78,
+     -77.78
     ],
     [
-     -4.0,
-     -406.93
+     -55.0,
+     -95.26
     ],
     [
-     -2.07,
-     -407.73
+     -28.47,
+     -106.25
     ],
     [
      -0.0,
-     -408.0
+     -110.0
     ],
     [
-     2.07,
-     -407.73
+     28.47,
+     -106.25
     ],
     [
-     4.0,
-     -406.93
+     55.0,
+     -95.26
     ],
     [
-     5.66,
-     -405.66
+     77.78,
+     -77.78
     ],
     [
-     6.93,
-     -404.0
+     95.26,
+     -55.0
     ],
     [
-     7.73,
-     -402.07
+     106.25,
+     -28.47
     ]
    ],
-   "start": -180,
-   "end": 180,
-   "sketch": "front"
+   "start": -600,
+   "end": 1000
   },
   {
    "op": "set_subcategory",
-   "name": "Rebar Anchor",
-   "subcategory": "Steel"
+   "name": "Body 200",
+   "subcategory": "Dark"
   },
   {
    "op": "set_material_param",
-   "name": "Rebar Anchor",
-   "param": "Steel Material"
+   "name": "Body 200",
+   "param": "Dark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rebar Anchor",
+   "name": "Body 200",
    "coarse": false,
    "medium": true,
-   "fine": false
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Dome Cap 200",
+   "profile": [
+    [
+     0,
+     1050
+    ],
+    [
+     44.0,
+     1046
+    ],
+    [
+     79.2,
+     1035
+    ],
+    [
+     101.2,
+     1018
+    ],
+    [
+     114,
+     1000
+    ],
+    [
+     114,
+     990
+    ],
+    [
+     0,
+     990
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dome Cap 200",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dome Cap 200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Reflective Band 200",
+   "points": [
+    [
+     111.5,
+     0.0
+    ],
+    [
+     107.7,
+     28.86
+    ],
+    [
+     96.56,
+     55.75
+    ],
+    [
+     78.84,
+     78.84
+    ],
+    [
+     55.75,
+     96.56
+    ],
+    [
+     28.86,
+     107.7
+    ],
+    [
+     0.0,
+     111.5
+    ],
+    [
+     -28.86,
+     107.7
+    ],
+    [
+     -55.75,
+     96.56
+    ],
+    [
+     -78.84,
+     78.84
+    ],
+    [
+     -96.56,
+     55.75
+    ],
+    [
+     -107.7,
+     28.86
+    ],
+    [
+     -111.5,
+     0.0
+    ],
+    [
+     -107.7,
+     -28.86
+    ],
+    [
+     -96.56,
+     -55.75
+    ],
+    [
+     -78.84,
+     -78.84
+    ],
+    [
+     -55.75,
+     -96.56
+    ],
+    [
+     -28.86,
+     -107.7
+    ],
+    [
+     -0.0,
+     -111.5
+    ],
+    [
+     28.86,
+     -107.7
+    ],
+    [
+     55.75,
+     -96.56
+    ],
+    [
+     78.84,
+     -78.84
+    ],
+    [
+     96.56,
+     -55.75
+    ],
+    [
+     107.7,
+     -28.86
+    ]
+   ],
+   "start": 820,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Reflective Band 200",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reflective Band 200",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reflective Band 200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Reflective Band Lower 200",
+   "points": [
+    [
+     111.5,
+     0.0
+    ],
+    [
+     107.7,
+     28.86
+    ],
+    [
+     96.56,
+     55.75
+    ],
+    [
+     78.84,
+     78.84
+    ],
+    [
+     55.75,
+     96.56
+    ],
+    [
+     28.86,
+     107.7
+    ],
+    [
+     0.0,
+     111.5
+    ],
+    [
+     -28.86,
+     107.7
+    ],
+    [
+     -55.75,
+     96.56
+    ],
+    [
+     -78.84,
+     78.84
+    ],
+    [
+     -96.56,
+     55.75
+    ],
+    [
+     -107.7,
+     28.86
+    ],
+    [
+     -111.5,
+     0.0
+    ],
+    [
+     -107.7,
+     -28.86
+    ],
+    [
+     -96.56,
+     -55.75
+    ],
+    [
+     -78.84,
+     -78.84
+    ],
+    [
+     -55.75,
+     -96.56
+    ],
+    [
+     -28.86,
+     -107.7
+    ],
+    [
+     -0.0,
+     -111.5
+    ],
+    [
+     28.86,
+     -107.7
+    ],
+    [
+     55.75,
+     -96.56
+    ],
+    [
+     78.84,
+     -78.84
+    ],
+    [
+     96.56,
+     -55.75
+    ],
+    [
+     107.7,
+     -28.86
+    ]
+   ],
+   "start": 700,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Reflective Band Lower 200",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reflective Band Lower 200",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reflective Band Lower 200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Ground Collar 200",
+   "profile": [
+    [
+     110,
+     0
+    ],
+    [
+     144,
+     0
+    ],
+    [
+     144,
+     10
+    ],
+    [
+     110,
+     25
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ground Collar 200",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ground Collar 200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 150_Steel",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Steel/Show 150_Steel",
+   "type": "150_Steel",
+   "param": "Show 150_Steel",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/Show 150_Steel",
+   "type": "200_Steel",
+   "param": "Show 150_Steel",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Body 150/Visible",
+   "solid": "Body 150",
+   "param": "Show 150_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dome Cap 150/Visible",
+   "solid": "Dome Cap 150",
+   "param": "Show 150_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Reflective Band 150/Visible",
+   "solid": "Reflective Band 150",
+   "param": "Show 150_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Reflective Band Lower 150/Visible",
+   "solid": "Reflective Band Lower 150",
+   "param": "Show 150_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Collar 150/Visible",
+   "solid": "Ground Collar 150",
+   "param": "Show 150_Steel"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 200_Steel",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Steel/Show 200_Steel",
+   "type": "150_Steel",
+   "param": "Show 200_Steel",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "200_Steel/Show 200_Steel",
+   "type": "200_Steel",
+   "param": "Show 200_Steel",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Body 200/Visible",
+   "solid": "Body 200",
+   "param": "Show 200_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dome Cap 200/Visible",
+   "solid": "Dome Cap 200",
+   "param": "Show 200_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Reflective Band 200/Visible",
+   "solid": "Reflective Band 200",
+   "param": "Show 200_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Reflective Band Lower 200/Visible",
+   "solid": "Reflective Band Lower 200",
+   "param": "Show 200_Steel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Collar 200/Visible",
+   "solid": "Ground Collar 200",
+   "param": "Show 200_Steel"
   },
   {
    "op": "set_type_image",
@@ -965,8 +1798,8 @@
   }
  ],
  "values": {
-  "Tube 152 mm dia, 1000 mm above ground": {
-   "value": "152x1000",
+  "Tube 152 / 219 mm dia, 1000 mm above ground": {
+   "value": "152/219x1000",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },

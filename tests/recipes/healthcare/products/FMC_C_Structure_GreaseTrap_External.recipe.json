@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_GreaseTrap_External",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs with connectors. Reference: query: structure grease trap external structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+grease+trap+external+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: walls, base, cover slab with two openings, baffle, two covers and frames, inlet and outlet tees (Fine), pipe stubs (shared by both types; the larger type is wider and deeper) with connectors, vent. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure grease trap external structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+grease+trap+external+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.archiexpo.com/prod/roto-slovenija/product-4630857-2566888.html; photo_title: In-ground grease trap ROFETT (Roto); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -386,7 +386,7 @@
    "name": "1000L_Precast/Description",
    "type": "1000L_Precast",
    "param": "Description",
-   "value": "about 1000 L liquid"
+   "value": "internal 1400 x 800 x 1000"
   },
   {
    "op": "set_type_value",
@@ -424,6 +424,13 @@
    "value": "C"
   },
   {
+   "op": "set_type_value",
+   "name": "1000L_Precast/URL",
+   "type": "1000L_Precast",
+   "param": "URL",
+   "value": "https://www.archiexpo.com/prod/roto-slovenija/product-4630857-2566888.html"
+  },
+  {
    "op": "add_type",
    "name": "2000L_Precast"
   },
@@ -453,7 +460,7 @@
    "name": "2000L_Precast/Description",
    "type": "2000L_Precast",
    "param": "Description",
-   "value": "about 2000 L liquid"
+   "value": "internal 1400 x 1300 x 1200"
   },
   {
    "op": "set_type_value",
@@ -491,33 +498,19 @@
    "value": "C"
   },
   {
-   "op": "add_subcategory",
-   "name": "Conc",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Conc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Conc Material"
+   "op": "set_type_value",
+   "name": "2000L_Precast/URL",
+   "type": "2000L_Precast",
+   "param": "URL",
+   "value": "https://www.archiexpo.com/prod/roto-slovenija/product-4630857-2566888.html"
   },
   {
    "op": "add_subcategory",
    "name": "Ci",
    "color": [
-    34,
-    36,
-    38
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
@@ -529,7 +522,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
+   "name": "FMC_Metal_DuctileIron_Black",
    "param": "Ci Material"
   },
   {
@@ -576,6 +569,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -590,22 +604,22 @@
    "points": [
     [
      -1150,
-     -600
+     -850.0
     ],
     [
      1150,
-     -600
+     -850.0
     ],
     [
      1150,
-     600
+     850.0
     ],
     [
      -1150,
-     600
+     850.0
     ]
    ],
-   "start": -1300,
+   "start": -1500,
    "end": 1870
   },
   {
@@ -619,293 +633,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Front",
-   "points": [
-    [
-     -850,
-     -550
-    ],
-    [
-     850,
-     -550
-    ],
-    [
-     850,
-     -400
-    ],
-    [
-     -850,
-     -400
-    ]
-   ],
-   "start": -1150,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Front",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Front",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Back",
-   "points": [
-    [
-     -850,
-     400
-    ],
-    [
-     850,
-     400
-    ],
-    [
-     850,
-     550
-    ],
-    [
-     -850,
-     550
-    ]
-   ],
-   "start": -1150,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Back",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Back",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Left",
-   "points": [
-    [
-     -850,
-     -400
-    ],
-    [
-     -700,
-     -400
-    ],
-    [
-     -700,
-     400
-    ],
-    [
-     -850,
-     400
-    ]
-   ],
-   "start": -1150,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Left",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Left",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Chamber Wall Right",
-   "points": [
-    [
-     700,
-     -400
-    ],
-    [
-     850,
-     -400
-    ],
-    [
-     850,
-     400
-    ],
-    [
-     700,
-     400
-    ]
-   ],
-   "start": -1150,
-   "end": -150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Chamber Wall Right",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Chamber Wall Right",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Chamber Wall Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base",
-   "points": [
-    [
-     -900,
-     -600
-    ],
-    [
-     900,
-     -600
-    ],
-    [
-     900,
-     600
-    ],
-    [
-     -900,
-     600
-    ]
-   ],
-   "start": -1300,
-   "end": -1150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab",
-   "points": [
-    [
-     -850,
-     -550
-    ],
-    [
-     850,
-     -550
-    ],
-    [
-     850,
-     550
-    ],
-    [
-     -850,
-     550
-    ]
-   ],
-   "start": -150,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Baffle",
-   "points": [
-    [
-     100,
-     -400
-    ],
-    [
-     175,
-     -400
-    ],
-    [
-     175,
-     400
-    ],
-    [
-     100,
-     400
-    ]
-   ],
-   "start": -1050,
-   "end": -300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Baffle",
-   "subcategory": "Conc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Baffle",
-   "param": "Conc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Baffle",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "void_extrusion",
@@ -2199,7 +1926,294 @@
   },
   {
    "op": "extrusion",
-   "name": "Vent Pipe",
+   "name": "Chamber Wall Front 1000L",
+   "points": [
+    [
+     -850,
+     -550.0
+    ],
+    [
+     850,
+     -550.0
+    ],
+    [
+     850,
+     -400.0
+    ],
+    [
+     -850,
+     -400.0
+    ]
+   ],
+   "start": -1150,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Front 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Front 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Front 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Back 1000L",
+   "points": [
+    [
+     -850,
+     400.0
+    ],
+    [
+     850,
+     400.0
+    ],
+    [
+     850,
+     550.0
+    ],
+    [
+     -850,
+     550.0
+    ]
+   ],
+   "start": -1150,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Back 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Back 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Back 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Left 1000L",
+   "points": [
+    [
+     -850,
+     -400.0
+    ],
+    [
+     -700,
+     -400.0
+    ],
+    [
+     -700,
+     400.0
+    ],
+    [
+     -850,
+     400.0
+    ]
+   ],
+   "start": -1150,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Left 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Left 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Left 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Right 1000L",
+   "points": [
+    [
+     700,
+     -400.0
+    ],
+    [
+     850,
+     -400.0
+    ],
+    [
+     850,
+     400.0
+    ],
+    [
+     700,
+     400.0
+    ]
+   ],
+   "start": -1150,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Right 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Right 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Right 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base 1000L",
+   "points": [
+    [
+     -900,
+     -600.0
+    ],
+    [
+     900,
+     -600.0
+    ],
+    [
+     900,
+     600.0
+    ],
+    [
+     -900,
+     600.0
+    ]
+   ],
+   "start": -1300,
+   "end": -1150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Slab 1000L",
+   "points": [
+    [
+     -850,
+     -550.0
+    ],
+    [
+     850,
+     -550.0
+    ],
+    [
+     850,
+     550.0
+    ],
+    [
+     -850,
+     550.0
+    ]
+   ],
+   "start": -150,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Slab 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Slab 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Slab 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Baffle 1000L",
+   "points": [
+    [
+     100,
+     -400.0
+    ],
+    [
+     175,
+     -400.0
+    ],
+    [
+     175,
+     400.0
+    ],
+    [
+     100,
+     400.0
+    ]
+   ],
+   "start": -1050,
+   "end": -300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baffle 1000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baffle 1000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baffle 1000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 1000L",
    "points": [
     [
      808.0,
@@ -2255,24 +2269,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Pipe",
+   "name": "Vent Pipe 1000L",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Pipe",
+   "name": "Vent Pipe 1000L",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Pipe",
+   "name": "Vent Pipe 1000L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Vent Cowl",
+   "name": "Vent Cowl 1000L",
    "profile": [
     [
      0,
@@ -2293,22 +2307,570 @@
    ],
    "axis_at": [
     780,
-    480
+    480.0
    ],
    "axis": "z",
    "subcategory": "Upvc"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Cowl",
+   "name": "Vent Cowl 1000L",
    "param": "Upvc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Cowl",
+   "name": "Vent Cowl 1000L",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Front 2000L",
+   "points": [
+    [
+     -850,
+     -800.0
+    ],
+    [
+     850,
+     -800.0
+    ],
+    [
+     850,
+     -650.0
+    ],
+    [
+     -850,
+     -650.0
+    ]
+   ],
+   "start": -1350,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Front 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Front 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Front 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Back 2000L",
+   "points": [
+    [
+     -850,
+     650.0
+    ],
+    [
+     850,
+     650.0
+    ],
+    [
+     850,
+     800.0
+    ],
+    [
+     -850,
+     800.0
+    ]
+   ],
+   "start": -1350,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Back 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Back 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Back 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Left 2000L",
+   "points": [
+    [
+     -850,
+     -650.0
+    ],
+    [
+     -700,
+     -650.0
+    ],
+    [
+     -700,
+     650.0
+    ],
+    [
+     -850,
+     650.0
+    ]
+   ],
+   "start": -1350,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Left 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Left 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Left 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chamber Wall Right 2000L",
+   "points": [
+    [
+     700,
+     -650.0
+    ],
+    [
+     850,
+     -650.0
+    ],
+    [
+     850,
+     650.0
+    ],
+    [
+     700,
+     650.0
+    ]
+   ],
+   "start": -1350,
+   "end": -150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chamber Wall Right 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Wall Right 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Wall Right 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base 2000L",
+   "points": [
+    [
+     -900,
+     -850.0
+    ],
+    [
+     900,
+     -850.0
+    ],
+    [
+     900,
+     850.0
+    ],
+    [
+     -900,
+     850.0
+    ]
+   ],
+   "start": -1500,
+   "end": -1350
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Slab 2000L",
+   "points": [
+    [
+     -850,
+     -800.0
+    ],
+    [
+     850,
+     -800.0
+    ],
+    [
+     850,
+     800.0
+    ],
+    [
+     -850,
+     800.0
+    ]
+   ],
+   "start": -150,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Slab 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Slab 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Slab 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Baffle 2000L",
+   "points": [
+    [
+     100,
+     -650.0
+    ],
+    [
+     175,
+     -650.0
+    ],
+    [
+     175,
+     650.0
+    ],
+    [
+     100,
+     650.0
+    ]
+   ],
+   "start": -1250,
+   "end": -300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Baffle 2000L",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Baffle 2000L",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Baffle 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Pipe 2000L",
+   "points": [
+    [
+     808.0,
+     730.0
+    ],
+    [
+     804.25,
+     744.0
+    ],
+    [
+     794.0,
+     754.25
+    ],
+    [
+     780.0,
+     758.0
+    ],
+    [
+     766.0,
+     754.25
+    ],
+    [
+     755.75,
+     744.0
+    ],
+    [
+     752.0,
+     730.0
+    ],
+    [
+     755.75,
+     716.0
+    ],
+    [
+     766.0,
+     705.75
+    ],
+    [
+     780.0,
+     702.0
+    ],
+    [
+     794.0,
+     705.75
+    ],
+    [
+     804.25,
+     716.0
+    ]
+   ],
+   "start": 0,
+   "end": 1800
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Pipe 2000L",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Pipe 2000L",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Pipe 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vent Cowl 2000L",
+   "profile": [
+    [
+     0,
+     1790
+    ],
+    [
+     28,
+     1790
+    ],
+    [
+     60,
+     1840
+    ],
+    [
+     0,
+     1870
+    ]
+   ],
+   "axis_at": [
+    780,
+    730.0
+   ],
+   "axis": "z",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Cowl 2000L",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Cowl 2000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1000L_Precast",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000L_Precast/Show 1000L_Precast",
+   "type": "1000L_Precast",
+   "param": "Show 1000L_Precast",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000L_Precast/Show 1000L_Precast",
+   "type": "2000L_Precast",
+   "param": "Show 1000L_Precast",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Front 1000L/Visible",
+   "solid": "Chamber Wall Front 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Back 1000L/Visible",
+   "solid": "Chamber Wall Back 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Left 1000L/Visible",
+   "solid": "Chamber Wall Left 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Right 1000L/Visible",
+   "solid": "Chamber Wall Right 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base 1000L/Visible",
+   "solid": "Base 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 1000L/Visible",
+   "solid": "Cover Slab 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Baffle 1000L/Visible",
+   "solid": "Baffle 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Pipe 1000L/Visible",
+   "solid": "Vent Pipe 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Cowl 1000L/Visible",
+   "solid": "Vent Cowl 1000L",
+   "param": "Show 1000L_Precast"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2000L_Precast",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000L_Precast/Show 2000L_Precast",
+   "type": "1000L_Precast",
+   "param": "Show 2000L_Precast",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2000L_Precast/Show 2000L_Precast",
+   "type": "2000L_Precast",
+   "param": "Show 2000L_Precast",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Front 2000L/Visible",
+   "solid": "Chamber Wall Front 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Back 2000L/Visible",
+   "solid": "Chamber Wall Back 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Left 2000L/Visible",
+   "solid": "Chamber Wall Left 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Wall Right 2000L/Visible",
+   "solid": "Chamber Wall Right 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base 2000L/Visible",
+   "solid": "Base 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 2000L/Visible",
+   "solid": "Cover Slab 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Baffle 2000L/Visible",
+   "solid": "Baffle 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Pipe 2000L/Visible",
+   "solid": "Vent Pipe 2000L",
+   "param": "Show 2000L_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Cowl 2000L/Visible",
+   "solid": "Vent Cowl 2000L",
+   "param": "Show 2000L_Precast"
   },
   {
    "op": "add_connector",
@@ -2337,8 +2899,8 @@
   }
  ],
  "values": {
-  "Internal 1400 x 800 x 1000 mm (1000 L geometry)": {
-   "value": "1400x800x1000",
+  "Internal 1400 x 800 x 1000 and 1400 x 1300 x 1200 mm (one per type)": {
+   "value": "per type",
    "source_status": "assumed",
    "source": "sizing from kitchen flow by the engineer"
   },

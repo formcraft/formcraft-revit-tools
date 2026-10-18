@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_Condenser_ColdRoom",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: base plate on rubber feet, compressor with dome and terminal cover on a mount, receiver, filter drier and sight glass, copper risers, service valves, coil housing with front fan and guard, rear coil with bars, electrical box and pressure switch. Reference: query: condenser cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=condenser+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: base plate on rubber feet, compressor with dome and terminal cover on a mount, receiver, filter drier and sight glass, copper risers, service valves, coil housing with front fan and guard, rear coil with bars, electrical box and pressure switch. Reference: query: condenser cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=condenser+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.danfoss.com/en-in/products/dcs/condensing-units/condensing-units/optyma-ico-46mt; photo_title: Danfoss Optyma iCO condensing unit; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -443,6 +443,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2kW_CondUnit/URL",
+   "type": "2kW_CondUnit",
+   "param": "URL",
+   "value": "https://www.danfoss.com/en-in/products/dcs/condensing-units/condensing-units/optyma-ico-46mt"
+  },
+  {
+   "op": "set_type_value",
    "name": "2kW_CondUnit/Voltage",
    "type": "2kW_CondUnit",
    "param": "Voltage",
@@ -531,6 +538,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "5kW_CondUnit/URL",
+   "type": "5kW_CondUnit",
+   "param": "URL",
+   "value": "https://www.danfoss.com/en-in/products/dcs/condensing-units/condensing-units/optyma-ico-46mt"
+  },
+  {
+   "op": "set_type_value",
    "name": "5kW_CondUnit/Voltage",
    "type": "5kW_CondUnit",
    "param": "Voltage",
@@ -594,45 +608,45 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Epw",
+   "name": "Lgrey",
    "color": [
-    237,
-    237,
-    232
+    207,
+    211,
+    208
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Epw Material",
+   "name": "Lgrey Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
+   "name": "FMC_Metal_Steel_PowderCoated_LightGrey",
+   "param": "Lgrey Material"
   },
   {
    "op": "add_subcategory",
-   "name": "Alu",
+   "name": "Fin",
    "color": [
-    192,
-    192,
-    192
+    169,
+    178,
+    184
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Alu Material",
+   "name": "Fin Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Material"
   },
   {
    "op": "add_subcategory",
@@ -1422,12 +1436,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Housing",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Coil Housing",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1463,12 +1477,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -3360,12 +3374,12 @@
     380
    ],
    "axis": "y",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan Bezel",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",

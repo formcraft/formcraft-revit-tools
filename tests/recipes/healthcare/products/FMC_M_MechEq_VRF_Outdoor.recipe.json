@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_VRF_Outdoor",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: base frame, corner posts, white front panels with service cover and handle, finned coil on sides and rear with guard bars, top deck with two fans (shroud, guard, hub, blades), service valves. Reference: query: vrf outdoor mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=vrf+outdoor+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: base frame, corner posts, white front panels with service cover and handle, finned coil on sides and rear with guard bars, top deck with two fans (shroud, guard, hub, blades), service valves. Reference: query: vrf outdoor mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=vrf+outdoor+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://mhiae.com/vrf/vrf-outdoor-units/; photo_title: Mitsubishi Heavy Industries VRF outdoor units; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -443,6 +443,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "28kW_VRF/URL",
+   "type": "28kW_VRF",
+   "param": "URL",
+   "value": "https://mhiae.com/vrf/vrf-outdoor-units/"
+  },
+  {
+   "op": "set_type_value",
    "name": "28kW_VRF/Voltage",
    "type": "28kW_VRF",
    "param": "Voltage",
@@ -531,6 +538,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "56kW_VRF/URL",
+   "type": "56kW_VRF",
+   "param": "URL",
+   "value": "https://mhiae.com/vrf/vrf-outdoor-units/"
+  },
+  {
+   "op": "set_type_value",
    "name": "56kW_VRF/Voltage",
    "type": "56kW_VRF",
    "param": "Voltage",
@@ -594,24 +608,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Epw",
+   "name": "Lgrey",
    "color": [
-    237,
-    237,
-    232
+    207,
+    211,
+    208
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Epw Material",
+   "name": "Lgrey Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
+   "name": "FMC_Metal_Steel_PowderCoated_LightGrey",
+   "param": "Lgrey Material"
   },
   {
    "op": "add_subcategory",
@@ -654,6 +668,27 @@
    "op": "add_material",
    "name": "FMC_Metal_Aluminium_Anodised_Silver",
    "param": "Alu Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Fin",
+   "color": [
+    169,
+    178,
+    184
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Fin Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Material"
   },
   {
    "op": "add_subcategory",
@@ -986,12 +1021,12 @@
   {
    "op": "set_subcategory",
    "name": "Front Panel Lower",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Front Panel Lower",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1028,12 +1063,12 @@
   {
    "op": "set_subcategory",
    "name": "Front Panel Upper",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Front Panel Upper",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1134,12 +1169,12 @@
   {
    "op": "set_subcategory",
    "name": "Service Cover",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Service Cover",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -1364,12 +1399,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Left",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Left",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -1405,12 +1440,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Right",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Right",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -1446,12 +1481,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Rear",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Rear",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",
@@ -2471,12 +2506,12 @@
   {
    "op": "set_subcategory",
    "name": "Top Deck",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Top Deck",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -2877,12 +2912,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan Left Shroud",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",
@@ -3318,12 +3353,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Epw"
+   "subcategory": "Lgrey"
   },
   {
    "op": "set_material_param",
    "name": "Fan Right Shroud",
-   "param": "Epw Material"
+   "param": "Lgrey Material"
   },
   {
    "op": "set_visibility",

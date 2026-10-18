@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_I_Casework_Clinical_WallUnit_Glazed",
  "template": "Metric Generic Model.rft",
- "about": "Wall unit modelled as a generic product: carcass with sloped dust-shedding top, aluminium-framed glazed leaves with D-pulls, 2 shelves, pelmet with LED under-light. Back at y = 0; underside at the Default Elevation. Geometry is drawn at the 900_Glazed type; the other types share it until a parametric pass. Reference: query: casework clinical wall unit glazed casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+clinical+wall+unit+glazed+casework+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Wall unit modelled as a generic product: carcass with sloped dust-shedding top, aluminium-framed glazed leaves with D-pulls, 2 shelves, pelmet with LED under-light. Back at y = 0; underside at the Default Elevation. Each type has its own geometry (parts carry 'only' for their type); shared parts have none. Reference: query: casework clinical wall unit glazed casework hospital; images: https://www.google.com/search?tbm=isch&q=casework+clinical+wall+unit+glazed+casework+hospital; basis: generic product; brand, model and supplier open for review; photo: https://jnj.cenmed.com/glazed-double-door-wall-cabinet-30hx16dx42l/; photo_title: Glazed Double Door Wall Cabinet 30Hx16Dx42L; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -335,6 +335,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "600_Glazed/URL",
+   "type": "600_Glazed",
+   "param": "URL",
+   "value": "https://jnj.cenmed.com/glazed-double-door-wall-cabinet-30hx16dx42l/"
+  },
+  {
+   "op": "set_type_value",
    "name": "600_Glazed/Default Elevation",
    "type": "600_Glazed",
    "param": "Default Elevation",
@@ -409,6 +416,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "900_Glazed/URL",
+   "type": "900_Glazed",
+   "param": "URL",
+   "value": "https://jnj.cenmed.com/glazed-double-door-wall-cabinet-30hx16dx42l/"
+  },
+  {
+   "op": "set_type_value",
    "name": "900_Glazed/Default Elevation",
    "type": "900_Glazed",
    "param": "Default Elevation",
@@ -480,6 +494,13 @@
    "type": "1200_Glazed",
    "param": "FMC_Role_Code",
    "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Glazed/URL",
+   "type": "1200_Glazed",
+   "param": "URL",
+   "value": "https://jnj.cenmed.com/glazed-double-door-wall-cabinet-30hx16dx42l/"
   },
   {
    "op": "set_type_value",
@@ -608,19 +629,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -450,
+     -600.0,
      -346.0
     ],
     [
-     450,
+     600.0,
      -346.0
     ],
     [
-     450,
+     600.0,
      0
     ],
     [
-     -450,
+     -600.0,
      0
     ]
    ],
@@ -641,22 +662,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 600",
    "points": [
     [
-     -450,
+     -300.0,
      -300
     ],
     [
-     450,
+     300.0,
      -300
     ],
     [
-     450,
+     300.0,
      0
     ],
     [
-     -450,
+     -300.0,
      0
     ]
    ],
@@ -665,24 +686,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 600",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 600",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Carcass",
+   "name": "Wall Unit Carcass 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Sloped Top",
+   "name": "Wall Unit Sloped Top 600",
    "points": [
     [
      0,
@@ -701,30 +722,822 @@
      884.0
     ]
    ],
-   "start": -450,
-   "end": 450,
+   "start": -300.0,
+   "end": 300.0,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Sloped Top",
+   "name": "Wall Unit Sloped Top 600",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Sloped Top",
+   "name": "Wall Unit Sloped Top 600",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Sloped Top",
+   "name": "Wall Unit Sloped Top 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Frame",
+   "name": "Wall Unit Leaf 1 Frame 600",
+   "points": [
+    [
+     295.0,
+     2.0
+    ],
+    [
+     296.15,
+     2.23
+    ],
+    [
+     297.12,
+     2.88
+    ],
+    [
+     297.77,
+     3.85
+    ],
+    [
+     298.0,
+     5.0
+    ],
+    [
+     298.0,
+     715.0
+    ],
+    [
+     297.77,
+     716.15
+    ],
+    [
+     297.12,
+     717.12
+    ],
+    [
+     296.15,
+     717.77
+    ],
+    [
+     295.0,
+     718.0
+    ],
+    [
+     -295.0,
+     718.0
+    ],
+    [
+     -296.15,
+     717.77
+    ],
+    [
+     -297.12,
+     717.12
+    ],
+    [
+     -297.77,
+     716.15
+    ],
+    [
+     -298.0,
+     715.0
+    ],
+    [
+     -298.0,
+     5.0
+    ],
+    [
+     -297.77,
+     3.85
+    ],
+    [
+     -297.12,
+     2.88
+    ],
+    [
+     -296.15,
+     2.23
+    ],
+    [
+     -295.0,
+     2.0
+    ]
+   ],
+   "start": 300,
+   "end": 320,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Frame 600",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Frame 600",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Frame 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Glass 600",
+   "points": [
+    [
+     251.0,
+     47.0
+    ],
+    [
+     252.41,
+     47.59
+    ],
+    [
+     253.0,
+     49.0
+    ],
+    [
+     253.0,
+     671.0
+    ],
+    [
+     252.41,
+     672.41
+    ],
+    [
+     251.0,
+     673.0
+    ],
+    [
+     -251.0,
+     673.0
+    ],
+    [
+     -252.41,
+     672.41
+    ],
+    [
+     -253.0,
+     671.0
+    ],
+    [
+     -253.0,
+     49.0
+    ],
+    [
+     -252.41,
+     47.59
+    ],
+    [
+     -251.0,
+     47.0
+    ]
+   ],
+   "start": 318,
+   "end": 321,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Glass 600",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Glass 600",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Glass 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Bar 600",
+   "points": [
+    [
+     279.0,
+     -340.0
+    ],
+    [
+     278.8,
+     -338.45
+    ],
+    [
+     278.2,
+     -337.0
+    ],
+    [
+     277.24,
+     -335.76
+    ],
+    [
+     276.0,
+     -334.8
+    ],
+    [
+     274.55,
+     -334.2
+    ],
+    [
+     273.0,
+     -334.0
+    ],
+    [
+     271.45,
+     -334.2
+    ],
+    [
+     270.0,
+     -334.8
+    ],
+    [
+     268.76,
+     -335.76
+    ],
+    [
+     267.8,
+     -337.0
+    ],
+    [
+     267.2,
+     -338.45
+    ],
+    [
+     267.0,
+     -340.0
+    ],
+    [
+     267.2,
+     -341.55
+    ],
+    [
+     267.8,
+     -343.0
+    ],
+    [
+     268.76,
+     -344.24
+    ],
+    [
+     270.0,
+     -345.2
+    ],
+    [
+     271.45,
+     -345.8
+    ],
+    [
+     273.0,
+     -346.0
+    ],
+    [
+     274.55,
+     -345.8
+    ],
+    [
+     276.0,
+     -345.2
+    ],
+    [
+     277.24,
+     -344.24
+    ],
+    [
+     278.2,
+     -343.0
+    ],
+    [
+     278.8,
+     -341.55
+    ]
+   ],
+   "start": 46.0,
+   "end": 174.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Bar 600",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 600",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Bar 600",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 600 1",
+   "points": [
+    [
+     277.0,
+     58.0
+    ],
+    [
+     276.86,
+     59.04
+    ],
+    [
+     276.46,
+     60.0
+    ],
+    [
+     275.83,
+     60.83
+    ],
+    [
+     275.0,
+     61.46
+    ],
+    [
+     274.04,
+     61.86
+    ],
+    [
+     273.0,
+     62.0
+    ],
+    [
+     271.96,
+     61.86
+    ],
+    [
+     271.0,
+     61.46
+    ],
+    [
+     270.17,
+     60.83
+    ],
+    [
+     269.54,
+     60.0
+    ],
+    [
+     269.14,
+     59.04
+    ],
+    [
+     269.0,
+     58.0
+    ],
+    [
+     269.14,
+     56.96
+    ],
+    [
+     269.54,
+     56.0
+    ],
+    [
+     270.17,
+     55.17
+    ],
+    [
+     271.0,
+     54.54
+    ],
+    [
+     271.96,
+     54.14
+    ],
+    [
+     273.0,
+     54.0
+    ],
+    [
+     274.04,
+     54.14
+    ],
+    [
+     275.0,
+     54.54
+    ],
+    [
+     275.83,
+     55.17
+    ],
+    [
+     276.46,
+     56.0
+    ],
+    [
+     276.86,
+     56.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 600 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 600 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 600 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 600 2",
+   "points": [
+    [
+     277.0,
+     162.0
+    ],
+    [
+     276.86,
+     163.04
+    ],
+    [
+     276.46,
+     164.0
+    ],
+    [
+     275.83,
+     164.83
+    ],
+    [
+     275.0,
+     165.46
+    ],
+    [
+     274.04,
+     165.86
+    ],
+    [
+     273.0,
+     166.0
+    ],
+    [
+     271.96,
+     165.86
+    ],
+    [
+     271.0,
+     165.46
+    ],
+    [
+     270.17,
+     164.83
+    ],
+    [
+     269.54,
+     164.0
+    ],
+    [
+     269.14,
+     163.04
+    ],
+    [
+     269.0,
+     162.0
+    ],
+    [
+     269.14,
+     160.96
+    ],
+    [
+     269.54,
+     160.0
+    ],
+    [
+     270.17,
+     159.17
+    ],
+    [
+     271.0,
+     158.54
+    ],
+    [
+     271.96,
+     158.14
+    ],
+    [
+     273.0,
+     158.0
+    ],
+    [
+     274.04,
+     158.14
+    ],
+    [
+     275.0,
+     158.54
+    ],
+    [
+     275.83,
+     159.17
+    ],
+    [
+     276.46,
+     160.0
+    ],
+    [
+     276.86,
+     160.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 600 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 600 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 600 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 600 1",
+   "points": [
+    [
+     -280.0,
+     -280
+    ],
+    [
+     280.0,
+     -280
+    ],
+    [
+     280.0,
+     -20
+    ],
+    [
+     -280.0,
+     -20
+    ]
+   ],
+   "start": 240,
+   "end": 258
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 600 1",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 600 1",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 600 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 600 2",
+   "points": [
+    [
+     -280.0,
+     -280
+    ],
+    [
+     280.0,
+     -280
+    ],
+    [
+     280.0,
+     -20
+    ],
+    [
+     -280.0,
+     -20
+    ]
+   ],
+   "start": 480,
+   "end": 498
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 600 2",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 600 2",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 600 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bottom Light Pelmet 600",
+   "points": [
+    [
+     -300.0,
+     -320
+    ],
+    [
+     300.0,
+     -320
+    ],
+    [
+     300.0,
+     -290
+    ],
+    [
+     -300.0,
+     -290
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bottom Light Pelmet 600",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bottom Light Pelmet 600",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bottom Light Pelmet 600",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED Under Light 600",
+   "points": [
+    [
+     -250.0,
+     -280
+    ],
+    [
+     250.0,
+     -280
+    ],
+    [
+     250.0,
+     -60
+    ],
+    [
+     -250.0,
+     -60
+    ]
+   ],
+   "start": -34,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED Under Light 600",
+   "subcategory": "Led"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED Under Light 600",
+   "param": "Led Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED Under Light 600",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Carcass 900",
+   "points": [
+    [
+     -450.0,
+     -300
+    ],
+    [
+     450.0,
+     -300
+    ],
+    [
+     450.0,
+     0
+    ],
+    [
+     -450.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Carcass 900",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Carcass 900",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Carcass 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Sloped Top 900",
+   "points": [
+    [
+     0,
+     720
+    ],
+    [
+     -300,
+     720
+    ],
+    [
+     -300,
+     740
+    ],
+    [
+     0,
+     884.0
+    ]
+   ],
+   "start": -450.0,
+   "end": 450.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Sloped Top 900",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Sloped Top 900",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Sloped Top 900",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Frame 900",
    "points": [
     [
      -5.0,
@@ -813,40 +1626,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Frame",
+   "name": "Wall Unit Leaf 1 Frame 900",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Frame",
+   "name": "Wall Unit Leaf 1 Frame 900",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Frame",
+   "name": "Wall Unit Leaf 1 Frame 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Glass",
+   "name": "Wall Unit Leaf 1 Glass 900",
    "points": [
     [
      -49.0,
      47.0
     ],
     [
-     -48.23,
-     47.15
-    ],
-    [
      -47.59,
      47.59
-    ],
-    [
-     -47.15,
-     48.23
     ],
     [
      -47.0,
@@ -857,16 +1662,8 @@
      671.0
     ],
     [
-     -47.15,
-     671.77
-    ],
-    [
      -47.59,
      672.41
-    ],
-    [
-     -48.23,
-     672.85
     ],
     [
      -49.0,
@@ -877,16 +1674,8 @@
      673.0
     ],
     [
-     -401.77,
-     672.85
-    ],
-    [
      -402.41,
      672.41
-    ],
-    [
-     -402.85,
-     671.77
     ],
     [
      -403.0,
@@ -897,16 +1686,8 @@
      49.0
     ],
     [
-     -402.85,
-     48.23
-    ],
-    [
      -402.41,
      47.59
-    ],
-    [
-     -401.77,
-     47.15
     ],
     [
      -401.0,
@@ -919,24 +1700,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Glass",
+   "name": "Wall Unit Leaf 1 Glass 900",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Glass",
+   "name": "Wall Unit Leaf 1 Glass 900",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Glass",
+   "name": "Wall Unit Leaf 1 Glass 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 900",
    "points": [
     [
      -21.0,
@@ -1040,24 +1821,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 900",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 900",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Bar",
+   "name": "Wall Unit Leaf 1 Handle Bar 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 900 1",
    "points": [
     [
      -23.0,
@@ -1162,24 +1943,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 900 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 900 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Post 1",
+   "name": "Wall Unit Leaf 1 Handle Post 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 900 2",
    "points": [
     [
      -23.0,
@@ -1284,24 +2065,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 900 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 900 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 1 Handle Post 2",
+   "name": "Wall Unit Leaf 1 Handle Post 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Frame",
+   "name": "Wall Unit Leaf 2 Frame 900",
    "points": [
     [
      445.0,
@@ -1390,40 +2171,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Frame",
+   "name": "Wall Unit Leaf 2 Frame 900",
    "subcategory": "Front"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Frame",
+   "name": "Wall Unit Leaf 2 Frame 900",
    "param": "Front Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Frame",
+   "name": "Wall Unit Leaf 2 Frame 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Glass",
+   "name": "Wall Unit Leaf 2 Glass 900",
    "points": [
     [
      401.0,
      47.0
     ],
     [
-     401.77,
-     47.15
-    ],
-    [
      402.41,
      47.59
-    ],
-    [
-     402.85,
-     48.23
     ],
     [
      403.0,
@@ -1434,16 +2207,8 @@
      671.0
     ],
     [
-     402.85,
-     671.77
-    ],
-    [
      402.41,
      672.41
-    ],
-    [
-     401.77,
-     672.85
     ],
     [
      401.0,
@@ -1454,16 +2219,8 @@
      673.0
     ],
     [
-     48.23,
-     672.85
-    ],
-    [
      47.59,
      672.41
-    ],
-    [
-     47.15,
-     671.77
     ],
     [
      47.0,
@@ -1474,16 +2231,8 @@
      49.0
     ],
     [
-     47.15,
-     48.23
-    ],
-    [
      47.59,
      47.59
-    ],
-    [
-     48.23,
-     47.15
     ],
     [
      49.0,
@@ -1496,24 +2245,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Glass",
+   "name": "Wall Unit Leaf 2 Glass 900",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Glass",
+   "name": "Wall Unit Leaf 2 Glass 900",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Glass",
+   "name": "Wall Unit Leaf 2 Glass 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 900",
    "points": [
     [
      33.0,
@@ -1617,24 +2366,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 900",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 900",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Bar",
+   "name": "Wall Unit Leaf 2 Handle Bar 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 900 1",
    "points": [
     [
      31.0,
@@ -1739,24 +2488,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 900 1",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 900 1",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Post 1",
+   "name": "Wall Unit Leaf 2 Handle Post 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 900 2",
    "points": [
     [
      31.0,
@@ -1861,39 +2610,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 900 2",
    "subcategory": "Hdl"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 900 2",
    "param": "Hdl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Unit Leaf 2 Handle Post 2",
+   "name": "Wall Unit Leaf 2 Handle Post 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "points": [
     [
-     -430,
+     -430.0,
      -280
     ],
     [
-     430,
+     430.0,
      -280
     ],
     [
-     430,
+     430.0,
      -20
     ],
     [
-     -430,
+     -430.0,
      -20
     ]
    ],
@@ -1902,39 +2651,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 1",
+   "name": "Shelf 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "points": [
     [
-     -430,
+     -430.0,
      -280
     ],
     [
-     430,
+     430.0,
      -280
     ],
     [
-     430,
+     430.0,
      -20
     ],
     [
-     -430,
+     -430.0,
      -20
     ]
    ],
@@ -1943,39 +2692,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shelf 2",
+   "name": "Shelf 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bottom Light Pelmet",
+   "name": "Bottom Light Pelmet 900",
    "points": [
     [
-     -450,
+     -450.0,
      -320
     ],
     [
-     450,
+     450.0,
      -320
     ],
     [
-     450,
+     450.0,
      -290
     ],
     [
-     -450,
+     -450.0,
      -290
     ]
    ],
@@ -1984,39 +2733,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bottom Light Pelmet",
+   "name": "Bottom Light Pelmet 900",
    "subcategory": "Carc"
   },
   {
    "op": "set_material_param",
-   "name": "Bottom Light Pelmet",
+   "name": "Bottom Light Pelmet 900",
    "param": "Carc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bottom Light Pelmet",
+   "name": "Bottom Light Pelmet 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "LED Under Light",
+   "name": "LED Under Light 900",
    "points": [
     [
-     -400,
+     -400.0,
      -280
     ],
     [
-     400,
+     400.0,
      -280
     ],
     [
-     400,
+     400.0,
      -60
     ],
     [
-     -400,
+     -400.0,
      -60
     ]
    ],
@@ -2025,20 +2774,1696 @@
   },
   {
    "op": "set_subcategory",
-   "name": "LED Under Light",
+   "name": "LED Under Light 900",
    "subcategory": "Led"
   },
   {
    "op": "set_material_param",
-   "name": "LED Under Light",
+   "name": "LED Under Light 900",
    "param": "Led Material"
   },
   {
    "op": "set_visibility",
-   "name": "LED Under Light",
+   "name": "LED Under Light 900",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Carcass 1200",
+   "points": [
+    [
+     -600.0,
+     -300
+    ],
+    [
+     600.0,
+     -300
+    ],
+    [
+     600.0,
+     0
+    ],
+    [
+     -600.0,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Carcass 1200",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Carcass 1200",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Carcass 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Sloped Top 1200",
+   "points": [
+    [
+     0,
+     720
+    ],
+    [
+     -300,
+     720
+    ],
+    [
+     -300,
+     740
+    ],
+    [
+     0,
+     884.0
+    ]
+   ],
+   "start": -600.0,
+   "end": 600.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Sloped Top 1200",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Sloped Top 1200",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Sloped Top 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Frame 1200",
+   "points": [
+    [
+     -5.0,
+     2.0
+    ],
+    [
+     -3.85,
+     2.23
+    ],
+    [
+     -2.88,
+     2.88
+    ],
+    [
+     -2.23,
+     3.85
+    ],
+    [
+     -2.0,
+     5.0
+    ],
+    [
+     -2.0,
+     715.0
+    ],
+    [
+     -2.23,
+     716.15
+    ],
+    [
+     -2.88,
+     717.12
+    ],
+    [
+     -3.85,
+     717.77
+    ],
+    [
+     -5.0,
+     718.0
+    ],
+    [
+     -595.0,
+     718.0
+    ],
+    [
+     -596.15,
+     717.77
+    ],
+    [
+     -597.12,
+     717.12
+    ],
+    [
+     -597.77,
+     716.15
+    ],
+    [
+     -598.0,
+     715.0
+    ],
+    [
+     -598.0,
+     5.0
+    ],
+    [
+     -597.77,
+     3.85
+    ],
+    [
+     -597.12,
+     2.88
+    ],
+    [
+     -596.15,
+     2.23
+    ],
+    [
+     -595.0,
+     2.0
+    ]
+   ],
+   "start": 300,
+   "end": 320,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Frame 1200",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Frame 1200",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Frame 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Glass 1200",
+   "points": [
+    [
+     -49.0,
+     47.0
+    ],
+    [
+     -47.59,
+     47.59
+    ],
+    [
+     -47.0,
+     49.0
+    ],
+    [
+     -47.0,
+     671.0
+    ],
+    [
+     -47.59,
+     672.41
+    ],
+    [
+     -49.0,
+     673.0
+    ],
+    [
+     -551.0,
+     673.0
+    ],
+    [
+     -552.41,
+     672.41
+    ],
+    [
+     -553.0,
+     671.0
+    ],
+    [
+     -553.0,
+     49.0
+    ],
+    [
+     -552.41,
+     47.59
+    ],
+    [
+     -551.0,
+     47.0
+    ]
+   ],
+   "start": 318,
+   "end": 321,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Glass 1200",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Glass 1200",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Glass 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Bar 1200",
+   "points": [
+    [
+     -21.0,
+     -340.0
+    ],
+    [
+     -21.2,
+     -338.45
+    ],
+    [
+     -21.8,
+     -337.0
+    ],
+    [
+     -22.76,
+     -335.76
+    ],
+    [
+     -24.0,
+     -334.8
+    ],
+    [
+     -25.45,
+     -334.2
+    ],
+    [
+     -27.0,
+     -334.0
+    ],
+    [
+     -28.55,
+     -334.2
+    ],
+    [
+     -30.0,
+     -334.8
+    ],
+    [
+     -31.24,
+     -335.76
+    ],
+    [
+     -32.2,
+     -337.0
+    ],
+    [
+     -32.8,
+     -338.45
+    ],
+    [
+     -33.0,
+     -340.0
+    ],
+    [
+     -32.8,
+     -341.55
+    ],
+    [
+     -32.2,
+     -343.0
+    ],
+    [
+     -31.24,
+     -344.24
+    ],
+    [
+     -30.0,
+     -345.2
+    ],
+    [
+     -28.55,
+     -345.8
+    ],
+    [
+     -27.0,
+     -346.0
+    ],
+    [
+     -25.45,
+     -345.8
+    ],
+    [
+     -24.0,
+     -345.2
+    ],
+    [
+     -22.76,
+     -344.24
+    ],
+    [
+     -21.8,
+     -343.0
+    ],
+    [
+     -21.2,
+     -341.55
+    ]
+   ],
+   "start": 46.0,
+   "end": 174.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Bar 1200",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 1200",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Bar 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 1",
+   "points": [
+    [
+     -23.0,
+     58.0
+    ],
+    [
+     -23.14,
+     59.04
+    ],
+    [
+     -23.54,
+     60.0
+    ],
+    [
+     -24.17,
+     60.83
+    ],
+    [
+     -25.0,
+     61.46
+    ],
+    [
+     -25.96,
+     61.86
+    ],
+    [
+     -27.0,
+     62.0
+    ],
+    [
+     -28.04,
+     61.86
+    ],
+    [
+     -29.0,
+     61.46
+    ],
+    [
+     -29.83,
+     60.83
+    ],
+    [
+     -30.46,
+     60.0
+    ],
+    [
+     -30.86,
+     59.04
+    ],
+    [
+     -31.0,
+     58.0
+    ],
+    [
+     -30.86,
+     56.96
+    ],
+    [
+     -30.46,
+     56.0
+    ],
+    [
+     -29.83,
+     55.17
+    ],
+    [
+     -29.0,
+     54.54
+    ],
+    [
+     -28.04,
+     54.14
+    ],
+    [
+     -27.0,
+     54.0
+    ],
+    [
+     -25.96,
+     54.14
+    ],
+    [
+     -25.0,
+     54.54
+    ],
+    [
+     -24.17,
+     55.17
+    ],
+    [
+     -23.54,
+     56.0
+    ],
+    [
+     -23.14,
+     56.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 2",
+   "points": [
+    [
+     -23.0,
+     162.0
+    ],
+    [
+     -23.14,
+     163.04
+    ],
+    [
+     -23.54,
+     164.0
+    ],
+    [
+     -24.17,
+     164.83
+    ],
+    [
+     -25.0,
+     165.46
+    ],
+    [
+     -25.96,
+     165.86
+    ],
+    [
+     -27.0,
+     166.0
+    ],
+    [
+     -28.04,
+     165.86
+    ],
+    [
+     -29.0,
+     165.46
+    ],
+    [
+     -29.83,
+     164.83
+    ],
+    [
+     -30.46,
+     164.0
+    ],
+    [
+     -30.86,
+     163.04
+    ],
+    [
+     -31.0,
+     162.0
+    ],
+    [
+     -30.86,
+     160.96
+    ],
+    [
+     -30.46,
+     160.0
+    ],
+    [
+     -29.83,
+     159.17
+    ],
+    [
+     -29.0,
+     158.54
+    ],
+    [
+     -28.04,
+     158.14
+    ],
+    [
+     -27.0,
+     158.0
+    ],
+    [
+     -25.96,
+     158.14
+    ],
+    [
+     -25.0,
+     158.54
+    ],
+    [
+     -24.17,
+     159.17
+    ],
+    [
+     -23.54,
+     160.0
+    ],
+    [
+     -23.14,
+     160.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Frame 1200",
+   "points": [
+    [
+     595.0,
+     2.0
+    ],
+    [
+     596.15,
+     2.23
+    ],
+    [
+     597.12,
+     2.88
+    ],
+    [
+     597.77,
+     3.85
+    ],
+    [
+     598.0,
+     5.0
+    ],
+    [
+     598.0,
+     715.0
+    ],
+    [
+     597.77,
+     716.15
+    ],
+    [
+     597.12,
+     717.12
+    ],
+    [
+     596.15,
+     717.77
+    ],
+    [
+     595.0,
+     718.0
+    ],
+    [
+     5.0,
+     718.0
+    ],
+    [
+     3.85,
+     717.77
+    ],
+    [
+     2.88,
+     717.12
+    ],
+    [
+     2.23,
+     716.15
+    ],
+    [
+     2.0,
+     715.0
+    ],
+    [
+     2.0,
+     5.0
+    ],
+    [
+     2.23,
+     3.85
+    ],
+    [
+     2.88,
+     2.88
+    ],
+    [
+     3.85,
+     2.23
+    ],
+    [
+     5.0,
+     2.0
+    ]
+   ],
+   "start": 300,
+   "end": 320,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Frame 1200",
+   "subcategory": "Front"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Frame 1200",
+   "param": "Front Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Frame 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Glass 1200",
+   "points": [
+    [
+     551.0,
+     47.0
+    ],
+    [
+     552.41,
+     47.59
+    ],
+    [
+     553.0,
+     49.0
+    ],
+    [
+     553.0,
+     671.0
+    ],
+    [
+     552.41,
+     672.41
+    ],
+    [
+     551.0,
+     673.0
+    ],
+    [
+     49.0,
+     673.0
+    ],
+    [
+     47.59,
+     672.41
+    ],
+    [
+     47.0,
+     671.0
+    ],
+    [
+     47.0,
+     49.0
+    ],
+    [
+     47.59,
+     47.59
+    ],
+    [
+     49.0,
+     47.0
+    ]
+   ],
+   "start": 318,
+   "end": 321,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Glass 1200",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Glass 1200",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Glass 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Bar 1200",
+   "points": [
+    [
+     33.0,
+     -340.0
+    ],
+    [
+     32.8,
+     -338.45
+    ],
+    [
+     32.2,
+     -337.0
+    ],
+    [
+     31.24,
+     -335.76
+    ],
+    [
+     30.0,
+     -334.8
+    ],
+    [
+     28.55,
+     -334.2
+    ],
+    [
+     27.0,
+     -334.0
+    ],
+    [
+     25.45,
+     -334.2
+    ],
+    [
+     24.0,
+     -334.8
+    ],
+    [
+     22.76,
+     -335.76
+    ],
+    [
+     21.8,
+     -337.0
+    ],
+    [
+     21.2,
+     -338.45
+    ],
+    [
+     21.0,
+     -340.0
+    ],
+    [
+     21.2,
+     -341.55
+    ],
+    [
+     21.8,
+     -343.0
+    ],
+    [
+     22.76,
+     -344.24
+    ],
+    [
+     24.0,
+     -345.2
+    ],
+    [
+     25.45,
+     -345.8
+    ],
+    [
+     27.0,
+     -346.0
+    ],
+    [
+     28.55,
+     -345.8
+    ],
+    [
+     30.0,
+     -345.2
+    ],
+    [
+     31.24,
+     -344.24
+    ],
+    [
+     32.2,
+     -343.0
+    ],
+    [
+     32.8,
+     -341.55
+    ]
+   ],
+   "start": 46.0,
+   "end": 174.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Bar 1200",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 1200",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Bar 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 1",
+   "points": [
+    [
+     31.0,
+     58.0
+    ],
+    [
+     30.86,
+     59.04
+    ],
+    [
+     30.46,
+     60.0
+    ],
+    [
+     29.83,
+     60.83
+    ],
+    [
+     29.0,
+     61.46
+    ],
+    [
+     28.04,
+     61.86
+    ],
+    [
+     27.0,
+     62.0
+    ],
+    [
+     25.96,
+     61.86
+    ],
+    [
+     25.0,
+     61.46
+    ],
+    [
+     24.17,
+     60.83
+    ],
+    [
+     23.54,
+     60.0
+    ],
+    [
+     23.14,
+     59.04
+    ],
+    [
+     23.0,
+     58.0
+    ],
+    [
+     23.14,
+     56.96
+    ],
+    [
+     23.54,
+     56.0
+    ],
+    [
+     24.17,
+     55.17
+    ],
+    [
+     25.0,
+     54.54
+    ],
+    [
+     25.96,
+     54.14
+    ],
+    [
+     27.0,
+     54.0
+    ],
+    [
+     28.04,
+     54.14
+    ],
+    [
+     29.0,
+     54.54
+    ],
+    [
+     29.83,
+     55.17
+    ],
+    [
+     30.46,
+     56.0
+    ],
+    [
+     30.86,
+     56.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 1",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 1",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 2",
+   "points": [
+    [
+     31.0,
+     162.0
+    ],
+    [
+     30.86,
+     163.04
+    ],
+    [
+     30.46,
+     164.0
+    ],
+    [
+     29.83,
+     164.83
+    ],
+    [
+     29.0,
+     165.46
+    ],
+    [
+     28.04,
+     165.86
+    ],
+    [
+     27.0,
+     166.0
+    ],
+    [
+     25.96,
+     165.86
+    ],
+    [
+     25.0,
+     165.46
+    ],
+    [
+     24.17,
+     164.83
+    ],
+    [
+     23.54,
+     164.0
+    ],
+    [
+     23.14,
+     163.04
+    ],
+    [
+     23.0,
+     162.0
+    ],
+    [
+     23.14,
+     160.96
+    ],
+    [
+     23.54,
+     160.0
+    ],
+    [
+     24.17,
+     159.17
+    ],
+    [
+     25.0,
+     158.54
+    ],
+    [
+     25.96,
+     158.14
+    ],
+    [
+     27.0,
+     158.0
+    ],
+    [
+     28.04,
+     158.14
+    ],
+    [
+     29.0,
+     158.54
+    ],
+    [
+     29.83,
+     159.17
+    ],
+    [
+     30.46,
+     160.0
+    ],
+    [
+     30.86,
+     160.96
+    ]
+   ],
+   "start": 320,
+   "end": 340,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 2",
+   "subcategory": "Hdl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 2",
+   "param": "Hdl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 1",
+   "points": [
+    [
+     -580.0,
+     -280
+    ],
+    [
+     580.0,
+     -280
+    ],
+    [
+     580.0,
+     -20
+    ],
+    [
+     -580.0,
+     -20
+    ]
+   ],
+   "start": 240,
+   "end": 258
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 1",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 1",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shelf 1200 2",
+   "points": [
+    [
+     -580.0,
+     -280
+    ],
+    [
+     580.0,
+     -280
+    ],
+    [
+     580.0,
+     -20
+    ],
+    [
+     -580.0,
+     -20
+    ]
+   ],
+   "start": 480,
+   "end": 498
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shelf 1200 2",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shelf 1200 2",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shelf 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bottom Light Pelmet 1200",
+   "points": [
+    [
+     -600.0,
+     -320
+    ],
+    [
+     600.0,
+     -320
+    ],
+    [
+     600.0,
+     -290
+    ],
+    [
+     -600.0,
+     -290
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bottom Light Pelmet 1200",
+   "subcategory": "Carc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bottom Light Pelmet 1200",
+   "param": "Carc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bottom Light Pelmet 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "LED Under Light 1200",
+   "points": [
+    [
+     -550.0,
+     -280
+    ],
+    [
+     550.0,
+     -280
+    ],
+    [
+     550.0,
+     -60
+    ],
+    [
+     -550.0,
+     -60
+    ]
+   ],
+   "start": -34,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LED Under Light 1200",
+   "subcategory": "Led"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LED Under Light 1200",
+   "param": "Led Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LED Under Light 1200",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_Glazed",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Glazed/Show 600_Glazed",
+   "type": "600_Glazed",
+   "param": "Show 600_Glazed",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Glazed/Show 600_Glazed",
+   "type": "900_Glazed",
+   "param": "Show 600_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Glazed/Show 600_Glazed",
+   "type": "1200_Glazed",
+   "param": "Show 600_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Carcass 600/Visible",
+   "solid": "Wall Unit Carcass 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Sloped Top 600/Visible",
+   "solid": "Wall Unit Sloped Top 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Frame 600/Visible",
+   "solid": "Wall Unit Leaf 1 Frame 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Glass 600/Visible",
+   "solid": "Wall Unit Leaf 1 Glass 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 600/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Bar 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 600 1/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 600 1",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 600 2/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 600 2",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 600 1/Visible",
+   "solid": "Shelf 600 1",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 600 2/Visible",
+   "solid": "Shelf 600 2",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bottom Light Pelmet 600/Visible",
+   "solid": "Bottom Light Pelmet 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LED Under Light 600/Visible",
+   "solid": "LED Under Light 600",
+   "param": "Show 600_Glazed"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_Glazed",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Glazed/Show 900_Glazed",
+   "type": "600_Glazed",
+   "param": "Show 900_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Glazed/Show 900_Glazed",
+   "type": "900_Glazed",
+   "param": "Show 900_Glazed",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Glazed/Show 900_Glazed",
+   "type": "1200_Glazed",
+   "param": "Show 900_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Carcass 900/Visible",
+   "solid": "Wall Unit Carcass 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Sloped Top 900/Visible",
+   "solid": "Wall Unit Sloped Top 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Frame 900/Visible",
+   "solid": "Wall Unit Leaf 1 Frame 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Glass 900/Visible",
+   "solid": "Wall Unit Leaf 1 Glass 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 900/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Bar 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 900 1/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 900 1",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 900 2/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 900 2",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Frame 900/Visible",
+   "solid": "Wall Unit Leaf 2 Frame 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Glass 900/Visible",
+   "solid": "Wall Unit Leaf 2 Glass 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 900/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Bar 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 900 1/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 900 1",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 900 2/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 900 2",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 1/Visible",
+   "solid": "Shelf 900 1",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 900 2/Visible",
+   "solid": "Shelf 900 2",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bottom Light Pelmet 900/Visible",
+   "solid": "Bottom Light Pelmet 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LED Under Light 900/Visible",
+   "solid": "LED Under Light 900",
+   "param": "Show 900_Glazed"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_Glazed",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Glazed/Show 1200_Glazed",
+   "type": "600_Glazed",
+   "param": "Show 1200_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Glazed/Show 1200_Glazed",
+   "type": "900_Glazed",
+   "param": "Show 1200_Glazed",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_Glazed/Show 1200_Glazed",
+   "type": "1200_Glazed",
+   "param": "Show 1200_Glazed",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Carcass 1200/Visible",
+   "solid": "Wall Unit Carcass 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Sloped Top 1200/Visible",
+   "solid": "Wall Unit Sloped Top 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Frame 1200/Visible",
+   "solid": "Wall Unit Leaf 1 Frame 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Glass 1200/Visible",
+   "solid": "Wall Unit Leaf 1 Glass 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Bar 1200/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Bar 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 1/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 1200 1",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 1 Handle Post 1200 2/Visible",
+   "solid": "Wall Unit Leaf 1 Handle Post 1200 2",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Frame 1200/Visible",
+   "solid": "Wall Unit Leaf 2 Frame 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Glass 1200/Visible",
+   "solid": "Wall Unit Leaf 2 Glass 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Bar 1200/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Bar 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 1/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 1200 1",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Unit Leaf 2 Handle Post 1200 2/Visible",
+   "solid": "Wall Unit Leaf 2 Handle Post 1200 2",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 1/Visible",
+   "solid": "Shelf 1200 1",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shelf 1200 2/Visible",
+   "solid": "Shelf 1200 2",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bottom Light Pelmet 1200/Visible",
+   "solid": "Bottom Light Pelmet 1200",
+   "param": "Show 1200_Glazed"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LED Under Light 1200/Visible",
+   "solid": "LED Under Light 1200",
+   "param": "Show 1200_Glazed"
   },
   {
    "op": "set_type_image",

@@ -17,7 +17,7 @@
   "glass": "FMC_Glass_Clear",
   "grey": "FMC_Plastic_ABS_Grey",
   "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
-  "black": "FMC_Plastic_ABS_Black",
+  "display": "FMC_Glass_Display_Black",
   "led_green": "FMC_Plastic_LED_Green",
   "red": "FMC_Plastic_FireHoseReel_Red",
   "chrome": "FMC_Metal_Chrome_Polished"
@@ -25,12 +25,14 @@
  "reference": {
   "query": "washer disinfector cssd plumbing equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=washer+disinfector+cssd+plumbing+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.belimed.com/de/products/washer-disinfectors/wd-200",
+  "photo_title": "Belimed WD 200 washer-disinfector",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
    "n": "Cabinet",
-   "shape": "box",
    "at": [
     -500,
     -400,
@@ -40,11 +42,11 @@
     1950
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "box"
   },
   {
    "n": "Load Door Frame",
-   "shape": "fbox",
    "at": [
     -380,
     -406,
@@ -54,11 +56,11 @@
     1500
    ],
    "mat": "stainless",
-   "r": 10
+   "r": 10,
+   "shape": "fbox"
   },
   {
    "n": "Load Door Glass",
-   "shape": "fbox",
    "at": [
     -340,
     -409,
@@ -68,11 +70,11 @@
     1460
    ],
    "mat": "glass",
-   "r": 8
+   "r": 8,
+   "shape": "fbox"
   },
   {
    "n": "Load Kick Plate",
-   "shape": "fbox",
    "at": [
     -440,
     -404,
@@ -81,11 +83,11 @@
     -400,
     260
    ],
-   "mat": "grey"
+   "mat": "grey",
+   "shape": "fbox"
   },
   {
    "n": "Load Control Panel",
-   "shape": "fbox",
    "at": [
     -380,
     -404,
@@ -95,11 +97,11 @@
     1880
    ],
    "mat": "medical_grey",
-   "r": 8
+   "r": 8,
+   "shape": "fbox"
   },
   {
    "n": "Load Touchscreen",
-   "shape": "fbox",
    "at": [
     -340,
     -407,
@@ -108,145 +110,44 @@
     -400,
     1820
    ],
-   "mat": "black",
-   "r": 4
+   "mat": "display",
+   "r": 4,
+   "shape": "fbox"
   },
   {
    "n": "Load Status LED",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     320,
     1760
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 9,
+   "shape": "cyl",
    "y": [
     -408,
     -400
-   ],
-   "mat": "led_green",
-   "lod": "f"
+   ]
   },
   {
    "n": "Load Stop Button",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     320,
     1660
    ],
+   "lod": "f",
+   "mat": "red",
    "r": 18,
+   "shape": "cyl",
    "y": [
     -414,
     -400
-   ],
-   "mat": "red",
-   "lod": "f"
-  },
-  {
-   "n": "Unload Door Frame",
-   "shape": "fbox",
-   "at": [
-    -380,
-    400,
-    300,
-    380,
-    406,
-    1500
-   ],
-   "mat": "stainless",
-   "r": 10
-  },
-  {
-   "n": "Unload Door Glass",
-   "shape": "fbox",
-   "at": [
-    -340,
-    406,
-    340,
-    340,
-    409,
-    1460
-   ],
-   "mat": "glass",
-   "r": 8
-  },
-  {
-   "n": "Unload Kick Plate",
-   "shape": "fbox",
-   "at": [
-    -440,
-    400,
-    20,
-    440,
-    404,
-    260
-   ],
-   "mat": "grey"
-  },
-  {
-   "n": "Unload Control Panel",
-   "shape": "fbox",
-   "at": [
-    -380,
-    400,
-    1560,
-    380,
-    404,
-    1880
-   ],
-   "mat": "medical_grey",
-   "r": 8
-  },
-  {
-   "n": "Unload Touchscreen",
-   "shape": "fbox",
-   "at": [
-    -340,
-    400,
-    1620,
-    -80,
-    407,
-    1820
-   ],
-   "mat": "black",
-   "r": 4
-  },
-  {
-   "n": "Unload Status LED",
-   "shape": "cyl",
-   "axis": "y",
-   "c": [
-    320,
-    1760
-   ],
-   "r": 9,
-   "y": [
-    400,
-    408
-   ],
-   "mat": "led_green",
-   "lod": "f"
-  },
-  {
-   "n": "Unload Stop Button",
-   "shape": "cyl",
-   "axis": "y",
-   "c": [
-    320,
-    1660
-   ],
-   "r": 18,
-   "y": [
-    400,
-    414
-   ],
-   "mat": "red",
-   "lod": "f"
+   ]
   },
   {
    "n": "Wall Flange",
-   "shape": "fbox",
    "at": [
     -560,
     -20,
@@ -255,12 +156,12 @@
     20,
     2000
    ],
+   "lod": "f",
    "mat": "stainless",
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Service Duct",
-   "shape": "box",
    "at": [
     -450,
     -300,
@@ -270,26 +171,26 @@
     2100
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "box"
   },
   {
    "n": "Vapour Condenser",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     300,
     0
    ],
+   "mat": "stainless",
    "r": 80,
+   "shape": "cyl",
    "z": [
     2100,
     2250
-   ],
-   "mat": "stainless"
+   ]
   },
   {
    "n": "Rack Rail",
-   "shape": "box",
    "at": [
     -330,
     -340,
@@ -298,23 +199,146 @@
     -330,
     1010
    ],
+   "lod": "f",
    "mat": "chrome",
-   "lod": "f"
+   "shape": "box"
   },
   {
    "n": "Drain Spigot",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     0,
     200
    ],
+   "mat": "grey",
    "r": 40,
+   "shape": "cyl",
    "z": [
     -80,
     0
+   ]
+  },
+  {
+   "n": "Unload Door Frame",
+   "at": [
+    -380,
+    400,
+    300,
+    380,
+    406,
+    1500
    ],
-   "mat": "grey"
+   "mat": "stainless",
+   "r": 10,
+   "shape": "fbox",
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Door Glass",
+   "at": [
+    -340,
+    406,
+    340,
+    340,
+    409,
+    1460
+   ],
+   "mat": "glass",
+   "r": 8,
+   "shape": "fbox",
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Kick Plate",
+   "at": [
+    -440,
+    400,
+    20,
+    440,
+    404,
+    260
+   ],
+   "mat": "grey",
+   "shape": "fbox",
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Control Panel",
+   "at": [
+    -380,
+    400,
+    1560,
+    380,
+    404,
+    1880
+   ],
+   "mat": "medical_grey",
+   "r": 8,
+   "shape": "fbox",
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Touchscreen",
+   "at": [
+    -340,
+    400,
+    1620,
+    -80,
+    407,
+    1820
+   ],
+   "mat": "display",
+   "r": 4,
+   "shape": "fbox",
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Status LED",
+   "axis": "y",
+   "c": [
+    320,
+    1760
+   ],
+   "lod": "f",
+   "mat": "led_green",
+   "r": 9,
+   "shape": "cyl",
+   "y": [
+    400,
+    408
+   ],
+   "only": [
+    "1000_DoubleDoor"
+   ]
+  },
+  {
+   "n": "Unload Stop Button",
+   "axis": "y",
+   "c": [
+    320,
+    1660
+   ],
+   "lod": "f",
+   "mat": "red",
+   "r": 18,
+   "shape": "cyl",
+   "y": [
+    400,
+    414
+   ],
+   "only": [
+    "1000_DoubleDoor"
+   ]
   }
  ],
  "connectors": [
@@ -370,7 +394,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "Washer-disinfector modelled as a generic product: cabinet, load and unload faces (door frame and glass, kick plate, control panel, touchscreen, LED and stop button), wall flange for the barrier wall (y = 0), service duct, vapour condenser, rack rail, drain. Double-door drawn; single-door shares it.",
+ "about": "Washer-disinfector modelled as a generic product: cabinet, load and unload faces (door frame and glass, kick plate, control panel, touchscreen, LED and stop button), wall flange for the barrier wall (y = 0), service duct, vapour condenser, rack rail, drain. Per type: the double-door (pass-through) type adds the clean-side door, panel and touchscreen; the single-door type has a plain rear.",
  "template": "Metric Generic Model.rft",
  "type_values": {
   "Voltage": 415,

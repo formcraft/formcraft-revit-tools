@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_FP_FireProt_Extinguisher_CO2",
  "template": "Metric Generic Model.rft",
- "about": "CO2 extinguisher modelled as a generic product: red cylinder with foot ring, black identification band and instruction label, valve with carry handle, squeeze lever, safety pin and tamper tag, hose and discharge horn in its clip, wall bracket and hook. Geometry drawn for 5kg_CO2; the other types share it (sizes in the values). Reference: query: fire prot extinguisher co2 fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+extinguisher+co2+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "CO2 extinguisher modelled as a generic product: red cylinder with foot ring, black identification band and instruction label, valve with carry handle, squeeze lever, safety pin and tamper tag, swivel horn (2 kg) or hose and discharge horn in its clip (5 kg), wall bracket and hook. Each size has its own parts (Show parameters). Reference: query: fire prot extinguisher co2 fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+extinguisher+co2+fire+protection+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.atom.com.au/co2-fire-extinguisher-5kg; photo_title: CO2 Fire Extinguisher 5kg; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -374,7 +374,7 @@
    "name": "2kg_CO2/Description",
    "type": "2kg_CO2",
    "param": "Description",
-   "value": "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, hose and horn (5 kg), wall bracket"
+   "value": "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, swivel horn (2 kg) or hose and horn (5 kg), wall bracket"
   },
   {
    "op": "set_type_value",
@@ -413,6 +413,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2kg_CO2/URL",
+   "type": "2kg_CO2",
+   "param": "URL",
+   "value": "https://www.atom.com.au/co2-fire-extinguisher-5kg"
+  },
+  {
+   "op": "set_type_value",
    "name": "2kg_CO2/Default Elevation",
    "type": "2kg_CO2",
    "param": "Default Elevation",
@@ -448,7 +455,7 @@
    "name": "5kg_CO2/Description",
    "type": "5kg_CO2",
    "param": "Description",
-   "value": "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, hose and horn (5 kg), wall bracket"
+   "value": "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, swivel horn (2 kg) or hose and horn (5 kg), wall bracket"
   },
   {
    "op": "set_type_value",
@@ -484,6 +491,13 @@
    "type": "5kg_CO2",
    "param": "FMC_Role_Code",
    "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "5kg_CO2/URL",
+   "type": "5kg_CO2",
+   "param": "URL",
+   "value": "https://www.atom.com.au/co2-fire-extinguisher-5kg"
   },
   {
    "op": "set_type_value",
@@ -538,9 +552,9 @@
    "op": "add_subcategory",
    "name": "Red",
    "color": [
-    200,
-    16,
-    46
+    193,
+    18,
+    31
    ],
    "line_weight_projection": 1
   },
@@ -552,7 +566,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Paint_Enamel_SignalRed",
    "param": "Red Material"
   },
   {
@@ -684,11 +698,11 @@
     ],
     [
      144,
-     0
+     15.0
     ],
     [
      -71,
-     0
+     15.0
     ]
    ],
    "start": 0,
@@ -708,7 +722,1129 @@
   },
   {
    "op": "extrusion",
-   "name": "Wall Bracket Plate",
+   "name": "Wall Bracket Plate 2kg",
+   "points": [
+    [
+     29.0,
+     258.5
+    ],
+    [
+     31.3,
+     258.96
+    ],
+    [
+     33.24,
+     260.26
+    ],
+    [
+     34.54,
+     262.2
+    ],
+    [
+     35.0,
+     264.5
+    ],
+    [
+     35.0,
+     504.0
+    ],
+    [
+     34.54,
+     506.3
+    ],
+    [
+     33.24,
+     508.24
+    ],
+    [
+     31.3,
+     509.54
+    ],
+    [
+     29.0,
+     510.0
+    ],
+    [
+     -29.0,
+     510.0
+    ],
+    [
+     -31.3,
+     509.54
+    ],
+    [
+     -33.24,
+     508.24
+    ],
+    [
+     -34.54,
+     506.3
+    ],
+    [
+     -35.0,
+     504.0
+    ],
+    [
+     -35.0,
+     264.5
+    ],
+    [
+     -34.54,
+     262.2
+    ],
+    [
+     -33.24,
+     260.26
+    ],
+    [
+     -31.3,
+     258.96
+    ],
+    [
+     -29.0,
+     258.5
+    ]
+   ],
+   "start": 0,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Bracket Plate 2kg",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Bracket Plate 2kg",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Bracket Plate 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bracket Hook 2kg",
+   "points": [
+    [
+     -14,
+     -67
+    ],
+    [
+     14,
+     -67
+    ],
+    [
+     14,
+     -6
+    ],
+    [
+     -14,
+     -6
+    ]
+   ],
+   "start": 472,
+   "end": 484
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bracket Hook 2kg",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bracket Hook 2kg",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bracket Hook 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Base Foot 2kg",
+   "profile": [
+    [
+     41,
+     0
+    ],
+    [
+     53,
+     0
+    ],
+    [
+     53,
+     14
+    ],
+    [
+     41,
+     14
+    ]
+   ],
+   "axis_at": [
+    0,
+    -85
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Foot 2kg",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Foot 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cylinder 2kg",
+   "profile": [
+    [
+     0,
+     10
+    ],
+    [
+     43,
+     10
+    ],
+    [
+     55,
+     24
+    ],
+    [
+     55,
+     428.75
+    ],
+    [
+     41.25,
+     456.25
+    ],
+    [
+     24,
+     466
+    ],
+    [
+     0,
+     470
+    ]
+   ],
+   "axis_at": [
+    0,
+    -85
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cylinder 2kg",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cylinder 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Label Band 2kg",
+   "profile": [
+    [
+     55,
+     150.4
+    ],
+    [
+     56,
+     150.4
+    ],
+    [
+     56,
+     272.59999999999997
+    ],
+    [
+     55,
+     272.59999999999997
+    ]
+   ],
+   "axis_at": [
+    0,
+    -85
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label Band 2kg",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label Band 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Instruction Label 2kg",
+   "points": [
+    [
+     26.25,
+     159.8
+    ],
+    [
+     27.78,
+     160.1
+    ],
+    [
+     29.08,
+     160.97
+    ],
+    [
+     29.95,
+     162.27
+    ],
+    [
+     30.25,
+     163.8
+    ],
+    [
+     30.25,
+     259.2
+    ],
+    [
+     29.95,
+     260.73
+    ],
+    [
+     29.08,
+     262.03
+    ],
+    [
+     27.78,
+     262.9
+    ],
+    [
+     26.25,
+     263.2
+    ],
+    [
+     -26.25,
+     263.2
+    ],
+    [
+     -27.78,
+     262.9
+    ],
+    [
+     -29.08,
+     262.03
+    ],
+    [
+     -29.95,
+     260.73
+    ],
+    [
+     -30.25,
+     259.2
+    ],
+    [
+     -30.25,
+     163.8
+    ],
+    [
+     -29.95,
+     162.27
+    ],
+    [
+     -29.08,
+     160.97
+    ],
+    [
+     -27.78,
+     160.1
+    ],
+    [
+     -26.25,
+     159.8
+    ]
+   ],
+   "start": 131.75,
+   "end": 142.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Instruction Label 2kg",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Instruction Label 2kg",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Instruction Label 2kg",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Neck 2kg",
+   "profile": [
+    [
+     0,
+     466
+    ],
+    [
+     22,
+     466
+    ],
+    [
+     22,
+     484
+    ],
+    [
+     0,
+     484
+    ]
+   ],
+   "axis_at": [
+    0,
+    -85
+   ],
+   "axis": "z",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Neck 2kg",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Neck 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Valve Body 2kg",
+   "points": [
+    [
+     12.0,
+     -103.0
+    ],
+    [
+     14.3,
+     -102.54
+    ],
+    [
+     16.24,
+     -101.24
+    ],
+    [
+     17.54,
+     -99.3
+    ],
+    [
+     18.0,
+     -97.0
+    ],
+    [
+     18.0,
+     -73.0
+    ],
+    [
+     17.54,
+     -70.7
+    ],
+    [
+     16.24,
+     -68.76
+    ],
+    [
+     14.3,
+     -67.46
+    ],
+    [
+     12.0,
+     -67.0
+    ],
+    [
+     -12.0,
+     -67.0
+    ],
+    [
+     -14.3,
+     -67.46
+    ],
+    [
+     -16.24,
+     -68.76
+    ],
+    [
+     -17.54,
+     -70.7
+    ],
+    [
+     -18.0,
+     -73.0
+    ],
+    [
+     -18.0,
+     -97.0
+    ],
+    [
+     -17.54,
+     -99.3
+    ],
+    [
+     -16.24,
+     -101.24
+    ],
+    [
+     -14.3,
+     -102.54
+    ],
+    [
+     -12.0,
+     -103.0
+    ]
+   ],
+   "start": 484,
+   "end": 532
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Valve Body 2kg",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Valve Body 2kg",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Valve Body 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Carry Handle 2kg",
+   "points": [
+    [
+     9.0,
+     -90.0
+    ],
+    [
+     10.53,
+     -89.7
+    ],
+    [
+     11.83,
+     -88.83
+    ],
+    [
+     12.7,
+     -87.53
+    ],
+    [
+     13.0,
+     -86.0
+    ],
+    [
+     13.0,
+     6.0
+    ],
+    [
+     12.7,
+     7.53
+    ],
+    [
+     11.83,
+     8.83
+    ],
+    [
+     10.53,
+     9.7
+    ],
+    [
+     9.0,
+     10.0
+    ],
+    [
+     -9.0,
+     10.0
+    ],
+    [
+     -10.53,
+     9.7
+    ],
+    [
+     -11.83,
+     8.83
+    ],
+    [
+     -12.7,
+     7.53
+    ],
+    [
+     -13.0,
+     6.0
+    ],
+    [
+     -13.0,
+     -86.0
+    ],
+    [
+     -12.7,
+     -87.53
+    ],
+    [
+     -11.83,
+     -88.83
+    ],
+    [
+     -10.53,
+     -89.7
+    ],
+    [
+     -9.0,
+     -90.0
+    ]
+   ],
+   "start": 518,
+   "end": 527
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Carry Handle 2kg",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Carry Handle 2kg",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Carry Handle 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Squeeze Lever 2kg",
+   "points": [
+    [
+     9.0,
+     -90.0
+    ],
+    [
+     10.53,
+     -89.7
+    ],
+    [
+     11.83,
+     -88.83
+    ],
+    [
+     12.7,
+     -87.53
+    ],
+    [
+     13.0,
+     -86.0
+    ],
+    [
+     13.0,
+     11.0
+    ],
+    [
+     12.7,
+     12.53
+    ],
+    [
+     11.83,
+     13.83
+    ],
+    [
+     10.53,
+     14.7
+    ],
+    [
+     9.0,
+     15.0
+    ],
+    [
+     -9.0,
+     15.0
+    ],
+    [
+     -10.53,
+     14.7
+    ],
+    [
+     -11.83,
+     13.83
+    ],
+    [
+     -12.7,
+     12.53
+    ],
+    [
+     -13.0,
+     11.0
+    ],
+    [
+     -13.0,
+     -86.0
+    ],
+    [
+     -12.7,
+     -87.53
+    ],
+    [
+     -11.83,
+     -88.83
+    ],
+    [
+     -10.53,
+     -89.7
+    ],
+    [
+     -9.0,
+     -90.0
+    ]
+   ],
+   "start": 536,
+   "end": 545
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Squeeze Lever 2kg",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Squeeze Lever 2kg",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Squeeze Lever 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Safety Pin 2kg",
+   "points": [
+    [
+     -90.0,
+     532.0
+    ],
+    [
+     -90.4,
+     533.5
+    ],
+    [
+     -91.5,
+     534.6
+    ],
+    [
+     -93.0,
+     535.0
+    ],
+    [
+     -94.5,
+     534.6
+    ],
+    [
+     -95.6,
+     533.5
+    ],
+    [
+     -96.0,
+     532.0
+    ],
+    [
+     -95.6,
+     530.5
+    ],
+    [
+     -94.5,
+     529.4
+    ],
+    [
+     -93.0,
+     529.0
+    ],
+    [
+     -91.5,
+     529.4
+    ],
+    [
+     -90.4,
+     530.5
+    ]
+   ],
+   "start": -24,
+   "end": 24,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Safety Pin 2kg",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Safety Pin 2kg",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Safety Pin 2kg",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Pin Ring 2kg",
+   "profile": [
+    [
+     7,
+     24
+    ],
+    [
+     10,
+     24
+    ],
+    [
+     10,
+     27
+    ],
+    [
+     7,
+     27
+    ]
+   ],
+   "axis_at": [
+    -93,
+    532
+   ],
+   "axis": "x",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pin Ring 2kg",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pin Ring 2kg",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tamper Tag 2kg",
+   "points": [
+    [
+     43.0,
+     500.0
+    ],
+    [
+     44.15,
+     500.23
+    ],
+    [
+     45.12,
+     500.88
+    ],
+    [
+     45.77,
+     501.85
+    ],
+    [
+     46.0,
+     503.0
+    ],
+    [
+     46.0,
+     525.0
+    ],
+    [
+     45.77,
+     526.15
+    ],
+    [
+     45.12,
+     527.12
+    ],
+    [
+     44.15,
+     527.77
+    ],
+    [
+     43.0,
+     528.0
+    ],
+    [
+     29.0,
+     528.0
+    ],
+    [
+     27.85,
+     527.77
+    ],
+    [
+     26.88,
+     527.12
+    ],
+    [
+     26.23,
+     526.15
+    ],
+    [
+     26.0,
+     525.0
+    ],
+    [
+     26.0,
+     503.0
+    ],
+    [
+     26.23,
+     501.85
+    ],
+    [
+     26.88,
+     500.88
+    ],
+    [
+     27.85,
+     500.23
+    ],
+    [
+     29.0,
+     500.0
+    ]
+   ],
+   "start": 95,
+   "end": 97,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tamper Tag 2kg",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tamper Tag 2kg",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tamper Tag 2kg",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Swivel Arm 2kg",
+   "points": [
+    [
+     -76.0,
+     506.0
+    ],
+    [
+     -76.31,
+     508.33
+    ],
+    [
+     -77.21,
+     510.5
+    ],
+    [
+     -78.64,
+     512.36
+    ],
+    [
+     -80.5,
+     513.79
+    ],
+    [
+     -82.67,
+     514.69
+    ],
+    [
+     -85.0,
+     515.0
+    ],
+    [
+     -87.33,
+     514.69
+    ],
+    [
+     -89.5,
+     513.79
+    ],
+    [
+     -91.36,
+     512.36
+    ],
+    [
+     -92.79,
+     510.5
+    ],
+    [
+     -93.69,
+     508.33
+    ],
+    [
+     -94.0,
+     506.0
+    ],
+    [
+     -93.69,
+     503.67
+    ],
+    [
+     -92.79,
+     501.5
+    ],
+    [
+     -91.36,
+     499.64
+    ],
+    [
+     -89.5,
+     498.21
+    ],
+    [
+     -87.33,
+     497.31
+    ],
+    [
+     -85.0,
+     497.0
+    ],
+    [
+     -82.67,
+     497.31
+    ],
+    [
+     -80.5,
+     498.21
+    ],
+    [
+     -78.64,
+     499.64
+    ],
+    [
+     -77.21,
+     501.5
+    ],
+    [
+     -76.31,
+     503.67
+    ]
+   ],
+   "start": 18,
+   "end": 89,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Swivel Arm 2kg",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Swivel Arm 2kg",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Swivel Arm 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Swivel Horn 2kg",
+   "profile": [
+    [
+     9,
+     514
+    ],
+    [
+     14,
+     514
+    ],
+    [
+     34,
+     291.4
+    ],
+    [
+     29,
+     291.4
+    ]
+   ],
+   "axis_at": [
+    89,
+    -85
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Swivel Horn 2kg",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Swivel Horn 2kg",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Bracket Plate 5kg",
    "points": [
     [
      29.0,
@@ -797,24 +1933,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Bracket Plate",
+   "name": "Wall Bracket Plate 5kg",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Bracket Plate",
+   "name": "Wall Bracket Plate 5kg",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Bracket Plate",
+   "name": "Wall Bracket Plate 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Bracket Hook",
+   "name": "Bracket Hook 5kg",
    "points": [
     [
      -14,
@@ -838,24 +1974,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Bracket Hook",
+   "name": "Bracket Hook 5kg",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Bracket Hook",
+   "name": "Bracket Hook 5kg",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Bracket Hook",
+   "name": "Bracket Hook 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Base Foot",
+   "name": "Base Foot 5kg",
    "profile": [
     [
      56,
@@ -883,19 +2019,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Base Foot",
+   "name": "Base Foot 5kg",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Foot",
+   "name": "Base Foot 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Cylinder",
+   "name": "Cylinder 5kg",
    "profile": [
     [
      0,
@@ -935,19 +2071,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Cylinder",
+   "name": "Cylinder 5kg",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cylinder",
+   "name": "Cylinder 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Label Band",
+   "name": "Label Band 5kg",
    "profile": [
     [
      70,
@@ -975,19 +2111,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Label Band",
+   "name": "Label Band 5kg",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Label Band",
+   "name": "Label Band 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Instruction Label",
+   "name": "Instruction Label 5kg",
    "points": [
     [
      34.5,
@@ -1076,24 +2212,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Instruction Label",
+   "name": "Instruction Label 5kg",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Instruction Label",
+   "name": "Instruction Label 5kg",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Instruction Label",
+   "name": "Instruction Label 5kg",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Neck",
+   "name": "Neck 5kg",
    "profile": [
     [
      0,
@@ -1121,19 +2257,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Neck",
+   "name": "Neck 5kg",
    "param": "Brass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Neck",
+   "name": "Neck 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Valve Body",
+   "name": "Valve Body 5kg",
    "points": [
     [
      12.0,
@@ -1221,24 +2357,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Valve Body",
+   "name": "Valve Body 5kg",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Valve Body",
+   "name": "Valve Body 5kg",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Valve Body",
+   "name": "Valve Body 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Carry Handle",
+   "name": "Carry Handle 5kg",
    "points": [
     [
      9.0,
@@ -1326,24 +2462,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Carry Handle",
+   "name": "Carry Handle 5kg",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Carry Handle",
+   "name": "Carry Handle 5kg",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Carry Handle",
+   "name": "Carry Handle 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Squeeze Lever",
+   "name": "Squeeze Lever 5kg",
    "points": [
     [
      9.0,
@@ -1431,120 +2567,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Squeeze Lever",
+   "name": "Squeeze Lever 5kg",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Squeeze Lever",
+   "name": "Squeeze Lever 5kg",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Squeeze Lever",
+   "name": "Squeeze Lever 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Safety Pin",
+   "name": "Safety Pin 5kg",
    "points": [
     [
      -105.0,
      682.0
     ],
     [
-     -105.1,
-     682.78
-    ],
-    [
      -105.4,
      683.5
     ],
     [
-     -105.88,
-     684.12
-    ],
-    [
      -106.5,
      684.6
-    ],
-    [
-     -107.22,
-     684.9
     ],
     [
      -108.0,
      685.0
     ],
     [
-     -108.78,
-     684.9
-    ],
-    [
      -109.5,
      684.6
-    ],
-    [
-     -110.12,
-     684.12
     ],
     [
      -110.6,
      683.5
     ],
     [
-     -110.9,
-     682.78
-    ],
-    [
      -111.0,
      682.0
-    ],
-    [
-     -110.9,
-     681.22
     ],
     [
      -110.6,
      680.5
     ],
     [
-     -110.12,
-     679.88
-    ],
-    [
      -109.5,
      679.4
-    ],
-    [
-     -108.78,
-     679.1
     ],
     [
      -108.0,
      679.0
     ],
     [
-     -107.22,
-     679.1
-    ],
-    [
      -106.5,
      679.4
     ],
     [
-     -105.88,
-     679.88
-    ],
-    [
      -105.4,
      680.5
-    ],
-    [
-     -105.1,
-     681.22
     ]
    ],
    "start": -24,
@@ -1553,24 +2641,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Safety Pin",
+   "name": "Safety Pin 5kg",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Safety Pin",
+   "name": "Safety Pin 5kg",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Safety Pin",
+   "name": "Safety Pin 5kg",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Pin Ring",
+   "name": "Pin Ring 5kg",
    "profile": [
     [
      7,
@@ -1598,19 +2686,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Pin Ring",
+   "name": "Pin Ring 5kg",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pin Ring",
+   "name": "Pin Ring 5kg",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tamper Tag",
+   "name": "Tamper Tag 5kg",
    "points": [
     [
      43.0,
@@ -1699,24 +2787,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tamper Tag",
+   "name": "Tamper Tag 5kg",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Tamper Tag",
+   "name": "Tamper Tag 5kg",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tamper Tag",
+   "name": "Tamper Tag 5kg",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hose Elbow",
+   "name": "Hose Elbow 5kg",
    "points": [
     [
      -92.0,
@@ -1821,24 +2909,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hose Elbow",
+   "name": "Hose Elbow 5kg",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Hose Elbow",
+   "name": "Hose Elbow 5kg",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hose Elbow",
+   "name": "Hose Elbow 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hose",
+   "name": "Hose 5kg",
    "points": [
     [
      112.0,
@@ -1942,24 +3030,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hose",
+   "name": "Hose 5kg",
    "subcategory": "Rubber"
   },
   {
    "op": "set_material_param",
-   "name": "Hose",
+   "name": "Hose 5kg",
    "param": "Rubber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hose",
+   "name": "Hose 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Discharge Horn",
+   "name": "Discharge Horn 5kg",
    "profile": [
     [
      10,
@@ -1987,19 +3075,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Discharge Horn",
+   "name": "Discharge Horn 5kg",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Discharge Horn",
+   "name": "Discharge Horn 5kg",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Horn Clip",
+   "name": "Horn Clip 5kg",
    "points": [
     [
      64,
@@ -2023,20 +3111,252 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Horn Clip",
+   "name": "Horn Clip 5kg",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Horn Clip",
+   "name": "Horn Clip 5kg",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Horn Clip",
+   "name": "Horn Clip 5kg",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2kg_CO2",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2kg_CO2/Show 2kg_CO2",
+   "type": "2kg_CO2",
+   "param": "Show 2kg_CO2",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "5kg_CO2/Show 2kg_CO2",
+   "type": "5kg_CO2",
+   "param": "Show 2kg_CO2",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Bracket Plate 2kg/Visible",
+   "solid": "Wall Bracket Plate 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bracket Hook 2kg/Visible",
+   "solid": "Bracket Hook 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Foot 2kg/Visible",
+   "solid": "Base Foot 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cylinder 2kg/Visible",
+   "solid": "Cylinder 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Band 2kg/Visible",
+   "solid": "Label Band 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Instruction Label 2kg/Visible",
+   "solid": "Instruction Label 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Neck 2kg/Visible",
+   "solid": "Neck 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Valve Body 2kg/Visible",
+   "solid": "Valve Body 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carry Handle 2kg/Visible",
+   "solid": "Carry Handle 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Squeeze Lever 2kg/Visible",
+   "solid": "Squeeze Lever 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Pin 2kg/Visible",
+   "solid": "Safety Pin 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pin Ring 2kg/Visible",
+   "solid": "Pin Ring 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tamper Tag 2kg/Visible",
+   "solid": "Tamper Tag 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Swivel Arm 2kg/Visible",
+   "solid": "Swivel Arm 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Swivel Horn 2kg/Visible",
+   "solid": "Swivel Horn 2kg",
+   "param": "Show 2kg_CO2"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 5kg_CO2",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2kg_CO2/Show 5kg_CO2",
+   "type": "2kg_CO2",
+   "param": "Show 5kg_CO2",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "5kg_CO2/Show 5kg_CO2",
+   "type": "5kg_CO2",
+   "param": "Show 5kg_CO2",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Bracket Plate 5kg/Visible",
+   "solid": "Wall Bracket Plate 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bracket Hook 5kg/Visible",
+   "solid": "Bracket Hook 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Foot 5kg/Visible",
+   "solid": "Base Foot 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cylinder 5kg/Visible",
+   "solid": "Cylinder 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Label Band 5kg/Visible",
+   "solid": "Label Band 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Instruction Label 5kg/Visible",
+   "solid": "Instruction Label 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Neck 5kg/Visible",
+   "solid": "Neck 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Valve Body 5kg/Visible",
+   "solid": "Valve Body 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Carry Handle 5kg/Visible",
+   "solid": "Carry Handle 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Squeeze Lever 5kg/Visible",
+   "solid": "Squeeze Lever 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Pin 5kg/Visible",
+   "solid": "Safety Pin 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pin Ring 5kg/Visible",
+   "solid": "Pin Ring 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tamper Tag 5kg/Visible",
+   "solid": "Tamper Tag 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hose Elbow 5kg/Visible",
+   "solid": "Hose Elbow 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hose 5kg/Visible",
+   "solid": "Hose 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Discharge Horn 5kg/Visible",
+   "solid": "Discharge Horn 5kg",
+   "param": "Show 5kg_CO2"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Horn Clip 5kg/Visible",
+   "solid": "Horn Clip 5kg",
+   "param": "Show 5kg_CO2"
   },
   {
    "op": "set_type_image",

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFoundation_Base_TankStand",
  "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0: four pads on blinding, chamfered pedestals 300 above ground, tie beams, base plates and two HD bolts per leg (Fine). Tank mass (water full) to the engineer. Reference: query: str foundation base tank stand structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+base+tank+stand+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: four pads on blinding, chamfered pedestals 300 above ground, tie beams, base plates and two HD bolts per leg (Fine). Tank mass (water full) to the engineer. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str foundation base tank stand structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+base+tank+stand+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review; photo: https://jojo.co.za/product/diy-slimline-tank-stand; photo_title: DIY Slimline Tank Stand (JoJo); photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -358,6 +358,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "3x3_RC/URL",
+   "type": "3x3_RC",
+   "param": "URL",
+   "value": "https://jojo.co.za/product/diy-slimline-tank-stand"
+  },
+  {
    "op": "add_type",
    "name": "4x4_RC"
   },
@@ -387,7 +394,7 @@
    "name": "4x4_RC/Description",
    "type": "4x4_RC",
    "param": "Description",
-   "value": "base for a 4 x 4 m tower"
+   "value": "base for a 4 x 4 m tower (legs at 3.4 m)"
   },
   {
    "op": "set_type_value",
@@ -423,6 +430,13 @@
    "type": "4x4_RC",
    "param": "FMC_Role_Code",
    "value": "S"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4x4_RC/URL",
+   "type": "4x4_RC",
+   "param": "URL",
+   "value": "https://jojo.co.za/product/diy-slimline-tank-stand"
   },
   {
    "op": "add_subcategory",
@@ -502,20 +516,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1750,
-     -1750
+     -2250,
+     -2250
     ],
     [
-     1750,
-     -1750
+     2250,
+     -2250
     ],
     [
-     1750,
-     1750
+     2250,
+     2250
     ],
     [
-     -1750,
-     1750
+     -2250,
+     2250
     ]
    ],
    "start": -1050,
@@ -535,7 +549,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Pad Front 1",
+   "name": "Pad Front 3x3 1",
    "points": [
     [
      -1700,
@@ -559,24 +573,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pad Front 1",
+   "name": "Pad Front 3x3 1",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pad Front 1",
+   "name": "Pad Front 3x3 1",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pad Front 1",
+   "name": "Pad Front 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pad Front 2",
+   "name": "Pad Front 3x3 2",
    "points": [
     [
      700,
@@ -600,24 +614,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pad Front 2",
+   "name": "Pad Front 3x3 2",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pad Front 2",
+   "name": "Pad Front 3x3 2",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pad Front 2",
+   "name": "Pad Front 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blinding Front 1",
+   "name": "Blinding Front 3x3 1",
    "points": [
     [
      -1750,
@@ -641,24 +655,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding Front 1",
+   "name": "Blinding Front 3x3 1",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding Front 1",
+   "name": "Blinding Front 3x3 1",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding Front 1",
+   "name": "Blinding Front 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blinding Front 2",
+   "name": "Blinding Front 3x3 2",
    "points": [
     [
      650,
@@ -682,24 +696,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding Front 2",
+   "name": "Blinding Front 3x3 2",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding Front 2",
+   "name": "Blinding Front 3x3 2",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding Front 2",
+   "name": "Blinding Front 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Front 1",
+   "name": "Pedestal Front 3x3 1",
    "points": [
     [
      -1385,
@@ -739,24 +753,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Front 1",
+   "name": "Pedestal Front 3x3 1",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Front 1",
+   "name": "Pedestal Front 3x3 1",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Front 1",
+   "name": "Pedestal Front 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Front 2",
+   "name": "Pedestal Front 3x3 2",
    "points": [
     [
      1015,
@@ -796,24 +810,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Front 2",
+   "name": "Pedestal Front 3x3 2",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Front 2",
+   "name": "Pedestal Front 3x3 2",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Front 2",
+   "name": "Pedestal Front 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base Plate Front 1",
+   "name": "Base Plate Front 3x3 1",
    "points": [
     [
      -1350,
@@ -837,24 +851,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Plate Front 1",
+   "name": "Base Plate Front 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Base Plate Front 1",
+   "name": "Base Plate Front 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Plate Front 1",
+   "name": "Base Plate Front 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base Plate Front 2",
+   "name": "Base Plate Front 3x3 2",
    "points": [
     [
      1050,
@@ -878,24 +892,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Plate Front 2",
+   "name": "Base Plate Front 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Base Plate Front 2",
+   "name": "Base Plate Front 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Plate Front 2",
+   "name": "Base Plate Front 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Front A 1",
+   "name": "HD Bolt Front A 3x3 1",
    "points": [
     [
      -1290.0,
@@ -943,24 +957,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Front A 1",
+   "name": "HD Bolt Front A 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Front A 1",
+   "name": "HD Bolt Front A 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Front A 1",
+   "name": "HD Bolt Front A 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Front A 2",
+   "name": "HD Bolt Front A 3x3 2",
    "points": [
     [
      1110.0,
@@ -1008,24 +1022,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Front A 2",
+   "name": "HD Bolt Front A 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Front A 2",
+   "name": "HD Bolt Front A 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Front A 2",
+   "name": "HD Bolt Front A 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Front B 1",
+   "name": "HD Bolt Front B 3x3 1",
    "points": [
     [
      -1090.0,
@@ -1073,24 +1087,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Front B 1",
+   "name": "HD Bolt Front B 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Front B 1",
+   "name": "HD Bolt Front B 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Front B 1",
+   "name": "HD Bolt Front B 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Front B 2",
+   "name": "HD Bolt Front B 3x3 2",
    "points": [
     [
      1310.0,
@@ -1138,24 +1152,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Front B 2",
+   "name": "HD Bolt Front B 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Front B 2",
+   "name": "HD Bolt Front B 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Front B 2",
+   "name": "HD Bolt Front B 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pad Back 1",
+   "name": "Pad Back 3x3 1",
    "points": [
     [
      -1700,
@@ -1179,24 +1193,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pad Back 1",
+   "name": "Pad Back 3x3 1",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pad Back 1",
+   "name": "Pad Back 3x3 1",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pad Back 1",
+   "name": "Pad Back 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pad Back 2",
+   "name": "Pad Back 3x3 2",
    "points": [
     [
      700,
@@ -1220,24 +1234,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pad Back 2",
+   "name": "Pad Back 3x3 2",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pad Back 2",
+   "name": "Pad Back 3x3 2",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pad Back 2",
+   "name": "Pad Back 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blinding Back 1",
+   "name": "Blinding Back 3x3 1",
    "points": [
     [
      -1750,
@@ -1261,24 +1275,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding Back 1",
+   "name": "Blinding Back 3x3 1",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding Back 1",
+   "name": "Blinding Back 3x3 1",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding Back 1",
+   "name": "Blinding Back 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Blinding Back 2",
+   "name": "Blinding Back 3x3 2",
    "points": [
     [
      650,
@@ -1302,24 +1316,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding Back 2",
+   "name": "Blinding Back 3x3 2",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding Back 2",
+   "name": "Blinding Back 3x3 2",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding Back 2",
+   "name": "Blinding Back 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Back 1",
+   "name": "Pedestal Back 3x3 1",
    "points": [
     [
      -1385,
@@ -1359,24 +1373,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Back 1",
+   "name": "Pedestal Back 3x3 1",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Back 1",
+   "name": "Pedestal Back 3x3 1",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Back 1",
+   "name": "Pedestal Back 3x3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Back 2",
+   "name": "Pedestal Back 3x3 2",
    "points": [
     [
      1015,
@@ -1416,24 +1430,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Back 2",
+   "name": "Pedestal Back 3x3 2",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Back 2",
+   "name": "Pedestal Back 3x3 2",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Back 2",
+   "name": "Pedestal Back 3x3 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base Plate Back 1",
+   "name": "Base Plate Back 3x3 1",
    "points": [
     [
      -1350,
@@ -1457,24 +1471,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Plate Back 1",
+   "name": "Base Plate Back 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Base Plate Back 1",
+   "name": "Base Plate Back 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Plate Back 1",
+   "name": "Base Plate Back 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Base Plate Back 2",
+   "name": "Base Plate Back 3x3 2",
    "points": [
     [
      1050,
@@ -1498,24 +1512,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Base Plate Back 2",
+   "name": "Base Plate Back 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Base Plate Back 2",
+   "name": "Base Plate Back 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Plate Back 2",
+   "name": "Base Plate Back 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Back A 1",
+   "name": "HD Bolt Back A 3x3 1",
    "points": [
     [
      -1290.0,
@@ -1563,24 +1577,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Back A 1",
+   "name": "HD Bolt Back A 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Back A 1",
+   "name": "HD Bolt Back A 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Back A 1",
+   "name": "HD Bolt Back A 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Back A 2",
+   "name": "HD Bolt Back A 3x3 2",
    "points": [
     [
      1110.0,
@@ -1628,24 +1642,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Back A 2",
+   "name": "HD Bolt Back A 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Back A 2",
+   "name": "HD Bolt Back A 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Back A 2",
+   "name": "HD Bolt Back A 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Back B 1",
+   "name": "HD Bolt Back B 3x3 1",
    "points": [
     [
      -1090.0,
@@ -1693,24 +1707,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Back B 1",
+   "name": "HD Bolt Back B 3x3 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Back B 1",
+   "name": "HD Bolt Back B 3x3 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Back B 1",
+   "name": "HD Bolt Back B 3x3 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "HD Bolt Back B 2",
+   "name": "HD Bolt Back B 3x3 2",
    "points": [
     [
      1310.0,
@@ -1758,24 +1772,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "HD Bolt Back B 2",
+   "name": "HD Bolt Back B 3x3 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "HD Bolt Back B 2",
+   "name": "HD Bolt Back B 3x3 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "HD Bolt Back B 2",
+   "name": "HD Bolt Back B 3x3 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ground Beam Front",
+   "name": "Ground Beam Front 3x3",
    "points": [
     [
      -1000,
@@ -1799,24 +1813,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ground Beam Front",
+   "name": "Ground Beam Front 3x3",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Ground Beam Front",
+   "name": "Ground Beam Front 3x3",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ground Beam Front",
+   "name": "Ground Beam Front 3x3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ground Beam Back",
+   "name": "Ground Beam Back 3x3",
    "points": [
     [
      -1000,
@@ -1840,24 +1854,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ground Beam Back",
+   "name": "Ground Beam Back 3x3",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Ground Beam Back",
+   "name": "Ground Beam Back 3x3",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ground Beam Back",
+   "name": "Ground Beam Back 3x3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ground Beam Left",
+   "name": "Ground Beam Left 3x3",
    "points": [
     [
      -1315,
@@ -1881,24 +1895,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ground Beam Left",
+   "name": "Ground Beam Left 3x3",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Ground Beam Left",
+   "name": "Ground Beam Left 3x3",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ground Beam Left",
+   "name": "Ground Beam Left 3x3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Ground Beam Right",
+   "name": "Ground Beam Right 3x3",
    "points": [
     [
      1085,
@@ -1922,20 +1936,1800 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Ground Beam Right",
+   "name": "Ground Beam Right 3x3",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Ground Beam Right",
+   "name": "Ground Beam Right 3x3",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Ground Beam Right",
+   "name": "Ground Beam Right 3x3",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pad Front 4x4 1",
+   "points": [
+    [
+     -2200,
+     -2200
+    ],
+    [
+     -1200,
+     -2200
+    ],
+    [
+     -1200,
+     -1200
+    ],
+    [
+     -2200,
+     -1200
+    ]
+   ],
+   "start": -1000,
+   "end": -600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pad Front 4x4 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pad Front 4x4 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pad Front 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pad Front 4x4 2",
+   "points": [
+    [
+     1200,
+     -2200
+    ],
+    [
+     2200,
+     -2200
+    ],
+    [
+     2200,
+     -1200
+    ],
+    [
+     1200,
+     -1200
+    ]
+   ],
+   "start": -1000,
+   "end": -600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pad Front 4x4 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pad Front 4x4 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pad Front 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding Front 4x4 1",
+   "points": [
+    [
+     -2250,
+     -2250
+    ],
+    [
+     -1150,
+     -2250
+    ],
+    [
+     -1150,
+     -1150
+    ],
+    [
+     -2250,
+     -1150
+    ]
+   ],
+   "start": -1050,
+   "end": -1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding Front 4x4 1",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding Front 4x4 1",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding Front 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding Front 4x4 2",
+   "points": [
+    [
+     1150,
+     -2250
+    ],
+    [
+     2250,
+     -2250
+    ],
+    [
+     2250,
+     -1150
+    ],
+    [
+     1150,
+     -1150
+    ]
+   ],
+   "start": -1050,
+   "end": -1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding Front 4x4 2",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding Front 4x4 2",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding Front 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Front 4x4 1",
+   "points": [
+    [
+     -1885,
+     -1900
+    ],
+    [
+     -1515,
+     -1900
+    ],
+    [
+     -1500,
+     -1885
+    ],
+    [
+     -1500,
+     -1515
+    ],
+    [
+     -1515,
+     -1500
+    ],
+    [
+     -1885,
+     -1500
+    ],
+    [
+     -1900,
+     -1515
+    ],
+    [
+     -1900,
+     -1885
+    ]
+   ],
+   "start": -600,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Front 4x4 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Front 4x4 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Front 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Front 4x4 2",
+   "points": [
+    [
+     1515,
+     -1900
+    ],
+    [
+     1885,
+     -1900
+    ],
+    [
+     1900,
+     -1885
+    ],
+    [
+     1900,
+     -1515
+    ],
+    [
+     1885,
+     -1500
+    ],
+    [
+     1515,
+     -1500
+    ],
+    [
+     1500,
+     -1515
+    ],
+    [
+     1500,
+     -1885
+    ]
+   ],
+   "start": -600,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Front 4x4 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Front 4x4 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Front 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate Front 4x4 1",
+   "points": [
+    [
+     -1850,
+     -1850
+    ],
+    [
+     -1550,
+     -1850
+    ],
+    [
+     -1550,
+     -1550
+    ],
+    [
+     -1850,
+     -1550
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate Front 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate Front 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate Front 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate Front 4x4 2",
+   "points": [
+    [
+     1550,
+     -1850
+    ],
+    [
+     1850,
+     -1850
+    ],
+    [
+     1850,
+     -1550
+    ],
+    [
+     1550,
+     -1550
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate Front 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate Front 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate Front 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Front A 4x4 1",
+   "points": [
+    [
+     -1790.0,
+     -1800.0
+    ],
+    [
+     -1791.91,
+     -1794.12
+    ],
+    [
+     -1796.91,
+     -1790.49
+    ],
+    [
+     -1803.09,
+     -1790.49
+    ],
+    [
+     -1808.09,
+     -1794.12
+    ],
+    [
+     -1810.0,
+     -1800.0
+    ],
+    [
+     -1808.09,
+     -1805.88
+    ],
+    [
+     -1803.09,
+     -1809.51
+    ],
+    [
+     -1796.91,
+     -1809.51
+    ],
+    [
+     -1791.91,
+     -1805.88
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Front A 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Front A 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Front A 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Front A 4x4 2",
+   "points": [
+    [
+     1610.0,
+     -1800.0
+    ],
+    [
+     1608.09,
+     -1794.12
+    ],
+    [
+     1603.09,
+     -1790.49
+    ],
+    [
+     1596.91,
+     -1790.49
+    ],
+    [
+     1591.91,
+     -1794.12
+    ],
+    [
+     1590.0,
+     -1800.0
+    ],
+    [
+     1591.91,
+     -1805.88
+    ],
+    [
+     1596.91,
+     -1809.51
+    ],
+    [
+     1603.09,
+     -1809.51
+    ],
+    [
+     1608.09,
+     -1805.88
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Front A 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Front A 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Front A 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Front B 4x4 1",
+   "points": [
+    [
+     -1590.0,
+     -1600.0
+    ],
+    [
+     -1591.91,
+     -1594.12
+    ],
+    [
+     -1596.91,
+     -1590.49
+    ],
+    [
+     -1603.09,
+     -1590.49
+    ],
+    [
+     -1608.09,
+     -1594.12
+    ],
+    [
+     -1610.0,
+     -1600.0
+    ],
+    [
+     -1608.09,
+     -1605.88
+    ],
+    [
+     -1603.09,
+     -1609.51
+    ],
+    [
+     -1596.91,
+     -1609.51
+    ],
+    [
+     -1591.91,
+     -1605.88
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Front B 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Front B 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Front B 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Front B 4x4 2",
+   "points": [
+    [
+     1810.0,
+     -1600.0
+    ],
+    [
+     1808.09,
+     -1594.12
+    ],
+    [
+     1803.09,
+     -1590.49
+    ],
+    [
+     1796.91,
+     -1590.49
+    ],
+    [
+     1791.91,
+     -1594.12
+    ],
+    [
+     1790.0,
+     -1600.0
+    ],
+    [
+     1791.91,
+     -1605.88
+    ],
+    [
+     1796.91,
+     -1609.51
+    ],
+    [
+     1803.09,
+     -1609.51
+    ],
+    [
+     1808.09,
+     -1605.88
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Front B 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Front B 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Front B 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pad Back 4x4 1",
+   "points": [
+    [
+     -2200,
+     1200
+    ],
+    [
+     -1200,
+     1200
+    ],
+    [
+     -1200,
+     2200
+    ],
+    [
+     -2200,
+     2200
+    ]
+   ],
+   "start": -1000,
+   "end": -600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pad Back 4x4 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pad Back 4x4 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pad Back 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pad Back 4x4 2",
+   "points": [
+    [
+     1200,
+     1200
+    ],
+    [
+     2200,
+     1200
+    ],
+    [
+     2200,
+     2200
+    ],
+    [
+     1200,
+     2200
+    ]
+   ],
+   "start": -1000,
+   "end": -600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pad Back 4x4 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pad Back 4x4 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pad Back 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding Back 4x4 1",
+   "points": [
+    [
+     -2250,
+     1150
+    ],
+    [
+     -1150,
+     1150
+    ],
+    [
+     -1150,
+     2250
+    ],
+    [
+     -2250,
+     2250
+    ]
+   ],
+   "start": -1050,
+   "end": -1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding Back 4x4 1",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding Back 4x4 1",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding Back 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding Back 4x4 2",
+   "points": [
+    [
+     1150,
+     1150
+    ],
+    [
+     2250,
+     1150
+    ],
+    [
+     2250,
+     2250
+    ],
+    [
+     1150,
+     2250
+    ]
+   ],
+   "start": -1050,
+   "end": -1000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding Back 4x4 2",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding Back 4x4 2",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding Back 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Back 4x4 1",
+   "points": [
+    [
+     -1885,
+     1500
+    ],
+    [
+     -1515,
+     1500
+    ],
+    [
+     -1500,
+     1515
+    ],
+    [
+     -1500,
+     1885
+    ],
+    [
+     -1515,
+     1900
+    ],
+    [
+     -1885,
+     1900
+    ],
+    [
+     -1900,
+     1885
+    ],
+    [
+     -1900,
+     1515
+    ]
+   ],
+   "start": -600,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Back 4x4 1",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Back 4x4 1",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Back 4x4 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Back 4x4 2",
+   "points": [
+    [
+     1515,
+     1500
+    ],
+    [
+     1885,
+     1500
+    ],
+    [
+     1900,
+     1515
+    ],
+    [
+     1900,
+     1885
+    ],
+    [
+     1885,
+     1900
+    ],
+    [
+     1515,
+     1900
+    ],
+    [
+     1500,
+     1885
+    ],
+    [
+     1500,
+     1515
+    ]
+   ],
+   "start": -600,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Back 4x4 2",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Back 4x4 2",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Back 4x4 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate Back 4x4 1",
+   "points": [
+    [
+     -1850,
+     1550
+    ],
+    [
+     -1550,
+     1550
+    ],
+    [
+     -1550,
+     1850
+    ],
+    [
+     -1850,
+     1850
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate Back 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate Back 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate Back 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Plate Back 4x4 2",
+   "points": [
+    [
+     1550,
+     1550
+    ],
+    [
+     1850,
+     1550
+    ],
+    [
+     1850,
+     1850
+    ],
+    [
+     1550,
+     1850
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Plate Back 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Plate Back 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Plate Back 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Back A 4x4 1",
+   "points": [
+    [
+     -1790.0,
+     1600.0
+    ],
+    [
+     -1791.91,
+     1605.88
+    ],
+    [
+     -1796.91,
+     1609.51
+    ],
+    [
+     -1803.09,
+     1609.51
+    ],
+    [
+     -1808.09,
+     1605.88
+    ],
+    [
+     -1810.0,
+     1600.0
+    ],
+    [
+     -1808.09,
+     1594.12
+    ],
+    [
+     -1803.09,
+     1590.49
+    ],
+    [
+     -1796.91,
+     1590.49
+    ],
+    [
+     -1791.91,
+     1594.12
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Back A 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Back A 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Back A 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Back A 4x4 2",
+   "points": [
+    [
+     1610.0,
+     1600.0
+    ],
+    [
+     1608.09,
+     1605.88
+    ],
+    [
+     1603.09,
+     1609.51
+    ],
+    [
+     1596.91,
+     1609.51
+    ],
+    [
+     1591.91,
+     1605.88
+    ],
+    [
+     1590.0,
+     1600.0
+    ],
+    [
+     1591.91,
+     1594.12
+    ],
+    [
+     1596.91,
+     1590.49
+    ],
+    [
+     1603.09,
+     1590.49
+    ],
+    [
+     1608.09,
+     1594.12
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Back A 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Back A 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Back A 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Back B 4x4 1",
+   "points": [
+    [
+     -1590.0,
+     1800.0
+    ],
+    [
+     -1591.91,
+     1805.88
+    ],
+    [
+     -1596.91,
+     1809.51
+    ],
+    [
+     -1603.09,
+     1809.51
+    ],
+    [
+     -1608.09,
+     1805.88
+    ],
+    [
+     -1610.0,
+     1800.0
+    ],
+    [
+     -1608.09,
+     1794.12
+    ],
+    [
+     -1603.09,
+     1790.49
+    ],
+    [
+     -1596.91,
+     1790.49
+    ],
+    [
+     -1591.91,
+     1794.12
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Back B 4x4 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Back B 4x4 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Back B 4x4 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "HD Bolt Back B 4x4 2",
+   "points": [
+    [
+     1810.0,
+     1800.0
+    ],
+    [
+     1808.09,
+     1805.88
+    ],
+    [
+     1803.09,
+     1809.51
+    ],
+    [
+     1796.91,
+     1809.51
+    ],
+    [
+     1791.91,
+     1805.88
+    ],
+    [
+     1790.0,
+     1800.0
+    ],
+    [
+     1791.91,
+     1794.12
+    ],
+    [
+     1796.91,
+     1790.49
+    ],
+    [
+     1803.09,
+     1790.49
+    ],
+    [
+     1808.09,
+     1794.12
+    ]
+   ],
+   "start": 320,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "HD Bolt Back B 4x4 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "HD Bolt Back B 4x4 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "HD Bolt Back B 4x4 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ground Beam Front 4x4",
+   "points": [
+    [
+     -1500,
+     -1815
+    ],
+    [
+     1500,
+     -1815
+    ],
+    [
+     1500,
+     -1585
+    ],
+    [
+     -1500,
+     -1585
+    ]
+   ],
+   "start": -400,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ground Beam Front 4x4",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ground Beam Front 4x4",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ground Beam Front 4x4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ground Beam Back 4x4",
+   "points": [
+    [
+     -1500,
+     1585
+    ],
+    [
+     1500,
+     1585
+    ],
+    [
+     1500,
+     1815
+    ],
+    [
+     -1500,
+     1815
+    ]
+   ],
+   "start": -400,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ground Beam Back 4x4",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ground Beam Back 4x4",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ground Beam Back 4x4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ground Beam Left 4x4",
+   "points": [
+    [
+     -1815,
+     -1500
+    ],
+    [
+     -1585,
+     -1500
+    ],
+    [
+     -1585,
+     1500
+    ],
+    [
+     -1815,
+     1500
+    ]
+   ],
+   "start": -400,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ground Beam Left 4x4",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ground Beam Left 4x4",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ground Beam Left 4x4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ground Beam Right 4x4",
+   "points": [
+    [
+     1585,
+     -1500
+    ],
+    [
+     1815,
+     -1500
+    ],
+    [
+     1815,
+     1500
+    ],
+    [
+     1585,
+     1500
+    ]
+   ],
+   "start": -400,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ground Beam Right 4x4",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ground Beam Right 4x4",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ground Beam Right 4x4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3x3_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3x3_RC/Show 3x3_RC",
+   "type": "3x3_RC",
+   "param": "Show 3x3_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "4x4_RC/Show 3x3_RC",
+   "type": "4x4_RC",
+   "param": "Show 3x3_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Front 3x3 1/Visible",
+   "solid": "Pad Front 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Front 3x3 2/Visible",
+   "solid": "Pad Front 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Front 3x3 1/Visible",
+   "solid": "Blinding Front 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Front 3x3 2/Visible",
+   "solid": "Blinding Front 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Front 3x3 1/Visible",
+   "solid": "Pedestal Front 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Front 3x3 2/Visible",
+   "solid": "Pedestal Front 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Front 3x3 1/Visible",
+   "solid": "Base Plate Front 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Front 3x3 2/Visible",
+   "solid": "Base Plate Front 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front A 3x3 1/Visible",
+   "solid": "HD Bolt Front A 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front A 3x3 2/Visible",
+   "solid": "HD Bolt Front A 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front B 3x3 1/Visible",
+   "solid": "HD Bolt Front B 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front B 3x3 2/Visible",
+   "solid": "HD Bolt Front B 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Back 3x3 1/Visible",
+   "solid": "Pad Back 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Back 3x3 2/Visible",
+   "solid": "Pad Back 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Back 3x3 1/Visible",
+   "solid": "Blinding Back 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Back 3x3 2/Visible",
+   "solid": "Blinding Back 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Back 3x3 1/Visible",
+   "solid": "Pedestal Back 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Back 3x3 2/Visible",
+   "solid": "Pedestal Back 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Back 3x3 1/Visible",
+   "solid": "Base Plate Back 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Back 3x3 2/Visible",
+   "solid": "Base Plate Back 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back A 3x3 1/Visible",
+   "solid": "HD Bolt Back A 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back A 3x3 2/Visible",
+   "solid": "HD Bolt Back A 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back B 3x3 1/Visible",
+   "solid": "HD Bolt Back B 3x3 1",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back B 3x3 2/Visible",
+   "solid": "HD Bolt Back B 3x3 2",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Front 3x3/Visible",
+   "solid": "Ground Beam Front 3x3",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Back 3x3/Visible",
+   "solid": "Ground Beam Back 3x3",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Left 3x3/Visible",
+   "solid": "Ground Beam Left 3x3",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Right 3x3/Visible",
+   "solid": "Ground Beam Right 3x3",
+   "param": "Show 3x3_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 4x4_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3x3_RC/Show 4x4_RC",
+   "type": "3x3_RC",
+   "param": "Show 4x4_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4x4_RC/Show 4x4_RC",
+   "type": "4x4_RC",
+   "param": "Show 4x4_RC",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Front 4x4 1/Visible",
+   "solid": "Pad Front 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Front 4x4 2/Visible",
+   "solid": "Pad Front 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Front 4x4 1/Visible",
+   "solid": "Blinding Front 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Front 4x4 2/Visible",
+   "solid": "Blinding Front 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Front 4x4 1/Visible",
+   "solid": "Pedestal Front 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Front 4x4 2/Visible",
+   "solid": "Pedestal Front 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Front 4x4 1/Visible",
+   "solid": "Base Plate Front 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Front 4x4 2/Visible",
+   "solid": "Base Plate Front 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front A 4x4 1/Visible",
+   "solid": "HD Bolt Front A 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front A 4x4 2/Visible",
+   "solid": "HD Bolt Front A 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front B 4x4 1/Visible",
+   "solid": "HD Bolt Front B 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Front B 4x4 2/Visible",
+   "solid": "HD Bolt Front B 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Back 4x4 1/Visible",
+   "solid": "Pad Back 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pad Back 4x4 2/Visible",
+   "solid": "Pad Back 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Back 4x4 1/Visible",
+   "solid": "Blinding Back 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding Back 4x4 2/Visible",
+   "solid": "Blinding Back 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Back 4x4 1/Visible",
+   "solid": "Pedestal Back 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Back 4x4 2/Visible",
+   "solid": "Pedestal Back 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Back 4x4 1/Visible",
+   "solid": "Base Plate Back 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Plate Back 4x4 2/Visible",
+   "solid": "Base Plate Back 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back A 4x4 1/Visible",
+   "solid": "HD Bolt Back A 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back A 4x4 2/Visible",
+   "solid": "HD Bolt Back A 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back B 4x4 1/Visible",
+   "solid": "HD Bolt Back B 4x4 1",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "HD Bolt Back B 4x4 2/Visible",
+   "solid": "HD Bolt Back B 4x4 2",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Front 4x4/Visible",
+   "solid": "Ground Beam Front 4x4",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Back 4x4/Visible",
+   "solid": "Ground Beam Back 4x4",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Left 4x4/Visible",
+   "solid": "Ground Beam Left 4x4",
+   "param": "Show 4x4_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Ground Beam Right 4x4/Visible",
+   "solid": "Ground Beam Right 4x4",
+   "param": "Show 4x4_RC"
   },
   {
    "op": "set_type_image",
@@ -1944,8 +3738,8 @@
   }
  ],
  "values": {
-  "Legs at 2400 mm centres (geometry)": {
-   "value": 2400,
+  "Legs at 2400 / 3400 mm centres (one per type)": {
+   "value": "2400/3400",
    "source_status": "assumed",
    "source": "matches FMC_S_GenericModel_TankStand_Steel"
   },

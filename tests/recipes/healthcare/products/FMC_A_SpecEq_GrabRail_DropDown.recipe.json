@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_GrabRail_DropDown",
  "template": "Metric Generic Model.rft",
- "about": "Drop-down rail modelled as a generic product: wall plate with screws, hinge housing and pin, looped arm (top and bottom tubes, nose, bends), roll holder with roll, flush button at the nose. Top tube at z = 0; Default Elevation 680; geometry is the 750 type. Reference: query: grab rail drop down specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+drop+down+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Drop-down rail modelled as a generic product: wall plate with screws, hinge housing and pin, looped arm (top and bottom tubes, nose, bends), roll holder with roll, flush button at the nose. Top tube at z = 0; Default Elevation 680; the arm is per type (750 / 850). Reference: query: grab rail drop down specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+drop+down+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.commercialwashroomsltd.co.uk/disabled-toilets/disabled-grab-rails/shower-grab-rails/delabie-be-line-drop-down-support-rail.html; photo_title: Delabie Be-Line Drop Down Support Rail; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -83,6 +389,34 @@
    "type": "750_DropDown",
    "param": "FMC_Keynote_Code",
    "value": "A.SAC_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/FMC_Code_Description",
+   "type": "750_DropDown",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail DropDown: Hinged support arm, optional roll holder"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/FMC_Code_Group",
+   "type": "750_DropDown",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/FMC_Role_Code",
+   "type": "750_DropDown",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/URL",
+   "type": "750_DropDown",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/disabled-toilets/disabled-grab-rails/shower-grab-rails/delabie-be-line-drop-down-support-rail.html"
   },
   {
    "op": "set_type_value",
@@ -136,6 +470,34 @@
    "type": "850_DropDown",
    "param": "FMC_Keynote_Code",
    "value": "A.SAC_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/FMC_Code_Description",
+   "type": "850_DropDown",
+   "param": "FMC_Code_Description",
+   "value": "GrabRail DropDown: Hinged support arm, optional roll holder"
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/FMC_Code_Group",
+   "type": "850_DropDown",
+   "param": "FMC_Code_Group",
+   "value": "A.SAC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/FMC_Role_Code",
+   "type": "850_DropDown",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/URL",
+   "type": "850_DropDown",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/disabled-toilets/disabled-grab-rails/shower-grab-rails/delabie-be-line-drop-down-support-rail.html"
   },
   {
    "op": "set_type_value",
@@ -244,11 +606,11 @@
    "points": [
     [
      -60.0,
-     -766.0
+     -866.0
     ],
     [
      60.0,
-     -766.0
+     -866.0
     ],
     [
      60.0,
@@ -1097,491 +1459,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Arm Top",
-   "points": [
-    [
-     16.0,
-     0.0
-    ],
-    [
-     15.45,
-     4.14
-    ],
-    [
-     13.86,
-     8.0
-    ],
-    [
-     11.31,
-     11.31
-    ],
-    [
-     8.0,
-     13.86
-    ],
-    [
-     4.14,
-     15.45
-    ],
-    [
-     0.0,
-     16.0
-    ],
-    [
-     -4.14,
-     15.45
-    ],
-    [
-     -8.0,
-     13.86
-    ],
-    [
-     -11.31,
-     11.31
-    ],
-    [
-     -13.86,
-     8.0
-    ],
-    [
-     -15.45,
-     4.14
-    ],
-    [
-     -16.0,
-     0.0
-    ],
-    [
-     -15.45,
-     -4.14
-    ],
-    [
-     -13.86,
-     -8.0
-    ],
-    [
-     -11.31,
-     -11.31
-    ],
-    [
-     -8.0,
-     -13.86
-    ],
-    [
-     -4.14,
-     -15.45
-    ],
-    [
-     -0.0,
-     -16.0
-    ],
-    [
-     4.14,
-     -15.45
-    ],
-    [
-     8.0,
-     -13.86
-    ],
-    [
-     11.31,
-     -11.31
-    ],
-    [
-     13.86,
-     -8.0
-    ],
-    [
-     15.45,
-     -4.14
-    ]
-   ],
-   "start": 95,
-   "end": 750,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Arm Top",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm Top",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Arm Bottom",
-   "points": [
-    [
-     16.0,
-     -120.0
-    ],
-    [
-     15.45,
-     -115.86
-    ],
-    [
-     13.86,
-     -112.0
-    ],
-    [
-     11.31,
-     -108.69
-    ],
-    [
-     8.0,
-     -106.14
-    ],
-    [
-     4.14,
-     -104.55
-    ],
-    [
-     0.0,
-     -104.0
-    ],
-    [
-     -4.14,
-     -104.55
-    ],
-    [
-     -8.0,
-     -106.14
-    ],
-    [
-     -11.31,
-     -108.69
-    ],
-    [
-     -13.86,
-     -112.0
-    ],
-    [
-     -15.45,
-     -115.86
-    ],
-    [
-     -16.0,
-     -120.0
-    ],
-    [
-     -15.45,
-     -124.14
-    ],
-    [
-     -13.86,
-     -128.0
-    ],
-    [
-     -11.31,
-     -131.31
-    ],
-    [
-     -8.0,
-     -133.86
-    ],
-    [
-     -4.14,
-     -135.45
-    ],
-    [
-     -0.0,
-     -136.0
-    ],
-    [
-     4.14,
-     -135.45
-    ],
-    [
-     8.0,
-     -133.86
-    ],
-    [
-     11.31,
-     -131.31
-    ],
-    [
-     13.86,
-     -128.0
-    ],
-    [
-     15.45,
-     -124.14
-    ]
-   ],
-   "start": 95,
-   "end": 720,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Arm Bottom",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm Bottom",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Arm Bend Top",
-   "profile": [
-    [
-     0,
-     766.0
-    ],
-    [
-     6.12,
-     764.78
-    ],
-    [
-     11.31,
-     761.31
-    ],
-    [
-     14.78,
-     756.12
-    ],
-    [
-     16.0,
-     750.0
-    ],
-    [
-     14.78,
-     743.88
-    ],
-    [
-     11.31,
-     738.69
-    ],
-    [
-     6.12,
-     735.22
-    ],
-    [
-     0,
-     734.0
-    ]
-   ],
-   "axis_at": [
-    0,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm Bend Top",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm Bend Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Arm Nose",
-   "points": [
-    [
-     16.0,
-     -740.0
-    ],
-    [
-     15.45,
-     -735.86
-    ],
-    [
-     13.86,
-     -732.0
-    ],
-    [
-     11.31,
-     -728.69
-    ],
-    [
-     8.0,
-     -726.14
-    ],
-    [
-     4.14,
-     -724.55
-    ],
-    [
-     0.0,
-     -724.0
-    ],
-    [
-     -4.14,
-     -724.55
-    ],
-    [
-     -8.0,
-     -726.14
-    ],
-    [
-     -11.31,
-     -728.69
-    ],
-    [
-     -13.86,
-     -732.0
-    ],
-    [
-     -15.45,
-     -735.86
-    ],
-    [
-     -16.0,
-     -740.0
-    ],
-    [
-     -15.45,
-     -744.14
-    ],
-    [
-     -13.86,
-     -748.0
-    ],
-    [
-     -11.31,
-     -751.31
-    ],
-    [
-     -8.0,
-     -753.86
-    ],
-    [
-     -4.14,
-     -755.45
-    ],
-    [
-     -0.0,
-     -756.0
-    ],
-    [
-     4.14,
-     -755.45
-    ],
-    [
-     8.0,
-     -753.86
-    ],
-    [
-     11.31,
-     -751.31
-    ],
-    [
-     13.86,
-     -748.0
-    ],
-    [
-     15.45,
-     -744.14
-    ]
-   ],
-   "start": -110,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Arm Nose",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm Nose",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm Nose",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Arm Bend Bottom",
-   "profile": [
-    [
-     0,
-     -136.0
-    ],
-    [
-     6.12,
-     -134.78
-    ],
-    [
-     11.31,
-     -131.31
-    ],
-    [
-     14.78,
-     -126.12
-    ],
-    [
-     16.0,
-     -120.0
-    ],
-    [
-     14.78,
-     -113.88
-    ],
-    [
-     11.31,
-     -108.69
-    ],
-    [
-     6.12,
-     -105.22
-    ],
-    [
-     0,
-     -104.0
-    ]
-   ],
-   "axis_at": [
-    0,
-    -728
-   ],
-   "axis": "z",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Arm Bend Bottom",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Arm Bend Bottom",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Roll Holder Spindle",
    "points": [
     [
@@ -1867,7 +1744,492 @@
   },
   {
    "op": "extrusion",
-   "name": "Flush Button",
+   "name": "Arm Top 750",
+   "points": [
+    [
+     16.0,
+     0.0
+    ],
+    [
+     15.45,
+     4.14
+    ],
+    [
+     13.86,
+     8.0
+    ],
+    [
+     11.31,
+     11.31
+    ],
+    [
+     8.0,
+     13.86
+    ],
+    [
+     4.14,
+     15.45
+    ],
+    [
+     0.0,
+     16.0
+    ],
+    [
+     -4.14,
+     15.45
+    ],
+    [
+     -8.0,
+     13.86
+    ],
+    [
+     -11.31,
+     11.31
+    ],
+    [
+     -13.86,
+     8.0
+    ],
+    [
+     -15.45,
+     4.14
+    ],
+    [
+     -16.0,
+     0.0
+    ],
+    [
+     -15.45,
+     -4.14
+    ],
+    [
+     -13.86,
+     -8.0
+    ],
+    [
+     -11.31,
+     -11.31
+    ],
+    [
+     -8.0,
+     -13.86
+    ],
+    [
+     -4.14,
+     -15.45
+    ],
+    [
+     -0.0,
+     -16.0
+    ],
+    [
+     4.14,
+     -15.45
+    ],
+    [
+     8.0,
+     -13.86
+    ],
+    [
+     11.31,
+     -11.31
+    ],
+    [
+     13.86,
+     -8.0
+    ],
+    [
+     15.45,
+     -4.14
+    ]
+   ],
+   "start": 95,
+   "end": 750,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Top 750",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Top 750",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Top 750",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Bottom 750",
+   "points": [
+    [
+     16.0,
+     -120.0
+    ],
+    [
+     15.45,
+     -115.86
+    ],
+    [
+     13.86,
+     -112.0
+    ],
+    [
+     11.31,
+     -108.69
+    ],
+    [
+     8.0,
+     -106.14
+    ],
+    [
+     4.14,
+     -104.55
+    ],
+    [
+     0.0,
+     -104.0
+    ],
+    [
+     -4.14,
+     -104.55
+    ],
+    [
+     -8.0,
+     -106.14
+    ],
+    [
+     -11.31,
+     -108.69
+    ],
+    [
+     -13.86,
+     -112.0
+    ],
+    [
+     -15.45,
+     -115.86
+    ],
+    [
+     -16.0,
+     -120.0
+    ],
+    [
+     -15.45,
+     -124.14
+    ],
+    [
+     -13.86,
+     -128.0
+    ],
+    [
+     -11.31,
+     -131.31
+    ],
+    [
+     -8.0,
+     -133.86
+    ],
+    [
+     -4.14,
+     -135.45
+    ],
+    [
+     -0.0,
+     -136.0
+    ],
+    [
+     4.14,
+     -135.45
+    ],
+    [
+     8.0,
+     -133.86
+    ],
+    [
+     11.31,
+     -131.31
+    ],
+    [
+     13.86,
+     -128.0
+    ],
+    [
+     15.45,
+     -124.14
+    ]
+   ],
+   "start": 95,
+   "end": 720,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Bottom 750",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bottom 750",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bottom 750",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Arm Bend Top 750",
+   "profile": [
+    [
+     0,
+     766.0
+    ],
+    [
+     6.12,
+     764.78
+    ],
+    [
+     11.31,
+     761.31
+    ],
+    [
+     14.78,
+     756.12
+    ],
+    [
+     16.0,
+     750.0
+    ],
+    [
+     14.78,
+     743.88
+    ],
+    [
+     11.31,
+     738.69
+    ],
+    [
+     6.12,
+     735.22
+    ],
+    [
+     0,
+     734.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bend Top 750",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bend Top 750",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Nose 750",
+   "points": [
+    [
+     16.0,
+     -740.0
+    ],
+    [
+     15.45,
+     -735.86
+    ],
+    [
+     13.86,
+     -732.0
+    ],
+    [
+     11.31,
+     -728.69
+    ],
+    [
+     8.0,
+     -726.14
+    ],
+    [
+     4.14,
+     -724.55
+    ],
+    [
+     0.0,
+     -724.0
+    ],
+    [
+     -4.14,
+     -724.55
+    ],
+    [
+     -8.0,
+     -726.14
+    ],
+    [
+     -11.31,
+     -728.69
+    ],
+    [
+     -13.86,
+     -732.0
+    ],
+    [
+     -15.45,
+     -735.86
+    ],
+    [
+     -16.0,
+     -740.0
+    ],
+    [
+     -15.45,
+     -744.14
+    ],
+    [
+     -13.86,
+     -748.0
+    ],
+    [
+     -11.31,
+     -751.31
+    ],
+    [
+     -8.0,
+     -753.86
+    ],
+    [
+     -4.14,
+     -755.45
+    ],
+    [
+     -0.0,
+     -756.0
+    ],
+    [
+     4.14,
+     -755.45
+    ],
+    [
+     8.0,
+     -753.86
+    ],
+    [
+     11.31,
+     -751.31
+    ],
+    [
+     13.86,
+     -748.0
+    ],
+    [
+     15.45,
+     -744.14
+    ]
+   ],
+   "start": -110,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Nose 750",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Nose 750",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Nose 750",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Arm Bend Bottom 750",
+   "profile": [
+    [
+     0,
+     -136.0
+    ],
+    [
+     6.12,
+     -134.78
+    ],
+    [
+     11.31,
+     -131.31
+    ],
+    [
+     14.78,
+     -126.12
+    ],
+    [
+     16.0,
+     -120.0
+    ],
+    [
+     14.78,
+     -113.88
+    ],
+    [
+     11.31,
+     -108.69
+    ],
+    [
+     6.12,
+     -105.22
+    ],
+    [
+     0,
+     -104.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    -728
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bend Bottom 750",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bend Bottom 750",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Button 750",
    "points": [
     [
      12.0,
@@ -1955,20 +2317,722 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Flush Button",
+   "name": "Flush Button 750",
    "subcategory": "Blue"
   },
   {
    "op": "set_material_param",
-   "name": "Flush Button",
+   "name": "Flush Button 750",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Flush Button",
+   "name": "Flush Button 750",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Top 850",
+   "points": [
+    [
+     16.0,
+     0.0
+    ],
+    [
+     15.45,
+     4.14
+    ],
+    [
+     13.86,
+     8.0
+    ],
+    [
+     11.31,
+     11.31
+    ],
+    [
+     8.0,
+     13.86
+    ],
+    [
+     4.14,
+     15.45
+    ],
+    [
+     0.0,
+     16.0
+    ],
+    [
+     -4.14,
+     15.45
+    ],
+    [
+     -8.0,
+     13.86
+    ],
+    [
+     -11.31,
+     11.31
+    ],
+    [
+     -13.86,
+     8.0
+    ],
+    [
+     -15.45,
+     4.14
+    ],
+    [
+     -16.0,
+     0.0
+    ],
+    [
+     -15.45,
+     -4.14
+    ],
+    [
+     -13.86,
+     -8.0
+    ],
+    [
+     -11.31,
+     -11.31
+    ],
+    [
+     -8.0,
+     -13.86
+    ],
+    [
+     -4.14,
+     -15.45
+    ],
+    [
+     -0.0,
+     -16.0
+    ],
+    [
+     4.14,
+     -15.45
+    ],
+    [
+     8.0,
+     -13.86
+    ],
+    [
+     11.31,
+     -11.31
+    ],
+    [
+     13.86,
+     -8.0
+    ],
+    [
+     15.45,
+     -4.14
+    ]
+   ],
+   "start": 95,
+   "end": 850,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Top 850",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Top 850",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Top 850",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Bottom 850",
+   "points": [
+    [
+     16.0,
+     -120.0
+    ],
+    [
+     15.45,
+     -115.86
+    ],
+    [
+     13.86,
+     -112.0
+    ],
+    [
+     11.31,
+     -108.69
+    ],
+    [
+     8.0,
+     -106.14
+    ],
+    [
+     4.14,
+     -104.55
+    ],
+    [
+     0.0,
+     -104.0
+    ],
+    [
+     -4.14,
+     -104.55
+    ],
+    [
+     -8.0,
+     -106.14
+    ],
+    [
+     -11.31,
+     -108.69
+    ],
+    [
+     -13.86,
+     -112.0
+    ],
+    [
+     -15.45,
+     -115.86
+    ],
+    [
+     -16.0,
+     -120.0
+    ],
+    [
+     -15.45,
+     -124.14
+    ],
+    [
+     -13.86,
+     -128.0
+    ],
+    [
+     -11.31,
+     -131.31
+    ],
+    [
+     -8.0,
+     -133.86
+    ],
+    [
+     -4.14,
+     -135.45
+    ],
+    [
+     -0.0,
+     -136.0
+    ],
+    [
+     4.14,
+     -135.45
+    ],
+    [
+     8.0,
+     -133.86
+    ],
+    [
+     11.31,
+     -131.31
+    ],
+    [
+     13.86,
+     -128.0
+    ],
+    [
+     15.45,
+     -124.14
+    ]
+   ],
+   "start": 95,
+   "end": 820,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Bottom 850",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bottom 850",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bottom 850",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Arm Bend Top 850",
+   "profile": [
+    [
+     0,
+     866.0
+    ],
+    [
+     6.12,
+     864.78
+    ],
+    [
+     11.31,
+     861.31
+    ],
+    [
+     14.78,
+     856.12
+    ],
+    [
+     16.0,
+     850.0
+    ],
+    [
+     14.78,
+     843.88
+    ],
+    [
+     11.31,
+     838.69
+    ],
+    [
+     6.12,
+     835.22
+    ],
+    [
+     0,
+     834.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bend Top 850",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bend Top 850",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Nose 850",
+   "points": [
+    [
+     16.0,
+     -840.0
+    ],
+    [
+     15.45,
+     -835.86
+    ],
+    [
+     13.86,
+     -832.0
+    ],
+    [
+     11.31,
+     -828.69
+    ],
+    [
+     8.0,
+     -826.14
+    ],
+    [
+     4.14,
+     -824.55
+    ],
+    [
+     0.0,
+     -824.0
+    ],
+    [
+     -4.14,
+     -824.55
+    ],
+    [
+     -8.0,
+     -826.14
+    ],
+    [
+     -11.31,
+     -828.69
+    ],
+    [
+     -13.86,
+     -832.0
+    ],
+    [
+     -15.45,
+     -835.86
+    ],
+    [
+     -16.0,
+     -840.0
+    ],
+    [
+     -15.45,
+     -844.14
+    ],
+    [
+     -13.86,
+     -848.0
+    ],
+    [
+     -11.31,
+     -851.31
+    ],
+    [
+     -8.0,
+     -853.86
+    ],
+    [
+     -4.14,
+     -855.45
+    ],
+    [
+     -0.0,
+     -856.0
+    ],
+    [
+     4.14,
+     -855.45
+    ],
+    [
+     8.0,
+     -853.86
+    ],
+    [
+     11.31,
+     -851.31
+    ],
+    [
+     13.86,
+     -848.0
+    ],
+    [
+     15.45,
+     -844.14
+    ]
+   ],
+   "start": -110,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Nose 850",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Nose 850",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Nose 850",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Arm Bend Bottom 850",
+   "profile": [
+    [
+     0,
+     -136.0
+    ],
+    [
+     6.12,
+     -134.78
+    ],
+    [
+     11.31,
+     -131.31
+    ],
+    [
+     14.78,
+     -126.12
+    ],
+    [
+     16.0,
+     -120.0
+    ],
+    [
+     14.78,
+     -113.88
+    ],
+    [
+     11.31,
+     -108.69
+    ],
+    [
+     6.12,
+     -105.22
+    ],
+    [
+     0,
+     -104.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    -828
+   ],
+   "axis": "z",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Bend Bottom 850",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Bend Bottom 850",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Flush Button 850",
+   "points": [
+    [
+     12.0,
+     -860.0
+    ],
+    [
+     15.06,
+     -859.39
+    ],
+    [
+     17.66,
+     -857.66
+    ],
+    [
+     19.39,
+     -855.06
+    ],
+    [
+     20.0,
+     -852.0
+    ],
+    [
+     20.0,
+     -808.0
+    ],
+    [
+     19.39,
+     -804.94
+    ],
+    [
+     17.66,
+     -802.34
+    ],
+    [
+     15.06,
+     -800.61
+    ],
+    [
+     12.0,
+     -800.0
+    ],
+    [
+     -12.0,
+     -800.0
+    ],
+    [
+     -15.06,
+     -800.61
+    ],
+    [
+     -17.66,
+     -802.34
+    ],
+    [
+     -19.39,
+     -804.94
+    ],
+    [
+     -20.0,
+     -808.0
+    ],
+    [
+     -20.0,
+     -852.0
+    ],
+    [
+     -19.39,
+     -855.06
+    ],
+    [
+     -17.66,
+     -857.66
+    ],
+    [
+     -15.06,
+     -859.39
+    ],
+    [
+     -12.0,
+     -860.0
+    ]
+   ],
+   "start": 15,
+   "end": 30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Flush Button 850",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Flush Button 850",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Flush Button 850",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 750_DropDown",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/Show 750_DropDown",
+   "type": "750_DropDown",
+   "param": "Show 750_DropDown",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/Show 750_DropDown",
+   "type": "850_DropDown",
+   "param": "Show 750_DropDown",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Top 750/Visible",
+   "solid": "Arm Top 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bottom 750/Visible",
+   "solid": "Arm Bottom 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bend Top 750/Visible",
+   "solid": "Arm Bend Top 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Nose 750/Visible",
+   "solid": "Arm Nose 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bend Bottom 750/Visible",
+   "solid": "Arm Bend Bottom 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flush Button 750/Visible",
+   "solid": "Flush Button 750",
+   "param": "Show 750_DropDown"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 850_DropDown",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "750_DropDown/Show 850_DropDown",
+   "type": "750_DropDown",
+   "param": "Show 850_DropDown",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "850_DropDown/Show 850_DropDown",
+   "type": "850_DropDown",
+   "param": "Show 850_DropDown",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Top 850/Visible",
+   "solid": "Arm Top 850",
+   "param": "Show 850_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bottom 850/Visible",
+   "solid": "Arm Bottom 850",
+   "param": "Show 850_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bend Top 850/Visible",
+   "solid": "Arm Bend Top 850",
+   "param": "Show 850_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Nose 850/Visible",
+   "solid": "Arm Nose 850",
+   "param": "Show 850_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Arm Bend Bottom 850/Visible",
+   "solid": "Arm Bend Bottom 850",
+   "param": "Show 850_DropDown"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Flush Button 850/Visible",
+   "solid": "Flush Button 850",
+   "param": "Show 850_DropDown"
   },
   {
    "op": "set_type_image",

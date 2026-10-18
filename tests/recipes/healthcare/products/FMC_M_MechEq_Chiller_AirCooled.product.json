@@ -25,21 +25,24 @@
   "Number of Poles": 3
  },
  "materials": {
-  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
   "black": "FMC_Plastic_ABS_Black",
   "copper": "FMC_Metal_Copper_Pipe",
   "dark": "FMC_Metal_SteelLTZ_Painted",
   "enamel": "FMC_Paint_Gloss_Enamel",
-  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "fin": "FMC_Metal_Aluminium_FinCoil",
   "gi": "FMC_Metal_GI_Pipe",
   "grey": "FMC_Plastic_ABS_Grey",
   "lag": "FMC_Insulation_Elastomeric_Black",
-  "red": "FMC_Metal_SprinklerPipe_RedPainted"
+  "lgrey": "FMC_Metal_Steel_PowderCoated_LightGrey",
+  "red": "FMC_Metal_Steel_Painted_Red"
  },
  "reference": {
   "query": "chiller air cooled mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=chiller+air+cooled+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.daikinapplied.eu/products/ewaq-f-",
+  "photo_title": "Daikin Applied EWAQ-F air-cooled scroll chiller",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
@@ -66,7 +69,7 @@
     1100,
     2250
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "Panel Door Left",
@@ -79,7 +82,7 @@
     -1100,
     2150
    ],
-   "mat": "epw",
+   "mat": "lgrey",
    "r": 6
   },
   {
@@ -93,7 +96,7 @@
     -1100,
     2150
    ],
-   "mat": "epw",
+   "mat": "lgrey",
    "r": 6
   },
   {
@@ -179,7 +182,7 @@
     -1780,
     1200
    ],
-   "mat": "alu"
+   "mat": "fin"
   },
   {
    "n": "Coil Rear",
@@ -206,7 +209,7 @@
     -1780,
     1200
    ],
-   "mat": "alu"
+   "mat": "fin"
   },
   {
    "n": "V End Panel Left",
@@ -233,7 +236,7 @@
     -1800,
     -1780
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "V End Panel Right",
@@ -260,7 +263,7 @@
     1180,
     1200
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "V Floor",
@@ -286,7 +289,7 @@
     1100,
     2280
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "Post Front",
@@ -299,7 +302,7 @@
     -1040,
     2250
    ],
-   "mat": "epw",
+   "mat": "lgrey",
    "repeat": {
     "n": 3,
     "d": [
@@ -320,7 +323,7 @@
     1100,
     2250
    ],
-   "mat": "epw",
+   "mat": "lgrey",
    "repeat": {
     "n": 3,
     "d": [
@@ -537,7 +540,7 @@
      2406.0
     ]
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "Fan 1 Guard Outer",
@@ -772,7 +775,7 @@
      2406.0
     ]
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "Fan 2 Guard Outer",
@@ -1007,7 +1010,7 @@
      2406.0
     ]
    ],
-   "mat": "epw"
+   "mat": "lgrey"
   },
   {
    "n": "Fan 3 Guard Outer",
@@ -1224,6 +1227,24 @@
    "system": "PowerBalanced",
    "part": "Electrical Bay",
    "side": "right"
+  },
+  {
+   "n": "CHW Return",
+   "domain": "pipe",
+   "system": "HydronicReturn",
+   "part": "CHW Inlet",
+   "side": "left",
+   "diameter": 150,
+   "flow": "In"
+  },
+  {
+   "n": "CHW Supply",
+   "domain": "pipe",
+   "system": "HydronicSupply",
+   "part": "CHW Outlet",
+   "side": "left",
+   "diameter": 150,
+   "flow": "Out"
   }
  ],
  "values": {
@@ -1248,7 +1269,7 @@
    "source": "manufacturer practice"
   }
  },
- "about": "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW connectors are not in the record (E only).",
+ "about": "Modelled as a generic product: base frame, posts, V-shaped finned coils with end panels and fan deck, three top fans (shroud, guard, hub, blades), two scroll compressors with domes and suction header under the V, lagged evaporator with flanged CHW nozzles, end electrical bay with doors, HMI and isolator. CHW return (In) and supply (Out) connectors on the nozzles.",
  "clearances": [
   {
    "n": "Coil Airflow Space",

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_L_Planting_Hedge",
  "template": "Metric Generic Model.rft",
- "about": "Hedge modelled as a generic product: mulch strip, stems, clipped body with battered sides and rounded top, leafy lumps along both faces and the top. Array it along a line for a run. Geometry drawn for 1.2m_Hedge; the other types share it (sizes in the values). Reference: query: planting hedge planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+hedge+planting+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Hedge modelled as a generic product: mulch strip, stems, clipped body with battered sides and rounded top, leafy lumps along both faces and the top. Array it along a line for a run. Each type has its own parts where the types differ (Show parameters). Reference: query: planting hedge planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+hedge+planting+hospital; basis: generic product; brand, model and supplier open for review; photo: https://kingco.co.uk/instant-hedging; photo_title: Instant Hedging (King & Co); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -340,6 +340,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "1.2m_Hedge/URL",
+   "type": "1.2m_Hedge",
+   "param": "URL",
+   "value": "https://kingco.co.uk/instant-hedging"
+  },
+  {
    "op": "add_type",
    "name": "1.8m_Hedge"
   },
@@ -407,6 +414,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "1.8m_Hedge/URL",
+   "type": "1.8m_Hedge",
+   "param": "URL",
+   "value": "https://kingco.co.uk/instant-hedging"
+  },
+  {
    "op": "add_subcategory",
    "name": "Mulch",
    "color": [
@@ -431,9 +445,9 @@
    "op": "add_subcategory",
    "name": "Bark",
    "color": [
-    142,
-    90,
-    52
+    94,
+    74,
+    58
    ],
    "line_weight_projection": 1
   },
@@ -445,12 +459,12 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Timber_Mugavu",
+   "name": "FMC_Plant_Bark_Trunk",
    "param": "Bark Material"
   },
   {
    "op": "add_subcategory",
-   "name": "Leaf2",
+   "name": "Hedge",
    "color": [
     85,
     127,
@@ -460,14 +474,14 @@
   },
   {
    "op": "add_family_param",
-   "name": "Leaf2 Material",
+   "name": "Hedge Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
    "name": "FMC_Plant_Hedge_Duranta",
-   "param": "Leaf2 Material"
+   "param": "Hedge Material"
   },
   {
    "op": "add_subcategory",
@@ -513,6 +527,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Leaf2",
+   "color": [
+    63,
+    106,
+    44
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leaf2 Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plant_Foliage_Canopy",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -543,7 +578,7 @@
     ]
    ],
    "start": 0,
-   "end": 1250.0
+   "end": 1875.0
   },
   {
    "op": "set_subcategory",
@@ -559,7 +594,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Mulch Strip",
+   "name": "Mulch Strip 1.2m",
    "points": [
     [
      -1050,
@@ -583,24 +618,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Mulch Strip",
+   "name": "Mulch Strip 1.2m",
    "subcategory": "Mulch"
   },
   {
    "op": "set_material_param",
-   "name": "Mulch Strip",
+   "name": "Mulch Strip 1.2m",
    "param": "Mulch Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mulch Strip",
+   "name": "Mulch Strip 1.2m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 1",
+   "name": "Stem 1.2m 1",
    "points": [
     [
      -855.0,
@@ -704,24 +739,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 1",
+   "name": "Stem 1.2m 1",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 1",
+   "name": "Stem 1.2m 1",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 1",
+   "name": "Stem 1.2m 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 2",
+   "name": "Stem 1.2m 2",
    "points": [
     [
      -605.0,
@@ -825,24 +860,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 2",
+   "name": "Stem 1.2m 2",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 2",
+   "name": "Stem 1.2m 2",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 2",
+   "name": "Stem 1.2m 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 3",
+   "name": "Stem 1.2m 3",
    "points": [
     [
      -355.0,
@@ -946,24 +981,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 3",
+   "name": "Stem 1.2m 3",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 3",
+   "name": "Stem 1.2m 3",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 3",
+   "name": "Stem 1.2m 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 4",
+   "name": "Stem 1.2m 4",
    "points": [
     [
      -105.0,
@@ -1067,24 +1102,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 4",
+   "name": "Stem 1.2m 4",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 4",
+   "name": "Stem 1.2m 4",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 4",
+   "name": "Stem 1.2m 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 5",
+   "name": "Stem 1.2m 5",
    "points": [
     [
      145.0,
@@ -1188,24 +1223,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 5",
+   "name": "Stem 1.2m 5",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 5",
+   "name": "Stem 1.2m 5",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 5",
+   "name": "Stem 1.2m 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 6",
+   "name": "Stem 1.2m 6",
    "points": [
     [
      395.0,
@@ -1309,24 +1344,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 6",
+   "name": "Stem 1.2m 6",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 6",
+   "name": "Stem 1.2m 6",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 6",
+   "name": "Stem 1.2m 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 7",
+   "name": "Stem 1.2m 7",
    "points": [
     [
      645.0,
@@ -1430,24 +1465,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 7",
+   "name": "Stem 1.2m 7",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 7",
+   "name": "Stem 1.2m 7",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 7",
+   "name": "Stem 1.2m 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Stem 8",
+   "name": "Stem 1.2m 8",
    "points": [
     [
      895.0,
@@ -1551,24 +1586,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Stem 8",
+   "name": "Stem 1.2m 8",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Stem 8",
+   "name": "Stem 1.2m 8",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Stem 8",
+   "name": "Stem 1.2m 8",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hedge Body",
+   "name": "Hedge Body 1.2m",
    "points": [
     [
      -200,
@@ -1613,24 +1648,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hedge Body",
-   "subcategory": "Leaf2"
+   "name": "Hedge Body 1.2m",
+   "subcategory": "Hedge"
   },
   {
    "op": "set_material_param",
-   "name": "Hedge Body",
-   "param": "Leaf2 Material"
+   "name": "Hedge Body 1.2m",
+   "param": "Hedge Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hedge Body",
+   "name": "Hedge Body 1.2m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front Low 1",
+   "name": "Lump Front Low 1.2m 1",
    "profile": [
     [
      0.0,
@@ -1686,19 +1721,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front Low 1",
+   "name": "Lump Front Low 1.2m 1",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front Low 1",
+   "name": "Lump Front Low 1.2m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front Low 2",
+   "name": "Lump Front Low 1.2m 2",
    "profile": [
     [
      0.0,
@@ -1754,19 +1789,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front Low 2",
+   "name": "Lump Front Low 1.2m 2",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front Low 2",
+   "name": "Lump Front Low 1.2m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front Low 3",
+   "name": "Lump Front Low 1.2m 3",
    "profile": [
     [
      0.0,
@@ -1822,19 +1857,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front Low 3",
+   "name": "Lump Front Low 1.2m 3",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front Low 3",
+   "name": "Lump Front Low 1.2m 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front Low 4",
+   "name": "Lump Front Low 1.2m 4",
    "profile": [
     [
      0.0,
@@ -1890,19 +1925,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front Low 4",
+   "name": "Lump Front Low 1.2m 4",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front Low 4",
+   "name": "Lump Front Low 1.2m 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front Low 5",
+   "name": "Lump Front Low 1.2m 5",
    "profile": [
     [
      0.0,
@@ -1958,19 +1993,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front Low 5",
+   "name": "Lump Front Low 1.2m 5",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front Low 5",
+   "name": "Lump Front Low 1.2m 5",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front High 1",
+   "name": "Lump Front High 1.2m 1",
    "profile": [
     [
      0.0,
@@ -2026,19 +2061,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front High 1",
+   "name": "Lump Front High 1.2m 1",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front High 1",
+   "name": "Lump Front High 1.2m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front High 2",
+   "name": "Lump Front High 1.2m 2",
    "profile": [
     [
      0.0,
@@ -2094,19 +2129,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front High 2",
+   "name": "Lump Front High 1.2m 2",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front High 2",
+   "name": "Lump Front High 1.2m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front High 3",
+   "name": "Lump Front High 1.2m 3",
    "profile": [
     [
      0.0,
@@ -2162,19 +2197,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front High 3",
+   "name": "Lump Front High 1.2m 3",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front High 3",
+   "name": "Lump Front High 1.2m 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Front High 4",
+   "name": "Lump Front High 1.2m 4",
    "profile": [
     [
      0.0,
@@ -2230,19 +2265,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Front High 4",
+   "name": "Lump Front High 1.2m 4",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Front High 4",
+   "name": "Lump Front High 1.2m 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back Low 1",
+   "name": "Lump Back Low 1.2m 1",
    "profile": [
     [
      0.0,
@@ -2298,19 +2333,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back Low 1",
+   "name": "Lump Back Low 1.2m 1",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back Low 1",
+   "name": "Lump Back Low 1.2m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back Low 2",
+   "name": "Lump Back Low 1.2m 2",
    "profile": [
     [
      0.0,
@@ -2366,19 +2401,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back Low 2",
+   "name": "Lump Back Low 1.2m 2",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back Low 2",
+   "name": "Lump Back Low 1.2m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back Low 3",
+   "name": "Lump Back Low 1.2m 3",
    "profile": [
     [
      0.0,
@@ -2434,19 +2469,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back Low 3",
+   "name": "Lump Back Low 1.2m 3",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back Low 3",
+   "name": "Lump Back Low 1.2m 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back Low 4",
+   "name": "Lump Back Low 1.2m 4",
    "profile": [
     [
      0.0,
@@ -2502,19 +2537,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back Low 4",
+   "name": "Lump Back Low 1.2m 4",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back Low 4",
+   "name": "Lump Back Low 1.2m 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back High 1",
+   "name": "Lump Back High 1.2m 1",
    "profile": [
     [
      0.0,
@@ -2570,19 +2605,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back High 1",
+   "name": "Lump Back High 1.2m 1",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back High 1",
+   "name": "Lump Back High 1.2m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back High 2",
+   "name": "Lump Back High 1.2m 2",
    "profile": [
     [
      0.0,
@@ -2638,19 +2673,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back High 2",
+   "name": "Lump Back High 1.2m 2",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back High 2",
+   "name": "Lump Back High 1.2m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back High 3",
+   "name": "Lump Back High 1.2m 3",
    "profile": [
     [
      0.0,
@@ -2706,19 +2741,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back High 3",
+   "name": "Lump Back High 1.2m 3",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back High 3",
+   "name": "Lump Back High 1.2m 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back High 4",
+   "name": "Lump Back High 1.2m 4",
    "profile": [
     [
      0.0,
@@ -2774,19 +2809,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back High 4",
+   "name": "Lump Back High 1.2m 4",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back High 4",
+   "name": "Lump Back High 1.2m 4",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lump Back High 5",
+   "name": "Lump Back High 1.2m 5",
    "profile": [
     [
      0.0,
@@ -2842,19 +2877,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lump Back High 5",
+   "name": "Lump Back High 1.2m 5",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lump Back High 5",
+   "name": "Lump Back High 1.2m 5",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Top Lump 1",
+   "name": "Top Lump 1.2m 1",
    "profile": [
     [
      0.0,
@@ -2910,19 +2945,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Top Lump 1",
+   "name": "Top Lump 1.2m 1",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Lump 1",
+   "name": "Top Lump 1.2m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Top Lump 2",
+   "name": "Top Lump 1.2m 2",
    "profile": [
     [
      0.0,
@@ -2978,19 +3013,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Top Lump 2",
+   "name": "Top Lump 1.2m 2",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Lump 2",
+   "name": "Top Lump 1.2m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Top Lump 3",
+   "name": "Top Lump 1.2m 3",
    "profile": [
     [
      0.0,
@@ -3046,19 +3081,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Top Lump 3",
+   "name": "Top Lump 1.2m 3",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Lump 3",
+   "name": "Top Lump 1.2m 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Top Lump 4",
+   "name": "Top Lump 1.2m 4",
    "profile": [
     [
      0.0,
@@ -3114,15 +3149,3006 @@
   },
   {
    "op": "set_material_param",
-   "name": "Top Lump 4",
+   "name": "Top Lump 1.2m 4",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Lump 4",
+   "name": "Top Lump 1.2m 4",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mulch Strip 1.8m",
+   "points": [
+    [
+     -1050,
+     -400
+    ],
+    [
+     1050,
+     -400
+    ],
+    [
+     1050,
+     400
+    ],
+    [
+     -1050,
+     400
+    ]
+   ],
+   "start": 0.0,
+   "end": 45.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mulch Strip 1.8m",
+   "subcategory": "Mulch"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mulch Strip 1.8m",
+   "param": "Mulch Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mulch Strip 1.8m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 1",
+   "points": [
+    [
+     -855.0,
+     0.0
+    ],
+    [
+     -855.68,
+     5.18
+    ],
+    [
+     -857.68,
+     10.0
+    ],
+    [
+     -860.86,
+     14.14
+    ],
+    [
+     -865.0,
+     17.32
+    ],
+    [
+     -869.82,
+     19.32
+    ],
+    [
+     -875.0,
+     20.0
+    ],
+    [
+     -880.18,
+     19.32
+    ],
+    [
+     -885.0,
+     17.32
+    ],
+    [
+     -889.14,
+     14.14
+    ],
+    [
+     -892.32,
+     10.0
+    ],
+    [
+     -894.32,
+     5.18
+    ],
+    [
+     -895.0,
+     0.0
+    ],
+    [
+     -894.32,
+     -5.18
+    ],
+    [
+     -892.32,
+     -10.0
+    ],
+    [
+     -889.14,
+     -14.14
+    ],
+    [
+     -885.0,
+     -17.32
+    ],
+    [
+     -880.18,
+     -19.32
+    ],
+    [
+     -875.0,
+     -20.0
+    ],
+    [
+     -869.82,
+     -19.32
+    ],
+    [
+     -865.0,
+     -17.32
+    ],
+    [
+     -860.86,
+     -14.14
+    ],
+    [
+     -857.68,
+     -10.0
+    ],
+    [
+     -855.68,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 1",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 1",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 2",
+   "points": [
+    [
+     -605.0,
+     0.0
+    ],
+    [
+     -605.68,
+     5.18
+    ],
+    [
+     -607.68,
+     10.0
+    ],
+    [
+     -610.86,
+     14.14
+    ],
+    [
+     -615.0,
+     17.32
+    ],
+    [
+     -619.82,
+     19.32
+    ],
+    [
+     -625.0,
+     20.0
+    ],
+    [
+     -630.18,
+     19.32
+    ],
+    [
+     -635.0,
+     17.32
+    ],
+    [
+     -639.14,
+     14.14
+    ],
+    [
+     -642.32,
+     10.0
+    ],
+    [
+     -644.32,
+     5.18
+    ],
+    [
+     -645.0,
+     0.0
+    ],
+    [
+     -644.32,
+     -5.18
+    ],
+    [
+     -642.32,
+     -10.0
+    ],
+    [
+     -639.14,
+     -14.14
+    ],
+    [
+     -635.0,
+     -17.32
+    ],
+    [
+     -630.18,
+     -19.32
+    ],
+    [
+     -625.0,
+     -20.0
+    ],
+    [
+     -619.82,
+     -19.32
+    ],
+    [
+     -615.0,
+     -17.32
+    ],
+    [
+     -610.86,
+     -14.14
+    ],
+    [
+     -607.68,
+     -10.0
+    ],
+    [
+     -605.68,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 2",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 2",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 3",
+   "points": [
+    [
+     -355.0,
+     0.0
+    ],
+    [
+     -355.68,
+     5.18
+    ],
+    [
+     -357.68,
+     10.0
+    ],
+    [
+     -360.86,
+     14.14
+    ],
+    [
+     -365.0,
+     17.32
+    ],
+    [
+     -369.82,
+     19.32
+    ],
+    [
+     -375.0,
+     20.0
+    ],
+    [
+     -380.18,
+     19.32
+    ],
+    [
+     -385.0,
+     17.32
+    ],
+    [
+     -389.14,
+     14.14
+    ],
+    [
+     -392.32,
+     10.0
+    ],
+    [
+     -394.32,
+     5.18
+    ],
+    [
+     -395.0,
+     0.0
+    ],
+    [
+     -394.32,
+     -5.18
+    ],
+    [
+     -392.32,
+     -10.0
+    ],
+    [
+     -389.14,
+     -14.14
+    ],
+    [
+     -385.0,
+     -17.32
+    ],
+    [
+     -380.18,
+     -19.32
+    ],
+    [
+     -375.0,
+     -20.0
+    ],
+    [
+     -369.82,
+     -19.32
+    ],
+    [
+     -365.0,
+     -17.32
+    ],
+    [
+     -360.86,
+     -14.14
+    ],
+    [
+     -357.68,
+     -10.0
+    ],
+    [
+     -355.68,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 3",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 3",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 4",
+   "points": [
+    [
+     -105.0,
+     0.0
+    ],
+    [
+     -105.68,
+     5.18
+    ],
+    [
+     -107.68,
+     10.0
+    ],
+    [
+     -110.86,
+     14.14
+    ],
+    [
+     -115.0,
+     17.32
+    ],
+    [
+     -119.82,
+     19.32
+    ],
+    [
+     -125.0,
+     20.0
+    ],
+    [
+     -130.18,
+     19.32
+    ],
+    [
+     -135.0,
+     17.32
+    ],
+    [
+     -139.14,
+     14.14
+    ],
+    [
+     -142.32,
+     10.0
+    ],
+    [
+     -144.32,
+     5.18
+    ],
+    [
+     -145.0,
+     0.0
+    ],
+    [
+     -144.32,
+     -5.18
+    ],
+    [
+     -142.32,
+     -10.0
+    ],
+    [
+     -139.14,
+     -14.14
+    ],
+    [
+     -135.0,
+     -17.32
+    ],
+    [
+     -130.18,
+     -19.32
+    ],
+    [
+     -125.0,
+     -20.0
+    ],
+    [
+     -119.82,
+     -19.32
+    ],
+    [
+     -115.0,
+     -17.32
+    ],
+    [
+     -110.86,
+     -14.14
+    ],
+    [
+     -107.68,
+     -10.0
+    ],
+    [
+     -105.68,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 4",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 4",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 5",
+   "points": [
+    [
+     145.0,
+     0.0
+    ],
+    [
+     144.32,
+     5.18
+    ],
+    [
+     142.32,
+     10.0
+    ],
+    [
+     139.14,
+     14.14
+    ],
+    [
+     135.0,
+     17.32
+    ],
+    [
+     130.18,
+     19.32
+    ],
+    [
+     125.0,
+     20.0
+    ],
+    [
+     119.82,
+     19.32
+    ],
+    [
+     115.0,
+     17.32
+    ],
+    [
+     110.86,
+     14.14
+    ],
+    [
+     107.68,
+     10.0
+    ],
+    [
+     105.68,
+     5.18
+    ],
+    [
+     105.0,
+     0.0
+    ],
+    [
+     105.68,
+     -5.18
+    ],
+    [
+     107.68,
+     -10.0
+    ],
+    [
+     110.86,
+     -14.14
+    ],
+    [
+     115.0,
+     -17.32
+    ],
+    [
+     119.82,
+     -19.32
+    ],
+    [
+     125.0,
+     -20.0
+    ],
+    [
+     130.18,
+     -19.32
+    ],
+    [
+     135.0,
+     -17.32
+    ],
+    [
+     139.14,
+     -14.14
+    ],
+    [
+     142.32,
+     -10.0
+    ],
+    [
+     144.32,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 5",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 5",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 6",
+   "points": [
+    [
+     395.0,
+     0.0
+    ],
+    [
+     394.32,
+     5.18
+    ],
+    [
+     392.32,
+     10.0
+    ],
+    [
+     389.14,
+     14.14
+    ],
+    [
+     385.0,
+     17.32
+    ],
+    [
+     380.18,
+     19.32
+    ],
+    [
+     375.0,
+     20.0
+    ],
+    [
+     369.82,
+     19.32
+    ],
+    [
+     365.0,
+     17.32
+    ],
+    [
+     360.86,
+     14.14
+    ],
+    [
+     357.68,
+     10.0
+    ],
+    [
+     355.68,
+     5.18
+    ],
+    [
+     355.0,
+     0.0
+    ],
+    [
+     355.68,
+     -5.18
+    ],
+    [
+     357.68,
+     -10.0
+    ],
+    [
+     360.86,
+     -14.14
+    ],
+    [
+     365.0,
+     -17.32
+    ],
+    [
+     369.82,
+     -19.32
+    ],
+    [
+     375.0,
+     -20.0
+    ],
+    [
+     380.18,
+     -19.32
+    ],
+    [
+     385.0,
+     -17.32
+    ],
+    [
+     389.14,
+     -14.14
+    ],
+    [
+     392.32,
+     -10.0
+    ],
+    [
+     394.32,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 6",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 6",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 7",
+   "points": [
+    [
+     645.0,
+     0.0
+    ],
+    [
+     644.32,
+     5.18
+    ],
+    [
+     642.32,
+     10.0
+    ],
+    [
+     639.14,
+     14.14
+    ],
+    [
+     635.0,
+     17.32
+    ],
+    [
+     630.18,
+     19.32
+    ],
+    [
+     625.0,
+     20.0
+    ],
+    [
+     619.82,
+     19.32
+    ],
+    [
+     615.0,
+     17.32
+    ],
+    [
+     610.86,
+     14.14
+    ],
+    [
+     607.68,
+     10.0
+    ],
+    [
+     605.68,
+     5.18
+    ],
+    [
+     605.0,
+     0.0
+    ],
+    [
+     605.68,
+     -5.18
+    ],
+    [
+     607.68,
+     -10.0
+    ],
+    [
+     610.86,
+     -14.14
+    ],
+    [
+     615.0,
+     -17.32
+    ],
+    [
+     619.82,
+     -19.32
+    ],
+    [
+     625.0,
+     -20.0
+    ],
+    [
+     630.18,
+     -19.32
+    ],
+    [
+     635.0,
+     -17.32
+    ],
+    [
+     639.14,
+     -14.14
+    ],
+    [
+     642.32,
+     -10.0
+    ],
+    [
+     644.32,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 7",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 7",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stem 1.8m 8",
+   "points": [
+    [
+     895.0,
+     0.0
+    ],
+    [
+     894.32,
+     5.18
+    ],
+    [
+     892.32,
+     10.0
+    ],
+    [
+     889.14,
+     14.14
+    ],
+    [
+     885.0,
+     17.32
+    ],
+    [
+     880.18,
+     19.32
+    ],
+    [
+     875.0,
+     20.0
+    ],
+    [
+     869.82,
+     19.32
+    ],
+    [
+     865.0,
+     17.32
+    ],
+    [
+     860.86,
+     14.14
+    ],
+    [
+     857.68,
+     10.0
+    ],
+    [
+     855.68,
+     5.18
+    ],
+    [
+     855.0,
+     0.0
+    ],
+    [
+     855.68,
+     -5.18
+    ],
+    [
+     857.68,
+     -10.0
+    ],
+    [
+     860.86,
+     -14.14
+    ],
+    [
+     865.0,
+     -17.32
+    ],
+    [
+     869.82,
+     -19.32
+    ],
+    [
+     875.0,
+     -20.0
+    ],
+    [
+     880.18,
+     -19.32
+    ],
+    [
+     885.0,
+     -17.32
+    ],
+    [
+     889.14,
+     -14.14
+    ],
+    [
+     892.32,
+     -10.0
+    ],
+    [
+     894.32,
+     -5.18
+    ]
+   ],
+   "start": 45.0,
+   "end": 345.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stem 1.8m 8",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stem 1.8m 8",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stem 1.8m 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hedge Body 1.8m",
+   "points": [
+    [
+     -200,
+     270.0
+    ],
+    [
+     200,
+     270.0
+    ],
+    [
+     290,
+     600.0
+    ],
+    [
+     300,
+     1350.0
+    ],
+    [
+     230,
+     1680.0
+    ],
+    [
+     0,
+     1800.0
+    ],
+    [
+     -230,
+     1680.0
+    ],
+    [
+     -300,
+     1350.0
+    ],
+    [
+     -290,
+     600.0
+    ]
+   ],
+   "start": -1000,
+   "end": 1000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hedge Body 1.8m",
+   "subcategory": "Hedge"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hedge Body 1.8m",
+   "param": "Hedge Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hedge Body 1.8m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front Low 1.8m 1",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    -800,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front Low 1.8m 1",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front Low 1.8m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front Low 1.8m 2",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    -400,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front Low 1.8m 2",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front Low 1.8m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front Low 1.8m 3",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front Low 1.8m 3",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front Low 1.8m 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front Low 1.8m 4",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    400,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front Low 1.8m 4",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front Low 1.8m 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front Low 1.8m 5",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    800,
+    -215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front Low 1.8m 5",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front Low 1.8m 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front High 1.8m 1",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    -600,
+    -205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front High 1.8m 1",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front High 1.8m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front High 1.8m 2",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    -200,
+    -205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front High 1.8m 2",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front High 1.8m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front High 1.8m 3",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    200,
+    -205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front High 1.8m 3",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front High 1.8m 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Front High 1.8m 4",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    600,
+    -205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Front High 1.8m 4",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Front High 1.8m 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back Low 1.8m 1",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    -600,
+    215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back Low 1.8m 1",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back Low 1.8m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back Low 1.8m 2",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    -200,
+    215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back Low 1.8m 2",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back Low 1.8m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back Low 1.8m 3",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    200,
+    215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back Low 1.8m 3",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back Low 1.8m 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back Low 1.8m 4",
+   "profile": [
+    [
+     0.0,
+     390.0
+    ],
+    [
+     71.1,
+     408.3
+    ],
+    [
+     135.2,
+     461.5
+    ],
+    [
+     186.1,
+     544.7
+    ],
+    [
+     218.7,
+     649.0
+    ],
+    [
+     230.0,
+     765.0
+    ],
+    [
+     218.7,
+     880.9
+    ],
+    [
+     186.1,
+     985.3
+    ],
+    [
+     135.2,
+     1068.4
+    ],
+    [
+     71.1,
+     1121.7
+    ],
+    [
+     0.0,
+     1140.0
+    ]
+   ],
+   "axis_at": [
+    600,
+    215
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back Low 1.8m 4",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back Low 1.8m 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back High 1.8m 1",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    -800,
+    205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back High 1.8m 1",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back High 1.8m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back High 1.8m 2",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    -400,
+    205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back High 1.8m 2",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back High 1.8m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back High 1.8m 3",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    0,
+    205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back High 1.8m 3",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back High 1.8m 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back High 1.8m 4",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    400,
+    205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back High 1.8m 4",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back High 1.8m 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lump Back High 1.8m 5",
+   "profile": [
+    [
+     0.0,
+     930.0
+    ],
+    [
+     71.1,
+     947.6
+    ],
+    [
+     135.2,
+     998.7
+    ],
+    [
+     186.1,
+     1078.3
+    ],
+    [
+     218.7,
+     1178.7
+    ],
+    [
+     230.0,
+     1290.0
+    ],
+    [
+     218.7,
+     1401.3
+    ],
+    [
+     186.1,
+     1501.7
+    ],
+    [
+     135.2,
+     1581.3
+    ],
+    [
+     71.1,
+     1632.4
+    ],
+    [
+     0.0,
+     1650.0
+    ]
+   ],
+   "axis_at": [
+    800,
+    205
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lump Back High 1.8m 5",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lump Back High 1.8m 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Top Lump 1.8m 1",
+   "profile": [
+    [
+     0.0,
+     1530.0
+    ],
+    [
+     77.3,
+     1538.4
+    ],
+    [
+     146.9,
+     1563.0
+    ],
+    [
+     202.3,
+     1601.1
+    ],
+    [
+     237.8,
+     1649.2
+    ],
+    [
+     250.0,
+     1702.5
+    ],
+    [
+     237.8,
+     1755.8
+    ],
+    [
+     202.3,
+     1803.9
+    ],
+    [
+     146.9,
+     1842.0
+    ],
+    [
+     77.3,
+     1866.6
+    ],
+    [
+     0.0,
+     1875.0
+    ]
+   ],
+   "axis_at": [
+    -750,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Lump 1.8m 1",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Lump 1.8m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Top Lump 1.8m 2",
+   "profile": [
+    [
+     0.0,
+     1530.0
+    ],
+    [
+     77.3,
+     1538.4
+    ],
+    [
+     146.9,
+     1563.0
+    ],
+    [
+     202.3,
+     1601.1
+    ],
+    [
+     237.8,
+     1649.2
+    ],
+    [
+     250.0,
+     1702.5
+    ],
+    [
+     237.8,
+     1755.8
+    ],
+    [
+     202.3,
+     1803.9
+    ],
+    [
+     146.9,
+     1842.0
+    ],
+    [
+     77.3,
+     1866.6
+    ],
+    [
+     0.0,
+     1875.0
+    ]
+   ],
+   "axis_at": [
+    -250,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Lump 1.8m 2",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Lump 1.8m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Top Lump 1.8m 3",
+   "profile": [
+    [
+     0.0,
+     1530.0
+    ],
+    [
+     77.3,
+     1538.4
+    ],
+    [
+     146.9,
+     1563.0
+    ],
+    [
+     202.3,
+     1601.1
+    ],
+    [
+     237.8,
+     1649.2
+    ],
+    [
+     250.0,
+     1702.5
+    ],
+    [
+     237.8,
+     1755.8
+    ],
+    [
+     202.3,
+     1803.9
+    ],
+    [
+     146.9,
+     1842.0
+    ],
+    [
+     77.3,
+     1866.6
+    ],
+    [
+     0.0,
+     1875.0
+    ]
+   ],
+   "axis_at": [
+    250,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Lump 1.8m 3",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Lump 1.8m 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Top Lump 1.8m 4",
+   "profile": [
+    [
+     0.0,
+     1530.0
+    ],
+    [
+     77.3,
+     1538.4
+    ],
+    [
+     146.9,
+     1563.0
+    ],
+    [
+     202.3,
+     1601.1
+    ],
+    [
+     237.8,
+     1649.2
+    ],
+    [
+     250.0,
+     1702.5
+    ],
+    [
+     237.8,
+     1755.8
+    ],
+    [
+     202.3,
+     1803.9
+    ],
+    [
+     146.9,
+     1842.0
+    ],
+    [
+     77.3,
+     1866.6
+    ],
+    [
+     0.0,
+     1875.0
+    ]
+   ],
+   "axis_at": [
+    750,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Lump 1.8m 4",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Lump 1.8m 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1.2m_Hedge",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.2m_Hedge/Show 1.2m_Hedge",
+   "type": "1.2m_Hedge",
+   "param": "Show 1.2m_Hedge",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.8m_Hedge/Show 1.2m_Hedge",
+   "type": "1.8m_Hedge",
+   "param": "Show 1.2m_Hedge",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mulch Strip 1.2m/Visible",
+   "solid": "Mulch Strip 1.2m",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 1/Visible",
+   "solid": "Stem 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 2/Visible",
+   "solid": "Stem 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 3/Visible",
+   "solid": "Stem 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 4/Visible",
+   "solid": "Stem 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 5/Visible",
+   "solid": "Stem 1.2m 5",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 6/Visible",
+   "solid": "Stem 1.2m 6",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 7/Visible",
+   "solid": "Stem 1.2m 7",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.2m 8/Visible",
+   "solid": "Stem 1.2m 8",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hedge Body 1.2m/Visible",
+   "solid": "Hedge Body 1.2m",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.2m 1/Visible",
+   "solid": "Lump Front Low 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.2m 2/Visible",
+   "solid": "Lump Front Low 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.2m 3/Visible",
+   "solid": "Lump Front Low 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.2m 4/Visible",
+   "solid": "Lump Front Low 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.2m 5/Visible",
+   "solid": "Lump Front Low 1.2m 5",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.2m 1/Visible",
+   "solid": "Lump Front High 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.2m 2/Visible",
+   "solid": "Lump Front High 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.2m 3/Visible",
+   "solid": "Lump Front High 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.2m 4/Visible",
+   "solid": "Lump Front High 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.2m 1/Visible",
+   "solid": "Lump Back Low 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.2m 2/Visible",
+   "solid": "Lump Back Low 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.2m 3/Visible",
+   "solid": "Lump Back Low 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.2m 4/Visible",
+   "solid": "Lump Back Low 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.2m 1/Visible",
+   "solid": "Lump Back High 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.2m 2/Visible",
+   "solid": "Lump Back High 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.2m 3/Visible",
+   "solid": "Lump Back High 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.2m 4/Visible",
+   "solid": "Lump Back High 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.2m 5/Visible",
+   "solid": "Lump Back High 1.2m 5",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.2m 1/Visible",
+   "solid": "Top Lump 1.2m 1",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.2m 2/Visible",
+   "solid": "Top Lump 1.2m 2",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.2m 3/Visible",
+   "solid": "Top Lump 1.2m 3",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.2m 4/Visible",
+   "solid": "Top Lump 1.2m 4",
+   "param": "Show 1.2m_Hedge"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1.8m_Hedge",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.2m_Hedge/Show 1.8m_Hedge",
+   "type": "1.2m_Hedge",
+   "param": "Show 1.8m_Hedge",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.8m_Hedge/Show 1.8m_Hedge",
+   "type": "1.8m_Hedge",
+   "param": "Show 1.8m_Hedge",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mulch Strip 1.8m/Visible",
+   "solid": "Mulch Strip 1.8m",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 1/Visible",
+   "solid": "Stem 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 2/Visible",
+   "solid": "Stem 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 3/Visible",
+   "solid": "Stem 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 4/Visible",
+   "solid": "Stem 1.8m 4",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 5/Visible",
+   "solid": "Stem 1.8m 5",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 6/Visible",
+   "solid": "Stem 1.8m 6",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 7/Visible",
+   "solid": "Stem 1.8m 7",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Stem 1.8m 8/Visible",
+   "solid": "Stem 1.8m 8",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hedge Body 1.8m/Visible",
+   "solid": "Hedge Body 1.8m",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.8m 1/Visible",
+   "solid": "Lump Front Low 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.8m 2/Visible",
+   "solid": "Lump Front Low 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.8m 3/Visible",
+   "solid": "Lump Front Low 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.8m 4/Visible",
+   "solid": "Lump Front Low 1.8m 4",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front Low 1.8m 5/Visible",
+   "solid": "Lump Front Low 1.8m 5",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.8m 1/Visible",
+   "solid": "Lump Front High 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.8m 2/Visible",
+   "solid": "Lump Front High 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.8m 3/Visible",
+   "solid": "Lump Front High 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Front High 1.8m 4/Visible",
+   "solid": "Lump Front High 1.8m 4",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.8m 1/Visible",
+   "solid": "Lump Back Low 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.8m 2/Visible",
+   "solid": "Lump Back Low 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.8m 3/Visible",
+   "solid": "Lump Back Low 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back Low 1.8m 4/Visible",
+   "solid": "Lump Back Low 1.8m 4",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.8m 1/Visible",
+   "solid": "Lump Back High 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.8m 2/Visible",
+   "solid": "Lump Back High 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.8m 3/Visible",
+   "solid": "Lump Back High 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.8m 4/Visible",
+   "solid": "Lump Back High 1.8m 4",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lump Back High 1.8m 5/Visible",
+   "solid": "Lump Back High 1.8m 5",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.8m 1/Visible",
+   "solid": "Top Lump 1.8m 1",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.8m 2/Visible",
+   "solid": "Top Lump 1.8m 2",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.8m 3/Visible",
+   "solid": "Top Lump 1.8m 3",
+   "param": "Show 1.8m_Hedge"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Lump 1.8m 4/Visible",
+   "solid": "Top Lump 1.8m 4",
+   "param": "Show 1.8m_Hedge"
   },
   {
    "op": "set_type_image",

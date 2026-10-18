@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_ToiletCubicle_HPL",
  "template": "Metric Generic Model.rft",
- "about": "Cubicle modelled as a generic product: HPL side panels and pilasters on stainless feet, door with rising hinges, indicator bolt and knob, round aluminium head rail with returns to the wall, wall channels, coat hook; a WC pan shows the use (the pan is a separate plumbing fixture in the project). Back wall at y = 0. The 1000 x 1700 type shares the 900 x 1500 geometry. Reference: query: toilet cubicle hpl specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=toilet+cubicle+hpl+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Cubicle modelled as a generic product: HPL side panels and pilasters on stainless feet, door with rising hinges, indicator bolt and knob, round aluminium head rail with returns to the wall, wall channels, coat hook; a WC pan shows the use (the pan is a separate plumbing fixture in the project). Back wall at y = 0. Each type has its own panels, door and rail (Show parameters); the WC is shared. Reference: query: toilet cubicle hpl specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=toilet+cubicle+hpl+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.commercialwashroomsltd.co.uk/flush-fronted-hpl-toilet-cubicles-30mm-thick.html; photo_title: Flush Fronted HPL Toilet Cubicles (30mm); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -85,6 +391,34 @@
    "value": "J.CUB_00"
   },
   {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/FMC_Code_Description",
+   "type": "900x1500_HPL",
+   "param": "FMC_Code_Description",
+   "value": "ToiletCubicle HPL: 12 mm compact HPL cubicle, indicator bolt"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/FMC_Code_Group",
+   "type": "900x1500_HPL",
+   "param": "FMC_Code_Group",
+   "value": "J.CUB"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/FMC_Role_Code",
+   "type": "900x1500_HPL",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/URL",
+   "type": "900x1500_HPL",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/flush-fronted-hpl-toilet-cubicles-30mm-thick.html"
+  },
+  {
    "op": "add_type",
    "name": "1000x1700_HPL"
   },
@@ -129,6 +463,34 @@
    "type": "1000x1700_HPL",
    "param": "FMC_Keynote_Code",
    "value": "J.CUB_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/FMC_Code_Description",
+   "type": "1000x1700_HPL",
+   "param": "FMC_Code_Description",
+   "value": "ToiletCubicle HPL: 12 mm compact HPL cubicle, indicator bolt"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/FMC_Code_Group",
+   "type": "1000x1700_HPL",
+   "param": "FMC_Code_Group",
+   "value": "J.CUB"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/FMC_Role_Code",
+   "type": "1000x1700_HPL",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/URL",
+   "type": "1000x1700_HPL",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/flush-fronted-hpl-toilet-cubicles-30mm-thick.html"
   },
   {
    "op": "add_subcategory",
@@ -334,19 +696,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -470.0,
-     -1563
+     -520.0,
+     -1763
     ],
     [
-     470.0,
-     -1563
+     520.0,
+     -1763
     ],
     [
-     470.0,
+     520.0,
      0
     ],
     [
-     -470.0,
+     -520.0,
      0
     ]
    ],
@@ -367,7 +729,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Side Panel 1",
+   "name": "Side Panel 900 1",
    "points": [
     [
      -450.0,
@@ -391,24 +753,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Side Panel 1",
+   "name": "Side Panel 900 1",
    "subcategory": "Hpl"
   },
   {
    "op": "set_material_param",
-   "name": "Side Panel 1",
+   "name": "Side Panel 900 1",
    "param": "Hpl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Side Panel 1",
+   "name": "Side Panel 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Side Panel 2",
+   "name": "Side Panel 900 2",
    "points": [
     [
      437.0,
@@ -432,24 +794,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Side Panel 2",
+   "name": "Side Panel 900 2",
    "subcategory": "Hpl"
   },
   {
    "op": "set_material_param",
-   "name": "Side Panel 2",
+   "name": "Side Panel 900 2",
    "param": "Hpl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Side Panel 2",
+   "name": "Side Panel 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Channel",
+   "name": "Wall Channel 900",
    "points": [
     [
      -470.0,
@@ -473,24 +835,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Channel",
+   "name": "Wall Channel 900",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Channel",
+   "name": "Wall Channel 900",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Channel",
+   "name": "Wall Channel 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Channel Right",
+   "name": "Wall Channel Right 900",
    "points": [
     [
      450.0,
@@ -514,24 +876,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Channel Right",
+   "name": "Wall Channel Right 900",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Channel Right",
+   "name": "Wall Channel Right 900",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Channel Right",
+   "name": "Wall Channel Right 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pilaster Left",
+   "name": "Pilaster Left 900",
    "points": [
     [
      -450.0,
@@ -555,24 +917,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pilaster Left",
+   "name": "Pilaster Left 900",
    "subcategory": "Hpl"
   },
   {
    "op": "set_material_param",
-   "name": "Pilaster Left",
+   "name": "Pilaster Left 900",
    "param": "Hpl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pilaster Left",
+   "name": "Pilaster Left 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pilaster Right",
+   "name": "Pilaster Right 900",
    "points": [
     [
      300.0,
@@ -596,24 +958,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pilaster Right",
+   "name": "Pilaster Right 900",
    "subcategory": "Hpl"
   },
   {
    "op": "set_material_param",
-   "name": "Pilaster Right",
+   "name": "Pilaster Right 900",
    "param": "Hpl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pilaster Right",
+   "name": "Pilaster Right 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Leaf",
+   "name": "Door Leaf 900",
    "points": [
     [
      291.0,
@@ -702,24 +1064,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Leaf",
+   "name": "Door Leaf 900",
    "subcategory": "Hpl"
   },
   {
    "op": "set_material_param",
-   "name": "Door Leaf",
+   "name": "Door Leaf 900",
    "param": "Hpl Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Leaf",
+   "name": "Door Leaf 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Head Rail",
+   "name": "Head Rail 900",
    "points": [
     [
      -1487.0,
@@ -824,24 +1186,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Head Rail",
+   "name": "Head Rail 900",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Head Rail",
+   "name": "Head Rail 900",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Head Rail",
+   "name": "Head Rail 900",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Head Rail Return 1",
+   "name": "Head Rail Return 900 1",
    "points": [
     [
      -424.0,
@@ -946,24 +1308,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Head Rail Return 1",
+   "name": "Head Rail Return 900 1",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Head Rail Return 1",
+   "name": "Head Rail Return 900 1",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Head Rail Return 1",
+   "name": "Head Rail Return 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Head Rail Return 2",
+   "name": "Head Rail Return 900 2",
    "points": [
     [
      464.0,
@@ -1068,24 +1430,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Head Rail Return 2",
+   "name": "Head Rail Return 900 2",
    "subcategory": "Alu"
   },
   {
    "op": "set_material_param",
-   "name": "Head Rail Return 2",
+   "name": "Head Rail Return 900 2",
    "param": "Alu Material"
   },
   {
    "op": "set_visibility",
-   "name": "Head Rail Return 2",
+   "name": "Head Rail Return 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Foot 1",
+   "name": "Pedestal Foot 900 1",
    "points": [
     [
      -357.0,
@@ -1189,24 +1551,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Foot 1",
+   "name": "Pedestal Foot 900 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Foot 1",
+   "name": "Pedestal Foot 900 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Foot 1",
+   "name": "Pedestal Foot 900 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pedestal Foot 2",
+   "name": "Pedestal Foot 900 2",
    "points": [
     [
      393.0,
@@ -1310,24 +1672,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pedestal Foot 2",
+   "name": "Pedestal Foot 900 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Pedestal Foot 2",
+   "name": "Pedestal Foot 900 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pedestal Foot 2",
+   "name": "Pedestal Foot 900 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Shroud 1",
+   "name": "Foot Shroud 900 1",
    "points": [
     [
      -349.0,
@@ -1431,24 +1793,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Shroud 1",
+   "name": "Foot Shroud 900 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Shroud 1",
+   "name": "Foot Shroud 900 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Shroud 1",
+   "name": "Foot Shroud 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Foot Shroud 2",
+   "name": "Foot Shroud 900 2",
    "points": [
     [
      401.0,
@@ -1552,24 +1914,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Foot Shroud 2",
+   "name": "Foot Shroud 900 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Foot Shroud 2",
+   "name": "Foot Shroud 900 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Foot Shroud 2",
+   "name": "Foot Shroud 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Side Foot 1",
+   "name": "Side Foot 900 1",
    "points": [
     [
      -428.0,
@@ -1673,24 +2035,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Side Foot 1",
+   "name": "Side Foot 900 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Side Foot 1",
+   "name": "Side Foot 900 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Side Foot 1",
+   "name": "Side Foot 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Side Foot 2",
+   "name": "Side Foot 900 2",
    "points": [
     [
      460.0,
@@ -1794,24 +2156,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Side Foot 2",
+   "name": "Side Foot 900 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Side Foot 2",
+   "name": "Side Foot 900 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Side Foot 2",
+   "name": "Side Foot 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hinge 1",
+   "name": "Hinge 900 1",
    "points": [
     [
      294.0,
@@ -1835,24 +2197,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hinge 1",
+   "name": "Hinge 900 1",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Hinge 1",
+   "name": "Hinge 900 1",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hinge 1",
+   "name": "Hinge 900 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hinge 2",
+   "name": "Hinge 900 2",
    "points": [
     [
      294.0,
@@ -1876,24 +2238,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hinge 2",
+   "name": "Hinge 900 2",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Hinge 2",
+   "name": "Hinge 900 2",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hinge 2",
+   "name": "Hinge 900 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hinge 3",
+   "name": "Hinge 900 3",
    "points": [
     [
      294.0,
@@ -1917,24 +2279,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hinge 3",
+   "name": "Hinge 900 3",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Hinge 3",
+   "name": "Hinge 900 3",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hinge 3",
+   "name": "Hinge 900 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Bolt",
+   "name": "Indicator Bolt 900",
    "points": [
     [
      -218.0,
@@ -2023,24 +2385,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Bolt",
+   "name": "Indicator Bolt 900",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Bolt",
+   "name": "Indicator Bolt 900",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Bolt",
+   "name": "Indicator Bolt 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Indicator Window",
+   "name": "Indicator Window 900",
    "points": [
     [
      -229.0,
@@ -2129,24 +2491,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Indicator Window",
+   "name": "Indicator Window 900",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Indicator Window",
+   "name": "Indicator Window 900",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Indicator Window",
+   "name": "Indicator Window 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Knob",
+   "name": "Door Knob 900",
    "points": [
     [
      -226.0,
@@ -2251,24 +2613,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Knob",
+   "name": "Door Knob 900",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Door Knob",
+   "name": "Door Knob 900",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Knob",
+   "name": "Door Knob 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Coat Hook Plate",
+   "name": "Coat Hook Plate 900",
    "points": [
     [
      -226.0,
@@ -2357,24 +2719,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Coat Hook Plate",
+   "name": "Coat Hook Plate 900",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Coat Hook Plate",
+   "name": "Coat Hook Plate 900",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Coat Hook Plate",
+   "name": "Coat Hook Plate 900",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Sign",
+   "name": "Door Sign 900",
    "points": [
     [
      34.0,
@@ -2463,17 +2825,2130 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Sign",
+   "name": "Door Sign 900",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Door Sign",
+   "name": "Door Sign 900",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Sign",
+   "name": "Door Sign 900",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 1000 1",
+   "points": [
+    [
+     -500.0,
+     -1700
+    ],
+    [
+     -487.0,
+     -1700
+    ],
+    [
+     -487.0,
+     0
+    ],
+    [
+     -500.0,
+     0
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 1000 1",
+   "subcategory": "Hpl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 1000 1",
+   "param": "Hpl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 1000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Panel 1000 2",
+   "points": [
+    [
+     487.0,
+     -1700
+    ],
+    [
+     500.0,
+     -1700
+    ],
+    [
+     500.0,
+     0
+    ],
+    [
+     487.0,
+     0
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Panel 1000 2",
+   "subcategory": "Hpl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Panel 1000 2",
+   "param": "Hpl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Panel 1000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Channel 1000",
+   "points": [
+    [
+     -520.0,
+     -40
+    ],
+    [
+     -500.0,
+     -40
+    ],
+    [
+     -500.0,
+     0
+    ],
+    [
+     -520.0,
+     0
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Channel 1000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Channel 1000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Channel 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Channel Right 1000",
+   "points": [
+    [
+     500.0,
+     -40
+    ],
+    [
+     520.0,
+     -40
+    ],
+    [
+     520.0,
+     0
+    ],
+    [
+     500.0,
+     0
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Channel Right 1000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Channel Right 1000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Channel Right 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pilaster Left 1000",
+   "points": [
+    [
+     -500.0,
+     -1713
+    ],
+    [
+     -325.0,
+     -1713
+    ],
+    [
+     -325.0,
+     -1700
+    ],
+    [
+     -500.0,
+     -1700
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pilaster Left 1000",
+   "subcategory": "Hpl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pilaster Left 1000",
+   "param": "Hpl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pilaster Left 1000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pilaster Right 1000",
+   "points": [
+    [
+     325.0,
+     -1713
+    ],
+    [
+     500.0,
+     -1713
+    ],
+    [
+     500.0,
+     -1700
+    ],
+    [
+     325.0,
+     -1700
+    ]
+   ],
+   "start": 150,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pilaster Right 1000",
+   "subcategory": "Hpl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pilaster Right 1000",
+   "param": "Hpl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pilaster Right 1000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Leaf 1000",
+   "points": [
+    [
+     316.0,
+     170.0
+    ],
+    [
+     318.3,
+     170.46
+    ],
+    [
+     320.24,
+     171.76
+    ],
+    [
+     321.54,
+     173.7
+    ],
+    [
+     322.0,
+     176.0
+    ],
+    [
+     322.0,
+     1984.0
+    ],
+    [
+     321.54,
+     1986.3
+    ],
+    [
+     320.24,
+     1988.24
+    ],
+    [
+     318.3,
+     1989.54
+    ],
+    [
+     316.0,
+     1990.0
+    ],
+    [
+     -316.0,
+     1990.0
+    ],
+    [
+     -318.3,
+     1989.54
+    ],
+    [
+     -320.24,
+     1988.24
+    ],
+    [
+     -321.54,
+     1986.3
+    ],
+    [
+     -322.0,
+     1984.0
+    ],
+    [
+     -322.0,
+     176.0
+    ],
+    [
+     -321.54,
+     173.7
+    ],
+    [
+     -320.24,
+     171.76
+    ],
+    [
+     -318.3,
+     170.46
+    ],
+    [
+     -316.0,
+     170.0
+    ]
+   ],
+   "start": 1700,
+   "end": 1713,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Leaf 1000",
+   "subcategory": "Hpl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Leaf 1000",
+   "param": "Hpl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Leaf 1000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail 1000",
+   "points": [
+    [
+     -1687.0,
+     2020.0
+    ],
+    [
+     -1687.68,
+     2025.18
+    ],
+    [
+     -1689.68,
+     2030.0
+    ],
+    [
+     -1692.86,
+     2034.14
+    ],
+    [
+     -1697.0,
+     2037.32
+    ],
+    [
+     -1701.82,
+     2039.32
+    ],
+    [
+     -1707.0,
+     2040.0
+    ],
+    [
+     -1712.18,
+     2039.32
+    ],
+    [
+     -1717.0,
+     2037.32
+    ],
+    [
+     -1721.14,
+     2034.14
+    ],
+    [
+     -1724.32,
+     2030.0
+    ],
+    [
+     -1726.32,
+     2025.18
+    ],
+    [
+     -1727.0,
+     2020.0
+    ],
+    [
+     -1726.32,
+     2014.82
+    ],
+    [
+     -1724.32,
+     2010.0
+    ],
+    [
+     -1721.14,
+     2005.86
+    ],
+    [
+     -1717.0,
+     2002.68
+    ],
+    [
+     -1712.18,
+     2000.68
+    ],
+    [
+     -1707.0,
+     2000.0
+    ],
+    [
+     -1701.82,
+     2000.68
+    ],
+    [
+     -1697.0,
+     2002.68
+    ],
+    [
+     -1692.86,
+     2005.86
+    ],
+    [
+     -1689.68,
+     2010.0
+    ],
+    [
+     -1687.68,
+     2014.82
+    ]
+   ],
+   "start": -510.0,
+   "end": 510.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail 1000",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail 1000",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail 1000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Return 1000 1",
+   "points": [
+    [
+     -474.0,
+     2020.0
+    ],
+    [
+     -474.68,
+     2025.18
+    ],
+    [
+     -476.68,
+     2030.0
+    ],
+    [
+     -479.86,
+     2034.14
+    ],
+    [
+     -484.0,
+     2037.32
+    ],
+    [
+     -488.82,
+     2039.32
+    ],
+    [
+     -494.0,
+     2040.0
+    ],
+    [
+     -499.18,
+     2039.32
+    ],
+    [
+     -504.0,
+     2037.32
+    ],
+    [
+     -508.14,
+     2034.14
+    ],
+    [
+     -511.32,
+     2030.0
+    ],
+    [
+     -513.32,
+     2025.18
+    ],
+    [
+     -514.0,
+     2020.0
+    ],
+    [
+     -513.32,
+     2014.82
+    ],
+    [
+     -511.32,
+     2010.0
+    ],
+    [
+     -508.14,
+     2005.86
+    ],
+    [
+     -504.0,
+     2002.68
+    ],
+    [
+     -499.18,
+     2000.68
+    ],
+    [
+     -494.0,
+     2000.0
+    ],
+    [
+     -488.82,
+     2000.68
+    ],
+    [
+     -484.0,
+     2002.68
+    ],
+    [
+     -479.86,
+     2005.86
+    ],
+    [
+     -476.68,
+     2010.0
+    ],
+    [
+     -474.68,
+     2014.82
+    ]
+   ],
+   "start": 20,
+   "end": 1707,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Return 1000 1",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Return 1000 1",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Return 1000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Rail Return 1000 2",
+   "points": [
+    [
+     514.0,
+     2020.0
+    ],
+    [
+     513.32,
+     2025.18
+    ],
+    [
+     511.32,
+     2030.0
+    ],
+    [
+     508.14,
+     2034.14
+    ],
+    [
+     504.0,
+     2037.32
+    ],
+    [
+     499.18,
+     2039.32
+    ],
+    [
+     494.0,
+     2040.0
+    ],
+    [
+     488.82,
+     2039.32
+    ],
+    [
+     484.0,
+     2037.32
+    ],
+    [
+     479.86,
+     2034.14
+    ],
+    [
+     476.68,
+     2030.0
+    ],
+    [
+     474.68,
+     2025.18
+    ],
+    [
+     474.0,
+     2020.0
+    ],
+    [
+     474.68,
+     2014.82
+    ],
+    [
+     476.68,
+     2010.0
+    ],
+    [
+     479.86,
+     2005.86
+    ],
+    [
+     484.0,
+     2002.68
+    ],
+    [
+     488.82,
+     2000.68
+    ],
+    [
+     494.0,
+     2000.0
+    ],
+    [
+     499.18,
+     2000.68
+    ],
+    [
+     504.0,
+     2002.68
+    ],
+    [
+     508.14,
+     2005.86
+    ],
+    [
+     511.32,
+     2010.0
+    ],
+    [
+     513.32,
+     2014.82
+    ]
+   ],
+   "start": 20,
+   "end": 1707,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Rail Return 1000 2",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Rail Return 1000 2",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Rail Return 1000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Foot 1000 1",
+   "points": [
+    [
+     -394.5,
+     -1706.0
+    ],
+    [
+     -395.11,
+     -1701.34
+    ],
+    [
+     -396.91,
+     -1697.0
+    ],
+    [
+     -399.77,
+     -1693.27
+    ],
+    [
+     -403.5,
+     -1690.41
+    ],
+    [
+     -407.84,
+     -1688.61
+    ],
+    [
+     -412.5,
+     -1688.0
+    ],
+    [
+     -417.16,
+     -1688.61
+    ],
+    [
+     -421.5,
+     -1690.41
+    ],
+    [
+     -425.23,
+     -1693.27
+    ],
+    [
+     -428.09,
+     -1697.0
+    ],
+    [
+     -429.89,
+     -1701.34
+    ],
+    [
+     -430.5,
+     -1706.0
+    ],
+    [
+     -429.89,
+     -1710.66
+    ],
+    [
+     -428.09,
+     -1715.0
+    ],
+    [
+     -425.23,
+     -1718.73
+    ],
+    [
+     -421.5,
+     -1721.59
+    ],
+    [
+     -417.16,
+     -1723.39
+    ],
+    [
+     -412.5,
+     -1724.0
+    ],
+    [
+     -407.84,
+     -1723.39
+    ],
+    [
+     -403.5,
+     -1721.59
+    ],
+    [
+     -399.77,
+     -1718.73
+    ],
+    [
+     -396.91,
+     -1715.0
+    ],
+    [
+     -395.11,
+     -1710.66
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Foot 1000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Foot 1000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Foot 1000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pedestal Foot 1000 2",
+   "points": [
+    [
+     430.5,
+     -1706.0
+    ],
+    [
+     429.89,
+     -1701.34
+    ],
+    [
+     428.09,
+     -1697.0
+    ],
+    [
+     425.23,
+     -1693.27
+    ],
+    [
+     421.5,
+     -1690.41
+    ],
+    [
+     417.16,
+     -1688.61
+    ],
+    [
+     412.5,
+     -1688.0
+    ],
+    [
+     407.84,
+     -1688.61
+    ],
+    [
+     403.5,
+     -1690.41
+    ],
+    [
+     399.77,
+     -1693.27
+    ],
+    [
+     396.91,
+     -1697.0
+    ],
+    [
+     395.11,
+     -1701.34
+    ],
+    [
+     394.5,
+     -1706.0
+    ],
+    [
+     395.11,
+     -1710.66
+    ],
+    [
+     396.91,
+     -1715.0
+    ],
+    [
+     399.77,
+     -1718.73
+    ],
+    [
+     403.5,
+     -1721.59
+    ],
+    [
+     407.84,
+     -1723.39
+    ],
+    [
+     412.5,
+     -1724.0
+    ],
+    [
+     417.16,
+     -1723.39
+    ],
+    [
+     421.5,
+     -1721.59
+    ],
+    [
+     425.23,
+     -1718.73
+    ],
+    [
+     428.09,
+     -1715.0
+    ],
+    [
+     429.89,
+     -1710.66
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pedestal Foot 1000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pedestal Foot 1000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pedestal Foot 1000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Shroud 1000 1",
+   "points": [
+    [
+     -386.5,
+     -1706.0
+    ],
+    [
+     -387.39,
+     -1699.27
+    ],
+    [
+     -389.98,
+     -1693.0
+    ],
+    [
+     -394.12,
+     -1687.62
+    ],
+    [
+     -399.5,
+     -1683.48
+    ],
+    [
+     -405.77,
+     -1680.89
+    ],
+    [
+     -412.5,
+     -1680.0
+    ],
+    [
+     -419.23,
+     -1680.89
+    ],
+    [
+     -425.5,
+     -1683.48
+    ],
+    [
+     -430.88,
+     -1687.62
+    ],
+    [
+     -435.02,
+     -1693.0
+    ],
+    [
+     -437.61,
+     -1699.27
+    ],
+    [
+     -438.5,
+     -1706.0
+    ],
+    [
+     -437.61,
+     -1712.73
+    ],
+    [
+     -435.02,
+     -1719.0
+    ],
+    [
+     -430.88,
+     -1724.38
+    ],
+    [
+     -425.5,
+     -1728.52
+    ],
+    [
+     -419.23,
+     -1731.11
+    ],
+    [
+     -412.5,
+     -1732.0
+    ],
+    [
+     -405.77,
+     -1731.11
+    ],
+    [
+     -399.5,
+     -1728.52
+    ],
+    [
+     -394.12,
+     -1724.38
+    ],
+    [
+     -389.98,
+     -1719.0
+    ],
+    [
+     -387.39,
+     -1712.73
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Shroud 1000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Shroud 1000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Shroud 1000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Foot Shroud 1000 2",
+   "points": [
+    [
+     438.5,
+     -1706.0
+    ],
+    [
+     437.61,
+     -1699.27
+    ],
+    [
+     435.02,
+     -1693.0
+    ],
+    [
+     430.88,
+     -1687.62
+    ],
+    [
+     425.5,
+     -1683.48
+    ],
+    [
+     419.23,
+     -1680.89
+    ],
+    [
+     412.5,
+     -1680.0
+    ],
+    [
+     405.77,
+     -1680.89
+    ],
+    [
+     399.5,
+     -1683.48
+    ],
+    [
+     394.12,
+     -1687.62
+    ],
+    [
+     389.98,
+     -1693.0
+    ],
+    [
+     387.39,
+     -1699.27
+    ],
+    [
+     386.5,
+     -1706.0
+    ],
+    [
+     387.39,
+     -1712.73
+    ],
+    [
+     389.98,
+     -1719.0
+    ],
+    [
+     394.12,
+     -1724.38
+    ],
+    [
+     399.5,
+     -1728.52
+    ],
+    [
+     405.77,
+     -1731.11
+    ],
+    [
+     412.5,
+     -1732.0
+    ],
+    [
+     419.23,
+     -1731.11
+    ],
+    [
+     425.5,
+     -1728.52
+    ],
+    [
+     430.88,
+     -1724.38
+    ],
+    [
+     435.02,
+     -1719.0
+    ],
+    [
+     437.61,
+     -1712.73
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Foot Shroud 1000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Foot Shroud 1000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Foot Shroud 1000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Foot 1000 1",
+   "points": [
+    [
+     -478.0,
+     -1640.0
+    ],
+    [
+     -478.55,
+     -1635.86
+    ],
+    [
+     -480.14,
+     -1632.0
+    ],
+    [
+     -482.69,
+     -1628.69
+    ],
+    [
+     -486.0,
+     -1626.14
+    ],
+    [
+     -489.86,
+     -1624.55
+    ],
+    [
+     -494.0,
+     -1624.0
+    ],
+    [
+     -498.14,
+     -1624.55
+    ],
+    [
+     -502.0,
+     -1626.14
+    ],
+    [
+     -505.31,
+     -1628.69
+    ],
+    [
+     -507.86,
+     -1632.0
+    ],
+    [
+     -509.45,
+     -1635.86
+    ],
+    [
+     -510.0,
+     -1640.0
+    ],
+    [
+     -509.45,
+     -1644.14
+    ],
+    [
+     -507.86,
+     -1648.0
+    ],
+    [
+     -505.31,
+     -1651.31
+    ],
+    [
+     -502.0,
+     -1653.86
+    ],
+    [
+     -498.14,
+     -1655.45
+    ],
+    [
+     -494.0,
+     -1656.0
+    ],
+    [
+     -489.86,
+     -1655.45
+    ],
+    [
+     -486.0,
+     -1653.86
+    ],
+    [
+     -482.69,
+     -1651.31
+    ],
+    [
+     -480.14,
+     -1648.0
+    ],
+    [
+     -478.55,
+     -1644.14
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Foot 1000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Foot 1000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Foot 1000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Side Foot 1000 2",
+   "points": [
+    [
+     510.0,
+     -1640.0
+    ],
+    [
+     509.45,
+     -1635.86
+    ],
+    [
+     507.86,
+     -1632.0
+    ],
+    [
+     505.31,
+     -1628.69
+    ],
+    [
+     502.0,
+     -1626.14
+    ],
+    [
+     498.14,
+     -1624.55
+    ],
+    [
+     494.0,
+     -1624.0
+    ],
+    [
+     489.86,
+     -1624.55
+    ],
+    [
+     486.0,
+     -1626.14
+    ],
+    [
+     482.69,
+     -1628.69
+    ],
+    [
+     480.14,
+     -1632.0
+    ],
+    [
+     478.55,
+     -1635.86
+    ],
+    [
+     478.0,
+     -1640.0
+    ],
+    [
+     478.55,
+     -1644.14
+    ],
+    [
+     480.14,
+     -1648.0
+    ],
+    [
+     482.69,
+     -1651.31
+    ],
+    [
+     486.0,
+     -1653.86
+    ],
+    [
+     489.86,
+     -1655.45
+    ],
+    [
+     494.0,
+     -1656.0
+    ],
+    [
+     498.14,
+     -1655.45
+    ],
+    [
+     502.0,
+     -1653.86
+    ],
+    [
+     505.31,
+     -1651.31
+    ],
+    [
+     507.86,
+     -1648.0
+    ],
+    [
+     509.45,
+     -1644.14
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Side Foot 1000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Side Foot 1000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Side Foot 1000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1000 1",
+   "points": [
+    [
+     319.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1698
+    ],
+    [
+     319.0,
+     -1698
+    ]
+   ],
+   "start": 1800,
+   "end": 1900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1000 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1000 2",
+   "points": [
+    [
+     319.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1698
+    ],
+    [
+     319.0,
+     -1698
+    ]
+   ],
+   "start": 1000,
+   "end": 1100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1000 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1000 3",
+   "points": [
+    [
+     319.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1717
+    ],
+    [
+     331.0,
+     -1698
+    ],
+    [
+     319.0,
+     -1698
+    ]
+   ],
+   "start": 200,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1000 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1000 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1000 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Indicator Bolt 1000",
+   "points": [
+    [
+     -243.0,
+     1000.0
+    ],
+    [
+     -239.94,
+     1000.61
+    ],
+    [
+     -237.34,
+     1002.34
+    ],
+    [
+     -235.61,
+     1004.94
+    ],
+    [
+     -235.0,
+     1008.0
+    ],
+    [
+     -235.0,
+     1052.0
+    ],
+    [
+     -235.61,
+     1055.06
+    ],
+    [
+     -237.34,
+     1057.66
+    ],
+    [
+     -239.94,
+     1059.39
+    ],
+    [
+     -243.0,
+     1060.0
+    ],
+    [
+     -287.0,
+     1060.0
+    ],
+    [
+     -290.06,
+     1059.39
+    ],
+    [
+     -292.66,
+     1057.66
+    ],
+    [
+     -294.39,
+     1055.06
+    ],
+    [
+     -295.0,
+     1052.0
+    ],
+    [
+     -295.0,
+     1008.0
+    ],
+    [
+     -294.39,
+     1004.94
+    ],
+    [
+     -292.66,
+     1002.34
+    ],
+    [
+     -290.06,
+     1000.61
+    ],
+    [
+     -287.0,
+     1000.0
+    ]
+   ],
+   "start": 1713,
+   "end": 1719,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Indicator Bolt 1000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Indicator Bolt 1000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Indicator Bolt 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Indicator Window 1000",
+   "points": [
+    [
+     -254.0,
+     1018.0
+    ],
+    [
+     -252.47,
+     1018.3
+    ],
+    [
+     -251.17,
+     1019.17
+    ],
+    [
+     -250.3,
+     1020.47
+    ],
+    [
+     -250.0,
+     1022.0
+    ],
+    [
+     -250.0,
+     1038.0
+    ],
+    [
+     -250.3,
+     1039.53
+    ],
+    [
+     -251.17,
+     1040.83
+    ],
+    [
+     -252.47,
+     1041.7
+    ],
+    [
+     -254.0,
+     1042.0
+    ],
+    [
+     -276.0,
+     1042.0
+    ],
+    [
+     -277.53,
+     1041.7
+    ],
+    [
+     -278.83,
+     1040.83
+    ],
+    [
+     -279.7,
+     1039.53
+    ],
+    [
+     -280.0,
+     1038.0
+    ],
+    [
+     -280.0,
+     1022.0
+    ],
+    [
+     -279.7,
+     1020.47
+    ],
+    [
+     -278.83,
+     1019.17
+    ],
+    [
+     -277.53,
+     1018.3
+    ],
+    [
+     -276.0,
+     1018.0
+    ]
+   ],
+   "start": 1719,
+   "end": 1720,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Indicator Window 1000",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Indicator Window 1000",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Indicator Window 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Knob 1000",
+   "points": [
+    [
+     -251.0,
+     960.0
+    ],
+    [
+     -251.48,
+     963.62
+    ],
+    [
+     -252.88,
+     967.0
+    ],
+    [
+     -255.1,
+     969.9
+    ],
+    [
+     -258.0,
+     972.12
+    ],
+    [
+     -261.38,
+     973.52
+    ],
+    [
+     -265.0,
+     974.0
+    ],
+    [
+     -268.62,
+     973.52
+    ],
+    [
+     -272.0,
+     972.12
+    ],
+    [
+     -274.9,
+     969.9
+    ],
+    [
+     -277.12,
+     967.0
+    ],
+    [
+     -278.52,
+     963.62
+    ],
+    [
+     -279.0,
+     960.0
+    ],
+    [
+     -278.52,
+     956.38
+    ],
+    [
+     -277.12,
+     953.0
+    ],
+    [
+     -274.9,
+     950.1
+    ],
+    [
+     -272.0,
+     947.88
+    ],
+    [
+     -268.62,
+     946.48
+    ],
+    [
+     -265.0,
+     946.0
+    ],
+    [
+     -261.38,
+     946.48
+    ],
+    [
+     -258.0,
+     947.88
+    ],
+    [
+     -255.1,
+     950.1
+    ],
+    [
+     -252.88,
+     953.0
+    ],
+    [
+     -251.48,
+     956.38
+    ]
+   ],
+   "start": 1713,
+   "end": 1763,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Knob 1000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Knob 1000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Knob 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Coat Hook Plate 1000",
+   "points": [
+    [
+     -251.0,
+     1700.0
+    ],
+    [
+     -248.7,
+     1700.46
+    ],
+    [
+     -246.76,
+     1701.76
+    ],
+    [
+     -245.46,
+     1703.7
+    ],
+    [
+     -245.0,
+     1706.0
+    ],
+    [
+     -245.0,
+     1734.0
+    ],
+    [
+     -245.46,
+     1736.3
+    ],
+    [
+     -246.76,
+     1738.24
+    ],
+    [
+     -248.7,
+     1739.54
+    ],
+    [
+     -251.0,
+     1740.0
+    ],
+    [
+     -279.0,
+     1740.0
+    ],
+    [
+     -281.3,
+     1739.54
+    ],
+    [
+     -283.24,
+     1738.24
+    ],
+    [
+     -284.54,
+     1736.3
+    ],
+    [
+     -285.0,
+     1734.0
+    ],
+    [
+     -285.0,
+     1706.0
+    ],
+    [
+     -284.54,
+     1703.7
+    ],
+    [
+     -283.24,
+     1701.76
+    ],
+    [
+     -281.3,
+     1700.46
+    ],
+    [
+     -279.0,
+     1700.0
+    ]
+   ],
+   "start": 1694,
+   "end": 1699,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coat Hook Plate 1000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coat Hook Plate 1000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coat Hook Plate 1000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Sign 1000",
+   "points": [
+    [
+     34.0,
+     1500.0
+    ],
+    [
+     36.3,
+     1500.46
+    ],
+    [
+     38.24,
+     1501.76
+    ],
+    [
+     39.54,
+     1503.7
+    ],
+    [
+     40.0,
+     1506.0
+    ],
+    [
+     40.0,
+     1574.0
+    ],
+    [
+     39.54,
+     1576.3
+    ],
+    [
+     38.24,
+     1578.24
+    ],
+    [
+     36.3,
+     1579.54
+    ],
+    [
+     34.0,
+     1580.0
+    ],
+    [
+     -34.0,
+     1580.0
+    ],
+    [
+     -36.3,
+     1579.54
+    ],
+    [
+     -38.24,
+     1578.24
+    ],
+    [
+     -39.54,
+     1576.3
+    ],
+    [
+     -40.0,
+     1574.0
+    ],
+    [
+     -40.0,
+     1506.0
+    ],
+    [
+     -39.54,
+     1503.7
+    ],
+    [
+     -38.24,
+     1501.76
+    ],
+    [
+     -36.3,
+     1500.46
+    ],
+    [
+     -34.0,
+     1500.0
+    ]
+   ],
+   "start": 1714,
+   "end": 1716,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Sign 1000",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Sign 1000",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Sign 1000",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -3337,14 +5812,342 @@
    "fine": true
   },
   {
+   "op": "add_family_param",
+   "name": "Show 900x1500_HPL",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/Show 900x1500_HPL",
+   "type": "900x1500_HPL",
+   "param": "Show 900x1500_HPL",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/Show 900x1500_HPL",
+   "type": "1000x1700_HPL",
+   "param": "Show 900x1500_HPL",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 900 1/Visible",
+   "solid": "Side Panel 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 900 2/Visible",
+   "solid": "Side Panel 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Channel 900/Visible",
+   "solid": "Wall Channel 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Channel Right 900/Visible",
+   "solid": "Wall Channel Right 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pilaster Left 900/Visible",
+   "solid": "Pilaster Left 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pilaster Right 900/Visible",
+   "solid": "Pilaster Right 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Leaf 900/Visible",
+   "solid": "Door Leaf 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail 900/Visible",
+   "solid": "Head Rail 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail Return 900 1/Visible",
+   "solid": "Head Rail Return 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail Return 900 2/Visible",
+   "solid": "Head Rail Return 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Foot 900 1/Visible",
+   "solid": "Pedestal Foot 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Foot 900 2/Visible",
+   "solid": "Pedestal Foot 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Shroud 900 1/Visible",
+   "solid": "Foot Shroud 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Shroud 900 2/Visible",
+   "solid": "Foot Shroud 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Foot 900 1/Visible",
+   "solid": "Side Foot 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Foot 900 2/Visible",
+   "solid": "Side Foot 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 900 1/Visible",
+   "solid": "Hinge 900 1",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 900 2/Visible",
+   "solid": "Hinge 900 2",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 900 3/Visible",
+   "solid": "Hinge 900 3",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Bolt 900/Visible",
+   "solid": "Indicator Bolt 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 900/Visible",
+   "solid": "Indicator Window 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Knob 900/Visible",
+   "solid": "Door Knob 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Coat Hook Plate 900/Visible",
+   "solid": "Coat Hook Plate 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Sign 900/Visible",
+   "solid": "Door Sign 900",
+   "param": "Show 900x1500_HPL"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1000x1700_HPL",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900x1500_HPL/Show 1000x1700_HPL",
+   "type": "900x1500_HPL",
+   "param": "Show 1000x1700_HPL",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1000x1700_HPL/Show 1000x1700_HPL",
+   "type": "1000x1700_HPL",
+   "param": "Show 1000x1700_HPL",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 1000 1/Visible",
+   "solid": "Side Panel 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Panel 1000 2/Visible",
+   "solid": "Side Panel 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Channel 1000/Visible",
+   "solid": "Wall Channel 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Channel Right 1000/Visible",
+   "solid": "Wall Channel Right 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pilaster Left 1000/Visible",
+   "solid": "Pilaster Left 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pilaster Right 1000/Visible",
+   "solid": "Pilaster Right 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Leaf 1000/Visible",
+   "solid": "Door Leaf 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail 1000/Visible",
+   "solid": "Head Rail 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail Return 1000 1/Visible",
+   "solid": "Head Rail Return 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Rail Return 1000 2/Visible",
+   "solid": "Head Rail Return 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Foot 1000 1/Visible",
+   "solid": "Pedestal Foot 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pedestal Foot 1000 2/Visible",
+   "solid": "Pedestal Foot 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Shroud 1000 1/Visible",
+   "solid": "Foot Shroud 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Foot Shroud 1000 2/Visible",
+   "solid": "Foot Shroud 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Foot 1000 1/Visible",
+   "solid": "Side Foot 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Side Foot 1000 2/Visible",
+   "solid": "Side Foot 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1000 1/Visible",
+   "solid": "Hinge 1000 1",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1000 2/Visible",
+   "solid": "Hinge 1000 2",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hinge 1000 3/Visible",
+   "solid": "Hinge 1000 3",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Bolt 1000/Visible",
+   "solid": "Indicator Bolt 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Indicator Window 1000/Visible",
+   "solid": "Indicator Window 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Knob 1000/Visible",
+   "solid": "Door Knob 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Coat Hook Plate 1000/Visible",
+   "solid": "Coat Hook Plate 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Door Sign 1000/Visible",
+   "solid": "Door Sign 1000",
+   "param": "Show 1000x1700_HPL"
+  },
+  {
    "op": "set_type_image",
    "name": "Type image",
    "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_ToiletCubicle_HPL.png"
   }
  ],
  "values": {
-  "Cubicle 900 x 1500 mm, panels 2000 high on 150 feet": {
-   "value": "900x1500",
+  "Cubicle 900 x 1500 or 1000 x 1700 mm, panels 2000 high on 150 feet": {
+   "value": "900x1500/1000x1700",
    "source_status": "assumed",
    "source": "BS 6465-2 minimum activity space"
   },
@@ -3353,8 +6156,8 @@
    "source_status": "assumed",
    "source": "record note"
   },
-  "Door 600 mm, inward opening": {
-   "value": 600,
+  "Door 600 / 650 mm, inward opening": {
+   "value": "600/650",
    "source_status": "assumed",
    "source": "BS 6465-2"
   }

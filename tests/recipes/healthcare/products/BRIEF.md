@@ -90,3 +90,20 @@ Use `repeat` for rows of things. Keep each family at or below 70 parts.
 - The category mappings.
 - The materials you asked for.
 - Any family you think still looks weak.
+
+## Second pass (17 Oct, evening)
+1. **Materials:** the kit now has the materials you asked for (`batches/KIT_MATERIALS.txt`, 223 names). Switch your
+   stand-ins to them. Use `FMC_Plastic_EpoxyResin_Black` for epoxy worktops. Clearance solids need no material.
+2. **Per-type geometry:** a part may carry `"only": ["<type>", ...]`. It then shows only in those types, through a
+   Yes/No type parameter the compiler adds. Wherever your types differ in shape or size (L/U/straight, 2/3/4 piles,
+   1G/2G/3G, 5/6 kg, 600/1200 panels, 900/1000 doors), give each type its own parts. Leave shared parts without `only`.
+   Previews draw the first type; check the others by setting `prod['_render_type'] = '<type>'` before rendering.
+3. **Photos:** each record's `ref` now has a real product page in `ref['photo']`, and the compiler writes it to `URL`.
+   Rerun your script so the references are current.
+4. **Compiler changes, no action needed:**
+   - It adds every kit shared parameter bound to the category, and the keynote description and group.
+   - Ceiling categories are seen from below; ground items stay seen from above (`"view": "above"|"below"` overrides).
+   - Medical Equipment keeps only electrical connectors.
+   - Glass renders see-through, except materials named Display.
+5. **Finish:** rerun the whole batch, check the contact sheets once more, and report in 5 lines: what changed, and
+   which families now use `only`.

@@ -14,30 +14,35 @@
  ],
  "materials": {
   "painted_steel": "FMC_Metal_SteelLTZ_Painted",
-  "blue": "FMC_Plastic_ABS_Blue",
+  "motor_blue": "FMC_Metal_Steel_Painted_MotorBlue",
   "grey": "FMC_Plastic_ABS_Grey",
   "black": "FMC_Plastic_ABS_Black",
   "white": "FMC_Plastic_ABS_White",
   "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
   "copper": "FMC_Metal_Copper_Pipe",
   "galvanised": "FMC_Metal_GI_Pipe",
+  "blue": "FMC_Plastic_ABS_Blue",
   "stainless": "FMC_Metal_StainlessSteel_Brushed",
   "chrome": "FMC_Metal_Chrome_Polished",
   "epoxy_white": "FMC_Metal_Steel_EpoxyCoated_White",
+  "display": "FMC_Glass_Display_Black",
   "led_green": "FMC_Plastic_LED_Green",
-  "yellow": "FMC_Plastic_ABS_Yellow",
+  "led_amber": "FMC_Plastic_LED_Amber",
   "led_red": "FMC_Plastic_LED_Red",
+  "yellow": "FMC_Plastic_ABS_Yellow",
   "red": "FMC_Plastic_FireHoseReel_Red"
  },
  "reference": {
   "query": "medical gas oxygen plant psa mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+oxygen+plant+psa+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://supply.unicef.org/s0004054.html",
+  "photo_title": "UNICEF Supply Catalogue PSA oxygen plant",
+  "photo_kind": "supplier"
  },
  "parts": [
   {
-   "n": "Skid",
-   "shape": "box",
+   "n": "Skid 20m3h",
    "at": [
     -1600,
     -700,
@@ -46,11 +51,14 @@
     700,
     100
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Compressor Enclosure",
-   "shape": "box",
+   "n": "Compressor Enclosure 20m3h",
    "at": [
     -1550,
     -600,
@@ -59,12 +67,15 @@
     400,
     1400
    ],
-   "mat": "blue",
-   "r": 10
+   "mat": "motor_blue",
+   "r": 10,
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Compressor Louvre",
-   "shape": "fbox",
+   "n": "Compressor Louvre 20m3h",
    "at": [
     -1450,
     -606,
@@ -73,20 +84,23 @@
     -600,
     320
    ],
-   "mat": "grey",
    "lod": "f",
+   "mat": "grey",
    "repeat": {
-    "n": 8,
     "d": [
      0,
      0,
      50
-    ]
-   }
+    ],
+    "n": 8
+   },
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Compressor Panel",
-   "shape": "fbox",
+   "n": "Compressor Panel 20m3h",
    "at": [
     -1000,
     -606,
@@ -95,13 +109,16 @@
     -600,
     1300
    ],
+   "lod": "f",
    "mat": "black",
    "r": 4,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Refrigerant Dryer",
-   "shape": "box",
+   "n": "Refrigerant Dryer 20m3h",
    "at": [
     -450,
     -600,
@@ -111,11 +128,14 @@
     900
    ],
    "mat": "white",
-   "r": 8
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Dryer Louvre",
-   "shape": "fbox",
+   "n": "Dryer Louvre 20m3h",
    "at": [
     -400,
     -606,
@@ -124,70 +144,83 @@
     -600,
     500
    ],
+   "lod": "f",
    "mat": "grey",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Filter Housing",
-   "shape": "cyl",
+   "n": "Filter Housing 20m3h",
    "axis": "z",
    "c": [
     150,
     -450
    ],
-   "r": 50,
-   "z": [
-    500,
-    1000
-   ],
    "mat": "aluminium",
+   "r": 50,
    "repeat": {
-    "n": 3,
     "d": [
      130,
      0,
      0
-    ]
-   }
+    ],
+    "n": 3
+   },
+   "shape": "cyl",
+   "z": [
+    500,
+    1000
+   ],
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Air Header",
-   "shape": "cyl",
+   "n": "Air Header 20m3h",
    "axis": "x",
    "c": [
     -450,
     1050
    ],
+   "mat": "copper",
    "r": 20,
+   "shape": "cyl",
    "x": [
     -550,
     500
    ],
-   "mat": "copper"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Air Receiver Shell",
-   "shape": "cyl",
+   "n": "Air Receiver Shell 20m3h",
    "axis": "z",
    "c": [
     -150,
     300
    ],
+   "mat": "galvanised",
    "r": 280,
+   "shape": "cyl",
    "z": [
     198.0,
     1702.0
    ],
-   "mat": "galvanised"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Air Receiver Top Head",
-   "shape": "turn",
+   "n": "Air Receiver Top Head 20m3h",
    "axis": "z",
    "c": [
     -150,
     300
    ],
+   "mat": "galvanised",
    "profile": [
     [
      0,
@@ -210,16 +243,19 @@
      1800
     ]
    ],
-   "mat": "galvanised"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Air Receiver Bottom Head",
-   "shape": "turn",
+   "n": "Air Receiver Bottom Head 20m3h",
    "axis": "z",
    "c": [
     -150,
     300
    ],
+   "mat": "galvanised",
    "profile": [
     [
      0,
@@ -242,31 +278,37 @@
      198.0
     ]
    ],
-   "mat": "galvanised"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber A Shell",
-   "shape": "cyl",
+   "n": "Adsorber A Shell 20m3h",
    "axis": "z",
    "c": [
     650,
     200
    ],
+   "mat": "blue",
    "r": 230,
+   "shape": "cyl",
    "z": [
     180.5,
     2519.5
    ],
-   "mat": "blue"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber A Top Head",
-   "shape": "turn",
+   "n": "Adsorber A Top Head 20m3h",
    "axis": "z",
    "c": [
     650,
     200
    ],
+   "mat": "blue",
    "profile": [
     [
      0,
@@ -289,16 +331,19 @@
      2600
     ]
    ],
-   "mat": "blue"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber A Bottom Head",
-   "shape": "turn",
+   "n": "Adsorber A Bottom Head 20m3h",
    "axis": "z",
    "c": [
     650,
     200
    ],
+   "mat": "blue",
    "profile": [
     [
      0,
@@ -321,31 +366,37 @@
      180.5
     ]
    ],
-   "mat": "blue"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber B Shell",
-   "shape": "cyl",
+   "n": "Adsorber B Shell 20m3h",
    "axis": "z",
    "c": [
     1150,
     200
    ],
+   "mat": "blue",
    "r": 230,
+   "shape": "cyl",
    "z": [
     180.5,
     2519.5
    ],
-   "mat": "blue"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber B Top Head",
-   "shape": "turn",
+   "n": "Adsorber B Top Head 20m3h",
    "axis": "z",
    "c": [
     1150,
     200
    ],
+   "mat": "blue",
    "profile": [
     [
      0,
@@ -368,16 +419,19 @@
      2600
     ]
    ],
-   "mat": "blue"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Adsorber B Bottom Head",
-   "shape": "turn",
+   "n": "Adsorber B Bottom Head 20m3h",
    "axis": "z",
    "c": [
     1150,
     200
    ],
+   "mat": "blue",
    "profile": [
     [
      0,
@@ -400,31 +454,37 @@
      180.5
     ]
    ],
-   "mat": "blue"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Oxygen Receiver Shell",
-   "shape": "cyl",
+   "n": "Oxygen Receiver Shell 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "mat": "white",
    "r": 200,
+   "shape": "cyl",
    "z": [
     170.0,
     1630.0
    ],
-   "mat": "white"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Oxygen Receiver Top Head",
-   "shape": "turn",
+   "n": "Oxygen Receiver Top Head 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "mat": "white",
    "profile": [
     [
      0,
@@ -447,16 +507,19 @@
      1700
     ]
    ],
-   "mat": "white"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Oxygen Receiver Bottom Head",
-   "shape": "turn",
+   "n": "Oxygen Receiver Bottom Head 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "mat": "white",
    "profile": [
     [
      0,
@@ -479,16 +542,20 @@
      170.0
     ]
    ],
-   "mat": "white"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Oxygen Receiver Band",
-   "shape": "turn",
+   "n": "Oxygen Receiver Band 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "lod": "f",
+   "mat": "white",
    "profile": [
     [
      200,
@@ -507,47 +574,56 @@
      1120.0
     ]
    ],
-   "mat": "white",
-   "lod": "f"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Manifold",
-   "shape": "cyl",
+   "n": "Column Manifold 20m3h",
    "axis": "x",
    "c": [
     200,
     2450
    ],
+   "mat": "stainless",
    "r": 25,
+   "shape": "cyl",
    "x": [
     650,
     1150
    ],
-   "mat": "stainless"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Oxygen Outlet",
-   "shape": "cyl",
+   "n": "Oxygen Outlet 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "mat": "copper",
    "r": 14,
+   "shape": "cyl",
    "z": [
     1700,
     2000
    ],
-   "mat": "copper"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Outlet Band",
-   "shape": "turn",
+   "n": "Outlet Band 20m3h",
    "axis": "z",
    "c": [
     1350,
     -350
    ],
+   "lod": "f",
+   "mat": "white",
    "profile": [
     [
      14,
@@ -566,43 +642,50 @@
      1920
     ]
    ],
-   "mat": "white",
-   "lod": "f"
+   "shape": "turn",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge A Case",
-   "shape": "cyl",
+   "n": "Column Gauge A Case 20m3h",
    "axis": "y",
    "c": [
     650,
     1500
    ],
+   "mat": "chrome",
    "r": 45,
+   "shape": "cyl",
    "y": [
     -55,
     -30
    ],
-   "mat": "chrome"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge A Dial",
-   "shape": "cyl",
+   "n": "Column Gauge A Dial 20m3h",
    "axis": "y",
    "c": [
     650,
     1500
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 41,
+   "shape": "cyl",
    "y": [
     -57,
     -55
    ],
-   "mat": "white",
-   "lod": "f"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge A Needle",
-   "shape": "box",
+   "n": "Column Gauge A Needle 20m3h",
    "at": [
     648.5,
     -59,
@@ -611,43 +694,52 @@
     -57,
     1502
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge B Case",
-   "shape": "cyl",
+   "n": "Column Gauge B Case 20m3h",
    "axis": "y",
    "c": [
     1150,
     1500
    ],
+   "mat": "chrome",
    "r": 45,
+   "shape": "cyl",
    "y": [
     -55,
     -30
    ],
-   "mat": "chrome"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge B Dial",
-   "shape": "cyl",
+   "n": "Column Gauge B Dial 20m3h",
    "axis": "y",
    "c": [
     1150,
     1500
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 41,
+   "shape": "cyl",
    "y": [
     -57,
     -55
    ],
-   "mat": "white",
-   "lod": "f"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Column Gauge B Needle",
-   "shape": "box",
+   "n": "Column Gauge B Needle 20m3h",
    "at": [
     1148.5,
     -59,
@@ -656,12 +748,15 @@
     -57,
     1502
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Enclosure",
-   "shape": "box",
+   "n": "Control Panel Enclosure 20m3h",
    "at": [
     300,
     -650,
@@ -671,11 +766,14 @@
     1900
    ],
    "mat": "epoxy_white",
-   "r": 4
+   "r": 4,
+   "shape": "box",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Door",
-   "shape": "fbox",
+   "n": "Control Panel Door 20m3h",
    "at": [
     308,
     -656,
@@ -684,13 +782,16 @@
     -650,
     1892
    ],
+   "lod": "f",
    "mat": "epoxy_white",
    "r": 4,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Screen",
-   "shape": "fbox",
+   "n": "Control Panel Screen 20m3h",
    "at": [
     430.0,
     -658,
@@ -699,61 +800,73 @@
     -656,
     1788.0
    ],
-   "mat": "black",
+   "lod": "f",
+   "mat": "display",
    "r": 3,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel LED 1",
-   "shape": "cyl",
+   "n": "Control Panel LED 1 20m3h",
    "axis": "y",
    "c": [
     430.0,
     1484.0
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -660,
     -656
    ],
-   "mat": "led_green",
-   "lod": "f"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel LED 2",
-   "shape": "cyl",
+   "n": "Control Panel LED 2 20m3h",
    "axis": "y",
    "c": [
     508.0,
     1484.0
    ],
+   "lod": "f",
+   "mat": "led_amber",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -660,
     -656
    ],
-   "mat": "yellow",
-   "lod": "f"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel LED 3",
-   "shape": "cyl",
+   "n": "Control Panel LED 3 20m3h",
    "axis": "y",
    "c": [
     586.0,
     1484.0
    ],
+   "lod": "f",
+   "mat": "led_red",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -660,
     -656
    ],
-   "mat": "led_red",
-   "lod": "f"
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Isolator Plate",
-   "shape": "fbox",
+   "n": "Control Panel Isolator Plate 20m3h",
    "at": [
     768.0,
     -658,
@@ -762,12 +875,15 @@
     -656,
     1404.0
    ],
+   "lod": "f",
    "mat": "yellow",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Isolator Handle",
-   "shape": "fbox",
+   "n": "Control Panel Isolator Handle 20m3h",
    "at": [
     820.0,
     -676,
@@ -776,13 +892,16 @@
     -658,
     1388.0
    ],
+   "lod": "f",
    "mat": "red",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
   },
   {
-   "n": "Control Panel Door Handle",
-   "shape": "fbox",
+   "n": "Control Panel Door Handle 20m3h",
    "at": [
     365.0,
     -672,
@@ -791,9 +910,890 @@
     -656,
     1404.0
    ],
+   "lod": "f",
    "mat": "black",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "20m3h_PSA"
+   ]
+  },
+  {
+   "n": "Skid 50m3h",
+   "at": [
+    -2080.0,
+    -910.0,
+    0.0,
+    2080.0,
+    910.0,
+    120.0
+   ],
+   "mat": "painted_steel",
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Compressor Enclosure 50m3h",
+   "at": [
+    -2015.0,
+    -780.0,
+    120.0,
+    -715.0,
+    520.0,
+    1680.0
+   ],
+   "mat": "motor_blue",
+   "r": 13.0,
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Compressor Louvre 50m3h",
+   "at": [
+    -1885.0,
+    -787.8,
+    360.0,
+    -845.0,
+    -780.0,
+    384.0
+   ],
+   "lod": "f",
+   "mat": "grey",
+   "repeat": {
+    "d": [
+     0.0,
+     0.0,
+     60.0
+    ],
+    "n": 8
+   },
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Compressor Panel 50m3h",
+   "at": [
+    -1300.0,
+    -787.8,
+    1200.0,
+    -845.0,
+    -780.0,
+    1560.0
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 4.8,
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Refrigerant Dryer 50m3h",
+   "at": [
+    -585.0,
+    -780.0,
+    120.0,
+    65.0,
+    -130.0,
+    1080.0
+   ],
+   "mat": "white",
+   "r": 10.4,
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Dryer Louvre 50m3h",
+   "at": [
+    -520.0,
+    -787.8,
+    240.0,
+    0.0,
+    -780.0,
+    600.0
+   ],
+   "lod": "f",
+   "mat": "grey",
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Filter Housing 50m3h",
+   "axis": "z",
+   "c": [
+    195.0,
+    -585.0
+   ],
+   "mat": "aluminium",
+   "r": 65.0,
+   "repeat": {
+    "d": [
+     169.0,
+     0.0,
+     0.0
+    ],
+    "n": 3
+   },
+   "shape": "cyl",
+   "z": [
+    600.0,
+    1200.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Air Header 50m3h",
+   "axis": "x",
+   "c": [
+    -585.0,
+    1260.0
+   ],
+   "mat": "copper",
+   "r": 25.0,
+   "shape": "cyl",
+   "x": [
+    -715.0,
+    650.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Air Receiver Shell 50m3h",
+   "axis": "z",
+   "c": [
+    -195.0,
+    390.0
+   ],
+   "mat": "galvanised",
+   "r": 364.0,
+   "shape": "cyl",
+   "z": [
+    237.6,
+    2042.4
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Air Receiver Top Head 50m3h",
+   "axis": "z",
+   "c": [
+    -195.0,
+    390.0
+   ],
+   "mat": "galvanised",
+   "profile": [
+    [
+     0.0,
+     2042.4
+    ],
+    [
+     364.0,
+     2042.4
+    ],
+    [
+     309.4,
+     2118.8
+    ],
+    [
+     145.6,
+     2160.0
+    ],
+    [
+     0.0,
+     2160.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Air Receiver Bottom Head 50m3h",
+   "axis": "z",
+   "c": [
+    -195.0,
+    390.0
+   ],
+   "mat": "galvanised",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     145.6,
+     120.0
+    ],
+    [
+     309.4,
+     196.4
+    ],
+    [
+     364.0,
+     237.6
+    ],
+    [
+     0.0,
+     237.6
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber A Shell 50m3h",
+   "axis": "z",
+   "c": [
+    845.0,
+    260.0
+   ],
+   "mat": "blue",
+   "r": 299.0,
+   "shape": "cyl",
+   "z": [
+    216.6,
+    3023.4
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber A Top Head 50m3h",
+   "axis": "z",
+   "c": [
+    845.0,
+    260.0
+   ],
+   "mat": "blue",
+   "profile": [
+    [
+     0.0,
+     3023.4
+    ],
+    [
+     299.0,
+     3023.4
+    ],
+    [
+     254.2,
+     3086.2
+    ],
+    [
+     119.6,
+     3120.0
+    ],
+    [
+     0.0,
+     3120.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber A Bottom Head 50m3h",
+   "axis": "z",
+   "c": [
+    845.0,
+    260.0
+   ],
+   "mat": "blue",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     119.6,
+     120.0
+    ],
+    [
+     254.2,
+     182.8
+    ],
+    [
+     299.0,
+     216.6
+    ],
+    [
+     0.0,
+     216.6
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber B Shell 50m3h",
+   "axis": "z",
+   "c": [
+    1495.0,
+    260.0
+   ],
+   "mat": "blue",
+   "r": 299.0,
+   "shape": "cyl",
+   "z": [
+    216.6,
+    3023.4
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber B Top Head 50m3h",
+   "axis": "z",
+   "c": [
+    1495.0,
+    260.0
+   ],
+   "mat": "blue",
+   "profile": [
+    [
+     0.0,
+     3023.4
+    ],
+    [
+     299.0,
+     3023.4
+    ],
+    [
+     254.2,
+     3086.2
+    ],
+    [
+     119.6,
+     3120.0
+    ],
+    [
+     0.0,
+     3120.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Adsorber B Bottom Head 50m3h",
+   "axis": "z",
+   "c": [
+    1495.0,
+    260.0
+   ],
+   "mat": "blue",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     119.6,
+     120.0
+    ],
+    [
+     254.2,
+     182.8
+    ],
+    [
+     299.0,
+     216.6
+    ],
+    [
+     0.0,
+     216.6
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Oxygen Receiver Shell 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "mat": "white",
+   "r": 260.0,
+   "shape": "cyl",
+   "z": [
+    204.0,
+    1956.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Oxygen Receiver Top Head 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     0.0,
+     1956.0
+    ],
+    [
+     260.0,
+     1956.0
+    ],
+    [
+     221.0,
+     2010.6
+    ],
+    [
+     104.0,
+     2040.0
+    ],
+    [
+     0.0,
+     2040.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Oxygen Receiver Bottom Head 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     104.0,
+     120.0
+    ],
+    [
+     221.0,
+     174.6
+    ],
+    [
+     260.0,
+     204.0
+    ],
+    [
+     0.0,
+     204.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Oxygen Receiver Band 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "profile": [
+    [
+     260.0,
+     1272.0
+    ],
+    [
+     262.6,
+     1272.0
+    ],
+    [
+     262.6,
+     1344.0
+    ],
+    [
+     260.0,
+     1344.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Manifold 50m3h",
+   "axis": "x",
+   "c": [
+    260.0,
+    2940.0
+   ],
+   "mat": "stainless",
+   "r": 31.2,
+   "shape": "cyl",
+   "x": [
+    845.0,
+    1495.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Oxygen Outlet 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "mat": "copper",
+   "r": 18.2,
+   "shape": "cyl",
+   "z": [
+    2040.0,
+    2400.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Outlet Band 50m3h",
+   "axis": "z",
+   "c": [
+    1755.0,
+    -455.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "profile": [
+    [
+     18.2,
+     2280.0
+    ],
+    [
+     20.8,
+     2280.0
+    ],
+    [
+     20.8,
+     2304.0
+    ],
+    [
+     18.2,
+     2304.0
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge A Case 50m3h",
+   "axis": "y",
+   "c": [
+    845.0,
+    1800.0
+   ],
+   "mat": "chrome",
+   "r": 56.2,
+   "shape": "cyl",
+   "y": [
+    -71.5,
+    -39.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge A Dial 50m3h",
+   "axis": "y",
+   "c": [
+    845.0,
+    1800.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 51.2,
+   "shape": "cyl",
+   "y": [
+    -74.1,
+    -71.5
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge A Needle 50m3h",
+   "at": [
+    843.1,
+    -76.7,
+    1797.6,
+    880.1,
+    -74.1,
+    1802.4
+   ],
+   "lod": "f",
+   "mat": "black",
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge B Case 50m3h",
+   "axis": "y",
+   "c": [
+    1495.0,
+    1800.0
+   ],
+   "mat": "chrome",
+   "r": 56.2,
+   "shape": "cyl",
+   "y": [
+    -71.5,
+    -39.0
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge B Dial 50m3h",
+   "axis": "y",
+   "c": [
+    1495.0,
+    1800.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 51.2,
+   "shape": "cyl",
+   "y": [
+    -74.1,
+    -71.5
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Column Gauge B Needle 50m3h",
+   "at": [
+    1493.0,
+    -76.7,
+    1797.6,
+    1530.1,
+    -74.1,
+    1802.4
+   ],
+   "lod": "f",
+   "mat": "black",
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Enclosure 50m3h",
+   "at": [
+    390.0,
+    -845.0,
+    1320.0,
+    1235.0,
+    -637.0,
+    2280.0
+   ],
+   "mat": "epoxy_white",
+   "r": 5.2,
+   "shape": "box",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Door 50m3h",
+   "at": [
+    400.4,
+    -852.8,
+    1329.6,
+    1224.6,
+    -845.0,
+    2270.4
+   ],
+   "lod": "f",
+   "mat": "epoxy_white",
+   "r": 4.8,
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Screen 50m3h",
+   "at": [
+    559.0,
+    -855.4,
+    1896.0,
+    939.2,
+    -852.8,
+    2145.6
+   ],
+   "lod": "f",
+   "mat": "display",
+   "r": 3.6,
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel LED 1 50m3h",
+   "axis": "y",
+   "c": [
+    559.0,
+    1780.8
+   ],
+   "lod": "f",
+   "mat": "led_green",
+   "r": 10.0,
+   "shape": "cyl",
+   "y": [
+    -858.0,
+    -852.8
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel LED 2 50m3h",
+   "axis": "y",
+   "c": [
+    660.4,
+    1780.8
+   ],
+   "lod": "f",
+   "mat": "led_amber",
+   "r": 10.0,
+   "shape": "cyl",
+   "y": [
+    -858.0,
+    -852.8
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel LED 3 50m3h",
+   "axis": "y",
+   "c": [
+    761.8,
+    1780.8
+   ],
+   "lod": "f",
+   "mat": "led_red",
+   "r": 10.0,
+   "shape": "cyl",
+   "y": [
+    -858.0,
+    -852.8
+   ],
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Isolator Plate 50m3h",
+   "at": [
+    998.4,
+    -855.4,
+    1512.0,
+    1167.4,
+    -852.8,
+    1684.8
+   ],
+   "lod": "f",
+   "mat": "yellow",
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Isolator Handle 50m3h",
+   "at": [
+    1066.0,
+    -878.8,
+    1531.2,
+    1099.8,
+    -855.4,
+    1665.6
+   ],
+   "lod": "f",
+   "mat": "red",
+   "r": 2.4,
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
+  },
+  {
+   "n": "Control Panel Door Handle 50m3h",
+   "at": [
+    474.5,
+    -873.6,
+    1464.0,
+    508.3,
+    -852.8,
+    1684.8
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 2.4,
+   "shape": "fbox",
+   "only": [
+    "50m3h_PSA"
+   ]
   }
  ],
  "connectors": [
@@ -801,7 +1801,7 @@
    "n": "O2",
    "domain": "pipe",
    "system": "Other",
-   "part": "Oxygen Outlet",
+   "part": "Oxygen Outlet 20m3h",
    "side": "top",
    "diameter": 28,
    "flow": "Out"
@@ -810,7 +1810,7 @@
    "n": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "part": "Control Panel Enclosure",
+   "part": "Control Panel Enclosure 20m3h",
    "side": "top"
   }
  ],
@@ -831,7 +1831,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "PSA plant modelled as a generic product: skid, compressor enclosure with louvres and panel, dryer, three filter housings, air header, galvanised air receiver, two blue adsorber columns with manifold and gauges, oxygen receiver with white band, outlet, control panel with screen, LEDs and isolator. 20 m3/h drawn; 50 m3/h shares it.",
+ "about": "PSA plant modelled as a generic product: skid, compressor enclosure with louvres and panel, dryer, three filter housings, air header, galvanised air receiver, two blue adsorber columns with manifold and gauges, oxygen receiver with white band, outlet, control panel with screen, LEDs and isolator. Per type: 50 m3/h is the 20 m3/h skid scaled 1.3 in plan and 1.2 in height (columns 3.1 m).",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Voltage": 415,

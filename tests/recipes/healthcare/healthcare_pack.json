@@ -1,0 +1,11028 @@
+{
+"version": "HC v0.1",
+"generated": "2026-10-17",
+"title": "Formcraft Healthcare Pack",
+"depts": {
+"ALL": "Hospital-wide",
+"OPD": "Outpatients",
+"EMG": "Emergency",
+"WARD": "Wards",
+"ICU": "Critical care",
+"NICU": "Neonatal",
+"MAT": "Maternity",
+"THR": "Theatres",
+"CSSD": "Sterile services",
+"RAD": "Imaging",
+"LAB": "Laboratory",
+"PHA": "Pharmacy",
+"MORT": "Mortuary",
+"DENT": "Dental",
+"PHYS": "Physiotherapy",
+"DIAL": "Dialysis",
+"PSY": "Mental health",
+"KIT": "Kitchen",
+"LAUN": "Laundry",
+"ADM": "Admin and support",
+"PLANT": "Plant and energy",
+"EXT": "External works"
+},
+"connectors": {
+"CW": "Cold water",
+"HW": "Hot water",
+"SAN": "Sanitary",
+"VNT": "Vent",
+"MG": "Medical gases",
+"E": "Power",
+"ELV": "Data / ELV",
+"DS": "Supply air",
+"DE": "Extract air",
+"ST": "Steam",
+"FW": "Fire water"
+},
+"families": [
+{
+"id": "HC001",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_FlushSingle_Hygienic",
+"types": [
+"926x2100",
+"1026x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "HPL-faced, flush, vision panel option, kick plate; hygienic seals",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Wall-hosted opening, frame and leaf profiles by sweep, vision-panel yes/no, kick plate, door swing in plan at Coarse",
+"kn": "D.HOS_00"
+},
+{
+"id": "HC002",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_LeafAndHalf_BedPassage",
+"types": [
+"1500x2100",
+"1800x2100"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Unequal leaves for bed and trolley passage; bed clear width check",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Unequal leaves driven by one width formula; clear-width check reported by Gate A",
+"kn": "D.HOS_01"
+},
+{
+"id": "HC003",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Double_BedPassage_FD60",
+"types": [
+"1800x2100",
+"2000x2100"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Fire-rated leaf-and-half or pair on bed routes",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_02"
+},
+{
+"id": "HC004",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_DoubleAction_Theatre",
+"types": [
+"1200x2100",
+"1500x2100"
+],
+"depts": [
+"THR",
+"KIT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Swing both ways, push plates, vision panels",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_03"
+},
+{
+"id": "HC005",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_HermeticSliding_Theatre",
+"types": [
+"1500x2100",
+"1800x2100"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Airtight sliding, foot sensor, interlock; motor load",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.AUT_00"
+},
+{
+"id": "HC006",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_AutomaticSliding_Entrance",
+"types": [
+"2000x2400",
+"2400x2400"
+],
+"depts": [
+"EMG",
+"OPD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Main and A&E entrances; motor load",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.AUT_01"
+},
+{
+"id": "HC007",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_AutomaticSliding_Isolation",
+"types": [
+"1200x2100"
+],
+"depts": [
+"ICU",
+"WARD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Isolation suite, interlocked with anteroom",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.AUT_02"
+},
+{
+"id": "HC008",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_LeadLined_Xray",
+"types": [
+"1026x2100",
+"1500x2100"
+],
+"depts": [
+"RAD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Lead lining (2 mm Pb typ., physicist confirms), lead glass vision panel, warning light interface",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Layered leaf (lead as material layer), shielding parameters, nested warning-light interface",
+"kn": "D.SHD_00"
+},
+{
+"id": "HC009",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_LeadLined_Sliding_CT",
+"types": [
+"1500x2100"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Shielded sliding door for CT and fluoroscopy",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.SHD_01"
+},
+{
+"id": "HC010",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_RFShielded_MRI",
+"types": [
+"1200x2100"
+],
+"depts": [
+"RAD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "RF-shielded door; supplier-specific; placeholder geometry to vendor envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.SHD_02"
+},
+{
+"id": "HC011",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_FireRated_FD30_Ward",
+"types": [
+"926x2100",
+"1026x2100"
+],
+"depts": [
+"WARD",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "FD30S with intumescent and smoke seals",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.FIR_02"
+},
+{
+"id": "HC012",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_FireRated_FD60_Corridor",
+"types": [
+"1800x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Cross-corridor compartment pair",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.FIR_03"
+},
+{
+"id": "HC013",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Smoke_CrossCorridor_HoldOpen",
+"types": [
+"1800x2100",
+"2000x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Magnetic hold-open on fire alarm release",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.FIR_04"
+},
+{
+"id": "HC014",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Isolation_Anteroom",
+"types": [
+"1026x2100"
+],
+"depts": [
+"ICU",
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Anteroom doors with self-closer and pressure seals",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_04"
+},
+{
+"id": "HC015",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Cleanroom_Pharmacy",
+"types": [
+"926x2100"
+],
+"depts": [
+"PHA",
+"CSSD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Flush cleanroom door, coved frame, no ledges",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_05"
+},
+{
+"id": "HC016",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_ColdRoom_Insulated",
+"types": [
+"900x2000",
+"1200x2100"
+],
+"depts": [
+"MORT",
+"KIT",
+"PHA"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Insulated cold-room door with heater strip",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "D.MET_02"
+},
+{
+"id": "HC017",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Mortuary_BodyPassage",
+"types": [
+"1500x2100"
+],
+"depts": [
+"MORT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Wide door for trolley and coffin passage",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.MET_03"
+},
+{
+"id": "HC018",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Toilet_Accessible_OutwardOpening",
+"types": [
+"1000x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Outward opening, 900+ clear, emergency release lock, horizontal pull rail; latch-side clearance solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Nested shared clearance solid on a non-plotting subcategory; outward swing",
+"kn": "D.HOS_06"
+},
+{
+"id": "HC019",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Toilet_AntiBarricade",
+"types": [
+"926x2100"
+],
+"depts": [
+"WARD",
+"PSY"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Anti-barricade hardware, reversible stop",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_07"
+},
+{
+"id": "HC020",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Psychiatric_AntiLigature",
+"types": [
+"926x2100"
+],
+"depts": [
+"PSY"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Anti-ligature door top alarm, continuous hinge",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_08"
+},
+{
+"id": "HC021",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_AccessControlled_Staff",
+"types": [
+"926x2100",
+"1026x2100"
+],
+"depts": [
+"PHA",
+"THR",
+"ADM"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Card reader and mag-lock interfaces",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_09"
+},
+{
+"id": "HC022",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Louvred_Steel_Plant",
+"types": [
+"1200x2100",
+"1800x2100"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Steel louvred door for plant, generator and med-gas rooms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.MET_04"
+},
+{
+"id": "HC023",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Sluice_Single",
+"types": [
+"926x2100"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Sluice and dirty utility rooms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_10"
+},
+{
+"id": "HC024",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Nursery_GlazedVision",
+"types": [
+"926x2100"
+],
+"depts": [
+"NICU",
+"MAT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Full-height vision panel with integral blind",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_11"
+},
+{
+"id": "HC025",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Lift_LandingDoor_Bed",
+"types": [
+"1400x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Bed lift landing door (nested in lift family as alternative)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.ACP_00"
+},
+{
+"id": "HC026",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_Stretcher_Bifold_Store",
+"types": [
+"1200x2100"
+],
+"depts": [
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Bifold store door for stretcher and wheelchair bays",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.HOS_12"
+},
+{
+"id": "HC027",
+"role": "A",
+"category": "Doors",
+"family": "FMC_A_Door_AccessPanel_Riser",
+"types": [
+"600x600",
+"900x1800"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Riser and duct access panels, fire-rated option",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "D.ACP_01"
+},
+{
+"id": "HC028",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Ward_SteelCasement_Mesh",
+"types": [
+"1200x1200",
+"1500x1200",
+"1800x1500"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Steel casement with mosquito mesh and burglar bars, restricted opening 100 mm",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Arrays of panes from counts, yes/no burglar bars and mesh, restricted-opening angle",
+"kn": "G.STL_01"
+},
+{
+"id": "HC029",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Ward_AluSliding_Restricted",
+"types": [
+"1200x1200",
+"1800x1200"
+],
+"depts": [
+"WARD",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Aluminium slider with opening restrictor",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.SLD_02"
+},
+{
+"id": "HC030",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Observation_Internal_Nurse",
+"types": [
+"1200x900",
+"1800x900"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Internal glazed observation with integral blinds",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.FIX_02"
+},
+{
+"id": "HC031",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Observation_Theatre_Fixed",
+"types": [
+"1200x900"
+],
+"depts": [
+"THR"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Flush-glazed fixed observation into theatre",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.FIX_03"
+},
+{
+"id": "HC032",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Viewing_LeadGlass_Xray",
+"types": [
+"900x600",
+"1200x900"
+],
+"depts": [
+"RAD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Lead glass control-room viewing window",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.SHD_00"
+},
+{
+"id": "HC033",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Viewing_Isolation",
+"types": [
+"900x900"
+],
+"depts": [
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Fixed viewing panel into isolation room",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.FIX_04"
+},
+{
+"id": "HC034",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Hatch_Pharmacy_Dispensing",
+"types": [
+"900x600",
+"1200x600"
+],
+"depts": [
+"PHA"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Dispensing hatch with counter and security shutter",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.HAT_00"
+},
+{
+"id": "HC035",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Hatch_PassThrough_Lab",
+"types": [
+"600x600"
+],
+"depts": [
+"LAB",
+"CSSD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Interlocked pass-through hatch",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.HAT_01"
+},
+{
+"id": "HC036",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Hatch_Cashier",
+"types": [
+"900x600"
+],
+"depts": [
+"ADM"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Cashier and records window",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.HAT_02"
+},
+{
+"id": "HC037",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Screen_Reception_Glazed",
+"types": [
+"1800x1200"
+],
+"depts": [
+"OPD",
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Reception glazed screen with speech grille",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.HAT_03"
+},
+{
+"id": "HC038",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Hopper_HighLevel_Vent",
+"types": [
+"600x450",
+"900x450"
+],
+"depts": [
+"WARD",
+"LAB"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "High-level hopper vents for WCs, stores, labs",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.CAS_02"
+},
+{
+"id": "HC039",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_AntiLigature_Psychiatric",
+"types": [
+"1200x1200"
+],
+"depts": [
+"PSY"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Anti-ligature window, restricted opening",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.SAF_00"
+},
+{
+"id": "HC040",
+"role": "A",
+"category": "Windows",
+"family": "FMC_A_Window_Viewing_Mortuary",
+"types": [
+"1200x900"
+],
+"depts": [
+"MORT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Viewing room window with curtain track",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "G.FIX_05"
+},
+{
+"id": "HC041",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Lift_BedPassenger",
+"types": [
+"1600x2700car"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Bed lift; car size per bed + attendant; machine-room-less option",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LFT_00"
+},
+{
+"id": "HC042",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Lift_Goods_Service",
+"types": [
+"1400x2400car"
+],
+"depts": [
+"KIT",
+"LAUN"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Service and goods lift",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LFT_01"
+},
+{
+"id": "HC043",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Lift_Dumbwaiter",
+"types": [
+"600x600"
+],
+"depts": [
+"LAB",
+"PHA"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Specimen and pharmacy dumbwaiter",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LFT_02"
+},
+{
+"id": "HC044",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_ToiletCubicle_HPL",
+"types": [
+"900x1500",
+"1000x1700"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "12 mm compact HPL cubicle, indicator bolt",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CUB_00"
+},
+{
+"id": "HC045",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_ToiletCubicle_Ambulant",
+"types": [
+"900x1700"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Ambulant stall: inward/outward door, two vertical grab rails 450 apart",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Assembly with nested door and two grab rails, mirrored types",
+"kn": "J.CUB_01"
+},
+{
+"id": "HC046",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_ToiletCubicle_Accessible_Assembly",
+"types": [
+"1500x2200",
+"1700x2200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN",
+"ELV"
+],
+"clearance": "Accessibility",
+"wave": 1,
+"note": "Accessible WC assembly: outward door, drop-down rail, turning circle",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Assembly of nested fixtures with set-out dimensions locked to the standard",
+"kn": "J.CUB_02"
+},
+{
+"id": "HC047",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_ChangingPlaces_Unit",
+"types": [
+"3000x4000",
+"3000x3700"
+],
+"depts": [
+"OPD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Changing Places: ceiling hoist, adjustable bench, privacy screen, peninsular WC",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CUB_03"
+},
+{
+"id": "HC048",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_ShowerCubicle_Accessible",
+"types": [
+"1200x1500"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Level-access shower area with fold-down seat and curtain",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CUB_04"
+},
+{
+"id": "HC049",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_GrabRail_Straight",
+"types": [
+"300",
+"450",
+"600",
+"900"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Stainless or antimicrobial coated; wall-hosted",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Face-hosted, type catalogue of lengths, material parameter",
+"kn": "A.SAC_00"
+},
+{
+"id": "HC050",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_GrabRail_DropDown",
+"types": [
+"750",
+"850"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Hinged support arm, optional roll holder",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_01"
+},
+{
+"id": "HC051",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_GrabRail_LShape",
+"types": [
+"600x600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "L-shaped rail for showers",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_02"
+},
+{
+"id": "HC052",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_BackrestPad_WC",
+"types": [
+"400x200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Backrest behind low-level cistern",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_03"
+},
+{
+"id": "HC053",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Mirror_Tilting_Accessible",
+"types": [
+"500x700"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Tilting or full-height mirror",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_04"
+},
+{
+"id": "HC054",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_CurtainTrack_Bed_Cubicle",
+"types": [
+"2400x2600",
+"3000x3000"
+],
+"depts": [
+"WARD",
+"ICU",
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Ceiling-hosted cubicle curtain track (L or U), disposable curtain",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.TRK_00"
+},
+{
+"id": "HC055",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_IVTrack_Ceiling",
+"types": [
+"2400"
+],
+"depts": [
+"WARD",
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Ceiling IV track with hooks",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.TRK_01"
+},
+{
+"id": "HC056",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_PatientHoist_CeilingTrack",
+"types": [
+"3000",
+"4000"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "XY or straight track hoist; lifting envelope solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LFT_03"
+},
+{
+"id": "HC057",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_PatientHoist_Mobile",
+"types": [
+"1200x700"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Mobile hydraulic hoist; sling sweep envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LFT_04"
+},
+{
+"id": "HC058",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_WheelchairRack_Wall",
+"types": [
+"3-chair",
+"5-chair"
+],
+"depts": [
+"EMG",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Wheelchair parking rack, floor protection plate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.EQP_00"
+},
+{
+"id": "HC059",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_LinenChute_Disposal",
+"types": [
+"600dia"
+],
+"depts": [
+"WARD",
+"LAUN"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Linen and waste chute with fire-rated hopper door",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.EQP_01"
+},
+{
+"id": "HC060",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Dispenser_Sanitiser_Auto",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Motion-sensor alcohol gel dispenser at every bed and room door",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Small wall-hosted item with an electrical connector and load",
+"kn": "A.SAC_05"
+},
+{
+"id": "HC061",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Dispenser_Soap_Auto",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Soap or foam dispenser beside clinical basins",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_06"
+},
+{
+"id": "HC062",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Dispenser_PaperTowel_Bin",
+"types": [
+"surface",
+"semi-recessed"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Combination towel dispenser and waste unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_07"
+},
+{
+"id": "HC063",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Dispenser_GloveApron",
+"types": [
+"3-box"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "PPE dispenser at room entry",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_08"
+},
+{
+"id": "HC064",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_SharpsBin_Bracket",
+"types": [
+"wall"
+],
+"depts": [
+"WARD",
+"OPD",
+"LAB"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Sharps container bracket",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SAC_09"
+},
+{
+"id": "HC065",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Signage_Room_Plate",
+"types": [
+"300x100",
+"300x200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Room ID plate with braille strip; reads room name and number",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SGN_00"
+},
+{
+"id": "HC066",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Signage_Hanging_Wayfinding",
+"types": [
+"1200x300",
+"1800x300"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Suspended corridor wayfinding sign",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SGN_01"
+},
+{
+"id": "HC067",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_Signage_Totem_External",
+"types": [
+"600x2000"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Site totem sign",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SGN_02"
+},
+{
+"id": "HC068",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_WallProtection_CrashRail",
+"types": [
+"horizontal"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Bumper rail on bed corridors, mounted at trolley height",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.WPR_00"
+},
+{
+"id": "HC069",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_WallProtection_CornerGuard",
+"types": [
+"1200",
+"1500"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Surface or flush corner guard",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.WPR_01"
+},
+{
+"id": "HC070",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_WallProtection_Handrail_Corridor",
+"types": [
+"continuous"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Combined handrail and crash rail",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.WPR_02"
+},
+{
+"id": "HC071",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_WallPanel_Hygienic_Cladding",
+"types": [
+"1200x2700"
+],
+"depts": [
+"THR",
+"CSSD",
+"LAB"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Hygienic PVC or HPL wall cladding panel",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "I.HYG_00"
+},
+{
+"id": "HC072",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_TheatrePanel_Modular",
+"types": [
+"1200x3000"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"E",
+"MG",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Modular theatre wall with service panels",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "I.HYG_01"
+},
+{
+"id": "HC073",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_BedheadTrunking_Horizontal",
+"types": [
+"1500",
+"2000",
+"3000"
+],
+"depts": [
+"WARD",
+"ICU",
+"MAT"
+],
+"connectors": [
+"E",
+"ELV",
+"MG"
+],
+"clearance": "",
+"wave": 2,
+"note": "Architectural casing; MEP points are hosted by E/P families",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.BHU_00"
+},
+{
+"id": "HC074",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_LockerBank_Staff",
+"types": [
+"3-tier",
+"6-door"
+],
+"depts": [
+"ADM"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Staff locker bank",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.LOC_00"
+},
+{
+"id": "HC075",
+"role": "A",
+"category": "Specialty Equipment",
+"family": "FMC_A_SpecEq_PatientWardrobe",
+"types": [
+"600x600x1800"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Ward wardrobe",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.LOC_01"
+},
+{
+"id": "HC076",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Canopy_AmbulanceBay",
+"types": [
+"6000x9000"
+],
+"depts": [
+"EMG"
+],
+"connectors": [
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Covered ambulance drop-off, 4.2 m clear height check",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "A.CAN_00"
+},
+{
+"id": "HC077",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Bollard_AmbulanceBay",
+"types": [
+"150dia",
+"200dia"
+],
+"depts": [
+"EMG",
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Steel or concrete bollard",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.BOL_00"
+},
+{
+"id": "HC078",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Ramp_Stretcher_External",
+"types": [
+"1:12",
+"1:15"
+],
+"depts": [
+"EMG",
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "External ramp with handrails and landings",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.RMP_00"
+},
+{
+"id": "HC079",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Clearance_TurningCircle",
+"types": [
+"1500dia"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 1,
+"note": "Nested-only clearance solid: wheelchair turning circle (non-plotting)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "The shared clearance component every other family nests",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC080",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Clearance_BedSpace",
+"types": [
+"1200 perimeter"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 1,
+"note": "Nested-only clearance solid around acute bed",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Clearance driven by host size (bed length and width + perimeter)",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC081",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Clearance_DoorApproach",
+"types": [
+"450",
+"600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 1,
+"note": "Nested-only latch-side approach clearance",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Clearance placed by door hand (left/right) with a formula",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC082",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Clearance_Maintenance",
+"types": [
+"box"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [],
+"clearance": "Maintenance",
+"wave": 3,
+"note": "Nested-only equipment maintenance envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC083",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_Partition_Cubicle_Glazed_ICU",
+"types": [
+"3600x2700"
+],
+"depts": [
+"ICU"
+],
+"connectors": [
+"E",
+"MG",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Glazed ICU cubicle front with sliding doors",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "I.PTN_01"
+},
+{
+"id": "HC084",
+"role": "A",
+"category": "Generic Models",
+"family": "FMC_A_GenericModel_WasteStore_Clinical_Cage",
+"types": [
+"3000x2000"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Segregated clinical waste store (colour-coded)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.WST_00"
+},
+{
+"id": "HC085",
+"role": "A",
+"category": "Profiles",
+"family": "FMC_A_Profile_HygienicCoving_Floor",
+"types": [
+"38",
+"50",
+"100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Coved floor-wall junction profile for sweeps",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "I.COV_00"
+},
+{
+"id": "HC086",
+"role": "A",
+"category": "Profiles",
+"family": "FMC_A_Profile_CrashRail_Section",
+"types": [
+"150x25",
+"200x30"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Crash rail section for the sweep",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "I.WPR_03"
+},
+{
+"id": "HC087",
+"role": "A",
+"category": "Profiles",
+"family": "FMC_A_Profile_Handrail_Hospital_Section",
+"types": [
+"50x40"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Handrail with integral bumper",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "I.WPR_04"
+},
+{
+"id": "HC088",
+"role": "A",
+"category": "Profiles",
+"family": "FMC_A_Profile_Nosing_StairAntiSlip",
+"types": [
+"55x55"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Contrasting anti-slip stair nosing",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "I.FLR_05"
+},
+{
+"id": "HC089",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_ICU_Electric",
+"types": [
+"2200x1000"
+],
+"depts": [
+"ICU"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 1,
+"note": "Multi-section ICU bed: rails up/down, IV pole, caster sweep; 1200 clear perimeter solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Medical Equipment category (no connectors), rails up/down states, caster sweep, Coarse/Medium/Fine",
+"kn": "F.MED_00"
+},
+{
+"id": "HC090",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_Ward_Electric",
+"types": [
+"2150x950"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "3-function ward bed; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_01"
+},
+{
+"id": "HC091",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_Ward_Manual",
+"types": [
+"2000x900"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "2-crank manual bed (district hospitals)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_02"
+},
+{
+"id": "HC092",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_Bariatric",
+"types": [
+"2300x1200"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "Accessibility",
+"wave": 2,
+"note": "Bariatric bed, 1200 width, reinforced clearance zone; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_03"
+},
+{
+"id": "HC093",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_Paediatric_Cot",
+"types": [
+"1400x700"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Paediatric cot with high rails",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_04"
+},
+{
+"id": "HC094",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Bed_Delivery",
+"types": [
+"1900x800"
+],
+"depts": [
+"MAT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Delivery bed with leg supports (MoH HC III+)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_05"
+},
+{
+"id": "HC095",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Cot_Infant_Bassinet",
+"types": [
+"800x450"
+],
+"depts": [
+"MAT",
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Bedside bassinet",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_06"
+},
+{
+"id": "HC096",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Incubator_Neonatal",
+"types": [
+"1100x700"
+],
+"depts": [
+"NICU"
+],
+"connectors": [
+"E",
+"MG"
+],
+"clearance": "",
+"wave": 2,
+"note": "Closed incubator; connected power via E outlet family; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_07"
+},
+{
+"id": "HC097",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Warmer_Radiant_Infant",
+"types": [
+"1000x800"
+],
+"depts": [
+"NICU",
+"MAT"
+],
+"connectors": [
+"E",
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "Radiant warmer; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_08"
+},
+{
+"id": "HC098",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Couch_Examination",
+"types": [
+"1900x650"
+],
+"depts": [
+"OPD",
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "2-section exam couch; side clearance solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Simple MedEq with side clearance and adjustable back angle",
+"kn": "F.MED_09"
+},
+{
+"id": "HC099",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Couch_Gynaecology",
+"types": [
+"1800x650"
+],
+"depts": [
+"OPD",
+"MAT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Gynae couch with stirrups",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_10"
+},
+{
+"id": "HC100",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Chair_Dialysis",
+"types": [
+"1900x800"
+],
+"depts": [
+"DIAL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Reclining dialysis/treatment chair; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_11"
+},
+{
+"id": "HC101",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Chair_Phlebotomy",
+"types": [
+"900x700"
+],
+"depts": [
+"LAB",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Blood-draw chair",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_12"
+},
+{
+"id": "HC102",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Chair_Dental",
+"types": [
+"1900x900"
+],
+"depts": [
+"DENT"
+],
+"connectors": [
+"CW",
+"SAN",
+"E",
+"MG"
+],
+"clearance": "",
+"wave": 2,
+"note": "Dental chair; services by P/E families in the floor box; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_13"
+},
+{
+"id": "HC103",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Chair_Recliner_Visitor",
+"types": [
+"900x800"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Visitor recliner",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_14"
+},
+{
+"id": "HC104",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Stretcher",
+"types": [
+"2000x700"
+],
+"depts": [
+"EMG",
+"RAD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Patient trolley with rails, IV pole, O2 cylinder holder",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_15"
+},
+{
+"id": "HC105",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Wheelchair_Standard",
+"types": [
+"1050x650"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 2,
+"note": "Wheelchair with 1500 turning circle solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_16"
+},
+{
+"id": "HC106",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Wheelchair_Bariatric",
+"types": [
+"1100x800"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Bariatric wheelchair",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_17"
+},
+{
+"id": "HC107",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Resuscitation",
+"types": [
+"800x550"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Crash cart",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_18"
+},
+{
+"id": "HC108",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Medicine",
+"types": [
+"700x500"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Lockable drug trolley",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_19"
+},
+{
+"id": "HC109",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Dressing_SS",
+"types": [
+"800x500"
+],
+"depts": [
+"WARD",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Stainless dressing trolley",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_20"
+},
+{
+"id": "HC110",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Instrument_Mayo",
+"types": [
+"600x400"
+],
+"depts": [
+"THR"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Mayo instrument stand",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_21"
+},
+{
+"id": "HC111",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Linen",
+"types": [
+"900x600"
+],
+"depts": [
+"WARD",
+"LAUN"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Linen trolley",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_22"
+},
+{
+"id": "HC112",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Trolley_Meal",
+"types": [
+"1200x700"
+],
+"depts": [
+"KIT",
+"WARD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Heated meal trolley; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_23"
+},
+{
+"id": "HC113",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Stand_IV",
+"types": [
+"600dia"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "IV stand, 5-leg base",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_24"
+},
+{
+"id": "HC114",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Table_Overbed",
+"types": [
+"900x400"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Height-adjustable overbed table",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_25"
+},
+{
+"id": "HC115",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Table_Operating",
+"types": [
+"2000x550"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Operating table with column and base; OT light zone above; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Rotating and tilting parts by angle parameters; vendor envelope at Coarse",
+"kn": "Z.MEQ_00"
+},
+{
+"id": "HC116",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Machine_Anaesthesia",
+"types": [
+"800x700"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"E",
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "Anaesthesia workstation (gas via pendant); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_01"
+},
+{
+"id": "HC117",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Ventilator_ICU",
+"types": [
+"500x500"
+],
+"depts": [
+"ICU"
+],
+"connectors": [
+"E",
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "ICU ventilator (gas via pendant); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_02"
+},
+{
+"id": "HC118",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Machine_Dialysis",
+"types": [
+"500x600"
+],
+"depts": [
+"DIAL"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Haemodialysis machine (RO water via P outlet); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_03"
+},
+{
+"id": "HC119",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Monitor_Patient_Mobile",
+"types": [
+"400x300"
+],
+"depts": [
+"ICU",
+"EMG"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Monitor on trolley or arm; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_04"
+},
+{
+"id": "HC120",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Defibrillator",
+"types": [
+"350x300"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "AED on wall bracket",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_05"
+},
+{
+"id": "HC121",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Ultrasound_Cart",
+"types": [
+"600x900"
+],
+"depts": [
+"RAD",
+"MAT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Ultrasound scanner; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_00"
+},
+{
+"id": "HC122",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Xray_Mobile",
+"types": [
+"1300x700"
+],
+"depts": [
+"RAD",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Mobile X-ray unit; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_01"
+},
+{
+"id": "HC123",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Xray_Fixed_Room",
+"types": [
+"room set"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Ceiling-tube X-ray with table and bucky; shielding by A; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_02"
+},
+{
+"id": "HC124",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_CT_Scanner",
+"types": [
+"gantry+table"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E",
+"ELV",
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Vendor envelope; service and shielding by MEP/A; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_03"
+},
+{
+"id": "HC125",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_MRI_Scanner",
+"types": [
+"magnet+table"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E",
+"ELV",
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Vendor envelope; 5 gauss line solid (non-plotting); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_04"
+},
+{
+"id": "HC126",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Mammography_Unit",
+"types": [
+"1200x900"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Mammography; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.IMG_05"
+},
+{
+"id": "HC127",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Fridge_Vaccine",
+"types": [
+"600x650x1800"
+],
+"depts": [
+"PHA",
+"OPD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Vaccine refrigerator (cold chain); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.REF_00"
+},
+{
+"id": "HC128",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Fridge_BloodBank",
+"types": [
+"700x800x2000"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Blood bank refrigerator; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.REF_01"
+},
+{
+"id": "HC129",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_MortuaryFridge_3Body",
+"types": [
+"2500x900x1900"
+],
+"depts": [
+"MORT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "3- or 6-body mortuary refrigerator (NMEG: mortuary body refrigerators); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.REF_02"
+},
+{
+"id": "HC130",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Table_Autopsy",
+"types": [
+"2400x800"
+],
+"depts": [
+"MORT"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Autopsy table (water and drain via P families); services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.MEQ_06"
+},
+{
+"id": "HC131",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Analyser_Lab_Bench",
+"types": [
+"900x700"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"CW",
+"SAN",
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Bench-top analyser envelope; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LAB_00"
+},
+{
+"id": "HC132",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Centrifuge_Bench",
+"types": [
+"600x600"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Bench centrifuge; services via nested shared FMC_P_MechEq_ServicePoint (Medical Equipment cannot hold connectors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LAB_01"
+},
+{
+"id": "HC133",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Microscope_Bench",
+"types": [
+"500x400"
+],
+"depts": [
+"LAB"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Microscope station",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.LAB_02"
+},
+{
+"id": "HC134",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Physio_Plinth",
+"types": [
+"1900x700"
+],
+"depts": [
+"PHYS"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Treatment plinth",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_26"
+},
+{
+"id": "HC135",
+"role": "I",
+"category": "Medical Equipment",
+"family": "FMC_I_MedEq_Physio_ParallelBars",
+"types": [
+"3000x900"
+],
+"depts": [
+"PHYS"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Parallel walking bars",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "F.MED_27"
+},
+{
+"id": "HC136",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Locker_Bedside",
+"types": [
+"500x450x850"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Bedside locker with drawer",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.FUR_00"
+},
+{
+"id": "HC137",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Seating_Waiting_Beam",
+"types": [
+"3-seat",
+"4-seat",
+"5-seat"
+],
+"depts": [
+"OPD",
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Beam seating; type count drives waiting-area schedule",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Parametric array: seat count drives length; schedule counts seats",
+"kn": "F.SEA_00"
+},
+{
+"id": "HC138",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Seating_Corridor_Bench",
+"types": [
+"1200",
+"1800"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Antimicrobial vinyl backless bench (rest stops on long corridors)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_01"
+},
+{
+"id": "HC139",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Chair_Bariatric_Waiting",
+"types": [
+"700 wide"
+],
+"depts": [
+"OPD"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Rated 250 kg+, seat 500 high",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_02"
+},
+{
+"id": "HC140",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Seating_Modular_Lounge",
+"types": [
+"straight",
+"curved"
+],
+"depts": [
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Modular soft seating at main reception",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_03"
+},
+{
+"id": "HC141",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Seating_AntiLigature",
+"types": [
+"1200",
+"1800"
+],
+"depts": [
+"PSY"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Fixed rotomoulded bench",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_04"
+},
+{
+"id": "HC142",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Desk_Consulting",
+"types": [
+"1400x700"
+],
+"depts": [
+"OPD"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Consulting desk; consultation room layout set with couch and basin",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "F.FUR_01"
+},
+{
+"id": "HC143",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Chair_Consulting",
+"types": [
+"task"
+],
+"depts": [
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Clinician task chair",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_05"
+},
+{
+"id": "HC144",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Chair_Patient_Arm",
+"types": [
+"side"
+],
+"depts": [
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Patient chair with arms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_06"
+},
+{
+"id": "HC145",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Screen_Mobile_Privacy",
+"types": [
+"3-panel"
+],
+"depts": [
+"WARD",
+"OPD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Mobile privacy screen",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.FUR_02"
+},
+{
+"id": "HC146",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Cabinet_Records_Mobile",
+"types": [
+"1800x900"
+],
+"depts": [
+"ADM"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Mobile shelving for records",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.FUR_03"
+},
+{
+"id": "HC147",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Sofa_Family_Room",
+"types": [
+"2-seat",
+"3-seat"
+],
+"depts": [
+"WARD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Family room sofa",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.SEA_07"
+},
+{
+"id": "HC148",
+"role": "I",
+"category": "Furniture",
+"family": "FMC_I_Furniture_Table_StaffRest",
+"types": [
+"1200x800"
+],
+"depts": [
+"ADM"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Staff rest table",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "F.FUR_04"
+},
+{
+"id": "HC149",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_NurseStation_Counter",
+"types": [
+"L",
+"U",
+"straight"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 1,
+"note": "Counter with low accessible section, cable management; parametric run",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Line-style run (L/U/straight) with a lowered accessible section and power/data connectors",
+"kn": "J.CNT_00"
+},
+{
+"id": "HC150",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Reception_Counter_Accessible",
+"types": [
+"2400",
+"3600"
+],
+"depts": [
+"OPD",
+"EMG"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Raised and lowered sections",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CNT_01"
+},
+{
+"id": "HC151",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Clinical_BaseUnit_SS",
+"types": [
+"600",
+"900",
+"1200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Stainless or HPL base unit, coved plinth",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_04"
+},
+{
+"id": "HC152",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Clinical_WallUnit_Glazed",
+"types": [
+"600",
+"900",
+"1200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Glazed wall unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_05"
+},
+{
+"id": "HC153",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Clinical_TallUnit_Store",
+"types": [
+"600x600x2100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Tall store",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_06"
+},
+{
+"id": "HC154",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Pharmacy_Shelving_Dispensary",
+"types": [
+"900",
+"1200"
+],
+"depts": [
+"PHA"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Adjustable shelving bays",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "K.PHA_00"
+},
+{
+"id": "HC155",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Pharmacy_Counter_Dispensing",
+"types": [
+"2400"
+],
+"depts": [
+"PHA"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Dispensing counter with drawer packs",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.PHA_01"
+},
+{
+"id": "HC156",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Lab_Bench_Wall",
+"types": [
+"1500",
+"1800",
+"3000"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Wall bench with service spine; sink and outlets hosted",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.LAB_00"
+},
+{
+"id": "HC157",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Lab_Bench_Island",
+"types": [
+"3000x1500"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Island bench with reagent shelf",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.LAB_01"
+},
+{
+"id": "HC158",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_FumeCupboard",
+"types": [
+"1200",
+"1500",
+"1800"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"DE",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Fume cupboard; extract connector (M) and power",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.LAB_02"
+},
+{
+"id": "HC159",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_BiosafetyCabinet_ClassII",
+"types": [
+"1200",
+"1500"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Class II BSC envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.LAB_03"
+},
+{
+"id": "HC160",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_SterileStore_Shelving_Wire",
+"types": [
+"900",
+"1200"
+],
+"depts": [
+"CSSD",
+"THR"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Wire shelving for sterile stock",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_07"
+},
+{
+"id": "HC161",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_ProcedureRoom_Unit",
+"types": [
+"2400 run"
+],
+"depts": [
+"EMG",
+"OPD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Treatment room casework run",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_08"
+},
+{
+"id": "HC162",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Sluice_Unit_Base",
+"types": [
+"1200"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sluice room base unit beside hopper",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "J.CAB_09"
+},
+{
+"id": "HC163",
+"role": "I",
+"category": "Casework",
+"family": "FMC_I_Casework_Kitchen_Ward_Pantry",
+"types": [
+"1800",
+"2400"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Ward pantry with sink and boiler point",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "K.KIT_00"
+},
+{
+"id": "HC164",
+"role": "S",
+"category": "Structural Columns",
+"family": "FMC_S_StrColumn_RC_Rect",
+"types": [
+"300x300",
+"400x400",
+"500x500"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "RC column, cover and grade from kit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "C.COL_04"
+},
+{
+"id": "HC165",
+"role": "S",
+"category": "Structural Columns",
+"family": "FMC_S_StrColumn_RC_Round",
+"types": [
+"400dia",
+"500dia"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Circular RC column",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "C.COL_05"
+},
+{
+"id": "HC166",
+"role": "S",
+"category": "Structural Columns",
+"family": "FMC_S_StrColumn_Steel_UC",
+"types": [
+"152UC",
+"203UC",
+"254UC"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Universal column",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "M.UCL_02"
+},
+{
+"id": "HC167",
+"role": "S",
+"category": "Structural Columns",
+"family": "FMC_S_StrColumn_Steel_CHS_Canopy",
+"types": [
+"114",
+"168"
+],
+"depts": [
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Canopy column",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "A.CAN_01"
+},
+{
+"id": "HC168",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_RC_Rect",
+"types": [
+"230x450",
+"300x600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "RC beam",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "C.COL_04"
+},
+{
+"id": "HC169",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_RC_LBeam_Edge",
+"types": [
+"230x600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Edge L-beam",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.COL_07"
+},
+{
+"id": "HC170",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_Steel_UB",
+"types": [
+"203UB",
+"254UB",
+"305UB"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Steel beam",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "M.UBM_01"
+},
+{
+"id": "HC171",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_Steel_Unistrut_PendantSupport",
+"types": [
+"41x41 grid"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 1,
+"note": "Pendant and OT-light support frame above ceiling (load from vendor)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Structural framing with grid spacing parameters and load data fields",
+"kn": "M.SUP_00"
+},
+{
+"id": "HC172",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_Steel_LiftingBeam_LiftShaft",
+"types": [
+"152UB"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Lift shaft lifting beam",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.UBM_02"
+},
+{
+"id": "HC173",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_Steel_Truss_Canopy",
+"types": [
+"6000",
+"9000"
+],
+"depts": [
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Ambulance canopy truss",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "A.CAN_02"
+},
+{
+"id": "HC174",
+"role": "S",
+"category": "Structural Framing",
+"family": "FMC_S_StrFraming_Purlin_Z",
+"types": [
+"Z150",
+"Z200"
+],
+"depts": [
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Cold-formed purlin",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "M.ZPU_02"
+},
+{
+"id": "HC175",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_PadFooting",
+"types": [
+"1500x1500",
+"2000x2000"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Pad footing",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.PAD_02"
+},
+{
+"id": "HC176",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_PileCap",
+"types": [
+"2-pile",
+"3-pile",
+"4-pile"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Pile cap",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "C.PIL_00"
+},
+{
+"id": "HC177",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_Pile_Bored",
+"types": [
+"450",
+"600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Bored pile",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "C.PIL_01"
+},
+{
+"id": "HC178",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_StripFooting",
+"types": [
+"600",
+"900"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Strip footing",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.STR_03"
+},
+{
+"id": "HC179",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_Plinth_Equipment_Isolated",
+"types": [
+"MRI",
+"CT",
+"Generator"
+],
+"depts": [
+"RAD",
+"PLANT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Isolated plinth with vibration break; mass from vendor",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.PLN_00"
+},
+{
+"id": "HC180",
+"role": "S",
+"category": "Structural Foundations",
+"family": "FMC_S_StrFoundation_Base_TankStand",
+"types": [
+"3x3",
+"4x4"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Tank tower base",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.PLN_01"
+},
+{
+"id": "HC181",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_LiftPit",
+"types": [
+"1600x2700"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Lift pit with sump",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.PIT_00"
+},
+{
+"id": "HC182",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_CastInChannel",
+"types": [
+"41x41"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Cast-in channel for pendants and services",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.FIX_00"
+},
+{
+"id": "HC183",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_Embed_Plate",
+"types": [
+"200x200",
+"300x300"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Cast-in plate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.FIX_01"
+},
+{
+"id": "HC184",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_MovementJoint_Slab",
+"types": [
+"20",
+"30"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Movement joint",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "C.JNT_00"
+},
+{
+"id": "HC185",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_TankStand_Steel",
+"types": [
+"3m",
+"6m"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Steel tank tower",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "M.TWR_00"
+},
+{
+"id": "HC186",
+"role": "S",
+"category": "Structural Connections",
+"family": "FMC_S_StrConnection_BasePlate",
+"types": [
+"300x300",
+"400x400"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Column base plate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.FIX_02"
+},
+{
+"id": "HC187",
+"role": "S",
+"category": "Structural Connections",
+"family": "FMC_S_StrConnection_FinPlate",
+"types": [
+"100x200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Beam fin plate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.FIX_03"
+},
+{
+"id": "HC188",
+"role": "S",
+"category": "Generic Models",
+"family": "FMC_S_GenericModel_Opening_RadiationShielded_Sleeve",
+"types": [
+"100dia",
+"150dia"
+],
+"depts": [
+"RAD"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Lead-sleeved penetration for shielded rooms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "M.FIX_04"
+},
+{
+"id": "HC189",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Manhole_Precast",
+"types": [
+"1050dia",
+"1200dia"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "Precast inspection chamber with benching",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MAN_02"
+},
+{
+"id": "HC190",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Manhole_Brick",
+"types": [
+"600x900",
+"900x1200"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Brick chamber",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MAN_03"
+},
+{
+"id": "HC191",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Catchpit_Stormwater",
+"types": [
+"900x900"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Catch pit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.DRN_04"
+},
+{
+"id": "HC192",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Gully_Trapped",
+"types": [
+"450x450"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Trapped road gully",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.DRN_05"
+},
+{
+"id": "HC193",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_SepticTank_MultiChamber",
+"types": [
+"10m3",
+"20m3",
+"40m3"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Where no sewer; sizing by engineer",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SEP_02"
+},
+{
+"id": "HC194",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Soakpit",
+"types": [
+"2000dia"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Soak pit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SEP_03"
+},
+{
+"id": "HC195",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_WWTP_Packaged",
+"types": [
+"50m3/d",
+"100m3/d"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Packaged wastewater treatment plant envelope (hospital effluent)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TRT_00"
+},
+{
+"id": "HC196",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_NeutralisationPit_Lab",
+"types": [
+"1000x1000"
+],
+"depts": [
+"LAB",
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Lab effluent neutralisation chamber",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TRT_01"
+},
+{
+"id": "HC197",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_GreaseTrap_External",
+"types": [
+"1000L",
+"2000L"
+],
+"depts": [
+"KIT",
+"EXT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Kitchen grease trap",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TRT_02"
+},
+{
+"id": "HC198",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Interceptor_Fuel",
+"types": [
+"1000L"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Fuel interceptor at generator and parking",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TRT_03"
+},
+{
+"id": "HC199",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Culvert_Box",
+"types": [
+"900x600",
+"1200x900"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Box culvert",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.CUL_01"
+},
+{
+"id": "HC200",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Culvert_Pipe",
+"types": [
+"600",
+"900"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Pipe culvert with headwalls",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.CUL_02"
+},
+{
+"id": "HC201",
+"role": "C",
+"category": "Structures",
+"family": "FMC_C_Structure_Drain_UChannel_Covered",
+"types": [
+"300",
+"450",
+"600"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Covered U-channel",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.DRN_06"
+},
+{
+"id": "HC202",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Kerb_Precast",
+"types": [
+"straight",
+"dropped"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Precast kerb incl. dropped kerb at crossings",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.KRB_03"
+},
+{
+"id": "HC203",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_SpeedHump",
+"types": [
+"3700 wide"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Speed hump at ambulance route",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.MRK_01"
+},
+{
+"id": "HC204",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Parking_Bay_Accessible",
+"types": [
+"3600x5000"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Accessible bay with transfer zone",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.MRK_02"
+},
+{
+"id": "HC205",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Parking_Bay_Ambulance",
+"types": [
+"4000x8000"
+],
+"depts": [
+"EMG"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Ambulance bay marking and clearance",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.MRK_03"
+},
+{
+"id": "HC206",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Incinerator_MedicalWaste",
+"types": [
+"50kg/h",
+"100kg/h"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Incinerator envelope and stack (EIA by others)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.WST_00"
+},
+{
+"id": "HC207",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Gatehouse_Barrier",
+"types": [
+"3000"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Boom barrier at the main gate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "T.GAT_00"
+},
+{
+"id": "HC208",
+"role": "C",
+"category": "Site",
+"family": "FMC_C_SiteFurniture_Helipad_Marking",
+"types": [
+"D-value"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Helipad marking placeholder (aviation authority approval)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.MRK_04"
+},
+{
+"id": "HC209",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Tree_Shade",
+"types": [
+"6m",
+"10m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Shade tree (indigenous species list)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.TRE_04"
+},
+{
+"id": "HC210",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Tree_Ornamental",
+"types": [
+"4m",
+"6m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Ornamental tree",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.TRE_05"
+},
+{
+"id": "HC211",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Palm",
+"types": [
+"6m",
+"9m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Palm",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "L.TRE_06"
+},
+{
+"id": "HC212",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Shrub",
+"types": [
+"0.6m",
+"1.2m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Shrub",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "L.SHR_01"
+},
+{
+"id": "HC213",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Hedge",
+"types": [
+"1.2m",
+"1.8m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Hedge run",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "L.SHR_02"
+},
+{
+"id": "HC214",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Groundcover",
+"types": [
+"0.3m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Groundcover patch",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "L.SHR_03"
+},
+{
+"id": "HC215",
+"role": "L",
+"category": "Planting",
+"family": "FMC_L_Planting_Planter_Raised_Therapy",
+"types": [
+"1200x600x750"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Wheelchair-height therapy planter",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.PLT_00"
+},
+{
+"id": "HC216",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_Bench_HealingGarden",
+"types": [
+"1500",
+"1800"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Garden bench with armrests to help standing",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_00"
+},
+{
+"id": "HC217",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_Bench_Concrete_TimberCap",
+"types": [
+"1800",
+"2400"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Precast bench with timber slats",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_01"
+},
+{
+"id": "HC218",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_Pergola_Timber",
+"types": [
+"3000x3000"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Shade pergola",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_02"
+},
+{
+"id": "HC219",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_WaterFeature_HealingGarden",
+"types": [
+"1500dia"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"CW",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Small recirculating feature",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_03"
+},
+{
+"id": "HC220",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_DrinkingPost_Outdoor",
+"types": [
+"1000 high"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Vandal-resistant drinking post",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_04"
+},
+{
+"id": "HC221",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_WasteBin_External_Segregated",
+"types": [
+"2-bin",
+"3-bin"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Segregated external bins",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "L.FUR_05"
+},
+{
+"id": "HC222",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_Fence_Chainlink",
+"types": [
+"1.8m",
+"2.4m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Boundary fence",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "T.FEN_00"
+},
+{
+"id": "HC223",
+"role": "L",
+"category": "Site",
+"family": "FMC_L_SiteFurniture_Gate_Sliding_Main",
+"types": [
+"6m",
+"8m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Motorised sliding gate",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "T.GAT_01"
+},
+{
+"id": "HC224",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_MSB_LV_Main",
+"types": [
+"1600A",
+"2500A"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Main LV switchboard, normal and essential sections",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_04"
+},
+{
+"id": "HC225",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_MDB_Essential",
+"types": [
+"400A",
+"630A"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Essential services board on generator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_05"
+},
+{
+"id": "HC226",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_DB_Final_TPN",
+"types": [
+"12way",
+"18way",
+"24way"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "TPN DB 415 V; circuit count, schedule template",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Electrical equipment with distribution system, ways and panel schedule template",
+"kn": "E.DBD_06"
+},
+{
+"id": "HC227",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_DB_Final_SPN",
+"types": [
+"8way",
+"12way"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "SPN DB 240 V",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_07"
+},
+{
+"id": "HC228",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_DB_Essential_Red",
+"types": [
+"12way",
+"18way"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Essential-supply DB, red identification",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_08"
+},
+{
+"id": "HC229",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_ATS_Panel",
+"types": [
+"400A",
+"630A"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Automatic transfer switch",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_09"
+},
+{
+"id": "HC230",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_Generator_Diesel_Standby",
+"types": [
+"250kVA",
+"500kVA",
+"800kVA"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Standby generator with day tank and acoustic canopy",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.GEN_00"
+},
+{
+"id": "HC231",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_UPS_Central",
+"types": [
+"60kVA",
+"120kVA"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Central UPS for critical loads",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.BAT_02"
+},
+{
+"id": "HC232",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_UPS_Rack",
+"types": [
+"10kVA"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Rack UPS for comms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.BAT_03"
+},
+{
+"id": "HC233",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_IPS_Theatre_IT",
+"types": [
+"5kVA",
+"8kVA"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Medical IT (isolated power) system with insulation monitor (HTM 06-01 group 2)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Medical IT system data (insulation monitor) and essential-supply flag",
+"kn": "E.DBD_10"
+},
+{
+"id": "HC234",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_Transformer_Pad",
+"types": [
+"500kVA",
+"1000kVA"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "UMEME pad transformer envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.TRF_00"
+},
+{
+"id": "HC235",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_MeterCabinet_Intake",
+"types": [
+"1-way",
+"3-way"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Intake and metering",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_11"
+},
+{
+"id": "HC236",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_Inverter_Solar",
+"types": [
+"10kW",
+"50kW"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Solar inverter",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.INV_03"
+},
+{
+"id": "HC237",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_BatteryBank",
+"types": [
+"100kWh"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Battery bank envelope",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "Z.BAT_04"
+},
+{
+"id": "HC238",
+"role": "E",
+"category": "Electrical Equipment",
+"family": "FMC_E_EQ_Isolator_Rotary",
+"types": [
+"20A",
+"32A",
+"63A"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Equipment isolator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.DBD_12"
+},
+{
+"id": "HC239",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Socket_13A_Twin",
+"types": [
+"switched"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Twin 13 A; 240 V exactly; load and circuit params",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Face-based fixture, 240 V connector, circuit and load parameters",
+"kn": "E.SOC_04"
+},
+{
+"id": "HC240",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Socket_13A_Essential_Red",
+"types": [
+"switched"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Red essential socket on generator circuit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_05"
+},
+{
+"id": "HC241",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Socket_MedicalIT",
+"types": [
+"twin"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "IT-system socket with indicator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_06"
+},
+{
+"id": "HC242",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Socket_Floor_Box",
+"types": [
+"2-gang"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Floor box",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_07"
+},
+{
+"id": "HC243",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Socket_Industrial_32A",
+"types": [
+"1P",
+"3P"
+],
+"depts": [
+"PLANT",
+"KIT",
+"LAUN"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Industrial socket for equipment",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_08"
+},
+{
+"id": "HC244",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_FusedSpur",
+"types": [
+"13A"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Fused connection unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_09"
+},
+{
+"id": "HC245",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Switch_Light",
+"types": [
+"1G",
+"2G",
+"3G",
+"4G"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Light switch",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_10"
+},
+{
+"id": "HC246",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Switch_Dimmer",
+"types": [
+"1G"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Dimmer",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_11"
+},
+{
+"id": "HC247",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_NurseCall_BedheadUnit",
+"types": [
+"standard",
+"with pillow"
+],
+"depts": [
+"WARD",
+"ICU"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 1,
+"note": "Nurse call point with pull and pillow speaker",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "ELV connector (nurse call system), Fine-only detail",
+"kn": "E.NCS_00"
+},
+{
+"id": "HC248",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_NurseCall_PullCord_Toilet",
+"types": [
+"ceiling"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Emergency pull cord with reset",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.NCS_01"
+},
+{
+"id": "HC249",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_NurseCall_OverDoorLight",
+"types": [
+"single",
+"dual"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Over-door indicator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.NCS_02"
+},
+{
+"id": "HC250",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_NurseCall_MasterStation",
+"types": [
+"desk"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Master station at nurse base",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.NCS_03"
+},
+{
+"id": "HC251",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Data_Outlet_RJ45",
+"types": [
+"1-port",
+"2-port"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Data outlet",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_00"
+},
+{
+"id": "HC252",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_AccessControl_CardReader",
+"types": [
+"surface"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Card reader",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SEC_00"
+},
+{
+"id": "HC253",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_AccessControl_MagLock",
+"types": [
+"600lb"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Mag-lock on door head",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SEC_01"
+},
+{
+"id": "HC254",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Intercom_Door",
+"types": [
+"audio",
+"video"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Door intercom",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.NCS_04"
+},
+{
+"id": "HC255",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_Clock_Theatre_Elapsed",
+"types": [
+"wall"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Theatre clock and elapsed timer",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.NCS_05"
+},
+{
+"id": "HC256",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_TV_Patient_Arm",
+"types": [
+"arm"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Patient TV on arm",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_01"
+},
+{
+"id": "HC257",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_HandDryer_HEPA",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "HEPA hand dryer (public toilets only)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.SOC_12"
+},
+{
+"id": "HC258",
+"role": "E",
+"category": "Electrical Fixtures",
+"family": "FMC_E_ElecFixture_JunctionBox",
+"types": [
+"75x75",
+"100x100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Conduit junction box",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.CON_02"
+},
+{
+"id": "HC259",
+"role": "E",
+"category": "Communication Devices",
+"family": "FMC_E_Comms_WiFi_AccessPoint",
+"types": [
+"ceiling"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Wi-Fi AP",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_02"
+},
+{
+"id": "HC260",
+"role": "E",
+"category": "Communication Devices",
+"family": "FMC_E_Comms_Rack_Comms",
+"types": [
+"24U",
+"42U"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Comms rack",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_03"
+},
+{
+"id": "HC261",
+"role": "E",
+"category": "Communication Devices",
+"family": "FMC_E_Comms_PA_Speaker_Ceiling",
+"types": [
+"6W"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "PA and voice alarm speaker",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_04"
+},
+{
+"id": "HC262",
+"role": "E",
+"category": "Security Devices",
+"family": "FMC_E_SecurityDevice_CCTV_Camera_Dome",
+"types": [
+"ceiling"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Dome camera",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_05"
+},
+{
+"id": "HC263",
+"role": "E",
+"category": "Security Devices",
+"family": "FMC_E_SecurityDevice_CCTV_Camera_Bullet",
+"types": [
+"wall"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Bullet camera",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "E.ICT_06"
+},
+{
+"id": "HC264",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Panel_600_Cleanroom_IP65",
+"types": [
+"600x600",
+"1200x600"
+],
+"depts": [
+"THR",
+"CSSD",
+"PHA"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Sealed IP65 cleanroom panel, gel-seal grid option",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Ceiling-hosted lighting with photometric web and IP rating",
+"kn": "E.LED_06"
+},
+{
+"id": "HC265",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Panel_600_General",
+"types": [
+"600x600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "LED panel",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_07"
+},
+{
+"id": "HC266",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Downlight_LED",
+"types": [
+"150",
+"200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Downlight",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "E.LED_08"
+},
+{
+"id": "HC267",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Batten_LED",
+"types": [
+"1200",
+"1500"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Batten",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "E.LED_09"
+},
+{
+"id": "HC268",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Bedhead_Reading_Ward",
+"types": [
+"1200"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Bedhead up/down light with reading and night light",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_10"
+},
+{
+"id": "HC269",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Examination_Wall_Arm",
+"types": [
+"arm"
+],
+"depts": [
+"OPD",
+"EMG"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Examination light on wall arm",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_11"
+},
+{
+"id": "HC270",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Examination_Mobile",
+"types": [
+"stand"
+],
+"depts": [
+"OPD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Mobile examination light",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_12"
+},
+{
+"id": "HC271",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_OperatingLight_Ceiling",
+"types": [
+"single",
+"double dome"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Surgical light; ceiling mount to Unistrut frame; sweep solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Nested arms with angle parameters, sweep envelope, ceiling mount",
+"kn": "E.LED_13"
+},
+{
+"id": "HC272",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_NightLight_Footlight",
+"types": [
+"recessed"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Low-level night light",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_14"
+},
+{
+"id": "HC273",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Emergency_Bulkhead_Maintained",
+"types": [
+"3h"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Emergency bulkhead",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_15"
+},
+{
+"id": "HC274",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_ExitSign_Illuminated",
+"types": [
+"single",
+"double"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Exit sign",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_16"
+},
+{
+"id": "HC275",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Bulkhead_IP65",
+"types": [
+"wall"
+],
+"depts": [
+"EXT",
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Weatherproof bulkhead",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_17"
+},
+{
+"id": "HC276",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Streetlight_Pole",
+"types": [
+"6m",
+"8m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Street light (solar option)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.EXL_00"
+},
+{
+"id": "HC277",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Bollard_Light",
+"types": [
+"900"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Bollard light",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.EXL_01"
+},
+{
+"id": "HC278",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_Floodlight",
+"types": [
+"100W",
+"200W"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Floodlight",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.EXL_02"
+},
+{
+"id": "HC279",
+"role": "E",
+"category": "Lighting Fixtures",
+"family": "FMC_E_LightFixture_XrayWarning_Light",
+"types": [
+"door head"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "X-ray in-use warning light",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.LED_18"
+},
+{
+"id": "HC280",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AC_Split_WallHigh",
+"types": [
+"9k",
+"12k",
+"18k",
+"24k BTU/h"
+],
+"depts": [
+"WARD",
+"ADM"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "Split AC indoor (kW and BTU/h), condensate connector",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_05"
+},
+{
+"id": "HC281",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AC_Split_Outdoor",
+"types": [
+"9k-24k BTU/h"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Condensing unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_06"
+},
+{
+"id": "HC282",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AC_Cassette_4Way",
+"types": [
+"18k",
+"24k",
+"36k BTU/h"
+],
+"depts": [
+"OPD",
+"ADM"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "Cassette indoor unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_07"
+},
+{
+"id": "HC283",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AC_Ducted_FCU",
+"types": [
+"5kW",
+"10kW"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"DS",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Ducted fan coil",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_08"
+},
+{
+"id": "HC284",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_VRF_Outdoor",
+"types": [
+"28kW",
+"56kW"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "VRF outdoor unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "H.SPL_09"
+},
+{
+"id": "HC285",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_VRF_Indoor_Cassette",
+"types": [
+"2.8kW",
+"5.6kW"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "VRF cassette",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_10"
+},
+{
+"id": "HC286",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AC_Precision_ServerRoom",
+"types": [
+"10kW"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Close-control unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.SPL_11"
+},
+{
+"id": "HC287",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AHU_Theatre_HEPA",
+"types": [
+"1.5m3/s",
+"2.5m3/s"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"E",
+"DS",
+"DE",
+"SAN"
+],
+"clearance": "",
+"wave": 1,
+"note": "Theatre AHU: HEPA, humidity, 25 air changes (HTM 03-01 basis); duct connectors",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Several duct connectors with flows and sizes, plus condensate pipe and power",
+"kn": "H.AHU_00"
+},
+{
+"id": "HC288",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AHU_General",
+"types": [
+"1m3/s",
+"3m3/s"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"DS",
+"DE"
+],
+"clearance": "",
+"wave": 2,
+"note": "General AHU",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.AHU_01"
+},
+{
+"id": "HC289",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ERV_FreshAir",
+"types": [
+"500",
+"1000 m3/h"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"E",
+"DS",
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Energy recovery ventilator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.AHU_02"
+},
+{
+"id": "HC290",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ExtractFan_Inline",
+"types": [
+"100",
+"150",
+"200"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"DE"
+],
+"clearance": "",
+"wave": 2,
+"note": "Inline extract fan",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "H.FAN_04"
+},
+{
+"id": "HC291",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ExtractFan_Roof",
+"types": [
+"300",
+"450"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E",
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Roof extract fan",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.FAN_05"
+},
+{
+"id": "HC292",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ExtractFan_Wall",
+"types": [
+"150",
+"250"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Wall extract fan",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "H.FAN_06"
+},
+{
+"id": "HC293",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ExtractFan_FumeCupboard",
+"types": [
+"0.3m3/s"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"E",
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Fume extract with stack",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.FAN_07"
+},
+{
+"id": "HC294",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_ExtractFan_Isolation_HEPA",
+"types": [
+"0.2m3/s"
+],
+"depts": [
+"ICU"
+],
+"connectors": [
+"E",
+"DE"
+],
+"clearance": "",
+"wave": 2,
+"note": "Negative-pressure isolation extract with HEPA",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.FAN_08"
+},
+{
+"id": "HC295",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Chiller_AirCooled",
+"types": [
+"200kW",
+"400kW"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Air-cooled chiller",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "H.CHW_00"
+},
+{
+"id": "HC296",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Pump_ChilledWater",
+"types": [
+"5l/s"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "CHW pump",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CHW_01"
+},
+{
+"id": "HC297",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Hood_Kitchen_Extract",
+"types": [
+"2400",
+"3600"
+],
+"depts": [
+"KIT"
+],
+"connectors": [
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Kitchen hood",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "H.FAN_09"
+},
+{
+"id": "HC298",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Condenser_ColdRoom",
+"types": [
+"2kW",
+"5kW"
+],
+"depts": [
+"MORT",
+"KIT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Cold-room condensing unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CLD_00"
+},
+{
+"id": "HC299",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Evaporator_ColdRoom",
+"types": [
+"2kW",
+"5kW"
+],
+"depts": [
+"MORT",
+"KIT"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Cold-room evaporator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CLD_01"
+},
+{
+"id": "HC300",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_PneumaticTube_Station",
+"types": [
+"single"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Pneumatic tube station",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.PTS_00"
+},
+{
+"id": "HC301",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_PneumaticTube_Blower",
+"types": [
+"1.5kW"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Pneumatic tube blower",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.PTS_01"
+},
+{
+"id": "HC302",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Boiler_Steam_CSSD",
+"types": [
+"100kg/h",
+"250kg/h"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E",
+"ST",
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Steam generator for CSSD and laundry",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.STM_00"
+},
+{
+"id": "HC303",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_AirCurtain_Entrance",
+"types": [
+"1500",
+"2000"
+],
+"depts": [
+"EMG",
+"OPD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Air curtain",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.FAN_10"
+},
+{
+"id": "HC304",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_CeilingFan",
+"types": [
+"1200",
+"1400"
+],
+"depts": [
+"WARD",
+"OPD"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Ceiling fan (district hospitals)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": true,
+"proves": "",
+"kn": "H.FAN_11"
+},
+{
+"id": "HC305",
+"role": "M",
+"category": "Mechanical Equipment",
+"family": "FMC_M_MechEq_Dehumidifier",
+"types": [
+"20l/day"
+],
+"depts": [
+"RAD"
+],
+"connectors": [
+"E",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Dehumidifier for imaging rooms",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CLD_02"
+},
+{
+"id": "HC306",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Diffuser_Square_4Way",
+"types": [
+"300",
+"450",
+"600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 2,
+"note": "Square diffuser",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_00"
+},
+{
+"id": "HC307",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Diffuser_Linear_Slot",
+"types": [
+"1200",
+"1500"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 3,
+"note": "Linear slot",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_01"
+},
+{
+"id": "HC308",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Diffuser_LaminarFlow_Theatre",
+"types": [
+"2400x2400",
+"3000x3000"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 1,
+"note": "Ultra-clean ventilation canopy over the operating zone",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Air terminal with flow and size types, canopy zone solid",
+"kn": "H.ATD_02"
+},
+{
+"id": "HC309",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Grille_Return",
+"types": [
+"300x300",
+"600x300"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"DE"
+],
+"clearance": "",
+"wave": 2,
+"note": "Return grille",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_03"
+},
+{
+"id": "HC310",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Grille_Extract_LowLevel",
+"types": [
+"600x300"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"DE"
+],
+"clearance": "",
+"wave": 3,
+"note": "Low-level extract",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_04"
+},
+{
+"id": "HC311",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Grille_Transfer_Door",
+"types": [
+"450x150"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Door transfer grille (pressure regime)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_05"
+},
+{
+"id": "HC312",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_HEPA_TerminalFilter",
+"types": [
+"600x600"
+],
+"depts": [
+"ICU",
+"PHA"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 3,
+"note": "Terminal HEPA filter box",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_06"
+},
+{
+"id": "HC313",
+"role": "M",
+"category": "Air Terminals",
+"family": "FMC_M_AirTerminal_Louvre_External",
+"types": [
+"600x600",
+"1200x600"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 3,
+"note": "Weather louvre",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.ATD_07"
+},
+{
+"id": "HC314",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Damper_Fire",
+"types": [
+"200x200",
+"600x400"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 2,
+"note": "Fire damper at compartments",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.DMP_00"
+},
+{
+"id": "HC315",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Damper_FireSmoke",
+"types": [
+"600x400"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"DS",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Motorised fire and smoke damper",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.DMP_01"
+},
+{
+"id": "HC316",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Damper_Volume",
+"types": [
+"200dia",
+"600x400"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 3,
+"note": "Volume control damper",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.DMP_02"
+},
+{
+"id": "HC317",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Damper_PressureStabiliser",
+"types": [
+"300x150"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"DS"
+],
+"clearance": "",
+"wave": 3,
+"note": "Pressure stabiliser",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.DMP_03"
+},
+{
+"id": "HC318",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Valve_CAV_VAV",
+"types": [
+"200",
+"300"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"DS",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "CAV/VAV box",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "H.DMP_04"
+},
+{
+"id": "HC319",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Sensor_RoomPressure",
+"types": [
+"wall"
+],
+"depts": [
+"ICU",
+"THR",
+"PHA"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Room pressure monitor display at door",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CTL_00"
+},
+{
+"id": "HC320",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Sensor_TempHumidity",
+"types": [
+"wall"
+],
+"depts": [
+"THR",
+"PHA"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "T and RH sensor",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CTL_01"
+},
+{
+"id": "HC321",
+"role": "M",
+"category": "Duct Accessories",
+"family": "FMC_M_DuctAccessory_Thermostat_Controller",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Room controller",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "H.CTL_02"
+},
+{
+"id": "HC322",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Basin_ClinicalHandwash",
+"types": [
+"500",
+"600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 1,
+"note": "Overflow-free, plug-free clinical basin, elbow or sensor tap, splashback (HBN 00-10 basis)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "CW, HW and sanitary connectors at the right heights; nested tap; splashback",
+"kn": "P.BAS_02"
+},
+{
+"id": "HC323",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Basin_Vanity",
+"types": [
+"single",
+"double"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Vanity basin",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.BAS_03"
+},
+{
+"id": "HC324",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Basin_Accessible",
+"types": [
+"550"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "Accessibility",
+"wave": 2,
+"note": "Accessible basin with knee space",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.BAS_04"
+},
+{
+"id": "HC325",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_ScrubTrough_Theatre",
+"types": [
+"1-bay",
+"2-bay",
+"3-bay"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 1,
+"note": "Stainless scrub trough, knee or sensor taps, TMV",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Bay count drives width and number of connectors (arrayed connectors)",
+"kn": "P.SNK_02"
+},
+{
+"id": "HC326",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Sink_Sluice_Hopper",
+"types": [
+"flushing rim"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "Sluice hopper with flushing rim",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_03"
+},
+{
+"id": "HC327",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Sink_Lab_Epoxy",
+"types": [
+"450",
+"600"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Lab sink",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_04"
+},
+{
+"id": "HC328",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Sink_Kitchen_SS_Double",
+"types": [
+"1200",
+"1500"
+],
+"depts": [
+"KIT"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Kitchen sink",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_05"
+},
+{
+"id": "HC329",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Sink_Plaster_Trap",
+"types": [
+"900"
+],
+"depts": [
+"EMG",
+"OPD"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Plaster room sink with trap",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_06"
+},
+{
+"id": "HC330",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Sink_Cleaners",
+"types": [
+"600"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Cleaner's sink",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_07"
+},
+{
+"id": "HC331",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_WC_Accessible_Peninsular",
+"types": [
+"back to wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "Accessibility",
+"wave": 2,
+"note": "Accessible WC set out per BS 8300 dims",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.WCS_02"
+},
+{
+"id": "HC332",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_WC_Standard",
+"types": [
+"close coupled"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "WC",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.WCS_03"
+},
+{
+"id": "HC333",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_WC_Squat",
+"types": [
+"ceramic"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Squat pan (Uganda public facilities)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.WCS_04"
+},
+{
+"id": "HC334",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Urinal_Bowl",
+"types": [
+"single"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Urinal",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.WCS_05"
+},
+{
+"id": "HC335",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_BedpanWasher_Disinfector",
+"types": [
+"floor",
+"wall"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Bedpan washer-disinfector",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.STE_00"
+},
+{
+"id": "HC336",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Macerator_Pulp",
+"types": [
+"floor"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Pulp macerator",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SLU_00"
+},
+{
+"id": "HC337",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Shower_Accessible_Thermostatic",
+"types": [
+"wall"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "Accessibility",
+"wave": 2,
+"note": "Thermostatic shower with level-access drain",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SHW_00"
+},
+{
+"id": "HC338",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Shower_Emergency_Eyewash",
+"types": [
+"combo"
+],
+"depts": [
+"LAB"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Emergency shower and eyewash",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SHW_01"
+},
+{
+"id": "HC339",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Bath_Assisted",
+"types": [
+"height-adjustable"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Assisted bath",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SHW_02"
+},
+{
+"id": "HC340",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_DrinkingFountain_DualHeight",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "Accessibility",
+"wave": 3,
+"note": "Dual-height fountain, low bowl 815-860 rim",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRK_00"
+},
+{
+"id": "HC341",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_BottleRefill_Station",
+"types": [
+"wall",
+"free-standing"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Chilled filtered refill",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRK_01"
+},
+{
+"id": "HC342",
+"role": "P",
+"category": "Plumbing Fixtures",
+"family": "FMC_P_PlumbingFixture_Trough_Autopsy_Sink",
+"types": [
+"1800"
+],
+"depts": [
+"MORT"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Mortuary sink",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.SNK_08"
+},
+{
+"id": "HC343",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Tap_Elbow_Lever",
+"types": [
+"single"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Elbow lever mixer (nested in basins)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TAP_01"
+},
+{
+"id": "HC344",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Tap_Sensor",
+"types": [
+"deck",
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sensor tap (nested)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TAP_02"
+},
+{
+"id": "HC345",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_TMV_Type3",
+"types": [
+"15",
+"22"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW"
+],
+"clearance": "",
+"wave": 2,
+"note": "Thermostatic mixing valve",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TAP_03"
+},
+{
+"id": "HC346",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Valve_Gate",
+"types": [
+"15-100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Isolation valve",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.VLV_00"
+},
+{
+"id": "HC347",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Valve_PRV",
+"types": [
+"25",
+"50"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Pressure reducing valve",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.VLV_01"
+},
+{
+"id": "HC348",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_FloorDrain_SS",
+"types": [
+"100",
+"150"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 2,
+"note": "Stainless floor drain",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRN_00"
+},
+{
+"id": "HC349",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_FloorGully_Sealed_Theatre",
+"types": [
+"sealed"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sealable gully (where permitted)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRN_01"
+},
+{
+"id": "HC350",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Cleanout_Rodding",
+"types": [
+"100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Rodding eye",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRN_02"
+},
+{
+"id": "HC351",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_Vent_AirAdmittance",
+"types": [
+"110"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"VNT"
+],
+"clearance": "",
+"wave": 3,
+"note": "Air admittance valve",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRN_03"
+},
+{
+"id": "HC352",
+"role": "P",
+"category": "Pipe Accessories",
+"family": "FMC_P_PipeAccessory_GreaseInterceptor_Undersink",
+"types": [
+"20L"
+],
+"depts": [
+"KIT"
+],
+"connectors": [
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Under-sink interceptor",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "P.DRN_04"
+},
+{
+"id": "HC353",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_WaterHeater_Instant",
+"types": [
+"3kW",
+"6kW"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Instant heater (multi-discipline)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.HWS_00"
+},
+{
+"id": "HC354",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_WaterHeater_Storage",
+"types": [
+"50L",
+"100L",
+"200L"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Storage heater",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.HWS_01"
+},
+{
+"id": "HC355",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_WaterHeater_Solar",
+"types": [
+"200L",
+"300L"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Solar thermosiphon",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.HWS_02"
+},
+{
+"id": "HC356",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Calorifier",
+"types": [
+"1000L",
+"2000L"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"CW",
+"HW",
+"ST"
+],
+"clearance": "",
+"wave": 3,
+"note": "Calorifier for central HW",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.HWS_03"
+},
+{
+"id": "HC357",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Tank_Poly_Tower",
+"types": [
+"5000L",
+"10000L"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"CW"
+],
+"clearance": "",
+"wave": 2,
+"note": "Poly tank on tower",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TNK_01"
+},
+{
+"id": "HC358",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Tank_Sectional_GRP",
+"types": [
+"20m3",
+"50m3"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"CW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sectional tank with divided compartments",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TNK_02"
+},
+{
+"id": "HC359",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Tank_Underground_Rainwater",
+"types": [
+"20m3",
+"50m3"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"CW",
+"SAN"
+],
+"clearance": "",
+"wave": 3,
+"note": "Rainwater harvesting tank",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.TNK_03"
+},
+{
+"id": "HC360",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Pump_BoosterSet",
+"types": [
+"duty/standby"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"CW",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Booster set",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.PMP_00"
+},
+{
+"id": "HC361",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Pump_Sump_Submersible",
+"types": [
+"1.5kW"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sump pump",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.PMP_01"
+},
+{
+"id": "HC362",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis",
+"types": [
+"500L/h"
+],
+"depts": [
+"DIAL"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "RO plant for dialysis water",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.WTR_00"
+},
+{
+"id": "HC363",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_UVSteriliser",
+"types": [
+"inline"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"CW",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "UV steriliser",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.STE_01"
+},
+{
+"id": "HC364",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Washer_Disinfector_CSSD",
+"types": [
+"single",
+"double door"
+],
+"depts": [
+"CSSD"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Pass-through washer-disinfector (NMEG CSSD category)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.STE_02"
+},
+{
+"id": "HC365",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Steriliser_Steam_CSSD",
+"types": [
+"300L",
+"600L"
+],
+"depts": [
+"CSSD"
+],
+"connectors": [
+"CW",
+"SAN",
+"ST",
+"E"
+],
+"clearance": "",
+"wave": 1,
+"note": "Pass-through steam steriliser: steam, water, drain, power connectors",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "Category-switch test: build as MechEq, switch, confirm connectors survive; steam, water, drain, power",
+"kn": "Z.STE_03"
+},
+{
+"id": "HC366",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_Autoclave_Benchtop",
+"types": [
+"23L"
+],
+"depts": [
+"OPD",
+"DENT"
+],
+"connectors": [
+"CW",
+"SAN",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Bench autoclave",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "Z.STE_04"
+},
+{
+"id": "HC367",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_ServicePoint_MedGas",
+"types": [
+"60_MedGas"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 1,
+"note": "Nested shared medical-gas service point (O2, vacuum, medical air) for Medical Equipment hosts; pipes refuse MedEq (Revit QE4, 17 Oct)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Nested shared connector family inside a Medical Equipment host: the project connects its pipes (Revit QE4: pipes refuse MedEq, power works)",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC368",
+"role": "P",
+"category": "Plumbing Equipment",
+"family": "FMC_P_PlumbingEq_ServicePoint_Water",
+"types": [
+"60_Water"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"CW",
+"HW",
+"SAN"
+],
+"clearance": "",
+"wave": 1,
+"note": "Nested shared water and drainage service point for Medical Equipment hosts (Revit QE4, 17 Oct)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Second service point: water and drainage for MedEq hosts (dental chair, dialysis, autopsy table)",
+"kn": "",
+"kn_note": "exempt: nested helper or clearance, never scheduled"
+},
+{
+"id": "HC369",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Outlet_O2",
+"types": [
+"BS",
+"DIN"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 1,
+"note": "Oxygen terminal unit; custom pipe system FMC_MG_O2; labels and colours from kit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Custom medical-gas pipe system (FMC_MG_O2) with BS colour and label",
+"kn": "P.MGO_00"
+},
+{
+"id": "HC370",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Outlet_Vacuum",
+"types": [
+"BS",
+"DIN"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 1,
+"note": "Medical vacuum terminal unit",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "Second gas system to prove system-type mapping",
+"kn": "P.MGO_01"
+},
+{
+"id": "HC371",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Outlet_MedAir",
+"types": [
+"4bar",
+"7bar"
+],
+"depts": [
+"ICU",
+"THR"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 2,
+"note": "Medical air 4 bar and surgical air 7 bar",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGO_02"
+},
+{
+"id": "HC372",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Outlet_N2O",
+"types": [
+"BS"
+],
+"depts": [
+"THR",
+"MAT"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "Nitrous oxide / Entonox",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGO_03"
+},
+{
+"id": "HC373",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Outlet_AGSS",
+"types": [
+"BS"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "Anaesthetic gas scavenging",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGO_04"
+},
+{
+"id": "HC374",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_BedheadPanel",
+"types": [
+"1-bed",
+"2-bed"
+],
+"depts": [
+"WARD",
+"ICU",
+"MAT"
+],
+"connectors": [
+"MG",
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 1,
+"note": "Bedhead set: O2, VAC, MA outlets + sockets + nurse call in one type table",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "One type table combining gas outlets, sockets and nurse call (nested shared families)",
+"kn": "P.MGO_05"
+},
+{
+"id": "HC375",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Pendant_ICU",
+"types": [
+"single arm",
+"double arm"
+],
+"depts": [
+"ICU"
+],
+"connectors": [
+"MG",
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "ICU pendant (to Unistrut frame)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.BHU_01"
+},
+{
+"id": "HC376",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Pendant_Theatre",
+"types": [
+"anaesthesia",
+"surgeon"
+],
+"depts": [
+"THR"
+],
+"connectors": [
+"MG",
+"E",
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Theatre pendants",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "E.BHU_02"
+},
+{
+"id": "HC377",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_AreaValveBox",
+"types": [
+"2-gas",
+"3-gas",
+"4-gas"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 2,
+"note": "Zone valve box (AVSU) with lockable cover",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGV_00"
+},
+{
+"id": "HC378",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_AlarmPanel_Area",
+"types": [
+"3-gas"
+],
+"depts": [
+"WARD",
+"ICU",
+"THR"
+],
+"connectors": [
+"MG",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Area alarm panel",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGV_01"
+},
+{
+"id": "HC379",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_Manifold_O2Cylinder",
+"types": [
+"2x5",
+"2x10"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"MG",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Automatic cylinder manifold",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGP_00"
+},
+{
+"id": "HC380",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_VIE_LOX",
+"types": [
+"1500L",
+"3000L"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"MG"
+],
+"clearance": "",
+"wave": 3,
+"note": "Liquid oxygen VIE tank with safety distances solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGP_01"
+},
+{
+"id": "HC381",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_OxygenPlant_PSA",
+"types": [
+"20m3/h",
+"50m3/h"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"MG",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "PSA oxygen plant (NMEG: medical oxygen plants)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGP_02"
+},
+{
+"id": "HC382",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_VacuumPlant",
+"types": [
+"duplex",
+"triplex"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"MG",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Medical vacuum plant",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGP_03"
+},
+{
+"id": "HC383",
+"role": "P",
+"category": "Mechanical Equipment",
+"family": "FMC_P_MechEq_MedGas_AirPlant",
+"types": [
+"duplex",
+"triplex"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"MG",
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Medical air compressor plant",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "P.MGP_04"
+},
+{
+"id": "HC384",
+"role": "FP",
+"category": "Sprinklers",
+"family": "FMC_FP_Sprinkler_Pendent_Standard",
+"types": [
+"K80",
+"K115"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 1,
+"note": "Pendent sprinkler with coverage solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Fire sprinkler connector, K-factor types, coverage solid",
+"kn": "V.SPR_04"
+},
+{
+"id": "HC385",
+"role": "FP",
+"category": "Sprinklers",
+"family": "FMC_FP_Sprinkler_Sidewall",
+"types": [
+"K80"
+],
+"depts": [
+"WARD"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Sidewall sprinkler",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "V.SPR_05"
+},
+{
+"id": "HC386",
+"role": "FP",
+"category": "Sprinklers",
+"family": "FMC_FP_Sprinkler_Concealed",
+"types": [
+"K80"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Concealed cover-plate sprinkler",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": true,
+"proves": "",
+"kn": "V.SPR_06"
+},
+{
+"id": "HC387",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_HoseReel_Swinging",
+"types": [
+"30m"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 2,
+"note": "Hose reel in cabinet",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.HRL_01"
+},
+{
+"id": "HC388",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_LandingValve_Riser",
+"types": [
+"65"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Dry or wet riser landing valve",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.HYD_00"
+},
+{
+"id": "HC389",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Hydrant_Pillar_External",
+"types": [
+"2-way"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "External hydrant",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.HYD_01"
+},
+{
+"id": "HC390",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_BreechingInlet",
+"types": [
+"2-way",
+"4-way"
+],
+"depts": [
+"EXT"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Fire brigade inlet",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.HYD_02"
+},
+{
+"id": "HC391",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Extinguisher_CO2",
+"types": [
+"2kg",
+"5kg"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "CO2 extinguisher on bracket",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.EXT_04"
+},
+{
+"id": "HC392",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Extinguisher_Powder",
+"types": [
+"6kg",
+"9kg"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Powder extinguisher",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.EXT_05"
+},
+{
+"id": "HC393",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Extinguisher_Cabinet",
+"types": [
+"single",
+"double"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Cabinet",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.EXT_06"
+},
+{
+"id": "HC394",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_FireBlanket",
+"types": [
+"1200x1200"
+],
+"depts": [
+"KIT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Fire blanket",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.EXT_07"
+},
+{
+"id": "HC395",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Valve_AlarmCheck",
+"types": [
+"100",
+"150"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Alarm check valve set",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.VLV_00"
+},
+{
+"id": "HC396",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Valve_ZoneFlowSwitch",
+"types": [
+"65",
+"100"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"FW",
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Zone valve with flow switch",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.VLV_01"
+},
+{
+"id": "HC397",
+"role": "FP",
+"category": "Mechanical Equipment",
+"family": "FMC_FP_MechEq_FirePump_Set",
+"types": [
+"electric+diesel+jockey"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"FW",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Fire pump set",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "V.PMP_00"
+},
+{
+"id": "HC398",
+"role": "FP",
+"category": "Plumbing Equipment",
+"family": "FMC_FP_PlumbingEq_FireTank",
+"types": [
+"100m3",
+"200m3"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"FW"
+],
+"clearance": "",
+"wave": 3,
+"note": "Fire water tank",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET"
+],
+"existing": false,
+"proves": "",
+"kn": "V.PMP_01"
+},
+{
+"id": "HC399",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Panel_Addressable",
+"types": [
+"2-loop",
+"4-loop"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"ELV",
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Addressable fire alarm panel",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_00"
+},
+{
+"id": "HC400",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Detector_Smoke",
+"types": [
+"optical"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 1,
+"note": "Optical detector with coverage solid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "Fire alarm device with ELV connector and coverage radius",
+"kn": "V.FAL_01"
+},
+{
+"id": "HC401",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Detector_Heat",
+"types": [
+"A1R",
+"CS"
+],
+"depts": [
+"KIT",
+"PLANT"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Heat detector",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_02"
+},
+{
+"id": "HC402",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Detector_Multi",
+"types": [
+"optical-heat"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Multi-sensor",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_03"
+},
+{
+"id": "HC403",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_CallPoint_Manual",
+"types": [
+"surface"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Manual call point",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_04"
+},
+{
+"id": "HC404",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Sounder_Beacon",
+"types": [
+"wall",
+"ceiling"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 2,
+"note": "Sounder-beacon (visual for wards: staff alarm strategy)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_05"
+},
+{
+"id": "HC405",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_DoorHolder_Magnetic",
+"types": [
+"wall"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Door holder interface (with A smoke door)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_06"
+},
+{
+"id": "HC406",
+"role": "FP",
+"category": "Fire Alarm Devices",
+"family": "FMC_FP_FireAlarm_Interface_Module",
+"types": [
+"input",
+"output"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "I/O module for AHU shutdown and lifts",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.FAL_07"
+},
+{
+"id": "HC407",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Suppression_Gas_ServerRoom",
+"types": [
+"cylinder"
+],
+"depts": [
+"ADM"
+],
+"connectors": [
+"ELV"
+],
+"clearance": "",
+"wave": 3,
+"note": "Clean-agent suppression",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "V.GAS_00"
+},
+{
+"id": "HC408",
+"role": "FP",
+"category": "Fire Protection",
+"family": "FMC_FP_FireProt_Signage_FireAction",
+"types": [
+"A4"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Fire action notice",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "A.SGN_03"
+},
+{
+"id": "HC409",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_AirTerminal_Rod",
+"types": [
+"500",
+"1000"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Air terminal",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.ROD_03"
+},
+{
+"id": "HC410",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_DownConductor_TestClamp",
+"types": [
+"25x3 tape"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Down conductor with test clamp",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.TAP_04"
+},
+{
+"id": "HC411",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_EarthPit_Inspection",
+"types": [
+"300x300"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Earth pit with lid",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.EAR_02"
+},
+{
+"id": "HC412",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_EarthRod",
+"types": [
+"1.2m",
+"2.4m"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Earth rod",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.EAR_03"
+},
+{
+"id": "HC413",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_EarthBar_Main",
+"types": [
+"12-way"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Main earth terminal bar",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.BND_00"
+},
+{
+"id": "HC414",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_SPD_Type1",
+"types": [
+"TPN"
+],
+"depts": [
+"PLANT"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 2,
+"note": "Type 1 SPD at intake",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "X.SPD_00"
+},
+{
+"id": "HC415",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_SPD_Type2",
+"types": [
+"TPN",
+"SPN"
+],
+"depts": [
+"ALL"
+],
+"connectors": [
+"E"
+],
+"clearance": "",
+"wave": 3,
+"note": "Type 2 SPD at DBs",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH",
+"ASSET",
+"ELEC_LOAD"
+],
+"existing": false,
+"proves": "",
+"kn": "X.SPD_01"
+},
+{
+"id": "HC416",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_EquipotentialBar_Theatre",
+"types": [
+"16-way"
+],
+"depts": [
+"THR",
+"ICU"
+],
+"connectors": [],
+"clearance": "",
+"wave": 2,
+"note": "Supplementary equipotential bonding bar (group 2 locations)",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.BND_01"
+},
+{
+"id": "HC417",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_ConductorClip",
+"types": [
+"tape",
+"round"
+],
+"depts": [
+"ALL"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Fixing clip",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.TAP_05"
+},
+{
+"id": "HC418",
+"role": "LP",
+"category": "Lightning Protection",
+"family": "FMC_LP_LP_RingEarth_Conductor",
+"types": [
+"tape"
+],
+"depts": [
+"EXT"
+],
+"connectors": [],
+"clearance": "",
+"wave": 3,
+"note": "Ring earth electrode run",
+"lod": "LOD 400 geometry-capable, LOD 500 data-ready",
+"packs": [
+"HEALTH"
+],
+"existing": false,
+"proves": "",
+"kn": "X.EAR_04"
+}
+]
+}

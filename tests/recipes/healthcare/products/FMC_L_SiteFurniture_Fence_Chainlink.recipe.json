@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_L_SiteFurniture_Fence_Chainlink",
  "template": "Metric Generic Model.rft",
- "about": "Fence bay modelled as a generic product: post footings (Medium), GI posts and caps, cranked arms, top rail, chain-link mesh panel, mid and bottom tension wires, tension bars, three barbed strands with barbs, line clips. Array along the boundary. Geometry drawn for 1.8m_Chainlink; the other types share it (sizes in the values). Reference: query: site furniture fence chainlink site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+fence+chainlink+site+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Fence bay modelled as a generic product: post footings (Medium) and bottom tension wire shared; per height: GI posts and caps, cranked arms, top rail, chain-link mesh panel with its diamond wires (Fine), mid tension wire, tension bars, three barbed strands (Show parameters). Array along the boundary. Reference: query: site furniture fence chainlink site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+fence+chainlink+site+hospital; basis: generic product; brand, model and supplier open for review; photo: https://bendreybros.co.uk/galvanised-chainlink-fencing-1800mm-x-3mm-x-125m; photo_title: Galvanised chainlink fencing 1800mm (Bendrey Bros); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -328,6 +328,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "1.8m_Chainlink/URL",
+   "type": "1.8m_Chainlink",
+   "param": "URL",
+   "value": "https://bendreybros.co.uk/galvanised-chainlink-fencing-1800mm-x-3mm-x-125m"
+  },
+  {
    "op": "add_type",
    "name": "2.4m_Chainlink"
   },
@@ -395,6 +402,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "2.4m_Chainlink/URL",
+   "type": "2.4m_Chainlink",
+   "param": "URL",
+   "value": "https://bendreybros.co.uk/galvanised-chainlink-fencing-1800mm-x-3mm-x-125m"
+  },
+  {
    "op": "add_subcategory",
    "name": "Concg",
    "color": [
@@ -440,9 +454,9 @@
    "op": "add_subcategory",
    "name": "Mesh",
    "color": [
-    94,
-    80,
-    72
+    167,
+    172,
+    175
    ],
    "line_weight_projection": 1
   },
@@ -454,29 +468,8 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BRCMesh_A142",
+   "name": "FMC_Metal_ChainLink_Galvanised",
    "param": "Mesh Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
   },
   {
    "op": "add_subcategory",
@@ -510,7 +503,7 @@
     ]
    ],
    "start": -600,
-   "end": 2133.2
+   "end": 2733.2
   },
   {
    "op": "set_subcategory",
@@ -768,7 +761,81 @@
   },
   {
    "op": "extrusion",
-   "name": "Post 1",
+   "name": "Tension Wire Bottom",
+   "points": [
+    [
+     -3.5,
+     80.0
+    ],
+    [
+     -3.83,
+     81.25
+    ],
+    [
+     -4.75,
+     82.17
+    ],
+    [
+     -6.0,
+     82.5
+    ],
+    [
+     -7.25,
+     82.17
+    ],
+    [
+     -8.17,
+     81.25
+    ],
+    [
+     -8.5,
+     80.0
+    ],
+    [
+     -8.17,
+     78.75
+    ],
+    [
+     -7.25,
+     77.83
+    ],
+    [
+     -6.0,
+     77.5
+    ],
+    [
+     -4.75,
+     77.83
+    ],
+    [
+     -3.83,
+     78.75
+    ]
+   ],
+   "start": -1470,
+   "end": 1470,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tension Wire Bottom",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tension Wire Bottom",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tension Wire Bottom",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 1.8m 1",
    "points": [
     [
      -1470.0,
@@ -872,24 +939,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 1",
+   "name": "Post 1.8m 1",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Post 1",
+   "name": "Post 1.8m 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 1",
+   "name": "Post 1.8m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Post 2",
+   "name": "Post 1.8m 2",
    "points": [
     [
      1530.0,
@@ -993,24 +1060,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Post 2",
+   "name": "Post 1.8m 2",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Post 2",
+   "name": "Post 1.8m 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post 2",
+   "name": "Post 1.8m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cranked Arm 1",
+   "name": "Cranked Arm 1.8m 1",
    "points": [
     [
      -15.0,
@@ -1035,24 +1102,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cranked Arm 1",
+   "name": "Cranked Arm 1.8m 1",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Cranked Arm 1",
+   "name": "Cranked Arm 1.8m 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cranked Arm 1",
+   "name": "Cranked Arm 1.8m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cranked Arm 2",
+   "name": "Cranked Arm 1.8m 2",
    "points": [
     [
      -15.0,
@@ -1077,24 +1144,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cranked Arm 2",
+   "name": "Cranked Arm 1.8m 2",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Cranked Arm 2",
+   "name": "Cranked Arm 1.8m 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cranked Arm 2",
+   "name": "Cranked Arm 1.8m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Post Cap 1",
+   "name": "Post Cap 1.8m 1",
    "profile": [
     [
      0,
@@ -1122,19 +1189,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap 1",
+   "name": "Post Cap 1.8m 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap 1",
+   "name": "Post Cap 1.8m 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Post Cap 2",
+   "name": "Post Cap 1.8m 2",
    "profile": [
     [
      0,
@@ -1162,19 +1229,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Post Cap 2",
+   "name": "Post Cap 1.8m 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Post Cap 2",
+   "name": "Post Cap 1.8m 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Top Rail",
+   "name": "Top Rail 1.8m",
    "points": [
     [
      21.0,
@@ -1279,24 +1346,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Top Rail",
+   "name": "Top Rail 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Top Rail",
+   "name": "Top Rail 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Rail",
+   "name": "Top Rail 1.8m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Chain Link Mesh",
+   "name": "Chain Link Mesh 1.8m",
    "points": [
     [
      -1470,
@@ -1320,1296 +1387,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Chain Link Mesh",
+   "name": "Chain Link Mesh 1.8m",
    "subcategory": "Mesh"
   },
   {
    "op": "set_material_param",
-   "name": "Chain Link Mesh",
+   "name": "Chain Link Mesh 1.8m",
    "param": "Mesh Material"
   },
   {
    "op": "set_visibility",
-   "name": "Chain Link Mesh",
+   "name": "Chain Link Mesh 1.8m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Mesh Wire Up 1",
-   "points": [
-    [
-     -1472.8,
-     1602.8
-    ],
-    [
-     -1312.8,
-     1762.8
-    ],
-    [
-     -1307.2,
-     1757.2
-    ],
-    [
-     -1467.2,
-     1597.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 2",
-   "points": [
-    [
-     -1472.8,
-     1282.8
-    ],
-    [
-     -992.8,
-     1762.8
-    ],
-    [
-     -987.2,
-     1757.2
-    ],
-    [
-     -1467.2,
-     1277.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 3",
-   "points": [
-    [
-     -1472.8,
-     962.8
-    ],
-    [
-     -672.8,
-     1762.8
-    ],
-    [
-     -667.2,
-     1757.2
-    ],
-    [
-     -1467.2,
-     957.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 4",
-   "points": [
-    [
-     -1472.8,
-     642.8
-    ],
-    [
-     -352.8,
-     1762.8
-    ],
-    [
-     -347.2,
-     1757.2
-    ],
-    [
-     -1467.2,
-     637.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 5",
-   "points": [
-    [
-     -1472.8,
-     322.8
-    ],
-    [
-     -32.8,
-     1762.8
-    ],
-    [
-     -27.2,
-     1757.2
-    ],
-    [
-     -1467.2,
-     317.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 5",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 5",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 6",
-   "points": [
-    [
-     -1412.8,
-     62.8
-    ],
-    [
-     287.2,
-     1762.8
-    ],
-    [
-     292.8,
-     1757.2
-    ],
-    [
-     -1407.2,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 6",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 6",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 7",
-   "points": [
-    [
-     -1092.8,
-     62.8
-    ],
-    [
-     607.2,
-     1762.8
-    ],
-    [
-     612.8,
-     1757.2
-    ],
-    [
-     -1087.2,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 7",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 7",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 8",
-   "points": [
-    [
-     -772.8,
-     62.8
-    ],
-    [
-     927.2,
-     1762.8
-    ],
-    [
-     932.8,
-     1757.2
-    ],
-    [
-     -767.2,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 8",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 8",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 9",
-   "points": [
-    [
-     -452.8,
-     62.8
-    ],
-    [
-     1247.2,
-     1762.8
-    ],
-    [
-     1252.8,
-     1757.2
-    ],
-    [
-     -447.2,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 9",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 9",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 10",
-   "points": [
-    [
-     -132.8,
-     62.8
-    ],
-    [
-     1467.2,
-     1662.8
-    ],
-    [
-     1472.8,
-     1657.2
-    ],
-    [
-     -127.2,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 10",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 10",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 11",
-   "points": [
-    [
-     187.2,
-     62.8
-    ],
-    [
-     1467.2,
-     1342.8
-    ],
-    [
-     1472.8,
-     1337.2
-    ],
-    [
-     192.8,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 11",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 11",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 12",
-   "points": [
-    [
-     507.2,
-     62.8
-    ],
-    [
-     1467.2,
-     1022.8
-    ],
-    [
-     1472.8,
-     1017.2
-    ],
-    [
-     512.8,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 12",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 12",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 13",
-   "points": [
-    [
-     827.2,
-     62.8
-    ],
-    [
-     1467.2,
-     702.8
-    ],
-    [
-     1472.8,
-     697.2
-    ],
-    [
-     832.8,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 13",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 13",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Up 14",
-   "points": [
-    [
-     1147.2,
-     62.8
-    ],
-    [
-     1467.2,
-     382.8
-    ],
-    [
-     1472.8,
-     377.2
-    ],
-    [
-     1152.8,
-     57.2
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Up 14",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Up 14",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Up 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 1",
-   "points": [
-    [
-     -1312.8,
-     57.2
-    ],
-    [
-     -1472.8,
-     217.2
-    ],
-    [
-     -1467.2,
-     222.8
-    ],
-    [
-     -1307.2,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 2",
-   "points": [
-    [
-     -992.8,
-     57.2
-    ],
-    [
-     -1472.8,
-     537.2
-    ],
-    [
-     -1467.2,
-     542.8
-    ],
-    [
-     -987.2,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 3",
-   "points": [
-    [
-     -672.8,
-     57.2
-    ],
-    [
-     -1472.8,
-     857.2
-    ],
-    [
-     -1467.2,
-     862.8
-    ],
-    [
-     -667.2,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 4",
-   "points": [
-    [
-     -352.8,
-     57.2
-    ],
-    [
-     -1472.8,
-     1177.2
-    ],
-    [
-     -1467.2,
-     1182.8
-    ],
-    [
-     -347.2,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 5",
-   "points": [
-    [
-     -32.8,
-     57.2
-    ],
-    [
-     -1472.8,
-     1497.2
-    ],
-    [
-     -1467.2,
-     1502.8
-    ],
-    [
-     -27.2,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 5",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 5",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 6",
-   "points": [
-    [
-     287.2,
-     57.2
-    ],
-    [
-     -1412.8,
-     1757.2
-    ],
-    [
-     -1407.2,
-     1762.8
-    ],
-    [
-     292.8,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 6",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 6",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 7",
-   "points": [
-    [
-     607.2,
-     57.2
-    ],
-    [
-     -1092.8,
-     1757.2
-    ],
-    [
-     -1087.2,
-     1762.8
-    ],
-    [
-     612.8,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 7",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 7",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 8",
-   "points": [
-    [
-     927.2,
-     57.2
-    ],
-    [
-     -772.8,
-     1757.2
-    ],
-    [
-     -767.2,
-     1762.8
-    ],
-    [
-     932.8,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 8",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 8",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 9",
-   "points": [
-    [
-     1247.2,
-     57.2
-    ],
-    [
-     -452.8,
-     1757.2
-    ],
-    [
-     -447.2,
-     1762.8
-    ],
-    [
-     1252.8,
-     62.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 9",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 9",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 10",
-   "points": [
-    [
-     1467.2,
-     157.2
-    ],
-    [
-     -132.8,
-     1757.2
-    ],
-    [
-     -127.2,
-     1762.8
-    ],
-    [
-     1472.8,
-     162.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 10",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 10",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 11",
-   "points": [
-    [
-     1467.2,
-     477.2
-    ],
-    [
-     187.2,
-     1757.2
-    ],
-    [
-     192.8,
-     1762.8
-    ],
-    [
-     1472.8,
-     482.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 11",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 11",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 12",
-   "points": [
-    [
-     1467.2,
-     797.2
-    ],
-    [
-     507.2,
-     1757.2
-    ],
-    [
-     512.8,
-     1762.8
-    ],
-    [
-     1472.8,
-     802.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 12",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 12",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 13",
-   "points": [
-    [
-     1467.2,
-     1117.2
-    ],
-    [
-     827.2,
-     1757.2
-    ],
-    [
-     832.8,
-     1762.8
-    ],
-    [
-     1472.8,
-     1122.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 13",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 13",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Mesh Wire Down 14",
-   "points": [
-    [
-     1467.2,
-     1437.2
-    ],
-    [
-     1147.2,
-     1757.2
-    ],
-    [
-     1152.8,
-     1762.8
-    ],
-    [
-     1472.8,
-     1442.8
-    ]
-   ],
-   "start": 3,
-   "end": 6,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Mesh Wire Down 14",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Mesh Wire Down 14",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Mesh Wire Down 14",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tension Wire Mid",
+   "name": "Tension Wire Mid 1.8m",
    "points": [
     [
      -3.5,
      900.0
     ],
     [
-     -3.59,
-     900.65
-    ],
-    [
      -3.83,
      901.25
     ],
     [
-     -4.23,
-     901.77
-    ],
-    [
      -4.75,
      902.17
-    ],
-    [
-     -5.35,
-     902.41
     ],
     [
      -6.0,
      902.5
     ],
     [
-     -6.65,
-     902.41
-    ],
-    [
      -7.25,
      902.17
-    ],
-    [
-     -7.77,
-     901.77
     ],
     [
      -8.17,
      901.25
     ],
     [
-     -8.41,
-     900.65
-    ],
-    [
      -8.5,
      900.0
-    ],
-    [
-     -8.41,
-     899.35
     ],
     [
      -8.17,
      898.75
     ],
     [
-     -7.77,
-     898.23
-    ],
-    [
      -7.25,
      897.83
-    ],
-    [
-     -6.65,
-     897.59
     ],
     [
      -6.0,
      897.5
     ],
     [
-     -5.35,
-     897.59
-    ],
-    [
      -4.75,
      897.83
     ],
     [
-     -4.23,
-     898.23
-    ],
-    [
      -3.83,
      898.75
-    ],
-    [
-     -3.59,
-     899.35
     ]
    ],
    "start": -1470,
@@ -2618,146 +1461,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tension Wire Mid",
+   "name": "Tension Wire Mid 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Tension Wire Mid",
+   "name": "Tension Wire Mid 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tension Wire Mid",
+   "name": "Tension Wire Mid 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tension Wire Bottom",
-   "points": [
-    [
-     -3.5,
-     80.0
-    ],
-    [
-     -3.59,
-     80.65
-    ],
-    [
-     -3.83,
-     81.25
-    ],
-    [
-     -4.23,
-     81.77
-    ],
-    [
-     -4.75,
-     82.17
-    ],
-    [
-     -5.35,
-     82.41
-    ],
-    [
-     -6.0,
-     82.5
-    ],
-    [
-     -6.65,
-     82.41
-    ],
-    [
-     -7.25,
-     82.17
-    ],
-    [
-     -7.77,
-     81.77
-    ],
-    [
-     -8.17,
-     81.25
-    ],
-    [
-     -8.41,
-     80.65
-    ],
-    [
-     -8.5,
-     80.0
-    ],
-    [
-     -8.41,
-     79.35
-    ],
-    [
-     -8.17,
-     78.75
-    ],
-    [
-     -7.77,
-     78.23
-    ],
-    [
-     -7.25,
-     77.83
-    ],
-    [
-     -6.65,
-     77.59
-    ],
-    [
-     -6.0,
-     77.5
-    ],
-    [
-     -5.35,
-     77.59
-    ],
-    [
-     -4.75,
-     77.83
-    ],
-    [
-     -4.23,
-     78.23
-    ],
-    [
-     -3.83,
-     78.75
-    ],
-    [
-     -3.59,
-     79.35
-    ]
-   ],
-   "start": -1470,
-   "end": 1470,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tension Wire Bottom",
-   "subcategory": "Gi"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tension Wire Bottom",
-   "param": "Gi Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tension Wire Bottom",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tension Bar 1",
+   "name": "Tension Bar 1.8m 1",
    "points": [
     [
      -1478,
@@ -2781,24 +1502,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tension Bar 1",
+   "name": "Tension Bar 1.8m 1",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Tension Bar 1",
+   "name": "Tension Bar 1.8m 1",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tension Bar 1",
+   "name": "Tension Bar 1.8m 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tension Bar 2",
+   "name": "Tension Bar 1.8m 2",
    "points": [
     [
      1470,
@@ -2822,120 +1543,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tension Bar 2",
+   "name": "Tension Bar 1.8m 2",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Tension Bar 2",
+   "name": "Tension Bar 1.8m 2",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tension Bar 2",
+   "name": "Tension Bar 1.8m 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barbed Wire 1",
+   "name": "Barbed Wire 1 1.8m",
    "points": [
     [
      -97.5,
      1900.0
     ],
     [
-     -97.59,
-     1900.65
-    ],
-    [
      -97.83,
      1901.25
     ],
     [
-     -98.23,
-     1901.77
-    ],
-    [
      -98.75,
      1902.17
-    ],
-    [
-     -99.35,
-     1902.41
     ],
     [
      -100.0,
      1902.5
     ],
     [
-     -100.65,
-     1902.41
-    ],
-    [
      -101.25,
      1902.17
-    ],
-    [
-     -101.77,
-     1901.77
     ],
     [
      -102.17,
      1901.25
     ],
     [
-     -102.41,
-     1900.65
-    ],
-    [
      -102.5,
      1900.0
-    ],
-    [
-     -102.41,
-     1899.35
     ],
     [
      -102.17,
      1898.75
     ],
     [
-     -101.77,
-     1898.23
-    ],
-    [
      -101.25,
      1897.83
-    ],
-    [
-     -100.65,
-     1897.59
     ],
     [
      -100.0,
      1897.5
     ],
     [
-     -99.35,
-     1897.59
-    ],
-    [
      -98.75,
      1897.83
     ],
     [
-     -98.23,
-     1898.23
-    ],
-    [
      -97.83,
      1898.75
-    ],
-    [
-     -97.59,
-     1899.35
     ]
    ],
    "start": -1500,
@@ -2944,120 +1617,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Barbed Wire 1",
+   "name": "Barbed Wire 1 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barbed Wire 1",
+   "name": "Barbed Wire 1 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barbed Wire 1",
+   "name": "Barbed Wire 1 1.8m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barbed Wire 2",
+   "name": "Barbed Wire 2 1.8m",
    "points": [
     [
      -192.5,
      2010.0
     ],
     [
-     -192.59,
-     2010.65
-    ],
-    [
      -192.83,
      2011.25
     ],
     [
-     -193.23,
-     2011.77
-    ],
-    [
      -193.75,
      2012.17
-    ],
-    [
-     -194.35,
-     2012.41
     ],
     [
      -195.0,
      2012.5
     ],
     [
-     -195.65,
-     2012.41
-    ],
-    [
      -196.25,
      2012.17
-    ],
-    [
-     -196.77,
-     2011.77
     ],
     [
      -197.17,
      2011.25
     ],
     [
-     -197.41,
-     2010.65
-    ],
-    [
      -197.5,
      2010.0
-    ],
-    [
-     -197.41,
-     2009.35
     ],
     [
      -197.17,
      2008.75
     ],
     [
-     -196.77,
-     2008.23
-    ],
-    [
      -196.25,
      2007.83
-    ],
-    [
-     -195.65,
-     2007.59
     ],
     [
      -195.0,
      2007.5
     ],
     [
-     -194.35,
-     2007.59
-    ],
-    [
      -193.75,
      2007.83
     ],
     [
-     -193.23,
-     2008.23
-    ],
-    [
      -192.83,
      2008.75
-    ],
-    [
-     -192.59,
-     2009.35
     ]
    ],
    "start": -1500,
@@ -3066,120 +1691,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Barbed Wire 2",
+   "name": "Barbed Wire 2 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barbed Wire 2",
+   "name": "Barbed Wire 2 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barbed Wire 2",
+   "name": "Barbed Wire 2 1.8m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barbed Wire 3",
+   "name": "Barbed Wire 3 1.8m",
    "points": [
     [
      -282.5,
      2110.0
     ],
     [
-     -282.59,
-     2110.65
-    ],
-    [
      -282.83,
      2111.25
     ],
     [
-     -283.23,
-     2111.77
-    ],
-    [
      -283.75,
      2112.17
-    ],
-    [
-     -284.35,
-     2112.41
     ],
     [
      -285.0,
      2112.5
     ],
     [
-     -285.65,
-     2112.41
-    ],
-    [
      -286.25,
      2112.17
-    ],
-    [
-     -286.77,
-     2111.77
     ],
     [
      -287.17,
      2111.25
     ],
     [
-     -287.41,
-     2110.65
-    ],
-    [
      -287.5,
      2110.0
-    ],
-    [
-     -287.41,
-     2109.35
     ],
     [
      -287.17,
      2108.75
     ],
     [
-     -286.77,
-     2108.23
-    ],
-    [
      -286.25,
      2107.83
-    ],
-    [
-     -285.65,
-     2107.59
     ],
     [
      -285.0,
      2107.5
     ],
     [
-     -284.35,
-     2107.59
-    ],
-    [
      -283.75,
      2107.83
     ],
     [
-     -283.23,
-     2108.23
-    ],
-    [
      -282.83,
      2108.75
-    ],
-    [
-     -282.59,
-     2109.35
     ]
    ],
    "start": -1500,
@@ -3188,553 +1765,2807 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Barbed Wire 3",
+   "name": "Barbed Wire 3 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barbed Wire 3",
+   "name": "Barbed Wire 3 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barbed Wire 3",
+   "name": "Barbed Wire 3 1.8m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 1",
+   "name": "Mesh Wire Up 1 1.8m",
    "points": [
     [
-     -1400,
-     -110
+     -1472.8,
+     1462.8
     ],
     [
-     -1390,
-     -110
+     -1172.8,
+     1762.8
     ],
     [
-     -1390,
-     -90
+     -1167.2,
+     1757.2
     ],
     [
-     -1400,
-     -90
+     -1467.2,
+     1457.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 1",
+   "name": "Mesh Wire Up 1 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 1",
+   "name": "Mesh Wire Up 1 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 1",
+   "name": "Mesh Wire Up 1 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 2",
+   "name": "Mesh Wire Up 2 1.8m",
    "points": [
     [
-     -1100,
-     -110
+     -1472.8,
+     862.8
     ],
     [
-     -1090,
-     -110
+     -572.8,
+     1762.8
     ],
     [
-     -1090,
-     -90
+     -567.2,
+     1757.2
     ],
     [
-     -1100,
-     -90
+     -1467.2,
+     857.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 2",
+   "name": "Mesh Wire Up 2 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 2",
+   "name": "Mesh Wire Up 2 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 2",
+   "name": "Mesh Wire Up 2 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 3",
+   "name": "Mesh Wire Up 3 1.8m",
    "points": [
     [
-     -800,
-     -110
+     -1472.8,
+     262.8
     ],
     [
-     -790,
-     -110
+     27.2,
+     1762.8
     ],
     [
-     -790,
-     -90
+     32.8,
+     1757.2
     ],
     [
-     -800,
-     -90
+     -1467.2,
+     257.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 3",
+   "name": "Mesh Wire Up 3 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 3",
+   "name": "Mesh Wire Up 3 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 3",
+   "name": "Mesh Wire Up 3 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 4",
+   "name": "Mesh Wire Up 4 1.8m",
    "points": [
     [
-     -500,
-     -110
+     -1072.8,
+     62.8
     ],
     [
-     -490,
-     -110
+     627.2,
+     1762.8
     ],
     [
-     -490,
-     -90
+     632.8,
+     1757.2
     ],
     [
-     -500,
-     -90
+     -1067.2,
+     57.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 4",
+   "name": "Mesh Wire Up 4 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 4",
+   "name": "Mesh Wire Up 4 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 4",
+   "name": "Mesh Wire Up 4 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 5",
+   "name": "Mesh Wire Up 5 1.8m",
    "points": [
     [
-     -200,
-     -110
+     -472.8,
+     62.8
     ],
     [
-     -190,
-     -110
+     1227.2,
+     1762.8
     ],
     [
-     -190,
-     -90
+     1232.8,
+     1757.2
     ],
     [
-     -200,
-     -90
+     -467.2,
+     57.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 5",
+   "name": "Mesh Wire Up 5 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 5",
+   "name": "Mesh Wire Up 5 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 5",
+   "name": "Mesh Wire Up 5 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 6",
+   "name": "Mesh Wire Up 6 1.8m",
    "points": [
     [
-     100,
-     -110
+     127.2,
+     62.8
     ],
     [
-     110,
-     -110
+     1467.2,
+     1402.8
     ],
     [
-     110,
-     -90
+     1472.8,
+     1397.2
     ],
     [
-     100,
-     -90
+     132.8,
+     57.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 6",
+   "name": "Mesh Wire Up 6 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 6",
+   "name": "Mesh Wire Up 6 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 6",
+   "name": "Mesh Wire Up 6 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 7",
+   "name": "Mesh Wire Up 7 1.8m",
    "points": [
     [
-     400,
-     -110
+     727.2,
+     62.8
     ],
     [
-     410,
-     -110
+     1467.2,
+     802.8
     ],
     [
-     410,
-     -90
+     1472.8,
+     797.2
     ],
     [
-     400,
-     -90
+     732.8,
+     57.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 7",
+   "name": "Mesh Wire Up 7 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 7",
+   "name": "Mesh Wire Up 7 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 7",
+   "name": "Mesh Wire Up 7 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 8",
+   "name": "Mesh Wire Up 8 1.8m",
    "points": [
     [
-     700,
-     -110
+     1327.2,
+     62.8
     ],
     [
-     710,
-     -110
+     1467.2,
+     202.8
     ],
     [
-     710,
-     -90
+     1472.8,
+     197.2
     ],
     [
-     700,
-     -90
+     1332.8,
+     57.2
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 8",
+   "name": "Mesh Wire Up 8 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 8",
+   "name": "Mesh Wire Up 8 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 8",
+   "name": "Mesh Wire Up 8 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 9",
+   "name": "Mesh Wire Down 1 1.8m",
    "points": [
     [
-     1000,
-     -110
+     -1172.8,
+     57.2
     ],
     [
-     1010,
-     -110
+     -1472.8,
+     357.2
     ],
     [
-     1010,
-     -90
+     -1467.2,
+     362.8
     ],
     [
-     1000,
-     -90
+     -1167.2,
+     62.8
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 9",
+   "name": "Mesh Wire Down 1 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 9",
+   "name": "Mesh Wire Down 1 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 9",
+   "name": "Mesh Wire Down 1 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Barb 10",
+   "name": "Mesh Wire Down 2 1.8m",
    "points": [
     [
-     1300,
-     -110
+     -572.8,
+     57.2
     ],
     [
-     1310,
-     -110
+     -1472.8,
+     957.2
     ],
     [
-     1310,
-     -90
+     -1467.2,
+     962.8
     ],
     [
-     1300,
-     -90
+     -567.2,
+     62.8
     ]
    ],
-   "start": 1890,
-   "end": 1910
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Barb 10",
+   "name": "Mesh Wire Down 2 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Barb 10",
+   "name": "Mesh Wire Down 2 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Barb 10",
+   "name": "Mesh Wire Down 2 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Line Clip 1",
+   "name": "Mesh Wire Down 3 1.8m",
    "points": [
     [
-     -1400,
-     -8
+     27.2,
+     57.2
     ],
     [
-     -1390,
-     -8
+     -1472.8,
+     1557.2
     ],
     [
-     -1390,
-     8
+     -1467.2,
+     1562.8
     ],
     [
-     -1400,
-     8
+     32.8,
+     62.8
     ]
    ],
-   "start": 1755,
-   "end": 1785
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Line Clip 1",
+   "name": "Mesh Wire Down 3 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Line Clip 1",
+   "name": "Mesh Wire Down 3 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Line Clip 1",
+   "name": "Mesh Wire Down 3 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Line Clip 2",
+   "name": "Mesh Wire Down 4 1.8m",
    "points": [
     [
-     -280,
-     -8
+     627.2,
+     57.2
     ],
     [
-     -270,
-     -8
+     -1072.8,
+     1757.2
     ],
     [
-     -270,
-     8
+     -1067.2,
+     1762.8
     ],
     [
-     -280,
-     8
+     632.8,
+     62.8
     ]
    ],
-   "start": 1755,
-   "end": 1785
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Line Clip 2",
+   "name": "Mesh Wire Down 4 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Line Clip 2",
+   "name": "Mesh Wire Down 4 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Line Clip 2",
+   "name": "Mesh Wire Down 4 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Line Clip 3",
+   "name": "Mesh Wire Down 5 1.8m",
    "points": [
     [
-     840,
-     -8
+     1227.2,
+     57.2
     ],
     [
-     850,
-     -8
+     -472.8,
+     1757.2
     ],
     [
-     850,
-     8
+     -467.2,
+     1762.8
     ],
     [
-     840,
-     8
+     1232.8,
+     62.8
     ]
    ],
-   "start": 1755,
-   "end": 1785
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Line Clip 3",
+   "name": "Mesh Wire Down 5 1.8m",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Line Clip 3",
+   "name": "Mesh Wire Down 5 1.8m",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Line Clip 3",
+   "name": "Mesh Wire Down 5 1.8m",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 6 1.8m",
+   "points": [
+    [
+     1467.2,
+     417.2
+    ],
+    [
+     127.2,
+     1757.2
+    ],
+    [
+     132.8,
+     1762.8
+    ],
+    [
+     1472.8,
+     422.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 6 1.8m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 6 1.8m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 6 1.8m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 7 1.8m",
+   "points": [
+    [
+     1467.2,
+     1017.2
+    ],
+    [
+     727.2,
+     1757.2
+    ],
+    [
+     732.8,
+     1762.8
+    ],
+    [
+     1472.8,
+     1022.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 7 1.8m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 7 1.8m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 7 1.8m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 8 1.8m",
+   "points": [
+    [
+     1467.2,
+     1617.2
+    ],
+    [
+     1327.2,
+     1757.2
+    ],
+    [
+     1332.8,
+     1762.8
+    ],
+    [
+     1472.8,
+     1622.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 8 1.8m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 8 1.8m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 8 1.8m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 2.4m 1",
+   "points": [
+    [
+     -1470.0,
+     0.0
+    ],
+    [
+     -1471.02,
+     7.76
+    ],
+    [
+     -1474.02,
+     15.0
+    ],
+    [
+     -1478.79,
+     21.21
+    ],
+    [
+     -1485.0,
+     25.98
+    ],
+    [
+     -1492.24,
+     28.98
+    ],
+    [
+     -1500.0,
+     30.0
+    ],
+    [
+     -1507.76,
+     28.98
+    ],
+    [
+     -1515.0,
+     25.98
+    ],
+    [
+     -1521.21,
+     21.21
+    ],
+    [
+     -1525.98,
+     15.0
+    ],
+    [
+     -1528.98,
+     7.76
+    ],
+    [
+     -1530.0,
+     0.0
+    ],
+    [
+     -1528.98,
+     -7.76
+    ],
+    [
+     -1525.98,
+     -15.0
+    ],
+    [
+     -1521.21,
+     -21.21
+    ],
+    [
+     -1515.0,
+     -25.98
+    ],
+    [
+     -1507.76,
+     -28.98
+    ],
+    [
+     -1500.0,
+     -30.0
+    ],
+    [
+     -1492.24,
+     -28.98
+    ],
+    [
+     -1485.0,
+     -25.98
+    ],
+    [
+     -1478.79,
+     -21.21
+    ],
+    [
+     -1474.02,
+     -15.0
+    ],
+    [
+     -1471.02,
+     -7.76
+    ]
+   ],
+   "start": 0,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 2.4m 1",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 2.4m 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 2.4m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 2.4m 2",
+   "points": [
+    [
+     1530.0,
+     0.0
+    ],
+    [
+     1528.98,
+     7.76
+    ],
+    [
+     1525.98,
+     15.0
+    ],
+    [
+     1521.21,
+     21.21
+    ],
+    [
+     1515.0,
+     25.98
+    ],
+    [
+     1507.76,
+     28.98
+    ],
+    [
+     1500.0,
+     30.0
+    ],
+    [
+     1492.24,
+     28.98
+    ],
+    [
+     1485.0,
+     25.98
+    ],
+    [
+     1478.79,
+     21.21
+    ],
+    [
+     1474.02,
+     15.0
+    ],
+    [
+     1471.02,
+     7.76
+    ],
+    [
+     1470.0,
+     0.0
+    ],
+    [
+     1471.02,
+     -7.76
+    ],
+    [
+     1474.02,
+     -15.0
+    ],
+    [
+     1478.79,
+     -21.21
+    ],
+    [
+     1485.0,
+     -25.98
+    ],
+    [
+     1492.24,
+     -28.98
+    ],
+    [
+     1500.0,
+     -30.0
+    ],
+    [
+     1507.76,
+     -28.98
+    ],
+    [
+     1515.0,
+     -25.98
+    ],
+    [
+     1521.21,
+     -21.21
+    ],
+    [
+     1525.98,
+     -15.0
+    ],
+    [
+     1528.98,
+     -7.76
+    ]
+   ],
+   "start": 0,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 2.4m 2",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 2.4m 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 2.4m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cranked Arm 2.4m 1",
+   "points": [
+    [
+     -15.0,
+     2366.8
+    ],
+    [
+     -315.0,
+     2706.8
+    ],
+    [
+     -285.0,
+     2733.2
+    ],
+    [
+     15.0,
+     2393.2
+    ]
+   ],
+   "start": -1520,
+   "end": -1480,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cranked Arm 2.4m 1",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cranked Arm 2.4m 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cranked Arm 2.4m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cranked Arm 2.4m 2",
+   "points": [
+    [
+     -15.0,
+     2366.8
+    ],
+    [
+     -315.0,
+     2706.8
+    ],
+    [
+     -285.0,
+     2733.2
+    ],
+    [
+     15.0,
+     2393.2
+    ]
+   ],
+   "start": 1480,
+   "end": 1520,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cranked Arm 2.4m 2",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cranked Arm 2.4m 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cranked Arm 2.4m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Post Cap 2.4m 1",
+   "profile": [
+    [
+     0,
+     2400
+    ],
+    [
+     34,
+     2400
+    ],
+    [
+     34,
+     2430
+    ],
+    [
+     0,
+     2430
+    ]
+   ],
+   "axis_at": [
+    -1500,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap 2.4m 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap 2.4m 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Post Cap 2.4m 2",
+   "profile": [
+    [
+     0,
+     2400
+    ],
+    [
+     34,
+     2400
+    ],
+    [
+     34,
+     2430
+    ],
+    [
+     0,
+     2430
+    ]
+   ],
+   "axis_at": [
+    1500,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Cap 2.4m 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Cap 2.4m 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Rail 2.4m",
+   "points": [
+    [
+     21.0,
+     2370.0
+    ],
+    [
+     20.28,
+     2375.44
+    ],
+    [
+     18.19,
+     2380.5
+    ],
+    [
+     14.85,
+     2384.85
+    ],
+    [
+     10.5,
+     2388.19
+    ],
+    [
+     5.44,
+     2390.28
+    ],
+    [
+     0.0,
+     2391.0
+    ],
+    [
+     -5.44,
+     2390.28
+    ],
+    [
+     -10.5,
+     2388.19
+    ],
+    [
+     -14.85,
+     2384.85
+    ],
+    [
+     -18.19,
+     2380.5
+    ],
+    [
+     -20.28,
+     2375.44
+    ],
+    [
+     -21.0,
+     2370.0
+    ],
+    [
+     -20.28,
+     2364.56
+    ],
+    [
+     -18.19,
+     2359.5
+    ],
+    [
+     -14.85,
+     2355.15
+    ],
+    [
+     -10.5,
+     2351.81
+    ],
+    [
+     -5.44,
+     2349.72
+    ],
+    [
+     -0.0,
+     2349.0
+    ],
+    [
+     5.44,
+     2349.72
+    ],
+    [
+     10.5,
+     2351.81
+    ],
+    [
+     14.85,
+     2355.15
+    ],
+    [
+     18.19,
+     2359.5
+    ],
+    [
+     20.28,
+     2364.56
+    ]
+   ],
+   "start": -1470,
+   "end": 1470,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Rail 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Rail 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Rail 2.4m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Chain Link Mesh 2.4m",
+   "points": [
+    [
+     -1470,
+     -3
+    ],
+    [
+     1470,
+     -3
+    ],
+    [
+     1470,
+     3
+    ],
+    [
+     -1470,
+     3
+    ]
+   ],
+   "start": 60,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Chain Link Mesh 2.4m",
+   "subcategory": "Mesh"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chain Link Mesh 2.4m",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chain Link Mesh 2.4m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tension Wire Mid 2.4m",
+   "points": [
+    [
+     -3.5,
+     1200.0
+    ],
+    [
+     -3.83,
+     1201.25
+    ],
+    [
+     -4.75,
+     1202.17
+    ],
+    [
+     -6.0,
+     1202.5
+    ],
+    [
+     -7.25,
+     1202.17
+    ],
+    [
+     -8.17,
+     1201.25
+    ],
+    [
+     -8.5,
+     1200.0
+    ],
+    [
+     -8.17,
+     1198.75
+    ],
+    [
+     -7.25,
+     1197.83
+    ],
+    [
+     -6.0,
+     1197.5
+    ],
+    [
+     -4.75,
+     1197.83
+    ],
+    [
+     -3.83,
+     1198.75
+    ]
+   ],
+   "start": -1470,
+   "end": 1470,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tension Wire Mid 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tension Wire Mid 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tension Wire Mid 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tension Bar 2.4m 1",
+   "points": [
+    [
+     -1478,
+     -6
+    ],
+    [
+     -1470,
+     -6
+    ],
+    [
+     -1470,
+     6
+    ],
+    [
+     -1478,
+     6
+    ]
+   ],
+   "start": 60,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tension Bar 2.4m 1",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tension Bar 2.4m 1",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tension Bar 2.4m 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tension Bar 2.4m 2",
+   "points": [
+    [
+     1470,
+     -6
+    ],
+    [
+     1478,
+     -6
+    ],
+    [
+     1478,
+     6
+    ],
+    [
+     1470,
+     6
+    ]
+   ],
+   "start": 60,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tension Bar 2.4m 2",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tension Bar 2.4m 2",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tension Bar 2.4m 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Barbed Wire 1 2.4m",
+   "points": [
+    [
+     -97.5,
+     2500.0
+    ],
+    [
+     -97.83,
+     2501.25
+    ],
+    [
+     -98.75,
+     2502.17
+    ],
+    [
+     -100.0,
+     2502.5
+    ],
+    [
+     -101.25,
+     2502.17
+    ],
+    [
+     -102.17,
+     2501.25
+    ],
+    [
+     -102.5,
+     2500.0
+    ],
+    [
+     -102.17,
+     2498.75
+    ],
+    [
+     -101.25,
+     2497.83
+    ],
+    [
+     -100.0,
+     2497.5
+    ],
+    [
+     -98.75,
+     2497.83
+    ],
+    [
+     -97.83,
+     2498.75
+    ]
+   ],
+   "start": -1500,
+   "end": 1500,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Barbed Wire 1 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Barbed Wire 1 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Barbed Wire 1 2.4m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Barbed Wire 2 2.4m",
+   "points": [
+    [
+     -192.5,
+     2610.0
+    ],
+    [
+     -192.83,
+     2611.25
+    ],
+    [
+     -193.75,
+     2612.17
+    ],
+    [
+     -195.0,
+     2612.5
+    ],
+    [
+     -196.25,
+     2612.17
+    ],
+    [
+     -197.17,
+     2611.25
+    ],
+    [
+     -197.5,
+     2610.0
+    ],
+    [
+     -197.17,
+     2608.75
+    ],
+    [
+     -196.25,
+     2607.83
+    ],
+    [
+     -195.0,
+     2607.5
+    ],
+    [
+     -193.75,
+     2607.83
+    ],
+    [
+     -192.83,
+     2608.75
+    ]
+   ],
+   "start": -1500,
+   "end": 1500,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Barbed Wire 2 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Barbed Wire 2 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Barbed Wire 2 2.4m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Barbed Wire 3 2.4m",
+   "points": [
+    [
+     -282.5,
+     2710.0
+    ],
+    [
+     -282.83,
+     2711.25
+    ],
+    [
+     -283.75,
+     2712.17
+    ],
+    [
+     -285.0,
+     2712.5
+    ],
+    [
+     -286.25,
+     2712.17
+    ],
+    [
+     -287.17,
+     2711.25
+    ],
+    [
+     -287.5,
+     2710.0
+    ],
+    [
+     -287.17,
+     2708.75
+    ],
+    [
+     -286.25,
+     2707.83
+    ],
+    [
+     -285.0,
+     2707.5
+    ],
+    [
+     -283.75,
+     2707.83
+    ],
+    [
+     -282.83,
+     2708.75
+    ]
+   ],
+   "start": -1500,
+   "end": 1500,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Barbed Wire 3 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Barbed Wire 3 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Barbed Wire 3 2.4m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 1 2.4m",
+   "points": [
+    [
+     -1472.8,
+     2062.8
+    ],
+    [
+     -1172.8,
+     2362.8
+    ],
+    [
+     -1167.2,
+     2357.2
+    ],
+    [
+     -1467.2,
+     2057.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 1 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 1 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 1 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 2 2.4m",
+   "points": [
+    [
+     -1472.8,
+     1462.8
+    ],
+    [
+     -572.8,
+     2362.8
+    ],
+    [
+     -567.2,
+     2357.2
+    ],
+    [
+     -1467.2,
+     1457.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 2 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 2 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 2 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 3 2.4m",
+   "points": [
+    [
+     -1472.8,
+     862.8
+    ],
+    [
+     27.2,
+     2362.8
+    ],
+    [
+     32.8,
+     2357.2
+    ],
+    [
+     -1467.2,
+     857.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 3 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 3 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 3 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 4 2.4m",
+   "points": [
+    [
+     -1472.8,
+     262.8
+    ],
+    [
+     627.2,
+     2362.8
+    ],
+    [
+     632.8,
+     2357.2
+    ],
+    [
+     -1467.2,
+     257.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 4 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 4 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 4 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 5 2.4m",
+   "points": [
+    [
+     -1072.8,
+     62.8
+    ],
+    [
+     1227.2,
+     2362.8
+    ],
+    [
+     1232.8,
+     2357.2
+    ],
+    [
+     -1067.2,
+     57.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 5 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 5 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 5 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 6 2.4m",
+   "points": [
+    [
+     -472.8,
+     62.8
+    ],
+    [
+     1467.2,
+     2002.8
+    ],
+    [
+     1472.8,
+     1997.2
+    ],
+    [
+     -467.2,
+     57.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 6 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 6 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 6 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 7 2.4m",
+   "points": [
+    [
+     127.2,
+     62.8
+    ],
+    [
+     1467.2,
+     1402.8
+    ],
+    [
+     1472.8,
+     1397.2
+    ],
+    [
+     132.8,
+     57.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 7 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 7 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 7 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 8 2.4m",
+   "points": [
+    [
+     727.2,
+     62.8
+    ],
+    [
+     1467.2,
+     802.8
+    ],
+    [
+     1472.8,
+     797.2
+    ],
+    [
+     732.8,
+     57.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 8 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 8 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 8 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Up 9 2.4m",
+   "points": [
+    [
+     1327.2,
+     62.8
+    ],
+    [
+     1467.2,
+     202.8
+    ],
+    [
+     1472.8,
+     197.2
+    ],
+    [
+     1332.8,
+     57.2
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Up 9 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Up 9 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Up 9 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 1 2.4m",
+   "points": [
+    [
+     -1172.8,
+     57.2
+    ],
+    [
+     -1472.8,
+     357.2
+    ],
+    [
+     -1467.2,
+     362.8
+    ],
+    [
+     -1167.2,
+     62.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 1 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 1 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 1 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 2 2.4m",
+   "points": [
+    [
+     -572.8,
+     57.2
+    ],
+    [
+     -1472.8,
+     957.2
+    ],
+    [
+     -1467.2,
+     962.8
+    ],
+    [
+     -567.2,
+     62.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 2 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 2 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 2 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 3 2.4m",
+   "points": [
+    [
+     27.2,
+     57.2
+    ],
+    [
+     -1472.8,
+     1557.2
+    ],
+    [
+     -1467.2,
+     1562.8
+    ],
+    [
+     32.8,
+     62.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 3 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 3 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 3 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 4 2.4m",
+   "points": [
+    [
+     627.2,
+     57.2
+    ],
+    [
+     -1472.8,
+     2157.2
+    ],
+    [
+     -1467.2,
+     2162.8
+    ],
+    [
+     632.8,
+     62.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 4 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 4 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 4 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 5 2.4m",
+   "points": [
+    [
+     1227.2,
+     57.2
+    ],
+    [
+     -1072.8,
+     2357.2
+    ],
+    [
+     -1067.2,
+     2362.8
+    ],
+    [
+     1232.8,
+     62.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 5 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 5 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 5 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 6 2.4m",
+   "points": [
+    [
+     1467.2,
+     417.2
+    ],
+    [
+     -472.8,
+     2357.2
+    ],
+    [
+     -467.2,
+     2362.8
+    ],
+    [
+     1472.8,
+     422.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 6 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 6 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 6 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 7 2.4m",
+   "points": [
+    [
+     1467.2,
+     1017.2
+    ],
+    [
+     127.2,
+     2357.2
+    ],
+    [
+     132.8,
+     2362.8
+    ],
+    [
+     1472.8,
+     1022.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 7 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 7 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 7 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 8 2.4m",
+   "points": [
+    [
+     1467.2,
+     1617.2
+    ],
+    [
+     727.2,
+     2357.2
+    ],
+    [
+     732.8,
+     2362.8
+    ],
+    [
+     1472.8,
+     1622.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 8 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 8 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 8 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mesh Wire Down 9 2.4m",
+   "points": [
+    [
+     1467.2,
+     2217.2
+    ],
+    [
+     1327.2,
+     2357.2
+    ],
+    [
+     1332.8,
+     2362.8
+    ],
+    [
+     1472.8,
+     2222.8
+    ]
+   ],
+   "start": 3,
+   "end": 6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mesh Wire Down 9 2.4m",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mesh Wire Down 9 2.4m",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mesh Wire Down 9 2.4m",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1.8m_Chainlink",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.8m_Chainlink/Show 1.8m_Chainlink",
+   "type": "1.8m_Chainlink",
+   "param": "Show 1.8m_Chainlink",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2.4m_Chainlink/Show 1.8m_Chainlink",
+   "type": "2.4m_Chainlink",
+   "param": "Show 1.8m_Chainlink",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 1.8m 1/Visible",
+   "solid": "Post 1.8m 1",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 1.8m 2/Visible",
+   "solid": "Post 1.8m 2",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cranked Arm 1.8m 1/Visible",
+   "solid": "Cranked Arm 1.8m 1",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cranked Arm 1.8m 2/Visible",
+   "solid": "Cranked Arm 1.8m 2",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 1.8m 1/Visible",
+   "solid": "Post Cap 1.8m 1",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 1.8m 2/Visible",
+   "solid": "Post Cap 1.8m 2",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 1.8m/Visible",
+   "solid": "Top Rail 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chain Link Mesh 1.8m/Visible",
+   "solid": "Chain Link Mesh 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Wire Mid 1.8m/Visible",
+   "solid": "Tension Wire Mid 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Bar 1.8m 1/Visible",
+   "solid": "Tension Bar 1.8m 1",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Bar 1.8m 2/Visible",
+   "solid": "Tension Bar 1.8m 2",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 1 1.8m/Visible",
+   "solid": "Barbed Wire 1 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 2 1.8m/Visible",
+   "solid": "Barbed Wire 2 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 3 1.8m/Visible",
+   "solid": "Barbed Wire 3 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 1 1.8m/Visible",
+   "solid": "Mesh Wire Up 1 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 2 1.8m/Visible",
+   "solid": "Mesh Wire Up 2 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 3 1.8m/Visible",
+   "solid": "Mesh Wire Up 3 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 4 1.8m/Visible",
+   "solid": "Mesh Wire Up 4 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 5 1.8m/Visible",
+   "solid": "Mesh Wire Up 5 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 6 1.8m/Visible",
+   "solid": "Mesh Wire Up 6 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 7 1.8m/Visible",
+   "solid": "Mesh Wire Up 7 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 8 1.8m/Visible",
+   "solid": "Mesh Wire Up 8 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 1 1.8m/Visible",
+   "solid": "Mesh Wire Down 1 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 2 1.8m/Visible",
+   "solid": "Mesh Wire Down 2 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 3 1.8m/Visible",
+   "solid": "Mesh Wire Down 3 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 4 1.8m/Visible",
+   "solid": "Mesh Wire Down 4 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 5 1.8m/Visible",
+   "solid": "Mesh Wire Down 5 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 6 1.8m/Visible",
+   "solid": "Mesh Wire Down 6 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 7 1.8m/Visible",
+   "solid": "Mesh Wire Down 7 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 8 1.8m/Visible",
+   "solid": "Mesh Wire Down 8 1.8m",
+   "param": "Show 1.8m_Chainlink"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2.4m_Chainlink",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.8m_Chainlink/Show 2.4m_Chainlink",
+   "type": "1.8m_Chainlink",
+   "param": "Show 2.4m_Chainlink",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2.4m_Chainlink/Show 2.4m_Chainlink",
+   "type": "2.4m_Chainlink",
+   "param": "Show 2.4m_Chainlink",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 2.4m 1/Visible",
+   "solid": "Post 2.4m 1",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post 2.4m 2/Visible",
+   "solid": "Post 2.4m 2",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cranked Arm 2.4m 1/Visible",
+   "solid": "Cranked Arm 2.4m 1",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cranked Arm 2.4m 2/Visible",
+   "solid": "Cranked Arm 2.4m 2",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 2.4m 1/Visible",
+   "solid": "Post Cap 2.4m 1",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Post Cap 2.4m 2/Visible",
+   "solid": "Post Cap 2.4m 2",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Rail 2.4m/Visible",
+   "solid": "Top Rail 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chain Link Mesh 2.4m/Visible",
+   "solid": "Chain Link Mesh 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Wire Mid 2.4m/Visible",
+   "solid": "Tension Wire Mid 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Bar 2.4m 1/Visible",
+   "solid": "Tension Bar 2.4m 1",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tension Bar 2.4m 2/Visible",
+   "solid": "Tension Bar 2.4m 2",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 1 2.4m/Visible",
+   "solid": "Barbed Wire 1 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 2 2.4m/Visible",
+   "solid": "Barbed Wire 2 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Barbed Wire 3 2.4m/Visible",
+   "solid": "Barbed Wire 3 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 1 2.4m/Visible",
+   "solid": "Mesh Wire Up 1 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 2 2.4m/Visible",
+   "solid": "Mesh Wire Up 2 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 3 2.4m/Visible",
+   "solid": "Mesh Wire Up 3 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 4 2.4m/Visible",
+   "solid": "Mesh Wire Up 4 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 5 2.4m/Visible",
+   "solid": "Mesh Wire Up 5 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 6 2.4m/Visible",
+   "solid": "Mesh Wire Up 6 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 7 2.4m/Visible",
+   "solid": "Mesh Wire Up 7 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 8 2.4m/Visible",
+   "solid": "Mesh Wire Up 8 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Up 9 2.4m/Visible",
+   "solid": "Mesh Wire Up 9 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 1 2.4m/Visible",
+   "solid": "Mesh Wire Down 1 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 2 2.4m/Visible",
+   "solid": "Mesh Wire Down 2 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 3 2.4m/Visible",
+   "solid": "Mesh Wire Down 3 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 4 2.4m/Visible",
+   "solid": "Mesh Wire Down 4 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 5 2.4m/Visible",
+   "solid": "Mesh Wire Down 5 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 6 2.4m/Visible",
+   "solid": "Mesh Wire Down 6 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 7 2.4m/Visible",
+   "solid": "Mesh Wire Down 7 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 8 2.4m/Visible",
+   "solid": "Mesh Wire Down 8 2.4m",
+   "param": "Show 2.4m_Chainlink"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mesh Wire Down 9 2.4m/Visible",
+   "solid": "Mesh Wire Down 9 2.4m",
+   "param": "Show 2.4m_Chainlink"
   },
   {
    "op": "set_type_image",
@@ -3743,7 +4574,7 @@
   }
  ],
  "values": {
-  "Mesh 1.8 m, 50 mm, 2.5 mm galvanised": {
+  "Mesh 50 mm, 2.5 mm galvanised": {
    "value": "50x2.5",
    "source_status": "assumed",
    "source": "chain-link to BS 1722-1 class"
@@ -3758,10 +4589,10 @@
    "source_status": "assumed",
    "source": "hospital boundary security"
   },
-  "2.4 m type": {
-   "value": 2400,
+  "Heights 1.8 m and 2.4 m": {
+   "value": "1800/2400",
    "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
+   "source": "type names"
   }
  }
 }

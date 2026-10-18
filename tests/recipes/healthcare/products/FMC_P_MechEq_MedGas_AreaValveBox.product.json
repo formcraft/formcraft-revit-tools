@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_MechEq_MedGas_AreaValveBox",
  "category": "Mechanical Equipment",
- "desc": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)",
+ "desc": "Area valve service unit (AVSU), steel box with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels: 2-gas (O2, VAC), 3-gas (+ MA4) or 4-gas (+ N2O)",
  "ifc": "IfcValve",
  "keynote": "P.MGV_00",
  "types": [
@@ -23,56 +23,68 @@
   "copper": "FMC_Metal_Copper_Pipe",
   "brass": "FMC_Metal_Brass_Polished",
   "white": "FMC_Plastic_ABS_White",
-  "black": "FMC_Plastic_ABS_Black"
+  "black": "FMC_Plastic_ABS_Black",
+  "french_blue": "FMC_Plastic_ABS_FrenchBlue"
  },
  "reference": {
   "query": "medical gas area valve box mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+area+valve+box+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://gcegroup.com/en/products/avsu-lva-htm",
+  "photo_title": "GCE AVSU & LVA HTM",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
-   "n": "Box Back",
-   "shape": "box",
+   "n": "Box Back 2Gas",
    "at": [
     -225,
     -15,
     0,
-    225,
+    95,
     0,
     320
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Box Top",
-   "shape": "box",
+   "n": "Box Top 2Gas",
    "at": [
     -225,
     -110,
     300,
-    225,
+    95,
     -15,
     320
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Box Bottom",
-   "shape": "box",
+   "n": "Box Bottom 2Gas",
    "at": [
     -225,
     -110,
     0,
-    225,
+    95,
     -15,
     20
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
    "n": "Box Left",
-   "shape": "box",
    "at": [
     -225,
     -110,
@@ -81,50 +93,59 @@
     -15,
     300
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "box"
   },
   {
-   "n": "Box Right",
-   "shape": "box",
+   "n": "Box Right 2Gas",
    "at": [
-    205,
+    75,
     -110,
     20,
-    225,
+    95,
     -15,
     300
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Frame Top",
-   "shape": "fbox",
+   "n": "Frame Top 2Gas",
    "at": [
     -235,
     -122,
     290,
-    235,
+    105,
     -110,
     330
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Frame Bottom",
-   "shape": "fbox",
+   "n": "Frame Bottom 2Gas",
    "at": [
     -235,
     -122,
     -10,
-    235,
+    105,
     -110,
     30
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
    "n": "Frame Left",
-   "shape": "fbox",
    "at": [
     -235,
     -122,
@@ -133,95 +154,107 @@
     -110,
     290
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "fbox"
   },
   {
-   "n": "Frame Right",
-   "shape": "fbox",
+   "n": "Frame Right 2Gas",
    "at": [
-    205,
+    75,
     -122,
     30,
-    235,
+    105,
     -110,
     290
    ],
-   "mat": "epoxy_white"
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Cover Glazing",
-   "shape": "fbox",
+   "n": "Cover Glazing 2Gas",
    "at": [
     -205,
     -118,
     30,
-    205,
+    75,
     -114,
     290
    ],
+   "lod": "m",
    "mat": "polycarbonate",
-   "lod": "m"
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Lock",
-   "shape": "fbox",
+   "n": "Lock 2Gas",
    "at": [
-    195,
+    65,
     -132,
     140,
-    225,
+    95,
     -122,
     180
    ],
-   "mat": "chrome"
+   "mat": "chrome",
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
-   "n": "Warning Label",
-   "shape": "fbox",
+   "n": "Warning Label 2Gas",
    "at": [
     -200,
     -124,
     296,
-    200,
+    70,
     -122,
     324
    ],
+   "lod": "f",
    "mat": "yellow",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "2Gas_AVSU"
+   ]
   },
   {
    "n": "O2 Pipe",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -130,
     -55
    ],
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     -60,
     400
-   ],
-   "mat": "copper"
+   ]
   },
   {
    "n": "O2 Valve",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -130,
     -55
    ],
+   "mat": "brass",
    "r": 22,
+   "shape": "cyl",
    "z": [
     130,
     190
-   ],
-   "mat": "brass"
+   ]
   },
   {
    "n": "O2 Lever",
-   "shape": "box",
    "at": [
     -140,
     -110,
@@ -231,27 +264,27 @@
     170
    ],
    "mat": "white",
-   "r": 4
+   "r": 4,
+   "shape": "box"
   },
   {
    "n": "O2 Emergency Inlet",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -130,
     90
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 12,
+   "shape": "cyl",
    "y": [
     -100,
     -55
-   ],
-   "mat": "brass",
-   "lod": "f"
+   ]
   },
   {
    "n": "O2 Label",
-   "shape": "fbox",
    "at": [
     -180,
     -112,
@@ -260,17 +293,19 @@
     -110,
     270
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "O2 Band",
-   "shape": "turn",
    "axis": "z",
    "c": [
     -130,
     -55
    ],
+   "lod": "f",
+   "mat": "white",
    "profile": [
     [
      11,
@@ -289,42 +324,40 @@
      350
     ]
    ],
-   "mat": "white",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "VAC Pipe",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     0,
     -55
    ],
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     -60,
     400
-   ],
-   "mat": "copper"
+   ]
   },
   {
    "n": "VAC Valve",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     0,
     -55
    ],
+   "mat": "brass",
    "r": 22,
+   "shape": "cyl",
    "z": [
     130,
     190
-   ],
-   "mat": "brass"
+   ]
   },
   {
    "n": "VAC Lever",
-   "shape": "box",
    "at": [
     -10,
     -110,
@@ -334,27 +367,27 @@
     170
    ],
    "mat": "yellow",
-   "r": 4
+   "r": 4,
+   "shape": "box"
   },
   {
    "n": "VAC Emergency Inlet",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     0,
     90
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 12,
+   "shape": "cyl",
    "y": [
     -100,
     -55
-   ],
-   "mat": "brass",
-   "lod": "f"
+   ]
   },
   {
    "n": "VAC Label",
-   "shape": "fbox",
    "at": [
     -50,
     -112,
@@ -363,17 +396,19 @@
     -110,
     270
    ],
+   "lod": "f",
    "mat": "yellow",
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "VAC Band",
-   "shape": "turn",
    "axis": "z",
    "c": [
     0,
     -55
    ],
+   "lod": "f",
+   "mat": "yellow",
    "profile": [
     [
      11,
@@ -392,42 +427,210 @@
      350
     ]
    ],
+   "shape": "turn"
+  },
+  {
+   "n": "Box Back 3Gas",
+   "at": [
+    -225,
+    -15,
+    0,
+    225,
+    0,
+    320
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Top 3Gas",
+   "at": [
+    -225,
+    -110,
+    300,
+    225,
+    -15,
+    320
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Bottom 3Gas",
+   "at": [
+    -225,
+    -110,
+    0,
+    225,
+    -15,
+    20
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Right 3Gas",
+   "at": [
+    205,
+    -110,
+    20,
+    225,
+    -15,
+    300
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Top 3Gas",
+   "at": [
+    -235,
+    -122,
+    290,
+    235,
+    -110,
+    330
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Bottom 3Gas",
+   "at": [
+    -235,
+    -122,
+    -10,
+    235,
+    -110,
+    30
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Right 3Gas",
+   "at": [
+    205,
+    -122,
+    30,
+    235,
+    -110,
+    290
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Cover Glazing 3Gas",
+   "at": [
+    -205,
+    -118,
+    30,
+    205,
+    -114,
+    290
+   ],
+   "lod": "m",
+   "mat": "polycarbonate",
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Lock 3Gas",
+   "at": [
+    195,
+    -132,
+    140,
+    225,
+    -122,
+    180
+   ],
+   "mat": "chrome",
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Warning Label 3Gas",
+   "at": [
+    -200,
+    -124,
+    296,
+    200,
+    -122,
+    324
+   ],
+   "lod": "f",
    "mat": "yellow",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Pipe",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     130,
     -55
    ],
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     -60,
     400
    ],
-   "mat": "copper"
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Valve",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     130,
     -55
    ],
+   "mat": "brass",
    "r": 22,
+   "shape": "cyl",
    "z": [
     130,
     190
    ],
-   "mat": "brass"
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Lever",
-   "shape": "box",
    "at": [
     120,
     -110,
@@ -437,27 +640,35 @@
     170
    ],
    "mat": "black",
-   "r": 4
+   "r": 4,
+   "shape": "box",
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Emergency Inlet",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     130,
     90
    ],
+   "lod": "f",
+   "mat": "brass",
    "r": 12,
+   "shape": "cyl",
    "y": [
     -100,
     -55
    ],
-   "mat": "brass",
-   "lod": "f"
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Label",
-   "shape": "fbox",
    "at": [
     80,
     -112,
@@ -466,17 +677,23 @@
     -110,
     270
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
   },
   {
    "n": "MA4 Band",
-   "shape": "turn",
    "axis": "z",
    "c": [
     130,
     -55
    ],
+   "lod": "f",
+   "mat": "black",
    "profile": [
     [
      11,
@@ -495,8 +712,294 @@
      350
     ]
    ],
-   "mat": "black",
-   "lod": "f"
+   "shape": "turn",
+   "only": [
+    "3Gas_AVSU",
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Back 4Gas",
+   "at": [
+    -225,
+    -15,
+    0,
+    355,
+    0,
+    320
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Top 4Gas",
+   "at": [
+    -225,
+    -110,
+    300,
+    355,
+    -15,
+    320
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Bottom 4Gas",
+   "at": [
+    -225,
+    -110,
+    0,
+    355,
+    -15,
+    20
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Box Right 4Gas",
+   "at": [
+    335,
+    -110,
+    20,
+    355,
+    -15,
+    300
+   ],
+   "mat": "epoxy_white",
+   "shape": "box",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Top 4Gas",
+   "at": [
+    -235,
+    -122,
+    290,
+    365,
+    -110,
+    330
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Bottom 4Gas",
+   "at": [
+    -235,
+    -122,
+    -10,
+    365,
+    -110,
+    30
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Frame Right 4Gas",
+   "at": [
+    335,
+    -122,
+    30,
+    365,
+    -110,
+    290
+   ],
+   "mat": "epoxy_white",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Cover Glazing 4Gas",
+   "at": [
+    -205,
+    -118,
+    30,
+    335,
+    -114,
+    290
+   ],
+   "lod": "m",
+   "mat": "polycarbonate",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Lock 4Gas",
+   "at": [
+    325,
+    -132,
+    140,
+    355,
+    -122,
+    180
+   ],
+   "mat": "chrome",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "Warning Label 4Gas",
+   "at": [
+    -200,
+    -124,
+    296,
+    330,
+    -122,
+    324
+   ],
+   "lod": "f",
+   "mat": "yellow",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Pipe",
+   "axis": "z",
+   "c": [
+    260,
+    -55
+   ],
+   "mat": "copper",
+   "r": 11,
+   "shape": "cyl",
+   "z": [
+    -60,
+    400
+   ],
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Valve",
+   "axis": "z",
+   "c": [
+    260,
+    -55
+   ],
+   "mat": "brass",
+   "r": 22,
+   "shape": "cyl",
+   "z": [
+    130,
+    190
+   ],
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Lever",
+   "at": [
+    250,
+    -110,
+    150,
+    270,
+    -55,
+    170
+   ],
+   "mat": "french_blue",
+   "r": 4,
+   "shape": "box",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Emergency Inlet",
+   "axis": "y",
+   "c": [
+    260,
+    90
+   ],
+   "lod": "f",
+   "mat": "brass",
+   "r": 12,
+   "shape": "cyl",
+   "y": [
+    -100,
+    -55
+   ],
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Label",
+   "at": [
+    210,
+    -112,
+    240,
+    310,
+    -110,
+    270
+   ],
+   "lod": "f",
+   "mat": "french_blue",
+   "shape": "fbox",
+   "only": [
+    "4Gas_AVSU"
+   ]
+  },
+  {
+   "n": "N2O Band",
+   "axis": "z",
+   "c": [
+    260,
+    -55
+   ],
+   "lod": "f",
+   "mat": "french_blue",
+   "profile": [
+    [
+     11,
+     330
+    ],
+    [
+     13,
+     330
+    ],
+    [
+     13,
+     350
+    ],
+    [
+     11,
+     350
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "4Gas_AVSU"
+   ]
   }
  ],
  "connectors": [
@@ -526,11 +1029,20 @@
    "side": "top",
    "diameter": 15,
    "flow": "In"
+  },
+  {
+   "n": "N2O",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "N2O Pipe",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
   }
  ],
  "values": {
-  "Box 450 x 330 x 120 mm": {
-   "value": "450x330x120",
+  "Box 320 / 450 / 580 x 330 x 120 mm": {
+   "value": "130 mm per gas + 60",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
@@ -545,7 +1057,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it.",
+ "about": "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. Per type: the box grows 130 mm per gas to the right; O2 and VAC are shared, MA4 shows in the 3- and 4-gas types, N2O in the 4-gas type. The MA4 and N2O connectors exist in every type and stay unconnected where the gas is hidden.",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Default Elevation": 1500

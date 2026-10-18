@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_Evaporator_ColdRoom",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: white casing on two ceiling rails (z = 0), two front fans (bezel, blades, hub, guard), rear finned coil with bars, drip tray and drain, end covers, terminal box with defrost gland. Reference: query: evaporator cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=evaporator+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: white casing on two ceiling rails (z = 0), two front fans (bezel, blades, hub, guard), rear finned coil with bars, drip tray and drain, end covers, terminal box with defrost gland. Reference: query: evaporator cold room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=evaporator+cold+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.ahlsell.dk/en/produkter/refrigeration-technology/heat-exchangers/evaporators-hfc-co2/evaporators-hfc/c-75.30.10.10/10398014/eco-modine-gce-evaporator; photo_title: Eco (Modine) GCE evaporator / unit cooler; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -437,6 +437,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2kW_UnitCooler/URL",
+   "type": "2kW_UnitCooler",
+   "param": "URL",
+   "value": "https://www.ahlsell.dk/en/produkter/refrigeration-technology/heat-exchangers/evaporators-hfc-co2/evaporators-hfc/c-75.30.10.10/10398014/eco-modine-gce-evaporator"
+  },
+  {
+   "op": "set_type_value",
    "name": "2kW_UnitCooler/Voltage",
    "type": "2kW_UnitCooler",
    "param": "Voltage",
@@ -525,6 +532,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "5kW_UnitCooler/URL",
+   "type": "5kW_UnitCooler",
+   "param": "URL",
+   "value": "https://www.ahlsell.dk/en/produkter/refrigeration-technology/heat-exchangers/evaporators-hfc-co2/evaporators-hfc/c-75.30.10.10/10398014/eco-modine-gce-evaporator"
+  },
+  {
+   "op": "set_type_value",
    "name": "5kW_UnitCooler/Voltage",
    "type": "5kW_UnitCooler",
    "param": "Voltage",
@@ -567,24 +581,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Alu",
+   "name": "Fin",
    "color": [
-    192,
-    192,
-    192
+    169,
+    178,
+    184
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Alu Material",
+   "name": "Fin Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Material"
   },
   {
    "op": "add_subcategory",
@@ -909,12 +923,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Face",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Face",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_SpecEq_ChangingPlaces_Unit",
  "template": "Metric Generic Model.rft",
- "about": "Changing Places modelled as a generic assembly (back wall y = 0, side walls x = +-1500; room walls not part of the family): peninsular WC with contrasting seat and drop-down rails both sides, wall bench on a lift column with side rail, height-adjustable basin with mirror, shower area with riser and gully, folding privacy screen, XY hoist rails on wall brackets with traverse, motor, strap, spreader bar and hand control, charger, alarm cord and reset; turning circle on Clearance Accessibility. Reference: query: changing places unit specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=changing+places+unit+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Changing Places modelled as a generic assembly (back wall y = 0, side walls x = +-1500; room walls not part of the family): peninsular WC with contrasting seat and drop-down rails both sides, wall bench on a lift column with side rail, height-adjustable basin with mirror, shower area with riser and gully, folding privacy screen, XY hoist rails on wall brackets with traverse, motor, strap, spreader bar and hand control, charger, alarm cord and reset; turning circle on Clearance Accessibility. The shower area and hoist rails are per type (3700 room: shower 300 mm nearer the back wall, rails 300 shorter). Reference: query: changing places unit specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=changing+places+unit+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.commercialwashroomsltd.co.uk/disabled-toilets/changing-places.html?cat=187; photo_title: Changing Places; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -22,33 +22,339 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LP_Part",
+   "guid": "7358e31e-0924-5ef8-9e82-c11bf9ad7160",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Extinguisher_Rating",
+   "guid": "59ff9559-a353-5172-9793-e70bce8154c9",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Hose_Length_m",
+   "guid": "38ed9a83-2f51-56d9-930f-4fab315adbb5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Sign_Code",
+   "guid": "308bad99-638f-5312-920b-abcd5888e7f3",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Design_Movement",
+   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+   "instance": true
   },
   {
    "op": "add_type",
@@ -95,6 +401,34 @@
    "type": "3000x4000_ChangingPlaces",
    "param": "FMC_Keynote_Code",
    "value": "J.CUB_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/FMC_Code_Description",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "FMC_Code_Description",
+   "value": "ChangingPlaces Unit: Changing Places: ceiling hoist, adjustable bench, privacy screen, peninsular WC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/FMC_Code_Group",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "FMC_Code_Group",
+   "value": "J.CUB"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/FMC_Role_Code",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/URL",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/disabled-toilets/changing-places.html?cat=187"
   },
   {
    "op": "set_type_value",
@@ -155,6 +489,34 @@
    "type": "3000x3700_ChangingPlaces",
    "param": "FMC_Keynote_Code",
    "value": "J.CUB_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/FMC_Code_Description",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "FMC_Code_Description",
+   "value": "ChangingPlaces Unit: Changing Places: ceiling hoist, adjustable bench, privacy screen, peninsular WC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/FMC_Code_Group",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "FMC_Code_Group",
+   "value": "J.CUB"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/FMC_Role_Code",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "FMC_Role_Code",
+   "value": "A"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/URL",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "URL",
+   "value": "https://www.commercialwashroomsltd.co.uk/disabled-toilets/changing-places.html?cat=187"
   },
   {
    "op": "set_type_value",
@@ -361,45 +723,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Safety",
+   "name": "Curtainp",
    "color": [
-    201,
-    205,
-    210
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Safety Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_MedicalGrey",
-   "param": "Safety Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Curtain",
-   "color": [
-    58,
     110,
-    165
+    90,
+    120
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Curtain Material",
+   "name": "Curtainp Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
-   "param": "Curtain Material"
+   "name": "FMC_Fabric_Curtain_Plain",
+   "param": "Curtainp Material"
   },
   {
    "op": "add_subcategory",
@@ -463,6 +804,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_LED_Red",
    "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Safety",
+   "color": [
+    142,
+    149,
+    155
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Safety Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Vinyl_SafetyFloor_Grey",
+   "param": "Safety Material"
   },
   {
    "op": "add_subcategory",
@@ -4013,436 +4375,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Shower Mixer",
-   "points": [
-    [
-     1480.0,
-     -2700.0
-    ],
-    [
-     1487.65,
-     -2698.48
-    ],
-    [
-     1494.14,
-     -2694.14
-    ],
-    [
-     1498.48,
-     -2687.65
-    ],
-    [
-     1500.0,
-     -2680.0
-    ],
-    [
-     1500.0,
-     -2520.0
-    ],
-    [
-     1498.48,
-     -2512.35
-    ],
-    [
-     1494.14,
-     -2505.86
-    ],
-    [
-     1487.65,
-     -2501.52
-    ],
-    [
-     1480.0,
-     -2500.0
-    ],
-    [
-     1450.0,
-     -2500.0
-    ],
-    [
-     1442.35,
-     -2501.52
-    ],
-    [
-     1435.86,
-     -2505.86
-    ],
-    [
-     1431.52,
-     -2512.35
-    ],
-    [
-     1430.0,
-     -2520.0
-    ],
-    [
-     1430.0,
-     -2680.0
-    ],
-    [
-     1431.52,
-     -2687.65
-    ],
-    [
-     1435.86,
-     -2694.14
-    ],
-    [
-     1442.35,
-     -2698.48
-    ],
-    [
-     1450.0,
-     -2700.0
-    ]
-   ],
-   "start": 1000,
-   "end": 1100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Mixer",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Mixer",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Mixer",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shower Riser",
-   "points": [
-    [
-     1462.0,
-     -2600.0
-    ],
-    [
-     1461.59,
-     -2596.89
-    ],
-    [
-     1460.39,
-     -2594.0
-    ],
-    [
-     1458.49,
-     -2591.51
-    ],
-    [
-     1456.0,
-     -2589.61
-    ],
-    [
-     1453.11,
-     -2588.41
-    ],
-    [
-     1450.0,
-     -2588.0
-    ],
-    [
-     1446.89,
-     -2588.41
-    ],
-    [
-     1444.0,
-     -2589.61
-    ],
-    [
-     1441.51,
-     -2591.51
-    ],
-    [
-     1439.61,
-     -2594.0
-    ],
-    [
-     1438.41,
-     -2596.89
-    ],
-    [
-     1438.0,
-     -2600.0
-    ],
-    [
-     1438.41,
-     -2603.11
-    ],
-    [
-     1439.61,
-     -2606.0
-    ],
-    [
-     1441.51,
-     -2608.49
-    ],
-    [
-     1444.0,
-     -2610.39
-    ],
-    [
-     1446.89,
-     -2611.59
-    ],
-    [
-     1450.0,
-     -2612.0
-    ],
-    [
-     1453.11,
-     -2611.59
-    ],
-    [
-     1456.0,
-     -2610.39
-    ],
-    [
-     1458.49,
-     -2608.49
-    ],
-    [
-     1460.39,
-     -2606.0
-    ],
-    [
-     1461.59,
-     -2603.11
-    ]
-   ],
-   "start": 1100,
-   "end": 2000
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Riser",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Riser",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Riser",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shower Head",
-   "points": [
-    [
-     -2560.0,
-     1700.0
-    ],
-    [
-     -2561.36,
-     1710.35
-    ],
-    [
-     -2565.36,
-     1720.0
-    ],
-    [
-     -2571.72,
-     1728.28
-    ],
-    [
-     -2580.0,
-     1734.64
-    ],
-    [
-     -2589.65,
-     1738.64
-    ],
-    [
-     -2600.0,
-     1740.0
-    ],
-    [
-     -2610.35,
-     1738.64
-    ],
-    [
-     -2620.0,
-     1734.64
-    ],
-    [
-     -2628.28,
-     1728.28
-    ],
-    [
-     -2634.64,
-     1720.0
-    ],
-    [
-     -2638.64,
-     1710.35
-    ],
-    [
-     -2640.0,
-     1700.0
-    ],
-    [
-     -2638.64,
-     1689.65
-    ],
-    [
-     -2634.64,
-     1680.0
-    ],
-    [
-     -2628.28,
-     1671.72
-    ],
-    [
-     -2620.0,
-     1665.36
-    ],
-    [
-     -2610.35,
-     1661.36
-    ],
-    [
-     -2600.0,
-     1660.0
-    ],
-    [
-     -2589.65,
-     1661.36
-    ],
-    [
-     -2580.0,
-     1665.36
-    ],
-    [
-     -2571.72,
-     1671.72
-    ],
-    [
-     -2565.36,
-     1680.0
-    ],
-    [
-     -2561.36,
-     1689.65
-    ]
-   ],
-   "start": 1380,
-   "end": 1440,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Head",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Head",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Head",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Shower Floor",
-   "points": [
-    [
-     400,
-     -3600
-    ],
-    [
-     1500,
-     -3600
-    ],
-    [
-     1500,
-     -2300
-    ],
-    [
-     400,
-     -2300
-    ]
-   ],
-   "start": 0,
-   "end": 4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Shower Floor",
-   "subcategory": "Safety"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Shower Floor",
-   "param": "Safety Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Shower Floor",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Floor Gully",
-   "points": [
-    [
-     600,
-     -2990
-    ],
-    [
-     1400,
-     -2990
-    ],
-    [
-     1400,
-     -2950
-    ],
-    [
-     600,
-     -2950
-    ]
-   ],
-   "start": 4,
-   "end": 6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Floor Gully",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Floor Gully",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Floor Gully",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Privacy Screen",
    "points": [
     [
@@ -4469,12 +4401,12 @@
   {
    "op": "set_subcategory",
    "name": "Privacy Screen",
-   "subcategory": "Curtain"
+   "subcategory": "Curtainp"
   },
   {
    "op": "set_material_param",
    "name": "Privacy Screen",
-   "param": "Curtain Material"
+   "param": "Curtainp Material"
   },
   {
    "op": "set_visibility",
@@ -4967,88 +4899,6 @@
    "name": "Screen Foot 2",
    "coarse": false,
    "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hoist Fixed Rail 1",
-   "points": [
-    [
-     -1500,
-     -3900
-    ],
-    [
-     -1430,
-     -3900
-    ],
-    [
-     -1430,
-     -100
-    ],
-    [
-     -1500,
-     -100
-    ]
-   ],
-   "start": 2350,
-   "end": 2420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hoist Fixed Rail 1",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hoist Fixed Rail 1",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hoist Fixed Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Hoist Fixed Rail 2",
-   "points": [
-    [
-     1430,
-     -3900
-    ],
-    [
-     1500,
-     -3900
-    ],
-    [
-     1500,
-     -100
-    ],
-    [
-     1430,
-     -100
-    ]
-   ],
-   "start": 2350,
-   "end": 2420
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Hoist Fixed Rail 2",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Hoist Fixed Rail 2",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Hoist Fixed Rail 2",
-   "coarse": false,
-   "medium": true,
    "fine": true
   },
   {
@@ -6150,99 +6000,51 @@
    "points": [
     [
      1473.0,
-     -2200.0
-    ],
-    [
-     1472.9,
-     -2199.22
+     -1900.0
     ],
     [
      1472.6,
-     -2198.5
-    ],
-    [
-     1472.12,
-     -2197.88
+     -1898.5
     ],
     [
      1471.5,
-     -2197.4
-    ],
-    [
-     1470.78,
-     -2197.1
+     -1897.4
     ],
     [
      1470.0,
-     -2197.0
-    ],
-    [
-     1469.22,
-     -2197.1
+     -1897.0
     ],
     [
      1468.5,
-     -2197.4
-    ],
-    [
-     1467.88,
-     -2197.88
+     -1897.4
     ],
     [
      1467.4,
-     -2198.5
-    ],
-    [
-     1467.1,
-     -2199.22
+     -1898.5
     ],
     [
      1467.0,
-     -2200.0
-    ],
-    [
-     1467.1,
-     -2200.78
+     -1900.0
     ],
     [
      1467.4,
-     -2201.5
-    ],
-    [
-     1467.88,
-     -2202.12
+     -1901.5
     ],
     [
      1468.5,
-     -2202.6
-    ],
-    [
-     1469.22,
-     -2202.9
+     -1902.6
     ],
     [
      1470.0,
-     -2203.0
-    ],
-    [
-     1470.78,
-     -2202.9
+     -1903.0
     ],
     [
      1471.5,
-     -2202.6
-    ],
-    [
-     1472.12,
-     -2202.12
+     -1902.6
     ],
     [
      1472.6,
-     -2201.5
-    ],
-    [
-     1472.9,
-     -2200.78
+     -1901.5
     ]
    ],
    "start": 120,
@@ -6263,6 +6065,1030 @@
    "name": "Alarm Cord",
    "coarse": false,
    "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Mixer 4000",
+   "points": [
+    [
+     1480.0,
+     -2700.0
+    ],
+    [
+     1487.65,
+     -2698.48
+    ],
+    [
+     1494.14,
+     -2694.14
+    ],
+    [
+     1498.48,
+     -2687.65
+    ],
+    [
+     1500.0,
+     -2680.0
+    ],
+    [
+     1500.0,
+     -2520.0
+    ],
+    [
+     1498.48,
+     -2512.35
+    ],
+    [
+     1494.14,
+     -2505.86
+    ],
+    [
+     1487.65,
+     -2501.52
+    ],
+    [
+     1480.0,
+     -2500.0
+    ],
+    [
+     1450.0,
+     -2500.0
+    ],
+    [
+     1442.35,
+     -2501.52
+    ],
+    [
+     1435.86,
+     -2505.86
+    ],
+    [
+     1431.52,
+     -2512.35
+    ],
+    [
+     1430.0,
+     -2520.0
+    ],
+    [
+     1430.0,
+     -2680.0
+    ],
+    [
+     1431.52,
+     -2687.65
+    ],
+    [
+     1435.86,
+     -2694.14
+    ],
+    [
+     1442.35,
+     -2698.48
+    ],
+    [
+     1450.0,
+     -2700.0
+    ]
+   ],
+   "start": 1000,
+   "end": 1100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Mixer 4000",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Mixer 4000",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Mixer 4000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Riser 4000",
+   "points": [
+    [
+     1462.0,
+     -2600.0
+    ],
+    [
+     1461.59,
+     -2596.89
+    ],
+    [
+     1460.39,
+     -2594.0
+    ],
+    [
+     1458.49,
+     -2591.51
+    ],
+    [
+     1456.0,
+     -2589.61
+    ],
+    [
+     1453.11,
+     -2588.41
+    ],
+    [
+     1450.0,
+     -2588.0
+    ],
+    [
+     1446.89,
+     -2588.41
+    ],
+    [
+     1444.0,
+     -2589.61
+    ],
+    [
+     1441.51,
+     -2591.51
+    ],
+    [
+     1439.61,
+     -2594.0
+    ],
+    [
+     1438.41,
+     -2596.89
+    ],
+    [
+     1438.0,
+     -2600.0
+    ],
+    [
+     1438.41,
+     -2603.11
+    ],
+    [
+     1439.61,
+     -2606.0
+    ],
+    [
+     1441.51,
+     -2608.49
+    ],
+    [
+     1444.0,
+     -2610.39
+    ],
+    [
+     1446.89,
+     -2611.59
+    ],
+    [
+     1450.0,
+     -2612.0
+    ],
+    [
+     1453.11,
+     -2611.59
+    ],
+    [
+     1456.0,
+     -2610.39
+    ],
+    [
+     1458.49,
+     -2608.49
+    ],
+    [
+     1460.39,
+     -2606.0
+    ],
+    [
+     1461.59,
+     -2603.11
+    ]
+   ],
+   "start": 1100,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Riser 4000",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Riser 4000",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Riser 4000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Head 4000",
+   "points": [
+    [
+     -2560.0,
+     1700.0
+    ],
+    [
+     -2561.36,
+     1710.35
+    ],
+    [
+     -2565.36,
+     1720.0
+    ],
+    [
+     -2571.72,
+     1728.28
+    ],
+    [
+     -2580.0,
+     1734.64
+    ],
+    [
+     -2589.65,
+     1738.64
+    ],
+    [
+     -2600.0,
+     1740.0
+    ],
+    [
+     -2610.35,
+     1738.64
+    ],
+    [
+     -2620.0,
+     1734.64
+    ],
+    [
+     -2628.28,
+     1728.28
+    ],
+    [
+     -2634.64,
+     1720.0
+    ],
+    [
+     -2638.64,
+     1710.35
+    ],
+    [
+     -2640.0,
+     1700.0
+    ],
+    [
+     -2638.64,
+     1689.65
+    ],
+    [
+     -2634.64,
+     1680.0
+    ],
+    [
+     -2628.28,
+     1671.72
+    ],
+    [
+     -2620.0,
+     1665.36
+    ],
+    [
+     -2610.35,
+     1661.36
+    ],
+    [
+     -2600.0,
+     1660.0
+    ],
+    [
+     -2589.65,
+     1661.36
+    ],
+    [
+     -2580.0,
+     1665.36
+    ],
+    [
+     -2571.72,
+     1671.72
+    ],
+    [
+     -2565.36,
+     1680.0
+    ],
+    [
+     -2561.36,
+     1689.65
+    ]
+   ],
+   "start": 1380,
+   "end": 1440,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Head 4000",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Head 4000",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Head 4000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Floor 4000",
+   "points": [
+    [
+     400,
+     -3600
+    ],
+    [
+     1500,
+     -3600
+    ],
+    [
+     1500,
+     -2300
+    ],
+    [
+     400,
+     -2300
+    ]
+   ],
+   "start": 0,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Floor 4000",
+   "subcategory": "Safety"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Floor 4000",
+   "param": "Safety Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Floor 4000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Floor Gully 4000",
+   "points": [
+    [
+     600,
+     -2990
+    ],
+    [
+     1400,
+     -2990
+    ],
+    [
+     1400,
+     -2950
+    ],
+    [
+     600,
+     -2950
+    ]
+   ],
+   "start": 4,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Floor Gully 4000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Gully 4000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Gully 4000",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hoist Fixed Rail 4000 1",
+   "points": [
+    [
+     -1500,
+     -3900
+    ],
+    [
+     -1430,
+     -3900
+    ],
+    [
+     -1430,
+     -100
+    ],
+    [
+     -1500,
+     -100
+    ]
+   ],
+   "start": 2350,
+   "end": 2420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hoist Fixed Rail 4000 1",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hoist Fixed Rail 4000 1",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hoist Fixed Rail 4000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hoist Fixed Rail 4000 2",
+   "points": [
+    [
+     1430,
+     -3900
+    ],
+    [
+     1500,
+     -3900
+    ],
+    [
+     1500,
+     -100
+    ],
+    [
+     1430,
+     -100
+    ]
+   ],
+   "start": 2350,
+   "end": 2420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hoist Fixed Rail 4000 2",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hoist Fixed Rail 4000 2",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hoist Fixed Rail 4000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Mixer 3700",
+   "points": [
+    [
+     1480.0,
+     -2400.0
+    ],
+    [
+     1487.65,
+     -2398.48
+    ],
+    [
+     1494.14,
+     -2394.14
+    ],
+    [
+     1498.48,
+     -2387.65
+    ],
+    [
+     1500.0,
+     -2380.0
+    ],
+    [
+     1500.0,
+     -2220.0
+    ],
+    [
+     1498.48,
+     -2212.35
+    ],
+    [
+     1494.14,
+     -2205.86
+    ],
+    [
+     1487.65,
+     -2201.52
+    ],
+    [
+     1480.0,
+     -2200.0
+    ],
+    [
+     1450.0,
+     -2200.0
+    ],
+    [
+     1442.35,
+     -2201.52
+    ],
+    [
+     1435.86,
+     -2205.86
+    ],
+    [
+     1431.52,
+     -2212.35
+    ],
+    [
+     1430.0,
+     -2220.0
+    ],
+    [
+     1430.0,
+     -2380.0
+    ],
+    [
+     1431.52,
+     -2387.65
+    ],
+    [
+     1435.86,
+     -2394.14
+    ],
+    [
+     1442.35,
+     -2398.48
+    ],
+    [
+     1450.0,
+     -2400.0
+    ]
+   ],
+   "start": 1000,
+   "end": 1100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Mixer 3700",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Mixer 3700",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Mixer 3700",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Riser 3700",
+   "points": [
+    [
+     1462.0,
+     -2300.0
+    ],
+    [
+     1461.59,
+     -2296.89
+    ],
+    [
+     1460.39,
+     -2294.0
+    ],
+    [
+     1458.49,
+     -2291.51
+    ],
+    [
+     1456.0,
+     -2289.61
+    ],
+    [
+     1453.11,
+     -2288.41
+    ],
+    [
+     1450.0,
+     -2288.0
+    ],
+    [
+     1446.89,
+     -2288.41
+    ],
+    [
+     1444.0,
+     -2289.61
+    ],
+    [
+     1441.51,
+     -2291.51
+    ],
+    [
+     1439.61,
+     -2294.0
+    ],
+    [
+     1438.41,
+     -2296.89
+    ],
+    [
+     1438.0,
+     -2300.0
+    ],
+    [
+     1438.41,
+     -2303.11
+    ],
+    [
+     1439.61,
+     -2306.0
+    ],
+    [
+     1441.51,
+     -2308.49
+    ],
+    [
+     1444.0,
+     -2310.39
+    ],
+    [
+     1446.89,
+     -2311.59
+    ],
+    [
+     1450.0,
+     -2312.0
+    ],
+    [
+     1453.11,
+     -2311.59
+    ],
+    [
+     1456.0,
+     -2310.39
+    ],
+    [
+     1458.49,
+     -2308.49
+    ],
+    [
+     1460.39,
+     -2306.0
+    ],
+    [
+     1461.59,
+     -2303.11
+    ]
+   ],
+   "start": 1100,
+   "end": 2000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Riser 3700",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Riser 3700",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Riser 3700",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Head 3700",
+   "points": [
+    [
+     -2260.0,
+     1700.0
+    ],
+    [
+     -2261.36,
+     1710.35
+    ],
+    [
+     -2265.36,
+     1720.0
+    ],
+    [
+     -2271.72,
+     1728.28
+    ],
+    [
+     -2280.0,
+     1734.64
+    ],
+    [
+     -2289.65,
+     1738.64
+    ],
+    [
+     -2300.0,
+     1740.0
+    ],
+    [
+     -2310.35,
+     1738.64
+    ],
+    [
+     -2320.0,
+     1734.64
+    ],
+    [
+     -2328.28,
+     1728.28
+    ],
+    [
+     -2334.64,
+     1720.0
+    ],
+    [
+     -2338.64,
+     1710.35
+    ],
+    [
+     -2340.0,
+     1700.0
+    ],
+    [
+     -2338.64,
+     1689.65
+    ],
+    [
+     -2334.64,
+     1680.0
+    ],
+    [
+     -2328.28,
+     1671.72
+    ],
+    [
+     -2320.0,
+     1665.36
+    ],
+    [
+     -2310.35,
+     1661.36
+    ],
+    [
+     -2300.0,
+     1660.0
+    ],
+    [
+     -2289.65,
+     1661.36
+    ],
+    [
+     -2280.0,
+     1665.36
+    ],
+    [
+     -2271.72,
+     1671.72
+    ],
+    [
+     -2265.36,
+     1680.0
+    ],
+    [
+     -2261.36,
+     1689.65
+    ]
+   ],
+   "start": 1380,
+   "end": 1440,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Head 3700",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Head 3700",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Head 3700",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shower Floor 3700",
+   "points": [
+    [
+     400,
+     -3300
+    ],
+    [
+     1500,
+     -3300
+    ],
+    [
+     1500,
+     -2000
+    ],
+    [
+     400,
+     -2000
+    ]
+   ],
+   "start": 0,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shower Floor 3700",
+   "subcategory": "Safety"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shower Floor 3700",
+   "param": "Safety Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shower Floor 3700",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Floor Gully 3700",
+   "points": [
+    [
+     600,
+     -2690
+    ],
+    [
+     1400,
+     -2690
+    ],
+    [
+     1400,
+     -2650
+    ],
+    [
+     600,
+     -2650
+    ]
+   ],
+   "start": 4,
+   "end": 6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Floor Gully 3700",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Floor Gully 3700",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Floor Gully 3700",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hoist Fixed Rail 3700 1",
+   "points": [
+    [
+     -1500,
+     -3600
+    ],
+    [
+     -1430,
+     -3600
+    ],
+    [
+     -1430,
+     -100
+    ],
+    [
+     -1500,
+     -100
+    ]
+   ],
+   "start": 2350,
+   "end": 2420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hoist Fixed Rail 3700 1",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hoist Fixed Rail 3700 1",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hoist Fixed Rail 3700 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hoist Fixed Rail 3700 2",
+   "points": [
+    [
+     1430,
+     -3600
+    ],
+    [
+     1500,
+     -3600
+    ],
+    [
+     1500,
+     -100
+    ],
+    [
+     1430,
+     -100
+    ]
+   ],
+   "start": 2350,
+   "end": 2420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hoist Fixed Rail 3700 2",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hoist Fixed Rail 3700 2",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hoist Fixed Rail 3700 2",
+   "coarse": false,
+   "medium": true,
    "fine": true
   },
   {
@@ -6380,6 +7206,130 @@
    "coarse": true,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3000x4000_ChangingPlaces",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/Show 3000x4000_ChangingPlaces",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "Show 3000x4000_ChangingPlaces",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/Show 3000x4000_ChangingPlaces",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "Show 3000x4000_ChangingPlaces",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Mixer 4000/Visible",
+   "solid": "Shower Mixer 4000",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Riser 4000/Visible",
+   "solid": "Shower Riser 4000",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Head 4000/Visible",
+   "solid": "Shower Head 4000",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Floor 4000/Visible",
+   "solid": "Shower Floor 4000",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Floor Gully 4000/Visible",
+   "solid": "Floor Gully 4000",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hoist Fixed Rail 4000 1/Visible",
+   "solid": "Hoist Fixed Rail 4000 1",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hoist Fixed Rail 4000 2/Visible",
+   "solid": "Hoist Fixed Rail 4000 2",
+   "param": "Show 3000x4000_ChangingPlaces"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3000x3700_ChangingPlaces",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x4000_ChangingPlaces/Show 3000x3700_ChangingPlaces",
+   "type": "3000x4000_ChangingPlaces",
+   "param": "Show 3000x3700_ChangingPlaces",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3700_ChangingPlaces/Show 3000x3700_ChangingPlaces",
+   "type": "3000x3700_ChangingPlaces",
+   "param": "Show 3000x3700_ChangingPlaces",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Mixer 3700/Visible",
+   "solid": "Shower Mixer 3700",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Riser 3700/Visible",
+   "solid": "Shower Riser 3700",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Head 3700/Visible",
+   "solid": "Shower Head 3700",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shower Floor 3700/Visible",
+   "solid": "Shower Floor 3700",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Floor Gully 3700/Visible",
+   "solid": "Floor Gully 3700",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hoist Fixed Rail 3700 1/Visible",
+   "solid": "Hoist Fixed Rail 3700 1",
+   "param": "Show 3000x3700_ChangingPlaces"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hoist Fixed Rail 3700 2/Visible",
+   "solid": "Hoist Fixed Rail 3700 2",
+   "param": "Show 3000x3700_ChangingPlaces"
   },
   {
    "op": "add_connector",

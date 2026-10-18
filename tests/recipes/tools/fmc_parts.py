@@ -20,6 +20,8 @@ GUID = {'FMC_Keynote_Code': '2d089b32-0589-516b-8952-9f6afad95971', 'FMC_Cost_Un
         'FMC_Geometry_Stage': '27c3be4d-9757-51ba-aa96-6c7a3a061025', 'IfcExportAs': 'bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7'}
 _mat_cache = None
 STAGING = os.environ.get("FMC_STAGING", r"D:\Fomcraft\FMC_BIM_27\FMC_Kit_v2.2\FMC_Kit_v2.2\04_Families\_Staging")
+# Revit's own enum names for systems people write the other way round (PipeSystemType.SupplyHydronic, ...)
+SYS_ALIAS = {"HydronicSupply": "SupplyHydronic", "HydronicReturn": "ReturnHydronic", "ColdWater": "DomesticColdWater", "HotWater": "DomesticHotWater"}
 OPEN = {"FMC_Manufacturer": "dc399f41-0c78-566b-bf6a-94cdba78e4fa", "FMC_Model_Number": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"}
 
 KIT_ROOT = os.environ.get("FMC_KIT", "/home/claude/kitdata/FMC_Kit_v2.2")
@@ -44,6 +46,14 @@ def kit_params(category):
         except Exception: _kit['p'] = {}
     ost = CAT_OST.get(category, "OST_GenericModel"); ost = ost if any(ost in p.get('categories', []) for p in _kit['p'].values()) else CAT_PROXY.get(ost, "OST_GenericModel")
     return {n: p for n, p in _kit['p'].items() if p.get('binding') in ('Type', 'Instance') and ost in p.get('categories', [])}
+HC_PACK = os.environ.get("FMC_HC_PACK", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "healthcare", "healthcare_pack.json"))
+def catalogue_kn(family):
+    """The keynote the catalogue gives the family (healthcare_pack.json 'kn'), when the product file has none."""
+    if 'c' not in _kit:
+        try: _kit['c'] = {f['family']: f.get('kn', '') for f in json.load(open(HC_PACK, encoding='utf-8'))['families']}
+        except Exception: _kit['c'] = {}
+    return _kit['c'].get(family, '')
+
 def keynote_text(code):
     if 'k' not in _kit:
         _kit['k'] = {}
@@ -65,6 +75,15 @@ def hexrgb(h):
 
 # ---------------------------------------------------------------- outlines
 def circle(cx, cy, r, n=24): return [[round(cx + r * math.cos(2 * math.pi * k / n), 2), round(cy + r * math.sin(2 * math.pi * k / n), 2)] for k in range(n)]
+MIN_EDGE = 1.0   # mm: Revit refuses edges under its ShortCurveTolerance (~0.8 mm), so outlines keep 1 mm or more
+def clean(pts):
+    """Drop points closer than MIN_EDGE to the last kept one (and to the first), so no edge is too short for Revit."""
+    out = []
+    for q in pts:
+        if not out or math.dist(q, out[-1]) >= MIN_EDGE: out.append(q)
+    while len(out) > 3 and math.dist(out[-1], out[0]) < MIN_EDGE: out.pop()
+    return out
+
 def rrect(x0, y0, x1, y1, r=0, n=4):
     r = max(0, min(r, (x1 - x0) / 2 - 0.01, (y1 - y0) / 2 - 0.01))
     if r <= 0.5: return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
@@ -133,7 +152,7 @@ def bounds(g):
 def compile_product(prod, kn_lookup=None):
     mats = prod.get('materials', {}); kit = kit_materials()
     parts = expand(prod['parts'])
-    ops, values = [], dict(prod.get('values', {}))
+    ops, values, about_extra = [], dict(prod.get('values', {})), ''
     if prod.get('category'): ops.append({"op": "set_category", "name": prod['category']})
     if prod.get('shared'): ops.append({"op": "set_family_params", "name": "family", "shared": True})
     for prm, typ, grp in (("Voltage", "Voltage", "Electrical"), ("Number of Poles", "NumberOfPoles", "Electrical"), ("Apparent Load", "ApparentPower", "ElectricalLoads")):
@@ -145,7 +164,7 @@ def compile_product(prod, kn_lookup=None):
     # owner, 17 Oct: every shared parameter the kit binds to this category, as the kit binds it (SPR-005/006/016/021);
     # brand and model stay blank for review (supplier: kit change request FMC_Supplier)
     for n, p in kp.items(): ops.append({"op": "add_shared_param", "name": n, "guid": p['guid'], "instance": p['binding'] == 'Instance'})
-    kn = prod.get('keynote') or (kn_lookup or {}).get(prod['family'], '')
+    kn = prod.get('keynote') or (kn_lookup or {}).get(prod['family'], '') or catalogue_kn(prod['family'])
     ref = prod.get('reference', {})
     for t in prod['types']:
         tn = t['name']; ops.append({"op": "add_type", "name": tn})
@@ -199,8 +218,12 @@ def compile_product(prod, kn_lookup=None):
         ops.append({"op": "add_family_param", "name": prm, "type": "YesNo", "group": "Graphics"})
         for tn in tnames: ops.append({"op": "set_type_value", "name": f"{tn}/{prm}", "type": tn, "param": prm, "value": tn in only})
         for n in names: ops.append({"op": "set_visible_param", "name": f"{n}/Visible", "solid": n, "param": prm})
+    if cat == "Medical Equipment":
+        dropped = [c['n'] for c in prod.get('connectors', []) if c['domain'] != 'electrical']
+        if dropped: about_extra = " Medical Equipment can't join piping or duct systems (QE4), so " + ", ".join(dropped) + " reach it through the nested service point."
+        prod = dict(prod, connectors=[c for c in prod.get('connectors', []) if c['domain'] == 'electrical'])
     for c in prod.get('connectors', []):
-        o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": c['system'], "solid": c['part'], "side": c.get('side', 'back')}
+        o = {"op": "add_connector", "name": c['n'], "domain": c['domain'], "system": SYS_ALIAS.get(c['system'], c['system']), "solid": c['part'], "side": c.get('side', 'back')}
         for k in ('diameter', 'width', 'height', 'flow'):
             if k in c: o[k] = c[k]
         ops.append(o)
@@ -212,7 +235,7 @@ def compile_product(prod, kn_lookup=None):
     # owner, 17 Oct: the 3D picture is the Type Image (Type Properties, schedules, legends); render_type_image makes it
     role = prod['family'].split('_')[1]
     ops.append({"op": "set_type_image", "name": "Type image", "path": f"{STAGING}\\{role}\\_Images\\{prod['family']}.png"})
-    about = prod.get('about', '')
+    about = prod.get('about', '') + about_extra
     if ref:
         about += ' Reference: ' + '; '.join(f"{k}: {v}" for k, v in ref.items() if v)
     r = {"schema": "fmc-recipe/0.1", "family": prod['family'], "template": prod.get('template', 'Metric Generic Model.rft'), "about": about.strip(), "ops": ops, "values": values}
@@ -224,12 +247,15 @@ def solid_ops(p, g, sub, matparam, lod):
     if g['kind'] == 'turn':
         prof = g['profile']
         if g['axis'] == 'y': prof = [[r, -t] for r, t in prof]   # engine: axis y depth runs toward -y (room side)
-        o = {"op": "revolution", "name": name, "profile": prof, "axis_at": g['c'], "axis": g['axis']}
+        o = {"op": "revolution", "name": name, "profile": clean(prof), "axis_at": g['c'], "axis": g['axis']}
         if sub: o['subcategory'] = sub
         ops = [o]
     else:
-        o = {"op": "void_extrusion" if void else "extrusion", "name": name, "points": g['pts'], "start": round(g['a'], 2), "end": round(g['b'], 2)}
+        o = {"op": "void_extrusion" if void else "extrusion", "name": name, "points": clean(g['pts']), "start": round(g['a'], 2), "end": round(g['b'], 2)}
         if g['kind'] == 'front': o['sketch'] = 'front'; o['start'], o['end'] = round(-g['b'], 2), round(-g['a'], 2)
+        if abs(o['end'] - o['start']) < MIN_EDGE:   # thin marks and labels: at least 1 mm deep, grown away from the body
+            if o['start'] <= o['end']: o['start'] = round(o['end'] - MIN_EDGE, 2)
+            else: o['start'] = round(o['end'] + MIN_EDGE, 2)
         if g['kind'] == 'right': o['sketch'] = 'right'
         ops = [o]
         if sub and not void: ops.append({"op": "set_subcategory", "name": name, "subcategory": sub})
@@ -268,7 +294,7 @@ def mesh(g, seg=32):
 # ---------------------------------------------------------------- preview (z-buffer renderer, numpy + PIL)
 import re as _re
 GLASS_TAG = 100000
-GLASS_RE = _re.compile(r'Glass|Glazing|Polycarbonate_Clear|Acrylic_Clear|Perspex', _re.I)
+GLASS_RE = _re.compile(r'^(?!.*Display)(?=.*(Glass|Glazing|Polycarbonate_Clear|Acrylic_Clear|Perspex))', _re.I)
 
 def _tris(prod, lod):
     import numpy as np
@@ -348,15 +374,20 @@ def _view(T, C, I, az, el, W, H, persp=False):
         gl[y0:y1 + 1, x0:x1 + 1] |= upd
     return img
 
-def hangs(T):
-    """A ceiling product: everything at or below the ceiling line z = 0, so it is seen from below."""
-    return len(T) and T[:, :, 2].max() <= 30 and T[:, :, 2].min() < -10
+CEILING_CATS = {"Fire Alarm Devices", "Lighting Fixtures", "Sprinklers", "Air Terminals", "Communication Devices", "Security Devices",
+                "Data Devices", "Nurse Call Devices", "Lighting Devices"}
+def hangs(T, prod=None):
+    """A ceiling product is seen from below: prod 'view': 'below' says so, or a ceiling category with everything at or
+    below z = 0. Products sunk into the ground (top at z = 0) are not ceiling products and keep the view from above."""
+    if prod is not None and prod.get('view') in ('below', 'above'): return prod['view'] == 'below'
+    if prod is not None and prod.get('category') not in CEILING_CATS: return False
+    return bool(len(T)) and T[:, :, 2].max() <= 30 and T[:, :, 2].min() < -10
 
 def render(prod, path, lod='f', views=(('3D', -35, 22), ('Front', 0, 0), ('Side', 90, 0), ('Plan', 0, 89.9)), W=520, H=420):
     import numpy as np
     from PIL import Image, ImageDraw
     T, C, I, n = _tris(prod, lod)
-    if hangs(T): views = tuple((t, a, -25 if t == '3D' else e) for t, a, e in views)
+    if hangs(T, prod): views = tuple((t, a, -25 if t == '3D' else e) for t, a, e in views)
     tiles = []
     for title, az, el in views:
         im = Image.fromarray((_view(T, C, I, az, el, W, H) * 255).astype('uint8'))
@@ -371,7 +402,7 @@ def render_type_image(prod, path, lod='f', size=800):
     """The Type Image: one 3D view, rendered at twice the size and scaled down for clean edges, on white."""
     from PIL import Image
     T, C, I, n = _tris(prod, lod)
-    im = Image.fromarray((_view(T, C, I, -35, -25 if hangs(T) else 22, size * 2, size * 2) * 255).astype('uint8'))
+    im = Image.fromarray((_view(T, C, I, -35, -25 if hangs(T, prod) else 22, size * 2, size * 2) * 255).astype('uint8'))
     im.resize((size, size), Image.LANCZOS).save(path); return path
 
 if __name__ == '__main__':

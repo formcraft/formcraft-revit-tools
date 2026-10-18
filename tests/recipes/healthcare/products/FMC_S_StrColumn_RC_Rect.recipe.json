@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrColumn_RC_Rect",
  "template": "Metric Generic Model.rft",
- "about": "RC column modelled as cast: 75 mm kicker, chamfered shaft, plugged formwork tie holes (Fine). Reinforcement is detailed by the engineer, not modelled. Geometry shows the 300 type; 3000 high. Reference: query: str column rc rect structural columns hospital; images: https://www.google.com/search?tbm=isch&q=str+column+rc+rect+structural+columns+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "RC column modelled as cast: 75 mm kicker, chamfered shaft, plugged formwork tie holes (Fine). Reinforcement is detailed by the engineer, not modelled. 3000 high. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str column rc rect structural columns hospital; images: https://www.google.com/search?tbm=isch&q=str+column+rc+rect+structural+columns+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.molin.com/precast-concrete-products/structural-precast-concrete/beams-columns/; photo_title: Beams & Columns (Molin precast); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -400,6 +400,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "300x300_RC/URL",
+   "type": "300x300_RC",
+   "param": "URL",
+   "value": "https://www.molin.com/precast-concrete-products/structural-precast-concrete/beams-columns/"
+  },
+  {
    "op": "add_type",
    "name": "400x400_RC"
   },
@@ -465,6 +472,13 @@
    "type": "400x400_RC",
    "param": "FMC_Role_Code",
    "value": "S"
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_RC/URL",
+   "type": "400x400_RC",
+   "param": "URL",
+   "value": "https://www.molin.com/precast-concrete-products/structural-precast-concrete/beams-columns/"
   },
   {
    "op": "add_type",
@@ -534,6 +548,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "500x500_RC/URL",
+   "type": "500x500_RC",
+   "param": "URL",
+   "value": "https://www.molin.com/precast-concrete-products/structural-precast-concrete/beams-columns/"
+  },
+  {
    "op": "add_subcategory",
    "name": "Conc",
    "color": [
@@ -590,20 +611,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -151.0,
-     -151.0
+     -251.0,
+     -251.0
     ],
     [
-     150.0,
-     -151.0
+     250.0,
+     -251.0
     ],
     [
-     150.0,
-     150.0
+     250.0,
+     250.0
     ],
     [
-     -151.0,
-     150.0
+     -251.0,
+     250.0
     ]
    ],
    "start": 0,
@@ -623,7 +644,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Kicker",
+   "name": "Kicker 300x300",
    "points": [
     [
      -130.0,
@@ -663,24 +684,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Kicker",
+   "name": "Kicker 300x300",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Kicker",
+   "name": "Kicker 300x300",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Kicker",
+   "name": "Kicker 300x300",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Shaft",
+   "name": "Shaft 300x300",
    "points": [
     [
      -130.0,
@@ -720,24 +741,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Shaft",
+   "name": "Shaft 300x300",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Shaft",
+   "name": "Shaft 300x300",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Shaft",
+   "name": "Shaft 300x300",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Front 1",
+   "name": "Tie Hole Plug Front 300x300 1",
    "points": [
     [
      12.0,
@@ -794,24 +815,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Front 1",
+   "name": "Tie Hole Plug Front 300x300 1",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Front 1",
+   "name": "Tie Hole Plug Front 300x300 1",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Front 1",
+   "name": "Tie Hole Plug Front 300x300 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Front 2",
+   "name": "Tie Hole Plug Front 300x300 2",
    "points": [
     [
      12.0,
@@ -868,24 +889,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Front 2",
+   "name": "Tie Hole Plug Front 300x300 2",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Front 2",
+   "name": "Tie Hole Plug Front 300x300 2",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Front 2",
+   "name": "Tie Hole Plug Front 300x300 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Front 3",
+   "name": "Tie Hole Plug Front 300x300 3",
    "points": [
     [
      12.0,
@@ -942,24 +963,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Front 3",
+   "name": "Tie Hole Plug Front 300x300 3",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Front 3",
+   "name": "Tie Hole Plug Front 300x300 3",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Front 3",
+   "name": "Tie Hole Plug Front 300x300 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Front 4",
+   "name": "Tie Hole Plug Front 300x300 4",
    "points": [
     [
      12.0,
@@ -1016,24 +1037,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Front 4",
+   "name": "Tie Hole Plug Front 300x300 4",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Front 4",
+   "name": "Tie Hole Plug Front 300x300 4",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Front 4",
+   "name": "Tie Hole Plug Front 300x300 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Side 1",
+   "name": "Tie Hole Plug Side 300x300 1",
    "points": [
     [
      12.0,
@@ -1090,24 +1111,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Side 1",
+   "name": "Tie Hole Plug Side 300x300 1",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Side 1",
+   "name": "Tie Hole Plug Side 300x300 1",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Side 1",
+   "name": "Tie Hole Plug Side 300x300 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Side 2",
+   "name": "Tie Hole Plug Side 300x300 2",
    "points": [
     [
      12.0,
@@ -1164,24 +1185,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Side 2",
+   "name": "Tie Hole Plug Side 300x300 2",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Side 2",
+   "name": "Tie Hole Plug Side 300x300 2",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Side 2",
+   "name": "Tie Hole Plug Side 300x300 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Side 3",
+   "name": "Tie Hole Plug Side 300x300 3",
    "points": [
     [
      12.0,
@@ -1238,24 +1259,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Side 3",
+   "name": "Tie Hole Plug Side 300x300 3",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Side 3",
+   "name": "Tie Hole Plug Side 300x300 3",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Side 3",
+   "name": "Tie Hole Plug Side 300x300 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tie Hole Plug Side 4",
+   "name": "Tie Hole Plug Side 300x300 4",
    "points": [
     [
      12.0,
@@ -1312,20 +1333,1693 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Tie Hole Plug Side 4",
+   "name": "Tie Hole Plug Side 300x300 4",
    "subcategory": "Mortar"
   },
   {
    "op": "set_material_param",
-   "name": "Tie Hole Plug Side 4",
+   "name": "Tie Hole Plug Side 300x300 4",
    "param": "Mortar Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tie Hole Plug Side 4",
+   "name": "Tie Hole Plug Side 300x300 4",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kicker 400x400",
+   "points": [
+    [
+     -180.0,
+     -200.0
+    ],
+    [
+     180.0,
+     -200.0
+    ],
+    [
+     200.0,
+     -180.0
+    ],
+    [
+     200.0,
+     180.0
+    ],
+    [
+     180.0,
+     200.0
+    ],
+    [
+     -180.0,
+     200.0
+    ],
+    [
+     -200.0,
+     180.0
+    ],
+    [
+     -200.0,
+     -180.0
+    ]
+   ],
+   "start": 0,
+   "end": 75
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kicker 400x400",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kicker 400x400",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kicker 400x400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shaft 400x400",
+   "points": [
+    [
+     -180.0,
+     -200.0
+    ],
+    [
+     180.0,
+     -200.0
+    ],
+    [
+     200.0,
+     -180.0
+    ],
+    [
+     200.0,
+     180.0
+    ],
+    [
+     180.0,
+     200.0
+    ],
+    [
+     -180.0,
+     200.0
+    ],
+    [
+     -200.0,
+     180.0
+    ],
+    [
+     -200.0,
+     -180.0
+    ]
+   ],
+   "start": 75,
+   "end": 3000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shaft 400x400",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shaft 400x400",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shaft 400x400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 400x400 1",
+   "points": [
+    [
+     12.0,
+     600.0
+    ],
+    [
+     10.39,
+     606.0
+    ],
+    [
+     6.0,
+     610.39
+    ],
+    [
+     0.0,
+     612.0
+    ],
+    [
+     -6.0,
+     610.39
+    ],
+    [
+     -10.39,
+     606.0
+    ],
+    [
+     -12.0,
+     600.0
+    ],
+    [
+     -10.39,
+     594.0
+    ],
+    [
+     -6.0,
+     589.61
+    ],
+    [
+     -0.0,
+     588.0
+    ],
+    [
+     6.0,
+     589.61
+    ],
+    [
+     10.39,
+     594.0
+    ]
+   ],
+   "start": 195.0,
+   "end": 201.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 400x400 1",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 400x400 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 400x400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 400x400 2",
+   "points": [
+    [
+     12.0,
+     1300.0
+    ],
+    [
+     10.39,
+     1306.0
+    ],
+    [
+     6.0,
+     1310.39
+    ],
+    [
+     0.0,
+     1312.0
+    ],
+    [
+     -6.0,
+     1310.39
+    ],
+    [
+     -10.39,
+     1306.0
+    ],
+    [
+     -12.0,
+     1300.0
+    ],
+    [
+     -10.39,
+     1294.0
+    ],
+    [
+     -6.0,
+     1289.61
+    ],
+    [
+     -0.0,
+     1288.0
+    ],
+    [
+     6.0,
+     1289.61
+    ],
+    [
+     10.39,
+     1294.0
+    ]
+   ],
+   "start": 195.0,
+   "end": 201.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 400x400 2",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 400x400 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 400x400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 400x400 3",
+   "points": [
+    [
+     12.0,
+     2000.0
+    ],
+    [
+     10.39,
+     2006.0
+    ],
+    [
+     6.0,
+     2010.39
+    ],
+    [
+     0.0,
+     2012.0
+    ],
+    [
+     -6.0,
+     2010.39
+    ],
+    [
+     -10.39,
+     2006.0
+    ],
+    [
+     -12.0,
+     2000.0
+    ],
+    [
+     -10.39,
+     1994.0
+    ],
+    [
+     -6.0,
+     1989.61
+    ],
+    [
+     -0.0,
+     1988.0
+    ],
+    [
+     6.0,
+     1989.61
+    ],
+    [
+     10.39,
+     1994.0
+    ]
+   ],
+   "start": 195.0,
+   "end": 201.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 400x400 3",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 400x400 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 400x400 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 400x400 4",
+   "points": [
+    [
+     12.0,
+     2700.0
+    ],
+    [
+     10.39,
+     2706.0
+    ],
+    [
+     6.0,
+     2710.39
+    ],
+    [
+     0.0,
+     2712.0
+    ],
+    [
+     -6.0,
+     2710.39
+    ],
+    [
+     -10.39,
+     2706.0
+    ],
+    [
+     -12.0,
+     2700.0
+    ],
+    [
+     -10.39,
+     2694.0
+    ],
+    [
+     -6.0,
+     2689.61
+    ],
+    [
+     -0.0,
+     2688.0
+    ],
+    [
+     6.0,
+     2689.61
+    ],
+    [
+     10.39,
+     2694.0
+    ]
+   ],
+   "start": 195.0,
+   "end": 201.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 400x400 4",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 400x400 4",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 400x400 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 400x400 1",
+   "points": [
+    [
+     12.0,
+     600.0
+    ],
+    [
+     10.39,
+     606.0
+    ],
+    [
+     6.0,
+     610.39
+    ],
+    [
+     0.0,
+     612.0
+    ],
+    [
+     -6.0,
+     610.39
+    ],
+    [
+     -10.39,
+     606.0
+    ],
+    [
+     -12.0,
+     600.0
+    ],
+    [
+     -10.39,
+     594.0
+    ],
+    [
+     -6.0,
+     589.61
+    ],
+    [
+     0.0,
+     588.0
+    ],
+    [
+     6.0,
+     589.61
+    ],
+    [
+     10.39,
+     594.0
+    ]
+   ],
+   "start": -201.0,
+   "end": -195.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 400x400 1",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 400x400 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 400x400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 400x400 2",
+   "points": [
+    [
+     12.0,
+     1300.0
+    ],
+    [
+     10.39,
+     1306.0
+    ],
+    [
+     6.0,
+     1310.3899999999999
+    ],
+    [
+     0.0,
+     1312.0
+    ],
+    [
+     -6.0,
+     1310.3899999999999
+    ],
+    [
+     -10.39,
+     1306.0
+    ],
+    [
+     -12.0,
+     1300.0
+    ],
+    [
+     -10.39,
+     1294.0
+    ],
+    [
+     -6.0,
+     1289.6100000000001
+    ],
+    [
+     0.0,
+     1288.0
+    ],
+    [
+     6.0,
+     1289.6100000000001
+    ],
+    [
+     10.39,
+     1294.0
+    ]
+   ],
+   "start": -201.0,
+   "end": -195.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 400x400 2",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 400x400 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 400x400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 400x400 3",
+   "points": [
+    [
+     12.0,
+     2000.0
+    ],
+    [
+     10.39,
+     2006.0
+    ],
+    [
+     6.0,
+     2010.3899999999999
+    ],
+    [
+     0.0,
+     2012.0
+    ],
+    [
+     -6.0,
+     2010.3899999999999
+    ],
+    [
+     -10.39,
+     2006.0
+    ],
+    [
+     -12.0,
+     2000.0
+    ],
+    [
+     -10.39,
+     1994.0
+    ],
+    [
+     -6.0,
+     1989.6100000000001
+    ],
+    [
+     0.0,
+     1988.0
+    ],
+    [
+     6.0,
+     1989.6100000000001
+    ],
+    [
+     10.39,
+     1994.0
+    ]
+   ],
+   "start": -201.0,
+   "end": -195.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 400x400 3",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 400x400 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 400x400 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 400x400 4",
+   "points": [
+    [
+     12.0,
+     2700.0
+    ],
+    [
+     10.39,
+     2706.0
+    ],
+    [
+     6.0,
+     2710.39
+    ],
+    [
+     0.0,
+     2712.0
+    ],
+    [
+     -6.0,
+     2710.39
+    ],
+    [
+     -10.39,
+     2706.0
+    ],
+    [
+     -12.0,
+     2700.0
+    ],
+    [
+     -10.39,
+     2694.0
+    ],
+    [
+     -6.0,
+     2689.61
+    ],
+    [
+     0.0,
+     2688.0
+    ],
+    [
+     6.0,
+     2689.61
+    ],
+    [
+     10.39,
+     2694.0
+    ]
+   ],
+   "start": -201.0,
+   "end": -195.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 400x400 4",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 400x400 4",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 400x400 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kicker 500x500",
+   "points": [
+    [
+     -230.0,
+     -250.0
+    ],
+    [
+     230.0,
+     -250.0
+    ],
+    [
+     250.0,
+     -230.0
+    ],
+    [
+     250.0,
+     230.0
+    ],
+    [
+     230.0,
+     250.0
+    ],
+    [
+     -230.0,
+     250.0
+    ],
+    [
+     -250.0,
+     230.0
+    ],
+    [
+     -250.0,
+     -230.0
+    ]
+   ],
+   "start": 0,
+   "end": 75
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kicker 500x500",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kicker 500x500",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kicker 500x500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Shaft 500x500",
+   "points": [
+    [
+     -230.0,
+     -250.0
+    ],
+    [
+     230.0,
+     -250.0
+    ],
+    [
+     250.0,
+     -230.0
+    ],
+    [
+     250.0,
+     230.0
+    ],
+    [
+     230.0,
+     250.0
+    ],
+    [
+     -230.0,
+     250.0
+    ],
+    [
+     -250.0,
+     230.0
+    ],
+    [
+     -250.0,
+     -230.0
+    ]
+   ],
+   "start": 75,
+   "end": 3000
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shaft 500x500",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shaft 500x500",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shaft 500x500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 500x500 1",
+   "points": [
+    [
+     12.0,
+     600.0
+    ],
+    [
+     10.39,
+     606.0
+    ],
+    [
+     6.0,
+     610.39
+    ],
+    [
+     0.0,
+     612.0
+    ],
+    [
+     -6.0,
+     610.39
+    ],
+    [
+     -10.39,
+     606.0
+    ],
+    [
+     -12.0,
+     600.0
+    ],
+    [
+     -10.39,
+     594.0
+    ],
+    [
+     -6.0,
+     589.61
+    ],
+    [
+     -0.0,
+     588.0
+    ],
+    [
+     6.0,
+     589.61
+    ],
+    [
+     10.39,
+     594.0
+    ]
+   ],
+   "start": 245.0,
+   "end": 251.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 500x500 1",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 500x500 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 500x500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 500x500 2",
+   "points": [
+    [
+     12.0,
+     1300.0
+    ],
+    [
+     10.39,
+     1306.0
+    ],
+    [
+     6.0,
+     1310.39
+    ],
+    [
+     0.0,
+     1312.0
+    ],
+    [
+     -6.0,
+     1310.39
+    ],
+    [
+     -10.39,
+     1306.0
+    ],
+    [
+     -12.0,
+     1300.0
+    ],
+    [
+     -10.39,
+     1294.0
+    ],
+    [
+     -6.0,
+     1289.61
+    ],
+    [
+     -0.0,
+     1288.0
+    ],
+    [
+     6.0,
+     1289.61
+    ],
+    [
+     10.39,
+     1294.0
+    ]
+   ],
+   "start": 245.0,
+   "end": 251.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 500x500 2",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 500x500 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 500x500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 500x500 3",
+   "points": [
+    [
+     12.0,
+     2000.0
+    ],
+    [
+     10.39,
+     2006.0
+    ],
+    [
+     6.0,
+     2010.39
+    ],
+    [
+     0.0,
+     2012.0
+    ],
+    [
+     -6.0,
+     2010.39
+    ],
+    [
+     -10.39,
+     2006.0
+    ],
+    [
+     -12.0,
+     2000.0
+    ],
+    [
+     -10.39,
+     1994.0
+    ],
+    [
+     -6.0,
+     1989.61
+    ],
+    [
+     -0.0,
+     1988.0
+    ],
+    [
+     6.0,
+     1989.61
+    ],
+    [
+     10.39,
+     1994.0
+    ]
+   ],
+   "start": 245.0,
+   "end": 251.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 500x500 3",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 500x500 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 500x500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Front 500x500 4",
+   "points": [
+    [
+     12.0,
+     2700.0
+    ],
+    [
+     10.39,
+     2706.0
+    ],
+    [
+     6.0,
+     2710.39
+    ],
+    [
+     0.0,
+     2712.0
+    ],
+    [
+     -6.0,
+     2710.39
+    ],
+    [
+     -10.39,
+     2706.0
+    ],
+    [
+     -12.0,
+     2700.0
+    ],
+    [
+     -10.39,
+     2694.0
+    ],
+    [
+     -6.0,
+     2689.61
+    ],
+    [
+     -0.0,
+     2688.0
+    ],
+    [
+     6.0,
+     2689.61
+    ],
+    [
+     10.39,
+     2694.0
+    ]
+   ],
+   "start": 245.0,
+   "end": 251.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Front 500x500 4",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Front 500x500 4",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Front 500x500 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 500x500 1",
+   "points": [
+    [
+     12.0,
+     600.0
+    ],
+    [
+     10.39,
+     606.0
+    ],
+    [
+     6.0,
+     610.39
+    ],
+    [
+     0.0,
+     612.0
+    ],
+    [
+     -6.0,
+     610.39
+    ],
+    [
+     -10.39,
+     606.0
+    ],
+    [
+     -12.0,
+     600.0
+    ],
+    [
+     -10.39,
+     594.0
+    ],
+    [
+     -6.0,
+     589.61
+    ],
+    [
+     0.0,
+     588.0
+    ],
+    [
+     6.0,
+     589.61
+    ],
+    [
+     10.39,
+     594.0
+    ]
+   ],
+   "start": -251.0,
+   "end": -245.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 500x500 1",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 500x500 1",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 500x500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 500x500 2",
+   "points": [
+    [
+     12.0,
+     1300.0
+    ],
+    [
+     10.39,
+     1306.0
+    ],
+    [
+     6.0,
+     1310.3899999999999
+    ],
+    [
+     0.0,
+     1312.0
+    ],
+    [
+     -6.0,
+     1310.3899999999999
+    ],
+    [
+     -10.39,
+     1306.0
+    ],
+    [
+     -12.0,
+     1300.0
+    ],
+    [
+     -10.39,
+     1294.0
+    ],
+    [
+     -6.0,
+     1289.6100000000001
+    ],
+    [
+     0.0,
+     1288.0
+    ],
+    [
+     6.0,
+     1289.6100000000001
+    ],
+    [
+     10.39,
+     1294.0
+    ]
+   ],
+   "start": -251.0,
+   "end": -245.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 500x500 2",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 500x500 2",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 500x500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 500x500 3",
+   "points": [
+    [
+     12.0,
+     2000.0
+    ],
+    [
+     10.39,
+     2006.0
+    ],
+    [
+     6.0,
+     2010.3899999999999
+    ],
+    [
+     0.0,
+     2012.0
+    ],
+    [
+     -6.0,
+     2010.3899999999999
+    ],
+    [
+     -10.39,
+     2006.0
+    ],
+    [
+     -12.0,
+     2000.0
+    ],
+    [
+     -10.39,
+     1994.0
+    ],
+    [
+     -6.0,
+     1989.6100000000001
+    ],
+    [
+     0.0,
+     1988.0
+    ],
+    [
+     6.0,
+     1989.6100000000001
+    ],
+    [
+     10.39,
+     1994.0
+    ]
+   ],
+   "start": -251.0,
+   "end": -245.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 500x500 3",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 500x500 3",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 500x500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tie Hole Plug Side 500x500 4",
+   "points": [
+    [
+     12.0,
+     2700.0
+    ],
+    [
+     10.39,
+     2706.0
+    ],
+    [
+     6.0,
+     2710.39
+    ],
+    [
+     0.0,
+     2712.0
+    ],
+    [
+     -6.0,
+     2710.39
+    ],
+    [
+     -10.39,
+     2706.0
+    ],
+    [
+     -12.0,
+     2700.0
+    ],
+    [
+     -10.39,
+     2694.0
+    ],
+    [
+     -6.0,
+     2689.61
+    ],
+    [
+     0.0,
+     2688.0
+    ],
+    [
+     6.0,
+     2689.61
+    ],
+    [
+     10.39,
+     2694.0
+    ]
+   ],
+   "start": -251.0,
+   "end": -245.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tie Hole Plug Side 500x500 4",
+   "subcategory": "Mortar"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tie Hole Plug Side 500x500 4",
+   "param": "Mortar Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tie Hole Plug Side 500x500 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 300x300_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x300_RC/Show 300x300_RC",
+   "type": "300x300_RC",
+   "param": "Show 300x300_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_RC/Show 300x300_RC",
+   "type": "400x400_RC",
+   "param": "Show 300x300_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "500x500_RC/Show 300x300_RC",
+   "type": "500x500_RC",
+   "param": "Show 300x300_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kicker 300x300/Visible",
+   "solid": "Kicker 300x300",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft 300x300/Visible",
+   "solid": "Shaft 300x300",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 300x300 1/Visible",
+   "solid": "Tie Hole Plug Front 300x300 1",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 300x300 2/Visible",
+   "solid": "Tie Hole Plug Front 300x300 2",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 300x300 3/Visible",
+   "solid": "Tie Hole Plug Front 300x300 3",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 300x300 4/Visible",
+   "solid": "Tie Hole Plug Front 300x300 4",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 300x300 1/Visible",
+   "solid": "Tie Hole Plug Side 300x300 1",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 300x300 2/Visible",
+   "solid": "Tie Hole Plug Side 300x300 2",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 300x300 3/Visible",
+   "solid": "Tie Hole Plug Side 300x300 3",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 300x300 4/Visible",
+   "solid": "Tie Hole Plug Side 300x300 4",
+   "param": "Show 300x300_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 400x400_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x300_RC/Show 400x400_RC",
+   "type": "300x300_RC",
+   "param": "Show 400x400_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_RC/Show 400x400_RC",
+   "type": "400x400_RC",
+   "param": "Show 400x400_RC",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "500x500_RC/Show 400x400_RC",
+   "type": "500x500_RC",
+   "param": "Show 400x400_RC",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kicker 400x400/Visible",
+   "solid": "Kicker 400x400",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft 400x400/Visible",
+   "solid": "Shaft 400x400",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 400x400 1/Visible",
+   "solid": "Tie Hole Plug Front 400x400 1",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 400x400 2/Visible",
+   "solid": "Tie Hole Plug Front 400x400 2",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 400x400 3/Visible",
+   "solid": "Tie Hole Plug Front 400x400 3",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 400x400 4/Visible",
+   "solid": "Tie Hole Plug Front 400x400 4",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 400x400 1/Visible",
+   "solid": "Tie Hole Plug Side 400x400 1",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 400x400 2/Visible",
+   "solid": "Tie Hole Plug Side 400x400 2",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 400x400 3/Visible",
+   "solid": "Tie Hole Plug Side 400x400 3",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 400x400 4/Visible",
+   "solid": "Tie Hole Plug Side 400x400 4",
+   "param": "Show 400x400_RC"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 500x500_RC",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300x300_RC/Show 500x500_RC",
+   "type": "300x300_RC",
+   "param": "Show 500x500_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "400x400_RC/Show 500x500_RC",
+   "type": "400x400_RC",
+   "param": "Show 500x500_RC",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "500x500_RC/Show 500x500_RC",
+   "type": "500x500_RC",
+   "param": "Show 500x500_RC",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Kicker 500x500/Visible",
+   "solid": "Kicker 500x500",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Shaft 500x500/Visible",
+   "solid": "Shaft 500x500",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 500x500 1/Visible",
+   "solid": "Tie Hole Plug Front 500x500 1",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 500x500 2/Visible",
+   "solid": "Tie Hole Plug Front 500x500 2",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 500x500 3/Visible",
+   "solid": "Tie Hole Plug Front 500x500 3",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Front 500x500 4/Visible",
+   "solid": "Tie Hole Plug Front 500x500 4",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 500x500 1/Visible",
+   "solid": "Tie Hole Plug Side 500x500 1",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 500x500 2/Visible",
+   "solid": "Tie Hole Plug Side 500x500 2",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 500x500 3/Visible",
+   "solid": "Tie Hole Plug Side 500x500 3",
+   "param": "Show 500x500_RC"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tie Hole Plug Side 500x500 4/Visible",
+   "solid": "Tie Hole Plug Side 500x500 4",
+   "param": "Show 500x500_RC"
   },
   {
    "op": "set_type_image",
@@ -1334,8 +3028,8 @@
   }
  ],
  "values": {
-  "Section 300 x 300 mm (smallest type)": {
-   "value": "300x300",
+  "Sections 300, 400 and 500 square (one per type)": {
+   "value": "300/400/500",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },

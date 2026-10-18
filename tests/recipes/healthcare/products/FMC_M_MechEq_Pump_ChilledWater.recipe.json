@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_Pump_ChilledWater",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: baseplate, scroll volute with foot, flanged end suction and top discharge, motor adapter, finned motor with cowl and feet, terminal box with gland, gauge cock, vent, lifting eye. CHW pipe connectors are not in the record (E only). Reference: query: pump chilled water mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=pump+chilled+water+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: baseplate, scroll volute with foot, flanged end suction and top discharge, motor adapter, finned motor with cowl and feet, terminal box with gland, gauge cock, vent, lifting eye. CHW return on the suction, supply on the discharge. Reference: query: pump chilled water mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=pump+chilled+water+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://wilo.com/weil/en_us/Products-and-Solutions/Pumps/End-Suction-Centrifugal-Pumps/; photo_title: Wilo End-Suction Centrifugal Pumps; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -443,6 +443,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "5ls_EndSuction/URL",
+   "type": "5ls_EndSuction",
+   "param": "URL",
+   "value": "https://wilo.com/weil/en_us/Products-and-Solutions/Pumps/End-Suction-Centrifugal-Pumps/"
+  },
+  {
+   "op": "set_type_value",
    "name": "5ls_EndSuction/Voltage",
    "type": "5ls_EndSuction",
    "param": "Voltage",
@@ -485,24 +492,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Pcg",
+   "name": "Mblue",
    "color": [
-    158,
-    164,
-    170
+    31,
+    78,
+    140
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Pcg Material",
+   "name": "Mblue Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
-   "param": "Pcg Material"
+   "name": "FMC_Metal_Steel_Painted_MotorBlue",
+   "param": "Mblue Material"
   },
   {
    "op": "add_subcategory",
@@ -681,12 +688,12 @@
   {
    "op": "set_subcategory",
    "name": "Volute Foot",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Volute Foot",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -791,12 +798,12 @@
   {
    "op": "set_subcategory",
    "name": "Volute",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Volute",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -913,12 +920,12 @@
   {
    "op": "set_subcategory",
    "name": "Suction Nozzle",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Suction Nozzle",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -953,12 +960,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Suction Flange",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1074,12 +1081,12 @@
   {
    "op": "set_subcategory",
    "name": "Discharge Nozzle",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Discharge Nozzle",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1114,12 +1121,12 @@
     75
    ],
    "axis": "z",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Discharge Flange",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1154,12 +1161,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Adapter",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1276,12 +1283,12 @@
   {
    "op": "set_subcategory",
    "name": "Motor",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1316,12 +1323,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 1",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1356,12 +1363,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 2",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1396,12 +1403,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 3",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1436,12 +1443,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 4",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1476,12 +1483,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 5",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1516,12 +1523,12 @@
     350
    ],
    "axis": "x",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Fin 6",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1601,12 +1608,12 @@
   {
    "op": "set_subcategory",
    "name": "Motor Feet",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Feet",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1642,12 +1649,12 @@
   {
    "op": "set_subcategory",
    "name": "Terminal Box",
-   "subcategory": "Pcg"
+   "subcategory": "Mblue"
   },
   {
    "op": "set_material_param",
    "name": "Terminal Box",
-   "param": "Pcg Material"
+   "param": "Mblue Material"
   },
   {
    "op": "set_visibility",
@@ -1967,6 +1974,26 @@
    "connector": "Power",
    "connector_param": "Apparent Load",
    "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "CHW Return",
+   "domain": "pipe",
+   "system": "ReturnHydronic",
+   "solid": "Suction Nozzle",
+   "side": "left",
+   "diameter": 65,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "CHW Supply",
+   "domain": "pipe",
+   "system": "SupplyHydronic",
+   "solid": "Discharge Nozzle",
+   "side": "top",
+   "diameter": 50,
+   "flow": "Out"
   },
   {
    "op": "set_type_image",

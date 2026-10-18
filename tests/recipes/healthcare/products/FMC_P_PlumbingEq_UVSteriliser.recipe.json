@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_UVSteriliser",
  "template": "Metric Generic Model.rft",
- "about": "UV steriliser modelled as a generic product: chamber with end cap and lamp cap, lamp cable, inlet and outlet stubs with unions, wall clamps, UV sensor port, controller with display, LEDs and buttons. Reference: query: uvsteriliser plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=uvsteriliser+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "UV steriliser modelled as a generic product: chamber with end cap and lamp cap, lamp cable, inlet and outlet stubs with unions, wall clamps, UV sensor port, controller with display, LEDs and buttons. Reference: query: uvsteriliser plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=uvsteriliser+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://hydrobuilder.com/products/axeon-uv-sterilizer-light-1-gpm-110-volt; photo_title: AXEON UV Sterilizer, 1 GPM (small unit, not a plant-room size); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -134,6 +134,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "Inline_UV/URL",
+   "type": "Inline_UV",
+   "param": "URL",
+   "value": "https://hydrobuilder.com/products/axeon-uv-sterilizer-light-1-gpm-110-volt"
+  },
+  {
+   "op": "set_type_value",
    "name": "Inline_UV/Voltage",
    "type": "Inline_UV",
    "param": "Voltage",
@@ -229,6 +236,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_White",
    "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
   },
   {
    "op": "add_subcategory",
@@ -1469,12 +1497,12 @@
   {
    "op": "set_subcategory",
    "name": "Controller Display",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Controller Display",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",

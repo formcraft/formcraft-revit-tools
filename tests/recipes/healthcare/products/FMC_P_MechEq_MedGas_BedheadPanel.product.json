@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_MechEq_MedGas_BedheadPanel",
  "category": "Mechanical Equipment",
- "desc": "Bedhead services panel: 2000 mm horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential red rockers), nurse call and data, uplight and reading light",
+ "desc": "Bedhead services panel: horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential, red rockers), nurse call and data, uplight and reading light per bed; 1-bed 2000 mm or 2-bed 4000 mm",
  "ifc": "IfcFlowTerminal",
  "keynote": "P.MGO_05",
  "types": [
@@ -22,17 +22,21 @@
   "yellow": "FMC_Plastic_ABS_Yellow",
   "red": "FMC_Plastic_FireHoseReel_Red",
   "led_red": "FMC_Plastic_LED_Red",
-  "led_green": "FMC_Plastic_LED_Green"
+  "led_green": "FMC_Plastic_LED_Green",
+  "led_amber": "FMC_Plastic_LED_Amber"
  },
  "reference": {
   "query": "medical gas bedhead panel mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+bedhead+panel+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.specifiedby.com/cableflow-international/medisys",
+  "photo_title": "Cableflow Medisys bedhead trunking",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
-   "n": "Trunking",
-   "shape": "right",
+   "n": "Trunking 1Bed",
+   "mat": "aluminium",
    "pts": [
     [
      0,
@@ -59,15 +63,18 @@
      300
     ]
    ],
+   "shape": "right",
    "x": [
     -1000,
     1000
    ],
-   "mat": "aluminium"
+   "only": [
+    "1Bed_Panel"
+   ]
   },
   {
    "n": "End Cap L",
-   "shape": "right",
+   "mat": "grey",
    "pts": [
     [
      0,
@@ -94,15 +101,15 @@
      305
     ]
    ],
+   "shape": "right",
    "x": [
     -1012,
     -1000
-   ],
-   "mat": "grey"
+   ]
   },
   {
-   "n": "End Cap R",
-   "shape": "right",
+   "n": "End Cap R 1Bed",
+   "mat": "grey",
    "pts": [
     [
      0,
@@ -129,15 +136,17 @@
      305
     ]
    ],
+   "shape": "right",
    "x": [
     1000,
     1012
    ],
-   "mat": "grey"
+   "only": [
+    "1Bed_Panel"
+   ]
   },
   {
-   "n": "Uplight Lens",
-   "shape": "box",
+   "n": "Uplight Lens 1Bed",
    "at": [
     -950,
     -70,
@@ -146,61 +155,14 @@
     -15,
     308
    ],
-   "mat": "polycarbonate"
-  },
-  {
-   "n": "Reading Light Lens",
-   "shape": "fbox",
-   "at": [
-    -400,
-    -88,
-    -6,
-    400,
-    -18,
-    0
-   ],
    "mat": "polycarbonate",
-   "lod": "f"
-  },
-  {
-   "n": "Divider",
-   "shape": "fbox",
-   "at": [
-    -260,
-    -92,
-    20,
-    -256,
-    -90,
-    280
-   ],
-   "mat": "grey",
-   "lod": "f",
-   "repeat": {
-    "n": 3,
-    "d": [
-     380,
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "n": "Label Strip",
-   "shape": "fbox",
-   "at": [
-    -950,
-    -92,
-    262,
-    950,
-    -90,
-    280
-   ],
-   "mat": "white",
-   "lod": "f"
+   "shape": "box",
+   "only": [
+    "1Bed_Panel"
+   ]
   },
   {
    "n": "O2 Fascia",
-   "shape": "fbox",
    "at": [
     405.0,
     -100,
@@ -210,16 +172,17 @@
     185.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox"
   },
   {
    "n": "O2 Ring",
-   "shape": "turn",
    "axis": "y",
    "c": [
     450,
     146
    ],
+   "mat": "white",
    "profile": [
     [
      16,
@@ -238,16 +201,16 @@
      -104
     ]
    ],
-   "mat": "white"
+   "shape": "turn"
   },
   {
    "n": "O2 Collar",
-   "shape": "turn",
    "axis": "y",
    "c": [
     450,
     146
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -278,11 +241,10 @@
      -110
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn"
   },
   {
    "n": "O2 Label",
-   "shape": "fbox",
    "at": [
     423.0,
     -100.6,
@@ -291,13 +253,13 @@
     -100,
     113.0
    ],
+   "lod": "f",
    "mat": "black",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "VAC Fascia",
-   "shape": "fbox",
    "at": [
     535.0,
     -100,
@@ -307,16 +269,17 @@
     185.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox"
   },
   {
    "n": "VAC Ring",
-   "shape": "turn",
    "axis": "y",
    "c": [
     580,
     146
    ],
+   "mat": "yellow",
    "profile": [
     [
      16,
@@ -335,16 +298,16 @@
      -104
     ]
    ],
-   "mat": "yellow"
+   "shape": "turn"
   },
   {
    "n": "VAC Collar",
-   "shape": "turn",
    "axis": "y",
    "c": [
     580,
     146
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -375,11 +338,10 @@
      -110
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn"
   },
   {
    "n": "VAC Label",
-   "shape": "fbox",
    "at": [
     553.0,
     -100.6,
@@ -388,13 +350,13 @@
     -100,
     113.0
    ],
+   "lod": "f",
    "mat": "yellow",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "MA4 Fascia",
-   "shape": "fbox",
    "at": [
     665.0,
     -100,
@@ -404,16 +366,17 @@
     185.0
    ],
    "mat": "white",
-   "r": 7
+   "r": 7,
+   "shape": "fbox"
   },
   {
    "n": "MA4 Ring",
-   "shape": "turn",
    "axis": "y",
    "c": [
     710,
     146
    ],
+   "mat": "black",
    "profile": [
     [
      16,
@@ -432,16 +395,16 @@
      -104
     ]
    ],
-   "mat": "black"
+   "shape": "turn"
   },
   {
    "n": "MA4 Collar",
-   "shape": "turn",
    "axis": "y",
    "c": [
     710,
     146
    ],
+   "mat": "chrome",
    "profile": [
     [
      0,
@@ -472,11 +435,10 @@
      -110
     ]
    ],
-   "mat": "chrome"
+   "shape": "turn"
   },
   {
    "n": "MA4 Label",
-   "shape": "fbox",
    "at": [
     683.0,
     -100.6,
@@ -485,13 +447,13 @@
     -100,
     113.0
    ],
+   "lod": "f",
    "mat": "white",
    "r": 2,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Socket A Plate",
-   "shape": "fbox",
    "at": [
     -873,
     -99,
@@ -501,11 +463,11 @@
     193
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox"
   },
   {
    "n": "Socket A Face",
-   "shape": "fbox",
    "at": [
     -862,
     -100,
@@ -514,21 +476,21 @@
     -99,
     165
    ],
+   "lod": "f",
    "mat": "black",
    "r": 3,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox"
   },
   {
    "n": "Socket A Rocker",
-   "shape": "fbox",
    "at": [
     -846,
     -103,
@@ -537,21 +499,21 @@
     -99,
     186
    ],
+   "lod": "f",
    "mat": "white",
    "r": 2,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox"
   },
   {
    "n": "Socket B Plate",
-   "shape": "fbox",
    "at": [
     -693,
     -99,
@@ -561,11 +523,11 @@
     193
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox"
   },
   {
    "n": "Socket B Face",
-   "shape": "fbox",
    "at": [
     -682,
     -100,
@@ -574,21 +536,21 @@
     -99,
     165
    ],
+   "lod": "f",
    "mat": "black",
    "r": 3,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox"
   },
   {
    "n": "Socket B Rocker",
-   "shape": "fbox",
    "at": [
     -666,
     -103,
@@ -597,21 +559,21 @@
     -99,
     186
    ],
+   "lod": "f",
    "mat": "red",
    "r": 2,
-   "lod": "f",
    "repeat": {
-    "n": 2,
     "d": [
      82,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox"
   },
   {
    "n": "Nurse Call Plate",
-   "shape": "fbox",
    "at": [
     -410,
     -99,
@@ -621,75 +583,75 @@
     193
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox"
   },
   {
    "n": "Call Button",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -370,
     165
    ],
+   "lod": "f",
+   "mat": "led_red",
    "r": 14,
+   "shape": "cyl",
    "y": [
     -104,
     -99
-   ],
-   "mat": "led_red",
-   "lod": "f"
+   ]
   },
   {
    "n": "Reset Button",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -330,
     165
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 14,
+   "shape": "cyl",
    "y": [
     -104,
     -99
-   ],
-   "mat": "led_green",
-   "lod": "f"
+   ]
   },
   {
    "n": "Reassurance LED",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -310,
     125
    ],
+   "lod": "f",
+   "mat": "led_amber",
    "r": 4,
+   "shape": "cyl",
    "y": [
     -101,
     -99
-   ],
-   "mat": "yellow",
-   "lod": "f"
+   ]
   },
   {
    "n": "Handset Socket",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -370,
     125
    ],
+   "lod": "f",
+   "mat": "black",
    "r": 10,
+   "shape": "cyl",
    "y": [
     -101,
     -99
-   ],
-   "mat": "black",
-   "lod": "f"
+   ]
   },
   {
    "n": "Data Plate",
-   "shape": "fbox",
    "at": [
     -240,
     -99,
@@ -699,11 +661,11 @@
     193
    ],
    "mat": "white",
-   "r": 5
+   "r": 5,
+   "shape": "fbox"
   },
   {
    "n": "RJ45",
-   "shape": "fbox",
    "at": [
     -228,
     -100,
@@ -712,16 +674,782 @@
     -99,
     166
    ],
-   "mat": "black",
    "lod": "f",
+   "mat": "black",
    "repeat": {
-    "n": 2,
     "d": [
      34,
      0,
      0
+    ],
+    "n": 2
+   },
+   "shape": "fbox"
+  },
+  {
+   "n": "Reading Light Lens",
+   "at": [
+    -400,
+    -88,
+    -6,
+    400,
+    -18,
+    0
+   ],
+   "lod": "f",
+   "mat": "polycarbonate",
+   "shape": "fbox"
+  },
+  {
+   "n": "Divider",
+   "at": [
+    -260,
+    -92,
+    20,
+    -256,
+    -90,
+    280
+   ],
+   "lod": "f",
+   "mat": "grey",
+   "repeat": {
+    "d": [
+     380,
+     0,
+     0
+    ],
+    "n": 3
+   },
+   "shape": "fbox",
+   "only": [
+    "1Bed_Panel"
+   ]
+  },
+  {
+   "n": "Trunking 2Bed",
+   "mat": "aluminium",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     -70,
+     0
+    ],
+    [
+     -90,
+     25
+    ],
+    [
+     -90,
+     275
+    ],
+    [
+     -70,
+     300
+    ],
+    [
+     0,
+     300
     ]
-   }
+   ],
+   "shape": "right",
+   "x": [
+    -1000,
+    3000
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "End Cap R 2Bed",
+   "mat": "grey",
+   "pts": [
+    [
+     0,
+     -5
+    ],
+    [
+     -75,
+     -5
+    ],
+    [
+     -95,
+     25
+    ],
+    [
+     -95,
+     275
+    ],
+    [
+     -75,
+     305
+    ],
+    [
+     0,
+     305
+    ]
+   ],
+   "shape": "right",
+   "x": [
+    3000,
+    3012
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Uplight Lens 2Bed",
+   "at": [
+    -950,
+    -70,
+    300,
+    2950,
+    -15,
+    308
+   ],
+   "mat": "polycarbonate",
+   "shape": "box",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 O2 Fascia",
+   "at": [
+    2405.0,
+    -100,
+    95.0,
+    2495.0,
+    -90,
+    185.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 O2 Ring",
+   "axis": "y",
+   "c": [
+    2450,
+    146
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     16,
+     -100
+    ],
+    [
+     24,
+     -100
+    ],
+    [
+     24,
+     -104
+    ],
+    [
+     16,
+     -104
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 O2 Collar",
+   "axis": "y",
+   "c": [
+    2450,
+    146
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -100
+    ],
+    [
+     16,
+     -100
+    ],
+    [
+     16,
+     -112
+    ],
+    [
+     13,
+     -114
+    ],
+    [
+     5,
+     -114
+    ],
+    [
+     5,
+     -110
+    ],
+    [
+     0,
+     -110
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 O2 Label",
+   "at": [
+    2423.0,
+    -100.6,
+    103.0,
+    2477.0,
+    -100,
+    113.0
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 VAC Fascia",
+   "at": [
+    2535.0,
+    -100,
+    95.0,
+    2625.0,
+    -90,
+    185.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 VAC Ring",
+   "axis": "y",
+   "c": [
+    2580,
+    146
+   ],
+   "mat": "yellow",
+   "profile": [
+    [
+     16,
+     -100
+    ],
+    [
+     24,
+     -100
+    ],
+    [
+     24,
+     -104
+    ],
+    [
+     16,
+     -104
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 VAC Collar",
+   "axis": "y",
+   "c": [
+    2580,
+    146
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -100
+    ],
+    [
+     16,
+     -100
+    ],
+    [
+     16,
+     -112
+    ],
+    [
+     13,
+     -114
+    ],
+    [
+     5,
+     -114
+    ],
+    [
+     5,
+     -110
+    ],
+    [
+     0,
+     -110
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 VAC Label",
+   "at": [
+    2553.0,
+    -100.6,
+    103.0,
+    2607.0,
+    -100,
+    113.0
+   ],
+   "lod": "f",
+   "mat": "yellow",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 MA4 Fascia",
+   "at": [
+    2665.0,
+    -100,
+    95.0,
+    2755.0,
+    -90,
+    185.0
+   ],
+   "mat": "white",
+   "r": 7,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 MA4 Ring",
+   "axis": "y",
+   "c": [
+    2710,
+    146
+   ],
+   "mat": "black",
+   "profile": [
+    [
+     16,
+     -100
+    ],
+    [
+     24,
+     -100
+    ],
+    [
+     24,
+     -104
+    ],
+    [
+     16,
+     -104
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 MA4 Collar",
+   "axis": "y",
+   "c": [
+    2710,
+    146
+   ],
+   "mat": "chrome",
+   "profile": [
+    [
+     0,
+     -100
+    ],
+    [
+     16,
+     -100
+    ],
+    [
+     16,
+     -112
+    ],
+    [
+     13,
+     -114
+    ],
+    [
+     5,
+     -114
+    ],
+    [
+     5,
+     -110
+    ],
+    [
+     0,
+     -110
+    ]
+   ],
+   "shape": "turn",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 MA4 Label",
+   "at": [
+    2683.0,
+    -100.6,
+    103.0,
+    2737.0,
+    -100,
+    113.0
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 2,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket A Plate",
+   "at": [
+    1127,
+    -99,
+    107,
+    1273,
+    -90,
+    193
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket A Face",
+   "at": [
+    1138,
+    -100,
+    125,
+    1180,
+    -99,
+    165
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 3,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket A Rocker",
+   "at": [
+    1154,
+    -103,
+    172,
+    1170,
+    -99,
+    186
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 2,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket B Plate",
+   "at": [
+    1307,
+    -99,
+    107,
+    1453,
+    -90,
+    193
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket B Face",
+   "at": [
+    1318,
+    -100,
+    125,
+    1360,
+    -99,
+    165
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 3,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Socket B Rocker",
+   "at": [
+    1334,
+    -103,
+    172,
+    1350,
+    -99,
+    186
+   ],
+   "lod": "f",
+   "mat": "red",
+   "r": 2,
+   "repeat": {
+    "d": [
+     82,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Nurse Call Plate",
+   "at": [
+    1590,
+    -99,
+    107,
+    1710,
+    -90,
+    193
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Call Button",
+   "axis": "y",
+   "c": [
+    1630,
+    165
+   ],
+   "lod": "f",
+   "mat": "led_red",
+   "r": 14,
+   "shape": "cyl",
+   "y": [
+    -104,
+    -99
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Reset Button",
+   "axis": "y",
+   "c": [
+    1670,
+    165
+   ],
+   "lod": "f",
+   "mat": "led_green",
+   "r": 14,
+   "shape": "cyl",
+   "y": [
+    -104,
+    -99
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Reassurance LED",
+   "axis": "y",
+   "c": [
+    1690,
+    125
+   ],
+   "lod": "f",
+   "mat": "led_amber",
+   "r": 4,
+   "shape": "cyl",
+   "y": [
+    -101,
+    -99
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Handset Socket",
+   "axis": "y",
+   "c": [
+    1630,
+    125
+   ],
+   "lod": "f",
+   "mat": "black",
+   "r": 10,
+   "shape": "cyl",
+   "y": [
+    -101,
+    -99
+   ],
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Data Plate",
+   "at": [
+    1760,
+    -99,
+    107,
+    1846,
+    -90,
+    193
+   ],
+   "mat": "white",
+   "r": 5,
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 RJ45",
+   "at": [
+    1772,
+    -100,
+    150,
+    1792,
+    -99,
+    166
+   ],
+   "lod": "f",
+   "mat": "black",
+   "repeat": {
+    "d": [
+     34,
+     0,
+     0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed 2 Reading Light Lens",
+   "at": [
+    1600,
+    -88,
+    -6,
+    2400,
+    -18,
+    0
+   ],
+   "lod": "f",
+   "mat": "polycarbonate",
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
+  },
+  {
+   "n": "Bed Divider",
+   "at": [
+    998,
+    -92,
+    20,
+    1002,
+    -90,
+    280
+   ],
+   "lod": "f",
+   "mat": "grey",
+   "shape": "fbox",
+   "only": [
+    "2Bed_Panel"
+   ]
   }
  ],
  "connectors": [
@@ -775,7 +1503,7 @@
   }
  ],
  "values": {
-  "Trunking 2000 x 300 x 90 mm": {
+  "Trunking 2000 / 4000 x 300 x 90 mm": {
    "value": "2000x300x90",
    "source_status": "assumed",
    "source": "HTM 08-03 bedhead services"
@@ -791,7 +1519,7 @@
    "source": "HTM 02-01 terminal order"
   }
  },
- "about": "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight and reading-light lenses, dividers, label strip, three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate. 1-bed drawn; 2-bed shares it until a second set is nested.",
+ "about": "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight lens, and per bed three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate and reading light. Per type: bed 1 sits at x = 0 in both; the 2-bed type runs the trunking on to 4000 mm with a second bed set, fed inside the trunking from bed 1's service connectors.",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Voltage": 240,

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_FP_FireProt_BreechingInlet",
  "template": "Metric Generic Model.rft",
- "about": "Breeching inlet modelled as a generic product: red back plate with label, collecting head on brackets, riser outlet and elbow into the wall, inlet necks with check-valve bosses, male couplings, blank caps and chains, drain valve. Geometry drawn for 2-way_Inlet; the other types share it (sizes in the values). Reference: query: fire prot breeching inlet fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+breeching+inlet+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Breeching inlet modelled as a generic product: red back plate with label, collecting head on brackets, riser outlet and elbow into the wall, gunmetal inlet necks angled 45 degrees down with octagonal male couplings and chrome blank caps, drain valve. The 2-way and 4-way types each carry their own plate, head and inlets (Show parameters). Reference: query: fire prot breeching inlet fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+breeching+inlet+fire+protection+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.fireprotectiononline.co.uk/inlet-breeching-dry-riser; photo_title: Dry riser inlet breeching; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -98,7 +98,7 @@
    "name": "2-way_Inlet/Description",
    "type": "2-way_Inlet",
    "param": "Description",
-   "value": "Fire brigade breeching inlet (dry riser), 65 mm male instantaneous inlets with non-return valves, blank caps and chains, DN100 outlet, drain valve, red back plate with label"
+   "value": "Fire brigade breeching inlet (dry riser), 2 or 4 x 65 mm male instantaneous inlets angled down, blank caps, DN100/DN150 outlet, drain valve, red back plate with label"
   },
   {
    "op": "set_type_value",
@@ -113,6 +113,13 @@
    "type": "2-way_Inlet",
    "param": "FMC_Keynote_Code",
    "value": "V.HYD_02"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Inlet/URL",
+   "type": "2-way_Inlet",
+   "param": "URL",
+   "value": "https://www.fireprotectiononline.co.uk/inlet-breeching-dry-riser"
   },
   {
    "op": "set_type_value",
@@ -151,7 +158,7 @@
    "name": "4-way_Inlet/Description",
    "type": "4-way_Inlet",
    "param": "Description",
-   "value": "Fire brigade breeching inlet (dry riser), 65 mm male instantaneous inlets with non-return valves, blank caps and chains, DN100 outlet, drain valve, red back plate with label"
+   "value": "Fire brigade breeching inlet (dry riser), 2 or 4 x 65 mm male instantaneous inlets angled down, blank caps, DN100/DN150 outlet, drain valve, red back plate with label"
   },
   {
    "op": "set_type_value",
@@ -169,31 +176,17 @@
   },
   {
    "op": "set_type_value",
+   "name": "4-way_Inlet/URL",
+   "type": "4-way_Inlet",
+   "param": "URL",
+   "value": "https://www.fireprotectiononline.co.uk/inlet-breeching-dry-riser"
+  },
+  {
+   "op": "set_type_value",
    "name": "4-way_Inlet/Default Elevation",
    "type": "4-way_Inlet",
    "param": "Default Elevation",
    "value": 450
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    200,
-    16,
-    46
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
-   "param": "Red Material"
   },
   {
    "op": "add_subcategory",
@@ -218,6 +211,48 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    193,
+    18,
+    31
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Paint_Enamel_SignalRed",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Gun",
+   "color": [
+    168,
+    139,
+    90
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Gun Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Gunmetal_LG2",
+   "param": "Gun Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Steel",
    "color": [
     61,
@@ -236,27 +271,6 @@
    "op": "add_material",
    "name": "FMC_Metal_SteelLTZ_Painted",
    "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Brass",
-   "color": [
-    200,
-    164,
-    74
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Brass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
   },
   {
    "op": "add_subcategory",
@@ -294,19 +308,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -290.0,
-     -358
+     -470.0,
+     -336.9
     ],
     [
-     290.0,
-     -358
+     470.0,
+     -336.9
     ],
     [
-     290.0,
+     470.0,
      0
     ],
     [
-     -290.0,
+     -470.0,
      0
     ]
    ],
@@ -324,112 +338,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Back Plate",
-   "points": [
-    [
-     282.0,
-     0.0
-    ],
-    [
-     285.06,
-     0.61
-    ],
-    [
-     287.66,
-     2.34
-    ],
-    [
-     289.39,
-     4.94
-    ],
-    [
-     290.0,
-     8.0
-    ],
-    [
-     290.0,
-     572.0
-    ],
-    [
-     289.39,
-     575.06
-    ],
-    [
-     287.66,
-     577.66
-    ],
-    [
-     285.06,
-     579.39
-    ],
-    [
-     282.0,
-     580.0
-    ],
-    [
-     -282.0,
-     580.0
-    ],
-    [
-     -285.06,
-     579.39
-    ],
-    [
-     -287.66,
-     577.66
-    ],
-    [
-     -289.39,
-     575.06
-    ],
-    [
-     -290.0,
-     572.0
-    ],
-    [
-     -290.0,
-     8.0
-    ],
-    [
-     -289.39,
-     4.94
-    ],
-    [
-     -287.66,
-     2.34
-    ],
-    [
-     -285.06,
-     0.61
-    ],
-    [
-     -282.0,
-     0.0
-    ]
-   ],
-   "start": 0,
-   "end": 10,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Back Plate",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Back Plate",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -533,210 +441,6 @@
   {
    "op": "set_visibility",
    "name": "Label DRY RISER INLET",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Bracket 1",
-   "points": [
-    [
-     -190,
-     -95
-    ],
-    [
-     -160,
-     -95
-    ],
-    [
-     -160,
-     -10
-    ],
-    [
-     -190,
-     -10
-    ]
-   ],
-   "start": 200,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Bracket 1",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Bracket 1",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Bracket 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Head Bracket 2",
-   "points": [
-    [
-     160,
-     -95
-    ],
-    [
-     190,
-     -95
-    ],
-    [
-     190,
-     -10
-    ],
-    [
-     160,
-     -10
-    ]
-   ],
-   "start": 200,
-   "end": 260
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Head Bracket 2",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Head Bracket 2",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Head Bracket 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Collecting Head",
-   "points": [
-    [
-     -88.0,
-     230.0
-    ],
-    [
-     -90.45,
-     248.63
-    ],
-    [
-     -97.65,
-     266.0
-    ],
-    [
-     -109.09,
-     280.91
-    ],
-    [
-     -124.0,
-     292.35
-    ],
-    [
-     -141.37,
-     299.55
-    ],
-    [
-     -160.0,
-     302.0
-    ],
-    [
-     -178.63,
-     299.55
-    ],
-    [
-     -196.0,
-     292.35
-    ],
-    [
-     -210.91,
-     280.91
-    ],
-    [
-     -222.35,
-     266.0
-    ],
-    [
-     -229.55,
-     248.63
-    ],
-    [
-     -232.0,
-     230.0
-    ],
-    [
-     -229.55,
-     211.37
-    ],
-    [
-     -222.35,
-     194.0
-    ],
-    [
-     -210.91,
-     179.09
-    ],
-    [
-     -196.0,
-     167.65
-    ],
-    [
-     -178.63,
-     160.45
-    ],
-    [
-     -160.0,
-     158.0
-    ],
-    [
-     -141.37,
-     160.45
-    ],
-    [
-     -124.0,
-     167.65
-    ],
-    [
-     -109.09,
-     179.09
-    ],
-    [
-     -97.65,
-     194.0
-    ],
-    [
-     -90.45,
-     211.37
-    ]
-   ],
-   "start": -210,
-   "end": 210,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Collecting Head",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Collecting Head",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Collecting Head",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -986,572 +690,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Inlet Neck 1",
-   "points": [
-    [
-     -75.0,
-     205.0
-    ],
-    [
-     -76.36,
-     215.35
-    ],
-    [
-     -80.36,
-     225.0
-    ],
-    [
-     -86.72,
-     233.28
-    ],
-    [
-     -95.0,
-     239.64
-    ],
-    [
-     -104.65,
-     243.64
-    ],
-    [
-     -115.0,
-     245.0
-    ],
-    [
-     -125.35,
-     243.64
-    ],
-    [
-     -135.0,
-     239.64
-    ],
-    [
-     -143.28,
-     233.28
-    ],
-    [
-     -149.64,
-     225.0
-    ],
-    [
-     -153.64,
-     215.35
-    ],
-    [
-     -155.0,
-     205.0
-    ],
-    [
-     -153.64,
-     194.65
-    ],
-    [
-     -149.64,
-     185.0
-    ],
-    [
-     -143.28,
-     176.72
-    ],
-    [
-     -135.0,
-     170.36
-    ],
-    [
-     -125.35,
-     166.36
-    ],
-    [
-     -115.0,
-     165.0
-    ],
-    [
-     -104.65,
-     166.36
-    ],
-    [
-     -95.0,
-     170.36
-    ],
-    [
-     -86.72,
-     176.72
-    ],
-    [
-     -80.36,
-     185.0
-    ],
-    [
-     -76.36,
-     194.65
-    ]
-   ],
-   "start": 215,
-   "end": 300,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Neck 1",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Neck 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Neck 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Neck 2",
-   "points": [
-    [
-     155.0,
-     205.0
-    ],
-    [
-     153.64,
-     215.35
-    ],
-    [
-     149.64,
-     225.0
-    ],
-    [
-     143.28,
-     233.28
-    ],
-    [
-     135.0,
-     239.64
-    ],
-    [
-     125.35,
-     243.64
-    ],
-    [
-     115.0,
-     245.0
-    ],
-    [
-     104.65,
-     243.64
-    ],
-    [
-     95.0,
-     239.64
-    ],
-    [
-     86.72,
-     233.28
-    ],
-    [
-     80.36,
-     225.0
-    ],
-    [
-     76.36,
-     215.35
-    ],
-    [
-     75.0,
-     205.0
-    ],
-    [
-     76.36,
-     194.65
-    ],
-    [
-     80.36,
-     185.0
-    ],
-    [
-     86.72,
-     176.72
-    ],
-    [
-     95.0,
-     170.36
-    ],
-    [
-     104.65,
-     166.36
-    ],
-    [
-     115.0,
-     165.0
-    ],
-    [
-     125.35,
-     166.36
-    ],
-    [
-     135.0,
-     170.36
-    ],
-    [
-     143.28,
-     176.72
-    ],
-    [
-     149.64,
-     185.0
-    ],
-    [
-     153.64,
-     194.65
-    ]
-   ],
-   "start": 215,
-   "end": 300,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Neck 2",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Neck 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Neck 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Check Valve Boss 1",
-   "profile": [
-    [
-     40,
-     255
-    ],
-    [
-     54,
-     255
-    ],
-    [
-     54,
-     280
-    ],
-    [
-     40,
-     280
-    ]
-   ],
-   "axis_at": [
-    -115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Check Valve Boss 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Check Valve Boss 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Check Valve Boss 2",
-   "profile": [
-    [
-     40,
-     255
-    ],
-    [
-     54,
-     255
-    ],
-    [
-     54,
-     280
-    ],
-    [
-     40,
-     280
-    ]
-   ],
-   "axis_at": [
-    115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Check Valve Boss 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Check Valve Boss 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Male Coupling 1",
-   "profile": [
-    [
-     30,
-     300
-    ],
-    [
-     46,
-     300
-    ],
-    [
-     46,
-     345
-    ],
-    [
-     30,
-     345
-    ]
-   ],
-   "axis_at": [
-    -115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Male Coupling 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Male Coupling 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Male Coupling 2",
-   "profile": [
-    [
-     30,
-     300
-    ],
-    [
-     46,
-     300
-    ],
-    [
-     46,
-     345
-    ],
-    [
-     30,
-     345
-    ]
-   ],
-   "axis_at": [
-    115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Male Coupling 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Male Coupling 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Blank Cap 1",
-   "profile": [
-    [
-     0,
-     345
-    ],
-    [
-     50,
-     345
-    ],
-    [
-     50,
-     358
-    ],
-    [
-     0,
-     358
-    ]
-   ],
-   "axis_at": [
-    -115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blank Cap 1",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blank Cap 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Blank Cap 2",
-   "profile": [
-    [
-     0,
-     345
-    ],
-    [
-     50,
-     345
-    ],
-    [
-     50,
-     358
-    ],
-    [
-     0,
-     358
-    ]
-   ],
-   "axis_at": [
-    115,
-    205
-   ],
-   "axis": "y",
-   "subcategory": "Brass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blank Cap 2",
-   "param": "Brass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blank Cap 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cap Chain 1",
-   "points": [
-    [
-     -70,
-     -352
-    ],
-    [
-     -66,
-     -352
-    ],
-    [
-     -66,
-     -348
-    ],
-    [
-     -70,
-     -348
-    ]
-   ],
-   "start": 110,
-   "end": 200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cap Chain 1",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cap Chain 1",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cap Chain 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cap Chain 2",
-   "points": [
-    [
-     160,
-     -352
-    ],
-    [
-     164,
-     -352
-    ],
-    [
-     164,
-     -348
-    ],
-    [
-     160,
-     -348
-    ]
-   ],
-   "start": 110,
-   "end": 200
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cap Chain 2",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cap Chain 2",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cap Chain 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Drain Valve",
    "points": [
     [
@@ -1657,12 +795,12 @@
   {
    "op": "set_subcategory",
    "name": "Drain Valve",
-   "subcategory": "Brass"
+   "subcategory": "Gun"
   },
   {
    "op": "set_material_param",
    "name": "Drain Valve",
-   "param": "Brass Material"
+   "param": "Gun Material"
   },
   {
    "op": "set_visibility",
@@ -1713,7 +851,317 @@
   },
   {
    "op": "extrusion",
-   "name": "Plate Fixing 1",
+   "name": "Back Plate 2-way",
+   "points": [
+    [
+     282.0,
+     0.0
+    ],
+    [
+     285.06,
+     0.61
+    ],
+    [
+     287.66,
+     2.34
+    ],
+    [
+     289.39,
+     4.94
+    ],
+    [
+     290.0,
+     8.0
+    ],
+    [
+     290.0,
+     572.0
+    ],
+    [
+     289.39,
+     575.06
+    ],
+    [
+     287.66,
+     577.66
+    ],
+    [
+     285.06,
+     579.39
+    ],
+    [
+     282.0,
+     580.0
+    ],
+    [
+     -282.0,
+     580.0
+    ],
+    [
+     -285.06,
+     579.39
+    ],
+    [
+     -287.66,
+     577.66
+    ],
+    [
+     -289.39,
+     575.06
+    ],
+    [
+     -290.0,
+     572.0
+    ],
+    [
+     -290.0,
+     8.0
+    ],
+    [
+     -289.39,
+     4.94
+    ],
+    [
+     -287.66,
+     2.34
+    ],
+    [
+     -285.06,
+     0.61
+    ],
+    [
+     -282.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Plate 2-way",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Plate 2-way",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Plate 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Bracket 2-way 1",
+   "points": [
+    [
+     -200,
+     -95
+    ],
+    [
+     -170,
+     -95
+    ],
+    [
+     -170,
+     -10
+    ],
+    [
+     -200,
+     -10
+    ]
+   ],
+   "start": 200,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Bracket 2-way 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Bracket 2-way 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Bracket 2-way 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Bracket 2-way 2",
+   "points": [
+    [
+     170,
+     -95
+    ],
+    [
+     200,
+     -95
+    ],
+    [
+     200,
+     -10
+    ],
+    [
+     170,
+     -10
+    ]
+   ],
+   "start": 200,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Bracket 2-way 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Bracket 2-way 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Bracket 2-way 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Collecting Head 2-way",
+   "points": [
+    [
+     -88.0,
+     230.0
+    ],
+    [
+     -90.45,
+     248.63
+    ],
+    [
+     -97.65,
+     266.0
+    ],
+    [
+     -109.09,
+     280.91
+    ],
+    [
+     -124.0,
+     292.35
+    ],
+    [
+     -141.37,
+     299.55
+    ],
+    [
+     -160.0,
+     302.0
+    ],
+    [
+     -178.63,
+     299.55
+    ],
+    [
+     -196.0,
+     292.35
+    ],
+    [
+     -210.91,
+     280.91
+    ],
+    [
+     -222.35,
+     266.0
+    ],
+    [
+     -229.55,
+     248.63
+    ],
+    [
+     -232.0,
+     230.0
+    ],
+    [
+     -229.55,
+     211.37
+    ],
+    [
+     -222.35,
+     194.0
+    ],
+    [
+     -210.91,
+     179.09
+    ],
+    [
+     -196.0,
+     167.65
+    ],
+    [
+     -178.63,
+     160.45
+    ],
+    [
+     -160.0,
+     158.0
+    ],
+    [
+     -141.37,
+     160.45
+    ],
+    [
+     -124.0,
+     167.65
+    ],
+    [
+     -109.09,
+     179.09
+    ],
+    [
+     -97.65,
+     194.0
+    ],
+    [
+     -90.45,
+     211.37
+    ]
+   ],
+   "start": -210,
+   "end": 210,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Collecting Head 2-way",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Collecting Head 2-way",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Collecting Head 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Fixing 2-way 1",
    "points": [
     [
      -254.0,
@@ -1818,24 +1266,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Fixing 1",
+   "name": "Plate Fixing 2-way 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Fixing 1",
+   "name": "Plate Fixing 2-way 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Fixing 1",
+   "name": "Plate Fixing 2-way 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Plate Fixing 2",
+   "name": "Plate Fixing 2-way 2",
    "points": [
     [
      266.0,
@@ -1940,20 +1388,2126 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plate Fixing 2",
+   "name": "Plate Fixing 2-way 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Plate Fixing 2",
+   "name": "Plate Fixing 2-way 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plate Fixing 2",
+   "name": "Plate Fixing 2-way 2",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 1 2-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": -147.8,
+   "end": -82.2,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 1 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 1 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 1 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 1 2-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": -154.36,
+   "end": -75.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 1 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 1 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 1 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 1 Flats 2-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": -163.0,
+   "end": -67.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 1 Flats 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 1 Flats 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 1 Flats 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 1 2-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": -157.64,
+   "end": -72.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 1 2-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 1 2-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 1 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 1 Flats 2-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": -167.0,
+   "end": -63.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 1 Flats 2-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 1 Flats 2-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 1 Flats 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 2 2-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": 82.2,
+   "end": 147.8,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 2 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 2 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 2 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 2 2-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": 75.64,
+   "end": 154.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 2 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 2 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 2 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 2 Flats 2-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": 67.0,
+   "end": 163.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 2 Flats 2-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 2 Flats 2-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 2 Flats 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 2 2-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": 72.36,
+   "end": 157.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 2 2-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 2 2-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 2 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 2 Flats 2-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": 63.0,
+   "end": 167.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 2 Flats 2-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 2 Flats 2-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 2 Flats 2-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Plate 4-way",
+   "points": [
+    [
+     462.0,
+     0.0
+    ],
+    [
+     465.06,
+     0.61
+    ],
+    [
+     467.66,
+     2.34
+    ],
+    [
+     469.39,
+     4.94
+    ],
+    [
+     470.0,
+     8.0
+    ],
+    [
+     470.0,
+     572.0
+    ],
+    [
+     469.39,
+     575.06
+    ],
+    [
+     467.66,
+     577.66
+    ],
+    [
+     465.06,
+     579.39
+    ],
+    [
+     462.0,
+     580.0
+    ],
+    [
+     -462.0,
+     580.0
+    ],
+    [
+     -465.06,
+     579.39
+    ],
+    [
+     -467.66,
+     577.66
+    ],
+    [
+     -469.39,
+     575.06
+    ],
+    [
+     -470.0,
+     572.0
+    ],
+    [
+     -470.0,
+     8.0
+    ],
+    [
+     -469.39,
+     4.94
+    ],
+    [
+     -467.66,
+     2.34
+    ],
+    [
+     -465.06,
+     0.61
+    ],
+    [
+     -462.0,
+     0.0
+    ]
+   ],
+   "start": 0,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Plate 4-way",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Plate 4-way",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Plate 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Bracket 4-way 1",
+   "points": [
+    [
+     -380,
+     -95
+    ],
+    [
+     -350,
+     -95
+    ],
+    [
+     -350,
+     -10
+    ],
+    [
+     -380,
+     -10
+    ]
+   ],
+   "start": 200,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Bracket 4-way 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Bracket 4-way 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Bracket 4-way 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Head Bracket 4-way 2",
+   "points": [
+    [
+     350,
+     -95
+    ],
+    [
+     380,
+     -95
+    ],
+    [
+     380,
+     -10
+    ],
+    [
+     350,
+     -10
+    ]
+   ],
+   "start": 200,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Head Bracket 4-way 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head Bracket 4-way 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head Bracket 4-way 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Collecting Head 4-way",
+   "points": [
+    [
+     -88.0,
+     230.0
+    ],
+    [
+     -90.45,
+     248.63
+    ],
+    [
+     -97.65,
+     266.0
+    ],
+    [
+     -109.09,
+     280.91
+    ],
+    [
+     -124.0,
+     292.35
+    ],
+    [
+     -141.37,
+     299.55
+    ],
+    [
+     -160.0,
+     302.0
+    ],
+    [
+     -178.63,
+     299.55
+    ],
+    [
+     -196.0,
+     292.35
+    ],
+    [
+     -210.91,
+     280.91
+    ],
+    [
+     -222.35,
+     266.0
+    ],
+    [
+     -229.55,
+     248.63
+    ],
+    [
+     -232.0,
+     230.0
+    ],
+    [
+     -229.55,
+     211.37
+    ],
+    [
+     -222.35,
+     194.0
+    ],
+    [
+     -210.91,
+     179.09
+    ],
+    [
+     -196.0,
+     167.65
+    ],
+    [
+     -178.63,
+     160.45
+    ],
+    [
+     -160.0,
+     158.0
+    ],
+    [
+     -141.37,
+     160.45
+    ],
+    [
+     -124.0,
+     167.65
+    ],
+    [
+     -109.09,
+     179.09
+    ],
+    [
+     -97.65,
+     194.0
+    ],
+    [
+     -90.45,
+     211.37
+    ]
+   ],
+   "start": -390,
+   "end": 390,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Collecting Head 4-way",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Collecting Head 4-way",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Collecting Head 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Fixing 4-way 1",
+   "points": [
+    [
+     -434.0,
+     30.0
+    ],
+    [
+     -434.2,
+     31.55
+    ],
+    [
+     -434.8,
+     33.0
+    ],
+    [
+     -435.76,
+     34.24
+    ],
+    [
+     -437.0,
+     35.2
+    ],
+    [
+     -438.45,
+     35.8
+    ],
+    [
+     -440.0,
+     36.0
+    ],
+    [
+     -441.55,
+     35.8
+    ],
+    [
+     -443.0,
+     35.2
+    ],
+    [
+     -444.24,
+     34.24
+    ],
+    [
+     -445.2,
+     33.0
+    ],
+    [
+     -445.8,
+     31.55
+    ],
+    [
+     -446.0,
+     30.0
+    ],
+    [
+     -445.8,
+     28.45
+    ],
+    [
+     -445.2,
+     27.0
+    ],
+    [
+     -444.24,
+     25.76
+    ],
+    [
+     -443.0,
+     24.8
+    ],
+    [
+     -441.55,
+     24.2
+    ],
+    [
+     -440.0,
+     24.0
+    ],
+    [
+     -438.45,
+     24.2
+    ],
+    [
+     -437.0,
+     24.8
+    ],
+    [
+     -435.76,
+     25.76
+    ],
+    [
+     -434.8,
+     27.0
+    ],
+    [
+     -434.2,
+     28.45
+    ]
+   ],
+   "start": 10,
+   "end": 14,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Fixing 4-way 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Fixing 4-way 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Fixing 4-way 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plate Fixing 4-way 2",
+   "points": [
+    [
+     446.0,
+     30.0
+    ],
+    [
+     445.8,
+     31.55
+    ],
+    [
+     445.2,
+     33.0
+    ],
+    [
+     444.24,
+     34.24
+    ],
+    [
+     443.0,
+     35.2
+    ],
+    [
+     441.55,
+     35.8
+    ],
+    [
+     440.0,
+     36.0
+    ],
+    [
+     438.45,
+     35.8
+    ],
+    [
+     437.0,
+     35.2
+    ],
+    [
+     435.76,
+     34.24
+    ],
+    [
+     434.8,
+     33.0
+    ],
+    [
+     434.2,
+     31.55
+    ],
+    [
+     434.0,
+     30.0
+    ],
+    [
+     434.2,
+     28.45
+    ],
+    [
+     434.8,
+     27.0
+    ],
+    [
+     435.76,
+     25.76
+    ],
+    [
+     437.0,
+     24.8
+    ],
+    [
+     438.45,
+     24.2
+    ],
+    [
+     440.0,
+     24.0
+    ],
+    [
+     441.55,
+     24.2
+    ],
+    [
+     443.0,
+     24.8
+    ],
+    [
+     444.24,
+     25.76
+    ],
+    [
+     445.2,
+     27.0
+    ],
+    [
+     445.8,
+     28.45
+    ]
+   ],
+   "start": 10,
+   "end": 14,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plate Fixing 4-way 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plate Fixing 4-way 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plate Fixing 4-way 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 1 4-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": -362.8,
+   "end": -297.2,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 1 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 1 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 1 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 1 4-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": -369.36,
+   "end": -290.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 1 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 1 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 1 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 1 Flats 4-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": -378.0,
+   "end": -282.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 1 Flats 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 1 Flats 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 1 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 1 4-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": -372.64,
+   "end": -287.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 1 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 1 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 1 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 1 Flats 4-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": -382.0,
+   "end": -278.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 1 Flats 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 1 Flats 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 1 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 2 4-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": -142.8,
+   "end": -77.2,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 2 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 2 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 2 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 2 4-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": -149.36,
+   "end": -70.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 2 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 2 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 2 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 2 Flats 4-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": -158.0,
+   "end": -62.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 2 Flats 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 2 Flats 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 2 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 2 4-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": -152.64,
+   "end": -67.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 2 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 2 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 2 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 2 Flats 4-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": -162.0,
+   "end": -58.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 2 Flats 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 2 Flats 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 2 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 3 4-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": 77.2,
+   "end": 142.8,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 3 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 3 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 3 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 3 4-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": 70.64,
+   "end": 149.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 3 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 3 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 3 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 3 Flats 4-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": 62.0,
+   "end": 158.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 3 Flats 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 3 Flats 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 3 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 3 4-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": 67.36,
+   "end": 152.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 3 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 3 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 3 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 3 Flats 4-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": 58.0,
+   "end": 162.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 3 Flats 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 3 Flats 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 3 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Neck 4 4-way",
+   "points": [
+    [
+     -182.7,
+     150.7
+    ],
+    [
+     -225.1,
+     108.3
+    ],
+    [
+     -281.7,
+     164.9
+    ],
+    [
+     -239.3,
+     207.3
+    ]
+   ],
+   "start": 297.2,
+   "end": 362.8,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Neck 4 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Neck 4 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Neck 4 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 4 4-way",
+   "points": [
+    [
+     -219.5,
+     102.6
+    ],
+    [
+     -256.3,
+     65.9
+    ],
+    [
+     -324.1,
+     133.7
+    ],
+    [
+     -287.4,
+     170.5
+    ]
+   ],
+   "start": 290.64,
+   "end": 369.36,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 4 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 4 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 4 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Male Coupling 4 Flats 4-way",
+   "points": [
+    [
+     -225.3,
+     108.4
+    ],
+    [
+     -262.0,
+     71.6
+    ],
+    [
+     -318.4,
+     128.0
+    ],
+    [
+     -281.6,
+     164.7
+    ]
+   ],
+   "start": 282.0,
+   "end": 378.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Male Coupling 4 Flats 4-way",
+   "subcategory": "Gun"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Male Coupling 4 Flats 4-way",
+   "param": "Gun Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Male Coupling 4 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 4 4-way",
+   "points": [
+    [
+     -253.4,
+     63.0
+    ],
+    [
+     -263.3,
+     53.1
+    ],
+    [
+     -336.9,
+     126.7
+    ],
+    [
+     -327.0,
+     136.6
+    ]
+   ],
+   "start": 287.36,
+   "end": 372.64,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 4 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 4 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 4 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blank Cap 4 Flats 4-way",
+   "points": [
+    [
+     -259.7,
+     69.3
+    ],
+    [
+     -269.6,
+     59.4
+    ],
+    [
+     -330.6,
+     120.4
+    ],
+    [
+     -320.7,
+     130.3
+    ]
+   ],
+   "start": 278.0,
+   "end": 382.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blank Cap 4 Flats 4-way",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blank Cap 4 Flats 4-way",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blank Cap 4 Flats 4-way",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2-way_Inlet",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Inlet/Show 2-way_Inlet",
+   "type": "2-way_Inlet",
+   "param": "Show 2-way_Inlet",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-way_Inlet/Show 2-way_Inlet",
+   "type": "4-way_Inlet",
+   "param": "Show 2-way_Inlet",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Plate 2-way/Visible",
+   "solid": "Back Plate 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Bracket 2-way 1/Visible",
+   "solid": "Head Bracket 2-way 1",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Bracket 2-way 2/Visible",
+   "solid": "Head Bracket 2-way 2",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Collecting Head 2-way/Visible",
+   "solid": "Collecting Head 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Fixing 2-way 1/Visible",
+   "solid": "Plate Fixing 2-way 1",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Fixing 2-way 2/Visible",
+   "solid": "Plate Fixing 2-way 2",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 1 2-way/Visible",
+   "solid": "Inlet Neck 1 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 1 2-way/Visible",
+   "solid": "Male Coupling 1 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 1 Flats 2-way/Visible",
+   "solid": "Male Coupling 1 Flats 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 1 2-way/Visible",
+   "solid": "Blank Cap 1 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 1 Flats 2-way/Visible",
+   "solid": "Blank Cap 1 Flats 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 2 2-way/Visible",
+   "solid": "Inlet Neck 2 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 2 2-way/Visible",
+   "solid": "Male Coupling 2 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 2 Flats 2-way/Visible",
+   "solid": "Male Coupling 2 Flats 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 2 2-way/Visible",
+   "solid": "Blank Cap 2 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 2 Flats 2-way/Visible",
+   "solid": "Blank Cap 2 Flats 2-way",
+   "param": "Show 2-way_Inlet"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 4-way_Inlet",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Inlet/Show 4-way_Inlet",
+   "type": "2-way_Inlet",
+   "param": "Show 4-way_Inlet",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4-way_Inlet/Show 4-way_Inlet",
+   "type": "4-way_Inlet",
+   "param": "Show 4-way_Inlet",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back Plate 4-way/Visible",
+   "solid": "Back Plate 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Bracket 4-way 1/Visible",
+   "solid": "Head Bracket 4-way 1",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Head Bracket 4-way 2/Visible",
+   "solid": "Head Bracket 4-way 2",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Collecting Head 4-way/Visible",
+   "solid": "Collecting Head 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Fixing 4-way 1/Visible",
+   "solid": "Plate Fixing 4-way 1",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plate Fixing 4-way 2/Visible",
+   "solid": "Plate Fixing 4-way 2",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 1 4-way/Visible",
+   "solid": "Inlet Neck 1 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 1 4-way/Visible",
+   "solid": "Male Coupling 1 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 1 Flats 4-way/Visible",
+   "solid": "Male Coupling 1 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 1 4-way/Visible",
+   "solid": "Blank Cap 1 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 1 Flats 4-way/Visible",
+   "solid": "Blank Cap 1 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 2 4-way/Visible",
+   "solid": "Inlet Neck 2 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 2 4-way/Visible",
+   "solid": "Male Coupling 2 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 2 Flats 4-way/Visible",
+   "solid": "Male Coupling 2 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 2 4-way/Visible",
+   "solid": "Blank Cap 2 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 2 Flats 4-way/Visible",
+   "solid": "Blank Cap 2 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 3 4-way/Visible",
+   "solid": "Inlet Neck 3 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 3 4-way/Visible",
+   "solid": "Male Coupling 3 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 3 Flats 4-way/Visible",
+   "solid": "Male Coupling 3 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 3 4-way/Visible",
+   "solid": "Blank Cap 3 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 3 Flats 4-way/Visible",
+   "solid": "Blank Cap 3 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Neck 4 4-way/Visible",
+   "solid": "Inlet Neck 4 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 4 4-way/Visible",
+   "solid": "Male Coupling 4 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Male Coupling 4 Flats 4-way/Visible",
+   "solid": "Male Coupling 4 Flats 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 4 4-way/Visible",
+   "solid": "Blank Cap 4 4-way",
+   "param": "Show 4-way_Inlet"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blank Cap 4 Flats 4-way/Visible",
+   "solid": "Blank Cap 4 Flats 4-way",
+   "param": "Show 4-way_Inlet"
   },
   {
    "op": "add_connector",
@@ -1982,8 +3536,8 @@
    "source_status": "assumed",
    "source": "BS 9990 dry riser practice"
   },
-  "Back plate 580 x 580 mm": {
-   "value": "580x580",
+  "Back plate 580 x 580 (2-way), 940 x 580 mm (4-way)": {
+   "value": "580/940x580",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },

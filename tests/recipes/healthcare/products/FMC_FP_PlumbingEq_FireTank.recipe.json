@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_FP_PlumbingEq_FireTank",
  "template": "Metric Generic Model.rft",
- "about": "Fire tank modelled as a generic product: plinth walls under each panel line, galvanised shell with external base, top and panel flanges, roof with manhole and vent cowl, ladder with rungs and roof handrail, level gauge, pump suction outlet with flange, fill inlet, overflow and downpipe, drain and valve, label. Geometry drawn for 100m3_Sectional; the other types share it (sizes in the values). Reference: query: fire tank plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=fire+tank+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Fire tank modelled as a generic product, origin at the front-left corner: each size has its own plinth walls, shell, external panel flanges, fill, overflow and downpipe (Show parameters); shared front items: manhole, vent cowl, ladder with rungs and roof handrail, level gauge, pump suction outlet with flange, drain, label. Reference: query: fire tank plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=fire+tank+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.dutcotennant.com/fire-water-tanks-steel-aluminium; photo_title: Dutco Tennant fire water tanks (steel/aluminium); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -121,6 +121,13 @@
    "value": "V.PMP_01"
   },
   {
+   "op": "set_type_value",
+   "name": "100m3_Sectional/URL",
+   "type": "100m3_Sectional",
+   "param": "URL",
+   "value": "https://www.dutcotennant.com/fire-water-tanks-steel-aluminium"
+  },
+  {
    "op": "add_type",
    "name": "200m3_Sectional"
   },
@@ -167,25 +174,11 @@
    "value": "V.PMP_01"
   },
   {
-   "op": "add_subcategory",
-   "name": "Concg",
-   "color": [
-    177,
-    175,
-    168
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Concg Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_C30",
-   "param": "Concg Material"
+   "op": "set_type_value",
+   "name": "200m3_Sectional/URL",
+   "type": "200m3_Sectional",
+   "param": "URL",
+   "value": "https://www.dutcotennant.com/fire-water-tanks-steel-aluminium"
   },
   {
    "op": "add_subcategory",
@@ -252,6 +245,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    193,
+    18,
+    31
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Paint_Enamel_SignalRed",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "White",
    "color": [
     242,
@@ -273,24 +287,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Red",
+   "name": "Concg",
    "color": [
-    200,
-    16,
-    46
+    177,
+    175,
+    168
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Red Material",
+   "name": "Concg Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
-   "param": "Red Material"
+   "name": "FMC_Concrete_C30",
+   "param": "Concg Material"
   },
   {
    "op": "add_subcategory",
@@ -307,20 +321,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -3110,
-     -3360
+     -60,
+     -575
     ],
     [
-     3625,
-     -3360
+     8990,
+     -575
     ],
     [
-     3625,
-     3150
+     8990,
+     8640
     ],
     [
-     -3110,
-     3150
+     -60,
+     8640
     ]
    ],
    "start": 0,
@@ -337,826 +351,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 1",
-   "points": [
-    [
-     -3110,
-     -3150
-    ],
-    [
-     -2990,
-     -3150
-    ],
-    [
-     -2990,
-     3150
-    ],
-    [
-     -3110,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 1",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 1",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 2",
-   "points": [
-    [
-     -1890,
-     -3150
-    ],
-    [
-     -1770,
-     -3150
-    ],
-    [
-     -1770,
-     3150
-    ],
-    [
-     -1890,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 2",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 2",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 3",
-   "points": [
-    [
-     -670,
-     -3150
-    ],
-    [
-     -550,
-     -3150
-    ],
-    [
-     -550,
-     3150
-    ],
-    [
-     -670,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 3",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 3",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 4",
-   "points": [
-    [
-     550,
-     -3150
-    ],
-    [
-     670,
-     -3150
-    ],
-    [
-     670,
-     3150
-    ],
-    [
-     550,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 4",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 4",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 5",
-   "points": [
-    [
-     1770,
-     -3150
-    ],
-    [
-     1890,
-     -3150
-    ],
-    [
-     1890,
-     3150
-    ],
-    [
-     1770,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 5",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 5",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plinth Wall 6",
-   "points": [
-    [
-     2990,
-     -3150
-    ],
-    [
-     3110,
-     -3150
-    ],
-    [
-     3110,
-     3150
-    ],
-    [
-     2990,
-     3150
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plinth Wall 6",
-   "subcategory": "Concg"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plinth Wall 6",
-   "param": "Concg Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plinth Wall 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tank Shell",
-   "points": [
-    [
-     -3050,
-     -3050
-    ],
-    [
-     3050,
-     -3050
-    ],
-    [
-     3050,
-     3050
-    ],
-    [
-     -3050,
-     3050
-    ]
-   ],
-   "start": 600,
-   "end": 3650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tank Shell",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Tank Shell",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tank Shell",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Flange",
-   "points": [
-    [
-     -3080,
-     -3080
-    ],
-    [
-     3080,
-     -3080
-    ],
-    [
-     3080,
-     3080
-    ],
-    [
-     -3080,
-     3080
-    ]
-   ],
-   "start": 600,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Flange",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Flange",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Flange",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top Flange",
-   "points": [
-    [
-     -3080,
-     -3080
-    ],
-    [
-     3080,
-     -3080
-    ],
-    [
-     3080,
-     3080
-    ],
-    [
-     -3080,
-     3080
-    ]
-   ],
-   "start": 3610,
-   "end": 3650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top Flange",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Flange",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Flange",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange X 1",
-   "points": [
-    [
-     -1855,
-     -3080
-    ],
-    [
-     -1805,
-     -3080
-    ],
-    [
-     -1805,
-     3080
-    ],
-    [
-     -1855,
-     3080
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange X 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange X 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange X 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange X 2",
-   "points": [
-    [
-     -635,
-     -3080
-    ],
-    [
-     -585,
-     -3080
-    ],
-    [
-     -585,
-     3080
-    ],
-    [
-     -635,
-     3080
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange X 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange X 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange X 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange X 3",
-   "points": [
-    [
-     585,
-     -3080
-    ],
-    [
-     635,
-     -3080
-    ],
-    [
-     635,
-     3080
-    ],
-    [
-     585,
-     3080
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange X 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange X 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange X 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange X 4",
-   "points": [
-    [
-     1805,
-     -3080
-    ],
-    [
-     1855,
-     -3080
-    ],
-    [
-     1855,
-     3080
-    ],
-    [
-     1805,
-     3080
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange X 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange X 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange X 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Y 1",
-   "points": [
-    [
-     -3080,
-     -1855
-    ],
-    [
-     3080,
-     -1855
-    ],
-    [
-     3080,
-     -1805
-    ],
-    [
-     -3080,
-     -1805
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Y 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Y 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Y 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Y 2",
-   "points": [
-    [
-     -3080,
-     -635
-    ],
-    [
-     3080,
-     -635
-    ],
-    [
-     3080,
-     -585
-    ],
-    [
-     -3080,
-     -585
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Y 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Y 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Y 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Y 3",
-   "points": [
-    [
-     -3080,
-     585
-    ],
-    [
-     3080,
-     585
-    ],
-    [
-     3080,
-     635
-    ],
-    [
-     -3080,
-     635
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Y 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Y 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Y 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Y 4",
-   "points": [
-    [
-     -3080,
-     1805
-    ],
-    [
-     3080,
-     1805
-    ],
-    [
-     3080,
-     1855
-    ],
-    [
-     -3080,
-     1855
-    ]
-   ],
-   "start": 640,
-   "end": 3610
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Y 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Y 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Y 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Z 1",
-   "points": [
-    [
-     -3080,
-     -3080
-    ],
-    [
-     3080,
-     -3080
-    ],
-    [
-     3080,
-     3080
-    ],
-    [
-     -3080,
-     3080
-    ]
-   ],
-   "start": 1795,
-   "end": 1845
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Z 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Z 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Z 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Panel Flange Z 2",
-   "points": [
-    [
-     -3080,
-     -3080
-    ],
-    [
-     3080,
-     -3080
-    ],
-    [
-     3080,
-     3080
-    ],
-    [
-     -3080,
-     3080
-    ]
-   ],
-   "start": 3015,
-   "end": 3065
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Panel Flange Z 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Panel Flange Z 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Panel Flange Z 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof",
-   "points": [
-    [
-     -3050,
-     -3050
-    ],
-    [
-     3050,
-     -3050
-    ],
-    [
-     3050,
-     3050
-    ],
-    [
-     -3050,
-     3050
-    ]
-   ],
-   "start": 3650,
-   "end": 3670
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1179,7 +373,7 @@
      2500
     ]
    ],
-   "start": 3670,
+   "start": 3650,
    "end": 3720
   },
   {
@@ -1246,11 +440,11 @@
    "profile": [
     [
      0,
-     3670
+     3650
     ],
     [
      60,
-     3670
+     3650
     ],
     [
      60,
@@ -1270,8 +464,8 @@
     ]
    ],
    "axis_at": [
-    -2000,
-    2000
+    1000,
+    4200
    ],
    "axis": "z",
    "subcategory": "Gi"
@@ -1293,20 +487,20 @@
    "name": "Ladder Stringer 1",
    "points": [
     [
-     2300,
-     -3135
+     4300,
+     -85
     ],
     [
-     2340,
-     -3135
+     4340,
+     -85
     ],
     [
-     2340,
-     -3095
+     4340,
+     -45
     ],
     [
-     2300,
-     -3095
+     4300,
+     -45
     ]
    ],
    "start": 0,
@@ -1334,20 +528,20 @@
    "name": "Ladder Stringer 2",
    "points": [
     [
-     2700,
-     -3135
+     4700,
+     -85
     ],
     [
-     2740,
-     -3135
+     4740,
+     -85
     ],
     [
-     2740,
-     -3095
+     4740,
+     -45
     ],
     [
-     2700,
-     -3095
+     4700,
+     -45
     ]
    ],
    "start": 0,
@@ -1375,104 +569,104 @@
    "name": "Ladder Rung 1",
    "points": [
     [
-     -3103.0,
+     -53.0,
      300.0
     ],
     [
-     -3103.41,
+     -53.41,
      303.11
     ],
     [
-     -3104.61,
+     -54.61,
      306.0
     ],
     [
-     -3106.51,
+     -56.51,
      308.49
     ],
     [
-     -3109.0,
+     -59.0,
      310.39
     ],
     [
-     -3111.89,
+     -61.89,
      311.59
     ],
     [
-     -3115.0,
+     -65.0,
      312.0
     ],
     [
-     -3118.11,
+     -68.11,
      311.59
     ],
     [
-     -3121.0,
+     -71.0,
      310.39
     ],
     [
-     -3123.49,
+     -73.49,
      308.49
     ],
     [
-     -3125.39,
+     -75.39,
      306.0
     ],
     [
-     -3126.59,
+     -76.59,
      303.11
     ],
     [
-     -3127.0,
+     -77.0,
      300.0
     ],
     [
-     -3126.59,
+     -76.59,
      296.89
     ],
     [
-     -3125.39,
+     -75.39,
      294.0
     ],
     [
-     -3123.49,
+     -73.49,
      291.51
     ],
     [
-     -3121.0,
+     -71.0,
      289.61
     ],
     [
-     -3118.11,
+     -68.11,
      288.41
     ],
     [
-     -3115.0,
+     -65.0,
      288.0
     ],
     [
-     -3111.89,
+     -61.89,
      288.41
     ],
     [
-     -3109.0,
+     -59.0,
      289.61
     ],
     [
-     -3106.51,
+     -56.51,
      291.51
     ],
     [
-     -3104.61,
+     -54.61,
      294.0
     ],
     [
-     -3103.41,
+     -53.41,
      296.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -1497,104 +691,104 @@
    "name": "Ladder Rung 2",
    "points": [
     [
-     -3103.0,
-     600.0
+     -53.0,
+     700.0
     ],
     [
-     -3103.41,
-     603.11
+     -53.41,
+     703.11
     ],
     [
-     -3104.61,
-     606.0
+     -54.61,
+     706.0
     ],
     [
-     -3106.51,
-     608.49
+     -56.51,
+     708.49
     ],
     [
-     -3109.0,
-     610.39
+     -59.0,
+     710.39
     ],
     [
-     -3111.89,
-     611.59
+     -61.89,
+     711.59
     ],
     [
-     -3115.0,
-     612.0
+     -65.0,
+     712.0
     ],
     [
-     -3118.11,
-     611.59
+     -68.11,
+     711.59
     ],
     [
-     -3121.0,
-     610.39
+     -71.0,
+     710.39
     ],
     [
-     -3123.49,
-     608.49
+     -73.49,
+     708.49
     ],
     [
-     -3125.39,
-     606.0
+     -75.39,
+     706.0
     ],
     [
-     -3126.59,
-     603.11
+     -76.59,
+     703.11
     ],
     [
-     -3127.0,
-     600.0
+     -77.0,
+     700.0
     ],
     [
-     -3126.59,
-     596.89
+     -76.59,
+     696.89
     ],
     [
-     -3125.39,
-     594.0
+     -75.39,
+     694.0
     ],
     [
-     -3123.49,
-     591.51
+     -73.49,
+     691.51
     ],
     [
-     -3121.0,
-     589.61
+     -71.0,
+     689.61
     ],
     [
-     -3118.11,
-     588.41
+     -68.11,
+     688.41
     ],
     [
-     -3115.0,
-     588.0
+     -65.0,
+     688.0
     ],
     [
-     -3111.89,
-     588.41
+     -61.89,
+     688.41
     ],
     [
-     -3109.0,
-     589.61
+     -59.0,
+     689.61
     ],
     [
-     -3106.51,
-     591.51
+     -56.51,
+     691.51
     ],
     [
-     -3104.61,
-     594.0
+     -54.61,
+     694.0
     ],
     [
-     -3103.41,
-     596.89
+     -53.41,
+     696.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -1619,104 +813,104 @@
    "name": "Ladder Rung 3",
    "points": [
     [
-     -3103.0,
-     900.0
+     -53.0,
+     1100.0
     ],
     [
-     -3103.41,
-     903.11
+     -53.41,
+     1103.11
     ],
     [
-     -3104.61,
-     906.0
+     -54.61,
+     1106.0
     ],
     [
-     -3106.51,
-     908.49
+     -56.51,
+     1108.49
     ],
     [
-     -3109.0,
-     910.39
+     -59.0,
+     1110.39
     ],
     [
-     -3111.89,
-     911.59
+     -61.89,
+     1111.59
     ],
     [
-     -3115.0,
-     912.0
+     -65.0,
+     1112.0
     ],
     [
-     -3118.11,
-     911.59
+     -68.11,
+     1111.59
     ],
     [
-     -3121.0,
-     910.39
+     -71.0,
+     1110.39
     ],
     [
-     -3123.49,
-     908.49
+     -73.49,
+     1108.49
     ],
     [
-     -3125.39,
-     906.0
+     -75.39,
+     1106.0
     ],
     [
-     -3126.59,
-     903.11
+     -76.59,
+     1103.11
     ],
     [
-     -3127.0,
-     900.0
+     -77.0,
+     1100.0
     ],
     [
-     -3126.59,
-     896.89
+     -76.59,
+     1096.89
     ],
     [
-     -3125.39,
-     894.0
+     -75.39,
+     1094.0
     ],
     [
-     -3123.49,
-     891.51
+     -73.49,
+     1091.51
     ],
     [
-     -3121.0,
-     889.61
+     -71.0,
+     1089.61
     ],
     [
-     -3118.11,
-     888.41
+     -68.11,
+     1088.41
     ],
     [
-     -3115.0,
-     888.0
+     -65.0,
+     1088.0
     ],
     [
-     -3111.89,
-     888.41
+     -61.89,
+     1088.41
     ],
     [
-     -3109.0,
-     889.61
+     -59.0,
+     1089.61
     ],
     [
-     -3106.51,
-     891.51
+     -56.51,
+     1091.51
     ],
     [
-     -3104.61,
-     894.0
+     -54.61,
+     1094.0
     ],
     [
-     -3103.41,
-     896.89
+     -53.41,
+     1096.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -1741,226 +935,226 @@
    "name": "Ladder Rung 4",
    "points": [
     [
-     -3103.0,
-     1200.0
-    ],
-    [
-     -3103.41,
-     1203.11
-    ],
-    [
-     -3104.61,
-     1206.0
-    ],
-    [
-     -3106.51,
-     1208.49
-    ],
-    [
-     -3109.0,
-     1210.39
-    ],
-    [
-     -3111.89,
-     1211.59
-    ],
-    [
-     -3115.0,
-     1212.0
-    ],
-    [
-     -3118.11,
-     1211.59
-    ],
-    [
-     -3121.0,
-     1210.39
-    ],
-    [
-     -3123.49,
-     1208.49
-    ],
-    [
-     -3125.39,
-     1206.0
-    ],
-    [
-     -3126.59,
-     1203.11
-    ],
-    [
-     -3127.0,
-     1200.0
-    ],
-    [
-     -3126.59,
-     1196.89
-    ],
-    [
-     -3125.39,
-     1194.0
-    ],
-    [
-     -3123.49,
-     1191.51
-    ],
-    [
-     -3121.0,
-     1189.61
-    ],
-    [
-     -3118.11,
-     1188.41
-    ],
-    [
-     -3115.0,
-     1188.0
-    ],
-    [
-     -3111.89,
-     1188.41
-    ],
-    [
-     -3109.0,
-     1189.61
-    ],
-    [
-     -3106.51,
-     1191.51
-    ],
-    [
-     -3104.61,
-     1194.0
-    ],
-    [
-     -3103.41,
-     1196.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 5",
-   "points": [
-    [
-     -3103.0,
+     -53.0,
      1500.0
     ],
     [
-     -3103.41,
+     -53.41,
      1503.11
     ],
     [
-     -3104.61,
+     -54.61,
      1506.0
     ],
     [
-     -3106.51,
+     -56.51,
      1508.49
     ],
     [
-     -3109.0,
+     -59.0,
      1510.39
     ],
     [
-     -3111.89,
+     -61.89,
      1511.59
     ],
     [
-     -3115.0,
+     -65.0,
      1512.0
     ],
     [
-     -3118.11,
+     -68.11,
      1511.59
     ],
     [
-     -3121.0,
+     -71.0,
      1510.39
     ],
     [
-     -3123.49,
+     -73.49,
      1508.49
     ],
     [
-     -3125.39,
+     -75.39,
      1506.0
     ],
     [
-     -3126.59,
+     -76.59,
      1503.11
     ],
     [
-     -3127.0,
+     -77.0,
      1500.0
     ],
     [
-     -3126.59,
+     -76.59,
      1496.89
     ],
     [
-     -3125.39,
+     -75.39,
      1494.0
     ],
     [
-     -3123.49,
+     -73.49,
      1491.51
     ],
     [
-     -3121.0,
+     -71.0,
      1489.61
     ],
     [
-     -3118.11,
+     -68.11,
      1488.41
     ],
     [
-     -3115.0,
+     -65.0,
      1488.0
     ],
     [
-     -3111.89,
+     -61.89,
      1488.41
     ],
     [
-     -3109.0,
+     -59.0,
      1489.61
     ],
     [
-     -3106.51,
+     -56.51,
      1491.51
     ],
     [
-     -3104.61,
+     -54.61,
      1494.0
     ],
     [
-     -3103.41,
+     -53.41,
      1496.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 5",
+   "points": [
+    [
+     -53.0,
+     1900.0
+    ],
+    [
+     -53.41,
+     1903.11
+    ],
+    [
+     -54.61,
+     1906.0
+    ],
+    [
+     -56.51,
+     1908.49
+    ],
+    [
+     -59.0,
+     1910.39
+    ],
+    [
+     -61.89,
+     1911.59
+    ],
+    [
+     -65.0,
+     1912.0
+    ],
+    [
+     -68.11,
+     1911.59
+    ],
+    [
+     -71.0,
+     1910.39
+    ],
+    [
+     -73.49,
+     1908.49
+    ],
+    [
+     -75.39,
+     1906.0
+    ],
+    [
+     -76.59,
+     1903.11
+    ],
+    [
+     -77.0,
+     1900.0
+    ],
+    [
+     -76.59,
+     1896.89
+    ],
+    [
+     -75.39,
+     1894.0
+    ],
+    [
+     -73.49,
+     1891.51
+    ],
+    [
+     -71.0,
+     1889.61
+    ],
+    [
+     -68.11,
+     1888.41
+    ],
+    [
+     -65.0,
+     1888.0
+    ],
+    [
+     -61.89,
+     1888.41
+    ],
+    [
+     -59.0,
+     1889.61
+    ],
+    [
+     -56.51,
+     1891.51
+    ],
+    [
+     -54.61,
+     1894.0
+    ],
+    [
+     -53.41,
+     1896.89
+    ]
+   ],
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -1985,104 +1179,104 @@
    "name": "Ladder Rung 6",
    "points": [
     [
-     -3103.0,
-     1800.0
+     -53.0,
+     2300.0
     ],
     [
-     -3103.41,
-     1803.11
+     -53.41,
+     2303.11
     ],
     [
-     -3104.61,
-     1806.0
+     -54.61,
+     2306.0
     ],
     [
-     -3106.51,
-     1808.49
+     -56.51,
+     2308.49
     ],
     [
-     -3109.0,
-     1810.39
+     -59.0,
+     2310.39
     ],
     [
-     -3111.89,
-     1811.59
+     -61.89,
+     2311.59
     ],
     [
-     -3115.0,
-     1812.0
+     -65.0,
+     2312.0
     ],
     [
-     -3118.11,
-     1811.59
+     -68.11,
+     2311.59
     ],
     [
-     -3121.0,
-     1810.39
+     -71.0,
+     2310.39
     ],
     [
-     -3123.49,
-     1808.49
+     -73.49,
+     2308.49
     ],
     [
-     -3125.39,
-     1806.0
+     -75.39,
+     2306.0
     ],
     [
-     -3126.59,
-     1803.11
+     -76.59,
+     2303.11
     ],
     [
-     -3127.0,
-     1800.0
+     -77.0,
+     2300.0
     ],
     [
-     -3126.59,
-     1796.89
+     -76.59,
+     2296.89
     ],
     [
-     -3125.39,
-     1794.0
+     -75.39,
+     2294.0
     ],
     [
-     -3123.49,
-     1791.51
+     -73.49,
+     2291.51
     ],
     [
-     -3121.0,
-     1789.61
+     -71.0,
+     2289.61
     ],
     [
-     -3118.11,
-     1788.41
+     -68.11,
+     2288.41
     ],
     [
-     -3115.0,
-     1788.0
+     -65.0,
+     2288.0
     ],
     [
-     -3111.89,
-     1788.41
+     -61.89,
+     2288.41
     ],
     [
-     -3109.0,
-     1789.61
+     -59.0,
+     2289.61
     ],
     [
-     -3106.51,
-     1791.51
+     -56.51,
+     2291.51
     ],
     [
-     -3104.61,
-     1794.0
+     -54.61,
+     2294.0
     ],
     [
-     -3103.41,
-     1796.89
+     -53.41,
+     2296.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -2107,348 +1301,348 @@
    "name": "Ladder Rung 7",
    "points": [
     [
-     -3103.0,
-     2100.0
-    ],
-    [
-     -3103.41,
-     2103.11
-    ],
-    [
-     -3104.61,
-     2106.0
-    ],
-    [
-     -3106.51,
-     2108.49
-    ],
-    [
-     -3109.0,
-     2110.39
-    ],
-    [
-     -3111.89,
-     2111.59
-    ],
-    [
-     -3115.0,
-     2112.0
-    ],
-    [
-     -3118.11,
-     2111.59
-    ],
-    [
-     -3121.0,
-     2110.39
-    ],
-    [
-     -3123.49,
-     2108.49
-    ],
-    [
-     -3125.39,
-     2106.0
-    ],
-    [
-     -3126.59,
-     2103.11
-    ],
-    [
-     -3127.0,
-     2100.0
-    ],
-    [
-     -3126.59,
-     2096.89
-    ],
-    [
-     -3125.39,
-     2094.0
-    ],
-    [
-     -3123.49,
-     2091.51
-    ],
-    [
-     -3121.0,
-     2089.61
-    ],
-    [
-     -3118.11,
-     2088.41
-    ],
-    [
-     -3115.0,
-     2088.0
-    ],
-    [
-     -3111.89,
-     2088.41
-    ],
-    [
-     -3109.0,
-     2089.61
-    ],
-    [
-     -3106.51,
-     2091.51
-    ],
-    [
-     -3104.61,
-     2094.0
-    ],
-    [
-     -3103.41,
-     2096.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 7",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 7",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 8",
-   "points": [
-    [
-     -3103.0,
-     2400.0
-    ],
-    [
-     -3103.41,
-     2403.11
-    ],
-    [
-     -3104.61,
-     2406.0
-    ],
-    [
-     -3106.51,
-     2408.49
-    ],
-    [
-     -3109.0,
-     2410.39
-    ],
-    [
-     -3111.89,
-     2411.59
-    ],
-    [
-     -3115.0,
-     2412.0
-    ],
-    [
-     -3118.11,
-     2411.59
-    ],
-    [
-     -3121.0,
-     2410.39
-    ],
-    [
-     -3123.49,
-     2408.49
-    ],
-    [
-     -3125.39,
-     2406.0
-    ],
-    [
-     -3126.59,
-     2403.11
-    ],
-    [
-     -3127.0,
-     2400.0
-    ],
-    [
-     -3126.59,
-     2396.89
-    ],
-    [
-     -3125.39,
-     2394.0
-    ],
-    [
-     -3123.49,
-     2391.51
-    ],
-    [
-     -3121.0,
-     2389.61
-    ],
-    [
-     -3118.11,
-     2388.41
-    ],
-    [
-     -3115.0,
-     2388.0
-    ],
-    [
-     -3111.89,
-     2388.41
-    ],
-    [
-     -3109.0,
-     2389.61
-    ],
-    [
-     -3106.51,
-     2391.51
-    ],
-    [
-     -3104.61,
-     2394.0
-    ],
-    [
-     -3103.41,
-     2396.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 8",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 8",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 9",
-   "points": [
-    [
-     -3103.0,
+     -53.0,
      2700.0
     ],
     [
-     -3103.41,
+     -53.41,
      2703.11
     ],
     [
-     -3104.61,
+     -54.61,
      2706.0
     ],
     [
-     -3106.51,
+     -56.51,
      2708.49
     ],
     [
-     -3109.0,
+     -59.0,
      2710.39
     ],
     [
-     -3111.89,
+     -61.89,
      2711.59
     ],
     [
-     -3115.0,
+     -65.0,
      2712.0
     ],
     [
-     -3118.11,
+     -68.11,
      2711.59
     ],
     [
-     -3121.0,
+     -71.0,
      2710.39
     ],
     [
-     -3123.49,
+     -73.49,
      2708.49
     ],
     [
-     -3125.39,
+     -75.39,
      2706.0
     ],
     [
-     -3126.59,
+     -76.59,
      2703.11
     ],
     [
-     -3127.0,
+     -77.0,
      2700.0
     ],
     [
-     -3126.59,
+     -76.59,
      2696.89
     ],
     [
-     -3125.39,
+     -75.39,
      2694.0
     ],
     [
-     -3123.49,
+     -73.49,
      2691.51
     ],
     [
-     -3121.0,
+     -71.0,
      2689.61
     ],
     [
-     -3118.11,
+     -68.11,
      2688.41
     ],
     [
-     -3115.0,
+     -65.0,
      2688.0
     ],
     [
-     -3111.89,
+     -61.89,
      2688.41
     ],
     [
-     -3109.0,
+     -59.0,
      2689.61
     ],
     [
-     -3106.51,
+     -56.51,
      2691.51
     ],
     [
-     -3104.61,
+     -54.61,
      2694.0
     ],
     [
-     -3103.41,
+     -53.41,
      2696.89
     ]
    ],
-   "start": 2340,
-   "end": 2700,
+   "start": 4340,
+   "end": 4700,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 7",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 7",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 8",
+   "points": [
+    [
+     -53.0,
+     3100.0
+    ],
+    [
+     -53.41,
+     3103.11
+    ],
+    [
+     -54.61,
+     3106.0
+    ],
+    [
+     -56.51,
+     3108.49
+    ],
+    [
+     -59.0,
+     3110.39
+    ],
+    [
+     -61.89,
+     3111.59
+    ],
+    [
+     -65.0,
+     3112.0
+    ],
+    [
+     -68.11,
+     3111.59
+    ],
+    [
+     -71.0,
+     3110.39
+    ],
+    [
+     -73.49,
+     3108.49
+    ],
+    [
+     -75.39,
+     3106.0
+    ],
+    [
+     -76.59,
+     3103.11
+    ],
+    [
+     -77.0,
+     3100.0
+    ],
+    [
+     -76.59,
+     3096.89
+    ],
+    [
+     -75.39,
+     3094.0
+    ],
+    [
+     -73.49,
+     3091.51
+    ],
+    [
+     -71.0,
+     3089.61
+    ],
+    [
+     -68.11,
+     3088.41
+    ],
+    [
+     -65.0,
+     3088.0
+    ],
+    [
+     -61.89,
+     3088.41
+    ],
+    [
+     -59.0,
+     3089.61
+    ],
+    [
+     -56.51,
+     3091.51
+    ],
+    [
+     -54.61,
+     3094.0
+    ],
+    [
+     -53.41,
+     3096.89
+    ]
+   ],
+   "start": 4340,
+   "end": 4700,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ladder Rung 8",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ladder Rung 8",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ladder Rung 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Ladder Rung 9",
+   "points": [
+    [
+     -53.0,
+     3500.0
+    ],
+    [
+     -53.41,
+     3503.11
+    ],
+    [
+     -54.61,
+     3506.0
+    ],
+    [
+     -56.51,
+     3508.49
+    ],
+    [
+     -59.0,
+     3510.39
+    ],
+    [
+     -61.89,
+     3511.59
+    ],
+    [
+     -65.0,
+     3512.0
+    ],
+    [
+     -68.11,
+     3511.59
+    ],
+    [
+     -71.0,
+     3510.39
+    ],
+    [
+     -73.49,
+     3508.49
+    ],
+    [
+     -75.39,
+     3506.0
+    ],
+    [
+     -76.59,
+     3503.11
+    ],
+    [
+     -77.0,
+     3500.0
+    ],
+    [
+     -76.59,
+     3496.89
+    ],
+    [
+     -75.39,
+     3494.0
+    ],
+    [
+     -73.49,
+     3491.51
+    ],
+    [
+     -71.0,
+     3489.61
+    ],
+    [
+     -68.11,
+     3488.41
+    ],
+    [
+     -65.0,
+     3488.0
+    ],
+    [
+     -61.89,
+     3488.41
+    ],
+    [
+     -59.0,
+     3489.61
+    ],
+    [
+     -56.51,
+     3491.51
+    ],
+    [
+     -54.61,
+     3494.0
+    ],
+    [
+     -53.41,
+     3496.89
+    ]
+   ],
+   "start": 4340,
+   "end": 4700,
    "sketch": "right"
   },
   {
@@ -2464,372 +1658,6 @@
   {
    "op": "set_visibility",
    "name": "Ladder Rung 9",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 10",
-   "points": [
-    [
-     -3103.0,
-     3000.0
-    ],
-    [
-     -3103.41,
-     3003.11
-    ],
-    [
-     -3104.61,
-     3006.0
-    ],
-    [
-     -3106.51,
-     3008.49
-    ],
-    [
-     -3109.0,
-     3010.39
-    ],
-    [
-     -3111.89,
-     3011.59
-    ],
-    [
-     -3115.0,
-     3012.0
-    ],
-    [
-     -3118.11,
-     3011.59
-    ],
-    [
-     -3121.0,
-     3010.39
-    ],
-    [
-     -3123.49,
-     3008.49
-    ],
-    [
-     -3125.39,
-     3006.0
-    ],
-    [
-     -3126.59,
-     3003.11
-    ],
-    [
-     -3127.0,
-     3000.0
-    ],
-    [
-     -3126.59,
-     2996.89
-    ],
-    [
-     -3125.39,
-     2994.0
-    ],
-    [
-     -3123.49,
-     2991.51
-    ],
-    [
-     -3121.0,
-     2989.61
-    ],
-    [
-     -3118.11,
-     2988.41
-    ],
-    [
-     -3115.0,
-     2988.0
-    ],
-    [
-     -3111.89,
-     2988.41
-    ],
-    [
-     -3109.0,
-     2989.61
-    ],
-    [
-     -3106.51,
-     2991.51
-    ],
-    [
-     -3104.61,
-     2994.0
-    ],
-    [
-     -3103.41,
-     2996.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 10",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 10",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 10",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 11",
-   "points": [
-    [
-     -3103.0,
-     3300.0
-    ],
-    [
-     -3103.41,
-     3303.11
-    ],
-    [
-     -3104.61,
-     3306.0
-    ],
-    [
-     -3106.51,
-     3308.49
-    ],
-    [
-     -3109.0,
-     3310.39
-    ],
-    [
-     -3111.89,
-     3311.59
-    ],
-    [
-     -3115.0,
-     3312.0
-    ],
-    [
-     -3118.11,
-     3311.59
-    ],
-    [
-     -3121.0,
-     3310.39
-    ],
-    [
-     -3123.49,
-     3308.49
-    ],
-    [
-     -3125.39,
-     3306.0
-    ],
-    [
-     -3126.59,
-     3303.11
-    ],
-    [
-     -3127.0,
-     3300.0
-    ],
-    [
-     -3126.59,
-     3296.89
-    ],
-    [
-     -3125.39,
-     3294.0
-    ],
-    [
-     -3123.49,
-     3291.51
-    ],
-    [
-     -3121.0,
-     3289.61
-    ],
-    [
-     -3118.11,
-     3288.41
-    ],
-    [
-     -3115.0,
-     3288.0
-    ],
-    [
-     -3111.89,
-     3288.41
-    ],
-    [
-     -3109.0,
-     3289.61
-    ],
-    [
-     -3106.51,
-     3291.51
-    ],
-    [
-     -3104.61,
-     3294.0
-    ],
-    [
-     -3103.41,
-     3296.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 11",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 11",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 11",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Ladder Rung 12",
-   "points": [
-    [
-     -3103.0,
-     3600.0
-    ],
-    [
-     -3103.41,
-     3603.11
-    ],
-    [
-     -3104.61,
-     3606.0
-    ],
-    [
-     -3106.51,
-     3608.49
-    ],
-    [
-     -3109.0,
-     3610.39
-    ],
-    [
-     -3111.89,
-     3611.59
-    ],
-    [
-     -3115.0,
-     3612.0
-    ],
-    [
-     -3118.11,
-     3611.59
-    ],
-    [
-     -3121.0,
-     3610.39
-    ],
-    [
-     -3123.49,
-     3608.49
-    ],
-    [
-     -3125.39,
-     3606.0
-    ],
-    [
-     -3126.59,
-     3603.11
-    ],
-    [
-     -3127.0,
-     3600.0
-    ],
-    [
-     -3126.59,
-     3596.89
-    ],
-    [
-     -3125.39,
-     3594.0
-    ],
-    [
-     -3123.49,
-     3591.51
-    ],
-    [
-     -3121.0,
-     3589.61
-    ],
-    [
-     -3118.11,
-     3588.41
-    ],
-    [
-     -3115.0,
-     3588.0
-    ],
-    [
-     -3111.89,
-     3588.41
-    ],
-    [
-     -3109.0,
-     3589.61
-    ],
-    [
-     -3106.51,
-     3591.51
-    ],
-    [
-     -3104.61,
-     3594.0
-    ],
-    [
-     -3103.41,
-     3596.89
-    ]
-   ],
-   "start": 2340,
-   "end": 2700,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Ladder Rung 12",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Ladder Rung 12",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Ladder Rung 12",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -2839,23 +1667,23 @@
    "name": "Roof Handrail Post 1",
    "points": [
     [
-     2300,
-     -3050
+     4300,
+     0
     ],
     [
-     2340,
-     -3050
+     4340,
+     0
     ],
     [
-     2340,
-     -3010
+     4340,
+     40
     ],
     [
-     2300,
-     -3010
+     4300,
+     40
     ]
    ],
-   "start": 3670,
+   "start": 3650,
    "end": 4700
   },
   {
@@ -2880,23 +1708,23 @@
    "name": "Roof Handrail Post 2",
    "points": [
     [
-     2700,
-     -3050
+     4700,
+     0
     ],
     [
-     2740,
-     -3050
+     4740,
+     0
     ],
     [
-     2740,
-     -3010
+     4740,
+     40
     ],
     [
-     2700,
-     -3010
+     4700,
+     40
     ]
    ],
-   "start": 3670,
+   "start": 3650,
    "end": 4700
   },
   {
@@ -2921,20 +1749,20 @@
    "name": "Roof Handrail",
    "points": [
     [
-     2300,
-     -3050
+     4300,
+     0
     ],
     [
-     2740,
-     -3050
+     4740,
+     0
     ],
     [
-     2740,
-     -3010
+     4740,
+     40
     ],
     [
-     2300,
-     -3010
+     4300,
+     40
     ]
    ],
    "start": 4660,
@@ -2962,100 +1790,100 @@
    "name": "Level Gauge Tube",
    "points": [
     [
-     -2480.0,
-     -3120.0
+     570.0,
+     -70.0
     ],
     [
-     -2480.68,
-     -3114.82
+     569.32,
+     -64.82
     ],
     [
-     -2482.68,
-     -3110.0
+     567.32,
+     -60.0
     ],
     [
-     -2485.86,
-     -3105.86
+     564.14,
+     -55.86
     ],
     [
-     -2490.0,
-     -3102.68
+     560.0,
+     -52.68
     ],
     [
-     -2494.82,
-     -3100.68
+     555.18,
+     -50.68
     ],
     [
-     -2500.0,
-     -3100.0
+     550.0,
+     -50.0
     ],
     [
-     -2505.18,
-     -3100.68
+     544.82,
+     -50.68
     ],
     [
-     -2510.0,
-     -3102.68
+     540.0,
+     -52.68
     ],
     [
-     -2514.14,
-     -3105.86
+     535.86,
+     -55.86
     ],
     [
-     -2517.32,
-     -3110.0
+     532.68,
+     -60.0
     ],
     [
-     -2519.32,
-     -3114.82
+     530.68,
+     -64.82
     ],
     [
-     -2520.0,
-     -3120.0
+     530.0,
+     -70.0
     ],
     [
-     -2519.32,
-     -3125.18
+     530.68,
+     -75.18
     ],
     [
-     -2517.32,
-     -3130.0
+     532.68,
+     -80.0
     ],
     [
-     -2514.14,
-     -3134.14
+     535.86,
+     -84.14
     ],
     [
-     -2510.0,
-     -3137.32
+     540.0,
+     -87.32
     ],
     [
-     -2505.18,
-     -3139.32
+     544.82,
+     -89.32
     ],
     [
-     -2500.0,
-     -3140.0
+     550.0,
+     -90.0
     ],
     [
-     -2494.82,
-     -3139.32
+     555.18,
+     -89.32
     ],
     [
-     -2490.0,
-     -3137.32
+     560.0,
+     -87.32
     ],
     [
-     -2485.86,
-     -3134.14
+     564.14,
+     -84.14
     ],
     [
-     -2482.68,
-     -3130.0
+     567.32,
+     -80.0
     ],
     [
-     -2480.68,
-     -3125.18
+     569.32,
+     -75.18
     ]
    ],
    "start": 700,
@@ -3080,150 +1908,108 @@
   },
   {
    "op": "extrusion",
-   "name": "Level Gauge Board",
-   "points": [
-    [
-     -2600,
-     700
-    ],
-    [
-     -2400,
-     700
-    ],
-    [
-     -2400,
-     3600
-    ],
-    [
-     -2600,
-     3600
-    ]
-   ],
-   "start": 3080,
-   "end": 3105,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Level Gauge Board",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Level Gauge Board",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Level Gauge Board",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Pump Suction Outlet",
    "points": [
     [
-     -1090.0,
+     1960.0,
      800.0
     ],
     [
-     -1093.75,
+     1956.25,
      828.47
     ],
     [
-     -1104.74,
+     1945.26,
      855.0
     ],
     [
-     -1122.22,
+     1927.78,
      877.78
     ],
     [
-     -1145.0,
+     1905.0,
      895.26
     ],
     [
-     -1171.53,
+     1878.47,
      906.25
     ],
     [
-     -1200.0,
+     1850.0,
      910.0
     ],
     [
-     -1228.47,
+     1821.53,
      906.25
     ],
     [
-     -1255.0,
+     1795.0,
      895.26
     ],
     [
-     -1277.78,
+     1772.22,
      877.78
     ],
     [
-     -1295.26,
+     1754.74,
      855.0
     ],
     [
-     -1306.25,
+     1743.75,
      828.47
     ],
     [
-     -1310.0,
+     1740.0,
      800.0
     ],
     [
-     -1306.25,
+     1743.75,
      771.53
     ],
     [
-     -1295.26,
+     1754.74,
      745.0
     ],
     [
-     -1277.78,
+     1772.22,
      722.22
     ],
     [
-     -1255.0,
+     1795.0,
      704.74
     ],
     [
-     -1228.47,
+     1821.53,
      693.75
     ],
     [
-     -1200.0,
+     1850.0,
      690.0
     ],
     [
-     -1171.53,
+     1878.47,
      693.75
     ],
     [
-     -1145.0,
+     1905.0,
      704.74
     ],
     [
-     -1122.22,
+     1927.78,
      722.22
     ],
     [
-     -1104.74,
+     1945.26,
      745.0
     ],
     [
-     -1093.75,
+     1956.25,
      771.53
     ]
    ],
-   "start": 3050,
-   "end": 3600,
-   "sketch": "right"
+   "start": 0,
+   "end": 550,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
@@ -3248,26 +2034,26 @@
    "profile": [
     [
      0,
-     3600
+     550
     ],
     [
      180,
-     3600
+     550
     ],
     [
      180,
-     3625
+     575
     ],
     [
      0,
-     3625
+     575
     ]
    ],
    "axis_at": [
-    -1200,
+    1850,
     800
    ],
-   "axis": "x",
+   "axis": "y",
    "subcategory": "Red"
   },
   {
@@ -3284,347 +2070,1208 @@
   },
   {
    "op": "extrusion",
-   "name": "Fill Inlet",
+   "name": "Drain",
    "points": [
     [
-     1250.0,
+     3090.0,
+     720.0
+    ],
+    [
+     3088.64,
+     730.35
+    ],
+    [
+     3084.64,
+     740.0
+    ],
+    [
+     3078.28,
+     748.28
+    ],
+    [
+     3070.0,
+     754.64
+    ],
+    [
+     3060.35,
+     758.64
+    ],
+    [
+     3050.0,
+     760.0
+    ],
+    [
+     3039.65,
+     758.64
+    ],
+    [
+     3030.0,
+     754.64
+    ],
+    [
+     3021.72,
+     748.28
+    ],
+    [
+     3015.36,
+     740.0
+    ],
+    [
+     3011.36,
+     730.35
+    ],
+    [
+     3010.0,
+     720.0
+    ],
+    [
+     3011.36,
+     709.65
+    ],
+    [
+     3015.36,
+     700.0
+    ],
+    [
+     3021.72,
+     691.72
+    ],
+    [
+     3030.0,
+     685.36
+    ],
+    [
+     3039.65,
+     681.36
+    ],
+    [
+     3050.0,
+     680.0
+    ],
+    [
+     3060.35,
+     681.36
+    ],
+    [
+     3070.0,
+     685.36
+    ],
+    [
+     3078.28,
+     691.72
+    ],
+    [
+     3084.64,
+     700.0
+    ],
+    [
+     3088.64,
+     709.65
+    ]
+   ],
+   "start": 250,
+   "end": 0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Label",
+   "points": [
+    [
+     1500,
+     2600
+    ],
+    [
+     4100,
+     2600
+    ],
+    [
+     4100,
+     3000
+    ],
+    [
+     1500,
+     3000
+    ]
+   ],
+   "start": 2,
+   "end": 10,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Label",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Label",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 1",
+   "points": [
+    [
+     -60,
+     -100
+    ],
+    [
+     60,
+     -100
+    ],
+    [
+     60,
+     6200
+    ],
+    [
+     -60,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 1",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 1",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 2",
+   "points": [
+    [
+     1160,
+     -100
+    ],
+    [
+     1280,
+     -100
+    ],
+    [
+     1280,
+     6200
+    ],
+    [
+     1160,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 2",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 2",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 3",
+   "points": [
+    [
+     2380,
+     -100
+    ],
+    [
+     2500,
+     -100
+    ],
+    [
+     2500,
+     6200
+    ],
+    [
+     2380,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 3",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 3",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 4",
+   "points": [
+    [
+     3600,
+     -100
+    ],
+    [
+     3720,
+     -100
+    ],
+    [
+     3720,
+     6200
+    ],
+    [
+     3600,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 4",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 4",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 5",
+   "points": [
+    [
+     4820,
+     -100
+    ],
+    [
+     4940,
+     -100
+    ],
+    [
+     4940,
+     6200
+    ],
+    [
+     4820,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 5",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 5",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 100m3 6",
+   "points": [
+    [
+     6040,
+     -100
+    ],
+    [
+     6160,
+     -100
+    ],
+    [
+     6160,
+     6200
+    ],
+    [
+     6040,
+     6200
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 100m3 6",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 100m3 6",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 100m3 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Shell 100m3",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     6100,
+     0
+    ],
+    [
+     6100,
+     6100
+    ],
+    [
+     0,
+     6100
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Shell 100m3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Shell 100m3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Shell 100m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 100m3 1",
+   "points": [
+    [
+     1195,
+     -30
+    ],
+    [
+     1245,
+     -30
+    ],
+    [
+     1245,
+     6130
+    ],
+    [
+     1195,
+     6130
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 100m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 100m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 100m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 100m3 2",
+   "points": [
+    [
+     2415,
+     -30
+    ],
+    [
+     2465,
+     -30
+    ],
+    [
+     2465,
+     6130
+    ],
+    [
+     2415,
+     6130
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 100m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 100m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 100m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 100m3 3",
+   "points": [
+    [
+     3635,
+     -30
+    ],
+    [
+     3685,
+     -30
+    ],
+    [
+     3685,
+     6130
+    ],
+    [
+     3635,
+     6130
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 100m3 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 100m3 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 100m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 100m3 4",
+   "points": [
+    [
+     4855,
+     -30
+    ],
+    [
+     4905,
+     -30
+    ],
+    [
+     4905,
+     6130
+    ],
+    [
+     4855,
+     6130
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 100m3 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 100m3 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 100m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 100m3 1",
+   "points": [
+    [
+     -30,
+     1195
+    ],
+    [
+     6130,
+     1195
+    ],
+    [
+     6130,
+     1245
+    ],
+    [
+     -30,
+     1245
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 100m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 100m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 100m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 100m3 2",
+   "points": [
+    [
+     -30,
+     2415
+    ],
+    [
+     6130,
+     2415
+    ],
+    [
+     6130,
+     2465
+    ],
+    [
+     -30,
+     2465
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 100m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 100m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 100m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 100m3 3",
+   "points": [
+    [
+     -30,
+     3635
+    ],
+    [
+     6130,
+     3635
+    ],
+    [
+     6130,
+     3685
+    ],
+    [
+     -30,
+     3685
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 100m3 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 100m3 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 100m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 100m3 4",
+   "points": [
+    [
+     -30,
+     4855
+    ],
+    [
+     6130,
+     4855
+    ],
+    [
+     6130,
+     4905
+    ],
+    [
+     -30,
+     4905
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 100m3 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 100m3 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 100m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Z 100m3 1",
+   "points": [
+    [
+     -30,
+     -30
+    ],
+    [
+     6130,
+     -30
+    ],
+    [
+     6130,
+     6130
+    ],
+    [
+     -30,
+     6130
+    ]
+   ],
+   "start": 1795,
+   "end": 1845
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Z 100m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Z 100m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Z 100m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Z 100m3 2",
+   "points": [
+    [
+     -30,
+     -30
+    ],
+    [
+     6130,
+     -30
+    ],
+    [
+     6130,
+     6130
+    ],
+    [
+     -30,
+     6130
+    ]
+   ],
+   "start": 3015,
+   "end": 3065
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Z 100m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Z 100m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Z 100m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fill Inlet 100m3",
+   "points": [
+    [
+     4950.0,
      3300.0
     ],
     [
-     1248.3,
+     4948.3,
      3312.94
     ],
     [
-     1243.3,
+     4943.3,
      3325.0
     ],
     [
-     1235.36,
+     4935.36,
      3335.36
     ],
     [
-     1225.0,
+     4925.0,
      3343.3
     ],
     [
-     1212.94,
+     4912.94,
      3348.3
     ],
     [
-     1200.0,
+     4900.0,
      3350.0
     ],
     [
-     1187.06,
+     4887.06,
      3348.3
     ],
     [
-     1175.0,
+     4875.0,
      3343.3
     ],
     [
-     1164.64,
+     4864.64,
      3335.36
     ],
     [
-     1156.7,
+     4856.7,
      3325.0
     ],
     [
-     1151.7,
+     4851.7,
      3312.94
     ],
     [
-     1150.0,
+     4850.0,
      3300.0
     ],
     [
-     1151.7,
+     4851.7,
      3287.06
     ],
     [
-     1156.7,
+     4856.7,
      3275.0
     ],
     [
-     1164.64,
+     4864.64,
      3264.64
     ],
     [
-     1175.0,
+     4875.0,
      3256.7
     ],
     [
-     1187.06,
+     4887.06,
      3251.7
     ],
     [
-     1200.0,
+     4900.0,
      3250.0
     ],
     [
-     1212.94,
+     4912.94,
      3251.7
     ],
     [
-     1225.0,
+     4925.0,
      3256.7
     ],
     [
-     1235.36,
+     4935.36,
      3264.64
     ],
     [
-     1243.3,
+     4943.3,
      3275.0
     ],
     [
-     1248.3,
+     4948.3,
      3287.06
     ]
    ],
-   "start": 3050,
-   "end": 3500,
+   "start": 6100,
+   "end": 6550,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Fill Inlet",
+   "name": "Fill Inlet 100m3",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Fill Inlet",
+   "name": "Fill Inlet 100m3",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fill Inlet",
+   "name": "Fill Inlet 100m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Overflow",
+   "name": "Overflow 100m3",
    "points": [
     [
-     65.0,
+     3115.0,
      3420.0
     ],
     [
-     62.79,
+     3112.79,
      3436.82
     ],
     [
-     56.29,
+     3106.29,
      3452.5
     ],
     [
-     45.96,
+     3095.96,
      3465.96
     ],
     [
-     32.5,
+     3082.5,
      3476.29
     ],
     [
-     16.82,
+     3066.82,
      3482.79
     ],
     [
-     0.0,
+     3050.0,
      3485.0
     ],
     [
-     -16.82,
+     3033.18,
      3482.79
     ],
     [
-     -32.5,
+     3017.5,
      3476.29
     ],
     [
-     -45.96,
+     3004.04,
      3465.96
     ],
     [
-     -56.29,
+     2993.71,
      3452.5
     ],
     [
-     -62.79,
+     2987.21,
      3436.82
     ],
     [
-     -65.0,
+     2985.0,
      3420.0
     ],
     [
-     -62.79,
+     2987.21,
      3403.18
     ],
     [
-     -56.29,
+     2993.71,
      3387.5
     ],
     [
-     -45.96,
+     3004.04,
      3374.04
     ],
     [
-     -32.5,
+     3017.5,
      3363.71
     ],
     [
-     -16.82,
+     3033.18,
      3357.21
     ],
     [
-     -0.0,
+     3050.0,
      3355.0
     ],
     [
-     16.82,
+     3066.82,
      3357.21
     ],
     [
-     32.5,
+     3082.5,
      3363.71
     ],
     [
-     45.96,
+     3095.96,
      3374.04
     ],
     [
-     56.29,
+     3106.29,
      3387.5
     ],
     [
-     62.79,
+     3112.79,
      3403.18
     ]
    ],
-   "start": 3050,
-   "end": 3420,
+   "start": 6100,
+   "end": 6470,
    "sketch": "right"
   },
   {
    "op": "set_subcategory",
-   "name": "Overflow",
+   "name": "Overflow 100m3",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Overflow",
+   "name": "Overflow 100m3",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Overflow",
+   "name": "Overflow 100m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Overflow Downpipe",
+   "name": "Overflow Downpipe 100m3",
    "points": [
     [
-     3485.0,
-     0.0
+     6535.0,
+     3050.0
     ],
     [
-     3482.79,
-     16.82
+     6532.79,
+     3066.82
     ],
     [
-     3476.29,
-     32.5
+     6526.29,
+     3082.5
     ],
     [
-     3465.96,
-     45.96
+     6515.96,
+     3095.96
     ],
     [
-     3452.5,
-     56.29
+     6502.5,
+     3106.29
     ],
     [
-     3436.82,
-     62.79
+     6486.82,
+     3112.79
     ],
     [
-     3420.0,
-     65.0
+     6470.0,
+     3115.0
     ],
     [
-     3403.18,
-     62.79
+     6453.18,
+     3112.79
     ],
     [
-     3387.5,
-     56.29
+     6437.5,
+     3106.29
     ],
     [
-     3374.04,
-     45.96
+     6424.04,
+     3095.96
     ],
     [
-     3363.71,
-     32.5
+     6413.71,
+     3082.5
     ],
     [
-     3357.21,
-     16.82
+     6407.21,
+     3066.82
     ],
     [
-     3355.0,
-     0.0
+     6405.0,
+     3050.0
     ],
     [
-     3357.21,
-     -16.82
+     6407.21,
+     3033.18
     ],
     [
-     3363.71,
-     -32.5
+     6413.71,
+     3017.5
     ],
     [
-     3374.04,
-     -45.96
+     6424.04,
+     3004.04
     ],
     [
-     3387.5,
-     -56.29
+     6437.5,
+     2993.71
     ],
     [
-     3403.18,
-     -62.79
+     6453.18,
+     2987.21
     ],
     [
-     3420.0,
-     -65.0
+     6470.0,
+     2985.0
     ],
     [
-     3436.82,
-     -62.79
+     6486.82,
+     2987.21
     ],
     [
-     3452.5,
-     -56.29
+     6502.5,
+     2993.71
     ],
     [
-     3465.96,
-     -45.96
+     6515.96,
+     3004.04
     ],
     [
-     3476.29,
-     -32.5
+     6526.29,
+     3017.5
     ],
     [
-     3482.79,
-     -16.82
+     6532.79,
+     3033.18
     ]
    ],
    "start": 700,
@@ -3632,224 +3279,1644 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Overflow Downpipe",
+   "name": "Overflow Downpipe 100m3",
    "subcategory": "Gi"
   },
   {
    "op": "set_material_param",
-   "name": "Overflow Downpipe",
+   "name": "Overflow Downpipe 100m3",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Overflow Downpipe",
+   "name": "Overflow Downpipe 100m3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drain",
+   "name": "Plinth Wall 200m3 1",
    "points": [
     [
-     2040.0,
-     720.0
+     -60,
+     -100
     ],
     [
-     2038.64,
-     730.35
+     60,
+     -100
     ],
     [
-     2034.64,
-     740.0
+     60,
+     8640
     ],
     [
-     2028.28,
-     748.28
-    ],
-    [
-     2020.0,
-     754.64
-    ],
-    [
-     2010.35,
-     758.64
-    ],
-    [
-     2000.0,
-     760.0
-    ],
-    [
-     1989.65,
-     758.64
-    ],
-    [
-     1980.0,
-     754.64
-    ],
-    [
-     1971.72,
-     748.28
-    ],
-    [
-     1965.36,
-     740.0
-    ],
-    [
-     1961.36,
-     730.35
-    ],
-    [
-     1960.0,
-     720.0
-    ],
-    [
-     1961.36,
-     709.65
-    ],
-    [
-     1965.36,
-     700.0
-    ],
-    [
-     1971.72,
-     691.72
-    ],
-    [
-     1980.0,
-     685.36
-    ],
-    [
-     1989.65,
-     681.36
-    ],
-    [
-     2000.0,
-     680.0
-    ],
-    [
-     2010.35,
-     681.36
-    ],
-    [
-     2020.0,
-     685.36
-    ],
-    [
-     2028.28,
-     691.72
-    ],
-    [
-     2034.64,
-     700.0
-    ],
-    [
-     2038.64,
-     709.65
+     -60,
+     8640
     ]
    ],
-   "start": 3300,
-   "end": 3050,
-   "sketch": "front"
+   "start": 0,
+   "end": 600
   },
   {
    "op": "set_subcategory",
-   "name": "Drain",
-   "subcategory": "Gi"
+   "name": "Plinth Wall 200m3 1",
+   "subcategory": "Concg"
   },
   {
    "op": "set_material_param",
-   "name": "Drain",
-   "param": "Gi Material"
+   "name": "Plinth Wall 200m3 1",
+   "param": "Concg Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drain",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Drain Valve",
-   "profile": [
-    [
-     0,
-     3300
-    ],
-    [
-     60,
-     3300
-    ],
-    [
-     60,
-     3360
-    ],
-    [
-     0,
-     3360
-    ]
-   ],
-   "axis_at": [
-    2000,
-    720
-   ],
-   "axis": "y",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drain Valve",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drain Valve",
+   "name": "Plinth Wall 200m3 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Tank Label",
+   "name": "Plinth Wall 200m3 2",
    "points": [
     [
-     -1400,
-     2600
+     1160,
+     -100
     ],
     [
-     1400,
-     2600
+     1280,
+     -100
     ],
     [
-     1400,
-     3000
+     1280,
+     8640
     ],
     [
-     -1400,
-     3000
+     1160,
+     8640
     ]
    ],
-   "start": 3052,
-   "end": 3060,
-   "sketch": "front"
+   "start": 0,
+   "end": 600
   },
   {
    "op": "set_subcategory",
-   "name": "Tank Label",
-   "subcategory": "White"
+   "name": "Plinth Wall 200m3 2",
+   "subcategory": "Concg"
   },
   {
    "op": "set_material_param",
-   "name": "Tank Label",
-   "param": "White Material"
+   "name": "Plinth Wall 200m3 2",
+   "param": "Concg Material"
   },
   {
    "op": "set_visibility",
-   "name": "Tank Label",
+   "name": "Plinth Wall 200m3 2",
    "coarse": false,
-   "medium": false,
+   "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 3",
+   "points": [
+    [
+     2380,
+     -100
+    ],
+    [
+     2500,
+     -100
+    ],
+    [
+     2500,
+     8640
+    ],
+    [
+     2380,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 3",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 3",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 4",
+   "points": [
+    [
+     3600,
+     -100
+    ],
+    [
+     3720,
+     -100
+    ],
+    [
+     3720,
+     8640
+    ],
+    [
+     3600,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 4",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 4",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 5",
+   "points": [
+    [
+     4820,
+     -100
+    ],
+    [
+     4940,
+     -100
+    ],
+    [
+     4940,
+     8640
+    ],
+    [
+     4820,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 5",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 5",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 6",
+   "points": [
+    [
+     6040,
+     -100
+    ],
+    [
+     6160,
+     -100
+    ],
+    [
+     6160,
+     8640
+    ],
+    [
+     6040,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 6",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 6",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 7",
+   "points": [
+    [
+     7260,
+     -100
+    ],
+    [
+     7380,
+     -100
+    ],
+    [
+     7380,
+     8640
+    ],
+    [
+     7260,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 7",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 7",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth Wall 200m3 8",
+   "points": [
+    [
+     8480,
+     -100
+    ],
+    [
+     8600,
+     -100
+    ],
+    [
+     8600,
+     8640
+    ],
+    [
+     8480,
+     8640
+    ]
+   ],
+   "start": 0,
+   "end": 600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth Wall 200m3 8",
+   "subcategory": "Concg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth Wall 200m3 8",
+   "param": "Concg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth Wall 200m3 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tank Shell 200m3",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     8540,
+     0
+    ],
+    [
+     8540,
+     8540
+    ],
+    [
+     0,
+     8540
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tank Shell 200m3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tank Shell 200m3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tank Shell 200m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 1",
+   "points": [
+    [
+     1195,
+     -30
+    ],
+    [
+     1245,
+     -30
+    ],
+    [
+     1245,
+     8570
+    ],
+    [
+     1195,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 2",
+   "points": [
+    [
+     2415,
+     -30
+    ],
+    [
+     2465,
+     -30
+    ],
+    [
+     2465,
+     8570
+    ],
+    [
+     2415,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 3",
+   "points": [
+    [
+     3635,
+     -30
+    ],
+    [
+     3685,
+     -30
+    ],
+    [
+     3685,
+     8570
+    ],
+    [
+     3635,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 4",
+   "points": [
+    [
+     4855,
+     -30
+    ],
+    [
+     4905,
+     -30
+    ],
+    [
+     4905,
+     8570
+    ],
+    [
+     4855,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 5",
+   "points": [
+    [
+     6075,
+     -30
+    ],
+    [
+     6125,
+     -30
+    ],
+    [
+     6125,
+     8570
+    ],
+    [
+     6075,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange X 200m3 6",
+   "points": [
+    [
+     7295,
+     -30
+    ],
+    [
+     7345,
+     -30
+    ],
+    [
+     7345,
+     8570
+    ],
+    [
+     7295,
+     8570
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange X 200m3 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange X 200m3 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange X 200m3 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 1",
+   "points": [
+    [
+     -30,
+     1195
+    ],
+    [
+     8570,
+     1195
+    ],
+    [
+     8570,
+     1245
+    ],
+    [
+     -30,
+     1245
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 2",
+   "points": [
+    [
+     -30,
+     2415
+    ],
+    [
+     8570,
+     2415
+    ],
+    [
+     8570,
+     2465
+    ],
+    [
+     -30,
+     2465
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 3",
+   "points": [
+    [
+     -30,
+     3635
+    ],
+    [
+     8570,
+     3635
+    ],
+    [
+     8570,
+     3685
+    ],
+    [
+     -30,
+     3685
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 4",
+   "points": [
+    [
+     -30,
+     4855
+    ],
+    [
+     8570,
+     4855
+    ],
+    [
+     8570,
+     4905
+    ],
+    [
+     -30,
+     4905
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 5",
+   "points": [
+    [
+     -30,
+     6075
+    ],
+    [
+     8570,
+     6075
+    ],
+    [
+     8570,
+     6125
+    ],
+    [
+     -30,
+     6125
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 5",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 5",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Y 200m3 6",
+   "points": [
+    [
+     -30,
+     7295
+    ],
+    [
+     8570,
+     7295
+    ],
+    [
+     8570,
+     7345
+    ],
+    [
+     -30,
+     7345
+    ]
+   ],
+   "start": 600,
+   "end": 3650
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Y 200m3 6",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Y 200m3 6",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Y 200m3 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Z 200m3 1",
+   "points": [
+    [
+     -30,
+     -30
+    ],
+    [
+     8570,
+     -30
+    ],
+    [
+     8570,
+     8570
+    ],
+    [
+     -30,
+     8570
+    ]
+   ],
+   "start": 1795,
+   "end": 1845
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Z 200m3 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Z 200m3 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Z 200m3 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Panel Flange Z 200m3 2",
+   "points": [
+    [
+     -30,
+     -30
+    ],
+    [
+     8570,
+     -30
+    ],
+    [
+     8570,
+     8570
+    ],
+    [
+     -30,
+     8570
+    ]
+   ],
+   "start": 3015,
+   "end": 3065
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Panel Flange Z 200m3 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Panel Flange Z 200m3 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Panel Flange Z 200m3 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fill Inlet 200m3",
+   "points": [
+    [
+     7390.0,
+     3300.0
+    ],
+    [
+     7388.3,
+     3312.94
+    ],
+    [
+     7383.3,
+     3325.0
+    ],
+    [
+     7375.36,
+     3335.36
+    ],
+    [
+     7365.0,
+     3343.3
+    ],
+    [
+     7352.94,
+     3348.3
+    ],
+    [
+     7340.0,
+     3350.0
+    ],
+    [
+     7327.06,
+     3348.3
+    ],
+    [
+     7315.0,
+     3343.3
+    ],
+    [
+     7304.64,
+     3335.36
+    ],
+    [
+     7296.7,
+     3325.0
+    ],
+    [
+     7291.7,
+     3312.94
+    ],
+    [
+     7290.0,
+     3300.0
+    ],
+    [
+     7291.7,
+     3287.06
+    ],
+    [
+     7296.7,
+     3275.0
+    ],
+    [
+     7304.64,
+     3264.64
+    ],
+    [
+     7315.0,
+     3256.7
+    ],
+    [
+     7327.06,
+     3251.7
+    ],
+    [
+     7340.0,
+     3250.0
+    ],
+    [
+     7352.94,
+     3251.7
+    ],
+    [
+     7365.0,
+     3256.7
+    ],
+    [
+     7375.36,
+     3264.64
+    ],
+    [
+     7383.3,
+     3275.0
+    ],
+    [
+     7388.3,
+     3287.06
+    ]
+   ],
+   "start": 8540,
+   "end": 8990,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fill Inlet 200m3",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fill Inlet 200m3",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fill Inlet 200m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Overflow 200m3",
+   "points": [
+    [
+     4335.0,
+     3420.0
+    ],
+    [
+     4332.79,
+     3436.82
+    ],
+    [
+     4326.29,
+     3452.5
+    ],
+    [
+     4315.96,
+     3465.96
+    ],
+    [
+     4302.5,
+     3476.29
+    ],
+    [
+     4286.82,
+     3482.79
+    ],
+    [
+     4270.0,
+     3485.0
+    ],
+    [
+     4253.18,
+     3482.79
+    ],
+    [
+     4237.5,
+     3476.29
+    ],
+    [
+     4224.04,
+     3465.96
+    ],
+    [
+     4213.71,
+     3452.5
+    ],
+    [
+     4207.21,
+     3436.82
+    ],
+    [
+     4205.0,
+     3420.0
+    ],
+    [
+     4207.21,
+     3403.18
+    ],
+    [
+     4213.71,
+     3387.5
+    ],
+    [
+     4224.04,
+     3374.04
+    ],
+    [
+     4237.5,
+     3363.71
+    ],
+    [
+     4253.18,
+     3357.21
+    ],
+    [
+     4270.0,
+     3355.0
+    ],
+    [
+     4286.82,
+     3357.21
+    ],
+    [
+     4302.5,
+     3363.71
+    ],
+    [
+     4315.96,
+     3374.04
+    ],
+    [
+     4326.29,
+     3387.5
+    ],
+    [
+     4332.79,
+     3403.18
+    ]
+   ],
+   "start": 8540,
+   "end": 8910,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Overflow 200m3",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Overflow 200m3",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Overflow 200m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Overflow Downpipe 200m3",
+   "points": [
+    [
+     8975.0,
+     4270.0
+    ],
+    [
+     8972.79,
+     4286.82
+    ],
+    [
+     8966.29,
+     4302.5
+    ],
+    [
+     8955.96,
+     4315.96
+    ],
+    [
+     8942.5,
+     4326.29
+    ],
+    [
+     8926.82,
+     4332.79
+    ],
+    [
+     8910.0,
+     4335.0
+    ],
+    [
+     8893.18,
+     4332.79
+    ],
+    [
+     8877.5,
+     4326.29
+    ],
+    [
+     8864.04,
+     4315.96
+    ],
+    [
+     8853.71,
+     4302.5
+    ],
+    [
+     8847.21,
+     4286.82
+    ],
+    [
+     8845.0,
+     4270.0
+    ],
+    [
+     8847.21,
+     4253.18
+    ],
+    [
+     8853.71,
+     4237.5
+    ],
+    [
+     8864.04,
+     4224.04
+    ],
+    [
+     8877.5,
+     4213.71
+    ],
+    [
+     8893.18,
+     4207.21
+    ],
+    [
+     8910.0,
+     4205.0
+    ],
+    [
+     8926.82,
+     4207.21
+    ],
+    [
+     8942.5,
+     4213.71
+    ],
+    [
+     8955.96,
+     4224.04
+    ],
+    [
+     8966.29,
+     4237.5
+    ],
+    [
+     8972.79,
+     4253.18
+    ]
+   ],
+   "start": 700,
+   "end": 3420
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Overflow Downpipe 200m3",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Overflow Downpipe 200m3",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Overflow Downpipe 200m3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 100m3_Sectional",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100m3_Sectional/Show 100m3_Sectional",
+   "type": "100m3_Sectional",
+   "param": "Show 100m3_Sectional",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "200m3_Sectional/Show 100m3_Sectional",
+   "type": "200m3_Sectional",
+   "param": "Show 100m3_Sectional",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 1/Visible",
+   "solid": "Plinth Wall 100m3 1",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 2/Visible",
+   "solid": "Plinth Wall 100m3 2",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 3/Visible",
+   "solid": "Plinth Wall 100m3 3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 4/Visible",
+   "solid": "Plinth Wall 100m3 4",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 5/Visible",
+   "solid": "Plinth Wall 100m3 5",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 100m3 6/Visible",
+   "solid": "Plinth Wall 100m3 6",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Shell 100m3/Visible",
+   "solid": "Tank Shell 100m3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 100m3 1/Visible",
+   "solid": "Panel Flange X 100m3 1",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 100m3 2/Visible",
+   "solid": "Panel Flange X 100m3 2",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 100m3 3/Visible",
+   "solid": "Panel Flange X 100m3 3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 100m3 4/Visible",
+   "solid": "Panel Flange X 100m3 4",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 100m3 1/Visible",
+   "solid": "Panel Flange Y 100m3 1",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 100m3 2/Visible",
+   "solid": "Panel Flange Y 100m3 2",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 100m3 3/Visible",
+   "solid": "Panel Flange Y 100m3 3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 100m3 4/Visible",
+   "solid": "Panel Flange Y 100m3 4",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Z 100m3 1/Visible",
+   "solid": "Panel Flange Z 100m3 1",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Z 100m3 2/Visible",
+   "solid": "Panel Flange Z 100m3 2",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Inlet 100m3/Visible",
+   "solid": "Fill Inlet 100m3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow 100m3/Visible",
+   "solid": "Overflow 100m3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow Downpipe 100m3/Visible",
+   "solid": "Overflow Downpipe 100m3",
+   "param": "Show 100m3_Sectional"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 200m3_Sectional",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100m3_Sectional/Show 200m3_Sectional",
+   "type": "100m3_Sectional",
+   "param": "Show 200m3_Sectional",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "200m3_Sectional/Show 200m3_Sectional",
+   "type": "200m3_Sectional",
+   "param": "Show 200m3_Sectional",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 1/Visible",
+   "solid": "Plinth Wall 200m3 1",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 2/Visible",
+   "solid": "Plinth Wall 200m3 2",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 3/Visible",
+   "solid": "Plinth Wall 200m3 3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 4/Visible",
+   "solid": "Plinth Wall 200m3 4",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 5/Visible",
+   "solid": "Plinth Wall 200m3 5",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 6/Visible",
+   "solid": "Plinth Wall 200m3 6",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 7/Visible",
+   "solid": "Plinth Wall 200m3 7",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth Wall 200m3 8/Visible",
+   "solid": "Plinth Wall 200m3 8",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Tank Shell 200m3/Visible",
+   "solid": "Tank Shell 200m3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 1/Visible",
+   "solid": "Panel Flange X 200m3 1",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 2/Visible",
+   "solid": "Panel Flange X 200m3 2",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 3/Visible",
+   "solid": "Panel Flange X 200m3 3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 4/Visible",
+   "solid": "Panel Flange X 200m3 4",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 5/Visible",
+   "solid": "Panel Flange X 200m3 5",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange X 200m3 6/Visible",
+   "solid": "Panel Flange X 200m3 6",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 1/Visible",
+   "solid": "Panel Flange Y 200m3 1",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 2/Visible",
+   "solid": "Panel Flange Y 200m3 2",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 3/Visible",
+   "solid": "Panel Flange Y 200m3 3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 4/Visible",
+   "solid": "Panel Flange Y 200m3 4",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 5/Visible",
+   "solid": "Panel Flange Y 200m3 5",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Y 200m3 6/Visible",
+   "solid": "Panel Flange Y 200m3 6",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Z 200m3 1/Visible",
+   "solid": "Panel Flange Z 200m3 1",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Panel Flange Z 200m3 2/Visible",
+   "solid": "Panel Flange Z 200m3 2",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Inlet 200m3/Visible",
+   "solid": "Fill Inlet 200m3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow 200m3/Visible",
+   "solid": "Overflow 200m3",
+   "param": "Show 200m3_Sectional"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Overflow Downpipe 200m3/Visible",
+   "solid": "Overflow Downpipe 200m3",
+   "param": "Show 200m3_Sectional"
   },
   {
    "op": "add_connector",
@@ -3857,7 +4924,7 @@
    "domain": "pipe",
    "system": "FireProtectWet",
    "solid": "Suction Flange",
-   "side": "right",
+   "side": "front",
    "diameter": 200,
    "flow": "Out"
   },
@@ -3873,7 +4940,7 @@
    "source_status": "assumed",
    "source": "1220 mm sectional panels; effective capacity below overflow"
   },
-  "200 m3: 8.5 x 8.5 x 3.05 m": {
+  "200 m3: 8.54 x 8.54 x 3.05 m (7 x 7 x 2.5 panels)": {
    "value": "8540x8540x3050",
    "source_status": "assumed",
    "source": "1220 mm sectional panels"

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_MechEq_AC_Split_Outdoor",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Modelled as a generic product: white casing on foot rails, front axial fan with bezel, blades, hub and wire guard, finned coil with guard bars at the rear, right-side valve cover with liquid and gas service valves. Reference: query: ac split outdoor mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+split+outdoor+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: white casing on foot rails, front axial fan with bezel, blades, hub and wire guard, finned coil with guard bars at the rear, right-side valve cover with liquid and gas service valves. Reference: query: ac split outdoor mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+split+outdoor+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.shi.com/product/40301650/Schneider-Uniflair-Air-conditioning-cooling-split-system-outdoor-unit; photo_title: Schneider Uniflair Air conditioning cooling split system outdoor unit; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -437,6 +437,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2.6-7.0kW_Condensing/URL",
+   "type": "2.6-7.0kW_Condensing",
+   "param": "URL",
+   "value": "https://www.shi.com/product/40301650/Schneider-Uniflair-Air-conditioning-cooling-split-system-outdoor-unit"
+  },
+  {
+   "op": "set_type_value",
    "name": "2.6-7.0kW_Condensing/Voltage",
    "type": "2.6-7.0kW_Condensing",
    "param": "Voltage",
@@ -532,6 +539,27 @@
    "op": "add_material",
    "name": "FMC_Metal_Brass_Polished",
    "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Fin",
+   "color": [
+    169,
+    178,
+    184
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Fin Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Material"
   },
   {
    "op": "add_subcategory",
@@ -1310,12 +1338,12 @@
   {
    "op": "set_subcategory",
    "name": "Coil Fins",
-   "subcategory": "Alu"
+   "subcategory": "Fin"
   },
   {
    "op": "set_material_param",
    "name": "Coil Fins",
-   "param": "Alu Material"
+   "param": "Fin Material"
   },
   {
    "op": "set_visibility",

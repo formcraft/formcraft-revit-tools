@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_ElecFixture_Switch_Light",
  "template": "Metric Generic Model.rft",
- "about": "Light switch: plate, two wide rockers with surrounds and position marks, screws, steel box. Gang count is in the type name; geometry shows 2 gangs. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: switch light electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=switch+light+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Light switch: plate, screws, steel box; rockers with surrounds and marks per type: 1G one wide, 2G two, 3G three narrow, 4G a 2 x 2 grid. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: switch light electrical fixtures hospital; images: https://www.google.com/search?tbm=isch&q=switch+light+electrical+fixtures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.diy.ie/departments/mk-10a-2-way-1-gang-light-switch-gloss-white/53978_BQ.prd; photo_title: MK 10A 2-Way 1 Gang Light Switch Gloss White; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -22,33 +22,291 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Circuit_Ref",
+   "guid": "1fc378b3-9930-552d-851c-c8a0002ad673",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -80,7 +338,7 @@
    "name": "10A_1G/Description",
    "type": "10A_1G",
    "param": "Description",
-   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type (2-gang shown)"
+   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type"
   },
   {
    "op": "set_type_value",
@@ -95,6 +353,34 @@
    "type": "10A_1G",
    "param": "FMC_Keynote_Code",
    "value": "E.SOC_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/FMC_Code_Description",
+   "type": "10A_1G",
+   "param": "FMC_Code_Description",
+   "value": "Switch Light: Light switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/FMC_Code_Group",
+   "type": "10A_1G",
+   "param": "FMC_Code_Group",
+   "value": "E.SOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/FMC_Role_Code",
+   "type": "10A_1G",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/URL",
+   "type": "10A_1G",
+   "param": "URL",
+   "value": "https://www.diy.ie/departments/mk-10a-2-way-1-gang-light-switch-gloss-white/53978_BQ.prd"
   },
   {
    "op": "set_type_value",
@@ -147,7 +433,7 @@
    "name": "10A_2G/Description",
    "type": "10A_2G",
    "param": "Description",
-   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type (2-gang shown)"
+   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type"
   },
   {
    "op": "set_type_value",
@@ -162,6 +448,34 @@
    "type": "10A_2G",
    "param": "FMC_Keynote_Code",
    "value": "E.SOC_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/FMC_Code_Description",
+   "type": "10A_2G",
+   "param": "FMC_Code_Description",
+   "value": "Switch Light: Light switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/FMC_Code_Group",
+   "type": "10A_2G",
+   "param": "FMC_Code_Group",
+   "value": "E.SOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/FMC_Role_Code",
+   "type": "10A_2G",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/URL",
+   "type": "10A_2G",
+   "param": "URL",
+   "value": "https://www.diy.ie/departments/mk-10a-2-way-1-gang-light-switch-gloss-white/53978_BQ.prd"
   },
   {
    "op": "set_type_value",
@@ -214,7 +528,7 @@
    "name": "10A_3G/Description",
    "type": "10A_3G",
    "param": "Description",
-   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type (2-gang shown)"
+   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type"
   },
   {
    "op": "set_type_value",
@@ -229,6 +543,34 @@
    "type": "10A_3G",
    "param": "FMC_Keynote_Code",
    "value": "E.SOC_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/FMC_Code_Description",
+   "type": "10A_3G",
+   "param": "FMC_Code_Description",
+   "value": "Switch Light: Light switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/FMC_Code_Group",
+   "type": "10A_3G",
+   "param": "FMC_Code_Group",
+   "value": "E.SOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/FMC_Role_Code",
+   "type": "10A_3G",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/URL",
+   "type": "10A_3G",
+   "param": "URL",
+   "value": "https://www.diy.ie/departments/mk-10a-2-way-1-gang-light-switch-gloss-white/53978_BQ.prd"
   },
   {
    "op": "set_type_value",
@@ -281,7 +623,7 @@
    "name": "10A_4G/Description",
    "type": "10A_4G",
    "param": "Description",
-   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type (2-gang shown)"
+   "value": "Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type"
   },
   {
    "op": "set_type_value",
@@ -296,6 +638,34 @@
    "type": "10A_4G",
    "param": "FMC_Keynote_Code",
    "value": "E.SOC_10"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/FMC_Code_Description",
+   "type": "10A_4G",
+   "param": "FMC_Code_Description",
+   "value": "Switch Light: Light switch"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/FMC_Code_Group",
+   "type": "10A_4G",
+   "param": "FMC_Code_Group",
+   "value": "E.SOC"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/FMC_Role_Code",
+   "type": "10A_4G",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/URL",
+   "type": "10A_4G",
+   "param": "URL",
+   "value": "https://www.diy.ie/departments/mk-10a-2-way-1-gang-light-switch-gloss-white/53978_BQ.prd"
   },
   {
    "op": "set_type_value",
@@ -689,96 +1059,48 @@
      43.0
     ],
     [
-     -28.91,
-     43.83
-    ],
-    [
      -29.23,
      44.6
     ],
     [
-     -29.74,
-     45.26
-    ],
-    [
      -30.4,
      45.77
-    ],
-    [
-     -31.17,
-     46.09
     ],
     [
      -32.0,
      46.2
     ],
     [
-     -32.83,
-     46.09
-    ],
-    [
      -33.6,
      45.77
-    ],
-    [
-     -34.26,
-     45.26
     ],
     [
      -34.77,
      44.6
     ],
     [
-     -35.09,
-     43.83
-    ],
-    [
      -35.2,
      43.0
-    ],
-    [
-     -35.09,
-     42.17
     ],
     [
      -34.77,
      41.4
     ],
     [
-     -34.26,
-     40.74
-    ],
-    [
      -33.6,
      40.23
-    ],
-    [
-     -32.83,
-     39.91
     ],
     [
      -32.0,
      39.8
     ],
     [
-     -31.17,
-     39.91
-    ],
-    [
      -30.4,
      40.23
     ],
     [
-     -29.74,
-     40.74
-    ],
-    [
      -29.23,
      41.4
-    ],
-    [
-     -28.91,
-     42.17
     ]
    ],
    "start": 9.5,
@@ -811,96 +1133,48 @@
      43.0
     ],
     [
-     35.09,
-     43.83
-    ],
-    [
      34.77,
      44.6
     ],
     [
-     34.26,
-     45.26
-    ],
-    [
      33.6,
      45.77
-    ],
-    [
-     32.83,
-     46.09
     ],
     [
      32.0,
      46.2
     ],
     [
-     31.17,
-     46.09
-    ],
-    [
      30.4,
      45.77
-    ],
-    [
-     29.74,
-     45.26
     ],
     [
      29.23,
      44.6
     ],
     [
-     28.91,
-     43.83
-    ],
-    [
      28.8,
      43.0
-    ],
-    [
-     28.91,
-     42.17
     ],
     [
      29.23,
      41.4
     ],
     [
-     29.74,
-     40.74
-    ],
-    [
      30.4,
      40.23
-    ],
-    [
-     31.17,
-     39.91
     ],
     [
      32.0,
      39.8
     ],
     [
-     32.83,
-     39.91
-    ],
-    [
      33.6,
      40.23
     ],
     [
-     34.26,
-     40.74
-    ],
-    [
      34.77,
      41.4
-    ],
-    [
-     35.09,
-     42.17
     ]
    ],
    "start": 9.5,
@@ -926,23 +1200,205 @@
   },
   {
    "op": "extrusion",
-   "name": "Rocker Surround L",
+   "name": "Rocker Surround 1G",
+   "points": [
+    [
+     12.5,
+     16.0
+    ],
+    [
+     13.56,
+     16.44
+    ],
+    [
+     14.0,
+     17.5
+    ],
+    [
+     14.0,
+     68.5
+    ],
+    [
+     13.56,
+     69.56
+    ],
+    [
+     12.5,
+     70.0
+    ],
+    [
+     -12.5,
+     70.0
+    ],
+    [
+     -13.56,
+     69.56
+    ],
+    [
+     -14.0,
+     68.5
+    ],
+    [
+     -14.0,
+     17.5
+    ],
+    [
+     -13.56,
+     16.44
+    ],
+    [
+     -12.5,
+     16.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 1G",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 1G",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 1G",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 1G",
+   "points": [
+    [
+     11.5,
+     18.0
+    ],
+    [
+     12.56,
+     18.44
+    ],
+    [
+     13.0,
+     19.5
+    ],
+    [
+     13.0,
+     66.5
+    ],
+    [
+     12.56,
+     67.56
+    ],
+    [
+     11.5,
+     68.0
+    ],
+    [
+     -11.5,
+     68.0
+    ],
+    [
+     -12.56,
+     67.56
+    ],
+    [
+     -13.0,
+     66.5
+    ],
+    [
+     -13.0,
+     19.5
+    ],
+    [
+     -12.56,
+     18.44
+    ],
+    [
+     -11.5,
+     18.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 1G",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 1G",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 1G",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 1G",
+   "points": [
+    [
+     -2,
+     62.0
+    ],
+    [
+     2,
+     62.0
+    ],
+    [
+     2,
+     66.0
+    ],
+    [
+     -2,
+     66.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 1G",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 1G",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 1G",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 2G L",
    "points": [
     [
      -3.5,
      18.0
     ],
     [
-     -2.93,
-     18.11
-    ],
-    [
      -2.44,
      18.44
-    ],
-    [
-     -2.11,
-     18.93
     ],
     [
      -2.0,
@@ -953,16 +1409,8 @@
      66.5
     ],
     [
-     -2.11,
-     67.07
-    ],
-    [
      -2.44,
      67.56
-    ],
-    [
-     -2.93,
-     67.89
     ],
     [
      -3.5,
@@ -973,16 +1421,8 @@
      68.0
     ],
     [
-     -25.07,
-     67.89
-    ],
-    [
      -25.56,
      67.56
-    ],
-    [
-     -25.89,
-     67.07
     ],
     [
      -26.0,
@@ -993,16 +1433,8 @@
      19.5
     ],
     [
-     -25.89,
-     18.93
-    ],
-    [
      -25.56,
      18.44
-    ],
-    [
-     -25.07,
-     18.11
     ],
     [
      -24.5,
@@ -1015,40 +1447,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker Surround L",
+   "name": "Rocker Surround 2G L",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker Surround L",
+   "name": "Rocker Surround 2G L",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker Surround L",
+   "name": "Rocker Surround 2G L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rocker L",
+   "name": "Rocker 2G L",
    "points": [
     [
      -4.5,
      20.0
     ],
     [
-     -3.93,
-     20.11
-    ],
-    [
      -3.44,
      20.44
-    ],
-    [
-     -3.11,
-     20.93
     ],
     [
      -3.0,
@@ -1059,16 +1483,8 @@
      64.5
     ],
     [
-     -3.11,
-     65.07
-    ],
-    [
      -3.44,
      65.56
-    ],
-    [
-     -3.93,
-     65.89
     ],
     [
      -4.5,
@@ -1079,16 +1495,8 @@
      66.0
     ],
     [
-     -24.07,
-     65.89
-    ],
-    [
      -24.56,
      65.56
-    ],
-    [
-     -24.89,
-     65.07
     ],
     [
      -25.0,
@@ -1099,16 +1507,8 @@
      21.5
     ],
     [
-     -24.89,
-     20.93
-    ],
-    [
      -24.56,
      20.44
-    ],
-    [
-     -24.07,
-     20.11
     ],
     [
      -23.5,
@@ -1121,24 +1521,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker L",
+   "name": "Rocker 2G L",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker L",
+   "name": "Rocker 2G L",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker L",
+   "name": "Rocker 2G L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rocker Mark L",
+   "name": "Rocker Mark 2G L",
    "points": [
     [
      -16,
@@ -1157,46 +1557,38 @@
      64.0
     ]
    ],
-   "start": 13,
+   "start": 12.3,
    "end": 13.3,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker Mark L",
+   "name": "Rocker Mark 2G L",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker Mark L",
+   "name": "Rocker Mark 2G L",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker Mark L",
+   "name": "Rocker Mark 2G L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rocker Surround R",
+   "name": "Rocker Surround 2G R",
    "points": [
     [
      24.5,
      18.0
     ],
     [
-     25.07,
-     18.11
-    ],
-    [
      25.56,
      18.44
-    ],
-    [
-     25.89,
-     18.93
     ],
     [
      26.0,
@@ -1207,16 +1599,8 @@
      66.5
     ],
     [
-     25.89,
-     67.07
-    ],
-    [
      25.56,
      67.56
-    ],
-    [
-     25.07,
-     67.89
     ],
     [
      24.5,
@@ -1227,16 +1611,8 @@
      68.0
     ],
     [
-     2.93,
-     67.89
-    ],
-    [
      2.44,
      67.56
-    ],
-    [
-     2.11,
-     67.07
     ],
     [
      2.0,
@@ -1247,16 +1623,8 @@
      19.5
     ],
     [
-     2.11,
-     18.93
-    ],
-    [
      2.44,
      18.44
-    ],
-    [
-     2.93,
-     18.11
     ],
     [
      3.5,
@@ -1269,40 +1637,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker Surround R",
+   "name": "Rocker Surround 2G R",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker Surround R",
+   "name": "Rocker Surround 2G R",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker Surround R",
+   "name": "Rocker Surround 2G R",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rocker R",
+   "name": "Rocker 2G R",
    "points": [
     [
      23.5,
      20.0
     ],
     [
-     24.07,
-     20.11
-    ],
-    [
      24.56,
      20.44
-    ],
-    [
-     24.89,
-     20.93
     ],
     [
      25.0,
@@ -1313,16 +1673,8 @@
      64.5
     ],
     [
-     24.89,
-     65.07
-    ],
-    [
      24.56,
      65.56
-    ],
-    [
-     24.07,
-     65.89
     ],
     [
      23.5,
@@ -1333,16 +1685,8 @@
      66.0
     ],
     [
-     3.93,
-     65.89
-    ],
-    [
      3.44,
      65.56
-    ],
-    [
-     3.11,
-     65.07
     ],
     [
      3.0,
@@ -1353,16 +1697,8 @@
      21.5
     ],
     [
-     3.11,
-     20.93
-    ],
-    [
      3.44,
      20.44
-    ],
-    [
-     3.93,
-     20.11
     ],
     [
      4.5,
@@ -1375,24 +1711,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker R",
+   "name": "Rocker 2G R",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker R",
+   "name": "Rocker 2G R",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker R",
+   "name": "Rocker 2G R",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Rocker Mark R",
+   "name": "Rocker Mark 2G R",
    "points": [
     [
      12,
@@ -1411,26 +1747,1672 @@
      64.0
     ]
    ],
-   "start": 13,
+   "start": 12.3,
    "end": 13.3,
    "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Rocker Mark R",
+   "name": "Rocker Mark 2G R",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Rocker Mark R",
+   "name": "Rocker Mark 2G R",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Rocker Mark R",
+   "name": "Rocker Mark 2G R",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 3G L",
+   "points": [
+    [
+     -14.0,
+     18.0
+    ],
+    [
+     -12.94,
+     18.44
+    ],
+    [
+     -12.5,
+     19.5
+    ],
+    [
+     -12.5,
+     66.5
+    ],
+    [
+     -12.94,
+     67.56
+    ],
+    [
+     -14.0,
+     68.0
+    ],
+    [
+     -28.0,
+     68.0
+    ],
+    [
+     -29.06,
+     67.56
+    ],
+    [
+     -29.5,
+     66.5
+    ],
+    [
+     -29.5,
+     19.5
+    ],
+    [
+     -29.06,
+     18.44
+    ],
+    [
+     -28.0,
+     18.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 3G L",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 3G L",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 3G L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 3G L",
+   "points": [
+    [
+     -15.0,
+     20.0
+    ],
+    [
+     -13.94,
+     20.44
+    ],
+    [
+     -13.5,
+     21.5
+    ],
+    [
+     -13.5,
+     64.5
+    ],
+    [
+     -13.94,
+     65.56
+    ],
+    [
+     -15.0,
+     66.0
+    ],
+    [
+     -27.0,
+     66.0
+    ],
+    [
+     -28.06,
+     65.56
+    ],
+    [
+     -28.5,
+     64.5
+    ],
+    [
+     -28.5,
+     21.5
+    ],
+    [
+     -28.06,
+     20.44
+    ],
+    [
+     -27.0,
+     20.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 3G L",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 3G L",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 3G L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 3G L",
+   "points": [
+    [
+     -23,
+     60.0
+    ],
+    [
+     -19,
+     60.0
+    ],
+    [
+     -19,
+     64.0
+    ],
+    [
+     -23,
+     64.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 3G L",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 3G L",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 3G L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 3G M",
+   "points": [
+    [
+     7.0,
+     18.0
+    ],
+    [
+     8.06,
+     18.44
+    ],
+    [
+     8.5,
+     19.5
+    ],
+    [
+     8.5,
+     66.5
+    ],
+    [
+     8.06,
+     67.56
+    ],
+    [
+     7.0,
+     68.0
+    ],
+    [
+     -7.0,
+     68.0
+    ],
+    [
+     -8.06,
+     67.56
+    ],
+    [
+     -8.5,
+     66.5
+    ],
+    [
+     -8.5,
+     19.5
+    ],
+    [
+     -8.06,
+     18.44
+    ],
+    [
+     -7.0,
+     18.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 3G M",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 3G M",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 3G M",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 3G M",
+   "points": [
+    [
+     6.0,
+     20.0
+    ],
+    [
+     7.06,
+     20.44
+    ],
+    [
+     7.5,
+     21.5
+    ],
+    [
+     7.5,
+     64.5
+    ],
+    [
+     7.06,
+     65.56
+    ],
+    [
+     6.0,
+     66.0
+    ],
+    [
+     -6.0,
+     66.0
+    ],
+    [
+     -7.06,
+     65.56
+    ],
+    [
+     -7.5,
+     64.5
+    ],
+    [
+     -7.5,
+     21.5
+    ],
+    [
+     -7.06,
+     20.44
+    ],
+    [
+     -6.0,
+     20.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 3G M",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 3G M",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 3G M",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 3G M",
+   "points": [
+    [
+     -2,
+     60.0
+    ],
+    [
+     2,
+     60.0
+    ],
+    [
+     2,
+     64.0
+    ],
+    [
+     -2,
+     64.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 3G M",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 3G M",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 3G M",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 3G R",
+   "points": [
+    [
+     28.0,
+     18.0
+    ],
+    [
+     29.06,
+     18.44
+    ],
+    [
+     29.5,
+     19.5
+    ],
+    [
+     29.5,
+     66.5
+    ],
+    [
+     29.06,
+     67.56
+    ],
+    [
+     28.0,
+     68.0
+    ],
+    [
+     14.0,
+     68.0
+    ],
+    [
+     12.94,
+     67.56
+    ],
+    [
+     12.5,
+     66.5
+    ],
+    [
+     12.5,
+     19.5
+    ],
+    [
+     12.94,
+     18.44
+    ],
+    [
+     14.0,
+     18.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 3G R",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 3G R",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 3G R",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 3G R",
+   "points": [
+    [
+     27.0,
+     20.0
+    ],
+    [
+     28.06,
+     20.44
+    ],
+    [
+     28.5,
+     21.5
+    ],
+    [
+     28.5,
+     64.5
+    ],
+    [
+     28.06,
+     65.56
+    ],
+    [
+     27.0,
+     66.0
+    ],
+    [
+     15.0,
+     66.0
+    ],
+    [
+     13.94,
+     65.56
+    ],
+    [
+     13.5,
+     64.5
+    ],
+    [
+     13.5,
+     21.5
+    ],
+    [
+     13.94,
+     20.44
+    ],
+    [
+     15.0,
+     20.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 3G R",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 3G R",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 3G R",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 3G R",
+   "points": [
+    [
+     19,
+     60.0
+    ],
+    [
+     23,
+     60.0
+    ],
+    [
+     23,
+     64.0
+    ],
+    [
+     19,
+     64.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 3G R",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 3G R",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 3G R",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 4G TL",
+   "points": [
+    [
+     -3.5,
+     44.0
+    ],
+    [
+     -2.44,
+     44.44
+    ],
+    [
+     -2.0,
+     45.5
+    ],
+    [
+     -2.0,
+     66.5
+    ],
+    [
+     -2.44,
+     67.56
+    ],
+    [
+     -3.5,
+     68.0
+    ],
+    [
+     -22.5,
+     68.0
+    ],
+    [
+     -23.56,
+     67.56
+    ],
+    [
+     -24.0,
+     66.5
+    ],
+    [
+     -24.0,
+     45.5
+    ],
+    [
+     -23.56,
+     44.44
+    ],
+    [
+     -22.5,
+     44.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 4G TL",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 4G TL",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 4G TL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 4G TL",
+   "points": [
+    [
+     -4.5,
+     46.0
+    ],
+    [
+     -3.44,
+     46.44
+    ],
+    [
+     -3.0,
+     47.5
+    ],
+    [
+     -3.0,
+     64.5
+    ],
+    [
+     -3.44,
+     65.56
+    ],
+    [
+     -4.5,
+     66.0
+    ],
+    [
+     -21.5,
+     66.0
+    ],
+    [
+     -22.56,
+     65.56
+    ],
+    [
+     -23.0,
+     64.5
+    ],
+    [
+     -23.0,
+     47.5
+    ],
+    [
+     -22.56,
+     46.44
+    ],
+    [
+     -21.5,
+     46.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 4G TL",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 4G TL",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 4G TL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 4G TL",
+   "points": [
+    [
+     -15,
+     60.0
+    ],
+    [
+     -11,
+     60.0
+    ],
+    [
+     -11,
+     64.0
+    ],
+    [
+     -15,
+     64.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 4G TL",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 4G TL",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 4G TL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 4G TR",
+   "points": [
+    [
+     22.5,
+     44.0
+    ],
+    [
+     23.56,
+     44.44
+    ],
+    [
+     24.0,
+     45.5
+    ],
+    [
+     24.0,
+     66.5
+    ],
+    [
+     23.56,
+     67.56
+    ],
+    [
+     22.5,
+     68.0
+    ],
+    [
+     3.5,
+     68.0
+    ],
+    [
+     2.44,
+     67.56
+    ],
+    [
+     2.0,
+     66.5
+    ],
+    [
+     2.0,
+     45.5
+    ],
+    [
+     2.44,
+     44.44
+    ],
+    [
+     3.5,
+     44.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 4G TR",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 4G TR",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 4G TR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 4G TR",
+   "points": [
+    [
+     21.5,
+     46.0
+    ],
+    [
+     22.56,
+     46.44
+    ],
+    [
+     23.0,
+     47.5
+    ],
+    [
+     23.0,
+     64.5
+    ],
+    [
+     22.56,
+     65.56
+    ],
+    [
+     21.5,
+     66.0
+    ],
+    [
+     4.5,
+     66.0
+    ],
+    [
+     3.44,
+     65.56
+    ],
+    [
+     3.0,
+     64.5
+    ],
+    [
+     3.0,
+     47.5
+    ],
+    [
+     3.44,
+     46.44
+    ],
+    [
+     4.5,
+     46.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 4G TR",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 4G TR",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 4G TR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 4G TR",
+   "points": [
+    [
+     11,
+     60.0
+    ],
+    [
+     15,
+     60.0
+    ],
+    [
+     15,
+     64.0
+    ],
+    [
+     11,
+     64.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 4G TR",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 4G TR",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 4G TR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 4G BL",
+   "points": [
+    [
+     -3.5,
+     18.0
+    ],
+    [
+     -2.44,
+     18.44
+    ],
+    [
+     -2.0,
+     19.5
+    ],
+    [
+     -2.0,
+     40.5
+    ],
+    [
+     -2.44,
+     41.56
+    ],
+    [
+     -3.5,
+     42.0
+    ],
+    [
+     -22.5,
+     42.0
+    ],
+    [
+     -23.56,
+     41.56
+    ],
+    [
+     -24.0,
+     40.5
+    ],
+    [
+     -24.0,
+     19.5
+    ],
+    [
+     -23.56,
+     18.44
+    ],
+    [
+     -22.5,
+     18.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 4G BL",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 4G BL",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 4G BL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 4G BL",
+   "points": [
+    [
+     -4.5,
+     20.0
+    ],
+    [
+     -3.44,
+     20.44
+    ],
+    [
+     -3.0,
+     21.5
+    ],
+    [
+     -3.0,
+     38.5
+    ],
+    [
+     -3.44,
+     39.56
+    ],
+    [
+     -4.5,
+     40.0
+    ],
+    [
+     -21.5,
+     40.0
+    ],
+    [
+     -22.56,
+     39.56
+    ],
+    [
+     -23.0,
+     38.5
+    ],
+    [
+     -23.0,
+     21.5
+    ],
+    [
+     -22.56,
+     20.44
+    ],
+    [
+     -21.5,
+     20.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 4G BL",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 4G BL",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 4G BL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 4G BL",
+   "points": [
+    [
+     -15,
+     34.0
+    ],
+    [
+     -11,
+     34.0
+    ],
+    [
+     -11,
+     38.0
+    ],
+    [
+     -15,
+     38.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 4G BL",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 4G BL",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 4G BL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Surround 4G BR",
+   "points": [
+    [
+     22.5,
+     18.0
+    ],
+    [
+     23.56,
+     18.44
+    ],
+    [
+     24.0,
+     19.5
+    ],
+    [
+     24.0,
+     40.5
+    ],
+    [
+     23.56,
+     41.56
+    ],
+    [
+     22.5,
+     42.0
+    ],
+    [
+     3.5,
+     42.0
+    ],
+    [
+     2.44,
+     41.56
+    ],
+    [
+     2.0,
+     40.5
+    ],
+    [
+     2.0,
+     19.5
+    ],
+    [
+     2.44,
+     18.44
+    ],
+    [
+     3.5,
+     18.0
+    ]
+   ],
+   "start": 9.5,
+   "end": 10.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Surround 4G BR",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Surround 4G BR",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Surround 4G BR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker 4G BR",
+   "points": [
+    [
+     21.5,
+     20.0
+    ],
+    [
+     22.56,
+     20.44
+    ],
+    [
+     23.0,
+     21.5
+    ],
+    [
+     23.0,
+     38.5
+    ],
+    [
+     22.56,
+     39.56
+    ],
+    [
+     21.5,
+     40.0
+    ],
+    [
+     4.5,
+     40.0
+    ],
+    [
+     3.44,
+     39.56
+    ],
+    [
+     3.0,
+     38.5
+    ],
+    [
+     3.0,
+     21.5
+    ],
+    [
+     3.44,
+     20.44
+    ],
+    [
+     4.5,
+     20.0
+    ]
+   ],
+   "start": 10.5,
+   "end": 13,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker 4G BR",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker 4G BR",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker 4G BR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rocker Mark 4G BR",
+   "points": [
+    [
+     11,
+     34.0
+    ],
+    [
+     15,
+     34.0
+    ],
+    [
+     15,
+     38.0
+    ],
+    [
+     11,
+     38.0
+    ]
+   ],
+   "start": 12.3,
+   "end": 13.3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rocker Mark 4G BR",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rocker Mark 4G BR",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rocker Mark 4G BR",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10A_1G",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/Show 10A_1G",
+   "type": "10A_1G",
+   "param": "Show 10A_1G",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/Show 10A_1G",
+   "type": "10A_2G",
+   "param": "Show 10A_1G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/Show 10A_1G",
+   "type": "10A_3G",
+   "param": "Show 10A_1G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/Show 10A_1G",
+   "type": "10A_4G",
+   "param": "Show 10A_1G",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 1G/Visible",
+   "solid": "Rocker Surround 1G",
+   "param": "Show 10A_1G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 1G/Visible",
+   "solid": "Rocker 1G",
+   "param": "Show 10A_1G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 1G/Visible",
+   "solid": "Rocker Mark 1G",
+   "param": "Show 10A_1G"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10A_2G",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/Show 10A_2G",
+   "type": "10A_1G",
+   "param": "Show 10A_2G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/Show 10A_2G",
+   "type": "10A_2G",
+   "param": "Show 10A_2G",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/Show 10A_2G",
+   "type": "10A_3G",
+   "param": "Show 10A_2G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/Show 10A_2G",
+   "type": "10A_4G",
+   "param": "Show 10A_2G",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 2G L/Visible",
+   "solid": "Rocker Surround 2G L",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 2G L/Visible",
+   "solid": "Rocker 2G L",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 2G L/Visible",
+   "solid": "Rocker Mark 2G L",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 2G R/Visible",
+   "solid": "Rocker Surround 2G R",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 2G R/Visible",
+   "solid": "Rocker 2G R",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 2G R/Visible",
+   "solid": "Rocker Mark 2G R",
+   "param": "Show 10A_2G"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10A_3G",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/Show 10A_3G",
+   "type": "10A_1G",
+   "param": "Show 10A_3G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/Show 10A_3G",
+   "type": "10A_2G",
+   "param": "Show 10A_3G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/Show 10A_3G",
+   "type": "10A_3G",
+   "param": "Show 10A_3G",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/Show 10A_3G",
+   "type": "10A_4G",
+   "param": "Show 10A_3G",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 3G L/Visible",
+   "solid": "Rocker Surround 3G L",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 3G L/Visible",
+   "solid": "Rocker 3G L",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 3G L/Visible",
+   "solid": "Rocker Mark 3G L",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 3G M/Visible",
+   "solid": "Rocker Surround 3G M",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 3G M/Visible",
+   "solid": "Rocker 3G M",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 3G M/Visible",
+   "solid": "Rocker Mark 3G M",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 3G R/Visible",
+   "solid": "Rocker Surround 3G R",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 3G R/Visible",
+   "solid": "Rocker 3G R",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 3G R/Visible",
+   "solid": "Rocker Mark 3G R",
+   "param": "Show 10A_3G"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10A_4G",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_1G/Show 10A_4G",
+   "type": "10A_1G",
+   "param": "Show 10A_4G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_2G/Show 10A_4G",
+   "type": "10A_2G",
+   "param": "Show 10A_4G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_3G/Show 10A_4G",
+   "type": "10A_3G",
+   "param": "Show 10A_4G",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10A_4G/Show 10A_4G",
+   "type": "10A_4G",
+   "param": "Show 10A_4G",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 4G TL/Visible",
+   "solid": "Rocker Surround 4G TL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 4G TL/Visible",
+   "solid": "Rocker 4G TL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 4G TL/Visible",
+   "solid": "Rocker Mark 4G TL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 4G TR/Visible",
+   "solid": "Rocker Surround 4G TR",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 4G TR/Visible",
+   "solid": "Rocker 4G TR",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 4G TR/Visible",
+   "solid": "Rocker Mark 4G TR",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 4G BL/Visible",
+   "solid": "Rocker Surround 4G BL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 4G BL/Visible",
+   "solid": "Rocker 4G BL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 4G BL/Visible",
+   "solid": "Rocker Mark 4G BL",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Surround 4G BR/Visible",
+   "solid": "Rocker Surround 4G BR",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker 4G BR/Visible",
+   "solid": "Rocker 4G BR",
+   "param": "Show 10A_4G"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rocker Mark 4G BR/Visible",
+   "solid": "Rocker Mark 4G BR",
+   "param": "Show 10A_4G"
   },
   {
    "op": "add_connector",

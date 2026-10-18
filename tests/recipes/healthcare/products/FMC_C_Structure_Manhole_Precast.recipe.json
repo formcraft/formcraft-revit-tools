@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_Manhole_Precast",
  "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0: cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs with connectors. Reference: query: structure manhole precast structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+manhole+precast+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: ductile-iron cover and frame with pattern and keyholes, brick adjustment course, cover slab with opening, two rings, base unit with half-round channel and benching, four step irons (Fine), inlet and outlet pipe stubs (shared by both types) with connectors. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: structure manhole precast structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+manhole+precast+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.marshalls.co.uk/commercial/product/chamber-rings; photo_title: Chamber Rings (Marshalls); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -115,6 +115,13 @@
    "value": "P.MAN_02"
   },
   {
+   "op": "set_type_value",
+   "name": "1050dia_Precast/URL",
+   "type": "1050dia_Precast",
+   "param": "URL",
+   "value": "https://www.marshalls.co.uk/commercial/product/chamber-rings"
+  },
+  {
    "op": "add_type",
    "name": "1200dia_Precast"
   },
@@ -161,12 +168,19 @@
    "value": "P.MAN_02"
   },
   {
+   "op": "set_type_value",
+   "name": "1200dia_Precast/URL",
+   "type": "1200dia_Precast",
+   "param": "URL",
+   "value": "https://www.marshalls.co.uk/commercial/product/chamber-rings"
+  },
+  {
    "op": "add_subcategory",
    "name": "Ci",
    "color": [
-    34,
-    36,
-    38
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
@@ -178,7 +192,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
+   "name": "FMC_Metal_DuctileIron_Black",
    "param": "Ci Material"
   },
   {
@@ -225,27 +239,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Pre",
-   "color": [
-    178,
-    175,
-    167
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pre Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Manhole_Precast",
-   "param": "Pre Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Upvc",
    "color": [
     74,
@@ -267,6 +260,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Pre",
+   "color": [
+    178,
+    175,
+    167
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pre Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Manhole_Precast",
+   "param": "Pre Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -280,20 +294,20 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -950,
-     -700.0
+     -1000,
+     -795.0
     ],
     [
-     950,
-     -700.0
+     1000,
+     -795.0
     ],
     [
-     950,
-     700.0
+     1000,
+     795.0
     ],
     [
-     -950,
-     700.0
+     -1000,
+     795.0
     ]
    ],
    "start": -2050,
@@ -968,8 +982,276 @@
    "fine": true
   },
   {
+   "op": "void_extrusion",
+   "name": "Access Opening",
+   "points": [
+    [
+     -300,
+     -300
+    ],
+    [
+     300,
+     -300
+    ],
+    [
+     300,
+     300
+    ],
+    [
+     -300,
+     300
+    ]
+   ],
+   "start": -401,
+   "end": -249
+  },
+  {
    "op": "extrusion",
-   "name": "Cover Slab",
+   "name": "Inlet Pipe",
+   "points": [
+    [
+     80.0,
+     -1820.0
+    ],
+    [
+     77.27,
+     -1799.29
+    ],
+    [
+     69.28,
+     -1780.0
+    ],
+    [
+     56.57,
+     -1763.43
+    ],
+    [
+     40.0,
+     -1750.72
+    ],
+    [
+     20.71,
+     -1742.73
+    ],
+    [
+     0.0,
+     -1740.0
+    ],
+    [
+     -20.71,
+     -1742.73
+    ],
+    [
+     -40.0,
+     -1750.72
+    ],
+    [
+     -56.57,
+     -1763.43
+    ],
+    [
+     -69.28,
+     -1780.0
+    ],
+    [
+     -77.27,
+     -1799.29
+    ],
+    [
+     -80.0,
+     -1820.0
+    ],
+    [
+     -77.27,
+     -1840.71
+    ],
+    [
+     -69.28,
+     -1860.0
+    ],
+    [
+     -56.57,
+     -1876.57
+    ],
+    [
+     -40.0,
+     -1889.28
+    ],
+    [
+     -20.71,
+     -1897.27
+    ],
+    [
+     -0.0,
+     -1900.0
+    ],
+    [
+     20.71,
+     -1897.27
+    ],
+    [
+     40.0,
+     -1889.28
+    ],
+    [
+     56.57,
+     -1876.57
+    ],
+    [
+     69.28,
+     -1860.0
+    ],
+    [
+     77.27,
+     -1840.71
+    ]
+   ],
+   "start": -1000,
+   "end": -540,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Pipe",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Pipe",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Pipe",
+   "points": [
+    [
+     80.0,
+     -1845.0
+    ],
+    [
+     77.27,
+     -1824.29
+    ],
+    [
+     69.28,
+     -1805.0
+    ],
+    [
+     56.57,
+     -1788.43
+    ],
+    [
+     40.0,
+     -1775.72
+    ],
+    [
+     20.71,
+     -1767.73
+    ],
+    [
+     0.0,
+     -1765.0
+    ],
+    [
+     -20.71,
+     -1767.73
+    ],
+    [
+     -40.0,
+     -1775.72
+    ],
+    [
+     -56.57,
+     -1788.43
+    ],
+    [
+     -69.28,
+     -1805.0
+    ],
+    [
+     -77.27,
+     -1824.29
+    ],
+    [
+     -80.0,
+     -1845.0
+    ],
+    [
+     -77.27,
+     -1865.71
+    ],
+    [
+     -69.28,
+     -1885.0
+    ],
+    [
+     -56.57,
+     -1901.57
+    ],
+    [
+     -40.0,
+     -1914.28
+    ],
+    [
+     -20.71,
+     -1922.27
+    ],
+    [
+     -0.0,
+     -1925.0
+    ],
+    [
+     20.71,
+     -1922.27
+    ],
+    [
+     40.0,
+     -1914.28
+    ],
+    [
+     56.57,
+     -1901.57
+    ],
+    [
+     69.28,
+     -1885.0
+    ],
+    [
+     77.27,
+     -1865.71
+    ]
+   ],
+   "start": 540,
+   "end": 1000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Pipe",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Pipe",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Slab 1050dia",
    "points": [
     [
      700.0,
@@ -1169,48 +1451,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cover Slab",
+   "name": "Cover Slab 1050dia",
    "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Cover Slab",
+   "name": "Cover Slab 1050dia",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cover Slab",
+   "name": "Cover Slab 1050dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
-   "op": "void_extrusion",
-   "name": "Access Opening",
-   "points": [
-    [
-     -300,
-     -300
-    ],
-    [
-     300,
-     -300
-    ],
-    [
-     300,
-     300
-    ],
-    [
-     -300,
-     300
-    ]
-   ],
-   "start": -401,
-   "end": -249
-  },
-  {
    "op": "revolution",
-   "name": "Chamber Ring 1",
+   "name": "Chamber Ring 1050dia 1",
    "profile": [
     [
      525,
@@ -1238,19 +1496,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Chamber Ring 1",
+   "name": "Chamber Ring 1050dia 1",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Chamber Ring 1",
+   "name": "Chamber Ring 1050dia 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Chamber Ring 2",
+   "name": "Chamber Ring 1050dia 2",
    "profile": [
     [
      525,
@@ -1278,19 +1536,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Chamber Ring 2",
+   "name": "Chamber Ring 1050dia 2",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Chamber Ring 2",
+   "name": "Chamber Ring 1050dia 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Base Unit",
+   "name": "Base Unit 1050dia",
    "profile": [
     [
      0,
@@ -1326,19 +1584,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Base Unit",
+   "name": "Base Unit 1050dia",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Base Unit",
+   "name": "Base Unit 1050dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Channel",
+   "name": "Channel 1050dia",
    "points": [
     [
      -525,
@@ -1362,24 +1620,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Channel",
+   "name": "Channel 1050dia",
    "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Channel",
+   "name": "Channel 1050dia",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Channel",
+   "name": "Channel 1050dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Benching Back",
+   "name": "Benching Back 1050dia",
    "points": [
     [
      519.6,
@@ -1439,24 +1697,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Benching Back",
+   "name": "Benching Back 1050dia",
    "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Benching Back",
+   "name": "Benching Back 1050dia",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Benching Back",
+   "name": "Benching Back 1050dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Benching Front",
+   "name": "Benching Front 1050dia",
    "points": [
     [
      -519.6,
@@ -1516,24 +1774,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Benching Front",
+   "name": "Benching Front 1050dia",
    "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Benching Front",
+   "name": "Benching Front 1050dia",
    "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Benching Front",
+   "name": "Benching Front 1050dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron 1",
+   "name": "Step Iron 1050dia 1",
    "points": [
     [
      -150,
@@ -1557,24 +1815,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron 1",
+   "name": "Step Iron 1050dia 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron 1",
+   "name": "Step Iron 1050dia 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron 1",
+   "name": "Step Iron 1050dia 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron 2",
+   "name": "Step Iron 1050dia 2",
    "points": [
     [
      -150,
@@ -1598,24 +1856,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron 2",
+   "name": "Step Iron 1050dia 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron 2",
+   "name": "Step Iron 1050dia 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron 2",
+   "name": "Step Iron 1050dia 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron 3",
+   "name": "Step Iron 1050dia 3",
    "points": [
     [
      -150,
@@ -1639,24 +1897,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron 3",
+   "name": "Step Iron 1050dia 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron 3",
+   "name": "Step Iron 1050dia 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron 3",
+   "name": "Step Iron 1050dia 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron 4",
+   "name": "Step Iron 1050dia 4",
    "points": [
     [
      -150,
@@ -1680,24 +1938,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron 4",
+   "name": "Step Iron 1050dia 4",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron 4",
+   "name": "Step Iron 1050dia 4",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron 4",
+   "name": "Step Iron 1050dia 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg L 1",
+   "name": "Step Iron Leg L 1050dia 1",
    "points": [
     [
      -150,
@@ -1721,24 +1979,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg L 1",
+   "name": "Step Iron Leg L 1050dia 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg L 1",
+   "name": "Step Iron Leg L 1050dia 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg L 1",
+   "name": "Step Iron Leg L 1050dia 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg L 2",
+   "name": "Step Iron Leg L 1050dia 2",
    "points": [
     [
      -150,
@@ -1762,24 +2020,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg L 2",
+   "name": "Step Iron Leg L 1050dia 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg L 2",
+   "name": "Step Iron Leg L 1050dia 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg L 2",
+   "name": "Step Iron Leg L 1050dia 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg L 3",
+   "name": "Step Iron Leg L 1050dia 3",
    "points": [
     [
      -150,
@@ -1803,24 +2061,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg L 3",
+   "name": "Step Iron Leg L 1050dia 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg L 3",
+   "name": "Step Iron Leg L 1050dia 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg L 3",
+   "name": "Step Iron Leg L 1050dia 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg L 4",
+   "name": "Step Iron Leg L 1050dia 4",
    "points": [
     [
      -150,
@@ -1844,24 +2102,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg L 4",
+   "name": "Step Iron Leg L 1050dia 4",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg L 4",
+   "name": "Step Iron Leg L 1050dia 4",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg L 4",
+   "name": "Step Iron Leg L 1050dia 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg R 1",
+   "name": "Step Iron Leg R 1050dia 1",
    "points": [
     [
      130,
@@ -1885,24 +2143,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg R 1",
+   "name": "Step Iron Leg R 1050dia 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg R 1",
+   "name": "Step Iron Leg R 1050dia 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg R 1",
+   "name": "Step Iron Leg R 1050dia 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg R 2",
+   "name": "Step Iron Leg R 1050dia 2",
    "points": [
     [
      130,
@@ -1926,24 +2184,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg R 2",
+   "name": "Step Iron Leg R 1050dia 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg R 2",
+   "name": "Step Iron Leg R 1050dia 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg R 2",
+   "name": "Step Iron Leg R 1050dia 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg R 3",
+   "name": "Step Iron Leg R 1050dia 3",
    "points": [
     [
      130,
@@ -1967,24 +2225,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg R 3",
+   "name": "Step Iron Leg R 1050dia 3",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg R 3",
+   "name": "Step Iron Leg R 1050dia 3",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg R 3",
+   "name": "Step Iron Leg R 1050dia 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Step Iron Leg R 4",
+   "name": "Step Iron Leg R 1050dia 4",
    "points": [
     [
      130,
@@ -2008,264 +2266,1320 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Step Iron Leg R 4",
+   "name": "Step Iron Leg R 1050dia 4",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Step Iron Leg R 4",
+   "name": "Step Iron Leg R 1050dia 4",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Step Iron Leg R 4",
+   "name": "Step Iron Leg R 1050dia 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Inlet Pipe",
+   "name": "Cover Slab 1200dia",
    "points": [
     [
-     80.0,
-     -1820.0
+     795.0,
+     0.0
     ],
     [
-     77.27,
-     -1799.29
+     788.2,
+     103.77
     ],
     [
-     69.28,
-     -1780.0
+     767.91,
+     205.76
     ],
     [
-     56.57,
-     -1763.43
+     734.48,
+     304.23
     ],
     [
-     40.0,
-     -1750.72
+     688.49,
+     397.5
     ],
     [
-     20.71,
-     -1742.73
+     630.72,
+     483.97
+    ],
+    [
+     562.15,
+     562.15
+    ],
+    [
+     483.97,
+     630.72
+    ],
+    [
+     397.5,
+     688.49
+    ],
+    [
+     304.23,
+     734.48
+    ],
+    [
+     205.76,
+     767.91
+    ],
+    [
+     103.77,
+     788.2
     ],
     [
      0.0,
-     -1740.0
+     795.0
     ],
     [
-     -20.71,
-     -1742.73
+     -103.77,
+     788.2
     ],
     [
-     -40.0,
-     -1750.72
+     -205.76,
+     767.91
     ],
     [
-     -56.57,
-     -1763.43
+     -304.23,
+     734.48
     ],
     [
-     -69.28,
-     -1780.0
+     -397.5,
+     688.49
     ],
     [
-     -77.27,
-     -1799.29
+     -483.97,
+     630.72
     ],
     [
-     -80.0,
-     -1820.0
+     -562.15,
+     562.15
     ],
     [
-     -77.27,
-     -1840.71
+     -630.72,
+     483.97
     ],
     [
-     -69.28,
-     -1860.0
+     -688.49,
+     397.5
     ],
     [
-     -56.57,
-     -1876.57
+     -734.48,
+     304.23
     ],
     [
-     -40.0,
-     -1889.28
+     -767.91,
+     205.76
     ],
     [
-     -20.71,
-     -1897.27
+     -788.2,
+     103.77
+    ],
+    [
+     -795.0,
+     0.0
+    ],
+    [
+     -788.2,
+     -103.77
+    ],
+    [
+     -767.91,
+     -205.76
+    ],
+    [
+     -734.48,
+     -304.23
+    ],
+    [
+     -688.49,
+     -397.5
+    ],
+    [
+     -630.72,
+     -483.97
+    ],
+    [
+     -562.15,
+     -562.15
+    ],
+    [
+     -483.97,
+     -630.72
+    ],
+    [
+     -397.5,
+     -688.49
+    ],
+    [
+     -304.23,
+     -734.48
+    ],
+    [
+     -205.76,
+     -767.91
+    ],
+    [
+     -103.77,
+     -788.2
     ],
     [
      -0.0,
-     -1900.0
+     -795.0
     ],
     [
-     20.71,
-     -1897.27
+     103.77,
+     -788.2
     ],
     [
-     40.0,
-     -1889.28
+     205.76,
+     -767.91
     ],
     [
-     56.57,
-     -1876.57
+     304.23,
+     -734.48
     ],
     [
-     69.28,
-     -1860.0
+     397.5,
+     -688.49
     ],
     [
-     77.27,
-     -1840.71
+     483.97,
+     -630.72
+    ],
+    [
+     562.15,
+     -562.15
+    ],
+    [
+     630.72,
+     -483.97
+    ],
+    [
+     688.49,
+     -397.5
+    ],
+    [
+     734.48,
+     -304.23
+    ],
+    [
+     767.91,
+     -205.76
+    ],
+    [
+     788.2,
+     -103.77
     ]
    ],
-   "start": -950,
-   "end": -515,
-   "sketch": "right"
+   "start": -400,
+   "end": -250
   },
   {
    "op": "set_subcategory",
-   "name": "Inlet Pipe",
-   "subcategory": "Upvc"
+   "name": "Cover Slab 1200dia",
+   "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Inlet Pipe",
-   "param": "Upvc Material"
+   "name": "Cover Slab 1200dia",
+   "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Inlet Pipe",
+   "name": "Cover Slab 1200dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Chamber Ring 1200dia 1",
+   "profile": [
+    [
+     600,
+     -900
+    ],
+    [
+     720,
+     -900
+    ],
+    [
+     720,
+     -400
+    ],
+    [
+     600,
+     -400
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Ring 1200dia 1",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Ring 1200dia 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Chamber Ring 1200dia 2",
+   "profile": [
+    [
+     600,
+     -1400
+    ],
+    [
+     720,
+     -1400
+    ],
+    [
+     720,
+     -900
+    ],
+    [
+     600,
+     -900
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Chamber Ring 1200dia 2",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Chamber Ring 1200dia 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Base Unit 1200dia",
+   "profile": [
+    [
+     0,
+     -2050
+    ],
+    [
+     720,
+     -2050
+    ],
+    [
+     720,
+     -1400
+    ],
+    [
+     600,
+     -1400
+    ],
+    [
+     600,
+     -1900
+    ],
+    [
+     0,
+     -1900
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Unit 1200dia",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Unit 1200dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Outlet Pipe",
+   "name": "Channel 1200dia",
    "points": [
     [
-     80.0,
-     -1845.0
+     -600,
+     -75
     ],
     [
-     77.27,
-     -1824.29
+     600,
+     -75
     ],
     [
-     69.28,
-     -1805.0
+     600,
+     75
     ],
     [
-     56.57,
-     -1788.43
-    ],
-    [
-     40.0,
-     -1775.72
-    ],
-    [
-     20.71,
-     -1767.73
-    ],
-    [
-     0.0,
-     -1765.0
-    ],
-    [
-     -20.71,
-     -1767.73
-    ],
-    [
-     -40.0,
-     -1775.72
-    ],
-    [
-     -56.57,
-     -1788.43
-    ],
-    [
-     -69.28,
-     -1805.0
-    ],
-    [
-     -77.27,
-     -1824.29
-    ],
-    [
-     -80.0,
-     -1845.0
-    ],
-    [
-     -77.27,
-     -1865.71
-    ],
-    [
-     -69.28,
-     -1885.0
-    ],
-    [
-     -56.57,
-     -1901.57
-    ],
-    [
-     -40.0,
-     -1914.28
-    ],
-    [
-     -20.71,
-     -1922.27
-    ],
-    [
-     -0.0,
-     -1925.0
-    ],
-    [
-     20.71,
-     -1922.27
-    ],
-    [
-     40.0,
-     -1914.28
-    ],
-    [
-     56.57,
-     -1901.57
-    ],
-    [
-     69.28,
-     -1885.0
-    ],
-    [
-     77.27,
-     -1865.71
+     -600,
+     75
     ]
    ],
-   "start": 515,
-   "end": 950,
-   "sketch": "right"
+   "start": -1900,
+   "end": -1830
   },
   {
    "op": "set_subcategory",
-   "name": "Outlet Pipe",
-   "subcategory": "Upvc"
+   "name": "Channel 1200dia",
+   "subcategory": "Pre"
   },
   {
    "op": "set_material_param",
-   "name": "Outlet Pipe",
-   "param": "Upvc Material"
+   "name": "Channel 1200dia",
+   "param": "Pre Material"
   },
   {
    "op": "set_visibility",
-   "name": "Outlet Pipe",
+   "name": "Channel 1200dia",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Back 1200dia",
+   "points": [
+    [
+     595.3,
+     75.0
+    ],
+    [
+     560.2,
+     214.9
+    ],
+    [
+     492.8,
+     342.3
+    ],
+    [
+     396.9,
+     450.0
+    ],
+    [
+     278.0,
+     531.7
+    ],
+    [
+     143.2,
+     582.7
+    ],
+    [
+     0.0,
+     600.0
+    ],
+    [
+     -143.2,
+     582.7
+    ],
+    [
+     -278.0,
+     531.7
+    ],
+    [
+     -396.9,
+     450.0
+    ],
+    [
+     -492.8,
+     342.3
+    ],
+    [
+     -560.2,
+     214.9
+    ],
+    [
+     -595.3,
+     75.0
+    ]
+   ],
+   "start": -1900,
+   "end": -1720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Back 1200dia",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Back 1200dia",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Back 1200dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Benching Front 1200dia",
+   "points": [
+    [
+     -595.3,
+     -75.0
+    ],
+    [
+     -560.2,
+     -214.9
+    ],
+    [
+     -492.8,
+     -342.3
+    ],
+    [
+     -396.9,
+     -450.0
+    ],
+    [
+     -278.0,
+     -531.7
+    ],
+    [
+     -143.2,
+     -582.7
+    ],
+    [
+     0.0,
+     -600.0
+    ],
+    [
+     143.2,
+     -582.7
+    ],
+    [
+     278.0,
+     -531.7
+    ],
+    [
+     396.9,
+     -450.0
+    ],
+    [
+     492.8,
+     -342.3
+    ],
+    [
+     560.2,
+     -214.9
+    ],
+    [
+     595.3,
+     -75.0
+    ]
+   ],
+   "start": -1900,
+   "end": -1720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Benching Front 1200dia",
+   "subcategory": "Pre"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Benching Front 1200dia",
+   "param": "Pre Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Benching Front 1200dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 1200dia 1",
+   "points": [
+    [
+     -150,
+     470
+    ],
+    [
+     150,
+     470
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     -150,
+     490
+    ]
+   ],
+   "start": -700,
+   "end": -680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 1200dia 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 1200dia 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 1200dia 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 1200dia 2",
+   "points": [
+    [
+     -150,
+     470
+    ],
+    [
+     150,
+     470
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     -150,
+     490
+    ]
+   ],
+   "start": -1000,
+   "end": -980
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 1200dia 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 1200dia 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 1200dia 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 1200dia 3",
+   "points": [
+    [
+     -150,
+     470
+    ],
+    [
+     150,
+     470
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     -150,
+     490
+    ]
+   ],
+   "start": -1300,
+   "end": -1280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 1200dia 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 1200dia 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 1200dia 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron 1200dia 4",
+   "points": [
+    [
+     -150,
+     470
+    ],
+    [
+     150,
+     470
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     -150,
+     490
+    ]
+   ],
+   "start": -1600,
+   "end": -1580
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron 1200dia 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron 1200dia 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron 1200dia 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg L 1200dia 1",
+   "points": [
+    [
+     -150,
+     490
+    ],
+    [
+     -130,
+     490
+    ],
+    [
+     -130,
+     600
+    ],
+    [
+     -150,
+     600
+    ]
+   ],
+   "start": -700,
+   "end": -680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg L 1200dia 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg L 1200dia 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg L 1200dia 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg L 1200dia 2",
+   "points": [
+    [
+     -150,
+     490
+    ],
+    [
+     -130,
+     490
+    ],
+    [
+     -130,
+     600
+    ],
+    [
+     -150,
+     600
+    ]
+   ],
+   "start": -1000,
+   "end": -980
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg L 1200dia 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg L 1200dia 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg L 1200dia 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg L 1200dia 3",
+   "points": [
+    [
+     -150,
+     490
+    ],
+    [
+     -130,
+     490
+    ],
+    [
+     -130,
+     600
+    ],
+    [
+     -150,
+     600
+    ]
+   ],
+   "start": -1300,
+   "end": -1280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg L 1200dia 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg L 1200dia 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg L 1200dia 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg L 1200dia 4",
+   "points": [
+    [
+     -150,
+     490
+    ],
+    [
+     -130,
+     490
+    ],
+    [
+     -130,
+     600
+    ],
+    [
+     -150,
+     600
+    ]
+   ],
+   "start": -1600,
+   "end": -1580
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg L 1200dia 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg L 1200dia 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg L 1200dia 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg R 1200dia 1",
+   "points": [
+    [
+     130,
+     490
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     150,
+     600
+    ],
+    [
+     130,
+     600
+    ]
+   ],
+   "start": -700,
+   "end": -680
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg R 1200dia 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg R 1200dia 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg R 1200dia 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg R 1200dia 2",
+   "points": [
+    [
+     130,
+     490
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     150,
+     600
+    ],
+    [
+     130,
+     600
+    ]
+   ],
+   "start": -1000,
+   "end": -980
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg R 1200dia 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg R 1200dia 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg R 1200dia 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg R 1200dia 3",
+   "points": [
+    [
+     130,
+     490
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     150,
+     600
+    ],
+    [
+     130,
+     600
+    ]
+   ],
+   "start": -1300,
+   "end": -1280
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg R 1200dia 3",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg R 1200dia 3",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg R 1200dia 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Step Iron Leg R 1200dia 4",
+   "points": [
+    [
+     130,
+     490
+    ],
+    [
+     150,
+     490
+    ],
+    [
+     150,
+     600
+    ],
+    [
+     130,
+     600
+    ]
+   ],
+   "start": -1600,
+   "end": -1580
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Step Iron Leg R 1200dia 4",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Step Iron Leg R 1200dia 4",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Step Iron Leg R 1200dia 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1050dia_Precast",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1050dia_Precast/Show 1050dia_Precast",
+   "type": "1050dia_Precast",
+   "param": "Show 1050dia_Precast",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200dia_Precast/Show 1050dia_Precast",
+   "type": "1200dia_Precast",
+   "param": "Show 1050dia_Precast",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 1050dia/Visible",
+   "solid": "Cover Slab 1050dia",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Ring 1050dia 1/Visible",
+   "solid": "Chamber Ring 1050dia 1",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Ring 1050dia 2/Visible",
+   "solid": "Chamber Ring 1050dia 2",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Unit 1050dia/Visible",
+   "solid": "Base Unit 1050dia",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Channel 1050dia/Visible",
+   "solid": "Channel 1050dia",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Back 1050dia/Visible",
+   "solid": "Benching Back 1050dia",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Front 1050dia/Visible",
+   "solid": "Benching Front 1050dia",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1050dia 1/Visible",
+   "solid": "Step Iron 1050dia 1",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1050dia 2/Visible",
+   "solid": "Step Iron 1050dia 2",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1050dia 3/Visible",
+   "solid": "Step Iron 1050dia 3",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1050dia 4/Visible",
+   "solid": "Step Iron 1050dia 4",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1050dia 1/Visible",
+   "solid": "Step Iron Leg L 1050dia 1",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1050dia 2/Visible",
+   "solid": "Step Iron Leg L 1050dia 2",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1050dia 3/Visible",
+   "solid": "Step Iron Leg L 1050dia 3",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1050dia 4/Visible",
+   "solid": "Step Iron Leg L 1050dia 4",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1050dia 1/Visible",
+   "solid": "Step Iron Leg R 1050dia 1",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1050dia 2/Visible",
+   "solid": "Step Iron Leg R 1050dia 2",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1050dia 3/Visible",
+   "solid": "Step Iron Leg R 1050dia 3",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1050dia 4/Visible",
+   "solid": "Step Iron Leg R 1050dia 4",
+   "param": "Show 1050dia_Precast"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200dia_Precast",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1050dia_Precast/Show 1200dia_Precast",
+   "type": "1050dia_Precast",
+   "param": "Show 1200dia_Precast",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200dia_Precast/Show 1200dia_Precast",
+   "type": "1200dia_Precast",
+   "param": "Show 1200dia_Precast",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Slab 1200dia/Visible",
+   "solid": "Cover Slab 1200dia",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Ring 1200dia 1/Visible",
+   "solid": "Chamber Ring 1200dia 1",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Chamber Ring 1200dia 2/Visible",
+   "solid": "Chamber Ring 1200dia 2",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Unit 1200dia/Visible",
+   "solid": "Base Unit 1200dia",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Channel 1200dia/Visible",
+   "solid": "Channel 1200dia",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Back 1200dia/Visible",
+   "solid": "Benching Back 1200dia",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Benching Front 1200dia/Visible",
+   "solid": "Benching Front 1200dia",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1200dia 1/Visible",
+   "solid": "Step Iron 1200dia 1",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1200dia 2/Visible",
+   "solid": "Step Iron 1200dia 2",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1200dia 3/Visible",
+   "solid": "Step Iron 1200dia 3",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron 1200dia 4/Visible",
+   "solid": "Step Iron 1200dia 4",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1200dia 1/Visible",
+   "solid": "Step Iron Leg L 1200dia 1",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1200dia 2/Visible",
+   "solid": "Step Iron Leg L 1200dia 2",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1200dia 3/Visible",
+   "solid": "Step Iron Leg L 1200dia 3",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg L 1200dia 4/Visible",
+   "solid": "Step Iron Leg L 1200dia 4",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1200dia 1/Visible",
+   "solid": "Step Iron Leg R 1200dia 1",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1200dia 2/Visible",
+   "solid": "Step Iron Leg R 1200dia 2",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1200dia 3/Visible",
+   "solid": "Step Iron Leg R 1200dia 3",
+   "param": "Show 1200dia_Precast"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Step Iron Leg R 1200dia 4/Visible",
+   "solid": "Step Iron Leg R 1200dia 4",
+   "param": "Show 1200dia_Precast"
   },
   {
    "op": "add_connector",
@@ -2294,10 +3608,10 @@
   }
  ],
  "values": {
-  "Internal diameter 1050 mm (geometry)": {
-   "value": 1050,
+  "Internal diameter 1050 and 1200 mm (one per type)": {
+   "value": "1050/1200",
    "source_status": "assumed",
-   "source": "typical precast ring (BS EN 1917)"
+   "source": "typical precast rings (BS EN 1917)"
   },
   "Depth to invert 1900 mm shown": {
    "value": 1900,

@@ -412,27 +412,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Ss",
    "color": [
     180,
@@ -454,24 +433,45 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Epw",
+   "name": "Galv",
    "color": [
-    237,
-    237,
-    232
+    183,
+    188,
+    192
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Epw Material",
+   "name": "Galv Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Epw Material"
+   "name": "FMC_Metal_Duct_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Hepa",
+   "color": [
+    244,
+    244,
+    240
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Hepa Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Filter_Media_HEPA_White",
+   "param": "Hepa Material"
   },
   {
    "op": "add_subcategory",
@@ -581,744 +581,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Plenum",
-   "points": [
-    [
-     -1500,
-     -1500
-    ],
-    [
-     1500,
-     -1500
-    ],
-    [
-     1500,
-     1500
-    ],
-    [
-     -1500,
-     1500
-    ]
-   ],
-   "start": 0,
-   "end": 500
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plenum",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plenum",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plenum",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Frame Front",
-   "points": [
-    [
-     -1500,
-     -1500
-    ],
-    [
-     1500,
-     -1500
-    ],
-    [
-     1500,
-     -1440
-    ],
-    [
-     -1500,
-     -1440
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Frame Front",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Frame Front",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Frame Rear",
-   "points": [
-    [
-     -1500,
-     1440
-    ],
-    [
-     1500,
-     1440
-    ],
-    [
-     1500,
-     1500
-    ],
-    [
-     -1500,
-     1500
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Frame Rear",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Frame Rear",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Frame Rear",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Frame Left",
-   "points": [
-    [
-     -1500,
-     -1440
-    ],
-    [
-     -1440,
-     -1440
-    ],
-    [
-     -1440,
-     1440
-    ],
-    [
-     -1500,
-     1440
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Frame Left",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Frame Left",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Frame Right",
-   "points": [
-    [
-     1440,
-     -1440
-    ],
-    [
-     1500,
-     -1440
-    ],
-    [
-     1500,
-     1440
-    ],
-    [
-     1440,
-     1440
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Frame Right",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Frame Right",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grid Bar NS 1",
-   "points": [
-    [
-     -500,
-     -1440
-    ],
-    [
-     -470,
-     -1440
-    ],
-    [
-     -470,
-     1440
-    ],
-    [
-     -500,
-     1440
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grid Bar NS 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grid Bar NS 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grid Bar NS 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grid Bar NS 2",
-   "points": [
-    [
-     470,
-     -1440
-    ],
-    [
-     500,
-     -1440
-    ],
-    [
-     500,
-     1440
-    ],
-    [
-     470,
-     1440
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grid Bar NS 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grid Bar NS 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grid Bar NS 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grid Bar EW 1",
-   "points": [
-    [
-     -1440,
-     -500
-    ],
-    [
-     1440,
-     -500
-    ],
-    [
-     1440,
-     -470
-    ],
-    [
-     -1440,
-     -470
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grid Bar EW 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grid Bar EW 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grid Bar EW 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grid Bar EW 2",
-   "points": [
-    [
-     -1440,
-     470
-    ],
-    [
-     1440,
-     470
-    ],
-    [
-     1440,
-     500
-    ],
-    [
-     -1440,
-     500
-    ]
-   ],
-   "start": -30,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grid Bar EW 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grid Bar EW 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grid Bar EW 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row A 1",
-   "points": [
-    [
-     -1440,
-     -1440
-    ],
-    [
-     -500,
-     -1440
-    ],
-    [
-     -500,
-     -500
-    ],
-    [
-     -1440,
-     -500
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row A 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row A 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row A 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row A 2",
-   "points": [
-    [
-     -470,
-     -1440
-    ],
-    [
-     470,
-     -1440
-    ],
-    [
-     470,
-     -500
-    ],
-    [
-     -470,
-     -500
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row A 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row A 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row A 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row A 3",
-   "points": [
-    [
-     500,
-     -1440
-    ],
-    [
-     1440,
-     -1440
-    ],
-    [
-     1440,
-     -500
-    ],
-    [
-     500,
-     -500
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row A 3",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row A 3",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row A 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row B 1",
-   "points": [
-    [
-     -1440,
-     -470
-    ],
-    [
-     -500,
-     -470
-    ],
-    [
-     -500,
-     470
-    ],
-    [
-     -1440,
-     470
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row B 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row B 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row B 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row B 2",
-   "points": [
-    [
-     -470,
-     -470
-    ],
-    [
-     470,
-     -470
-    ],
-    [
-     470,
-     470
-    ],
-    [
-     -470,
-     470
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row B 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row B 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row B 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row B 3",
-   "points": [
-    [
-     500,
-     -470
-    ],
-    [
-     1440,
-     -470
-    ],
-    [
-     1440,
-     470
-    ],
-    [
-     500,
-     470
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row B 3",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row B 3",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row B 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row C 1",
-   "points": [
-    [
-     -1440,
-     500
-    ],
-    [
-     -500,
-     500
-    ],
-    [
-     -500,
-     1440
-    ],
-    [
-     -1440,
-     1440
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row C 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row C 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row C 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row C 2",
-   "points": [
-    [
-     -470,
-     500
-    ],
-    [
-     470,
-     500
-    ],
-    [
-     470,
-     1440
-    ],
-    [
-     -470,
-     1440
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row C 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row C 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row C 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screen Row C 3",
-   "points": [
-    [
-     500,
-     500
-    ],
-    [
-     1440,
-     500
-    ],
-    [
-     1440,
-     1440
-    ],
-    [
-     500,
-     1440
-    ]
-   ],
-   "start": -24,
-   "end": -4
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screen Row C 3",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screen Row C 3",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screen Row C 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1483,7 +745,2619 @@
   },
   {
    "op": "extrusion",
-   "name": "Skirt Front",
+   "name": "Plenum 2400",
+   "points": [
+    [
+     -1200.0,
+     -1200.0
+    ],
+    [
+     1200.0,
+     -1200.0
+    ],
+    [
+     1200.0,
+     1200.0
+    ],
+    [
+     -1200.0,
+     1200.0
+    ]
+   ],
+   "start": 0,
+   "end": 500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plenum 2400",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plenum 2400",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plenum 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Front 2400",
+   "points": [
+    [
+     -1200.0,
+     -1200.0
+    ],
+    [
+     1200.0,
+     -1200.0
+    ],
+    [
+     1200.0,
+     -1152.0
+    ],
+    [
+     -1200.0,
+     -1152.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Front 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Front 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Rear 2400",
+   "points": [
+    [
+     -1200.0,
+     1152.0
+    ],
+    [
+     1200.0,
+     1152.0
+    ],
+    [
+     1200.0,
+     1200.0
+    ],
+    [
+     -1200.0,
+     1200.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Rear 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Rear 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Rear 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Left 2400",
+   "points": [
+    [
+     -1200.0,
+     -1152.0
+    ],
+    [
+     -1152.0,
+     -1152.0
+    ],
+    [
+     -1152.0,
+     1152.0
+    ],
+    [
+     -1200.0,
+     1152.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Left 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Left 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Left 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Right 2400",
+   "points": [
+    [
+     1152.0,
+     -1152.0
+    ],
+    [
+     1200.0,
+     -1152.0
+    ],
+    [
+     1200.0,
+     1152.0
+    ],
+    [
+     1152.0,
+     1152.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Right 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Right 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Right 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar NS 2400 1",
+   "points": [
+    [
+     -400.0,
+     -1152.0
+    ],
+    [
+     -376.0,
+     -1152.0
+    ],
+    [
+     -376.0,
+     1152.0
+    ],
+    [
+     -400.0,
+     1152.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar NS 2400 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar NS 2400 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar NS 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar NS 2400 2",
+   "points": [
+    [
+     376.0,
+     -1152.0
+    ],
+    [
+     400.0,
+     -1152.0
+    ],
+    [
+     400.0,
+     1152.0
+    ],
+    [
+     376.0,
+     1152.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar NS 2400 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar NS 2400 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar NS 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar EW 2400 1",
+   "points": [
+    [
+     -1152.0,
+     -400.0
+    ],
+    [
+     1152.0,
+     -400.0
+    ],
+    [
+     1152.0,
+     -376.0
+    ],
+    [
+     -1152.0,
+     -376.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar EW 2400 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar EW 2400 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar EW 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar EW 2400 2",
+   "points": [
+    [
+     -1152.0,
+     376.0
+    ],
+    [
+     1152.0,
+     376.0
+    ],
+    [
+     1152.0,
+     400.0
+    ],
+    [
+     -1152.0,
+     400.0
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar EW 2400 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar EW 2400 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar EW 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 2400 1",
+   "points": [
+    [
+     -1152.0,
+     -1152.0
+    ],
+    [
+     -400.0,
+     -1152.0
+    ],
+    [
+     -400.0,
+     -400.0
+    ],
+    [
+     -1152.0,
+     -400.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 2400 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 2400 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 2400 2",
+   "points": [
+    [
+     -376.0,
+     -1152.0
+    ],
+    [
+     376.0,
+     -1152.0
+    ],
+    [
+     376.0,
+     -400.0
+    ],
+    [
+     -376.0,
+     -400.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 2400 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 2400 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 2400 3",
+   "points": [
+    [
+     400.0,
+     -1152.0
+    ],
+    [
+     1152.0,
+     -1152.0
+    ],
+    [
+     1152.0,
+     -400.0
+    ],
+    [
+     400.0,
+     -400.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 2400 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 2400 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 2400 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 2400 1",
+   "points": [
+    [
+     -1152.0,
+     -376.0
+    ],
+    [
+     -400.0,
+     -376.0
+    ],
+    [
+     -400.0,
+     376.0
+    ],
+    [
+     -1152.0,
+     376.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 2400 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 2400 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 2400 2",
+   "points": [
+    [
+     -376.0,
+     -376.0
+    ],
+    [
+     376.0,
+     -376.0
+    ],
+    [
+     376.0,
+     376.0
+    ],
+    [
+     -376.0,
+     376.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 2400 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 2400 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 2400 3",
+   "points": [
+    [
+     400.0,
+     -376.0
+    ],
+    [
+     1152.0,
+     -376.0
+    ],
+    [
+     1152.0,
+     376.0
+    ],
+    [
+     400.0,
+     376.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 2400 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 2400 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 2400 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 2400 1",
+   "points": [
+    [
+     -1152.0,
+     400.0
+    ],
+    [
+     -400.0,
+     400.0
+    ],
+    [
+     -400.0,
+     1152.0
+    ],
+    [
+     -1152.0,
+     1152.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 2400 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 2400 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 2400 2",
+   "points": [
+    [
+     -376.0,
+     400.0
+    ],
+    [
+     376.0,
+     400.0
+    ],
+    [
+     376.0,
+     1152.0
+    ],
+    [
+     -376.0,
+     1152.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 2400 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 2400 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 2400 3",
+   "points": [
+    [
+     400.0,
+     400.0
+    ],
+    [
+     1152.0,
+     400.0
+    ],
+    [
+     1152.0,
+     1152.0
+    ],
+    [
+     400.0,
+     1152.0
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 2400 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 2400 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 2400 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Front 2400",
+   "points": [
+    [
+     -1200.0,
+     -1209.6
+    ],
+    [
+     1200.0,
+     -1209.6
+    ],
+    [
+     1200.0,
+     -1200.0
+    ],
+    [
+     -1200.0,
+     -1200.0
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Front 2400",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Front 2400",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Rear 2400",
+   "points": [
+    [
+     -1200.0,
+     1200.0
+    ],
+    [
+     1200.0,
+     1200.0
+    ],
+    [
+     1200.0,
+     1209.6
+    ],
+    [
+     -1200.0,
+     1209.6
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Rear 2400",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Rear 2400",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Rear 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Left 2400",
+   "points": [
+    [
+     -1209.6,
+     -1200.0
+    ],
+    [
+     -1200.0,
+     -1200.0
+    ],
+    [
+     -1200.0,
+     1200.0
+    ],
+    [
+     -1209.6,
+     1200.0
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Left 2400",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Left 2400",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Left 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Right 2400",
+   "points": [
+    [
+     1200.0,
+     -1200.0
+    ],
+    [
+     1209.6,
+     -1200.0
+    ],
+    [
+     1209.6,
+     1200.0
+    ],
+    [
+     1200.0,
+     1200.0
+    ]
+   ],
+   "start": -450,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Right 2400",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Right 2400",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Right 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Trim Front 2400",
+   "points": [
+    [
+     -1211.2,
+     -1212.8
+    ],
+    [
+     1211.2,
+     -1212.8
+    ],
+    [
+     1211.2,
+     -1198.4
+    ],
+    [
+     -1211.2,
+     -1198.4
+    ]
+   ],
+   "start": -470,
+   "end": -450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Trim Front 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Trim Front 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Trim Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Trim Rear 2400",
+   "points": [
+    [
+     -1211.2,
+     1198.4
+    ],
+    [
+     1211.2,
+     1198.4
+    ],
+    [
+     1211.2,
+     1212.8
+    ],
+    [
+     -1211.2,
+     1212.8
+    ]
+   ],
+   "start": -470,
+   "end": -450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Trim Rear 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Trim Rear 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Trim Rear 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Trim Left 2400",
+   "points": [
+    [
+     -1212.8,
+     -1200.0
+    ],
+    [
+     -1198.4,
+     -1200.0
+    ],
+    [
+     -1198.4,
+     1200.0
+    ],
+    [
+     -1212.8,
+     1200.0
+    ]
+   ],
+   "start": -470,
+   "end": -450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Trim Left 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Trim Left 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Trim Left 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Trim Right 2400",
+   "points": [
+    [
+     1198.4,
+     -1200.0
+    ],
+    [
+     1212.8,
+     -1200.0
+    ],
+    [
+     1212.8,
+     1200.0
+    ],
+    [
+     1198.4,
+     1200.0
+    ]
+   ],
+   "start": -470,
+   "end": -450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skirt Trim Right 2400",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skirt Trim Right 2400",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skirt Trim Right 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Light Front 2400",
+   "points": [
+    [
+     -1120.0,
+     -1150.4
+    ],
+    [
+     1120.0,
+     -1150.4
+    ],
+    [
+     1120.0,
+     -1104.0
+    ],
+    [
+     -1120.0,
+     -1104.0
+    ]
+   ],
+   "start": -40,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Light Front 2400",
+   "subcategory": "Pc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Light Front 2400",
+   "param": "Pc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Light Front 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Light Rear 2400",
+   "points": [
+    [
+     -1120.0,
+     1104.0
+    ],
+    [
+     1120.0,
+     1104.0
+    ],
+    [
+     1120.0,
+     1150.4
+    ],
+    [
+     -1120.0,
+     1150.4
+    ]
+   ],
+   "start": -40,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Light Rear 2400",
+   "subcategory": "Pc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Light Rear 2400",
+   "param": "Pc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Light Rear 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Spigot Main 2400",
+   "points": [
+    [
+     -440.0,
+     -600.0
+    ],
+    [
+     -445.45,
+     -558.59
+    ],
+    [
+     -461.44,
+     -520.0
+    ],
+    [
+     -486.86,
+     -486.86
+    ],
+    [
+     -520.0,
+     -461.44
+    ],
+    [
+     -558.59,
+     -445.45
+    ],
+    [
+     -600.0,
+     -440.0
+    ],
+    [
+     -641.41,
+     -445.45
+    ],
+    [
+     -680.0,
+     -461.44
+    ],
+    [
+     -713.14,
+     -486.86
+    ],
+    [
+     -738.56,
+     -520.0
+    ],
+    [
+     -754.55,
+     -558.59
+    ],
+    [
+     -760.0,
+     -600.0
+    ],
+    [
+     -754.55,
+     -641.41
+    ],
+    [
+     -738.56,
+     -680.0
+    ],
+    [
+     -713.14,
+     -713.14
+    ],
+    [
+     -680.0,
+     -738.56
+    ],
+    [
+     -641.41,
+     -754.55
+    ],
+    [
+     -600.0,
+     -760.0
+    ],
+    [
+     -558.59,
+     -754.55
+    ],
+    [
+     -520.0,
+     -738.56
+    ],
+    [
+     -486.86,
+     -713.14
+    ],
+    [
+     -461.44,
+     -680.0
+    ],
+    [
+     -445.45,
+     -641.41
+    ]
+   ],
+   "start": 500,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Spigot Main 2400",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Spigot Main 2400",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Spigot Main 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Spigot 2 2400",
+   "points": [
+    [
+     760.0,
+     -600.0
+    ],
+    [
+     754.55,
+     -558.59
+    ],
+    [
+     738.56,
+     -520.0
+    ],
+    [
+     713.14,
+     -486.86
+    ],
+    [
+     680.0,
+     -461.44
+    ],
+    [
+     641.41,
+     -445.45
+    ],
+    [
+     600.0,
+     -440.0
+    ],
+    [
+     558.59,
+     -445.45
+    ],
+    [
+     520.0,
+     -461.44
+    ],
+    [
+     486.86,
+     -486.86
+    ],
+    [
+     461.44,
+     -520.0
+    ],
+    [
+     445.45,
+     -558.59
+    ],
+    [
+     440.0,
+     -600.0
+    ],
+    [
+     445.45,
+     -641.41
+    ],
+    [
+     461.44,
+     -680.0
+    ],
+    [
+     486.86,
+     -713.14
+    ],
+    [
+     520.0,
+     -738.56
+    ],
+    [
+     558.59,
+     -754.55
+    ],
+    [
+     600.0,
+     -760.0
+    ],
+    [
+     641.41,
+     -754.55
+    ],
+    [
+     680.0,
+     -738.56
+    ],
+    [
+     713.14,
+     -713.14
+    ],
+    [
+     738.56,
+     -680.0
+    ],
+    [
+     754.55,
+     -641.41
+    ]
+   ],
+   "start": 500,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Spigot 2 2400",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Spigot 2 2400",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Spigot 2 2400",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Spigot Rear 2400 1",
+   "points": [
+    [
+     -440.0,
+     600.0
+    ],
+    [
+     -445.45,
+     641.41
+    ],
+    [
+     -461.44,
+     680.0
+    ],
+    [
+     -486.86,
+     713.14
+    ],
+    [
+     -520.0,
+     738.56
+    ],
+    [
+     -558.59,
+     754.55
+    ],
+    [
+     -600.0,
+     760.0
+    ],
+    [
+     -641.41,
+     754.55
+    ],
+    [
+     -680.0,
+     738.56
+    ],
+    [
+     -713.14,
+     713.14
+    ],
+    [
+     -738.56,
+     680.0
+    ],
+    [
+     -754.55,
+     641.41
+    ],
+    [
+     -760.0,
+     600.0
+    ],
+    [
+     -754.55,
+     558.59
+    ],
+    [
+     -738.56,
+     520.0
+    ],
+    [
+     -713.14,
+     486.86
+    ],
+    [
+     -680.0,
+     461.44
+    ],
+    [
+     -641.41,
+     445.45
+    ],
+    [
+     -600.0,
+     440.0
+    ],
+    [
+     -558.59,
+     445.45
+    ],
+    [
+     -520.0,
+     461.44
+    ],
+    [
+     -486.86,
+     486.86
+    ],
+    [
+     -461.44,
+     520.0
+    ],
+    [
+     -445.45,
+     558.59
+    ]
+   ],
+   "start": 500,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Spigot Rear 2400 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Spigot Rear 2400 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Spigot Rear 2400 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Spigot Rear 2400 2",
+   "points": [
+    [
+     760.0,
+     600.0
+    ],
+    [
+     754.55,
+     641.41
+    ],
+    [
+     738.56,
+     680.0
+    ],
+    [
+     713.14,
+     713.14
+    ],
+    [
+     680.0,
+     738.56
+    ],
+    [
+     641.41,
+     754.55
+    ],
+    [
+     600.0,
+     760.0
+    ],
+    [
+     558.59,
+     754.55
+    ],
+    [
+     520.0,
+     738.56
+    ],
+    [
+     486.86,
+     713.14
+    ],
+    [
+     461.44,
+     680.0
+    ],
+    [
+     445.45,
+     641.41
+    ],
+    [
+     440.0,
+     600.0
+    ],
+    [
+     445.45,
+     558.59
+    ],
+    [
+     461.44,
+     520.0
+    ],
+    [
+     486.86,
+     486.86
+    ],
+    [
+     520.0,
+     461.44
+    ],
+    [
+     558.59,
+     445.45
+    ],
+    [
+     600.0,
+     440.0
+    ],
+    [
+     641.41,
+     445.45
+    ],
+    [
+     680.0,
+     461.44
+    ],
+    [
+     713.14,
+     486.86
+    ],
+    [
+     738.56,
+     520.0
+    ],
+    [
+     754.55,
+     558.59
+    ]
+   ],
+   "start": 500,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Spigot Rear 2400 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Spigot Rear 2400 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Spigot Rear 2400 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Test Port 2400 1",
+   "points": [
+    [
+     -1032.0,
+     -1040.0
+    ],
+    [
+     -1032.27,
+     -1037.93
+    ],
+    [
+     -1033.07,
+     -1036.0
+    ],
+    [
+     -1034.34,
+     -1034.34
+    ],
+    [
+     -1036.0,
+     -1033.07
+    ],
+    [
+     -1037.93,
+     -1032.27
+    ],
+    [
+     -1040.0,
+     -1032.0
+    ],
+    [
+     -1042.07,
+     -1032.27
+    ],
+    [
+     -1044.0,
+     -1033.07
+    ],
+    [
+     -1045.66,
+     -1034.34
+    ],
+    [
+     -1046.93,
+     -1036.0
+    ],
+    [
+     -1047.73,
+     -1037.93
+    ],
+    [
+     -1048.0,
+     -1040.0
+    ],
+    [
+     -1047.73,
+     -1042.07
+    ],
+    [
+     -1046.93,
+     -1044.0
+    ],
+    [
+     -1045.66,
+     -1045.66
+    ],
+    [
+     -1044.0,
+     -1046.93
+    ],
+    [
+     -1042.07,
+     -1047.73
+    ],
+    [
+     -1040.0,
+     -1048.0
+    ],
+    [
+     -1037.93,
+     -1047.73
+    ],
+    [
+     -1036.0,
+     -1046.93
+    ],
+    [
+     -1034.34,
+     -1045.66
+    ],
+    [
+     -1033.07,
+     -1044.0
+    ],
+    [
+     -1032.27,
+     -1042.07
+    ]
+   ],
+   "start": -28,
+   "end": -24
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Test Port 2400 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Test Port 2400 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Test Port 2400 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Test Port 2400 2",
+   "points": [
+    [
+     1048.0,
+     -1040.0
+    ],
+    [
+     1047.73,
+     -1037.93
+    ],
+    [
+     1046.93,
+     -1036.0
+    ],
+    [
+     1045.66,
+     -1034.34
+    ],
+    [
+     1044.0,
+     -1033.07
+    ],
+    [
+     1042.07,
+     -1032.27
+    ],
+    [
+     1040.0,
+     -1032.0
+    ],
+    [
+     1037.93,
+     -1032.27
+    ],
+    [
+     1036.0,
+     -1033.07
+    ],
+    [
+     1034.34,
+     -1034.34
+    ],
+    [
+     1033.07,
+     -1036.0
+    ],
+    [
+     1032.27,
+     -1037.93
+    ],
+    [
+     1032.0,
+     -1040.0
+    ],
+    [
+     1032.27,
+     -1042.07
+    ],
+    [
+     1033.07,
+     -1044.0
+    ],
+    [
+     1034.34,
+     -1045.66
+    ],
+    [
+     1036.0,
+     -1046.93
+    ],
+    [
+     1037.93,
+     -1047.73
+    ],
+    [
+     1040.0,
+     -1048.0
+    ],
+    [
+     1042.07,
+     -1047.73
+    ],
+    [
+     1044.0,
+     -1046.93
+    ],
+    [
+     1045.66,
+     -1045.66
+    ],
+    [
+     1046.93,
+     -1044.0
+    ],
+    [
+     1047.73,
+     -1042.07
+    ]
+   ],
+   "start": -28,
+   "end": -24
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Test Port 2400 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Test Port 2400 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Test Port 2400 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plenum 3000",
+   "points": [
+    [
+     -1500,
+     -1500
+    ],
+    [
+     1500,
+     -1500
+    ],
+    [
+     1500,
+     1500
+    ],
+    [
+     -1500,
+     1500
+    ]
+   ],
+   "start": 0,
+   "end": 500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plenum 3000",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plenum 3000",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plenum 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Front 3000",
+   "points": [
+    [
+     -1500,
+     -1500
+    ],
+    [
+     1500,
+     -1500
+    ],
+    [
+     1500,
+     -1440
+    ],
+    [
+     -1500,
+     -1440
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Front 3000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Front 3000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Front 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Rear 3000",
+   "points": [
+    [
+     -1500,
+     1440
+    ],
+    [
+     1500,
+     1440
+    ],
+    [
+     1500,
+     1500
+    ],
+    [
+     -1500,
+     1500
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Rear 3000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Rear 3000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Rear 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Left 3000",
+   "points": [
+    [
+     -1500,
+     -1440
+    ],
+    [
+     -1440,
+     -1440
+    ],
+    [
+     -1440,
+     1440
+    ],
+    [
+     -1500,
+     1440
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Left 3000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Left 3000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Left 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Perimeter Frame Right 3000",
+   "points": [
+    [
+     1440,
+     -1440
+    ],
+    [
+     1500,
+     -1440
+    ],
+    [
+     1500,
+     1440
+    ],
+    [
+     1440,
+     1440
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Perimeter Frame Right 3000",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Perimeter Frame Right 3000",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Perimeter Frame Right 3000",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar NS 3000 1",
+   "points": [
+    [
+     -500,
+     -1440
+    ],
+    [
+     -470,
+     -1440
+    ],
+    [
+     -470,
+     1440
+    ],
+    [
+     -500,
+     1440
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar NS 3000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar NS 3000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar NS 3000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar NS 3000 2",
+   "points": [
+    [
+     470,
+     -1440
+    ],
+    [
+     500,
+     -1440
+    ],
+    [
+     500,
+     1440
+    ],
+    [
+     470,
+     1440
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar NS 3000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar NS 3000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar NS 3000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar EW 3000 1",
+   "points": [
+    [
+     -1440,
+     -500
+    ],
+    [
+     1440,
+     -500
+    ],
+    [
+     1440,
+     -470
+    ],
+    [
+     -1440,
+     -470
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar EW 3000 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar EW 3000 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar EW 3000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Grid Bar EW 3000 2",
+   "points": [
+    [
+     -1440,
+     470
+    ],
+    [
+     1440,
+     470
+    ],
+    [
+     1440,
+     500
+    ],
+    [
+     -1440,
+     500
+    ]
+   ],
+   "start": -30,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Grid Bar EW 3000 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Grid Bar EW 3000 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Grid Bar EW 3000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 3000 1",
+   "points": [
+    [
+     -1440,
+     -1440
+    ],
+    [
+     -500,
+     -1440
+    ],
+    [
+     -500,
+     -500
+    ],
+    [
+     -1440,
+     -500
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 3000 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 3000 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 3000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 3000 2",
+   "points": [
+    [
+     -470,
+     -1440
+    ],
+    [
+     470,
+     -1440
+    ],
+    [
+     470,
+     -500
+    ],
+    [
+     -470,
+     -500
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 3000 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 3000 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 3000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row A 3000 3",
+   "points": [
+    [
+     500,
+     -1440
+    ],
+    [
+     1440,
+     -1440
+    ],
+    [
+     1440,
+     -500
+    ],
+    [
+     500,
+     -500
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row A 3000 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row A 3000 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row A 3000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 3000 1",
+   "points": [
+    [
+     -1440,
+     -470
+    ],
+    [
+     -500,
+     -470
+    ],
+    [
+     -500,
+     470
+    ],
+    [
+     -1440,
+     470
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 3000 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 3000 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 3000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 3000 2",
+   "points": [
+    [
+     -470,
+     -470
+    ],
+    [
+     470,
+     -470
+    ],
+    [
+     470,
+     470
+    ],
+    [
+     -470,
+     470
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 3000 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 3000 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 3000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row B 3000 3",
+   "points": [
+    [
+     500,
+     -470
+    ],
+    [
+     1440,
+     -470
+    ],
+    [
+     1440,
+     470
+    ],
+    [
+     500,
+     470
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row B 3000 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row B 3000 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row B 3000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 3000 1",
+   "points": [
+    [
+     -1440,
+     500
+    ],
+    [
+     -500,
+     500
+    ],
+    [
+     -500,
+     1440
+    ],
+    [
+     -1440,
+     1440
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 3000 1",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 3000 1",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 3000 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 3000 2",
+   "points": [
+    [
+     -470,
+     500
+    ],
+    [
+     470,
+     500
+    ],
+    [
+     470,
+     1440
+    ],
+    [
+     -470,
+     1440
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 3000 2",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 3000 2",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 3000 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen Row C 3000 3",
+   "points": [
+    [
+     500,
+     500
+    ],
+    [
+     1440,
+     500
+    ],
+    [
+     1440,
+     1440
+    ],
+    [
+     500,
+     1440
+    ]
+   ],
+   "start": -24,
+   "end": -4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Row C 3000 3",
+   "subcategory": "Hepa"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Row C 3000 3",
+   "param": "Hepa Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Row C 3000 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skirt Front 3000",
    "points": [
     [
      -1500,
@@ -1507,24 +3381,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Front",
+   "name": "Skirt Front 3000",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Front",
+   "name": "Skirt Front 3000",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Front",
+   "name": "Skirt Front 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Rear",
+   "name": "Skirt Rear 3000",
    "points": [
     [
      -1500,
@@ -1548,24 +3422,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Rear",
+   "name": "Skirt Rear 3000",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Rear",
+   "name": "Skirt Rear 3000",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Rear",
+   "name": "Skirt Rear 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Left",
+   "name": "Skirt Left 3000",
    "points": [
     [
      -1512,
@@ -1589,24 +3463,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Left",
+   "name": "Skirt Left 3000",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Left",
+   "name": "Skirt Left 3000",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Left",
+   "name": "Skirt Left 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Right",
+   "name": "Skirt Right 3000",
    "points": [
     [
      1500,
@@ -1630,24 +3504,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Right",
+   "name": "Skirt Right 3000",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Right",
+   "name": "Skirt Right 3000",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Right",
+   "name": "Skirt Right 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Trim Front",
+   "name": "Skirt Trim Front 3000",
    "points": [
     [
      -1514,
@@ -1671,24 +3545,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Trim Front",
+   "name": "Skirt Trim Front 3000",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Trim Front",
+   "name": "Skirt Trim Front 3000",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Trim Front",
+   "name": "Skirt Trim Front 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Trim Rear",
+   "name": "Skirt Trim Rear 3000",
    "points": [
     [
      -1514,
@@ -1712,24 +3586,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Trim Rear",
+   "name": "Skirt Trim Rear 3000",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Trim Rear",
+   "name": "Skirt Trim Rear 3000",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Trim Rear",
+   "name": "Skirt Trim Rear 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Trim Left",
+   "name": "Skirt Trim Left 3000",
    "points": [
     [
      -1516,
@@ -1753,24 +3627,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Trim Left",
+   "name": "Skirt Trim Left 3000",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Trim Left",
+   "name": "Skirt Trim Left 3000",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Trim Left",
+   "name": "Skirt Trim Left 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Skirt Trim Right",
+   "name": "Skirt Trim Right 3000",
    "points": [
     [
      1498,
@@ -1794,24 +3668,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skirt Trim Right",
+   "name": "Skirt Trim Right 3000",
    "subcategory": "Ss"
   },
   {
    "op": "set_material_param",
-   "name": "Skirt Trim Right",
+   "name": "Skirt Trim Right 3000",
    "param": "Ss Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skirt Trim Right",
+   "name": "Skirt Trim Right 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Perimeter Light Front",
+   "name": "Perimeter Light Front 3000",
    "points": [
     [
      -1400,
@@ -1835,24 +3709,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Perimeter Light Front",
+   "name": "Perimeter Light Front 3000",
    "subcategory": "Pc"
   },
   {
    "op": "set_material_param",
-   "name": "Perimeter Light Front",
+   "name": "Perimeter Light Front 3000",
    "param": "Pc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Perimeter Light Front",
+   "name": "Perimeter Light Front 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Perimeter Light Rear",
+   "name": "Perimeter Light Rear 3000",
    "points": [
     [
      -1400,
@@ -1876,24 +3750,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Perimeter Light Rear",
+   "name": "Perimeter Light Rear 3000",
    "subcategory": "Pc"
   },
   {
    "op": "set_material_param",
-   "name": "Perimeter Light Rear",
+   "name": "Perimeter Light Rear 3000",
    "param": "Pc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Perimeter Light Rear",
+   "name": "Perimeter Light Rear 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Supply Spigot Main",
+   "name": "Supply Spigot Main 3000",
    "points": [
     [
      -550.0,
@@ -1997,24 +3871,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Supply Spigot Main",
+   "name": "Supply Spigot Main 3000",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Supply Spigot Main",
+   "name": "Supply Spigot Main 3000",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Supply Spigot Main",
+   "name": "Supply Spigot Main 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Supply Spigot 2",
+   "name": "Supply Spigot 2 3000",
    "points": [
     [
      950.0,
@@ -2118,24 +3992,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Supply Spigot 2",
+   "name": "Supply Spigot 2 3000",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Supply Spigot 2",
+   "name": "Supply Spigot 2 3000",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Supply Spigot 2",
+   "name": "Supply Spigot 2 3000",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Supply Spigot Rear 1",
+   "name": "Supply Spigot Rear 3000 1",
    "points": [
     [
      -550.0,
@@ -2239,24 +4113,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Supply Spigot Rear 1",
+   "name": "Supply Spigot Rear 3000 1",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Supply Spigot Rear 1",
+   "name": "Supply Spigot Rear 3000 1",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Supply Spigot Rear 1",
+   "name": "Supply Spigot Rear 3000 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Supply Spigot Rear 2",
+   "name": "Supply Spigot Rear 3000 2",
    "points": [
     [
      950.0,
@@ -2360,24 +4234,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Supply Spigot Rear 2",
+   "name": "Supply Spigot Rear 3000 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Supply Spigot Rear 2",
+   "name": "Supply Spigot Rear 3000 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Supply Spigot Rear 2",
+   "name": "Supply Spigot Rear 3000 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Test Port 1",
+   "name": "Test Port 3000 1",
    "points": [
     [
      -1290.0,
@@ -2481,24 +4355,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Test Port 1",
+   "name": "Test Port 3000 1",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Test Port 1",
+   "name": "Test Port 3000 1",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Test Port 1",
+   "name": "Test Port 3000 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Test Port 2",
+   "name": "Test Port 3000 2",
    "points": [
     [
      1310.0,
@@ -2602,27 +4476,485 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Test Port 2",
+   "name": "Test Port 3000 2",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Test Port 2",
+   "name": "Test Port 3000 2",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Test Port 2",
+   "name": "Test Port 3000 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
+   "op": "add_family_param",
+   "name": "Show 2400x2400_UCV",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/Show 2400x2400_UCV",
+   "type": "2400x2400_UCV",
+   "param": "Show 2400x2400_UCV",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_UCV/Show 2400x2400_UCV",
+   "type": "3000x3000_UCV",
+   "param": "Show 2400x2400_UCV",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plenum 2400/Visible",
+   "solid": "Plenum 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Front 2400/Visible",
+   "solid": "Perimeter Frame Front 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Rear 2400/Visible",
+   "solid": "Perimeter Frame Rear 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Left 2400/Visible",
+   "solid": "Perimeter Frame Left 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Right 2400/Visible",
+   "solid": "Perimeter Frame Right 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar NS 2400 1/Visible",
+   "solid": "Grid Bar NS 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar NS 2400 2/Visible",
+   "solid": "Grid Bar NS 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar EW 2400 1/Visible",
+   "solid": "Grid Bar EW 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar EW 2400 2/Visible",
+   "solid": "Grid Bar EW 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 2400 1/Visible",
+   "solid": "Screen Row A 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 2400 2/Visible",
+   "solid": "Screen Row A 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 2400 3/Visible",
+   "solid": "Screen Row A 2400 3",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 2400 1/Visible",
+   "solid": "Screen Row B 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 2400 2/Visible",
+   "solid": "Screen Row B 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 2400 3/Visible",
+   "solid": "Screen Row B 2400 3",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 2400 1/Visible",
+   "solid": "Screen Row C 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 2400 2/Visible",
+   "solid": "Screen Row C 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 2400 3/Visible",
+   "solid": "Screen Row C 2400 3",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Front 2400/Visible",
+   "solid": "Skirt Front 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Rear 2400/Visible",
+   "solid": "Skirt Rear 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Left 2400/Visible",
+   "solid": "Skirt Left 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Right 2400/Visible",
+   "solid": "Skirt Right 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Front 2400/Visible",
+   "solid": "Skirt Trim Front 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Rear 2400/Visible",
+   "solid": "Skirt Trim Rear 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Left 2400/Visible",
+   "solid": "Skirt Trim Left 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Right 2400/Visible",
+   "solid": "Skirt Trim Right 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Light Front 2400/Visible",
+   "solid": "Perimeter Light Front 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Light Rear 2400/Visible",
+   "solid": "Perimeter Light Rear 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Main 2400/Visible",
+   "solid": "Supply Spigot Main 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot 2 2400/Visible",
+   "solid": "Supply Spigot 2 2400",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Rear 2400 1/Visible",
+   "solid": "Supply Spigot Rear 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Rear 2400 2/Visible",
+   "solid": "Supply Spigot Rear 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Test Port 2400 1/Visible",
+   "solid": "Test Port 2400 1",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Test Port 2400 2/Visible",
+   "solid": "Test Port 2400 2",
+   "param": "Show 2400x2400_UCV"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3000x3000_UCV",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2400x2400_UCV/Show 3000x3000_UCV",
+   "type": "2400x2400_UCV",
+   "param": "Show 3000x3000_UCV",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000x3000_UCV/Show 3000x3000_UCV",
+   "type": "3000x3000_UCV",
+   "param": "Show 3000x3000_UCV",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plenum 3000/Visible",
+   "solid": "Plenum 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Front 3000/Visible",
+   "solid": "Perimeter Frame Front 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Rear 3000/Visible",
+   "solid": "Perimeter Frame Rear 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Left 3000/Visible",
+   "solid": "Perimeter Frame Left 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Frame Right 3000/Visible",
+   "solid": "Perimeter Frame Right 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar NS 3000 1/Visible",
+   "solid": "Grid Bar NS 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar NS 3000 2/Visible",
+   "solid": "Grid Bar NS 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar EW 3000 1/Visible",
+   "solid": "Grid Bar EW 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Grid Bar EW 3000 2/Visible",
+   "solid": "Grid Bar EW 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 3000 1/Visible",
+   "solid": "Screen Row A 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 3000 2/Visible",
+   "solid": "Screen Row A 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row A 3000 3/Visible",
+   "solid": "Screen Row A 3000 3",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 3000 1/Visible",
+   "solid": "Screen Row B 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 3000 2/Visible",
+   "solid": "Screen Row B 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row B 3000 3/Visible",
+   "solid": "Screen Row B 3000 3",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 3000 1/Visible",
+   "solid": "Screen Row C 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 3000 2/Visible",
+   "solid": "Screen Row C 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screen Row C 3000 3/Visible",
+   "solid": "Screen Row C 3000 3",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Front 3000/Visible",
+   "solid": "Skirt Front 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Rear 3000/Visible",
+   "solid": "Skirt Rear 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Left 3000/Visible",
+   "solid": "Skirt Left 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Right 3000/Visible",
+   "solid": "Skirt Right 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Front 3000/Visible",
+   "solid": "Skirt Trim Front 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Rear 3000/Visible",
+   "solid": "Skirt Trim Rear 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Left 3000/Visible",
+   "solid": "Skirt Trim Left 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skirt Trim Right 3000/Visible",
+   "solid": "Skirt Trim Right 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Light Front 3000/Visible",
+   "solid": "Perimeter Light Front 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Perimeter Light Rear 3000/Visible",
+   "solid": "Perimeter Light Rear 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Main 3000/Visible",
+   "solid": "Supply Spigot Main 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot 2 3000/Visible",
+   "solid": "Supply Spigot 2 3000",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Rear 3000 1/Visible",
+   "solid": "Supply Spigot Rear 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Spigot Rear 3000 2/Visible",
+   "solid": "Supply Spigot Rear 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Test Port 3000 1/Visible",
+   "solid": "Test Port 3000 1",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Test Port 3000 2/Visible",
+   "solid": "Test Port 3000 2",
+   "param": "Show 3000x3000_UCV"
+  },
+  {
    "op": "add_connector",
-   "name": "Supply",
+   "name": "Supply 2400",
    "domain": "duct",
    "system": "SupplyAir",
-   "solid": "Supply Spigot Main",
+   "solid": "Supply Spigot Main 2400",
+   "side": "top",
+   "diameter": 315,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Supply 3000",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "solid": "Supply Spigot Main 3000",
    "side": "top",
    "diameter": 400,
    "flow": "In"

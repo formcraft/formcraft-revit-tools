@@ -2,7 +2,7 @@
  "family": "FMC_A_GenericModel_Bollard_AmbulanceBay",
  "category": "Site",
  "template": "Metric Generic Model.rft",
- "desc": "Ambulance bay bollard, 152 mm steel tube, concrete filled, domed cap, two reflective bands, cast into a 350 dia concrete footing",
+ "desc": "Ambulance bay bollard, 152 or 219 mm steel tube, concrete filled, domed cap, two reflective bands, cast into a 350 dia concrete footing",
  "ifc": "IfcBuildingElementProxy",
  "keynote": "T.BOL_00",
  "types": [
@@ -12,7 +12,7 @@
   },
   {
    "name": "200_Steel",
-   "desc": "Steel bollard 200 mm dia, 1000 mm high, concrete filled"
+   "desc": "Steel bollard 219 mm dia, 1000 mm high, concrete filled"
   }
  ],
  "materials": {
@@ -39,7 +39,23 @@
    "lod": "mf"
   },
   {
-   "n": "Body",
+   "n": "Rebar Anchor",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -400
+   ],
+   "r": 8,
+   "y": [
+    -170,
+    170
+   ],
+   "mat": "steel",
+   "lod": "m"
+  },
+  {
+   "n": "Body 150",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -52,10 +68,13 @@
     1000
    ],
    "mat": "dark",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "150_Steel"
+   ]
   },
   {
-   "n": "Dome Cap",
+   "n": "Dome Cap 150",
    "shape": "turn",
    "axis": "z",
    "c": [
@@ -68,15 +87,15 @@
      1050
     ],
     [
-     30,
+     30.400000000000002,
      1046
     ],
     [
-     55,
+     54.72,
      1035
     ],
     [
-     70,
+     69.92,
      1018
     ],
     [
@@ -93,10 +112,13 @@
     ]
    ],
    "mat": "dark",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "150_Steel"
+   ]
   },
   {
-   "n": "Reflective Band",
+   "n": "Reflective Band 150",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -109,10 +131,13 @@
     900
    ],
    "mat": "yellow",
-   "lod": "f"
+   "lod": "f",
+   "only": [
+    "150_Steel"
+   ]
   },
   {
-   "n": "Reflective Band Lower",
+   "n": "Reflective Band Lower 150",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -125,10 +150,13 @@
     760
    ],
    "mat": "yellow",
-   "lod": "f"
+   "lod": "f",
+   "only": [
+    "150_Steel"
+   ]
   },
   {
-   "n": "Ground Collar",
+   "n": "Ground Collar 150",
    "shape": "turn",
    "axis": "z",
    "c": [
@@ -154,33 +182,156 @@
     ]
    ],
    "mat": "dark",
-   "lod": "f"
+   "lod": "f",
+   "only": [
+    "150_Steel"
+   ]
   },
   {
-   "n": "Rebar Anchor",
+   "n": "Body 200",
    "shape": "cyl",
-   "axis": "y",
+   "axis": "z",
    "c": [
     0,
-    -400
+    0
    ],
-   "r": 8,
-   "y": [
-    -180,
-    180
+   "r": 110,
+   "z": [
+    -600,
+    1000
    ],
-   "mat": "steel",
-   "lod": "m"
+   "mat": "dark",
+   "lod": "mf",
+   "only": [
+    "200_Steel"
+   ]
+  },
+  {
+   "n": "Dome Cap 200",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     1050
+    ],
+    [
+     44.0,
+     1046
+    ],
+    [
+     79.2,
+     1035
+    ],
+    [
+     101.2,
+     1018
+    ],
+    [
+     114,
+     1000
+    ],
+    [
+     114,
+     990
+    ],
+    [
+     0,
+     990
+    ]
+   ],
+   "mat": "dark",
+   "lod": "mf",
+   "only": [
+    "200_Steel"
+   ]
+  },
+  {
+   "n": "Reflective Band 200",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 111.5,
+   "z": [
+    820,
+    900
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "only": [
+    "200_Steel"
+   ]
+  },
+  {
+   "n": "Reflective Band Lower 200",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 111.5,
+   "z": [
+    700,
+    760
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "only": [
+    "200_Steel"
+   ]
+  },
+  {
+   "n": "Ground Collar 200",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     110,
+     0
+    ],
+    [
+     144,
+     0
+    ],
+    [
+     144,
+     10
+    ],
+    [
+     110,
+     25
+    ]
+   ],
+   "mat": "dark",
+   "lod": "f",
+   "only": [
+    "200_Steel"
+   ]
   }
  ],
  "reference": {
   "query": "bollard ambulance bay generic models hospital",
   "images": "https://www.google.com/search?tbm=isch&q=bollard+ambulance+bay+generic+models+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.marshalls.co.uk/landscaping/landscape-protection/bollards/steel-bollards",
+  "photo_title": "Marshalls steel bollards",
+  "photo_kind": "manufacturer"
  },
  "values": {
-  "Tube 152 mm dia, 1000 mm above ground": {
-   "value": "152x1000",
+  "Tube 152 / 219 mm dia, 1000 mm above ground": {
+   "value": "152/219x1000",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },
@@ -195,5 +346,5 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "Bollard modelled as a generic product: footing below ground (z < 0), painted tube with domed cap, reflective bands, ground collar, anchor bar; geometry is the 150 type."
+ "about": "Bollard modelled as a generic product: footing below ground (z < 0) and anchor bar shared; tube, domed cap, reflective bands and ground collar per type."
 }

@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_MechEq_MedGas_OxygenPlant_PSA",
  "template": "Metric Mechanical Equipment.rft",
- "about": "PSA plant modelled as a generic product: skid, compressor enclosure with louvres and panel, dryer, three filter housings, air header, galvanised air receiver, two blue adsorber columns with manifold and gauges, oxygen receiver with white band, outlet, control panel with screen, LEDs and isolator. 20 m3/h drawn; 50 m3/h shares it. Reference: query: medical gas oxygen plant psa mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+oxygen+plant+psa+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "PSA plant modelled as a generic product: skid, compressor enclosure with louvres and panel, dryer, three filter housings, air header, galvanised air receiver, two blue adsorber columns with manifold and gauges, oxygen receiver with white band, outlet, control panel with screen, LEDs and isolator. Per type: 50 m3/h is the 20 m3/h skid scaled 1.3 in plan and 1.2 in height (columns 3.1 m). Reference: query: medical gas oxygen plant psa mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+oxygen+plant+psa+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://supply.unicef.org/s0004054.html; photo_title: UNICEF Supply Catalogue PSA oxygen plant; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -443,6 +443,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "20m3h_PSA/URL",
+   "type": "20m3h_PSA",
+   "param": "URL",
+   "value": "https://supply.unicef.org/s0004054.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "20m3h_PSA/Voltage",
    "type": "20m3h_PSA",
    "param": "Voltage",
@@ -531,6 +538,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "50m3h_PSA/URL",
+   "type": "50m3h_PSA",
+   "param": "URL",
+   "value": "https://supply.unicef.org/s0004054.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "50m3h_PSA/Voltage",
    "type": "50m3h_PSA",
    "param": "Voltage",
@@ -573,24 +587,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Blue",
+   "name": "Motor Blue",
    "color": [
-    47,
-    109,
-    181
+    31,
+    78,
+    140
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Blue Material",
+   "name": "Motor Blue Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
+   "name": "FMC_Metal_Steel_Painted_MotorBlue",
+   "param": "Motor Blue Material"
   },
   {
    "op": "add_subcategory",
@@ -720,6 +734,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Blue",
+   "color": [
+    47,
+    109,
+    181
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Blue",
+   "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Stainless",
    "color": [
     180,
@@ -783,6 +818,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Led Green",
    "color": [
     59,
@@ -804,24 +860,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Yellow",
+   "name": "Led Amber",
    "color": [
-    242,
-    194,
-    48
+    255,
+    176,
+    0
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Yellow Material",
+   "name": "Led Amber Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
+   "name": "FMC_Plastic_LED_Amber",
+   "param": "Led Amber Material"
   },
   {
    "op": "add_subcategory",
@@ -843,6 +899,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_LED_Red",
    "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
   },
   {
    "op": "add_subcategory",
@@ -880,24 +957,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1600,
-     -700
+     -2080.0,
+     -910.0
     ],
     [
-     1600,
-     -700
+     2080.0,
+     -910.0
     ],
     [
-     1600,
-     700
+     2080.0,
+     910.0
     ],
     [
-     -1600,
-     700
+     -2080.0,
+     910.0
     ]
    ],
    "start": 0,
-   "end": 2600
+   "end": 3120.0
   },
   {
    "op": "set_subcategory",
@@ -913,7 +990,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Skid",
+   "name": "Skid 20m3h",
    "points": [
     [
      -1600,
@@ -937,24 +1014,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Skid",
+   "name": "Skid 20m3h",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Skid",
+   "name": "Skid 20m3h",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Skid",
+   "name": "Skid 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Enclosure",
+   "name": "Compressor Enclosure 20m3h",
    "points": [
     [
      -560.0,
@@ -1042,24 +1119,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Enclosure",
-   "subcategory": "Blue"
+   "name": "Compressor Enclosure 20m3h",
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Enclosure",
-   "param": "Blue Material"
+   "name": "Compressor Enclosure 20m3h",
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Enclosure",
+   "name": "Compressor Enclosure 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 1",
+   "name": "Compressor Louvre 20m3h 1",
    "points": [
     [
      -1450,
@@ -1084,24 +1161,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 1",
+   "name": "Compressor Louvre 20m3h 1",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 1",
+   "name": "Compressor Louvre 20m3h 1",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 1",
+   "name": "Compressor Louvre 20m3h 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 2",
+   "name": "Compressor Louvre 20m3h 2",
    "points": [
     [
      -1450,
@@ -1126,24 +1203,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 2",
+   "name": "Compressor Louvre 20m3h 2",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 2",
+   "name": "Compressor Louvre 20m3h 2",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 2",
+   "name": "Compressor Louvre 20m3h 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 3",
+   "name": "Compressor Louvre 20m3h 3",
    "points": [
     [
      -1450,
@@ -1168,24 +1245,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 3",
+   "name": "Compressor Louvre 20m3h 3",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 3",
+   "name": "Compressor Louvre 20m3h 3",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 3",
+   "name": "Compressor Louvre 20m3h 3",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 4",
+   "name": "Compressor Louvre 20m3h 4",
    "points": [
     [
      -1450,
@@ -1210,24 +1287,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 4",
+   "name": "Compressor Louvre 20m3h 4",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 4",
+   "name": "Compressor Louvre 20m3h 4",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 4",
+   "name": "Compressor Louvre 20m3h 4",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 5",
+   "name": "Compressor Louvre 20m3h 5",
    "points": [
     [
      -1450,
@@ -1252,24 +1329,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 5",
+   "name": "Compressor Louvre 20m3h 5",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 5",
+   "name": "Compressor Louvre 20m3h 5",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 5",
+   "name": "Compressor Louvre 20m3h 5",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 6",
+   "name": "Compressor Louvre 20m3h 6",
    "points": [
     [
      -1450,
@@ -1294,24 +1371,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 6",
+   "name": "Compressor Louvre 20m3h 6",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 6",
+   "name": "Compressor Louvre 20m3h 6",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 6",
+   "name": "Compressor Louvre 20m3h 6",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 7",
+   "name": "Compressor Louvre 20m3h 7",
    "points": [
     [
      -1450,
@@ -1336,24 +1413,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 7",
+   "name": "Compressor Louvre 20m3h 7",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 7",
+   "name": "Compressor Louvre 20m3h 7",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 7",
+   "name": "Compressor Louvre 20m3h 7",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Louvre 8",
+   "name": "Compressor Louvre 20m3h 8",
    "points": [
     [
      -1450,
@@ -1378,24 +1455,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Louvre 8",
+   "name": "Compressor Louvre 20m3h 8",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Louvre 8",
+   "name": "Compressor Louvre 20m3h 8",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Louvre 8",
+   "name": "Compressor Louvre 20m3h 8",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Compressor Panel",
+   "name": "Compressor Panel 20m3h",
    "points": [
     [
      -654.0,
@@ -1484,24 +1561,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Compressor Panel",
+   "name": "Compressor Panel 20m3h",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Compressor Panel",
+   "name": "Compressor Panel 20m3h",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Compressor Panel",
+   "name": "Compressor Panel 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Refrigerant Dryer",
+   "name": "Refrigerant Dryer 20m3h",
    "points": [
     [
      42.0,
@@ -1589,24 +1666,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Refrigerant Dryer",
+   "name": "Refrigerant Dryer 20m3h",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Refrigerant Dryer",
+   "name": "Refrigerant Dryer 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Refrigerant Dryer",
+   "name": "Refrigerant Dryer 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dryer Louvre",
+   "name": "Dryer Louvre 20m3h",
    "points": [
     [
      -400,
@@ -1631,24 +1708,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dryer Louvre",
+   "name": "Dryer Louvre 20m3h",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Dryer Louvre",
+   "name": "Dryer Louvre 20m3h",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dryer Louvre",
+   "name": "Dryer Louvre 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Filter Housing 1",
+   "name": "Filter Housing 20m3h 1",
    "points": [
     [
      200.0,
@@ -1752,24 +1829,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Filter Housing 1",
+   "name": "Filter Housing 20m3h 1",
    "subcategory": "Aluminium"
   },
   {
    "op": "set_material_param",
-   "name": "Filter Housing 1",
+   "name": "Filter Housing 20m3h 1",
    "param": "Aluminium Material"
   },
   {
    "op": "set_visibility",
-   "name": "Filter Housing 1",
+   "name": "Filter Housing 20m3h 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Filter Housing 2",
+   "name": "Filter Housing 20m3h 2",
    "points": [
     [
      330.0,
@@ -1873,24 +1950,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Filter Housing 2",
+   "name": "Filter Housing 20m3h 2",
    "subcategory": "Aluminium"
   },
   {
    "op": "set_material_param",
-   "name": "Filter Housing 2",
+   "name": "Filter Housing 20m3h 2",
    "param": "Aluminium Material"
   },
   {
    "op": "set_visibility",
-   "name": "Filter Housing 2",
+   "name": "Filter Housing 20m3h 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Filter Housing 3",
+   "name": "Filter Housing 20m3h 3",
    "points": [
     [
      460.0,
@@ -1994,24 +2071,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Filter Housing 3",
+   "name": "Filter Housing 20m3h 3",
    "subcategory": "Aluminium"
   },
   {
    "op": "set_material_param",
-   "name": "Filter Housing 3",
+   "name": "Filter Housing 20m3h 3",
    "param": "Aluminium Material"
   },
   {
    "op": "set_visibility",
-   "name": "Filter Housing 3",
+   "name": "Filter Housing 20m3h 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Air Header",
+   "name": "Air Header 20m3h",
    "points": [
     [
      -430.0,
@@ -2116,24 +2193,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Air Header",
+   "name": "Air Header 20m3h",
    "subcategory": "Copper"
   },
   {
    "op": "set_material_param",
-   "name": "Air Header",
+   "name": "Air Header 20m3h",
    "param": "Copper Material"
   },
   {
    "op": "set_visibility",
-   "name": "Air Header",
+   "name": "Air Header 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Air Receiver Shell",
+   "name": "Air Receiver Shell 20m3h",
    "points": [
     [
      130.0,
@@ -2237,24 +2314,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Air Receiver Shell",
+   "name": "Air Receiver Shell 20m3h",
    "subcategory": "Galvanised"
   },
   {
    "op": "set_material_param",
-   "name": "Air Receiver Shell",
+   "name": "Air Receiver Shell 20m3h",
    "param": "Galvanised Material"
   },
   {
    "op": "set_visibility",
-   "name": "Air Receiver Shell",
+   "name": "Air Receiver Shell 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Air Receiver Top Head",
+   "name": "Air Receiver Top Head 20m3h",
    "profile": [
     [
      0,
@@ -2286,19 +2363,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Air Receiver Top Head",
+   "name": "Air Receiver Top Head 20m3h",
    "param": "Galvanised Material"
   },
   {
    "op": "set_visibility",
-   "name": "Air Receiver Top Head",
+   "name": "Air Receiver Top Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Air Receiver Bottom Head",
+   "name": "Air Receiver Bottom Head 20m3h",
    "profile": [
     [
      0,
@@ -2330,19 +2407,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Air Receiver Bottom Head",
+   "name": "Air Receiver Bottom Head 20m3h",
    "param": "Galvanised Material"
   },
   {
    "op": "set_visibility",
-   "name": "Air Receiver Bottom Head",
+   "name": "Air Receiver Bottom Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Adsorber A Shell",
+   "name": "Adsorber A Shell 20m3h",
    "points": [
     [
      880.0,
@@ -2446,24 +2523,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Adsorber A Shell",
+   "name": "Adsorber A Shell 20m3h",
    "subcategory": "Blue"
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber A Shell",
+   "name": "Adsorber A Shell 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber A Shell",
+   "name": "Adsorber A Shell 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Adsorber A Top Head",
+   "name": "Adsorber A Top Head 20m3h",
    "profile": [
     [
      0,
@@ -2495,19 +2572,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber A Top Head",
+   "name": "Adsorber A Top Head 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber A Top Head",
+   "name": "Adsorber A Top Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Adsorber A Bottom Head",
+   "name": "Adsorber A Bottom Head 20m3h",
    "profile": [
     [
      0,
@@ -2539,19 +2616,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber A Bottom Head",
+   "name": "Adsorber A Bottom Head 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber A Bottom Head",
+   "name": "Adsorber A Bottom Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Adsorber B Shell",
+   "name": "Adsorber B Shell 20m3h",
    "points": [
     [
      1380.0,
@@ -2655,24 +2732,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Adsorber B Shell",
+   "name": "Adsorber B Shell 20m3h",
    "subcategory": "Blue"
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber B Shell",
+   "name": "Adsorber B Shell 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber B Shell",
+   "name": "Adsorber B Shell 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Adsorber B Top Head",
+   "name": "Adsorber B Top Head 20m3h",
    "profile": [
     [
      0,
@@ -2704,19 +2781,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber B Top Head",
+   "name": "Adsorber B Top Head 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber B Top Head",
+   "name": "Adsorber B Top Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Adsorber B Bottom Head",
+   "name": "Adsorber B Bottom Head 20m3h",
    "profile": [
     [
      0,
@@ -2748,19 +2825,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Adsorber B Bottom Head",
+   "name": "Adsorber B Bottom Head 20m3h",
    "param": "Blue Material"
   },
   {
    "op": "set_visibility",
-   "name": "Adsorber B Bottom Head",
+   "name": "Adsorber B Bottom Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Oxygen Receiver Shell",
+   "name": "Oxygen Receiver Shell 20m3h",
    "points": [
     [
      1550.0,
@@ -2864,24 +2941,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Oxygen Receiver Shell",
+   "name": "Oxygen Receiver Shell 20m3h",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Oxygen Receiver Shell",
+   "name": "Oxygen Receiver Shell 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Oxygen Receiver Shell",
+   "name": "Oxygen Receiver Shell 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Oxygen Receiver Top Head",
+   "name": "Oxygen Receiver Top Head 20m3h",
    "profile": [
     [
      0,
@@ -2913,19 +2990,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Oxygen Receiver Top Head",
+   "name": "Oxygen Receiver Top Head 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Oxygen Receiver Top Head",
+   "name": "Oxygen Receiver Top Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Oxygen Receiver Bottom Head",
+   "name": "Oxygen Receiver Bottom Head 20m3h",
    "profile": [
     [
      0,
@@ -2957,19 +3034,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Oxygen Receiver Bottom Head",
+   "name": "Oxygen Receiver Bottom Head 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Oxygen Receiver Bottom Head",
+   "name": "Oxygen Receiver Bottom Head 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Oxygen Receiver Band",
+   "name": "Oxygen Receiver Band 20m3h",
    "profile": [
     [
      200,
@@ -2997,19 +3074,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Oxygen Receiver Band",
+   "name": "Oxygen Receiver Band 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Oxygen Receiver Band",
+   "name": "Oxygen Receiver Band 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Manifold",
+   "name": "Column Manifold 20m3h",
    "points": [
     [
      225.0,
@@ -3114,24 +3191,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Manifold",
+   "name": "Column Manifold 20m3h",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Column Manifold",
+   "name": "Column Manifold 20m3h",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Manifold",
+   "name": "Column Manifold 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Oxygen Outlet",
+   "name": "Oxygen Outlet 20m3h",
    "points": [
     [
      1364.0,
@@ -3235,24 +3312,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Oxygen Outlet",
+   "name": "Oxygen Outlet 20m3h",
    "subcategory": "Copper"
   },
   {
    "op": "set_material_param",
-   "name": "Oxygen Outlet",
+   "name": "Oxygen Outlet 20m3h",
    "param": "Copper Material"
   },
   {
    "op": "set_visibility",
-   "name": "Oxygen Outlet",
+   "name": "Oxygen Outlet 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Outlet Band",
+   "name": "Outlet Band 20m3h",
    "profile": [
     [
      14,
@@ -3280,19 +3357,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Outlet Band",
+   "name": "Outlet Band 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Outlet Band",
+   "name": "Outlet Band 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge A Case",
+   "name": "Column Gauge A Case 20m3h",
    "points": [
     [
      695.0,
@@ -3397,24 +3474,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge A Case",
+   "name": "Column Gauge A Case 20m3h",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge A Case",
+   "name": "Column Gauge A Case 20m3h",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge A Case",
+   "name": "Column Gauge A Case 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge A Dial",
+   "name": "Column Gauge A Dial 20m3h",
    "points": [
     [
      691.0,
@@ -3519,24 +3596,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge A Dial",
+   "name": "Column Gauge A Dial 20m3h",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge A Dial",
+   "name": "Column Gauge A Dial 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge A Dial",
+   "name": "Column Gauge A Dial 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge A Needle",
+   "name": "Column Gauge A Needle 20m3h",
    "points": [
     [
      648.5,
@@ -3560,24 +3637,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge A Needle",
+   "name": "Column Gauge A Needle 20m3h",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge A Needle",
+   "name": "Column Gauge A Needle 20m3h",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge A Needle",
+   "name": "Column Gauge A Needle 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge B Case",
+   "name": "Column Gauge B Case 20m3h",
    "points": [
     [
      1195.0,
@@ -3682,24 +3759,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge B Case",
+   "name": "Column Gauge B Case 20m3h",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge B Case",
+   "name": "Column Gauge B Case 20m3h",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge B Case",
+   "name": "Column Gauge B Case 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge B Dial",
+   "name": "Column Gauge B Dial 20m3h",
    "points": [
     [
      1191.0,
@@ -3804,24 +3881,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge B Dial",
+   "name": "Column Gauge B Dial 20m3h",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge B Dial",
+   "name": "Column Gauge B Dial 20m3h",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge B Dial",
+   "name": "Column Gauge B Dial 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Column Gauge B Needle",
+   "name": "Column Gauge B Needle 20m3h",
    "points": [
     [
      1148.5,
@@ -3845,24 +3922,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Column Gauge B Needle",
+   "name": "Column Gauge B Needle 20m3h",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Column Gauge B Needle",
+   "name": "Column Gauge B Needle 20m3h",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Column Gauge B Needle",
+   "name": "Column Gauge B Needle 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Enclosure",
+   "name": "Control Panel Enclosure 20m3h",
    "points": [
     [
      946.0,
@@ -3950,24 +4027,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Enclosure",
+   "name": "Control Panel Enclosure 20m3h",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Enclosure",
+   "name": "Control Panel Enclosure 20m3h",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Enclosure",
+   "name": "Control Panel Enclosure 20m3h",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Door",
+   "name": "Control Panel Door 20m3h",
    "points": [
     [
      938.0,
@@ -4056,24 +4133,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Door",
+   "name": "Control Panel Door 20m3h",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Door",
+   "name": "Control Panel Door 20m3h",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Door",
+   "name": "Control Panel Door 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Screen",
+   "name": "Control Panel Screen 20m3h",
    "points": [
     [
      719.5,
@@ -4162,24 +4239,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Screen",
-   "subcategory": "Black"
+   "name": "Control Panel Screen 20m3h",
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Screen",
-   "param": "Black Material"
+   "name": "Control Panel Screen 20m3h",
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Screen",
+   "name": "Control Panel Screen 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel LED 1",
+   "name": "Control Panel LED 1 20m3h",
    "points": [
     [
      438.0,
@@ -4284,24 +4361,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel LED 1",
+   "name": "Control Panel LED 1 20m3h",
    "subcategory": "Led Green"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel LED 1",
+   "name": "Control Panel LED 1 20m3h",
    "param": "Led Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel LED 1",
+   "name": "Control Panel LED 1 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel LED 2",
+   "name": "Control Panel LED 2 20m3h",
    "points": [
     [
      516.0,
@@ -4406,24 +4483,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel LED 2",
-   "subcategory": "Yellow"
+   "name": "Control Panel LED 2 20m3h",
+   "subcategory": "Led Amber"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel LED 2",
-   "param": "Yellow Material"
+   "name": "Control Panel LED 2 20m3h",
+   "param": "Led Amber Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel LED 2",
+   "name": "Control Panel LED 2 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel LED 3",
+   "name": "Control Panel LED 3 20m3h",
    "points": [
     [
      594.0,
@@ -4528,24 +4605,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel LED 3",
+   "name": "Control Panel LED 3 20m3h",
    "subcategory": "Led Red"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel LED 3",
+   "name": "Control Panel LED 3 20m3h",
    "param": "Led Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel LED 3",
+   "name": "Control Panel LED 3 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Isolator Plate",
+   "name": "Control Panel Isolator Plate 20m3h",
    "points": [
     [
      768.0,
@@ -4570,40 +4647,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Isolator Plate",
+   "name": "Control Panel Isolator Plate 20m3h",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Isolator Plate",
+   "name": "Control Panel Isolator Plate 20m3h",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Isolator Plate",
+   "name": "Control Panel Isolator Plate 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Isolator Handle",
+   "name": "Control Panel Isolator Handle 20m3h",
    "points": [
     [
      844.0,
      1276.0
     ],
     [
-     844.77,
-     1276.15
-    ],
-    [
      845.41,
      1276.59
-    ],
-    [
-     845.85,
-     1277.23
     ],
     [
      846.0,
@@ -4614,16 +4683,8 @@
      1386.0
     ],
     [
-     845.85,
-     1386.77
-    ],
-    [
      845.41,
      1387.41
-    ],
-    [
-     844.77,
-     1387.85
     ],
     [
      844.0,
@@ -4634,16 +4695,8 @@
      1388.0
     ],
     [
-     821.23,
-     1387.85
-    ],
-    [
      820.59,
      1387.41
-    ],
-    [
-     820.15,
-     1386.77
     ],
     [
      820.0,
@@ -4654,16 +4707,8 @@
      1278.0
     ],
     [
-     820.15,
-     1277.23
-    ],
-    [
      820.59,
      1276.59
-    ],
-    [
-     821.23,
-     1276.15
     ],
     [
      822.0,
@@ -4676,40 +4721,32 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Isolator Handle",
+   "name": "Control Panel Isolator Handle 20m3h",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Isolator Handle",
+   "name": "Control Panel Isolator Handle 20m3h",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Isolator Handle",
+   "name": "Control Panel Isolator Handle 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Control Panel Door Handle",
+   "name": "Control Panel Door Handle 20m3h",
    "points": [
     [
      389.0,
      1220.0
     ],
     [
-     389.77,
-     1220.15
-    ],
-    [
      390.41,
      1220.59
-    ],
-    [
-     390.85,
-     1221.23
     ],
     [
      391.0,
@@ -4720,16 +4757,8 @@
      1402.0
     ],
     [
-     390.85,
-     1402.77
-    ],
-    [
      390.41,
      1403.41
-    ],
-    [
-     389.77,
-     1403.85
     ],
     [
      389.0,
@@ -4740,16 +4769,8 @@
      1404.0
     ],
     [
-     366.23,
-     1403.85
-    ],
-    [
      365.59,
      1403.41
-    ],
-    [
-     365.15,
-     1402.77
     ],
     [
      365.0,
@@ -4760,16 +4781,8 @@
      1222.0
     ],
     [
-     365.15,
-     1221.23
-    ],
-    [
      365.59,
      1220.59
-    ],
-    [
-     366.23,
-     1220.15
     ],
     [
      367.0,
@@ -4782,27 +4795,4465 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Control Panel Door Handle",
+   "name": "Control Panel Door Handle 20m3h",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Control Panel Door Handle",
+   "name": "Control Panel Door Handle 20m3h",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Control Panel Door Handle",
+   "name": "Control Panel Door Handle 20m3h",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Skid 50m3h",
+   "points": [
+    [
+     -2080.0,
+     -910.0
+    ],
+    [
+     2080.0,
+     -910.0
+    ],
+    [
+     2080.0,
+     910.0
+    ],
+    [
+     -2080.0,
+     910.0
+    ]
+   ],
+   "start": 0.0,
+   "end": 120.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Skid 50m3h",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Skid 50m3h",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Skid 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Enclosure 50m3h",
+   "points": [
+    [
+     -728.0,
+     -780.0
+    ],
+    [
+     -723.03,
+     -779.01
+    ],
+    [
+     -718.81,
+     -776.19
+    ],
+    [
+     -715.99,
+     -771.97
+    ],
+    [
+     -715.0,
+     -767.0
+    ],
+    [
+     -715.0,
+     507.0
+    ],
+    [
+     -715.99,
+     511.97
+    ],
+    [
+     -718.81,
+     516.19
+    ],
+    [
+     -723.03,
+     519.01
+    ],
+    [
+     -728.0,
+     520.0
+    ],
+    [
+     -2002.0,
+     520.0
+    ],
+    [
+     -2006.97,
+     519.01
+    ],
+    [
+     -2011.19,
+     516.19
+    ],
+    [
+     -2014.01,
+     511.97
+    ],
+    [
+     -2015.0,
+     507.0
+    ],
+    [
+     -2015.0,
+     -767.0
+    ],
+    [
+     -2014.01,
+     -771.97
+    ],
+    [
+     -2011.19,
+     -776.19
+    ],
+    [
+     -2006.97,
+     -779.01
+    ],
+    [
+     -2002.0,
+     -780.0
+    ]
+   ],
+   "start": 120.0,
+   "end": 1680.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Enclosure 50m3h",
+   "subcategory": "Motor Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Enclosure 50m3h",
+   "param": "Motor Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Enclosure 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 1",
+   "points": [
+    [
+     -1885.0,
+     360.0
+    ],
+    [
+     -845.0,
+     360.0
+    ],
+    [
+     -845.0,
+     384.0
+    ],
+    [
+     -1885.0,
+     384.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 2",
+   "points": [
+    [
+     -1885.0,
+     420.0
+    ],
+    [
+     -845.0,
+     420.0
+    ],
+    [
+     -845.0,
+     444.0
+    ],
+    [
+     -1885.0,
+     444.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 3",
+   "points": [
+    [
+     -1885.0,
+     480.0
+    ],
+    [
+     -845.0,
+     480.0
+    ],
+    [
+     -845.0,
+     504.0
+    ],
+    [
+     -1885.0,
+     504.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 4",
+   "points": [
+    [
+     -1885.0,
+     540.0
+    ],
+    [
+     -845.0,
+     540.0
+    ],
+    [
+     -845.0,
+     564.0
+    ],
+    [
+     -1885.0,
+     564.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 4",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 4",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 5",
+   "points": [
+    [
+     -1885.0,
+     600.0
+    ],
+    [
+     -845.0,
+     600.0
+    ],
+    [
+     -845.0,
+     624.0
+    ],
+    [
+     -1885.0,
+     624.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 5",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 5",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 6",
+   "points": [
+    [
+     -1885.0,
+     660.0
+    ],
+    [
+     -845.0,
+     660.0
+    ],
+    [
+     -845.0,
+     684.0
+    ],
+    [
+     -1885.0,
+     684.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 6",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 6",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 7",
+   "points": [
+    [
+     -1885.0,
+     720.0
+    ],
+    [
+     -845.0,
+     720.0
+    ],
+    [
+     -845.0,
+     744.0
+    ],
+    [
+     -1885.0,
+     744.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 7",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 7",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Louvre 50m3h 8",
+   "points": [
+    [
+     -1885.0,
+     780.0
+    ],
+    [
+     -845.0,
+     780.0
+    ],
+    [
+     -845.0,
+     804.0
+    ],
+    [
+     -1885.0,
+     804.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Louvre 50m3h 8",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Louvre 50m3h 8",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Louvre 50m3h 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Compressor Panel 50m3h",
+   "points": [
+    [
+     -849.8,
+     1200.0
+    ],
+    [
+     -847.96,
+     1200.37
+    ],
+    [
+     -846.41,
+     1201.41
+    ],
+    [
+     -845.37,
+     1202.96
+    ],
+    [
+     -845.0,
+     1204.8
+    ],
+    [
+     -845.0,
+     1555.2
+    ],
+    [
+     -845.37,
+     1557.04
+    ],
+    [
+     -846.41,
+     1558.59
+    ],
+    [
+     -847.96,
+     1559.63
+    ],
+    [
+     -849.8,
+     1560.0
+    ],
+    [
+     -1295.2,
+     1560.0
+    ],
+    [
+     -1297.04,
+     1559.63
+    ],
+    [
+     -1298.59,
+     1558.59
+    ],
+    [
+     -1299.63,
+     1557.04
+    ],
+    [
+     -1300.0,
+     1555.2
+    ],
+    [
+     -1300.0,
+     1204.8
+    ],
+    [
+     -1299.63,
+     1202.96
+    ],
+    [
+     -1298.59,
+     1201.41
+    ],
+    [
+     -1297.04,
+     1200.37
+    ],
+    [
+     -1295.2,
+     1200.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Compressor Panel 50m3h",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Compressor Panel 50m3h",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Compressor Panel 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Refrigerant Dryer 50m3h",
+   "points": [
+    [
+     54.6,
+     -780.0
+    ],
+    [
+     58.58,
+     -779.21
+    ],
+    [
+     61.95,
+     -776.95
+    ],
+    [
+     64.21,
+     -773.58
+    ],
+    [
+     65.0,
+     -769.6
+    ],
+    [
+     65.0,
+     -140.4
+    ],
+    [
+     64.21,
+     -136.42
+    ],
+    [
+     61.95,
+     -133.05
+    ],
+    [
+     58.58,
+     -130.79
+    ],
+    [
+     54.6,
+     -130.0
+    ],
+    [
+     -574.6,
+     -130.0
+    ],
+    [
+     -578.58,
+     -130.79
+    ],
+    [
+     -581.95,
+     -133.05
+    ],
+    [
+     -584.21,
+     -136.42
+    ],
+    [
+     -585.0,
+     -140.4
+    ],
+    [
+     -585.0,
+     -769.6
+    ],
+    [
+     -584.21,
+     -773.58
+    ],
+    [
+     -581.95,
+     -776.95
+    ],
+    [
+     -578.58,
+     -779.21
+    ],
+    [
+     -574.6,
+     -780.0
+    ]
+   ],
+   "start": 120.0,
+   "end": 1080.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Refrigerant Dryer 50m3h",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Refrigerant Dryer 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Refrigerant Dryer 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dryer Louvre 50m3h",
+   "points": [
+    [
+     -520.0,
+     240.0
+    ],
+    [
+     0.0,
+     240.0
+    ],
+    [
+     0.0,
+     600.0
+    ],
+    [
+     -520.0,
+     600.0
+    ]
+   ],
+   "start": 780.0,
+   "end": 787.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dryer Louvre 50m3h",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dryer Louvre 50m3h",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dryer Louvre 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Housing 50m3h 1",
+   "points": [
+    [
+     260.0,
+     -585.0
+    ],
+    [
+     257.79,
+     -568.18
+    ],
+    [
+     251.29,
+     -552.5
+    ],
+    [
+     240.96,
+     -539.04
+    ],
+    [
+     227.5,
+     -528.71
+    ],
+    [
+     211.82,
+     -522.21
+    ],
+    [
+     195.0,
+     -520.0
+    ],
+    [
+     178.18,
+     -522.21
+    ],
+    [
+     162.5,
+     -528.71
+    ],
+    [
+     149.04,
+     -539.04
+    ],
+    [
+     138.71,
+     -552.5
+    ],
+    [
+     132.21,
+     -568.18
+    ],
+    [
+     130.0,
+     -585.0
+    ],
+    [
+     132.21,
+     -601.82
+    ],
+    [
+     138.71,
+     -617.5
+    ],
+    [
+     149.04,
+     -630.96
+    ],
+    [
+     162.5,
+     -641.29
+    ],
+    [
+     178.18,
+     -647.79
+    ],
+    [
+     195.0,
+     -650.0
+    ],
+    [
+     211.82,
+     -647.79
+    ],
+    [
+     227.5,
+     -641.29
+    ],
+    [
+     240.96,
+     -630.96
+    ],
+    [
+     251.29,
+     -617.5
+    ],
+    [
+     257.79,
+     -601.82
+    ]
+   ],
+   "start": 600.0,
+   "end": 1200.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Housing 50m3h 1",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Housing 50m3h 1",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Housing 50m3h 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Housing 50m3h 2",
+   "points": [
+    [
+     429.0,
+     -585.0
+    ],
+    [
+     426.79,
+     -568.18
+    ],
+    [
+     420.29,
+     -552.5
+    ],
+    [
+     409.96,
+     -539.04
+    ],
+    [
+     396.5,
+     -528.71
+    ],
+    [
+     380.82,
+     -522.21
+    ],
+    [
+     364.0,
+     -520.0
+    ],
+    [
+     347.18,
+     -522.21
+    ],
+    [
+     331.5,
+     -528.71
+    ],
+    [
+     318.04,
+     -539.04
+    ],
+    [
+     307.71,
+     -552.5
+    ],
+    [
+     301.21,
+     -568.18
+    ],
+    [
+     299.0,
+     -585.0
+    ],
+    [
+     301.21,
+     -601.82
+    ],
+    [
+     307.71,
+     -617.5
+    ],
+    [
+     318.04,
+     -630.96
+    ],
+    [
+     331.5,
+     -641.29
+    ],
+    [
+     347.18,
+     -647.79
+    ],
+    [
+     364.0,
+     -650.0
+    ],
+    [
+     380.82,
+     -647.79
+    ],
+    [
+     396.5,
+     -641.29
+    ],
+    [
+     409.96,
+     -630.96
+    ],
+    [
+     420.29,
+     -617.5
+    ],
+    [
+     426.79,
+     -601.82
+    ]
+   ],
+   "start": 600.0,
+   "end": 1200.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Housing 50m3h 2",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Housing 50m3h 2",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Housing 50m3h 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filter Housing 50m3h 3",
+   "points": [
+    [
+     598.0,
+     -585.0
+    ],
+    [
+     595.79,
+     -568.18
+    ],
+    [
+     589.29,
+     -552.5
+    ],
+    [
+     578.96,
+     -539.04
+    ],
+    [
+     565.5,
+     -528.71
+    ],
+    [
+     549.82,
+     -522.21
+    ],
+    [
+     533.0,
+     -520.0
+    ],
+    [
+     516.18,
+     -522.21
+    ],
+    [
+     500.5,
+     -528.71
+    ],
+    [
+     487.04,
+     -539.04
+    ],
+    [
+     476.71,
+     -552.5
+    ],
+    [
+     470.21,
+     -568.18
+    ],
+    [
+     468.0,
+     -585.0
+    ],
+    [
+     470.21,
+     -601.82
+    ],
+    [
+     476.71,
+     -617.5
+    ],
+    [
+     487.04,
+     -630.96
+    ],
+    [
+     500.5,
+     -641.29
+    ],
+    [
+     516.18,
+     -647.79
+    ],
+    [
+     533.0,
+     -650.0
+    ],
+    [
+     549.82,
+     -647.79
+    ],
+    [
+     565.5,
+     -641.29
+    ],
+    [
+     578.96,
+     -630.96
+    ],
+    [
+     589.29,
+     -617.5
+    ],
+    [
+     595.79,
+     -601.82
+    ]
+   ],
+   "start": 600.0,
+   "end": 1200.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filter Housing 50m3h 3",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filter Housing 50m3h 3",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filter Housing 50m3h 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Air Header 50m3h",
+   "points": [
+    [
+     -560.0,
+     1260.0
+    ],
+    [
+     -560.85,
+     1266.47
+    ],
+    [
+     -563.35,
+     1272.5
+    ],
+    [
+     -567.32,
+     1277.68
+    ],
+    [
+     -572.5,
+     1281.65
+    ],
+    [
+     -578.53,
+     1284.15
+    ],
+    [
+     -585.0,
+     1285.0
+    ],
+    [
+     -591.47,
+     1284.15
+    ],
+    [
+     -597.5,
+     1281.65
+    ],
+    [
+     -602.68,
+     1277.68
+    ],
+    [
+     -606.65,
+     1272.5
+    ],
+    [
+     -609.15,
+     1266.47
+    ],
+    [
+     -610.0,
+     1260.0
+    ],
+    [
+     -609.15,
+     1253.53
+    ],
+    [
+     -606.65,
+     1247.5
+    ],
+    [
+     -602.68,
+     1242.32
+    ],
+    [
+     -597.5,
+     1238.35
+    ],
+    [
+     -591.47,
+     1235.85
+    ],
+    [
+     -585.0,
+     1235.0
+    ],
+    [
+     -578.53,
+     1235.85
+    ],
+    [
+     -572.5,
+     1238.35
+    ],
+    [
+     -567.32,
+     1242.32
+    ],
+    [
+     -563.35,
+     1247.5
+    ],
+    [
+     -560.85,
+     1253.53
+    ]
+   ],
+   "start": -715.0,
+   "end": 650.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Air Header 50m3h",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Air Header 50m3h",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Air Header 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Air Receiver Shell 50m3h",
+   "points": [
+    [
+     169.0,
+     390.0
+    ],
+    [
+     156.6,
+     484.21
+    ],
+    [
+     120.23,
+     572.0
+    ],
+    [
+     62.39,
+     647.39
+    ],
+    [
+     -13.0,
+     705.23
+    ],
+    [
+     -100.79,
+     741.6
+    ],
+    [
+     -195.0,
+     754.0
+    ],
+    [
+     -289.21,
+     741.6
+    ],
+    [
+     -377.0,
+     705.23
+    ],
+    [
+     -452.39,
+     647.39
+    ],
+    [
+     -510.23,
+     572.0
+    ],
+    [
+     -546.6,
+     484.21
+    ],
+    [
+     -559.0,
+     390.0
+    ],
+    [
+     -546.6,
+     295.79
+    ],
+    [
+     -510.23,
+     208.0
+    ],
+    [
+     -452.39,
+     132.61
+    ],
+    [
+     -377.0,
+     74.77
+    ],
+    [
+     -289.21,
+     38.4
+    ],
+    [
+     -195.0,
+     26.0
+    ],
+    [
+     -100.79,
+     38.4
+    ],
+    [
+     -13.0,
+     74.77
+    ],
+    [
+     62.39,
+     132.61
+    ],
+    [
+     120.23,
+     208.0
+    ],
+    [
+     156.6,
+     295.79
+    ]
+   ],
+   "start": 237.6,
+   "end": 2042.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Air Receiver Shell 50m3h",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Air Receiver Shell 50m3h",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Air Receiver Shell 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Air Receiver Top Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     2042.4
+    ],
+    [
+     364.0,
+     2042.4
+    ],
+    [
+     309.4,
+     2118.8
+    ],
+    [
+     145.6,
+     2160.0
+    ],
+    [
+     0.0,
+     2160.0
+    ]
+   ],
+   "axis_at": [
+    -195.0,
+    390.0
+   ],
+   "axis": "z",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Air Receiver Top Head 50m3h",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Air Receiver Top Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Air Receiver Bottom Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     145.6,
+     120.0
+    ],
+    [
+     309.4,
+     196.4
+    ],
+    [
+     364.0,
+     237.6
+    ],
+    [
+     0.0,
+     237.6
+    ]
+   ],
+   "axis_at": [
+    -195.0,
+    390.0
+   ],
+   "axis": "z",
+   "subcategory": "Galvanised"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Air Receiver Bottom Head 50m3h",
+   "param": "Galvanised Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Air Receiver Bottom Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Adsorber A Shell 50m3h",
+   "points": [
+    [
+     1144.0,
+     260.0
+    ],
+    [
+     1133.81,
+     337.39
+    ],
+    [
+     1103.94,
+     409.5
+    ],
+    [
+     1056.42,
+     471.42
+    ],
+    [
+     994.5,
+     518.94
+    ],
+    [
+     922.39,
+     548.81
+    ],
+    [
+     845.0,
+     559.0
+    ],
+    [
+     767.61,
+     548.81
+    ],
+    [
+     695.5,
+     518.94
+    ],
+    [
+     633.58,
+     471.42
+    ],
+    [
+     586.06,
+     409.5
+    ],
+    [
+     556.19,
+     337.39
+    ],
+    [
+     546.0,
+     260.0
+    ],
+    [
+     556.19,
+     182.61
+    ],
+    [
+     586.06,
+     110.5
+    ],
+    [
+     633.58,
+     48.58
+    ],
+    [
+     695.5,
+     1.06
+    ],
+    [
+     767.61,
+     -28.81
+    ],
+    [
+     845.0,
+     -39.0
+    ],
+    [
+     922.39,
+     -28.81
+    ],
+    [
+     994.5,
+     1.06
+    ],
+    [
+     1056.42,
+     48.58
+    ],
+    [
+     1103.94,
+     110.5
+    ],
+    [
+     1133.81,
+     182.61
+    ]
+   ],
+   "start": 216.6,
+   "end": 3023.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Adsorber A Shell 50m3h",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber A Shell 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber A Shell 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Adsorber A Top Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     3023.4
+    ],
+    [
+     299.0,
+     3023.4
+    ],
+    [
+     254.2,
+     3086.2
+    ],
+    [
+     119.6,
+     3120.0
+    ],
+    [
+     0.0,
+     3120.0
+    ]
+   ],
+   "axis_at": [
+    845.0,
+    260.0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber A Top Head 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber A Top Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Adsorber A Bottom Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     119.6,
+     120.0
+    ],
+    [
+     254.2,
+     182.8
+    ],
+    [
+     299.0,
+     216.6
+    ],
+    [
+     0.0,
+     216.6
+    ]
+   ],
+   "axis_at": [
+    845.0,
+    260.0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber A Bottom Head 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber A Bottom Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Adsorber B Shell 50m3h",
+   "points": [
+    [
+     1794.0,
+     260.0
+    ],
+    [
+     1783.81,
+     337.39
+    ],
+    [
+     1753.94,
+     409.5
+    ],
+    [
+     1706.42,
+     471.42
+    ],
+    [
+     1644.5,
+     518.94
+    ],
+    [
+     1572.39,
+     548.81
+    ],
+    [
+     1495.0,
+     559.0
+    ],
+    [
+     1417.61,
+     548.81
+    ],
+    [
+     1345.5,
+     518.94
+    ],
+    [
+     1283.58,
+     471.42
+    ],
+    [
+     1236.06,
+     409.5
+    ],
+    [
+     1206.19,
+     337.39
+    ],
+    [
+     1196.0,
+     260.0
+    ],
+    [
+     1206.19,
+     182.61
+    ],
+    [
+     1236.06,
+     110.5
+    ],
+    [
+     1283.58,
+     48.58
+    ],
+    [
+     1345.5,
+     1.06
+    ],
+    [
+     1417.61,
+     -28.81
+    ],
+    [
+     1495.0,
+     -39.0
+    ],
+    [
+     1572.39,
+     -28.81
+    ],
+    [
+     1644.5,
+     1.06
+    ],
+    [
+     1706.42,
+     48.58
+    ],
+    [
+     1753.94,
+     110.5
+    ],
+    [
+     1783.81,
+     182.61
+    ]
+   ],
+   "start": 216.6,
+   "end": 3023.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Adsorber B Shell 50m3h",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber B Shell 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber B Shell 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Adsorber B Top Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     3023.4
+    ],
+    [
+     299.0,
+     3023.4
+    ],
+    [
+     254.2,
+     3086.2
+    ],
+    [
+     119.6,
+     3120.0
+    ],
+    [
+     0.0,
+     3120.0
+    ]
+   ],
+   "axis_at": [
+    1495.0,
+    260.0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber B Top Head 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber B Top Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Adsorber B Bottom Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     119.6,
+     120.0
+    ],
+    [
+     254.2,
+     182.8
+    ],
+    [
+     299.0,
+     216.6
+    ],
+    [
+     0.0,
+     216.6
+    ]
+   ],
+   "axis_at": [
+    1495.0,
+    260.0
+   ],
+   "axis": "z",
+   "subcategory": "Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Adsorber B Bottom Head 50m3h",
+   "param": "Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Adsorber B Bottom Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Oxygen Receiver Shell 50m3h",
+   "points": [
+    [
+     2015.0,
+     -455.0
+    ],
+    [
+     2006.14,
+     -387.71
+    ],
+    [
+     1980.17,
+     -325.0
+    ],
+    [
+     1938.85,
+     -271.15
+    ],
+    [
+     1885.0,
+     -229.83
+    ],
+    [
+     1822.29,
+     -203.86
+    ],
+    [
+     1755.0,
+     -195.0
+    ],
+    [
+     1687.71,
+     -203.86
+    ],
+    [
+     1625.0,
+     -229.83
+    ],
+    [
+     1571.15,
+     -271.15
+    ],
+    [
+     1529.83,
+     -325.0
+    ],
+    [
+     1503.86,
+     -387.71
+    ],
+    [
+     1495.0,
+     -455.0
+    ],
+    [
+     1503.86,
+     -522.29
+    ],
+    [
+     1529.83,
+     -585.0
+    ],
+    [
+     1571.15,
+     -638.85
+    ],
+    [
+     1625.0,
+     -680.17
+    ],
+    [
+     1687.71,
+     -706.14
+    ],
+    [
+     1755.0,
+     -715.0
+    ],
+    [
+     1822.29,
+     -706.14
+    ],
+    [
+     1885.0,
+     -680.17
+    ],
+    [
+     1938.85,
+     -638.85
+    ],
+    [
+     1980.17,
+     -585.0
+    ],
+    [
+     2006.14,
+     -522.29
+    ]
+   ],
+   "start": 204.0,
+   "end": 1956.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Oxygen Receiver Shell 50m3h",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Oxygen Receiver Shell 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Oxygen Receiver Shell 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Oxygen Receiver Top Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     1956.0
+    ],
+    [
+     260.0,
+     1956.0
+    ],
+    [
+     221.0,
+     2010.6
+    ],
+    [
+     104.0,
+     2040.0
+    ],
+    [
+     0.0,
+     2040.0
+    ]
+   ],
+   "axis_at": [
+    1755.0,
+    -455.0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Oxygen Receiver Top Head 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Oxygen Receiver Top Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Oxygen Receiver Bottom Head 50m3h",
+   "profile": [
+    [
+     0.0,
+     120.0
+    ],
+    [
+     104.0,
+     120.0
+    ],
+    [
+     221.0,
+     174.6
+    ],
+    [
+     260.0,
+     204.0
+    ],
+    [
+     0.0,
+     204.0
+    ]
+   ],
+   "axis_at": [
+    1755.0,
+    -455.0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Oxygen Receiver Bottom Head 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Oxygen Receiver Bottom Head 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Oxygen Receiver Band 50m3h",
+   "profile": [
+    [
+     260.0,
+     1272.0
+    ],
+    [
+     262.6,
+     1272.0
+    ],
+    [
+     262.6,
+     1344.0
+    ],
+    [
+     260.0,
+     1344.0
+    ]
+   ],
+   "axis_at": [
+    1755.0,
+    -455.0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Oxygen Receiver Band 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Oxygen Receiver Band 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Manifold 50m3h",
+   "points": [
+    [
+     291.2,
+     2940.0
+    ],
+    [
+     290.14,
+     2948.08
+    ],
+    [
+     287.02,
+     2955.6
+    ],
+    [
+     282.06,
+     2962.06
+    ],
+    [
+     275.6,
+     2967.02
+    ],
+    [
+     268.08,
+     2970.14
+    ],
+    [
+     260.0,
+     2971.2
+    ],
+    [
+     251.92,
+     2970.14
+    ],
+    [
+     244.4,
+     2967.02
+    ],
+    [
+     237.94,
+     2962.06
+    ],
+    [
+     232.98,
+     2955.6
+    ],
+    [
+     229.86,
+     2948.08
+    ],
+    [
+     228.8,
+     2940.0
+    ],
+    [
+     229.86,
+     2931.92
+    ],
+    [
+     232.98,
+     2924.4
+    ],
+    [
+     237.94,
+     2917.94
+    ],
+    [
+     244.4,
+     2912.98
+    ],
+    [
+     251.92,
+     2909.86
+    ],
+    [
+     260.0,
+     2908.8
+    ],
+    [
+     268.08,
+     2909.86
+    ],
+    [
+     275.6,
+     2912.98
+    ],
+    [
+     282.06,
+     2917.94
+    ],
+    [
+     287.02,
+     2924.4
+    ],
+    [
+     290.14,
+     2931.92
+    ]
+   ],
+   "start": 845.0,
+   "end": 1495.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Manifold 50m3h",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Manifold 50m3h",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Manifold 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Oxygen Outlet 50m3h",
+   "points": [
+    [
+     1773.2,
+     -455.0
+    ],
+    [
+     1772.58,
+     -450.29
+    ],
+    [
+     1770.76,
+     -445.9
+    ],
+    [
+     1767.87,
+     -442.13
+    ],
+    [
+     1764.1,
+     -439.24
+    ],
+    [
+     1759.71,
+     -437.42
+    ],
+    [
+     1755.0,
+     -436.8
+    ],
+    [
+     1750.29,
+     -437.42
+    ],
+    [
+     1745.9,
+     -439.24
+    ],
+    [
+     1742.13,
+     -442.13
+    ],
+    [
+     1739.24,
+     -445.9
+    ],
+    [
+     1737.42,
+     -450.29
+    ],
+    [
+     1736.8,
+     -455.0
+    ],
+    [
+     1737.42,
+     -459.71
+    ],
+    [
+     1739.24,
+     -464.1
+    ],
+    [
+     1742.13,
+     -467.87
+    ],
+    [
+     1745.9,
+     -470.76
+    ],
+    [
+     1750.29,
+     -472.58
+    ],
+    [
+     1755.0,
+     -473.2
+    ],
+    [
+     1759.71,
+     -472.58
+    ],
+    [
+     1764.1,
+     -470.76
+    ],
+    [
+     1767.87,
+     -467.87
+    ],
+    [
+     1770.76,
+     -464.1
+    ],
+    [
+     1772.58,
+     -459.71
+    ]
+   ],
+   "start": 2040.0,
+   "end": 2400.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Oxygen Outlet 50m3h",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Oxygen Outlet 50m3h",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Oxygen Outlet 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Outlet Band 50m3h",
+   "profile": [
+    [
+     18.2,
+     2280.0
+    ],
+    [
+     20.8,
+     2280.0
+    ],
+    [
+     20.8,
+     2304.0
+    ],
+    [
+     18.2,
+     2304.0
+    ]
+   ],
+   "axis_at": [
+    1755.0,
+    -455.0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Band 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Band 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge A Case 50m3h",
+   "points": [
+    [
+     901.2,
+     1800.0
+    ],
+    [
+     899.29,
+     1814.55
+    ],
+    [
+     893.67,
+     1828.1
+    ],
+    [
+     884.74,
+     1839.74
+    ],
+    [
+     873.1,
+     1848.67
+    ],
+    [
+     859.55,
+     1854.29
+    ],
+    [
+     845.0,
+     1856.2
+    ],
+    [
+     830.45,
+     1854.29
+    ],
+    [
+     816.9,
+     1848.67
+    ],
+    [
+     805.26,
+     1839.74
+    ],
+    [
+     796.33,
+     1828.1
+    ],
+    [
+     790.71,
+     1814.55
+    ],
+    [
+     788.8,
+     1800.0
+    ],
+    [
+     790.71,
+     1785.45
+    ],
+    [
+     796.33,
+     1771.9
+    ],
+    [
+     805.26,
+     1760.26
+    ],
+    [
+     816.9,
+     1751.33
+    ],
+    [
+     830.45,
+     1745.71
+    ],
+    [
+     845.0,
+     1743.8
+    ],
+    [
+     859.55,
+     1745.71
+    ],
+    [
+     873.1,
+     1751.33
+    ],
+    [
+     884.74,
+     1760.26
+    ],
+    [
+     893.67,
+     1771.9
+    ],
+    [
+     899.29,
+     1785.45
+    ]
+   ],
+   "start": 39.0,
+   "end": 71.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge A Case 50m3h",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge A Case 50m3h",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge A Case 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge A Dial 50m3h",
+   "points": [
+    [
+     896.2,
+     1800.0
+    ],
+    [
+     894.46,
+     1813.25
+    ],
+    [
+     889.34,
+     1825.6
+    ],
+    [
+     881.2,
+     1836.2
+    ],
+    [
+     870.6,
+     1844.34
+    ],
+    [
+     858.25,
+     1849.46
+    ],
+    [
+     845.0,
+     1851.2
+    ],
+    [
+     831.75,
+     1849.46
+    ],
+    [
+     819.4,
+     1844.34
+    ],
+    [
+     808.8,
+     1836.2
+    ],
+    [
+     800.66,
+     1825.6
+    ],
+    [
+     795.54,
+     1813.25
+    ],
+    [
+     793.8,
+     1800.0
+    ],
+    [
+     795.54,
+     1786.75
+    ],
+    [
+     800.66,
+     1774.4
+    ],
+    [
+     808.8,
+     1763.8
+    ],
+    [
+     819.4,
+     1755.66
+    ],
+    [
+     831.75,
+     1750.54
+    ],
+    [
+     845.0,
+     1748.8
+    ],
+    [
+     858.25,
+     1750.54
+    ],
+    [
+     870.6,
+     1755.66
+    ],
+    [
+     881.2,
+     1763.8
+    ],
+    [
+     889.34,
+     1774.4
+    ],
+    [
+     894.46,
+     1786.75
+    ]
+   ],
+   "start": 71.5,
+   "end": 74.1,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge A Dial 50m3h",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge A Dial 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge A Dial 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge A Needle 50m3h",
+   "points": [
+    [
+     843.1,
+     -76.7
+    ],
+    [
+     880.1,
+     -76.7
+    ],
+    [
+     880.1,
+     -74.1
+    ],
+    [
+     843.1,
+     -74.1
+    ]
+   ],
+   "start": 1797.6,
+   "end": 1802.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge A Needle 50m3h",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge A Needle 50m3h",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge A Needle 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge B Case 50m3h",
+   "points": [
+    [
+     1551.2,
+     1800.0
+    ],
+    [
+     1549.29,
+     1814.55
+    ],
+    [
+     1543.67,
+     1828.1
+    ],
+    [
+     1534.74,
+     1839.74
+    ],
+    [
+     1523.1,
+     1848.67
+    ],
+    [
+     1509.55,
+     1854.29
+    ],
+    [
+     1495.0,
+     1856.2
+    ],
+    [
+     1480.45,
+     1854.29
+    ],
+    [
+     1466.9,
+     1848.67
+    ],
+    [
+     1455.26,
+     1839.74
+    ],
+    [
+     1446.33,
+     1828.1
+    ],
+    [
+     1440.71,
+     1814.55
+    ],
+    [
+     1438.8,
+     1800.0
+    ],
+    [
+     1440.71,
+     1785.45
+    ],
+    [
+     1446.33,
+     1771.9
+    ],
+    [
+     1455.26,
+     1760.26
+    ],
+    [
+     1466.9,
+     1751.33
+    ],
+    [
+     1480.45,
+     1745.71
+    ],
+    [
+     1495.0,
+     1743.8
+    ],
+    [
+     1509.55,
+     1745.71
+    ],
+    [
+     1523.1,
+     1751.33
+    ],
+    [
+     1534.74,
+     1760.26
+    ],
+    [
+     1543.67,
+     1771.9
+    ],
+    [
+     1549.29,
+     1785.45
+    ]
+   ],
+   "start": 39.0,
+   "end": 71.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge B Case 50m3h",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge B Case 50m3h",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge B Case 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge B Dial 50m3h",
+   "points": [
+    [
+     1546.2,
+     1800.0
+    ],
+    [
+     1544.46,
+     1813.25
+    ],
+    [
+     1539.34,
+     1825.6
+    ],
+    [
+     1531.2,
+     1836.2
+    ],
+    [
+     1520.6,
+     1844.34
+    ],
+    [
+     1508.25,
+     1849.46
+    ],
+    [
+     1495.0,
+     1851.2
+    ],
+    [
+     1481.75,
+     1849.46
+    ],
+    [
+     1469.4,
+     1844.34
+    ],
+    [
+     1458.8,
+     1836.2
+    ],
+    [
+     1450.66,
+     1825.6
+    ],
+    [
+     1445.54,
+     1813.25
+    ],
+    [
+     1443.8,
+     1800.0
+    ],
+    [
+     1445.54,
+     1786.75
+    ],
+    [
+     1450.66,
+     1774.4
+    ],
+    [
+     1458.8,
+     1763.8
+    ],
+    [
+     1469.4,
+     1755.66
+    ],
+    [
+     1481.75,
+     1750.54
+    ],
+    [
+     1495.0,
+     1748.8
+    ],
+    [
+     1508.25,
+     1750.54
+    ],
+    [
+     1520.6,
+     1755.66
+    ],
+    [
+     1531.2,
+     1763.8
+    ],
+    [
+     1539.34,
+     1774.4
+    ],
+    [
+     1544.46,
+     1786.75
+    ]
+   ],
+   "start": 71.5,
+   "end": 74.1,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge B Dial 50m3h",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge B Dial 50m3h",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge B Dial 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Column Gauge B Needle 50m3h",
+   "points": [
+    [
+     1493.0,
+     -76.7
+    ],
+    [
+     1530.1,
+     -76.7
+    ],
+    [
+     1530.1,
+     -74.1
+    ],
+    [
+     1493.0,
+     -74.1
+    ]
+   ],
+   "start": 1797.6,
+   "end": 1802.4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Column Gauge B Needle 50m3h",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Column Gauge B Needle 50m3h",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Column Gauge B Needle 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Enclosure 50m3h",
+   "points": [
+    [
+     1229.8,
+     -845.0
+    ],
+    [
+     1231.79,
+     -844.6
+    ],
+    [
+     1233.48,
+     -843.48
+    ],
+    [
+     1234.6,
+     -841.79
+    ],
+    [
+     1235.0,
+     -839.8
+    ],
+    [
+     1235.0,
+     -642.2
+    ],
+    [
+     1234.6,
+     -640.21
+    ],
+    [
+     1233.48,
+     -638.52
+    ],
+    [
+     1231.79,
+     -637.4
+    ],
+    [
+     1229.8,
+     -637.0
+    ],
+    [
+     395.2,
+     -637.0
+    ],
+    [
+     393.21,
+     -637.4
+    ],
+    [
+     391.52,
+     -638.52
+    ],
+    [
+     390.4,
+     -640.21
+    ],
+    [
+     390.0,
+     -642.2
+    ],
+    [
+     390.0,
+     -839.8
+    ],
+    [
+     390.4,
+     -841.79
+    ],
+    [
+     391.52,
+     -843.48
+    ],
+    [
+     393.21,
+     -844.6
+    ],
+    [
+     395.2,
+     -845.0
+    ]
+   ],
+   "start": 1320.0,
+   "end": 2280.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Enclosure 50m3h",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Enclosure 50m3h",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Enclosure 50m3h",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Door 50m3h",
+   "points": [
+    [
+     1219.8,
+     1329.6
+    ],
+    [
+     1221.64,
+     1329.97
+    ],
+    [
+     1223.19,
+     1331.01
+    ],
+    [
+     1224.23,
+     1332.56
+    ],
+    [
+     1224.6,
+     1334.4
+    ],
+    [
+     1224.6,
+     2265.6
+    ],
+    [
+     1224.23,
+     2267.44
+    ],
+    [
+     1223.19,
+     2268.99
+    ],
+    [
+     1221.64,
+     2270.03
+    ],
+    [
+     1219.8,
+     2270.4
+    ],
+    [
+     405.2,
+     2270.4
+    ],
+    [
+     403.36,
+     2270.03
+    ],
+    [
+     401.81,
+     2268.99
+    ],
+    [
+     400.77,
+     2267.44
+    ],
+    [
+     400.4,
+     2265.6
+    ],
+    [
+     400.4,
+     1334.4
+    ],
+    [
+     400.77,
+     1332.56
+    ],
+    [
+     401.81,
+     1331.01
+    ],
+    [
+     403.36,
+     1329.97
+    ],
+    [
+     405.2,
+     1329.6
+    ]
+   ],
+   "start": 845.0,
+   "end": 852.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Door 50m3h",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Door 50m3h",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Door 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Screen 50m3h",
+   "points": [
+    [
+     935.6,
+     1896.0
+    ],
+    [
+     936.98,
+     1896.27
+    ],
+    [
+     938.15,
+     1897.05
+    ],
+    [
+     938.93,
+     1898.22
+    ],
+    [
+     939.2,
+     1899.6
+    ],
+    [
+     939.2,
+     2142.0
+    ],
+    [
+     938.93,
+     2143.38
+    ],
+    [
+     938.15,
+     2144.55
+    ],
+    [
+     936.98,
+     2145.33
+    ],
+    [
+     935.6,
+     2145.6
+    ],
+    [
+     562.6,
+     2145.6
+    ],
+    [
+     561.22,
+     2145.33
+    ],
+    [
+     560.05,
+     2144.55
+    ],
+    [
+     559.27,
+     2143.38
+    ],
+    [
+     559.0,
+     2142.0
+    ],
+    [
+     559.0,
+     1899.6
+    ],
+    [
+     559.27,
+     1898.22
+    ],
+    [
+     560.05,
+     1897.05
+    ],
+    [
+     561.22,
+     1896.27
+    ],
+    [
+     562.6,
+     1896.0
+    ]
+   ],
+   "start": 852.8,
+   "end": 855.4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Screen 50m3h",
+   "subcategory": "Display"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Screen 50m3h",
+   "param": "Display Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Screen 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel LED 1 50m3h",
+   "points": [
+    [
+     569.0,
+     1780.8
+    ],
+    [
+     568.66,
+     1783.39
+    ],
+    [
+     567.66,
+     1785.8
+    ],
+    [
+     566.07,
+     1787.87
+    ],
+    [
+     564.0,
+     1789.46
+    ],
+    [
+     561.59,
+     1790.46
+    ],
+    [
+     559.0,
+     1790.8
+    ],
+    [
+     556.41,
+     1790.46
+    ],
+    [
+     554.0,
+     1789.46
+    ],
+    [
+     551.93,
+     1787.87
+    ],
+    [
+     550.34,
+     1785.8
+    ],
+    [
+     549.34,
+     1783.39
+    ],
+    [
+     549.0,
+     1780.8
+    ],
+    [
+     549.34,
+     1778.21
+    ],
+    [
+     550.34,
+     1775.8
+    ],
+    [
+     551.93,
+     1773.73
+    ],
+    [
+     554.0,
+     1772.14
+    ],
+    [
+     556.41,
+     1771.14
+    ],
+    [
+     559.0,
+     1770.8
+    ],
+    [
+     561.59,
+     1771.14
+    ],
+    [
+     564.0,
+     1772.14
+    ],
+    [
+     566.07,
+     1773.73
+    ],
+    [
+     567.66,
+     1775.8
+    ],
+    [
+     568.66,
+     1778.21
+    ]
+   ],
+   "start": 852.8,
+   "end": 858.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel LED 1 50m3h",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel LED 1 50m3h",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel LED 1 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel LED 2 50m3h",
+   "points": [
+    [
+     670.4,
+     1780.8
+    ],
+    [
+     670.06,
+     1783.39
+    ],
+    [
+     669.06,
+     1785.8
+    ],
+    [
+     667.47,
+     1787.87
+    ],
+    [
+     665.4,
+     1789.46
+    ],
+    [
+     662.99,
+     1790.46
+    ],
+    [
+     660.4,
+     1790.8
+    ],
+    [
+     657.81,
+     1790.46
+    ],
+    [
+     655.4,
+     1789.46
+    ],
+    [
+     653.33,
+     1787.87
+    ],
+    [
+     651.74,
+     1785.8
+    ],
+    [
+     650.74,
+     1783.39
+    ],
+    [
+     650.4,
+     1780.8
+    ],
+    [
+     650.74,
+     1778.21
+    ],
+    [
+     651.74,
+     1775.8
+    ],
+    [
+     653.33,
+     1773.73
+    ],
+    [
+     655.4,
+     1772.14
+    ],
+    [
+     657.81,
+     1771.14
+    ],
+    [
+     660.4,
+     1770.8
+    ],
+    [
+     662.99,
+     1771.14
+    ],
+    [
+     665.4,
+     1772.14
+    ],
+    [
+     667.47,
+     1773.73
+    ],
+    [
+     669.06,
+     1775.8
+    ],
+    [
+     670.06,
+     1778.21
+    ]
+   ],
+   "start": 852.8,
+   "end": 858.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel LED 2 50m3h",
+   "subcategory": "Led Amber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel LED 2 50m3h",
+   "param": "Led Amber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel LED 2 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel LED 3 50m3h",
+   "points": [
+    [
+     771.8,
+     1780.8
+    ],
+    [
+     771.46,
+     1783.39
+    ],
+    [
+     770.46,
+     1785.8
+    ],
+    [
+     768.87,
+     1787.87
+    ],
+    [
+     766.8,
+     1789.46
+    ],
+    [
+     764.39,
+     1790.46
+    ],
+    [
+     761.8,
+     1790.8
+    ],
+    [
+     759.21,
+     1790.46
+    ],
+    [
+     756.8,
+     1789.46
+    ],
+    [
+     754.73,
+     1787.87
+    ],
+    [
+     753.14,
+     1785.8
+    ],
+    [
+     752.14,
+     1783.39
+    ],
+    [
+     751.8,
+     1780.8
+    ],
+    [
+     752.14,
+     1778.21
+    ],
+    [
+     753.14,
+     1775.8
+    ],
+    [
+     754.73,
+     1773.73
+    ],
+    [
+     756.8,
+     1772.14
+    ],
+    [
+     759.21,
+     1771.14
+    ],
+    [
+     761.8,
+     1770.8
+    ],
+    [
+     764.39,
+     1771.14
+    ],
+    [
+     766.8,
+     1772.14
+    ],
+    [
+     768.87,
+     1773.73
+    ],
+    [
+     770.46,
+     1775.8
+    ],
+    [
+     771.46,
+     1778.21
+    ]
+   ],
+   "start": 852.8,
+   "end": 858.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel LED 3 50m3h",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel LED 3 50m3h",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel LED 3 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Isolator Plate 50m3h",
+   "points": [
+    [
+     998.4,
+     1512.0
+    ],
+    [
+     1167.4,
+     1512.0
+    ],
+    [
+     1167.4,
+     1684.8
+    ],
+    [
+     998.4,
+     1684.8
+    ]
+   ],
+   "start": 852.8,
+   "end": 855.4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Isolator Plate 50m3h",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Isolator Plate 50m3h",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Isolator Plate 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Isolator Handle 50m3h",
+   "points": [
+    [
+     1097.4,
+     1531.2
+    ],
+    [
+     1099.1,
+     1531.9
+    ],
+    [
+     1099.8,
+     1533.6
+    ],
+    [
+     1099.8,
+     1663.2
+    ],
+    [
+     1099.1,
+     1664.9
+    ],
+    [
+     1097.4,
+     1665.6
+    ],
+    [
+     1068.4,
+     1665.6
+    ],
+    [
+     1066.7,
+     1664.9
+    ],
+    [
+     1066.0,
+     1663.2
+    ],
+    [
+     1066.0,
+     1533.6
+    ],
+    [
+     1066.7,
+     1531.9
+    ],
+    [
+     1068.4,
+     1531.2
+    ]
+   ],
+   "start": 855.4,
+   "end": 878.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Isolator Handle 50m3h",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Isolator Handle 50m3h",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Isolator Handle 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Control Panel Door Handle 50m3h",
+   "points": [
+    [
+     505.9,
+     1464.0
+    ],
+    [
+     507.6,
+     1464.7
+    ],
+    [
+     508.3,
+     1466.4
+    ],
+    [
+     508.3,
+     1682.4
+    ],
+    [
+     507.6,
+     1684.1
+    ],
+    [
+     505.9,
+     1684.8
+    ],
+    [
+     476.9,
+     1684.8
+    ],
+    [
+     475.2,
+     1684.1
+    ],
+    [
+     474.5,
+     1682.4
+    ],
+    [
+     474.5,
+     1466.4
+    ],
+    [
+     475.2,
+     1464.7
+    ],
+    [
+     476.9,
+     1464.0
+    ]
+   ],
+   "start": 852.8,
+   "end": 873.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Control Panel Door Handle 50m3h",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Control Panel Door Handle 50m3h",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Control Panel Door Handle 50m3h",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 20m3h_PSA",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3h_PSA/Show 20m3h_PSA",
+   "type": "20m3h_PSA",
+   "param": "Show 20m3h_PSA",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3h_PSA/Show 20m3h_PSA",
+   "type": "50m3h_PSA",
+   "param": "Show 20m3h_PSA",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skid 20m3h/Visible",
+   "solid": "Skid 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Enclosure 20m3h/Visible",
+   "solid": "Compressor Enclosure 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 1/Visible",
+   "solid": "Compressor Louvre 20m3h 1",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 2/Visible",
+   "solid": "Compressor Louvre 20m3h 2",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 3/Visible",
+   "solid": "Compressor Louvre 20m3h 3",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 4/Visible",
+   "solid": "Compressor Louvre 20m3h 4",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 5/Visible",
+   "solid": "Compressor Louvre 20m3h 5",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 6/Visible",
+   "solid": "Compressor Louvre 20m3h 6",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 7/Visible",
+   "solid": "Compressor Louvre 20m3h 7",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 20m3h 8/Visible",
+   "solid": "Compressor Louvre 20m3h 8",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Panel 20m3h/Visible",
+   "solid": "Compressor Panel 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Refrigerant Dryer 20m3h/Visible",
+   "solid": "Refrigerant Dryer 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dryer Louvre 20m3h/Visible",
+   "solid": "Dryer Louvre 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 20m3h 1/Visible",
+   "solid": "Filter Housing 20m3h 1",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 20m3h 2/Visible",
+   "solid": "Filter Housing 20m3h 2",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 20m3h 3/Visible",
+   "solid": "Filter Housing 20m3h 3",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Header 20m3h/Visible",
+   "solid": "Air Header 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Shell 20m3h/Visible",
+   "solid": "Air Receiver Shell 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Top Head 20m3h/Visible",
+   "solid": "Air Receiver Top Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Bottom Head 20m3h/Visible",
+   "solid": "Air Receiver Bottom Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Shell 20m3h/Visible",
+   "solid": "Adsorber A Shell 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Top Head 20m3h/Visible",
+   "solid": "Adsorber A Top Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Bottom Head 20m3h/Visible",
+   "solid": "Adsorber A Bottom Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Shell 20m3h/Visible",
+   "solid": "Adsorber B Shell 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Top Head 20m3h/Visible",
+   "solid": "Adsorber B Top Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Bottom Head 20m3h/Visible",
+   "solid": "Adsorber B Bottom Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Shell 20m3h/Visible",
+   "solid": "Oxygen Receiver Shell 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Top Head 20m3h/Visible",
+   "solid": "Oxygen Receiver Top Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Bottom Head 20m3h/Visible",
+   "solid": "Oxygen Receiver Bottom Head 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Band 20m3h/Visible",
+   "solid": "Oxygen Receiver Band 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Manifold 20m3h/Visible",
+   "solid": "Column Manifold 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Outlet 20m3h/Visible",
+   "solid": "Oxygen Outlet 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Band 20m3h/Visible",
+   "solid": "Outlet Band 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Case 20m3h/Visible",
+   "solid": "Column Gauge A Case 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Dial 20m3h/Visible",
+   "solid": "Column Gauge A Dial 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Needle 20m3h/Visible",
+   "solid": "Column Gauge A Needle 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Case 20m3h/Visible",
+   "solid": "Column Gauge B Case 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Dial 20m3h/Visible",
+   "solid": "Column Gauge B Dial 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Needle 20m3h/Visible",
+   "solid": "Column Gauge B Needle 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Enclosure 20m3h/Visible",
+   "solid": "Control Panel Enclosure 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Door 20m3h/Visible",
+   "solid": "Control Panel Door 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Screen 20m3h/Visible",
+   "solid": "Control Panel Screen 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 1 20m3h/Visible",
+   "solid": "Control Panel LED 1 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 2 20m3h/Visible",
+   "solid": "Control Panel LED 2 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 3 20m3h/Visible",
+   "solid": "Control Panel LED 3 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Isolator Plate 20m3h/Visible",
+   "solid": "Control Panel Isolator Plate 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Isolator Handle 20m3h/Visible",
+   "solid": "Control Panel Isolator Handle 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Door Handle 20m3h/Visible",
+   "solid": "Control Panel Door Handle 20m3h",
+   "param": "Show 20m3h_PSA"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 50m3h_PSA",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20m3h_PSA/Show 50m3h_PSA",
+   "type": "20m3h_PSA",
+   "param": "Show 50m3h_PSA",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "50m3h_PSA/Show 50m3h_PSA",
+   "type": "50m3h_PSA",
+   "param": "Show 50m3h_PSA",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Skid 50m3h/Visible",
+   "solid": "Skid 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Enclosure 50m3h/Visible",
+   "solid": "Compressor Enclosure 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 1/Visible",
+   "solid": "Compressor Louvre 50m3h 1",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 2/Visible",
+   "solid": "Compressor Louvre 50m3h 2",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 3/Visible",
+   "solid": "Compressor Louvre 50m3h 3",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 4/Visible",
+   "solid": "Compressor Louvre 50m3h 4",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 5/Visible",
+   "solid": "Compressor Louvre 50m3h 5",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 6/Visible",
+   "solid": "Compressor Louvre 50m3h 6",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 7/Visible",
+   "solid": "Compressor Louvre 50m3h 7",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Louvre 50m3h 8/Visible",
+   "solid": "Compressor Louvre 50m3h 8",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Compressor Panel 50m3h/Visible",
+   "solid": "Compressor Panel 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Refrigerant Dryer 50m3h/Visible",
+   "solid": "Refrigerant Dryer 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dryer Louvre 50m3h/Visible",
+   "solid": "Dryer Louvre 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 50m3h 1/Visible",
+   "solid": "Filter Housing 50m3h 1",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 50m3h 2/Visible",
+   "solid": "Filter Housing 50m3h 2",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filter Housing 50m3h 3/Visible",
+   "solid": "Filter Housing 50m3h 3",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Header 50m3h/Visible",
+   "solid": "Air Header 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Shell 50m3h/Visible",
+   "solid": "Air Receiver Shell 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Top Head 50m3h/Visible",
+   "solid": "Air Receiver Top Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Air Receiver Bottom Head 50m3h/Visible",
+   "solid": "Air Receiver Bottom Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Shell 50m3h/Visible",
+   "solid": "Adsorber A Shell 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Top Head 50m3h/Visible",
+   "solid": "Adsorber A Top Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber A Bottom Head 50m3h/Visible",
+   "solid": "Adsorber A Bottom Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Shell 50m3h/Visible",
+   "solid": "Adsorber B Shell 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Top Head 50m3h/Visible",
+   "solid": "Adsorber B Top Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Adsorber B Bottom Head 50m3h/Visible",
+   "solid": "Adsorber B Bottom Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Shell 50m3h/Visible",
+   "solid": "Oxygen Receiver Shell 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Top Head 50m3h/Visible",
+   "solid": "Oxygen Receiver Top Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Bottom Head 50m3h/Visible",
+   "solid": "Oxygen Receiver Bottom Head 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Receiver Band 50m3h/Visible",
+   "solid": "Oxygen Receiver Band 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Manifold 50m3h/Visible",
+   "solid": "Column Manifold 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Oxygen Outlet 50m3h/Visible",
+   "solid": "Oxygen Outlet 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Outlet Band 50m3h/Visible",
+   "solid": "Outlet Band 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Case 50m3h/Visible",
+   "solid": "Column Gauge A Case 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Dial 50m3h/Visible",
+   "solid": "Column Gauge A Dial 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge A Needle 50m3h/Visible",
+   "solid": "Column Gauge A Needle 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Case 50m3h/Visible",
+   "solid": "Column Gauge B Case 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Dial 50m3h/Visible",
+   "solid": "Column Gauge B Dial 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Column Gauge B Needle 50m3h/Visible",
+   "solid": "Column Gauge B Needle 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Enclosure 50m3h/Visible",
+   "solid": "Control Panel Enclosure 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Door 50m3h/Visible",
+   "solid": "Control Panel Door 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Screen 50m3h/Visible",
+   "solid": "Control Panel Screen 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 1 50m3h/Visible",
+   "solid": "Control Panel LED 1 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 2 50m3h/Visible",
+   "solid": "Control Panel LED 2 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel LED 3 50m3h/Visible",
+   "solid": "Control Panel LED 3 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Isolator Plate 50m3h/Visible",
+   "solid": "Control Panel Isolator Plate 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Isolator Handle 50m3h/Visible",
+   "solid": "Control Panel Isolator Handle 50m3h",
+   "param": "Show 50m3h_PSA"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Control Panel Door Handle 50m3h/Visible",
+   "solid": "Control Panel Door Handle 50m3h",
+   "param": "Show 50m3h_PSA"
   },
   {
    "op": "add_connector",
    "name": "O2",
    "domain": "pipe",
    "system": "Other",
-   "solid": "Oxygen Outlet",
+   "solid": "Oxygen Outlet 20m3h",
    "side": "top",
    "diameter": 28,
    "flow": "Out"
@@ -4812,7 +9263,7 @@
    "name": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Control Panel Enclosure",
+   "solid": "Control Panel Enclosure 20m3h",
    "side": "top"
   },
   {

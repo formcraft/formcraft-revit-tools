@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_L_Planting_Tree_Shade",
  "template": "Metric Generic Model.rft",
- "about": "Shade tree modelled as a generic product: mulch ring, root flare, tapering trunk, four main branches and leader, layered canopy of a broad lower tier, four side lobes, two diagonal lobes and a crown. Geometry drawn for 6m_Shade; the other types share it (sizes in the values). Reference: query: planting tree shade planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+tree+shade+planting+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Shade tree modelled as a generic product: mulch ring, root flare, tapering trunk, four main branches and leader, layered canopy of a broad lower tier, four side lobes, two diagonal lobes and a crown. Each type has its own parts where the types differ (Show parameters). Reference: query: planting tree shade planting hospital; images: https://www.google.com/search?tbm=isch&q=planting+tree+shade+planting+hospital; basis: generic product; brand, model and supplier open for review; photo: https://trees.hillier.co.uk/our-services/semi-mature-trees/; photo_title: Semi-mature trees (Hillier Trees); photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -340,6 +340,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "6m_Shade/URL",
+   "type": "6m_Shade",
+   "param": "URL",
+   "value": "https://trees.hillier.co.uk/our-services/semi-mature-trees/"
+  },
+  {
    "op": "add_type",
    "name": "10m_Shade"
   },
@@ -407,6 +414,13 @@
    "value": "L"
   },
   {
+   "op": "set_type_value",
+   "name": "10m_Shade/URL",
+   "type": "10m_Shade",
+   "param": "URL",
+   "value": "https://trees.hillier.co.uk/our-services/semi-mature-trees/"
+  },
+  {
    "op": "add_subcategory",
    "name": "Mulch",
    "color": [
@@ -431,9 +445,9 @@
    "op": "add_subcategory",
    "name": "Bark",
    "color": [
-    142,
-    90,
-    52
+    94,
+    74,
+    58
    ],
    "line_weight_projection": 1
   },
@@ -445,7 +459,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Timber_Mugavu",
+   "name": "FMC_Plant_Bark_Trunk",
    "param": "Bark Material"
   },
   {
@@ -473,9 +487,9 @@
    "op": "add_subcategory",
    "name": "Leaf2",
    "color": [
-    85,
-    127,
-    58
+    63,
+    106,
+    44
    ],
    "line_weight_projection": 1
   },
@@ -487,7 +501,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plant_Hedge_Duranta",
+   "name": "FMC_Plant_Foliage_Canopy",
    "param": "Leaf2 Material"
   },
   {
@@ -526,24 +540,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -2850.0,
-     -2750.0
+     -4132.5,
+     -3987.5
     ],
     [
-     2800.0,
-     -2750.0
+     4060.0,
+     -3987.5
     ],
     [
-     2800.0,
-     2750.0
+     4060.0,
+     3987.5
     ],
     [
-     -2850.0,
-     2750.0
+     -4132.5,
+     3987.5
     ]
    ],
    "start": 0,
-   "end": 6000.0
+   "end": 10020.0
   },
   {
    "op": "set_subcategory",
@@ -559,7 +573,7 @@
   },
   {
    "op": "revolution",
-   "name": "Mulch Ring",
+   "name": "Mulch Ring 6m",
    "profile": [
     [
      0,
@@ -587,19 +601,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Mulch Ring",
+   "name": "Mulch Ring 6m",
    "param": "Mulch Material"
   },
   {
    "op": "set_visibility",
-   "name": "Mulch Ring",
+   "name": "Mulch Ring 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Root Flare",
+   "name": "Root Flare 6m",
    "profile": [
     [
      0,
@@ -631,19 +645,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Root Flare",
+   "name": "Root Flare 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Root Flare",
+   "name": "Root Flare 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Trunk",
+   "name": "Trunk 6m",
    "profile": [
     [
      0,
@@ -679,19 +693,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Trunk",
+   "name": "Trunk 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Trunk",
+   "name": "Trunk 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Branch West",
+   "name": "Branch West 6m",
    "points": [
     [
      -72.9,
@@ -716,24 +730,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Branch West",
+   "name": "Branch West 6m",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Branch West",
+   "name": "Branch West 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Branch West",
+   "name": "Branch West 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Branch East",
+   "name": "Branch East 6m",
    "points": [
     [
      -9.4,
@@ -758,24 +772,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Branch East",
+   "name": "Branch East 6m",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Branch East",
+   "name": "Branch East 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Branch East",
+   "name": "Branch East 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Branch South",
+   "name": "Branch South 6m",
    "points": [
     [
      -70.2,
@@ -800,24 +814,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Branch South",
+   "name": "Branch South 6m",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Branch South",
+   "name": "Branch South 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Branch South",
+   "name": "Branch South 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Branch North",
+   "name": "Branch North 6m",
    "points": [
     [
      -6.6,
@@ -842,24 +856,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Branch North",
+   "name": "Branch North 6m",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Branch North",
+   "name": "Branch North 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Branch North",
+   "name": "Branch North 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leader",
+   "name": "Leader 6m",
    "points": [
     [
      60.0,
@@ -963,24 +977,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leader",
+   "name": "Leader 6m",
    "subcategory": "Bark"
   },
   {
    "op": "set_material_param",
-   "name": "Leader",
+   "name": "Leader 6m",
    "param": "Bark Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leader",
+   "name": "Leader 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lower Tier",
+   "name": "Canopy Lower Tier 6m",
    "profile": [
     [
      0.0,
@@ -1036,19 +1050,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lower Tier",
+   "name": "Canopy Lower Tier 6m",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lower Tier",
+   "name": "Canopy Lower Tier 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe West",
+   "name": "Canopy Lobe West 6m",
    "profile": [
     [
      0.0,
@@ -1104,19 +1118,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe West",
+   "name": "Canopy Lobe West 6m",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe West",
+   "name": "Canopy Lobe West 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe East",
+   "name": "Canopy Lobe East 6m",
    "profile": [
     [
      0.0,
@@ -1172,19 +1186,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe East",
+   "name": "Canopy Lobe East 6m",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe East",
+   "name": "Canopy Lobe East 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe South",
+   "name": "Canopy Lobe South 6m",
    "profile": [
     [
      0.0,
@@ -1240,19 +1254,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe South",
+   "name": "Canopy Lobe South 6m",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe South",
+   "name": "Canopy Lobe South 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe North",
+   "name": "Canopy Lobe North 6m",
    "profile": [
     [
      0.0,
@@ -1308,19 +1322,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe North",
+   "name": "Canopy Lobe North 6m",
    "param": "Leaf2 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe North",
+   "name": "Canopy Lobe North 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe SW",
+   "name": "Canopy Lobe SW 6m",
    "profile": [
     [
      0.0,
@@ -1376,19 +1390,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe SW",
+   "name": "Canopy Lobe SW 6m",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe SW",
+   "name": "Canopy Lobe SW 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Lobe NE",
+   "name": "Canopy Lobe NE 6m",
    "profile": [
     [
      0.0,
@@ -1444,19 +1458,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Lobe NE",
+   "name": "Canopy Lobe NE 6m",
    "param": "Leaf1 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Lobe NE",
+   "name": "Canopy Lobe NE 6m",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Canopy Crown",
+   "name": "Canopy Crown 6m",
    "profile": [
     [
      0.0,
@@ -1512,15 +1526,1212 @@
   },
   {
    "op": "set_material_param",
-   "name": "Canopy Crown",
+   "name": "Canopy Crown 6m",
    "param": "Leaf3 Material"
   },
   {
    "op": "set_visibility",
-   "name": "Canopy Crown",
+   "name": "Canopy Crown 6m",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Mulch Ring 10m",
+   "profile": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     1087.5,
+     0.0
+    ],
+    [
+     1087.5,
+     66.8
+    ],
+    [
+     0.0,
+     66.8
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Mulch"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mulch Ring 10m",
+   "param": "Mulch Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mulch Ring 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Root Flare 10m",
+   "profile": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     348.0,
+     0.0
+    ],
+    [
+     246.5,
+     100.2
+    ],
+    [
+     174.0,
+     367.4
+    ],
+    [
+     0.0,
+     367.4
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Root Flare 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Root Flare 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Trunk 10m",
+   "profile": [
+    [
+     0.0,
+     367.4
+    ],
+    [
+     174.0,
+     367.4
+    ],
+    [
+     145.0,
+     2004.0
+    ],
+    [
+     123.2,
+     3507.0
+    ],
+    [
+     101.5,
+     4342.0
+    ],
+    [
+     0.0,
+     4342.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunk 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunk 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Branch West 10m",
+   "points": [
+    [
+     -105.7,
+     3103.0
+    ],
+    [
+     -2019.7,
+     5357.5
+    ],
+    [
+     -1895.3,
+     5497.5
+    ],
+    [
+     18.7,
+     3243.0
+    ]
+   ],
+   "start": -79.8,
+   "end": 79.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Branch West 10m",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Branch West 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Branch West 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Branch East 10m",
+   "points": [
+    [
+     -13.6,
+     3654.6
+    ],
+    [
+     1755.4,
+     5742.1
+    ],
+    [
+     1869.6,
+     5613.9
+    ],
+    [
+     100.6,
+     3526.4
+    ]
+   ],
+   "start": -72.5,
+   "end": 72.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Branch East 10m",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Branch East 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Branch East 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Branch South 10m",
+   "points": [
+    [
+     -101.8,
+     3360.7
+    ],
+    [
+     -1798.3,
+     5448.2
+    ],
+    [
+     -1681.7,
+     5573.8
+    ],
+    [
+     14.8,
+     3486.3
+    ]
+   ],
+   "start": -72.5,
+   "end": 72.5,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Branch South 10m",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Branch South 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Branch South 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Branch North 10m",
+   "points": [
+    [
+     -9.6,
+     3814.4
+    ],
+    [
+     1614.4,
+     5818.4
+    ],
+    [
+     1720.6,
+     5704.6
+    ],
+    [
+     96.6,
+     3700.6
+    ]
+   ],
+   "start": -65.2,
+   "end": 65.2,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Branch North 10m",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Branch North 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Branch North 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leader 10m",
+   "points": [
+    [
+     87.0,
+     0.0
+    ],
+    [
+     84.04,
+     22.52
+    ],
+    [
+     75.34,
+     43.5
+    ],
+    [
+     61.52,
+     61.52
+    ],
+    [
+     43.5,
+     75.34
+    ],
+    [
+     22.52,
+     84.04
+    ],
+    [
+     0.0,
+     87.0
+    ],
+    [
+     -22.52,
+     84.04
+    ],
+    [
+     -43.5,
+     75.34
+    ],
+    [
+     -61.52,
+     61.52
+    ],
+    [
+     -75.34,
+     43.5
+    ],
+    [
+     -84.04,
+     22.52
+    ],
+    [
+     -87.0,
+     0.0
+    ],
+    [
+     -84.04,
+     -22.52
+    ],
+    [
+     -75.34,
+     -43.5
+    ],
+    [
+     -61.52,
+     -61.52
+    ],
+    [
+     -43.5,
+     -75.34
+    ],
+    [
+     -22.52,
+     -84.04
+    ],
+    [
+     -0.0,
+     -87.0
+    ],
+    [
+     22.52,
+     -84.04
+    ],
+    [
+     43.5,
+     -75.34
+    ],
+    [
+     61.52,
+     -61.52
+    ],
+    [
+     75.34,
+     -43.5
+    ],
+    [
+     84.04,
+     -22.52
+    ]
+   ],
+   "start": 4342.0,
+   "end": 6346.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leader 10m",
+   "subcategory": "Bark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leader 10m",
+   "param": "Bark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leader 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lower Tier 10m",
+   "profile": [
+    [
+     0.0,
+     4843.0
+    ],
+    [
+     1232.2,
+     4900.3
+    ],
+    [
+     2343.8,
+     5066.3
+    ],
+    [
+     3226.0,
+     5325.0
+    ],
+    [
+     3792.3,
+     5650.8
+    ],
+    [
+     3987.5,
+     6012.0
+    ],
+    [
+     3792.3,
+     6373.2
+    ],
+    [
+     3226.0,
+     6699.0
+    ],
+    [
+     2343.8,
+     6957.7
+    ],
+    [
+     1232.2,
+     7123.7
+    ],
+    [
+     0.0,
+     7181.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lower Tier 10m",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lower Tier 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe West 10m",
+   "profile": [
+    [
+     0.0,
+     5344.0
+    ],
+    [
+     604.9,
+     5413.5
+    ],
+    [
+     1150.6,
+     5615.0
+    ],
+    [
+     1583.7,
+     5929.2
+    ],
+    [
+     1861.7,
+     6324.8
+    ],
+    [
+     1957.5,
+     6763.5
+    ],
+    [
+     1861.7,
+     7202.2
+    ],
+    [
+     1583.7,
+     7597.8
+    ],
+    [
+     1150.6,
+     7912.0
+    ],
+    [
+     604.9,
+     8113.5
+    ],
+    [
+     0.0,
+     8183.0
+    ]
+   ],
+   "axis_at": [
+    -2175.0,
+    217.5
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe West 10m",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe West 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe East 10m",
+   "profile": [
+    [
+     0.0,
+     5511.0
+    ],
+    [
+     604.9,
+     5580.5
+    ],
+    [
+     1150.6,
+     5782.0
+    ],
+    [
+     1583.7,
+     6096.2
+    ],
+    [
+     1861.7,
+     6491.8
+    ],
+    [
+     1957.5,
+     6930.5
+    ],
+    [
+     1861.7,
+     7369.2
+    ],
+    [
+     1583.7,
+     7764.8
+    ],
+    [
+     1150.6,
+     8079.0
+    ],
+    [
+     604.9,
+     8280.5
+    ],
+    [
+     0.0,
+     8350.0
+    ]
+   ],
+   "axis_at": [
+    2102.5,
+    -145.0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe East 10m",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe East 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe South 10m",
+   "profile": [
+    [
+     0.0,
+     5427.5
+    ],
+    [
+     582.5,
+     5495.0
+    ],
+    [
+     1107.9,
+     5690.7
+    ],
+    [
+     1525.0,
+     5995.5
+    ],
+    [
+     1792.8,
+     6379.6
+    ],
+    [
+     1885.0,
+     6805.2
+    ],
+    [
+     1792.8,
+     7230.9
+    ],
+    [
+     1525.0,
+     7615.0
+    ],
+    [
+     1107.9,
+     7919.8
+    ],
+    [
+     582.5,
+     8115.5
+    ],
+    [
+     0.0,
+     8183.0
+    ]
+   ],
+   "axis_at": [
+    145.0,
+    -2102.5
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe South 10m",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe South 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe North 10m",
+   "profile": [
+    [
+     0.0,
+     5594.5
+    ],
+    [
+     582.5,
+     5662.0
+    ],
+    [
+     1107.9,
+     5857.7
+    ],
+    [
+     1525.0,
+     6162.5
+    ],
+    [
+     1792.8,
+     6546.6
+    ],
+    [
+     1885.0,
+     6972.2
+    ],
+    [
+     1792.8,
+     7397.9
+    ],
+    [
+     1525.0,
+     7782.0
+    ],
+    [
+     1107.9,
+     8086.8
+    ],
+    [
+     582.5,
+     8282.5
+    ],
+    [
+     0.0,
+     8350.0
+    ]
+   ],
+   "axis_at": [
+    -145.0,
+    2102.5
+   ],
+   "axis": "z",
+   "subcategory": "Leaf2"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe North 10m",
+   "param": "Leaf2 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe North 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe SW 10m",
+   "profile": [
+    [
+     0.0,
+     5010.0
+    ],
+    [
+     425.7,
+     5063.1
+    ],
+    [
+     809.7,
+     5217.2
+    ],
+    [
+     1114.5,
+     5457.4
+    ],
+    [
+     1310.1,
+     5760.0
+    ],
+    [
+     1377.5,
+     6095.5
+    ],
+    [
+     1310.1,
+     6431.0
+    ],
+    [
+     1114.5,
+     6733.6
+    ],
+    [
+     809.7,
+     6973.8
+    ],
+    [
+     425.7,
+     7127.9
+    ],
+    [
+     0.0,
+     7181.0
+    ]
+   ],
+   "axis_at": [
+    -1812.5,
+    -1812.5
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe SW 10m",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe SW 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Lobe NE 10m",
+   "profile": [
+    [
+     0.0,
+     5177.0
+    ],
+    [
+     425.7,
+     5230.1
+    ],
+    [
+     809.7,
+     5384.2
+    ],
+    [
+     1114.5,
+     5624.4
+    ],
+    [
+     1310.1,
+     5927.0
+    ],
+    [
+     1377.5,
+     6262.5
+    ],
+    [
+     1310.1,
+     6598.0
+    ],
+    [
+     1114.5,
+     6900.6
+    ],
+    [
+     809.7,
+     7140.8
+    ],
+    [
+     425.7,
+     7294.9
+    ],
+    [
+     0.0,
+     7348.0
+    ]
+   ],
+   "axis_at": [
+    1740.0,
+    1812.5
+   ],
+   "axis": "z",
+   "subcategory": "Leaf1"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Lobe NE 10m",
+   "param": "Leaf1 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Lobe NE 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy Crown 10m",
+   "profile": [
+    [
+     0.0,
+     6680.0
+    ],
+    [
+     761.7,
+     6761.7
+    ],
+    [
+     1448.8,
+     6999.0
+    ],
+    [
+     1994.2,
+     7368.4
+    ],
+    [
+     2344.4,
+     7834.0
+    ],
+    [
+     2465.0,
+     8350.0
+    ],
+    [
+     2344.4,
+     8866.0
+    ],
+    [
+     1994.2,
+     9331.6
+    ],
+    [
+     1448.8,
+     9701.0
+    ],
+    [
+     761.7,
+     9938.3
+    ],
+    [
+     0.0,
+     10020.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Leaf3"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Crown 10m",
+   "param": "Leaf3 Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Crown 10m",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 6m_Shade",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Shade/Show 6m_Shade",
+   "type": "6m_Shade",
+   "param": "Show 6m_Shade",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "10m_Shade/Show 6m_Shade",
+   "type": "10m_Shade",
+   "param": "Show 6m_Shade",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mulch Ring 6m/Visible",
+   "solid": "Mulch Ring 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Root Flare 6m/Visible",
+   "solid": "Root Flare 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trunk 6m/Visible",
+   "solid": "Trunk 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch West 6m/Visible",
+   "solid": "Branch West 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch East 6m/Visible",
+   "solid": "Branch East 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch South 6m/Visible",
+   "solid": "Branch South 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch North 6m/Visible",
+   "solid": "Branch North 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leader 6m/Visible",
+   "solid": "Leader 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lower Tier 6m/Visible",
+   "solid": "Canopy Lower Tier 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe West 6m/Visible",
+   "solid": "Canopy Lobe West 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe East 6m/Visible",
+   "solid": "Canopy Lobe East 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe South 6m/Visible",
+   "solid": "Canopy Lobe South 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe North 6m/Visible",
+   "solid": "Canopy Lobe North 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe SW 6m/Visible",
+   "solid": "Canopy Lobe SW 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe NE 6m/Visible",
+   "solid": "Canopy Lobe NE 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Crown 6m/Visible",
+   "solid": "Canopy Crown 6m",
+   "param": "Show 6m_Shade"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 10m_Shade",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "6m_Shade/Show 10m_Shade",
+   "type": "6m_Shade",
+   "param": "Show 10m_Shade",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "10m_Shade/Show 10m_Shade",
+   "type": "10m_Shade",
+   "param": "Show 10m_Shade",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Mulch Ring 10m/Visible",
+   "solid": "Mulch Ring 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Root Flare 10m/Visible",
+   "solid": "Root Flare 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trunk 10m/Visible",
+   "solid": "Trunk 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch West 10m/Visible",
+   "solid": "Branch West 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch East 10m/Visible",
+   "solid": "Branch East 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch South 10m/Visible",
+   "solid": "Branch South 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Branch North 10m/Visible",
+   "solid": "Branch North 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leader 10m/Visible",
+   "solid": "Leader 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lower Tier 10m/Visible",
+   "solid": "Canopy Lower Tier 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe West 10m/Visible",
+   "solid": "Canopy Lobe West 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe East 10m/Visible",
+   "solid": "Canopy Lobe East 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe South 10m/Visible",
+   "solid": "Canopy Lobe South 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe North 10m/Visible",
+   "solid": "Canopy Lobe North 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe SW 10m/Visible",
+   "solid": "Canopy Lobe SW 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Lobe NE 10m/Visible",
+   "solid": "Canopy Lobe NE 10m",
+   "param": "Show 10m_Shade"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy Crown 10m/Visible",
+   "solid": "Canopy Crown 10m",
+   "param": "Show 10m_Shade"
   },
   {
    "op": "set_type_image",

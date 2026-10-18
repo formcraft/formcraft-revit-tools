@@ -17,20 +17,23 @@
   "grey": "FMC_Plastic_ABS_Grey",
   "chrome": "FMC_Metal_Chrome_Polished",
   "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
-  "black": "FMC_Plastic_ABS_Black",
+  "display": "FMC_Glass_Display_Black",
   "white": "FMC_Plastic_ABS_White",
   "led_green": "FMC_Plastic_LED_Green",
-  "led_red": "FMC_Plastic_LED_Red"
+  "led_red": "FMC_Plastic_LED_Red",
+  "black": "FMC_Plastic_ABS_Black"
  },
  "reference": {
   "query": "bedpan washer disinfector plumbing fixtures hospital",
   "images": "https://www.google.com/search?tbm=isch&q=bedpan+washer+disinfector+plumbing+fixtures+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://tuttnauer.com/medical/washer-disinfectors/revo-pro-bedpan-washer",
+  "photo_title": "Tuttnauer Revo Pro bedpan washer",
+  "photo_kind": "manufacturer"
  },
  "parts": [
   {
-   "n": "Cabinet",
-   "shape": "box",
+   "n": "Cabinet Floor",
    "at": [
     -300,
     -600,
@@ -40,11 +43,14 @@
     1800
    ],
    "mat": "stainless",
-   "r": 8
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
    "n": "Plinth",
-   "shape": "box",
    "at": [
     -290,
     -570,
@@ -53,11 +59,14 @@
     -20,
     100
    ],
-   "mat": "grey"
+   "mat": "grey",
+   "shape": "box",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Door Gasket",
-   "shape": "fbox",
+   "n": "Door Gasket Floor",
    "at": [
     -262,
     -604,
@@ -66,13 +75,16 @@
     -600,
     1455
    ],
+   "lod": "f",
    "mat": "grey",
    "r": 12,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Loading Door",
-   "shape": "fbox",
+   "n": "Loading Door Floor",
    "at": [
     -255,
     -616,
@@ -82,26 +94,32 @@
     1450
    ],
    "mat": "stainless",
-   "r": 12
+   "r": 12,
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Door Handle",
-   "shape": "cyl",
+   "n": "Door Handle Floor",
    "axis": "x",
    "c": [
     -640,
     1405
    ],
+   "mat": "chrome",
    "r": 12,
+   "shape": "cyl",
    "x": [
     -180,
     180
    ],
-   "mat": "chrome"
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Handle Post",
-   "shape": "fbox",
+   "n": "Handle Post Floor",
    "at": [
     -190,
     -640,
@@ -110,20 +128,23 @@
     -616,
     1415
    ],
-   "mat": "chrome",
    "lod": "f",
+   "mat": "chrome",
    "repeat": {
-    "n": 2,
     "d": [
      365,
      0,
      0
-    ]
-   }
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Control Panel",
-   "shape": "fbox",
+   "n": "Control Panel Floor",
    "at": [
     -260,
     -606,
@@ -133,11 +154,14 @@
     1740
    ],
    "mat": "medical_grey",
-   "r": 8
+   "r": 8,
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Display",
-   "shape": "fbox",
+   "n": "Display Floor",
    "at": [
     -220,
     -608,
@@ -146,69 +170,81 @@
     -606,
     1700
    ],
-   "mat": "black",
+   "lod": "f",
+   "mat": "display",
    "r": 4,
-   "lod": "f"
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Program Button",
-   "shape": "cyl",
+   "n": "Program Button Floor",
    "axis": "y",
    "c": [
     40,
     1650
    ],
-   "r": 15,
-   "y": [
-    -610,
-    -606
-   ],
-   "mat": "white",
    "lod": "f",
+   "mat": "white",
+   "r": 15,
    "repeat": {
-    "n": 3,
     "d": [
      60,
      0,
      0
-    ]
-   }
+    ],
+    "n": 3
+   },
+   "shape": "cyl",
+   "y": [
+    -610,
+    -606
+   ],
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Ready LED",
-   "shape": "cyl",
+   "n": "Ready LED Floor",
    "axis": "y",
    "c": [
     40,
     1575
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 6,
+   "shape": "cyl",
    "y": [
     -609,
     -606
    ],
-   "mat": "led_green",
-   "lod": "f"
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Fault LED",
-   "shape": "cyl",
+   "n": "Fault LED Floor",
    "axis": "y",
    "c": [
     100,
     1575
    ],
+   "lod": "f",
+   "mat": "led_red",
    "r": 6,
+   "shape": "cyl",
    "y": [
     -609,
     -606
    ],
-   "mat": "led_red",
-   "lod": "f"
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Service Panel",
-   "shape": "fbox",
+   "n": "Service Panel Floor",
    "at": [
     -280,
     -604,
@@ -218,11 +254,14 @@
     860
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Vent Slot",
-   "shape": "fbox",
+   "n": "Vent Slot Floor",
    "at": [
     -200,
     -606,
@@ -231,20 +270,23 @@
     -604,
     190
    ],
-   "mat": "black",
    "lod": "f",
+   "mat": "black",
    "repeat": {
-    "n": 5,
     "d": [
      0,
      0,
      22
-    ]
-   }
+    ],
+    "n": 5
+   },
+   "shape": "fbox",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Elbow Opener",
-   "shape": "box",
+   "n": "Elbow Opener Floor",
    "at": [
     180,
     -640,
@@ -254,11 +296,14 @@
     1280
    ],
    "mat": "medical_grey",
-   "r": 10
+   "r": 10,
+   "shape": "box",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Service Box",
-   "shape": "box",
+   "n": "Service Box Floor",
    "at": [
     -200,
     -160,
@@ -268,37 +313,370 @@
     1880
    ],
    "mat": "stainless",
-   "r": 6
+   "r": 6,
+   "shape": "box",
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Vapour Vent",
-   "shape": "cyl",
+   "n": "Vapour Vent Floor",
    "axis": "z",
    "c": [
     -120,
     -80
    ],
+   "mat": "grey",
    "r": 25,
+   "shape": "cyl",
    "z": [
     1880,
     1960
    ],
-   "mat": "grey"
+   "only": [
+    "600_Floor"
+   ]
   },
   {
-   "n": "Drain Spigot",
-   "shape": "cyl",
+   "n": "Drain Spigot Floor",
    "axis": "y",
    "c": [
     150,
     60
    ],
+   "mat": "grey",
    "r": 50,
+   "shape": "cyl",
    "y": [
     -60,
     0
    ],
-   "mat": "grey"
+   "only": [
+    "600_Floor"
+   ]
+  },
+  {
+   "n": "Wall Frame",
+   "at": [
+    -280,
+    -40,
+    0,
+    280,
+    0,
+    450
+   ],
+   "mat": "stainless",
+   "shape": "box",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Cabinet Wall",
+   "at": [
+    -300,
+    -600,
+    450.0,
+    300,
+    0,
+    1800.0
+   ],
+   "mat": "stainless",
+   "r": 8,
+   "shape": "box",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Door Gasket Wall",
+   "at": [
+    -262,
+    -604,
+    1089.3,
+    262,
+    -600,
+    1526.0
+   ],
+   "lod": "f",
+   "mat": "grey",
+   "r": 9.5,
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Loading Door Wall",
+   "at": [
+    -255,
+    -616,
+    1093.2,
+    255,
+    -604,
+    1522.1
+   ],
+   "mat": "stainless",
+   "r": 9.5,
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Door Handle Wall",
+   "axis": "x",
+   "c": [
+    -640,
+    1486.3
+   ],
+   "mat": "chrome",
+   "r": 10.8,
+   "shape": "cyl",
+   "x": [
+    -180,
+    180
+   ],
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Handle Post Wall",
+   "at": [
+    -190,
+    -640,
+    1478.4,
+    -175,
+    -616,
+    1494.3
+   ],
+   "lod": "f",
+   "mat": "chrome",
+   "repeat": {
+    "d": [
+     365,
+     0,
+     0.0
+    ],
+    "n": 2
+   },
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Control Panel Wall",
+   "at": [
+    -260,
+    -606,
+    1577.6,
+    260,
+    -600,
+    1752.4
+   ],
+   "mat": "medical_grey",
+   "r": 6.4,
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Display Wall",
+   "at": [
+    -220,
+    -608,
+    1649.1,
+    -20,
+    -606,
+    1720.6
+   ],
+   "lod": "f",
+   "mat": "display",
+   "r": 3.2,
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Program Button Wall",
+   "axis": "y",
+   "c": [
+    40,
+    1680.9
+   ],
+   "lod": "f",
+   "mat": "white",
+   "r": 13.5,
+   "repeat": {
+    "d": [
+     60,
+     0,
+     0.0
+    ],
+    "n": 3
+   },
+   "shape": "cyl",
+   "y": [
+    -610,
+    -606
+   ],
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Ready LED Wall",
+   "axis": "y",
+   "c": [
+    40,
+    1621.3
+   ],
+   "lod": "f",
+   "mat": "led_green",
+   "r": 5.4,
+   "shape": "cyl",
+   "y": [
+    -609,
+    -606
+   ],
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Fault LED Wall",
+   "axis": "y",
+   "c": [
+    100,
+    1621.3
+   ],
+   "lod": "f",
+   "mat": "led_red",
+   "r": 5.4,
+   "shape": "cyl",
+   "y": [
+    -609,
+    -606
+   ],
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Service Panel Wall",
+   "at": [
+    -280,
+    -604,
+    473.8,
+    280,
+    -600,
+    1053.5
+   ],
+   "mat": "stainless",
+   "r": 4.8,
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Vent Slot Wall",
+   "at": [
+    -200,
+    -606,
+    513.5,
+    200,
+    -604,
+    521.5
+   ],
+   "lod": "f",
+   "mat": "black",
+   "repeat": {
+    "d": [
+     0,
+     0,
+     17.5
+    ],
+    "n": 5
+   },
+   "shape": "fbox",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Elbow Opener Wall",
+   "at": [
+    180,
+    -640,
+    1307.6,
+    260,
+    -604,
+    1387.1
+   ],
+   "mat": "medical_grey",
+   "r": 10,
+   "shape": "box",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Service Box Wall",
+   "at": [
+    -200,
+    -160,
+    1800.0,
+    200,
+    0,
+    1863.5
+   ],
+   "mat": "stainless",
+   "r": 6,
+   "shape": "box",
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Vapour Vent Wall",
+   "axis": "z",
+   "c": [
+    -120,
+    -80
+   ],
+   "mat": "grey",
+   "r": 25.0,
+   "shape": "cyl",
+   "z": [
+    1863.5,
+    1927.1
+   ],
+   "only": [
+    "600_Wall"
+   ]
+  },
+  {
+   "n": "Drain Spigot Wall",
+   "axis": "y",
+   "c": [
+    150,
+    418.2
+   ],
+   "mat": "grey",
+   "r": 44.9,
+   "shape": "cyl",
+   "y": [
+    -60,
+    0
+   ],
+   "only": [
+    "600_Wall"
+   ]
   }
  ],
  "connectors": [
@@ -306,7 +684,7 @@
    "n": "CW",
    "domain": "pipe",
    "system": "DomesticColdWater",
-   "part": "Service Box",
+   "part": "Service Box Floor",
    "side": "top",
    "diameter": 15,
    "flow": "In"
@@ -315,7 +693,7 @@
    "n": "HW",
    "domain": "pipe",
    "system": "DomesticHotWater",
-   "part": "Service Box",
+   "part": "Service Box Floor",
    "side": "back",
    "diameter": 15,
    "flow": "In"
@@ -324,7 +702,7 @@
    "n": "Waste",
    "domain": "pipe",
    "system": "Sanitary",
-   "part": "Drain Spigot",
+   "part": "Drain Spigot Floor",
    "side": "back",
    "diameter": 110,
    "flow": "Out"
@@ -333,7 +711,7 @@
    "n": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "part": "Service Box",
+   "part": "Service Box Floor",
    "side": "top"
   }
  ],
@@ -354,7 +732,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "Bedpan washer-disinfector modelled as a generic product: stainless cabinet, plinth, loading door with gasket and bar handle, elbow opener, control panel with display, buttons and LEDs, service panel with vents, service box with vapour vent, drain spigot. Floor type drawn; the wall type shares it.",
+ "about": "Bedpan washer-disinfector modelled as a generic product: stainless cabinet, plinth, loading door with gasket and bar handle, elbow opener, control panel with display, buttons and LEDs, service panel with vents, service box with vapour vent, drain spigot. Per type: the floor unit stands on a plinth (1800 mm); the wall unit is 1350 mm tall, hung on a stainless wall frame with its base at 450 mm.",
  "template": "Metric Generic Model.rft",
  "type_values": {
   "Voltage": 240,

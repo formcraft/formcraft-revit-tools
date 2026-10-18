@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_EQ_Generator_Diesel_Standby",
  "template": "Metric Generic Model.rft",
- "about": "Generator set: base frame and day tank, acoustic canopy and roof, three side doors with handles and hinges, inlet louvre, radiator louvre with blades, control window with controller, emergency stop, roof silencer with saddles, exhaust stack and rain cap, lifting eyes, fuel filler and gauge, cable entry. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: generator diesel standby electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=generator+diesel+standby+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Generator set: base frame and day tank, acoustic canopy and roof, two side doors with handles and hinges, inlet louvre and radiator louvre with blades (length per rating), control window with controller, emergency stop, roof silencer with saddles, exhaust stack and rain cap, lifting eyes, fuel filler, cable entry. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: generator diesel standby electrical equipment hospital; images: https://www.google.com/search?tbm=isch&q=generator+diesel+standby+electrical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.cat.com/en_MX/by-industry/electric-power/electric-power-industries/healthcare.html; photo_title: Caterpillar healthcare standby power; photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -28,33 +28,345 @@
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Panel_ID",
+   "guid": "879ef0ea-61fa-5274-9881-915afd828153",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cable_Spec",
+   "guid": "1f352e44-006a-5146-87ea-a1da43245855",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Earth_Resistance_Ohm",
+   "guid": "0fe20834-bce9-5c3f-a498-96c0b6c61998",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_LPS_Class",
+   "guid": "aa1c5aad-32f5-5ba3-8139-a49a5faba0dd",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_IP_Rating",
+   "guid": "f13a86dc-4d00-538f-a764-e39f91673a8f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Ways",
+   "guid": "84dd2958-9179-588a-8069-1df161c8b4ee",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -101,6 +413,34 @@
    "type": "250kVA_Canopy",
    "param": "FMC_Keynote_Code",
    "value": "Z.GEN_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/FMC_Code_Description",
+   "type": "250kVA_Canopy",
+   "param": "FMC_Code_Description",
+   "value": "Generator Diesel Standby: Standby generator with day tank and acoustic canopy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/FMC_Code_Group",
+   "type": "250kVA_Canopy",
+   "param": "FMC_Code_Group",
+   "value": "Z.GEN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/FMC_Role_Code",
+   "type": "250kVA_Canopy",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/URL",
+   "type": "250kVA_Canopy",
+   "param": "URL",
+   "value": "https://www.cat.com/en_MX/by-industry/electric-power/electric-power-industries/healthcare.html"
   },
   {
    "op": "set_type_value",
@@ -171,6 +511,34 @@
   },
   {
    "op": "set_type_value",
+   "name": "500kVA_Canopy/FMC_Code_Description",
+   "type": "500kVA_Canopy",
+   "param": "FMC_Code_Description",
+   "value": "Generator Diesel Standby: Standby generator with day tank and acoustic canopy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/FMC_Code_Group",
+   "type": "500kVA_Canopy",
+   "param": "FMC_Code_Group",
+   "value": "Z.GEN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/FMC_Role_Code",
+   "type": "500kVA_Canopy",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/URL",
+   "type": "500kVA_Canopy",
+   "param": "URL",
+   "value": "https://www.cat.com/en_MX/by-industry/electric-power/electric-power-industries/healthcare.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "500kVA_Canopy/Voltage",
    "type": "500kVA_Canopy",
    "param": "Voltage",
@@ -238,6 +606,34 @@
   },
   {
    "op": "set_type_value",
+   "name": "800kVA_Canopy/FMC_Code_Description",
+   "type": "800kVA_Canopy",
+   "param": "FMC_Code_Description",
+   "value": "Generator Diesel Standby: Standby generator with day tank and acoustic canopy"
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/FMC_Code_Group",
+   "type": "800kVA_Canopy",
+   "param": "FMC_Code_Group",
+   "value": "Z.GEN"
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/FMC_Role_Code",
+   "type": "800kVA_Canopy",
+   "param": "FMC_Role_Code",
+   "value": "E"
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/URL",
+   "type": "800kVA_Canopy",
+   "param": "URL",
+   "value": "https://www.cat.com/en_MX/by-industry/electric-power/electric-power-industries/healthcare.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "800kVA_Canopy/Voltage",
    "type": "800kVA_Canopy",
    "param": "Voltage",
@@ -259,24 +655,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Struct",
+   "name": "Pcoat",
    "color": [
-    110,
-    110,
-    110
+    158,
+    164,
+    170
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Struct Material",
+   "name": "Pcoat Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
-   "param": "Struct Material"
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Pcoat Material"
   },
   {
    "op": "add_subcategory",
@@ -298,27 +694,6 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_Black",
    "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pcoat",
-   "color": [
-    158,
-    164,
-    170
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pcoat Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_PowderCoated",
-   "param": "Pcoat Material"
   },
   {
    "op": "add_subcategory",
@@ -366,9 +741,9 @@
    "op": "add_subcategory",
    "name": "Screen",
    "color": [
-    30,
-    31,
-    34
+    17,
+    22,
+    28
    ],
    "line_weight_projection": 1
   },
@@ -380,16 +755,16 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
+   "name": "FMC_Glass_Display_Black",
    "param": "Screen Material"
   },
   {
    "op": "add_subcategory",
    "name": "Redabs",
    "color": [
-    181,
-    18,
-    27
+    200,
+    32,
+    42
    ],
    "line_weight_projection": 1
   },
@@ -401,7 +776,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_FireHoseReel_Red",
+   "name": "FMC_Plastic_ABS_Red",
    "param": "Redabs Material"
   },
   {
@@ -448,24 +823,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Chrome",
+   "name": "Struct",
    "color": [
-    192,
-    195,
-    199
+    110,
+    110,
+    110
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Chrome Material",
+   "name": "Struct Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
+   "name": "FMC_Metal_StructuralSteel_S275",
+   "param": "Struct Material"
   },
   {
    "op": "add_subcategory",
@@ -496,11 +871,11 @@
      -940.0
     ],
     [
-     2540.0,
+     3540.0,
      -940.0
     ],
     [
-     2540.0,
+     3540.0,
      940.0
     ],
     [
@@ -525,362 +900,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Base Frame",
-   "points": [
-    [
-     -2500,
-     -900
-    ],
-    [
-     2500,
-     -900
-    ],
-    [
-     2500,
-     900
-    ],
-    [
-     -2500,
-     900
-    ]
-   ],
-   "start": 0,
-   "end": 150
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Frame",
-   "subcategory": "Struct"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Frame",
-   "param": "Struct Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Frame",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Base Tank",
-   "points": [
-    [
-     2380.0,
-     -880.0
-    ],
-    [
-     2387.65,
-     -878.48
-    ],
-    [
-     2394.14,
-     -874.14
-    ],
-    [
-     2398.48,
-     -867.65
-    ],
-    [
-     2400.0,
-     -860.0
-    ],
-    [
-     2400.0,
-     860.0
-    ],
-    [
-     2398.48,
-     867.65
-    ],
-    [
-     2394.14,
-     874.14
-    ],
-    [
-     2387.65,
-     878.48
-    ],
-    [
-     2380.0,
-     880.0
-    ],
-    [
-     -2380.0,
-     880.0
-    ],
-    [
-     -2387.65,
-     878.48
-    ],
-    [
-     -2394.14,
-     874.14
-    ],
-    [
-     -2398.48,
-     867.65
-    ],
-    [
-     -2400.0,
-     860.0
-    ],
-    [
-     -2400.0,
-     -860.0
-    ],
-    [
-     -2398.48,
-     -867.65
-    ],
-    [
-     -2394.14,
-     -874.14
-    ],
-    [
-     -2387.65,
-     -878.48
-    ],
-    [
-     -2380.0,
-     -880.0
-    ]
-   ],
-   "start": 150,
-   "end": 450
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Base Tank",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Base Tank",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Base Tank",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Canopy",
-   "points": [
-    [
-     2470.0,
-     -900.0
-    ],
-    [
-     2481.48,
-     -897.72
-    ],
-    [
-     2491.21,
-     -891.21
-    ],
-    [
-     2497.72,
-     -881.48
-    ],
-    [
-     2500.0,
-     -870.0
-    ],
-    [
-     2500.0,
-     870.0
-    ],
-    [
-     2497.72,
-     881.48
-    ],
-    [
-     2491.21,
-     891.21
-    ],
-    [
-     2481.48,
-     897.72
-    ],
-    [
-     2470.0,
-     900.0
-    ],
-    [
-     -2470.0,
-     900.0
-    ],
-    [
-     -2481.48,
-     897.72
-    ],
-    [
-     -2491.21,
-     891.21
-    ],
-    [
-     -2497.72,
-     881.48
-    ],
-    [
-     -2500.0,
-     870.0
-    ],
-    [
-     -2500.0,
-     -870.0
-    ],
-    [
-     -2497.72,
-     -881.48
-    ],
-    [
-     -2491.21,
-     -891.21
-    ],
-    [
-     -2481.48,
-     -897.72
-    ],
-    [
-     -2470.0,
-     -900.0
-    ]
-   ],
-   "start": 450,
-   "end": 2300
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Canopy",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Canopy",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Canopy",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Roof",
-   "points": [
-    [
-     2510.0,
-     -940.0
-    ],
-    [
-     2521.48,
-     -937.72
-    ],
-    [
-     2531.21,
-     -931.21
-    ],
-    [
-     2537.72,
-     -921.48
-    ],
-    [
-     2540.0,
-     -910.0
-    ],
-    [
-     2540.0,
-     910.0
-    ],
-    [
-     2537.72,
-     921.48
-    ],
-    [
-     2531.21,
-     931.21
-    ],
-    [
-     2521.48,
-     937.72
-    ],
-    [
-     2510.0,
-     940.0
-    ],
-    [
-     -2510.0,
-     940.0
-    ],
-    [
-     -2521.48,
-     937.72
-    ],
-    [
-     -2531.21,
-     931.21
-    ],
-    [
-     -2537.72,
-     921.48
-    ],
-    [
-     -2540.0,
-     910.0
-    ],
-    [
-     -2540.0,
-     -910.0
-    ],
-    [
-     -2537.72,
-     -921.48
-    ],
-    [
-     -2531.21,
-     -931.21
-    ],
-    [
-     -2521.48,
-     -937.72
-    ],
-    [
-     -2510.0,
-     -940.0
-    ]
-   ],
-   "start": 2300,
-   "end": 2360
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Roof",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Roof",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Roof",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Side Door 1",
    "points": [
     [
@@ -1087,112 +1106,6 @@
   {
    "op": "set_visibility",
    "name": "Side Door 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Door 3",
-   "points": [
-    [
-     1090.0,
-     600.0
-    ],
-    [
-     1093.83,
-     600.76
-    ],
-    [
-     1097.07,
-     602.93
-    ],
-    [
-     1099.24,
-     606.17
-    ],
-    [
-     1100.0,
-     610.0
-    ],
-    [
-     1100.0,
-     2140.0
-    ],
-    [
-     1099.24,
-     2143.83
-    ],
-    [
-     1097.07,
-     2147.07
-    ],
-    [
-     1093.83,
-     2149.24
-    ],
-    [
-     1090.0,
-     2150.0
-    ],
-    [
-     210.0,
-     2150.0
-    ],
-    [
-     206.17,
-     2149.24
-    ],
-    [
-     202.93,
-     2147.07
-    ],
-    [
-     200.76,
-     2143.83
-    ],
-    [
-     200.0,
-     2140.0
-    ],
-    [
-     200.0,
-     610.0
-    ],
-    [
-     200.76,
-     606.17
-    ],
-    [
-     202.93,
-     602.93
-    ],
-    [
-     206.17,
-     600.76
-    ],
-    [
-     210.0,
-     600.0
-    ]
-   ],
-   "start": 900,
-   "end": 905,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Door 3",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Side Door 3",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Door 3",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -1411,112 +1324,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Door Handle 3",
-   "points": [
-    [
-     1006.0,
-     1250.0
-    ],
-    [
-     1007.53,
-     1250.3
-    ],
-    [
-     1008.83,
-     1251.17
-    ],
-    [
-     1009.7,
-     1252.47
-    ],
-    [
-     1010.0,
-     1254.0
-    ],
-    [
-     1010.0,
-     1396.0
-    ],
-    [
-     1009.7,
-     1397.53
-    ],
-    [
-     1008.83,
-     1398.83
-    ],
-    [
-     1007.53,
-     1399.7
-    ],
-    [
-     1006.0,
-     1400.0
-    ],
-    [
-     994.0,
-     1400.0
-    ],
-    [
-     992.47,
-     1399.7
-    ],
-    [
-     991.17,
-     1398.83
-    ],
-    [
-     990.3,
-     1397.53
-    ],
-    [
-     990.0,
-     1396.0
-    ],
-    [
-     990.0,
-     1254.0
-    ],
-    [
-     990.3,
-     1252.47
-    ],
-    [
-     991.17,
-     1251.17
-    ],
-    [
-     992.47,
-     1250.3
-    ],
-    [
-     994.0,
-     1250.0
-    ]
-   ],
-   "start": 905,
-   "end": 925,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Handle 3",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Handle 3",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Handle 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Door Hinge 1",
    "points": [
     [
@@ -1524,16 +1331,8 @@
      800.0
     ],
     [
-     -2081.23,
-     800.15
-    ],
-    [
      -2080.59,
      800.59
-    ],
-    [
-     -2080.15,
-     801.23
     ],
     [
      -2080.0,
@@ -1544,16 +1343,8 @@
      878.0
     ],
     [
-     -2080.15,
-     878.77
-    ],
-    [
      -2080.59,
      879.41
-    ],
-    [
-     -2081.23,
-     879.85
     ],
     [
      -2082.0,
@@ -1564,16 +1355,8 @@
      880.0
     ],
     [
-     -2093.77,
-     879.85
-    ],
-    [
      -2094.41,
      879.41
-    ],
-    [
-     -2094.85,
-     878.77
     ],
     [
      -2095.0,
@@ -1584,16 +1367,8 @@
      802.0
     ],
     [
-     -2094.85,
-     801.23
-    ],
-    [
      -2094.41,
      800.59
-    ],
-    [
-     -2093.77,
-     800.15
     ],
     [
      -2093.0,
@@ -1630,16 +1405,8 @@
      800.0
     ],
     [
-     -931.23,
-     800.15
-    ],
-    [
      -930.59,
      800.59
-    ],
-    [
-     -930.15,
-     801.23
     ],
     [
      -930.0,
@@ -1650,16 +1417,8 @@
      878.0
     ],
     [
-     -930.15,
-     878.77
-    ],
-    [
      -930.59,
      879.41
-    ],
-    [
-     -931.23,
-     879.85
     ],
     [
      -932.0,
@@ -1670,16 +1429,8 @@
      880.0
     ],
     [
-     -943.77,
-     879.85
-    ],
-    [
      -944.41,
      879.41
-    ],
-    [
-     -944.85,
-     878.77
     ],
     [
      -945.0,
@@ -1690,16 +1441,8 @@
      802.0
     ],
     [
-     -944.85,
-     801.23
-    ],
-    [
      -944.41,
      800.59
-    ],
-    [
-     -943.77,
-     800.15
     ],
     [
      -943.0,
@@ -1723,1268 +1466,6 @@
   {
    "op": "set_visibility",
    "name": "Door Hinge 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Hinge 3",
-   "points": [
-    [
-     218.0,
-     800.0
-    ],
-    [
-     218.77,
-     800.15
-    ],
-    [
-     219.41,
-     800.59
-    ],
-    [
-     219.85,
-     801.23
-    ],
-    [
-     220.0,
-     802.0
-    ],
-    [
-     220.0,
-     878.0
-    ],
-    [
-     219.85,
-     878.77
-    ],
-    [
-     219.41,
-     879.41
-    ],
-    [
-     218.77,
-     879.85
-    ],
-    [
-     218.0,
-     880.0
-    ],
-    [
-     207.0,
-     880.0
-    ],
-    [
-     206.23,
-     879.85
-    ],
-    [
-     205.59,
-     879.41
-    ],
-    [
-     205.15,
-     878.77
-    ],
-    [
-     205.0,
-     878.0
-    ],
-    [
-     205.0,
-     802.0
-    ],
-    [
-     205.15,
-     801.23
-    ],
-    [
-     205.59,
-     800.59
-    ],
-    [
-     206.23,
-     800.15
-    ],
-    [
-     207.0,
-     800.0
-    ]
-   ],
-   "start": 905,
-   "end": 910,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Hinge 3",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Hinge 3",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Hinge 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Inlet Louvre",
-   "points": [
-    [
-     2344.0,
-     900.0
-    ],
-    [
-     2346.3,
-     900.46
-    ],
-    [
-     2348.24,
-     901.76
-    ],
-    [
-     2349.54,
-     903.7
-    ],
-    [
-     2350.0,
-     906.0
-    ],
-    [
-     2350.0,
-     1994.0
-    ],
-    [
-     2349.54,
-     1996.3
-    ],
-    [
-     2348.24,
-     1998.24
-    ],
-    [
-     2346.3,
-     1999.54
-    ],
-    [
-     2344.0,
-     2000.0
-    ],
-    [
-     1256.0,
-     2000.0
-    ],
-    [
-     1253.7,
-     1999.54
-    ],
-    [
-     1251.76,
-     1998.24
-    ],
-    [
-     1250.46,
-     1996.3
-    ],
-    [
-     1250.0,
-     1994.0
-    ],
-    [
-     1250.0,
-     906.0
-    ],
-    [
-     1250.46,
-     903.7
-    ],
-    [
-     1251.76,
-     901.76
-    ],
-    [
-     1253.7,
-     900.46
-    ],
-    [
-     1256.0,
-     900.0
-    ]
-   ],
-   "start": 900,
-   "end": 906,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Inlet Louvre",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Inlet Louvre",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Inlet Louvre",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 1",
-   "points": [
-    [
-     1270,
-     950
-    ],
-    [
-     2330,
-     950
-    ],
-    [
-     2330,
-     980
-    ],
-    [
-     1270,
-     980
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 1",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 1",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 2",
-   "points": [
-    [
-     1270,
-     1050
-    ],
-    [
-     2330,
-     1050
-    ],
-    [
-     2330,
-     1080
-    ],
-    [
-     1270,
-     1080
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 2",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 2",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 3",
-   "points": [
-    [
-     1270,
-     1150
-    ],
-    [
-     2330,
-     1150
-    ],
-    [
-     2330,
-     1180
-    ],
-    [
-     1270,
-     1180
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 3",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 3",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 4",
-   "points": [
-    [
-     1270,
-     1250
-    ],
-    [
-     2330,
-     1250
-    ],
-    [
-     2330,
-     1280
-    ],
-    [
-     1270,
-     1280
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 4",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 4",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 5",
-   "points": [
-    [
-     1270,
-     1350
-    ],
-    [
-     2330,
-     1350
-    ],
-    [
-     2330,
-     1380
-    ],
-    [
-     1270,
-     1380
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 5",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 5",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 6",
-   "points": [
-    [
-     1270,
-     1450
-    ],
-    [
-     2330,
-     1450
-    ],
-    [
-     2330,
-     1480
-    ],
-    [
-     1270,
-     1480
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 6",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 6",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 7",
-   "points": [
-    [
-     1270,
-     1550
-    ],
-    [
-     2330,
-     1550
-    ],
-    [
-     2330,
-     1580
-    ],
-    [
-     1270,
-     1580
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 7",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 7",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 8",
-   "points": [
-    [
-     1270,
-     1650
-    ],
-    [
-     2330,
-     1650
-    ],
-    [
-     2330,
-     1680
-    ],
-    [
-     1270,
-     1680
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 8",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 8",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 9",
-   "points": [
-    [
-     1270,
-     1750
-    ],
-    [
-     2330,
-     1750
-    ],
-    [
-     2330,
-     1780
-    ],
-    [
-     1270,
-     1780
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 9",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 9",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Louvre Blade 10",
-   "points": [
-    [
-     1270,
-     1850
-    ],
-    [
-     2330,
-     1850
-    ],
-    [
-     2330,
-     1880
-    ],
-    [
-     1270,
-     1880
-    ]
-   ],
-   "start": 906,
-   "end": 912,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Louvre Blade 10",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Louvre Blade 10",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Louvre Blade 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Louvre",
-   "points": [
-    [
-     -750,
-     600
-    ],
-    [
-     750,
-     600
-    ],
-    [
-     750,
-     2150
-    ],
-    [
-     -750,
-     2150
-    ]
-   ],
-   "start": 2500,
-   "end": 2506,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Louvre",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Louvre",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Louvre",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 1",
-   "points": [
-    [
-     -730,
-     640
-    ],
-    [
-     730,
-     640
-    ],
-    [
-     730,
-     670
-    ],
-    [
-     -730,
-     670
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 1",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 1",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 2",
-   "points": [
-    [
-     -730,
-     745
-    ],
-    [
-     730,
-     745
-    ],
-    [
-     730,
-     775
-    ],
-    [
-     -730,
-     775
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 2",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 2",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 3",
-   "points": [
-    [
-     -730,
-     850
-    ],
-    [
-     730,
-     850
-    ],
-    [
-     730,
-     880
-    ],
-    [
-     -730,
-     880
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 3",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 3",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 4",
-   "points": [
-    [
-     -730,
-     955
-    ],
-    [
-     730,
-     955
-    ],
-    [
-     730,
-     985
-    ],
-    [
-     -730,
-     985
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 4",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 4",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 5",
-   "points": [
-    [
-     -730,
-     1060
-    ],
-    [
-     730,
-     1060
-    ],
-    [
-     730,
-     1090
-    ],
-    [
-     -730,
-     1090
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 5",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 5",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 6",
-   "points": [
-    [
-     -730,
-     1165
-    ],
-    [
-     730,
-     1165
-    ],
-    [
-     730,
-     1195
-    ],
-    [
-     -730,
-     1195
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 6",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 6",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 7",
-   "points": [
-    [
-     -730,
-     1270
-    ],
-    [
-     730,
-     1270
-    ],
-    [
-     730,
-     1300
-    ],
-    [
-     -730,
-     1300
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 7",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 7",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 8",
-   "points": [
-    [
-     -730,
-     1375
-    ],
-    [
-     730,
-     1375
-    ],
-    [
-     730,
-     1405
-    ],
-    [
-     -730,
-     1405
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 8",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 8",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 9",
-   "points": [
-    [
-     -730,
-     1480
-    ],
-    [
-     730,
-     1480
-    ],
-    [
-     730,
-     1510
-    ],
-    [
-     -730,
-     1510
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 9",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 9",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 10",
-   "points": [
-    [
-     -730,
-     1585
-    ],
-    [
-     730,
-     1585
-    ],
-    [
-     730,
-     1615
-    ],
-    [
-     -730,
-     1615
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 10",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 10",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 11",
-   "points": [
-    [
-     -730,
-     1690
-    ],
-    [
-     730,
-     1690
-    ],
-    [
-     730,
-     1720
-    ],
-    [
-     -730,
-     1720
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 11",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 11",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 12",
-   "points": [
-    [
-     -730,
-     1795
-    ],
-    [
-     730,
-     1795
-    ],
-    [
-     730,
-     1825
-    ],
-    [
-     -730,
-     1825
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 12",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 12",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 13",
-   "points": [
-    [
-     -730,
-     1900
-    ],
-    [
-     730,
-     1900
-    ],
-    [
-     730,
-     1930
-    ],
-    [
-     -730,
-     1930
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 13",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 13",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 13",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Radiator Blade 14",
-   "points": [
-    [
-     -730,
-     2005
-    ],
-    [
-     730,
-     2005
-    ],
-    [
-     730,
-     2035
-    ],
-    [
-     -730,
-     2035
-    ]
-   ],
-   "start": 2506,
-   "end": 2512,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Radiator Blade 14",
-   "subcategory": "Pcoat"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Radiator Blade 14",
-   "param": "Pcoat Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Radiator Blade 14",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -3282,533 +1763,8 @@
    "fine": true
   },
   {
-   "op": "extrusion",
-   "name": "Silencer",
-   "points": [
-    [
-     180.0,
-     2550.0
-    ],
-    [
-     173.87,
-     2596.59
-    ],
-    [
-     155.88,
-     2640.0
-    ],
-    [
-     127.28,
-     2677.28
-    ],
-    [
-     90.0,
-     2705.88
-    ],
-    [
-     46.59,
-     2723.87
-    ],
-    [
-     0.0,
-     2730.0
-    ],
-    [
-     -46.59,
-     2723.87
-    ],
-    [
-     -90.0,
-     2705.88
-    ],
-    [
-     -127.28,
-     2677.28
-    ],
-    [
-     -155.88,
-     2640.0
-    ],
-    [
-     -173.87,
-     2596.59
-    ],
-    [
-     -180.0,
-     2550.0
-    ],
-    [
-     -173.87,
-     2503.41
-    ],
-    [
-     -155.88,
-     2460.0
-    ],
-    [
-     -127.28,
-     2422.72
-    ],
-    [
-     -90.0,
-     2394.12
-    ],
-    [
-     -46.59,
-     2376.13
-    ],
-    [
-     -0.0,
-     2370.0
-    ],
-    [
-     46.59,
-     2376.13
-    ],
-    [
-     90.0,
-     2394.12
-    ],
-    [
-     127.28,
-     2422.72
-    ],
-    [
-     155.88,
-     2460.0
-    ],
-    [
-     173.87,
-     2503.41
-    ]
-   ],
-   "start": -1200,
-   "end": 800,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Silencer",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Silencer",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Silencer",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Silencer Saddle 1",
-   "points": [
-    [
-     -840.0,
-     0.0
-    ],
-    [
-     -842.04,
-     15.53
-    ],
-    [
-     -848.04,
-     30.0
-    ],
-    [
-     -857.57,
-     42.43
-    ],
-    [
-     -870.0,
-     51.96
-    ],
-    [
-     -884.47,
-     57.96
-    ],
-    [
-     -900.0,
-     60.0
-    ],
-    [
-     -915.53,
-     57.96
-    ],
-    [
-     -930.0,
-     51.96
-    ],
-    [
-     -942.43,
-     42.43
-    ],
-    [
-     -951.96,
-     30.0
-    ],
-    [
-     -957.96,
-     15.53
-    ],
-    [
-     -960.0,
-     0.0
-    ],
-    [
-     -957.96,
-     -15.53
-    ],
-    [
-     -951.96,
-     -30.0
-    ],
-    [
-     -942.43,
-     -42.43
-    ],
-    [
-     -930.0,
-     -51.96
-    ],
-    [
-     -915.53,
-     -57.96
-    ],
-    [
-     -900.0,
-     -60.0
-    ],
-    [
-     -884.47,
-     -57.96
-    ],
-    [
-     -870.0,
-     -51.96
-    ],
-    [
-     -857.57,
-     -42.43
-    ],
-    [
-     -848.04,
-     -30.0
-    ],
-    [
-     -842.04,
-     -15.53
-    ]
-   ],
-   "start": 2360,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Silencer Saddle 1",
-   "subcategory": "Struct"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Silencer Saddle 1",
-   "param": "Struct Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Silencer Saddle 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Silencer Saddle 2",
-   "points": [
-    [
-     560.0,
-     0.0
-    ],
-    [
-     557.96,
-     15.53
-    ],
-    [
-     551.96,
-     30.0
-    ],
-    [
-     542.43,
-     42.43
-    ],
-    [
-     530.0,
-     51.96
-    ],
-    [
-     515.53,
-     57.96
-    ],
-    [
-     500.0,
-     60.0
-    ],
-    [
-     484.47,
-     57.96
-    ],
-    [
-     470.0,
-     51.96
-    ],
-    [
-     457.57,
-     42.43
-    ],
-    [
-     448.04,
-     30.0
-    ],
-    [
-     442.04,
-     15.53
-    ],
-    [
-     440.0,
-     0.0
-    ],
-    [
-     442.04,
-     -15.53
-    ],
-    [
-     448.04,
-     -30.0
-    ],
-    [
-     457.57,
-     -42.43
-    ],
-    [
-     470.0,
-     -51.96
-    ],
-    [
-     484.47,
-     -57.96
-    ],
-    [
-     500.0,
-     -60.0
-    ],
-    [
-     515.53,
-     -57.96
-    ],
-    [
-     530.0,
-     -51.96
-    ],
-    [
-     542.43,
-     -42.43
-    ],
-    [
-     551.96,
-     -30.0
-    ],
-    [
-     557.96,
-     -15.53
-    ]
-   ],
-   "start": 2360,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Silencer Saddle 2",
-   "subcategory": "Struct"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Silencer Saddle 2",
-   "param": "Struct Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Silencer Saddle 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Exhaust Stack",
-   "points": [
-    [
-     890.0,
-     0.0
-    ],
-    [
-     886.93,
-     23.29
-    ],
-    [
-     877.94,
-     45.0
-    ],
-    [
-     863.64,
-     63.64
-    ],
-    [
-     845.0,
-     77.94
-    ],
-    [
-     823.29,
-     86.93
-    ],
-    [
-     800.0,
-     90.0
-    ],
-    [
-     776.71,
-     86.93
-    ],
-    [
-     755.0,
-     77.94
-    ],
-    [
-     736.36,
-     63.64
-    ],
-    [
-     722.06,
-     45.0
-    ],
-    [
-     713.07,
-     23.29
-    ],
-    [
-     710.0,
-     0.0
-    ],
-    [
-     713.07,
-     -23.29
-    ],
-    [
-     722.06,
-     -45.0
-    ],
-    [
-     736.36,
-     -63.64
-    ],
-    [
-     755.0,
-     -77.94
-    ],
-    [
-     776.71,
-     -86.93
-    ],
-    [
-     800.0,
-     -90.0
-    ],
-    [
-     823.29,
-     -86.93
-    ],
-    [
-     845.0,
-     -77.94
-    ],
-    [
-     863.64,
-     -63.64
-    ],
-    [
-     877.94,
-     -45.0
-    ],
-    [
-     886.93,
-     -23.29
-    ]
-   ],
-   "start": 2550,
-   "end": 3100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Exhaust Stack",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Exhaust Stack",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Exhaust Stack",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
    "op": "revolution",
-   "name": "Rain Cap",
-   "profile": [
-    [
-     0,
-     3100
-    ],
-    [
-     110,
-     3100
-    ],
-    [
-     110,
-     3115
-    ],
-    [
-     0,
-     3140
-    ]
-   ],
-   "axis_at": [
-    800,
-    0
-   ],
-   "axis": "z",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rain Cap",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rain Cap",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lifting Eye 1",
+   "name": "Lifting Eye",
    "profile": [
     [
      30,
@@ -3836,52 +1792,12 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lifting Eye 1",
+   "name": "Lifting Eye",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lifting Eye 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Lifting Eye 2",
-   "profile": [
-    [
-     30,
-     10
-    ],
-    [
-     45,
-     10
-    ],
-    [
-     45,
-     -10
-    ],
-    [
-     30,
-     -10
-    ]
-   ],
-   "axis_at": [
-    2300,
-    2420
-   ],
-   "axis": "y",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lifting Eye 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lifting Eye 2",
+   "name": "Lifting Eye",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -4010,112 +1926,6 @@
   },
   {
    "op": "extrusion",
-   "name": "Fuel Gauge",
-   "points": [
-    [
-     -1999.99,
-     260.0
-    ],
-    [
-     -1980.86,
-     263.81
-    ],
-    [
-     -1964.64,
-     274.64
-    ],
-    [
-     -1953.81,
-     290.86
-    ],
-    [
-     -1950.0,
-     309.99
-    ],
-    [
-     -1950.0,
-     310.01
-    ],
-    [
-     -1953.81,
-     329.14
-    ],
-    [
-     -1964.64,
-     345.36
-    ],
-    [
-     -1980.86,
-     356.19
-    ],
-    [
-     -1999.99,
-     360.0
-    ],
-    [
-     -2000.01,
-     360.0
-    ],
-    [
-     -2019.14,
-     356.19
-    ],
-    [
-     -2035.36,
-     345.36
-    ],
-    [
-     -2046.19,
-     329.14
-    ],
-    [
-     -2050.0,
-     310.01
-    ],
-    [
-     -2050.0,
-     309.99
-    ],
-    [
-     -2046.19,
-     290.86
-    ],
-    [
-     -2035.36,
-     274.64
-    ],
-    [
-     -2019.14,
-     263.81
-    ],
-    [
-     -2000.01,
-     260.0
-    ]
-   ],
-   "start": 880,
-   "end": 882,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Fuel Gauge",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Fuel Gauge",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Fuel Gauge",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
    "name": "Cable Entry Plate",
    "points": [
     [
@@ -4222,7 +2032,1725 @@
   },
   {
    "op": "extrusion",
-   "name": "Drip Tray Lip",
+   "name": "Base Frame 250",
+   "points": [
+    [
+     -2500,
+     -900
+    ],
+    [
+     1300,
+     -900
+    ],
+    [
+     1300,
+     900
+    ],
+    [
+     -2500,
+     900
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame 250",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame 250",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Tank 250",
+   "points": [
+    [
+     1180.0,
+     -880.0
+    ],
+    [
+     1187.65,
+     -878.48
+    ],
+    [
+     1194.14,
+     -874.14
+    ],
+    [
+     1198.48,
+     -867.65
+    ],
+    [
+     1200.0,
+     -860.0
+    ],
+    [
+     1200.0,
+     860.0
+    ],
+    [
+     1198.48,
+     867.65
+    ],
+    [
+     1194.14,
+     874.14
+    ],
+    [
+     1187.65,
+     878.48
+    ],
+    [
+     1180.0,
+     880.0
+    ],
+    [
+     -2380.0,
+     880.0
+    ],
+    [
+     -2387.65,
+     878.48
+    ],
+    [
+     -2394.14,
+     874.14
+    ],
+    [
+     -2398.48,
+     867.65
+    ],
+    [
+     -2400.0,
+     860.0
+    ],
+    [
+     -2400.0,
+     -860.0
+    ],
+    [
+     -2398.48,
+     -867.65
+    ],
+    [
+     -2394.14,
+     -874.14
+    ],
+    [
+     -2387.65,
+     -878.48
+    ],
+    [
+     -2380.0,
+     -880.0
+    ]
+   ],
+   "start": 150,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Tank 250",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Tank 250",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Tank 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Canopy 250",
+   "points": [
+    [
+     1270.0,
+     -900.0
+    ],
+    [
+     1281.48,
+     -897.72
+    ],
+    [
+     1291.21,
+     -891.21
+    ],
+    [
+     1297.72,
+     -881.48
+    ],
+    [
+     1300.0,
+     -870.0
+    ],
+    [
+     1300.0,
+     870.0
+    ],
+    [
+     1297.72,
+     881.48
+    ],
+    [
+     1291.21,
+     891.21
+    ],
+    [
+     1281.48,
+     897.72
+    ],
+    [
+     1270.0,
+     900.0
+    ],
+    [
+     -2470.0,
+     900.0
+    ],
+    [
+     -2481.48,
+     897.72
+    ],
+    [
+     -2491.21,
+     891.21
+    ],
+    [
+     -2497.72,
+     881.48
+    ],
+    [
+     -2500.0,
+     870.0
+    ],
+    [
+     -2500.0,
+     -870.0
+    ],
+    [
+     -2497.72,
+     -881.48
+    ],
+    [
+     -2491.21,
+     -891.21
+    ],
+    [
+     -2481.48,
+     -897.72
+    ],
+    [
+     -2470.0,
+     -900.0
+    ]
+   ],
+   "start": 450,
+   "end": 2300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy 250",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy 250",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof 250",
+   "points": [
+    [
+     1310.0,
+     -940.0
+    ],
+    [
+     1321.48,
+     -937.72
+    ],
+    [
+     1331.21,
+     -931.21
+    ],
+    [
+     1337.72,
+     -921.48
+    ],
+    [
+     1340.0,
+     -910.0
+    ],
+    [
+     1340.0,
+     910.0
+    ],
+    [
+     1337.72,
+     921.48
+    ],
+    [
+     1331.21,
+     931.21
+    ],
+    [
+     1321.48,
+     937.72
+    ],
+    [
+     1310.0,
+     940.0
+    ],
+    [
+     -2510.0,
+     940.0
+    ],
+    [
+     -2521.48,
+     937.72
+    ],
+    [
+     -2531.21,
+     931.21
+    ],
+    [
+     -2537.72,
+     921.48
+    ],
+    [
+     -2540.0,
+     910.0
+    ],
+    [
+     -2540.0,
+     -910.0
+    ],
+    [
+     -2537.72,
+     -921.48
+    ],
+    [
+     -2531.21,
+     -931.21
+    ],
+    [
+     -2521.48,
+     -937.72
+    ],
+    [
+     -2510.0,
+     -940.0
+    ]
+   ],
+   "start": 2300,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof 250",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof 250",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drip Tray Lip 250",
+   "points": [
+    [
+     -2500,
+     -905
+    ],
+    [
+     1300,
+     -905
+    ],
+    [
+     1300,
+     -900
+    ],
+    [
+     -2500,
+     -900
+    ]
+   ],
+   "start": 150,
+   "end": 180
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drip Tray Lip 250",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drip Tray Lip 250",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drip Tray Lip 250",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Louvre 250",
+   "points": [
+    [
+     1144.0,
+     900.0
+    ],
+    [
+     1146.3,
+     900.46
+    ],
+    [
+     1148.24,
+     901.76
+    ],
+    [
+     1149.54,
+     903.7
+    ],
+    [
+     1150.0,
+     906.0
+    ],
+    [
+     1150.0,
+     1994.0
+    ],
+    [
+     1149.54,
+     1996.3
+    ],
+    [
+     1148.24,
+     1998.24
+    ],
+    [
+     1146.3,
+     1999.54
+    ],
+    [
+     1144.0,
+     2000.0
+    ],
+    [
+     56.0,
+     2000.0
+    ],
+    [
+     53.7,
+     1999.54
+    ],
+    [
+     51.76,
+     1998.24
+    ],
+    [
+     50.46,
+     1996.3
+    ],
+    [
+     50.0,
+     1994.0
+    ],
+    [
+     50.0,
+     906.0
+    ],
+    [
+     50.46,
+     903.7
+    ],
+    [
+     51.76,
+     901.76
+    ],
+    [
+     53.7,
+     900.46
+    ],
+    [
+     56.0,
+     900.0
+    ]
+   ],
+   "start": 900,
+   "end": 906,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Louvre 250",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Louvre 250",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Louvre 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 250 1",
+   "points": [
+    [
+     70,
+     1050
+    ],
+    [
+     1130,
+     1050
+    ],
+    [
+     1130,
+     1100
+    ],
+    [
+     70,
+     1100
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 250 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 250 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 250 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 250 2",
+   "points": [
+    [
+     70,
+     1380
+    ],
+    [
+     1130,
+     1380
+    ],
+    [
+     1130,
+     1430
+    ],
+    [
+     70,
+     1430
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 250 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 250 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 250 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 250 3",
+   "points": [
+    [
+     70,
+     1710
+    ],
+    [
+     1130,
+     1710
+    ],
+    [
+     1130,
+     1760
+    ],
+    [
+     70,
+     1760
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 250 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 250 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 250 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Louvre 250",
+   "points": [
+    [
+     -750,
+     600
+    ],
+    [
+     750,
+     600
+    ],
+    [
+     750,
+     2150
+    ],
+    [
+     -750,
+     2150
+    ]
+   ],
+   "start": 1300,
+   "end": 1306,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Louvre 250",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Louvre 250",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Louvre 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 250 1",
+   "points": [
+    [
+     -730,
+     760
+    ],
+    [
+     730,
+     760
+    ],
+    [
+     730,
+     800
+    ],
+    [
+     -730,
+     800
+    ]
+   ],
+   "start": 1306,
+   "end": 1312,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 250 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 250 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 250 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 250 2",
+   "points": [
+    [
+     -730,
+     1220
+    ],
+    [
+     730,
+     1220
+    ],
+    [
+     730,
+     1260
+    ],
+    [
+     -730,
+     1260
+    ]
+   ],
+   "start": 1306,
+   "end": 1312,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 250 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 250 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 250 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 250 3",
+   "points": [
+    [
+     -730,
+     1680
+    ],
+    [
+     730,
+     1680
+    ],
+    [
+     730,
+     1720
+    ],
+    [
+     -730,
+     1720
+    ]
+   ],
+   "start": 1306,
+   "end": 1312,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 250 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 250 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 250 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer 250",
+   "points": [
+    [
+     180.0,
+     2550.0
+    ],
+    [
+     173.87,
+     2596.59
+    ],
+    [
+     155.88,
+     2640.0
+    ],
+    [
+     127.28,
+     2677.28
+    ],
+    [
+     90.0,
+     2705.88
+    ],
+    [
+     46.59,
+     2723.87
+    ],
+    [
+     0.0,
+     2730.0
+    ],
+    [
+     -46.59,
+     2723.87
+    ],
+    [
+     -90.0,
+     2705.88
+    ],
+    [
+     -127.28,
+     2677.28
+    ],
+    [
+     -155.88,
+     2640.0
+    ],
+    [
+     -173.87,
+     2596.59
+    ],
+    [
+     -180.0,
+     2550.0
+    ],
+    [
+     -173.87,
+     2503.41
+    ],
+    [
+     -155.88,
+     2460.0
+    ],
+    [
+     -127.28,
+     2422.72
+    ],
+    [
+     -90.0,
+     2394.12
+    ],
+    [
+     -46.59,
+     2376.13
+    ],
+    [
+     -0.0,
+     2370.0
+    ],
+    [
+     46.59,
+     2376.13
+    ],
+    [
+     90.0,
+     2394.12
+    ],
+    [
+     127.28,
+     2422.72
+    ],
+    [
+     155.88,
+     2460.0
+    ],
+    [
+     173.87,
+     2503.41
+    ]
+   ],
+   "start": -1500,
+   "end": -400,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer 250",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer 250",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 250 1",
+   "points": [
+    [
+     -1240.0,
+     0.0
+    ],
+    [
+     -1242.04,
+     15.53
+    ],
+    [
+     -1248.04,
+     30.0
+    ],
+    [
+     -1257.57,
+     42.43
+    ],
+    [
+     -1270.0,
+     51.96
+    ],
+    [
+     -1284.47,
+     57.96
+    ],
+    [
+     -1300.0,
+     60.0
+    ],
+    [
+     -1315.53,
+     57.96
+    ],
+    [
+     -1330.0,
+     51.96
+    ],
+    [
+     -1342.43,
+     42.43
+    ],
+    [
+     -1351.96,
+     30.0
+    ],
+    [
+     -1357.96,
+     15.53
+    ],
+    [
+     -1360.0,
+     0.0
+    ],
+    [
+     -1357.96,
+     -15.53
+    ],
+    [
+     -1351.96,
+     -30.0
+    ],
+    [
+     -1342.43,
+     -42.43
+    ],
+    [
+     -1330.0,
+     -51.96
+    ],
+    [
+     -1315.53,
+     -57.96
+    ],
+    [
+     -1300.0,
+     -60.0
+    ],
+    [
+     -1284.47,
+     -57.96
+    ],
+    [
+     -1270.0,
+     -51.96
+    ],
+    [
+     -1257.57,
+     -42.43
+    ],
+    [
+     -1248.04,
+     -30.0
+    ],
+    [
+     -1242.04,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 250 1",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 250 1",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 250 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 250 2",
+   "points": [
+    [
+     -540.0,
+     0.0
+    ],
+    [
+     -542.04,
+     15.53
+    ],
+    [
+     -548.04,
+     30.0
+    ],
+    [
+     -557.57,
+     42.43
+    ],
+    [
+     -570.0,
+     51.96
+    ],
+    [
+     -584.47,
+     57.96
+    ],
+    [
+     -600.0,
+     60.0
+    ],
+    [
+     -615.53,
+     57.96
+    ],
+    [
+     -630.0,
+     51.96
+    ],
+    [
+     -642.43,
+     42.43
+    ],
+    [
+     -651.96,
+     30.0
+    ],
+    [
+     -657.96,
+     15.53
+    ],
+    [
+     -660.0,
+     0.0
+    ],
+    [
+     -657.96,
+     -15.53
+    ],
+    [
+     -651.96,
+     -30.0
+    ],
+    [
+     -642.43,
+     -42.43
+    ],
+    [
+     -630.0,
+     -51.96
+    ],
+    [
+     -615.53,
+     -57.96
+    ],
+    [
+     -600.0,
+     -60.0
+    ],
+    [
+     -584.47,
+     -57.96
+    ],
+    [
+     -570.0,
+     -51.96
+    ],
+    [
+     -557.57,
+     -42.43
+    ],
+    [
+     -548.04,
+     -30.0
+    ],
+    [
+     -542.04,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 250 2",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 250 2",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 250 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Exhaust Stack 250",
+   "points": [
+    [
+     -310.0,
+     0.0
+    ],
+    [
+     -313.07,
+     23.29
+    ],
+    [
+     -322.06,
+     45.0
+    ],
+    [
+     -336.36,
+     63.64
+    ],
+    [
+     -355.0,
+     77.94
+    ],
+    [
+     -376.71,
+     86.93
+    ],
+    [
+     -400.0,
+     90.0
+    ],
+    [
+     -423.29,
+     86.93
+    ],
+    [
+     -445.0,
+     77.94
+    ],
+    [
+     -463.64,
+     63.64
+    ],
+    [
+     -477.94,
+     45.0
+    ],
+    [
+     -486.93,
+     23.29
+    ],
+    [
+     -490.0,
+     0.0
+    ],
+    [
+     -486.93,
+     -23.29
+    ],
+    [
+     -477.94,
+     -45.0
+    ],
+    [
+     -463.64,
+     -63.64
+    ],
+    [
+     -445.0,
+     -77.94
+    ],
+    [
+     -423.29,
+     -86.93
+    ],
+    [
+     -400.0,
+     -90.0
+    ],
+    [
+     -376.71,
+     -86.93
+    ],
+    [
+     -355.0,
+     -77.94
+    ],
+    [
+     -336.36,
+     -63.64
+    ],
+    [
+     -322.06,
+     -45.0
+    ],
+    [
+     -313.07,
+     -23.29
+    ]
+   ],
+   "start": 2550,
+   "end": 3100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Exhaust Stack 250",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Exhaust Stack 250",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Exhaust Stack 250",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rain Cap 250",
+   "profile": [
+    [
+     0,
+     3100
+    ],
+    [
+     110,
+     3100
+    ],
+    [
+     110,
+     3115
+    ],
+    [
+     0,
+     3140
+    ]
+   ],
+   "axis_at": [
+    -400,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap 250",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap 250",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lifting Eye Rear 250",
+   "profile": [
+    [
+     30,
+     10
+    ],
+    [
+     45,
+     10
+    ],
+    [
+     45,
+     -10
+    ],
+    [
+     30,
+     -10
+    ]
+   ],
+   "axis_at": [
+    1100,
+    2420
+   ],
+   "axis": "y",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lifting Eye Rear 250",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lifting Eye Rear 250",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame 500",
+   "points": [
+    [
+     -2500,
+     -900
+    ],
+    [
+     2500,
+     -900
+    ],
+    [
+     2500,
+     900
+    ],
+    [
+     -2500,
+     900
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame 500",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame 500",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Tank 500",
+   "points": [
+    [
+     2380.0,
+     -880.0
+    ],
+    [
+     2387.65,
+     -878.48
+    ],
+    [
+     2394.14,
+     -874.14
+    ],
+    [
+     2398.48,
+     -867.65
+    ],
+    [
+     2400.0,
+     -860.0
+    ],
+    [
+     2400.0,
+     860.0
+    ],
+    [
+     2398.48,
+     867.65
+    ],
+    [
+     2394.14,
+     874.14
+    ],
+    [
+     2387.65,
+     878.48
+    ],
+    [
+     2380.0,
+     880.0
+    ],
+    [
+     -2380.0,
+     880.0
+    ],
+    [
+     -2387.65,
+     878.48
+    ],
+    [
+     -2394.14,
+     874.14
+    ],
+    [
+     -2398.48,
+     867.65
+    ],
+    [
+     -2400.0,
+     860.0
+    ],
+    [
+     -2400.0,
+     -860.0
+    ],
+    [
+     -2398.48,
+     -867.65
+    ],
+    [
+     -2394.14,
+     -874.14
+    ],
+    [
+     -2387.65,
+     -878.48
+    ],
+    [
+     -2380.0,
+     -880.0
+    ]
+   ],
+   "start": 150,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Tank 500",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Tank 500",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Tank 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Canopy 500",
+   "points": [
+    [
+     2470.0,
+     -900.0
+    ],
+    [
+     2481.48,
+     -897.72
+    ],
+    [
+     2491.21,
+     -891.21
+    ],
+    [
+     2497.72,
+     -881.48
+    ],
+    [
+     2500.0,
+     -870.0
+    ],
+    [
+     2500.0,
+     870.0
+    ],
+    [
+     2497.72,
+     881.48
+    ],
+    [
+     2491.21,
+     891.21
+    ],
+    [
+     2481.48,
+     897.72
+    ],
+    [
+     2470.0,
+     900.0
+    ],
+    [
+     -2470.0,
+     900.0
+    ],
+    [
+     -2481.48,
+     897.72
+    ],
+    [
+     -2491.21,
+     891.21
+    ],
+    [
+     -2497.72,
+     881.48
+    ],
+    [
+     -2500.0,
+     870.0
+    ],
+    [
+     -2500.0,
+     -870.0
+    ],
+    [
+     -2497.72,
+     -881.48
+    ],
+    [
+     -2491.21,
+     -891.21
+    ],
+    [
+     -2481.48,
+     -897.72
+    ],
+    [
+     -2470.0,
+     -900.0
+    ]
+   ],
+   "start": 450,
+   "end": 2300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy 500",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy 500",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof 500",
+   "points": [
+    [
+     2510.0,
+     -940.0
+    ],
+    [
+     2521.48,
+     -937.72
+    ],
+    [
+     2531.21,
+     -931.21
+    ],
+    [
+     2537.72,
+     -921.48
+    ],
+    [
+     2540.0,
+     -910.0
+    ],
+    [
+     2540.0,
+     910.0
+    ],
+    [
+     2537.72,
+     921.48
+    ],
+    [
+     2531.21,
+     931.21
+    ],
+    [
+     2521.48,
+     937.72
+    ],
+    [
+     2510.0,
+     940.0
+    ],
+    [
+     -2510.0,
+     940.0
+    ],
+    [
+     -2521.48,
+     937.72
+    ],
+    [
+     -2531.21,
+     931.21
+    ],
+    [
+     -2537.72,
+     921.48
+    ],
+    [
+     -2540.0,
+     910.0
+    ],
+    [
+     -2540.0,
+     -910.0
+    ],
+    [
+     -2537.72,
+     -921.48
+    ],
+    [
+     -2531.21,
+     -931.21
+    ],
+    [
+     -2521.48,
+     -937.72
+    ],
+    [
+     -2510.0,
+     -940.0
+    ]
+   ],
+   "start": 2300,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof 500",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof 500",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drip Tray Lip 500",
    "points": [
     [
      -2500,
@@ -4246,17 +3774,2344 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drip Tray Lip",
+   "name": "Drip Tray Lip 500",
    "subcategory": "Struct"
   },
   {
    "op": "set_material_param",
-   "name": "Drip Tray Lip",
+   "name": "Drip Tray Lip 500",
    "param": "Struct Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drip Tray Lip",
+   "name": "Drip Tray Lip 500",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Louvre 500",
+   "points": [
+    [
+     2344.0,
+     900.0
+    ],
+    [
+     2346.3,
+     900.46
+    ],
+    [
+     2348.24,
+     901.76
+    ],
+    [
+     2349.54,
+     903.7
+    ],
+    [
+     2350.0,
+     906.0
+    ],
+    [
+     2350.0,
+     1994.0
+    ],
+    [
+     2349.54,
+     1996.3
+    ],
+    [
+     2348.24,
+     1998.24
+    ],
+    [
+     2346.3,
+     1999.54
+    ],
+    [
+     2344.0,
+     2000.0
+    ],
+    [
+     1256.0,
+     2000.0
+    ],
+    [
+     1253.7,
+     1999.54
+    ],
+    [
+     1251.76,
+     1998.24
+    ],
+    [
+     1250.46,
+     1996.3
+    ],
+    [
+     1250.0,
+     1994.0
+    ],
+    [
+     1250.0,
+     906.0
+    ],
+    [
+     1250.46,
+     903.7
+    ],
+    [
+     1251.76,
+     901.76
+    ],
+    [
+     1253.7,
+     900.46
+    ],
+    [
+     1256.0,
+     900.0
+    ]
+   ],
+   "start": 900,
+   "end": 906,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Louvre 500",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Louvre 500",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Louvre 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 500 1",
+   "points": [
+    [
+     1270,
+     1050
+    ],
+    [
+     2330,
+     1050
+    ],
+    [
+     2330,
+     1100
+    ],
+    [
+     1270,
+     1100
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 500 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 500 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 500 2",
+   "points": [
+    [
+     1270,
+     1380
+    ],
+    [
+     2330,
+     1380
+    ],
+    [
+     2330,
+     1430
+    ],
+    [
+     1270,
+     1430
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 500 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 500 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 500 3",
+   "points": [
+    [
+     1270,
+     1710
+    ],
+    [
+     2330,
+     1710
+    ],
+    [
+     2330,
+     1760
+    ],
+    [
+     1270,
+     1760
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 500 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 500 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Louvre 500",
+   "points": [
+    [
+     -750,
+     600
+    ],
+    [
+     750,
+     600
+    ],
+    [
+     750,
+     2150
+    ],
+    [
+     -750,
+     2150
+    ]
+   ],
+   "start": 2500,
+   "end": 2506,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Louvre 500",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Louvre 500",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Louvre 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 500 1",
+   "points": [
+    [
+     -730,
+     760
+    ],
+    [
+     730,
+     760
+    ],
+    [
+     730,
+     800
+    ],
+    [
+     -730,
+     800
+    ]
+   ],
+   "start": 2506,
+   "end": 2512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 500 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 500 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 500 2",
+   "points": [
+    [
+     -730,
+     1220
+    ],
+    [
+     730,
+     1220
+    ],
+    [
+     730,
+     1260
+    ],
+    [
+     -730,
+     1260
+    ]
+   ],
+   "start": 2506,
+   "end": 2512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 500 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 500 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 500 3",
+   "points": [
+    [
+     -730,
+     1680
+    ],
+    [
+     730,
+     1680
+    ],
+    [
+     730,
+     1720
+    ],
+    [
+     -730,
+     1720
+    ]
+   ],
+   "start": 2506,
+   "end": 2512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 500 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 500 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer 500",
+   "points": [
+    [
+     180.0,
+     2550.0
+    ],
+    [
+     173.87,
+     2596.59
+    ],
+    [
+     155.88,
+     2640.0
+    ],
+    [
+     127.28,
+     2677.28
+    ],
+    [
+     90.0,
+     2705.88
+    ],
+    [
+     46.59,
+     2723.87
+    ],
+    [
+     0.0,
+     2730.0
+    ],
+    [
+     -46.59,
+     2723.87
+    ],
+    [
+     -90.0,
+     2705.88
+    ],
+    [
+     -127.28,
+     2677.28
+    ],
+    [
+     -155.88,
+     2640.0
+    ],
+    [
+     -173.87,
+     2596.59
+    ],
+    [
+     -180.0,
+     2550.0
+    ],
+    [
+     -173.87,
+     2503.41
+    ],
+    [
+     -155.88,
+     2460.0
+    ],
+    [
+     -127.28,
+     2422.72
+    ],
+    [
+     -90.0,
+     2394.12
+    ],
+    [
+     -46.59,
+     2376.13
+    ],
+    [
+     -0.0,
+     2370.0
+    ],
+    [
+     46.59,
+     2376.13
+    ],
+    [
+     90.0,
+     2394.12
+    ],
+    [
+     127.28,
+     2422.72
+    ],
+    [
+     155.88,
+     2460.0
+    ],
+    [
+     173.87,
+     2503.41
+    ]
+   ],
+   "start": -1500,
+   "end": 800,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer 500",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer 500",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 500 1",
+   "points": [
+    [
+     -1240.0,
+     0.0
+    ],
+    [
+     -1242.04,
+     15.53
+    ],
+    [
+     -1248.04,
+     30.0
+    ],
+    [
+     -1257.57,
+     42.43
+    ],
+    [
+     -1270.0,
+     51.96
+    ],
+    [
+     -1284.47,
+     57.96
+    ],
+    [
+     -1300.0,
+     60.0
+    ],
+    [
+     -1315.53,
+     57.96
+    ],
+    [
+     -1330.0,
+     51.96
+    ],
+    [
+     -1342.43,
+     42.43
+    ],
+    [
+     -1351.96,
+     30.0
+    ],
+    [
+     -1357.96,
+     15.53
+    ],
+    [
+     -1360.0,
+     0.0
+    ],
+    [
+     -1357.96,
+     -15.53
+    ],
+    [
+     -1351.96,
+     -30.0
+    ],
+    [
+     -1342.43,
+     -42.43
+    ],
+    [
+     -1330.0,
+     -51.96
+    ],
+    [
+     -1315.53,
+     -57.96
+    ],
+    [
+     -1300.0,
+     -60.0
+    ],
+    [
+     -1284.47,
+     -57.96
+    ],
+    [
+     -1270.0,
+     -51.96
+    ],
+    [
+     -1257.57,
+     -42.43
+    ],
+    [
+     -1248.04,
+     -30.0
+    ],
+    [
+     -1242.04,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 500 1",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 500 1",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 500 2",
+   "points": [
+    [
+     660.0,
+     0.0
+    ],
+    [
+     657.96,
+     15.53
+    ],
+    [
+     651.96,
+     30.0
+    ],
+    [
+     642.43,
+     42.43
+    ],
+    [
+     630.0,
+     51.96
+    ],
+    [
+     615.53,
+     57.96
+    ],
+    [
+     600.0,
+     60.0
+    ],
+    [
+     584.47,
+     57.96
+    ],
+    [
+     570.0,
+     51.96
+    ],
+    [
+     557.57,
+     42.43
+    ],
+    [
+     548.04,
+     30.0
+    ],
+    [
+     542.04,
+     15.53
+    ],
+    [
+     540.0,
+     0.0
+    ],
+    [
+     542.04,
+     -15.53
+    ],
+    [
+     548.04,
+     -30.0
+    ],
+    [
+     557.57,
+     -42.43
+    ],
+    [
+     570.0,
+     -51.96
+    ],
+    [
+     584.47,
+     -57.96
+    ],
+    [
+     600.0,
+     -60.0
+    ],
+    [
+     615.53,
+     -57.96
+    ],
+    [
+     630.0,
+     -51.96
+    ],
+    [
+     642.43,
+     -42.43
+    ],
+    [
+     651.96,
+     -30.0
+    ],
+    [
+     657.96,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 500 2",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 500 2",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Exhaust Stack 500",
+   "points": [
+    [
+     890.0,
+     0.0
+    ],
+    [
+     886.93,
+     23.29
+    ],
+    [
+     877.94,
+     45.0
+    ],
+    [
+     863.64,
+     63.64
+    ],
+    [
+     845.0,
+     77.94
+    ],
+    [
+     823.29,
+     86.93
+    ],
+    [
+     800.0,
+     90.0
+    ],
+    [
+     776.71,
+     86.93
+    ],
+    [
+     755.0,
+     77.94
+    ],
+    [
+     736.36,
+     63.64
+    ],
+    [
+     722.06,
+     45.0
+    ],
+    [
+     713.07,
+     23.29
+    ],
+    [
+     710.0,
+     0.0
+    ],
+    [
+     713.07,
+     -23.29
+    ],
+    [
+     722.06,
+     -45.0
+    ],
+    [
+     736.36,
+     -63.64
+    ],
+    [
+     755.0,
+     -77.94
+    ],
+    [
+     776.71,
+     -86.93
+    ],
+    [
+     800.0,
+     -90.0
+    ],
+    [
+     823.29,
+     -86.93
+    ],
+    [
+     845.0,
+     -77.94
+    ],
+    [
+     863.64,
+     -63.64
+    ],
+    [
+     877.94,
+     -45.0
+    ],
+    [
+     886.93,
+     -23.29
+    ]
+   ],
+   "start": 2550,
+   "end": 3100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Exhaust Stack 500",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Exhaust Stack 500",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Exhaust Stack 500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rain Cap 500",
+   "profile": [
+    [
+     0,
+     3100
+    ],
+    [
+     110,
+     3100
+    ],
+    [
+     110,
+     3115
+    ],
+    [
+     0,
+     3140
+    ]
+   ],
+   "axis_at": [
+    800,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap 500",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap 500",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lifting Eye Rear 500",
+   "profile": [
+    [
+     30,
+     10
+    ],
+    [
+     45,
+     10
+    ],
+    [
+     45,
+     -10
+    ],
+    [
+     30,
+     -10
+    ]
+   ],
+   "axis_at": [
+    2300,
+    2420
+   ],
+   "axis": "y",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lifting Eye Rear 500",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lifting Eye Rear 500",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame 800",
+   "points": [
+    [
+     -2500,
+     -900
+    ],
+    [
+     3500,
+     -900
+    ],
+    [
+     3500,
+     900
+    ],
+    [
+     -2500,
+     900
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame 800",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame 800",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Tank 800",
+   "points": [
+    [
+     3380.0,
+     -880.0
+    ],
+    [
+     3387.65,
+     -878.48
+    ],
+    [
+     3394.14,
+     -874.14
+    ],
+    [
+     3398.48,
+     -867.65
+    ],
+    [
+     3400.0,
+     -860.0
+    ],
+    [
+     3400.0,
+     860.0
+    ],
+    [
+     3398.48,
+     867.65
+    ],
+    [
+     3394.14,
+     874.14
+    ],
+    [
+     3387.65,
+     878.48
+    ],
+    [
+     3380.0,
+     880.0
+    ],
+    [
+     -2380.0,
+     880.0
+    ],
+    [
+     -2387.65,
+     878.48
+    ],
+    [
+     -2394.14,
+     874.14
+    ],
+    [
+     -2398.48,
+     867.65
+    ],
+    [
+     -2400.0,
+     860.0
+    ],
+    [
+     -2400.0,
+     -860.0
+    ],
+    [
+     -2398.48,
+     -867.65
+    ],
+    [
+     -2394.14,
+     -874.14
+    ],
+    [
+     -2387.65,
+     -878.48
+    ],
+    [
+     -2380.0,
+     -880.0
+    ]
+   ],
+   "start": 150,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Tank 800",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Tank 800",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Tank 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Canopy 800",
+   "points": [
+    [
+     3470.0,
+     -900.0
+    ],
+    [
+     3481.48,
+     -897.72
+    ],
+    [
+     3491.21,
+     -891.21
+    ],
+    [
+     3497.72,
+     -881.48
+    ],
+    [
+     3500.0,
+     -870.0
+    ],
+    [
+     3500.0,
+     870.0
+    ],
+    [
+     3497.72,
+     881.48
+    ],
+    [
+     3491.21,
+     891.21
+    ],
+    [
+     3481.48,
+     897.72
+    ],
+    [
+     3470.0,
+     900.0
+    ],
+    [
+     -2470.0,
+     900.0
+    ],
+    [
+     -2481.48,
+     897.72
+    ],
+    [
+     -2491.21,
+     891.21
+    ],
+    [
+     -2497.72,
+     881.48
+    ],
+    [
+     -2500.0,
+     870.0
+    ],
+    [
+     -2500.0,
+     -870.0
+    ],
+    [
+     -2497.72,
+     -881.48
+    ],
+    [
+     -2491.21,
+     -891.21
+    ],
+    [
+     -2481.48,
+     -897.72
+    ],
+    [
+     -2470.0,
+     -900.0
+    ]
+   ],
+   "start": 450,
+   "end": 2300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy 800",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy 800",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Roof 800",
+   "points": [
+    [
+     3510.0,
+     -940.0
+    ],
+    [
+     3521.48,
+     -937.72
+    ],
+    [
+     3531.21,
+     -931.21
+    ],
+    [
+     3537.72,
+     -921.48
+    ],
+    [
+     3540.0,
+     -910.0
+    ],
+    [
+     3540.0,
+     910.0
+    ],
+    [
+     3537.72,
+     921.48
+    ],
+    [
+     3531.21,
+     931.21
+    ],
+    [
+     3521.48,
+     937.72
+    ],
+    [
+     3510.0,
+     940.0
+    ],
+    [
+     -2510.0,
+     940.0
+    ],
+    [
+     -2521.48,
+     937.72
+    ],
+    [
+     -2531.21,
+     931.21
+    ],
+    [
+     -2537.72,
+     921.48
+    ],
+    [
+     -2540.0,
+     910.0
+    ],
+    [
+     -2540.0,
+     -910.0
+    ],
+    [
+     -2537.72,
+     -921.48
+    ],
+    [
+     -2531.21,
+     -931.21
+    ],
+    [
+     -2521.48,
+     -937.72
+    ],
+    [
+     -2510.0,
+     -940.0
+    ]
+   ],
+   "start": 2300,
+   "end": 2360
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Roof 800",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Roof 800",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Roof 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drip Tray Lip 800",
+   "points": [
+    [
+     -2500,
+     -905
+    ],
+    [
+     3500,
+     -905
+    ],
+    [
+     3500,
+     -900
+    ],
+    [
+     -2500,
+     -900
+    ]
+   ],
+   "start": 150,
+   "end": 180
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drip Tray Lip 800",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drip Tray Lip 800",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drip Tray Lip 800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Louvre 800",
+   "points": [
+    [
+     3344.0,
+     900.0
+    ],
+    [
+     3346.3,
+     900.46
+    ],
+    [
+     3348.24,
+     901.76
+    ],
+    [
+     3349.54,
+     903.7
+    ],
+    [
+     3350.0,
+     906.0
+    ],
+    [
+     3350.0,
+     1994.0
+    ],
+    [
+     3349.54,
+     1996.3
+    ],
+    [
+     3348.24,
+     1998.24
+    ],
+    [
+     3346.3,
+     1999.54
+    ],
+    [
+     3344.0,
+     2000.0
+    ],
+    [
+     2256.0,
+     2000.0
+    ],
+    [
+     2253.7,
+     1999.54
+    ],
+    [
+     2251.76,
+     1998.24
+    ],
+    [
+     2250.46,
+     1996.3
+    ],
+    [
+     2250.0,
+     1994.0
+    ],
+    [
+     2250.0,
+     906.0
+    ],
+    [
+     2250.46,
+     903.7
+    ],
+    [
+     2251.76,
+     901.76
+    ],
+    [
+     2253.7,
+     900.46
+    ],
+    [
+     2256.0,
+     900.0
+    ]
+   ],
+   "start": 900,
+   "end": 906,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Louvre 800",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Louvre 800",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Louvre 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 800 1",
+   "points": [
+    [
+     2270,
+     1050
+    ],
+    [
+     3330,
+     1050
+    ],
+    [
+     3330,
+     1100
+    ],
+    [
+     2270,
+     1100
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 800 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 800 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 800 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 800 2",
+   "points": [
+    [
+     2270,
+     1380
+    ],
+    [
+     3330,
+     1380
+    ],
+    [
+     3330,
+     1430
+    ],
+    [
+     2270,
+     1430
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 800 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 800 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 800 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Louvre Blade 800 3",
+   "points": [
+    [
+     2270,
+     1710
+    ],
+    [
+     3330,
+     1710
+    ],
+    [
+     3330,
+     1760
+    ],
+    [
+     2270,
+     1760
+    ]
+   ],
+   "start": 906,
+   "end": 912,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Louvre Blade 800 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Louvre Blade 800 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Louvre Blade 800 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Louvre 800",
+   "points": [
+    [
+     -750,
+     600
+    ],
+    [
+     750,
+     600
+    ],
+    [
+     750,
+     2150
+    ],
+    [
+     -750,
+     2150
+    ]
+   ],
+   "start": 3500,
+   "end": 3506,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Louvre 800",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Louvre 800",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Louvre 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 800 1",
+   "points": [
+    [
+     -730,
+     760
+    ],
+    [
+     730,
+     760
+    ],
+    [
+     730,
+     800
+    ],
+    [
+     -730,
+     800
+    ]
+   ],
+   "start": 3506,
+   "end": 3512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 800 1",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 800 1",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 800 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 800 2",
+   "points": [
+    [
+     -730,
+     1220
+    ],
+    [
+     730,
+     1220
+    ],
+    [
+     730,
+     1260
+    ],
+    [
+     -730,
+     1260
+    ]
+   ],
+   "start": 3506,
+   "end": 3512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 800 2",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 800 2",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 800 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiator Blade 800 3",
+   "points": [
+    [
+     -730,
+     1680
+    ],
+    [
+     730,
+     1680
+    ],
+    [
+     730,
+     1720
+    ],
+    [
+     -730,
+     1720
+    ]
+   ],
+   "start": 3506,
+   "end": 3512,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiator Blade 800 3",
+   "subcategory": "Pcoat"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiator Blade 800 3",
+   "param": "Pcoat Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiator Blade 800 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer 800",
+   "points": [
+    [
+     180.0,
+     2550.0
+    ],
+    [
+     173.87,
+     2596.59
+    ],
+    [
+     155.88,
+     2640.0
+    ],
+    [
+     127.28,
+     2677.28
+    ],
+    [
+     90.0,
+     2705.88
+    ],
+    [
+     46.59,
+     2723.87
+    ],
+    [
+     0.0,
+     2730.0
+    ],
+    [
+     -46.59,
+     2723.87
+    ],
+    [
+     -90.0,
+     2705.88
+    ],
+    [
+     -127.28,
+     2677.28
+    ],
+    [
+     -155.88,
+     2640.0
+    ],
+    [
+     -173.87,
+     2596.59
+    ],
+    [
+     -180.0,
+     2550.0
+    ],
+    [
+     -173.87,
+     2503.41
+    ],
+    [
+     -155.88,
+     2460.0
+    ],
+    [
+     -127.28,
+     2422.72
+    ],
+    [
+     -90.0,
+     2394.12
+    ],
+    [
+     -46.59,
+     2376.13
+    ],
+    [
+     -0.0,
+     2370.0
+    ],
+    [
+     46.59,
+     2376.13
+    ],
+    [
+     90.0,
+     2394.12
+    ],
+    [
+     127.28,
+     2422.72
+    ],
+    [
+     155.88,
+     2460.0
+    ],
+    [
+     173.87,
+     2503.41
+    ]
+   ],
+   "start": -1500,
+   "end": 1800,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer 800",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer 800",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 800 1",
+   "points": [
+    [
+     -1240.0,
+     0.0
+    ],
+    [
+     -1242.04,
+     15.53
+    ],
+    [
+     -1248.04,
+     30.0
+    ],
+    [
+     -1257.57,
+     42.43
+    ],
+    [
+     -1270.0,
+     51.96
+    ],
+    [
+     -1284.47,
+     57.96
+    ],
+    [
+     -1300.0,
+     60.0
+    ],
+    [
+     -1315.53,
+     57.96
+    ],
+    [
+     -1330.0,
+     51.96
+    ],
+    [
+     -1342.43,
+     42.43
+    ],
+    [
+     -1351.96,
+     30.0
+    ],
+    [
+     -1357.96,
+     15.53
+    ],
+    [
+     -1360.0,
+     0.0
+    ],
+    [
+     -1357.96,
+     -15.53
+    ],
+    [
+     -1351.96,
+     -30.0
+    ],
+    [
+     -1342.43,
+     -42.43
+    ],
+    [
+     -1330.0,
+     -51.96
+    ],
+    [
+     -1315.53,
+     -57.96
+    ],
+    [
+     -1300.0,
+     -60.0
+    ],
+    [
+     -1284.47,
+     -57.96
+    ],
+    [
+     -1270.0,
+     -51.96
+    ],
+    [
+     -1257.57,
+     -42.43
+    ],
+    [
+     -1248.04,
+     -30.0
+    ],
+    [
+     -1242.04,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 800 1",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 800 1",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 800 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Silencer Saddle 800 2",
+   "points": [
+    [
+     1660.0,
+     0.0
+    ],
+    [
+     1657.96,
+     15.53
+    ],
+    [
+     1651.96,
+     30.0
+    ],
+    [
+     1642.43,
+     42.43
+    ],
+    [
+     1630.0,
+     51.96
+    ],
+    [
+     1615.53,
+     57.96
+    ],
+    [
+     1600.0,
+     60.0
+    ],
+    [
+     1584.47,
+     57.96
+    ],
+    [
+     1570.0,
+     51.96
+    ],
+    [
+     1557.57,
+     42.43
+    ],
+    [
+     1548.04,
+     30.0
+    ],
+    [
+     1542.04,
+     15.53
+    ],
+    [
+     1540.0,
+     0.0
+    ],
+    [
+     1542.04,
+     -15.53
+    ],
+    [
+     1548.04,
+     -30.0
+    ],
+    [
+     1557.57,
+     -42.43
+    ],
+    [
+     1570.0,
+     -51.96
+    ],
+    [
+     1584.47,
+     -57.96
+    ],
+    [
+     1600.0,
+     -60.0
+    ],
+    [
+     1615.53,
+     -57.96
+    ],
+    [
+     1630.0,
+     -51.96
+    ],
+    [
+     1642.43,
+     -42.43
+    ],
+    [
+     1651.96,
+     -30.0
+    ],
+    [
+     1657.96,
+     -15.53
+    ]
+   ],
+   "start": 2360,
+   "end": 2400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Silencer Saddle 800 2",
+   "subcategory": "Struct"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Silencer Saddle 800 2",
+   "param": "Struct Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Silencer Saddle 800 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Exhaust Stack 800",
+   "points": [
+    [
+     1890.0,
+     0.0
+    ],
+    [
+     1886.93,
+     23.29
+    ],
+    [
+     1877.94,
+     45.0
+    ],
+    [
+     1863.64,
+     63.64
+    ],
+    [
+     1845.0,
+     77.94
+    ],
+    [
+     1823.29,
+     86.93
+    ],
+    [
+     1800.0,
+     90.0
+    ],
+    [
+     1776.71,
+     86.93
+    ],
+    [
+     1755.0,
+     77.94
+    ],
+    [
+     1736.36,
+     63.64
+    ],
+    [
+     1722.06,
+     45.0
+    ],
+    [
+     1713.07,
+     23.29
+    ],
+    [
+     1710.0,
+     0.0
+    ],
+    [
+     1713.07,
+     -23.29
+    ],
+    [
+     1722.06,
+     -45.0
+    ],
+    [
+     1736.36,
+     -63.64
+    ],
+    [
+     1755.0,
+     -77.94
+    ],
+    [
+     1776.71,
+     -86.93
+    ],
+    [
+     1800.0,
+     -90.0
+    ],
+    [
+     1823.29,
+     -86.93
+    ],
+    [
+     1845.0,
+     -77.94
+    ],
+    [
+     1863.64,
+     -63.64
+    ],
+    [
+     1877.94,
+     -45.0
+    ],
+    [
+     1886.93,
+     -23.29
+    ]
+   ],
+   "start": 2550,
+   "end": 3100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Exhaust Stack 800",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Exhaust Stack 800",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Exhaust Stack 800",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Rain Cap 800",
+   "profile": [
+    [
+     0,
+     3100
+    ],
+    [
+     110,
+     3100
+    ],
+    [
+     110,
+     3115
+    ],
+    [
+     0,
+     3140
+    ]
+   ],
+   "axis_at": [
+    1800,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rain Cap 800",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rain Cap 800",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lifting Eye Rear 800",
+   "profile": [
+    [
+     30,
+     10
+    ],
+    [
+     45,
+     10
+    ],
+    [
+     45,
+     -10
+    ],
+    [
+     30,
+     -10
+    ]
+   ],
+   "axis_at": [
+    3300,
+    2420
+   ],
+   "axis": "y",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lifting Eye Rear 800",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lifting Eye Rear 800",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -4270,11 +6125,11 @@
      -1900
     ],
     [
-     3500,
+     4500,
      -1900
     ],
     [
-     3500,
+     4500,
      1900
     ],
     [
@@ -4296,6 +6151,429 @@
    "coarse": true,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 250kVA_Canopy",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/Show 250kVA_Canopy",
+   "type": "250kVA_Canopy",
+   "param": "Show 250kVA_Canopy",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/Show 250kVA_Canopy",
+   "type": "500kVA_Canopy",
+   "param": "Show 250kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/Show 250kVA_Canopy",
+   "type": "800kVA_Canopy",
+   "param": "Show 250kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Frame 250/Visible",
+   "solid": "Base Frame 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Tank 250/Visible",
+   "solid": "Base Tank 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy 250/Visible",
+   "solid": "Canopy 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof 250/Visible",
+   "solid": "Roof 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drip Tray Lip 250/Visible",
+   "solid": "Drip Tray Lip 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Louvre 250/Visible",
+   "solid": "Inlet Louvre 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 250 1/Visible",
+   "solid": "Louvre Blade 250 1",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 250 2/Visible",
+   "solid": "Louvre Blade 250 2",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 250 3/Visible",
+   "solid": "Louvre Blade 250 3",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Louvre 250/Visible",
+   "solid": "Radiator Louvre 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 250 1/Visible",
+   "solid": "Radiator Blade 250 1",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 250 2/Visible",
+   "solid": "Radiator Blade 250 2",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 250 3/Visible",
+   "solid": "Radiator Blade 250 3",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer 250/Visible",
+   "solid": "Silencer 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 250 1/Visible",
+   "solid": "Silencer Saddle 250 1",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 250 2/Visible",
+   "solid": "Silencer Saddle 250 2",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Exhaust Stack 250/Visible",
+   "solid": "Exhaust Stack 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap 250/Visible",
+   "solid": "Rain Cap 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lifting Eye Rear 250/Visible",
+   "solid": "Lifting Eye Rear 250",
+   "param": "Show 250kVA_Canopy"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 500kVA_Canopy",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/Show 500kVA_Canopy",
+   "type": "250kVA_Canopy",
+   "param": "Show 500kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/Show 500kVA_Canopy",
+   "type": "500kVA_Canopy",
+   "param": "Show 500kVA_Canopy",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/Show 500kVA_Canopy",
+   "type": "800kVA_Canopy",
+   "param": "Show 500kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Frame 500/Visible",
+   "solid": "Base Frame 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Tank 500/Visible",
+   "solid": "Base Tank 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy 500/Visible",
+   "solid": "Canopy 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof 500/Visible",
+   "solid": "Roof 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drip Tray Lip 500/Visible",
+   "solid": "Drip Tray Lip 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Louvre 500/Visible",
+   "solid": "Inlet Louvre 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 500 1/Visible",
+   "solid": "Louvre Blade 500 1",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 500 2/Visible",
+   "solid": "Louvre Blade 500 2",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 500 3/Visible",
+   "solid": "Louvre Blade 500 3",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Louvre 500/Visible",
+   "solid": "Radiator Louvre 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 500 1/Visible",
+   "solid": "Radiator Blade 500 1",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 500 2/Visible",
+   "solid": "Radiator Blade 500 2",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 500 3/Visible",
+   "solid": "Radiator Blade 500 3",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer 500/Visible",
+   "solid": "Silencer 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 500 1/Visible",
+   "solid": "Silencer Saddle 500 1",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 500 2/Visible",
+   "solid": "Silencer Saddle 500 2",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Exhaust Stack 500/Visible",
+   "solid": "Exhaust Stack 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap 500/Visible",
+   "solid": "Rain Cap 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lifting Eye Rear 500/Visible",
+   "solid": "Lifting Eye Rear 500",
+   "param": "Show 500kVA_Canopy"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 800kVA_Canopy",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "250kVA_Canopy/Show 800kVA_Canopy",
+   "type": "250kVA_Canopy",
+   "param": "Show 800kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "500kVA_Canopy/Show 800kVA_Canopy",
+   "type": "500kVA_Canopy",
+   "param": "Show 800kVA_Canopy",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "800kVA_Canopy/Show 800kVA_Canopy",
+   "type": "800kVA_Canopy",
+   "param": "Show 800kVA_Canopy",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Frame 800/Visible",
+   "solid": "Base Frame 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base Tank 800/Visible",
+   "solid": "Base Tank 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Canopy 800/Visible",
+   "solid": "Canopy 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Roof 800/Visible",
+   "solid": "Roof 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drip Tray Lip 800/Visible",
+   "solid": "Drip Tray Lip 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Inlet Louvre 800/Visible",
+   "solid": "Inlet Louvre 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 800 1/Visible",
+   "solid": "Louvre Blade 800 1",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 800 2/Visible",
+   "solid": "Louvre Blade 800 2",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Louvre Blade 800 3/Visible",
+   "solid": "Louvre Blade 800 3",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Louvre 800/Visible",
+   "solid": "Radiator Louvre 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 800 1/Visible",
+   "solid": "Radiator Blade 800 1",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 800 2/Visible",
+   "solid": "Radiator Blade 800 2",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiator Blade 800 3/Visible",
+   "solid": "Radiator Blade 800 3",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer 800/Visible",
+   "solid": "Silencer 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 800 1/Visible",
+   "solid": "Silencer Saddle 800 1",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Silencer Saddle 800 2/Visible",
+   "solid": "Silencer Saddle 800 2",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Exhaust Stack 800/Visible",
+   "solid": "Exhaust Stack 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rain Cap 800/Visible",
+   "solid": "Rain Cap 800",
+   "param": "Show 800kVA_Canopy"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lifting Eye Rear 800/Visible",
+   "solid": "Lifting Eye Rear 800",
+   "param": "Show 800kVA_Canopy"
   },
   {
    "op": "add_connector",
@@ -4333,10 +6611,10 @@
   }
  ],
  "values": {
-  "Canopy 5000 x 1800 x 2360 mm (500 kVA class)": {
-   "value": "5000x1800x2360",
+  "Canopy length 3800 / 5000 / 6000 mm, 1800 x 2360 mm": {
+   "value": "3800/5000/6000x1800x2360",
    "source_status": "assumed",
-   "source": "typical 500 kVA canopy set; 250/800 kVA sizes differ, supplier GA to confirm"
+   "source": "typical canopy sets per rating; width and height kept common, supplier GA to confirm"
   },
   "Base tank 8 h at 75 % load": {
    "value": "8 h",

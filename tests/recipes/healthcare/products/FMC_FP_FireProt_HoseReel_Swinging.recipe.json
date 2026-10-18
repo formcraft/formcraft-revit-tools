@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_FP_FireProt_HoseReel_Swinging",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Hose reel modelled as a generic product: red steel cabinet with label fascia; Medium shows the glazed door shut, Fine shows it open on its hinges with the reel inside: drum flanges, three hose coils, spokes, swivel cap, swing arm and pivot, inlet stop valve with red handwheel, hose guide, nozzle in its clip. Reference: query: fire prot hose reel swinging fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+hose+reel+swinging+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Hose reel modelled as a generic product: red steel cabinet with label fascia; glazed door (frame, glass, handle, hinges) shut over the reel: drum flanges, three hose coils, spokes, swivel cap, swing arm and pivot, inlet stop valve with red handwheel, hose guide, nozzle in its clip. Reference: query: fire prot hose reel swinging fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+hose+reel+swinging+fire+protection+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.fireandsafetycentre.co.uk/products/universal-automatic-swinging-fire-hose-reel-with-30m-x-25mm-hose; photo_title: 25mm x 30m Automatic Swinging Fire Hose Reel; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -425,6 +425,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "30m_Swinging/URL",
+   "type": "30m_Swinging",
+   "param": "URL",
+   "value": "https://www.fireandsafetycentre.co.uk/products/universal-automatic-swinging-fire-hose-reel-with-30m-x-25mm-hose"
+  },
+  {
+   "op": "set_type_value",
    "name": "30m_Swinging/Default Elevation",
    "type": "30m_Swinging",
    "param": "Default Elevation",
@@ -434,9 +441,9 @@
    "op": "add_subcategory",
    "name": "Red",
    "color": [
-    200,
-    16,
-    46
+    193,
+    18,
+    31
    ],
    "line_weight_projection": 1
   },
@@ -448,7 +455,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "name": "FMC_Paint_Enamel_SignalRed",
    "param": "Red Material"
   },
   {
@@ -579,24 +586,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Brass",
+   "name": "Gun",
    "color": [
-    200,
-    164,
-    74
+    168,
+    139,
+    90
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Brass Material",
+   "name": "Gun Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Brass_Polished",
-   "param": "Brass Material"
+   "name": "FMC_Metal_Gunmetal_LG2",
+   "param": "Gun Material"
   },
   {
    "op": "add_subcategory",
@@ -613,19 +620,19 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -406.0,
-     -1028
+     -388,
+     -312
     ],
     [
      380,
-     -1028
+     -312
     ],
     [
      380,
      0
     ],
     [
-     -406.0,
+     -388,
      0
     ]
    ],
@@ -1027,16 +1034,8 @@
      712.0
     ],
     [
-     168.77,
-     712.15
-    ],
-    [
      169.41,
      712.59
-    ],
-    [
-     169.85,
-     713.23
     ],
     [
      170.0,
@@ -1047,16 +1046,8 @@
      746.0
     ],
     [
-     169.85,
-     746.77
-    ],
-    [
      169.41,
      747.41
-    ],
-    [
-     168.77,
-     747.85
     ],
     [
      168.0,
@@ -1067,16 +1058,8 @@
      748.0
     ],
     [
-     -168.77,
-     747.85
-    ],
-    [
      -169.41,
      747.41
-    ],
-    [
-     -169.85,
-     746.77
     ],
     [
      -170.0,
@@ -1087,16 +1070,8 @@
      714.0
     ],
     [
-     -169.85,
-     713.23
-    ],
-    [
      -169.41,
      712.59
-    ],
-    [
-     -168.77,
-     712.15
     ],
     [
      -168.0,
@@ -1126,27 +1101,27 @@
   },
   {
    "op": "extrusion",
-   "name": "Door Shut",
+   "name": "Door Rail Top",
    "points": [
     [
      368.0,
-     40.0
+     640.0
     ],
     [
      369.53,
-     40.3
+     640.3
     ],
     [
      370.83,
-     41.17
+     641.17
     ],
     [
      371.7,
-     42.47
+     642.47
     ],
     [
      372.0,
-     44.0
+     644.0
     ],
     [
      372.0,
@@ -1187,6 +1162,112 @@
     [
      -372.0,
      696.0
+    ],
+    [
+     -372.0,
+     644.0
+    ],
+    [
+     -371.7,
+     642.47
+    ],
+    [
+     -370.83,
+     641.17
+    ],
+    [
+     -369.53,
+     640.3
+    ],
+    [
+     -368.0,
+     640.0
+    ]
+   ],
+   "start": 286,
+   "end": 298,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Rail Top",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Rail Top",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Rail Top",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Rail Bottom",
+   "points": [
+    [
+     368.0,
+     40.0
+    ],
+    [
+     369.53,
+     40.3
+    ],
+    [
+     370.83,
+     41.17
+    ],
+    [
+     371.7,
+     42.47
+    ],
+    [
+     372.0,
+     44.0
+    ],
+    [
+     372.0,
+     96.0
+    ],
+    [
+     371.7,
+     97.53
+    ],
+    [
+     370.83,
+     98.83
+    ],
+    [
+     369.53,
+     99.7
+    ],
+    [
+     368.0,
+     100.0
+    ],
+    [
+     -368.0,
+     100.0
+    ],
+    [
+     -369.53,
+     99.7
+    ],
+    [
+     -370.83,
+     98.83
+    ],
+    [
+     -371.7,
+     97.53
+    ],
+    [
+     -372.0,
+     96.0
     ],
     [
      -372.0,
@@ -1215,143 +1296,145 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Door Shut",
+   "name": "Door Rail Bottom",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Door Shut",
+   "name": "Door Rail Bottom",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Shut",
+   "name": "Door Rail Bottom",
    "coarse": false,
    "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Glass Shut",
-   "points": [
-    [
-     -320,
-     100
-    ],
-    [
-     320,
-     100
-    ],
-    [
-     320,
-     640
-    ],
-    [
-     -320,
-     640
-    ]
-   ],
-   "start": 298,
-   "end": 300,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Glass Shut",
-   "subcategory": "Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Glass Shut",
-   "param": "Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Glass Shut",
-   "coarse": false,
-   "medium": true,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Open",
-   "points": [
-    [
-     -392,
-     -1028
-    ],
-    [
-     -380,
-     -1028
-    ],
-    [
-     -380,
-     -286
-    ],
-    [
-     -392,
-     -286
-    ]
-   ],
-   "start": 40,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Open",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Open",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Open",
-   "coarse": false,
-   "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Door Glass Open",
+   "name": "Door Stile 1",
    "points": [
     [
-     -394,
-     -980
+     -372,
+     100
     ],
     [
-     -392,
-     -980
+     -320,
+     100
     ],
     [
-     -392,
-     -334
+     -320,
+     640
     ],
     [
-     -394,
-     -334
+     -372,
+     640
     ]
    ],
-   "start": 100,
-   "end": 640
+   "start": 286,
+   "end": 298,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
-   "name": "Door Glass Open",
+   "name": "Door Stile 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Stile 2",
+   "points": [
+    [
+     320,
+     100
+    ],
+    [
+     372,
+     100
+    ],
+    [
+     372,
+     640
+    ],
+    [
+     320,
+     640
+    ]
+   ],
+   "start": 286,
+   "end": 298,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Stile 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Stile 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Stile 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Glass",
+   "points": [
+    [
+     -320,
+     100
+    ],
+    [
+     320,
+     100
+    ],
+    [
+     320,
+     640
+    ],
+    [
+     -320,
+     640
+    ]
+   ],
+   "start": 290,
+   "end": 294,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Glass",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Door Glass Open",
+   "name": "Door Glass",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Door Glass Open",
+   "name": "Door Glass",
    "coarse": false,
-   "medium": false,
+   "medium": true,
    "fine": true
   },
   {
@@ -1359,88 +1442,89 @@
    "name": "Door Handle",
    "points": [
     [
-     -397.0,
-     -1004.0
+     348.0,
+     330.0
     ],
     [
-     -395.85,
-     -1003.77
+     349.53,
+     330.3
     ],
     [
-     -394.88,
-     -1003.12
+     350.83,
+     331.17
     ],
     [
-     -394.23,
-     -1002.15
+     351.7,
+     332.47
     ],
     [
-     -394.0,
-     -1001.0
+     352.0,
+     334.0
     ],
     [
-     -394.0,
-     -991.0
+     352.0,
+     436.0
     ],
     [
-     -394.23,
-     -989.85
+     351.7,
+     437.53
     ],
     [
-     -394.88,
-     -988.88
+     350.83,
+     438.83
     ],
     [
-     -395.85,
-     -988.23
+     349.53,
+     439.7
     ],
     [
-     -397.0,
-     -988.0
+     348.0,
+     440.0
     ],
     [
-     -403.0,
-     -988.0
+     334.0,
+     440.0
     ],
     [
-     -404.15,
-     -988.23
+     332.47,
+     439.7
     ],
     [
-     -405.12,
-     -988.88
+     331.17,
+     438.83
     ],
     [
-     -405.77,
-     -989.85
+     330.3,
+     437.53
     ],
     [
-     -406.0,
-     -991.0
+     330.0,
+     436.0
     ],
     [
-     -406.0,
-     -1001.0
+     330.0,
+     334.0
     ],
     [
-     -405.77,
-     -1002.15
+     330.3,
+     332.47
     ],
     [
-     -405.12,
-     -1003.12
+     331.17,
+     331.17
     ],
     [
-     -404.15,
-     -1003.77
+     332.47,
+     330.3
     ],
     [
-     -403.0,
-     -1004.0
+     334.0,
+     330.0
     ]
    ],
-   "start": 330,
-   "end": 440
+   "start": 298,
+   "end": 312,
+   "sketch": "front"
   },
   {
    "op": "set_subcategory",
@@ -2174,12 +2258,12 @@
   {
    "op": "set_subcategory",
    "name": "Inlet Valve Body",
-   "subcategory": "Brass"
+   "subcategory": "Gun"
   },
   {
    "op": "set_material_param",
    "name": "Inlet Valve Body",
-   "param": "Brass Material"
+   "param": "Gun Material"
   },
   {
    "op": "set_visibility",

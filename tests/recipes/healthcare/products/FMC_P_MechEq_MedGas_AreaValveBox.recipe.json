@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_MechEq_MedGas_AreaValveBox",
  "template": "Metric Mechanical Equipment.rft",
- "about": "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. 3-gas drawn; 2 and 4-gas share it. Reference: query: medical gas area valve box mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+area+valve+box+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "AVSU modelled as a generic product: box (back and four sides), cover frame, glazing (Medium only, so Fine shows the valves), lock, warning label, per gas a copper pipe with BS 1710 band, lever ball valve (lever in gas colour), emergency inlet and label. Per type: the box grows 130 mm per gas to the right; O2 and VAC are shared, MA4 shows in the 3- and 4-gas types, N2O in the 4-gas type. The MA4 and N2O connectors exist in every type and stay unconnected where the gas is hidden. Reference: query: medical gas area valve box mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+area+valve+box+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://gcegroup.com/en/products/avsu-lva-htm; photo_title: GCE AVSU & LVA HTM; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -386,7 +386,7 @@
    "name": "2Gas_AVSU/Description",
    "type": "2Gas_AVSU",
    "param": "Description",
-   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+   "value": "Area valve service unit (AVSU), steel box with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels: 2-gas (O2, VAC), 3-gas (+ MA4) or 4-gas (+ N2O)"
   },
   {
    "op": "set_type_value",
@@ -425,6 +425,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2Gas_AVSU/URL",
+   "type": "2Gas_AVSU",
+   "param": "URL",
+   "value": "https://gcegroup.com/en/products/avsu-lva-htm"
+  },
+  {
+   "op": "set_type_value",
    "name": "2Gas_AVSU/Default Elevation",
    "type": "2Gas_AVSU",
    "param": "Default Elevation",
@@ -460,7 +467,7 @@
    "name": "3Gas_AVSU/Description",
    "type": "3Gas_AVSU",
    "param": "Description",
-   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+   "value": "Area valve service unit (AVSU), steel box with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels: 2-gas (O2, VAC), 3-gas (+ MA4) or 4-gas (+ N2O)"
   },
   {
    "op": "set_type_value",
@@ -499,6 +506,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "3Gas_AVSU/URL",
+   "type": "3Gas_AVSU",
+   "param": "URL",
+   "value": "https://gcegroup.com/en/products/avsu-lva-htm"
+  },
+  {
+   "op": "set_type_value",
    "name": "3Gas_AVSU/Default Elevation",
    "type": "3Gas_AVSU",
    "param": "Default Elevation",
@@ -534,7 +548,7 @@
    "name": "4Gas_AVSU/Description",
    "type": "4Gas_AVSU",
    "param": "Description",
-   "value": "Area valve service unit (AVSU), surface/recessed steel box 450 x 330 mm with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels per gas (3-gas drawn)"
+   "value": "Area valve service unit (AVSU), steel box with lockable glazed cover, lever ball valves, emergency inlet ports and gas labels: 2-gas (O2, VAC), 3-gas (+ MA4) or 4-gas (+ N2O)"
   },
   {
    "op": "set_type_value",
@@ -570,6 +584,13 @@
    "type": "4Gas_AVSU",
    "param": "FMC_Role_Code",
    "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/URL",
+   "type": "4Gas_AVSU",
+   "param": "URL",
+   "value": "https://gcegroup.com/en/products/avsu-lva-htm"
   },
   {
    "op": "set_type_value",
@@ -748,6 +769,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "French Blue",
+   "color": [
+    31,
+    78,
+    153
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "French Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_FrenchBlue",
+   "param": "French Blue Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -765,11 +807,11 @@
      -132
     ],
     [
-     235,
+     365,
      -132
     ],
     [
-     235,
+     365,
      0
     ],
     [
@@ -794,18 +836,18 @@
   },
   {
    "op": "extrusion",
-   "name": "Box Back",
+   "name": "Box Back 2Gas",
    "points": [
     [
      -225,
      -15
     ],
     [
-     225,
+     95,
      -15
     ],
     [
-     225,
+     95,
      0
     ],
     [
@@ -818,35 +860,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Box Back",
+   "name": "Box Back 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Box Back",
+   "name": "Box Back 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Box Back",
+   "name": "Box Back 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Box Top",
+   "name": "Box Top 2Gas",
    "points": [
     [
      -225,
      -110
     ],
     [
-     225,
+     95,
      -110
     ],
     [
-     225,
+     95,
      -15
     ],
     [
@@ -859,35 +901,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Box Top",
+   "name": "Box Top 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Box Top",
+   "name": "Box Top 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Box Top",
+   "name": "Box Top 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Box Bottom",
+   "name": "Box Bottom 2Gas",
    "points": [
     [
      -225,
      -110
     ],
     [
-     225,
+     95,
      -110
     ],
     [
-     225,
+     95,
      -15
     ],
     [
@@ -900,17 +942,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Box Bottom",
+   "name": "Box Bottom 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Box Bottom",
+   "name": "Box Bottom 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Box Bottom",
+   "name": "Box Bottom 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -958,22 +1000,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Box Right",
+   "name": "Box Right 2Gas",
    "points": [
     [
-     205,
+     75,
      -110
     ],
     [
-     225,
+     95,
      -110
     ],
     [
-     225,
+     95,
      -15
     ],
     [
-     205,
+     75,
      -15
     ]
    ],
@@ -982,35 +1024,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Box Right",
+   "name": "Box Right 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Box Right",
+   "name": "Box Right 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Box Right",
+   "name": "Box Right 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Frame Top",
+   "name": "Frame Top 2Gas",
    "points": [
     [
      -235,
      290
     ],
     [
-     235,
+     105,
      290
     ],
     [
-     235,
+     105,
      330
     ],
     [
@@ -1024,35 +1066,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Top",
+   "name": "Frame Top 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Top",
+   "name": "Frame Top 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Top",
+   "name": "Frame Top 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Frame Bottom",
+   "name": "Frame Bottom 2Gas",
    "points": [
     [
      -235,
      -10
     ],
     [
-     235,
+     105,
      -10
     ],
     [
-     235,
+     105,
      30
     ],
     [
@@ -1066,17 +1108,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Bottom",
+   "name": "Frame Bottom 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Bottom",
+   "name": "Frame Bottom 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Bottom",
+   "name": "Frame Bottom 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -1125,22 +1167,22 @@
   },
   {
    "op": "extrusion",
-   "name": "Frame Right",
+   "name": "Frame Right 2Gas",
    "points": [
     [
-     205,
+     75,
      30
     ],
     [
-     235,
+     105,
      30
     ],
     [
-     235,
+     105,
      290
     ],
     [
-     205,
+     75,
      290
     ]
    ],
@@ -1150,35 +1192,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Right",
+   "name": "Frame Right 2Gas",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Right",
+   "name": "Frame Right 2Gas",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Right",
+   "name": "Frame Right 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Cover Glazing",
+   "name": "Cover Glazing 2Gas",
    "points": [
     [
      -205,
      30
     ],
     [
-     205,
+     75,
      30
     ],
     [
-     205,
+     75,
      290
     ],
     [
@@ -1192,39 +1234,39 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cover Glazing",
+   "name": "Cover Glazing 2Gas",
    "subcategory": "Polycarbonate"
   },
   {
    "op": "set_material_param",
-   "name": "Cover Glazing",
+   "name": "Cover Glazing 2Gas",
    "param": "Polycarbonate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cover Glazing",
+   "name": "Cover Glazing 2Gas",
    "coarse": false,
    "medium": true,
    "fine": false
   },
   {
    "op": "extrusion",
-   "name": "Lock",
+   "name": "Lock 2Gas",
    "points": [
     [
-     195,
+     65,
      140
     ],
     [
-     225,
+     95,
      140
     ],
     [
-     225,
+     95,
      180
     ],
     [
-     195,
+     65,
      180
     ]
    ],
@@ -1234,35 +1276,35 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Lock",
+   "name": "Lock 2Gas",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Lock",
+   "name": "Lock 2Gas",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lock",
+   "name": "Lock 2Gas",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Warning Label",
+   "name": "Warning Label 2Gas",
    "points": [
     [
      -200,
      296
     ],
     [
-     200,
+     70,
      296
     ],
     [
-     200,
+     70,
      324
     ],
     [
@@ -1276,17 +1318,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Warning Label",
+   "name": "Warning Label 2Gas",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Warning Label",
+   "name": "Warning Label 2Gas",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Warning Label",
+   "name": "Warning Label 2Gas",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -2395,6 +2437,422 @@
   },
   {
    "op": "extrusion",
+   "name": "Box Back 3Gas",
+   "points": [
+    [
+     -225,
+     -15
+    ],
+    [
+     225,
+     -15
+    ],
+    [
+     225,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Back 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Back 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Back 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Top 3Gas",
+   "points": [
+    [
+     -225,
+     -110
+    ],
+    [
+     225,
+     -110
+    ],
+    [
+     225,
+     -15
+    ],
+    [
+     -225,
+     -15
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Top 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Top 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Top 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Bottom 3Gas",
+   "points": [
+    [
+     -225,
+     -110
+    ],
+    [
+     225,
+     -110
+    ],
+    [
+     225,
+     -15
+    ],
+    [
+     -225,
+     -15
+    ]
+   ],
+   "start": 0,
+   "end": 20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Bottom 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Bottom 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Bottom 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Right 3Gas",
+   "points": [
+    [
+     205,
+     -110
+    ],
+    [
+     225,
+     -110
+    ],
+    [
+     225,
+     -15
+    ],
+    [
+     205,
+     -15
+    ]
+   ],
+   "start": 20,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Right 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Right 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Right 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Top 3Gas",
+   "points": [
+    [
+     -235,
+     290
+    ],
+    [
+     235,
+     290
+    ],
+    [
+     235,
+     330
+    ],
+    [
+     -235,
+     330
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Top 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Top 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Top 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Bottom 3Gas",
+   "points": [
+    [
+     -235,
+     -10
+    ],
+    [
+     235,
+     -10
+    ],
+    [
+     235,
+     30
+    ],
+    [
+     -235,
+     30
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Bottom 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Bottom 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Bottom 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Right 3Gas",
+   "points": [
+    [
+     205,
+     30
+    ],
+    [
+     235,
+     30
+    ],
+    [
+     235,
+     290
+    ],
+    [
+     205,
+     290
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Right 3Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Right 3Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Right 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Glazing 3Gas",
+   "points": [
+    [
+     -205,
+     30
+    ],
+    [
+     205,
+     30
+    ],
+    [
+     205,
+     290
+    ],
+    [
+     -205,
+     290
+    ]
+   ],
+   "start": 114,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Glazing 3Gas",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Glazing 3Gas",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Glazing 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock 3Gas",
+   "points": [
+    [
+     195,
+     140
+    ],
+    [
+     225,
+     140
+    ],
+    [
+     225,
+     180
+    ],
+    [
+     195,
+     180
+    ]
+   ],
+   "start": 122,
+   "end": 132,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock 3Gas",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock 3Gas",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock 3Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Warning Label 3Gas",
+   "points": [
+    [
+     -200,
+     296
+    ],
+    [
+     200,
+     296
+    ],
+    [
+     200,
+     324
+    ],
+    [
+     -200,
+     324
+    ]
+   ],
+   "start": 122,
+   "end": 124,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Warning Label 3Gas",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Warning Label 3Gas",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Warning Label 3Gas",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
    "name": "MA4 Pipe",
    "points": [
     [
@@ -2945,6 +3403,1333 @@
    "fine": true
   },
   {
+   "op": "extrusion",
+   "name": "Box Back 4Gas",
+   "points": [
+    [
+     -225,
+     -15
+    ],
+    [
+     355,
+     -15
+    ],
+    [
+     355,
+     0
+    ],
+    [
+     -225,
+     0
+    ]
+   ],
+   "start": 0,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Back 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Back 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Back 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Top 4Gas",
+   "points": [
+    [
+     -225,
+     -110
+    ],
+    [
+     355,
+     -110
+    ],
+    [
+     355,
+     -15
+    ],
+    [
+     -225,
+     -15
+    ]
+   ],
+   "start": 300,
+   "end": 320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Top 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Top 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Top 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Bottom 4Gas",
+   "points": [
+    [
+     -225,
+     -110
+    ],
+    [
+     355,
+     -110
+    ],
+    [
+     355,
+     -15
+    ],
+    [
+     -225,
+     -15
+    ]
+   ],
+   "start": 0,
+   "end": 20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Bottom 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Bottom 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Bottom 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Box Right 4Gas",
+   "points": [
+    [
+     335,
+     -110
+    ],
+    [
+     355,
+     -110
+    ],
+    [
+     355,
+     -15
+    ],
+    [
+     335,
+     -15
+    ]
+   ],
+   "start": 20,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Box Right 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Box Right 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Box Right 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Top 4Gas",
+   "points": [
+    [
+     -235,
+     290
+    ],
+    [
+     365,
+     290
+    ],
+    [
+     365,
+     330
+    ],
+    [
+     -235,
+     330
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Top 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Top 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Top 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Bottom 4Gas",
+   "points": [
+    [
+     -235,
+     -10
+    ],
+    [
+     365,
+     -10
+    ],
+    [
+     365,
+     30
+    ],
+    [
+     -235,
+     30
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Bottom 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Bottom 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Bottom 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Right 4Gas",
+   "points": [
+    [
+     335,
+     30
+    ],
+    [
+     365,
+     30
+    ],
+    [
+     365,
+     290
+    ],
+    [
+     335,
+     290
+    ]
+   ],
+   "start": 110,
+   "end": 122,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Right 4Gas",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Right 4Gas",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Right 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cover Glazing 4Gas",
+   "points": [
+    [
+     -205,
+     30
+    ],
+    [
+     335,
+     30
+    ],
+    [
+     335,
+     290
+    ],
+    [
+     -205,
+     290
+    ]
+   ],
+   "start": 114,
+   "end": 118,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cover Glazing 4Gas",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cover Glazing 4Gas",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cover Glazing 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Lock 4Gas",
+   "points": [
+    [
+     325,
+     140
+    ],
+    [
+     355,
+     140
+    ],
+    [
+     355,
+     180
+    ],
+    [
+     325,
+     180
+    ]
+   ],
+   "start": 122,
+   "end": 132,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lock 4Gas",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lock 4Gas",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lock 4Gas",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Warning Label 4Gas",
+   "points": [
+    [
+     -200,
+     296
+    ],
+    [
+     330,
+     296
+    ],
+    [
+     330,
+     324
+    ],
+    [
+     -200,
+     324
+    ]
+   ],
+   "start": 122,
+   "end": 124,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Warning Label 4Gas",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Warning Label 4Gas",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Warning Label 4Gas",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "N2O Pipe",
+   "points": [
+    [
+     271.0,
+     -55.0
+    ],
+    [
+     270.63,
+     -52.15
+    ],
+    [
+     269.53,
+     -49.5
+    ],
+    [
+     267.78,
+     -47.22
+    ],
+    [
+     265.5,
+     -45.47
+    ],
+    [
+     262.85,
+     -44.37
+    ],
+    [
+     260.0,
+     -44.0
+    ],
+    [
+     257.15,
+     -44.37
+    ],
+    [
+     254.5,
+     -45.47
+    ],
+    [
+     252.22,
+     -47.22
+    ],
+    [
+     250.47,
+     -49.5
+    ],
+    [
+     249.37,
+     -52.15
+    ],
+    [
+     249.0,
+     -55.0
+    ],
+    [
+     249.37,
+     -57.85
+    ],
+    [
+     250.47,
+     -60.5
+    ],
+    [
+     252.22,
+     -62.78
+    ],
+    [
+     254.5,
+     -64.53
+    ],
+    [
+     257.15,
+     -65.63
+    ],
+    [
+     260.0,
+     -66.0
+    ],
+    [
+     262.85,
+     -65.63
+    ],
+    [
+     265.5,
+     -64.53
+    ],
+    [
+     267.78,
+     -62.78
+    ],
+    [
+     269.53,
+     -60.5
+    ],
+    [
+     270.63,
+     -57.85
+    ]
+   ],
+   "start": -60,
+   "end": 400
+  },
+  {
+   "op": "set_subcategory",
+   "name": "N2O Pipe",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "N2O Valve",
+   "points": [
+    [
+     282.0,
+     -55.0
+    ],
+    [
+     281.25,
+     -49.31
+    ],
+    [
+     279.05,
+     -44.0
+    ],
+    [
+     275.56,
+     -39.44
+    ],
+    [
+     271.0,
+     -35.95
+    ],
+    [
+     265.69,
+     -33.75
+    ],
+    [
+     260.0,
+     -33.0
+    ],
+    [
+     254.31,
+     -33.75
+    ],
+    [
+     249.0,
+     -35.95
+    ],
+    [
+     244.44,
+     -39.44
+    ],
+    [
+     240.95,
+     -44.0
+    ],
+    [
+     238.75,
+     -49.31
+    ],
+    [
+     238.0,
+     -55.0
+    ],
+    [
+     238.75,
+     -60.69
+    ],
+    [
+     240.95,
+     -66.0
+    ],
+    [
+     244.44,
+     -70.56
+    ],
+    [
+     249.0,
+     -74.05
+    ],
+    [
+     254.31,
+     -76.25
+    ],
+    [
+     260.0,
+     -77.0
+    ],
+    [
+     265.69,
+     -76.25
+    ],
+    [
+     271.0,
+     -74.05
+    ],
+    [
+     275.56,
+     -70.56
+    ],
+    [
+     279.05,
+     -66.0
+    ],
+    [
+     281.25,
+     -60.69
+    ]
+   ],
+   "start": 130,
+   "end": 190
+  },
+  {
+   "op": "set_subcategory",
+   "name": "N2O Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "N2O Lever",
+   "points": [
+    [
+     266.0,
+     -110.0
+    ],
+    [
+     267.53,
+     -109.7
+    ],
+    [
+     268.83,
+     -108.83
+    ],
+    [
+     269.7,
+     -107.53
+    ],
+    [
+     270.0,
+     -106.0
+    ],
+    [
+     270.0,
+     -59.0
+    ],
+    [
+     269.7,
+     -57.47
+    ],
+    [
+     268.83,
+     -56.17
+    ],
+    [
+     267.53,
+     -55.3
+    ],
+    [
+     266.0,
+     -55.0
+    ],
+    [
+     254.0,
+     -55.0
+    ],
+    [
+     252.47,
+     -55.3
+    ],
+    [
+     251.17,
+     -56.17
+    ],
+    [
+     250.3,
+     -57.47
+    ],
+    [
+     250.0,
+     -59.0
+    ],
+    [
+     250.0,
+     -106.0
+    ],
+    [
+     250.3,
+     -107.53
+    ],
+    [
+     251.17,
+     -108.83
+    ],
+    [
+     252.47,
+     -109.7
+    ],
+    [
+     254.0,
+     -110.0
+    ]
+   ],
+   "start": 150,
+   "end": 170
+  },
+  {
+   "op": "set_subcategory",
+   "name": "N2O Lever",
+   "subcategory": "French Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Lever",
+   "param": "French Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Lever",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "N2O Emergency Inlet",
+   "points": [
+    [
+     272.0,
+     90.0
+    ],
+    [
+     271.59,
+     93.11
+    ],
+    [
+     270.39,
+     96.0
+    ],
+    [
+     268.49,
+     98.49
+    ],
+    [
+     266.0,
+     100.39
+    ],
+    [
+     263.11,
+     101.59
+    ],
+    [
+     260.0,
+     102.0
+    ],
+    [
+     256.89,
+     101.59
+    ],
+    [
+     254.0,
+     100.39
+    ],
+    [
+     251.51,
+     98.49
+    ],
+    [
+     249.61,
+     96.0
+    ],
+    [
+     248.41,
+     93.11
+    ],
+    [
+     248.0,
+     90.0
+    ],
+    [
+     248.41,
+     86.89
+    ],
+    [
+     249.61,
+     84.0
+    ],
+    [
+     251.51,
+     81.51
+    ],
+    [
+     254.0,
+     79.61
+    ],
+    [
+     256.89,
+     78.41
+    ],
+    [
+     260.0,
+     78.0
+    ],
+    [
+     263.11,
+     78.41
+    ],
+    [
+     266.0,
+     79.61
+    ],
+    [
+     268.49,
+     81.51
+    ],
+    [
+     270.39,
+     84.0
+    ],
+    [
+     271.59,
+     86.89
+    ]
+   ],
+   "start": 55,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "N2O Emergency Inlet",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Emergency Inlet",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Emergency Inlet",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "N2O Label",
+   "points": [
+    [
+     210,
+     240
+    ],
+    [
+     310,
+     240
+    ],
+    [
+     310,
+     270
+    ],
+    [
+     210,
+     270
+    ]
+   ],
+   "start": 110,
+   "end": 112,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "N2O Label",
+   "subcategory": "French Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Label",
+   "param": "French Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "N2O Band",
+   "profile": [
+    [
+     11,
+     330
+    ],
+    [
+     13,
+     330
+    ],
+    [
+     13,
+     350
+    ],
+    [
+     11,
+     350
+    ]
+   ],
+   "axis_at": [
+    260,
+    -55
+   ],
+   "axis": "z",
+   "subcategory": "French Blue"
+  },
+  {
+   "op": "set_material_param",
+   "name": "N2O Band",
+   "param": "French Blue Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "N2O Band",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2Gas_AVSU",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Show 2Gas_AVSU",
+   "type": "2Gas_AVSU",
+   "param": "Show 2Gas_AVSU",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Show 2Gas_AVSU",
+   "type": "3Gas_AVSU",
+   "param": "Show 2Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Show 2Gas_AVSU",
+   "type": "4Gas_AVSU",
+   "param": "Show 2Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Back 2Gas/Visible",
+   "solid": "Box Back 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Top 2Gas/Visible",
+   "solid": "Box Top 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Bottom 2Gas/Visible",
+   "solid": "Box Bottom 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Right 2Gas/Visible",
+   "solid": "Box Right 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Top 2Gas/Visible",
+   "solid": "Frame Top 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Bottom 2Gas/Visible",
+   "solid": "Frame Bottom 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Right 2Gas/Visible",
+   "solid": "Frame Right 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Glazing 2Gas/Visible",
+   "solid": "Cover Glazing 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock 2Gas/Visible",
+   "solid": "Lock 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Warning Label 2Gas/Visible",
+   "solid": "Warning Label 2Gas",
+   "param": "Show 2Gas_AVSU"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3Gas_AVSU",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Show 3Gas_AVSU",
+   "type": "2Gas_AVSU",
+   "param": "Show 3Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Show 3Gas_AVSU",
+   "type": "3Gas_AVSU",
+   "param": "Show 3Gas_AVSU",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Show 3Gas_AVSU",
+   "type": "4Gas_AVSU",
+   "param": "Show 3Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Back 3Gas/Visible",
+   "solid": "Box Back 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Top 3Gas/Visible",
+   "solid": "Box Top 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Bottom 3Gas/Visible",
+   "solid": "Box Bottom 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Right 3Gas/Visible",
+   "solid": "Box Right 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Top 3Gas/Visible",
+   "solid": "Frame Top 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Bottom 3Gas/Visible",
+   "solid": "Frame Bottom 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Right 3Gas/Visible",
+   "solid": "Frame Right 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Glazing 3Gas/Visible",
+   "solid": "Cover Glazing 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock 3Gas/Visible",
+   "solid": "Lock 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Warning Label 3Gas/Visible",
+   "solid": "Warning Label 3Gas",
+   "param": "Show 3Gas_AVSU"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3Gas_AVSU or 4Gas_AVSU",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Show 3Gas_AVSU or 4Gas_AVSU",
+   "type": "2Gas_AVSU",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Show 3Gas_AVSU or 4Gas_AVSU",
+   "type": "3Gas_AVSU",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Show 3Gas_AVSU or 4Gas_AVSU",
+   "type": "4Gas_AVSU",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Pipe/Visible",
+   "solid": "MA4 Pipe",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Valve/Visible",
+   "solid": "MA4 Valve",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Lever/Visible",
+   "solid": "MA4 Lever",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Emergency Inlet/Visible",
+   "solid": "MA4 Emergency Inlet",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Label/Visible",
+   "solid": "MA4 Label",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "MA4 Band/Visible",
+   "solid": "MA4 Band",
+   "param": "Show 3Gas_AVSU or 4Gas_AVSU"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 4Gas_AVSU",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Gas_AVSU/Show 4Gas_AVSU",
+   "type": "2Gas_AVSU",
+   "param": "Show 4Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3Gas_AVSU/Show 4Gas_AVSU",
+   "type": "3Gas_AVSU",
+   "param": "Show 4Gas_AVSU",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "4Gas_AVSU/Show 4Gas_AVSU",
+   "type": "4Gas_AVSU",
+   "param": "Show 4Gas_AVSU",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Back 4Gas/Visible",
+   "solid": "Box Back 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Top 4Gas/Visible",
+   "solid": "Box Top 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Bottom 4Gas/Visible",
+   "solid": "Box Bottom 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Box Right 4Gas/Visible",
+   "solid": "Box Right 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Top 4Gas/Visible",
+   "solid": "Frame Top 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Bottom 4Gas/Visible",
+   "solid": "Frame Bottom 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Right 4Gas/Visible",
+   "solid": "Frame Right 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cover Glazing 4Gas/Visible",
+   "solid": "Cover Glazing 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lock 4Gas/Visible",
+   "solid": "Lock 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Warning Label 4Gas/Visible",
+   "solid": "Warning Label 4Gas",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Pipe/Visible",
+   "solid": "N2O Pipe",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Valve/Visible",
+   "solid": "N2O Valve",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Lever/Visible",
+   "solid": "N2O Lever",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Emergency Inlet/Visible",
+   "solid": "N2O Emergency Inlet",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Label/Visible",
+   "solid": "N2O Label",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "N2O Band/Visible",
+   "solid": "N2O Band",
+   "param": "Show 4Gas_AVSU"
+  },
+  {
    "op": "add_connector",
    "name": "O2",
    "domain": "pipe",
@@ -2975,14 +4760,24 @@
    "flow": "In"
   },
   {
+   "op": "add_connector",
+   "name": "N2O",
+   "domain": "pipe",
+   "system": "Other",
+   "solid": "N2O Pipe",
+   "side": "top",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
    "op": "set_type_image",
    "name": "Type image",
    "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_MechEq_MedGas_AreaValveBox.png"
   }
  ],
  "values": {
-  "Box 450 x 330 x 120 mm": {
-   "value": "450x330x120",
+  "Box 320 / 450 / 580 x 330 x 120 mm": {
+   "value": "130 mm per gas + 60",
    "source_status": "assumed",
    "source": "typical product, to confirm with the supplier"
   },

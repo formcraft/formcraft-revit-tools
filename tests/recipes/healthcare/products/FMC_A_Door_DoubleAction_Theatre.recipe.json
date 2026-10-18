@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_A_Door_DoubleAction_Theatre",
  "template": "Metric Door.rft",
- "about": "Double-action pair modelled as a product: frame without stops (leaves swing both ways), two HPL leaves with lipping, round portholes with stainless T-section rings, push plates and kick plates both faces, floor-spring cover plates and top pivots, rubber finger guards and a meeting brush. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door double action theatre doors hospital; images: https://www.google.com/search?tbm=isch&q=door+double+action+theatre+doors+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Double-action pair modelled as a product: frame without stops (leaves swing both ways), two HPL leaves with lipping, round portholes with stainless T-section rings, push plates and kick plates both faces, floor-spring cover plates and top pivots, rubber finger guards and a meeting brush. Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door double action theatre doors hospital; images: https://www.google.com/search?tbm=isch&q=door+double+action+theatre+doors+hospital; basis: generic product; brand, model and supplier open for review; photo: https://specadsystems.com/en/index/door-systems/dualswing.html; photo_title: AD Systems DualSwing Door System; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -395,6 +395,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1200x2100_DoubleAction/URL",
+   "type": "1200x2100_DoubleAction",
+   "param": "URL",
+   "value": "https://specadsystems.com/en/index/door-systems/dualswing.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "1200x2100_DoubleAction/Width",
    "type": "1200x2100_DoubleAction",
    "param": "Width",
@@ -476,6 +483,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1500x2100_DoubleAction/URL",
+   "type": "1500x2100_DoubleAction",
+   "param": "URL",
+   "value": "https://specadsystems.com/en/index/door-systems/dualswing.html"
+  },
+  {
+   "op": "set_type_value",
    "name": "1500x2100_DoubleAction/Width",
    "type": "1500x2100_DoubleAction",
    "param": "Width",
@@ -487,6 +501,27 @@
    "type": "1500x2100_DoubleAction",
    "param": "Height",
    "value": 2100.0
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Seal",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Seal Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Seal Material"
   },
   {
    "op": "add_subcategory",
@@ -595,27 +630,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Seal",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Seal Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Seal Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -629,24 +643,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -638.0,
+     -788.0,
      -82.0
     ],
     [
-     638.0,
+     788.0,
      -82.0
     ],
     [
-     638.0,
+     788.0,
      82.0
     ],
     [
-     -638.0,
+     -788.0,
      82.0
     ]
    ],
    "start": 0,
-   "end": 2138
+   "end": 2138.0
   },
   {
    "op": "set_subcategory",
@@ -662,7 +676,48 @@
   },
   {
    "op": "extrusion",
-   "name": "Frame Jamb 1",
+   "name": "Meeting Brush",
+   "points": [
+    [
+     -2,
+     -10
+    ],
+    [
+     2,
+     -10
+    ],
+    [
+     2,
+     10
+    ],
+    [
+     -2,
+     10
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Meeting Brush",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Meeting Brush",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Meeting Brush",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1200x2100 1",
    "points": [
     [
      -563.0,
@@ -730,28 +785,28 @@
     ]
    ],
    "start": 0,
-   "end": 2100
+   "end": 2100.0
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Jamb 1",
+   "name": "Frame Jamb 1200x2100 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Jamb 1",
+   "name": "Frame Jamb 1200x2100 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Jamb 1",
+   "name": "Frame Jamb 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Frame Jamb 2",
+   "name": "Frame Jamb 1200x2100 2",
    "points": [
     [
      597.0,
@@ -819,28 +874,28 @@
     ]
    ],
    "start": 0,
-   "end": 2100
+   "end": 2100.0
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Jamb 2",
+   "name": "Frame Jamb 1200x2100 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Jamb 2",
+   "name": "Frame Jamb 1200x2100 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Jamb 2",
+   "name": "Frame Jamb 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Frame Head",
+   "name": "Frame Head 1200x2100",
    "points": [
     [
      67.0,
@@ -913,24 +968,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Frame Head",
+   "name": "Frame Head 1200x2100",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Frame Head",
+   "name": "Frame Head 1200x2100",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Frame Head",
+   "name": "Frame Head 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Jamb Front 1",
+   "name": "Architrave Jamb Front 1200x2100 1",
    "points": [
     [
      -573.0,
@@ -998,28 +1053,28 @@
     ]
    ],
    "start": 0,
-   "end": 2138
+   "end": 2138.0
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Jamb Front 1",
+   "name": "Architrave Jamb Front 1200x2100 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Jamb Front 1",
+   "name": "Architrave Jamb Front 1200x2100 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Jamb Front 1",
+   "name": "Architrave Jamb Front 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Jamb Front 2",
+   "name": "Architrave Jamb Front 1200x2100 2",
    "points": [
     [
      633.0,
@@ -1087,28 +1142,28 @@
     ]
    ],
    "start": 0,
-   "end": 2138
+   "end": 2138.0
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Jamb Front 2",
+   "name": "Architrave Jamb Front 1200x2100 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Jamb Front 2",
+   "name": "Architrave Jamb Front 1200x2100 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Jamb Front 2",
+   "name": "Architrave Jamb Front 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Jamb Back 1",
+   "name": "Architrave Jamb Back 1200x2100 1",
    "points": [
     [
      -573.0,
@@ -1176,28 +1231,28 @@
     ]
    ],
    "start": 0,
-   "end": 2138
+   "end": 2138.0
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Jamb Back 1",
+   "name": "Architrave Jamb Back 1200x2100 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Jamb Back 1",
+   "name": "Architrave Jamb Back 1200x2100 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Jamb Back 1",
+   "name": "Architrave Jamb Back 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Jamb Back 2",
+   "name": "Architrave Jamb Back 1200x2100 2",
    "points": [
     [
      633.0,
@@ -1265,28 +1320,28 @@
     ]
    ],
    "start": 0,
-   "end": 2138
+   "end": 2138.0
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Jamb Back 2",
+   "name": "Architrave Jamb Back 1200x2100 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Jamb Back 2",
+   "name": "Architrave Jamb Back 1200x2100 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Jamb Back 2",
+   "name": "Architrave Jamb Back 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Head 1",
+   "name": "Architrave Head 1200x2100 1",
    "points": [
     [
      -75.0,
@@ -1359,24 +1414,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Head 1",
+   "name": "Architrave Head 1200x2100 1",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Head 1",
+   "name": "Architrave Head 1200x2100 1",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Head 1",
+   "name": "Architrave Head 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Architrave Head 2",
+   "name": "Architrave Head 1200x2100 2",
    "points": [
     [
      77.0,
@@ -1449,24 +1504,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Architrave Head 2",
+   "name": "Architrave Head 1200x2100 2",
    "subcategory": "Frame"
   },
   {
    "op": "set_material_param",
-   "name": "Architrave Head 2",
+   "name": "Architrave Head 1200x2100 2",
    "param": "Frame Material"
   },
   {
    "op": "set_visibility",
-   "name": "Architrave Head 2",
+   "name": "Architrave Head 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Porthole Glass",
+   "name": "Left Porthole Glass 1200x2100",
    "points": [
     [
      -137.0,
@@ -1635,24 +1690,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Porthole Glass",
+   "name": "Left Porthole Glass 1200x2100",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Left Porthole Glass",
+   "name": "Left Porthole Glass 1200x2100",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Porthole Glass",
+   "name": "Left Porthole Glass 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Left Porthole Ring",
+   "name": "Left Porthole Ring 1200x2100",
    "profile": [
     [
      126,
@@ -1696,19 +1751,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Left Porthole Ring",
+   "name": "Left Porthole Ring 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Porthole Ring",
+   "name": "Left Porthole Ring 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Lipping 1",
+   "name": "Left Leaf Lipping 1200x2100 1",
    "points": [
     [
      -556.0,
@@ -1728,28 +1783,28 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Lipping 1",
+   "name": "Left Leaf Lipping 1200x2100 1",
    "subcategory": "Lipping"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Lipping 1",
+   "name": "Left Leaf Lipping 1200x2100 1",
    "param": "Lipping Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Lipping 1",
+   "name": "Left Leaf Lipping 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Lipping 2",
+   "name": "Left Leaf Lipping 1200x2100 2",
    "points": [
     [
      -10.0,
@@ -1769,28 +1824,28 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Lipping 2",
+   "name": "Left Leaf Lipping 1200x2100 2",
    "subcategory": "Lipping"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Lipping 2",
+   "name": "Left Leaf Lipping 1200x2100 2",
    "param": "Lipping Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Lipping 2",
+   "name": "Left Leaf Lipping 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Below",
+   "name": "Left Leaf Below 1200x2100",
    "points": [
     [
      -548.0,
@@ -1815,24 +1870,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Below",
+   "name": "Left Leaf Below 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Below",
+   "name": "Left Leaf Below 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Below",
+   "name": "Left Leaf Below 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Left Of Opening",
+   "name": "Left Leaf Left Of Opening 1200x2100",
    "points": [
     [
      -548.0,
@@ -1857,24 +1912,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Left Of Opening",
+   "name": "Left Leaf Left Of Opening 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Left Of Opening",
+   "name": "Left Leaf Left Of Opening 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Left Of Opening",
+   "name": "Left Leaf Left Of Opening 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Right Of Opening",
+   "name": "Left Leaf Right Of Opening 1200x2100",
    "points": [
     [
      -129.0,
@@ -1899,24 +1954,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Right Of Opening",
+   "name": "Left Leaf Right Of Opening 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Right Of Opening",
+   "name": "Left Leaf Right Of Opening 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Right Of Opening",
+   "name": "Left Leaf Right Of Opening 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Leaf Above",
+   "name": "Left Leaf Above 1200x2100",
    "points": [
     [
      -548.0,
@@ -1928,11 +1983,11 @@
     ],
     [
      -10,
-     2057
+     2057.0
     ],
     [
      -548.0,
-     2057
+     2057.0
     ]
    ],
    "start": -22.0,
@@ -1941,24 +1996,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Leaf Above",
+   "name": "Left Leaf Above 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Left Leaf Above",
+   "name": "Left Leaf Above 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Leaf Above",
+   "name": "Left Leaf Above 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Push Plate 1",
+   "name": "Left Push Plate 1200x2100 1",
    "points": [
     [
      -177.0,
@@ -2047,24 +2102,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Push Plate 1",
+   "name": "Left Push Plate 1200x2100 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Push Plate 1",
+   "name": "Left Push Plate 1200x2100 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Push Plate 1",
+   "name": "Left Push Plate 1200x2100 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Push Plate 2",
+   "name": "Left Push Plate 1200x2100 2",
    "points": [
     [
      -177.0,
@@ -2153,24 +2208,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Push Plate 2",
+   "name": "Left Push Plate 1200x2100 2",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Push Plate 2",
+   "name": "Left Push Plate 1200x2100 2",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Push Plate 2",
+   "name": "Left Push Plate 1200x2100 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Kick Plate 1",
+   "name": "Left Kick Plate 1200x2100 1",
    "points": [
     [
      -20.0,
@@ -2259,24 +2314,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Kick Plate 1",
+   "name": "Left Kick Plate 1200x2100 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Kick Plate 1",
+   "name": "Left Kick Plate 1200x2100 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Kick Plate 1",
+   "name": "Left Kick Plate 1200x2100 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Kick Plate 2",
+   "name": "Left Kick Plate 1200x2100 2",
    "points": [
     [
      -20.0,
@@ -2365,24 +2420,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Kick Plate 2",
+   "name": "Left Kick Plate 1200x2100 2",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Kick Plate 2",
+   "name": "Left Kick Plate 1200x2100 2",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Kick Plate 2",
+   "name": "Left Kick Plate 1200x2100 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Floor Spring Cover",
+   "name": "Left Floor Spring Cover 1200x2100",
    "points": [
     [
      -556.0,
@@ -2406,24 +2461,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Left Floor Spring Cover",
+   "name": "Left Floor Spring Cover 1200x2100",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Floor Spring Cover",
+   "name": "Left Floor Spring Cover 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Floor Spring Cover",
+   "name": "Left Floor Spring Cover 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Left Top Pivot",
+   "name": "Left Top Pivot 1200x2100",
    "points": [
     [
      -507.0,
@@ -2490,29 +2545,29 @@
      -3.44
     ]
    ],
-   "start": 2057,
-   "end": 2060
+   "start": 2057.0,
+   "end": 2060.0
   },
   {
    "op": "set_subcategory",
-   "name": "Left Top Pivot",
+   "name": "Left Top Pivot 1200x2100",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Left Top Pivot",
+   "name": "Left Top Pivot 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Left Top Pivot",
+   "name": "Left Top Pivot 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Porthole Glass",
+   "name": "Right Porthole Glass 1200x2100",
    "points": [
     [
      421.0,
@@ -2681,24 +2736,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Porthole Glass",
+   "name": "Right Porthole Glass 1200x2100",
    "subcategory": "Glass"
   },
   {
    "op": "set_material_param",
-   "name": "Right Porthole Glass",
+   "name": "Right Porthole Glass 1200x2100",
    "param": "Glass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Porthole Glass",
+   "name": "Right Porthole Glass 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Right Porthole Ring",
+   "name": "Right Porthole Ring 1200x2100",
    "profile": [
     [
      126,
@@ -2742,19 +2797,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Right Porthole Ring",
+   "name": "Right Porthole Ring 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Porthole Ring",
+   "name": "Right Porthole Ring 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Lipping 1",
+   "name": "Right Leaf Lipping 1200x2100 1",
    "points": [
     [
      2.0,
@@ -2774,28 +2829,28 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Lipping 1",
+   "name": "Right Leaf Lipping 1200x2100 1",
    "subcategory": "Lipping"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Lipping 1",
+   "name": "Right Leaf Lipping 1200x2100 1",
    "param": "Lipping Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Lipping 1",
+   "name": "Right Leaf Lipping 1200x2100 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Lipping 2",
+   "name": "Right Leaf Lipping 1200x2100 2",
    "points": [
     [
      548.0,
@@ -2815,28 +2870,28 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Lipping 2",
+   "name": "Right Leaf Lipping 1200x2100 2",
    "subcategory": "Lipping"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Lipping 2",
+   "name": "Right Leaf Lipping 1200x2100 2",
    "param": "Lipping Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Lipping 2",
+   "name": "Right Leaf Lipping 1200x2100 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Below",
+   "name": "Right Leaf Below 1200x2100",
    "points": [
     [
      10,
@@ -2861,24 +2916,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Below",
+   "name": "Right Leaf Below 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Below",
+   "name": "Right Leaf Below 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Below",
+   "name": "Right Leaf Below 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Left Of Opening",
+   "name": "Right Leaf Left Of Opening 1200x2100",
    "points": [
     [
      10,
@@ -2903,24 +2958,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Left Of Opening",
+   "name": "Right Leaf Left Of Opening 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Left Of Opening",
+   "name": "Right Leaf Left Of Opening 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Left Of Opening",
+   "name": "Right Leaf Left Of Opening 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Right Of Opening",
+   "name": "Right Leaf Right Of Opening 1200x2100",
    "points": [
     [
      429.0,
@@ -2945,24 +3000,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Right Of Opening",
+   "name": "Right Leaf Right Of Opening 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Right Of Opening",
+   "name": "Right Leaf Right Of Opening 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Right Of Opening",
+   "name": "Right Leaf Right Of Opening 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Leaf Above",
+   "name": "Right Leaf Above 1200x2100",
    "points": [
     [
      10,
@@ -2974,11 +3029,11 @@
     ],
     [
      548.0,
-     2057
+     2057.0
     ],
     [
      10,
-     2057
+     2057.0
     ]
    ],
    "start": -22.0,
@@ -2987,24 +3042,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Leaf Above",
+   "name": "Right Leaf Above 1200x2100",
    "subcategory": "Laminate"
   },
   {
    "op": "set_material_param",
-   "name": "Right Leaf Above",
+   "name": "Right Leaf Above 1200x2100",
    "param": "Laminate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Leaf Above",
+   "name": "Right Leaf Above 1200x2100",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Push Plate 1",
+   "name": "Right Push Plate 1200x2100 1",
    "points": [
     [
      381.0,
@@ -3093,24 +3148,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Push Plate 1",
+   "name": "Right Push Plate 1200x2100 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Push Plate 1",
+   "name": "Right Push Plate 1200x2100 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Push Plate 1",
+   "name": "Right Push Plate 1200x2100 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Push Plate 2",
+   "name": "Right Push Plate 1200x2100 2",
    "points": [
     [
      381.0,
@@ -3199,24 +3254,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Push Plate 2",
+   "name": "Right Push Plate 1200x2100 2",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Push Plate 2",
+   "name": "Right Push Plate 1200x2100 2",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Push Plate 2",
+   "name": "Right Push Plate 1200x2100 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Kick Plate 1",
+   "name": "Right Kick Plate 1200x2100 1",
    "points": [
     [
      538.0,
@@ -3305,24 +3360,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Kick Plate 1",
+   "name": "Right Kick Plate 1200x2100 1",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Kick Plate 1",
+   "name": "Right Kick Plate 1200x2100 1",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Kick Plate 1",
+   "name": "Right Kick Plate 1200x2100 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Kick Plate 2",
+   "name": "Right Kick Plate 1200x2100 2",
    "points": [
     [
      538.0,
@@ -3411,24 +3466,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Kick Plate 2",
+   "name": "Right Kick Plate 1200x2100 2",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Kick Plate 2",
+   "name": "Right Kick Plate 1200x2100 2",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Kick Plate 2",
+   "name": "Right Kick Plate 1200x2100 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Floor Spring Cover",
+   "name": "Right Floor Spring Cover 1200x2100",
    "points": [
     [
      356.0,
@@ -3452,24 +3507,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Right Floor Spring Cover",
+   "name": "Right Floor Spring Cover 1200x2100",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Floor Spring Cover",
+   "name": "Right Floor Spring Cover 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Floor Spring Cover",
+   "name": "Right Floor Spring Cover 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Right Top Pivot",
+   "name": "Right Top Pivot 1200x2100",
    "points": [
     [
      525.0,
@@ -3536,29 +3591,29 @@
      -3.44
     ]
    ],
-   "start": 2057,
-   "end": 2060
+   "start": 2057.0,
+   "end": 2060.0
   },
   {
    "op": "set_subcategory",
-   "name": "Right Top Pivot",
+   "name": "Right Top Pivot 1200x2100",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Right Top Pivot",
+   "name": "Right Top Pivot 1200x2100",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Right Top Pivot",
+   "name": "Right Top Pivot 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Finger Guard Left",
+   "name": "Finger Guard Left 1200x2100",
    "points": [
     [
      -560.0,
@@ -3578,28 +3633,28 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Finger Guard Left",
+   "name": "Finger Guard Left 1200x2100",
    "subcategory": "Seal"
   },
   {
    "op": "set_material_param",
-   "name": "Finger Guard Left",
+   "name": "Finger Guard Left 1200x2100",
    "param": "Seal Material"
   },
   {
    "op": "set_visibility",
-   "name": "Finger Guard Left",
+   "name": "Finger Guard Left 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Finger Guard Right",
+   "name": "Finger Guard Right 1200x2100",
    "points": [
     [
      556.0,
@@ -3619,65 +3674,3510 @@
     ]
    ],
    "start": 8,
-   "end": 2057
+   "end": 2057.0
   },
   {
    "op": "set_subcategory",
-   "name": "Finger Guard Right",
+   "name": "Finger Guard Right 1200x2100",
    "subcategory": "Seal"
   },
   {
    "op": "set_material_param",
-   "name": "Finger Guard Right",
+   "name": "Finger Guard Right 1200x2100",
    "param": "Seal Material"
   },
   {
    "op": "set_visibility",
-   "name": "Finger Guard Right",
+   "name": "Finger Guard Right 1200x2100",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Meeting Brush",
+   "name": "Frame Jamb 1500x2100 1",
    "points": [
     [
-     -2,
-     -10
+     -713.0,
+     -70.0
     ],
     [
-     2,
-     -10
+     -711.5,
+     -69.6
     ],
     [
-     2,
-     10
+     -710.4,
+     -68.5
     ],
     [
-     -2,
-     10
+     -710.0,
+     -67.0
+    ],
+    [
+     -710.0,
+     67.0
+    ],
+    [
+     -710.4,
+     68.5
+    ],
+    [
+     -711.5,
+     69.6
+    ],
+    [
+     -713.0,
+     70.0
+    ],
+    [
+     -747.0,
+     70.0
+    ],
+    [
+     -748.5,
+     69.6
+    ],
+    [
+     -749.6,
+     68.5
+    ],
+    [
+     -750.0,
+     67.0
+    ],
+    [
+     -750.0,
+     -67.0
+    ],
+    [
+     -749.6,
+     -68.5
+    ],
+    [
+     -748.5,
+     -69.6
+    ],
+    [
+     -747.0,
+     -70.0
     ]
    ],
-   "start": 8,
-   "end": 2057
+   "start": 0,
+   "end": 2100.0
   },
   {
    "op": "set_subcategory",
-   "name": "Meeting Brush",
+   "name": "Frame Jamb 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Jamb 1500x2100 2",
+   "points": [
+    [
+     747.0,
+     -70.0
+    ],
+    [
+     748.5,
+     -69.6
+    ],
+    [
+     749.6,
+     -68.5
+    ],
+    [
+     750.0,
+     -67.0
+    ],
+    [
+     750.0,
+     67.0
+    ],
+    [
+     749.6,
+     68.5
+    ],
+    [
+     748.5,
+     69.6
+    ],
+    [
+     747.0,
+     70.0
+    ],
+    [
+     713.0,
+     70.0
+    ],
+    [
+     711.5,
+     69.6
+    ],
+    [
+     710.4,
+     68.5
+    ],
+    [
+     710.0,
+     67.0
+    ],
+    [
+     710.0,
+     -67.0
+    ],
+    [
+     710.4,
+     -68.5
+    ],
+    [
+     711.5,
+     -69.6
+    ],
+    [
+     713.0,
+     -70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2100.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Jamb 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Jamb 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Jamb 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Head 1500x2100",
+   "points": [
+    [
+     67.0,
+     2060.0
+    ],
+    [
+     68.5,
+     2060.4
+    ],
+    [
+     69.6,
+     2061.5
+    ],
+    [
+     70.0,
+     2063.0
+    ],
+    [
+     70.0,
+     2097.0
+    ],
+    [
+     69.6,
+     2098.5
+    ],
+    [
+     68.5,
+     2099.6
+    ],
+    [
+     67.0,
+     2100.0
+    ],
+    [
+     -67.0,
+     2100.0
+    ],
+    [
+     -68.5,
+     2099.6
+    ],
+    [
+     -69.6,
+     2098.5
+    ],
+    [
+     -70.0,
+     2097.0
+    ],
+    [
+     -70.0,
+     2063.0
+    ],
+    [
+     -69.6,
+     2061.5
+    ],
+    [
+     -68.5,
+     2060.4
+    ],
+    [
+     -67.0,
+     2060.0
+    ]
+   ],
+   "start": -750.0,
+   "end": 750.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Head 1500x2100",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Head 1500x2100",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Head 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "points": [
+    [
+     -723.0,
+     -82.0
+    ],
+    [
+     -720.5,
+     -81.3
+    ],
+    [
+     -718.7,
+     -79.5
+    ],
+    [
+     -718.0,
+     -77.0
+    ],
+    [
+     -718.0,
+     -75.0
+    ],
+    [
+     -718.7,
+     -72.5
+    ],
+    [
+     -720.5,
+     -70.7
+    ],
+    [
+     -723.0,
+     -70.0
+    ],
+    [
+     -783.0,
+     -70.0
+    ],
+    [
+     -785.5,
+     -70.7
+    ],
+    [
+     -787.3,
+     -72.5
+    ],
+    [
+     -788.0,
+     -75.0
+    ],
+    [
+     -788.0,
+     -77.0
+    ],
+    [
+     -787.3,
+     -79.5
+    ],
+    [
+     -785.5,
+     -81.3
+    ],
+    [
+     -783.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "points": [
+    [
+     783.0,
+     -82.0
+    ],
+    [
+     785.5,
+     -81.3
+    ],
+    [
+     787.3,
+     -79.5
+    ],
+    [
+     788.0,
+     -77.0
+    ],
+    [
+     788.0,
+     -75.0
+    ],
+    [
+     787.3,
+     -72.5
+    ],
+    [
+     785.5,
+     -70.7
+    ],
+    [
+     783.0,
+     -70.0
+    ],
+    [
+     723.0,
+     -70.0
+    ],
+    [
+     720.5,
+     -70.7
+    ],
+    [
+     718.7,
+     -72.5
+    ],
+    [
+     718.0,
+     -75.0
+    ],
+    [
+     718.0,
+     -77.0
+    ],
+    [
+     718.7,
+     -79.5
+    ],
+    [
+     720.5,
+     -81.3
+    ],
+    [
+     723.0,
+     -82.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Front 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "points": [
+    [
+     -723.0,
+     70.0
+    ],
+    [
+     -720.5,
+     70.7
+    ],
+    [
+     -718.7,
+     72.5
+    ],
+    [
+     -718.0,
+     75.0
+    ],
+    [
+     -718.0,
+     77.0
+    ],
+    [
+     -718.7,
+     79.5
+    ],
+    [
+     -720.5,
+     81.3
+    ],
+    [
+     -723.0,
+     82.0
+    ],
+    [
+     -783.0,
+     82.0
+    ],
+    [
+     -785.5,
+     81.3
+    ],
+    [
+     -787.3,
+     79.5
+    ],
+    [
+     -788.0,
+     77.0
+    ],
+    [
+     -788.0,
+     75.0
+    ],
+    [
+     -787.3,
+     72.5
+    ],
+    [
+     -785.5,
+     70.7
+    ],
+    [
+     -783.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "points": [
+    [
+     783.0,
+     70.0
+    ],
+    [
+     785.5,
+     70.7
+    ],
+    [
+     787.3,
+     72.5
+    ],
+    [
+     788.0,
+     75.0
+    ],
+    [
+     788.0,
+     77.0
+    ],
+    [
+     787.3,
+     79.5
+    ],
+    [
+     785.5,
+     81.3
+    ],
+    [
+     783.0,
+     82.0
+    ],
+    [
+     723.0,
+     82.0
+    ],
+    [
+     720.5,
+     81.3
+    ],
+    [
+     718.7,
+     79.5
+    ],
+    [
+     718.0,
+     77.0
+    ],
+    [
+     718.0,
+     75.0
+    ],
+    [
+     718.7,
+     72.5
+    ],
+    [
+     720.5,
+     70.7
+    ],
+    [
+     723.0,
+     70.0
+    ]
+   ],
+   "start": 0,
+   "end": 2138.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Jamb Back 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1500x2100 1",
+   "points": [
+    [
+     -75.0,
+     2068.0
+    ],
+    [
+     -72.5,
+     2068.7
+    ],
+    [
+     -70.7,
+     2070.5
+    ],
+    [
+     -70.0,
+     2073.0
+    ],
+    [
+     -70.0,
+     2133.0
+    ],
+    [
+     -70.7,
+     2135.5
+    ],
+    [
+     -72.5,
+     2137.3
+    ],
+    [
+     -75.0,
+     2138.0
+    ],
+    [
+     -77.0,
+     2138.0
+    ],
+    [
+     -79.5,
+     2137.3
+    ],
+    [
+     -81.3,
+     2135.5
+    ],
+    [
+     -82.0,
+     2133.0
+    ],
+    [
+     -82.0,
+     2073.0
+    ],
+    [
+     -81.3,
+     2070.5
+    ],
+    [
+     -79.5,
+     2068.7
+    ],
+    [
+     -77.0,
+     2068.0
+    ]
+   ],
+   "start": -788.0,
+   "end": 788.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1500x2100 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1500x2100 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Architrave Head 1500x2100 2",
+   "points": [
+    [
+     77.0,
+     2068.0
+    ],
+    [
+     79.5,
+     2068.7
+    ],
+    [
+     81.3,
+     2070.5
+    ],
+    [
+     82.0,
+     2073.0
+    ],
+    [
+     82.0,
+     2133.0
+    ],
+    [
+     81.3,
+     2135.5
+    ],
+    [
+     79.5,
+     2137.3
+    ],
+    [
+     77.0,
+     2138.0
+    ],
+    [
+     75.0,
+     2138.0
+    ],
+    [
+     72.5,
+     2137.3
+    ],
+    [
+     70.7,
+     2135.5
+    ],
+    [
+     70.0,
+     2133.0
+    ],
+    [
+     70.0,
+     2073.0
+    ],
+    [
+     70.7,
+     2070.5
+    ],
+    [
+     72.5,
+     2068.7
+    ],
+    [
+     75.0,
+     2068.0
+    ]
+   ],
+   "start": -788.0,
+   "end": 788.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Architrave Head 1500x2100 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Architrave Head 1500x2100 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Architrave Head 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Porthole Glass 1500x2100",
+   "points": [
+    [
+     -212.0,
+     1450.0
+    ],
+    [
+     -213.75,
+     1472.21
+    ],
+    [
+     -218.95,
+     1493.88
+    ],
+    [
+     -227.48,
+     1514.47
+    ],
+    [
+     -239.12,
+     1533.47
+    ],
+    [
+     -253.59,
+     1550.41
+    ],
+    [
+     -270.53,
+     1564.88
+    ],
+    [
+     -289.53,
+     1576.52
+    ],
+    [
+     -310.12,
+     1585.05
+    ],
+    [
+     -331.79,
+     1590.25
+    ],
+    [
+     -354.0,
+     1592.0
+    ],
+    [
+     -376.21,
+     1590.25
+    ],
+    [
+     -397.88,
+     1585.05
+    ],
+    [
+     -418.47,
+     1576.52
+    ],
+    [
+     -437.47,
+     1564.88
+    ],
+    [
+     -454.41,
+     1550.41
+    ],
+    [
+     -468.88,
+     1533.47
+    ],
+    [
+     -480.52,
+     1514.47
+    ],
+    [
+     -489.05,
+     1493.88
+    ],
+    [
+     -494.25,
+     1472.21
+    ],
+    [
+     -496.0,
+     1450.0
+    ],
+    [
+     -494.25,
+     1427.79
+    ],
+    [
+     -489.05,
+     1406.12
+    ],
+    [
+     -480.52,
+     1385.53
+    ],
+    [
+     -468.88,
+     1366.53
+    ],
+    [
+     -454.41,
+     1349.59
+    ],
+    [
+     -437.47,
+     1335.12
+    ],
+    [
+     -418.47,
+     1323.48
+    ],
+    [
+     -397.88,
+     1314.95
+    ],
+    [
+     -376.21,
+     1309.75
+    ],
+    [
+     -354.0,
+     1308.0
+    ],
+    [
+     -331.79,
+     1309.75
+    ],
+    [
+     -310.12,
+     1314.95
+    ],
+    [
+     -289.53,
+     1323.48
+    ],
+    [
+     -270.53,
+     1335.12
+    ],
+    [
+     -253.59,
+     1349.59
+    ],
+    [
+     -239.12,
+     1366.53
+    ],
+    [
+     -227.48,
+     1385.53
+    ],
+    [
+     -218.95,
+     1406.12
+    ],
+    [
+     -213.75,
+     1427.79
+    ]
+   ],
+   "start": -4,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Porthole Glass 1500x2100",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Porthole Glass 1500x2100",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Porthole Glass 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Left Porthole Ring 1500x2100",
+   "profile": [
+    [
+     126,
+     28.0
+    ],
+    [
+     219.0,
+     25.0
+    ],
+    [
+     219.0,
+     22.0
+    ],
+    [
+     150,
+     22.0
+    ],
+    [
+     150,
+     -22.0
+    ],
+    [
+     219.0,
+     -22.0
+    ],
+    [
+     219.0,
+     -25.0
+    ],
+    [
+     126,
+     -28.0
+    ]
+   ],
+   "axis_at": [
+    -354.0,
+    1450
+   ],
+   "axis": "y",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Porthole Ring 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Porthole Ring 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Lipping 1500x2100 1",
+   "points": [
+    [
+     -706.0,
+     -22.0
+    ],
+    [
+     -698.0,
+     -22.0
+    ],
+    [
+     -698.0,
+     22.0
+    ],
+    [
+     -706.0,
+     22.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Lipping 1500x2100 1",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Lipping 1500x2100 1",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Lipping 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Lipping 1500x2100 2",
+   "points": [
+    [
+     -10.0,
+     -22.0
+    ],
+    [
+     -2.0,
+     -22.0
+    ],
+    [
+     -2.0,
+     22.0
+    ],
+    [
+     -10.0,
+     22.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Lipping 1500x2100 2",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Lipping 1500x2100 2",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Lipping 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Below 1500x2100",
+   "points": [
+    [
+     -698.0,
+     8
+    ],
+    [
+     -10,
+     8
+    ],
+    [
+     -10,
+     1300
+    ],
+    [
+     -698.0,
+     1300
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Below 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Below 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Below 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Left Of Opening 1500x2100",
+   "points": [
+    [
+     -698.0,
+     1300
+    ],
+    [
+     -504.0,
+     1300
+    ],
+    [
+     -504.0,
+     1600
+    ],
+    [
+     -698.0,
+     1600
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Left Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Left Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Left Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Right Of Opening 1500x2100",
+   "points": [
+    [
+     -204.0,
+     1300
+    ],
+    [
+     -10,
+     1300
+    ],
+    [
+     -10,
+     1600
+    ],
+    [
+     -204.0,
+     1600
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Right Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Right Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Right Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Leaf Above 1500x2100",
+   "points": [
+    [
+     -698.0,
+     1600
+    ],
+    [
+     -10,
+     1600
+    ],
+    [
+     -10,
+     2057.0
+    ],
+    [
+     -698.0,
+     2057.0
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Leaf Above 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Leaf Above 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Leaf Above 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Push Plate 1500x2100 1",
+   "points": [
+    [
+     -252.0,
+     950.0
+    ],
+    [
+     -248.94,
+     950.61
+    ],
+    [
+     -246.34,
+     952.34
+    ],
+    [
+     -244.61,
+     954.94
+    ],
+    [
+     -244.0,
+     958.0
+    ],
+    [
+     -244.0,
+     1142.0
+    ],
+    [
+     -244.61,
+     1145.06
+    ],
+    [
+     -246.34,
+     1147.66
+    ],
+    [
+     -248.94,
+     1149.39
+    ],
+    [
+     -252.0,
+     1150.0
+    ],
+    [
+     -456.0,
+     1150.0
+    ],
+    [
+     -459.06,
+     1149.39
+    ],
+    [
+     -461.66,
+     1147.66
+    ],
+    [
+     -463.39,
+     1145.06
+    ],
+    [
+     -464.0,
+     1142.0
+    ],
+    [
+     -464.0,
+     958.0
+    ],
+    [
+     -463.39,
+     954.94
+    ],
+    [
+     -461.66,
+     952.34
+    ],
+    [
+     -459.06,
+     950.61
+    ],
+    [
+     -456.0,
+     950.0
+    ]
+   ],
+   "start": 22.0,
+   "end": 24.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Push Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Push Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Push Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Push Plate 1500x2100 2",
+   "points": [
+    [
+     -252.0,
+     950.0
+    ],
+    [
+     -248.94,
+     950.61
+    ],
+    [
+     -246.34,
+     952.34
+    ],
+    [
+     -244.61,
+     954.94
+    ],
+    [
+     -244.0,
+     958.0
+    ],
+    [
+     -244.0,
+     1142.0
+    ],
+    [
+     -244.61,
+     1145.06
+    ],
+    [
+     -246.34,
+     1147.66
+    ],
+    [
+     -248.94,
+     1149.39
+    ],
+    [
+     -252.0,
+     1150.0
+    ],
+    [
+     -456.0,
+     1150.0
+    ],
+    [
+     -459.06,
+     1149.39
+    ],
+    [
+     -461.66,
+     1147.66
+    ],
+    [
+     -463.39,
+     1145.06
+    ],
+    [
+     -464.0,
+     1142.0
+    ],
+    [
+     -464.0,
+     958.0
+    ],
+    [
+     -463.39,
+     954.94
+    ],
+    [
+     -461.66,
+     952.34
+    ],
+    [
+     -459.06,
+     950.61
+    ],
+    [
+     -456.0,
+     950.0
+    ]
+   ],
+   "start": -24.0,
+   "end": -22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Push Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Push Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Push Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Kick Plate 1500x2100 1",
+   "points": [
+    [
+     -20.0,
+     10.0
+    ],
+    [
+     -18.85,
+     10.23
+    ],
+    [
+     -17.88,
+     10.88
+    ],
+    [
+     -17.23,
+     11.85
+    ],
+    [
+     -17.0,
+     13.0
+    ],
+    [
+     -17.0,
+     397.0
+    ],
+    [
+     -17.23,
+     398.15
+    ],
+    [
+     -17.88,
+     399.12
+    ],
+    [
+     -18.85,
+     399.77
+    ],
+    [
+     -20.0,
+     400.0
+    ],
+    [
+     -688.0,
+     400.0
+    ],
+    [
+     -689.15,
+     399.77
+    ],
+    [
+     -690.12,
+     399.12
+    ],
+    [
+     -690.77,
+     398.15
+    ],
+    [
+     -691.0,
+     397.0
+    ],
+    [
+     -691.0,
+     13.0
+    ],
+    [
+     -690.77,
+     11.85
+    ],
+    [
+     -690.12,
+     10.88
+    ],
+    [
+     -689.15,
+     10.23
+    ],
+    [
+     -688.0,
+     10.0
+    ]
+   ],
+   "start": 22.0,
+   "end": 23.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Kick Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Kick Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Kick Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Kick Plate 1500x2100 2",
+   "points": [
+    [
+     -20.0,
+     10.0
+    ],
+    [
+     -18.85,
+     10.23
+    ],
+    [
+     -17.88,
+     10.88
+    ],
+    [
+     -17.23,
+     11.85
+    ],
+    [
+     -17.0,
+     13.0
+    ],
+    [
+     -17.0,
+     397.0
+    ],
+    [
+     -17.23,
+     398.15
+    ],
+    [
+     -17.88,
+     399.12
+    ],
+    [
+     -18.85,
+     399.77
+    ],
+    [
+     -20.0,
+     400.0
+    ],
+    [
+     -688.0,
+     400.0
+    ],
+    [
+     -689.15,
+     399.77
+    ],
+    [
+     -690.12,
+     399.12
+    ],
+    [
+     -690.77,
+     398.15
+    ],
+    [
+     -691.0,
+     397.0
+    ],
+    [
+     -691.0,
+     13.0
+    ],
+    [
+     -690.77,
+     11.85
+    ],
+    [
+     -690.12,
+     10.88
+    ],
+    [
+     -689.15,
+     10.23
+    ],
+    [
+     -688.0,
+     10.0
+    ]
+   ],
+   "start": -23.5,
+   "end": -22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Kick Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Kick Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Kick Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Floor Spring Cover 1500x2100",
+   "points": [
+    [
+     -706.0,
+     -50
+    ],
+    [
+     -506.0,
+     -50
+    ],
+    [
+     -506.0,
+     50
+    ],
+    [
+     -706.0,
+     50
+    ]
+   ],
+   "start": 0,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Floor Spring Cover 1500x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Floor Spring Cover 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Floor Spring Cover 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Left Top Pivot 1500x2100",
+   "points": [
+    [
+     -657.0,
+     0.0
+    ],
+    [
+     -657.69,
+     3.44
+    ],
+    [
+     -659.64,
+     6.36
+    ],
+    [
+     -662.56,
+     8.31
+    ],
+    [
+     -666.0,
+     9.0
+    ],
+    [
+     -669.44,
+     8.31
+    ],
+    [
+     -672.36,
+     6.36
+    ],
+    [
+     -674.31,
+     3.44
+    ],
+    [
+     -675.0,
+     0.0
+    ],
+    [
+     -674.31,
+     -3.44
+    ],
+    [
+     -672.36,
+     -6.36
+    ],
+    [
+     -669.44,
+     -8.31
+    ],
+    [
+     -666.0,
+     -9.0
+    ],
+    [
+     -662.56,
+     -8.31
+    ],
+    [
+     -659.64,
+     -6.36
+    ],
+    [
+     -657.69,
+     -3.44
+    ]
+   ],
+   "start": 2057.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Left Top Pivot 1500x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Left Top Pivot 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Left Top Pivot 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Porthole Glass 1500x2100",
+   "points": [
+    [
+     496.0,
+     1450.0
+    ],
+    [
+     494.25,
+     1472.21
+    ],
+    [
+     489.05,
+     1493.88
+    ],
+    [
+     480.52,
+     1514.47
+    ],
+    [
+     468.88,
+     1533.47
+    ],
+    [
+     454.41,
+     1550.41
+    ],
+    [
+     437.47,
+     1564.88
+    ],
+    [
+     418.47,
+     1576.52
+    ],
+    [
+     397.88,
+     1585.05
+    ],
+    [
+     376.21,
+     1590.25
+    ],
+    [
+     354.0,
+     1592.0
+    ],
+    [
+     331.79,
+     1590.25
+    ],
+    [
+     310.12,
+     1585.05
+    ],
+    [
+     289.53,
+     1576.52
+    ],
+    [
+     270.53,
+     1564.88
+    ],
+    [
+     253.59,
+     1550.41
+    ],
+    [
+     239.12,
+     1533.47
+    ],
+    [
+     227.48,
+     1514.47
+    ],
+    [
+     218.95,
+     1493.88
+    ],
+    [
+     213.75,
+     1472.21
+    ],
+    [
+     212.0,
+     1450.0
+    ],
+    [
+     213.75,
+     1427.79
+    ],
+    [
+     218.95,
+     1406.12
+    ],
+    [
+     227.48,
+     1385.53
+    ],
+    [
+     239.12,
+     1366.53
+    ],
+    [
+     253.59,
+     1349.59
+    ],
+    [
+     270.53,
+     1335.12
+    ],
+    [
+     289.53,
+     1323.48
+    ],
+    [
+     310.12,
+     1314.95
+    ],
+    [
+     331.79,
+     1309.75
+    ],
+    [
+     354.0,
+     1308.0
+    ],
+    [
+     376.21,
+     1309.75
+    ],
+    [
+     397.88,
+     1314.95
+    ],
+    [
+     418.47,
+     1323.48
+    ],
+    [
+     437.47,
+     1335.12
+    ],
+    [
+     454.41,
+     1349.59
+    ],
+    [
+     468.88,
+     1366.53
+    ],
+    [
+     480.52,
+     1385.53
+    ],
+    [
+     489.05,
+     1406.12
+    ],
+    [
+     494.25,
+     1427.79
+    ]
+   ],
+   "start": -4,
+   "end": 4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Porthole Glass 1500x2100",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Porthole Glass 1500x2100",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Porthole Glass 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Right Porthole Ring 1500x2100",
+   "profile": [
+    [
+     126,
+     28.0
+    ],
+    [
+     219.0,
+     25.0
+    ],
+    [
+     219.0,
+     22.0
+    ],
+    [
+     150,
+     22.0
+    ],
+    [
+     150,
+     -22.0
+    ],
+    [
+     219.0,
+     -22.0
+    ],
+    [
+     219.0,
+     -25.0
+    ],
+    [
+     126,
+     -28.0
+    ]
+   ],
+   "axis_at": [
+    354.0,
+    1450
+   ],
+   "axis": "y",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Porthole Ring 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Porthole Ring 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Lipping 1500x2100 1",
+   "points": [
+    [
+     2.0,
+     -22.0
+    ],
+    [
+     10.0,
+     -22.0
+    ],
+    [
+     10.0,
+     22.0
+    ],
+    [
+     2.0,
+     22.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Lipping 1500x2100 1",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Lipping 1500x2100 1",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Lipping 1500x2100 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Lipping 1500x2100 2",
+   "points": [
+    [
+     698.0,
+     -22.0
+    ],
+    [
+     706.0,
+     -22.0
+    ],
+    [
+     706.0,
+     22.0
+    ],
+    [
+     698.0,
+     22.0
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Lipping 1500x2100 2",
+   "subcategory": "Lipping"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Lipping 1500x2100 2",
+   "param": "Lipping Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Lipping 1500x2100 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Below 1500x2100",
+   "points": [
+    [
+     10,
+     8
+    ],
+    [
+     698.0,
+     8
+    ],
+    [
+     698.0,
+     1300
+    ],
+    [
+     10,
+     1300
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Below 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Below 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Below 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Left Of Opening 1500x2100",
+   "points": [
+    [
+     10,
+     1300
+    ],
+    [
+     204.0,
+     1300
+    ],
+    [
+     204.0,
+     1600
+    ],
+    [
+     10,
+     1600
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Left Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Left Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Left Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Right Of Opening 1500x2100",
+   "points": [
+    [
+     504.0,
+     1300
+    ],
+    [
+     698.0,
+     1300
+    ],
+    [
+     698.0,
+     1600
+    ],
+    [
+     504.0,
+     1600
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Right Of Opening 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Right Of Opening 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Right Of Opening 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Leaf Above 1500x2100",
+   "points": [
+    [
+     10,
+     1600
+    ],
+    [
+     698.0,
+     1600
+    ],
+    [
+     698.0,
+     2057.0
+    ],
+    [
+     10,
+     2057.0
+    ]
+   ],
+   "start": -22.0,
+   "end": 22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Leaf Above 1500x2100",
+   "subcategory": "Laminate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Leaf Above 1500x2100",
+   "param": "Laminate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Leaf Above 1500x2100",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Push Plate 1500x2100 1",
+   "points": [
+    [
+     456.0,
+     950.0
+    ],
+    [
+     459.06,
+     950.61
+    ],
+    [
+     461.66,
+     952.34
+    ],
+    [
+     463.39,
+     954.94
+    ],
+    [
+     464.0,
+     958.0
+    ],
+    [
+     464.0,
+     1142.0
+    ],
+    [
+     463.39,
+     1145.06
+    ],
+    [
+     461.66,
+     1147.66
+    ],
+    [
+     459.06,
+     1149.39
+    ],
+    [
+     456.0,
+     1150.0
+    ],
+    [
+     252.0,
+     1150.0
+    ],
+    [
+     248.94,
+     1149.39
+    ],
+    [
+     246.34,
+     1147.66
+    ],
+    [
+     244.61,
+     1145.06
+    ],
+    [
+     244.0,
+     1142.0
+    ],
+    [
+     244.0,
+     958.0
+    ],
+    [
+     244.61,
+     954.94
+    ],
+    [
+     246.34,
+     952.34
+    ],
+    [
+     248.94,
+     950.61
+    ],
+    [
+     252.0,
+     950.0
+    ]
+   ],
+   "start": 22.0,
+   "end": 24.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Push Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Push Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Push Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Push Plate 1500x2100 2",
+   "points": [
+    [
+     456.0,
+     950.0
+    ],
+    [
+     459.06,
+     950.61
+    ],
+    [
+     461.66,
+     952.34
+    ],
+    [
+     463.39,
+     954.94
+    ],
+    [
+     464.0,
+     958.0
+    ],
+    [
+     464.0,
+     1142.0
+    ],
+    [
+     463.39,
+     1145.06
+    ],
+    [
+     461.66,
+     1147.66
+    ],
+    [
+     459.06,
+     1149.39
+    ],
+    [
+     456.0,
+     1150.0
+    ],
+    [
+     252.0,
+     1150.0
+    ],
+    [
+     248.94,
+     1149.39
+    ],
+    [
+     246.34,
+     1147.66
+    ],
+    [
+     244.61,
+     1145.06
+    ],
+    [
+     244.0,
+     1142.0
+    ],
+    [
+     244.0,
+     958.0
+    ],
+    [
+     244.61,
+     954.94
+    ],
+    [
+     246.34,
+     952.34
+    ],
+    [
+     248.94,
+     950.61
+    ],
+    [
+     252.0,
+     950.0
+    ]
+   ],
+   "start": -24.0,
+   "end": -22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Push Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Push Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Push Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Kick Plate 1500x2100 1",
+   "points": [
+    [
+     688.0,
+     10.0
+    ],
+    [
+     689.15,
+     10.23
+    ],
+    [
+     690.12,
+     10.88
+    ],
+    [
+     690.77,
+     11.85
+    ],
+    [
+     691.0,
+     13.0
+    ],
+    [
+     691.0,
+     397.0
+    ],
+    [
+     690.77,
+     398.15
+    ],
+    [
+     690.12,
+     399.12
+    ],
+    [
+     689.15,
+     399.77
+    ],
+    [
+     688.0,
+     400.0
+    ],
+    [
+     20.0,
+     400.0
+    ],
+    [
+     18.85,
+     399.77
+    ],
+    [
+     17.88,
+     399.12
+    ],
+    [
+     17.23,
+     398.15
+    ],
+    [
+     17.0,
+     397.0
+    ],
+    [
+     17.0,
+     13.0
+    ],
+    [
+     17.23,
+     11.85
+    ],
+    [
+     17.88,
+     10.88
+    ],
+    [
+     18.85,
+     10.23
+    ],
+    [
+     20.0,
+     10.0
+    ]
+   ],
+   "start": 22.0,
+   "end": 23.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Kick Plate 1500x2100 1",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Kick Plate 1500x2100 1",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Kick Plate 1500x2100 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Kick Plate 1500x2100 2",
+   "points": [
+    [
+     688.0,
+     10.0
+    ],
+    [
+     689.15,
+     10.23
+    ],
+    [
+     690.12,
+     10.88
+    ],
+    [
+     690.77,
+     11.85
+    ],
+    [
+     691.0,
+     13.0
+    ],
+    [
+     691.0,
+     397.0
+    ],
+    [
+     690.77,
+     398.15
+    ],
+    [
+     690.12,
+     399.12
+    ],
+    [
+     689.15,
+     399.77
+    ],
+    [
+     688.0,
+     400.0
+    ],
+    [
+     20.0,
+     400.0
+    ],
+    [
+     18.85,
+     399.77
+    ],
+    [
+     17.88,
+     399.12
+    ],
+    [
+     17.23,
+     398.15
+    ],
+    [
+     17.0,
+     397.0
+    ],
+    [
+     17.0,
+     13.0
+    ],
+    [
+     17.23,
+     11.85
+    ],
+    [
+     17.88,
+     10.88
+    ],
+    [
+     18.85,
+     10.23
+    ],
+    [
+     20.0,
+     10.0
+    ]
+   ],
+   "start": -23.5,
+   "end": -22.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Kick Plate 1500x2100 2",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Kick Plate 1500x2100 2",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Kick Plate 1500x2100 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Floor Spring Cover 1500x2100",
+   "points": [
+    [
+     506.0,
+     -50
+    ],
+    [
+     706.0,
+     -50
+    ],
+    [
+     706.0,
+     50
+    ],
+    [
+     506.0,
+     50
+    ]
+   ],
+   "start": 0,
+   "end": 2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Floor Spring Cover 1500x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Floor Spring Cover 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Floor Spring Cover 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Right Top Pivot 1500x2100",
+   "points": [
+    [
+     675.0,
+     0.0
+    ],
+    [
+     674.31,
+     3.44
+    ],
+    [
+     672.36,
+     6.36
+    ],
+    [
+     669.44,
+     8.31
+    ],
+    [
+     666.0,
+     9.0
+    ],
+    [
+     662.56,
+     8.31
+    ],
+    [
+     659.64,
+     6.36
+    ],
+    [
+     657.69,
+     3.44
+    ],
+    [
+     657.0,
+     0.0
+    ],
+    [
+     657.69,
+     -3.44
+    ],
+    [
+     659.64,
+     -6.36
+    ],
+    [
+     662.56,
+     -8.31
+    ],
+    [
+     666.0,
+     -9.0
+    ],
+    [
+     669.44,
+     -8.31
+    ],
+    [
+     672.36,
+     -6.36
+    ],
+    [
+     674.31,
+     -3.44
+    ]
+   ],
+   "start": 2057.0,
+   "end": 2060.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Right Top Pivot 1500x2100",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Right Top Pivot 1500x2100",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Right Top Pivot 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Finger Guard Left 1500x2100",
+   "points": [
+    [
+     -710.0,
+     -14
+    ],
+    [
+     -706.0,
+     -14
+    ],
+    [
+     -706.0,
+     14
+    ],
+    [
+     -710.0,
+     14
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Finger Guard Left 1500x2100",
    "subcategory": "Seal"
   },
   {
    "op": "set_material_param",
-   "name": "Meeting Brush",
+   "name": "Finger Guard Left 1500x2100",
    "param": "Seal Material"
   },
   {
    "op": "set_visibility",
-   "name": "Meeting Brush",
+   "name": "Finger Guard Left 1500x2100",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Finger Guard Right 1500x2100",
+   "points": [
+    [
+     706.0,
+     -14
+    ],
+    [
+     710.0,
+     -14
+    ],
+    [
+     710.0,
+     14
+    ],
+    [
+     706.0,
+     14
+    ]
+   ],
+   "start": 8,
+   "end": 2057.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Finger Guard Right 1500x2100",
+   "subcategory": "Seal"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Finger Guard Right 1500x2100",
+   "param": "Seal Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Finger Guard Right 1500x2100",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200x2100_DoubleAction",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_DoubleAction/Show 1200x2100_DoubleAction",
+   "type": "1200x2100_DoubleAction",
+   "param": "Show 1200x2100_DoubleAction",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_DoubleAction/Show 1200x2100_DoubleAction",
+   "type": "1500x2100_DoubleAction",
+   "param": "Show 1200x2100_DoubleAction",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1200x2100 1/Visible",
+   "solid": "Frame Jamb 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1200x2100 2/Visible",
+   "solid": "Frame Jamb 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Head 1200x2100/Visible",
+   "solid": "Frame Head 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1200x2100 1/Visible",
+   "solid": "Architrave Jamb Front 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1200x2100 2/Visible",
+   "solid": "Architrave Jamb Front 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1200x2100 1/Visible",
+   "solid": "Architrave Jamb Back 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1200x2100 2/Visible",
+   "solid": "Architrave Jamb Back 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1200x2100 1/Visible",
+   "solid": "Architrave Head 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1200x2100 2/Visible",
+   "solid": "Architrave Head 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Porthole Glass 1200x2100/Visible",
+   "solid": "Left Porthole Glass 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Porthole Ring 1200x2100/Visible",
+   "solid": "Left Porthole Ring 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Lipping 1200x2100 1/Visible",
+   "solid": "Left Leaf Lipping 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Lipping 1200x2100 2/Visible",
+   "solid": "Left Leaf Lipping 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Below 1200x2100/Visible",
+   "solid": "Left Leaf Below 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Left Of Opening 1200x2100/Visible",
+   "solid": "Left Leaf Left Of Opening 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Right Of Opening 1200x2100/Visible",
+   "solid": "Left Leaf Right Of Opening 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Above 1200x2100/Visible",
+   "solid": "Left Leaf Above 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Push Plate 1200x2100 1/Visible",
+   "solid": "Left Push Plate 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Push Plate 1200x2100 2/Visible",
+   "solid": "Left Push Plate 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Kick Plate 1200x2100 1/Visible",
+   "solid": "Left Kick Plate 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Kick Plate 1200x2100 2/Visible",
+   "solid": "Left Kick Plate 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Floor Spring Cover 1200x2100/Visible",
+   "solid": "Left Floor Spring Cover 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Top Pivot 1200x2100/Visible",
+   "solid": "Left Top Pivot 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Porthole Glass 1200x2100/Visible",
+   "solid": "Right Porthole Glass 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Porthole Ring 1200x2100/Visible",
+   "solid": "Right Porthole Ring 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Lipping 1200x2100 1/Visible",
+   "solid": "Right Leaf Lipping 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Lipping 1200x2100 2/Visible",
+   "solid": "Right Leaf Lipping 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Below 1200x2100/Visible",
+   "solid": "Right Leaf Below 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Left Of Opening 1200x2100/Visible",
+   "solid": "Right Leaf Left Of Opening 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Right Of Opening 1200x2100/Visible",
+   "solid": "Right Leaf Right Of Opening 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Above 1200x2100/Visible",
+   "solid": "Right Leaf Above 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Push Plate 1200x2100 1/Visible",
+   "solid": "Right Push Plate 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Push Plate 1200x2100 2/Visible",
+   "solid": "Right Push Plate 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Kick Plate 1200x2100 1/Visible",
+   "solid": "Right Kick Plate 1200x2100 1",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Kick Plate 1200x2100 2/Visible",
+   "solid": "Right Kick Plate 1200x2100 2",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Floor Spring Cover 1200x2100/Visible",
+   "solid": "Right Floor Spring Cover 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Top Pivot 1200x2100/Visible",
+   "solid": "Right Top Pivot 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Finger Guard Left 1200x2100/Visible",
+   "solid": "Finger Guard Left 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Finger Guard Right 1200x2100/Visible",
+   "solid": "Finger Guard Right 1200x2100",
+   "param": "Show 1200x2100_DoubleAction"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500x2100_DoubleAction",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200x2100_DoubleAction/Show 1500x2100_DoubleAction",
+   "type": "1200x2100_DoubleAction",
+   "param": "Show 1500x2100_DoubleAction",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500x2100_DoubleAction/Show 1500x2100_DoubleAction",
+   "type": "1500x2100_DoubleAction",
+   "param": "Show 1500x2100_DoubleAction",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1500x2100 1/Visible",
+   "solid": "Frame Jamb 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Jamb 1500x2100 2/Visible",
+   "solid": "Frame Jamb 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Head 1500x2100/Visible",
+   "solid": "Frame Head 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1500x2100 1/Visible",
+   "solid": "Architrave Jamb Front 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Front 1500x2100 2/Visible",
+   "solid": "Architrave Jamb Front 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1500x2100 1/Visible",
+   "solid": "Architrave Jamb Back 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Jamb Back 1500x2100 2/Visible",
+   "solid": "Architrave Jamb Back 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1500x2100 1/Visible",
+   "solid": "Architrave Head 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Architrave Head 1500x2100 2/Visible",
+   "solid": "Architrave Head 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Porthole Glass 1500x2100/Visible",
+   "solid": "Left Porthole Glass 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Porthole Ring 1500x2100/Visible",
+   "solid": "Left Porthole Ring 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Lipping 1500x2100 1/Visible",
+   "solid": "Left Leaf Lipping 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Lipping 1500x2100 2/Visible",
+   "solid": "Left Leaf Lipping 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Below 1500x2100/Visible",
+   "solid": "Left Leaf Below 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Left Of Opening 1500x2100/Visible",
+   "solid": "Left Leaf Left Of Opening 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Right Of Opening 1500x2100/Visible",
+   "solid": "Left Leaf Right Of Opening 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Leaf Above 1500x2100/Visible",
+   "solid": "Left Leaf Above 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Push Plate 1500x2100 1/Visible",
+   "solid": "Left Push Plate 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Push Plate 1500x2100 2/Visible",
+   "solid": "Left Push Plate 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Kick Plate 1500x2100 1/Visible",
+   "solid": "Left Kick Plate 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Kick Plate 1500x2100 2/Visible",
+   "solid": "Left Kick Plate 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Floor Spring Cover 1500x2100/Visible",
+   "solid": "Left Floor Spring Cover 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Left Top Pivot 1500x2100/Visible",
+   "solid": "Left Top Pivot 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Porthole Glass 1500x2100/Visible",
+   "solid": "Right Porthole Glass 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Porthole Ring 1500x2100/Visible",
+   "solid": "Right Porthole Ring 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Lipping 1500x2100 1/Visible",
+   "solid": "Right Leaf Lipping 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Lipping 1500x2100 2/Visible",
+   "solid": "Right Leaf Lipping 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Below 1500x2100/Visible",
+   "solid": "Right Leaf Below 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Left Of Opening 1500x2100/Visible",
+   "solid": "Right Leaf Left Of Opening 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Right Of Opening 1500x2100/Visible",
+   "solid": "Right Leaf Right Of Opening 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Leaf Above 1500x2100/Visible",
+   "solid": "Right Leaf Above 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Push Plate 1500x2100 1/Visible",
+   "solid": "Right Push Plate 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Push Plate 1500x2100 2/Visible",
+   "solid": "Right Push Plate 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Kick Plate 1500x2100 1/Visible",
+   "solid": "Right Kick Plate 1500x2100 1",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Kick Plate 1500x2100 2/Visible",
+   "solid": "Right Kick Plate 1500x2100 2",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Floor Spring Cover 1500x2100/Visible",
+   "solid": "Right Floor Spring Cover 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Right Top Pivot 1500x2100/Visible",
+   "solid": "Right Top Pivot 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Finger Guard Left 1500x2100/Visible",
+   "solid": "Finger Guard Left 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Finger Guard Right 1500x2100/Visible",
+   "solid": "Finger Guard Right 1500x2100",
+   "param": "Show 1500x2100_DoubleAction"
   },
   {
    "op": "set_type_image",

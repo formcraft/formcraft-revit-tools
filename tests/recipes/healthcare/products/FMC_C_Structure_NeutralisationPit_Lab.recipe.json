@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_C_Structure_NeutralisationPit_Lab",
  "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0: chamber walls, base and cover slab, liner, limestone bed and baffle (Fine, seen in section), cover and frame, sampling chamber with small cover on the outlet, inlet/outlet stubs with connectors, vent with cowl and warning sign. Reference: query: structure neutralisation pit lab structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+neutralisation+pit+lab+structures+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Ground at z = 0: chamber walls, base and cover slab, liner, limestone bed and baffle (Fine, seen in section), cover and frame, sampling chamber with small cover on the outlet, inlet/outlet stubs with connectors, vent with cowl and warning sign. Reference: query: structure neutralisation pit lab structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+neutralisation+pit+lab+structures+hospital; basis: generic product; brand, model and supplier open for review; photo: https://mifab.com/Catalog/Library/MI-NEUT.pdf; photo_title: MI-NEUT neutralization tank (MIFAB); photo_kind: datasheet",
  "ops": [
   {
    "op": "set_category",
@@ -115,6 +115,13 @@
    "value": "P.TRT_01"
   },
   {
+   "op": "set_type_value",
+   "name": "1000x1000_Neutralisation/URL",
+   "type": "1000x1000_Neutralisation",
+   "param": "URL",
+   "value": "https://mifab.com/Catalog/Library/MI-NEUT.pdf"
+  },
+  {
    "op": "add_subcategory",
    "name": "Conc",
    "color": [
@@ -181,9 +188,9 @@
    "op": "add_subcategory",
    "name": "Ci",
    "color": [
-    34,
-    36,
-    38
+    35,
+    35,
+    35
    ],
    "line_weight_projection": 1
   },
@@ -195,7 +202,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_BurglarBar_Steel",
+   "name": "FMC_Metal_DuctileIron_Black",
    "param": "Ci Material"
   },
   {
@@ -242,24 +249,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Yellow",
+   "name": "Safety",
    "color": [
-    242,
-    194,
-    48
+    245,
+    196,
+    0
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Yellow Material",
+   "name": "Safety Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
+   "name": "FMC_Paint_Safety_Yellow",
+   "param": "Safety Material"
   },
   {
    "op": "add_subcategory",
@@ -1806,12 +1813,12 @@
   {
    "op": "set_subcategory",
    "name": "Chemical Warning Sign",
-   "subcategory": "Yellow"
+   "subcategory": "Safety"
   },
   {
    "op": "set_material_param",
    "name": "Chemical Warning Sign",
-   "param": "Yellow Material"
+   "param": "Safety Material"
   },
   {
    "op": "set_visibility",

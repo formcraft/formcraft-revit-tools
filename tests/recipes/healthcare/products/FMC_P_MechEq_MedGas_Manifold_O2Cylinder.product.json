@@ -1,7 +1,7 @@
 {
  "family": "FMC_P_MechEq_MedGas_Manifold_O2Cylinder",
  "category": "Mechanical Equipment",
- "desc": "Automatic oxygen cylinder manifold, 2 x 5 J-size cylinders, wall-mounted control cabinet with bank and line pressure gauges, changeover indication, headers with pigtails, cylinder restraint rails",
+ "desc": "Automatic oxygen cylinder manifold, J-size cylinders in two banks (2 x 5 or 2 x 10), wall-mounted control cabinet with bank and line pressure gauges, changeover indication, headers with pigtails, cylinder restraint rails",
  "ifc": "IfcUnitaryEquipment",
  "keynote": "P.MGP_00",
  "types": [
@@ -18,7 +18,7 @@
   "white": "FMC_Plastic_ABS_White",
   "black": "FMC_Plastic_ABS_Black",
   "led_green": "FMC_Plastic_LED_Green",
-  "yellow": "FMC_Plastic_ABS_Yellow",
+  "led_amber": "FMC_Plastic_LED_Amber",
   "copper": "FMC_Metal_Copper_Pipe",
   "brass": "FMC_Metal_Brass_Polished",
   "painted_steel": "FMC_Metal_SteelLTZ_Painted",
@@ -27,12 +27,14 @@
  "reference": {
   "query": "medical gas manifold o2cylinder mechanical equipment hospital",
   "images": "https://www.google.com/search?tbm=isch&q=medical+gas+manifold+o2cylinder+mechanical+equipment+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.medicalexpo.com/prod/schoenn-medizintechnik/product-101255-1054812.html",
+  "photo_title": "Schoenn medical gas manifold AMS 3000",
+  "photo_kind": "supplier"
  },
  "parts": [
   {
    "n": "Control Cabinet",
-   "shape": "box",
    "at": [
     -260,
     -180,
@@ -42,11 +44,11 @@
     1500
    ],
    "mat": "epoxy_white",
-   "r": 8
+   "r": 8,
+   "shape": "box"
   },
   {
    "n": "Cabinet Door",
-   "shape": "fbox",
    "at": [
     -250,
     -186,
@@ -55,44 +57,44 @@
     -180,
     1490
    ],
+   "lod": "f",
    "mat": "epoxy_white",
    "r": 6,
-   "lod": "f"
+   "shape": "fbox"
   },
   {
    "n": "Bank A Gauge Case",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -150,
     1380
    ],
+   "mat": "chrome",
    "r": 45,
+   "shape": "cyl",
    "y": [
     -211,
     -186
-   ],
-   "mat": "chrome"
+   ]
   },
   {
    "n": "Bank A Gauge Dial",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -150,
     1380
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 41,
+   "shape": "cyl",
    "y": [
     -213,
     -211
-   ],
-   "mat": "white",
-   "lod": "f"
+   ]
   },
   {
    "n": "Bank A Gauge Needle",
-   "shape": "box",
    "at": [
     -151.5,
     -215,
@@ -101,43 +103,43 @@
     -213,
     1382
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box"
   },
   {
    "n": "Bank B Gauge Case",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     150,
     1380
    ],
+   "mat": "chrome",
    "r": 45,
+   "shape": "cyl",
    "y": [
     -211,
     -186
-   ],
-   "mat": "chrome"
+   ]
   },
   {
    "n": "Bank B Gauge Dial",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     150,
     1380
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 41,
+   "shape": "cyl",
    "y": [
     -213,
     -211
-   ],
-   "mat": "white",
-   "lod": "f"
+   ]
   },
   {
    "n": "Bank B Gauge Needle",
-   "shape": "box",
    "at": [
     148.5,
     -215,
@@ -146,43 +148,43 @@
     -213,
     1382
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box"
   },
   {
    "n": "Line Gauge Case",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     0,
     1250
    ],
+   "mat": "chrome",
    "r": 40,
+   "shape": "cyl",
    "y": [
     -211,
     -186
-   ],
-   "mat": "chrome"
+   ]
   },
   {
    "n": "Line Gauge Dial",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     0,
     1250
    ],
+   "lod": "f",
+   "mat": "white",
    "r": 36,
+   "shape": "cyl",
    "y": [
     -213,
     -211
-   ],
-   "mat": "white",
-   "lod": "f"
+   ]
   },
   {
    "n": "Line Gauge Needle",
-   "shape": "box",
    "at": [
     -1.5,
     -215,
@@ -191,64 +193,66 @@
     -213,
     1252
    ],
+   "lod": "f",
    "mat": "black",
-   "lod": "f"
+   "shape": "box"
   },
   {
    "n": "Duty A LED",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     -150,
     1110
    ],
+   "lod": "f",
+   "mat": "led_green",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -190,
     -186
-   ],
-   "mat": "led_green",
-   "lod": "f"
+   ]
   },
   {
    "n": "Duty B LED",
-   "shape": "cyl",
    "axis": "y",
    "c": [
     150,
     1110
    ],
+   "lod": "f",
+   "mat": "led_amber",
    "r": 8,
+   "shape": "cyl",
    "y": [
     -190,
     -186
-   ],
-   "mat": "yellow",
-   "lod": "f"
+   ]
   },
   {
    "n": "Outlet Pipe",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     0,
     -90
    ],
+   "mat": "copper",
    "r": 11,
+   "shape": "cyl",
    "z": [
     1500,
     1800
-   ],
-   "mat": "copper"
+   ]
   },
   {
    "n": "Outlet Band",
-   "shape": "turn",
    "axis": "z",
    "c": [
     0,
     -90
    ],
+   "lod": "f",
+   "mat": "white",
    "profile": [
     [
      11,
@@ -267,42 +271,40 @@
      1720
     ]
    ],
-   "mat": "white",
-   "lod": "f"
+   "shape": "turn"
   },
   {
    "n": "Header A",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -200,
     1650
    ],
+   "mat": "brass",
    "r": 12,
+   "shape": "cyl",
    "x": [
     -1650,
     -260
-   ],
-   "mat": "brass"
+   ]
   },
   {
    "n": "Header B",
-   "shape": "cyl",
    "axis": "x",
    "c": [
     -200,
     1650
    ],
+   "mat": "brass",
    "r": 12,
+   "shape": "cyl",
    "x": [
     260,
     1650
-   ],
-   "mat": "brass"
+   ]
   },
   {
    "n": "Restraint Rail A",
-   "shape": "box",
    "at": [
     -1700,
     -60,
@@ -311,11 +313,11 @@
     -20,
     1100
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box"
   },
   {
    "n": "Restraint Rail B",
-   "shape": "box",
    "at": [
     500,
     -60,
@@ -324,39 +326,40 @@
     -20,
     1100
    ],
-   "mat": "painted_steel"
+   "mat": "painted_steel",
+   "shape": "box"
   },
   {
    "n": "Cylinder A",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     -1600,
     -200
    ],
-   "r": 115,
-   "z": [
-    0,
-    1250
-   ],
    "mat": "gloss_black",
+   "r": 115,
    "repeat": {
-    "n": 5,
     "d": [
      250,
      0,
      0
-    ]
-   }
+    ],
+    "n": 5
+   },
+   "shape": "cyl",
+   "z": [
+    0,
+    1250
+   ]
   },
   {
    "n": "Shoulder A",
-   "shape": "turn",
    "axis": "z",
    "c": [
     -1600,
     -200
    ],
+   "mat": "white",
    "profile": [
     [
      0,
@@ -379,94 +382,201 @@
      1385
     ]
    ],
-   "mat": "white",
    "repeat": {
-    "n": 5,
     "d": [
      250,
      0,
      0
-    ]
-   }
+    ],
+    "n": 5
+   },
+   "shape": "turn"
   },
   {
-   "n": "Cylinder Valve A",
-   "shape": "cyl",
+   "n": "Valve and Pigtail A",
    "axis": "z",
    "c": [
     -1600,
     -200
-   ],
-   "r": 22,
-   "z": [
-    1385,
-    1470
    ],
    "mat": "brass",
+   "profile": [
+    [
+     0,
+     1385
+    ],
+    [
+     22,
+     1385
+    ],
+    [
+     22,
+     1470
+    ],
+    [
+     5,
+     1470
+    ],
+    [
+     5,
+     1650
+    ],
+    [
+     0,
+     1650
+    ]
+   ],
    "repeat": {
-    "n": 5,
     "d": [
      250,
      0,
      0
-    ]
-   }
-  },
-  {
-   "n": "Pigtail A",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    -1600,
-    -200
-   ],
-   "r": 5,
-   "z": [
-    1470,
-    1650
-   ],
-   "mat": "copper",
-   "lod": "f",
-   "repeat": {
-    "n": 5,
-    "d": [
-     250,
-     0,
-     0
-    ]
-   }
+    ],
+    "n": 5
+   },
+   "shape": "turn"
   },
   {
    "n": "Cylinder B",
-   "shape": "cyl",
    "axis": "z",
    "c": [
     600,
     -200
    ],
+   "mat": "gloss_black",
    "r": 115,
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "cyl",
+   "z": [
+    0,
+    1250
+   ]
+  },
+  {
+   "n": "Shoulder B",
+   "axis": "z",
+   "c": [
+    600,
+    -200
+   ],
+   "mat": "white",
+   "profile": [
+    [
+     0,
+     1250
+    ],
+    [
+     115,
+     1250
+    ],
+    [
+     100,
+     1330
+    ],
+    [
+     45,
+     1380
+    ],
+    [
+     0,
+     1385
+    ]
+   ],
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "turn"
+  },
+  {
+   "n": "Valve and Pigtail B",
+   "axis": "z",
+   "c": [
+    600,
+    -200
+   ],
+   "mat": "brass",
+   "profile": [
+    [
+     0,
+     1385
+    ],
+    [
+     22,
+     1385
+    ],
+    [
+     22,
+     1470
+    ],
+    [
+     5,
+     1470
+    ],
+    [
+     5,
+     1650
+    ],
+    [
+     0,
+     1650
+    ]
+   ],
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "turn"
+  },
+  {
+   "n": "Reserve Cylinder A",
+   "axis": "z",
+   "c": [
+    -1600,
+    -460
+   ],
+   "mat": "gloss_black",
+   "r": 115,
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "cyl",
    "z": [
     0,
     1250
    ],
-   "mat": "gloss_black",
-   "repeat": {
-    "n": 5,
-    "d": [
-     250,
-     0,
-     0
-    ]
-   }
+   "only": [
+    "2x10_Auto"
+   ]
   },
   {
-   "n": "Shoulder B",
-   "shape": "turn",
+   "n": "Reserve Shoulder A",
    "axis": "z",
    "c": [
-    600,
-    -200
+    -1600,
+    -460
    ],
+   "mat": "white",
    "profile": [
     [
      0,
@@ -485,66 +595,107 @@
      1380
     ],
     [
-     0,
+     22,
      1385
+    ],
+    [
+     22,
+     1470
+    ],
+    [
+     0,
+     1470
     ]
+   ],
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "turn",
+   "only": [
+    "2x10_Auto"
+   ]
+  },
+  {
+   "n": "Reserve Cylinder B",
+   "axis": "z",
+   "c": [
+    600,
+    -460
+   ],
+   "mat": "gloss_black",
+   "r": 115,
+   "repeat": {
+    "d": [
+     250,
+     0,
+     0
+    ],
+    "n": 5
+   },
+   "shape": "cyl",
+   "z": [
+    0,
+    1250
+   ],
+   "only": [
+    "2x10_Auto"
+   ]
+  },
+  {
+   "n": "Reserve Shoulder B",
+   "axis": "z",
+   "c": [
+    600,
+    -460
    ],
    "mat": "white",
+   "profile": [
+    [
+     0,
+     1250
+    ],
+    [
+     115,
+     1250
+    ],
+    [
+     100,
+     1330
+    ],
+    [
+     45,
+     1380
+    ],
+    [
+     22,
+     1385
+    ],
+    [
+     22,
+     1470
+    ],
+    [
+     0,
+     1470
+    ]
+   ],
    "repeat": {
-    "n": 5,
     "d": [
      250,
      0,
      0
-    ]
-   }
-  },
-  {
-   "n": "Cylinder Valve B",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    600,
-    -200
-   ],
-   "r": 22,
-   "z": [
-    1385,
-    1470
-   ],
-   "mat": "brass",
-   "repeat": {
-    "n": 5,
-    "d": [
-     250,
-     0,
-     0
-    ]
-   }
-  },
-  {
-   "n": "Pigtail B",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    600,
-    -200
-   ],
-   "r": 5,
-   "z": [
-    1470,
-    1650
-   ],
-   "mat": "copper",
-   "lod": "f",
-   "repeat": {
-    "n": 5,
-    "d": [
-     250,
-     0,
-     0
-    ]
-   }
+    ],
+    "n": 5
+   },
+   "shape": "turn",
+   "only": [
+    "2x10_Auto"
+   ]
   }
  ],
  "connectors": [
@@ -566,8 +717,8 @@
   }
  ],
  "values": {
-  "2 x 5 J cylinders (230 dia x 1385 mm)": {
-   "value": "2x5 J",
+  "J cylinders 230 dia x 1470 mm": {
+   "value": "J",
    "source_status": "assumed",
    "source": "BS EN ISO 7396-1 / HTM 02-01 manifold"
   },
@@ -582,7 +733,7 @@
    "source": "typical product, to confirm with the supplier"
   }
  },
- "about": "Manifold modelled as a generic product: control cabinet and door, bank and line gauges, duty LEDs, outlet pipe with white band, two brass headers, restraint rails, per bank five black cylinders with white shoulders, valves and pigtails. 2 x 5 drawn; 2 x 10 shares it.",
+ "about": "Manifold modelled as a generic product: control cabinet and door, bank and line gauges, duty LEDs, outlet pipe with white band, two brass headers, restraint rails, per bank black cylinders with white shoulders and a brass valve-and-pigtail. Per type: 2 x 5 has one row of five per bank on the headers; 2 x 10 adds a second row of five per bank in front, swapped onto the headers at changeover.",
  "template": "Metric Mechanical Equipment.rft",
  "type_values": {
   "Voltage": 240,

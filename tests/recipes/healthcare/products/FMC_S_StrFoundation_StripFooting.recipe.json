@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_StrFoundation_StripFooting",
  "template": "Metric Generic Model.rft",
- "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible. Reference: query: str foundation strip footing structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+strip+footing+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: str foundation strip footing structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+strip+footing+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.infrabuild.com/reinforcing/products/reinforcing-bar/footing-cages/; photo_title: Footing cages (InfraBuild); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -358,6 +358,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "600_Strip/URL",
+   "type": "600_Strip",
+   "param": "URL",
+   "value": "https://www.infrabuild.com/reinforcing/products/reinforcing-bar/footing-cages/"
+  },
+  {
    "op": "add_type",
    "name": "900_Strip"
   },
@@ -425,6 +432,34 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "900_Strip/URL",
+   "type": "900_Strip",
+   "param": "URL",
+   "value": "https://www.infrabuild.com/reinforcing/products/reinforcing-bar/footing-cages/"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    242
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Paint_RoadMarking_White",
+   "param": "White Material"
+  },
+  {
    "op": "add_subcategory",
    "name": "Blind",
    "color": [
@@ -468,27 +503,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    242
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Paint_RoadMarking_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -503,22 +517,22 @@
    "points": [
     [
      -1500,
-     -350
+     -500
     ],
     [
      1500,
-     -350
+     -500
     ],
     [
      1500,
-     350
+     500
     ],
     [
      -1500,
-     350
+     500
     ]
    ],
-   "start": -250,
+   "start": -300,
    "end": 1
   },
   {
@@ -535,7 +549,89 @@
   },
   {
    "op": "extrusion",
-   "name": "Blinding",
+   "name": "Wall Setting-out Line",
+   "points": [
+    [
+     -1500,
+     -100
+    ],
+    [
+     1500,
+     -100
+    ],
+    [
+     1500,
+     -95
+    ],
+    [
+     -1500,
+     -95
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Setting-out Line",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Setting-out Line",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Setting-out Line",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Setting-out Line Back",
+   "points": [
+    [
+     -1500,
+     95
+    ],
+    [
+     1500,
+     95
+    ],
+    [
+     1500,
+     100
+    ],
+    [
+     -1500,
+     100
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Setting-out Line Back",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Setting-out Line Back",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Setting-out Line Back",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding 600",
    "points": [
     [
      -1500,
@@ -559,24 +655,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Blinding",
+   "name": "Blinding 600",
    "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Blinding",
+   "name": "Blinding 600",
    "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Blinding",
+   "name": "Blinding 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Strip",
+   "name": "Strip 600",
    "points": [
     [
      -1500,
@@ -600,102 +696,166 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Strip",
+   "name": "Strip 600",
    "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Strip",
+   "name": "Strip 600",
    "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Strip",
+   "name": "Strip 600",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Setting-out Line",
+   "name": "Blinding 900",
    "points": [
     [
      -1500,
-     -100
+     -500
     ],
     [
      1500,
-     -100
+     -500
     ],
     [
      1500,
-     -95
+     500
     ],
     [
      -1500,
-     -95
+     500
     ]
    ],
-   "start": 0,
-   "end": 1
+   "start": -300,
+   "end": -250
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Setting-out Line",
-   "subcategory": "White"
+   "name": "Blinding 900",
+   "subcategory": "Blind"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Setting-out Line",
-   "param": "White Material"
+   "name": "Blinding 900",
+   "param": "Blind Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Setting-out Line",
+   "name": "Blinding 900",
    "coarse": false,
-   "medium": false,
+   "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Setting-out Line Back",
+   "name": "Strip 900",
    "points": [
     [
      -1500,
-     95
+     -450
     ],
     [
      1500,
-     95
+     -450
     ],
     [
      1500,
-     100
+     450
     ],
     [
      -1500,
-     100
+     450
     ]
    ],
-   "start": 0,
-   "end": 1
+   "start": -250,
+   "end": 0
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Setting-out Line Back",
-   "subcategory": "White"
+   "name": "Strip 900",
+   "subcategory": "Conc"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Setting-out Line Back",
-   "param": "White Material"
+   "name": "Strip 900",
+   "param": "Conc Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Setting-out Line Back",
+   "name": "Strip 900",
    "coarse": false,
-   "medium": false,
+   "medium": true,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600_Strip",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/Show 600_Strip",
+   "type": "600_Strip",
+   "param": "Show 600_Strip",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/Show 600_Strip",
+   "type": "900_Strip",
+   "param": "Show 600_Strip",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding 600/Visible",
+   "solid": "Blinding 600",
+   "param": "Show 600_Strip"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Strip 600/Visible",
+   "solid": "Strip 600",
+   "param": "Show 600_Strip"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 900_Strip",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/Show 900_Strip",
+   "type": "600_Strip",
+   "param": "Show 900_Strip",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/Show 900_Strip",
+   "type": "900_Strip",
+   "param": "Show 900_Strip",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Blinding 900/Visible",
+   "solid": "Blinding 900",
+   "param": "Show 900_Strip"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Strip 900/Visible",
+   "solid": "Strip 900",
+   "param": "Show 900_Strip"
   },
   {
    "op": "set_type_image",
@@ -704,8 +864,8 @@
   }
  ],
  "values": {
-  "Strip 600 x 200 mm (geometry)": {
-   "value": "600x200",
+  "Strips 600 x 200 and 900 x 250 mm (one per type)": {
+   "value": "600x200/900x250",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },

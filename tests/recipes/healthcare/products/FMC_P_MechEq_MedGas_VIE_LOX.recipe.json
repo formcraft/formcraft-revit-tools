@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_MechEq_MedGas_VIE_LOX",
  "template": "Metric Mechanical Equipment.rft",
- "about": "VIE modelled as a generic product: plinth, vessel with dished heads and four legs, valve manifold with safety valves, top vent, liquid line, three star-finned vaporisers with headers, supply pipe, fill cabinet with coupling, hazard label, contents and pressure gauges; the BCGA CP 36 separation zone as a Clearance Operation solid. 1500 l drawn; 3000 l shares it. Reference: query: medical gas vie lox mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+vie+lox+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "VIE modelled as a generic product: plinth, vessel with dished heads and four legs, valve manifold with safety valves, top vent, liquid line, three star-finned vaporisers with headers, supply pipe, fill cabinet with coupling, hazard label, contents and pressure gauges; the BCGA CP 36 separation zone as a Clearance Operation solid. Per type: 3000 l is the 1500 l installation scaled 1.26 (1810 dia x 4540 mm vessel). Reference: query: medical gas vie lox mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+vie+lox+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.praxair.co.in/industries/healthcare/medical-gases-supply/conventional-mode-for-oxygen-ip; photo_title: Praxair conventional mode for oxygen (liquid oxygen tank supply); photo_kind: other",
  "ops": [
   {
    "op": "set_category",
@@ -424,6 +424,13 @@
    "value": "P"
   },
   {
+   "op": "set_type_value",
+   "name": "1500L_VIE/URL",
+   "type": "1500L_VIE",
+   "param": "URL",
+   "value": "https://www.praxair.co.in/industries/healthcare/medical-gases-supply/conventional-mode-for-oxygen-ip"
+  },
+  {
    "op": "add_type",
    "name": "3000L_VIE"
   },
@@ -489,6 +496,13 @@
    "type": "3000L_VIE",
    "param": "FMC_Role_Code",
    "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000L_VIE/URL",
+   "type": "3000L_VIE",
+   "param": "URL",
+   "value": "https://www.praxair.co.in/industries/healthcare/medical-gases-supply/conventional-mode-for-oxygen-ip"
   },
   {
    "op": "add_subcategory",
@@ -597,24 +611,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Aluminium",
+   "name": "Fin Coil",
    "color": [
-    192,
-    192,
-    192
+    169,
+    178,
+    184
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Aluminium Material",
+   "name": "Fin Coil Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Aluminium Material"
+   "name": "FMC_Metal_Aluminium_FinCoil",
+   "param": "Fin Coil Material"
   },
   {
    "op": "add_subcategory",
@@ -746,24 +760,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -1300,
-     -1300
+     -1638.0,
+     -1638.0
     ],
     [
-     2900,
-     -1300
+     3654.0,
+     -1638.0
     ],
     [
-     2900,
-     1300
+     3654.0,
+     1638.0
     ],
     [
-     -1300,
-     1300
+     -1638.0,
+     1638.0
     ]
    ],
    "start": 0,
-   "end": 3800
+   "end": 4788.0
   },
   {
    "op": "set_subcategory",
@@ -779,7 +793,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Plinth",
+   "name": "Plinth 1500L",
    "points": [
     [
      -1300,
@@ -803,24 +817,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Plinth",
+   "name": "Plinth 1500L",
    "subcategory": "Concrete"
   },
   {
    "op": "set_material_param",
-   "name": "Plinth",
+   "name": "Plinth 1500L",
    "param": "Concrete Material"
   },
   {
    "op": "set_visibility",
-   "name": "Plinth",
+   "name": "Plinth 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vessel Shell",
+   "name": "Vessel Shell 1500L",
    "points": [
     [
      720.0,
@@ -924,24 +938,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vessel Shell",
+   "name": "Vessel Shell 1500L",
    "subcategory": "Epoxy White"
   },
   {
    "op": "set_material_param",
-   "name": "Vessel Shell",
+   "name": "Vessel Shell 1500L",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vessel Shell",
+   "name": "Vessel Shell 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Vessel Top Head",
+   "name": "Vessel Top Head 1500L",
    "profile": [
     [
      0,
@@ -973,19 +987,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Vessel Top Head",
+   "name": "Vessel Top Head 1500L",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vessel Top Head",
+   "name": "Vessel Top Head 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Vessel Bottom Head",
+   "name": "Vessel Bottom Head 1500L",
    "profile": [
     [
      0,
@@ -1017,19 +1031,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Vessel Bottom Head",
+   "name": "Vessel Bottom Head 1500L",
    "param": "Epoxy White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vessel Bottom Head",
+   "name": "Vessel Bottom Head 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Front 1",
+   "name": "Leg Front 1500L 1",
    "points": [
     [
      -560,
@@ -1053,24 +1067,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Front 1",
+   "name": "Leg Front 1500L 1",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Front 1",
+   "name": "Leg Front 1500L 1",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Front 1",
+   "name": "Leg Front 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Front 2",
+   "name": "Leg Front 1500L 2",
    "points": [
     [
      480,
@@ -1094,24 +1108,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Front 2",
+   "name": "Leg Front 1500L 2",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Front 2",
+   "name": "Leg Front 1500L 2",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Front 2",
+   "name": "Leg Front 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Back 1",
+   "name": "Leg Back 1500L 1",
    "points": [
     [
      -560,
@@ -1135,24 +1149,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Back 1",
+   "name": "Leg Back 1500L 1",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Back 1",
+   "name": "Leg Back 1500L 1",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Back 1",
+   "name": "Leg Back 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Leg Back 2",
+   "name": "Leg Back 1500L 2",
    "points": [
     [
      480,
@@ -1176,24 +1190,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Leg Back 2",
+   "name": "Leg Back 1500L 2",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Leg Back 2",
+   "name": "Leg Back 1500L 2",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Leg Back 2",
+   "name": "Leg Back 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Valve Manifold",
+   "name": "Valve Manifold 1500L",
    "points": [
     [
      -300,
@@ -1217,24 +1231,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Valve Manifold",
+   "name": "Valve Manifold 1500L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Valve Manifold",
+   "name": "Valve Manifold 1500L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Valve Manifold",
+   "name": "Valve Manifold 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Safety Valve 1",
+   "name": "Safety Valve 1500L 1",
    "points": [
     [
      -185.0,
@@ -1338,24 +1352,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Safety Valve 1",
+   "name": "Safety Valve 1500L 1",
    "subcategory": "Brass"
   },
   {
    "op": "set_material_param",
-   "name": "Safety Valve 1",
+   "name": "Safety Valve 1500L 1",
    "param": "Brass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Safety Valve 1",
+   "name": "Safety Valve 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Safety Valve 2",
+   "name": "Safety Valve 1500L 2",
    "points": [
     [
      215.0,
@@ -1459,24 +1473,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Safety Valve 2",
+   "name": "Safety Valve 1500L 2",
    "subcategory": "Brass"
   },
   {
    "op": "set_material_param",
-   "name": "Safety Valve 2",
+   "name": "Safety Valve 1500L 2",
    "param": "Brass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Safety Valve 2",
+   "name": "Safety Valve 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Top Vent",
+   "name": "Top Vent 1500L",
    "points": [
     [
      25.0,
@@ -1580,24 +1594,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Top Vent",
+   "name": "Top Vent 1500L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Top Vent",
+   "name": "Top Vent 1500L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Top Vent",
+   "name": "Top Vent 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Liquid Line",
+   "name": "Liquid Line 1500L",
    "points": [
     [
      -752.0,
@@ -1702,24 +1716,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Liquid Line",
+   "name": "Liquid Line 1500L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Liquid Line",
+   "name": "Liquid Line 1500L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Liquid Line",
+   "name": "Liquid Line 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin A 1",
+   "name": "Vaporiser Fin A 1500L 1",
    "points": [
     [
      1450,
@@ -1743,24 +1757,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin A 1",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin A 1500L 1",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin A 1",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin A 1500L 1",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin A 1",
+   "name": "Vaporiser Fin A 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin A 2",
+   "name": "Vaporiser Fin A 1500L 2",
    "points": [
     [
      1870,
@@ -1784,24 +1798,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin A 2",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin A 1500L 2",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin A 2",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin A 1500L 2",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin A 2",
+   "name": "Vaporiser Fin A 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin A 3",
+   "name": "Vaporiser Fin A 1500L 3",
    "points": [
     [
      2290,
@@ -1825,24 +1839,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin A 3",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin A 1500L 3",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin A 3",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin A 1500L 3",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin A 3",
+   "name": "Vaporiser Fin A 1500L 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin B 1",
+   "name": "Vaporiser Fin B 1500L 1",
    "points": [
     [
      1590,
@@ -1866,24 +1880,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin B 1",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin B 1500L 1",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin B 1",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin B 1500L 1",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin B 1",
+   "name": "Vaporiser Fin B 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin B 2",
+   "name": "Vaporiser Fin B 1500L 2",
    "points": [
     [
      2010,
@@ -1907,24 +1921,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin B 2",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin B 1500L 2",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin B 2",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin B 1500L 2",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin B 2",
+   "name": "Vaporiser Fin B 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Fin B 3",
+   "name": "Vaporiser Fin B 1500L 3",
    "points": [
     [
      2430,
@@ -1948,24 +1962,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Fin B 3",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Fin B 1500L 3",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Fin B 3",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Fin B 1500L 3",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Fin B 3",
+   "name": "Vaporiser Fin B 1500L 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Core 1",
+   "name": "Vaporiser Core 1500L 1",
    "points": [
     [
      1635.0,
@@ -2069,24 +2083,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Core 1",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Core 1500L 1",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Core 1",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Core 1500L 1",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Core 1",
+   "name": "Vaporiser Core 1500L 1",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Core 2",
+   "name": "Vaporiser Core 1500L 2",
    "points": [
     [
      2055.0,
@@ -2190,24 +2204,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Core 2",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Core 1500L 2",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Core 2",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Core 1500L 2",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Core 2",
+   "name": "Vaporiser Core 1500L 2",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Core 3",
+   "name": "Vaporiser Core 1500L 3",
    "points": [
     [
      2475.0,
@@ -2311,24 +2325,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Core 3",
-   "subcategory": "Aluminium"
+   "name": "Vaporiser Core 1500L 3",
+   "subcategory": "Fin Coil"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Core 3",
-   "param": "Aluminium Material"
+   "name": "Vaporiser Core 1500L 3",
+   "param": "Fin Coil Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Core 3",
+   "name": "Vaporiser Core 1500L 3",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Header Bottom",
+   "name": "Vaporiser Header Bottom 1500L",
    "points": [
     [
      1450,
@@ -2352,24 +2366,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Header Bottom",
+   "name": "Vaporiser Header Bottom 1500L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Header Bottom",
+   "name": "Vaporiser Header Bottom 1500L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Header Bottom",
+   "name": "Vaporiser Header Bottom 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vaporiser Header Top",
+   "name": "Vaporiser Header Top 1500L",
    "points": [
     [
      1450,
@@ -2393,24 +2407,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vaporiser Header Top",
+   "name": "Vaporiser Header Top 1500L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Vaporiser Header Top",
+   "name": "Vaporiser Header Top 1500L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vaporiser Header Top",
+   "name": "Vaporiser Header Top 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Supply Pipe",
+   "name": "Supply Pipe 1500L",
    "points": [
     [
      18.0,
@@ -2515,24 +2529,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Supply Pipe",
+   "name": "Supply Pipe 1500L",
    "subcategory": "Copper"
   },
   {
    "op": "set_material_param",
-   "name": "Supply Pipe",
+   "name": "Supply Pipe 1500L",
    "param": "Copper Material"
   },
   {
    "op": "set_visibility",
-   "name": "Supply Pipe",
+   "name": "Supply Pipe 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fill Cabinet",
+   "name": "Fill Cabinet 1500L",
    "points": [
     [
      -856.0,
@@ -2620,24 +2634,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fill Cabinet",
+   "name": "Fill Cabinet 1500L",
    "subcategory": "Painted Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Fill Cabinet",
+   "name": "Fill Cabinet 1500L",
    "param": "Painted Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fill Cabinet",
+   "name": "Fill Cabinet 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Fill Coupling",
+   "name": "Fill Coupling 1500L",
    "points": [
     [
      -1100,
@@ -2662,24 +2676,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Fill Coupling",
+   "name": "Fill Coupling 1500L",
    "subcategory": "Brass"
   },
   {
    "op": "set_material_param",
-   "name": "Fill Coupling",
+   "name": "Fill Coupling 1500L",
    "param": "Brass Material"
   },
   {
    "op": "set_visibility",
-   "name": "Fill Coupling",
+   "name": "Fill Coupling 1500L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hazard Label",
+   "name": "Hazard Label 1500L",
    "points": [
     [
      -300,
@@ -2704,24 +2718,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hazard Label",
+   "name": "Hazard Label 1500L",
    "subcategory": "Yellow"
   },
   {
    "op": "set_material_param",
-   "name": "Hazard Label",
+   "name": "Hazard Label 1500L",
    "param": "Yellow Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hazard Label",
+   "name": "Hazard Label 1500L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Contents Gauge Case",
+   "name": "Contents Gauge Case 1500L",
    "points": [
     [
      -90.0,
@@ -2826,24 +2840,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Contents Gauge Case",
+   "name": "Contents Gauge Case 1500L",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Contents Gauge Case",
+   "name": "Contents Gauge Case 1500L",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Contents Gauge Case",
+   "name": "Contents Gauge Case 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Contents Gauge Dial",
+   "name": "Contents Gauge Dial 1500L",
    "points": [
     [
      -94.0,
@@ -2948,24 +2962,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Contents Gauge Dial",
+   "name": "Contents Gauge Dial 1500L",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Contents Gauge Dial",
+   "name": "Contents Gauge Dial 1500L",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Contents Gauge Dial",
+   "name": "Contents Gauge Dial 1500L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Contents Gauge Needle",
+   "name": "Contents Gauge Needle 1500L",
    "points": [
     [
      -151.5,
@@ -2989,24 +3003,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Contents Gauge Needle",
+   "name": "Contents Gauge Needle 1500L",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Contents Gauge Needle",
+   "name": "Contents Gauge Needle 1500L",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Contents Gauge Needle",
+   "name": "Contents Gauge Needle 1500L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pressure Gauge Case",
+   "name": "Pressure Gauge Case 1500L",
    "points": [
     [
      210.0,
@@ -3111,24 +3125,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pressure Gauge Case",
+   "name": "Pressure Gauge Case 1500L",
    "subcategory": "Chrome"
   },
   {
    "op": "set_material_param",
-   "name": "Pressure Gauge Case",
+   "name": "Pressure Gauge Case 1500L",
    "param": "Chrome Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pressure Gauge Case",
+   "name": "Pressure Gauge Case 1500L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pressure Gauge Dial",
+   "name": "Pressure Gauge Dial 1500L",
    "points": [
     [
      206.0,
@@ -3233,24 +3247,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pressure Gauge Dial",
+   "name": "Pressure Gauge Dial 1500L",
    "subcategory": "White"
   },
   {
    "op": "set_material_param",
-   "name": "Pressure Gauge Dial",
+   "name": "Pressure Gauge Dial 1500L",
    "param": "White Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pressure Gauge Dial",
+   "name": "Pressure Gauge Dial 1500L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Pressure Gauge Needle",
+   "name": "Pressure Gauge Needle 1500L",
    "points": [
     [
      148.5,
@@ -3274,17 +3288,2529 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Pressure Gauge Needle",
+   "name": "Pressure Gauge Needle 1500L",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Pressure Gauge Needle",
+   "name": "Pressure Gauge Needle 1500L",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Pressure Gauge Needle",
+   "name": "Pressure Gauge Needle 1500L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plinth 3000L",
+   "points": [
+    [
+     -1638.0,
+     -1638.0
+    ],
+    [
+     3654.0,
+     -1638.0
+    ],
+    [
+     3654.0,
+     1638.0
+    ],
+    [
+     -1638.0,
+     1638.0
+    ]
+   ],
+   "start": 0.0,
+   "end": 189.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plinth 3000L",
+   "subcategory": "Concrete"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plinth 3000L",
+   "param": "Concrete Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plinth 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vessel Shell 3000L",
+   "points": [
+    [
+     907.2,
+     0.0
+    ],
+    [
+     876.29,
+     234.8
+    ],
+    [
+     785.66,
+     453.6
+    ],
+    [
+     641.49,
+     641.49
+    ],
+    [
+     453.6,
+     785.66
+    ],
+    [
+     234.8,
+     876.29
+    ],
+    [
+     0.0,
+     907.2
+    ],
+    [
+     -234.8,
+     876.29
+    ],
+    [
+     -453.6,
+     785.66
+    ],
+    [
+     -641.49,
+     641.49
+    ],
+    [
+     -785.66,
+     453.6
+    ],
+    [
+     -876.29,
+     234.8
+    ],
+    [
+     -907.2,
+     0.0
+    ],
+    [
+     -876.29,
+     -234.8
+    ],
+    [
+     -785.66,
+     -453.6
+    ],
+    [
+     -641.49,
+     -641.49
+    ],
+    [
+     -453.6,
+     -785.66
+    ],
+    [
+     -234.8,
+     -876.29
+    ],
+    [
+     -0.0,
+     -907.2
+    ],
+    [
+     234.8,
+     -876.29
+    ],
+    [
+     453.6,
+     -785.66
+    ],
+    [
+     641.49,
+     -641.49
+    ],
+    [
+     785.66,
+     -453.6
+    ],
+    [
+     876.29,
+     -234.8
+    ]
+   ],
+   "start": 970.2,
+   "end": 4384.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vessel Shell 3000L",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vessel Shell 3000L",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vessel Shell 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vessel Top Head 3000L",
+   "profile": [
+    [
+     0.0,
+     4384.8
+    ],
+    [
+     907.2,
+     4384.8
+    ],
+    [
+     771.1,
+     4483.1
+    ],
+    [
+     362.9,
+     4536.0
+    ],
+    [
+     0.0,
+     4536.0
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vessel Top Head 3000L",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vessel Top Head 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Vessel Bottom Head 3000L",
+   "profile": [
+    [
+     0.0,
+     819.0
+    ],
+    [
+     362.9,
+     819.0
+    ],
+    [
+     771.1,
+     917.3
+    ],
+    [
+     907.2,
+     970.2
+    ],
+    [
+     0.0,
+     970.2
+    ]
+   ],
+   "axis_at": [
+    0.0,
+    0.0
+   ],
+   "axis": "z",
+   "subcategory": "Epoxy White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vessel Bottom Head 3000L",
+   "param": "Epoxy White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vessel Bottom Head 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Front 3000L 1",
+   "points": [
+    [
+     -705.6,
+     -705.6
+    ],
+    [
+     -604.8,
+     -705.6
+    ],
+    [
+     -604.8,
+     -604.8
+    ],
+    [
+     -705.6,
+     -604.8
+    ]
+   ],
+   "start": 189.0,
+   "end": 1134.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Front 3000L 1",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Front 3000L 1",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Front 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Front 3000L 2",
+   "points": [
+    [
+     604.8000000000001,
+     -705.6
+    ],
+    [
+     705.6000000000001,
+     -705.6
+    ],
+    [
+     705.6000000000001,
+     -604.8
+    ],
+    [
+     604.8000000000001,
+     -604.8
+    ]
+   ],
+   "start": 189.0,
+   "end": 1134.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Front 3000L 2",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Front 3000L 2",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Front 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Back 3000L 1",
+   "points": [
+    [
+     -705.6,
+     604.8
+    ],
+    [
+     -604.8,
+     604.8
+    ],
+    [
+     -604.8,
+     705.6
+    ],
+    [
+     -705.6,
+     705.6
+    ]
+   ],
+   "start": 189.0,
+   "end": 1134.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Back 3000L 1",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Back 3000L 1",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Back 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Back 3000L 2",
+   "points": [
+    [
+     604.8000000000001,
+     604.8
+    ],
+    [
+     705.6000000000001,
+     604.8
+    ],
+    [
+     705.6000000000001,
+     705.6
+    ],
+    [
+     604.8000000000001,
+     705.6
+    ]
+   ],
+   "start": 189.0,
+   "end": 1134.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Back 3000L 2",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Back 3000L 2",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Back 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Valve Manifold 3000L",
+   "points": [
+    [
+     -378.0,
+     -1033.2
+    ],
+    [
+     378.0,
+     -1033.2
+    ],
+    [
+     378.0,
+     -907.2
+    ],
+    [
+     -378.0,
+     -907.2
+    ]
+   ],
+   "start": 1260.0,
+   "end": 1890.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Valve Manifold 3000L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Valve Manifold 3000L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Valve Manifold 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Safety Valve 3000L 1",
+   "points": [
+    [
+     -233.1,
+     -970.2
+    ],
+    [
+     -233.74,
+     -965.31
+    ],
+    [
+     -235.63,
+     -960.75
+    ],
+    [
+     -238.64,
+     -956.84
+    ],
+    [
+     -242.55,
+     -953.83
+    ],
+    [
+     -247.11,
+     -951.94
+    ],
+    [
+     -252.0,
+     -951.3
+    ],
+    [
+     -256.89,
+     -951.94
+    ],
+    [
+     -261.45,
+     -953.83
+    ],
+    [
+     -265.36,
+     -956.84
+    ],
+    [
+     -268.37,
+     -960.75
+    ],
+    [
+     -270.26,
+     -965.31
+    ],
+    [
+     -270.9,
+     -970.2
+    ],
+    [
+     -270.26,
+     -975.09
+    ],
+    [
+     -268.37,
+     -979.65
+    ],
+    [
+     -265.36,
+     -983.56
+    ],
+    [
+     -261.45,
+     -986.57
+    ],
+    [
+     -256.89,
+     -988.46
+    ],
+    [
+     -252.0,
+     -989.1
+    ],
+    [
+     -247.11,
+     -988.46
+    ],
+    [
+     -242.55,
+     -986.57
+    ],
+    [
+     -238.64,
+     -983.56
+    ],
+    [
+     -235.63,
+     -979.65
+    ],
+    [
+     -233.74,
+     -975.09
+    ]
+   ],
+   "start": 1890.0,
+   "end": 2041.2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Safety Valve 3000L 1",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Safety Valve 3000L 1",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Safety Valve 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Safety Valve 3000L 2",
+   "points": [
+    [
+     270.9,
+     -970.2
+    ],
+    [
+     270.26,
+     -965.31
+    ],
+    [
+     268.37,
+     -960.75
+    ],
+    [
+     265.36,
+     -956.84
+    ],
+    [
+     261.45,
+     -953.83
+    ],
+    [
+     256.89,
+     -951.94
+    ],
+    [
+     252.0,
+     -951.3
+    ],
+    [
+     247.11,
+     -951.94
+    ],
+    [
+     242.55,
+     -953.83
+    ],
+    [
+     238.64,
+     -956.84
+    ],
+    [
+     235.63,
+     -960.75
+    ],
+    [
+     233.74,
+     -965.31
+    ],
+    [
+     233.1,
+     -970.2
+    ],
+    [
+     233.74,
+     -975.09
+    ],
+    [
+     235.63,
+     -979.65
+    ],
+    [
+     238.64,
+     -983.56
+    ],
+    [
+     242.55,
+     -986.57
+    ],
+    [
+     247.11,
+     -988.46
+    ],
+    [
+     252.0,
+     -989.1
+    ],
+    [
+     256.89,
+     -988.46
+    ],
+    [
+     261.45,
+     -986.57
+    ],
+    [
+     265.36,
+     -983.56
+    ],
+    [
+     268.37,
+     -979.65
+    ],
+    [
+     270.26,
+     -975.09
+    ]
+   ],
+   "start": 1890.0,
+   "end": 2041.2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Safety Valve 3000L 2",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Safety Valve 3000L 2",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Safety Valve 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Vent 3000L",
+   "points": [
+    [
+     31.5,
+     0.0
+    ],
+    [
+     30.43,
+     8.15
+    ],
+    [
+     27.28,
+     15.75
+    ],
+    [
+     22.27,
+     22.27
+    ],
+    [
+     15.75,
+     27.28
+    ],
+    [
+     8.15,
+     30.43
+    ],
+    [
+     0.0,
+     31.5
+    ],
+    [
+     -8.15,
+     30.43
+    ],
+    [
+     -15.75,
+     27.28
+    ],
+    [
+     -22.27,
+     22.27
+    ],
+    [
+     -27.28,
+     15.75
+    ],
+    [
+     -30.43,
+     8.15
+    ],
+    [
+     -31.5,
+     0.0
+    ],
+    [
+     -30.43,
+     -8.15
+    ],
+    [
+     -27.28,
+     -15.75
+    ],
+    [
+     -22.27,
+     -22.27
+    ],
+    [
+     -15.75,
+     -27.28
+    ],
+    [
+     -8.15,
+     -30.43
+    ],
+    [
+     -0.0,
+     -31.5
+    ],
+    [
+     8.15,
+     -30.43
+    ],
+    [
+     15.75,
+     -27.28
+    ],
+    [
+     22.27,
+     -22.27
+    ],
+    [
+     27.28,
+     -15.75
+    ],
+    [
+     30.43,
+     -8.15
+    ]
+   ],
+   "start": 4536.0,
+   "end": 4788.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Vent 3000L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Vent 3000L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Vent 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Liquid Line 3000L",
+   "points": [
+    [
+     -947.5,
+     1386.0
+    ],
+    [
+     -948.27,
+     1391.88
+    ],
+    [
+     -950.54,
+     1397.35
+    ],
+    [
+     -954.15,
+     1402.05
+    ],
+    [
+     -958.85,
+     1405.66
+    ],
+    [
+     -964.32,
+     1407.93
+    ],
+    [
+     -970.2,
+     1408.7
+    ],
+    [
+     -976.08,
+     1407.93
+    ],
+    [
+     -981.55,
+     1405.66
+    ],
+    [
+     -986.25,
+     1402.05
+    ],
+    [
+     -989.86,
+     1397.35
+    ],
+    [
+     -992.13,
+     1391.88
+    ],
+    [
+     -992.9,
+     1386.0
+    ],
+    [
+     -992.13,
+     1380.12
+    ],
+    [
+     -989.86,
+     1374.65
+    ],
+    [
+     -986.25,
+     1369.95
+    ],
+    [
+     -981.55,
+     1366.34
+    ],
+    [
+     -976.08,
+     1364.07
+    ],
+    [
+     -970.2,
+     1363.3
+    ],
+    [
+     -964.32,
+     1364.07
+    ],
+    [
+     -958.85,
+     1366.34
+    ],
+    [
+     -954.15,
+     1369.95
+    ],
+    [
+     -950.54,
+     1374.65
+    ],
+    [
+     -948.27,
+     1380.12
+    ]
+   ],
+   "start": 378.0,
+   "end": 2016.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Liquid Line 3000L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Liquid Line 3000L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Liquid Line 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin A 3000L 1",
+   "points": [
+    [
+     1827.0,
+     -12.6
+    ],
+    [
+     2205.0,
+     -12.6
+    ],
+    [
+     2205.0,
+     12.6
+    ],
+    [
+     1827.0,
+     12.6
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin A 3000L 1",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin A 3000L 1",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin A 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin A 3000L 2",
+   "points": [
+    [
+     2356.2,
+     -12.6
+    ],
+    [
+     2734.2,
+     -12.6
+    ],
+    [
+     2734.2,
+     12.6
+    ],
+    [
+     2356.2,
+     12.6
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin A 3000L 2",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin A 3000L 2",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin A 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin A 3000L 3",
+   "points": [
+    [
+     2885.4,
+     -12.6
+    ],
+    [
+     3263.4,
+     -12.6
+    ],
+    [
+     3263.4,
+     12.6
+    ],
+    [
+     2885.4,
+     12.6
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin A 3000L 3",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin A 3000L 3",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin A 3000L 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin B 3000L 1",
+   "points": [
+    [
+     2003.4,
+     -189.0
+    ],
+    [
+     2028.6,
+     -189.0
+    ],
+    [
+     2028.6,
+     189.0
+    ],
+    [
+     2003.4,
+     189.0
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin B 3000L 1",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin B 3000L 1",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin B 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin B 3000L 2",
+   "points": [
+    [
+     2532.6000000000004,
+     -189.0
+    ],
+    [
+     2557.8,
+     -189.0
+    ],
+    [
+     2557.8,
+     189.0
+    ],
+    [
+     2532.6000000000004,
+     189.0
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin B 3000L 2",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin B 3000L 2",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin B 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Fin B 3000L 3",
+   "points": [
+    [
+     3061.8,
+     -189.0
+    ],
+    [
+     3087.0,
+     -189.0
+    ],
+    [
+     3087.0,
+     189.0
+    ],
+    [
+     3061.8,
+     189.0
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Fin B 3000L 3",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Fin B 3000L 3",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Fin B 3000L 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Core 3000L 1",
+   "points": [
+    [
+     2060.1,
+     0.0
+    ],
+    [
+     2058.6,
+     11.41
+    ],
+    [
+     2054.19,
+     22.05
+    ],
+    [
+     2047.18,
+     31.18
+    ],
+    [
+     2038.05,
+     38.19
+    ],
+    [
+     2027.41,
+     42.6
+    ],
+    [
+     2016.0,
+     44.1
+    ],
+    [
+     2004.59,
+     42.6
+    ],
+    [
+     1993.95,
+     38.19
+    ],
+    [
+     1984.82,
+     31.18
+    ],
+    [
+     1977.81,
+     22.05
+    ],
+    [
+     1973.4,
+     11.41
+    ],
+    [
+     1971.9,
+     0.0
+    ],
+    [
+     1973.4,
+     -11.41
+    ],
+    [
+     1977.81,
+     -22.05
+    ],
+    [
+     1984.82,
+     -31.18
+    ],
+    [
+     1993.95,
+     -38.19
+    ],
+    [
+     2004.59,
+     -42.6
+    ],
+    [
+     2016.0,
+     -44.1
+    ],
+    [
+     2027.41,
+     -42.6
+    ],
+    [
+     2038.05,
+     -38.19
+    ],
+    [
+     2047.18,
+     -31.18
+    ],
+    [
+     2054.19,
+     -22.05
+    ],
+    [
+     2058.6,
+     -11.41
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Core 3000L 1",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Core 3000L 1",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Core 3000L 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Core 3000L 2",
+   "points": [
+    [
+     2589.3,
+     0.0
+    ],
+    [
+     2587.8,
+     11.41
+    ],
+    [
+     2583.39,
+     22.05
+    ],
+    [
+     2576.38,
+     31.18
+    ],
+    [
+     2567.25,
+     38.19
+    ],
+    [
+     2556.61,
+     42.6
+    ],
+    [
+     2545.2,
+     44.1
+    ],
+    [
+     2533.79,
+     42.6
+    ],
+    [
+     2523.15,
+     38.19
+    ],
+    [
+     2514.02,
+     31.18
+    ],
+    [
+     2507.01,
+     22.05
+    ],
+    [
+     2502.6,
+     11.41
+    ],
+    [
+     2501.1,
+     0.0
+    ],
+    [
+     2502.6,
+     -11.41
+    ],
+    [
+     2507.01,
+     -22.05
+    ],
+    [
+     2514.02,
+     -31.18
+    ],
+    [
+     2523.15,
+     -38.19
+    ],
+    [
+     2533.79,
+     -42.6
+    ],
+    [
+     2545.2,
+     -44.1
+    ],
+    [
+     2556.61,
+     -42.6
+    ],
+    [
+     2567.25,
+     -38.19
+    ],
+    [
+     2576.38,
+     -31.18
+    ],
+    [
+     2583.39,
+     -22.05
+    ],
+    [
+     2587.8,
+     -11.41
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Core 3000L 2",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Core 3000L 2",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Core 3000L 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Core 3000L 3",
+   "points": [
+    [
+     3118.5,
+     0.0
+    ],
+    [
+     3117.0,
+     11.41
+    ],
+    [
+     3112.59,
+     22.05
+    ],
+    [
+     3105.58,
+     31.18
+    ],
+    [
+     3096.45,
+     38.19
+    ],
+    [
+     3085.81,
+     42.6
+    ],
+    [
+     3074.4,
+     44.1
+    ],
+    [
+     3062.99,
+     42.6
+    ],
+    [
+     3052.35,
+     38.19
+    ],
+    [
+     3043.22,
+     31.18
+    ],
+    [
+     3036.21,
+     22.05
+    ],
+    [
+     3031.8,
+     11.41
+    ],
+    [
+     3030.3,
+     0.0
+    ],
+    [
+     3031.8,
+     -11.41
+    ],
+    [
+     3036.21,
+     -22.05
+    ],
+    [
+     3043.22,
+     -31.18
+    ],
+    [
+     3052.35,
+     -38.19
+    ],
+    [
+     3062.99,
+     -42.6
+    ],
+    [
+     3074.4,
+     -44.1
+    ],
+    [
+     3085.81,
+     -42.6
+    ],
+    [
+     3096.45,
+     -38.19
+    ],
+    [
+     3105.58,
+     -31.18
+    ],
+    [
+     3112.59,
+     -22.05
+    ],
+    [
+     3117.0,
+     -11.41
+    ]
+   ],
+   "start": 378.0,
+   "end": 3780.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Core 3000L 3",
+   "subcategory": "Fin Coil"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Core 3000L 3",
+   "param": "Fin Coil Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Core 3000L 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Header Bottom 3000L",
+   "points": [
+    [
+     1827.0,
+     -50.4
+    ],
+    [
+     3263.4,
+     -50.4
+    ],
+    [
+     3263.4,
+     50.4
+    ],
+    [
+     1827.0,
+     50.4
+    ]
+   ],
+   "start": 277.2,
+   "end": 378.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Header Bottom 3000L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Header Bottom 3000L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Header Bottom 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vaporiser Header Top 3000L",
+   "points": [
+    [
+     1827.0,
+     -50.4
+    ],
+    [
+     3263.4,
+     -50.4
+    ],
+    [
+     3263.4,
+     50.4
+    ],
+    [
+     1827.0,
+     50.4
+    ]
+   ],
+   "start": 3780.0,
+   "end": 3880.8
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vaporiser Header Top 3000L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vaporiser Header Top 3000L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vaporiser Header Top 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Pipe 3000L",
+   "points": [
+    [
+     22.7,
+     3276.0
+    ],
+    [
+     21.93,
+     3281.88
+    ],
+    [
+     19.66,
+     3287.35
+    ],
+    [
+     16.05,
+     3292.05
+    ],
+    [
+     11.35,
+     3295.66
+    ],
+    [
+     5.88,
+     3297.93
+    ],
+    [
+     0.0,
+     3298.7
+    ],
+    [
+     -5.88,
+     3297.93
+    ],
+    [
+     -11.35,
+     3295.66
+    ],
+    [
+     -16.05,
+     3292.05
+    ],
+    [
+     -19.66,
+     3287.35
+    ],
+    [
+     -21.93,
+     3281.88
+    ],
+    [
+     -22.7,
+     3276.0
+    ],
+    [
+     -21.93,
+     3270.12
+    ],
+    [
+     -19.66,
+     3264.65
+    ],
+    [
+     -16.05,
+     3259.95
+    ],
+    [
+     -11.35,
+     3256.34
+    ],
+    [
+     -5.88,
+     3254.07
+    ],
+    [
+     -0.0,
+     3253.3
+    ],
+    [
+     5.88,
+     3254.07
+    ],
+    [
+     11.35,
+     3256.34
+    ],
+    [
+     16.05,
+     3259.95
+    ],
+    [
+     19.66,
+     3264.65
+    ],
+    [
+     21.93,
+     3270.12
+    ]
+   ],
+   "start": 3263.4,
+   "end": 3654.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Pipe 3000L",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Pipe 3000L",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Pipe 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fill Cabinet 3000L",
+   "points": [
+    [
+     -1078.6,
+     -1575.0
+    ],
+    [
+     -1075.69,
+     -1574.42
+    ],
+    [
+     -1073.23,
+     -1572.77
+    ],
+    [
+     -1071.58,
+     -1570.31
+    ],
+    [
+     -1071.0,
+     -1567.4
+    ],
+    [
+     -1071.0,
+     -1204.6
+    ],
+    [
+     -1071.58,
+     -1201.69
+    ],
+    [
+     -1073.23,
+     -1199.23
+    ],
+    [
+     -1075.69,
+     -1197.58
+    ],
+    [
+     -1078.6,
+     -1197.0
+    ],
+    [
+     -1567.4,
+     -1197.0
+    ],
+    [
+     -1570.31,
+     -1197.58
+    ],
+    [
+     -1572.77,
+     -1199.23
+    ],
+    [
+     -1574.42,
+     -1201.69
+    ],
+    [
+     -1575.0,
+     -1204.6
+    ],
+    [
+     -1575.0,
+     -1567.4
+    ],
+    [
+     -1574.42,
+     -1570.31
+    ],
+    [
+     -1572.77,
+     -1572.77
+    ],
+    [
+     -1570.31,
+     -1574.42
+    ],
+    [
+     -1567.4,
+     -1575.0
+    ]
+   ],
+   "start": 189.0,
+   "end": 1323.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fill Cabinet 3000L",
+   "subcategory": "Painted Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fill Cabinet 3000L",
+   "param": "Painted Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fill Cabinet 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Fill Coupling 3000L",
+   "points": [
+    [
+     -1386.0,
+     819.0
+    ],
+    [
+     -1260.0,
+     819.0
+    ],
+    [
+     -1260.0,
+     945.0
+    ],
+    [
+     -1386.0,
+     945.0
+    ]
+   ],
+   "start": 1575.0,
+   "end": 1590.1,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Fill Coupling 3000L",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fill Coupling 3000L",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fill Coupling 3000L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hazard Label 3000L",
+   "points": [
+    [
+     -378.0,
+     2520.0
+    ],
+    [
+     378.0,
+     2520.0
+    ],
+    [
+     378.0,
+     2898.0
+    ],
+    [
+     -378.0,
+     2898.0
+    ]
+   ],
+   "start": 902.2,
+   "end": 909.7,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hazard Label 3000L",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hazard Label 3000L",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hazard Label 3000L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Contents Gauge Case 3000L",
+   "points": [
+    [
+     -113.4,
+     2142.0
+    ],
+    [
+     -115.98,
+     2161.57
+    ],
+    [
+     -123.53,
+     2179.8
+    ],
+    [
+     -135.54,
+     2195.46
+    ],
+    [
+     -151.2,
+     2207.47
+    ],
+    [
+     -169.43,
+     2215.02
+    ],
+    [
+     -189.0,
+     2217.6
+    ],
+    [
+     -208.57,
+     2215.02
+    ],
+    [
+     -226.8,
+     2207.47
+    ],
+    [
+     -242.46,
+     2195.46
+    ],
+    [
+     -254.47,
+     2179.8
+    ],
+    [
+     -262.02,
+     2161.57
+    ],
+    [
+     -264.6,
+     2142.0
+    ],
+    [
+     -262.02,
+     2122.43
+    ],
+    [
+     -254.47,
+     2104.2
+    ],
+    [
+     -242.46,
+     2088.54
+    ],
+    [
+     -226.8,
+     2076.53
+    ],
+    [
+     -208.57,
+     2068.98
+    ],
+    [
+     -189.0,
+     2066.4
+    ],
+    [
+     -169.43,
+     2068.98
+    ],
+    [
+     -151.2,
+     2076.53
+    ],
+    [
+     -135.54,
+     2088.54
+    ],
+    [
+     -123.53,
+     2104.2
+    ],
+    [
+     -115.98,
+     2122.43
+    ]
+   ],
+   "start": 1033.2,
+   "end": 1064.7,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Contents Gauge Case 3000L",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Contents Gauge Case 3000L",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Contents Gauge Case 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Contents Gauge Dial 3000L",
+   "points": [
+    [
+     -118.4,
+     2142.0
+    ],
+    [
+     -120.81,
+     2160.27
+    ],
+    [
+     -127.86,
+     2177.3
+    ],
+    [
+     -139.08,
+     2191.92
+    ],
+    [
+     -153.7,
+     2203.14
+    ],
+    [
+     -170.73,
+     2210.19
+    ],
+    [
+     -189.0,
+     2212.6
+    ],
+    [
+     -207.27,
+     2210.19
+    ],
+    [
+     -224.3,
+     2203.14
+    ],
+    [
+     -238.92,
+     2191.92
+    ],
+    [
+     -250.14,
+     2177.3
+    ],
+    [
+     -257.19,
+     2160.27
+    ],
+    [
+     -259.6,
+     2142.0
+    ],
+    [
+     -257.19,
+     2123.73
+    ],
+    [
+     -250.14,
+     2106.7
+    ],
+    [
+     -238.92,
+     2092.08
+    ],
+    [
+     -224.3,
+     2080.86
+    ],
+    [
+     -207.27,
+     2073.81
+    ],
+    [
+     -189.0,
+     2071.4
+    ],
+    [
+     -170.73,
+     2073.81
+    ],
+    [
+     -153.7,
+     2080.86
+    ],
+    [
+     -139.08,
+     2092.08
+    ],
+    [
+     -127.86,
+     2106.7
+    ],
+    [
+     -120.81,
+     2123.73
+    ]
+   ],
+   "start": 1064.7,
+   "end": 1067.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Contents Gauge Dial 3000L",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Contents Gauge Dial 3000L",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Contents Gauge Dial 3000L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Contents Gauge Needle 3000L",
+   "points": [
+    [
+     -190.9,
+     -1069.7
+    ],
+    [
+     -143.6,
+     -1069.7
+    ],
+    [
+     -143.6,
+     -1067.2
+    ],
+    [
+     -190.9,
+     -1067.2
+    ]
+   ],
+   "start": 2139.5,
+   "end": 2144.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Contents Gauge Needle 3000L",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Contents Gauge Needle 3000L",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Contents Gauge Needle 3000L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pressure Gauge Case 3000L",
+   "points": [
+    [
+     264.6,
+     2142.0
+    ],
+    [
+     262.02,
+     2161.57
+    ],
+    [
+     254.47,
+     2179.8
+    ],
+    [
+     242.46,
+     2195.46
+    ],
+    [
+     226.8,
+     2207.47
+    ],
+    [
+     208.57,
+     2215.02
+    ],
+    [
+     189.0,
+     2217.6
+    ],
+    [
+     169.43,
+     2215.02
+    ],
+    [
+     151.2,
+     2207.47
+    ],
+    [
+     135.54,
+     2195.46
+    ],
+    [
+     123.53,
+     2179.8
+    ],
+    [
+     115.98,
+     2161.57
+    ],
+    [
+     113.4,
+     2142.0
+    ],
+    [
+     115.98,
+     2122.43
+    ],
+    [
+     123.53,
+     2104.2
+    ],
+    [
+     135.54,
+     2088.54
+    ],
+    [
+     151.2,
+     2076.53
+    ],
+    [
+     169.43,
+     2068.98
+    ],
+    [
+     189.0,
+     2066.4
+    ],
+    [
+     208.57,
+     2068.98
+    ],
+    [
+     226.8,
+     2076.53
+    ],
+    [
+     242.46,
+     2088.54
+    ],
+    [
+     254.47,
+     2104.2
+    ],
+    [
+     262.02,
+     2122.43
+    ]
+   ],
+   "start": 1033.2,
+   "end": 1064.7,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pressure Gauge Case 3000L",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pressure Gauge Case 3000L",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pressure Gauge Case 3000L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pressure Gauge Dial 3000L",
+   "points": [
+    [
+     259.6,
+     2142.0
+    ],
+    [
+     257.19,
+     2160.27
+    ],
+    [
+     250.14,
+     2177.3
+    ],
+    [
+     238.92,
+     2191.92
+    ],
+    [
+     224.3,
+     2203.14
+    ],
+    [
+     207.27,
+     2210.19
+    ],
+    [
+     189.0,
+     2212.6
+    ],
+    [
+     170.73,
+     2210.19
+    ],
+    [
+     153.7,
+     2203.14
+    ],
+    [
+     139.08,
+     2191.92
+    ],
+    [
+     127.86,
+     2177.3
+    ],
+    [
+     120.81,
+     2160.27
+    ],
+    [
+     118.4,
+     2142.0
+    ],
+    [
+     120.81,
+     2123.73
+    ],
+    [
+     127.86,
+     2106.7
+    ],
+    [
+     139.08,
+     2092.08
+    ],
+    [
+     153.7,
+     2080.86
+    ],
+    [
+     170.73,
+     2073.81
+    ],
+    [
+     189.0,
+     2071.4
+    ],
+    [
+     207.27,
+     2073.81
+    ],
+    [
+     224.3,
+     2080.86
+    ],
+    [
+     238.92,
+     2092.08
+    ],
+    [
+     250.14,
+     2106.7
+    ],
+    [
+     257.19,
+     2123.73
+    ]
+   ],
+   "start": 1064.7,
+   "end": 1067.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pressure Gauge Dial 3000L",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pressure Gauge Dial 3000L",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pressure Gauge Dial 3000L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pressure Gauge Needle 3000L",
+   "points": [
+    [
+     187.1,
+     -1069.7
+    ],
+    [
+     234.4,
+     -1069.7
+    ],
+    [
+     234.4,
+     -1067.2
+    ],
+    [
+     187.1,
+     -1067.2
+    ]
+   ],
+   "start": 2139.5,
+   "end": 2144.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pressure Gauge Needle 3000L",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pressure Gauge Needle 3000L",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pressure Gauge Needle 3000L",
    "coarse": false,
    "medium": false,
    "fine": true
@@ -3326,11 +5852,459 @@
    "fine": true
   },
   {
+   "op": "add_family_param",
+   "name": "Show 1500L_VIE",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500L_VIE/Show 1500L_VIE",
+   "type": "1500L_VIE",
+   "param": "Show 1500L_VIE",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000L_VIE/Show 1500L_VIE",
+   "type": "3000L_VIE",
+   "param": "Show 1500L_VIE",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 1500L/Visible",
+   "solid": "Plinth 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Shell 1500L/Visible",
+   "solid": "Vessel Shell 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Top Head 1500L/Visible",
+   "solid": "Vessel Top Head 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Bottom Head 1500L/Visible",
+   "solid": "Vessel Bottom Head 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Front 1500L 1/Visible",
+   "solid": "Leg Front 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Front 1500L 2/Visible",
+   "solid": "Leg Front 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 1500L 1/Visible",
+   "solid": "Leg Back 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 1500L 2/Visible",
+   "solid": "Leg Back 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Valve Manifold 1500L/Visible",
+   "solid": "Valve Manifold 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Valve 1500L 1/Visible",
+   "solid": "Safety Valve 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Valve 1500L 2/Visible",
+   "solid": "Safety Valve 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Vent 1500L/Visible",
+   "solid": "Top Vent 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Liquid Line 1500L/Visible",
+   "solid": "Liquid Line 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 1500L 1/Visible",
+   "solid": "Vaporiser Fin A 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 1500L 2/Visible",
+   "solid": "Vaporiser Fin A 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 1500L 3/Visible",
+   "solid": "Vaporiser Fin A 1500L 3",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 1500L 1/Visible",
+   "solid": "Vaporiser Fin B 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 1500L 2/Visible",
+   "solid": "Vaporiser Fin B 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 1500L 3/Visible",
+   "solid": "Vaporiser Fin B 1500L 3",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 1500L 1/Visible",
+   "solid": "Vaporiser Core 1500L 1",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 1500L 2/Visible",
+   "solid": "Vaporiser Core 1500L 2",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 1500L 3/Visible",
+   "solid": "Vaporiser Core 1500L 3",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Header Bottom 1500L/Visible",
+   "solid": "Vaporiser Header Bottom 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Header Top 1500L/Visible",
+   "solid": "Vaporiser Header Top 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Pipe 1500L/Visible",
+   "solid": "Supply Pipe 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Cabinet 1500L/Visible",
+   "solid": "Fill Cabinet 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Coupling 1500L/Visible",
+   "solid": "Fill Coupling 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hazard Label 1500L/Visible",
+   "solid": "Hazard Label 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Case 1500L/Visible",
+   "solid": "Contents Gauge Case 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Dial 1500L/Visible",
+   "solid": "Contents Gauge Dial 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Needle 1500L/Visible",
+   "solid": "Contents Gauge Needle 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Case 1500L/Visible",
+   "solid": "Pressure Gauge Case 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Dial 1500L/Visible",
+   "solid": "Pressure Gauge Dial 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Needle 1500L/Visible",
+   "solid": "Pressure Gauge Needle 1500L",
+   "param": "Show 1500L_VIE"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 3000L_VIE",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500L_VIE/Show 3000L_VIE",
+   "type": "1500L_VIE",
+   "param": "Show 3000L_VIE",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "3000L_VIE/Show 3000L_VIE",
+   "type": "3000L_VIE",
+   "param": "Show 3000L_VIE",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plinth 3000L/Visible",
+   "solid": "Plinth 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Shell 3000L/Visible",
+   "solid": "Vessel Shell 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Top Head 3000L/Visible",
+   "solid": "Vessel Top Head 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vessel Bottom Head 3000L/Visible",
+   "solid": "Vessel Bottom Head 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Front 3000L 1/Visible",
+   "solid": "Leg Front 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Front 3000L 2/Visible",
+   "solid": "Leg Front 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 3000L 1/Visible",
+   "solid": "Leg Back 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Leg Back 3000L 2/Visible",
+   "solid": "Leg Back 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Valve Manifold 3000L/Visible",
+   "solid": "Valve Manifold 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Valve 3000L 1/Visible",
+   "solid": "Safety Valve 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Safety Valve 3000L 2/Visible",
+   "solid": "Safety Valve 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Top Vent 3000L/Visible",
+   "solid": "Top Vent 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Liquid Line 3000L/Visible",
+   "solid": "Liquid Line 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 3000L 1/Visible",
+   "solid": "Vaporiser Fin A 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 3000L 2/Visible",
+   "solid": "Vaporiser Fin A 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin A 3000L 3/Visible",
+   "solid": "Vaporiser Fin A 3000L 3",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 3000L 1/Visible",
+   "solid": "Vaporiser Fin B 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 3000L 2/Visible",
+   "solid": "Vaporiser Fin B 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Fin B 3000L 3/Visible",
+   "solid": "Vaporiser Fin B 3000L 3",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 3000L 1/Visible",
+   "solid": "Vaporiser Core 3000L 1",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 3000L 2/Visible",
+   "solid": "Vaporiser Core 3000L 2",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Core 3000L 3/Visible",
+   "solid": "Vaporiser Core 3000L 3",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Header Bottom 3000L/Visible",
+   "solid": "Vaporiser Header Bottom 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vaporiser Header Top 3000L/Visible",
+   "solid": "Vaporiser Header Top 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Supply Pipe 3000L/Visible",
+   "solid": "Supply Pipe 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Cabinet 3000L/Visible",
+   "solid": "Fill Cabinet 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Fill Coupling 3000L/Visible",
+   "solid": "Fill Coupling 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hazard Label 3000L/Visible",
+   "solid": "Hazard Label 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Case 3000L/Visible",
+   "solid": "Contents Gauge Case 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Dial 3000L/Visible",
+   "solid": "Contents Gauge Dial 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Contents Gauge Needle 3000L/Visible",
+   "solid": "Contents Gauge Needle 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Case 3000L/Visible",
+   "solid": "Pressure Gauge Case 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Dial 3000L/Visible",
+   "solid": "Pressure Gauge Dial 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pressure Gauge Needle 3000L/Visible",
+   "solid": "Pressure Gauge Needle 3000L",
+   "param": "Show 3000L_VIE"
+  },
+  {
    "op": "add_connector",
    "name": "O2",
    "domain": "pipe",
    "system": "Other",
-   "solid": "Supply Pipe",
+   "solid": "Supply Pipe 1500L",
    "side": "right",
    "diameter": 28,
    "flow": "Out"

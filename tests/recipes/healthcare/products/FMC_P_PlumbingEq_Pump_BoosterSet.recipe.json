@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_Pump_BoosterSet",
  "template": "Metric Generic Model.rft",
- "about": "Booster set modelled as a generic product: base frame, two pumps (foot, sleeve, head, motor stool, motor, fan cowl, terminal box), suction and discharge headers with branches, check valves and isolators with levers, gauge, red membrane vessel on legs, control panel on a stand with screen, LEDs and isolator. Reference: query: pump booster set plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=pump+booster+set+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Booster set modelled as a generic product: base frame, two pumps (foot, sleeve, head, motor stool, motor, fan cowl, terminal box), suction and discharge headers with branches, check valves and isolators with levers, gauge, red membrane vessel on legs, control panel on a stand with screen, LEDs and isolator. Reference: query: pump booster set plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=pump+booster+set+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.anglianpumping.com/?p=222037; photo_title: Calpeda IMAT 2MXH Twin Pump Booster Set; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -140,6 +140,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "2x2.2kW_DutyStandby/URL",
+   "type": "2x2.2kW_DutyStandby",
+   "param": "URL",
+   "value": "https://www.anglianpumping.com/?p=222037"
+  },
+  {
+   "op": "set_type_value",
    "name": "2x2.2kW_DutyStandby/Voltage",
    "type": "2x2.2kW_DutyStandby",
    "param": "Voltage",
@@ -203,24 +210,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Blue",
+   "name": "Motor Blue",
    "color": [
-    47,
-    109,
-    181
+    31,
+    78,
+    140
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Blue Material",
+   "name": "Motor Blue Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Blue",
-   "param": "Blue Material"
+   "name": "FMC_Metal_Steel_Painted_MotorBlue",
+   "param": "Motor Blue Material"
   },
   {
    "op": "add_subcategory",
@@ -329,6 +336,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Painted Red",
+   "color": [
+    198,
+    40,
+    40
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Painted Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_Painted_Red",
+   "param": "Painted Red Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Epoxy White",
    "color": [
     237,
@@ -347,6 +375,27 @@
    "op": "add_material",
    "name": "FMC_Metal_Steel_EpoxyCoated_White",
    "param": "Epoxy White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
   },
   {
    "op": "add_subcategory",
@@ -371,24 +420,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Yellow",
+   "name": "Led Amber",
    "color": [
-    242,
-    194,
-    48
+    255,
+    176,
+    0
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Yellow Material",
+   "name": "Led Amber Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
+   "name": "FMC_Plastic_LED_Amber",
+   "param": "Led Amber Material"
   },
   {
    "op": "add_subcategory",
@@ -410,6 +459,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_LED_Red",
    "param": "Led Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
   },
   {
    "op": "add_subcategory",
@@ -936,12 +1006,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Stool 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -976,12 +1046,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Motor Stool 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1097,12 +1167,12 @@
   {
    "op": "set_subcategory",
    "name": "Motor 1",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Motor 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1218,12 +1288,12 @@
   {
    "op": "set_subcategory",
    "name": "Motor 2",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Motor 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1262,12 +1332,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Fan Cowl 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1306,12 +1376,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Fan Cowl 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1411,12 +1481,12 @@
   {
    "op": "set_subcategory",
    "name": "Terminal Box 1",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Terminal Box 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -1516,12 +1586,12 @@
   {
    "op": "set_subcategory",
    "name": "Terminal Box 2",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "Terminal Box 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -3345,12 +3415,12 @@
   {
    "op": "set_subcategory",
    "name": "Pressure Vessel Shell",
-   "subcategory": "Red"
+   "subcategory": "Painted Red"
   },
   {
    "op": "set_material_param",
    "name": "Pressure Vessel Shell",
-   "param": "Red Material"
+   "param": "Painted Red Material"
   },
   {
    "op": "set_visibility",
@@ -3389,12 +3459,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Red"
+   "subcategory": "Painted Red"
   },
   {
    "op": "set_material_param",
    "name": "Pressure Vessel Top Head",
-   "param": "Red Material"
+   "param": "Painted Red Material"
   },
   {
    "op": "set_visibility",
@@ -3433,12 +3503,12 @@
     0
    ],
    "axis": "z",
-   "subcategory": "Red"
+   "subcategory": "Painted Red"
   },
   {
    "op": "set_material_param",
    "name": "Pressure Vessel Bottom Head",
-   "param": "Red Material"
+   "param": "Painted Red Material"
   },
   {
    "op": "set_visibility",
@@ -3914,12 +3984,12 @@
   {
    "op": "set_subcategory",
    "name": "Control Panel Screen",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Control Panel Screen",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
@@ -4158,12 +4228,12 @@
   {
    "op": "set_subcategory",
    "name": "Control Panel LED 2",
-   "subcategory": "Yellow"
+   "subcategory": "Led Amber"
   },
   {
    "op": "set_material_param",
    "name": "Control Panel LED 2",
-   "param": "Yellow Material"
+   "param": "Led Amber Material"
   },
   {
    "op": "set_visibility",
@@ -4345,16 +4415,8 @@
      1249.0
     ],
     [
-     189.17,
-     1249.15
-    ],
-    [
      189.81,
      1249.59
-    ],
-    [
-     190.25,
-     1250.23
     ],
     [
      190.4,
@@ -4365,16 +4427,8 @@
      1310.0
     ],
     [
-     190.25,
-     1310.77
-    ],
-    [
      189.81,
      1311.41
-    ],
-    [
-     189.17,
-     1311.85
     ],
     [
      188.4,
@@ -4385,16 +4439,8 @@
      1312.0
     ],
     [
-     169.23,
-     1311.85
-    ],
-    [
      168.59,
      1311.41
-    ],
-    [
-     168.15,
-     1310.77
     ],
     [
      168.0,
@@ -4405,16 +4451,8 @@
      1251.0
     ],
     [
-     168.15,
-     1250.23
-    ],
-    [
      168.59,
      1249.59
-    ],
-    [
-     169.23,
-     1249.15
     ],
     [
      170.0,
@@ -4451,16 +4489,8 @@
      1217.5
     ],
     [
-     -202.83,
-     1217.65
-    ],
-    [
      -202.19,
      1218.09
-    ],
-    [
-     -201.75,
-     1218.73
     ],
     [
      -201.6,
@@ -4471,16 +4501,8 @@
      1319.0
     ],
     [
-     -201.75,
-     1319.77
-    ],
-    [
      -202.19,
      1320.41
-    ],
-    [
-     -202.83,
-     1320.85
     ],
     [
      -203.6,
@@ -4491,16 +4513,8 @@
      1321.0
     ],
     [
-     -222.77,
-     1320.85
-    ],
-    [
      -223.41,
      1320.41
-    ],
-    [
-     -223.85,
-     1319.77
     ],
     [
      -224.0,
@@ -4511,16 +4525,8 @@
      1219.5
     ],
     [
-     -223.85,
-     1218.73
-    ],
-    [
      -223.41,
      1218.09
-    ],
-    [
-     -222.77,
-     1217.65
     ],
     [
      -222.0,

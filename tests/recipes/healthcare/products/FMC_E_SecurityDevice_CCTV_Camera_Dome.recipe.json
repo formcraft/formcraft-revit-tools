@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_E_SecurityDevice_CCTV_Camera_Dome",
  "template": "Metric Generic Model.rft",
- "about": "Dome camera: base, trim ring, clear bubble, camera ball with lens and IR LEDs, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: security device cctv camera dome security devices hospital; images: https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+dome+security+devices+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Dome camera: base, trim ring, clear bubble, camera ball with lens and IR LEDs, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: security device cctv camera dome security devices hospital; images: https://www.google.com/search?tbm=isch&q=security+device+cctv+camera+dome+security+devices+hospital; basis: generic product; brand, model and supplier open for review; photo: https://abus.com/uk/product/IPCB78520; photo_title: ABUS IP Dome 8 MPx (4K, 2.8-12 mm); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -10,33 +10,63 @@
   },
   {
    "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
    "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
   },
   {
    "op": "add_shared_param",
    "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
   },
   {
    "op": "add_shared_param",
    "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
   },
   {
    "op": "add_type",
@@ -83,6 +113,13 @@
    "type": "150_Ceiling",
    "param": "FMC_Keynote_Code",
    "value": "E.ICT_05"
+  },
+  {
+   "op": "set_type_value",
+   "name": "150_Ceiling/URL",
+   "type": "150_Ceiling",
+   "param": "URL",
+   "value": "https://abus.com/uk/product/IPCB78520"
   },
   {
    "op": "add_subcategory",
@@ -151,9 +188,9 @@
    "op": "add_subcategory",
    "name": "Screen",
    "color": [
-    30,
-    31,
-    34
+    17,
+    22,
+    28
    ],
    "line_weight_projection": 1
   },
@@ -165,7 +202,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
+   "name": "FMC_Glass_Display_Black",
    "param": "Screen Material"
   },
   {
@@ -531,96 +568,48 @@
      -56.0
     ],
     [
-     -15.1,
-     -55.22
-    ],
-    [
      -15.4,
      -54.5
     ],
     [
-     -15.88,
-     -53.88
-    ],
-    [
      -16.5,
      -53.4
-    ],
-    [
-     -17.22,
-     -53.1
     ],
     [
      -18.0,
      -53.0
     ],
     [
-     -18.78,
-     -53.1
-    ],
-    [
      -19.5,
      -53.4
-    ],
-    [
-     -20.12,
-     -53.88
     ],
     [
      -20.6,
      -54.5
     ],
     [
-     -20.9,
-     -55.22
-    ],
-    [
      -21.0,
      -56.0
-    ],
-    [
-     -20.9,
-     -56.78
     ],
     [
      -20.6,
      -57.5
     ],
     [
-     -20.12,
-     -58.12
-    ],
-    [
      -19.5,
      -58.6
-    ],
-    [
-     -18.78,
-     -58.9
     ],
     [
      -18.0,
      -59.0
     ],
     [
-     -17.22,
-     -58.9
-    ],
-    [
      -16.5,
      -58.6
     ],
     [
-     -15.88,
-     -58.12
-    ],
-    [
      -15.4,
      -57.5
-    ],
-    [
-     -15.1,
-     -56.78
     ]
    ],
    "start": 36,
@@ -653,96 +642,48 @@
      -56.0
     ],
     [
-     20.9,
-     -55.22
-    ],
-    [
      20.6,
      -54.5
     ],
     [
-     20.12,
-     -53.88
-    ],
-    [
      19.5,
      -53.4
-    ],
-    [
-     18.78,
-     -53.1
     ],
     [
      18.0,
      -53.0
     ],
     [
-     17.22,
-     -53.1
-    ],
-    [
      16.5,
      -53.4
-    ],
-    [
-     15.88,
-     -53.88
     ],
     [
      15.4,
      -54.5
     ],
     [
-     15.1,
-     -55.22
-    ],
-    [
      15.0,
      -56.0
-    ],
-    [
-     15.1,
-     -56.78
     ],
     [
      15.4,
      -57.5
     ],
     [
-     15.88,
-     -58.12
-    ],
-    [
      16.5,
      -58.6
-    ],
-    [
-     17.22,
-     -58.9
     ],
     [
      18.0,
      -59.0
     ],
     [
-     18.78,
-     -58.9
-    ],
-    [
      19.5,
      -58.6
     ],
     [
-     20.12,
-     -58.12
-    ],
-    [
      20.6,
      -57.5
-    ],
-    [
-     20.9,
-     -56.78
     ]
    ],
    "start": 36,

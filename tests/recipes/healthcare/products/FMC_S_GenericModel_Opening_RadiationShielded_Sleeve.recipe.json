@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_GenericModel_Opening_RadiationShielded_Sleeve",
  "template": "Metric Generic Model.rft",
- "about": "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision. Reference: query: opening radiation shielded sleeve generic models hospital; images: https://www.google.com/search?tbm=isch&q=opening+radiation+shielded+sleeve+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Wall centred on y = 0 (230 thick), sleeve axis along y: steel sleeve, lead lining, collars lapping the wall lead on both faces, sealant rings and a radiation label (Fine). Lead thickness is the RPA's decision. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: opening radiation shielded sleeve generic models hospital; images: https://www.google.com/search?tbm=isch&q=opening+radiation+shielded+sleeve+generic+models+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.labfriend.com.au/kleinfeld-lab-sleeves-lead-pvc-coated-inner-diameter-80mm; photo_title: Kleinfeld LAB Sleeves, Lead, PVC-Coated, ID 80 mm; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -394,6 +394,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "100dia_Lead/URL",
+   "type": "100dia_Lead",
+   "param": "URL",
+   "value": "https://www.labfriend.com.au/kleinfeld-lab-sleeves-lead-pvc-coated-inner-diameter-80mm"
+  },
+  {
    "op": "add_type",
    "name": "150dia_Lead"
   },
@@ -461,6 +468,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "150dia_Lead/URL",
+   "type": "150dia_Lead",
+   "param": "URL",
+   "value": "https://www.labfriend.com.au/kleinfeld-lab-sleeves-lead-pvc-coated-inner-diameter-80mm"
+  },
+  {
    "op": "add_subcategory",
    "name": "Gi",
    "color": [
@@ -485,9 +499,9 @@
    "op": "add_subcategory",
    "name": "Lead",
    "color": [
-    110,
-    110,
-    110
+    122,
+    126,
+    131
    ],
    "line_weight_projection": 1
   },
@@ -499,7 +513,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Metal_StructuralSteel_S275",
+   "name": "FMC_Metal_Lead_Sheet",
    "param": "Lead Material"
   },
   {
@@ -525,24 +539,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Yellow",
+   "name": "Safety",
    "color": [
-    242,
-    194,
-    48
+    245,
+    196,
+    0
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Yellow Material",
+   "name": "Safety Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
+   "name": "FMC_Paint_Safety_Yellow",
+   "param": "Safety Material"
   },
   {
    "op": "add_subcategory",
@@ -559,24 +573,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -110,
+     -135,
      -140
     ],
     [
-     110,
+     135,
      -140
     ],
     [
-     110,
+     135,
      140
     ],
     [
-     -110,
+     -135,
      140
     ]
    ],
-   "start": -110,
-   "end": 110
+   "start": -135,
+   "end": 135
   },
   {
    "op": "set_subcategory",
@@ -592,7 +606,7 @@
   },
   {
    "op": "revolution",
-   "name": "Sleeve Tube",
+   "name": "Sleeve Tube 100dia",
    "profile": [
     [
      50,
@@ -620,19 +634,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Sleeve Tube",
+   "name": "Sleeve Tube 100dia",
    "param": "Gi Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sleeve Tube",
+   "name": "Sleeve Tube 100dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lead Lining",
+   "name": "Lead Lining 100dia",
    "profile": [
     [
      54,
@@ -660,19 +674,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lead Lining",
+   "name": "Lead Lining 100dia",
    "param": "Lead Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lead Lining",
+   "name": "Lead Lining 100dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lead Collar Front",
+   "name": "Lead Collar Front 100dia",
    "profile": [
     [
      54,
@@ -700,19 +714,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lead Collar Front",
+   "name": "Lead Collar Front 100dia",
    "param": "Lead Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lead Collar Front",
+   "name": "Lead Collar Front 100dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Lead Collar Back",
+   "name": "Lead Collar Back 100dia",
    "profile": [
     [
      54,
@@ -740,19 +754,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Lead Collar Back",
+   "name": "Lead Collar Back 100dia",
    "param": "Lead Material"
   },
   {
    "op": "set_visibility",
-   "name": "Lead Collar Back",
+   "name": "Lead Collar Back 100dia",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Sealant Ring Front",
+   "name": "Sealant Ring Front 100dia",
    "profile": [
     [
      54,
@@ -780,19 +794,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Sealant Ring Front",
+   "name": "Sealant Ring Front 100dia",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sealant Ring Front",
+   "name": "Sealant Ring Front 100dia",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "revolution",
-   "name": "Sealant Ring Back",
+   "name": "Sealant Ring Back 100dia",
    "profile": [
     [
      54,
@@ -820,19 +834,19 @@
   },
   {
    "op": "set_material_param",
-   "name": "Sealant Ring Back",
+   "name": "Sealant Ring Back 100dia",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Sealant Ring Back",
+   "name": "Sealant Ring Back 100dia",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Radiation Label",
+   "name": "Radiation Label 100dia",
    "points": [
     [
      -25,
@@ -857,20 +871,426 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Radiation Label",
-   "subcategory": "Yellow"
+   "name": "Radiation Label 100dia",
+   "subcategory": "Safety"
   },
   {
    "op": "set_material_param",
-   "name": "Radiation Label",
-   "param": "Yellow Material"
+   "name": "Radiation Label 100dia",
+   "param": "Safety Material"
   },
   {
    "op": "set_visibility",
-   "name": "Radiation Label",
+   "name": "Radiation Label 100dia",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Sleeve Tube 150dia",
+   "profile": [
+    [
+     75,
+     140
+    ],
+    [
+     79,
+     140
+    ],
+    [
+     79,
+     -140
+    ],
+    [
+     75,
+     -140
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sleeve Tube 150dia",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sleeve Tube 150dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lead Lining 150dia",
+   "profile": [
+    [
+     79,
+     115
+    ],
+    [
+     82,
+     115
+    ],
+    [
+     82,
+     -115
+    ],
+    [
+     79,
+     -115
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Lining 150dia",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Lining 150dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lead Collar Front 150dia",
+   "profile": [
+    [
+     79,
+     118
+    ],
+    [
+     135,
+     118
+    ],
+    [
+     135,
+     115
+    ],
+    [
+     79,
+     115
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Collar Front 150dia",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Collar Front 150dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Lead Collar Back 150dia",
+   "profile": [
+    [
+     79,
+     -115
+    ],
+    [
+     135,
+     -115
+    ],
+    [
+     135,
+     -118
+    ],
+    [
+     79,
+     -118
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Lead"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lead Collar Back 150dia",
+   "param": "Lead Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lead Collar Back 150dia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Sealant Ring Front 150dia",
+   "profile": [
+    [
+     79,
+     124
+    ],
+    [
+     87,
+     124
+    ],
+    [
+     87,
+     118
+    ],
+    [
+     79,
+     118
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sealant Ring Front 150dia",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sealant Ring Front 150dia",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Sealant Ring Back 150dia",
+   "profile": [
+    [
+     79,
+     -118
+    ],
+    [
+     87,
+     -118
+    ],
+    [
+     87,
+     -124
+    ],
+    [
+     79,
+     -124
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "y",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Sealant Ring Back 150dia",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Sealant Ring Back 150dia",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Radiation Label 150dia",
+   "points": [
+    [
+     -25,
+     97
+    ],
+    [
+     25,
+     97
+    ],
+    [
+     25,
+     127
+    ],
+    [
+     -25,
+     127
+    ]
+   ],
+   "start": 118,
+   "end": 119.5,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Radiation Label 150dia",
+   "subcategory": "Safety"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Radiation Label 150dia",
+   "param": "Safety Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Radiation Label 150dia",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 100dia_Lead",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100dia_Lead/Show 100dia_Lead",
+   "type": "100dia_Lead",
+   "param": "Show 100dia_Lead",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "150dia_Lead/Show 100dia_Lead",
+   "type": "150dia_Lead",
+   "param": "Show 100dia_Lead",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sleeve Tube 100dia/Visible",
+   "solid": "Sleeve Tube 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Lining 100dia/Visible",
+   "solid": "Lead Lining 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Collar Front 100dia/Visible",
+   "solid": "Lead Collar Front 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Collar Back 100dia/Visible",
+   "solid": "Lead Collar Back 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sealant Ring Front 100dia/Visible",
+   "solid": "Sealant Ring Front 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sealant Ring Back 100dia/Visible",
+   "solid": "Sealant Ring Back 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiation Label 100dia/Visible",
+   "solid": "Radiation Label 100dia",
+   "param": "Show 100dia_Lead"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 150dia_Lead",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100dia_Lead/Show 150dia_Lead",
+   "type": "100dia_Lead",
+   "param": "Show 150dia_Lead",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "150dia_Lead/Show 150dia_Lead",
+   "type": "150dia_Lead",
+   "param": "Show 150dia_Lead",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sleeve Tube 150dia/Visible",
+   "solid": "Sleeve Tube 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Lining 150dia/Visible",
+   "solid": "Lead Lining 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Collar Front 150dia/Visible",
+   "solid": "Lead Collar Front 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Lead Collar Back 150dia/Visible",
+   "solid": "Lead Collar Back 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sealant Ring Front 150dia/Visible",
+   "solid": "Sealant Ring Front 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Sealant Ring Back 150dia/Visible",
+   "solid": "Sealant Ring Back 150dia",
+   "param": "Show 150dia_Lead"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Radiation Label 150dia/Visible",
+   "solid": "Radiation Label 150dia",
+   "param": "Show 150dia_Lead"
   },
   {
    "op": "set_type_image",
@@ -879,8 +1299,8 @@
   }
  ],
  "values": {
-  "Bore 100 mm (geometry)": {
-   "value": 100,
+  "Bore 100 and 150 mm (one per type)": {
+   "value": "100/150",
    "source_status": "assumed",
    "source": "service size"
   },

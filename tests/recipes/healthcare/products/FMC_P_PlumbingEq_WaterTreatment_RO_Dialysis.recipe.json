@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_WaterTreatment_RO_Dialysis",
  "template": "Metric Generic Model.rft",
- "about": "RO plant modelled as a generic product: stainless frame (posts, rails), four membrane vessels with end caps and manifold, two cartridge housings, pump base with motor and pump end, three flow meters with floats, feed and reject gauges, control panel with screen and LEDs, feed, permeate and drain stubs. Reference: query: water treatment ro dialysis plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=water+treatment+ro+dialysis+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "RO plant modelled as a generic product: stainless frame (posts, rails), four membrane vessels with end caps and manifold, two cartridge housings, pump base with motor and pump end, three flow meters with floats, feed and reject gauges, control panel with screen and LEDs, feed, permeate and drain stubs. Reference: query: water treatment ro dialysis plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=water+treatment+ro+dialysis+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://veoliawatertechnologies.co.uk/products/modula; photo_title: Veolia Renal RO Systems (Modula); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -140,6 +140,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "500Lh_RO/URL",
+   "type": "500Lh_RO",
+   "param": "URL",
+   "value": "https://veoliawatertechnologies.co.uk/products/modula"
+  },
+  {
+   "op": "set_type_value",
    "name": "500Lh_RO/Voltage",
    "type": "500Lh_RO",
    "param": "Voltage",
@@ -242,6 +249,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_Blue",
    "param": "Blue Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Motor Blue",
+   "color": [
+    31,
+    78,
+    140
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Motor Blue Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_Painted_MotorBlue",
+   "param": "Motor Blue Material"
   },
   {
    "op": "add_subcategory",
@@ -350,6 +378,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Led Green",
    "color": [
     59,
@@ -368,6 +417,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_LED_Green",
    "param": "Led Green Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Led Amber",
+   "color": [
+    255,
+    176,
+    0
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Amber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Amber",
+   "param": "Led Amber Material"
   },
   {
    "op": "add_subcategory",
@@ -2185,12 +2255,12 @@
   {
    "op": "set_subcategory",
    "name": "HP Pump Motor",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Motor",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2229,12 +2299,12 @@
     200
    ],
    "axis": "x",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Fan Cowl",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2374,12 +2444,12 @@
   {
    "op": "set_subcategory",
    "name": "HP Pump Terminal Box",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Terminal Box",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2414,12 +2484,12 @@
     200
    ],
    "axis": "x",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Fin 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2454,12 +2524,12 @@
     200
    ],
    "axis": "x",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Fin 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2494,12 +2564,12 @@
     200
    ],
    "axis": "x",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Fin 3",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2535,12 +2605,12 @@
   {
    "op": "set_subcategory",
    "name": "HP Pump Foot 1",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Foot 1",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -2576,12 +2646,12 @@
   {
    "op": "set_subcategory",
    "name": "HP Pump Foot 2",
-   "subcategory": "Blue"
+   "subcategory": "Motor Blue"
   },
   {
    "op": "set_material_param",
    "name": "HP Pump Foot 2",
-   "param": "Blue Material"
+   "param": "Motor Blue Material"
   },
   {
    "op": "set_visibility",
@@ -4311,12 +4381,12 @@
   {
    "op": "set_subcategory",
    "name": "Control Panel Screen",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Control Panel Screen",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
@@ -4555,12 +4625,12 @@
   {
    "op": "set_subcategory",
    "name": "Control Panel LED 2",
-   "subcategory": "Yellow"
+   "subcategory": "Led Amber"
   },
   {
    "op": "set_material_param",
    "name": "Control Panel LED 2",
-   "param": "Yellow Material"
+   "param": "Led Amber Material"
   },
   {
    "op": "set_visibility",
@@ -4742,16 +4812,8 @@
      1410.0
     ],
     [
-     701.17,
-     1410.15
-    ],
-    [
      701.81,
      1410.59
-    ],
-    [
-     702.25,
-     1411.23
     ],
     [
      702.4,
@@ -4762,16 +4824,8 @@
      1478.0
     ],
     [
-     702.25,
-     1478.77
-    ],
-    [
      701.81,
      1479.41
-    ],
-    [
-     701.17,
-     1479.85
     ],
     [
      700.4,
@@ -4782,16 +4836,8 @@
      1480.0
     ],
     [
-     689.23,
-     1479.85
-    ],
-    [
      688.59,
      1479.41
-    ],
-    [
-     688.15,
-     1478.77
     ],
     [
      688.0,
@@ -4802,16 +4848,8 @@
      1412.0
     ],
     [
-     688.15,
-     1411.23
-    ],
-    [
      688.59,
      1410.59
-    ],
-    [
-     689.23,
-     1410.15
     ],
     [
      690.0,
@@ -4848,16 +4886,8 @@
      1375.0
     ],
     [
-     449.17,
-     1375.15
-    ],
-    [
      449.81,
      1375.59
-    ],
-    [
-     450.25,
-     1376.23
     ],
     [
      450.4,
@@ -4868,16 +4898,8 @@
      1488.0
     ],
     [
-     450.25,
-     1488.77
-    ],
-    [
      449.81,
      1489.41
-    ],
-    [
-     449.17,
-     1489.85
     ],
     [
      448.4,
@@ -4888,16 +4910,8 @@
      1490.0
     ],
     [
-     437.23,
-     1489.85
-    ],
-    [
      436.59,
      1489.41
-    ],
-    [
-     436.15,
-     1488.77
     ],
     [
      436.0,
@@ -4908,16 +4922,8 @@
      1377.0
     ],
     [
-     436.15,
-     1376.23
-    ],
-    [
      436.59,
      1375.59
-    ],
-    [
-     437.23,
-     1375.15
     ],
     [
      438.0,

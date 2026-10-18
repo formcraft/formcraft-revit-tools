@@ -2,29 +2,29 @@
  "family": "FMC_A_GenericModel_Ramp_Stretcher_External",
  "category": "Site",
  "template": "Metric Generic Model.rft",
- "desc": "External stretcher ramp 1:12, 2000 wide between kerbs, 500 rise over 6000 going plus 1800 top landing, upstand kerbs, stainless handrails at 1000 and 600 both sides with 300 extensions, contrasting nosings, channel drain",
+ "desc": "External stretcher ramp 1:12 or 1:15, 2000 wide between kerbs, 500 rise plus 1800 top landing, upstand kerbs, stainless handrails at 1000 and 600 both sides with 300 extensions, contrasting nosings, channel drain",
  "ifc": "IfcRamp",
  "keynote": "T.RMP_00",
  "types": [
   {
    "name": "1in12_Ramp",
-   "desc": "External stretcher ramp 1:12, 500 mm rise, 1800 mm wide clear"
+   "desc": "External stretcher ramp 1:12, 6000 going, 500 mm rise, 1800 mm wide clear"
   },
   {
    "name": "1in15_Ramp",
-   "desc": "External stretcher ramp 1:15, 500 mm rise, 1800 mm wide clear"
+   "desc": "External stretcher ramp 1:15, 7500 going, 500 mm rise, 1800 mm wide clear"
   }
  ],
  "materials": {
   "conc": "FMC_Concrete_C30",
   "precast": "FMC_Concrete_Precast_Painted",
-  "safety": "FMC_Plastic_ABS_MedicalGrey",
+  "safety": "FMC_Plastic_Vinyl_SafetyFloor_Grey",
   "ss": "FMC_Metal_StainlessSteel_Brushed",
   "yellow": "FMC_Plastic_ABS_Yellow"
  },
  "parts": [
   {
-   "n": "Ramp Slab",
+   "n": "Ramp Slab 1in12",
    "shape": "right",
    "pts": [
     [
@@ -53,10 +53,13 @@
     1000
    ],
    "mat": "conc",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Kerb Left",
+   "n": "Kerb Left 1in12",
    "shape": "right",
    "pts": [
     [
@@ -89,10 +92,13 @@
     -900
    ],
    "mat": "precast",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Kerb Right",
+   "n": "Kerb Right 1in12",
    "shape": "right",
    "pts": [
     [
@@ -125,38 +131,13 @@
     1000
    ],
    "mat": "precast",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Contrast Strip",
-   "shape": "right",
-   "pts": [
-    [
-     0,
-     0
-    ],
-    [
-     0,
-     3
-    ],
-    [
-     60,
-     8
-    ],
-    [
-     60,
-     5
-    ]
-   ],
-   "x": [
-    -900,
-    900
-   ],
-   "mat": "yellow",
-   "lod": "f"
-  },
-  {
-   "n": "Landing Strip",
+   "n": "Landing Strip 1in12",
    "shape": "right",
    "pts": [
     [
@@ -181,10 +162,13 @@
     900
    ],
    "mat": "yellow",
-   "lod": "f"
+   "lod": "f",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Post",
+   "n": "Post 1in12",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -193,8 +177,8 @@
    ],
    "r": 24,
    "z": [
-    125,
-    1125
+    125.0,
+    1125.0
    ],
    "mat": "ss",
    "lod": "mf",
@@ -203,12 +187,15 @@
     "d": [
      0,
      1500,
-     125
+     125.0
     ]
-   }
+   },
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Post Right",
+   "n": "Post Right 1in12",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -217,8 +204,8 @@
    ],
    "r": 24,
    "z": [
-    125,
-    1125
+    125.0,
+    1125.0
    ],
    "mat": "ss",
    "lod": "mf",
@@ -227,12 +214,15 @@
     "d": [
      0,
      1500,
-     125
+     125.0
     ]
-   }
+   },
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Landing Post",
+   "n": "Landing Post 1in12",
    "shape": "cyl",
    "axis": "z",
    "c": [
@@ -253,10 +243,13 @@
      0,
      0
     ]
-   }
+   },
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Handrail Upper",
+   "n": "Handrail Upper 1in12",
    "shape": "right",
    "pts": [
     [
@@ -297,10 +290,13 @@
     -925
    ],
    "mat": "ss",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Handrail Upper Right",
+   "n": "Handrail Upper Right 1in12",
    "shape": "right",
    "pts": [
     [
@@ -341,10 +337,13 @@
     975
    ],
    "mat": "ss",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Handrail Lower",
+   "n": "Handrail Lower 1in12",
    "shape": "right",
    "pts": [
     [
@@ -377,10 +376,13 @@
     -930
    ],
    "mat": "ss",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
   },
   {
-   "n": "Handrail Lower Right",
+   "n": "Handrail Lower Right 1in12",
    "shape": "right",
    "pts": [
     [
@@ -413,7 +415,497 @@
     970
    ],
    "mat": "ss",
-   "lod": "mf"
+   "lod": "mf",
+   "only": [
+    "1in12_Ramp"
+   ]
+  },
+  {
+   "n": "Anti Slip Finish 1in12",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     6000,
+     502
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "safety",
+   "lod": "f",
+   "only": [
+    "1in12_Ramp"
+   ]
+  },
+  {
+   "n": "Ramp Slab 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     -150
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     7500,
+     500
+    ],
+    [
+     9300,
+     500
+    ],
+    [
+     9300,
+     -150
+    ]
+   ],
+   "x": [
+    -1000,
+    1000
+   ],
+   "mat": "conc",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Kerb Left 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     7500,
+     600
+    ],
+    [
+     9300,
+     600
+    ],
+    [
+     9300,
+     500
+    ],
+    [
+     7500,
+     500
+    ]
+   ],
+   "x": [
+    -1000,
+    -900
+   ],
+   "mat": "precast",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Kerb Right 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     7500,
+     600
+    ],
+    [
+     9300,
+     600
+    ],
+    [
+     9300,
+     500
+    ],
+    [
+     7500,
+     500
+    ]
+   ],
+   "x": [
+    900,
+    1000
+   ],
+   "mat": "precast",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Landing Strip 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     7440,
+     495
+    ],
+    [
+     7440,
+     498
+    ],
+    [
+     7500,
+     503
+    ],
+    [
+     7500,
+     500
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Post 1in15",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -950,
+    300
+   ],
+   "r": 24,
+   "z": [
+    120.0,
+    1120.0
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 5,
+    "d": [
+     0,
+     1500,
+     100.0
+    ]
+   },
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Post Right 1in15",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    950,
+    300
+   ],
+   "r": 24,
+   "z": [
+    120.0,
+    1120.0
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 5,
+    "d": [
+     0,
+     1500,
+     100.0
+    ]
+   },
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Landing Post 1in15",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -950,
+    8400
+   ],
+   "r": 24,
+   "z": [
+    600,
+    1600
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     1900,
+     0,
+     0
+    ]
+   },
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Handrail Upper 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     7500,
+     1525
+    ],
+    [
+     9300,
+     1525
+    ],
+    [
+     9300,
+     1475
+    ],
+    [
+     7500,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "x": [
+    -975,
+    -925
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Handrail Upper Right 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     7500,
+     1525
+    ],
+    [
+     9300,
+     1525
+    ],
+    [
+     9300,
+     1475
+    ],
+    [
+     7500,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "x": [
+    925,
+    975
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Handrail Lower 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     7500,
+     1125
+    ],
+    [
+     9300,
+     1125
+    ],
+    [
+     9300,
+     1075
+    ],
+    [
+     7500,
+     1075
+    ]
+   ],
+   "x": [
+    -970,
+    -930
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Handrail Lower Right 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     7500,
+     1125
+    ],
+    [
+     9300,
+     1125
+    ],
+    [
+     9300,
+     1075
+    ],
+    [
+     7500,
+     1075
+    ]
+   ],
+   "x": [
+    930,
+    970
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Anti Slip Finish 1in15",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     7500,
+     502
+    ],
+    [
+     7500,
+     500
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "safety",
+   "lod": "f",
+   "only": [
+    "1in15_Ramp"
+   ]
+  },
+  {
+   "n": "Contrast Strip",
+   "shape": "right",
+   "pts": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     60,
+     8
+    ],
+    [
+     60,
+     5
+    ]
+   ],
+   "x": [
+    -900,
+    900
+   ],
+   "mat": "yellow",
+   "lod": "f"
   },
   {
    "n": "Rail End Return",
@@ -440,34 +932,6 @@
    }
   },
   {
-   "n": "Anti Slip Finish",
-   "shape": "right",
-   "pts": [
-    [
-     0,
-     0
-    ],
-    [
-     0,
-     2
-    ],
-    [
-     6000,
-     502
-    ],
-    [
-     6000,
-     500
-    ]
-   ],
-   "x": [
-    -900,
-    900
-   ],
-   "mat": "safety",
-   "lod": "f"
-  },
-  {
    "n": "Channel Drain",
    "shape": "box",
    "at": [
@@ -485,11 +949,14 @@
  "reference": {
   "query": "ramp stretcher external generic models hospital",
   "images": "https://www.google.com/search?tbm=isch&q=ramp+stretcher+external+generic+models+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://askjan.org/products/PVI-OnTrac-Wheelchair-Access-Ramp-with-Handrails.cfm",
+  "photo_title": "PVI OnTrac Wheelchair Access Ramp with Handrails",
+  "photo_kind": "other"
  },
  "values": {
-  "Gradient 1:12, going 6000 mm, rise 500 mm": {
-   "value": "1:12",
+  "Gradient 1:12 (6000 going) or 1:15 (7500 going), rise 500 mm": {
+   "value": "1:12/1:15",
    "source_status": "assumed",
    "source": "Approved Document M table 2"
   },
@@ -509,5 +976,5 @@
    "source": "Approved Document M / BS 8300-1"
   }
  },
- "about": "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, contrast strips, stainless posts following the slope (repeat with rise), upper and lower handrails with 300 extensions, end returns, anti-slip finish, channel drain at the foot. Geometry is the 1:12 type."
+ "about": "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, stainless posts following the slope (repeat with rise), upper and lower handrails with 300 extensions, anti-slip finish per type; foot contrast strip, end returns and channel drain shared."
 }

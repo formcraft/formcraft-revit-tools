@@ -8,17 +8,17 @@
  "types": [
   {
    "name": "114_CHS",
-   "desc": "CHS 114.3 canopy column"
+   "desc": "CHS 114.3 x 5.0 canopy column"
   },
   {
    "name": "168_CHS",
-   "desc": "CHS 168.3 canopy column"
+   "desc": "CHS 168.3 x 6.3 canopy column"
   }
  ],
  "materials": {
   "galv": "FMC_Metal_ColdFormed_Galvanised",
   "paint": "FMC_Metal_SteelLTZ_Painted",
-  "yellow": "FMC_Plastic_ABS_Yellow"
+  "safety": "FMC_Paint_Safety_Yellow"
  },
  "parts": [
   {
@@ -33,60 +33,6 @@
     20
    ],
    "mat": "paint"
-  },
-  {
-   "n": "Column",
-   "shape": "cyl",
-   "axis": "z",
-   "c": [
-    0,
-    0
-   ],
-   "r": 84.15,
-   "z": [
-    20,
-    3500
-   ],
-   "mat": "paint",
-   "seg": 36
-  },
-  {
-   "n": "Hazard Band",
-   "shape": "turn",
-   "axis": "z",
-   "c": [
-    0,
-    0
-   ],
-   "profile": [
-    [
-     84.15,
-     300
-    ],
-    [
-     85.65,
-     300
-    ],
-    [
-     85.65,
-     450
-    ],
-    [
-     84.15,
-     450
-    ]
-   ],
-   "mat": "yellow",
-   "lod": "f",
-   "repeat": {
-    "n": 4,
-    "d": [
-     0,
-     0,
-     300
-    ]
-   },
-   "seg": 36
   },
   {
    "n": "Cap Plate",
@@ -139,114 +85,6 @@
     ]
    },
    "seg": 12
-  },
-  {
-   "n": "Gusset X+",
-   "shape": "front",
-   "pts": [
-    [
-     84.15,
-     20
-    ],
-    [
-     170,
-     20
-    ],
-    [
-     170,
-     40
-    ],
-    [
-     84.15,
-     170
-    ]
-   ],
-   "y": [
-    -5,
-    5
-   ],
-   "mat": "paint"
-  },
-  {
-   "n": "Gusset X-",
-   "shape": "front",
-   "pts": [
-    [
-     -84.15,
-     20
-    ],
-    [
-     -84.15,
-     170
-    ],
-    [
-     -170,
-     40
-    ],
-    [
-     -170,
-     20
-    ]
-   ],
-   "y": [
-    -5,
-    5
-   ],
-   "mat": "paint"
-  },
-  {
-   "n": "Gusset Y+",
-   "shape": "right",
-   "pts": [
-    [
-     84.15,
-     20
-    ],
-    [
-     84.15,
-     170
-    ],
-    [
-     170,
-     40
-    ],
-    [
-     170,
-     20
-    ]
-   ],
-   "x": [
-    -5,
-    5
-   ],
-   "mat": "paint"
-  },
-  {
-   "n": "Gusset Y-",
-   "shape": "right",
-   "pts": [
-    [
-     -84.15,
-     20
-    ],
-    [
-     -170,
-     20
-    ],
-    [
-     -170,
-     40
-    ],
-    [
-     -84.15,
-     170
-    ]
-   ],
-   "x": [
-    -5,
-    5
-   ],
-   "mat": "paint"
   },
   {
    "n": "HD Bolt 1 Washer",
@@ -515,18 +353,381 @@
    "mat": "galv",
    "lod": "f",
    "seg": 12
+  },
+  {
+   "n": "Column 114",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 57.15,
+   "z": [
+    20,
+    3500
+   ],
+   "mat": "paint",
+   "seg": 36,
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Hazard Band 114",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     57.15,
+     300
+    ],
+    [
+     58.65,
+     300
+    ],
+    [
+     58.65,
+     450
+    ],
+    [
+     57.15,
+     450
+    ]
+   ],
+   "mat": "safety",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   },
+   "seg": 36,
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Gusset X+ 114",
+   "shape": "front",
+   "pts": [
+    [
+     57.15,
+     20
+    ],
+    [
+     170,
+     20
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     57.15,
+     170
+    ]
+   ],
+   "y": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Gusset X- 114",
+   "shape": "front",
+   "pts": [
+    [
+     -57.15,
+     20
+    ],
+    [
+     -57.15,
+     170
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -170,
+     20
+    ]
+   ],
+   "y": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Gusset Y+ 114",
+   "shape": "right",
+   "pts": [
+    [
+     57.15,
+     20
+    ],
+    [
+     57.15,
+     170
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     170,
+     20
+    ]
+   ],
+   "x": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Gusset Y- 114",
+   "shape": "right",
+   "pts": [
+    [
+     -57.15,
+     20
+    ],
+    [
+     -170,
+     20
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -57.15,
+     170
+    ]
+   ],
+   "x": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "114_CHS"
+   ]
+  },
+  {
+   "n": "Column 168",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 84.15,
+   "z": [
+    20,
+    3500
+   ],
+   "mat": "paint",
+   "seg": 36,
+   "only": [
+    "168_CHS"
+   ]
+  },
+  {
+   "n": "Hazard Band 168",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     84.15,
+     300
+    ],
+    [
+     85.65,
+     300
+    ],
+    [
+     85.65,
+     450
+    ],
+    [
+     84.15,
+     450
+    ]
+   ],
+   "mat": "safety",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   },
+   "seg": 36,
+   "only": [
+    "168_CHS"
+   ]
+  },
+  {
+   "n": "Gusset X+ 168",
+   "shape": "front",
+   "pts": [
+    [
+     84.15,
+     20
+    ],
+    [
+     170,
+     20
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     84.15,
+     170
+    ]
+   ],
+   "y": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "168_CHS"
+   ]
+  },
+  {
+   "n": "Gusset X- 168",
+   "shape": "front",
+   "pts": [
+    [
+     -84.15,
+     20
+    ],
+    [
+     -84.15,
+     170
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -170,
+     20
+    ]
+   ],
+   "y": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "168_CHS"
+   ]
+  },
+  {
+   "n": "Gusset Y+ 168",
+   "shape": "right",
+   "pts": [
+    [
+     84.15,
+     20
+    ],
+    [
+     84.15,
+     170
+    ],
+    [
+     170,
+     40
+    ],
+    [
+     170,
+     20
+    ]
+   ],
+   "x": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "168_CHS"
+   ]
+  },
+  {
+   "n": "Gusset Y- 168",
+   "shape": "right",
+   "pts": [
+    [
+     -84.15,
+     20
+    ],
+    [
+     -170,
+     20
+    ],
+    [
+     -170,
+     40
+    ],
+    [
+     -84.15,
+     170
+    ]
+   ],
+   "x": [
+    -5,
+    5
+   ],
+   "mat": "paint",
+   "only": [
+    "168_CHS"
+   ]
   }
  ],
  "reference": {
   "query": "str column steel chs canopy structural columns hospital",
   "images": "https://www.google.com/search?tbm=isch&q=str+column+steel+chs+canopy+structural+columns+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://bmsteel.co.uk/1143-x-36mm-circular-hollow-section-bsen10219/p2569",
+  "photo_title": "114.3 x 3.6mm Circular Hollow Section - BSEN10219 (BM Steel)",
+  "photo_kind": "supplier"
  },
  "values": {
-  "CHS 168.3 x 6.3 (geometry)": {
-   "value": "168.3x6.3",
+  "CHS 114.3 and 168.3 (one per type)": {
+   "value": "114.3/168.3",
    "source_status": "assumed",
-   "source": "EN 10210 section, from knowledge; section choice by engineer"
+   "source": "EN 10210 sections, from knowledge; section choice by engineer"
   },
   "Height 3500 mm to cap plate": {
    "value": 3500,
@@ -544,5 +745,5 @@
    "source": "vehicle-impact visibility at ambulance set-down"
   }
  },
- "about": "Canopy column modelled as erected: base plate, four radial gussets, HD bolts, painted CHS with yellow hazard bands (Fine), cap plate and fin plate with bolts for the truss."
+ "about": "Canopy column modelled as erected: base plate, four radial gussets, HD bolts, painted CHS with safety-yellow hazard bands (Fine), cap plate and fin plate with bolts for the truss. Each type has its own geometry where it differs (parts with 'only'); the rest is shared."
 }

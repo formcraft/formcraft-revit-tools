@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_Steriliser_Steam_CSSD",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Steam steriliser modelled as a generic product: cabinet, load and unload faces (door frame, chamber door with seal and badge, kick plate, panel, touchscreen, printer slot, LED, stop button), wall flange, service header with steam, water, vent stack and drain. Built on the Mechanical Equipment template with category Plumbing Equipment for the category-switch test (connectors must survive). Reference: query: steriliser steam cssd plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=steriliser+steam+cssd+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Steam steriliser modelled as a generic product: cabinet, load and unload faces (door frame, chamber door with seal and badge, kick plate, panel, touchscreen, printer slot, LED, stop button), wall flange, service header with steam, water, vent stack and drain. Built on the Mechanical Equipment template with category Plumbing Equipment for the category-switch test (connectors must survive). Per type: 600 l is 1300 x 1820 x 2030 mm with a larger chamber door. Reference: query: steriliser steam cssd plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=steriliser+steam+cssd+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://tuttnauer.com/medical-autoclaves/hospital-cssd/large-autoclaves; photo_title: Tuttnauer large autoclaves for hospital CSSD; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -140,6 +140,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "300L_PassThrough/URL",
+   "type": "300L_PassThrough",
+   "param": "URL",
+   "value": "https://tuttnauer.com/medical-autoclaves/hospital-cssd/large-autoclaves"
+  },
+  {
+   "op": "set_type_value",
    "name": "300L_PassThrough/Voltage",
    "type": "300L_PassThrough",
    "param": "Voltage",
@@ -204,6 +211,13 @@
    "type": "600L_PassThrough",
    "param": "FMC_Keynote_Code",
    "value": "Z.STE_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600L_PassThrough/URL",
+   "type": "600L_PassThrough",
+   "param": "URL",
+   "value": "https://tuttnauer.com/medical-autoclaves/hospital-cssd/large-autoclaves"
   },
   {
    "op": "set_type_value",
@@ -291,24 +305,24 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Black",
+   "name": "Display",
    "color": [
-    30,
-    31,
-    34
+    17,
+    22,
+    28
    ],
    "line_weight_projection": 1
   },
   {
    "op": "add_family_param",
-   "name": "Black Material",
+   "name": "Display Material",
    "type": "Material",
    "group": "Materials"
   },
   {
    "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
   },
   {
    "op": "add_subcategory",
@@ -351,6 +365,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_FireHoseReel_Red",
    "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
   },
   {
    "op": "add_subcategory",
@@ -409,24 +444,24 @@
    "name": "Coarse Envelope",
    "points": [
     [
-     -610,
-     -714
+     -719.8,
+     -928.2
     ],
     [
-     610,
-     -714
+     719.8,
+     -928.2
     ],
     [
-     610,
-     714
+     719.8,
+     928.2
     ],
     [
-     -610,
-     714
+     -719.8,
+     928.2
     ]
    ],
-   "start": -80,
-   "end": 2300
+   "start": -83.2,
+   "end": 2392.0
   },
   {
    "op": "set_subcategory",
@@ -442,7 +477,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Cabinet",
+   "name": "Cabinet 300L",
    "points": [
     [
      544.0,
@@ -530,24 +565,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Cabinet",
+   "name": "Cabinet 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Cabinet",
+   "name": "Cabinet 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Cabinet",
+   "name": "Cabinet 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Door Frame",
+   "name": "Load Door Frame 300L",
    "points": [
     [
      350.0,
@@ -636,24 +671,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Door Frame",
+   "name": "Load Door Frame 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Load Door Frame",
+   "name": "Load Door Frame 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Door Frame",
+   "name": "Load Door Frame 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Kick Plate",
+   "name": "Load Kick Plate 300L",
    "points": [
     [
      -420,
@@ -678,24 +713,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Kick Plate",
+   "name": "Load Kick Plate 300L",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Load Kick Plate",
+   "name": "Load Kick Plate 300L",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Kick Plate",
+   "name": "Load Kick Plate 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Control Panel",
+   "name": "Load Control Panel 300L",
    "points": [
     [
      352.0,
@@ -784,24 +819,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Control Panel",
+   "name": "Load Control Panel 300L",
    "subcategory": "Medical Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Load Control Panel",
+   "name": "Load Control Panel 300L",
    "param": "Medical Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Control Panel",
+   "name": "Load Control Panel 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Touchscreen",
+   "name": "Load Touchscreen 300L",
    "points": [
     [
      -64.0,
@@ -890,24 +925,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Touchscreen",
-   "subcategory": "Black"
+   "name": "Load Touchscreen 300L",
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
-   "name": "Load Touchscreen",
-   "param": "Black Material"
+   "name": "Load Touchscreen 300L",
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Touchscreen",
+   "name": "Load Touchscreen 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Status LED",
+   "name": "Load Status LED 300L",
    "points": [
     [
      309.0,
@@ -1012,24 +1047,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Status LED",
+   "name": "Load Status LED 300L",
    "subcategory": "Led Green"
   },
   {
    "op": "set_material_param",
-   "name": "Load Status LED",
+   "name": "Load Status LED 300L",
    "param": "Led Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Status LED",
+   "name": "Load Status LED 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Stop Button",
+   "name": "Load Stop Button 300L",
    "points": [
     [
      318.0,
@@ -1134,24 +1169,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Stop Button",
+   "name": "Load Stop Button 300L",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Load Stop Button",
+   "name": "Load Stop Button 300L",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Stop Button",
+   "name": "Load Stop Button 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Door Frame",
+   "name": "Unload Door Frame 300L",
    "points": [
     [
      350.0,
@@ -1240,24 +1275,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Door Frame",
+   "name": "Unload Door Frame 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Door Frame",
+   "name": "Unload Door Frame 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Door Frame",
+   "name": "Unload Door Frame 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Kick Plate",
+   "name": "Unload Kick Plate 300L",
    "points": [
     [
      -420,
@@ -1282,24 +1317,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Kick Plate",
+   "name": "Unload Kick Plate 300L",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Kick Plate",
+   "name": "Unload Kick Plate 300L",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Kick Plate",
+   "name": "Unload Kick Plate 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Control Panel",
+   "name": "Unload Control Panel 300L",
    "points": [
     [
      352.0,
@@ -1388,24 +1423,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Control Panel",
+   "name": "Unload Control Panel 300L",
    "subcategory": "Medical Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Control Panel",
+   "name": "Unload Control Panel 300L",
    "param": "Medical Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Control Panel",
+   "name": "Unload Control Panel 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Touchscreen",
+   "name": "Unload Touchscreen 300L",
    "points": [
     [
      -64.0,
@@ -1494,24 +1529,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Touchscreen",
-   "subcategory": "Black"
+   "name": "Unload Touchscreen 300L",
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Touchscreen",
-   "param": "Black Material"
+   "name": "Unload Touchscreen 300L",
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Touchscreen",
+   "name": "Unload Touchscreen 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Status LED",
+   "name": "Unload Status LED 300L",
    "points": [
     [
      309.0,
@@ -1616,24 +1651,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Status LED",
+   "name": "Unload Status LED 300L",
    "subcategory": "Led Green"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Status LED",
+   "name": "Unload Status LED 300L",
    "param": "Led Green Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Status LED",
+   "name": "Unload Status LED 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Stop Button",
+   "name": "Unload Stop Button 300L",
    "points": [
     [
      318.0,
@@ -1738,24 +1773,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Stop Button",
+   "name": "Unload Stop Button 300L",
    "subcategory": "Red"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Stop Button",
+   "name": "Unload Stop Button 300L",
    "param": "Red Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Stop Button",
+   "name": "Unload Stop Button 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Chamber Door",
+   "name": "Load Chamber Door 300L",
    "points": [
     [
      260.0,
@@ -1844,24 +1879,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Chamber Door",
+   "name": "Load Chamber Door 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Load Chamber Door",
+   "name": "Load Chamber Door 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Chamber Door",
+   "name": "Load Chamber Door 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Unload Chamber Door",
+   "name": "Unload Chamber Door 300L",
    "points": [
     [
      260.0,
@@ -1950,24 +1985,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Unload Chamber Door",
+   "name": "Unload Chamber Door 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Unload Chamber Door",
+   "name": "Unload Chamber Door 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Unload Chamber Door",
+   "name": "Unload Chamber Door 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Door Seal",
+   "name": "Load Door Seal 300L",
    "points": [
     [
      266.0,
@@ -2056,24 +2091,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Door Seal",
+   "name": "Load Door Seal 300L",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Load Door Seal",
+   "name": "Load Door Seal 300L",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Door Seal",
+   "name": "Load Door Seal 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Door Badge",
+   "name": "Load Door Badge 300L",
    "points": [
     [
      -120,
@@ -2098,120 +2133,72 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Door Badge",
+   "name": "Load Door Badge 300L",
    "subcategory": "Medical Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Load Door Badge",
+   "name": "Load Door Badge 300L",
    "param": "Medical Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Door Badge",
+   "name": "Load Door Badge 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Load Printer Slot",
+   "name": "Load Printer Slot 300L",
    "points": [
     [
      203.0,
      1700.0
     ],
     [
-     202.9,
-     1700.78
-    ],
-    [
      202.6,
      1701.5
     ],
     [
-     202.12,
-     1702.12
-    ],
-    [
      201.5,
      1702.6
-    ],
-    [
-     200.78,
-     1702.9
     ],
     [
      200.0,
      1703.0
     ],
     [
-     199.22,
-     1702.9
-    ],
-    [
      198.5,
      1702.6
-    ],
-    [
-     197.88,
-     1702.12
     ],
     [
      197.4,
      1701.5
     ],
     [
-     197.1,
-     1700.78
-    ],
-    [
      197.0,
      1700.0
-    ],
-    [
-     197.1,
-     1699.22
     ],
     [
      197.4,
      1698.5
     ],
     [
-     197.88,
-     1697.88
-    ],
-    [
      198.5,
      1697.4
-    ],
-    [
-     199.22,
-     1697.1
     ],
     [
      200.0,
      1697.0
     ],
     [
-     200.78,
-     1697.1
-    ],
-    [
      201.5,
      1697.4
     ],
     [
-     202.12,
-     1697.88
-    ],
-    [
      202.6,
      1698.5
-    ],
-    [
-     202.9,
-     1699.22
     ]
    ],
    "start": 704,
@@ -2220,24 +2207,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Load Printer Slot",
+   "name": "Load Printer Slot 300L",
    "subcategory": "Black"
   },
   {
    "op": "set_material_param",
-   "name": "Load Printer Slot",
+   "name": "Load Printer Slot 300L",
    "param": "Black Material"
   },
   {
    "op": "set_visibility",
-   "name": "Load Printer Slot",
+   "name": "Load Printer Slot 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Wall Flange",
+   "name": "Wall Flange 300L",
    "points": [
     [
      -610,
@@ -2262,24 +2249,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Wall Flange",
+   "name": "Wall Flange 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Wall Flange",
+   "name": "Wall Flange 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Wall Flange",
+   "name": "Wall Flange 300L",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Service Header",
+   "name": "Service Header 300L",
    "points": [
     [
      444.0,
@@ -2367,24 +2354,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Service Header",
+   "name": "Service Header 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Service Header",
+   "name": "Service Header 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Service Header",
+   "name": "Service Header 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Steam Inlet",
+   "name": "Steam Inlet 300L",
    "points": [
     [
      -280.0,
@@ -2488,24 +2475,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Steam Inlet",
+   "name": "Steam Inlet 300L",
    "subcategory": "Steel"
   },
   {
    "op": "set_material_param",
-   "name": "Steam Inlet",
+   "name": "Steam Inlet 300L",
    "param": "Steel Material"
   },
   {
    "op": "set_visibility",
-   "name": "Steam Inlet",
+   "name": "Steam Inlet 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Water Inlet",
+   "name": "Water Inlet 300L",
    "points": [
     [
      -88.0,
@@ -2609,24 +2596,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Water Inlet",
+   "name": "Water Inlet 300L",
    "subcategory": "Copper"
   },
   {
    "op": "set_material_param",
-   "name": "Water Inlet",
+   "name": "Water Inlet 300L",
    "param": "Copper Material"
   },
   {
    "op": "set_visibility",
-   "name": "Water Inlet",
+   "name": "Water Inlet 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Vent Stack",
+   "name": "Vent Stack 300L",
    "points": [
     [
      340.0,
@@ -2730,24 +2717,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Vent Stack",
+   "name": "Vent Stack 300L",
    "subcategory": "Stainless"
   },
   {
    "op": "set_material_param",
-   "name": "Vent Stack",
+   "name": "Vent Stack 300L",
    "param": "Stainless Material"
   },
   {
    "op": "set_visibility",
-   "name": "Vent Stack",
+   "name": "Vent Stack 300L",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Drain Spigot",
+   "name": "Drain Spigot 300L",
    "points": [
     [
      40.0,
@@ -2851,27 +2838,2733 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Drain Spigot",
+   "name": "Drain Spigot 300L",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Drain Spigot",
+   "name": "Drain Spigot 300L",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Drain Spigot",
+   "name": "Drain Spigot 300L",
    "coarse": false,
    "medium": true,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet 600L",
+   "points": [
+    [
+     641.9,
+     -910.0
+    ],
+    [
+     644.62,
+     -909.46
+    ],
+    [
+     646.92,
+     -907.92
+    ],
+    [
+     648.46,
+     -905.62
+    ],
+    [
+     649.0,
+     -902.9
+    ],
+    [
+     649.0,
+     902.9
+    ],
+    [
+     648.46,
+     905.62
+    ],
+    [
+     646.92,
+     907.92
+    ],
+    [
+     644.62,
+     909.46
+    ],
+    [
+     641.9,
+     910.0
+    ],
+    [
+     -641.9,
+     910.0
+    ],
+    [
+     -644.62,
+     909.46
+    ],
+    [
+     -646.92,
+     907.92
+    ],
+    [
+     -648.46,
+     905.62
+    ],
+    [
+     -649.0,
+     902.9
+    ],
+    [
+     -649.0,
+     -902.9
+    ],
+    [
+     -648.46,
+     -905.62
+    ],
+    [
+     -646.92,
+     -907.92
+    ],
+    [
+     -644.62,
+     -909.46
+    ],
+    [
+     -641.9,
+     -910.0
+    ]
+   ],
+   "start": 0.0,
+   "end": 2028.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Door Frame 600L",
+   "points": [
+    [
+     414.4,
+     312.0
+    ],
+    [
+     418.38,
+     312.79
+    ],
+    [
+     421.75,
+     315.05
+    ],
+    [
+     424.01,
+     318.42
+    ],
+    [
+     424.8,
+     322.4
+    ],
+    [
+     424.8,
+     1549.6
+    ],
+    [
+     424.01,
+     1553.58
+    ],
+    [
+     421.75,
+     1556.95
+    ],
+    [
+     418.38,
+     1559.21
+    ],
+    [
+     414.4,
+     1560.0
+    ],
+    [
+     -414.4,
+     1560.0
+    ],
+    [
+     -418.38,
+     1559.21
+    ],
+    [
+     -421.75,
+     1556.95
+    ],
+    [
+     -424.01,
+     1553.58
+    ],
+    [
+     -424.8,
+     1549.6
+    ],
+    [
+     -424.8,
+     322.4
+    ],
+    [
+     -424.01,
+     318.42
+    ],
+    [
+     -421.75,
+     315.05
+    ],
+    [
+     -418.38,
+     312.79
+    ],
+    [
+     -414.4,
+     312.0
+    ]
+   ],
+   "start": 910.0,
+   "end": 917.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Door Frame 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Door Frame 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Door Frame 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Kick Plate 600L",
+   "points": [
+    [
+     -495.6,
+     20.8
+    ],
+    [
+     495.6,
+     20.8
+    ],
+    [
+     495.6,
+     270.4
+    ],
+    [
+     -495.6,
+     270.4
+    ]
+   ],
+   "start": 910.0,
+   "end": 915.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Kick Plate 600L",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Kick Plate 600L",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Kick Plate 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Control Panel 600L",
+   "points": [
+    [
+     416.5,
+     1622.4
+    ],
+    [
+     419.68,
+     1623.03
+    ],
+    [
+     422.37,
+     1624.83
+    ],
+    [
+     424.17,
+     1627.52
+    ],
+    [
+     424.8,
+     1630.7
+    ],
+    [
+     424.8,
+     1946.9
+    ],
+    [
+     424.17,
+     1950.08
+    ],
+    [
+     422.37,
+     1952.77
+    ],
+    [
+     419.68,
+     1954.57
+    ],
+    [
+     416.5,
+     1955.2
+    ],
+    [
+     -416.5,
+     1955.2
+    ],
+    [
+     -419.68,
+     1954.57
+    ],
+    [
+     -422.37,
+     1952.77
+    ],
+    [
+     -424.17,
+     1950.08
+    ],
+    [
+     -424.8,
+     1946.9
+    ],
+    [
+     -424.8,
+     1630.7
+    ],
+    [
+     -424.17,
+     1627.52
+    ],
+    [
+     -422.37,
+     1624.83
+    ],
+    [
+     -419.68,
+     1623.03
+    ],
+    [
+     -416.5,
+     1622.4
+    ]
+   ],
+   "start": 910.0,
+   "end": 915.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Control Panel 600L",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Control Panel 600L",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Control Panel 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Touchscreen 600L",
+   "points": [
+    [
+     -75.0,
+     1684.8
+    ],
+    [
+     -73.39,
+     1685.12
+    ],
+    [
+     -72.03,
+     1686.03
+    ],
+    [
+     -71.12,
+     1687.39
+    ],
+    [
+     -70.8,
+     1689.0
+    ],
+    [
+     -70.8,
+     1888.6
+    ],
+    [
+     -71.12,
+     1890.21
+    ],
+    [
+     -72.03,
+     1891.57
+    ],
+    [
+     -73.39,
+     1892.48
+    ],
+    [
+     -75.0,
+     1892.8
+    ],
+    [
+     -373.4,
+     1892.8
+    ],
+    [
+     -375.01,
+     1892.48
+    ],
+    [
+     -376.37,
+     1891.57
+    ],
+    [
+     -377.28,
+     1890.21
+    ],
+    [
+     -377.6,
+     1888.6
+    ],
+    [
+     -377.6,
+     1689.0
+    ],
+    [
+     -377.28,
+     1687.39
+    ],
+    [
+     -376.37,
+     1686.03
+    ],
+    [
+     -375.01,
+     1685.12
+    ],
+    [
+     -373.4,
+     1684.8
+    ]
+   ],
+   "start": 910.0,
+   "end": 919.1,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Touchscreen 600L",
+   "subcategory": "Display"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Touchscreen 600L",
+   "param": "Display Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Touchscreen 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Status LED 600L",
+   "points": [
+    [
+     364.0,
+     1830.4
+    ],
+    [
+     363.66,
+     1832.99
+    ],
+    [
+     362.66,
+     1835.4
+    ],
+    [
+     361.07,
+     1837.47
+    ],
+    [
+     359.0,
+     1839.06
+    ],
+    [
+     356.59,
+     1840.06
+    ],
+    [
+     354.0,
+     1840.4
+    ],
+    [
+     351.41,
+     1840.06
+    ],
+    [
+     349.0,
+     1839.06
+    ],
+    [
+     346.93,
+     1837.47
+    ],
+    [
+     345.34,
+     1835.4
+    ],
+    [
+     344.34,
+     1832.99
+    ],
+    [
+     344.0,
+     1830.4
+    ],
+    [
+     344.34,
+     1827.81
+    ],
+    [
+     345.34,
+     1825.4
+    ],
+    [
+     346.93,
+     1823.33
+    ],
+    [
+     349.0,
+     1821.74
+    ],
+    [
+     351.41,
+     1820.74
+    ],
+    [
+     354.0,
+     1820.4
+    ],
+    [
+     356.59,
+     1820.74
+    ],
+    [
+     359.0,
+     1821.74
+    ],
+    [
+     361.07,
+     1823.33
+    ],
+    [
+     362.66,
+     1825.4
+    ],
+    [
+     363.66,
+     1827.81
+    ]
+   ],
+   "start": 910.0,
+   "end": 920.4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Status LED 600L",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Status LED 600L",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Status LED 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Stop Button 600L",
+   "points": [
+    [
+     374.0,
+     1726.4
+    ],
+    [
+     373.32,
+     1731.58
+    ],
+    [
+     371.32,
+     1736.4
+    ],
+    [
+     368.14,
+     1740.54
+    ],
+    [
+     364.0,
+     1743.72
+    ],
+    [
+     359.18,
+     1745.72
+    ],
+    [
+     354.0,
+     1746.4
+    ],
+    [
+     348.82,
+     1745.72
+    ],
+    [
+     344.0,
+     1743.72
+    ],
+    [
+     339.86,
+     1740.54
+    ],
+    [
+     336.68,
+     1736.4
+    ],
+    [
+     334.68,
+     1731.58
+    ],
+    [
+     334.0,
+     1726.4
+    ],
+    [
+     334.68,
+     1721.22
+    ],
+    [
+     336.68,
+     1716.4
+    ],
+    [
+     339.86,
+     1712.26
+    ],
+    [
+     344.0,
+     1709.08
+    ],
+    [
+     348.82,
+     1707.08
+    ],
+    [
+     354.0,
+     1706.4
+    ],
+    [
+     359.18,
+     1707.08
+    ],
+    [
+     364.0,
+     1709.08
+    ],
+    [
+     368.14,
+     1712.26
+    ],
+    [
+     371.32,
+     1716.4
+    ],
+    [
+     373.32,
+     1721.22
+    ]
+   ],
+   "start": 910.0,
+   "end": 928.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Stop Button 600L",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Stop Button 600L",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Stop Button 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Door Frame 600L",
+   "points": [
+    [
+     414.4,
+     312.0
+    ],
+    [
+     418.38,
+     312.79
+    ],
+    [
+     421.75,
+     315.05
+    ],
+    [
+     424.01,
+     318.42
+    ],
+    [
+     424.8,
+     322.4
+    ],
+    [
+     424.8,
+     1549.6
+    ],
+    [
+     424.01,
+     1553.58
+    ],
+    [
+     421.75,
+     1556.95
+    ],
+    [
+     418.38,
+     1559.21
+    ],
+    [
+     414.4,
+     1560.0
+    ],
+    [
+     -414.4,
+     1560.0
+    ],
+    [
+     -418.38,
+     1559.21
+    ],
+    [
+     -421.75,
+     1556.95
+    ],
+    [
+     -424.01,
+     1553.58
+    ],
+    [
+     -424.8,
+     1549.6
+    ],
+    [
+     -424.8,
+     322.4
+    ],
+    [
+     -424.01,
+     318.42
+    ],
+    [
+     -421.75,
+     315.05
+    ],
+    [
+     -418.38,
+     312.79
+    ],
+    [
+     -414.4,
+     312.0
+    ]
+   ],
+   "start": -917.8,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Door Frame 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Door Frame 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Door Frame 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Kick Plate 600L",
+   "points": [
+    [
+     -495.6,
+     20.8
+    ],
+    [
+     495.6,
+     20.8
+    ],
+    [
+     495.6,
+     270.4
+    ],
+    [
+     -495.6,
+     270.4
+    ]
+   ],
+   "start": -915.2,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Kick Plate 600L",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Kick Plate 600L",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Kick Plate 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Control Panel 600L",
+   "points": [
+    [
+     416.5,
+     1622.4
+    ],
+    [
+     419.68,
+     1623.03
+    ],
+    [
+     422.37,
+     1624.83
+    ],
+    [
+     424.17,
+     1627.52
+    ],
+    [
+     424.8,
+     1630.7
+    ],
+    [
+     424.8,
+     1946.9
+    ],
+    [
+     424.17,
+     1950.08
+    ],
+    [
+     422.37,
+     1952.77
+    ],
+    [
+     419.68,
+     1954.57
+    ],
+    [
+     416.5,
+     1955.2
+    ],
+    [
+     -416.5,
+     1955.2
+    ],
+    [
+     -419.68,
+     1954.57
+    ],
+    [
+     -422.37,
+     1952.77
+    ],
+    [
+     -424.17,
+     1950.08
+    ],
+    [
+     -424.8,
+     1946.9
+    ],
+    [
+     -424.8,
+     1630.7
+    ],
+    [
+     -424.17,
+     1627.52
+    ],
+    [
+     -422.37,
+     1624.83
+    ],
+    [
+     -419.68,
+     1623.03
+    ],
+    [
+     -416.5,
+     1622.4
+    ]
+   ],
+   "start": -915.2,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Control Panel 600L",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Control Panel 600L",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Control Panel 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Touchscreen 600L",
+   "points": [
+    [
+     -75.0,
+     1684.8
+    ],
+    [
+     -73.39,
+     1685.12
+    ],
+    [
+     -72.03,
+     1686.03
+    ],
+    [
+     -71.12,
+     1687.39
+    ],
+    [
+     -70.8,
+     1689.0
+    ],
+    [
+     -70.8,
+     1888.6
+    ],
+    [
+     -71.12,
+     1890.21
+    ],
+    [
+     -72.03,
+     1891.57
+    ],
+    [
+     -73.39,
+     1892.48
+    ],
+    [
+     -75.0,
+     1892.8
+    ],
+    [
+     -373.4,
+     1892.8
+    ],
+    [
+     -375.01,
+     1892.48
+    ],
+    [
+     -376.37,
+     1891.57
+    ],
+    [
+     -377.28,
+     1890.21
+    ],
+    [
+     -377.6,
+     1888.6
+    ],
+    [
+     -377.6,
+     1689.0
+    ],
+    [
+     -377.28,
+     1687.39
+    ],
+    [
+     -376.37,
+     1686.03
+    ],
+    [
+     -375.01,
+     1685.12
+    ],
+    [
+     -373.4,
+     1684.8
+    ]
+   ],
+   "start": -919.1,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Touchscreen 600L",
+   "subcategory": "Display"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Touchscreen 600L",
+   "param": "Display Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Touchscreen 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Status LED 600L",
+   "points": [
+    [
+     364.0,
+     1830.4
+    ],
+    [
+     363.66,
+     1832.99
+    ],
+    [
+     362.66,
+     1835.4
+    ],
+    [
+     361.07,
+     1837.47
+    ],
+    [
+     359.0,
+     1839.06
+    ],
+    [
+     356.59,
+     1840.06
+    ],
+    [
+     354.0,
+     1840.4
+    ],
+    [
+     351.41,
+     1840.06
+    ],
+    [
+     349.0,
+     1839.06
+    ],
+    [
+     346.93,
+     1837.47
+    ],
+    [
+     345.34,
+     1835.4
+    ],
+    [
+     344.34,
+     1832.99
+    ],
+    [
+     344.0,
+     1830.4
+    ],
+    [
+     344.34,
+     1827.81
+    ],
+    [
+     345.34,
+     1825.4
+    ],
+    [
+     346.93,
+     1823.33
+    ],
+    [
+     349.0,
+     1821.74
+    ],
+    [
+     351.41,
+     1820.74
+    ],
+    [
+     354.0,
+     1820.4
+    ],
+    [
+     356.59,
+     1820.74
+    ],
+    [
+     359.0,
+     1821.74
+    ],
+    [
+     361.07,
+     1823.33
+    ],
+    [
+     362.66,
+     1825.4
+    ],
+    [
+     363.66,
+     1827.81
+    ]
+   ],
+   "start": -920.4,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Status LED 600L",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Status LED 600L",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Status LED 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Stop Button 600L",
+   "points": [
+    [
+     374.0,
+     1726.4
+    ],
+    [
+     373.32,
+     1731.58
+    ],
+    [
+     371.32,
+     1736.4
+    ],
+    [
+     368.14,
+     1740.54
+    ],
+    [
+     364.0,
+     1743.72
+    ],
+    [
+     359.18,
+     1745.72
+    ],
+    [
+     354.0,
+     1746.4
+    ],
+    [
+     348.82,
+     1745.72
+    ],
+    [
+     344.0,
+     1743.72
+    ],
+    [
+     339.86,
+     1740.54
+    ],
+    [
+     336.68,
+     1736.4
+    ],
+    [
+     334.68,
+     1731.58
+    ],
+    [
+     334.0,
+     1726.4
+    ],
+    [
+     334.68,
+     1721.22
+    ],
+    [
+     336.68,
+     1716.4
+    ],
+    [
+     339.86,
+     1712.26
+    ],
+    [
+     344.0,
+     1709.08
+    ],
+    [
+     348.82,
+     1707.08
+    ],
+    [
+     354.0,
+     1706.4
+    ],
+    [
+     359.18,
+     1707.08
+    ],
+    [
+     364.0,
+     1709.08
+    ],
+    [
+     368.14,
+     1712.26
+    ],
+    [
+     371.32,
+     1716.4
+    ],
+    [
+     373.32,
+     1721.22
+    ]
+   ],
+   "start": -928.2,
+   "end": -910.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Stop Button 600L",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Stop Button 600L",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Stop Button 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Chamber Door 600L",
+   "points": [
+    [
+     315.2,
+     436.8
+    ],
+    [
+     339.08,
+     441.55
+    ],
+    [
+     359.32,
+     455.08
+    ],
+    [
+     372.85,
+     475.32
+    ],
+    [
+     377.6,
+     499.2
+    ],
+    [
+     377.6,
+     1289.6
+    ],
+    [
+     372.85,
+     1313.48
+    ],
+    [
+     359.32,
+     1333.72
+    ],
+    [
+     339.08,
+     1347.25
+    ],
+    [
+     315.2,
+     1352.0
+    ],
+    [
+     -315.2,
+     1352.0
+    ],
+    [
+     -339.08,
+     1347.25
+    ],
+    [
+     -359.32,
+     1333.72
+    ],
+    [
+     -372.85,
+     1313.48
+    ],
+    [
+     -377.6,
+     1289.6
+    ],
+    [
+     -377.6,
+     499.2
+    ],
+    [
+     -372.85,
+     475.32
+    ],
+    [
+     -359.32,
+     455.08
+    ],
+    [
+     -339.08,
+     441.55
+    ],
+    [
+     -315.2,
+     436.8
+    ]
+   ],
+   "start": 917.8,
+   "end": 925.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Chamber Door 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Chamber Door 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Chamber Door 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Unload Chamber Door 600L",
+   "points": [
+    [
+     315.2,
+     436.8
+    ],
+    [
+     339.08,
+     441.55
+    ],
+    [
+     359.32,
+     455.08
+    ],
+    [
+     372.85,
+     475.32
+    ],
+    [
+     377.6,
+     499.2
+    ],
+    [
+     377.6,
+     1289.6
+    ],
+    [
+     372.85,
+     1313.48
+    ],
+    [
+     359.32,
+     1333.72
+    ],
+    [
+     339.08,
+     1347.25
+    ],
+    [
+     315.2,
+     1352.0
+    ],
+    [
+     -315.2,
+     1352.0
+    ],
+    [
+     -339.08,
+     1347.25
+    ],
+    [
+     -359.32,
+     1333.72
+    ],
+    [
+     -372.85,
+     1313.48
+    ],
+    [
+     -377.6,
+     1289.6
+    ],
+    [
+     -377.6,
+     499.2
+    ],
+    [
+     -372.85,
+     475.32
+    ],
+    [
+     -359.32,
+     455.08
+    ],
+    [
+     -339.08,
+     441.55
+    ],
+    [
+     -315.2,
+     436.8
+    ]
+   ],
+   "start": -925.6,
+   "end": -917.8,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Unload Chamber Door 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Unload Chamber Door 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Unload Chamber Door 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Door Seal 600L",
+   "points": [
+    [
+     322.8,
+     426.4
+    ],
+    [
+     348.29,
+     431.47
+    ],
+    [
+     369.89,
+     445.91
+    ],
+    [
+     384.33,
+     467.51
+    ],
+    [
+     389.4,
+     493.0
+    ],
+    [
+     389.4,
+     1295.8
+    ],
+    [
+     384.33,
+     1321.29
+    ],
+    [
+     369.89,
+     1342.89
+    ],
+    [
+     348.29,
+     1357.33
+    ],
+    [
+     322.8,
+     1362.4
+    ],
+    [
+     -322.8,
+     1362.4
+    ],
+    [
+     -348.29,
+     1357.33
+    ],
+    [
+     -369.89,
+     1342.89
+    ],
+    [
+     -384.33,
+     1321.29
+    ],
+    [
+     -389.4,
+     1295.8
+    ],
+    [
+     -389.4,
+     493.0
+    ],
+    [
+     -384.33,
+     467.51
+    ],
+    [
+     -369.89,
+     445.91
+    ],
+    [
+     -348.29,
+     431.47
+    ],
+    [
+     -322.8,
+     426.4
+    ]
+   ],
+   "start": 917.8,
+   "end": 919.1,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Door Seal 600L",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Door Seal 600L",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Door Seal 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Door Badge 600L",
+   "points": [
+    [
+     -141.6,
+     1248.0
+    ],
+    [
+     141.6,
+     1248.0
+    ],
+    [
+     141.6,
+     1289.6
+    ],
+    [
+     -141.6,
+     1289.6
+    ]
+   ],
+   "start": 925.6,
+   "end": 928.2,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Door Badge 600L",
+   "subcategory": "Medical Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Door Badge 600L",
+   "param": "Medical Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Door Badge 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Load Printer Slot 600L",
+   "points": [
+    [
+     239.3,
+     1768.0
+    ],
+    [
+     238.86,
+     1769.65
+    ],
+    [
+     237.65,
+     1770.86
+    ],
+    [
+     236.0,
+     1771.3
+    ],
+    [
+     234.35,
+     1770.86
+    ],
+    [
+     233.14,
+     1769.65
+    ],
+    [
+     232.7,
+     1768.0
+    ],
+    [
+     233.14,
+     1766.35
+    ],
+    [
+     234.35,
+     1765.14
+    ],
+    [
+     236.0,
+     1764.7
+    ],
+    [
+     237.65,
+     1765.14
+    ],
+    [
+     238.86,
+     1766.35
+    ]
+   ],
+   "start": 915.2,
+   "end": 920.4,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Load Printer Slot 600L",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Load Printer Slot 600L",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Load Printer Slot 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Flange 600L",
+   "points": [
+    [
+     -719.8,
+     0.0
+    ],
+    [
+     719.8,
+     0.0
+    ],
+    [
+     719.8,
+     2080.0
+    ],
+    [
+     -719.8,
+     2080.0
+    ]
+   ],
+   "start": -26.0,
+   "end": 26.0,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Flange 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Flange 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Flange 600L",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Service Header 600L",
+   "points": [
+    [
+     523.9,
+     -520.0
+    ],
+    [
+     526.62,
+     -519.46
+    ],
+    [
+     528.92,
+     -517.92
+    ],
+    [
+     530.46,
+     -515.62
+    ],
+    [
+     531.0,
+     -512.9
+    ],
+    [
+     531.0,
+     512.9
+    ],
+    [
+     530.46,
+     515.62
+    ],
+    [
+     528.92,
+     517.92
+    ],
+    [
+     526.62,
+     519.46
+    ],
+    [
+     523.9,
+     520.0
+    ],
+    [
+     -523.9,
+     520.0
+    ],
+    [
+     -526.62,
+     519.46
+    ],
+    [
+     -528.92,
+     517.92
+    ],
+    [
+     -530.46,
+     515.62
+    ],
+    [
+     -531.0,
+     512.9
+    ],
+    [
+     -531.0,
+     -512.9
+    ],
+    [
+     -530.46,
+     -515.62
+    ],
+    [
+     -528.92,
+     -517.92
+    ],
+    [
+     -526.62,
+     -519.46
+    ],
+    [
+     -523.9,
+     -520.0
+    ]
+   ],
+   "start": 2028.0,
+   "end": 2163.2
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Service Header 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Service Header 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Service Header 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Steam Inlet 600L",
+   "points": [
+    [
+     -329.2,
+     260.0
+    ],
+    [
+     -330.05,
+     266.42
+    ],
+    [
+     -332.52,
+     272.4
+    ],
+    [
+     -336.46,
+     277.54
+    ],
+    [
+     -341.6,
+     281.48
+    ],
+    [
+     -347.58,
+     283.95
+    ],
+    [
+     -354.0,
+     284.8
+    ],
+    [
+     -360.42,
+     283.95
+    ],
+    [
+     -366.4,
+     281.48
+    ],
+    [
+     -371.54,
+     277.54
+    ],
+    [
+     -375.48,
+     272.4
+    ],
+    [
+     -377.95,
+     266.42
+    ],
+    [
+     -378.8,
+     260.0
+    ],
+    [
+     -377.95,
+     253.58
+    ],
+    [
+     -375.48,
+     247.6
+    ],
+    [
+     -371.54,
+     242.46
+    ],
+    [
+     -366.4,
+     238.52
+    ],
+    [
+     -360.42,
+     236.05
+    ],
+    [
+     -354.0,
+     235.2
+    ],
+    [
+     -347.58,
+     236.05
+    ],
+    [
+     -341.6,
+     238.52
+    ],
+    [
+     -336.46,
+     242.46
+    ],
+    [
+     -332.52,
+     247.6
+    ],
+    [
+     -330.05,
+     253.58
+    ]
+   ],
+   "start": 2163.2,
+   "end": 2288.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Steam Inlet 600L",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Steam Inlet 600L",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Steam Inlet 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Water Inlet 600L",
+   "points": [
+    [
+     -103.1,
+     260.0
+    ],
+    [
+     -103.61,
+     263.86
+    ],
+    [
+     -105.1,
+     267.45
+    ],
+    [
+     -107.46,
+     270.54
+    ],
+    [
+     -110.55,
+     272.9
+    ],
+    [
+     -114.14,
+     274.39
+    ],
+    [
+     -118.0,
+     274.9
+    ],
+    [
+     -121.86,
+     274.39
+    ],
+    [
+     -125.45,
+     272.9
+    ],
+    [
+     -128.54,
+     270.54
+    ],
+    [
+     -130.9,
+     267.45
+    ],
+    [
+     -132.39,
+     263.86
+    ],
+    [
+     -132.9,
+     260.0
+    ],
+    [
+     -132.39,
+     256.14
+    ],
+    [
+     -130.9,
+     252.55
+    ],
+    [
+     -128.54,
+     249.46
+    ],
+    [
+     -125.45,
+     247.1
+    ],
+    [
+     -121.86,
+     245.61
+    ],
+    [
+     -118.0,
+     245.1
+    ],
+    [
+     -114.14,
+     245.61
+    ],
+    [
+     -110.55,
+     247.1
+    ],
+    [
+     -107.46,
+     249.46
+    ],
+    [
+     -105.1,
+     252.55
+    ],
+    [
+     -103.61,
+     256.14
+    ]
+   ],
+   "start": 2163.2,
+   "end": 2288.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Water Inlet 600L",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Water Inlet 600L",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Water Inlet 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Vent Stack 600L",
+   "points": [
+    [
+     403.6,
+     0.0
+    ],
+    [
+     401.91,
+     12.84
+    ],
+    [
+     396.95,
+     24.8
+    ],
+    [
+     389.07,
+     35.07
+    ],
+    [
+     378.8,
+     42.95
+    ],
+    [
+     366.84,
+     47.91
+    ],
+    [
+     354.0,
+     49.6
+    ],
+    [
+     341.16,
+     47.91
+    ],
+    [
+     329.2,
+     42.95
+    ],
+    [
+     318.93,
+     35.07
+    ],
+    [
+     311.05,
+     24.8
+    ],
+    [
+     306.09,
+     12.84
+    ],
+    [
+     304.4,
+     0.0
+    ],
+    [
+     306.09,
+     -12.84
+    ],
+    [
+     311.05,
+     -24.8
+    ],
+    [
+     318.93,
+     -35.07
+    ],
+    [
+     329.2,
+     -42.95
+    ],
+    [
+     341.16,
+     -47.91
+    ],
+    [
+     354.0,
+     -49.6
+    ],
+    [
+     366.84,
+     -47.91
+    ],
+    [
+     378.8,
+     -42.95
+    ],
+    [
+     389.07,
+     -35.07
+    ],
+    [
+     396.95,
+     -24.8
+    ],
+    [
+     401.91,
+     -12.84
+    ]
+   ],
+   "start": 2163.2,
+   "end": 2392.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Vent Stack 600L",
+   "subcategory": "Stainless"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Vent Stack 600L",
+   "param": "Stainless Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Vent Stack 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Drain Spigot 600L",
+   "points": [
+    [
+     49.6,
+     390.0
+    ],
+    [
+     47.91,
+     402.84
+    ],
+    [
+     42.95,
+     414.8
+    ],
+    [
+     35.07,
+     425.07
+    ],
+    [
+     24.8,
+     432.95
+    ],
+    [
+     12.84,
+     437.91
+    ],
+    [
+     0.0,
+     439.6
+    ],
+    [
+     -12.84,
+     437.91
+    ],
+    [
+     -24.8,
+     432.95
+    ],
+    [
+     -35.07,
+     425.07
+    ],
+    [
+     -42.95,
+     414.8
+    ],
+    [
+     -47.91,
+     402.84
+    ],
+    [
+     -49.6,
+     390.0
+    ],
+    [
+     -47.91,
+     377.16
+    ],
+    [
+     -42.95,
+     365.2
+    ],
+    [
+     -35.07,
+     354.93
+    ],
+    [
+     -24.8,
+     347.05
+    ],
+    [
+     -12.84,
+     342.09
+    ],
+    [
+     -0.0,
+     340.4
+    ],
+    [
+     12.84,
+     342.09
+    ],
+    [
+     24.8,
+     347.05
+    ],
+    [
+     35.07,
+     354.93
+    ],
+    [
+     42.95,
+     365.2
+    ],
+    [
+     47.91,
+     377.16
+    ]
+   ],
+   "start": -83.2,
+   "end": 0.0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Drain Spigot 600L",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain Spigot 600L",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Spigot 600L",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 300L_PassThrough",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300L_PassThrough/Show 300L_PassThrough",
+   "type": "300L_PassThrough",
+   "param": "Show 300L_PassThrough",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "600L_PassThrough/Show 300L_PassThrough",
+   "type": "600L_PassThrough",
+   "param": "Show 300L_PassThrough",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet 300L/Visible",
+   "solid": "Cabinet 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Frame 300L/Visible",
+   "solid": "Load Door Frame 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Kick Plate 300L/Visible",
+   "solid": "Load Kick Plate 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Control Panel 300L/Visible",
+   "solid": "Load Control Panel 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Touchscreen 300L/Visible",
+   "solid": "Load Touchscreen 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Status LED 300L/Visible",
+   "solid": "Load Status LED 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Stop Button 300L/Visible",
+   "solid": "Load Stop Button 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Door Frame 300L/Visible",
+   "solid": "Unload Door Frame 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Kick Plate 300L/Visible",
+   "solid": "Unload Kick Plate 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Control Panel 300L/Visible",
+   "solid": "Unload Control Panel 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Touchscreen 300L/Visible",
+   "solid": "Unload Touchscreen 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Status LED 300L/Visible",
+   "solid": "Unload Status LED 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Stop Button 300L/Visible",
+   "solid": "Unload Stop Button 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Chamber Door 300L/Visible",
+   "solid": "Load Chamber Door 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Chamber Door 300L/Visible",
+   "solid": "Unload Chamber Door 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Seal 300L/Visible",
+   "solid": "Load Door Seal 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Badge 300L/Visible",
+   "solid": "Load Door Badge 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Printer Slot 300L/Visible",
+   "solid": "Load Printer Slot 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Flange 300L/Visible",
+   "solid": "Wall Flange 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Service Header 300L/Visible",
+   "solid": "Service Header 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Steam Inlet 300L/Visible",
+   "solid": "Steam Inlet 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Water Inlet 300L/Visible",
+   "solid": "Water Inlet 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Stack 300L/Visible",
+   "solid": "Vent Stack 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drain Spigot 300L/Visible",
+   "solid": "Drain Spigot 300L",
+   "param": "Show 300L_PassThrough"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 600L_PassThrough",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "300L_PassThrough/Show 600L_PassThrough",
+   "type": "300L_PassThrough",
+   "param": "Show 600L_PassThrough",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "600L_PassThrough/Show 600L_PassThrough",
+   "type": "600L_PassThrough",
+   "param": "Show 600L_PassThrough",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Cabinet 600L/Visible",
+   "solid": "Cabinet 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Frame 600L/Visible",
+   "solid": "Load Door Frame 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Kick Plate 600L/Visible",
+   "solid": "Load Kick Plate 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Control Panel 600L/Visible",
+   "solid": "Load Control Panel 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Touchscreen 600L/Visible",
+   "solid": "Load Touchscreen 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Status LED 600L/Visible",
+   "solid": "Load Status LED 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Stop Button 600L/Visible",
+   "solid": "Load Stop Button 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Door Frame 600L/Visible",
+   "solid": "Unload Door Frame 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Kick Plate 600L/Visible",
+   "solid": "Unload Kick Plate 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Control Panel 600L/Visible",
+   "solid": "Unload Control Panel 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Touchscreen 600L/Visible",
+   "solid": "Unload Touchscreen 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Status LED 600L/Visible",
+   "solid": "Unload Status LED 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Stop Button 600L/Visible",
+   "solid": "Unload Stop Button 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Chamber Door 600L/Visible",
+   "solid": "Load Chamber Door 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Unload Chamber Door 600L/Visible",
+   "solid": "Unload Chamber Door 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Seal 600L/Visible",
+   "solid": "Load Door Seal 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Door Badge 600L/Visible",
+   "solid": "Load Door Badge 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Load Printer Slot 600L/Visible",
+   "solid": "Load Printer Slot 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Wall Flange 600L/Visible",
+   "solid": "Wall Flange 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Service Header 600L/Visible",
+   "solid": "Service Header 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Steam Inlet 600L/Visible",
+   "solid": "Steam Inlet 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Water Inlet 600L/Visible",
+   "solid": "Water Inlet 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Vent Stack 600L/Visible",
+   "solid": "Vent Stack 600L",
+   "param": "Show 600L_PassThrough"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Drain Spigot 600L/Visible",
+   "solid": "Drain Spigot 600L",
+   "param": "Show 600L_PassThrough"
   },
   {
    "op": "add_connector",
    "name": "Steam",
    "domain": "pipe",
    "system": "Other",
-   "solid": "Steam Inlet",
+   "solid": "Steam Inlet 300L",
    "side": "top",
    "diameter": 25,
    "flow": "In"
@@ -2881,7 +5574,7 @@
    "name": "CW",
    "domain": "pipe",
    "system": "DomesticColdWater",
-   "solid": "Water Inlet",
+   "solid": "Water Inlet 300L",
    "side": "top",
    "diameter": 15,
    "flow": "In"
@@ -2891,7 +5584,7 @@
    "name": "Waste",
    "domain": "pipe",
    "system": "Sanitary",
-   "solid": "Drain Spigot",
+   "solid": "Drain Spigot 300L",
    "side": "bottom",
    "diameter": 50,
    "flow": "Out"
@@ -2901,7 +5594,7 @@
    "name": "Power",
    "domain": "electrical",
    "system": "PowerBalanced",
-   "solid": "Service Header",
+   "solid": "Service Header 300L",
    "side": "right"
   },
   {

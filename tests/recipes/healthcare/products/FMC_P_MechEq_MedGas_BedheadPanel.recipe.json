@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_MechEq_MedGas_BedheadPanel",
  "template": "Metric Mechanical Equipment.rft",
- "about": "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight and reading-light lenses, dividers, label strip, three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate. 1-bed drawn; 2-bed shares it until a second set is nested. Reference: query: medical gas bedhead panel mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+bedhead+panel+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Bedhead panel modelled as a generic product: trunking extrusion with end caps, uplight lens, and per bed three terminal units (fascia, ring, collar, label), two twin sockets, nurse call plate with call, reset, LED and handset socket, data plate and reading light. Per type: bed 1 sits at x = 0 in both; the 2-bed type runs the trunking on to 4000 mm with a second bed set, fed inside the trunking from bed 1's service connectors. Reference: query: medical gas bedhead panel mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=medical+gas+bedhead+panel+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.specifiedby.com/cableflow-international/medisys; photo_title: Cableflow Medisys bedhead trunking; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -398,7 +398,7 @@
    "name": "1Bed_Panel/Description",
    "type": "1Bed_Panel",
    "param": "Description",
-   "value": "Bedhead services panel: 2000 mm horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential red rockers), nurse call and data, uplight and reading light"
+   "value": "Bedhead services panel: horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential, red rockers), nurse call and data, uplight and reading light per bed; 1-bed 2000 mm or 2-bed 4000 mm"
   },
   {
    "op": "set_type_value",
@@ -434,6 +434,13 @@
    "type": "1Bed_Panel",
    "param": "FMC_Role_Code",
    "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1Bed_Panel/URL",
+   "type": "1Bed_Panel",
+   "param": "URL",
+   "value": "https://www.specifiedby.com/cableflow-international/medisys"
   },
   {
    "op": "set_type_value",
@@ -486,7 +493,7 @@
    "name": "2Bed_Panel/Description",
    "type": "2Bed_Panel",
    "param": "Description",
-   "value": "Bedhead services panel: 2000 mm horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential red rockers), nurse call and data, uplight and reading light"
+   "value": "Bedhead services panel: horizontal aluminium trunking with O2, vacuum and medical air terminal units, two twin sockets (one essential, red rockers), nurse call and data, uplight and reading light per bed; 1-bed 2000 mm or 2-bed 4000 mm"
   },
   {
    "op": "set_type_value",
@@ -522,6 +529,13 @@
    "type": "2Bed_Panel",
    "param": "FMC_Role_Code",
    "value": "P"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Bed_Panel/URL",
+   "type": "2Bed_Panel",
+   "param": "URL",
+   "value": "https://www.specifiedby.com/cableflow-international/medisys"
   },
   {
    "op": "set_type_value",
@@ -756,6 +770,27 @@
   },
   {
    "op": "add_subcategory",
+   "name": "Led Amber",
+   "color": [
+    255,
+    176,
+    0
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Led Amber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Amber",
+   "param": "Led Amber Material"
+  },
+  {
+   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -773,11 +808,11 @@
      -114
     ],
     [
-     1012,
+     3012,
      -114
     ],
     [
-     1012,
+     3012,
      0
     ],
     [
@@ -802,7 +837,7 @@
   },
   {
    "op": "extrusion",
-   "name": "Trunking",
+   "name": "Trunking 1Bed",
    "points": [
     [
      0,
@@ -835,17 +870,17 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Trunking",
+   "name": "Trunking 1Bed",
    "subcategory": "Aluminium"
   },
   {
    "op": "set_material_param",
-   "name": "Trunking",
+   "name": "Trunking 1Bed",
    "param": "Aluminium Material"
   },
   {
    "op": "set_visibility",
-   "name": "Trunking",
+   "name": "Trunking 1Bed",
    "coarse": false,
    "medium": true,
    "fine": true
@@ -902,7 +937,7 @@
   },
   {
    "op": "extrusion",
-   "name": "End Cap R",
+   "name": "End Cap R 1Bed",
    "points": [
     [
      0,
@@ -935,24 +970,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "End Cap R",
+   "name": "End Cap R 1Bed",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "End Cap R",
+   "name": "End Cap R 1Bed",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "End Cap R",
+   "name": "End Cap R 1Bed",
    "coarse": false,
    "medium": true,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Uplight Lens",
+   "name": "Uplight Lens 1Bed",
    "points": [
     [
      -950,
@@ -976,229 +1011,19 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Uplight Lens",
+   "name": "Uplight Lens 1Bed",
    "subcategory": "Polycarbonate"
   },
   {
    "op": "set_material_param",
-   "name": "Uplight Lens",
+   "name": "Uplight Lens 1Bed",
    "param": "Polycarbonate Material"
   },
   {
    "op": "set_visibility",
-   "name": "Uplight Lens",
+   "name": "Uplight Lens 1Bed",
    "coarse": false,
    "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Reading Light Lens",
-   "points": [
-    [
-     -400,
-     -6
-    ],
-    [
-     400,
-     -6
-    ],
-    [
-     400,
-     0
-    ],
-    [
-     -400,
-     0
-    ]
-   ],
-   "start": 18,
-   "end": 88,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Reading Light Lens",
-   "subcategory": "Polycarbonate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Reading Light Lens",
-   "param": "Polycarbonate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Reading Light Lens",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider 1",
-   "points": [
-    [
-     -260,
-     20
-    ],
-    [
-     -256,
-     20
-    ],
-    [
-     -256,
-     280
-    ],
-    [
-     -260,
-     280
-    ]
-   ],
-   "start": 90,
-   "end": 92,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider 1",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider 1",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider 2",
-   "points": [
-    [
-     120,
-     20
-    ],
-    [
-     124,
-     20
-    ],
-    [
-     124,
-     280
-    ],
-    [
-     120,
-     280
-    ]
-   ],
-   "start": 90,
-   "end": 92,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider 2",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider 2",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider 3",
-   "points": [
-    [
-     500,
-     20
-    ],
-    [
-     504,
-     20
-    ],
-    [
-     504,
-     280
-    ],
-    [
-     500,
-     280
-    ]
-   ],
-   "start": 90,
-   "end": 92,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider 3",
-   "subcategory": "Grey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider 3",
-   "param": "Grey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Label Strip",
-   "points": [
-    [
-     -950,
-     262
-    ],
-    [
-     950,
-     262
-    ],
-    [
-     950,
-     280
-    ],
-    [
-     -950,
-     280
-    ]
-   ],
-   "start": 90,
-   "end": 92,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Label Strip",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Label Strip",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Label Strip",
-   "coarse": false,
-   "medium": false,
    "fine": true
   },
   {
@@ -1408,16 +1233,8 @@
      103.0
     ],
     [
-     475.77,
-     103.15
-    ],
-    [
      476.41,
      103.59
-    ],
-    [
-     476.85,
-     104.23
     ],
     [
      477.0,
@@ -1428,16 +1245,8 @@
      111.0
     ],
     [
-     476.85,
-     111.77
-    ],
-    [
      476.41,
      112.41
-    ],
-    [
-     475.77,
-     112.85
     ],
     [
      475.0,
@@ -1448,16 +1257,8 @@
      113.0
     ],
     [
-     424.23,
-     112.85
-    ],
-    [
      423.59,
      112.41
-    ],
-    [
-     423.15,
-     111.77
     ],
     [
      423.0,
@@ -1468,23 +1269,15 @@
      105.0
     ],
     [
-     423.15,
-     104.23
-    ],
-    [
      423.59,
      103.59
-    ],
-    [
-     424.23,
-     103.15
     ],
     [
      425.0,
      103.0
     ]
    ],
-   "start": 100,
+   "start": 99.6,
    "end": 100.6,
    "sketch": "front"
   },
@@ -1712,16 +1505,8 @@
      103.0
     ],
     [
-     605.77,
-     103.15
-    ],
-    [
      606.41,
      103.59
-    ],
-    [
-     606.85,
-     104.23
     ],
     [
      607.0,
@@ -1732,16 +1517,8 @@
      111.0
     ],
     [
-     606.85,
-     111.77
-    ],
-    [
      606.41,
      112.41
-    ],
-    [
-     605.77,
-     112.85
     ],
     [
      605.0,
@@ -1752,16 +1529,8 @@
      113.0
     ],
     [
-     554.23,
-     112.85
-    ],
-    [
      553.59,
      112.41
-    ],
-    [
-     553.15,
-     111.77
     ],
     [
      553.0,
@@ -1772,23 +1541,15 @@
      105.0
     ],
     [
-     553.15,
-     104.23
-    ],
-    [
      553.59,
      103.59
-    ],
-    [
-     554.23,
-     103.15
     ],
     [
      555.0,
      103.0
     ]
    ],
-   "start": 100,
+   "start": 99.6,
    "end": 100.6,
    "sketch": "front"
   },
@@ -2016,16 +1777,8 @@
      103.0
     ],
     [
-     735.77,
-     103.15
-    ],
-    [
      736.41,
      103.59
-    ],
-    [
-     736.85,
-     104.23
     ],
     [
      737.0,
@@ -2036,16 +1789,8 @@
      111.0
     ],
     [
-     736.85,
-     111.77
-    ],
-    [
      736.41,
      112.41
-    ],
-    [
-     735.77,
-     112.85
     ],
     [
      735.0,
@@ -2056,16 +1801,8 @@
      113.0
     ],
     [
-     684.23,
-     112.85
-    ],
-    [
      683.59,
      112.41
-    ],
-    [
-     683.15,
-     111.77
     ],
     [
      683.0,
@@ -2076,23 +1813,15 @@
      105.0
     ],
     [
-     683.15,
-     104.23
-    ],
-    [
      683.59,
      103.59
-    ],
-    [
-     684.23,
-     103.15
     ],
     [
      685.0,
      103.0
     ]
    ],
-   "start": 100,
+   "start": 99.6,
    "end": 100.6,
    "sketch": "front"
   },
@@ -2440,16 +2169,8 @@
      172.0
     ],
     [
-     -831.23,
-     172.15
-    ],
-    [
      -830.59,
      172.59
-    ],
-    [
-     -830.15,
-     173.23
     ],
     [
      -830.0,
@@ -2460,16 +2181,8 @@
      184.0
     ],
     [
-     -830.15,
-     184.77
-    ],
-    [
      -830.59,
      185.41
-    ],
-    [
-     -831.23,
-     185.85
     ],
     [
      -832.0,
@@ -2480,16 +2193,8 @@
      186.0
     ],
     [
-     -844.77,
-     185.85
-    ],
-    [
      -845.41,
      185.41
-    ],
-    [
-     -845.85,
-     184.77
     ],
     [
      -846.0,
@@ -2500,16 +2205,8 @@
      174.0
     ],
     [
-     -845.85,
-     173.23
-    ],
-    [
      -845.41,
      172.59
-    ],
-    [
-     -844.77,
-     172.15
     ],
     [
      -844.0,
@@ -2546,16 +2243,8 @@
      172.0
     ],
     [
-     -749.23,
-     172.15
-    ],
-    [
      -748.59,
      172.59
-    ],
-    [
-     -748.15,
-     173.23
     ],
     [
      -748.0,
@@ -2566,16 +2255,8 @@
      184.0
     ],
     [
-     -748.15,
-     184.77
-    ],
-    [
      -748.59,
      185.41
-    ],
-    [
-     -749.23,
-     185.85
     ],
     [
      -750.0,
@@ -2586,16 +2267,8 @@
      186.0
     ],
     [
-     -762.77,
-     185.85
-    ],
-    [
      -763.41,
      185.41
-    ],
-    [
-     -763.85,
-     184.77
     ],
     [
      -764.0,
@@ -2606,16 +2279,8 @@
      174.0
     ],
     [
-     -763.85,
-     173.23
-    ],
-    [
      -763.41,
      172.59
-    ],
-    [
-     -762.77,
-     172.15
     ],
     [
      -762.0,
@@ -2970,16 +2635,8 @@
      172.0
     ],
     [
-     -651.23,
-     172.15
-    ],
-    [
      -650.59,
      172.59
-    ],
-    [
-     -650.15,
-     173.23
     ],
     [
      -650.0,
@@ -2990,16 +2647,8 @@
      184.0
     ],
     [
-     -650.15,
-     184.77
-    ],
-    [
      -650.59,
      185.41
-    ],
-    [
-     -651.23,
-     185.85
     ],
     [
      -652.0,
@@ -3010,16 +2659,8 @@
      186.0
     ],
     [
-     -664.77,
-     185.85
-    ],
-    [
      -665.41,
      185.41
-    ],
-    [
-     -665.85,
-     184.77
     ],
     [
      -666.0,
@@ -3030,16 +2671,8 @@
      174.0
     ],
     [
-     -665.85,
-     173.23
-    ],
-    [
      -665.41,
      172.59
-    ],
-    [
-     -664.77,
-     172.15
     ],
     [
      -664.0,
@@ -3076,16 +2709,8 @@
      172.0
     ],
     [
-     -569.23,
-     172.15
-    ],
-    [
      -568.59,
      172.59
-    ],
-    [
-     -568.15,
-     173.23
     ],
     [
      -568.0,
@@ -3096,16 +2721,8 @@
      184.0
     ],
     [
-     -568.15,
-     184.77
-    ],
-    [
      -568.59,
      185.41
-    ],
-    [
-     -569.23,
-     185.85
     ],
     [
      -570.0,
@@ -3116,16 +2733,8 @@
      186.0
     ],
     [
-     -582.77,
-     185.85
-    ],
-    [
      -583.41,
      185.41
-    ],
-    [
-     -583.85,
-     184.77
     ],
     [
      -584.0,
@@ -3136,16 +2745,8 @@
      174.0
     ],
     [
-     -583.85,
-     173.23
-    ],
-    [
      -583.41,
      172.59
-    ],
-    [
-     -582.77,
-     172.15
     ],
     [
      -582.0,
@@ -3631,12 +3232,12 @@
   {
    "op": "set_subcategory",
    "name": "Reassurance LED",
-   "subcategory": "Yellow"
+   "subcategory": "Led Amber"
   },
   {
    "op": "set_material_param",
    "name": "Reassurance LED",
-   "param": "Yellow Material"
+   "param": "Led Amber Material"
   },
   {
    "op": "set_visibility",
@@ -3958,6 +3559,3217 @@
    "fine": true
   },
   {
+   "op": "extrusion",
+   "name": "Reading Light Lens",
+   "points": [
+    [
+     -400,
+     -6
+    ],
+    [
+     400,
+     -6
+    ],
+    [
+     400,
+     0
+    ],
+    [
+     -400,
+     0
+    ]
+   ],
+   "start": 18,
+   "end": 88,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Reading Light Lens",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reading Light Lens",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reading Light Lens",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider 1",
+   "points": [
+    [
+     -260,
+     20
+    ],
+    [
+     -256,
+     20
+    ],
+    [
+     -256,
+     280
+    ],
+    [
+     -260,
+     280
+    ]
+   ],
+   "start": 90,
+   "end": 92,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider 2",
+   "points": [
+    [
+     120,
+     20
+    ],
+    [
+     124,
+     20
+    ],
+    [
+     124,
+     280
+    ],
+    [
+     120,
+     280
+    ]
+   ],
+   "start": 90,
+   "end": 92,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider 3",
+   "points": [
+    [
+     500,
+     20
+    ],
+    [
+     504,
+     20
+    ],
+    [
+     504,
+     280
+    ],
+    [
+     500,
+     280
+    ]
+   ],
+   "start": 90,
+   "end": 92,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Trunking 2Bed",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     -70,
+     0
+    ],
+    [
+     -90,
+     25
+    ],
+    [
+     -90,
+     275
+    ],
+    [
+     -70,
+     300
+    ],
+    [
+     0,
+     300
+    ]
+   ],
+   "start": -1000,
+   "end": 3000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Trunking 2Bed",
+   "subcategory": "Aluminium"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Trunking 2Bed",
+   "param": "Aluminium Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Trunking 2Bed",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap R 2Bed",
+   "points": [
+    [
+     0,
+     -5
+    ],
+    [
+     -75,
+     -5
+    ],
+    [
+     -95,
+     25
+    ],
+    [
+     -95,
+     275
+    ],
+    [
+     -75,
+     305
+    ],
+    [
+     0,
+     305
+    ]
+   ],
+   "start": 3000,
+   "end": 3012,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap R 2Bed",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap R 2Bed",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap R 2Bed",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Uplight Lens 2Bed",
+   "points": [
+    [
+     -950,
+     -70
+    ],
+    [
+     2950,
+     -70
+    ],
+    [
+     2950,
+     -15
+    ],
+    [
+     -950,
+     -15
+    ]
+   ],
+   "start": 300,
+   "end": 308
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Uplight Lens 2Bed",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Uplight Lens 2Bed",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Uplight Lens 2Bed",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 O2 Fascia",
+   "points": [
+    [
+     2488.0,
+     95.0
+    ],
+    [
+     2490.68,
+     95.53
+    ],
+    [
+     2492.95,
+     97.05
+    ],
+    [
+     2494.47,
+     99.32
+    ],
+    [
+     2495.0,
+     102.0
+    ],
+    [
+     2495.0,
+     178.0
+    ],
+    [
+     2494.47,
+     180.68
+    ],
+    [
+     2492.95,
+     182.95
+    ],
+    [
+     2490.68,
+     184.47
+    ],
+    [
+     2488.0,
+     185.0
+    ],
+    [
+     2412.0,
+     185.0
+    ],
+    [
+     2409.32,
+     184.47
+    ],
+    [
+     2407.05,
+     182.95
+    ],
+    [
+     2405.53,
+     180.68
+    ],
+    [
+     2405.0,
+     178.0
+    ],
+    [
+     2405.0,
+     102.0
+    ],
+    [
+     2405.53,
+     99.32
+    ],
+    [
+     2407.05,
+     97.05
+    ],
+    [
+     2409.32,
+     95.53
+    ],
+    [
+     2412.0,
+     95.0
+    ]
+   ],
+   "start": 90,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 O2 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 O2 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 O2 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 O2 Ring",
+   "profile": [
+    [
+     16,
+     100
+    ],
+    [
+     24,
+     100
+    ],
+    [
+     24,
+     104
+    ],
+    [
+     16,
+     104
+    ]
+   ],
+   "axis_at": [
+    2450,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 O2 Ring",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 O2 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 O2 Collar",
+   "profile": [
+    [
+     0,
+     100
+    ],
+    [
+     16,
+     100
+    ],
+    [
+     16,
+     112
+    ],
+    [
+     13,
+     114
+    ],
+    [
+     5,
+     114
+    ],
+    [
+     5,
+     110
+    ],
+    [
+     0,
+     110
+    ]
+   ],
+   "axis_at": [
+    2450,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 O2 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 O2 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 O2 Label",
+   "points": [
+    [
+     2475.0,
+     103.0
+    ],
+    [
+     2476.41,
+     103.59
+    ],
+    [
+     2477.0,
+     105.0
+    ],
+    [
+     2477.0,
+     111.0
+    ],
+    [
+     2476.41,
+     112.41
+    ],
+    [
+     2475.0,
+     113.0
+    ],
+    [
+     2425.0,
+     113.0
+    ],
+    [
+     2423.59,
+     112.41
+    ],
+    [
+     2423.0,
+     111.0
+    ],
+    [
+     2423.0,
+     105.0
+    ],
+    [
+     2423.59,
+     103.59
+    ],
+    [
+     2425.0,
+     103.0
+    ]
+   ],
+   "start": 99.6,
+   "end": 100.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 O2 Label",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 O2 Label",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 O2 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 VAC Fascia",
+   "points": [
+    [
+     2618.0,
+     95.0
+    ],
+    [
+     2620.68,
+     95.53
+    ],
+    [
+     2622.95,
+     97.05
+    ],
+    [
+     2624.47,
+     99.32
+    ],
+    [
+     2625.0,
+     102.0
+    ],
+    [
+     2625.0,
+     178.0
+    ],
+    [
+     2624.47,
+     180.68
+    ],
+    [
+     2622.95,
+     182.95
+    ],
+    [
+     2620.68,
+     184.47
+    ],
+    [
+     2618.0,
+     185.0
+    ],
+    [
+     2542.0,
+     185.0
+    ],
+    [
+     2539.32,
+     184.47
+    ],
+    [
+     2537.05,
+     182.95
+    ],
+    [
+     2535.53,
+     180.68
+    ],
+    [
+     2535.0,
+     178.0
+    ],
+    [
+     2535.0,
+     102.0
+    ],
+    [
+     2535.53,
+     99.32
+    ],
+    [
+     2537.05,
+     97.05
+    ],
+    [
+     2539.32,
+     95.53
+    ],
+    [
+     2542.0,
+     95.0
+    ]
+   ],
+   "start": 90,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 VAC Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 VAC Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 VAC Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 VAC Ring",
+   "profile": [
+    [
+     16,
+     100
+    ],
+    [
+     24,
+     100
+    ],
+    [
+     24,
+     104
+    ],
+    [
+     16,
+     104
+    ]
+   ],
+   "axis_at": [
+    2580,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 VAC Ring",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 VAC Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 VAC Collar",
+   "profile": [
+    [
+     0,
+     100
+    ],
+    [
+     16,
+     100
+    ],
+    [
+     16,
+     112
+    ],
+    [
+     13,
+     114
+    ],
+    [
+     5,
+     114
+    ],
+    [
+     5,
+     110
+    ],
+    [
+     0,
+     110
+    ]
+   ],
+   "axis_at": [
+    2580,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 VAC Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 VAC Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 VAC Label",
+   "points": [
+    [
+     2605.0,
+     103.0
+    ],
+    [
+     2606.41,
+     103.59
+    ],
+    [
+     2607.0,
+     105.0
+    ],
+    [
+     2607.0,
+     111.0
+    ],
+    [
+     2606.41,
+     112.41
+    ],
+    [
+     2605.0,
+     113.0
+    ],
+    [
+     2555.0,
+     113.0
+    ],
+    [
+     2553.59,
+     112.41
+    ],
+    [
+     2553.0,
+     111.0
+    ],
+    [
+     2553.0,
+     105.0
+    ],
+    [
+     2553.59,
+     103.59
+    ],
+    [
+     2555.0,
+     103.0
+    ]
+   ],
+   "start": 99.6,
+   "end": 100.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 VAC Label",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 VAC Label",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 VAC Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 MA4 Fascia",
+   "points": [
+    [
+     2748.0,
+     95.0
+    ],
+    [
+     2750.68,
+     95.53
+    ],
+    [
+     2752.95,
+     97.05
+    ],
+    [
+     2754.47,
+     99.32
+    ],
+    [
+     2755.0,
+     102.0
+    ],
+    [
+     2755.0,
+     178.0
+    ],
+    [
+     2754.47,
+     180.68
+    ],
+    [
+     2752.95,
+     182.95
+    ],
+    [
+     2750.68,
+     184.47
+    ],
+    [
+     2748.0,
+     185.0
+    ],
+    [
+     2672.0,
+     185.0
+    ],
+    [
+     2669.32,
+     184.47
+    ],
+    [
+     2667.05,
+     182.95
+    ],
+    [
+     2665.53,
+     180.68
+    ],
+    [
+     2665.0,
+     178.0
+    ],
+    [
+     2665.0,
+     102.0
+    ],
+    [
+     2665.53,
+     99.32
+    ],
+    [
+     2667.05,
+     97.05
+    ],
+    [
+     2669.32,
+     95.53
+    ],
+    [
+     2672.0,
+     95.0
+    ]
+   ],
+   "start": 90,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 MA4 Fascia",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 MA4 Fascia",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 MA4 Fascia",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 MA4 Ring",
+   "profile": [
+    [
+     16,
+     100
+    ],
+    [
+     24,
+     100
+    ],
+    [
+     24,
+     104
+    ],
+    [
+     16,
+     104
+    ]
+   ],
+   "axis_at": [
+    2710,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 MA4 Ring",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 MA4 Ring",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bed 2 MA4 Collar",
+   "profile": [
+    [
+     0,
+     100
+    ],
+    [
+     16,
+     100
+    ],
+    [
+     16,
+     112
+    ],
+    [
+     13,
+     114
+    ],
+    [
+     5,
+     114
+    ],
+    [
+     5,
+     110
+    ],
+    [
+     0,
+     110
+    ]
+   ],
+   "axis_at": [
+    2710,
+    146
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 MA4 Collar",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 MA4 Collar",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 MA4 Label",
+   "points": [
+    [
+     2735.0,
+     103.0
+    ],
+    [
+     2736.41,
+     103.59
+    ],
+    [
+     2737.0,
+     105.0
+    ],
+    [
+     2737.0,
+     111.0
+    ],
+    [
+     2736.41,
+     112.41
+    ],
+    [
+     2735.0,
+     113.0
+    ],
+    [
+     2685.0,
+     113.0
+    ],
+    [
+     2683.59,
+     112.41
+    ],
+    [
+     2683.0,
+     111.0
+    ],
+    [
+     2683.0,
+     105.0
+    ],
+    [
+     2683.59,
+     103.59
+    ],
+    [
+     2685.0,
+     103.0
+    ]
+   ],
+   "start": 99.6,
+   "end": 100.6,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 MA4 Label",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 MA4 Label",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 MA4 Label",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket A Plate",
+   "points": [
+    [
+     1268.0,
+     107.0
+    ],
+    [
+     1269.91,
+     107.38
+    ],
+    [
+     1271.54,
+     108.46
+    ],
+    [
+     1272.62,
+     110.09
+    ],
+    [
+     1273.0,
+     112.0
+    ],
+    [
+     1273.0,
+     188.0
+    ],
+    [
+     1272.62,
+     189.91
+    ],
+    [
+     1271.54,
+     191.54
+    ],
+    [
+     1269.91,
+     192.62
+    ],
+    [
+     1268.0,
+     193.0
+    ],
+    [
+     1132.0,
+     193.0
+    ],
+    [
+     1130.09,
+     192.62
+    ],
+    [
+     1128.46,
+     191.54
+    ],
+    [
+     1127.38,
+     189.91
+    ],
+    [
+     1127.0,
+     188.0
+    ],
+    [
+     1127.0,
+     112.0
+    ],
+    [
+     1127.38,
+     110.09
+    ],
+    [
+     1128.46,
+     108.46
+    ],
+    [
+     1130.09,
+     107.38
+    ],
+    [
+     1132.0,
+     107.0
+    ]
+   ],
+   "start": 90,
+   "end": 99,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket A Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket A Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket A Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket A Face 1",
+   "points": [
+    [
+     1177.0,
+     125.0
+    ],
+    [
+     1178.15,
+     125.23
+    ],
+    [
+     1179.12,
+     125.88
+    ],
+    [
+     1179.77,
+     126.85
+    ],
+    [
+     1180.0,
+     128.0
+    ],
+    [
+     1180.0,
+     162.0
+    ],
+    [
+     1179.77,
+     163.15
+    ],
+    [
+     1179.12,
+     164.12
+    ],
+    [
+     1178.15,
+     164.77
+    ],
+    [
+     1177.0,
+     165.0
+    ],
+    [
+     1141.0,
+     165.0
+    ],
+    [
+     1139.85,
+     164.77
+    ],
+    [
+     1138.88,
+     164.12
+    ],
+    [
+     1138.23,
+     163.15
+    ],
+    [
+     1138.0,
+     162.0
+    ],
+    [
+     1138.0,
+     128.0
+    ],
+    [
+     1138.23,
+     126.85
+    ],
+    [
+     1138.88,
+     125.88
+    ],
+    [
+     1139.85,
+     125.23
+    ],
+    [
+     1141.0,
+     125.0
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket A Face 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket A Face 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket A Face 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket A Face 2",
+   "points": [
+    [
+     1259.0,
+     125.0
+    ],
+    [
+     1260.15,
+     125.23
+    ],
+    [
+     1261.12,
+     125.88
+    ],
+    [
+     1261.77,
+     126.85
+    ],
+    [
+     1262.0,
+     128.0
+    ],
+    [
+     1262.0,
+     162.0
+    ],
+    [
+     1261.77,
+     163.15
+    ],
+    [
+     1261.12,
+     164.12
+    ],
+    [
+     1260.15,
+     164.77
+    ],
+    [
+     1259.0,
+     165.0
+    ],
+    [
+     1223.0,
+     165.0
+    ],
+    [
+     1221.85,
+     164.77
+    ],
+    [
+     1220.88,
+     164.12
+    ],
+    [
+     1220.23,
+     163.15
+    ],
+    [
+     1220.0,
+     162.0
+    ],
+    [
+     1220.0,
+     128.0
+    ],
+    [
+     1220.23,
+     126.85
+    ],
+    [
+     1220.88,
+     125.88
+    ],
+    [
+     1221.85,
+     125.23
+    ],
+    [
+     1223.0,
+     125.0
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket A Face 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket A Face 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket A Face 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket A Rocker 1",
+   "points": [
+    [
+     1168.0,
+     172.0
+    ],
+    [
+     1169.41,
+     172.59
+    ],
+    [
+     1170.0,
+     174.0
+    ],
+    [
+     1170.0,
+     184.0
+    ],
+    [
+     1169.41,
+     185.41
+    ],
+    [
+     1168.0,
+     186.0
+    ],
+    [
+     1156.0,
+     186.0
+    ],
+    [
+     1154.59,
+     185.41
+    ],
+    [
+     1154.0,
+     184.0
+    ],
+    [
+     1154.0,
+     174.0
+    ],
+    [
+     1154.59,
+     172.59
+    ],
+    [
+     1156.0,
+     172.0
+    ]
+   ],
+   "start": 99,
+   "end": 103,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket A Rocker 1",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket A Rocker 1",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket A Rocker 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket A Rocker 2",
+   "points": [
+    [
+     1250.0,
+     172.0
+    ],
+    [
+     1251.41,
+     172.59
+    ],
+    [
+     1252.0,
+     174.0
+    ],
+    [
+     1252.0,
+     184.0
+    ],
+    [
+     1251.41,
+     185.41
+    ],
+    [
+     1250.0,
+     186.0
+    ],
+    [
+     1238.0,
+     186.0
+    ],
+    [
+     1236.59,
+     185.41
+    ],
+    [
+     1236.0,
+     184.0
+    ],
+    [
+     1236.0,
+     174.0
+    ],
+    [
+     1236.59,
+     172.59
+    ],
+    [
+     1238.0,
+     172.0
+    ]
+   ],
+   "start": 99,
+   "end": 103,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket A Rocker 2",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket A Rocker 2",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket A Rocker 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket B Plate",
+   "points": [
+    [
+     1448.0,
+     107.0
+    ],
+    [
+     1449.91,
+     107.38
+    ],
+    [
+     1451.54,
+     108.46
+    ],
+    [
+     1452.62,
+     110.09
+    ],
+    [
+     1453.0,
+     112.0
+    ],
+    [
+     1453.0,
+     188.0
+    ],
+    [
+     1452.62,
+     189.91
+    ],
+    [
+     1451.54,
+     191.54
+    ],
+    [
+     1449.91,
+     192.62
+    ],
+    [
+     1448.0,
+     193.0
+    ],
+    [
+     1312.0,
+     193.0
+    ],
+    [
+     1310.09,
+     192.62
+    ],
+    [
+     1308.46,
+     191.54
+    ],
+    [
+     1307.38,
+     189.91
+    ],
+    [
+     1307.0,
+     188.0
+    ],
+    [
+     1307.0,
+     112.0
+    ],
+    [
+     1307.38,
+     110.09
+    ],
+    [
+     1308.46,
+     108.46
+    ],
+    [
+     1310.09,
+     107.38
+    ],
+    [
+     1312.0,
+     107.0
+    ]
+   ],
+   "start": 90,
+   "end": 99,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket B Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket B Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket B Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket B Face 1",
+   "points": [
+    [
+     1357.0,
+     125.0
+    ],
+    [
+     1358.15,
+     125.23
+    ],
+    [
+     1359.12,
+     125.88
+    ],
+    [
+     1359.77,
+     126.85
+    ],
+    [
+     1360.0,
+     128.0
+    ],
+    [
+     1360.0,
+     162.0
+    ],
+    [
+     1359.77,
+     163.15
+    ],
+    [
+     1359.12,
+     164.12
+    ],
+    [
+     1358.15,
+     164.77
+    ],
+    [
+     1357.0,
+     165.0
+    ],
+    [
+     1321.0,
+     165.0
+    ],
+    [
+     1319.85,
+     164.77
+    ],
+    [
+     1318.88,
+     164.12
+    ],
+    [
+     1318.23,
+     163.15
+    ],
+    [
+     1318.0,
+     162.0
+    ],
+    [
+     1318.0,
+     128.0
+    ],
+    [
+     1318.23,
+     126.85
+    ],
+    [
+     1318.88,
+     125.88
+    ],
+    [
+     1319.85,
+     125.23
+    ],
+    [
+     1321.0,
+     125.0
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket B Face 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket B Face 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket B Face 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket B Face 2",
+   "points": [
+    [
+     1439.0,
+     125.0
+    ],
+    [
+     1440.15,
+     125.23
+    ],
+    [
+     1441.12,
+     125.88
+    ],
+    [
+     1441.77,
+     126.85
+    ],
+    [
+     1442.0,
+     128.0
+    ],
+    [
+     1442.0,
+     162.0
+    ],
+    [
+     1441.77,
+     163.15
+    ],
+    [
+     1441.12,
+     164.12
+    ],
+    [
+     1440.15,
+     164.77
+    ],
+    [
+     1439.0,
+     165.0
+    ],
+    [
+     1403.0,
+     165.0
+    ],
+    [
+     1401.85,
+     164.77
+    ],
+    [
+     1400.88,
+     164.12
+    ],
+    [
+     1400.23,
+     163.15
+    ],
+    [
+     1400.0,
+     162.0
+    ],
+    [
+     1400.0,
+     128.0
+    ],
+    [
+     1400.23,
+     126.85
+    ],
+    [
+     1400.88,
+     125.88
+    ],
+    [
+     1401.85,
+     125.23
+    ],
+    [
+     1403.0,
+     125.0
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket B Face 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket B Face 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket B Face 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket B Rocker 1",
+   "points": [
+    [
+     1348.0,
+     172.0
+    ],
+    [
+     1349.41,
+     172.59
+    ],
+    [
+     1350.0,
+     174.0
+    ],
+    [
+     1350.0,
+     184.0
+    ],
+    [
+     1349.41,
+     185.41
+    ],
+    [
+     1348.0,
+     186.0
+    ],
+    [
+     1336.0,
+     186.0
+    ],
+    [
+     1334.59,
+     185.41
+    ],
+    [
+     1334.0,
+     184.0
+    ],
+    [
+     1334.0,
+     174.0
+    ],
+    [
+     1334.59,
+     172.59
+    ],
+    [
+     1336.0,
+     172.0
+    ]
+   ],
+   "start": 99,
+   "end": 103,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket B Rocker 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket B Rocker 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket B Rocker 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Socket B Rocker 2",
+   "points": [
+    [
+     1430.0,
+     172.0
+    ],
+    [
+     1431.41,
+     172.59
+    ],
+    [
+     1432.0,
+     174.0
+    ],
+    [
+     1432.0,
+     184.0
+    ],
+    [
+     1431.41,
+     185.41
+    ],
+    [
+     1430.0,
+     186.0
+    ],
+    [
+     1418.0,
+     186.0
+    ],
+    [
+     1416.59,
+     185.41
+    ],
+    [
+     1416.0,
+     184.0
+    ],
+    [
+     1416.0,
+     174.0
+    ],
+    [
+     1416.59,
+     172.59
+    ],
+    [
+     1418.0,
+     172.0
+    ]
+   ],
+   "start": 99,
+   "end": 103,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Socket B Rocker 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Socket B Rocker 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Socket B Rocker 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Nurse Call Plate",
+   "points": [
+    [
+     1705.0,
+     107.0
+    ],
+    [
+     1706.91,
+     107.38
+    ],
+    [
+     1708.54,
+     108.46
+    ],
+    [
+     1709.62,
+     110.09
+    ],
+    [
+     1710.0,
+     112.0
+    ],
+    [
+     1710.0,
+     188.0
+    ],
+    [
+     1709.62,
+     189.91
+    ],
+    [
+     1708.54,
+     191.54
+    ],
+    [
+     1706.91,
+     192.62
+    ],
+    [
+     1705.0,
+     193.0
+    ],
+    [
+     1595.0,
+     193.0
+    ],
+    [
+     1593.09,
+     192.62
+    ],
+    [
+     1591.46,
+     191.54
+    ],
+    [
+     1590.38,
+     189.91
+    ],
+    [
+     1590.0,
+     188.0
+    ],
+    [
+     1590.0,
+     112.0
+    ],
+    [
+     1590.38,
+     110.09
+    ],
+    [
+     1591.46,
+     108.46
+    ],
+    [
+     1593.09,
+     107.38
+    ],
+    [
+     1595.0,
+     107.0
+    ]
+   ],
+   "start": 90,
+   "end": 99,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Nurse Call Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Nurse Call Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Nurse Call Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Call Button",
+   "points": [
+    [
+     1644.0,
+     165.0
+    ],
+    [
+     1643.52,
+     168.62
+    ],
+    [
+     1642.12,
+     172.0
+    ],
+    [
+     1639.9,
+     174.9
+    ],
+    [
+     1637.0,
+     177.12
+    ],
+    [
+     1633.62,
+     178.52
+    ],
+    [
+     1630.0,
+     179.0
+    ],
+    [
+     1626.38,
+     178.52
+    ],
+    [
+     1623.0,
+     177.12
+    ],
+    [
+     1620.1,
+     174.9
+    ],
+    [
+     1617.88,
+     172.0
+    ],
+    [
+     1616.48,
+     168.62
+    ],
+    [
+     1616.0,
+     165.0
+    ],
+    [
+     1616.48,
+     161.38
+    ],
+    [
+     1617.88,
+     158.0
+    ],
+    [
+     1620.1,
+     155.1
+    ],
+    [
+     1623.0,
+     152.88
+    ],
+    [
+     1626.38,
+     151.48
+    ],
+    [
+     1630.0,
+     151.0
+    ],
+    [
+     1633.62,
+     151.48
+    ],
+    [
+     1637.0,
+     152.88
+    ],
+    [
+     1639.9,
+     155.1
+    ],
+    [
+     1642.12,
+     158.0
+    ],
+    [
+     1643.52,
+     161.38
+    ]
+   ],
+   "start": 99,
+   "end": 104,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Call Button",
+   "subcategory": "Led Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Call Button",
+   "param": "Led Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Call Button",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Reset Button",
+   "points": [
+    [
+     1684.0,
+     165.0
+    ],
+    [
+     1683.52,
+     168.62
+    ],
+    [
+     1682.12,
+     172.0
+    ],
+    [
+     1679.9,
+     174.9
+    ],
+    [
+     1677.0,
+     177.12
+    ],
+    [
+     1673.62,
+     178.52
+    ],
+    [
+     1670.0,
+     179.0
+    ],
+    [
+     1666.38,
+     178.52
+    ],
+    [
+     1663.0,
+     177.12
+    ],
+    [
+     1660.1,
+     174.9
+    ],
+    [
+     1657.88,
+     172.0
+    ],
+    [
+     1656.48,
+     168.62
+    ],
+    [
+     1656.0,
+     165.0
+    ],
+    [
+     1656.48,
+     161.38
+    ],
+    [
+     1657.88,
+     158.0
+    ],
+    [
+     1660.1,
+     155.1
+    ],
+    [
+     1663.0,
+     152.88
+    ],
+    [
+     1666.38,
+     151.48
+    ],
+    [
+     1670.0,
+     151.0
+    ],
+    [
+     1673.62,
+     151.48
+    ],
+    [
+     1677.0,
+     152.88
+    ],
+    [
+     1679.9,
+     155.1
+    ],
+    [
+     1682.12,
+     158.0
+    ],
+    [
+     1683.52,
+     161.38
+    ]
+   ],
+   "start": 99,
+   "end": 104,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Reset Button",
+   "subcategory": "Led Green"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Reset Button",
+   "param": "Led Green Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Reset Button",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Reassurance LED",
+   "points": [
+    [
+     1694.0,
+     125.0
+    ],
+    [
+     1693.86,
+     126.04
+    ],
+    [
+     1693.46,
+     127.0
+    ],
+    [
+     1692.83,
+     127.83
+    ],
+    [
+     1692.0,
+     128.46
+    ],
+    [
+     1691.04,
+     128.86
+    ],
+    [
+     1690.0,
+     129.0
+    ],
+    [
+     1688.96,
+     128.86
+    ],
+    [
+     1688.0,
+     128.46
+    ],
+    [
+     1687.17,
+     127.83
+    ],
+    [
+     1686.54,
+     127.0
+    ],
+    [
+     1686.14,
+     126.04
+    ],
+    [
+     1686.0,
+     125.0
+    ],
+    [
+     1686.14,
+     123.96
+    ],
+    [
+     1686.54,
+     123.0
+    ],
+    [
+     1687.17,
+     122.17
+    ],
+    [
+     1688.0,
+     121.54
+    ],
+    [
+     1688.96,
+     121.14
+    ],
+    [
+     1690.0,
+     121.0
+    ],
+    [
+     1691.04,
+     121.14
+    ],
+    [
+     1692.0,
+     121.54
+    ],
+    [
+     1692.83,
+     122.17
+    ],
+    [
+     1693.46,
+     123.0
+    ],
+    [
+     1693.86,
+     123.96
+    ]
+   ],
+   "start": 99,
+   "end": 101,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Reassurance LED",
+   "subcategory": "Led Amber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Reassurance LED",
+   "param": "Led Amber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Reassurance LED",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Handset Socket",
+   "points": [
+    [
+     1640.0,
+     125.0
+    ],
+    [
+     1639.66,
+     127.59
+    ],
+    [
+     1638.66,
+     130.0
+    ],
+    [
+     1637.07,
+     132.07
+    ],
+    [
+     1635.0,
+     133.66
+    ],
+    [
+     1632.59,
+     134.66
+    ],
+    [
+     1630.0,
+     135.0
+    ],
+    [
+     1627.41,
+     134.66
+    ],
+    [
+     1625.0,
+     133.66
+    ],
+    [
+     1622.93,
+     132.07
+    ],
+    [
+     1621.34,
+     130.0
+    ],
+    [
+     1620.34,
+     127.59
+    ],
+    [
+     1620.0,
+     125.0
+    ],
+    [
+     1620.34,
+     122.41
+    ],
+    [
+     1621.34,
+     120.0
+    ],
+    [
+     1622.93,
+     117.93
+    ],
+    [
+     1625.0,
+     116.34
+    ],
+    [
+     1627.41,
+     115.34
+    ],
+    [
+     1630.0,
+     115.0
+    ],
+    [
+     1632.59,
+     115.34
+    ],
+    [
+     1635.0,
+     116.34
+    ],
+    [
+     1637.07,
+     117.93
+    ],
+    [
+     1638.66,
+     120.0
+    ],
+    [
+     1639.66,
+     122.41
+    ]
+   ],
+   "start": 99,
+   "end": 101,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Handset Socket",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Handset Socket",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Handset Socket",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Data Plate",
+   "points": [
+    [
+     1841.0,
+     107.0
+    ],
+    [
+     1842.91,
+     107.38
+    ],
+    [
+     1844.54,
+     108.46
+    ],
+    [
+     1845.62,
+     110.09
+    ],
+    [
+     1846.0,
+     112.0
+    ],
+    [
+     1846.0,
+     188.0
+    ],
+    [
+     1845.62,
+     189.91
+    ],
+    [
+     1844.54,
+     191.54
+    ],
+    [
+     1842.91,
+     192.62
+    ],
+    [
+     1841.0,
+     193.0
+    ],
+    [
+     1765.0,
+     193.0
+    ],
+    [
+     1763.09,
+     192.62
+    ],
+    [
+     1761.46,
+     191.54
+    ],
+    [
+     1760.38,
+     189.91
+    ],
+    [
+     1760.0,
+     188.0
+    ],
+    [
+     1760.0,
+     112.0
+    ],
+    [
+     1760.38,
+     110.09
+    ],
+    [
+     1761.46,
+     108.46
+    ],
+    [
+     1763.09,
+     107.38
+    ],
+    [
+     1765.0,
+     107.0
+    ]
+   ],
+   "start": 90,
+   "end": 99,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Data Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Data Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Data Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 RJ45 1",
+   "points": [
+    [
+     1772,
+     150
+    ],
+    [
+     1792,
+     150
+    ],
+    [
+     1792,
+     166
+    ],
+    [
+     1772,
+     166
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 RJ45 1",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 RJ45 1",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 RJ45 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 RJ45 2",
+   "points": [
+    [
+     1806,
+     150
+    ],
+    [
+     1826,
+     150
+    ],
+    [
+     1826,
+     166
+    ],
+    [
+     1806,
+     166
+    ]
+   ],
+   "start": 99,
+   "end": 100,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 RJ45 2",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 RJ45 2",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 RJ45 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed 2 Reading Light Lens",
+   "points": [
+    [
+     1600,
+     -6
+    ],
+    [
+     2400,
+     -6
+    ],
+    [
+     2400,
+     0
+    ],
+    [
+     1600,
+     0
+    ]
+   ],
+   "start": 18,
+   "end": 88,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed 2 Reading Light Lens",
+   "subcategory": "Polycarbonate"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed 2 Reading Light Lens",
+   "param": "Polycarbonate Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed 2 Reading Light Lens",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Bed Divider",
+   "points": [
+    [
+     998,
+     20
+    ],
+    [
+     1002,
+     20
+    ],
+    [
+     1002,
+     280
+    ],
+    [
+     998,
+     280
+    ]
+   ],
+   "start": 90,
+   "end": 92,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bed Divider",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bed Divider",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bed Divider",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1Bed_Panel",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1Bed_Panel/Show 1Bed_Panel",
+   "type": "1Bed_Panel",
+   "param": "Show 1Bed_Panel",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Bed_Panel/Show 1Bed_Panel",
+   "type": "2Bed_Panel",
+   "param": "Show 1Bed_Panel",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trunking 1Bed/Visible",
+   "solid": "Trunking 1Bed",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 1Bed/Visible",
+   "solid": "End Cap R 1Bed",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Uplight Lens 1Bed/Visible",
+   "solid": "Uplight Lens 1Bed",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider 1/Visible",
+   "solid": "Divider 1",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider 2/Visible",
+   "solid": "Divider 2",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider 3/Visible",
+   "solid": "Divider 3",
+   "param": "Show 1Bed_Panel"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 2Bed_Panel",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1Bed_Panel/Show 2Bed_Panel",
+   "type": "1Bed_Panel",
+   "param": "Show 2Bed_Panel",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "2Bed_Panel/Show 2Bed_Panel",
+   "type": "2Bed_Panel",
+   "param": "Show 2Bed_Panel",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Trunking 2Bed/Visible",
+   "solid": "Trunking 2Bed",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap R 2Bed/Visible",
+   "solid": "End Cap R 2Bed",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Uplight Lens 2Bed/Visible",
+   "solid": "Uplight Lens 2Bed",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 O2 Fascia/Visible",
+   "solid": "Bed 2 O2 Fascia",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 O2 Ring/Visible",
+   "solid": "Bed 2 O2 Ring",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 O2 Collar/Visible",
+   "solid": "Bed 2 O2 Collar",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 O2 Label/Visible",
+   "solid": "Bed 2 O2 Label",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 VAC Fascia/Visible",
+   "solid": "Bed 2 VAC Fascia",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 VAC Ring/Visible",
+   "solid": "Bed 2 VAC Ring",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 VAC Collar/Visible",
+   "solid": "Bed 2 VAC Collar",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 VAC Label/Visible",
+   "solid": "Bed 2 VAC Label",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 MA4 Fascia/Visible",
+   "solid": "Bed 2 MA4 Fascia",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 MA4 Ring/Visible",
+   "solid": "Bed 2 MA4 Ring",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 MA4 Collar/Visible",
+   "solid": "Bed 2 MA4 Collar",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 MA4 Label/Visible",
+   "solid": "Bed 2 MA4 Label",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket A Plate/Visible",
+   "solid": "Bed 2 Socket A Plate",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket A Face 1/Visible",
+   "solid": "Bed 2 Socket A Face 1",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket A Face 2/Visible",
+   "solid": "Bed 2 Socket A Face 2",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket A Rocker 1/Visible",
+   "solid": "Bed 2 Socket A Rocker 1",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket A Rocker 2/Visible",
+   "solid": "Bed 2 Socket A Rocker 2",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket B Plate/Visible",
+   "solid": "Bed 2 Socket B Plate",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket B Face 1/Visible",
+   "solid": "Bed 2 Socket B Face 1",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket B Face 2/Visible",
+   "solid": "Bed 2 Socket B Face 2",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket B Rocker 1/Visible",
+   "solid": "Bed 2 Socket B Rocker 1",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Socket B Rocker 2/Visible",
+   "solid": "Bed 2 Socket B Rocker 2",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Nurse Call Plate/Visible",
+   "solid": "Bed 2 Nurse Call Plate",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Call Button/Visible",
+   "solid": "Bed 2 Call Button",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Reset Button/Visible",
+   "solid": "Bed 2 Reset Button",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Reassurance LED/Visible",
+   "solid": "Bed 2 Reassurance LED",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Handset Socket/Visible",
+   "solid": "Bed 2 Handset Socket",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Data Plate/Visible",
+   "solid": "Bed 2 Data Plate",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 RJ45 1/Visible",
+   "solid": "Bed 2 RJ45 1",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 RJ45 2/Visible",
+   "solid": "Bed 2 RJ45 2",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed 2 Reading Light Lens/Visible",
+   "solid": "Bed 2 Reading Light Lens",
+   "param": "Show 2Bed_Panel"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Bed Divider/Visible",
+   "solid": "Bed Divider",
+   "param": "Show 2Bed_Panel"
+  },
+  {
    "op": "add_connector",
    "name": "O2",
    "domain": "pipe",
@@ -4060,7 +6872,7 @@
   }
  ],
  "values": {
-  "Trunking 2000 x 300 x 90 mm": {
+  "Trunking 2000 / 4000 x 300 x 90 mm": {
    "value": "2000x300x90",
    "source_status": "assumed",
    "source": "HTM 08-03 bedhead services"

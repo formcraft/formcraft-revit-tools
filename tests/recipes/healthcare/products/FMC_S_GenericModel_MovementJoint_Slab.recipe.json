@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_S_GenericModel_MovementJoint_Slab",
  "template": "Metric Generic Model.rft",
- "about": "Floor at z = 0, joint along x: filler board and backer rod in the gap, flush aluminium cover frames with anchor legs and screws, rubber insert, sleeved dowels across the joint (Fine). Shown 1000 long. Reference: query: movement joint slab generic models hospital; images: https://www.google.com/search?tbm=isch&q=movement+joint+slab+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Floor at z = 0, joint along x: fibreboard filler and backer rod in the gap, flush aluminium cover frames with anchor legs and screws, rubber insert, sleeved dowels across the joint (Fine). Shown 1000 long. Each type has its own geometry where it differs (parts with 'only'); the rest is shared. Reference: query: movement joint slab generic models hospital; images: https://www.google.com/search?tbm=isch&q=movement+joint+slab+generic+models+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.inprocorp.com/products/806-series-floor-expansion-joint-covers-j806-a01-250-floor-expansion-joint-covers; photo_title: 806 Series Floor Expansion Joint Covers (Inpro); photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -394,6 +394,13 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "20_Joint/URL",
+   "type": "20_Joint",
+   "param": "URL",
+   "value": "https://www.inprocorp.com/products/806-series-floor-expansion-joint-covers-j806-a01-250-floor-expansion-joint-covers"
+  },
+  {
    "op": "add_type",
    "name": "30_Joint"
   },
@@ -461,12 +468,40 @@
    "value": "S"
   },
   {
+   "op": "set_type_value",
+   "name": "30_Joint/URL",
+   "type": "30_Joint",
+   "param": "URL",
+   "value": "https://www.inprocorp.com/products/806-series-floor-expansion-joint-covers-j806-a01-250-floor-expansion-joint-covers"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rebar",
+   "color": [
+    90,
+    74,
+    66
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rebar Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Rebar_B500_Ribbed",
+   "param": "Rebar Material"
+  },
+  {
    "op": "add_subcategory",
    "name": "Filler",
    "color": [
-    230,
-    223,
-    207
+    91,
+    74,
+    58
    ],
    "line_weight_projection": 1
   },
@@ -478,7 +513,7 @@
   },
   {
    "op": "add_material",
-   "name": "FMC_Board_SoftBoard_Ceiling",
+   "name": "FMC_Board_JointFiller_Fibre",
    "param": "Filler Material"
   },
   {
@@ -546,27 +581,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Rebar",
-   "color": [
-    90,
-    74,
-    66
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Rebar Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Rebar_B500_Ribbed",
-   "param": "Rebar Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Grey",
    "color": [
     154,
@@ -631,846 +645,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Filler Board",
-   "points": [
-    [
-     -500.0,
-     -10
-    ],
-    [
-     500.0,
-     -10
-    ],
-    [
-     500.0,
-     10
-    ],
-    [
-     -500.0,
-     10
-    ]
-   ],
-   "start": -150,
-   "end": -30
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Filler Board",
-   "subcategory": "Filler"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Filler Board",
-   "param": "Filler Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Filler Board",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Backer Rod",
-   "points": [
-    [
-     9.0,
-     -22.0
-    ],
-    [
-     7.79,
-     -17.5
-    ],
-    [
-     4.5,
-     -14.21
-    ],
-    [
-     0.0,
-     -13.0
-    ],
-    [
-     -4.5,
-     -14.21
-    ],
-    [
-     -7.79,
-     -17.5
-    ],
-    [
-     -9.0,
-     -22.0
-    ],
-    [
-     -7.79,
-     -26.5
-    ],
-    [
-     -4.5,
-     -29.79
-    ],
-    [
-     -0.0,
-     -31.0
-    ],
-    [
-     4.5,
-     -29.79
-    ],
-    [
-     7.79,
-     -26.5
-    ]
-   ],
-   "start": -500.0,
-   "end": 500.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Backer Rod",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Backer Rod",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Backer Rod",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Left",
-   "points": [
-    [
-     -500.0,
-     -60
-    ],
-    [
-     500.0,
-     -60
-    ],
-    [
-     500.0,
-     -10
-    ],
-    [
-     -500.0,
-     -10
-    ]
-   ],
-   "start": -10,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Left",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Left",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Right",
-   "points": [
-    [
-     -500.0,
-     10
-    ],
-    [
-     500.0,
-     10
-    ],
-    [
-     500.0,
-     60
-    ],
-    [
-     -500.0,
-     60
-    ]
-   ],
-   "start": -10,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Right",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Right",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anchor Leg Left",
-   "points": [
-    [
-     -500.0,
-     -60
-    ],
-    [
-     500.0,
-     -60
-    ],
-    [
-     500.0,
-     -55
-    ],
-    [
-     -500.0,
-     -55
-    ]
-   ],
-   "start": -50,
-   "end": -10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anchor Leg Left",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anchor Leg Left",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anchor Leg Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anchor Leg Right",
-   "points": [
-    [
-     -500.0,
-     55
-    ],
-    [
-     500.0,
-     55
-    ],
-    [
-     500.0,
-     60
-    ],
-    [
-     -500.0,
-     60
-    ]
-   ],
-   "start": -50,
-   "end": -10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anchor Leg Right",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anchor Leg Right",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anchor Leg Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rubber Insert",
-   "points": [
-    [
-     -500.0,
-     -10
-    ],
-    [
-     500.0,
-     -10
-    ],
-    [
-     500.0,
-     10
-    ],
-    [
-     -500.0,
-     10
-    ]
-   ],
-   "start": -12,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rubber Insert",
-   "subcategory": "Rubber"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Rubber Insert",
-   "param": "Rubber Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rubber Insert",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Left 1",
-   "points": [
-    [
-     -396.0,
-     -35.0
-    ],
-    [
-     -396.76,
-     -32.65
-    ],
-    [
-     -398.76,
-     -31.2
-    ],
-    [
-     -401.24,
-     -31.2
-    ],
-    [
-     -403.24,
-     -32.65
-    ],
-    [
-     -404.0,
-     -35.0
-    ],
-    [
-     -403.24,
-     -37.35
-    ],
-    [
-     -401.24,
-     -38.8
-    ],
-    [
-     -398.76,
-     -38.8
-    ],
-    [
-     -396.76,
-     -37.35
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Left 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Left 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Left 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Left 2",
-   "points": [
-    [
-     -130.0,
-     -35.0
-    ],
-    [
-     -130.76,
-     -32.65
-    ],
-    [
-     -132.76,
-     -31.2
-    ],
-    [
-     -135.24,
-     -31.2
-    ],
-    [
-     -137.24,
-     -32.65
-    ],
-    [
-     -138.0,
-     -35.0
-    ],
-    [
-     -137.24,
-     -37.35
-    ],
-    [
-     -135.24,
-     -38.8
-    ],
-    [
-     -132.76,
-     -38.8
-    ],
-    [
-     -130.76,
-     -37.35
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Left 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Left 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Left 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Left 3",
-   "points": [
-    [
-     136.0,
-     -35.0
-    ],
-    [
-     135.24,
-     -32.65
-    ],
-    [
-     133.24,
-     -31.2
-    ],
-    [
-     130.76,
-     -31.2
-    ],
-    [
-     128.76,
-     -32.65
-    ],
-    [
-     128.0,
-     -35.0
-    ],
-    [
-     128.76,
-     -37.35
-    ],
-    [
-     130.76,
-     -38.8
-    ],
-    [
-     133.24,
-     -38.8
-    ],
-    [
-     135.24,
-     -37.35
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Left 3",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Left 3",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Left 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Left 4",
-   "points": [
-    [
-     402.0,
-     -35.0
-    ],
-    [
-     401.24,
-     -32.65
-    ],
-    [
-     399.24,
-     -31.2
-    ],
-    [
-     396.76,
-     -31.2
-    ],
-    [
-     394.76,
-     -32.65
-    ],
-    [
-     394.0,
-     -35.0
-    ],
-    [
-     394.76,
-     -37.35
-    ],
-    [
-     396.76,
-     -38.8
-    ],
-    [
-     399.24,
-     -38.8
-    ],
-    [
-     401.24,
-     -37.35
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Left 4",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Left 4",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Left 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Right 1",
-   "points": [
-    [
-     -396.0,
-     35.0
-    ],
-    [
-     -396.76,
-     37.35
-    ],
-    [
-     -398.76,
-     38.8
-    ],
-    [
-     -401.24,
-     38.8
-    ],
-    [
-     -403.24,
-     37.35
-    ],
-    [
-     -404.0,
-     35.0
-    ],
-    [
-     -403.24,
-     32.65
-    ],
-    [
-     -401.24,
-     31.2
-    ],
-    [
-     -398.76,
-     31.2
-    ],
-    [
-     -396.76,
-     32.65
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Right 1",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Right 1",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Right 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Right 2",
-   "points": [
-    [
-     -130.0,
-     35.0
-    ],
-    [
-     -130.76,
-     37.35
-    ],
-    [
-     -132.76,
-     38.8
-    ],
-    [
-     -135.24,
-     38.8
-    ],
-    [
-     -137.24,
-     37.35
-    ],
-    [
-     -138.0,
-     35.0
-    ],
-    [
-     -137.24,
-     32.65
-    ],
-    [
-     -135.24,
-     31.2
-    ],
-    [
-     -132.76,
-     31.2
-    ],
-    [
-     -130.76,
-     32.65
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Right 2",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Right 2",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Right 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Right 3",
-   "points": [
-    [
-     136.0,
-     35.0
-    ],
-    [
-     135.24,
-     37.35
-    ],
-    [
-     133.24,
-     38.8
-    ],
-    [
-     130.76,
-     38.8
-    ],
-    [
-     128.76,
-     37.35
-    ],
-    [
-     128.0,
-     35.0
-    ],
-    [
-     128.76,
-     32.65
-    ],
-    [
-     130.76,
-     31.2
-    ],
-    [
-     133.24,
-     31.2
-    ],
-    [
-     135.24,
-     32.65
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Right 3",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Right 3",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Right 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Screw Right 4",
-   "points": [
-    [
-     402.0,
-     35.0
-    ],
-    [
-     401.24,
-     37.35
-    ],
-    [
-     399.24,
-     38.8
-    ],
-    [
-     396.76,
-     38.8
-    ],
-    [
-     394.76,
-     37.35
-    ],
-    [
-     394.0,
-     35.0
-    ],
-    [
-     394.76,
-     32.65
-    ],
-    [
-     396.76,
-     31.2
-    ],
-    [
-     399.24,
-     31.2
-    ],
-    [
-     401.24,
-     32.65
-    ]
-   ],
-   "start": 0,
-   "end": 1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Screw Right 4",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Screw Right 4",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Screw Right 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1696,7 +870,847 @@
   },
   {
    "op": "extrusion",
-   "name": "Dowel Sleeve 1",
+   "name": "Filler Board 20",
+   "points": [
+    [
+     -500.0,
+     -10
+    ],
+    [
+     500.0,
+     -10
+    ],
+    [
+     500.0,
+     10
+    ],
+    [
+     -500.0,
+     10
+    ]
+   ],
+   "start": -150,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filler Board 20",
+   "subcategory": "Filler"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filler Board 20",
+   "param": "Filler Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filler Board 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backer Rod 20",
+   "points": [
+    [
+     9.0,
+     -22.0
+    ],
+    [
+     7.79,
+     -17.5
+    ],
+    [
+     4.5,
+     -14.21
+    ],
+    [
+     0.0,
+     -13.0
+    ],
+    [
+     -4.5,
+     -14.21
+    ],
+    [
+     -7.79,
+     -17.5
+    ],
+    [
+     -9.0,
+     -22.0
+    ],
+    [
+     -7.79,
+     -26.5
+    ],
+    [
+     -4.5,
+     -29.79
+    ],
+    [
+     -0.0,
+     -31.0
+    ],
+    [
+     4.5,
+     -29.79
+    ],
+    [
+     7.79,
+     -26.5
+    ]
+   ],
+   "start": -500.0,
+   "end": 500.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backer Rod 20",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backer Rod 20",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backer Rod 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Left 20",
+   "points": [
+    [
+     -500.0,
+     -60
+    ],
+    [
+     500.0,
+     -60
+    ],
+    [
+     500.0,
+     -10
+    ],
+    [
+     -500.0,
+     -10
+    ]
+   ],
+   "start": -10,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Left 20",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Left 20",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Left 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Right 20",
+   "points": [
+    [
+     -500.0,
+     10
+    ],
+    [
+     500.0,
+     10
+    ],
+    [
+     500.0,
+     60
+    ],
+    [
+     -500.0,
+     60
+    ]
+   ],
+   "start": -10,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Right 20",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Right 20",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Right 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Leg Left 20",
+   "points": [
+    [
+     -500.0,
+     -60
+    ],
+    [
+     500.0,
+     -60
+    ],
+    [
+     500.0,
+     -55
+    ],
+    [
+     -500.0,
+     -55
+    ]
+   ],
+   "start": -50,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Leg Left 20",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Leg Left 20",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Leg Left 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Leg Right 20",
+   "points": [
+    [
+     -500.0,
+     55
+    ],
+    [
+     500.0,
+     55
+    ],
+    [
+     500.0,
+     60
+    ],
+    [
+     -500.0,
+     60
+    ]
+   ],
+   "start": -50,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Leg Right 20",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Leg Right 20",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Leg Right 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rubber Insert 20",
+   "points": [
+    [
+     -500.0,
+     -10
+    ],
+    [
+     500.0,
+     -10
+    ],
+    [
+     500.0,
+     10
+    ],
+    [
+     -500.0,
+     10
+    ]
+   ],
+   "start": -12,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rubber Insert 20",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rubber Insert 20",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rubber Insert 20",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 20 1",
+   "points": [
+    [
+     -396.0,
+     -35.0
+    ],
+    [
+     -396.76,
+     -32.65
+    ],
+    [
+     -398.76,
+     -31.2
+    ],
+    [
+     -401.24,
+     -31.2
+    ],
+    [
+     -403.24,
+     -32.65
+    ],
+    [
+     -404.0,
+     -35.0
+    ],
+    [
+     -403.24,
+     -37.35
+    ],
+    [
+     -401.24,
+     -38.8
+    ],
+    [
+     -398.76,
+     -38.8
+    ],
+    [
+     -396.76,
+     -37.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 20 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 20 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 20 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 20 2",
+   "points": [
+    [
+     -130.0,
+     -35.0
+    ],
+    [
+     -130.76,
+     -32.65
+    ],
+    [
+     -132.76,
+     -31.2
+    ],
+    [
+     -135.24,
+     -31.2
+    ],
+    [
+     -137.24,
+     -32.65
+    ],
+    [
+     -138.0,
+     -35.0
+    ],
+    [
+     -137.24,
+     -37.35
+    ],
+    [
+     -135.24,
+     -38.8
+    ],
+    [
+     -132.76,
+     -38.8
+    ],
+    [
+     -130.76,
+     -37.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 20 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 20 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 20 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 20 3",
+   "points": [
+    [
+     136.0,
+     -35.0
+    ],
+    [
+     135.24,
+     -32.65
+    ],
+    [
+     133.24,
+     -31.2
+    ],
+    [
+     130.76,
+     -31.2
+    ],
+    [
+     128.76,
+     -32.65
+    ],
+    [
+     128.0,
+     -35.0
+    ],
+    [
+     128.76,
+     -37.35
+    ],
+    [
+     130.76,
+     -38.8
+    ],
+    [
+     133.24,
+     -38.8
+    ],
+    [
+     135.24,
+     -37.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 20 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 20 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 20 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 20 4",
+   "points": [
+    [
+     402.0,
+     -35.0
+    ],
+    [
+     401.24,
+     -32.65
+    ],
+    [
+     399.24,
+     -31.2
+    ],
+    [
+     396.76,
+     -31.2
+    ],
+    [
+     394.76,
+     -32.65
+    ],
+    [
+     394.0,
+     -35.0
+    ],
+    [
+     394.76,
+     -37.35
+    ],
+    [
+     396.76,
+     -38.8
+    ],
+    [
+     399.24,
+     -38.8
+    ],
+    [
+     401.24,
+     -37.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 20 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 20 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 20 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 20 1",
+   "points": [
+    [
+     -396.0,
+     35.0
+    ],
+    [
+     -396.76,
+     37.35
+    ],
+    [
+     -398.76,
+     38.8
+    ],
+    [
+     -401.24,
+     38.8
+    ],
+    [
+     -403.24,
+     37.35
+    ],
+    [
+     -404.0,
+     35.0
+    ],
+    [
+     -403.24,
+     32.65
+    ],
+    [
+     -401.24,
+     31.2
+    ],
+    [
+     -398.76,
+     31.2
+    ],
+    [
+     -396.76,
+     32.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 20 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 20 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 20 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 20 2",
+   "points": [
+    [
+     -130.0,
+     35.0
+    ],
+    [
+     -130.76,
+     37.35
+    ],
+    [
+     -132.76,
+     38.8
+    ],
+    [
+     -135.24,
+     38.8
+    ],
+    [
+     -137.24,
+     37.35
+    ],
+    [
+     -138.0,
+     35.0
+    ],
+    [
+     -137.24,
+     32.65
+    ],
+    [
+     -135.24,
+     31.2
+    ],
+    [
+     -132.76,
+     31.2
+    ],
+    [
+     -130.76,
+     32.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 20 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 20 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 20 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 20 3",
+   "points": [
+    [
+     136.0,
+     35.0
+    ],
+    [
+     135.24,
+     37.35
+    ],
+    [
+     133.24,
+     38.8
+    ],
+    [
+     130.76,
+     38.8
+    ],
+    [
+     128.76,
+     37.35
+    ],
+    [
+     128.0,
+     35.0
+    ],
+    [
+     128.76,
+     32.65
+    ],
+    [
+     130.76,
+     31.2
+    ],
+    [
+     133.24,
+     31.2
+    ],
+    [
+     135.24,
+     32.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 20 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 20 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 20 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 20 4",
+   "points": [
+    [
+     402.0,
+     35.0
+    ],
+    [
+     401.24,
+     37.35
+    ],
+    [
+     399.24,
+     38.8
+    ],
+    [
+     396.76,
+     38.8
+    ],
+    [
+     394.76,
+     37.35
+    ],
+    [
+     394.0,
+     35.0
+    ],
+    [
+     394.76,
+     32.65
+    ],
+    [
+     396.76,
+     31.2
+    ],
+    [
+     399.24,
+     31.2
+    ],
+    [
+     401.24,
+     32.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 20 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 20 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 20 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dowel Sleeve 20 1",
    "points": [
     [
      -287.0,
@@ -1753,24 +1767,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dowel Sleeve 1",
+   "name": "Dowel Sleeve 20 1",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Dowel Sleeve 1",
+   "name": "Dowel Sleeve 20 1",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dowel Sleeve 1",
+   "name": "Dowel Sleeve 20 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dowel Sleeve 2",
+   "name": "Dowel Sleeve 20 2",
    "points": [
     [
      13.0,
@@ -1827,24 +1841,24 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dowel Sleeve 2",
+   "name": "Dowel Sleeve 20 2",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Dowel Sleeve 2",
+   "name": "Dowel Sleeve 20 2",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dowel Sleeve 2",
+   "name": "Dowel Sleeve 20 2",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Dowel Sleeve 3",
+   "name": "Dowel Sleeve 20 3",
    "points": [
     [
      313.0,
@@ -1901,20 +1915,1338 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Dowel Sleeve 3",
+   "name": "Dowel Sleeve 20 3",
    "subcategory": "Grey"
   },
   {
    "op": "set_material_param",
-   "name": "Dowel Sleeve 3",
+   "name": "Dowel Sleeve 20 3",
    "param": "Grey Material"
   },
   {
    "op": "set_visibility",
-   "name": "Dowel Sleeve 3",
+   "name": "Dowel Sleeve 20 3",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Filler Board 30",
+   "points": [
+    [
+     -500.0,
+     -15
+    ],
+    [
+     500.0,
+     -15
+    ],
+    [
+     500.0,
+     15
+    ],
+    [
+     -500.0,
+     15
+    ]
+   ],
+   "start": -150,
+   "end": -30
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Filler Board 30",
+   "subcategory": "Filler"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Filler Board 30",
+   "param": "Filler Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Filler Board 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Backer Rod 30",
+   "points": [
+    [
+     14.0,
+     -22.0
+    ],
+    [
+     12.12,
+     -15.0
+    ],
+    [
+     7.0,
+     -9.88
+    ],
+    [
+     0.0,
+     -8.0
+    ],
+    [
+     -7.0,
+     -9.88
+    ],
+    [
+     -12.12,
+     -15.0
+    ],
+    [
+     -14.0,
+     -22.0
+    ],
+    [
+     -12.12,
+     -29.0
+    ],
+    [
+     -7.0,
+     -34.12
+    ],
+    [
+     -0.0,
+     -36.0
+    ],
+    [
+     7.0,
+     -34.12
+    ],
+    [
+     12.12,
+     -29.0
+    ]
+   ],
+   "start": -500.0,
+   "end": 500.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Backer Rod 30",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Backer Rod 30",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Backer Rod 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Left 30",
+   "points": [
+    [
+     -500.0,
+     -65
+    ],
+    [
+     500.0,
+     -65
+    ],
+    [
+     500.0,
+     -15
+    ],
+    [
+     -500.0,
+     -15
+    ]
+   ],
+   "start": -10,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Left 30",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Left 30",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Left 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Right 30",
+   "points": [
+    [
+     -500.0,
+     15
+    ],
+    [
+     500.0,
+     15
+    ],
+    [
+     500.0,
+     65
+    ],
+    [
+     -500.0,
+     65
+    ]
+   ],
+   "start": -10,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Right 30",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Right 30",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Right 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Leg Left 30",
+   "points": [
+    [
+     -500.0,
+     -65
+    ],
+    [
+     500.0,
+     -65
+    ],
+    [
+     500.0,
+     -60
+    ],
+    [
+     -500.0,
+     -60
+    ]
+   ],
+   "start": -50,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Leg Left 30",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Leg Left 30",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Leg Left 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anchor Leg Right 30",
+   "points": [
+    [
+     -500.0,
+     60
+    ],
+    [
+     500.0,
+     60
+    ],
+    [
+     500.0,
+     65
+    ],
+    [
+     -500.0,
+     65
+    ]
+   ],
+   "start": -50,
+   "end": -10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anchor Leg Right 30",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anchor Leg Right 30",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anchor Leg Right 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rubber Insert 30",
+   "points": [
+    [
+     -500.0,
+     -15
+    ],
+    [
+     500.0,
+     -15
+    ],
+    [
+     500.0,
+     15
+    ],
+    [
+     -500.0,
+     15
+    ]
+   ],
+   "start": -12,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rubber Insert 30",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rubber Insert 30",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rubber Insert 30",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 30 1",
+   "points": [
+    [
+     -396.0,
+     -40.0
+    ],
+    [
+     -396.76,
+     -37.65
+    ],
+    [
+     -398.76,
+     -36.2
+    ],
+    [
+     -401.24,
+     -36.2
+    ],
+    [
+     -403.24,
+     -37.65
+    ],
+    [
+     -404.0,
+     -40.0
+    ],
+    [
+     -403.24,
+     -42.35
+    ],
+    [
+     -401.24,
+     -43.8
+    ],
+    [
+     -398.76,
+     -43.8
+    ],
+    [
+     -396.76,
+     -42.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 30 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 30 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 30 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 30 2",
+   "points": [
+    [
+     -130.0,
+     -40.0
+    ],
+    [
+     -130.76,
+     -37.65
+    ],
+    [
+     -132.76,
+     -36.2
+    ],
+    [
+     -135.24,
+     -36.2
+    ],
+    [
+     -137.24,
+     -37.65
+    ],
+    [
+     -138.0,
+     -40.0
+    ],
+    [
+     -137.24,
+     -42.35
+    ],
+    [
+     -135.24,
+     -43.8
+    ],
+    [
+     -132.76,
+     -43.8
+    ],
+    [
+     -130.76,
+     -42.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 30 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 30 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 30 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 30 3",
+   "points": [
+    [
+     136.0,
+     -40.0
+    ],
+    [
+     135.24,
+     -37.65
+    ],
+    [
+     133.24,
+     -36.2
+    ],
+    [
+     130.76,
+     -36.2
+    ],
+    [
+     128.76,
+     -37.65
+    ],
+    [
+     128.0,
+     -40.0
+    ],
+    [
+     128.76,
+     -42.35
+    ],
+    [
+     130.76,
+     -43.8
+    ],
+    [
+     133.24,
+     -43.8
+    ],
+    [
+     135.24,
+     -42.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 30 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 30 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 30 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Left 30 4",
+   "points": [
+    [
+     402.0,
+     -40.0
+    ],
+    [
+     401.24,
+     -37.65
+    ],
+    [
+     399.24,
+     -36.2
+    ],
+    [
+     396.76,
+     -36.2
+    ],
+    [
+     394.76,
+     -37.65
+    ],
+    [
+     394.0,
+     -40.0
+    ],
+    [
+     394.76,
+     -42.35
+    ],
+    [
+     396.76,
+     -43.8
+    ],
+    [
+     399.24,
+     -43.8
+    ],
+    [
+     401.24,
+     -42.35
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Left 30 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Left 30 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Left 30 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 30 1",
+   "points": [
+    [
+     -396.0,
+     40.0
+    ],
+    [
+     -396.76,
+     42.35
+    ],
+    [
+     -398.76,
+     43.8
+    ],
+    [
+     -401.24,
+     43.8
+    ],
+    [
+     -403.24,
+     42.35
+    ],
+    [
+     -404.0,
+     40.0
+    ],
+    [
+     -403.24,
+     37.65
+    ],
+    [
+     -401.24,
+     36.2
+    ],
+    [
+     -398.76,
+     36.2
+    ],
+    [
+     -396.76,
+     37.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 30 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 30 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 30 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 30 2",
+   "points": [
+    [
+     -130.0,
+     40.0
+    ],
+    [
+     -130.76,
+     42.35
+    ],
+    [
+     -132.76,
+     43.8
+    ],
+    [
+     -135.24,
+     43.8
+    ],
+    [
+     -137.24,
+     42.35
+    ],
+    [
+     -138.0,
+     40.0
+    ],
+    [
+     -137.24,
+     37.65
+    ],
+    [
+     -135.24,
+     36.2
+    ],
+    [
+     -132.76,
+     36.2
+    ],
+    [
+     -130.76,
+     37.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 30 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 30 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 30 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 30 3",
+   "points": [
+    [
+     136.0,
+     40.0
+    ],
+    [
+     135.24,
+     42.35
+    ],
+    [
+     133.24,
+     43.8
+    ],
+    [
+     130.76,
+     43.8
+    ],
+    [
+     128.76,
+     42.35
+    ],
+    [
+     128.0,
+     40.0
+    ],
+    [
+     128.76,
+     37.65
+    ],
+    [
+     130.76,
+     36.2
+    ],
+    [
+     133.24,
+     36.2
+    ],
+    [
+     135.24,
+     37.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 30 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 30 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 30 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Screw Right 30 4",
+   "points": [
+    [
+     402.0,
+     40.0
+    ],
+    [
+     401.24,
+     42.35
+    ],
+    [
+     399.24,
+     43.8
+    ],
+    [
+     396.76,
+     43.8
+    ],
+    [
+     394.76,
+     42.35
+    ],
+    [
+     394.0,
+     40.0
+    ],
+    [
+     394.76,
+     37.65
+    ],
+    [
+     396.76,
+     36.2
+    ],
+    [
+     399.24,
+     36.2
+    ],
+    [
+     401.24,
+     37.65
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screw Right 30 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screw Right 30 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screw Right 30 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dowel Sleeve 30 1",
+   "points": [
+    [
+     -287.0,
+     -90.0
+    ],
+    [
+     -288.74,
+     -83.5
+    ],
+    [
+     -293.5,
+     -78.74
+    ],
+    [
+     -300.0,
+     -77.0
+    ],
+    [
+     -306.5,
+     -78.74
+    ],
+    [
+     -311.26,
+     -83.5
+    ],
+    [
+     -313.0,
+     -90.0
+    ],
+    [
+     -311.26,
+     -96.5
+    ],
+    [
+     -306.5,
+     -101.26
+    ],
+    [
+     -300.0,
+     -103.0
+    ],
+    [
+     -293.5,
+     -101.26
+    ],
+    [
+     -288.74,
+     -96.5
+    ]
+   ],
+   "start": -260,
+   "end": -15,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dowel Sleeve 30 1",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dowel Sleeve 30 1",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dowel Sleeve 30 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dowel Sleeve 30 2",
+   "points": [
+    [
+     13.0,
+     -90.0
+    ],
+    [
+     11.26,
+     -83.5
+    ],
+    [
+     6.5,
+     -78.74
+    ],
+    [
+     0.0,
+     -77.0
+    ],
+    [
+     -6.5,
+     -78.74
+    ],
+    [
+     -11.26,
+     -83.5
+    ],
+    [
+     -13.0,
+     -90.0
+    ],
+    [
+     -11.26,
+     -96.5
+    ],
+    [
+     -6.5,
+     -101.26
+    ],
+    [
+     -0.0,
+     -103.0
+    ],
+    [
+     6.5,
+     -101.26
+    ],
+    [
+     11.26,
+     -96.5
+    ]
+   ],
+   "start": -260,
+   "end": -15,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dowel Sleeve 30 2",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dowel Sleeve 30 2",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dowel Sleeve 30 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Dowel Sleeve 30 3",
+   "points": [
+    [
+     313.0,
+     -90.0
+    ],
+    [
+     311.26,
+     -83.5
+    ],
+    [
+     306.5,
+     -78.74
+    ],
+    [
+     300.0,
+     -77.0
+    ],
+    [
+     293.5,
+     -78.74
+    ],
+    [
+     288.74,
+     -83.5
+    ],
+    [
+     287.0,
+     -90.0
+    ],
+    [
+     288.74,
+     -96.5
+    ],
+    [
+     293.5,
+     -101.26
+    ],
+    [
+     300.0,
+     -103.0
+    ],
+    [
+     306.5,
+     -101.26
+    ],
+    [
+     311.26,
+     -96.5
+    ]
+   ],
+   "start": -260,
+   "end": -15,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Dowel Sleeve 30 3",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Dowel Sleeve 30 3",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Dowel Sleeve 30 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 20_Joint",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20_Joint/Show 20_Joint",
+   "type": "20_Joint",
+   "param": "Show 20_Joint",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "30_Joint/Show 20_Joint",
+   "type": "30_Joint",
+   "param": "Show 20_Joint",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filler Board 20/Visible",
+   "solid": "Filler Board 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Backer Rod 20/Visible",
+   "solid": "Backer Rod 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Left 20/Visible",
+   "solid": "Frame Left 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Right 20/Visible",
+   "solid": "Frame Right 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Leg Left 20/Visible",
+   "solid": "Anchor Leg Left 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Leg Right 20/Visible",
+   "solid": "Anchor Leg Right 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rubber Insert 20/Visible",
+   "solid": "Rubber Insert 20",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 20 1/Visible",
+   "solid": "Screw Left 20 1",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 20 2/Visible",
+   "solid": "Screw Left 20 2",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 20 3/Visible",
+   "solid": "Screw Left 20 3",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 20 4/Visible",
+   "solid": "Screw Left 20 4",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 20 1/Visible",
+   "solid": "Screw Right 20 1",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 20 2/Visible",
+   "solid": "Screw Right 20 2",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 20 3/Visible",
+   "solid": "Screw Right 20 3",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 20 4/Visible",
+   "solid": "Screw Right 20 4",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 20 1/Visible",
+   "solid": "Dowel Sleeve 20 1",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 20 2/Visible",
+   "solid": "Dowel Sleeve 20 2",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 20 3/Visible",
+   "solid": "Dowel Sleeve 20 3",
+   "param": "Show 20_Joint"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 30_Joint",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "20_Joint/Show 30_Joint",
+   "type": "20_Joint",
+   "param": "Show 30_Joint",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "30_Joint/Show 30_Joint",
+   "type": "30_Joint",
+   "param": "Show 30_Joint",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Filler Board 30/Visible",
+   "solid": "Filler Board 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Backer Rod 30/Visible",
+   "solid": "Backer Rod 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Left 30/Visible",
+   "solid": "Frame Left 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Right 30/Visible",
+   "solid": "Frame Right 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Leg Left 30/Visible",
+   "solid": "Anchor Leg Left 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Anchor Leg Right 30/Visible",
+   "solid": "Anchor Leg Right 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Rubber Insert 30/Visible",
+   "solid": "Rubber Insert 30",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 30 1/Visible",
+   "solid": "Screw Left 30 1",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 30 2/Visible",
+   "solid": "Screw Left 30 2",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 30 3/Visible",
+   "solid": "Screw Left 30 3",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Left 30 4/Visible",
+   "solid": "Screw Left 30 4",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 30 1/Visible",
+   "solid": "Screw Right 30 1",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 30 2/Visible",
+   "solid": "Screw Right 30 2",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 30 3/Visible",
+   "solid": "Screw Right 30 3",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Screw Right 30 4/Visible",
+   "solid": "Screw Right 30 4",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 30 1/Visible",
+   "solid": "Dowel Sleeve 30 1",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 30 2/Visible",
+   "solid": "Dowel Sleeve 30 2",
+   "param": "Show 30_Joint"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Dowel Sleeve 30 3/Visible",
+   "solid": "Dowel Sleeve 30 3",
+   "param": "Show 30_Joint"
   },
   {
    "op": "set_type_image",
@@ -1923,13 +3255,13 @@
   }
  ],
  "values": {
-  "Joint width 20 mm (geometry)": {
-   "value": 20,
+  "Joint width 20 and 30 mm (one per type)": {
+   "value": "20/30",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
-  "Cover 120 mm wide, flush": {
-   "value": 120,
+  "Cover 100 mm frames each side, flush": {
+   "value": 100,
    "source_status": "assumed",
    "source": "typical hospital floor joint cover; cleanable"
   },

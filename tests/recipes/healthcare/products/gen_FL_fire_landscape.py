@@ -45,35 +45,64 @@ def arch(y0, y1, z0, rise, k=8):
     return [[y0, z0]] + [[round(cy - ry * math.cos(math.pi * i / k), 1), round(z0 + rise * math.sin(math.pi * i / k), 1)] for i in range(k + 1)] + [[y1, z0]]
 
 def count(parts): return sum(p.get('repeat', {}).get('n', 1) for p in parts)
+import copy
+def tf(parts, sx=1, sy=1, sz=1, dx=0, dy=0, dz=0):
+    """Scale then shift parts (x, y, z). Radii of round parts scale with x (or y for axis x)."""
+    X, Y, Z = (lambda v: round(v * sx + dx, 1)), (lambda v: round(v * sy + dy, 1)), (lambda v: round(v * sz + dz, 1))
+    out = []
+    for p in parts:
+        q = copy.deepcopy(p); s_ = q['shape']; ax = q.get('axis', 'z')
+        if 'at' in q:
+            a = q['at']; q['at'] = [X(a[0]), Y(a[1]), Z(a[2]), X(a[3]), Y(a[4]), Z(a[5])]
+            if 'r' in q: q['r'] = round(q['r'] * sx, 1)
+        elif s_ == 'cyl':
+            r = sy if ax == 'x' else sx; q['r'] = round(q['r'] * r, 1)
+            if ax == 'z': q['c'] = [X(q['c'][0]), Y(q['c'][1])]; q['z'] = [Z(v) for v in q['z']]
+            if ax == 'y': q['c'] = [X(q['c'][0]), Z(q['c'][1])]; q['y'] = [Y(v) for v in q['y']]
+            if ax == 'x': q['c'] = [Y(q['c'][0]), Z(q['c'][1])]; q['x'] = [X(v) for v in q['x']]
+        elif s_ == 'turn':
+            if ax == 'z': q['c'] = [X(q['c'][0]), Y(q['c'][1])]; q['profile'] = [[round(r * sx, 1), Z(t)] for r, t in q['profile']]
+            if ax == 'y': q['c'] = [X(q['c'][0]), Z(q['c'][1])]; q['profile'] = [[round(r * sx, 1), Y(t)] for r, t in q['profile']]
+            if ax == 'x': q['c'] = [Y(q['c'][0]), Z(q['c'][1])]; q['profile'] = [[round(r * sy, 1), X(t)] for r, t in q['profile']]
+        elif s_ == 'front': q['pts'] = [[X(a), Z(b)] for a, b in q['pts']]; q['y'] = [Y(v) for v in q['y']]
+        elif s_ == 'right': q['pts'] = [[Y(a), Z(b)] for a, b in q['pts']]; q['x'] = [X(v) for v in q['x']]
+        elif s_ == 'prism': q['pts'] = [[X(a), Y(b)] for a, b in q['pts']]; q['z'] = [Z(v) for v in q['z']]
+        if 'repeat' in q: d = q['repeat']['d']; q['repeat']['d'] = [round(d[0] * sx, 1), round(d[1] * sy, 1), round(d[2] * sz, 1)]
+        out.append(q)
+    return out
+def only(parts, t, tag=None):
+    """Parts shown only in type t (names get the type tag so they stay unique)."""
+    out = copy.deepcopy(parts)
+    for q in out: q['n'] = f"{q['n']} {tag or t.split('_')[0]}"; q['only'] = [t]
+    return out
+def down45(name, s0, s1, w, x, y0, z0, m, oct_=True, lod='mf'):
+    """A round-ish part on an axis running out (-y) and down at 45 degrees from (y0, z0): a square bar plus a
+    second bar turned 45 degrees in section (its 'flats'), which together read as an octagon."""
+    d = 0.7071; p0 = [y0 - d * s0, z0 - d * s0]; p1 = [y0 - d * s1, z0 - d * s1]
+    out = [BYZ(name, p0, p1, w, [x - w * 0.41, x + w * 0.41], m, lod)]
+    if oct_: out.append(BYZ(name + " Flats", p0, p1, w * 0.83, [x - w / 2, x + w / 2], m, lod))
+    return out
 
 # ------------------------------------------------------------------ connectors
 def pipe(n, part, side, system, dia, flow='In'): return {"n": n, "domain": "pipe", "system": system, "part": part, "side": side, "diameter": dia, "flow": flow}
 def elec(n, part, side, system='PowerBalanced'): return {"n": n, "domain": "electrical", "system": system, "part": part, "side": side}
 
 # ------------------------------------------------------------------ materials (kit names only)
-M = {"red": "FMC_Metal_SprinklerPipe_RedPainted",       # nearest to signal-red painted steel; FMC_Paint_Enamel_SignalRed requested
+M = {"red": "FMC_Paint_Enamel_SignalRed", "green": "FMC_Plastic_PPR_Green", "gun": "FMC_Metal_Gunmetal_LG2", "hedge": "FMC_Plant_Hedge_Duranta",
      "hose": "FMC_Plastic_FireHoseReel_Red", "brass": "FMC_Metal_Brass_Polished", "chrome": "FMC_Metal_Chrome_Polished",
      "steel": "FMC_Metal_SteelLTZ_Painted", "galv": "FMC_Metal_ColdFormed_Galvanised", "gi": "FMC_Metal_GI_Pipe",
      "ss": "FMC_Metal_StainlessSteel_Brushed", "white": "FMC_Plastic_ABS_White", "black": "FMC_Plastic_ABS_Black",
      "grey": "FMC_Plastic_ABS_Grey", "yellow": "FMC_Plastic_ABS_Yellow", "blue": "FMC_Plastic_ABS_Blue",
      "ledr": "FMC_Plastic_LED_Red", "ledg": "FMC_Plastic_LED_Green", "glass": "FMC_Glass_Clear", "pc": "FMC_Plastic_Polycarbonate_Clear",
      "lcd": "FMC_Glass_Reflective_BlueGreen", "rubber": "FMC_Rubber_Black", "epw": "FMC_Metal_Steel_EpoxyCoated_White",
-     "conc": "FMC_Concrete_Precast_Painted", "concg": "FMC_Concrete_C30", "bark": "FMC_Timber_Mugavu",
-     "leaf1": "FMC_Plant_Grass_Kikuyu", "leaf2": "FMC_Plant_Hedge_Duranta", "leaf3": "FMC_Plant_Grass_Paspalum", "leaf4": "FMC_Plastic_PPR_Green",
-     "flower": "FMC_Fabric_Kitenge_Print", "mulch": "FMC_Plant_Mulch_Bark", "soil": "FMC_Earth_Topsoil",
+     "conc": "FMC_Concrete_Precast_Painted", "concg": "FMC_Concrete_C30", "bark": "FMC_Plant_Bark_Trunk",
+     "leaf1": "FMC_Plant_Grass_Kikuyu", "leaf2": "FMC_Plant_Foliage_Canopy", "leaf3": "FMC_Plant_Grass_Paspalum", "leaf4": "FMC_Plastic_PPR_Green",
+     "flower": "FMC_Plant_Flowers_Orange", "mulch": "FMC_Plant_Mulch_Bark", "soil": "FMC_Earth_Topsoil",
      "timber": "FMC_Timber_Mvule", "pine": "FMC_Timber_Pine_CCATreated", "stone": "FMC_Stone_Dressed", "granite": "FMC_Stone_Granite_Black_Polished",
-     "water": "FMC_Glass_Reflective_BlueGreen", "pebble": "FMC_Stone_Pebbles_River", "mesh": "FMC_Metal_BRCMesh_A142",
+     "water": "FMC_Water_Still", "pebble": "FMC_Stone_Pebbles_River", "mesh": "FMC_Metal_ChainLink_Galvanised",
      "alu": "FMC_Metal_Aluminium_PowderCoated", "nylon": "FMC_Plastic_Nylon_CastorGrey"}
 
-NEEDED = [
-    {"name": "FMC_Paint_Enamel_SignalRed", "colour": "#C1121F", "why": "fire equipment (extinguishers, cabinets, hose reels, hydrants, valves, pumps, panels, call points) is signal-red (RAL 3000) painted steel or cast iron; the kit only has the red sprinkler-pipe paint, used as nearest"},
-    {"name": "FMC_Metal_Gunmetal_LG2", "colour": "#A88B5A", "why": "landing valves, breeching inlets and instantaneous couplings are gunmetal/bronze castings; FMC_Metal_Brass_Polished used as nearest"},
-    {"name": "FMC_Plant_Bark_Trunk", "colour": "#5E4A3A", "why": "tree and palm trunks; FMC_Timber_Mugavu used as nearest"},
-    {"name": "FMC_Plant_Foliage_Canopy", "colour": "#3F6A2C", "why": "tree, palm and shrub foliage; the kit's grass and Duranta hedge materials used as nearest"},
-    {"name": "FMC_Plant_Flowers_Orange", "colour": "#E0582A", "why": "flowering ornamental tree (Nandi flame / Spathodea type), shrubs and groundcover flowers; FMC_Fabric_Kitenge_Print used as nearest colour"},
-    {"name": "FMC_Water_Still", "colour": "#4A86A8", "why": "water surface of the healing-garden feature; FMC_Glass_Reflective_BlueGreen used as nearest"},
-    {"name": "FMC_Metal_ChainLink_Galvanised", "colour": "#A7ACAF", "why": "chain-link mesh panel of the boundary fence; FMC_Metal_BRCMesh_A142 used as nearest (dark, reads as see-through mesh)"},
-]
+NEEDED = []   # second pass: the kit now has every material batch FL asked for (signal red, gunmetal, bark, foliage, flowers, water, chain link)
 
 def make(fam, desc, ifc, types, parts, values, about, category=None, template=None, tv=None, conns=None, clear=None, geometry=None):
     rec = RECS[fam]
@@ -84,7 +113,8 @@ def make(fam, desc, ifc, types, parts, values, about, category=None, template=No
             "desc": desc, "ifc": ifc, "keynote": rec['kn'],
             "types": [t if isinstance(t, dict) else {"name": t} for t in types],
             "materials": {k: M[k] for k in used}, "reference": dict(rec['ref']), "parts": parts, "values": values,
-            "about": about + (f" Geometry drawn for {geometry}; the other types share it (sizes in the values)." if geometry else "")}
+            "about": about + (f" Geometry drawn for {geometry}; the other types share it (sizes in the values)." if geometry else "")
+                     + (" Each type has its own parts where the types differ (Show parameters)." if any(q.get('only') for q in parts) and 'Show parameters' not in about else "")}
     if tv: prod["type_values"] = tv
     if conns: prod["connectors"] = conns
     if clear: prod["clearances"] = clear
@@ -126,7 +156,7 @@ make("FMC_FP_Sprinkler_Concealed", "Concealed pendent sprinkler K80 (5.6K), 68 C
      "Concealed sprinkler modelled as a generic product: flat white cover plate with retainer flange flush to the ceiling (z = 0), threaded support cup, wrench boss, brass body and thread.",
      conns=[pipe("Inlet", "Thread Inlet", "top", "FireProtectWet", 15)])
 
-# ---- Hose reel, swinging, in cabinet (wall; Medium shows the door shut, Fine shows it open with the reel)
+# ---- Hose reel, swinging, in cabinet (wall; glazed door shut, reel seen through the glass)
 hr = [
     F("Cabinet Back", [-380, -12, 0, 380, 0, 760], "red"),
     rep(B("Cabinet Side", [-380, -280, 0, -368, -12, 760], "red"), 2, [748, 0, 0]),
@@ -136,11 +166,11 @@ hr = [
     F("Front Frame Bottom", [-380, -286, 0, 380, -280, 40], "red"),
     rep(F("Front Frame Stile", [-380, -286, 40, -350, -280, 700], "red"), 2, [730, 0, 0]),
     F("Label FIRE HOSE REEL", [-170, -288, 712, 170, -286, 748], "white", 2, 'f'),
-    F("Door Shut", [-372, -298, 40, 372, -286, 700], "red", 4, 'm'),
-    F("Door Glass Shut", [-320, -300, 100, 320, -298, 640], "glass", 0, 'm'),
-    B("Door Open", [-392, -1028, 40, -380, -286, 700], "red", 0, 'f'),
-    B("Door Glass Open", [-394, -980, 100, -392, -334, 640], "glass", 0, 'f'),
-    B("Door Handle", [-406, -1004, 330, -394, -988, 440], "black", 3, 'f'),
+    F("Door Rail Top", [-372, -298, 640, 372, -286, 700], "red", 4),
+    F("Door Rail Bottom", [-372, -298, 40, 372, -286, 100], "red", 4),
+    rep(F("Door Stile", [-372, -298, 100, -320, -286, 640], "red"), 2, [692, 0, 0]),
+    F("Door Glass", [-320, -294, 100, 320, -290, 640], "glass"),
+    F("Door Handle", [330, -312, 330, 352, -298, 440], "black", 4, 'f'),
     rep(B("Hinge", [-388, -294, 80, -376, -282, 140], "chrome", 0, 'f'), 2, [0, 0, 480]),
     DISC("Reel Back Flange", 'y', [0, 390], 300, -20, -26, "red"),
     DISC("Reel Hub", 'y', [0, 390], 95, -26, -200, "red"),
@@ -153,7 +183,7 @@ hr = [
     DISC("Swivel Cap", 'y', [0, 390], 48, -206, -216, "chrome", 'f'),
     B("Swing Arm", [0, -20, 382, 330, -14, 398], "gi", 0, 'f'),
     CY("Swing Pivot", 'z', [330, -60], 14, [120, 730], "gi"),
-    CY("Inlet Valve Body", 'z', [330, -60], 24, [60, 120], "brass"),
+    CY("Inlet Valve Body", 'z', [330, -60], 24, [60, 120], "gun"),
     CY("Inlet Valve Stem", 'y', [330, 90], 5, [-84, -130], "chrome", 'f'),
     RING("Inlet Handwheel", 'y', [330, 90], 26, 34, -130, -138, "red"),
     CY("Inlet Pipe", 'z', [330, -60], 14, [-60, 60], "gi"),
@@ -167,34 +197,33 @@ make("FMC_FP_FireProt_HoseReel_Swinging", "Swinging fire hose reel, 30 m x 19 mm
      "IfcFireSuppressionTerminal", ["30m_Swinging"], hr,
      {"Hose 30 m x 19 mm": A("30m 19mm", "type name; BS EN 671-1 hose reel"), "Cabinet 760 x 760 x 280 mm": A("760x760x280"),
       "Drum 600 mm diameter": A(600), "Cabinet bottom 900 mm above floor": A(900, "nozzle within reach, BS EN 671-3 practice")},
-     "Hose reel modelled as a generic product: red steel cabinet with label fascia; Medium shows the glazed door shut, Fine shows it open on its hinges with the reel inside: drum flanges, three hose coils, spokes, swivel cap, swing arm and pivot, inlet stop valve with red handwheel, hose guide, nozzle in its clip.",
+     "Hose reel modelled as a generic product: red steel cabinet with label fascia; glazed door (frame, glass, handle, hinges) shut over the reel: drum flanges, three hose coils, spokes, swivel cap, swing arm and pivot, inlet stop valve with red handwheel, hose guide, nozzle in its clip.",
      category="Mechanical Equipment", tv={"Default Elevation": 900}, conns=[pipe("Water Inlet", "Inlet Pipe", "bottom", "FireProtectWet", 25)])
 
 # ---- Landing valve 65 (oblique globe valve on a riser branch; inlet flange at z = 0)
 lv = [
-    DISC("Inlet Flange", 'z', [0, 0], 92, 0, 20, "brass"),
+    DISC("Inlet Flange", 'z', [0, 0], 92, 0, 20, "gun"),
     rep(CY("Flange Bolt X", 'z', [-68, 0], 8, [20, 30], "steel", 'f'), 2, [136, 0, 0]),
     rep(CY("Flange Bolt Y", 'z', [0, -68], 8, [20, 30], "steel", 'f'), 2, [0, 136, 0]),
-    TU("Valve Body", 'z', [0, 0], [[0, 20], [40, 20], [58, 50], [62, 90], [55, 130], [34, 150], [0, 150]], "brass"),
-    TU("Bonnet", 'z', [0, 0], [[0, 150], [36, 150], [36, 172], [26, 184], [26, 215], [0, 215]], "brass"),
-    B("Gland Nut", [-20, -20, 215, 20, 20, 232], "brass", 4),
+    TU("Valve Body", 'z', [0, 0], [[0, 20], [40, 20], [58, 50], [62, 90], [55, 130], [34, 150], [0, 150]], "gun"),
+    TU("Bonnet", 'z', [0, 0], [[0, 150], [36, 150], [36, 172], [26, 184], [26, 215], [0, 215]], "gun"),
+    B("Gland Nut", [-20, -20, 215, 20, 20, 232], "gun", 4),
     CY("Spindle", 'z', [0, 0], 8, [232, 268], "chrome"),
     RING("Handwheel Rim", 'z', [0, 0], 62, 72, 262, 274, "red"),
     B("Handwheel Spoke X", [-64, -5, 264, 64, 5, 272], "red"),
     B("Handwheel Spoke Y", [-5, -64, 264, 5, 64, 272], "red"),
     DISC("Handwheel Hub", 'z', [0, 0], 16, 260, 278, "red"),
-    CY("Outlet Branch", 'y', [0, 95], 36, [-45, -120], "brass"),
-    RING("Outlet Collar", 'y', [0, 95], 36, 46, -112, -126, "brass"),
-    TU("Instantaneous Coupling", 'y', [0, 95], [[30, -126], [50, -126], [50, -170], [44, -176], [30, -176]], "chrome"),
-    B("Coupling Release Lugs", [-60, -166, 90, 60, -152, 100], "chrome", 3, 'f'),
-    DISC("Blank Cap", 'y', [0, 95], 47, -176, -190, "brass"),
-    B("Cap Chain", [46, -184, 30, 50, -180, 92], "chrome", 0, 'f'),
+    *down45("Outlet Branch", 0, 70, 72, 0, -40, 140, "gun"),
+    *down45("Outlet Collar", 62, 74, 92, 0, -40, 140, "gun"),
+    *down45("Instantaneous Coupling", 74, 124, 100, 0, -40, 140, "chrome"),
+    BYZ("Coupling Release Lugs", [-40 - 0.7071 * 100, 140 - 0.7071 * 100], [-40 - 0.7071 * 112, 140 - 0.7071 * 112], 122, [-62, 62], "chrome", 'f'),
+    *down45("Blank Cap", 124, 136, 96, 0, -40, 140, "gun"),
     B("Strap Lock", [-8, -60, 175, 8, -36, 205], "yellow", 0, 'f'),
 ]
 make("FMC_FP_FireProt_LandingValve_Riser", "Landing valve 65 mm, oblique globe pattern, gunmetal, flanged inlet, female instantaneous outlet with blank cap and chain, red handwheel, strap lock",
      "IfcValve", ["65_LandingValve"], lv,
      {"Outlet 65 mm (2.5 in) instantaneous": A(65, "type name; BS 5041-1"), "Inlet flange DN65, 185 mm": A(185, "EN 1092 PN16 flange"), "Height 280 mm to handwheel": A(280)},
-     "Landing valve modelled as a generic product: flanged inlet with bolts, globe body and bonnet, gland nut, spindle and red handwheel, horizontal outlet with instantaneous coupling, release lugs, blank cap and chain, yellow strap lock. Outlet drawn horizontal (real valves angle it about 45 degrees down).",
+     "Landing valve modelled as a generic product: flanged inlet with bolts, globe body and bonnet, gland nut, spindle and red handwheel, outlet angled 45 degrees down with collar, instantaneous coupling, release lugs and blank cap (octagonal sections), yellow strap lock.",
      category="Pipe Accessories", conns=[pipe("Riser Inlet", "Inlet Flange", "bottom", "FireProtectWet", 65)])
 
 # ---- External pillar hydrant, 2-way (ground at z = 0)
@@ -209,10 +238,10 @@ hy = [
     RING("Reflective Band", 'z', [0, 0], 86, 88.5, 440, 520, "white"),
     CY("Outlet Right", 'x', [0, 690], 44, [100, 165], "red"),
     CY("Outlet Left", 'x', [0, 690], 44, [-165, -100], "red"),
-    TU("Coupling Right", 'x', [0, 690], [[32, 165], [52, 165], [52, 205], [32, 205]], "brass"),
-    TU("Coupling Left", 'x', [0, 690], [[32, -205], [52, -205], [52, -165], [32, -165]], "brass"),
-    DISC("Cap Right", 'x', [0, 690], 50, 205, 222, "brass"),
-    DISC("Cap Left", 'x', [0, 690], 50, -222, -205, "brass"),
+    TU("Coupling Right", 'x', [0, 690], [[32, 165], [52, 165], [52, 205], [32, 205]], "gun"),
+    TU("Coupling Left", 'x', [0, 690], [[32, -205], [52, -205], [52, -165], [32, -165]], "gun"),
+    DISC("Cap Right", 'x', [0, 690], 50, 205, 222, "gun"),
+    DISC("Cap Left", 'x', [0, 690], 50, -222, -205, "gun"),
     B("Cap Chain Right", [212, -3, 560, 216, 3, 645], "chrome", 0, 'f'),
     B("Cap Chain Left", [-216, -3, 560, -212, 3, 645], "chrome", 0, 'f'),
     TU("Drain Boss", 'y', [0, 150], [[0, -84], [22, -84], [22, -104], [0, -104]], "red", 'f'),
@@ -224,38 +253,36 @@ make("FMC_FP_FireProt_Hydrant_Pillar_External", "External pillar fire hydrant, 2
      "Pillar hydrant modelled as a generic product: bolted base flange, barrel and head, domed bonnet with operating nut, two side outlets with couplings, caps and chains, reflective band, drain boss and identification plate.",
      category="Mechanical Equipment", conns=[pipe("Main", "Base Flange", "bottom", "FireProtectWet", 100)])
 
-# ---- Breeching inlet (wall; collecting head with inlets)
-bi = [
-    F("Back Plate", [-290, -10, 0, 290, 0, 580], "red", 8),
-    F("Label DRY RISER INLET", [-200, -14, 470, 200, -10, 545], "white", 4),
-    rep(B("Head Bracket", [-190, -95, 200, -160, -10, 260], "steel"), 2, [350, 0, 0]),
-    CY("Collecting Head", 'x', [-160, 230], 72, [-210, 210], "red"),
-    CY("Riser Outlet", 'z', [0, -160], 55, [290, 470], "red"),
-    CY("Riser Elbow", 'y', [0, 450], 55, [-215, -10], "red"),
-    rep(CY("Inlet Neck", 'y', [-115, 205], 40, [-300, -215], "brass"), 2, [230, 0, 0]),
-    rep(RING("Check Valve Boss", 'y', [-115, 205], 40, 54, -255, -280, "brass"), 2, [230, 0, 0]),
-    rep(TU("Male Coupling", 'y', [-115, 205], [[30, -300], [46, -300], [46, -345], [30, -345]], "chrome"), 2, [230, 0, 0]),
-    rep(DISC("Blank Cap", 'y', [-115, 205], 50, -345, -358, "brass"), 2, [230, 0, 0]),
-    rep(B("Cap Chain", [-70, -352, 110, -66, -348, 200], "chrome", 0, 'f'), 2, [230, 0, 0]),
-    CY("Drain Valve", 'z', [0, -160], 15, [118, 160], "brass"),
-    RING("Drain Valve Wheel", 'z', [0, -160], 18, 26, 110, 117, "red", 'f'),
-    rep(CY("Plate Fixing", 'y', [-260, 30], 6, [-14, -10], "chrome", 'f'), 2, [520, 0, 0]),
-]
-make("FMC_FP_FireProt_BreechingInlet", "Fire brigade breeching inlet (dry riser), 65 mm male instantaneous inlets with non-return valves, blank caps and chains, DN100 outlet, drain valve, red back plate with label",
+# ---- Breeching inlet (wall; collecting head with inlets angled 45 degrees down; 2-way and 4-way parts per type)
+def bi_type(t, xs, half):
+    parts = [F("Back Plate", [-half, -10, 0, half, 0, 580], "red", 8),
+             rep(B("Head Bracket", [-half + 90, -95, 200, -half + 120, -10, 260], "steel"), 2, [2 * half - 210, 0, 0]),
+             CY("Collecting Head", 'x', [-160, 230], 72, [-(half - 80), half - 80], "red"),
+             rep(CY("Plate Fixing", 'y', [-half + 30, 30], 6, [-14, -10], "chrome", 'f'), 2, [2 * half - 60, 0, 0])]
+    for i, x in enumerate(xs):
+        parts += down45(f"Inlet Neck {i + 1}", 0, 60, 80, x, -211, 179, "gun", oct_=False)
+        parts += down45(f"Male Coupling {i + 1}", 60, 112, 96, x, -211, 179, "gun")
+        parts += down45(f"Blank Cap {i + 1}", 112, 126, 104, x, -211, 179, "chrome")
+    return only(parts, t)
+bi = [F("Label DRY RISER INLET", [-200, -14, 470, 200, -10, 545], "white", 4),
+      CY("Riser Outlet", 'z', [0, -160], 55, [290, 470], "red"),
+      CY("Riser Elbow", 'y', [0, 450], 55, [-215, -10], "red"),
+      CY("Drain Valve", 'z', [0, -160], 15, [118, 160], "gun"),
+      RING("Drain Valve Wheel", 'z', [0, -160], 18, 26, 110, 117, "red", 'f'),
+      *bi_type("2-way_Inlet", [-115, 115], 290), *bi_type("4-way_Inlet", [-330, -110, 110, 330], 470)]
+make("FMC_FP_FireProt_BreechingInlet", "Fire brigade breeching inlet (dry riser), 2 or 4 x 65 mm male instantaneous inlets angled down, blank caps, DN100/DN150 outlet, drain valve, red back plate with label",
      "IfcValve", ["2-way_Inlet", "4-way_Inlet"], bi,
      {"Inlets 65 mm male instantaneous": A(65, "BS 5041-3"), "Outlet DN100 (2-way), DN150 (4-way)": A("100/150", "BS 9990 dry riser practice"),
-      "Back plate 580 x 580 mm": A("580x580"), "Inlet centre 600 to 750 mm above ground": A(600, "BS 9990 inlet height")},
-     "Breeching inlet modelled as a generic product: red back plate with label, collecting head on brackets, riser outlet and elbow into the wall, inlet necks with check-valve bosses, male couplings, blank caps and chains, drain valve.",
-     category="Pipe Accessories", tv={"Default Elevation": 450}, conns=[pipe("Riser", "Riser Elbow", "back", "FireProtectWet", 100, "Out")],
-     geometry="2-way_Inlet")
+      "Back plate 580 x 580 (2-way), 940 x 580 mm (4-way)": A("580/940x580"), "Inlet centre 600 to 750 mm above ground": A(600, "BS 9990 inlet height")},
+     "Breeching inlet modelled as a generic product: red back plate with label, collecting head on brackets, riser outlet and elbow into the wall, gunmetal inlet necks angled 45 degrees down with octagonal male couplings and chrome blank caps, drain valve. The 2-way and 4-way types each carry their own plate, head and inlets (Show parameters).",
+     category="Pipe Accessories", tv={"Default Elevation": 450}, conns=[pipe("Riser", "Riser Elbow", "back", "FireProtectWet", 100, "Out")])
 
-# ---- Extinguishers (wall, on bracket; base at z = 0)
-def extinguisher(fam, desc, types, R, H, band, kind, values, geometry):
+# ---- Extinguishers (wall, on bracket; base at z = 0; each size is its own set of parts)
+def ext_parts(R, H, band, kind, hose):
     cy = -(30 + R)
-    neck = H
     parts = [
-        F("Wall Bracket Plate", [-35, -6, H * 0.55, 35, 0, neck + 40], "steel", 6),
-        B("Bracket Hook", [-14, cy + 18, neck + 2, 14, -6, neck + 14], "steel"),
+        F("Wall Bracket Plate", [-35, -6, H * 0.55, 35, 0, H + 40], "steel", 6),
+        B("Bracket Hook", [-14, cy + 18, H + 2, 14, -6, H + 14], "steel"),
         RING("Base Foot", 'z', [0, cy], R - 14, R - 2, 0, 14, "black"),
         TU("Cylinder", 'z', [0, cy], [[0, 10], [R - 12, 10], [R, 24], [R, H - R * 0.75], [R * 0.75, H - R * 0.25], [24, H - 4], [0, H]], "red"),
         RING("Label Band", 'z', [0, cy], R, R + 1, H * 0.32, H * 0.58, band),
@@ -266,14 +293,16 @@ def extinguisher(fam, desc, types, R, H, band, kind, values, geometry):
         B("Squeeze Lever", [-13, cy - 5, H + 66, 13, cy + 100, H + 75], "red", 4),
         CY("Safety Pin", 'x', [cy - 8, H + 62], 3, [-24, 24], "chrome", 'f'),
         RING("Pin Ring", 'x', [cy - 8, H + 62], 7, 10, 24, 27, "chrome", 'f'),
-        F("Tamper Tag", [26, cy - 12, H + 30, 46, cy - 10, H + 58], "yellow", 3, 'f'),
-    ]
+        F("Tamper Tag", [26, cy - 12, H + 30, 46, cy - 10, H + 58], "yellow", 3, 'f')]
     hx = R + 34
-    if kind == 'CO2':
+    if kind == 'CO2' and hose:
         parts += [CY("Hose Elbow", 'x', [cy, H + 36], 8, [18, hx], "rubber"),
                   CY("Hose", 'z', [hx, cy], 8, [H * 0.62, H + 44], "rubber"),
                   TU("Discharge Horn", 'z', [hx, cy], [[10, H * 0.62], [15, H * 0.62], [40, H * 0.14], [34, H * 0.14]], "black"),
                   B("Horn Clip", [R - 6, cy - 8, H * 0.5, hx - 30, cy + 8, H * 0.56], "black", 0, 'f')]
+    elif kind == 'CO2':   # small CO2: swivel horn straight off the valve
+        parts += [CY("Swivel Arm", 'x', [cy, H + 36], 9, [18, hx], "chrome"),
+                  TU("Swivel Horn", 'z', [hx, cy], [[9, H + 44], [14, H + 44], [34, H * 0.62], [29, H * 0.62]], "black")]
     else:
         parts += [TU("Gauge Bezel", 'y', [0, H + 40], [[0, cy - 18], [15, cy - 18], [15, cy - 28], [0, cy - 28]], "chrome"),
                   DISC("Gauge Face", 'y', [0, H + 40], 12, cy - 28, cy - 29.5, "white", 'f'),
@@ -282,38 +311,46 @@ def extinguisher(fam, desc, types, R, H, band, kind, values, geometry):
                   CY("Hose", 'z', [R + 14, cy], 9, [H * 0.22, H + 39], "rubber"),
                   TU("Nozzle", 'z', [R + 14, cy], [[0, H * 0.08], [8, H * 0.08], [13, H * 0.14], [13, H * 0.22], [0, H * 0.22]], "black"),
                   B("Nozzle Clip", [R - 6, cy - 8, H * 0.15, R + 4, cy + 8, H * 0.2], "black", 0, 'f')]
-    make(fam, desc, "IfcFireSuppressionTerminal", types, parts, values,
+    return parts
+def extinguisher(fam, desc, sizes, band, kind, values):
+    parts = [q for (t, R, H, hose) in sizes for q in only(ext_parts(R, H, band, kind, hose), t)]
+    make(fam, desc, "IfcFireSuppressionTerminal", [t for t, *_ in sizes], parts, values,
          f"{kind} extinguisher modelled as a generic product: red cylinder with foot ring, {band} identification band and instruction label, valve with carry handle, squeeze lever, safety pin and tamper tag, "
-         + ("hose and discharge horn in its clip" if kind == 'CO2' else "pressure gauge, hose and nozzle in its clip") + ", wall bracket and hook.",
-         category="Specialty Equipment", tv={"Default Elevation": 350}, geometry=geometry)
-extinguisher("FMC_FP_FireProt_Extinguisher_CO2", "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, hose and horn (5 kg), wall bracket",
-             ["2kg_CO2", "5kg_CO2"], 70, 620, "black", "CO2",
+         + ("swivel horn (2 kg) or hose and discharge horn in its clip (5 kg)" if kind == 'CO2' else "pressure gauge, hose and nozzle in its clip") + ", wall bracket and hook. Each size has its own parts (Show parameters).",
+         category="Specialty Equipment", tv={"Default Elevation": 350})
+extinguisher("FMC_FP_FireProt_Extinguisher_CO2", "CO2 fire extinguisher 2 kg / 5 kg, red with black band, squeeze-grip valve, swivel horn (2 kg) or hose and horn (5 kg), wall bracket",
+             [("2kg_CO2", 55, 470, False), ("5kg_CO2", 70, 620, True)], "black", "CO2",
              {"5 kg: 140 mm diameter, 680 mm overall": A("140x680", "BS EN 3 typical 5 kg CO2"), "2 kg: 110 mm diameter, 540 mm overall": A("110x540", "BS EN 3 typical 2 kg CO2"),
-              "Ratings 34B (2 kg), 70B to 89B (5 kg)": A("34B/89B", "BS EN 3-7 typical"), "Handle at or below 1100 mm": A(1100, "BS 5306-8 siting")}, "5kg_CO2")
+              "Ratings 34B (2 kg), 70B to 89B (5 kg)": A("34B/89B", "BS EN 3-7 typical"), "Handle at or below 1100 mm": A(1100, "BS 5306-8 siting")})
 extinguisher("FMC_FP_FireProt_Extinguisher_Powder", "ABC dry powder fire extinguisher 6 kg / 9 kg, red with blue band, stored pressure with gauge, hose and nozzle, wall bracket",
-             ["6kg_Powder", "9kg_Powder"], 80, 470, "blue", "Powder",
+             [("6kg_Powder", 80, 470, True), ("9kg_Powder", 90, 530, True)], "blue", "Powder",
              {"6 kg: 160 mm diameter, 540 mm overall": A("160x540", "BS EN 3 typical 6 kg powder"), "9 kg: 180 mm diameter, 600 mm overall": A("180x600", "BS EN 3 typical 9 kg powder"),
-              "Rating 27A 144B C (6 kg)": A("27A 144B C", "BS EN 3-7 typical"), "Handle at or below 1100 mm": A(1100, "BS 5306-8 siting")}, "6kg_Powder")
+              "Rating 27A 144B C (6 kg)": A("27A 144B C", "BS EN 3-7 typical"), "Handle at or below 1100 mm": A(1100, "BS 5306-8 siting")})
 
-# ---- Extinguisher cabinet (floor; GRP, domed top)
-cab = [
-    B("Plinth", [-200, -160, 0, 200, 160, 60], "black", 10),
-    B("Cabinet Body", [-190, -150, 60, 190, 150, 800], "red", 20),
-    RT("Domed Top", arch(-150, 150, 800, 90), [-190, 190], "red"),
-    F("Door", [-172, -160, 90, 172, -150, 780], "red", 14),
-    F("Window", [-120, -162, 330, 120, -160, 640], "pc", 10),
-    F("Window Frame", [-128, -161, 322, 128, -160, 648], "black", 12, 'f'),
-    F("Label FIRE EXTINGUISHER", [-132, -162, 680, 132, -160, 750], "white", 4),
-    F("Handle", [128, -176, 200, 150, -162, 300], "black", 6),
-    CY("Latch", 'y', [139, 330], 8, [-162, -170], "chrome", 'f'),
-    rep(F("Hinge", [-184, -165, 150, -170, -150, 210], "chrome", 2, 'f'), 2, [0, 0, 500]),
-    rep(B("Ventilation Slot", [-80, -162, 120, 80, -160, 128], "black", 0, 'f'), 3, [0, 0, 20]),
-]
-make("FMC_FP_FireProt_Extinguisher_Cabinet", "Floor-standing GRP extinguisher cabinet, red, domed top, door with viewing window and label; single (1 x 9 kg) or double",
+# ---- Extinguisher cabinet (floor; GRP, domed top; single and double each have their own parts)
+def cab_type(t, half, doors):
+    parts = [B("Plinth", [-half - 10, -160, 0, half + 10, 160, 60], "black", 10),
+             B("Cabinet Body", [-half, -150, 60, half, 150, 800], "red", 20),
+             RT("Domed Top", arch(-150, 150, 800, 90), [-half, half], "red")]
+    w = (2 * half - 36) / doors
+    for k in range(doors):
+        x0 = -half + 18 + k * w; x1 = x0 + w; xc = (x0 + x1) / 2; tag = f" {k + 1}" if doors > 1 else ""
+        parts += [F("Door Rail Top" + tag, [x0, -160, 640, x1, -150, 780], "red", 6), F("Door Rail Bottom" + tag, [x0, -160, 90, x1, -150, 330], "red", 6),
+                  F("Door Stile Left" + tag, [x0, -160, 330, xc - 120, -150, 640], "red"), F("Door Stile Right" + tag, [xc + 120, -160, 330, x1, -150, 640], "red"),
+                  F("Window" + tag, [xc - 120, -156, 330, xc + 120, -153, 640], "pc"),
+                  F("Label FIRE EXTINGUISHER" + tag, [xc - 125, -162, 680, xc + 125, -160, 750], "white", 4),
+                  F("Handle" + tag, [x1 - 42, -176, 200, x1 - 20, -162, 300], "black", 6),
+                  rep(B("Ventilation Slot" + tag, [xc - 80, -162, 120, xc + 80, -160, 128], "black", 0, 'f'), 3, [0, 0, 20]),
+                  TU("Extinguisher Inside" + tag, 'z', [xc, 0], [[0, 70], [80, 70], [80, 520], [60, 580], [22, 600], [0, 600]], "red"),
+                  RING("Extinguisher Band" + tag, 'z', [xc, 0], 80, 81, 230, 360, "blue", 'f'),
+                  B("Extinguisher Valve" + tag, [xc - 16, -16, 600, xc + 16, 16, 660], "chrome", 4, 'f')]
+    return only(parts, t)
+cab = cab_type("1Ext_Single", 190, 1) + cab_type("2Ext_Double", 360, 2)
+make("FMC_FP_FireProt_Extinguisher_Cabinet", "Floor-standing GRP extinguisher cabinet, red, domed top, door(s) with viewing window and label; single (1 x 9 kg) or double (2 x 9 kg)",
      "IfcFurniture", ["1Ext_Single", "2Ext_Double"], cab,
-     {"Single: 400 x 320 x 890 mm": A("400x320x890", "typical GRP single cabinet"), "Double: 720 x 320 x 890 mm": A("720x320x890", "typical GRP double cabinet"), "Takes 9 kg / 9 l extinguisher": A("9kg")},
-     "Extinguisher cabinet modelled as a generic product: black plinth, red GRP body with domed top, door with framed viewing window, label, handle and latch, hinges, vent slots.",
-     category="Specialty Equipment", geometry="1Ext_Single")
+     {"Single: 400 x 320 x 890 mm": A("400x320x890", "typical GRP single cabinet"), "Double: 740 x 320 x 890 mm": A("740x320x890", "typical GRP double cabinet"), "Takes 9 kg / 9 l extinguishers": A("9kg")},
+     "Extinguisher cabinet modelled as a generic product: black plinth, red GRP body with domed top, framed door(s) with clear viewing window showing the extinguisher inside, label, handle, vent slots. Single and double each have their own parts (Show parameters).",
+     category="Specialty Equipment")
 
 # ---- Fire blanket (wall)
 make("FMC_FP_FireProt_FireBlanket", "Fire blanket 1.2 x 1.2 m in a rigid red wall container with quick-release pull tapes",
@@ -472,42 +509,39 @@ make("FMC_FP_MechEq_FirePump_Set", "Packaged sprinkler fire pump set on one skid
      conns=[pipe("Suction", "Suction Header", "left", "FireProtectWet", 300), pipe("Discharge", "Discharge Header", "right", "FireProtectWet", 250, "Out"),
             elec("Power", "Electric Controller", "top")])
 
-# ---- Fire water tank (sectional pressed steel on plinth walls)
-tk = [
-    rep(B("Plinth Wall", [-3110, -3150, 0, -2990, 3150, 600], "concg"), 6, [1220, 0, 0]),
-    B("Tank Shell", [-3050, -3050, 600, 3050, 3050, 3650], "galv"),
-    B("Base Flange", [-3080, -3080, 600, 3080, 3080, 640], "galv"),
-    B("Top Flange", [-3080, -3080, 3610, 3080, 3080, 3650], "galv"),
-    rep(B("Panel Flange X", [-1855, -3080, 640, -1805, 3080, 3610], "galv"), 4, [1220, 0, 0]),
-    rep(B("Panel Flange Y", [-3080, -1855, 640, 3080, -1805, 3610], "galv"), 4, [0, 1220, 0]),
-    rep(B("Panel Flange Z", [-3080, -3080, 1795, 3080, 3080, 1845], "galv"), 2, [0, 0, 1220]),
-    B("Roof", [-3050, -3050, 3650, 3050, 3050, 3670], "galv"),
-    B("Manhole Frame", [1800, 1800, 3670, 2500, 2500, 3720], "galv"),
-    B("Manhole Lid", [1780, 1780, 3720, 2520, 2520, 3735], "galv", 0, 'f'),
-    TU("Vent Cowl", 'z', [-2000, 2000], [[0, 3670], [60, 3670], [60, 3950], [150, 3950], [150, 3990], [0, 4050]], "gi"),
-    rep(B("Ladder Stringer", [2300, -3135, 0, 2340, -3095, 3950], "galv"), 2, [400, 0, 0]),
-    rep(CY("Ladder Rung", 'x', [-3115, 300], 12, [2340, 2700], "galv"), 12, [0, 0, 300]),
-    rep(B("Roof Handrail Post", [2300, -3050, 3670, 2340, -3010, 4700], "galv"), 2, [400, 0, 0]),
-    B("Roof Handrail", [2300, -3050, 4660, 2740, -3010, 4700], "galv"),
-    CY("Level Gauge Tube", 'z', [-2500, -3120], 20, [700, 3600], "pc"),
-    F("Level Gauge Board", [-2600, -3105, 700, -2400, -3080, 3600], "white", 0, 'f'),
-    CY("Pump Suction Outlet", 'x', [-1200, 800], 110, [3050, 3600], "red"),
-    DISC("Suction Flange", 'x', [-1200, 800], 180, 3600, 3625, "red"),
-    CY("Fill Inlet", 'x', [1200, 3300], 50, [3050, 3500], "gi"),
-    CY("Overflow", 'x', [0, 3420], 65, [3050, 3420], "gi"),
-    CY("Overflow Downpipe", 'z', [3420, 0], 65, [700, 3420], "gi"),
-    CY("Drain", 'y', [2000, 720], 40, [-3050, -3300], "gi"),
-    TU("Drain Valve", 'y', [2000, 720], [[0, -3300], [60, -3300], [60, -3360], [0, -3360]], "red"),
-    F("Tank Label", [-1400, -3060, 2600, 1400, -3052, 3000], "white", 0, 'f'),
-]
+# ---- Fire water tank (sectional pressed steel on plinth walls; origin at the front-left corner; each size has its own shell)
+PNL = 1220
+def tank_type(t, n):
+    L = n * PNL
+    parts = [rep(B("Plinth Wall", [-60, -100, 0, 60, L + 100, 600], "concg"), n + 1, [PNL, 0, 0]),
+             B("Tank Shell", [0, 0, 600, L, L, 3650], "galv"),
+             rep(B("Panel Flange X", [PNL - 25, -30, 600, PNL + 25, L + 30, 3650], "galv"), n - 1, [PNL, 0, 0]),
+             rep(B("Panel Flange Y", [-30, PNL - 25, 600, L + 30, PNL + 25, 3650], "galv"), n - 1, [0, PNL, 0]),
+             rep(B("Panel Flange Z", [-30, -30, 1795, L + 30, L + 30, 1845], "galv"), 2, [0, 0, PNL]),
+             CY("Fill Inlet", 'x', [L - 1200, 3300], 50, [L, L + 450], "gi"),
+             CY("Overflow", 'x', [L / 2, 3420], 65, [L, L + 370], "gi"),
+             CY("Overflow Downpipe", 'z', [L + 370, L / 2], 65, [700, 3420], "gi")]
+    return only(parts, t)
+tk = [B("Manhole Frame", [1800, 1800, 3650, 2500, 2500, 3720], "galv"),
+      B("Manhole Lid", [1780, 1780, 3720, 2520, 2520, 3735], "galv", 0, 'f'),
+      TU("Vent Cowl", 'z', [1000, 4200], [[0, 3650], [60, 3650], [60, 3950], [150, 3950], [150, 3990], [0, 4050]], "gi"),
+      rep(B("Ladder Stringer", [4300, -85, 0, 4340, -45, 3950], "galv"), 2, [400, 0, 0]),
+      rep(CY("Ladder Rung", 'x', [-65, 300], 12, [4340, 4700], "galv"), 9, [0, 0, 400]),
+      rep(B("Roof Handrail Post", [4300, 0, 3650, 4340, 40, 4700], "galv"), 2, [400, 0, 0]),
+      B("Roof Handrail", [4300, 0, 4660, 4740, 40, 4700], "galv"),
+      CY("Level Gauge Tube", 'z', [550, -70], 20, [700, 3600], "pc"),
+      CY("Pump Suction Outlet", 'y', [1850, 800], 110, [-550, 0], "red"),
+      DISC("Suction Flange", 'y', [1850, 800], 180, -550, -575, "red"),
+      CY("Drain", 'y', [3050, 720], 40, [0, -250], "gi"),
+      F("Tank Label", [1500, -10, 2600, 4100, -2, 3000], "white", 0, 'f'),
+      *tank_type("100m3_Sectional", 5), *tank_type("200m3_Sectional", 7)]
 make("FMC_FP_PlumbingEq_FireTank", "Sectional pressed-steel fire water tank, galvanised 1220 mm panels with external flanges, on concrete plinth walls; ladder, handrail, manhole, vent, level gauge, suction outlet, fill, overflow, drain",
      "IfcTank", ["100m3_Sectional", "200m3_Sectional"], tk,
      {"100 m3: 6.1 x 6.1 x 3.05 m (5 x 5 x 2.5 panels)": A("6100x6100x3050", "1220 mm sectional panels; effective capacity below overflow"),
-      "200 m3: 8.5 x 8.5 x 3.05 m": A("8540x8540x3050", "1220 mm sectional panels"), "Plinth walls 600 mm at panel centres": A(600, "sectional tank supplier practice"),
+      "200 m3: 8.54 x 8.54 x 3.05 m (7 x 7 x 2.5 panels)": A("8540x8540x3050", "1220 mm sectional panels"), "Plinth walls 600 mm at panel centres": A(600, "sectional tank supplier practice"),
       "Effective capacity to BS EN 12845": A("BS EN 12845", "fire engineer sizes the store")},
-     "Fire tank modelled as a generic product: plinth walls under each panel line, galvanised shell with external base, top and panel flanges, roof with manhole and vent cowl, ladder with rungs and roof handrail, level gauge, pump suction outlet with flange, fill inlet, overflow and downpipe, drain and valve, label.",
-     tv={}, conns=[pipe("Pump Suction", "Suction Flange", "right", "FireProtectWet", 200, "Out")], geometry="100m3_Sectional")
-
+     "Fire tank modelled as a generic product, origin at the front-left corner: each size has its own plinth walls, shell, external panel flanges, fill, overflow and downpipe (Show parameters); shared front items: manhole, vent cowl, ladder with rungs and roof handrail, level gauge, pump suction outlet with flange, drain, label.",
+     conns=[pipe("Pump Suction", "Suction Flange", "front", "FireProtectWet", 200, "Out")])
 
 # ---- Addressable fire alarm panel (wall)
 fap = [
@@ -589,21 +623,32 @@ make("FMC_FP_FireAlarm_CallPoint_Manual", "Addressable manual call point, surfac
      "Call point modelled as a generic product: red back box and front housing, white resettable element with push area, house symbol and PUSH HERE text, test key slot, LED, cover screws, cable entry. The optional hinged clear cover is left off so the element reads.",
      category="Fire Alarm Devices", tv={"Default Elevation": 1400}, conns=[elec("Loop", "Back Box", "back", "FireAlarm")])
 
-# ---- Sounder-beacon (wall; axis y)
+# ---- Sounder-beacon (wall body on axis y, ceiling body hanging on axis z; a shared terminal carries the connector)
+def sb_parts(ax):
+    if ax == 'y':
+        return [TU("Base", 'y', [0, 0], [[0, 0], [52, 0], [52, -22], [0, -22]], "red"),
+                TU("Sounder Body", 'y', [0, 0], [[0, -22], [52, -22], [50, -34], [44, -40], [0, -40]], "red"),
+                RING("Grille Ring Outer", 'y', [0, 0], 38, 42, -40, -41.5, "black", 'f'),
+                RING("Grille Ring Inner", 'y', [0, 0], 29, 33, -40, -41.5, "black", 'f'),
+                TU("Beacon Collar", 'y', [0, 0], [[0, -40], [26, -40], [26, -46], [0, -46]], "red"),
+                TU("Beacon Lens", 'y', [0, 0], [[0, -46], [24, -46], [23, -58], [18, -68], [9, -73], [0, -74]], "ledr"),
+                rep(CY("Screw Cover", 'y', [-46, 0], 3, [-14, -23], "red", 'f'), 2, [92, 0, 0]),
+                F("Label", [-20, -23, -46, 20, -22, -38], "white", 2, 'f')]
+    return [TU("Base", 'z', [0, 0], [[0, 0], [52, 0], [52, -22], [0, -22]], "red"),
+            TU("Sounder Body", 'z', [0, 0], [[0, -22], [52, -22], [50, -34], [44, -40], [0, -40]], "red"),
+            RING("Grille Ring Outer", 'z', [0, 0], 38, 42, -40, -41.5, "black", 'f'),
+            RING("Grille Ring Inner", 'z', [0, 0], 29, 33, -40, -41.5, "black", 'f'),
+            TU("Beacon Collar", 'z', [0, 0], [[0, -40], [26, -40], [26, -46], [0, -46]], "red"),
+            TU("Beacon Lens", 'z', [0, 0], [[0, -46], [24, -46], [23, -58], [18, -68], [9, -73], [0, -74]], "ledr"),
+            rep(CY("Screw Cover", 'z', [-46, 0], 3, [-23, -14], "red", 'f'), 2, [92, 0, 0]),
+            B("Label", [-20, -46, -23, 20, -38, -22], "white", 0, 'f')]
 make("FMC_FP_FireAlarm_Sounder_Beacon", "Addressable sounder-beacon, red body, sounder grille, red LED beacon lens, wall or ceiling base, 104 mm diameter",
-     "IfcAlarm", ["Wall_SounderBeacon", "Ceiling_SounderBeacon"], [
-        TU("Base", 'y', [0, 0], [[0, 0], [52, 0], [52, -22], [0, -22]], "red"),
-        TU("Sounder Body", 'y', [0, 0], [[0, -22], [52, -22], [50, -34], [44, -40], [0, -40]], "red"),
-        RING("Grille Ring Outer", 'y', [0, 0], 38, 42, -40, -41.5, "black", 'f'),
-        RING("Grille Ring Inner", 'y', [0, 0], 29, 33, -40, -41.5, "black", 'f'),
-        TU("Beacon Collar", 'y', [0, 0], [[0, -40], [26, -40], [26, -46], [0, -46]], "red"),
-        TU("Beacon Lens", 'y', [0, 0], [[0, -46], [24, -46], [23, -58], [18, -68], [9, -73], [0, -74]], "ledr"),
-        rep(CY("Screw Cover", 'y', [-46, 0], 3, [-14, -23], "red", 'f'), 2, [92, 0, 0]),
-        F("Label", [-20, -23, -46, 20, -22, -38], "white", 2, 'f'),
-     ], {"Diameter 104 mm, 75 mm deep": A("104x75", "typical addressable sounder-beacon"), "Sound output up to 100 dB(A)": A("100dBA", "BS EN 54-3"),
-         "Beacon to BS EN 54-23 (wards: visual, staff alarm strategy)": A("EN 54-23", "record note")},
-     "Sounder-beacon modelled as a generic product: red base and sounder body with grille rings, collar and red LED lens dome, screw covers, label. Drawn wall mounted; the ceiling type uses the same body (place on the ceiling face).",
-     category="Fire Alarm Devices", tv={"Default Elevation": 2300}, conns=[elec("Loop", "Base", "back", "FireAlarm")], geometry="Wall_SounderBeacon")
+     "IfcAlarm", ["Wall_SounderBeacon", "Ceiling_SounderBeacon"],
+     [B("Terminal Block", [-15, -15, -15, 15, 0, 0], "grey", 0, 'm')] + only(sb_parts('y'), "Wall_SounderBeacon", "Wall") + only(sb_parts('z'), "Ceiling_SounderBeacon", "Ceiling"),
+     {"Diameter 104 mm, 75 mm deep": A("104x75", "typical addressable sounder-beacon"), "Sound output up to 100 dB(A)": A("100dBA", "BS EN 54-3"),
+      "Beacon to BS EN 54-23 (wards: visual, staff alarm strategy)": A("EN 54-23", "record note")},
+     "Sounder-beacon modelled as a generic product: red base and sounder body with grille rings, collar and red LED lens dome, screw covers, label. The wall type stands off the wall (y), the ceiling type hangs below the ceiling (z = 0); each has its own body (Show parameters) and a shared terminal block carries the connector.",
+     category="Fire Alarm Devices", tv={"Default Elevation": 2300}, conns=[elec("Loop", "Terminal Block", "back", "FireAlarm")])
 
 # ---- Magnetic door holder (wall unit; centre at z = 0)
 make("FMC_FP_FireAlarm_DoorHolder_Magnetic", "Electromagnetic door holder, wall mounted, 24 V dc, 50 kg holding force, with release button; door keeper plate supplied with the door",
@@ -707,11 +752,11 @@ st = [
         ("Canopy Crown", [0, 0], 1700, 4000, 6000, "leaf3")]),
 ]
 make("FMC_L_Planting_Tree_Shade", "Shade tree (indigenous species, e.g. Markhamia / Albizia type), 6 m or 10 m, broad layered canopy on a clear stem, mulched base",
-     "IfcGeographicElement", ["6m_Shade", "10m_Shade"], st,
+     "IfcGeographicElement", ["6m_Shade", "10m_Shade"], only(st, "6m_Shade") + only(tf(st, 1.45, 1.45, 1.67), "10m_Shade"),
      {"6 m: canopy spread 5.5 m, clear stem 2.6 m": A("6000/5500", "semi-mature indigenous shade tree"), "10 m: canopy spread 8 m": A("10000/8000", "mature shade tree"),
       "Mulch ring 1.5 m diameter": A(1500), "Species from the indigenous list (landscape architect)": A("open", "record note")},
      "Shade tree modelled as a generic product: mulch ring, root flare, tapering trunk, four main branches and leader, layered canopy of a broad lower tier, four side lobes, two diagonal lobes and a crown.",
-     geometry="6m_Shade")
+     )
 
 # ---- Ornamental tree (4 m, flowering, umbrella crown)
 ot = [
@@ -732,10 +777,10 @@ ot = [
       for i, (r, a, z) in enumerate([(1250, 0.3, 3150), (1200, 1.9, 3200), (1250, 3.5, 3150), (1150, 5.0, 3200), (500, 1.0, 3650), (550, 4.2, 3600), (0, 0, 3800), (1500, 2.7, 2900)])],
 ]
 make("FMC_L_Planting_Tree_Ornamental", "Flowering ornamental tree (e.g. Nandi flame / Spathodea or Jacaranda type), 4 m or 6 m, multi-stem umbrella crown with flower clusters",
-     "IfcGeographicElement", ["4m_Ornamental", "6m_Ornamental"], ot,
+     "IfcGeographicElement", ["4m_Ornamental", "6m_Ornamental"], only(ot, "4m_Ornamental") + only(tf(ot, 1.35, 1.35, 1.5), "6m_Ornamental"),
      {"4 m: spread 3.7 m": A("4000/3700", "young ornamental tree"), "6 m: spread 5 m": A("6000/5000"), "Flowering colour orange-red (species open)": A("orange-red", "landscape architect confirms species")},
      "Ornamental tree modelled as a generic product: mulch ring, short trunk splitting into four stems, umbrella canopy with side lobes and crown, eight flower clusters on the crown.",
-     geometry="4m_Ornamental")
+     )
 
 # ---- Palm (6 m)
 def arch_frond(name, horiz, top, length, rise, droop, w, axis, sign, m):
@@ -760,7 +805,7 @@ pm = [
     DISC("Mulch Ring", 'z', [0, 0], 500, 0, 40, "mulch"),
     TU("Root Boss", 'z', [0, 0], [[0, 0], [230, 0], [180, 120], [0, 120]], "bark"),
     TU("Trunk", 'z', [0, 0], [[0, 120], [175, 120], [150, 2500], [140, 5000], [150, 5300], [0, 5300]], "bark"),
-    rep(RING("Trunk Ring", 'z', [0, 0], 140, 166, 400, 440, "bark", 'f'), 12, [0, 0, 400]),
+    rep(RING("Trunk Ring", 'z', [0, 0], 140, 166, 500, 540, "bark", 'f'), 6, [0, 0, 800]),
     TU("Crown Shaft", 'z', [0, 0], [[0, 5300], [170, 5300], [190, 5500], [160, 5750], [0, 5800]], "leaf2"),
     *[f for i in range(4) for f in frond(i, i * math.pi / 2 + math.pi / 4, 5780)],
     arch_frond("Frond East", 'x', 5780, 2500, 300, 1100, 170, 'x', 1, "leaf3"),
@@ -774,10 +819,10 @@ pm = [
     ELL("Fruit Cluster West", [-220, -80], 130, 5220, 5450, "flower"),
 ]
 make("FMC_L_Planting_Palm", "Palm (e.g. Phoenix / Royal palm type), 6 m or 9 m clear trunk with leaf-scar rings, crown shaft, arching fronds, fruit clusters",
-     "IfcGeographicElement", ["6m_Palm", "9m_Palm"], pm,
+     "IfcGeographicElement", ["6m_Palm", "9m_Palm"], only(pm, "6m_Palm") + only(tf(pm[:4], 1, 1, 8300 / 5300) + tf(pm[4:], dz=3000), "9m_Palm"),
      {"6 m overall, crown spread 5.4 m": A("6000/5400"), "9 m overall": A(9000), "Trunk 300 to 350 mm diameter": A(330)},
-     "Palm modelled as a generic product: mulch ring, root boss, tall trunk with twelve leaf-scar rings, crown shaft, four arching fronds on the main axes and four diagonal fronds in three drooping segments, a skirt of old frond bases, two spear fronds, two fruit clusters.",
-     geometry="6m_Palm")
+     "Palm modelled as a generic product: mulch ring, root boss, tall trunk with leaf-scar rings (the 9 m type has a longer trunk under the same crown), crown shaft, four arching fronds on the main axes and four diagonal fronds in three drooping segments, a skirt of old frond bases, two spear fronds, two fruit clusters.",
+     )
 
 # ---- Shrub (1.2 m geometry)
 sh = [
@@ -792,16 +837,16 @@ sh = [
     *[ELL(f"Flower {i + 1}", [round(r * math.cos(a)), round(r * math.sin(a))], 70, z, z + 110, "flower", 'f')
       for i, (r, a, z) in enumerate([(430, 0.5, 700), (420, 2.2, 650), (430, 3.9, 700), (400, 5.4, 650), (150, 1.2, 1110), (300, 4.6, 980)])],
 ]
-make("FMC_L_Planting_Shrub", "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base", "IfcGeographicElement", ["0.6m_Shrub", "1.2m_Shrub"], sh,
+make("FMC_L_Planting_Shrub", "Flowering shrub, 0.6 m or 1.2 m, rounded layered form, mulched base", "IfcGeographicElement", ["0.6m_Shrub", "1.2m_Shrub"], only(tf(sh, 0.6, 0.6, 0.5), "0.6m_Shrub") + only(sh, "1.2m_Shrub"),
      {"1.2 m: spread 1.2 m": A("1200/1200"), "0.6 m: spread 0.7 m": A("600/700"), "Planting centres 600 to 1000 mm": A("600-1000", "landscape architect")},
      "Shrub modelled as a generic product: mulch ring, stems, a core mass with four side lobes and a top lobe, flowers dotted over the surface.",
-     geometry="1.2m_Shrub")
+     )
 
 # ---- Hedge run (2 m length, 1.2 m)
 hd = [
     B("Mulch Strip", [-1050, -400, 0, 1050, 400, 30], "mulch"),
     rep(CY("Stem", 'z', [-875, 0], 20, [30, 230], "bark", 'f'), 8, [250, 0, 0]),
-    RT("Hedge Body", [[-200, 180], [200, 180], [290, 400], [300, 900], [230, 1120], [0, 1200], [-230, 1120], [-300, 900], [-290, 400]], [-1000, 1000], "leaf2"),
+    RT("Hedge Body", [[-200, 180], [200, 180], [290, 400], [300, 900], [230, 1120], [0, 1200], [-230, 1120], [-300, 900], [-290, 400]], [-1000, 1000], "hedge"),
     rep(ELL("Lump Front Low", [-800, -215], 230, 260, 760, "leaf1"), 5, [400, 0, 0]),
     rep(ELL("Lump Front High", [-600, -205], 230, 620, 1100, "leaf3"), 4, [400, 0, 0]),
     rep(ELL("Lump Back Low", [-600, 215], 230, 260, 760, "leaf1"), 4, [400, 0, 0]),
@@ -809,10 +854,10 @@ hd = [
     rep(ELL("Top Lump", [-750, 0], 250, 1020, 1250, "leaf2"), 4, [500, 0, 0]),
 ]
 make("FMC_L_Planting_Hedge", "Clipped hedge run (e.g. Duranta), 1.2 m or 1.8 m high, 600 mm wide, per 2 m length, mulched strip",
-     "IfcGeographicElement", ["1.2m_Hedge", "1.8m_Hedge"], hd,
+     "IfcGeographicElement", ["1.2m_Hedge", "1.8m_Hedge"], only(hd, "1.2m_Hedge") + only(tf(hd, 1, 1, 1.5), "1.8m_Hedge"),
      {"1.2 m high x 0.6 m wide, 2 m run": A("1200x600x2000"), "1.8 m high type": A(1800), "Planted at 3 to 4 per metre, double staggered": A("3-4/m", "Duranta hedge practice")},
      "Hedge modelled as a generic product: mulch strip, stems, clipped body with battered sides and rounded top, leafy lumps along both faces and the top. Array it along a line for a run.",
-     geometry="1.2m_Hedge")
+     )
 
 # ---- Groundcover patch (1 m x 1 m)
 gc = [B("Mulch Bed", [-500, -500, 0, 500, 500, 30], "mulch"),
@@ -860,7 +905,7 @@ make("FMC_L_Planting_Planter_Raised_Therapy", "Wheelchair-height therapy planter
      "Therapy planter modelled as a generic product: galvanised legs with rubber pads and a back rail, tray with timber slats on all four faces, wide cap rail with screws, soil, herbs and flowers; open underneath for knee access.",
      category="Planting", clear=[{"n": "Approach Space", "shape": "box", "at": [-600, -1800, 0, 600, -330, 10], "sub": "Clearance Accessibility"}])
 
-# ---- Healing-garden bench with armrests (1500)
+# ---- Healing-garden bench with armrests (1500 / 1800; centre frame shared, ends, slats and bolts per length)
 def bench_frame(x0, x1, arms, tag):
     parts = [RT(f"Front Leg {tag}", bar2([-250, 0], [-235, 640 if arms else 440], 50), [x0, x1], "steel"),
              RT(f"Rear Leg {tag}", bar2([230, 0], [205, 440], 50), [x0, x1], "steel"),
@@ -869,38 +914,44 @@ def bench_frame(x0, x1, arms, tag):
              B(f"Foot {tag}", [x0 - 5, -280, 0, x1 + 5, -215, 10], "rubber", 0, 'f')]
     if arms: parts.append(B(f"Armrest {tag}", [x0 - 25, -330, 640, x1 + 25, 130, 675], "timber", 18))
     return parts
-bn = bench_frame(-735, -705, True, "Left") + bench_frame(705, 735, True, "Right") + bench_frame(-15, 15, False, "Centre")
-bn += [rep(B("Seat Slat", [-750, -305, 435, 750, -235, 462], "timber", 6), 6, [0, 88, 0])]
-d = (95, 450); L = math.hypot(*d); u = (d[0] / L, d[1] / L); nrm = (-u[1] * 28, u[0] * 28); p0 = (215 + 0.2 * u[0] * 0 - 10, 500)
-slat = [[p0[0], p0[1]], [p0[0] + u[0] * 80, p0[1] + u[1] * 80], [p0[0] + u[0] * 80 + nrm[0], p0[1] + u[1] * 80 + nrm[1]], [p0[0] + nrm[0], p0[1] + nrm[1]]]
-bn += [rep(RT("Back Slat", [[round(a, 1), round(b, 1)] for a, b in slat], [-750, 750], "timber"), 4, [0, round(u[0] * 100, 1), round(u[1] * 100, 1)]),
-       rep(CY("Slat Bolt Left", 'z', [-720, -270], 5, [462, 465], "ss", 'f'), 6, [0, 88, 0]),
-       rep(CY("Slat Bolt Right", 'z', [720, -270], 5, [462, 465], "ss", 'f'), 6, [0, 88, 0]),
-       rep(CY("Slat Bolt Centre", 'z', [0, -270], 5, [462, 465], "ss", 'f'), 6, [0, 88, 0])]
+_d = (95, 450); _L = math.hypot(*_d); _u = (_d[0] / _L, _d[1] / _L); _nr = (-_u[1] * 28, _u[0] * 28); _p0 = (205, 500)
+BACK_SLAT = [[round(a, 1), round(b, 1)] for a, b in [_p0, (_p0[0] + _u[0] * 80, _p0[1] + _u[1] * 80), (_p0[0] + _u[0] * 80 + _nr[0], _p0[1] + _u[1] * 80 + _nr[1]), (_p0[0] + _nr[0], _p0[1] + _nr[1])]]
+def bench_type(t, L):
+    h = L / 2; xe = h - 45
+    parts = bench_frame(-xe - 15, -xe + 15, True, "Left") + bench_frame(xe - 15, xe + 15, True, "Right")
+    parts += [rep(B("Seat Slat", [-h, -305, 435, h, -235, 462], "timber", 6), 6, [0, 88, 0]),
+              rep(RT("Back Slat", BACK_SLAT, [-h, h], "timber"), 4, [0, round(_u[0] * 100, 1), round(_u[1] * 100, 1)]),
+              rep(CY("Slat Bolt Left", 'z', [-xe, -270], 5, [462, 465], "ss", 'f'), 3, [0, 176, 0]),
+              rep(CY("Slat Bolt Right", 'z', [xe, -270], 5, [462, 465], "ss", 'f'), 3, [0, 176, 0])]
+    return only(parts, t)
+bn = bench_frame(-15, 15, False, "Centre") + [rep(CY("Slat Bolt Centre", 'z', [0, -270], 5, [462, 465], "ss", 'f'), 3, [0, 176, 0])] \
+     + bench_type("1500_Bench", 1500) + bench_type("1800_Bench", 1800)
 make("FMC_L_SiteFurniture_Bench_HealingGarden", "Healing-garden bench 1500 / 1800 with backrest and armrests to help standing, hardwood slats on powder-coated steel frames, seat 460, arms 675",
      "IfcFurniture", ["1500_Bench", "1800_Bench"], bn,
      {"Seat height 460 mm, arm height 675 mm": A("460/675", "inclusive seating guidance (BS 8300 / HBN 00-03 garden practice)"),
       "Length 1500 / 1800 mm, depth 640 mm": A("1500-1800x640"), "Hardwood slats 70 x 27 mm": A("70x27"), "Armrests extend to the seat front to push up on": A("forward arms")},
-     "Bench modelled as a generic product: three steel frames (front legs rising into the arm supports, rear legs, back supports, seat rails, feet), six hardwood seat slats with bolt heads at each frame, four raked back slats, timber armrests.",
-     category="Site", geometry="1500_Bench")
+     "Bench modelled as a generic product: three steel frames (front legs rising into the arm supports, rear legs, back supports, seat rails, feet), six hardwood seat slats with bolt heads at each frame, four raked back slats, timber armrests. The centre frame is shared; end frames, slats and bolts are per length (Show parameters).",
+     category="Site")
 
-# ---- Precast concrete bench with timber cap (1800)
-cb = [
-    B("Shadow Plinth", [-840, -190, 0, 840, 190, 80], "concg"),
-    B("Precast Body", [-900, -250, 80, 900, 250, 400], "conc"),
-    rep(B("Arris Chamfer", [-900, -255, 395, 900, -245, 405], "conc", 0, 'f'), 2, [0, 500, 0]),
-    rep(B("Batten", [-860, -230, 400, -820, 230, 420], "timber"), 4, [560, 0, 0]),
-    rep(B("Timber Slat", [-900, -245, 420, 900, -175, 455], "timber", 6), 6, [0, 82, 0]),
-    rep(CY("Fixing Front Row", 'z', [-840, -210], 5, [455, 458], "ss", 'f'), 4, [560, 0, 0]),
-    rep(CY("Fixing Back Row", 'z', [-840, 200], 5, [455, 458], "ss", 'f'), 4, [560, 0, 0]),
-    rep(F("Lifting Socket Cover", [-700, -252, 300, -660, -250, 340], "steel", 0, 'f'), 2, [1360, 0, 0]),
-    rep(CY("Skate Stop", 'z', [-300, 30], 14, [455, 475], "ss", 'f'), 2, [600, 0, 0]),
-]
+# ---- Precast concrete bench with timber cap (1800 / 2400, each length its own parts)
+def cb_type(t, L):
+    h = L / 2; nb = 4 if L <= 1800 else 5; sp = (L - 80) / (nb - 1); ns = 2 if L <= 1800 else 3
+    parts = [B("Shadow Plinth", [-h + 60, -190, 0, h - 60, 190, 80], "concg"),
+             B("Precast Body", [-h, -250, 80, h, 250, 400], "conc"),
+             rep(B("Arris Chamfer", [-h, -255, 395, h, -245, 405], "conc", 0, 'f'), 2, [0, 500, 0]),
+             rep(B("Batten", [-h + 40, -230, 400, -h + 80, 230, 420], "timber"), nb, [round((L - 120) / (nb - 1), 1), 0, 0]),
+             rep(B("Timber Slat", [-h, -245, 420, h, -175, 455], "timber", 6), 6, [0, 82, 0]),
+             rep(CY("Fixing Front Row", 'z', [-h + 60, -210], 5, [455, 458], "ss", 'f'), nb, [round((L - 120) / (nb - 1), 1), 0, 0]),
+             rep(CY("Fixing Back Row", 'z', [-h + 60, 200], 5, [455, 458], "ss", 'f'), nb, [round((L - 120) / (nb - 1), 1), 0, 0]),
+             rep(F("Lifting Socket Cover", [-h + 200, -252, 300, -h + 240, -250, 340], "steel", 0, 'f'), 2, [L - 440, 0, 0]),
+             rep(CY("Skate Stop", 'z', [-300 * (ns - 1), 30], 14, [455, 475], "ss", 'f'), ns, [600, 0, 0])]
+    return only(parts, t)
+cb = cb_type("1800_Bench", 1800) + cb_type("2400_Bench", 2400)
 make("FMC_L_SiteFurniture_Bench_Concrete_TimberCap", "Precast concrete bench 1800 / 2400 x 500, 455 high, with hardwood slat cap on battens, stainless fixings and skate stops, recessed shadow plinth",
      "IfcFurniture", ["1800_Bench", "2400_Bench"], cb,
      {"1800 / 2400 x 500 mm, seat 455 mm": A("1800-2400x500x455"), "Precast unit about 0.29 m3 (1800)": A(0.29), "Hardwood slats 70 x 35 mm": A("70x35")},
-     "Concrete bench modelled as a generic product: recessed shadow plinth, precast body with arris chamfers and lifting socket covers, timber battens, six slats with stainless fixings, two skate stops.",
-     category="Site", geometry="1800_Bench")
+     "Concrete bench modelled as a generic product: recessed shadow plinth, precast body with arris chamfers and lifting socket covers, timber battens, six slats with stainless fixings, skate stops; each length has its own parts (Show parameters).",
+     category="Site")
 
 # ---- Timber pergola 3000 x 3000
 pg = [
@@ -978,113 +1029,112 @@ make("FMC_L_SiteFurniture_DrinkingPost_Outdoor", "Vandal-resistant outdoor drink
      "Drinking post modelled as a generic product: splash pad with drain grating and bars, base plate with anchor caps, tapered stainless post with access panel and screws, bowl with drain, guarded bubbler, push button with collar, sign, service and waste spigots below.",
      category="Site", conns=[pipe("CW", "Service Inlet", "bottom", "DomesticColdWater", 15), pipe("Waste", "Waste Outlet", "bottom", "Sanitary", 40, "Out")])
 
-# ---- Segregated external waste bins (2-bin)
-wb = [
-    B("Base Slab", [-680, -330, 0, 680, 330, 60], "concg"),
-    rep(CY("Post", 'z', [-630, 280], 30, [60, 1200], "galv"), 3, [630, 0, 0]),
-    RT("Rain Hood", arch(-330, 330, 1200, 110), [-680, 680], "alu"),
-    B("Hood Fascia", [-680, -336, 1170, 680, -326, 1210], "alu"),
-    B("Hanging Rail", [-660, 250, 880, 660, 310, 920], "galv"),
-]
-for i, (x, col, name) in enumerate(((-315, "black", "General"), (315, "blue", "Recycling"))):
-    wb += [TU(f"Bin Body {name}", 'z', [x, 0], [[0, 150], [225, 150], [250, 1000], [0, 1000]], "ss"),
-           RING(f"Bin Rim {name}", 'z', [x, 0], 250, 262, 1000, 1022, col),
-           TU(f"Bin Lid {name}", 'z', [x, 0], [[0, 1022], [262, 1022], [240, 1062], [150, 1080], [0, 1088]], col),
-           B(f"Aperture {name}", [x - 95, -262, 1024, x + 95, -150, 1066], "black", 10, 'f'),
-           RING(f"Stream Band {name}", 'z', [x, 0], 244, 248.5, 700, 800, col),
-           B(f"Bin Bracket {name}", [x - 40, 230, 860, x + 40, 260, 940], "galv"),
-           F(f"Stream Sign {name}", [x - 150, -340, 1172, x + 150, -336, 1208], col, 3, 'f'),
-           RING(f"Base Ring {name}", 'z', [x, 0], 205, 228, 150, 175, "black", 'f')]
-make("FMC_L_SiteFurniture_WasteBin_External_Segregated", "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin, 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood",
+# ---- Segregated external waste bins (2-bin / 3-bin, each with its own frame and bins)
+STREAMS = [("black", "General"), ("blue", "Recycling"), ("green", "Organic")]
+def bins_type(t, n):
+    half = n * 315 + 50
+    parts = [B("Base Slab", [-half, -330, 0, half, 330, 60], "concg"),
+             rep(CY("Post", 'z', [-n * 315, 280], 30, [60, 1200], "galv"), n + 1, [630, 0, 0]),
+             RT("Rain Hood", arch(-330, 330, 1200, 110), [-half, half], "alu"),
+             B("Hood Fascia", [-half, -336, 1170, half, -326, 1210], "alu"),
+             B("Hanging Rail", [-half + 20, 250, 880, half - 20, 310, 920], "galv")]
+    for i in range(n):
+        x = (i - (n - 1) / 2) * 630; col, name = STREAMS[i]
+        parts += [TU(f"Bin Body {name}", 'z', [x, 0], [[0, 150], [225, 150], [250, 1000], [0, 1000]], "ss"),
+                  RING(f"Bin Rim {name}", 'z', [x, 0], 250, 262, 1000, 1022, col),
+                  TU(f"Bin Lid {name}", 'z', [x, 0], [[0, 1022], [262, 1022], [240, 1062], [150, 1080], [0, 1088]], col),
+                  B(f"Aperture {name}", [x - 95, -262, 1024, x + 95, -150, 1066], "black", 10, 'f'),
+                  RING(f"Stream Band {name}", 'z', [x, 0], 244, 248.5, 700, 800, col),
+                  B(f"Bin Bracket {name}", [x - 40, 230, 860, x + 40, 260, 940], "galv"),
+                  F(f"Stream Sign {name}", [x - 150, -340, 1172, x + 150, -336, 1208], col, 3, 'f'),
+                  RING(f"Base Ring {name}", 'z', [x, 0], 205, 228, 150, 175, "black", 'f')]
+    return only(parts, t)
+wb = bins_type("2-bin_Segregated", 2) + bins_type("3-bin_Segregated", 3)
+make("FMC_L_SiteFurniture_WasteBin_External_Segregated", "Segregated external waste station, 2-bin (general black, recycling blue) or 3-bin (plus organic green), 80 l stainless bins with coloured lids and bands, hung on a galvanised frame under a rain hood",
      "IfcFurniture", ["2-bin_Segregated", "3-bin_Segregated"], wb,
      {"2-bin: 1360 x 660 mm, 1310 mm high": A("1360x660x1310"), "3-bin: 1990 x 660 mm": A("1990x660"), "Bins 80 l each, colour coded by stream": A("80l", "estates segregation policy confirms colours")},
-     "Waste station modelled as a generic product: concrete base, three posts, curved rain hood with fascia and coloured stream signs, hanging rail, two tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings.",
-     category="Site", geometry="2-bin_Segregated")
+     "Waste station modelled as a generic product: concrete base, posts, curved rain hood with fascia and coloured stream signs, hanging rail, tapered stainless bins with coloured rims, domed lids with apertures, stream bands, brackets and base rings; the 2-bin and 3-bin types each have their own frame and bins (Show parameters).",
+     category="Site")
 
-# ---- Chain-link boundary fence (one 3 m bay)
+# ---- Chain-link boundary fence (one 3 m bay; 1.8 m and 2.4 m each have their own posts, mesh and wires)
 def lattice(x0, x1, z0, z1, step, w=8):
     """Diamond wires of the chain-link: 45-degree bars clipped to the mesh panel, in front of it (lod f)."""
     out = []; H = z1 - z0
     for sgn, tag in ((1, 'Up'), (-1, 'Down')):
         k = 0; c = x0 - H + step / 2
         while c < x1:
-            # line x = c + sgn*(z - z0) for 'Up' (sgn 1) or x = c + H - (z - z0) for 'Down'
-            pts = []
-            for z in (z0, z1):
-                x = c + (z - z0) if sgn > 0 else c + H - (z - z0)
-                pts.append([x, z])
-            (xa, za), (xb, zb) = pts
-            def clip(xa, za, xb, zb):
-                t0, t1 = 0.0, 1.0
-                for p, q in ((-(xb - xa), xa - x0), ((xb - xa), x1 - xa)):
-                    if p == 0: continue
-                    r = q / p
-                    if p < 0: t0 = max(t0, r)
-                    else: t1 = min(t1, r)
-                return (t0, t1) if t0 < t1 else None
-            tt = clip(xa, za, xb, zb)
-            if tt and (tt[1] - tt[0]) * H > 120:
-                a = [xa + (xb - xa) * tt[0], za + (zb - za) * tt[0]]; b = [xa + (xb - xa) * tt[1], za + (zb - za) * tt[1]]
-                k += 1; out.append(BXZ(f"Mesh Wire {tag} {k}", a, b, w, [-6, -3], "galv", 'f'))
+            xa, za = (c, z0) if sgn > 0 else (c + H, z0)
+            xb, zb = (c + H, z1) if sgn > 0 else (c, z1)
+            t0, t1 = 0.0, 1.0
+            for pp, qq in ((-(xb - xa), xa - x0), ((xb - xa), x1 - xa)):
+                r = qq / pp
+                if pp < 0: t0 = max(t0, r)
+                else: t1 = min(t1, r)
+            if t1 > t0 and (t1 - t0) * H > 120:
+                a = [xa + (xb - xa) * t0, za + (zb - za) * t0]; b = [xa + (xb - xa) * t1, za + (zb - za) * t1]
+                k += 1; out.append(BXZ(f"Mesh Wire {tag} {k}", a, b, w, [-6, -3], "gi", 'f'))
             c += step
     return out
-LATTICE = lattice(-1470, 1470, 60, 1760, 320)
-fn = [
-    rep(CY("Post Footing", 'z', [-1500, 0], 150, [-600, 0], "concg", 'm'), 2, [3000, 0, 0]),
-    rep(CY("Post", 'z', [-1500, 0], 30, [0, 1800], "gi"), 2, [3000, 0, 0]),
-    rep(BYZ("Cranked Arm", [0, 1780], [-300, 2120], 40, [-1520, -1480], "gi"), 2, [3000, 0, 0]),
-    rep(DISC("Post Cap", 'z', [-1500, 0], 34, 1800, 1830, "gi"), 2, [3000, 0, 0]),
-    CY("Top Rail", 'x', [0, 1770], 21, [-1470, 1470], "gi"),
-    B("Chain Link Mesh", [-1470, -3, 60, 1470, 3, 1760], "mesh"),
-    *LATTICE,
-    CY("Tension Wire Mid", 'x', [-6, 900], 2.5, [-1470, 1470], "gi", 'f'),
-    CY("Tension Wire Bottom", 'x', [-6, 80], 2.5, [-1470, 1470], "gi", 'f'),
-    rep(B("Tension Bar", [-1478, -6, 60, -1470, 6, 1760], "gi", 0, 'f'), 2, [2948, 0, 0]),
-    CY("Barbed Wire 1", 'x', [-100, 1900], 2.5, [-1500, 1500], "gi"),
-    CY("Barbed Wire 2", 'x', [-195, 2010], 2.5, [-1500, 1500], "gi"),
-    CY("Barbed Wire 3", 'x', [-285, 2110], 2.5, [-1500, 1500], "gi"),
-    rep(B("Barb", [-1400, -110, 1890, -1390, -90, 1910], "gi", 0, 'f'), 10, [300, 0, 0]),
-    rep(B("Line Clip", [-1400, -8, 1755, -1390, 8, 1785], "gi", 0, 'f'), 3, [1120, 0, 0]),
-]
+def fence_type(t, H):
+    parts = [rep(CY("Post", 'z', [-1500, 0], 30, [0, H], "gi"), 2, [3000, 0, 0]),
+             rep(BYZ("Cranked Arm", [0, H - 20], [-300, H + 320], 40, [-1520, -1480], "gi"), 2, [3000, 0, 0]),
+             rep(DISC("Post Cap", 'z', [-1500, 0], 34, H, H + 30, "gi"), 2, [3000, 0, 0]),
+             CY("Top Rail", 'x', [0, H - 30], 21, [-1470, 1470], "gi"),
+             B("Chain Link Mesh", [-1470, -3, 60, 1470, 3, H - 40], "mesh"),
+             CY("Tension Wire Mid", 'x', [-6, H / 2], 2.5, [-1470, 1470], "gi", 'f'),
+             rep(B("Tension Bar", [-1478, -6, 60, -1470, 6, H - 40], "gi", 0, 'f'), 2, [2948, 0, 0]),
+             CY("Barbed Wire 1", 'x', [-100, H + 100], 2.5, [-1500, 1500], "gi"),
+             CY("Barbed Wire 2", 'x', [-195, H + 210], 2.5, [-1500, 1500], "gi"),
+             CY("Barbed Wire 3", 'x', [-285, H + 310], 2.5, [-1500, 1500], "gi"),
+             *lattice(-1470, 1470, 60, H - 40, 600)]
+    return only(parts, t)
+fn = [rep(CY("Post Footing", 'z', [-1500, 0], 150, [-600, 0], "concg", 'm'), 2, [3000, 0, 0]),
+      CY("Tension Wire Bottom", 'x', [-6, 80], 2.5, [-1470, 1470], "gi", 'f'),
+      *fence_type("1.8m_Chainlink", 1800), *fence_type("2.4m_Chainlink", 2400)]
 make("FMC_L_SiteFurniture_Fence_Chainlink", "Boundary chain-link fence, 1.8 m or 2.4 m, per 3 m bay: GI posts in concrete footings, top rail, mesh, tension wires and bars, cranked arms with three barbed strands",
      "IfcRailing", ["1.8m_Chainlink", "2.4m_Chainlink"], fn,
-     {"Mesh 1.8 m, 50 mm, 2.5 mm galvanised": A("50x2.5", "chain-link to BS 1722-1 class"), "Posts 60 mm GI at 3 m, footings 300 x 600": A("60@3000"),
-      "Cranked arms with 3 barbed strands": A(3, "hospital boundary security"), "2.4 m type": A(2400)},
-     "Fence bay modelled as a generic product: post footings (Medium), GI posts and caps, cranked arms, top rail, chain-link mesh panel, mid and bottom tension wires, tension bars, three barbed strands with barbs, line clips. Array along the boundary.",
-     category="Site", geometry="1.8m_Chainlink")
+     {"Mesh 50 mm, 2.5 mm galvanised": A("50x2.5", "chain-link to BS 1722-1 class"), "Posts 60 mm GI at 3 m, footings 300 x 600": A("60@3000"),
+      "Cranked arms with 3 barbed strands": A(3, "hospital boundary security"), "Heights 1.8 m and 2.4 m": A("1800/2400", "type names")},
+     "Fence bay modelled as a generic product: post footings (Medium) and bottom tension wire shared; per height: GI posts and caps, cranked arms, top rail, chain-link mesh panel with its diamond wires (Fine), mid tension wire, tension bars, three barbed strands (Show parameters). Array along the boundary.",
+     category="Site")
 
-# ---- Motorised sliding gate (6 m opening)
-gt = [
-    B("Track Rail", [-3500, -25, 0, 3050, 25, 40], "steel"),
-    B("Track Parking Run", [-9300, -25, 0, -3500, 25, 40], "steel", 0, 'm'),
-    B("Bottom Rail", [-3400, -40, 80, 3000, 40, 180], "steel"),
-    B("Top Rail", [-3400, -30, 1920, 3000, 30, 2000], "steel"),
-    B("Mid Rail", [-3400, -25, 1000, 3000, 25, 1060], "steel"),
-    rep(B("Stile", [-3400, -40, 80, -3320, 40, 2000], "steel"), 2, [6320, 0, 0]),
-    rep(B("Picket", [-3230, -12, 180, -3206, 12, 1920], "steel"), 30, [205, 0, 0]),
-    rep(TU("Track Wheel", 'y', [-3000, 55], [[0, -32], [55, -32], [55, 32], [0, 32]], "nylon"), 2, [5400, 0, 0]),
-    B("Gear Rack", [-3400, -62, 360, 3000, -40, 400], "nylon"),
-    B("Receiver Post", [3020, -80, 0, 3180, 80, 2150], "steel"),
-    B("Receiver Catch", [2990, -60, 800, 3020, 60, 1200], "steel", 0, 'f'),
-    rep(B("Guide Post", [-3180, 60, 0, -3080, 160, 2150], "steel"), 1, [0, 0, 0]),
-    B("Guide Post Front", [-3180, -160, 0, -3080, -60, 2150], "steel"),
-    rep(CY("Guide Roller", 'z', [-3130, -48], 22, [1900, 2000], "nylon"), 2, [0, 96, 0]),
-    B("Motor Plinth", [-3500, -480, 0, -3120, -100, 100], "concg"),
-    B("Motor Housing", [-3450, -420, 100, -3170, -80, 330], "grey", 30),
-    CY("Pinion", 'y', [-3260, 332], 28, [-80, -40], "steel", 'f'),
-    rep(B("Photocell", [3040, -100, 450, 3100, -80, 560], "black", 6, 'f'), 1, [0, 0, 0]),
-    B("Photocell Guide Side", [-3160, -180, 450, -3100, -160, 560], "black", 6, 'f'),
-    TU("Warning Lamp", 'z', [3100, 0], [[0, 2150], [55, 2150], [48, 2240], [0, 2265]], "yellow"),
-    rep(B("Post Cap", [-3190, 50, 2150, -3070, 170, 2170], "steel", 0, 'f'), 1, [0, 0, 0]),
-    B("Post Cap Front", [-3190, -170, 2150, -3070, -50, 2170], "steel", 0, 'f'),
-    F("Keep Clear Sign", [2000, -46, 1300, 2500, -40, 1600], "white", 0, 'f'),
-]
+# ---- Motorised sliding gate (guide posts and operator fixed at the left; leaf, track and receiver post per opening)
+def gate_type(t, W, extra):
+    xr = -3000 + W
+    parts = [B("Track Rail", [-3500, -25, 0, xr + 50, 25, 40], "steel"),
+             B("Track Parking Run", [-3500 - W - 200, -25, 0, -3500, 25, 40], "steel", 0, 'm'),
+             B("Bottom Rail", [-3400, -40, 80, xr, 40, 180], "steel"),
+             B("Top Rail", [-3400, -30, 1920, xr, 30, 2000], "steel"),
+             B("Mid Rail", [-3400, -25, 1000, xr, 25, 1060], "steel"),
+             B("End Stile", [xr - 80, -40, 80, xr, 40, 2000], "steel"),
+             B("Gear Rack", [-3400, -62, 360, xr, -40, 400], "nylon"),
+             TU("Track Wheel End", 'y', [xr - 600, 55], [[0, -32], [55, -32], [55, 32], [0, 32]], "nylon"),
+             B("Receiver Post", [xr + 20, -80, 0, xr + 180, 80, 2150], "steel"),
+             B("Receiver Catch", [xr - 10, -60, 800, xr + 20, 60, 1200], "steel", 0, 'f'),
+             TU("Warning Lamp", 'z', [xr + 100, 0], [[0, 2150], [55, 2150], [48, 2240], [0, 2265]], "yellow"),
+             B("Photocell", [xr + 40, -100, 450, xr + 100, -80, 560], "black", 6, 'f'),
+             F("Keep Clear Sign", [xr - 1000, -46, 1300, xr - 500, -40, 1600], "white", 0, 'f')]
+    if extra: parts.append(rep(B("Picket Extension", [3010, -12, 180, 3034, 12, 1920], "steel"), extra, [260, 0, 0]))
+    return only(parts, t)
+gt = [B("Start Stile", [-3400, -40, 80, -3320, 40, 2000], "steel"),
+      rep(B("Picket", [-3230, -12, 180, -3206, 12, 1920], "steel"), 24, [260, 0, 0]),
+      TU("Track Wheel Start", 'y', [-2900, 55], [[0, -32], [55, -32], [55, 32], [0, 32]], "nylon"),
+      B("Guide Post Back", [-3180, 60, 0, -3080, 160, 2150], "steel"),
+      B("Guide Post Front", [-3180, -160, 0, -3080, -60, 2150], "steel"),
+      rep(CY("Guide Roller", 'z', [-3130, -48], 22, [1900, 2000], "nylon"), 2, [0, 96, 0]),
+      B("Post Cap Back", [-3190, 50, 2150, -3070, 170, 2170], "steel", 0, 'f'),
+      B("Post Cap Front", [-3190, -170, 2150, -3070, -50, 2170], "steel", 0, 'f'),
+      B("Motor Plinth", [-3500, -480, 0, -3120, -100, 100], "concg"),
+      B("Motor Housing", [-3450, -420, 100, -3170, -80, 330], "grey", 30),
+      CY("Pinion", 'y', [-3260, 332], 28, [-80, -40], "steel", 'f'),
+      B("Photocell Guide Side", [-3160, -180, 450, -3100, -160, 560], "black", 6, 'f'),
+      *gate_type("6m_Motorised", 6000, 0), *gate_type("8m_Motorised", 8000, 8)]
 make("FMC_L_SiteFurniture_Gate_Sliding_Main", "Motorised sliding main gate for a 6 m / 8 m opening: steel leaf 2 m high with pickets, on a ground track with V-wheels, gear rack, 240 V operator, guide posts with rollers, receiver post, photocells, warning lamp",
      "IfcDoor", ["6m_Motorised", "8m_Motorised"], gt,
-     {"Opening 6000 mm, leaf 6400 x 2000 mm": A("6000/6400x2000", "type name"), "Track run 12.3 m (opening + parking)": A(12350),
+     {"Opening 6000 / 8000 mm, leaf 6400 / 8400 x 2000 mm": A("6000-8000x2000", "type names"), "Track run = opening + leaf parking": A("12.6/16.6 m"),
       "Operator 240 V, 600 VA allowance": A(600, "sliding gate operator for leaves to about 800 kg"), "Safety to BS EN 12453 (photocells, edges)": A("EN 12453")},
-     "Sliding gate modelled as a generic product: ground track under the leaf (the 5.8 m parking run behind the guide posts shows at Medium, kept off Fine so the leaf reads), leaf with bottom, mid and top rails, stiles and thirty pickets, V-wheels, gear rack, receiver post and catch, twin guide posts with rollers, operator on a plinth with pinion, photocells, warning lamp, sign.",
-     category="Site", tv={"Voltage": 240, "Apparent Load": 600}, conns=[elec("Operator Power", "Motor Housing", "bottom")], geometry="6m_Motorised")
+     "Sliding gate modelled as a generic product: guide posts with rollers, operator on a plinth with pinion, start stile and pickets shared; per opening (Show parameters): ground track (parking run at Medium only so the leaf reads at Fine), bottom, mid and top rails, end stile, gear rack, end wheel, receiver post and catch, warning lamp, photocell, sign, and the 8 m leaf's extra pickets.",
+     category="Site", tv={"Voltage": 240, "Apparent Load": 600}, conns=[elec("Operator Power", "Motor Housing", "bottom")])
 
 # ------------------------------------------------------------------ write
 def main(only=None):
@@ -1105,6 +1155,10 @@ def main(only=None):
         json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
         fp.render(prod, os.path.join(HERE, f + '.preview.png'))
         fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
+        tdir = os.environ.get('FL_TYPE_PREVIEWS')
+        if tdir and any(q.get('only') for q in prod['parts']):
+            for t in prod['types'][1:]:
+                q = dict(prod); q['_render_type'] = t['name']; fp.render(q, os.path.join(tdir, f + '__' + t['name'] + '.preview.png'))
         out.append((f, count(prod['parts']), len(r['ops'])))
         print(out[-1], flush=True)
     return out

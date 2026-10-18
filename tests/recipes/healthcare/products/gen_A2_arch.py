@@ -19,24 +19,18 @@ MAT = {
     "alupc": "FMC_Metal_Aluminium_PowderCoated", "galv": "FMC_Metal_ColdFormed_Galvanised", "steel": "FMC_Metal_StructuralSteel_S275",
     "dark": "FMC_Metal_SteelLTZ_Painted", "epoxy": "FMC_Metal_Steel_EpoxyCoated_White", "gi": "FMC_Metal_GI_Pipe",
     "white": "FMC_Plastic_ABS_White", "grey": "FMC_Plastic_ABS_Grey", "mgrey": "FMC_Plastic_ABS_MedicalGrey", "black": "FMC_Plastic_ABS_Black",
-    "blue": "FMC_Plastic_ABS_Blue", "yellow": "FMC_Plastic_ABS_Yellow", "orange": "FMC_Plastic_ABS_Yellow",
+    "blue": "FMC_Plastic_ABS_Blue", "yellow": "FMC_Plastic_ABS_Yellow", "orange": "FMC_Plastic_HDPE_Orange",
     "red": "FMC_Plastic_LED_Red", "green": "FMC_Plastic_LED_Green", "ledb": "FMC_Plastic_LED_Blue", "rubber": "FMC_Rubber_Black",
     "castor": "FMC_Plastic_Nylon_CastorGrey", "pc": "FMC_Plastic_Polycarbonate_Clear", "glass": "FMC_Glass_Clear", "frost": "FMC_Glass_Frosted",
     "mirror": "FMC_Glass_Mirror", "hpl": "FMC_Plastic_Laminate_HPL", "mel": "FMC_Board_Melamine_White", "china": "FMC_Ceramic_VitreousChina_White",
-    "vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue", "curtain": "FMC_Fabric_Vinyl_Upholstery_Blue", "cladding": "FMC_Plastic_PVCCeiling_Panel",
+    "vinyl": "FMC_Fabric_Vinyl_Upholstery_Blue", "curtain": "FMC_Fabric_Curtain_Disposable_Blue", "curtainp": "FMC_Fabric_Curtain_Plain", "cladding": "FMC_Plastic_PVC_HygienicCladding_White",
+    "wprot": "FMC_Plastic_Vinyl_WallProtection_Grey",
     "conc": "FMC_Concrete_C30", "precast": "FMC_Concrete_Precast_Painted", "roof": "FMC_Roofing_AZED_Corrugated_Silver",
     "gutter": "FMC_Plastic_PVCGutter_White", "pipe": "FMC_Plastic_uPVC_Pipe_DarkGrey", "mesh": "FMC_Plastic_InsectMesh_Fibreglass",
-    "floor": "FMC_Plastic_Vinyl_Plank", "safety": "FMC_Plastic_ABS_MedicalGrey", "led": "FMC_Plastic_LED_Blue",
-    "clearance_accessibility": "FMC_Glass_Clear", "clearance_maintenance": "FMC_Glass_Clear",
+    "floor": "FMC_Plastic_Vinyl_Plank", "safety": "FMC_Plastic_Vinyl_SafetyFloor_Grey", "led": "FMC_Plastic_LED_Blue",
+    "clearance_accessibility": None, "clearance_maintenance": None,   # clearance solids carry no material
 }
-NEEDED = [
-    {"name": "FMC_Plastic_HDPE_Orange", "colour": "#E8742A", "why": "sharps-bin lids and infectious clinical-waste bins (HTM 07-01 colour code); modelled with FMC_Plastic_ABS_Yellow for now"},
-    {"name": "FMC_Fabric_Curtain_Disposable_Blue", "colour": "#7FA7CF", "why": "disposable cubicle and shower curtains; modelled with FMC_Fabric_Vinyl_Upholstery_Blue for now"},
-    {"name": "FMC_Plastic_PVC_HygienicCladding_White", "colour": "#F4F5F2", "why": "2.5 mm hygienic PVC wall cladding (Class B fire, welded joints); modelled with FMC_Plastic_PVCCeiling_Panel for now"},
-    {"name": "FMC_Plastic_Vinyl_SafetyFloor_Grey", "colour": "#8E959B", "why": "slip-resistant wet-room safety flooring in level-access showers and Changing Places; modelled with FMC_Plastic_ABS_MedicalGrey"},
-    {"name": "FMC_Clearance_Zone_Transparent", "colour": "#6FA8DC", "why": "non-plotting clearance solids, 70 % transparency; modelled with FMC_Glass_Clear for now"},
-    {"name": "FMC_Plastic_Vinyl_WallProtection_Grey", "colour": "#B9BEC3", "why": "impact-resistant PVC covers of crash rails, corner guards and handrails; modelled with FMC_Plastic_ABS_MedicalGrey"},
-]
+NEEDED = []   # second pass (17 Oct): the kit now has every material batch A2 asked for
 
 # ---------------------------------------------------------------- shape helpers
 def B(n, at, mat, r=0, lod='mf', **k): d = {"n": n, "shape": "box", "at": at, "mat": mat, "lod": lod, **k}; d.update({"r": r} if r else {}); return d
@@ -47,6 +41,9 @@ def FR(n, pts, y, mat, lod='mf', **k): return {"n": n, "shape": "front", "pts": 
 def RT(n, pts, x, mat, lod='mf', **k): return {"n": n, "shape": "right", "pts": pts, "x": x, "mat": mat, "lod": lod, **k}
 def PR(n, pts, z, mat, lod='mf', **k): return {"n": n, "shape": "prism", "pts": pts, "z": z, "mat": mat, "lod": lod, **k}
 def rep(n, d): return {"repeat": {"n": n, "d": d}}
+def only(types, parts, sfx):   # per-type geometry: parts shown only in these types (Yes/No type parameter), names made unique
+    for q in parts: q['only'] = [types] if isinstance(types, str) else list(types); q['n'] = f"{q['n']} {sfx}"
+    return parts
 def ball(n, axis, c, t, r, mat, lod='f', **k):   # sphere as a turned part: centre (c on the plane, t along the axis)
     prof = [[round(r * math.sin(math.pi * i / 8), 2), round(t - r * math.cos(math.pi * i / 8), 2)] for i in range(9)]
     prof[0][0] = 0; prof[-1][0] = 0
@@ -255,12 +252,13 @@ f = 'FMC_A_SpecEq_ToiletCubicle_HPL'
 add(f, "Toilet cubicle, 12 mm compact HPL panels on stainless pedestal feet, aluminium head rail, indicator bolt, rising hinges",
     "IfcBuildingElementProxy", [("900x1500_HPL", "WC cubicle 900 x 1500 mm, 12 mm compact HPL, 600 mm door"),
                                 ("1000x1700_HPL", "WC cubicle 1000 x 1700 mm, 12 mm compact HPL, 650 mm door")],
-    cubicle(900, 1500, 600) + wc_pan(0, 'WC', 'white'),
-    {"Cubicle 900 x 1500 mm, panels 2000 high on 150 feet": A("900x1500", "BS 6465-2 minimum activity space"),
-     "Compact HPL 12 mm": A(12, "record note"), "Door 600 mm, inward opening": A(600, "BS 6465-2")},
+    only("900x1500_HPL", cubicle(900, 1500, 600), "900") + only("1000x1700_HPL", cubicle(1000, 1700, 650), "1000") + wc_pan(0, 'WC', 'white'),
+    {"Cubicle 900 x 1500 or 1000 x 1700 mm, panels 2000 high on 150 feet": A("900x1500/1000x1700", "BS 6465-2 minimum activity space"),
+     "Compact HPL 12 mm": A(12, "record note"), "Door 600 / 650 mm, inward opening": A("600/650", "BS 6465-2")},
     "Cubicle modelled as a generic product: HPL side panels and pilasters on stainless feet, door with rising hinges, indicator bolt "
     "and knob, round aluminium head rail with returns to the wall, wall channels, coat hook; a WC pan shows the use (the pan is a "
-    "separate plumbing fixture in the project). Back wall at y = 0. The 1000 x 1700 type shares the 900 x 1500 geometry.")
+    "separate plumbing fixture in the project). Back wall at y = 0. Each type has its own panels, door and rail (Show parameters); "
+    "the WC is shared.")
 
 f = 'FMC_A_SpecEq_ToiletCubicle_Ambulant'
 amb = cubicle(900, 1700, 700, outward=True) + wc_pan(0, 'WC', 'white')
@@ -302,7 +300,7 @@ add(f, "Accessible WC assembly (Doc M pack) 1500 x 2200: back-to-wall WC with lo
     {"Room 1500 x 2200 mm": A("1500x2200", "Approved Document M fig 18 / BS 8300-2"), "WC centre 500 mm from side wall": A(500, "Approved Document M"),
      "Seat height 480 mm, rails at 680 mm": A(480, "Approved Document M"), "Turning circle 1500 mm": A(1500, "BS 8300-2")},
     "Accessible WC modelled as a generic assembly in a 1500 x 2200 room (back wall y = 0, side wall x = -750, room walls and door "
-    "are not part of the family): WC with contrasting seat and raised lid, cistern, flush lever on the transfer side, hinged drop-down "
+    "are not part of the family; the 1700 type only moves the opposite wall, so both types share the fittings): WC with contrasting seat and raised lid, cistern, flush lever on the transfer side, hinged drop-down "
     "rail with roll holder, side-wall horizontal and vertical rails, corner hand-rinse basin with mixer, mirror, pull cord with two "
     "bangles, alarm reset unit, towel dispenser, sanitary bin; turning circle on Clearance Accessibility.",
     connectors=[CW("WC Cistern"), SAN("WC Pedestal", 100), ELV("NurseCall", "Alarm Reset Unit")],
@@ -329,18 +327,13 @@ cp += [  # height-adjustable changing bench on the left wall
 ] + basin_side("Basin", xr - 60, -1, -1200, 800) + [
     B("Mirror", [xr - 6, -1450, 1050, xr, -950, 1900], 'mirror'),
     # shower on the right wall
-    B("Shower Mixer", [xr - 70, -2700, 1000, xr, -2500, 1100], 'chrome', 20),
-    C("Shower Riser", 'z', [xr - 50, -2600], 12, [1100, 2000], 'chrome'),
-    C("Shower Head", 'x', [-2600, 1700], 40, [xr - 120, xr - 60], 'chrome', 'f'),
-    B("Shower Floor", [xr - 1100, -3600, 0, xr, -2300, 4], 'safety'),
-    B("Floor Gully", [xr - 900, -2990, 4, xr - 100, -2950, 6], 'ss', 0, 'f'),
+
     # privacy screen (folding)
 ] + [
-    FR("Privacy Screen", [[-300, 150], [500, 150], [500, 1800], [-300, 1800]], [-3150, -3125], 'curtain'),
+    FR("Privacy Screen", [[-300, 150], [500, 150], [500, 1800], [-300, 1800]], [-3150, -3125], 'curtainp'),
     C("Screen Frame Post", 'z', [-310, -3140], 15, [0, 1820], 'ss', **rep(2, [820, 0, 0])),
     C("Screen Foot", 'y', [-310, 15], 15, [-3350, -2930], 'ss', 'f', **rep(2, [820, 0, 0])),
     # ceiling hoist: two fixed rails on wall brackets at 2400, one traverse rail, motor unit
-    B("Hoist Fixed Rail", [xl, -3900, 2350, xl + 70, -100, 2420], 'alu', **rep(2, [2930, 0, 0])),
     B("Rail Wall Bracket", [xl, -2050, 2280, xl + 80, -1950, 2440], 'alu', 0, 'f', **rep(2, [2920, 0, 0])),
     B("Traverse Rail", [xl + 70, -1680, 2340, xr - 70, -1560, 2420], 'alu'),
     B("Traverse Carriage", [xl + 20, -1720, 2300, xl + 120, -1520, 2440], 'white', 10, 'f', **rep(2, [2860, 0, 0])),
@@ -352,8 +345,15 @@ cp += [  # height-adjustable changing bench on the left wall
     C("Hand Control Cord", 'z', [230, -1625], 4, [1360, 2050], 'black', 'f'),
     B("Charger", [xl + 70, -260, 2250, xl + 160, -120, 2420], 'white', 10, 'f'),
     B("Alarm Reset Unit", [xr - 18, -400, 1150, xr, -320, 1230], 'white', 0, 'f'),
-    C("Alarm Cord", 'z', [xr - 30, -2200], 3, [120, 2200], 'red', 'f'),
+    C("Alarm Cord", 'z', [xr - 30, -1900], 3, [120, 2200], 'red', 'f'),
 ]
+for tn, dy, sfx in (("3000x4000_ChangingPlaces", 0, "4000"), ("3000x3700_ChangingPlaces", 300, "3700")):
+    cp += only(tn, [B("Shower Mixer", [xr - 70, -2700 + dy, 1000, xr, -2500 + dy, 1100], 'chrome', 20),
+                    C("Shower Riser", 'z', [xr - 50, -2600 + dy], 12, [1100, 2000], 'chrome'),
+                    C("Shower Head", 'x', [-2600 + dy, 1700], 40, [xr - 120, xr - 60], 'chrome', 'f'),
+                    B("Shower Floor", [xr - 1100, -3600 + dy, 0, xr, -2300 + dy, 4], 'safety'),
+                    B("Floor Gully", [xr - 900, -2990 + dy, 4, xr - 100, -2950 + dy, 6], 'ss', 0, 'f'),
+                    B("Hoist Fixed Rail", [xl, -3900 + dy, 2350, xl + 70, -100, 2420], 'alu', **rep(2, [2930, 0, 0]))], sfx)
 add(f, "Changing Places toilet 3000 x 4000 (BS 8300-2): peninsular WC with two drop-down rails, height-adjustable bench and basin, "
        "XY ceiling hoist, shower, privacy screen, alarm",
     "IfcElementAssembly", [("3000x4000_ChangingPlaces", "Changing Places 3000 x 4000 mm, 2400 mm ceiling, XY hoist"),
@@ -364,7 +364,8 @@ add(f, "Changing Places toilet 3000 x 4000 (BS 8300-2): peninsular WC with two d
     "Changing Places modelled as a generic assembly (back wall y = 0, side walls x = +-1500; room walls not part of the family): "
     "peninsular WC with contrasting seat and drop-down rails both sides, wall bench on a lift column with side rail, height-adjustable "
     "basin with mirror, shower area with riser and gully, folding privacy screen, XY hoist rails on wall brackets with traverse, motor, "
-    "strap, spreader bar and hand control, charger, alarm cord and reset; turning circle on Clearance Accessibility.",
+    "strap, spreader bar and hand control, charger, alarm cord and reset; turning circle on Clearance Accessibility. The shower area "
+    "and hoist rails are per type (3700 room: shower 300 mm nearer the back wall, rails 300 shorter).",
     connectors=[CW("WC Cistern"), HW("Basin Mixer", 'back'), SAN("WC Pedestal", 100), E("Bench Lift Column")],
     clearances=[{"n": "Turning Circle", "shape": "cyl", "axis": "z", "c": [0, -2100], "r": 750, "z": [0, 10], "sub": "Clearance Accessibility"}],
     tv={**EV(240, 1000)})
@@ -395,7 +396,7 @@ sh = [
     C("Curtain Track", 'x', [-1450, 2000], 12, [-600, 600], 'alu'),
     B("Track End Bracket", [-600, -1480, 1985, -585, -1420, 2015], 'alu', 0, 'f', **rep(2, [1185, 0, 0])),
     PR("Curtain", [[x, -1450 + (12 if i % 2 else -12)] for i, x in enumerate(range(150, 601, 50))] +
-       [[x, -1450 + (12 if i % 2 else -12) + 4] for i, x in reversed(list(enumerate(range(150, 601, 50))))], [300, 1985], 'curtain'),
+       [[x, -1450 + (12 if i % 2 else -12) + 4] for i, x in reversed(list(enumerate(range(150, 601, 50))))], [300, 1985], 'curtainp'),
     B("Soap Shelf", [400, -120, 1150, 560, 0, 1170], 'ss', 0, 'f'),
 ]
 add(f, "Level-access accessible shower area 1200 x 1500: wet-room floor and linear gully, fold-down seat, thermostatic mixer with riser "
@@ -410,13 +411,15 @@ add(f, "Level-access accessible shower area 1200 x 1500: wet-room floor and line
 
 # ================================================================= SANITARY ACCESSORIES
 f = 'FMC_A_SpecEq_GrabRail_Straight'
+gs = []
+for Lr in (300, 450, 600, 900):
+    gs += only(f"{Lr}_SS", rail_x("Rail", -Lr / 2, Lr / 2, 0) + [C("Fixing Screw", 'y', [-Lr / 2, 0], 4, [-10, -9], 'chrome', 'f', **rep(2, [Lr, 0, 0]))], str(Lr))
 add(f, "Straight grab rail, 32 mm brushed stainless tube, 50 mm clear of the wall, concealed-fixing flanges with cover rosettes",
-    "IfcDiscreteAccessory", [(f"{L}_SS", f"Straight grab rail {L} mm centres, 32 mm stainless steel, concealed fixings") for L in (300, 450, 600, 900)],
-    rail_x("Rail", -150, 150, 0) + [C("Fixing Screw", 'y', [-150, 0], 4, [-10, -9], 'chrome', 'f', **rep(2, [300, 0, 0]))],
+    "IfcDiscreteAccessory", [(f"{L}_SS", f"Straight grab rail {L} mm centres, 32 mm stainless steel, concealed fixings") for L in (300, 450, 600, 900)], gs,
     {"Tube 32 mm, 50 mm clear of wall": A(32, "BS 8300-2"), "Mounting height 800 mm (centreline)": A(800, "Approved Document M"),
      "Length 300/450/600/900 mm centres": A("300-900", "record types")},
     "Grab rail modelled as a generic product: tube, returns with bends to the wall, flanges with rosettes. Centreline at z = 0, height "
-    "set by Default Elevation; geometry is the 300 type.", tv={"Default Elevation": 800})
+    "set by Default Elevation; each length is its own set of parts (Show parameters).", tv={"Default Elevation": 800})
 
 f = 'FMC_A_SpecEq_GrabRail_DropDown'
 dd = [F("Wall Plate", [-60, -12, -220, 60, 0, 180], 'ss', 10),
@@ -424,22 +427,23 @@ dd = [F("Wall Plate", [-60, -12, -220, 60, 0, 180], 'ss', 10),
       C("Wall Plate Screw Low", 'y', [-35, -190], 5, [-14, -12], 'chrome', 'f', **rep(2, [70, 0, 0])),
       B("Hinge Housing", [-45, -95, -150, 45, -12, 40], 'ss', 25),
       C("Hinge Pin", 'x', [-60, 20], 10, [-50, 50], 'chrome', 'f'),
-      C("Arm Top", 'y', [0, 0], R32, [-750, -95], 'ss'),
-      C("Arm Bottom", 'y', [0, -120], R32, [-720, -95], 'ss'),
-      ball("Arm Bend Top", 'y', [0, 0], -750, R32, 'ss', 'mf'),
-      C("Arm Nose", 'z', [0, -740], R32, [-110, 0], 'ss'),
-      ball("Arm Bend Bottom", 'z', [0, -728], -120, R32, 'ss', 'mf'),
       C("Roll Holder Spindle", 'x', [-300, -170], 8, [-60, 60], 'chrome', 'f'),
       B("Roll Holder Arm", [-6, -320, -175, 6, -280, -120], 'chrome', 0, 'f'),
-      C("Toilet Roll", 'x', [-300, -170], 55, [-55, 55], 'white', 'f'),
-      B("Flush Button", [-20, -760, 15, 20, -700, 30], 'blue', 8, 'f')]
+      C("Toilet Roll", 'x', [-300, -170], 55, [-55, 55], 'white', 'f')]
+for Pj in (750, 850):
+    dd += only(f"{Pj}_DropDown", [C("Arm Top", 'y', [0, 0], R32, [-Pj, -95], 'ss'),
+                                  C("Arm Bottom", 'y', [0, -120], R32, [-(Pj - 30), -95], 'ss'),
+                                  ball("Arm Bend Top", 'y', [0, 0], -Pj, R32, 'ss', 'mf'),
+                                  C("Arm Nose", 'z', [0, -(Pj - 10)], R32, [-110, 0], 'ss'),
+                                  ball("Arm Bend Bottom", 'z', [0, -(Pj - 22)], -120, R32, 'ss', 'mf'),
+                                  B("Flush Button", [-20, -(Pj + 10), 15, 20, -(Pj - 50), 30], 'blue', 8, 'f')], str(Pj))
 add(f, "Hinged drop-down support rail 750 mm, 32 mm stainless loop, wall plate with hinge housing, toilet-roll holder, remote flush button",
     "IfcDiscreteAccessory", [("750_DropDown", "Drop-down support rail 750 mm projection, stainless, roll holder"),
                              ("850_DropDown", "Drop-down support rail 850 mm projection, stainless, roll holder")], dd,
     {"Projection 750 mm": A(750, "Approved Document M (rail extends beyond the WC pan front)"), "Top of rail 680 mm above floor": A(680, "Approved Document M"),
      "Tube 32 mm": A(32, "BS 8300-2")},
     "Drop-down rail modelled as a generic product: wall plate with screws, hinge housing and pin, looped arm (top and bottom tubes, nose, "
-    "bends), roll holder with roll, flush button at the nose. Top tube at z = 0; Default Elevation 680; geometry is the 750 type.",
+    "bends), roll holder with roll, flush button at the nose. Top tube at z = 0; Default Elevation 680; the arm is per type (750 / 850).",
     tv={"Default Elevation": 680})
 
 f = 'FMC_A_SpecEq_GrabRail_LShape'
@@ -491,41 +495,35 @@ add(f, "Tilting mirror 500 x 700 for wheelchair users, brushed stainless frame, 
 
 # ================================================================= TRACKS AND HOISTS
 f = 'FMC_A_SpecEq_CurtainTrack_Bed_Cubicle'
-X, Y, Rr = 1200, -2600, 300
-def track_run():
-    t = []
-    t.append(B("Track Left", [-X - 15, Y + Rr, -28, -X + 15, -300, 0], 'alu'))
-    t.append(B("Track Front", [-X + Rr, Y - 15, -28, X - Rr, Y + 15, 0], 'alu'))
-    t.append(B("Track Right", [X - 15, Y + Rr, -28, X + 15, -300, 0], 'alu'))
-    t.append(PR("Bend Left", ring_sector(-X + Rr, Y + Rr, Rr - 15, Rr + 15, 180, 270), [-28, 0], 'alu'))
-    t.append(PR("Bend Right", ring_sector(X - Rr, Y + Rr, Rr - 15, Rr + 15, 270, 360), [-28, 0], 'alu'))
-    t.append(C("Ceiling Fixing Left", 'z', [-X, -600], 22, [-6, 0], 'white', 'f', **rep(4, [0, -500, 0])))
-    t.append(C("Ceiling Fixing Front", 'z', [-600, Y], 22, [-6, 0], 'white', 'f', **rep(3, [600, 0, 0])))
-    t.append(C("Ceiling Fixing Right", 'z', [X, -600], 22, [-6, 0], 'white', 'f', **rep(4, [0, -500, 0])))
-    t.append(B("End Stop", [-X - 18, -330, -32, -X + 18, -300, 0], 'white', 0, 'f', **rep(2, [2 * X, 0, 0])))
-    return t
-def pleats(x, y0, y1, z0, z1, n='Curtain Stack Left'):
+Rr = 300
+def track_run(X, Y):
+    return [B("Track Left", [-X - 15, Y + Rr, -28, -X + 15, -300, 0], 'alu'),
+            B("Track Front", [-X + Rr, Y - 15, -28, X - Rr, Y + 15, 0], 'alu'),
+            B("Track Right", [X - 15, Y + Rr, -28, X + 15, -300, 0], 'alu'),
+            PR("Bend Left", ring_sector(-X + Rr, Y + Rr, Rr - 15, Rr + 15, 180, 270), [-28, 0], 'alu'),
+            PR("Bend Right", ring_sector(X - Rr, Y + Rr, Rr - 15, Rr + 15, 270, 360), [-28, 0], 'alu'),
+            C("Ceiling Fixing Left", 'z', [-X, -600], 22, [-6, 0], 'white', 'f', **rep(3, [0, -700, 0])),
+            C("Ceiling Fixing Front", 'z', [-600, Y], 22, [-6, 0], 'white', 'f', **rep(3, [600, 0, 0])),
+            C("Ceiling Fixing Right", 'z', [X, -600], 22, [-6, 0], 'white', 'f', **rep(3, [0, -700, 0])),
+            B("End Stop", [-X - 18, -330, -32, -X + 18, -300, 0], 'white', 0, 'f', **rep(2, [2 * X, 0, 0])),
+            pleats(-X, -1400, -340, -2350, -560, 'Curtain Stack Left'), pleats(-X, -1400, -340, -560, -40, 'Mesh Top Left', 'white'),
+            pleats(X, -1400, -340, -2350, -560, 'Curtain Stack Right'), pleats(X, -1400, -340, -560, -40, 'Mesh Top Right', 'white'),
+            C("Glider Left", 'z', [-X, -1380], 8, [-40, -20], 'white', 'f', **rep(6, [0, 200, 0])),
+            C("Glider Right", 'z', [X, -1380], 8, [-40, -20], 'white', 'f', **rep(6, [0, 200, 0]))]
+def pleats(x, y0, y1, z0, z1, n, mat='curtain'):
     ys = list(range(int(y0), int(y1) + 1, 40)); pts = [[x + (14 if i % 2 else -14), yy] for i, yy in enumerate(ys)]
-    back = [[px + 4, py] for px, py in reversed(pts)]
-    return PR(n, pts + back, [z0, z1], 'curtain')
-ct = track_run() + [
-    pleats(-X, -1400, -340, -2350, -560, 'Curtain Stack Left'), pleats(-X, -1400, -340, -560, -40, 'Mesh Top Left'),
-    pleats(X, -1400, -340, -2350, -560, 'Curtain Stack Right'), pleats(X, -1400, -340, -560, -40, 'Mesh Top Right'),
-    C("Glider Left", 'z', [-X, -1380], 8, [-40, -20], 'white', 'f', **rep(10, [0, 104, 0])),
-    C("Glider Right", 'z', [X, -1380], 8, [-40, -20], 'white', 'f', **rep(10, [0, 104, 0])),
-]
-for p in ct:
-    if p['n'].startswith('Mesh Top'): p['mat'] = 'white'
-add(f, "Bed-space cubicle curtain track, U-shaped 2400 x 2600, ceiling-fixed aluminium track with radius bends, gliders and disposable "
+    return PR(n, pts + [[px + 4, py] for px, py in reversed(pts)], [z0, z1], mat)
+ct = only("2400x2600_U", track_run(1200, -2600), "2400") + only("3000x3000_U", track_run(1500, -3000), "3000")
+add(f, "Bed-space cubicle curtain track, U-shaped, ceiling-fixed aluminium track with radius bends, gliders and disposable "
        "curtains with mesh top",
     "IfcDiscreteAccessory", [("2400x2600_U", "Cubicle curtain track U 2400 x 2600 mm around one bed, disposable curtains"),
                              ("3000x3000_U", "Cubicle curtain track U 3000 x 3000 mm around one bed, disposable curtains")], ct,
-    {"Track U 2400 wide x 2600 deep from the bedhead wall": A("2400x2600", "HBN 04-01 multi-bed bay bed space"),
+    {"Track U 2400 x 2600 or 3000 x 3000 from the bedhead wall": A("2400x2600/3000x3000", "HBN 04-01 multi-bed bay bed space"),
      "Curtain drop to 300 mm above floor, 500 mm mesh top": A(500, "HBN 04-01 / HTM 05-02 practice"),
      "Bend radius 300 mm": A(300)},
     "Curtain track modelled as a generic product hanging below the ceiling (z = 0): three straight runs with 300 radius bends, ceiling "
-    "fixings, end stops, gliders, two pleated curtain stacks drawn back to the bedhead wall (y = 0) with mesh tops. Geometry is the "
-    "2400 x 2600 type.")
+    "fixings, end stops, gliders, two pleated curtain stacks drawn back to the bedhead wall (y = 0) with mesh tops. Each size is its "
+    "own set of parts (Show parameters).")
 
 f = 'FMC_A_SpecEq_IVTrack_Ceiling'
 iv = [B("Track", [-1200, -15, -30, 1200, 15, 0], 'alu', 6),
@@ -551,12 +549,9 @@ add(f, "Ceiling IV track 2400, aluminium track with two sliding carriers, drop r
     "rods with collars, four-arm hook crowns with upturned tips, one IV bag for scale.")
 
 f = 'FMC_A_SpecEq_PatientHoist_CeilingTrack'
-ht = [B("Track", [-1500, -32, -70, 1500, 32, 0], 'alu', 4),
-      B("Track Channel", [-1490, -12, -72, 1490, 12, -70], 'dark', 0, 'f'),
-      B("End Stop", [-1520, -40, -80, -1500, 40, 0], 'white', 6, 'mf', **rep(2, [3020, 0, 0])),
-      C("Ceiling Fixing", 'z', [-1300, 0], 30, [-8, 0], 'white', 'f', **rep(4, [866, 0, 0])),
-      B("Charging Station", [1300, -50, -150, 1480, 50, -70], 'white', 15),
-      B("Charging Contacts", [1290, -20, -130, 1300, 20, -100], 'chrome', 0, 'f'),
+ht = [B("End Stop Charger End", [-1520, -40, -80, -1500, 40, 0], 'white', 6),
+      B("Charging Station", [-1480, -50, -150, -1300, 50, -70], 'white', 15),
+      B("Charging Contacts", [-1300, -20, -130, -1290, 20, -100], 'chrome', 0, 'f'),
       B("Trolley", [-90, -40, -110, 90, 40, -70], 'white', 10),
       B("Hoist Motor", [-190, -110, -420, 190, 110, -110], 'white', 60),
       F("Motor Face", [-170, -112, -400, 170, -110, -130], 'mgrey', 40, 'f'),
@@ -569,13 +564,19 @@ ht = [B("Track", [-1500, -32, -70, 1500, 32, 0], 'alu', 4),
       B("Hand Control", [230, -40, -900, 290, 0, -730], 'white', 15),
       B("Control Buttons", [240, -42, -860, 280, -40, -780], 'blue', 8, 'f'),
       C("Control Cord", 'z', [260, -20], 4, [-730, -350], 'black', 'f')]
-add(f, "Ceiling track patient hoist, straight 3000 track, 200 kg lift motor with strap and 2-point spreader bar, hand control, charging station",
+for Lt in (3000, 4000):
+    xe = -1500 + Lt
+    ht += only(f"{Lt}_Straight", [B("Track", [-1500, -32, -70, xe, 32, 0], 'alu', 4),
+                                  B("Track Channel", [-1490, -12, -72, xe - 10, 12, -70], 'dark', 0, 'f'),
+                                  B("End Stop", [xe, -40, -80, xe + 20, 40, 0], 'white', 6),
+                                  C("Ceiling Fixing", 'z', [-1300, 0], 30, [-8, 0], 'white', 'f', **rep(Lt // 1000 + 1, [(Lt - 400) / (Lt // 1000), 0, 0]))], str(Lt))
+add(f, "Ceiling track patient hoist, straight track, 200 kg lift motor with strap and 2-point spreader bar, hand control, charging station",
     "IfcTransportElement", [("3000_Straight", "Straight ceiling hoist track 3000 mm, 200 kg motor"),
                             ("4000_Straight", "Straight ceiling hoist track 4000 mm, 200 kg motor")], ht,
-    {"Track 3000 mm, profile 64 x 70": A(3000), "SWL 200 kg": A(200, "typical ward ceiling hoist"), "Charger 240 V, 100 VA": A(100)},
-    "Ceiling hoist modelled as a generic product below the ceiling (z = 0): aluminium track with end stops and fixings, charging "
-    "station at one end, trolley, motor unit with emergency-lower and LED, strap with swivel, spreader bar with hooks, hand control. "
-    "The lifting envelope is a Clearance Operation solid under the track.",
+    {"Track 3000 / 4000 mm, profile 64 x 70": A("3000/4000"), "SWL 200 kg": A(200, "typical ward ceiling hoist"), "Charger 240 V, 100 VA": A(100)},
+    "Ceiling hoist modelled as a generic product below the ceiling (z = 0): aluminium track from x = -1500 (charging station end) with "
+    "end stops and fixings (track, channel, far end stop and fixings per type), trolley, motor unit with emergency-lower and LED, strap "
+    "with swivel, spreader bar with hooks, hand control. The lifting envelope (Clearance Operation) is drawn for the 3000 track.",
     connectors=[E("Charging Station", 'top')], tv={**EV(240, 100)},
     clearances=[{"n": "Lifting Envelope", "shape": "box", "at": [-1500, -500, -2400, 1500, 500, -420], "sub": "Clearance Operation"}])
 
@@ -613,26 +614,27 @@ add(f, "Mobile patient hoist, 1200 x 700 base with powered leg spread, 4 castors
 
 # ================================================================= EQUIPMENT
 f = 'FMC_A_SpecEq_WheelchairRack_Wall'
-wr = [B("Floor Plate", [-1050, -950, 0, 1050, 0, 3], 'ss'),
-      B("Wheel Guide", [-830, -700, 3, -810, -100, 60], 'ss', 0, 'f', **rep(3, [700, 0, 0])),
-      C("Wall Rail", 'x', [-60, 900], 25, [-1050, 1050], 'ss'),
-      C("Bumper Rail", 'x', [-60, 320], 25, [-1050, 1050], 'ss'),
-      C("Rail Bracket", 'y', [-1000, 900], 18, [-60, 0], 'ss', 'f', **rep(4, [666.7, 0, 0])),
-      C("Bumper Bracket", 'y', [-1000, 320], 18, [-60, 0], 'ss', 'f', **rep(4, [666.7, 0, 0])),
-      T("Rail Flange", 'y', [-1000, 900], [[0, 0], [35, 0], [35, -8], [0, -8]], 'ss', 'f', **rep(4, [666.7, 0, 0])),
-      C("Divider Arm", 'y', [-1040, 850], 20, [-630, -8], 'ss', **rep(4, [700, 0, 0])),
-      C("Divider Post", 'z', [-1040, -630], 20, [0, 850], 'ss', **rep(4, [700, 0, 0])),
-      ball("Divider Corner", 'y', [-1040, 850], -630, 20, 'ss', **rep(4, [700, 0, 0])),
-      T("Divider Flange", 'y', [-1040, 850], [[0, 0], [35, 0], [35, -8], [0, -8]], 'ss', 'f', **rep(4, [700, 0, 0])),
+def rack(nb):
+    W = nb * 700; x0 = -W / 2; sp = (W - 20) / nb
+    return [B("Floor Plate", [x0, -950, 0, -x0, 0, 3], 'ss'),
+            B("Wheel Guide", [x0 + 220, -700, 3, x0 + 240, -100, 60], 'ss', 0, 'f', **rep(nb, [700, 0, 0])),
+            C("Wall Rail", 'x', [-60, 900], 25, [x0, -x0], 'ss'),
+            C("Bumper Rail", 'x', [-60, 320], 25, [x0, -x0], 'ss'),
+            C("Rail Bracket", 'y', [x0 + 10, 900], 18, [-60, 0], 'ss', 'f', **rep(nb + 1, [sp, 0, 0])),
+            C("Bumper Bracket", 'y', [x0 + 10, 320], 18, [-60, 0], 'ss', 'f', **rep(nb + 1, [sp, 0, 0])),
+            C("Divider Arm", 'y', [x0 + 10, 850], 20, [-630, -8], 'ss', **rep(nb + 1, [sp, 0, 0])),
+            C("Divider Post", 'z', [x0 + 10, -630], 20, [0, 850], 'ss', **rep(nb + 1, [sp, 0, 0])),
+            ball("Divider Corner", 'y', [x0 + 10, 850], -630, 20, 'ss', **rep(nb + 1, [sp, 0, 0]))]
+wr = only("3-Chair_Rack", rack(3), "3Bay") + only("5-Chair_Rack", rack(5), "5Bay") + [
       F("Sign Plate", [-200, -6, 1500, 200, 0, 1900], 'blue', 15),
       F("Sign Symbol", [-90, -8, 1600, 90, -6, 1780], 'white', 10, 'f'),
       F("Sign Text", [-150, -8, 1530, 150, -6, 1570], 'white', 0, 'f')]
-add(f, "Wall-mounted wheelchair parking rack, 3 bays at 700, stainless wall and bumper rails, bay dividers, floor protection plate, parking sign",
+add(f, "Wall-mounted wheelchair parking rack, bays at 700, stainless wall and bumper rails, bay dividers, floor protection plate, parking sign",
     "IfcFurniture", [("3-Chair_Rack", "Wheelchair parking rack, 3 bays, 2100 mm"), ("5-Chair_Rack", "Wheelchair parking rack, 5 bays, 3500 mm")], wr,
-    {"Bay width 700 mm, rack 2100 mm (3 bays)": A(700, "folded/open attendant chair widths"), "Floor plate depth 950 mm": A(950),
+    {"Bay width 700 mm, rack 2100 / 3500 mm": A(700, "folded/open attendant chair widths"), "Floor plate depth 950 mm": A(950),
      "Rails at 320 and 900 mm": A("320/900")},
     "Wheelchair rack modelled as a generic product: stainless floor plate with wheel guides, wall rail and low bumper rail on brackets, "
-    "four bay dividers with rounded corners, blue parking sign. Back wall at y = 0; geometry is the 3-chair type.")
+    "tubular bay dividers, blue parking sign. Back wall at y = 0; the rack is per type (3 or 5 bays), the sign is shared.")
 
 f = 'FMC_A_SpecEq_LinenChute_Disposal'
 lc = [C("Chute Tube", 'z', [0, 420], 300, [0, 3000], 'ss'),
@@ -677,26 +679,28 @@ add(f, "Touch-free soap/foam dispenser 1200 ml, 124 x 115 x 270 mm, level window
     "sensor window and nozzle underneath, drip tray on an arm. Default Elevation 1000.", tv={"Default Elevation": 1000})
 
 f = 'FMC_A_SpecEq_Dispenser_PaperTowel_Bin'
-pt = [B("Housing", [-200, -150, 0, 200, -6, 1400], 'ss', 10),
-      F("Trim Flange", [-225, -6, -25, 225, 0, 1425], 'ss', 8, 'f'),
-      F("Towel Door", [-190, -153, 860, 190, -150, 1390], 'ss', 6),
-      F("Level Window", [-25, -154, 1050, 25, -153, 1330], 'black', 10, 'f'),
-      F("Towel Slot", [-130, -154, 880, 130, -152, 895], 'black', 0, 'f'),
-      FR("Towel", [[-110, 820], [110, 820], [110, 888], [-110, 888]], [-162, -156], 'white'),
-      C("Towel Lock", 'y', [0, 1365], 9, [-156, -153], 'chrome', 'f'),
-      F("Waste Panel", [-190, -153, 30, 190, -150, 840], 'ss', 6),
-      RT("Waste Flap", [[-152, 700], [-175, 760], [-175, 800], [-152, 800]], [-150, 150], 'ss'),
-      FR("Waste Opening", [[-150, 700], [150, 700], [150, 760], [-150, 760]], [-154, -152], 'black', 'f'),
-      C("Bin Lock", 'y', [0, 640], 9, [-156, -153], 'chrome', 'f'),
-      F("Waste Label", [-60, -154, 560, 60, -153, 600], 'black', 3, 'f'),
-      B("Kick Plate", [-198, -152, 0, 198, -140, 30], 'ss', 0, 'f')]
+def towel(dy):
+    return [B("Housing", [-200, -150 + dy, 0, 200, min(-6 + dy, 90), 1400], 'ss', 10),
+            F("Towel Door", [-190, -153 + dy, 860, 190, -150 + dy, 1390], 'ss', 6),
+            F("Level Window", [-25, -154 + dy, 1050, 25, -153 + dy, 1330], 'black', 10, 'f'),
+            F("Towel Slot", [-130, -154 + dy, 880, 130, -152 + dy, 895], 'black', 0, 'f'),
+            FR("Towel", [[-110, 820], [110, 820], [110, 888], [-110, 888]], [-162 + dy, -156 + dy], 'white'),
+            C("Towel Lock", 'y', [0, 1365], 9, [-156 + dy, -153 + dy], 'chrome', 'f'),
+            F("Waste Panel", [-190, -153 + dy, 30, 190, -150 + dy, 840], 'ss', 6),
+            RT("Waste Flap", [[-152 + dy, 700], [-175 + dy, 760], [-175 + dy, 800], [-152 + dy, 800]], [-150, 150], 'ss'),
+            FR("Waste Opening", [[-150, 700], [150, 700], [150, 760], [-150, 760]], [-154 + dy, -152 + dy], 'black', 'f'),
+            C("Bin Lock", 'y', [0, 640], 9, [-156 + dy, -153 + dy], 'chrome', 'f'),
+            F("Waste Label", [-60, -154 + dy, 560, 60, -153 + dy, 600], 'black', 3, 'f'),
+            B("Kick Plate", [-198, -152 + dy, 0, 198, -140 + dy, 30], 'ss', 0, 'f')]
+pt = only("400x1400_Surface", towel(0), "Surface") + only("400x1400_Semi-Recessed", towel(90) + [F("Trim Flange", [-225, -6, -25, 225, 0, 1425], 'ss', 8)], "Semi")
 add(f, "Combination paper-towel dispenser and waste receptacle, brushed stainless, 400 x 1400 x 150, surface or semi-recessed (trim flange)",
     "IfcDiscreteAccessory", [("400x1400_Surface", "Towel dispenser/waste unit 400 x 1400 x 150 mm, surface mounted"),
-                             ("400x1400_Semi-Recessed", "Towel dispenser/waste unit 400 x 1400 mm, semi-recessed with trim flange")], pt,
+                             ("400x1400_Semi-Recessed", "Towel dispenser/waste unit 400 x 1400 mm, semi-recessed 90 mm into the wall, trim flange")], pt,
     {"400 x 1400 x 150 mm": A("400x1400x150"), "Bottom at 300 mm, towel slot at 1180 mm": A(300, "HBN 00-10 Part C reach range"),
-     "Waste capacity about 45 l": A(45)},
-    "Towel/waste unit modelled as a generic product: stainless housing with trim flange, towel door with level window, slot and towel "
-    "sheet, lock; waste panel with angled push flap, opening, lock and label; kick plate. Default Elevation 300.", tv={"Default Elevation": 300})
+     "Semi-recessed: 90 mm in the wall, 60 mm proud": A(90)},
+    "Towel/waste unit modelled as a generic product: stainless housing, towel door with level window, slot and towel sheet, lock; waste "
+    "panel with angled push flap, opening, lock and label; kick plate. Per type: surface (150 proud) or semi-recessed (90 into the wall, "
+    "trim flange). Default Elevation 300.", tv={"Default Elevation": 300})
 
 f = 'FMC_A_SpecEq_Dispenser_GloveApron'
 ga = [F("Back Panel", [-310, -8, 0, 310, 0, 560], 'white', 15),
@@ -740,41 +744,44 @@ add(f, "Sharps container wall bracket with 11 l sharps bin (yellow body, orange 
 
 # ================================================================= SIGNAGE
 f = 'FMC_A_SpecEq_Signage_Room_Plate'
-rp = [F("Back Plate", [-150, -4, 0, 150, 0, 100], 'blue', 6),
-      F("Face", [-145, -8, 5, 145, -4, 95], 'blue', 4),
-      F("Number Panel", [-145, -9, 60, -80, -8, 95], 'white', 3, 'f'),
+rp = [F("Number Panel", [-145, -9, 60, -80, -8, 95], 'white', 3, 'f'),
       F("Number Text", [-135, -11, 68, -90, -9, 88], 'blue', 0, 'f'),
       F("Name Text", [-65, -11, 70, 120, -9, 86], 'white', 0, 'f'),
       F("Name Text Line 2", [-65, -11, 52, 60, -9, 62], 'white', 0, 'f'),
-      F("Braille Strip", [-65, -9, 14, 135, -8, 34], 'white', 3, 'f'),
-      ] + [C(f"Braille Dot {r}", 'y', [-58, 19 + 6 * r], 1.5, [-10, -9], 'white', 'f', **rep(28, [7, 0, 0])) for r in range(2)] + [
-      C("Fixing Pad", 'y', [-130, 50], 8, [-5, -4], 'grey', 'f', **rep(2, [260, 0, 0]))]
-add(f, "Room identification plate 300 x 100 with tactile name and number and Grade 2 braille strip, contrasting colours",
+      F("Braille Strip", [-65, -9, 14, 135, -8, 34], 'white', 3, 'f')] + \
+     [C(f"Braille Dot {r}", 'y', [-58, 19 + 6 * r], 1.5, [-10, -9], 'white', 'f', **rep(20, [9.5, 0, 0])) for r in range(2)]
+for h, tn in ((100, "300x100_Braille"), (200, "300x200_Braille")):
+    rp += only(tn, [F("Back Plate", [-150, -4, 0, 150, 0, h], 'blue', 6), F("Face", [-145, -8, 5, 145, -4, h - 5], 'blue', 4),
+                    C("Fixing Pad", 'y', [-130, h / 2], 8, [-5, -4], 'grey', 'f', **rep(2, [260, 0, 0]))], str(h))
+rp += only("300x200_Braille", [F("Pictogram Panel", [-60, -9, 110, 60, -8, 190], 'white', 8, 'f'), F("Pictogram", [-35, -10, 125, 35, -9, 175], 'blue', 20, 'f')], "200")
+add(f, "Room identification plate 300 x 100 or 300 x 200 with tactile name and number, Grade 2 braille strip, pictogram (200 type)",
     "IfcBuildingElementProxy", [("300x100_Braille", "Room ID plate 300 x 100 mm, tactile text and braille"),
                                 ("300x200_Braille", "Room ID plate 300 x 200 mm, tactile text, braille and pictogram")], rp,
-    {"Plate 300 x 100 mm": A("300x100"), "Centre 1400-1700 mm on the latch side": A(1500, "BS 8300-2 / HTM 65"), "Tactile text 1 mm raised, braille strip": A(1, "BS 8300-2")},
-    "Room plate modelled as a generic product: back plate and face, number panel, raised name text, braille strip with two rows of dots, "
-    "fixing pads. Default Elevation 1450 (bottom). Room name and number come from the room in the project (label in the tag).",
-    tv={"Default Elevation": 1450})
+    {"Plate 300 x 100 / 300 x 200 mm": A("300x100/300x200"), "Centre 1400-1700 mm on the latch side": A(1500, "BS 8300-2 / HTM 65"), "Tactile text 1 mm raised, braille strip": A(1, "BS 8300-2")},
+    "Room plate modelled as a generic product: back plate and face per type, number panel, raised name text, braille strip with two rows "
+    "of dots, fixing pads; the 200 type adds a pictogram above. Default Elevation 1450 (bottom). Room name and number come from the room "
+    "in the project (label in the tag).", tv={"Default Elevation": 1450})
 
 f = 'FMC_A_SpecEq_Signage_Hanging_Wayfinding'
 hs = [T("Ceiling Rose", 'z', [-450, 0], [[0, -12], [35, -12], [35, 0], [0, 0]], 'white', **rep(2, [900, 0, 0])),
-      C("Suspension Cable", 'z', [-450, 0], 2, [-600, -12], 'ss', **rep(2, [900, 0, 0])),
-      B("Cable Gripper", [-460, -10, -630, -440, 10, -600], 'chrome', 0, 'f', **rep(2, [900, 0, 0])),
-      B("Sign Frame", [-600, -25, -930, 600, 25, -630], 'alupc', 8),
-      F("Face Front", [-585, -27, -915, 585, -25, -645], 'blue', 6),
-      F("Face Back", [-585, 25, -915, 585, 27, -645], 'blue', 6),
+      C("Suspension Cable", 'z', [-450, 0], 2, [-630, -12], 'ss', **rep(2, [900, 0, 0])),
+      B("Cable Gripper", [-460, -10, -660, -440, 10, -630], 'chrome', 0, 'f', **rep(2, [900, 0, 0])),
       FR("Arrow", [[-560, -780], [-480, -700], [-480, -750], [-400, -750], [-400, -810], [-480, -810], [-480, -860]], [-29, -27], 'white', 'f'),
       F("Text Line 1", [-360, -29, -740, 300, -27, -700], 'white', 0, 'f'),
-      F("Text Line 2", [-360, -29, -830, 120, -27, -790], 'white', 0, 'f'),
-      F("Department Colour Band", [440, -29, -900, 570, -27, -660], 'yellow', 0, 'f'),
-      B("LED Edge", [-600, -20, -932, 600, 20, -930], 'led', 0, 'f')]
-add(f, "Suspended corridor wayfinding sign 1200 x 300, double-sided, aluminium frame, edge-lit LED, cable suspension",
+      F("Text Line 2", [-360, -29, -830, 120, -27, -790], 'white', 0, 'f')]
+for w, tn in ((1200, "1200x300_Hanging"), (1800, "1800x300_Hanging")):
+    hw = w / 2; xs = -600   # signs share the left edge, so the arrow and text sit in the same place
+    hs += only(tn, [B("Sign Frame", [xs, -25, -960, xs + w, 25, -660], 'alupc', 8),
+                    F("Face Front", [xs + 15, -27, -945, xs + w - 15, -25, -675], 'blue', 6),
+                    F("Face Back", [xs + 15, 25, -945, xs + w - 15, 27, -675], 'blue', 6),
+                    F("Department Colour Band", [xs + w - 160, -29, -930, xs + w - 30, -27, -690], 'yellow', 0, 'f'),
+                    B("LED Edge", [xs, -20, -962, xs + w, 20, -960], 'led', 0, 'f')], str(w))
+add(f, "Suspended corridor wayfinding sign 1200 x 300 or 1800 x 300, double-sided, aluminium frame, edge-lit LED, cable suspension",
     "IfcBuildingElementProxy", [("1200x300_Hanging", "Hanging wayfinding sign 1200 x 300 mm, double sided, edge-lit"),
                                 ("1800x300_Hanging", "Hanging wayfinding sign 1800 x 300 mm, double sided, edge-lit")], hs,
-    {"Sign 1200 x 300 x 50 mm": A("1200x300x50"), "Underside 2100 mm min above floor": A(2100, "HTM 65 / BS 8300-2"), "LED 240 V, 30 VA": A(30)},
-    "Hanging sign modelled as a generic product below the ceiling (z = 0): roses, cables and grippers, aluminium frame, two faces, "
-    "arrow, text, department colour band, LED edge. Hangs 630 mm below the ceiling.",
+    {"Sign 1200 / 1800 x 300 x 50 mm": A("1200x300/1800x300"), "Underside 2100 mm min above floor": A(2100, "HTM 65 / BS 8300-2"), "LED 240 V, 30 VA": A(30)},
+    "Hanging sign modelled as a generic product below the ceiling (z = 0): roses, cables and grippers 900 apart (shared), arrow and text "
+    "(shared), frame, two faces, department colour band and LED edge per type. Hangs 660 mm below the ceiling.",
     connectors=[E("Ceiling Rose 1", 'top')], tv={**EV(240, 30)})
 
 f = 'FMC_A_SpecEq_Signage_Totem_External'
@@ -806,7 +813,7 @@ f = 'FMC_A_SpecEq_WallProtection_CrashRail'
 L = 1200
 cr = [RT("Retainer", [[0, 20], [-12, 20], [-12, 180], [0, 180]], [-L, L], 'alu'),
       RT("Bumper Cushion", [[-12, 35], [-22, 35], [-22, 165], [-12, 165]], [-L, L], 'black', 'f'),
-      RT("Cover", [[-12, 0], [-28, 10], [-34, 40], [-36, 100], [-34, 160], [-28, 190], [-12, 200]], [-L + 5, L - 5], 'mgrey'),
+      RT("Cover", [[-12, 0], [-28, 10], [-34, 40], [-36, 100], [-34, 160], [-28, 190], [-12, 200]], [-L + 5, L - 5], 'wprot'),
       RT("Face Insert", [[-36, 80], [-38, 82], [-38, 118], [-36, 120]], [-L + 5, L - 5], 'grey', 'f'),
       RT("End Cap", [[0, 0], [-28, 10], [-38, 100], [-28, 190], [0, 200]], [-L - 30, -L + 5], 'grey'),
       RT("End Cap Right", [[0, 0], [-28, 10], [-38, 100], [-28, 190], [0, 200]], [L - 5, L + 30], 'grey'),
@@ -820,28 +827,27 @@ add(f, "Bed-corridor crash (bumper) rail 200 high, aluminium retainer, shock-abs
 
 f = 'FMC_A_SpecEq_WallProtection_CornerGuard'
 def nose(r, z0, z1, n, mat, lod='mf'): return PR(n, [[8, 8]] + arc(8, 8, r, 180, 270, 8), [z0, z1], mat, lod)
-cg = [B("Cover Wing X", [8, -4, 12, 75, 0, 1188], 'mgrey'),
-      B("Cover Wing Y", [-4, 8, 12, 0, 75, 1188], 'mgrey'),
-      nose(12, 12, 1188, "Cover Nose", 'mgrey'),
-      B("Retainer X", [6, 0, 12, 55, 3, 1188], 'alu', 0, 'f'),
-      B("Retainer Y", [0, 6, 12, 3, 55, 1188], 'alu', 0, 'f'),
-      B("Bottom Cap X", [8, -6, 0, 78, 0, 12], 'grey'), B("Bottom Cap Y", [-6, 8, 0, 0, 78, 12], 'grey'), nose(14, 0, 12, "Bottom Cap Nose", 'grey'),
-      B("Top Cap X", [8, -6, 1188, 78, 0, 1200], 'grey'), B("Top Cap Y", [-6, 8, 1188, 0, 78, 1200], 'grey'), nose(14, 1188, 1200, "Top Cap Nose", 'grey'),
-      B("Grip Rib", [30, -6, 12, 40, -4, 1188], 'grey', 0, 'f'),
-      B("Grip Rib Side", [-6, 30, 12, -4, 40, 1188], 'grey', 0, 'f')]
-add(f, "Surface-mounted corner guard 75 x 75 x 1200, impact-resistant PVC cover on aluminium retainer, rounded nose, top and bottom caps",
+def guard(h):
+    t = h - 12
+    return [B("Cover Wing X", [8, -4, 12, 75, 0, t], 'wprot'), B("Cover Wing Y", [-4, 8, 12, 0, 75, t], 'wprot'), nose(12, 12, t, "Cover Nose", 'wprot'),
+            B("Retainer X", [6, 0, 12, 55, 3, t], 'alu', 0, 'f'), B("Retainer Y", [0, 6, 12, 3, 55, t], 'alu', 0, 'f'),
+            B("Top Cap X", [8, -6, t, 78, 0, h], 'grey'), B("Top Cap Y", [-6, 8, t, 0, 78, h], 'grey'), nose(14, t, h, "Top Cap Nose", 'grey'),
+            B("Grip Rib", [30, -6, 12, 40, -4, t], 'grey', 0, 'f'), B("Grip Rib Side", [-6, 30, 12, -4, 40, t], 'grey', 0, 'f')]
+cg = [B("Bottom Cap X", [8, -6, 0, 78, 0, 12], 'grey'), B("Bottom Cap Y", [-6, 8, 0, 0, 78, 12], 'grey'), nose(14, 0, 12, "Bottom Cap Nose", 'grey')]
+cg += only("1200_Surface", guard(1200), "1200") + only("1500_Surface", guard(1500), "1500")
+add(f, "Surface-mounted corner guard 75 x 75, 1200 or 1500 high, impact-resistant PVC cover on aluminium retainer, rounded nose, caps",
     "IfcCovering", [("1200_Surface", "Corner guard 75 x 75 x 1200 mm, surface mounted"), ("1500_Surface", "Corner guard 75 x 75 x 1500 mm, surface mounted")], cg,
-    {"Wings 75 x 75 mm": A("75x75"), "Height 1200 mm from skirting": A(1200, "record type"), "Nose radius 12 mm": A(12)},
+    {"Wings 75 x 75 mm": A("75x75"), "Height 1200 / 1500 mm from skirting": A("1200/1500", "record types"), "Nose radius 12 mm": A(12)},
     "Corner guard modelled as a generic product on an external corner at the origin (wall faces y = 0 and x = 0, wall in +x +y): PVC "
-    "cover with rounded nose and grip ribs, retainer, top and bottom caps; geometry is the 1200 type.")
+    "cover with rounded nose and grip ribs, retainer, caps; cover, retainer, ribs and top cap per type, bottom cap shared.")
 
 f = 'FMC_A_SpecEq_WallProtection_Handrail_Corridor'
 L = 1200
 hr = [RT("Retainer", [[0, 10], [-12, 10], [-12, 130], [0, 130]], [-L, L], 'alu'),
-      RT("Bumper Cover", [[-12, 0], [-30, 10], [-40, 70], [-30, 130], [-12, 140]], [-L + 5, L - 5], 'mgrey'),
+      RT("Bumper Cover", [[-12, 0], [-30, 10], [-40, 70], [-30, 130], [-12, 140]], [-L + 5, L - 5], 'wprot'),
       RT("Bumper Insert", [[-38, 55], [-41, 58], [-41, 82], [-38, 85]], [-L + 5, L - 5], 'grey', 'f'),
-      RT("Neck", [[-12, 130], [-42, 148], [-42, 162], [-12, 150]], [-L + 5, L - 5], 'mgrey'),
-      C("Handrail Grip", 'x', [-52, 175], 25, [-L + 5, L - 5], 'mgrey'),
+      RT("Neck", [[-12, 130], [-42, 148], [-42, 162], [-12, 150]], [-L + 5, L - 5], 'wprot'),
+      C("Handrail Grip", 'x', [-52, 175], 25, [-L + 5, L - 5], 'wprot'),
       C("Grip Core", 'x', [-52, 175], 18, [-L - 10, -L + 5], 'alu', 'f'),
       ball("Grip End", 'x', [-52, 175], -L + 5, 25, 'grey', 'mf'),
       ball("Grip End Right", 'x', [-52, 175], L - 5, 25, 'grey', 'mf'),
@@ -906,16 +912,17 @@ add(f, "Modular theatre wall panel 1200 x 3000, white epoxy steel, stainless ser
     connectors=[E("Socket Strip"), ELV("Data", "Data Outlet")] + [MG(g, "Gas Panel") for g, _ in gases], tv={**EV(240, 3000)})
 
 f = 'FMC_A_SpecEq_BedheadTrunking_Horizontal'
-L = 750
-bh = [RT("Trunking Body", [[0, 0], [-60, 0], [-80, 20], [-85, 130], [-80, 240], [-60, 260], [0, 260]], [-L, L], 'alu'),
+bh = []
+for L, tn in ((750, "1500_Horizontal"), (1000, "2000_Horizontal"), (1500, "3000_Horizontal")):
+  bh += only(tn, [RT("Trunking Body", [[0, 0], [-60, 0], [-80, 20], [-85, 130], [-80, 240], [-60, 260], [0, 260]], [-L, L], 'alu'),
       RT("Cover Gas", [[-82, 25], [-87, 25], [-87, 85], [-84, 85]], [-L + 10, L - 10], 'white', 'f'),
       RT("Cover Power", [[-86, 90], [-88, 90], [-88, 170], [-86, 170]], [-L + 10, L - 10], 'white', 'f'),
       RT("Cover ELV", [[-84, 175], [-87, 175], [-87, 235], [-82, 235]], [-L + 10, L - 10], 'white', 'f'),
       RT("Light Diffuser", [[-60, 260], [-60, 275], [-10, 275], [-10, 260]], [-L + 50, L - 50], 'pc'),
       RT("Uplight Lens", [[-55, 275], [-55, 278], [-15, 278], [-15, 275]], [-L + 60, L - 60], 'led', 'f'),
       RT("End Cap", [[0, 0], [-60, 0], [-82, 20], [-87, 130], [-82, 240], [-60, 260], [0, 260]], [-L - 15, -L], 'grey'),
-      RT("End Cap Right", [[0, 0], [-60, 0], [-82, 20], [-87, 130], [-82, 240], [-60, 260], [0, 260]], [L, L + 15], 'grey'),
-      F("Socket Outlet", [-640, -90, 105, -500, -88, 160], 'white', 6, 'f', **rep(4, [170, 0, 0])),
+      RT("End Cap Right", [[0, 0], [-60, 0], [-82, 20], [-87, 130], [-82, 240], [-60, 260], [0, 260]], [L, L + 15], 'grey')], str(2 * L))
+bh += [F("Socket Outlet", [-640, -90, 105, -500, -88, 160], 'white', 6, 'f', **rep(4, [170, 0, 0])),
       F("Socket Switch", [-520, -92, 125, -510, -90, 145], 'red', 0, 'f', **rep(4, [170, 0, 0])),
       F("Nurse Call Socket", [130, -89, 185, 210, -87, 225], 'white', 6, 'f'),
       C("Nurse Call Port", 'y', [170, 205], 10, [-90, -89], 'black', 'f'),
@@ -926,6 +933,12 @@ for i, (g, col) in enumerate([("O2", 'white'), ("VAC", 'yellow'), ("AIR", 'black
     x = 150 + i * 150
     bh += [T(f"Gas {g} Ring", 'y', [x, 55], [[17, -87], [24, -87], [24, -90], [17, -90]], col, 'f'),
            T(f"Gas {g} Socket", 'y', [x, 55], [[0, -86], [17, -86], [17, -98], [5, -100], [0, -100]], 'chrome')]
+bh += only("3000_Horizontal", [F("Socket Outlet", [-1450, -90, 105, -1310, -88, 160], 'white', 6, 'f', **rep(2, [170, 0, 0])),
+                               F("Nurse Call Socket", [-1150, -89, 185, -1070, -87, 225], 'white', 6, 'f'),
+                               F("Bed Number", [-1450, -89, 185, -1310, -87, 225], 'blue', 4, 'f')] +
+      [T(f"Gas {g} {k}", 'y', [-1400 + i * 150, 55], prof, col if k == 'Ring' else 'chrome', 'f' if k == 'Ring' else 'mf')
+       for i, (g, col) in enumerate([("O2", 'white'), ("VAC", 'yellow'), ("AIR", 'black')])
+       for k, prof in (("Ring", [[17, -87], [24, -87], [24, -90], [17, -90]]), ("Socket", [[0, -86], [17, -86], [17, -98], [5, -100], [0, -100]]))], "Bed 2")
 add(f, "Horizontal bedhead trunking 1500, aluminium three-compartment extrusion (gases, power, ELV) with integral reading/uplight",
     "IfcBuildingElementProxy", [("1500_Horizontal", "Bedhead trunking 1500 mm, 3 compartments, integral light"),
                                 ("2000_Horizontal", "Bedhead trunking 2000 mm, 3 compartments, integral light"),
@@ -935,8 +948,8 @@ add(f, "Horizontal bedhead trunking 1500, aluminium three-compartment extrusion 
     "Bedhead trunking modelled as a generic product: curved aluminium body with gas, power and ELV covers, uplight diffuser and lens, end "
     "caps, four sockets, three gas outlets, nurse-call and data outlets, light switch, bed number. The services are also hosted by the "
     "E/P families in the project (record note); the connectors here carry the casing's load and gas points. Bottom at z = 0; Default "
-    "Elevation 1300; geometry is the 1500 type.",
-    connectors=[E("Trunking Body"), ELV("NurseCall", "Nurse Call Socket")] + [MG(g, "Trunking Body") for g in ("O2", "VAC", "AIR")],
+    "Elevation 1300. Body, covers, light and end caps per length; the 3000 type adds a second bed's outlets.",
+    connectors=[E("Socket Outlet 1"), ELV("NurseCall", "Nurse Call Socket")] + [MG(g, f"Gas {g} Socket") for g in ("O2", "VAC", "AIR")],
     tv={**EV(240, 3000), "Default Elevation": 1300})
 
 # ================================================================= FURNITURE
@@ -945,18 +958,20 @@ lk = [B("Carcass", [-450, -450, 100, 450, 0, 1800], 'alupc', 0),
       B("Plinth", [-440, -420, 0, 440, -10, 100], 'black'),
       RT("Sloping Top", [[-450, 1800], [0, 1800], [0, 2050], [-30, 2050]], [-450, 450], 'alupc'),
       B("Divider Edge", [-152, -452, 100, -148, -450, 1800], 'dark', 0, 'f', **rep(2, [300, 0, 0]))]
-for t in range(3):
-    z0 = 110 + t * 563
-    lk += [F(f"Door Tier {t + 1}", [-445, -455, z0, -155, -450, z0 + 553], 'epoxy', 4, **rep(3, [300, 0, 0])),
-           F(f"Vent Tier {t + 1}", [-380, -457, z0 + 430, -220, -455, z0 + 500], 'dark', 3, 'f', **rep(3, [300, 0, 0])),
-           C(f"Lock Tier {t + 1}", 'y', [-185, z0 + 300], 12, [-465, -455], 'chrome', 'f', **rep(3, [300, 0, 0])),
-           F(f"Number Tier {t + 1}", [-350, -457, z0 + 360, -250, -455, z0 + 400], 'black', 3, 'f', **rep(3, [300, 0, 0]))]
+for tn, nt, sfx in (("900x1800_3-Tier", 3, "3T"), ("900x1800_6-Door", 2, "2T")):
+  dh = 1690 / nt
+  for t in range(nt):
+    z0 = 110 + t * dh
+    lk += only(tn, [F(f"Door Tier {t + 1}", [-445, -455, z0, -155, -450, z0 + dh - 10], 'epoxy', 4, **rep(3, [300, 0, 0])),
+           F(f"Vent Tier {t + 1}", [-380, -457, z0 + dh - 130, -220, -455, z0 + dh - 60], 'dark', 3, 'f', **rep(3, [300, 0, 0])),
+           C(f"Lock Tier {t + 1}", 'y', [-185, z0 + dh / 2], 12, [-465, -455], 'chrome', 'f', **rep(3, [300, 0, 0])),
+           F(f"Number Tier {t + 1}", [-350, -457, z0 + dh - 190, -250, -455, z0 + dh - 150], 'black', 3, 'f', **rep(3, [300, 0, 0]))], sfx)
 add(f, "Staff locker bank, 3 columns x 3 tiers, 900 x 450 x 1800 + sloping top, steel carcass, white doors with vents, cam locks, numbers",
     "IfcFurniture", [("900x1800_3-Tier", "Locker bank 3 columns x 3 tiers, 900 x 450 x 1800 mm, sloping top"),
                      ("900x1800_6-Door", "Locker bank 3 columns x 2 tiers (6 doors), 900 x 450 x 1800 mm, sloping top")], lk,
     {"900 x 450 x 1800 mm + 250 sloping top": A("900x450x1800"), "Column 300 mm, 3 tiers": A(300), "Plinth 100 mm": A(100)},
     "Locker bank modelled as a generic product: grey steel carcass on a black plinth, anti-dust sloping top, nine white doors with vent "
-    "slots, cam locks and number plates. Back at y = 0; geometry is the 3-tier type.")
+    "slots, cam locks and number plates. Back at y = 0; doors per type (3 tiers = 9 doors, 2 tiers = 6 doors).")
 
 f = 'FMC_A_SpecEq_PatientWardrobe'
 pw = [B("Carcass", [-300, -600, 80, 300, 0, 1800], 'mel', 0),
@@ -1020,52 +1035,55 @@ add(f, "Ambulance drop-off canopy 6000 x 9000, steel SHS columns with impact gua
     clearances=[{"n": "Clear Height Check", "shape": "box", "at": [-cx + 150, -cy - 300, 0, cx - 150, cy + 300, 4200], "sub": "Clearance Operation"}])
 
 f = 'FMC_A_GenericModel_Bollard_AmbulanceBay'
-bo = [C("Footing", 'z', [0, 0], 175, [-600, 0], 'conc'),
-      C("Body", 'z', [0, 0], 76, [-600, 1000], 'dark'),
-      T("Dome Cap", 'z', [0, 0], [[0, 1050], [30, 1046], [55, 1035], [70, 1018], [80, 1000], [80, 990], [0, 990]], 'dark'),
-      C("Reflective Band", 'z', [0, 0], 77.5, [820, 900], 'yellow', 'f'),
-      C("Reflective Band Lower", 'z', [0, 0], 77.5, [700, 760], 'yellow', 'f'),
-      T("Ground Collar", 'z', [0, 0], [[76, 0], [110, 0], [110, 10], [76, 25]], 'dark', 'f'),
-      C("Rebar Anchor", 'y', [0, -400], 8, [-180, 180], 'steel', 'm')]
-add(f, "Ambulance bay bollard, 152 mm steel tube, concrete filled, domed cap, two reflective bands, cast into a 350 dia concrete footing",
+def bollard(r):
+    return [C("Body", 'z', [0, 0], r, [-600, 1000], 'dark'),
+            T("Dome Cap", 'z', [0, 0], [[0, 1050], [r * 0.4, 1046], [r * 0.72, 1035], [r * 0.92, 1018], [r + 4, 1000], [r + 4, 990], [0, 990]], 'dark'),
+            C("Reflective Band", 'z', [0, 0], r + 1.5, [820, 900], 'yellow', 'f'),
+            C("Reflective Band Lower", 'z', [0, 0], r + 1.5, [700, 760], 'yellow', 'f'),
+            T("Ground Collar", 'z', [0, 0], [[r, 0], [r + 34, 0], [r + 34, 10], [r, 25]], 'dark', 'f')]
+bo = [C("Footing", 'z', [0, 0], 175, [-600, 0], 'conc'), C("Rebar Anchor", 'y', [0, -400], 8, [-170, 170], 'steel', 'm')]
+bo += only("150_Steel", bollard(76), "150") + only("200_Steel", bollard(110), "200")
+add(f, "Ambulance bay bollard, 152 or 219 mm steel tube, concrete filled, domed cap, two reflective bands, cast into a 350 dia concrete footing",
     "IfcBuildingElementProxy", [("150_Steel", "Steel bollard 152 mm dia, 1000 mm high, concrete filled"),
-                                ("200_Steel", "Steel bollard 200 mm dia, 1000 mm high, concrete filled")], bo,
-    {"Tube 152 mm dia, 1000 mm above ground": A("152x1000"), "Footing 350 dia x 600 deep": A("350x600"), "Reflective bands 80 + 60 mm": A(80)},
-    "Bollard modelled as a generic product: footing below ground (z < 0), painted tube with domed cap, reflective bands, ground collar, "
-    "anchor bar; geometry is the 150 type.", category="Site")
+                                ("200_Steel", "Steel bollard 219 mm dia, 1000 mm high, concrete filled")], bo,
+    {"Tube 152 / 219 mm dia, 1000 mm above ground": A("152/219x1000"), "Footing 350 dia x 600 deep": A("350x600"), "Reflective bands 80 + 60 mm": A(80)},
+    "Bollard modelled as a generic product: footing below ground (z < 0) and anchor bar shared; tube, domed cap, reflective bands and "
+    "ground collar per type.", category="Site")
 
 f = 'FMC_A_GenericModel_Ramp_Stretcher_External'
-G, RISE, LAND, W = 6000, 500, 1800, 1000
-rm = [RT("Ramp Slab", [[0, -150], [0, 0], [G, RISE], [G + LAND, RISE], [G + LAND, -150]], [-W, W], 'conc'),
-      RT("Kerb Left", [[0, 0], [0, 100], [G, RISE + 100], [G + LAND, RISE + 100], [G + LAND, RISE], [G, RISE]], [-W, -W + 100], 'precast', **{}),
-      RT("Kerb Right", [[0, 0], [0, 100], [G, RISE + 100], [G + LAND, RISE + 100], [G + LAND, RISE], [G, RISE]], [W - 100, W], 'precast'),
+RISE, LAND, W = 500, 1800, 1000
+def ramp(G):
+    np_ = G // 1500; dz = RISE * 1500 / G
+    up = lambda z0, z1: [[0, z0], [0, z1], [G, RISE + z1], [G + LAND, RISE + z1], [G + LAND, RISE + z0], [G, RISE + z0]]
+    return [RT("Ramp Slab", [[0, -150], [0, 0], [G, RISE], [G + LAND, RISE], [G + LAND, -150]], [-W, W], 'conc'),
+            RT("Kerb Left", up(0, 100), [-W, -W + 100], 'precast'), RT("Kerb Right", up(0, 100), [W - 100, W], 'precast'),
+            RT("Landing Strip", [[G - 60, RISE - 5], [G - 60, RISE - 2], [G, RISE + 3], [G, RISE]], [-W + 100, W - 100], 'yellow', 'f'),
+            C("Post", 'z', [-W + 50, 300], 24, [100 + 300 * RISE / G, 1100 + 300 * RISE / G], 'ss', **rep(np_, [0, 1500, dz])),
+            C("Post Right", 'z', [W - 50, 300], 24, [100 + 300 * RISE / G, 1100 + 300 * RISE / G], 'ss', **rep(np_, [0, 1500, dz])),
+            C("Landing Post", 'z', [-W + 50, G + 900], 24, [RISE + 100, RISE + 1100], 'ss', **rep(2, [2 * W - 100, 0, 0])),
+            RT("Handrail Upper", [[-300, 975], [-300, 1025]] + up(975, 1025)[1:4] + up(975, 1025)[4:] + [[0, 975]], [-W + 25, -W + 75], 'ss'),
+            RT("Handrail Upper Right", [[-300, 975], [-300, 1025]] + up(975, 1025)[1:4] + up(975, 1025)[4:] + [[0, 975]], [W - 75, W - 25], 'ss'),
+            RT("Handrail Lower", up(575, 625), [-W + 30, -W + 70], 'ss'), RT("Handrail Lower Right", up(575, 625), [W - 70, W - 30], 'ss'),
+            RT("Anti Slip Finish", [[0, 0], [0, 2], [G, RISE + 2], [G, RISE]], [-W + 100, W - 100], 'safety', 'f')]
+rm = only("1in12_Ramp", ramp(6000), "1in12") + only("1in15_Ramp", ramp(7500), "1in15") + [
       RT("Contrast Strip", [[0, 0], [0, 3], [60, 8], [60, 5]], [-W + 100, W - 100], 'yellow', 'f'),
-      RT("Landing Strip", [[G - 60, RISE - 5], [G - 60, RISE - 2], [G, RISE + 3], [G, RISE]], [-W + 100, W - 100], 'yellow', 'f'),
-      C("Post", 'z', [-W + 50, 300], 24, [100 + 25, 1100 + 25], 'ss', **rep(4, [0, 1500, 125])),
-      C("Post Right", 'z', [W - 50, 300], 24, [100 + 25, 1100 + 25], 'ss', **rep(4, [0, 1500, 125])),
-      C("Landing Post", 'z', [-W + 50, G + 900], 24, [RISE + 100, RISE + 1100], 'ss', **rep(2, [2 * W - 100, 0, 0])),
-      RT("Handrail Upper", [[-300, 1000 - 25], [-300, 1000 + 25], [0, 1000 + 25], [G, RISE + 1025], [G + LAND, RISE + 1025], [G + LAND, RISE + 975], [G, RISE + 975], [0, 975]], [-W + 25, -W + 75], 'ss'),
-      RT("Handrail Upper Right", [[-300, 975], [-300, 1025], [0, 1025], [G, RISE + 1025], [G + LAND, RISE + 1025], [G + LAND, RISE + 975], [G, RISE + 975], [0, 975]], [W - 75, W - 25], 'ss'),
-      RT("Handrail Lower", [[0, 575], [0, 625], [G, RISE + 625], [G + LAND, RISE + 625], [G + LAND, RISE + 575], [G, RISE + 575]], [-W + 30, -W + 70], 'ss'),
-      RT("Handrail Lower Right", [[0, 575], [0, 625], [G, RISE + 625], [G + LAND, RISE + 625], [G + LAND, RISE + 575], [G, RISE + 575]], [W - 70, W - 30], 'ss'),
       C("Rail End Return", 'z', [-W + 50, -300], 25, [700, 1025], 'ss', 'f', **rep(2, [2 * W - 100, 0, 0])),
-      RT("Anti Slip Finish", [[0, 0], [0, 2], [G, RISE + 2], [G, RISE]], [-W + 100, W - 100], 'safety', 'f'),
       B("Channel Drain", [-W, -150, -100, W, -50, 0], 'ss', 0, 'f')]
-add(f, "External stretcher ramp 1:12, 2000 wide between kerbs, 500 rise over 6000 going plus 1800 top landing, upstand kerbs, "
+add(f, "External stretcher ramp 1:12 or 1:15, 2000 wide between kerbs, 500 rise plus 1800 top landing, upstand kerbs, "
        "stainless handrails at 1000 and 600 both sides with 300 extensions, contrasting nosings, channel drain",
-    "IfcRamp", [("1in12_Ramp", "External stretcher ramp 1:12, 500 mm rise, 1800 mm wide clear"),
-                ("1in15_Ramp", "External stretcher ramp 1:15, 500 mm rise, 1800 mm wide clear")], rm,
-    {"Gradient 1:12, going 6000 mm, rise 500 mm": A("1:12", "Approved Document M table 2"), "Clear width 1800 mm between handrails": A(1800, "stretcher/bed passing"),
+    "IfcRamp", [("1in12_Ramp", "External stretcher ramp 1:12, 6000 going, 500 mm rise, 1800 mm wide clear"),
+                ("1in15_Ramp", "External stretcher ramp 1:15, 7500 going, 500 mm rise, 1800 mm wide clear")], rm,
+    {"Gradient 1:12 (6000 going) or 1:15 (7500 going), rise 500 mm": A("1:12/1:15", "Approved Document M table 2"), "Clear width 1800 mm between handrails": A(1800, "stretcher/bed passing"),
      "Landing 1800 mm": A(1800, "Approved Document M"), "Handrails 1000 and 600 mm, 300 extensions": A(1000, "Approved Document M / BS 8300-1")},
-    "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, contrast strips, stainless posts "
-    "following the slope (repeat with rise), upper and lower handrails with 300 extensions, end returns, anti-slip finish, channel drain at "
-    "the foot. Geometry is the 1:12 type.", category="Site")
+    "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, stainless posts following the "
+    "slope (repeat with rise), upper and lower handrails with 300 extensions, anti-slip finish per type; foot contrast strip, end "
+    "returns and channel drain shared.", category="Site")
 
 # ================================================================= CLEARANCE HELPERS
 def clearance(fam, sub_key, typ, desc, part, values, about):
     parts = part if isinstance(part, list) else [part]
     for q in parts: q['mat'] = sub_key; q['lod'] = 'mf'
-    add(fam, desc, "IfcBuildingElementProxy", [typ], parts, values, about, category="Generic Models", shared=True,
+    add(fam, desc, "IfcBuildingElementProxy", typ if isinstance(typ, list) else [typ], parts, values, about, category="Generic Models", shared=True,
         keynote_exempt="nested-only clearance helper; not scheduled or costed", clearance_only=True)
 
 clearance('FMC_A_GenericModel_Clearance_TurningCircle', 'clearance_accessibility', ("1500_TurningCircle", "Wheelchair turning circle 1500 mm dia, clearance solid (never printed)"),
@@ -1080,14 +1098,15 @@ clearance('FMC_A_GenericModel_Clearance_BedSpace', 'clearance_accessibility', ("
           {"Perimeter 1200 mm sides and foot": A(1200, "record type; HBN 04-01 bed-space clear zones"), "Bed footprint 2200 x 1000 mm": A("2200x1000", "acute/ICU bed class"),
            "Zone 3400 x 3400 mm overall": A("3400x3400")},
           "U-shaped zone (three boxes) around the bed footprint (left open), bedhead wall at y = 0, 10 mm high, on Clearance Accessibility.")
-clearance('FMC_A_GenericModel_Clearance_DoorApproach', 'clearance_accessibility', ("450_LatchSide", "Latch-side approach zone 450 x 1500 mm"),
-          "Latch-side door approach clearance 450 x 1500 beside the leading edge, pull side (non-plotting)",
-          {"n": "Approach Zone", "shape": "box", "at": [0, -1500, 0, 450, 0, 10]},
-          {"Latch side 450 mm (600 type)": A(450, "ADA 404.2.4 front approach, pull side 455 mm; BS 8300-2 300 mm nib minimum"),
+clearance('FMC_A_GenericModel_Clearance_DoorApproach', 'clearance_accessibility',
+          [("450_LatchSide", "Latch-side approach zone 450 x 1500 mm"), ("600_LatchSide", "Latch-side approach zone 600 x 1500 mm (bed passage doors)")],
+          "Latch-side door approach clearance 450 or 600 x 1500 beside the leading edge, pull side (non-plotting)",
+          [{"n": "Approach Zone 450", "shape": "box", "at": [0, -1500, 0, 450, 0, 10], "only": ["450_LatchSide"]},
+           {"n": "Approach Zone 600", "shape": "box", "at": [0, -1500, 0, 600, 0, 10], "only": ["600_LatchSide"]}],
+          {"Latch side 450 / 600 mm": A("450/600", "ADA 404.2.4 front approach, pull side 455 mm; HBN 00-04 bed passage 600"),
            "Depth 1500 mm": A(1500, "ADA 404.2.4 (1525 mm) / BS 8300-2")},
           "Approach zone from the door's leading edge (x = 0) toward the latch side, from the wall face (y = 0) 1500 deep, 10 mm high, on "
-          "Clearance Accessibility. The 600 type is set by the nesting family; geometry is the 450 type.")
-P[-1]['types'].append({"name": "600_LatchSide", "desc": "Latch-side approach zone 600 x 1500 mm (bed passage doors)"})
+          "Clearance Accessibility; one zone per type.")
 clearance('FMC_A_GenericModel_Clearance_Maintenance', 'clearance_maintenance', ("1000x1000_Box", "Maintenance envelope 1000 wide x 1000 deep x 2000 high"),
           "Equipment maintenance envelope 1000 x 1000 x 2000 in front of the equipment face (non-plotting)",
           {"n": "Maintenance Envelope", "shape": "box", "at": [-500, -1000, 0, 500, 0, 2000]},
@@ -1197,7 +1216,7 @@ if __name__ == '__main__':
         for t in prod['types']:
             import re
             assert re.match(r'^[A-Za-z0-9.x×-]+_[A-Za-z0-9-]+$', t['name']), t['name']
-        for m in prod['materials'].values(): assert m in open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read(), m
+        for m in prod['materials'].values(): assert m is None or m in open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read(), m
         names = [p['n'] for p in fp.expand(prod['parts'])]
         assert len(names) == len(set(names)), [x for x in names if names.count(x) > 1]
         for c in prod.get('connectors', []): assert c['part'] in names, (prod['family'], c['part'])

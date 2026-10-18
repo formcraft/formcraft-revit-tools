@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_M_AirTerminal_Diffuser_Linear_Slot",
  "template": "Metric Generic Model.rft",
- "about": "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs. Reference: query: diffuser linear slot air terminals hospital; images: https://www.google.com/search?tbm=isch&q=diffuser+linear+slot+air+terminals+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Modelled as a generic product: front and rear frame profiles, centre divider, end caps, dark slot throat with pattern controllers in both slots, plenum box with spigot and hanger lugs. Reference: query: diffuser linear slot air terminals hospital; images: https://www.google.com/search?tbm=isch&q=diffuser+linear+slot+air+terminals+hospital; basis: generic product; brand, model and supplier open for review; photo: https://airfoil.com.au/product/linear-slot-diffuser-lsd20/; photo_title: Airfoil Linear Slot Diffuser LSD20; photo_kind: manufacturer",
  "ops": [
   {
    "op": "set_category",
@@ -317,6 +317,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "1200_2Slot/URL",
+   "type": "1200_2Slot",
+   "param": "URL",
+   "value": "https://airfoil.com.au/product/linear-slot-diffuser-lsd20/"
+  },
+  {
+   "op": "set_type_value",
    "name": "1200_2Slot/Default Elevation",
    "type": "1200_2Slot",
    "param": "Default Elevation",
@@ -391,10 +398,38 @@
   },
   {
    "op": "set_type_value",
+   "name": "1500_2Slot/URL",
+   "type": "1500_2Slot",
+   "param": "URL",
+   "value": "https://airfoil.com.au/product/linear-slot-diffuser-lsd20/"
+  },
+  {
+   "op": "set_type_value",
    "name": "1500_2Slot/Default Elevation",
    "type": "1500_2Slot",
    "param": "Default Elevation",
    "value": 2700
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    183,
+    188,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Duct_Galvanised",
+   "param": "Galv Material"
   },
   {
    "op": "add_subcategory",
@@ -461,27 +496,6 @@
   },
   {
    "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    183,
-    188,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Duct_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
    "name": "Coarse Envelope",
    "color": [
     120,
@@ -525,1286 +539,6 @@
    "coarse": true,
    "medium": false,
    "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Front",
-   "points": [
-    [
-     -750,
-     -75
-    ],
-    [
-     750,
-     -75
-    ],
-    [
-     750,
-     -55
-    ],
-    [
-     -750,
-     -55
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Front",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Front",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Rear",
-   "points": [
-    [
-     -750,
-     55
-    ],
-    [
-     750,
-     55
-    ],
-    [
-     750,
-     75
-    ],
-    [
-     -750,
-     75
-    ]
-   ],
-   "start": -15,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Rear",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Rear",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Rear",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Divider",
-   "points": [
-    [
-     -750,
-     -8
-    ],
-    [
-     750,
-     -8
-    ],
-    [
-     750,
-     8
-    ],
-    [
-     -750,
-     8
-    ]
-   ],
-   "start": -18,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Divider",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Divider",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Divider",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 1",
-   "points": [
-    [
-     -760,
-     -75
-    ],
-    [
-     -750,
-     -75
-    ],
-    [
-     -750,
-     75
-    ],
-    [
-     -760,
-     75
-    ]
-   ],
-   "start": -16,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 1",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 1",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Cap 2",
-   "points": [
-    [
-     750,
-     -75
-    ],
-    [
-     760,
-     -75
-    ],
-    [
-     760,
-     75
-    ],
-    [
-     750,
-     75
-    ]
-   ],
-   "start": -16,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Cap 2",
-   "subcategory": "Epw"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Cap 2",
-   "param": "Epw Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Cap 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Slot Throat",
-   "points": [
-    [
-     -750,
-     -55
-    ],
-    [
-     750,
-     -55
-    ],
-    [
-     750,
-     55
-    ],
-    [
-     -750,
-     55
-    ]
-   ],
-   "start": -6,
-   "end": -1
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Slot Throat",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Slot Throat",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Slot Throat",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 1",
-   "points": [
-    [
-     -735,
-     -50
-    ],
-    [
-     -705,
-     -50
-    ],
-    [
-     -705,
-     -14
-    ],
-    [
-     -735,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 2",
-   "points": [
-    [
-     -610,
-     -50
-    ],
-    [
-     -580,
-     -50
-    ],
-    [
-     -580,
-     -14
-    ],
-    [
-     -610,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 3",
-   "points": [
-    [
-     -485,
-     -50
-    ],
-    [
-     -455,
-     -50
-    ],
-    [
-     -455,
-     -14
-    ],
-    [
-     -485,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 4",
-   "points": [
-    [
-     -360,
-     -50
-    ],
-    [
-     -330,
-     -50
-    ],
-    [
-     -330,
-     -14
-    ],
-    [
-     -360,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 5",
-   "points": [
-    [
-     -235,
-     -50
-    ],
-    [
-     -205,
-     -50
-    ],
-    [
-     -205,
-     -14
-    ],
-    [
-     -235,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 6",
-   "points": [
-    [
-     -110,
-     -50
-    ],
-    [
-     -80,
-     -50
-    ],
-    [
-     -80,
-     -14
-    ],
-    [
-     -110,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 7",
-   "points": [
-    [
-     15,
-     -50
-    ],
-    [
-     45,
-     -50
-    ],
-    [
-     45,
-     -14
-    ],
-    [
-     15,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 7",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 7",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 8",
-   "points": [
-    [
-     140,
-     -50
-    ],
-    [
-     170,
-     -50
-    ],
-    [
-     170,
-     -14
-    ],
-    [
-     140,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 8",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 8",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 9",
-   "points": [
-    [
-     265,
-     -50
-    ],
-    [
-     295,
-     -50
-    ],
-    [
-     295,
-     -14
-    ],
-    [
-     265,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 9",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 9",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 10",
-   "points": [
-    [
-     390,
-     -50
-    ],
-    [
-     420,
-     -50
-    ],
-    [
-     420,
-     -14
-    ],
-    [
-     390,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 10",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 10",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 11",
-   "points": [
-    [
-     515,
-     -50
-    ],
-    [
-     545,
-     -50
-    ],
-    [
-     545,
-     -14
-    ],
-    [
-     515,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 11",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 11",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Front 12",
-   "points": [
-    [
-     640,
-     -50
-    ],
-    [
-     670,
-     -50
-    ],
-    [
-     670,
-     -14
-    ],
-    [
-     640,
-     -14
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Front 12",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Front 12",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Front 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 1",
-   "points": [
-    [
-     -735,
-     14
-    ],
-    [
-     -705,
-     14
-    ],
-    [
-     -705,
-     50
-    ],
-    [
-     -735,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 1",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 1",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 2",
-   "points": [
-    [
-     -610,
-     14
-    ],
-    [
-     -580,
-     14
-    ],
-    [
-     -580,
-     50
-    ],
-    [
-     -610,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 2",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 2",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 3",
-   "points": [
-    [
-     -485,
-     14
-    ],
-    [
-     -455,
-     14
-    ],
-    [
-     -455,
-     50
-    ],
-    [
-     -485,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 3",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 3",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 4",
-   "points": [
-    [
-     -360,
-     14
-    ],
-    [
-     -330,
-     14
-    ],
-    [
-     -330,
-     50
-    ],
-    [
-     -360,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 4",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 4",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 5",
-   "points": [
-    [
-     -235,
-     14
-    ],
-    [
-     -205,
-     14
-    ],
-    [
-     -205,
-     50
-    ],
-    [
-     -235,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 5",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 5",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 6",
-   "points": [
-    [
-     -110,
-     14
-    ],
-    [
-     -80,
-     14
-    ],
-    [
-     -80,
-     50
-    ],
-    [
-     -110,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 6",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 6",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 7",
-   "points": [
-    [
-     15,
-     14
-    ],
-    [
-     45,
-     14
-    ],
-    [
-     45,
-     50
-    ],
-    [
-     15,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 7",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 7",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 8",
-   "points": [
-    [
-     140,
-     14
-    ],
-    [
-     170,
-     14
-    ],
-    [
-     170,
-     50
-    ],
-    [
-     140,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 8",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 8",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 9",
-   "points": [
-    [
-     265,
-     14
-    ],
-    [
-     295,
-     14
-    ],
-    [
-     295,
-     50
-    ],
-    [
-     265,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 9",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 9",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 9",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 10",
-   "points": [
-    [
-     390,
-     14
-    ],
-    [
-     420,
-     14
-    ],
-    [
-     420,
-     50
-    ],
-    [
-     390,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 10",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 10",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 10",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 11",
-   "points": [
-    [
-     515,
-     14
-    ],
-    [
-     545,
-     14
-    ],
-    [
-     545,
-     50
-    ],
-    [
-     515,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 11",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 11",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 11",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pattern Controller Rear 12",
-   "points": [
-    [
-     640,
-     14
-    ],
-    [
-     670,
-     14
-    ],
-    [
-     670,
-     50
-    ],
-    [
-     640,
-     50
-    ]
-   ],
-   "start": -13,
-   "end": -6
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pattern Controller Rear 12",
-   "subcategory": "Mgrey"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pattern Controller Rear 12",
-   "param": "Mgrey Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pattern Controller Rear 12",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Plenum Box",
-   "points": [
-    [
-     -60,
-     0
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     75,
-     60
-    ],
-    [
-     75,
-     250
-    ],
-    [
-     -75,
-     250
-    ],
-    [
-     -75,
-     60
-    ]
-   ],
-   "start": -740,
-   "end": 740,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Plenum Box",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Plenum Box",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Plenum Box",
-   "coarse": false,
-   "medium": true,
-   "fine": true
   },
   {
    "op": "extrusion",
@@ -1969,48 +703,2690 @@
   },
   {
    "op": "extrusion",
-   "name": "Hanger Lug 1",
+   "name": "Frame Front 1200",
    "points": [
     [
-     -600,
-     -85
+     -600.0,
+     -75
     ],
     [
-     -560,
-     -85
+     600.0,
+     -75
     ],
     [
-     -560,
-     -70
+     600.0,
+     -55
     ],
     [
-     -600,
-     -70
+     -600.0,
+     -55
     ]
    ],
-   "start": 200,
-   "end": 240
+   "start": -15,
+   "end": 0
   },
   {
    "op": "set_subcategory",
-   "name": "Hanger Lug 1",
-   "subcategory": "Galv"
+   "name": "Frame Front 1200",
+   "subcategory": "Epw"
   },
   {
    "op": "set_material_param",
-   "name": "Hanger Lug 1",
-   "param": "Galv Material"
+   "name": "Frame Front 1200",
+   "param": "Epw Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hanger Lug 1",
+   "name": "Frame Front 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Rear 1200",
+   "points": [
+    [
+     -600.0,
+     55
+    ],
+    [
+     600.0,
+     55
+    ],
+    [
+     600.0,
+     75
+    ],
+    [
+     -600.0,
+     75
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Rear 1200",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Rear 1200",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Rear 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider 1200",
+   "points": [
+    [
+     -600.0,
+     -8
+    ],
+    [
+     600.0,
+     -8
+    ],
+    [
+     600.0,
+     8
+    ],
+    [
+     -600.0,
+     8
+    ]
+   ],
+   "start": -18,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider 1200",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider 1200",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap 1200 1",
+   "points": [
+    [
+     -608.0,
+     -75
+    ],
+    [
+     -600.0,
+     -75
+    ],
+    [
+     -600.0,
+     75
+    ],
+    [
+     -608.0,
+     75
+    ]
+   ],
+   "start": -16,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap 1200 1",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap 1200 1",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap 1200 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap 1200 2",
+   "points": [
+    [
+     600.0,
+     -75
+    ],
+    [
+     608.0,
+     -75
+    ],
+    [
+     608.0,
+     75
+    ],
+    [
+     600.0,
+     75
+    ]
+   ],
+   "start": -16,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap 1200 2",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap 1200 2",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap 1200 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slot Throat 1200",
+   "points": [
+    [
+     -600.0,
+     -55
+    ],
+    [
+     600.0,
+     -55
+    ],
+    [
+     600.0,
+     55
+    ],
+    [
+     -600.0,
+     55
+    ]
+   ],
+   "start": -6,
+   "end": -1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slot Throat 1200",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slot Throat 1200",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slot Throat 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 1",
+   "points": [
+    [
+     -588.0,
+     -50
+    ],
+    [
+     -564.0,
+     -50
+    ],
+    [
+     -564.0,
+     -14
+    ],
+    [
+     -588.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 1",
    "coarse": false,
    "medium": false,
    "fine": true
   },
   {
    "op": "extrusion",
-   "name": "Hanger Lug 2",
+   "name": "Pattern Controller Front 1200 2",
+   "points": [
+    [
+     -488.0,
+     -50
+    ],
+    [
+     -464.0,
+     -50
+    ],
+    [
+     -464.0,
+     -14
+    ],
+    [
+     -488.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 3",
+   "points": [
+    [
+     -388.0,
+     -50
+    ],
+    [
+     -364.0,
+     -50
+    ],
+    [
+     -364.0,
+     -14
+    ],
+    [
+     -388.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 4",
+   "points": [
+    [
+     -288.0,
+     -50
+    ],
+    [
+     -264.0,
+     -50
+    ],
+    [
+     -264.0,
+     -14
+    ],
+    [
+     -288.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 5",
+   "points": [
+    [
+     -188.0,
+     -50
+    ],
+    [
+     -164.0,
+     -50
+    ],
+    [
+     -164.0,
+     -14
+    ],
+    [
+     -188.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 6",
+   "points": [
+    [
+     -88.0,
+     -50
+    ],
+    [
+     -64.0,
+     -50
+    ],
+    [
+     -64.0,
+     -14
+    ],
+    [
+     -88.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 7",
+   "points": [
+    [
+     12.0,
+     -50
+    ],
+    [
+     36.0,
+     -50
+    ],
+    [
+     36.0,
+     -14
+    ],
+    [
+     12.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 8",
+   "points": [
+    [
+     112.0,
+     -50
+    ],
+    [
+     136.0,
+     -50
+    ],
+    [
+     136.0,
+     -14
+    ],
+    [
+     112.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 9",
+   "points": [
+    [
+     212.0,
+     -50
+    ],
+    [
+     236.0,
+     -50
+    ],
+    [
+     236.0,
+     -14
+    ],
+    [
+     212.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 10",
+   "points": [
+    [
+     312.0,
+     -50
+    ],
+    [
+     336.0,
+     -50
+    ],
+    [
+     336.0,
+     -14
+    ],
+    [
+     312.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 11",
+   "points": [
+    [
+     412.0,
+     -50
+    ],
+    [
+     436.0,
+     -50
+    ],
+    [
+     436.0,
+     -14
+    ],
+    [
+     412.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1200 12",
+   "points": [
+    [
+     512.0,
+     -50
+    ],
+    [
+     536.0,
+     -50
+    ],
+    [
+     536.0,
+     -14
+    ],
+    [
+     512.0,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1200 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1200 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1200 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 1",
+   "points": [
+    [
+     -588.0,
+     14
+    ],
+    [
+     -564.0,
+     14
+    ],
+    [
+     -564.0,
+     50
+    ],
+    [
+     -588.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 2",
+   "points": [
+    [
+     -488.0,
+     14
+    ],
+    [
+     -464.0,
+     14
+    ],
+    [
+     -464.0,
+     50
+    ],
+    [
+     -488.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 3",
+   "points": [
+    [
+     -388.0,
+     14
+    ],
+    [
+     -364.0,
+     14
+    ],
+    [
+     -364.0,
+     50
+    ],
+    [
+     -388.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 4",
+   "points": [
+    [
+     -288.0,
+     14
+    ],
+    [
+     -264.0,
+     14
+    ],
+    [
+     -264.0,
+     50
+    ],
+    [
+     -288.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 5",
+   "points": [
+    [
+     -188.0,
+     14
+    ],
+    [
+     -164.0,
+     14
+    ],
+    [
+     -164.0,
+     50
+    ],
+    [
+     -188.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 6",
+   "points": [
+    [
+     -88.0,
+     14
+    ],
+    [
+     -64.0,
+     14
+    ],
+    [
+     -64.0,
+     50
+    ],
+    [
+     -88.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 7",
+   "points": [
+    [
+     12.0,
+     14
+    ],
+    [
+     36.0,
+     14
+    ],
+    [
+     36.0,
+     50
+    ],
+    [
+     12.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 8",
+   "points": [
+    [
+     112.0,
+     14
+    ],
+    [
+     136.0,
+     14
+    ],
+    [
+     136.0,
+     50
+    ],
+    [
+     112.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 9",
+   "points": [
+    [
+     212.0,
+     14
+    ],
+    [
+     236.0,
+     14
+    ],
+    [
+     236.0,
+     50
+    ],
+    [
+     212.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 10",
+   "points": [
+    [
+     312.0,
+     14
+    ],
+    [
+     336.0,
+     14
+    ],
+    [
+     336.0,
+     50
+    ],
+    [
+     312.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 11",
+   "points": [
+    [
+     412.0,
+     14
+    ],
+    [
+     436.0,
+     14
+    ],
+    [
+     436.0,
+     50
+    ],
+    [
+     412.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1200 12",
+   "points": [
+    [
+     512.0,
+     14
+    ],
+    [
+     536.0,
+     14
+    ],
+    [
+     536.0,
+     50
+    ],
+    [
+     512.0,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1200 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1200 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1200 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plenum Box 1200",
+   "points": [
+    [
+     -60,
+     0
+    ],
+    [
+     60,
+     0
+    ],
+    [
+     75,
+     60
+    ],
+    [
+     75,
+     250
+    ],
+    [
+     -75,
+     250
+    ],
+    [
+     -75,
+     60
+    ]
+   ],
+   "start": -592.0,
+   "end": 592.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plenum Box 1200",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plenum Box 1200",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plenum Box 1200",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Lug 1200 1",
+   "points": [
+    [
+     -480.0,
+     -85
+    ],
+    [
+     -448.0,
+     -85
+    ],
+    [
+     -448.0,
+     -70
+    ],
+    [
+     -480.0,
+     -70
+    ]
+   ],
+   "start": 200,
+   "end": 240
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Lug 1200 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Lug 1200 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Lug 1200 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Lug 1200 2",
+   "points": [
+    [
+     448.0,
+     -85
+    ],
+    [
+     480.0,
+     -85
+    ],
+    [
+     480.0,
+     -70
+    ],
+    [
+     448.0,
+     -70
+    ]
+   ],
+   "start": 200,
+   "end": 240
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Lug 1200 2",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Lug 1200 2",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Lug 1200 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Front 1500",
+   "points": [
+    [
+     -750,
+     -75
+    ],
+    [
+     750,
+     -75
+    ],
+    [
+     750,
+     -55
+    ],
+    [
+     -750,
+     -55
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Front 1500",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Front 1500",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Front 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Frame Rear 1500",
+   "points": [
+    [
+     -750,
+     55
+    ],
+    [
+     750,
+     55
+    ],
+    [
+     750,
+     75
+    ],
+    [
+     -750,
+     75
+    ]
+   ],
+   "start": -15,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Frame Rear 1500",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Frame Rear 1500",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Frame Rear 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Divider 1500",
+   "points": [
+    [
+     -750,
+     -8
+    ],
+    [
+     750,
+     -8
+    ],
+    [
+     750,
+     8
+    ],
+    [
+     -750,
+     8
+    ]
+   ],
+   "start": -18,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Divider 1500",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Divider 1500",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Divider 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap 1500 1",
+   "points": [
+    [
+     -760,
+     -75
+    ],
+    [
+     -750,
+     -75
+    ],
+    [
+     -750,
+     75
+    ],
+    [
+     -760,
+     75
+    ]
+   ],
+   "start": -16,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap 1500 1",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap 1500 1",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap 1500 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "End Cap 1500 2",
+   "points": [
+    [
+     750,
+     -75
+    ],
+    [
+     760,
+     -75
+    ],
+    [
+     760,
+     75
+    ],
+    [
+     750,
+     75
+    ]
+   ],
+   "start": -16,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "End Cap 1500 2",
+   "subcategory": "Epw"
+  },
+  {
+   "op": "set_material_param",
+   "name": "End Cap 1500 2",
+   "param": "Epw Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "End Cap 1500 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Slot Throat 1500",
+   "points": [
+    [
+     -750,
+     -55
+    ],
+    [
+     750,
+     -55
+    ],
+    [
+     750,
+     55
+    ],
+    [
+     -750,
+     55
+    ]
+   ],
+   "start": -6,
+   "end": -1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Slot Throat 1500",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Slot Throat 1500",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Slot Throat 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 1",
+   "points": [
+    [
+     -735,
+     -50
+    ],
+    [
+     -705,
+     -50
+    ],
+    [
+     -705,
+     -14
+    ],
+    [
+     -735,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 2",
+   "points": [
+    [
+     -610,
+     -50
+    ],
+    [
+     -580,
+     -50
+    ],
+    [
+     -580,
+     -14
+    ],
+    [
+     -610,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 3",
+   "points": [
+    [
+     -485,
+     -50
+    ],
+    [
+     -455,
+     -50
+    ],
+    [
+     -455,
+     -14
+    ],
+    [
+     -485,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 4",
+   "points": [
+    [
+     -360,
+     -50
+    ],
+    [
+     -330,
+     -50
+    ],
+    [
+     -330,
+     -14
+    ],
+    [
+     -360,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 5",
+   "points": [
+    [
+     -235,
+     -50
+    ],
+    [
+     -205,
+     -50
+    ],
+    [
+     -205,
+     -14
+    ],
+    [
+     -235,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 6",
+   "points": [
+    [
+     -110,
+     -50
+    ],
+    [
+     -80,
+     -50
+    ],
+    [
+     -80,
+     -14
+    ],
+    [
+     -110,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 7",
+   "points": [
+    [
+     15,
+     -50
+    ],
+    [
+     45,
+     -50
+    ],
+    [
+     45,
+     -14
+    ],
+    [
+     15,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 8",
+   "points": [
+    [
+     140,
+     -50
+    ],
+    [
+     170,
+     -50
+    ],
+    [
+     170,
+     -14
+    ],
+    [
+     140,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 9",
+   "points": [
+    [
+     265,
+     -50
+    ],
+    [
+     295,
+     -50
+    ],
+    [
+     295,
+     -14
+    ],
+    [
+     265,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 10",
+   "points": [
+    [
+     390,
+     -50
+    ],
+    [
+     420,
+     -50
+    ],
+    [
+     420,
+     -14
+    ],
+    [
+     390,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 11",
+   "points": [
+    [
+     515,
+     -50
+    ],
+    [
+     545,
+     -50
+    ],
+    [
+     545,
+     -14
+    ],
+    [
+     515,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Front 1500 12",
+   "points": [
+    [
+     640,
+     -50
+    ],
+    [
+     670,
+     -50
+    ],
+    [
+     670,
+     -14
+    ],
+    [
+     640,
+     -14
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Front 1500 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Front 1500 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Front 1500 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 1",
+   "points": [
+    [
+     -735,
+     14
+    ],
+    [
+     -705,
+     14
+    ],
+    [
+     -705,
+     50
+    ],
+    [
+     -735,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 1",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 1",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 2",
+   "points": [
+    [
+     -610,
+     14
+    ],
+    [
+     -580,
+     14
+    ],
+    [
+     -580,
+     50
+    ],
+    [
+     -610,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 2",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 2",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 3",
+   "points": [
+    [
+     -485,
+     14
+    ],
+    [
+     -455,
+     14
+    ],
+    [
+     -455,
+     50
+    ],
+    [
+     -485,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 3",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 3",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 4",
+   "points": [
+    [
+     -360,
+     14
+    ],
+    [
+     -330,
+     14
+    ],
+    [
+     -330,
+     50
+    ],
+    [
+     -360,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 4",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 4",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 5",
+   "points": [
+    [
+     -235,
+     14
+    ],
+    [
+     -205,
+     14
+    ],
+    [
+     -205,
+     50
+    ],
+    [
+     -235,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 5",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 5",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 6",
+   "points": [
+    [
+     -110,
+     14
+    ],
+    [
+     -80,
+     14
+    ],
+    [
+     -80,
+     50
+    ],
+    [
+     -110,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 6",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 6",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 7",
+   "points": [
+    [
+     15,
+     14
+    ],
+    [
+     45,
+     14
+    ],
+    [
+     45,
+     50
+    ],
+    [
+     15,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 7",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 7",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 8",
+   "points": [
+    [
+     140,
+     14
+    ],
+    [
+     170,
+     14
+    ],
+    [
+     170,
+     50
+    ],
+    [
+     140,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 8",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 8",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 9",
+   "points": [
+    [
+     265,
+     14
+    ],
+    [
+     295,
+     14
+    ],
+    [
+     295,
+     50
+    ],
+    [
+     265,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 9",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 9",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 10",
+   "points": [
+    [
+     390,
+     14
+    ],
+    [
+     420,
+     14
+    ],
+    [
+     420,
+     50
+    ],
+    [
+     390,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 10",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 10",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 11",
+   "points": [
+    [
+     515,
+     14
+    ],
+    [
+     545,
+     14
+    ],
+    [
+     545,
+     50
+    ],
+    [
+     515,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 11",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 11",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Pattern Controller Rear 1500 12",
+   "points": [
+    [
+     640,
+     14
+    ],
+    [
+     670,
+     14
+    ],
+    [
+     670,
+     50
+    ],
+    [
+     640,
+     50
+    ]
+   ],
+   "start": -13,
+   "end": -6
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Pattern Controller Rear 1500 12",
+   "subcategory": "Mgrey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Pattern Controller Rear 1500 12",
+   "param": "Mgrey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Pattern Controller Rear 1500 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Plenum Box 1500",
+   "points": [
+    [
+     -60,
+     0
+    ],
+    [
+     60,
+     0
+    ],
+    [
+     75,
+     60
+    ],
+    [
+     75,
+     250
+    ],
+    [
+     -75,
+     250
+    ],
+    [
+     -75,
+     60
+    ]
+   ],
+   "start": -740,
+   "end": 740,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Plenum Box 1500",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Plenum Box 1500",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Plenum Box 1500",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Lug 1500 1",
+   "points": [
+    [
+     -600,
+     -85
+    ],
+    [
+     -560,
+     -85
+    ],
+    [
+     -560,
+     -70
+    ],
+    [
+     -600,
+     -70
+    ]
+   ],
+   "start": 200,
+   "end": 240
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hanger Lug 1500 1",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hanger Lug 1500 1",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hanger Lug 1500 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hanger Lug 1500 2",
    "points": [
     [
      560,
@@ -2034,20 +3410,456 @@
   },
   {
    "op": "set_subcategory",
-   "name": "Hanger Lug 2",
+   "name": "Hanger Lug 1500 2",
    "subcategory": "Galv"
   },
   {
    "op": "set_material_param",
-   "name": "Hanger Lug 2",
+   "name": "Hanger Lug 1500 2",
    "param": "Galv Material"
   },
   {
    "op": "set_visibility",
-   "name": "Hanger Lug 2",
+   "name": "Hanger Lug 1500 2",
    "coarse": false,
    "medium": false,
    "fine": true
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1200_2Slot",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Slot/Show 1200_2Slot",
+   "type": "1200_2Slot",
+   "param": "Show 1200_2Slot",
+   "value": true
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_2Slot/Show 1200_2Slot",
+   "type": "1500_2Slot",
+   "param": "Show 1200_2Slot",
+   "value": false
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Front 1200/Visible",
+   "solid": "Frame Front 1200",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Rear 1200/Visible",
+   "solid": "Frame Rear 1200",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider 1200/Visible",
+   "solid": "Divider 1200",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap 1200 1/Visible",
+   "solid": "End Cap 1200 1",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap 1200 2/Visible",
+   "solid": "End Cap 1200 2",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slot Throat 1200/Visible",
+   "solid": "Slot Throat 1200",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 1/Visible",
+   "solid": "Pattern Controller Front 1200 1",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 2/Visible",
+   "solid": "Pattern Controller Front 1200 2",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 3/Visible",
+   "solid": "Pattern Controller Front 1200 3",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 4/Visible",
+   "solid": "Pattern Controller Front 1200 4",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 5/Visible",
+   "solid": "Pattern Controller Front 1200 5",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 6/Visible",
+   "solid": "Pattern Controller Front 1200 6",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 7/Visible",
+   "solid": "Pattern Controller Front 1200 7",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 8/Visible",
+   "solid": "Pattern Controller Front 1200 8",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 9/Visible",
+   "solid": "Pattern Controller Front 1200 9",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 10/Visible",
+   "solid": "Pattern Controller Front 1200 10",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 11/Visible",
+   "solid": "Pattern Controller Front 1200 11",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1200 12/Visible",
+   "solid": "Pattern Controller Front 1200 12",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 1/Visible",
+   "solid": "Pattern Controller Rear 1200 1",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 2/Visible",
+   "solid": "Pattern Controller Rear 1200 2",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 3/Visible",
+   "solid": "Pattern Controller Rear 1200 3",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 4/Visible",
+   "solid": "Pattern Controller Rear 1200 4",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 5/Visible",
+   "solid": "Pattern Controller Rear 1200 5",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 6/Visible",
+   "solid": "Pattern Controller Rear 1200 6",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 7/Visible",
+   "solid": "Pattern Controller Rear 1200 7",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 8/Visible",
+   "solid": "Pattern Controller Rear 1200 8",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 9/Visible",
+   "solid": "Pattern Controller Rear 1200 9",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 10/Visible",
+   "solid": "Pattern Controller Rear 1200 10",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 11/Visible",
+   "solid": "Pattern Controller Rear 1200 11",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1200 12/Visible",
+   "solid": "Pattern Controller Rear 1200 12",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plenum Box 1200/Visible",
+   "solid": "Plenum Box 1200",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanger Lug 1200 1/Visible",
+   "solid": "Hanger Lug 1200 1",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanger Lug 1200 2/Visible",
+   "solid": "Hanger Lug 1200 2",
+   "param": "Show 1200_2Slot"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Show 1500_2Slot",
+   "type": "YesNo",
+   "group": "Graphics"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1200_2Slot/Show 1500_2Slot",
+   "type": "1200_2Slot",
+   "param": "Show 1500_2Slot",
+   "value": false
+  },
+  {
+   "op": "set_type_value",
+   "name": "1500_2Slot/Show 1500_2Slot",
+   "type": "1500_2Slot",
+   "param": "Show 1500_2Slot",
+   "value": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Front 1500/Visible",
+   "solid": "Frame Front 1500",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Frame Rear 1500/Visible",
+   "solid": "Frame Rear 1500",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Divider 1500/Visible",
+   "solid": "Divider 1500",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap 1500 1/Visible",
+   "solid": "End Cap 1500 1",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "End Cap 1500 2/Visible",
+   "solid": "End Cap 1500 2",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Slot Throat 1500/Visible",
+   "solid": "Slot Throat 1500",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 1/Visible",
+   "solid": "Pattern Controller Front 1500 1",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 2/Visible",
+   "solid": "Pattern Controller Front 1500 2",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 3/Visible",
+   "solid": "Pattern Controller Front 1500 3",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 4/Visible",
+   "solid": "Pattern Controller Front 1500 4",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 5/Visible",
+   "solid": "Pattern Controller Front 1500 5",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 6/Visible",
+   "solid": "Pattern Controller Front 1500 6",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 7/Visible",
+   "solid": "Pattern Controller Front 1500 7",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 8/Visible",
+   "solid": "Pattern Controller Front 1500 8",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 9/Visible",
+   "solid": "Pattern Controller Front 1500 9",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 10/Visible",
+   "solid": "Pattern Controller Front 1500 10",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 11/Visible",
+   "solid": "Pattern Controller Front 1500 11",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Front 1500 12/Visible",
+   "solid": "Pattern Controller Front 1500 12",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 1/Visible",
+   "solid": "Pattern Controller Rear 1500 1",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 2/Visible",
+   "solid": "Pattern Controller Rear 1500 2",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 3/Visible",
+   "solid": "Pattern Controller Rear 1500 3",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 4/Visible",
+   "solid": "Pattern Controller Rear 1500 4",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 5/Visible",
+   "solid": "Pattern Controller Rear 1500 5",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 6/Visible",
+   "solid": "Pattern Controller Rear 1500 6",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 7/Visible",
+   "solid": "Pattern Controller Rear 1500 7",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 8/Visible",
+   "solid": "Pattern Controller Rear 1500 8",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 9/Visible",
+   "solid": "Pattern Controller Rear 1500 9",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 10/Visible",
+   "solid": "Pattern Controller Rear 1500 10",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 11/Visible",
+   "solid": "Pattern Controller Rear 1500 11",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Pattern Controller Rear 1500 12/Visible",
+   "solid": "Pattern Controller Rear 1500 12",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Plenum Box 1500/Visible",
+   "solid": "Plenum Box 1500",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanger Lug 1500 1/Visible",
+   "solid": "Hanger Lug 1500 1",
+   "param": "Show 1500_2Slot"
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Hanger Lug 1500 2/Visible",
+   "solid": "Hanger Lug 1500 2",
+   "param": "Show 1500_2Slot"
   },
   {
    "op": "add_connector",

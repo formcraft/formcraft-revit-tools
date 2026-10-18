@@ -2,7 +2,7 @@
  "schema": "fmc-recipe/0.1",
  "family": "FMC_P_PlumbingEq_Autoclave_Benchtop",
  "template": "Metric Generic Model.rft",
- "about": "Bench autoclave modelled as a generic product: body, bezel, round door with seal ring and handle, display, buttons, LED, reservoir lid, side vents, feet, fill and drain ports. Sits on the bench (z = 0 at worktop). Reference: query: autoclave benchtop plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=autoclave+benchtop+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "about": "Bench autoclave modelled as a generic product: body, bezel, round stainless door with seal ring and locking handle, display and program buttons, power LED, top water-reservoir lid, side vents, rubber feet, and fill and drain ports at the back. It sits on the bench (z = 0 at the worktop). Reference: query: autoclave benchtop plumbing equipment hospital; images: https://www.google.com/search?tbm=isch&q=autoclave+benchtop+plumbing+equipment+hospital; basis: generic product; brand, model and supplier open for review; photo: https://proscitech.com.au/products/b-class-autoclaves-135c; photo_title: B-class autoclaves, +135C; photo_kind: supplier",
  "ops": [
   {
    "op": "set_category",
@@ -134,6 +134,13 @@
   },
   {
    "op": "set_type_value",
+   "name": "23L_Benchtop/URL",
+   "type": "23L_Benchtop",
+   "param": "URL",
+   "value": "https://proscitech.com.au/products/b-class-autoclaves-135c"
+  },
+  {
+   "op": "set_type_value",
    "name": "23L_Benchtop/Voltage",
    "type": "23L_Benchtop",
    "param": "Voltage",
@@ -229,6 +236,27 @@
    "op": "add_material",
    "name": "FMC_Plastic_ABS_Black",
    "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Display",
+   "color": [
+    17,
+    22,
+    28
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Display Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Display Material"
   },
   {
    "op": "add_subcategory",
@@ -852,12 +880,12 @@
   {
    "op": "set_subcategory",
    "name": "Display",
-   "subcategory": "Black"
+   "subcategory": "Display"
   },
   {
    "op": "set_material_param",
    "name": "Display",
-   "param": "Black Material"
+   "param": "Display Material"
   },
   {
    "op": "set_visibility",
@@ -1379,10 +1407,6 @@
      443.99
     ],
     [
-     150.0,
-     444.01
-    ],
-    [
      149.7,
      445.54
     ],
@@ -1417,10 +1441,6 @@
     [
      -150.0,
      444.01
-    ],
-    [
-     -150.0,
-     443.99
     ],
     [
      -149.7,

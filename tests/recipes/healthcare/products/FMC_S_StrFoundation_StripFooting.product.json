@@ -22,32 +22,6 @@
  },
  "parts": [
   {
-   "n": "Blinding",
-   "shape": "box",
-   "at": [
-    -1500,
-    -350,
-    -250,
-    1500,
-    350,
-    -200
-   ],
-   "mat": "blind"
-  },
-  {
-   "n": "Strip",
-   "shape": "box",
-   "at": [
-    -1500,
-    -300,
-    -200,
-    1500,
-    300,
-    0
-   ],
-   "mat": "conc"
-  },
-  {
    "n": "Wall Setting-out Line",
    "shape": "box",
    "at": [
@@ -74,16 +48,83 @@
    ],
    "mat": "white",
    "lod": "f"
+  },
+  {
+   "n": "Blinding 600",
+   "shape": "box",
+   "at": [
+    -1500,
+    -350,
+    -250,
+    1500,
+    350,
+    -200
+   ],
+   "mat": "blind",
+   "only": [
+    "600_Strip"
+   ]
+  },
+  {
+   "n": "Strip 600",
+   "shape": "box",
+   "at": [
+    -1500,
+    -300,
+    -200,
+    1500,
+    300,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "600_Strip"
+   ]
+  },
+  {
+   "n": "Blinding 900",
+   "shape": "box",
+   "at": [
+    -1500,
+    -500,
+    -300,
+    1500,
+    500,
+    -250
+   ],
+   "mat": "blind",
+   "only": [
+    "900_Strip"
+   ]
+  },
+  {
+   "n": "Strip 900",
+   "shape": "box",
+   "at": [
+    -1500,
+    -450,
+    -250,
+    1500,
+    450,
+    0
+   ],
+   "mat": "conc",
+   "only": [
+    "900_Strip"
+   ]
   }
  ],
  "reference": {
   "query": "str foundation strip footing structural foundations hospital",
   "images": "https://www.google.com/search?tbm=isch&q=str+foundation+strip+footing+structural+foundations+hospital",
-  "basis": "generic product; brand, model and supplier open for review"
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.infrabuild.com/reinforcing/products/reinforcing-bar/footing-cages/",
+  "photo_title": "Footing cages (InfraBuild)",
+  "photo_kind": "manufacturer"
  },
  "values": {
-  "Strip 600 x 200 mm (geometry)": {
-   "value": "600x200",
+  "Strips 600 x 200 and 900 x 250 mm (one per type)": {
+   "value": "600x200/900x250",
    "source_status": "assumed",
    "source": "typical size, engineer to confirm"
   },
@@ -98,5 +139,5 @@
    "source": "typical foundation wall"
   }
  },
- "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible."
+ "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible. Each type has its own geometry where it differs (parts with 'only'); the rest is shared."
 }

@@ -20,22 +20,16 @@ MAT = {
     'cable': 'FMC_Plastic_ArmouredCable_Black', 'castor': 'FMC_Plastic_Nylon_CastorGrey', 'china': 'FMC_Ceramic_VitreousChina_White',
     'struct': 'FMC_Metal_StructuralSteel_S275', 'conduit': 'FMC_Plastic_Conduit_White', 'tray': 'FMC_Metal_CableTray_Galvanised',
     # stand-ins until the kit has the right finish (see batches/E_electrical.materials_needed.json)
-    'redsteel': 'FMC_Metal_SprinklerPipe_RedPainted',      # -> FMC_Metal_Steel_Painted_Red
-    'redabs': 'FMC_Plastic_FireHoseReel_Red',             # -> FMC_Plastic_ABS_Red
-    'opal': 'FMC_Plastic_ABS_White',                       # -> FMC_Plastic_Diffuser_Opal
-    'screen': 'FMC_Plastic_ABS_Black',                     # -> FMC_Glass_Display_Black
-    'green_steel': 'FMC_Metal_SteelLTZ_Painted',           # -> FMC_Metal_Steel_Painted_Green
-    'orange': 'FMC_Plastic_ABS_Yellow',                    # -> FMC_Plastic_ABS_Orange
+    # added to the kit on 17 Oct (second pass) at this batch's request
+    'redsteel': 'FMC_Metal_Steel_Painted_Red', 'redabs': 'FMC_Plastic_ABS_Red', 'opal': 'FMC_Plastic_Diffuser_Opal',
+    'screen': 'FMC_Glass_Display_Black', 'green_steel': 'FMC_Metal_Steel_Painted_Green', 'orange': 'FMC_Plastic_ABS_Orange',
 }
-NEEDED = [
-    {"name": "FMC_Metal_Steel_Painted_Red", "colour": "#C62828", "why": "essential-supply boards and SPD-free red identification doors (HTM 06-01); stand-in FMC_Metal_SprinklerPipe_RedPainted"},
-    {"name": "FMC_Plastic_ABS_Red", "colour": "#C8202A", "why": "red essential 13 A socket plates and nurse-call red buttons; stand-in FMC_Plastic_FireHoseReel_Red"},
-    {"name": "FMC_Plastic_Diffuser_Opal", "colour": "#F7F7F2", "why": "opal LED diffusers on panels, battens, bulkheads, downlights; stand-in FMC_Plastic_ABS_White"},
-    {"name": "FMC_Glass_Display_Black", "colour": "#11161C", "why": "LCD/touch displays on UPS, ATS, IPS, master station, TV, intercom; stand-in FMC_Plastic_ABS_Black"},
-    {"name": "FMC_Metal_Steel_Painted_Green", "colour": "#4E6B4A", "why": "pad transformer tank (utility green); stand-in FMC_Metal_SteelLTZ_Painted"},
-    {"name": "FMC_Plastic_ABS_Orange", "colour": "#E8792B", "why": "pull-cord bangles and IEC 60309 identification; stand-in FMC_Plastic_ABS_Yellow"},
-]
+NEEDED = []   # all six requests are in the kit since the second pass (17 Oct)
 
+def ONLY(types, parts):
+    """Per-type geometry: these parts show only in the listed types (compiler adds a Yes/No 'Show ...' parameter)."""
+    for q in parts: q['only'] = list(types)
+    return parts
 def _rep(d, rep):
     if rep: d['repeat'] = {'n': rep[0], 'd': [rep[1], rep[2], rep[3]]}
     return d
@@ -70,7 +64,7 @@ def etv(v, va, three=False, elev=None):
     return d
 
 P = []
-def add(fam, desc, ifc, types, parts, values, about, tv=None, conns=(), clear=(), cat=None, template=None):
+def add(fam, desc, ifc, types, parts, values, about, tv=None, conns=(), clear=(), cat=None, template=None, view=None):
     rec = RECS[fam]
     used = []
     for p in parts:
@@ -83,6 +77,7 @@ def add(fam, desc, ifc, types, parts, values, about, tv=None, conns=(), clear=()
         if isinstance(t, str): prod['types'].append({"name": t})
         else: prod['types'].append({"name": t[0], "values": t[1]})
     if clear: prod['clearances'] = list(clear)
+    if view: prod['view'] = view
     if not prod['type_values']: prod.pop('type_values')
     P.append(prod)
 
@@ -185,7 +180,9 @@ p = [B('Enclosure', [-180, -100, 0, 180, 0, 400], 'epw', 6),
      F('Door', [-176, -110, 10, 176, -100, 390], 'epw', 6),
      F('Door Window', [-140, -111, 150, 140, -109, 300], 'pc', 6, 'f'),
      F('DIN Cover Strip', [-125, -108, 195, 125, -106, 255], 'white', 2, 'f'),
-     F('MCB Toggle', [-118, -114, 215, -106, -108, 235], 'black', 1, 'f', rep=(12, 18, 0, 0)),
+     F('MCB Toggle', [-118, -114, 215, -106, -108, 235], 'black', 1, 'f', rep=(8, 18, 0, 0)),
+     *ONLY(['8way_SPN'], [F('Blank Strip', [26, -110, 210, 88, -108, 240], 'white', 1, 'f')]),
+     *ONLY(['12way_SPN'], [F('MCB Toggle Extra', [26, -114, 215, 38, -108, 235], 'black', 1, 'f', rep=(4, 18, 0, 0))]),
      F('Main Switch Toggle', [92, -115, 212, 118, -108, 238], 'redabs', 2, 'f'),
      F('Circuit Chart Holder', [-120, -111, 60, 120, -110, 120], 'white', 3, 'f'),
      F('Door Catch', [150, -118, 180, 165, -110, 260], 'grey', 3, 'f'),
@@ -196,7 +193,7 @@ add('FMC_E_EQ_DB_Final_SPN', 'Final distribution board SPN 240 V, surface metal 
     'IfcElectricDistributionBoard', [('8way_SPN', {"Apparent Load": 15000}), ('12way_SPN', {"Apparent Load": 23000})], p,
     {"Enclosure 360 x 400 x 110 mm": A("360x400x110"), "8 or 12 ways SPN, 100 A main switch": A("8/12 way", "type name"),
      "Mounting height 1400 mm (to bottom)": A(1400, "BS 7671 accessible height practice")},
-    "SPN board: white steel enclosure, door with smoked window over the DIN cover strip and 12 MCB toggles, red main switch, circuit chart holder, catch, top knockouts, screws, label.",
+    "SPN board: white steel enclosure, door with smoked window over the DIN cover strip and 8 MCB toggles plus blank (8way) or 12 toggles (12way), red main switch, circuit chart holder, catch, top knockouts, screws, label.",
     tv=etv(240, 15000, False, 1400), conns=[PWR('Enclosure', 'top', 'Supply')])
 
 # 4 Essential DB red: wall, 450 x 650 x 150 TPN, red door
@@ -204,8 +201,12 @@ p = [B('Enclosure', [-225, -140, 0, 225, 0, 650], 'epw', 6),
      F('Door', [-215, -150, 15, 215, -140, 635], 'redsteel', 6),
      F('Door Window', [-170, -151, 300, 170, -149, 580], 'pc', 4, 'f'),
      F('Breaker Row', [-160, -149.5, 320, 160, -148, 370], 'white', 2, 'f', rep=(3, 0, 0, 85)),
-     F('Breaker Toggle', [-150, -153, 335, -140, -149.5, 355], 'black', 1, 'f', rep=(18, 17, 0, 0)),
-     F('Breaker Toggle Mid', [-150, -153, 420, -140, -149.5, 440], 'black', 1, 'f', rep=(18, 17, 0, 0)),
+     F('Breaker Toggle', [-150, -153, 335, -140, -149.5, 355], 'black', 1, 'f', rep=(12, 17, 0, 0)),
+     F('Breaker Toggle Mid', [-150, -153, 420, -140, -149.5, 440], 'black', 1, 'f', rep=(12, 17, 0, 0)),
+     *ONLY(['12way_TPN'], [F('Blank Strip', [54, -151, 330, 150, -149.5, 360], 'white', 1, 'f'),
+                          F('Blank Strip Mid', [54, -151, 415, 150, -149.5, 445], 'white', 1, 'f')]),
+     *ONLY(['18way_TPN'], [F('Breaker Toggle Extra', [54, -153, 335, 64, -149.5, 355], 'black', 1, 'f', rep=(6, 17, 0, 0)),
+                          F('Breaker Toggle Mid Extra', [54, -153, 420, 64, -149.5, 440], 'black', 1, 'f', rep=(6, 17, 0, 0))]),
      F('Essential Label', [-110, -151, 590, 110, -150, 620], 'white', 3, 'f'),
      F('Main Switch', [-60, -153, 200, 60, -150, 280], 'grey', 4, 'f'),
      F('Main Switch Handle', [-15, -165, 225, 15, -153, 255], 'redabs', 3, 'f'),
@@ -217,7 +218,7 @@ add('FMC_E_EQ_DB_Essential_Red', 'Essential-supply distribution board TPN 415 V,
     'IfcElectricDistributionBoard', [('12way_TPN', {"Apparent Load": 72000}), ('18way_TPN', {"Apparent Load": 72000})], p,
     {"Enclosure 450 x 650 x 150 mm": A("450x650x150", "same body as FMC_E_EQ_DB_Final_TPN"), "12 or 18 ways TPN": A("12/18 way", "type name"),
      "Red door, essential supply": A("red", "HTM 06-01 identification practice"), "Mounting height 1400 mm": A(1400)},
-    "Essential board: white enclosure, red door with window, breaker rows with toggles, ESSENTIAL label, main switch with red handle, handle, lock, hinges, gland plate.",
+    "Essential board: white enclosure, red door with window, breaker rows with 12 or 18 toggles per row (blank strip on 12way), ESSENTIAL label, main switch with red handle, handle, lock, hinges, gland plate.",
     tv=etv(415, 72000, True, 1400), conns=[PWR('Enclosure', 'top', 'Supply')], clear=[clear_front(-225, 225, 150, 2000, 1000, z0=-1400)])
 
 # 5 ATS panel: floor, 800 x 600 x 2000, controller, mimic, selector, e-stop, glazed lower door
@@ -252,39 +253,42 @@ add('FMC_E_EQ_ATS_Panel', 'Automatic transfer switch panel, mains/generator chan
     "ATS panel: plinth, body, control door with controller bezel, display and keys, source mimic and lamps (mains, generator, on load), auto/manual selector, emergency stop; lower door with window over the changeover switch; handles, vents, rating plate.",
     tv=etv(415, 287000, True), conns=[PWR('Body', 'top', 'Mains'), PWR('Body', 'bottom', 'Generator')], clear=[clear_front(-400, 400, 600, 2000)])
 
-# 6 Diesel standby generator in acoustic canopy, ~5000 x 1800 x 2400 on base tank
-p = [B('Base Frame', [-2500, -900, 0, 2500, 900, 150], 'struct'),
-     B('Base Tank', [-2400, -880, 150, 2400, 880, 450], 'black', 20),
-     B('Canopy', [-2500, -900, 450, 2500, 900, 2300], 'pcoat', 30),
-     B('Roof', [-2540, -940, 2300, 2540, 940, 2360], 'pcoat', 30),
-     F('Side Door', [-2100, -905, 600, -1200, -900, 2150], 'pcoat', 10, rep=(3, 1150, 0, 0)),
-     F('Door Handle', [-1310, -925, 1250, -1290, -905, 1400], 'black', 4, 'f', rep=(3, 1150, 0, 0)),
-     F('Door Hinge', [-2095, -910, 800, -2080, -905, 880], 'steel', 2, 'f', rep=(3, 1150, 0, 0)),
-     F('Inlet Louvre', [1250, -906, 900, 2350, -900, 2000], 'steel', 6),
-     F('Louvre Blade', [1270, -912, 950, 2330, -906, 980], 'pcoat', 0, 'f', rep=(10, 0, 0, 100)),
-     RT('Radiator Louvre', [[-750, 600], [750, 600], [750, 2150], [-750, 2150]], [2500, 2506], 'steel'),
-     RT('Radiator Blade', [[-730, 640], [730, 640], [730, 670], [-730, 670]], [2506, 2512], 'pcoat', 'f', rep=(14, 0, 0, 105)),
+# 6 Diesel standby generator in acoustic canopy on base tank; control end at x = -2500, length per rating
+p = [F('Side Door', [-2100, -905, 600, -1200, -900, 2150], 'pcoat', 10, rep=(2, 1150, 0, 0)),
+     F('Door Handle', [-1310, -925, 1250, -1290, -905, 1400], 'black', 4, 'f', rep=(2, 1150, 0, 0)),
+     F('Door Hinge', [-2095, -910, 800, -2080, -905, 880], 'steel', 2, 'f', rep=(2, 1150, 0, 0)),
      F('Control Window', [-2350, -906, 1500, -2150, -905, 1800], 'pc', 6, 'f'),
      F('Controller', [-2330, -904, 1530, -2170, -903, 1770], 'screen', 4, 'f'),
      T('E-Stop', 'y', [-2250, 1350], [[0, 902], [30, 902], [30, 895], [0, 890]], 'redabs', 'f'),
      T('E-Stop Collar', 'y', [-2250, 1350], disc(40, 900, 903), 'yellow', 'f'),
-     C('Silencer', 'x', [0, 2550], 180, [-1200, 800], 'steel', seg=24),
-     C('Silencer Saddle', 'z', [-900, 0], 60, [2360, 2400], 'struct', 'f', rep=(2, 1400, 0, 0)),
-     C('Exhaust Stack', 'z', [800, 0], 90, [2550, 3100], 'steel'),
-     T('Rain Cap', 'z', [800, 0], [[0, 3100], [110, 3100], [110, 3115], [0, 3140]], 'steel', 'f'),
-     T('Lifting Eye', 'y', [-2300, 2420], ring(30, 45, -10, 10), 'galv', 'f', rep=(2, 4600, 0, 0)),
+     T('Lifting Eye', 'y', [-2300, 2420], ring(30, 45, -10, 10), 'galv', 'f'),
      C('Fuel Filler', 'y', [-2200, 300], 40, [-910, -880], 'black', 'f'),
-     F('Fuel Gauge', [-2050, -882, 260, -1950, -880, 360], 'chrome', 50, 'f'),
-     F('Cable Entry Plate', [-2400, -906, 460, -2000, -900, 560], 'steel', 4, 'f'),
-     B('Drip Tray Lip', [-2500, -905, 150, 2500, -900, 180], 'struct', 0, 'f')]
+     F('Cable Entry Plate', [-2400, -906, 460, -2000, -900, 560], 'steel', 4, 'f')]
+for t, x1 in (('250kVA_Canopy', 1300), ('500kVA_Canopy', 2500), ('800kVA_Canopy', 3500)):
+    k = t.split('kVA')[0]
+    p += ONLY([t], [
+        B(f'Base Frame {k}', [-2500, -900, 0, x1, 900, 150], 'struct'),
+        B(f'Base Tank {k}', [-2400, -880, 150, x1 - 100, 880, 450], 'black', 20),
+        B(f'Canopy {k}', [-2500, -900, 450, x1, 900, 2300], 'pcoat', 30),
+        B(f'Roof {k}', [-2540, -940, 2300, x1 + 40, 940, 2360], 'pcoat', 30),
+        B(f'Drip Tray Lip {k}', [-2500, -905, 150, x1, -900, 180], 'struct', 0, 'f'),
+        F(f'Inlet Louvre {k}', [x1 - 1250, -906, 900, x1 - 150, -900, 2000], 'steel', 6),
+        F(f'Louvre Blade {k}', [x1 - 1230, -912, 1050, x1 - 170, -906, 1100], 'pcoat', 0, 'f', rep=(3, 0, 0, 330)),
+        RT(f'Radiator Louvre {k}', [[-750, 600], [750, 600], [750, 2150], [-750, 2150]], [x1, x1 + 6], 'steel'),
+        RT(f'Radiator Blade {k}', [[-730, 760], [730, 760], [730, 800], [-730, 800]], [x1 + 6, x1 + 12], 'pcoat', 'f', rep=(3, 0, 0, 460)),
+        C(f'Silencer {k}', 'x', [0, 2550], 180, [-1500, x1 - 1700], 'steel', seg=24),
+        C(f'Silencer Saddle {k}', 'z', [-1300, 0], 60, [2360, 2400], 'struct', 'f', rep=(2, x1 - 600, 0, 0)),
+        C(f'Exhaust Stack {k}', 'z', [x1 - 1700, 0], 90, [2550, 3100], 'steel'),
+        T(f'Rain Cap {k}', 'z', [x1 - 1700, 0], [[0, 3100], [110, 3100], [110, 3115], [0, 3140]], 'steel', 'f'),
+        T(f'Lifting Eye Rear {k}', 'y', [x1 - 200, 2420], ring(30, 45, -10, 10), 'galv', 'f')])
 add('FMC_E_EQ_Generator_Diesel_Standby', 'Diesel standby generating set in acoustic canopy on a base day tank, 415 V 3-phase, radiator end louvre, roof silencer',
     'IfcElectricGenerator', [('250kVA_Canopy', {"Apparent Load": 250000}), ('500kVA_Canopy', {"Apparent Load": 500000}), ('800kVA_Canopy', {"Apparent Load": 800000})], p,
-    {"Canopy 5000 x 1800 x 2360 mm (500 kVA class)": A("5000x1800x2360", "typical 500 kVA canopy set; 250/800 kVA sizes differ, supplier GA to confirm"),
+    {"Canopy length 3800 / 5000 / 6000 mm, 1800 x 2360 mm": A("3800/5000/6000x1800x2360", "typical canopy sets per rating; width and height kept common, supplier GA to confirm"),
      "Base tank 8 h at 75 % load": A("8 h", "HTM 06-01 practice, engineer confirms"), "Rating per type 250/500/800 kVA prime/standby": A("kVA", "type name"),
      "Access 1000 mm all round": A(1000, "maintenance practice")},
-    "Generator set: base frame and day tank, acoustic canopy and roof, three side doors with handles and hinges, inlet louvre, radiator louvre with blades, control window with controller, emergency stop, roof silencer with saddles, exhaust stack and rain cap, lifting eyes, fuel filler and gauge, cable entry.",
+    "Generator set: base frame and day tank, acoustic canopy and roof, two side doors with handles and hinges, inlet louvre and radiator louvre with blades (length per rating), control window with controller, emergency stop, roof silencer with saddles, exhaust stack and rain cap, lifting eyes, fuel filler, cable entry.",
     tv=etv(415, 500000, True), conns=[PWR('Cable Entry Plate', 'back', 'Output')],
-    clear=[{"n": "Access", "shape": "box", "at": [-3500, -1900, 0, 3500, 1900, 2400], "sub": "Clearance Maintenance"}])
+    clear=[{"n": "Access", "shape": "box", "at": [-3500, -1900, 0, 4500, 1900, 2400], "sub": "Clearance Maintenance"}])
 
 # 7 Central UPS: UPS cabinet 600 + battery cabinet 800, 850 deep, 1900 high, dark
 p = [B('UPS Cabinet', [-700, -850, 60, -100, 0, 1900], 'steel', 4),
@@ -396,9 +400,12 @@ p = [B('Cabinet', [-300, -250, 0, 300, 0, 800], 'epw', 4),
      B('Rain Hood', [-330, -300, 800, 330, 10, 830], 'epw', 0),
      F('Door', [-295, -260, 5, 295, -250, 795], 'epw', 6),
      F('Meter Window', [-260, -261, 450, 260, -259, 720], 'pc', 6, 'f'),
-     F('Meter Body', [-230, -268, 480, -90, -261, 700], 'mgrey', 6, rep=(3, 165, 0, 0)),
-     F('Meter LCD', [-210, -269, 620, -110, -268, 670], 'screen', 2, 'f', rep=(3, 165, 0, 0)),
-     C('Meter Pulse LED', 'y', [-160, 590], 4, [-269.5, -268], 'red', 'f', rep=(3, 165, 0, 0)),
+     *ONLY(['1-way_Intake'], [F('Meter Body 1', [-70, -268, 480, 70, -261, 700], 'mgrey', 6),
+                             F('Meter LCD 1', [-50, -269, 620, 50, -268, 670], 'screen', 2, 'f'),
+                             C('Meter Pulse LED 1', 'y', [0, 590], 4, [-269.5, -268], 'red', 'f')]),
+     *ONLY(['3-way_Intake'], [F('Meter Body 3', [-230, -268, 480, -90, -261, 700], 'mgrey', 6, rep=(3, 165, 0, 0)),
+                             F('Meter LCD 3', [-210, -269, 620, -110, -268, 670], 'screen', 2, 'f', rep=(3, 165, 0, 0)),
+                             C('Meter Pulse LED 3', 'y', [-160, 590], 4, [-269.5, -268], 'red', 'f', rep=(3, 165, 0, 0))]),
      F('Cut-out Fuse', [-120, -258, 120, 120, -252, 300], 'black', 4, 'f'),
      F('Fuse Carrier', [-40, -265, 170, 40, -258, 260], 'grey', 4, 'f'),
      F('Hasp', [255, -275, 380, 280, -260, 430], 'chrome', 3, 'f'),
@@ -409,7 +416,7 @@ add('FMC_E_EQ_MeterCabinet_Intake', 'Intake and metering cabinet, wall/plinth mo
     'IfcElectricDistributionBoard', [('1-way_Intake', {"Number of Poles": 1, "Voltage": 240, "Apparent Load": 23000}), ('3-way_Intake', {"Apparent Load": 69000})], p,
     {"Cabinet 600 x 800 x 250 mm": A("600x800x250"), "1 or 3 meter ways": A("1/3 way", "type name; utility meters"),
      "Meter window at eye level, bottom at 1000 mm": A(1000, "utility reading practice")},
-    "Meter cabinet: steel cabinet with rain hood, door with meter window, three meter bodies with LCD and pulse LED, utility cut-out with fuse carrier, padlock hasp, danger label, vent, gland plate.",
+    "Meter cabinet: steel cabinet with rain hood, door with meter window, one or three meter bodies (per type) with LCD and pulse LED, utility cut-out with fuse carrier, padlock hasp, danger label, vent, gland plate.",
     tv=etv(415, 69000, True, 1000), conns=[PWR('Gland Plate', 'bottom', 'Supply')])
 
 # 12 Solar inverter: wall, 600 x 700 x 250
@@ -522,17 +529,18 @@ p = [B('Enclosure', [-75, -110, 0, 75, 0, 260], 'grey', 8),
      F('Switch Plate', [-45, -112, 160, 45, -110, 240], 'yellow', 6),
      T('Switch Boss', 'y', [0, 200], disc(22, -112, -120), 'redabs'),
      F('Switch Handle', [-8, -138, 168, 8, -120, 232], 'redabs', 5),
-     T('Socket Body', 'y', [0, 85], [[0, -110], [42, -110], [42, -150], [38, -160], [0, -160]], 'blue'),
-     T('Socket Lid', 'y', [0, 85], [[0, -160], [44, -160], [44, -170], [0, -172]], 'blue'),
-     F('Lid Hinge', [-20, -168, 128, 20, -150, 140], 'blue', 4, 'f'),
-     F('Lid Latch', [-12, -175, 30, 12, -160, 45], 'blue', 3, 'f'),
+     *[q for t, m in (('32A_1P', 'blue'), ('32A_3P', 'redabs')) for q in ONLY([t], [
+        T(f'Socket Body {t[4:]}', 'y', [0, 85], [[0, -110], [42, -110], [42, -150], [38, -160], [0, -160]], m),
+        T(f'Socket Lid {t[4:]}', 'y', [0, 85], [[0, -160], [44, -160], [44, -170], [0, -172]], m),
+        F(f'Lid Hinge {t[4:]}', [-20, -168, 128, 20, -150, 140], m, 4, 'f'),
+        F(f'Lid Latch {t[4:]}', [-12, -175, 30, 12, -160, 45], m, 3, 'f')])],
      F('Rating Label', [-30, -111, 250, 30, -110, 256], 'white', 0, 'f'),
      C('Cover Screw', 'y', [-62, 12], 3.5, [-112, -110], 'grey', 'f', rep=(2, 124, 0, 0)),
      C('Cover Screw Top', 'y', [-62, 248], 3.5, [-112, -110], 'grey', 'f', rep=(2, 124, 0, 0)),
      C('Cable Gland', 'z', [0, -55], 14, [-25, 0], 'black', 'f')]
 add('FMC_E_ElecFixture_Socket_Industrial_32A', 'Industrial interlocked switched socket IEC 60309, 32 A, IP44/IP67, wall mounted, rotary switch and flip lid',
     'IfcOutlet', [('32A_1P', {"Voltage": 240, "Number of Poles": 1, "Apparent Load": 7400}), ('32A_3P', {"Apparent Load": 23000})], p,
-    {"Enclosure 150 x 260 x 170 mm": A("150x260x170"), "32 A, 1P+N+E (blue, 230 V) or 3P+N+E (red, 415 V)": A("32A", "IEC 60309 colour code; body colour shown blue, set per type"),
+    {"Enclosure 150 x 260 x 170 mm": A("150x260x170"), "32 A, 1P+N+E (blue, 230 V) or 3P+N+E (red, 415 V)": A("32A", "IEC 60309 colour code: blue body on 1P, red on 3P (per type)"),
      "Height 1200 mm": A(1200)},
     "Industrial socket: grey enclosure, yellow switch plate with red rotary handle, angled IEC 60309 socket body with flip lid, hinge and latch, label, screws, gland.",
     tv=etv(415, 23000, True, 1200), conns=[PWR('Enclosure')])
@@ -550,12 +558,17 @@ add('FMC_E_ElecFixture_FusedSpur', 'Switched fused connection unit 13 A, BS 1363
     "Fused spur: plate with fuse carrier and slot, legend, red neon, flex outlet, double-pole rocker with mark, screws, steel box.",
     tv=etv(240, 1000, False, 1000), conns=[PWR('Back Box')])
 
-# 20 Light switch (2-gang shown; 1G-4G types)
-p = plate(sm='white') + rocker(-14, 43, 'L', 'white', 'grey', 22, 46) + rocker(14, 43, 'R', 'white', 'grey', 22, 46)
-add('FMC_E_ElecFixture_Switch_Light', 'Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type (2-gang shown)',
+# 20 Light switch: one plate, rockers per type (1G wide, 2G, 3G narrow, 4G 2 x 2 grid)
+p = plate(sm='white')
+p += ONLY(['10A_1G'], rocker(0, 43, '1G', 'white', 'grey', 26, 50))
+p += ONLY(['10A_2G'], rocker(-14, 43, '2G L', 'white', 'grey', 22, 46) + rocker(14, 43, '2G R', 'white', 'grey', 22, 46))
+p += ONLY(['10A_3G'], rocker(-21, 43, '3G L', 'white', 'grey', 15, 46) + rocker(0, 43, '3G M', 'white', 'grey', 15, 46) + rocker(21, 43, '3G R', 'white', 'grey', 15, 46))
+p += ONLY(['10A_4G'], rocker(-13, 56, '4G TL', 'white', 'grey', 20, 20) + rocker(13, 56, '4G TR', 'white', 'grey', 20, 20)
+                     + rocker(-13, 30, '4G BL', 'white', 'grey', 20, 20) + rocker(13, 30, '4G BR', 'white', 'grey', 20, 20))
+add('FMC_E_ElecFixture_Switch_Light', 'Plate light switch 10 AX, 2-way, 86 x 86 white moulded; 1 to 4 gangs by type',
     'IfcSwitchingDevice', [('10A_1G', {}), ('10A_2G', {}), ('10A_3G', {}), ('10A_4G', {})], p,
     {"Plate 86 x 86 mm": A("86x86"), "10 AX, 2-way per gang": A("10AX", "BS EN 60669-1"), "Height 1000 mm": A(1000, "Approved Document M range")},
-    "Light switch: plate, two wide rockers with surrounds and position marks, screws, steel box. Gang count is in the type name; geometry shows 2 gangs.",
+    "Light switch: plate, screws, steel box; rockers with surrounds and marks per type: 1G one wide, 2G two, 3G three narrow, 4G a 2 x 2 grid.",
     tv=etv(240, 0, False, 1000), conns=[PWR('Back Box')])
 
 # 21 Dimmer
@@ -579,7 +592,7 @@ p += [T('Call Button Ring', 'y', [-40, 43], disc(20, -9.5, -11), 'yellow', 'f'),
       F('Pillow Socket Bezel', [32, -11, 25, 62, -9.5, 61], 'grey', 4, 'f'),
       C('Pillow Socket', 'y', [47, 43], 9, [-15, -11], 'black', 'f'),
       F('Label Window', [-60, -10, 6, 60, -9.5, 16], 'pc', 1, 'f'),
-      F('Holster', [90, -30, 10, 150, 0, 110], 'white', 8),
+      *ONLY(['146x86_WithPillow'], [F('Holster', [90, -30, 10, 150, 0, 110], 'white', 8),
       F('Pillow Speaker', [100, -45, 30, 140, -22, 190], 'white', 14),
       C('Pillow Call Button', 'y', [120, 160], 9, [-49, -45], 'redabs', 'f'),
       F('Pillow Grille', [108, -46, 60, 132, -45, 120], 'grey', 6, 'f'),
@@ -587,12 +600,12 @@ p += [T('Call Button Ring', 'y', [-40, 43], disc(20, -9.5, -11), 'yellow', 'f'),
       C('Lead Drop', 'z', [120, -33], 4, [-80, 30], 'grey', 'f'),
       C('Lead Run', 'x', [-33, -80], 4, [47, 124], 'grey', 'f'),
       C('Lead Rise', 'z', [47, -33], 4, [-84, 43], 'grey', 'f'),
-      C('Lead Plug', 'y', [47, 43], 7, [-33, -15], 'black', 'f')]
+      C('Lead Plug', 'y', [47, 43], 7, [-33, -15], 'black', 'f')])]
 add('FMC_E_ElecFixture_NurseCall_BedheadUnit', 'Nurse call bedhead unit: call button with reassurance LED, cancel, pillow speaker socket; pillow speaker handset in a holster',
     'IfcAlarm', [('146x86_Standard', {}), ('146x86_WithPillow', {})], p,
     {"Plate 146 x 86 mm": A("146x86"), "Call, cancel, reassurance LED, pillow socket": A("HTM 08-03", "HTM 08-03 bedhead call point"),
      "Height 1400 mm at bedhead": A(1400, "bedhead practice")},
-    "Bedhead unit: plate with red call button on yellow ring, reassurance LED, green cancel, pillow socket with bezel, label window; holster with pillow speaker (call and light buttons, grille, lead).",
+    "Bedhead unit: plate with red call button on yellow ring, reassurance LED, green cancel, pillow socket with bezel, label window; holster with pillow speaker (call and light buttons, grille, lead) on the WithPillow type only.",
     tv={"Default Elevation": 1400}, conns=[ELV('NurseCall', 'Back Box')])
 
 # 23 Ceiling pull cord with reset
@@ -615,15 +628,17 @@ add('FMC_E_ElecFixture_NurseCall_PullCord_Toilet', 'Assisted-toilet emergency pu
 # 24 Over-door light: dual (red call / white or amber attack)
 p = [F('Base', [-90, -30, 0, 90, 0, 70], 'white', 10),
      F('Base Rim', [-86, -33, 4, 86, -30, 66], 'white', 8, 'f'),
-     T('Lens Red', 'y', [-40, 35], [[0, -33], [28, -33], [28, -45], [22, -55], [12, -60], [0, -62]], 'red'),
-     T('Lens White', 'y', [40, 35], [[0, -33], [28, -33], [28, -45], [22, -55], [12, -60], [0, -62]], 'pc'),
-     T('Lens Ring', 'y', [-40, 35], ring(28, 31, -33, -40), 'grey', 'f', rep=(2, 80, 0, 0)),
+     *ONLY(['180x70_Single'], [T('Lens Single', 'y', [0, 35], [[0, -33], [28, -33], [28, -45], [22, -55], [12, -60], [0, -62]], 'red'),
+                              T('Lens Ring Single', 'y', [0, 35], ring(28, 31, -33, -40), 'grey', 'f')]),
+     *ONLY(['180x70_Dual'], [T('Lens Red', 'y', [-40, 35], [[0, -33], [28, -33], [28, -45], [22, -55], [12, -60], [0, -62]], 'red'),
+                            T('Lens White', 'y', [40, 35], [[0, -33], [28, -33], [28, -45], [22, -55], [12, -60], [0, -62]], 'opal'),
+                            T('Lens Ring', 'y', [-40, 35], ring(28, 31, -33, -40), 'grey', 'f', rep=(2, 80, 0, 0))]),
      F('Label', [-30, -34, 8, 30, -33, 18], 'grey', 2, 'f'),
      C('Screw', 'y', [-78, 35], 2.5, [-34, -33], 'white', 'f', rep=(2, 156, 0, 0))]
 add('FMC_E_ElecFixture_NurseCall_OverDoorLight', 'Nurse call over-door indicator, dual lens (red call, white/amber attack), 180 x 70 base, above corridor door',
     'IfcAlarm', [('180x70_Single', {}), ('180x70_Dual', {})], p,
     {"Base 180 x 70 x 62 mm": A("180x70x62"), "Visible along the corridor, 360 deg lens": A("lens", "HTM 08-03"), "Height 2150 mm (door head + 50)": A(2150)},
-    "Over-door light: base and rim, two domed lenses (red and clear) with grey rings, label, screws.",
+    "Over-door light: base and rim, one red lens (Single) or red and white lenses (Dual) with grey rings, label, screws.",
     tv={"Default Elevation": 2150}, conns=[ELV('NurseCall', 'Base')])
 
 def slab(s0, s1, o0, o1, A=(-235, 60), B=(-40, 180)):
@@ -654,17 +669,16 @@ add('FMC_E_ElecFixture_NurseCall_MasterStation', 'Nurse call master station, des
 
 # 26 RJ45 data outlet, 2 angled shuttered ports
 p = plate(sm='white')
-for i, x in enumerate((-20, 20)):
-    s = 'L' if x < 0 else 'R'
-    p += [F(f'Module {s}', [x - 13, -12, 28, x + 13, -9.5, 58], 'white', 2, 'f'),
+for x, s, tl in ((0, 'C', ['86x86_1-port']), (-20, 'L', ['86x86_2-port']), (20, 'R', ['86x86_2-port'])):
+    p += ONLY(tl, [F(f'Module {s}', [x - 13, -12, 28, x + 13, -9.5, 58], 'white', 2, 'f'),
           F(f'Port {s}', [x - 7.5, -12.2, 34, x + 7.5, -12, 48], 'black', 1, 'f'),
           F(f'Shutter {s}', [x - 7, -12.6, 46, x + 7, -12.2, 52], 'white', 1, 'f'),
-          F(f'Port Key {s}', [x - 3, -12.3, 30, x + 3, -12, 34], 'black', 0, 'f')]
-p += [F('Label Window', [-25, -10, 66, 25, -9.5, 76], 'pc', 1, 'f'), F('ID Icon', [-30, -12.1, 52, -26, -12, 56], 'ledblue', 0, 'f')]
+          F(f'Port Key {s}', [x - 3, -12.3, 30, x + 3, -12, 34], 'black', 0, 'f')])
+p += [F('Label Window', [-25, -10, 66, 25, -9.5, 76], 'pc', 1, 'f'), F('ID Icon', [-36, -10, 52, -32, -9.5, 56], 'ledblue', 0, 'f')]
 add('FMC_E_ElecFixture_Data_Outlet_RJ45', 'Data outlet, 86 x 86 plate with angled shuttered Cat6A RJ45 modules and label window',
     'IfcOutlet', [('86x86_1-port', {}), ('86x86_2-port', {})], p,
     {"Plate 86 x 86 mm": A("86x86"), "Cat 6A RJ45, shuttered": A("Cat6A", "structured cabling practice, HTM 08-03"), "Height 450 mm / 1000 mm at desks": A(450)},
-    "Data outlet: plate, two modules with RJ45 ports, keyways and shutters, label window, ID icon, screws, steel box.",
+    "Data outlet: plate, one centred module (1-port) or two (2-port) with RJ45 ports, keyways and shutters, label window, ID icon, screws, steel box.",
     tv={"Default Elevation": 450}, conns=[ELV('Data', 'Back Box')])
 
 # 27 Card reader with keypad, surface
@@ -705,9 +719,10 @@ add('FMC_E_ElecFixture_AccessControl_MagLock', 'Electromagnetic lock 600 lb (270
 p = [B('Back Box', [-50, 0, 5, 50, 45, 245], 'steel'),
      F('Panel', [-55, -12, 0, 55, 0, 250], 'ss', 6),
      F('Rain Hood', [-55, -30, 240, 55, -12, 250], 'ss', 3),
-     T('Camera Window', 'y', [0, 210], disc(14, -12, -14), 'screen'),
-     T('Camera Lens', 'y', [0, 210], disc(6, -14, -15), 'black', 'f'),
-     C('IR LED', 'y', [-22, 210], 3, [-13, -12], 'red', 'f', rep=(2, 44, 0, 0)),
+     *ONLY(['110x250_Video'], [T('Camera Window', 'y', [0, 210], disc(14, -12, -14), 'screen'),
+                              T('Camera Lens', 'y', [0, 210], disc(6, -14, -15), 'black', 'f'),
+                              C('IR LED', 'y', [-22, 210], 3, [-13, -12], 'red', 'f', rep=(2, 44, 0, 0))]),
+     *ONLY(['110x250_Audio'], [F('Blank Badge', [-25, -13, 195, 25, -12, 225], 'ss', 4, 'f')]),
      F('Speaker Slot', [-25, -13, 150, 25, -12, 154], 'black', 1, 'f', rep=(5, 0, 0, 8)),
      F('Name Window', [-38, -13, 90, 38, -12, 130], 'pc', 3, 'f'),
      T('Call Button', 'y', [0, 55], [[0, -12], [16, -12], [16, -16], [13, -19], [0, -19]], 'chrome'),
@@ -717,7 +732,7 @@ p = [B('Back Box', [-50, 0, 5, 50, 45, 245], 'steel'),
 add('FMC_E_ElecFixture_Intercom_Door', 'Door entry intercom panel, stainless, camera with IR, speaker, name window, illuminated call button, rain hood',
     'IfcCommunicationsAppliance', [('110x250_Audio', {}), ('110x250_Video', {})], p,
     {"Panel 110 x 250 x 12 mm on flush box": A("110x250"), "Camera on video type": A("video", "type name"), "Call button at 1100 mm": A(1100, "Approved Document M")},
-    "Intercom: back box, stainless panel with rain hood, camera window and lens with IR LEDs, speaker slots, name window, illuminated call button, mic hole, security screws.",
+    "Intercom: back box, stainless panel with rain hood, camera window and lens with IR LEDs (Video) or blank badge (Audio), speaker slots, name window, illuminated call button, mic hole, security screws.",
     tv={"Default Elevation": 1000}, conns=[ELV('Communication', 'Back Box')])
 
 # 30 Theatre clock + elapsed timer, 600 x 300
@@ -790,23 +805,25 @@ add('FMC_E_ElecFixture_HandDryer_HEPA', 'Hands-in blade hand dryer with HEPA fil
     "Hand dryer: back plate, stainless upper and lower bodies joined by side cheeks around an open hand cavity, upper and lower air blades, HEPA cover, LED, inlet grille with bars, screws.",
     tv=etv(240, 1600, False, 800), conns=[PWR('Back Plate')])
 
-# 33 Adaptable junction box, galvanised, conduit spouts
-p = [B('Box', [-50, -50, 0, 50, 0, 100], 'galv'),
-     F('Lid', [-53, -55, -3, 53, -50, 103], 'galv', 3),
-     C('Lid Screw', 'y', [-44, 6], 3, [-56, -55], 'chrome', 'f', rep=(2, 88, 0, 0)),
-     C('Lid Screw Top', 'y', [-44, 94], 3, [-56, -55], 'chrome', 'f', rep=(2, 88, 0, 0)),
-     C('Spout Top', 'z', [0, -25], 12.5, [100, 125], 'galv'),
-     C('Spout Bottom', 'z', [0, -25], 12.5, [-25, 0], 'galv'),
-     C('Spout Side', 'x', [-25, 50], 12.5, [50, 75], 'galv', 'f'),
-     C('Conduit Stub Top', 'z', [0, -25], 10, [125, 200], 'conduit', 'f'),
-     C('Conduit Stub Bottom', 'z', [0, -25], 10, [-100, -25], 'conduit', 'f'),
-     C('Knockout', 'x', [-25, 50], 10, [-51, -50], 'galv', 'f'),
-     C('Earth Terminal', 'y', [0, 50], 4, [-2, 0], 'brass', 'f')]
+# 33 Adaptable junction box, galvanised, conduit spouts; box size per type, bottom spout shared
+p = [C('Spout Bottom', 'z', [0, -25], 12.5, [-25, 0], 'galv'),
+     C('Conduit Stub Bottom', 'z', [0, -25], 10, [-100, -25], 'conduit', 'f')]
+for t, a in (('75x75_Galv', 37.5), ('100x100_Galv', 50)):
+    k = t.split('_')[0]
+    p += ONLY([t], [B(f'Box {k}', [-a, -50, 0, a, 0, 2 * a], 'galv'),
+                    F(f'Lid {k}', [-a - 3, -55, -3, a + 3, -50, 2 * a + 3], 'galv', 3),
+                    C(f'Lid Screw {k}', 'y', [-a + 6, 6], 3, [-56, -55], 'chrome', 'f', rep=(2, 2 * a - 12, 0, 0)),
+                    C(f'Lid Screw Top {k}', 'y', [-a + 6, 2 * a - 6], 3, [-56, -55], 'chrome', 'f', rep=(2, 2 * a - 12, 0, 0)),
+                    C(f'Spout Top {k}', 'z', [0, -25], 12.5, [2 * a, 2 * a + 25], 'galv'),
+                    C(f'Conduit Stub Top {k}', 'z', [0, -25], 10, [2 * a + 25, 2 * a + 100], 'conduit', 'f'),
+                    C(f'Spout Side {k}', 'x', [-25, a], 12.5, [a, a + 25], 'galv', 'f'),
+                    C(f'Knockout {k}', 'x', [-25, a], 10, [-a - 1, -a], 'galv', 'f'),
+                    C(f'Earth Terminal {k}', 'y', [0, a], 4, [-2, 0], 'brass', 'f')])
 add('FMC_E_ElecFixture_JunctionBox', 'Adaptable junction box, galvanised steel, screwed lid, 20 mm conduit spouts',
     'IfcJunctionBox', [('75x75_Galv', {}), ('100x100_Galv', {})], p,
-    {"Box 100 x 100 x 50 mm (75 x 75 type smaller)": A("100x100x50", "BS EN 60670"), "20 mm conduit entries": A(20)},
+    {"Box 75 x 75 or 100 x 100, 50 mm deep (per type)": A("75x75/100x100x50", "BS EN 60670"), "20 mm conduit entries": A(20)},
     "Junction box: galvanised box, lid with four screws, top/bottom/side spouts with conduit stubs, knockout, earth terminal.",
-    tv=etv(240, 0), conns=[PWR('Box')])
+    tv=etv(240, 0), conns=[PWR('Spout Bottom', 'bottom')])
 
 # =============================================================== COMMUNICATION / SECURITY
 # 34 Wi-Fi AP ceiling
@@ -822,32 +839,39 @@ add('FMC_E_Comms_WiFi_AccessPoint', 'Wi-Fi 6 access point, ceiling mounted, 220 
     "Access point: mounting plate and T-bar clip above, domed white body, blue status ring, centre badge, security slot and lock tab; hangs below the ceiling (z = 0).",
     conns=[ELV('Data', 'Mount Plate', 'top')])
 
-# 35 Comms rack 42U, glass door
-p = [B('Frame', [-300, -800, 100, 300, 0, 2000], 'black', 4),
-     B('Plinth', [-300, -800, 40, 300, 0, 100], 'black'),
+# 35 Comms rack: 24U (1200) or 42U (2000) carcass per type, open sides drawn as panels so the kit shows through the glass
+p = [B('Plinth', [-300, -800, 40, 300, 0, 100], 'black'),
      C('Castor', 'z', [-250, -750], 25, [0, 40], 'castor', 'f', rep=(2, 500, 0, 0)),
      C('Castor Rear', 'z', [-250, -50], 25, [0, 40], 'castor', 'f', rep=(2, 500, 0, 0)),
-     B('Roof', [-300, -800, 2000, 300, 0, 2040], 'black'),
-     C('Roof Fan', 'z', [-130, -400], 60, [2040, 2045], 'grey', 'f', rep=(2, 260, 0, 0)),
-     F('Door Frame', [-298, -815, 110, 298, -800, 1990], 'black', 6),
-     F('Door Glass', [-270, -816, 140, 270, -815, 1960], 'glass', 4),
-     F('Door Handle', [240, -840, 950, 258, -816, 1150], 'chrome', 4, 'f'),
-     F('Patch Panel', [-240, -790, 1820, 240, -780, 1864], 'grey', 0, 'f', rep=(4, 0, 0, -130)),
-     F('Patch Port Row', [-225, -791, 1835, 225, -790, 1850], 'black', 0, 'f', rep=(4, 0, 0, -130)),
-     F('Cable Manager', [-240, -795, 1866, 240, -780, 1906], 'black', 0, 'f', rep=(4, 0, 0, -130)),
-     F('Switch', [-240, -790, 1200, 240, -760, 1244], 'mgrey', 2, 'f', rep=(2, 0, 0, -60)),
-     F('Switch LEDs', [-200, -791, 1225, 160, -790, 1230], 'green', 0, 'f', rep=(2, 0, 0, -60)),
-     F('Server', [-240, -790, 700, 240, -770, 788], 'black', 2, 'f', rep=(2, 0, 0, -100)),
-     F('Server Bezel', [-230, -791, 710, 230, -790, 778], 'steel', 2, 'f', rep=(2, 0, 0, -100)),
-     F('PDU Strip', [-240, -790, 200, 240, -770, 244], 'black', 0, 'f'),
-     F('Rail', [-252, -795, 120, -240, -780, 1980], 'galv', 0, 'f', rep=(2, 492, 0, 0)),
-     F('Side Panel Lock', [-301, -400, 1700, -300, -380, 1720], 'chrome', 0, 'f')]
+     F('Patch Panel', [-240, -790, 1000, 240, -780, 1044], 'grey', 0, 'f', rep=(2, 0, 0, -120)),
+     F('Patch Port Row', [-225, -791, 1015, 225, -790, 1030], 'black', 0, 'f', rep=(2, 0, 0, -120)),
+     F('Cable Manager', [-240, -795, 1046, 240, -780, 1080], 'black', 0, 'f', rep=(2, 0, 0, -120)),
+     F('Switch', [-240, -790, 700, 240, -760, 744], 'mgrey', 2, 'f', rep=(2, 0, 0, -60)),
+     F('Switch LEDs', [-200, -791, 725, 160, -790, 730], 'green', 0, 'f', rep=(2, 0, 0, -60)),
+     F('Server', [-240, -790, 400, 240, -770, 488], 'black', 2, 'f', rep=(2, 0, 0, -100)),
+     F('Server Bezel', [-230, -791, 410, 230, -790, 478], 'steel', 2, 'f', rep=(2, 0, 0, -100)),
+     F('PDU Strip', [-240, -790, 150, 240, -770, 194], 'black', 0, 'f')]
+for t, H in (('24U_600x800', 1200), ('42U_600x800', 2000)):
+    k = t[:3]
+    p += ONLY([t], [B(f'Side Panel {k}', [-300, -800, 100, -285, 0, H], 'black', 0, rep=(2, 585, 0, 0)),
+                    B(f'Back Panel {k}', [-285, -15, 100, 285, 0, H], 'black'),
+                    B(f'Roof {k}', [-300, -800, H, 300, 0, H + 40], 'black'),
+                    C(f'Roof Fan {k}', 'z', [-130, -400], 60, [H + 40, H + 45], 'grey', 'f', rep=(2, 260, 0, 0)),
+                    F(f'Door Stile {k}', [-298, -815, 110, -270, -800, H - 10], 'black', 0, rep=(2, 568, 0, 0)),
+                    F(f'Door Top Rail {k}', [-270, -815, H - 40, 270, -800, H - 10], 'black', 0),
+                    F(f'Door Bottom Rail {k}', [-270, -815, 110, 270, -800, 140], 'black', 0),
+                    F(f'Door Glass {k}', [-270, -812, 140, 270, -810, H - 40], 'glass', 0),
+                    F(f'Door Handle {k}', [240, -840, H / 2 - 100, 258, -815, H / 2 + 100], 'chrome', 4, 'f'),
+                    F(f'Rail {k}', [-252, -795, 120, -240, -780, H - 20], 'galv', 0, 'f', rep=(2, 492, 0, 0))])
+p += ONLY(['42U_600x800'], [F('Patch Panel Upper', [-240, -790, 1800, 240, -780, 1844], 'grey', 0, 'f', rep=(2, 0, 0, -120)),
+                            F('Patch Port Row Upper', [-225, -791, 1815, 225, -790, 1830], 'black', 0, 'f', rep=(2, 0, 0, -120)),
+                            F('Cable Manager Upper', [-240, -795, 1846, 240, -780, 1880], 'black', 0, 'f', rep=(2, 0, 0, -120))])
 add('FMC_E_Comms_Rack_Comms', 'Floor-standing 19 in comms rack 600 x 800, glass front door, roof fans, castors and plinth; patch panels, switches and servers shown',
     'IfcCommunicationsAppliance', [('24U_600x800', {}), ('42U_600x800', {})], p,
-    {"Rack 600 x 800 x 2040 mm (42U)": A("600x800x2040", "24U type 1200 high"), "Front 1000 mm, rear 750 mm access": A(1000, "TIA-942 / practice"),
+    {"Rack 600 x 800, 1240 high (24U) or 2040 high (42U)": A("600x800x1240/2040"), "Front 1000 mm, rear 750 mm access": A(1000, "TIA-942 / practice"),
      "Load 2000 VA": A(2000, "design allowance")},
-    "Comms rack: frame, plinth, castors, roof with fans, glass door in frame with handle, 19 in rails, four patch panels with port rows and cable managers, two switches with LEDs, two servers with bezels, PDU.",
-    tv=etv(240, 2000), conns=[PWR('Roof', 'top'), ELV('Data', 'Roof', 'top', 'Data')], clear=[clear_front(-300, 300, 815, 2040)])
+    "Comms rack: plinth, castors; per type (24U/42U) side and back panels, roof with fans, glass door with stiles, rails and handle, 19 in rails; patch panels with port rows and cable managers (two more on 42U), two switches with LEDs, two servers with bezels, PDU.",
+    tv=etv(240, 2000), conns=[PWR('Plinth', 'bottom'), ELV('Data', 'Plinth', 'bottom', 'Data')], clear=[clear_front(-300, 300, 815, 2040)])
 
 # 36 PA ceiling speaker, recessed, fire dome
 p = [T('Grille Rim', 'z', [0, 0], [[85, -8], [100, -8], [100, 0], [85, 0]], 'white'),
@@ -899,23 +923,26 @@ add('FMC_E_SecurityDevice_CCTV_Camera_Bullet', 'IP bullet camera, wall mounted o
     tv={"Default Elevation": 2700}, conns=[ELV('Security', 'Wall Base')])
 
 # =============================================================== LIGHTING
-# 39 Cleanroom IP65 panel, flanged recessed
-p = [B('Flange', [-310, -310, -12, 310, 310, 0], 'epw', 4),
-     B('Gasket', [-300, -300, -13, 300, 300, -12], 'rubber', 0, 'f'),
-     B('Diffuser', [-280, -280, -14, 280, 280, -12.5], 'opal', 3),
-     B('Body', [-290, -290, 0, 290, 290, 80], 'epw'),
-     B('Driver Box', [-120, -50, 80, 120, 50, 120], 'steel'),
-     C('Cable Gland', 'x', [0, 100], 8, [120, 140], 'black', 'f'),
-     C('Retaining Screw', 'z', [-298, -298], 4, [-15, -12], 'ss', 'f', rep=(2, 596, 0, 0)),
-     C('Retaining Screw Rear', 'z', [-298, 298], 4, [-15, -12], 'ss', 'f', rep=(2, 596, 0, 0)),
-     C('Retaining Screw Mid', 'z', [0, -298], 4, [-15, -12], 'ss', 'f', rep=(2, 0, 596, 0)),
-     B('LED Board', [-260, -260, 20, 260, 260, 25], 'grey', 0, 'f'),
-     B('Suspension Lug', [-300, -20, 60, -290, 20, 80], 'galv', 0, 'f', rep=(2, 590, 0, 0))]
+# 39 Cleanroom IP65 panel, flanged recessed; 600 x 600 or 1200 x 600 per type, driver shared
+p = [B('Driver Box', [-120, -50, 80, 120, 50, 120], 'steel'),
+     C('Cable Gland', 'x', [0, 100], 8, [120, 140], 'black', 'f')]
+for t, X in (('600x600_IP65', 300), ('1200x600_IP65', 600)):
+    k = t[:4] if X == 300 else t[:5]
+    Y = 300
+    p += ONLY([t], [B(f'Flange {k}', [-X - 10, -Y - 10, -12, X + 10, Y + 10, 0], 'epw', 4),
+                    B(f'Gasket {k}', [-X, -Y, -13, X, Y, -12], 'rubber', 0, 'f'),
+                    B(f'Diffuser {k}', [-X + 20, -Y + 20, -14, X - 20, Y - 20, -12.5], 'opal', 3),
+                    B(f'Body {k}', [-X + 10, -Y + 10, 0, X - 10, Y - 10, 80], 'epw'),
+                    B(f'LED Board {k}', [-X + 40, -Y + 40, 20, X - 40, Y - 40, 25], 'grey', 0, 'f'),
+                    C(f'Retaining Screw {k}', 'z', [-X + 2, -Y + 2], 4, [-15, -12], 'ss', 'f', rep=(3, X - 2, 0, 0)),
+                    C(f'Retaining Screw Rear {k}', 'z', [-X + 2, Y - 2], 4, [-15, -12], 'ss', 'f', rep=(3, X - 2, 0, 0)),
+                    C(f'Retaining Screw Side {k}', 'z', [-X + 2, 0], 4, [-15, -12], 'ss', 'f', rep=(2, 2 * X - 4, 0, 0)),
+                    B(f'Suspension Lug {k}', [-X, -20, 60, -X + 10, 20, 80], 'galv', 0, 'f', rep=(2, 2 * X - 10, 0, 0))])
 add('FMC_E_LightFixture_Panel_600_Cleanroom_IP65', 'Sealed IP65 cleanroom LED panel, flanged, front-maintained, gasketed opal diffuser, stainless retaining screws',
     'IfcLightFixture', [('600x600_IP65', {"Apparent Load": 40}), ('1200x600_IP65', {"Apparent Load": 60})], p,
-    {"Flange 620 x 620 mm, body 80 mm": A("620x620x80", "1200 x 600 type is twice as long; geometry shows 600 x 600"), "IP65 room side, 40 W, 4000 lm": A("IP65 40W"),
+    {"Flange 620 x 620 or 1220 x 620 mm, body 80 mm": A("620x620x80 / 1220x620x80", "per type"), "IP65 room side, 40 W, 4000 lm": A("IP65 40W"),
      "Cleanroom / theatre ceiling, HTM 03-01": A("HTM 03-01")},
-    "Cleanroom panel: white flange with gasket and opal diffuser below the ceiling, recessed body, LED board, driver box with gland, eight stainless retaining screws, suspension lugs.",
+    "Cleanroom panel: white flange with gasket and opal diffuser below the ceiling, recessed body, LED board, driver box with gland, eight stainless retaining screws, suspension lugs; flange, body and diffuser sized per type.",
     tv=etv(240, 40), conns=[PWR('Driver Box', 'top')])
 
 # 40 General LED panel 600, lay-in
@@ -932,40 +959,39 @@ add('FMC_E_LightFixture_Panel_600_General', 'Recessed LED panel 600 x 600 for la
     "LED panel: aluminium edge frame, opal diffuser, back tray, driver box with flex lead and plug, safety-wire lugs.",
     tv=etv(240, 36), conns=[PWR('Driver Box', 'top')])
 
-# 41 Downlight
-p = [T('Trim', 'z', [0, 0], [[80, -6], [100, -6], [100, 0], [80, 0]], 'white'),
-     T('Reflector', 'z', [0, 0], [[70, -6], [80, -6], [80, 30], [70, 30]], 'white'),
-     T('Diffuser', 'z', [0, 0], disc(76, -4, -3), 'opal'),
-     T('Body', 'z', [0, 0], disc(70, 0, 40), 'alu'),
-     T('Heatsink Fin', 'z', [0, 0], disc(60, 45, 50), 'alu', rep=(6, 0, 0, 10)),
-     T('Heatsink Core', 'z', [0, 0], disc(35, 40, 100), 'alu'),
-     B('Spring Clip', [-6, -96, 0, 6, -88, 50], 'galv', 0, 'f', rep=(2, 0, 184, 0)),
-     B('Driver', [90, -30, 30, 190, 30, 60], 'white'),
+# 41 Downlight: trim, reflector, diffuser, body, heatsink and clips per size; driver shared
+p = [B('Driver', [90, -30, 30, 190, 30, 60], 'white'),
      C('Driver Lead', 'x', [0, 45], 4, [35, 90], 'black', 'f')]
+for t, R_ in (('150_Downlight', 75), ('200_Downlight', 100)):
+    k = t[:3]; f_ = R_ / 100
+    p += ONLY([t], [T(f'Trim {k}', 'z', [0, 0], [[80 * f_, -6], [R_, -6], [R_, 0], [80 * f_, 0]], 'white'),
+                    T(f'Reflector {k}', 'z', [0, 0], [[70 * f_, -6], [80 * f_, -6], [80 * f_, 30], [70 * f_, 30]], 'white'),
+                    T(f'Diffuser {k}', 'z', [0, 0], disc(76 * f_, -4, -3), 'opal'),
+                    T(f'Body {k}', 'z', [0, 0], disc(70 * f_, 0, 40), 'alu'),
+                    T(f'Heatsink Fin {k}', 'z', [0, 0], disc(60 * f_, 45, 50), 'alu', rep=(6, 0, 0, 10)),
+                    T(f'Heatsink Core {k}', 'z', [0, 0], disc(35 * f_, 40, 100), 'alu'),
+                    B(f'Spring Clip {k}', [-6, -R_ + 4, 0, 6, -R_ + 12, 50], 'galv', 0, 'f', rep=(2, 0, 2 * R_ - 16, 0))])
 add('FMC_E_LightFixture_Downlight_LED', 'Recessed LED downlight, white trim, opal diffuser, finned heatsink, remote driver, spring clips', 'IfcLightFixture',
     [('150_Downlight', {"Apparent Load": 15}), ('200_Downlight', {"Apparent Load": 22})], p,
-    {"Trim 200 mm, cut-out 175 mm, height 100 mm": A("200x100", "150 type smaller"), "15 / 22 W, 4000 K": A("W"), "IP44 below ceiling": A("IP44")},
+    {"Trim 150 / 200 mm, height 100 mm (per type)": A("150/200x100"), "15 / 22 W, 4000 K": A("W"), "IP44 below ceiling": A("IP44")},
     "Downlight: trim, reflector, opal diffuser, body, six heatsink fins on a core, spring clips, remote driver with lead.",
     tv=etv(240, 22), conns=[PWR('Driver', 'top')])
 
-# 42 LED batten, surface
-L = 600
-semi = [[-35 + 35 - 35 * math.cos(math.pi * k / 10), -12 - 28 * math.sin(math.pi * k / 10)] for k in range(11)]
-p = [B('Base Channel', [-L, -35, -12, L, 35, 0], 'epw', 0),
-     RT('Diffuser', [[y, z] for y, z in semi], [-L + 15, L - 15], 'opal'),
-     T('End Cap', 'x', [0, -12], [[0, -L], [36, -L], [36, -L + 15], [0, -L + 15]], 'grey'),
-     T('End Cap Right', 'x', [0, -12], [[0, L - 15], [36, L - 15], [36, L], [0, L]], 'grey'),
-     C('Fixing Screw', 'z', [-450, 0], 4, [-13, -12], 'chrome', 'f', rep=(2, 900, 0, 0)),
-     C('Cable Entry', 'z', [-500, 0], 10, [0, 6], 'grey', 'f'),
-     B('LED Strip', [-L + 20, -6, -14, L - 20, 6, -12], 'grey', 0, 'f')]
-p[1]['pts'] = [[35 * math.cos(math.pi * k / 12), -12 - 30 * math.sin(math.pi * k / 12)] for k in range(13)]
-p[2] = T('End Cap', 'x', [0, -12], [[0, -L], [36, -L], [36, -L + 15], [0, -L + 15]], 'grey')
-for q in p[2:4]: q['profile'] = [[r, t] for r, t in q['profile']]
+# 42 LED batten, surface: channel, diffuser, end caps per length; cable entry shared
+p = [C('Cable Entry', 'z', [-500, 0], 10, [0, 6], 'grey', 'f')]
+dif = [[35 * math.cos(math.pi * k / 12), -12 - 30 * math.sin(math.pi * k / 12)] for k in range(13)]
+for t, L in (('1200_Batten', 600), ('1500_Batten', 750)):
+    k = t[:4]
+    p += ONLY([t], [B(f'Base Channel {k}', [-L, -35, -12, L, 35, 0], 'epw', 0),
+                    RT(f'Diffuser {k}', dif, [-L + 15, L - 15], 'opal'),
+                    T(f'End Cap L {k}', 'x', [0, -12], [[0, -L], [36, -L], [36, -L + 15], [0, -L + 15]], 'grey'),
+                    T(f'End Cap R {k}', 'x', [0, -12], [[0, L - 15], [36, L - 15], [36, L], [0, L]], 'grey'),
+                    C(f'Fixing Screw {k}', 'z', [-L + 150, 0], 4, [-13, -12], 'chrome', 'f', rep=(2, 2 * L - 300, 0, 0))])
 add('FMC_E_LightFixture_Batten_LED', 'LED batten, surface ceiling mount, white steel base channel, opal half-round diffuser, end caps', 'IfcLightFixture',
     [('1200_Batten', {"Apparent Load": 36}), ('1500_Batten', {"Apparent Load": 45})], p,
-    {"Length 1200 mm (1500 type longer), 70 x 45 mm": A("1200x70x45"), "36 / 45 W, 4000 K": A("W")},
-    "Batten: steel base channel on the ceiling, half-round opal diffuser, grey end caps, LED strip, fixing screws, cable entry; hangs below the ceiling (z = 0).",
-    tv=etv(240, 36), conns=[PWR('Base Channel', 'top')])
+    {"Length 1200 / 1500 mm (per type), 70 x 45 mm": A("1200/1500x70x45"), "36 / 45 W, 4000 K": A("W")},
+    "Batten: steel base channel on the ceiling, half-round opal diffuser, grey end caps, fixing screws (length per type), cable entry; hangs below the ceiling (z = 0).",
+    tv=etv(240, 36), conns=[PWR('Cable Entry', 'top')])
 
 # 43 Ward bedhead luminaire, up/down + reading + night light
 prof = [[0, 0], [0, 300], [-60, 300], [-110, 260], [-110, 40], [-70, 0]]
@@ -1050,27 +1076,27 @@ p = [B('Unistrut Channel', [-400, -171, 300, 400, -129, 341], 'galv', rep=(2, 0,
      T('Ceiling Cover', 'z', [0, 0], [[0, 0], [250, 0], [250, -15], [200, -40], [0, -40]], 'white'),
      C('Central Axis', 'z', [0, 0], 50, [-400, -40], 'white'),
      C('Arm Main', 'x', [0, -380], 30, [0, 900], 'white'),
-     C('Arm Satellite', 'x', [0, -330], 30, [-850, 0], 'white'),
+     *ONLY(['700-600_DoubleDome'], [C('Arm Satellite', 'x', [0, -330], 30, [-850, 0], 'white')]),
      C('Spring Arm Main', 'z', [900, 0], 25, [-900, -380], 'white'),
-     C('Spring Arm Sat', 'z', [-850, 0], 25, [-750, -330], 'white'),
+     *ONLY(['700-600_DoubleDome'], [C('Spring Arm Sat', 'z', [-850, 0], 25, [-750, -330], 'white')]),
      C('Yoke Main', 'y', [900, -950], 18, [-60, 60], 'white'),
-     C('Yoke Sat', 'y', [-850, -800], 18, [-60, 60], 'white'),
+     *ONLY(['700-600_DoubleDome'], [C('Yoke Sat', 'y', [-850, -800], 18, [-60, 60], 'white')]),
      T('Dome Main', 'z', [900, 0], [[0, -1000], [350, -1060], [350, -1080], [0, -1080]], 'white'),
      T('Dome Main Top', 'z', [900, 0], [[0, -950], [80, -955], [300, -1020], [350, -1060], [0, -1060]], 'white'),
      T('Lens Main', 'z', [900, 0], disc(330, -1082, -1080), 'frost'),
      T('LED Ring Main', 'z', [900, 0], ring(120, 150, -1083, -1082), 'yellow', 'f', rep=(1, 0, 0, 0)),
      T('LED Ring Main 2', 'z', [900, 0], ring(220, 250, -1083, -1082), 'yellow', 'f'),
      T('Sterile Handle Main', 'z', [900, 0], [[0, -1082], [25, -1082], [22, -1180], [0, -1185]], 'mgrey'),
-     T('Dome Sat', 'z', [-850, 0], [[0, -850], [80, -855], [260, -910], [300, -950], [300, -970], [0, -970]], 'white'),
-     T('Lens Sat', 'z', [-850, 0], disc(280, -972, -970), 'frost'),
-     T('LED Ring Sat', 'z', [-850, 0], ring(150, 180, -973, -972), 'yellow', 'f'),
-     T('Sterile Handle Sat', 'z', [-850, 0], [[0, -972], [25, -972], [22, -1070], [0, -1075]], 'mgrey')]
+     *ONLY(['700-600_DoubleDome'], [T('Dome Sat', 'z', [-850, 0], [[0, -850], [80, -855], [260, -910], [300, -950], [300, -970], [0, -970]], 'white')]),
+     *ONLY(['700-600_DoubleDome'], [T('Lens Sat', 'z', [-850, 0], disc(280, -972, -970), 'frost')]),
+     *ONLY(['700-600_DoubleDome'], [T('LED Ring Sat', 'z', [-850, 0], ring(150, 180, -973, -972), 'yellow', 'f')]),
+     *ONLY(['700-600_DoubleDome'], [T('Sterile Handle Sat', 'z', [-850, 0], [[0, -972], [25, -972], [22, -1070], [0, -1075]], 'mgrey')])]
 p = [q for q in p if q['n'] != 'Dome Main']
 add('FMC_E_LightFixture_OperatingLight_Ceiling', 'LED surgical light, ceiling mounted to a Unistrut frame: central axis, spring arms, 700 main dome and 600 satellite dome with sterile handles',
     'IfcLightFixture', [('700_Single', {"Apparent Load": 150}), ('700-600_DoubleDome', {"Apparent Load": 300})], p,
     {"Domes 700 / 600 mm, arm reach 900 mm": A("700/600"), "160 000 lux, 4500 K, Ra > 95 (IEC 60601-2-41)": A("160000lux"),
      "Ceiling 2900-3000 mm, Unistrut frame by structure": A(3000, "HBN 26 theatre practice"), "Sweep radius 1250 mm": A(1250)},
-    "Surgical light: Unistrut channels and threaded rods above the ceiling, mounting plate, ceiling cover, central axis, two arms with spring arms and yokes, main and satellite domes with frosted lenses, LED rings and sterile handles; sweep envelope on Clearance Operation.",
+    "Surgical light: Unistrut channels and threaded rods above the ceiling, mounting plate, ceiling cover, central axis, arms with spring arms and yokes, main dome and (DoubleDome type) satellite dome with frosted lenses, LED rings and sterile handles; sweep envelope on Clearance Operation.",
     tv=etv(240, 300), conns=[PWR('Mounting Plate', 'top')],
     clear=[{"n": "Sweep", "shape": "turn", "axis": "z", "c": [0, 0], "profile": [[0, -1200], [1250, -1200], [1250, -900], [0, -900]], "sub": "Clearance Operation"}])
 
@@ -1101,7 +1127,7 @@ add('FMC_E_LightFixture_Emergency_Bulkhead_Maintained', 'Emergency LED bulkhead,
 p = [F('Header Box', [-200, -60, 200, 200, 0, 250], 'white', 6),
      F('Blade', [-190, -34, 0, 190, -26, 200], 'pc', 4),
      F('Legend Panel', [-180, -35, 10, 180, -34, 190], 'green', 3),
-     F('Legend Panel Rear', [-180, -26, 10, 180, -25, 190], 'green', 3, 'f'),
+     *ONLY(['380x250_Double'], [F('Legend Panel Rear', [-180, -26, 10, 180, -25, 190], 'green', 3, 'f')]),
      FR('Man Torso', [[-138, 92], [-124, 92], [-106, 146], [-120, 150]], [-35.5, -35], 'white', 'f'),
      T('Man Head', 'y', [-104, 166], disc(11, -35, -35.5), 'white', 'f'),
      FR('Man Thigh Front', [[-130, 96], [-120, 90], [-96, 58], [-108, 52]], [-35.5, -35], 'white', 'f'),
@@ -1118,7 +1144,7 @@ p = [F('Header Box', [-200, -60, 200, 200, 0, 250], 'white', 6),
 add('FMC_E_LightFixture_ExitSign_Illuminated', 'Illuminated exit sign, edge-lit acrylic blade under a header box, ISO 7010 running-man legend with arrow, maintained 3 h', 'IfcLightFixture',
     [('380x250_Single', {}), ('380x250_Double', {})], p,
     {"Blade 380 x 200 mm, viewing distance 24 m": A("380x200", "BS 5266-1 / ISO 7010"), "Maintained 3 h": A("3h"), "Bottom at 2100 mm": A(2100)},
-    "Exit sign: header box with charge LED, clear blade, green legend panels front and rear, white running-man pictogram (torso, head, legs, arms), door outline and arrow.",
+    "Exit sign: header box with charge LED, clear blade, green legend panel (and a rear one on the Double type), white running-man pictogram (torso, head, legs, arms), door outline and arrow.",
     tv=etv(240, 3, False, 2100), conns=[PWR('Header Box', 'top')])
 
 # 50 IP65 round bulkhead
@@ -1135,25 +1161,26 @@ add('FMC_E_LightFixture_Bulkhead_IP65', 'Round LED bulkhead 270 mm, IP65, polyca
     tv=etv(240, 15, False, 2400), conns=[PWR('Base')])
 
 # 51 Street light pole with LED head and solar option (8 m)
-H = 8000
 p = [B('Base Plate', [-160, -160, 0, 160, 160, 20], 'galv'),
      C('Anchor Bolt', 'z', [-125, -125], 12, [0, 80], 'galv', 'f', rep=(2, 250, 0, 0)),
      C('Anchor Bolt Rear', 'z', [-125, 125], 12, [0, 80], 'galv', 'f', rep=(2, 250, 0, 0)),
-     T('Pole', 'z', [0, 0], [[0, 20], [85, 20], [45, H], [0, H]], 'galv'),
      F('Inspection Door', [-30, -90, 600, 30, -78, 900], 'galv', 6, 'f'),
-     PZ('Arm', [[-20, 0], [20, 0], [20, -1500], [-20, -1500]], [H - 300, H - 260], 'galv'),
-     C('Arm Spigot', 'y', [0, H - 260], 25, [-1650, -1500], 'galv'),
-     B('Luminaire Head', [-160, -2300, H - 340, 160, -1550, H - 220], 'pcoat', 60),
-     B('LED Module', [-120, -2200, H - 346, 120, -1650, H - 340], 'yellow', 30, 'f'),
-     B('Heat Fins', [-130, -2250, H - 220, 130, -1600, H - 200], 'pcoat', 20, 'f'),
-     B('Solar Panel Frame', [-600, -500, H + 150, 600, 500, H + 190], 'pvframe'),
-     B('Solar Panel Cells', [-580, -480, H + 190, 580, 480, H + 192], 'pv', 0, 'f'),
-     C('Panel Bracket', 'z', [0, 0], 30, [H, H + 150], 'galv'),
      F('Battery Box', [-150, -260, 3000, 150, -60, 3600], 'pcoat', 10),
      B('Battery Box Clamp', [-60, -60, 3200, 60, 0, 3260], 'galv', 0, 'f', rep=(2, 0, 0, 200))]
+for t, H in (('6m_LED', 6000), ('8m_LED', 8000)):
+    k = t[:2]
+    p += ONLY([t], [T(f'Pole {k}', 'z', [0, 0], [[0, 20], [85, 20], [45, H], [0, H]], 'galv'),
+                    PZ(f'Arm {k}', [[-20, 0], [20, 0], [20, -1500], [-20, -1500]], [H - 300, H - 260], 'galv'),
+                    C(f'Arm Spigot {k}', 'y', [0, H - 260], 25, [-1650, -1500], 'galv'),
+                    B(f'Luminaire Head {k}', [-160, -2300, H - 340, 160, -1550, H - 220], 'pcoat', 60),
+                    B(f'LED Module {k}', [-120, -2200, H - 346, 120, -1650, H - 340], 'yellow', 30, 'f'),
+                    B(f'Heat Fins {k}', [-130, -2250, H - 220, 130, -1600, H - 200], 'pcoat', 20, 'f'),
+                    B(f'Solar Panel Frame {k}', [-600, -500, H + 150, 600, 500, H + 190], 'pvframe'),
+                    B(f'Solar Panel Cells {k}', [-580, -480, H + 190, 580, 480, H + 192], 'pv', 0, 'f'),
+                    C(f'Panel Bracket {k}', 'z', [0, 0], 30, [H, H + 150], 'galv')])
 add('FMC_E_LightFixture_Streetlight_Pole', 'Street light: tapered galvanised pole on base plate, single arm, LED road luminaire; solar option with roof panel and pole-mounted battery box',
     'IfcLightFixture', [('6m_LED', {}), ('8m_LED', {})], p,
-    {"Pole 8 m (6 m type shorter), arm 1.5 m": A("8000/1500", "geometry shows 8 m"), "LED 60 W, Type II road optic": A("60W"),
+    {"Pole 6 m or 8 m (per type), arm 1.5 m": A("6000/8000/1500"), "LED 60 W, Type II road optic": A("60W"),
      "Solar option: 1.2 x 1.0 m panel, LiFePO4 battery box": A("solar", "note in record"), "Spacing 25-30 m": A("25-30 m")},
     "Street light: base plate and anchor bolts, tapered pole with inspection door, arm with spigot, LED luminaire with module and fins, solar panel on bracket, battery box with clamps.",
     tv=etv(240, 60), conns=[PWR('Base Plate', 'bottom')])
@@ -1211,14 +1238,15 @@ p = [B('Base Plate', [-60, -60, 0, 60, 60, 6], 'brass'),
      C('Base Screw', 'z', [-45, -45], 4, [6, 9], 'chrome', 'f', rep=(2, 90, 0, 0)),
      C('Base Screw Rear', 'z', [-45, 45], 4, [6, 9], 'chrome', 'f', rep=(2, 90, 0, 0)),
      T('Rod Boss', 'z', [0, 0], [[0, 6], [22, 6], [22, 40], [12, 55], [0, 55]], 'brass'),
-     C('Rod', 'z', [0, 0], 8, [55, 960], 'copper'),
-     T('Tip', 'z', [0, 0], [[0, 960], [8, 960], [0, 1000]], 'copper'),
+     *[q for t, h in (('500_Copper', 500), ('1000_Copper', 1000)) for q in ONLY([t], [
+        C(f'Rod {h}', 'z', [0, 0], 8, [55, h - 40], 'copper'),
+        T(f'Tip {h}', 'z', [0, 0], [[0, h - 40], [8, h - 40], [0, h]], 'copper')])],
      B('Tape Clamp', [20, -20, 0, 70, 20, 12], 'brass', 0, 'f'),
      B('Tape', [70, -12.5, 0, 300, 12.5, 3], 'copper', 0, 'f'),
      C('Clamp Bolt', 'z', [45, 0], 5, [12, 18], 'chrome', 'f')]
 add('FMC_LP_LP_AirTerminal_Rod', 'Lightning air terminal, solid copper rod 16 mm on a flat gunmetal base with 25 x 3 tape clamp (BS EN 62305)', 'IfcDiscreteAccessory',
     [('500_Copper', {}), ('1000_Copper', {})], p,
-    {"Rod 16 dia x 1000 mm (500 type shorter)": A("16x1000", "BS EN 62561-2 air termination rod"), "Base 120 x 120 mm with tape clamp": A("120x120"),
+    {"Rod 16 dia x 500 / 1000 mm (per type)": A("16x500/1000", "BS EN 62561-2 air termination rod"), "Base 120 x 120 mm with tape clamp": A("120x120"),
      "Protective angle / rolling sphere by designer": A("BS EN 62305-3")},
     "Air terminal: gunmetal base plate with screws, rod boss, copper rod with pointed tip, tape clamp and bolt with a tape stub.",
     cat='Electrical Fixtures')
@@ -1260,16 +1288,18 @@ add('FMC_LP_LP_EarthPit_Inspection', 'Earth inspection pit, precast concrete 300
     cat='Site')
 
 # 58 Earth rod (top at ground, z = 0)
-p = [C('Rod', 'z', [0, 0], 8, [-2400, -150], 'cubond'),
-     T('Driving Tip', 'z', [0, 0], [[0, -2440], [8, -2400], [0, -2400]], 'cubond'),
-     T('Coupler', 'z', [0, 0], ring(0, 11, -1250, -1150), 'brass'),
+p = [*ONLY(['1.2m_CopperBond'], [C('Rod 1.2m', 'z', [0, 0], 8, [-1200, -150], 'cubond'),
+                                  T('Driving Tip 1.2m', 'z', [0, 0], [[0, -1240], [8, -1200], [0, -1200]], 'cubond')]),
+     *ONLY(['2.4m_CopperBond'], [C('Rod 2.4m', 'z', [0, 0], 8, [-2400, -150], 'cubond'),
+                                  T('Driving Tip 2.4m', 'z', [0, 0], [[0, -2440], [8, -2400], [0, -2400]], 'cubond'),
+                                  T('Coupler', 'z', [0, 0], ring(0, 11, -1250, -1150), 'brass')]),
      B('Rod Clamp', [-18, -15, -230, 18, 15, -170], 'brass'),
      C('Clamp Bolt', 'y', [0, -200], 5, [-24, -15], 'chrome', 'f'),
      C('Earth Lead', 'x', [0, -200], 5, [18, 300], 'gy'),
      T('Rod Top', 'z', [0, 0], [[0, -150], [8, -150], [7, -145], [0, -145]], 'cubond', 'f')]
 add('FMC_LP_LP_EarthRod', 'Copper-bonded steel earth rod 16 mm with coupler, driving tip, rod clamp and green/yellow earth lead; top 150 mm below ground', 'IfcDiscreteAccessory',
     [('1.2m_CopperBond', {}), ('2.4m_CopperBond', {})], p,
-    {"Rod 16 dia x 2400 mm (1.2 m type shorter)": A("16x2400", "BS EN 62561-2"), "Copper bond 250 um": A("250um"), "Target resistance < 10 ohm": A(10, "BS EN 62305-3 / BS 7430")},
+    {"Rod 16 dia x 1200 / 2400 mm (two coupled 1.2 m rods)": A("16x1200/2400", "BS EN 62561-2"), "Copper bond 250 um": A("250um"), "Target resistance < 10 ohm": A(10, "BS EN 62305-3 / BS 7430")},
     "Earth rod: copper-bonded rod with driving tip, coupler, top, rod clamp with bolt and earth lead; ground at z = 0.",
     cat='Electrical Fixtures')
 
@@ -1292,6 +1322,7 @@ p = [B('Enclosure', [-150, -150, 0, 150, 0, 300], 'grey', 6),
      F('Cover Bottom', [-147, -160, 3, 147, -150, 80], 'grey', 6),
      F('Cover Side', [-147, -160, 80, -120, -150, 240], 'grey', 0, rep=(2, 267, 0, 0)),
      F('Window Seal', [-120, -152, 80, 120, -150, 84], 'black', 0, 'f', rep=(2, 0, 0, 156)),
+     F('Window', [-120, -160, 84, 120, -159, 236], 'pc', 0, 'f'),
      F('DIN Rail', [-120, -110, 150, 120, -100, 185], 'galv', 0, 'f'),
      F('SPD Module', [-110, -158, 110, -74, -110, 225], 'mgrey', 3, rep=(4, 36, 0, 0)),
      F('Status Flag', [-100, -159, 180, -84, -158, 192], 'green', 1, 'f', rep=(4, 36, 0, 0)),
@@ -1303,24 +1334,24 @@ p = [B('Enclosure', [-150, -150, 0, 150, 0, 300], 'grey', 6),
      C('Cable Gland', 'z', [-60, -75], 14, [-25, 0], 'black', 'f', rep=(3, 60, 0, 0))]
 add('FMC_LP_LP_SPD_Type1', 'Type 1 surge protective device TPN (3+1), Iimp 25 kA per pole, in an IP65 enclosure with window, at the intake', 'IfcProtectiveDevice', ['TPN_T1'], p,
     {"Enclosure 300 x 300 x 160 mm": A("300x300x160"), "Iimp 25 kA/pole, Up < 2.5 kV": A("25kA", "BS EN 61643-11 Type 1"), "Next to MSB, leads < 0.5 m": A(500, "BS 7671 534")},
-    "SPD Type 1: grey enclosure, cover frame round the window opening (glazing not drawn), DIN rail, four SPD modules with green status flags, terminal rows, remote signalling contact, screws, glands.",
+    "SPD Type 1: grey enclosure, cover frame with clear window, DIN rail, four SPD modules with green status flags, terminal rows, remote signalling contact, screws, glands.",
     tv=etv(415, 0, True, 1400), conns=[PWR('Enclosure', 'top', 'Supply')], cat='Electrical Equipment')
 
 # 61 SPD Type 2: DIN modular, plug-in cartridges (bare device inside a DB)
 p = [F('DIN Rail', [-60, -7.5, 30, 60, 0, 65], 'galv'),
-     F('Base', [-36, -50, 0, 36, -7.5, 90], 'mgrey', 2),
-     F('Cartridge', [-35, -68, 12, -19, -50, 78], 'white', 2, rep=(4, 18, 0, 0)),
-     F('Indicator Window', [-31, -68.5, 62, -23, -68, 72], 'green', 0, 'f', rep=(4, 18, 0, 0)),
-     F('Release Slot', [-30, -68.5, 18, -24, -68, 22], 'black', 0, 'f', rep=(4, 18, 0, 0)),
-     C('Terminal Screw', 'z', [-27, -40], 3, [90, 92], 'chrome', 'f', rep=(4, 18, 0, 0)),
-     C('Terminal Screw Bottom', 'z', [-27, -40], 3, [-2, 0], 'chrome', 'f', rep=(4, 18, 0, 0)),
-     F('Remote Contact Pins', [-30, -30, -6, 30, -20, 0], 'grey', 0, 'f'),
-     F('Rating Label', [-34, -50.5, 82, 34, -50, 88], 'white', 0, 'f')]
+     *[q for t, n in (('TPN_T2', 4), ('SPN_T2', 2)) for q in ONLY([t], [
+        F(f'Base {n}P', [-36, -50, 0, -36 + 18 * n, -7.5, 90], 'mgrey', 2),
+        F(f'Cartridge {n}P', [-35, -68, 12, -19, -50, 78], 'white', 2, rep=(n, 18, 0, 0)),
+        F(f'Indicator Window {n}P', [-31, -68.5, 62, -23, -68, 72], 'green', 0, 'f', rep=(n, 18, 0, 0)),
+        F(f'Release Slot {n}P', [-30, -68.5, 18, -24, -68, 22], 'black', 0, 'f', rep=(n, 18, 0, 0)),
+        C(f'Terminal Screw {n}P', 'z', [-27, -40], 3, [90, 92], 'chrome', 'f', rep=(n, 18, 0, 0)),
+        C(f'Terminal Screw Bottom {n}P', 'z', [-27, -40], 3, [-2, 0], 'chrome', 'f', rep=(n, 18, 0, 0))])],
+     F('Remote Contact Pins', [-30, -30, -6, 0, -20, 0], 'grey', 0, 'f')]
 add('FMC_LP_LP_SPD_Type2', 'Type 2 surge protective device, DIN-rail modular with plug-in cartridges and status windows, in final DBs', 'IfcProtectiveDevice',
     [('TPN_T2', {}), ('SPN_T2', {"Voltage": 240, "Number of Poles": 1})], p,
     {"4 modules x 18 mm, 90 mm high": A("72x90x68"), "In 20 kA, Imax 40 kA, Up < 1.5 kV": A("20/40kA", "BS EN 61643-11 Type 2"), "In each DB, BS 7671 534": A("BS 7671 534")},
-    "SPD Type 2: DIN rail, base, four plug-in cartridges with green indicator windows and release slots, top and bottom terminal screws, remote contact pins, label.",
-    tv=etv(415, 0, True, 1400), conns=[PWR('Base', 'top', 'Supply')], cat='Electrical Equipment')
+    "SPD Type 2: DIN rail, base, four (TPN) or two (SPN) plug-in cartridges with green indicator windows and release slots, top and bottom terminal screws, remote contact pins.",
+    tv=etv(415, 0, True, 1400), conns=[PWR('DIN Rail', 'top', 'Supply')], cat='Electrical Equipment')
 
 # 62 Theatre supplementary equipotential bonding bar, 16-way
 p = [F('Back Plate', [-220, -10, 0, 220, 0, 160], 'ss', 4),
@@ -1346,13 +1377,15 @@ p = [B('Clip Base', [-20, -10, -16, 20, 0, 16], 'grey', 2),
      B('Tape', [-12.5, -13, -150, 12.5, -10, 150], 'copper'),
      C('Fixing Screw', 'y', [0, 0], 3, [-17, -16], 'chrome', 'f'),
      C('Wall Plug', 'y', [0, 0], 3, [0, 40], 'grey', 'f')]
-p[3]['at'] = [-12.5, -13, -150, 12.5, -10, -16]
+p[3]['at'] = [-12.5, -13, -150, 12.5, -10, -16]; p[3]['only'] = ['25x3_Tape']
 p.insert(4, B('Tape Upper', [-12.5, -13, 16, 12.5, -10, 150], 'copper'))
+p[4]['only'] = ['25x3_Tape']
+p += ONLY(['8mm_Round'], [C('Round Conductor', 'z', [0, -11.5], 4, [-150, 150], 'copper')])
 p[0]['at'] = [-20, -10, -16, 20, 0, 16]
 add('FMC_LP_LP_ConductorClip', 'Down conductor DC clip for 25 x 3 tape (round 8 mm type by type name), PVC, screw fixed, with tape stub', 'IfcFastener',
     [('25x3_Tape', {}), ('8mm_Round', {})], p,
     {"Clip 40 x 32 x 16 mm": A("40x32x16"), "Fixings at 1 m vertical, 0.5 m horizontal": A(1000, "BS EN 62305-3 Table")},
-    "Clip: base, saddle and sides around a 25 x 3 copper tape stub, fixing screw, wall plug.",
+    "Clip: base, saddle and sides around a 25 x 3 tape stub (Tape) or 8 mm round conductor (Round), fixing screw, wall plug.",
     cat='Electrical Fixtures')
 
 # 64 Ring earth electrode run: 1 m segment buried 600, with a tape joint clamp
@@ -1368,14 +1401,14 @@ add('FMC_LP_LP_RingEarth_Conductor', 'Ring earth electrode: 25 x 3 bare copper t
     cat='Generic Models')
 
 # =============================================================== build
-BELOW = {'FMC_E_Comms_WiFi_AccessPoint', 'FMC_E_Comms_PA_Speaker_Ceiling', 'FMC_E_SecurityDevice_CCTV_Camera_Dome', 'FMC_E_LightFixture_Panel_600_Cleanroom_IP65',
-         'FMC_E_LightFixture_Panel_600_General', 'FMC_E_LightFixture_Downlight_LED', 'FMC_E_LightFixture_Batten_LED', 'FMC_E_LightFixture_OperatingLight_Ceiling'}
-def type_image_below(prod, path, size=600):
-    """Same as fp.render_type_image but the camera looks up (elevation -25) at a ceiling product."""
-    from PIL import Image
-    T, C_, I, n = fp._tris(prod, 'f')
-    im = Image.fromarray((fp._view(T, C_, I, -35, -25, size * 2, size * 2) * 255).astype('uint8'))
-    im.resize((size, size), Image.LANCZOS).save(path); return path
+REVIEW = os.environ.get('FMC_REVIEW', '/tmp/claude-0/-home-claude/ce672511-dda7-500e-94dd-9bdb64997d11/scratchpad/E_batch/types')
+os.makedirs(REVIEW, exist_ok=True)
+# ceiling products with parts above the ceiling (back boxes, domes, frames): the compiler's own test needs the hint
+BELOW = {'FMC_E_Comms_PA_Speaker_Ceiling', 'FMC_E_LightFixture_Panel_600_Cleanroom_IP65', 'FMC_E_LightFixture_Panel_600_General',
+         'FMC_E_LightFixture_Downlight_LED', 'FMC_E_LightFixture_OperatingLight_Ceiling', 'FMC_E_Comms_WiFi_AccessPoint',
+         'FMC_E_SecurityDevice_CCTV_Camera_Dome', 'FMC_E_LightFixture_Batten_LED'}
+for _p in P:
+    if _p['family'] in BELOW: _p['view'] = 'below'
 SKIPPED = []   # no Profiles in this batch
 
 def build(prod):
@@ -1392,12 +1425,11 @@ def build(prod):
     json.dump(prod, open(os.path.join(HERE, f + '.product.json'), 'w'), indent=1)
     r = fp.compile_product(prod)
     json.dump(r, open(os.path.join(HERE, f + '.recipe.json'), 'w'), indent=1)
-    if f in BELOW:   # ceiling products: the room sees them from below, so preview and Type Image look up at them
-        fp.render(prod, os.path.join(HERE, f + '.preview.png'), views=(('3D from below', -35, -25), ('3D', -35, 22), ('Front', 0, 0), ('Plan from below', 0, -89.9)))
-        type_image_below(prod, os.path.join(HERE, f + '.png'), 600)
-    else:
-        fp.render(prod, os.path.join(HERE, f + '.preview.png'))
-        fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
+    fp.render(prod, os.path.join(HERE, f + '.preview.png'))
+    fp.render_type_image(prod, os.path.join(HERE, f + '.png'), size=600)
+    for t in prod['types'][1:]:   # other types: review previews in the scratchpad, not in the pack
+        if any(t['name'] in q.get('only', []) for q in prod['parts']):
+            fp.render(dict(prod, _render_type=t['name']), os.path.join(REVIEW, f'{f}__{t["name"]}.preview.png'))
     return f, n, len(r['ops'])
 
 KITM = set(open(os.path.join(HERE, 'batches', 'KIT_MATERIALS.txt')).read().split())
