@@ -33,7 +33,12 @@ zone, Coarse/Medium box, subcategories and materials.
   true shape and vary by type).
 - The parametric rule holds: types change values only; geometry that must flex is native.
 
-## What to build (fits the hub plan: H1 Rhino connector, then H3 cross-app)
+## One family, three LODs (PR #182, owner's choice)
+Each of the four is one family: LOD 200 on Coarse (the envelope box), LOD 300 on Medium (the native recipe body), LOD 400
+on Fine (native parts plus the Rhino parts). Gate A runs per level. `fmc_recipe batch` fetches any missing Rhino part
+before it builds. This plan is that ladder applied to the four families first.
+
+## What to build (fits the hub plan: H1 Rhino connector with family parts first, then the cross-app import)
 ### Step 1 · H1: Rhino connector, enough for families
 `connectors/Formcraft.Rhino` (RhinoCommon plug-in, Rhino 8, `127.0.0.1` only, writes `%APPDATA%\Formcraft\apps\rhino.json`)
 and `fmc_rhino` in the server, with a stand-in for CI. Named operations only, no free scripting:
