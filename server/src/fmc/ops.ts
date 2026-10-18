@@ -59,6 +59,12 @@ export const GROUPS = ["Dimensions", "Constraints", "Data", "Text", "Materials",
 export const REFERENCES = ["NotAReference", "WeakReference", "StrongReference", "Left", "CenterLeftRight", "Right", "Front", "CenterFrontBack",
   "Back", "Bottom", "CenterElevation", "Top"] as const;
 
+/** QS03: a host plane, or a host plane and which of the component's references sits on it. */
+const NESTED_REFS = ["Left", "CenterLeftRight", "Right", "Front", "CenterFrontBack", "Back", "Bottom", "CenterElevation", "Top"] as const;
+const lockTo = z.union([z.string().min(1), z.object({ plane: z.string().min(1), ref: z.enum(NESTED_REFS),
+  at: z.number().optional().describe("where that reference sits in the component, mm from its origin along its own axis (default 0)") })]);
+export const lockPlane = (l: string | { plane: string } | undefined) => (typeof l === "string" ? l : l?.plane);
+
 export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_category"), name: z.string().min(1).describe("Revit category name, e.g. Generic Models, or OST_ name") }),
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
@@ -157,9 +163,9 @@ export const OP = z.discriminatedUnion("op", [
     params: z.record(z.string()).default({}).describe("nested instance parameter → this family's parameter (associated)"),
     // QS03: a component rides the host's planes. Its own Center (Left/Right), Center (Front/Back) and bottom (a plane
     // marked Bottom in the component) are moved onto these host planes and locked, so it moves with the host's sizes.
-    lock: z.object({ x: z.string().min(1).optional().describe("host plane for the component's Center (Left/Right)"),
-      y: z.string().min(1).optional().describe("host plane for its Center (Front/Back)"),
-      z: z.string().min(1).optional().describe("host plane or level for its bottom") }).optional() }),
+    lock: z.object({ x: lockTo.optional().describe("host plane for the component's Center (Left/Right), or { plane, ref: Left | Right }"),
+      y: lockTo.optional().describe("host plane for its Center (Front/Back), or { plane, ref: Front | Back }"),
+      z: lockTo.optional().describe("host plane or level for its Bottom, or { plane, ref: CenterElevation | Top }") }).optional() }),
   // Profiles, switches and kit materials (FAM-040): profile families drawn as data, a Yes/No parameter that shows or
   // hides a solid, and materials made from the kit's library with their textures.
   z.object({ op: z.literal("profile_lines"), name: z.string().min(1).describe("one name for the loop"),
@@ -656,7 +662,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
       }
       case "place_nested":
         if (!families.has(o.family)) p.push(`${at}: ${mayExist("family", o.family)}`);
-        for (const pl of Object.values(o.lock ?? {})) if (pl && !planes.has(pl)) p.push(`${at}: lock plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
+        for (const pl of Object.values(o.lock ?? {}).map(lockPlane)) if (pl && !planes.has(pl)) p.push(`${at}: lock plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         for (const hp of Object.values(o.params)) if (!params.has(hp)) p.push(`${at}: ${mayExist("parameter", hp)}`);
         break;
       case "add_dimension":

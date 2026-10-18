@@ -380,7 +380,11 @@ namespace RevitMCPCommandSet.Services.Fmc
             View plan = ViewFor(doc, "plan"), front = ViewFor(doc, "front");
             foreach (string axis in new[] { "x", "y", "z" })
             {
-                string pn = lk.Value<string>(axis);
+                // a plane name, or { plane, ref }: which of the component's references sits on the plane
+                JToken lt = lk[axis];
+                if (lt == null || lt.Type == JTokenType.Null) continue;
+                string pn = lt.Type == JTokenType.Object ? lt.Value<string>("plane") : lt.Value<string>();
+                string refName = lt.Type == JTokenType.Object ? lt.Value<string>("ref") : null;
                 if (string.IsNullOrEmpty(pn)) continue;
                 Reference hostRef; XYZ hostPoint, hostNormal;
                 ReferencePlane rp = new FilteredElementCollector(doc).OfClass(typeof(ReferencePlane)).Cast<ReferencePlane>().FirstOrDefault(r => r.Name == pn);
@@ -396,13 +400,22 @@ namespace RevitMCPCommandSet.Services.Fmc
                     hostRef = lv.GetPlaneReference(); hostPoint = new XYZ(0, 0, lv.Elevation); hostNormal = XYZ.BasisZ;
                 }
                 Transform tr = inst.GetTransform();
-                FamilyInstanceReferenceType kind = axis == "z" ? FamilyInstanceReferenceType.Bottom
+                FamilyInstanceReferenceType kind = !string.IsNullOrEmpty(refName) ? (FamilyInstanceReferenceType)Enum.Parse(typeof(FamilyInstanceReferenceType), refName)
+                    : axis == "z" ? FamilyInstanceReferenceType.Bottom
                     : Math.Abs(tr.BasisX.DotProduct(hostNormal)) > 0.99 ? FamilyInstanceReferenceType.CenterLeftRight
                     : Math.Abs(tr.BasisY.DotProduct(hostNormal)) > 0.99 ? FamilyInstanceReferenceType.CenterFrontBack
                     : throw new InvalidOperationException(pn + " isn't parallel to either centre plane of " + FmcDocGeometry.NameOf(inst) + " (check rotate_deg)");
                 Reference ir = inst.GetReferences(kind).FirstOrDefault()
                     ?? throw new InvalidOperationException(FmcDocGeometry.NameOf(inst) + " has no " + kind + " reference: mark that plane in the component's recipe");
-                double d = (hostPoint - tr.Origin).DotProduct(hostNormal);
+                // where that reference sits in the component (mm along its own x, y or z from its origin): the generator
+                // wrote the component, so the recipe carries it; 0 for the centre references and a bottom at the origin
+                double refAt = lt.Type == JTokenType.Object ? (lt.Value<double?>("at") ?? 0) : 0;
+                XYZ localAxis;
+                if (kind == FamilyInstanceReferenceType.CenterLeftRight || kind == FamilyInstanceReferenceType.Left || kind == FamilyInstanceReferenceType.Right) localAxis = tr.BasisX;
+                else if (kind == FamilyInstanceReferenceType.CenterFrontBack || kind == FamilyInstanceReferenceType.Front || kind == FamilyInstanceReferenceType.Back) localAxis = tr.BasisY;
+                else localAxis = tr.BasisZ;
+                XYZ refPoint = tr.Origin + localAxis.Multiply(Mm(refAt));
+                double d = (hostPoint - refPoint).DotProduct(hostNormal);
                 if (Math.Abs(d) > 1e-9) { ElementTransformUtils.MoveElement(doc, inst.Id, hostNormal.Multiply(d)); doc.Regenerate(); }
                 try
                 {
