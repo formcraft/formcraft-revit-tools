@@ -1,0 +1,242 @@
+{
+ "family": "FMC_P_MechEq_MedGas_Outlet_Vacuum",
+ "template": "Metric Mechanical Equipment.rft",
+ "desc": "Medical vacuum terminal unit, BS 5682 probe, wall mounted, flush back box",
+ "ifc": "IfcFlowTerminal",
+ "keynote": "P.MGO_01",
+ "types": [
+  {
+   "name": "BS5682_VAC"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1400
+ },
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "medical gas outlet vacuum mechanical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=medical+gas+outlet+vacuum+mechanical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.medicalexpo.com/medical-manufacturer/bs-type-outlet-56701.html",
+  "datasheet": "https://www.draeger.com/Content/Documents/Products/Terminal-Units-pi-9106572.pdf"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -45,
+    0,
+    5,
+    45,
+    55,
+    95
+   ],
+   "mat": "steel"
+  },
+  {
+   "n": "Fascia",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -10,
+    0,
+    50,
+    0,
+    100
+   ],
+   "r": 8,
+   "mat": "white"
+  },
+  {
+   "n": "Fascia Face",
+   "shape": "fbox",
+   "at": [
+    -47,
+    -12,
+    3,
+    47,
+    -10,
+    97
+   ],
+   "r": 7,
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Gas Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     19,
+     -12
+    ],
+    [
+     27,
+     -12
+    ],
+    [
+     27,
+     -16
+    ],
+    [
+     19,
+     -16
+    ]
+   ],
+   "mat": "yellow"
+  },
+  {
+   "n": "Socket Collar",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     0,
+     -10
+    ],
+    [
+     19,
+     -10
+    ],
+    [
+     19,
+     -24
+    ],
+    [
+     15,
+     -26
+    ],
+    [
+     6,
+     -26
+    ],
+    [
+     6,
+     -22
+    ],
+    [
+     0,
+     -22
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Release Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    55
+   ],
+   "profile": [
+    [
+     14,
+     -24
+    ],
+    [
+     17,
+     -24
+    ],
+    [
+     17,
+     -28
+    ],
+    [
+     14,
+     -28
+    ]
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Label Strip",
+   "shape": "fbox",
+   "at": [
+    -30,
+    -12.6,
+    14,
+    30,
+    -12,
+    26
+   ],
+   "r": 2,
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -40,
+    90
+   ],
+   "r": 2.5,
+   "y": [
+    -12.8,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     80,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "VAC",
+   "domain": "pipe",
+   "system": "Other",
+   "part": "Back Box",
+   "side": "back",
+   "diameter": 15,
+   "flow": "Out"
+  }
+ ],
+ "values": {
+  "Probe to BS 5682": {
+   "value": "BS 5682",
+   "source_status": "verified",
+   "source": "BS 5682:2015 probes and terminal units"
+  },
+  "Fascia 100 x 100 mm": {
+   "value": "100x100",
+   "source_status": "assumed",
+   "source": "square wall plate (Dr\u00e4ger lists square plates; size not published)"
+  },
+  "Gas identification colour": {
+   "value": "yellow",
+   "source_status": "verified",
+   "source": "HTM 02-01 / BS 1710 gas identification"
+  },
+  "Mounting height 1400 mm": {
+   "value": 1400,
+   "source_status": "assumed",
+   "source": "bedhead practice"
+  }
+ },
+ "about": "Terminal unit modelled as a generic product: square fascia, gas identification ring, chrome collar and release ring, label strip, screws, steel back box."
+}

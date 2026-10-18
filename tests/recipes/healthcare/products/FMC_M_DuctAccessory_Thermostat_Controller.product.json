@@ -1,0 +1,191 @@
+{
+ "family": "FMC_M_DuctAccessory_Thermostat_Controller",
+ "category": "Duct Accessories",
+ "template": "Metric Generic Model.rft",
+ "desc": "Room controller / thermostat 86 x 86 on a standard back box, backlit LCD with set point and mode, four buttons, occupancy LED",
+ "ifc": "IfcUnitaryControlElement",
+ "keynote": "H.CTL_02",
+ "types": [
+  {
+   "name": "86x86_Wall"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1400
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "ledb": "FMC_Plastic_LED_Blue",
+  "ledg": "FMC_Plastic_LED_Green",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "duct accessory thermostat controller duct accessories hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=duct+accessory+thermostat+controller+duct+accessories+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Box",
+   "shape": "box",
+   "at": [
+    -35,
+    0,
+    8,
+    35,
+    35,
+    78
+   ],
+   "mat": "dark"
+  },
+  {
+   "n": "Plate",
+   "shape": "fbox",
+   "at": [
+    -43,
+    -12,
+    0,
+    43,
+    0,
+    86
+   ],
+   "mat": "white",
+   "r": 6
+  },
+  {
+   "n": "LCD Bezel",
+   "shape": "fbox",
+   "at": [
+    -33,
+    -13,
+    38,
+    33,
+    -12,
+    78
+   ],
+   "mat": "black",
+   "r": 4
+  },
+  {
+   "n": "Temperature Digits",
+   "shape": "fbox",
+   "at": [
+    -22,
+    -13.6,
+    50,
+    12,
+    -13,
+    70
+   ],
+   "mat": "ledb",
+   "lod": "f"
+  },
+  {
+   "n": "Mode Icons",
+   "shape": "fbox",
+   "at": [
+    16,
+    -13.6,
+    52,
+    28,
+    -13,
+    68
+   ],
+   "mat": "ledb",
+   "lod": "f"
+  },
+  {
+   "n": "Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -27,
+    22
+   ],
+   "r": 5,
+   "y": [
+    -15,
+    -12
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     18,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Occupancy LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    34,
+    10
+   ],
+   "r": 2,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Screw Cover",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -36,
+    8
+   ],
+   "r": 2.5,
+   "y": [
+    -13,
+    -12
+   ],
+   "mat": "mgrey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     72,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "part": "Back Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Plate 86 x 86 x 12 mm on 35 mm box": {
+   "value": "86x86x12",
+   "source_status": "assumed",
+   "source": "BS 4662 single box"
+  },
+  "Set point range 16 to 28 C": {
+   "value": "16-28C",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Mounting height 1400 mm": {
+   "value": 1400,
+   "source_status": "assumed",
+   "source": "accessible controls practice"
+  }
+ },
+ "about": "Modelled as a generic product: plate on a back box, LCD bezel with digits and mode icons, four buttons, occupancy LED, screw covers."
+}

@@ -1,0 +1,129 @@
+{
+ "family": "FMC_LP_LP_RingEarth_Conductor",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Ring earth electrode: 25 x 3 bare copper tape laid on edge 600 mm deep, 1 m segment with a joint clamp and riveted joint",
+ "ifc": "IfcCableSegment",
+ "keynote": "X.EAR_04",
+ "types": [
+  {
+   "name": "25x3_Tape"
+  }
+ ],
+ "materials": {
+  "copper": "FMC_Metal_CopperTape_20x3",
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished"
+ },
+ "reference": {
+  "query": "lp lp ring earth conductor lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+ring+earth+conductor+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Tape Run",
+   "shape": "box",
+   "at": [
+    -500,
+    -1.5,
+    -12.5,
+    500,
+    1.5,
+    12.5
+   ],
+   "mat": "copper",
+   "lod": "mf"
+  },
+  {
+   "n": "Joint Clamp",
+   "shape": "box",
+   "at": [
+    -30,
+    -10,
+    -20,
+    30,
+    10,
+    20
+   ],
+   "mat": "brass",
+   "lod": "mf"
+  },
+  {
+   "n": "Clamp Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -15,
+    0
+   ],
+   "r": 4,
+   "y": [
+    -14,
+    -10
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     30,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rivet Joint",
+   "shape": "box",
+   "at": [
+    400,
+    -2,
+    -12.5,
+    450,
+    2,
+    12.5
+   ],
+   "mat": "copper",
+   "lod": "f"
+  },
+  {
+   "n": "Rivet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    415,
+    0
+   ],
+   "r": 3,
+   "y": [
+    -3,
+    -2
+   ],
+   "mat": "copper",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     20,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Tape 25 x 3 mm, 1000 mm segment": {
+   "value": "25x3",
+   "source_status": "assumed",
+   "source": "BS EN 62561-2"
+  },
+  "Depth 600 mm, 1 m from walls": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "BS EN 62305-3 type B arrangement"
+  }
+ },
+ "about": "Ring earth segment: copper tape on edge, joint clamp with two bolts, riveted joint; place along the route at -600 mm. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

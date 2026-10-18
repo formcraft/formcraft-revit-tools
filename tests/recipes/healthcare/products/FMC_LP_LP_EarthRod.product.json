@@ -1,0 +1,195 @@
+{
+ "family": "FMC_LP_LP_EarthRod",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Copper-bonded steel earth rod 16 mm with coupler, driving tip, rod clamp and green/yellow earth lead; top 150 mm below ground",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "X.EAR_03",
+ "types": [
+  {
+   "name": "1.2m_CopperBond",
+   "values": {}
+  },
+  {
+   "name": "2.4m_CopperBond",
+   "values": {}
+  }
+ ],
+ "materials": {
+  "cubond": "FMC_Metal_EarthRod_CopperBond",
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "gy": "FMC_Plastic_CableCore_GreenYellow"
+ },
+ "reference": {
+  "query": "lp lp earth rod lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+earth+rod+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Rod",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 8,
+   "z": [
+    -2400,
+    -150
+   ],
+   "mat": "cubond",
+   "lod": "mf"
+  },
+  {
+   "n": "Driving Tip",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -2440
+    ],
+    [
+     8,
+     -2400
+    ],
+    [
+     0,
+     -2400
+    ]
+   ],
+   "mat": "cubond",
+   "lod": "mf"
+  },
+  {
+   "n": "Coupler",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -1250
+    ],
+    [
+     11,
+     -1250
+    ],
+    [
+     11,
+     -1150
+    ],
+    [
+     0,
+     -1150
+    ]
+   ],
+   "mat": "brass",
+   "lod": "mf"
+  },
+  {
+   "n": "Rod Clamp",
+   "shape": "box",
+   "at": [
+    -18,
+    -15,
+    -230,
+    18,
+    15,
+    -170
+   ],
+   "mat": "brass",
+   "lod": "mf"
+  },
+  {
+   "n": "Clamp Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -200
+   ],
+   "r": 5,
+   "y": [
+    -24,
+    -15
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Earth Lead",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -200
+   ],
+   "r": 5,
+   "x": [
+    18,
+    300
+   ],
+   "mat": "gy",
+   "lod": "mf"
+  },
+  {
+   "n": "Rod Top",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -150
+    ],
+    [
+     8,
+     -150
+    ],
+    [
+     7,
+     -145
+    ],
+    [
+     0,
+     -145
+    ]
+   ],
+   "mat": "cubond",
+   "lod": "f"
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Rod 16 dia x 2400 mm (1.2 m type shorter)": {
+   "value": "16x2400",
+   "source_status": "assumed",
+   "source": "BS EN 62561-2"
+  },
+  "Copper bond 250 um": {
+   "value": "250um",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Target resistance < 10 ohm": {
+   "value": 10,
+   "source_status": "assumed",
+   "source": "BS EN 62305-3 / BS 7430"
+  }
+ },
+ "about": "Earth rod: copper-bonded rod with driving tip, coupler, top, rod clamp with bolt and earth lead; ground at z = 0. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

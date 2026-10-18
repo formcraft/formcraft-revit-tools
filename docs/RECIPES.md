@@ -102,6 +102,10 @@ Trims, surrounds, sills, quoins, copings and cornices come in one set per design
   until a sweep path can be locked to reference planes.
 
 ## The flow
+0. **From chat, inline (F-057):** `fmc_recipe check` and `build` take the recipe itself as `recipe` (a JSON object)
+   instead of `recipe_file`. The server keeps it in `<reports>\Recipes\<family>.recipe.json` and uses it like a file;
+   a real build saves it beside the staged family as always, so Gate A finds it. Healthcare pack recipes start in
+   `tests/recipes/healthcare/`.
 1. **Check:** `fmc_recipe check`, read-only. It validates the operations against the kit's parameter dictionary and
    shows where the family will be staged and released.
 2. **Build:** `fmc_recipe build`, a dry run first. It opens the template in the background, applies the operations,
@@ -251,3 +255,32 @@ of them on Metric Door.rft.
 centres to planes; the radial dimension labelled with a parameter; and whether Revit 2025 shows the Shared flag of a
 loaded family (if not, the op says so and the flag is checked by hand). Copies, switches, deletes and the default size
 use calls the engine already relies on.
+
+## Photo to family (parts models)
+
+`tests/recipes/tools/fmc_parts.py` turns a `*.product.json` parts model into a recipe and a four-view preview
+(3D, front, side, plan). A parts model lists named parts (box, fbox, prism, front, right, cyl, turn) with a kit material
+key and an LOD (c/m/f), plus connectors, clearances and sourced values. The compiler adds the kit parameters, one
+subcategory and material parameter per material, a Coarse envelope, and the connectors.
+
+**References are generic.** Each family gets a product photo page and an image-search link from `hc_refs.json`, built
+from its name and use. No brand is written. `FMC_Manufacturer` and `FMC_Model_Number` are added blank and filled at
+review from the owner's own photos. Supplier waits for the kit change request for `FMC_Supplier`. `URL` holds the photo
+page; a datasheet, if one was used, is only a source of sizes.
+
+Loop: write the parts model, then run `python3 ../tools/fmc_parts.py X.product.json X.recipe.json` (or
+`healthcare/products/make_products.py`). Compare the preview with the photo, adjust, then build with `fmc_recipe`
+(stepwise above 8 KB) and run Gate A.
+
+### Type Image and legends
+
+Every product recipe ends with `set_type_image`. It imports a 3D picture of the product (`render_type_image`, 800 px)
+into the family as Revit's built-in **Type Image**, for every type. The picture then shows in Type Properties, in
+schedules (image field) and in legends next to the legend components (plan, front and side, drawn by Revit from the
+family's own geometry). Pictures live in `04_Families\_Staging\<Role>\_Images\`. A second run reloads the picture, so a
+better render replaces the old one.
+
+### Owner review before sale
+
+The board's 3D viewer shows every product model with **✓ Pass test / ✗ Needs work** and a note. The tick is saved
+with the Inbox decisions as `REV-<family>`. A family is offered for sale only after it passes this review and Gate A.

@@ -1,0 +1,341 @@
+{
+ "family": "FMC_A_SpecEq_LinenChute_Disposal",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Linen and waste chute, 600 dia stainless chute with fire-rated (FD60) bottom-hinged hopper intake door, interlock and labels",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "A.EQP_01",
+ "types": [
+  {
+   "name": "600_FireRated",
+   "desc": "Linen/waste chute 600 mm dia, FD60 hopper intake door, interlock"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "green": "FMC_Plastic_LED_Green",
+  "red": "FMC_Plastic_LED_Red",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "yellow": "FMC_Plastic_ABS_Yellow"
+ },
+ "parts": [
+  {
+   "n": "Chute Tube",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    420
+   ],
+   "r": 300,
+   "z": [
+    0,
+    3000
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Chute Joint Band",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    420
+   ],
+   "profile": [
+    [
+     300,
+     2400
+    ],
+    [
+     312,
+     2400
+    ],
+    [
+     312,
+     2460
+    ],
+    [
+     300,
+     2460
+    ]
+   ],
+   "mat": "ss",
+   "lod": "f"
+  },
+  {
+   "n": "Throat",
+   "shape": "box",
+   "at": [
+    -280,
+    0,
+    760,
+    280,
+    170,
+    1440
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Door Frame",
+   "shape": "fbox",
+   "at": [
+    -380,
+    -45,
+    700,
+    380,
+    0,
+    1520
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "r": 10
+  },
+  {
+   "n": "Frame Shadow",
+   "shape": "fbox",
+   "at": [
+    -330,
+    -46,
+    760,
+    330,
+    -45,
+    1460
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Hopper Door",
+   "shape": "right",
+   "pts": [
+    [
+     -47,
+     770
+    ],
+    [
+     -60,
+     770
+    ],
+    [
+     -60,
+     1450
+    ],
+    [
+     -47,
+     1450
+    ]
+   ],
+   "x": [
+    -320,
+    320
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Pull Handle",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -100,
+    1360
+   ],
+   "r": 14,
+   "x": [
+    -200,
+    200
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Handle Stand",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -180,
+    1360
+   ],
+   "r": 10,
+   "y": [
+    -100,
+    -60
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     360,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Hinge",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -55,
+    775
+   ],
+   "r": 12,
+   "x": [
+    -310,
+    310
+   ],
+   "mat": "ss",
+   "lod": "f"
+  },
+  {
+   "n": "Fire Rating Label",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -62,
+    1050,
+    120,
+    -60,
+    1090
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Use Label",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -62,
+    1170,
+    200,
+    -60,
+    1260
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Interlock Panel",
+   "shape": "fbox",
+   "at": [
+    420,
+    -14,
+    1250,
+    520,
+    0,
+    1400
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Interlock Lamp",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    470,
+    1360
+   ],
+   "r": 10,
+   "y": [
+    -20,
+    -14
+   ],
+   "mat": "green",
+   "lod": "f"
+  },
+  {
+   "n": "Interlock Lamp Red",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    470,
+    1320
+   ],
+   "r": 10,
+   "y": [
+    -20,
+    -14
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Key Switch",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    470,
+    1280
+   ],
+   "r": 12,
+   "y": [
+    -22,
+    -14
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Floor Collar",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    420
+   ],
+   "profile": [
+    [
+     300,
+     0
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     380,
+     40
+    ],
+    [
+     300,
+     40
+    ]
+   ],
+   "mat": "galv",
+   "lod": "mf"
+  }
+ ],
+ "reference": {
+  "query": "linen chute disposal specialty equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=linen+chute+disposal+specialty+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Chute 600 mm dia": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "record type"
+  },
+  "Intake door FD60, self-closing, bottom-hinged hopper": {
+   "value": "FD60",
+   "source_status": "assumed",
+   "source": "HTM 05-02 / BS 476-22"
+  },
+  "Intake sill 760 mm": {
+   "value": 760,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Chute modelled as a generic product: one storey of 600 stainless chute behind the wall line (y = 0) with joint band and floor collar, throat, intake frame, tilted hopper door with pull handle and hinge, fire and use labels, interlock panel with lamps and key."
+}

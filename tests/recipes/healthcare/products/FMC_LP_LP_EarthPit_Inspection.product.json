@@ -1,0 +1,241 @@
+{
+ "family": "FMC_LP_LP_EarthPit_Inspection",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Earth inspection pit, precast concrete 300 x 300 clear with heavy lid flush at ground, earth rod head and clamp visible inside",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "X.EAR_02",
+ "types": [
+  {
+   "name": "300x300_Concrete"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C25",
+  "struct": "FMC_Metal_StructuralSteel_S275",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "black": "FMC_Plastic_ABS_Black",
+  "cubond": "FMC_Metal_EarthRod_CopperBond",
+  "brass": "FMC_Metal_Brass_Polished",
+  "gy": "FMC_Plastic_CableCore_GreenYellow"
+ },
+ "reference": {
+  "query": "lp lp earth pit inspection lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+earth+pit+inspection+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Chamber Wall Front",
+   "shape": "box",
+   "at": [
+    -200,
+    -200,
+    -450,
+    200,
+    -150,
+    0
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Chamber Wall Back",
+   "shape": "box",
+   "at": [
+    -200,
+    150,
+    -450,
+    200,
+    200,
+    0
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Chamber Wall Left",
+   "shape": "box",
+   "at": [
+    -200,
+    -150,
+    -450,
+    -150,
+    150,
+    0
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Chamber Wall Right",
+   "shape": "box",
+   "at": [
+    150,
+    -150,
+    -450,
+    200,
+    150,
+    0
+   ],
+   "mat": "conc",
+   "lod": "mf"
+  },
+  {
+   "n": "Lid Frame",
+   "shape": "box",
+   "at": [
+    -205,
+    -205,
+    -10,
+    205,
+    205,
+    0
+   ],
+   "mat": "struct",
+   "lod": "mf"
+  },
+  {
+   "n": "Lid",
+   "shape": "box",
+   "at": [
+    -195,
+    -195,
+    -8,
+    195,
+    195,
+    30
+   ],
+   "mat": "conc",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Lid Plate",
+   "shape": "box",
+   "at": [
+    -185,
+    -185,
+    30,
+    185,
+    185,
+    32
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Lift Ring",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    32
+   ],
+   "profile": [
+    [
+     10,
+     -40
+    ],
+    [
+     15,
+     -40
+    ],
+    [
+     15,
+     -30
+    ],
+    [
+     10,
+     -30
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     70,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Lid Label",
+   "shape": "box",
+   "at": [
+    -70,
+    -120,
+    32,
+    70,
+    -80,
+    33
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Earth Rod Head",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 8,
+   "z": [
+    -400,
+    -150
+   ],
+   "mat": "cubond",
+   "lod": "f"
+  },
+  {
+   "n": "Rod Clamp",
+   "shape": "box",
+   "at": [
+    -15,
+    -15,
+    -200,
+    15,
+    15,
+    -170
+   ],
+   "mat": "brass",
+   "lod": "f"
+  },
+  {
+   "n": "Earth Lead",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -185
+   ],
+   "r": 5,
+   "y": [
+    -15,
+    150
+   ],
+   "mat": "gy",
+   "lod": "f"
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Clear 300 x 300 x 450 mm, lid 390 mm": {
+   "value": "300x300x450",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Lid marked EARTH, removable for test": {
+   "value": "EARTH",
+   "source_status": "assumed",
+   "source": "BS 7430 / BS EN 62305-3"
+  }
+ },
+ "about": "Earth pit: four precast chamber walls, steel lid frame, concrete lid with yellow plate, lift rings and label; rod head, clamp and green/yellow lead inside. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

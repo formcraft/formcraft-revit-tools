@@ -1,0 +1,2293 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_GenericModel_Ramp_Stretcher_External",
+ "template": "Metric Generic Model.rft",
+ "about": "Ramp modelled as a generic product along +y (foot at y = 0): concrete slab (profile along x), kerbs, contrast strips, stainless posts following the slope (repeat with rise), upper and lower handrails with 300 extensions, end returns, anti-slip finish, channel drain at the foot. Geometry is the 1:12 type. Reference: query: ramp stretcher external generic models hospital; images: https://www.google.com/search?tbm=isch&q=ramp+stretcher+external+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Site"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "1in12_Ramp"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/FMC_Cost_Unit",
+   "type": "1in12_Ramp",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/FMC_Geometry_Stage",
+   "type": "1in12_Ramp",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/IfcExportAs",
+   "type": "1in12_Ramp",
+   "param": "IfcExportAs",
+   "value": "IfcRamp"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/Description",
+   "type": "1in12_Ramp",
+   "param": "Description",
+   "value": "External stretcher ramp 1:12, 500 mm rise, 1800 mm wide clear"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/Keynote",
+   "type": "1in12_Ramp",
+   "param": "Keynote",
+   "value": "T.RMP_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in12_Ramp/FMC_Keynote_Code",
+   "type": "1in12_Ramp",
+   "param": "FMC_Keynote_Code",
+   "value": "T.RMP_00"
+  },
+  {
+   "op": "add_type",
+   "name": "1in15_Ramp"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/FMC_Cost_Unit",
+   "type": "1in15_Ramp",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/FMC_Geometry_Stage",
+   "type": "1in15_Ramp",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/IfcExportAs",
+   "type": "1in15_Ramp",
+   "param": "IfcExportAs",
+   "value": "IfcRamp"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/Description",
+   "type": "1in15_Ramp",
+   "param": "Description",
+   "value": "External stretcher ramp 1:15, 500 mm rise, 1800 mm wide clear"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/Keynote",
+   "type": "1in15_Ramp",
+   "param": "Keynote",
+   "value": "T.RMP_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1in15_Ramp/FMC_Keynote_Code",
+   "type": "1in15_Ramp",
+   "param": "FMC_Keynote_Code",
+   "value": "T.RMP_00"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Precast",
+   "color": [
+    217,
+    212,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Precast Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Precast_Painted",
+   "param": "Precast Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Yellow",
+   "color": [
+    242,
+    194,
+    48
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Yellow Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Yellow",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ss",
+   "color": [
+    180,
+    183,
+    186
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ss Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StainlessSteel_Brushed",
+   "param": "Ss Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Safety",
+   "color": [
+    201,
+    205,
+    210
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Safety Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_MedicalGrey",
+   "param": "Safety Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1000,
+     -325.0
+    ],
+    [
+     1000,
+     -325.0
+    ],
+    [
+     1000,
+     7800
+    ],
+    [
+     -1000,
+     7800
+    ]
+   ],
+   "start": -150,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Ramp Slab",
+   "points": [
+    [
+     0,
+     -150
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     6000,
+     500
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     7800,
+     -150
+    ]
+   ],
+   "start": -1000,
+   "end": 1000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Ramp Slab",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Ramp Slab",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Ramp Slab",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kerb Left",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     6000,
+     600
+    ],
+    [
+     7800,
+     600
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "start": -1000,
+   "end": -900,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kerb Left",
+   "subcategory": "Precast"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kerb Left",
+   "param": "Precast Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kerb Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Kerb Right",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     100
+    ],
+    [
+     6000,
+     600
+    ],
+    [
+     7800,
+     600
+    ],
+    [
+     7800,
+     500
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "start": 900,
+   "end": 1000,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Kerb Right",
+   "subcategory": "Precast"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Kerb Right",
+   "param": "Precast Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Kerb Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Contrast Strip",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     60,
+     8
+    ],
+    [
+     60,
+     5
+    ]
+   ],
+   "start": -900,
+   "end": 900,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Contrast Strip",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Contrast Strip",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Contrast Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Landing Strip",
+   "points": [
+    [
+     5940,
+     495
+    ],
+    [
+     5940,
+     498
+    ],
+    [
+     6000,
+     503
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "start": -900,
+   "end": 900,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Landing Strip",
+   "subcategory": "Yellow"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Landing Strip",
+   "param": "Yellow Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Landing Strip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 1",
+   "points": [
+    [
+     -926.0,
+     300.0
+    ],
+    [
+     -926.82,
+     306.21
+    ],
+    [
+     -929.22,
+     312.0
+    ],
+    [
+     -933.03,
+     316.97
+    ],
+    [
+     -938.0,
+     320.78
+    ],
+    [
+     -943.79,
+     323.18
+    ],
+    [
+     -950.0,
+     324.0
+    ],
+    [
+     -956.21,
+     323.18
+    ],
+    [
+     -962.0,
+     320.78
+    ],
+    [
+     -966.97,
+     316.97
+    ],
+    [
+     -970.78,
+     312.0
+    ],
+    [
+     -973.18,
+     306.21
+    ],
+    [
+     -974.0,
+     300.0
+    ],
+    [
+     -973.18,
+     293.79
+    ],
+    [
+     -970.78,
+     288.0
+    ],
+    [
+     -966.97,
+     283.03
+    ],
+    [
+     -962.0,
+     279.22
+    ],
+    [
+     -956.21,
+     276.82
+    ],
+    [
+     -950.0,
+     276.0
+    ],
+    [
+     -943.79,
+     276.82
+    ],
+    [
+     -938.0,
+     279.22
+    ],
+    [
+     -933.03,
+     283.03
+    ],
+    [
+     -929.22,
+     288.0
+    ],
+    [
+     -926.82,
+     293.79
+    ]
+   ],
+   "start": 125,
+   "end": 1125
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 2",
+   "points": [
+    [
+     -926.0,
+     1800.0
+    ],
+    [
+     -926.82,
+     1806.21
+    ],
+    [
+     -929.22,
+     1812.0
+    ],
+    [
+     -933.03,
+     1816.97
+    ],
+    [
+     -938.0,
+     1820.78
+    ],
+    [
+     -943.79,
+     1823.18
+    ],
+    [
+     -950.0,
+     1824.0
+    ],
+    [
+     -956.21,
+     1823.18
+    ],
+    [
+     -962.0,
+     1820.78
+    ],
+    [
+     -966.97,
+     1816.97
+    ],
+    [
+     -970.78,
+     1812.0
+    ],
+    [
+     -973.18,
+     1806.21
+    ],
+    [
+     -974.0,
+     1800.0
+    ],
+    [
+     -973.18,
+     1793.79
+    ],
+    [
+     -970.78,
+     1788.0
+    ],
+    [
+     -966.97,
+     1783.03
+    ],
+    [
+     -962.0,
+     1779.22
+    ],
+    [
+     -956.21,
+     1776.82
+    ],
+    [
+     -950.0,
+     1776.0
+    ],
+    [
+     -943.79,
+     1776.82
+    ],
+    [
+     -938.0,
+     1779.22
+    ],
+    [
+     -933.03,
+     1783.03
+    ],
+    [
+     -929.22,
+     1788.0
+    ],
+    [
+     -926.82,
+     1793.79
+    ]
+   ],
+   "start": 250,
+   "end": 1250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 3",
+   "points": [
+    [
+     -926.0,
+     3300.0
+    ],
+    [
+     -926.82,
+     3306.21
+    ],
+    [
+     -929.22,
+     3312.0
+    ],
+    [
+     -933.03,
+     3316.97
+    ],
+    [
+     -938.0,
+     3320.78
+    ],
+    [
+     -943.79,
+     3323.18
+    ],
+    [
+     -950.0,
+     3324.0
+    ],
+    [
+     -956.21,
+     3323.18
+    ],
+    [
+     -962.0,
+     3320.78
+    ],
+    [
+     -966.97,
+     3316.97
+    ],
+    [
+     -970.78,
+     3312.0
+    ],
+    [
+     -973.18,
+     3306.21
+    ],
+    [
+     -974.0,
+     3300.0
+    ],
+    [
+     -973.18,
+     3293.79
+    ],
+    [
+     -970.78,
+     3288.0
+    ],
+    [
+     -966.97,
+     3283.03
+    ],
+    [
+     -962.0,
+     3279.22
+    ],
+    [
+     -956.21,
+     3276.82
+    ],
+    [
+     -950.0,
+     3276.0
+    ],
+    [
+     -943.79,
+     3276.82
+    ],
+    [
+     -938.0,
+     3279.22
+    ],
+    [
+     -933.03,
+     3283.03
+    ],
+    [
+     -929.22,
+     3288.0
+    ],
+    [
+     -926.82,
+     3293.79
+    ]
+   ],
+   "start": 375,
+   "end": 1375
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post 4",
+   "points": [
+    [
+     -926.0,
+     4800.0
+    ],
+    [
+     -926.82,
+     4806.21
+    ],
+    [
+     -929.22,
+     4812.0
+    ],
+    [
+     -933.03,
+     4816.97
+    ],
+    [
+     -938.0,
+     4820.78
+    ],
+    [
+     -943.79,
+     4823.18
+    ],
+    [
+     -950.0,
+     4824.0
+    ],
+    [
+     -956.21,
+     4823.18
+    ],
+    [
+     -962.0,
+     4820.78
+    ],
+    [
+     -966.97,
+     4816.97
+    ],
+    [
+     -970.78,
+     4812.0
+    ],
+    [
+     -973.18,
+     4806.21
+    ],
+    [
+     -974.0,
+     4800.0
+    ],
+    [
+     -973.18,
+     4793.79
+    ],
+    [
+     -970.78,
+     4788.0
+    ],
+    [
+     -966.97,
+     4783.03
+    ],
+    [
+     -962.0,
+     4779.22
+    ],
+    [
+     -956.21,
+     4776.82
+    ],
+    [
+     -950.0,
+     4776.0
+    ],
+    [
+     -943.79,
+     4776.82
+    ],
+    [
+     -938.0,
+     4779.22
+    ],
+    [
+     -933.03,
+     4783.03
+    ],
+    [
+     -929.22,
+     4788.0
+    ],
+    [
+     -926.82,
+     4793.79
+    ]
+   ],
+   "start": 500,
+   "end": 1500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Right 1",
+   "points": [
+    [
+     974.0,
+     300.0
+    ],
+    [
+     973.18,
+     306.21
+    ],
+    [
+     970.78,
+     312.0
+    ],
+    [
+     966.97,
+     316.97
+    ],
+    [
+     962.0,
+     320.78
+    ],
+    [
+     956.21,
+     323.18
+    ],
+    [
+     950.0,
+     324.0
+    ],
+    [
+     943.79,
+     323.18
+    ],
+    [
+     938.0,
+     320.78
+    ],
+    [
+     933.03,
+     316.97
+    ],
+    [
+     929.22,
+     312.0
+    ],
+    [
+     926.82,
+     306.21
+    ],
+    [
+     926.0,
+     300.0
+    ],
+    [
+     926.82,
+     293.79
+    ],
+    [
+     929.22,
+     288.0
+    ],
+    [
+     933.03,
+     283.03
+    ],
+    [
+     938.0,
+     279.22
+    ],
+    [
+     943.79,
+     276.82
+    ],
+    [
+     950.0,
+     276.0
+    ],
+    [
+     956.21,
+     276.82
+    ],
+    [
+     962.0,
+     279.22
+    ],
+    [
+     966.97,
+     283.03
+    ],
+    [
+     970.78,
+     288.0
+    ],
+    [
+     973.18,
+     293.79
+    ]
+   ],
+   "start": 125,
+   "end": 1125
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Right 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Right 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Right 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Right 2",
+   "points": [
+    [
+     974.0,
+     1800.0
+    ],
+    [
+     973.18,
+     1806.21
+    ],
+    [
+     970.78,
+     1812.0
+    ],
+    [
+     966.97,
+     1816.97
+    ],
+    [
+     962.0,
+     1820.78
+    ],
+    [
+     956.21,
+     1823.18
+    ],
+    [
+     950.0,
+     1824.0
+    ],
+    [
+     943.79,
+     1823.18
+    ],
+    [
+     938.0,
+     1820.78
+    ],
+    [
+     933.03,
+     1816.97
+    ],
+    [
+     929.22,
+     1812.0
+    ],
+    [
+     926.82,
+     1806.21
+    ],
+    [
+     926.0,
+     1800.0
+    ],
+    [
+     926.82,
+     1793.79
+    ],
+    [
+     929.22,
+     1788.0
+    ],
+    [
+     933.03,
+     1783.03
+    ],
+    [
+     938.0,
+     1779.22
+    ],
+    [
+     943.79,
+     1776.82
+    ],
+    [
+     950.0,
+     1776.0
+    ],
+    [
+     956.21,
+     1776.82
+    ],
+    [
+     962.0,
+     1779.22
+    ],
+    [
+     966.97,
+     1783.03
+    ],
+    [
+     970.78,
+     1788.0
+    ],
+    [
+     973.18,
+     1793.79
+    ]
+   ],
+   "start": 250,
+   "end": 1250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Right 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Right 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Right 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Right 3",
+   "points": [
+    [
+     974.0,
+     3300.0
+    ],
+    [
+     973.18,
+     3306.21
+    ],
+    [
+     970.78,
+     3312.0
+    ],
+    [
+     966.97,
+     3316.97
+    ],
+    [
+     962.0,
+     3320.78
+    ],
+    [
+     956.21,
+     3323.18
+    ],
+    [
+     950.0,
+     3324.0
+    ],
+    [
+     943.79,
+     3323.18
+    ],
+    [
+     938.0,
+     3320.78
+    ],
+    [
+     933.03,
+     3316.97
+    ],
+    [
+     929.22,
+     3312.0
+    ],
+    [
+     926.82,
+     3306.21
+    ],
+    [
+     926.0,
+     3300.0
+    ],
+    [
+     926.82,
+     3293.79
+    ],
+    [
+     929.22,
+     3288.0
+    ],
+    [
+     933.03,
+     3283.03
+    ],
+    [
+     938.0,
+     3279.22
+    ],
+    [
+     943.79,
+     3276.82
+    ],
+    [
+     950.0,
+     3276.0
+    ],
+    [
+     956.21,
+     3276.82
+    ],
+    [
+     962.0,
+     3279.22
+    ],
+    [
+     966.97,
+     3283.03
+    ],
+    [
+     970.78,
+     3288.0
+    ],
+    [
+     973.18,
+     3293.79
+    ]
+   ],
+   "start": 375,
+   "end": 1375
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Right 3",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Right 3",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Right 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Post Right 4",
+   "points": [
+    [
+     974.0,
+     4800.0
+    ],
+    [
+     973.18,
+     4806.21
+    ],
+    [
+     970.78,
+     4812.0
+    ],
+    [
+     966.97,
+     4816.97
+    ],
+    [
+     962.0,
+     4820.78
+    ],
+    [
+     956.21,
+     4823.18
+    ],
+    [
+     950.0,
+     4824.0
+    ],
+    [
+     943.79,
+     4823.18
+    ],
+    [
+     938.0,
+     4820.78
+    ],
+    [
+     933.03,
+     4816.97
+    ],
+    [
+     929.22,
+     4812.0
+    ],
+    [
+     926.82,
+     4806.21
+    ],
+    [
+     926.0,
+     4800.0
+    ],
+    [
+     926.82,
+     4793.79
+    ],
+    [
+     929.22,
+     4788.0
+    ],
+    [
+     933.03,
+     4783.03
+    ],
+    [
+     938.0,
+     4779.22
+    ],
+    [
+     943.79,
+     4776.82
+    ],
+    [
+     950.0,
+     4776.0
+    ],
+    [
+     956.21,
+     4776.82
+    ],
+    [
+     962.0,
+     4779.22
+    ],
+    [
+     966.97,
+     4783.03
+    ],
+    [
+     970.78,
+     4788.0
+    ],
+    [
+     973.18,
+     4793.79
+    ]
+   ],
+   "start": 500,
+   "end": 1500
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Post Right 4",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Post Right 4",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Post Right 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Landing Post 1",
+   "points": [
+    [
+     -926.0,
+     6900.0
+    ],
+    [
+     -926.82,
+     6906.21
+    ],
+    [
+     -929.22,
+     6912.0
+    ],
+    [
+     -933.03,
+     6916.97
+    ],
+    [
+     -938.0,
+     6920.78
+    ],
+    [
+     -943.79,
+     6923.18
+    ],
+    [
+     -950.0,
+     6924.0
+    ],
+    [
+     -956.21,
+     6923.18
+    ],
+    [
+     -962.0,
+     6920.78
+    ],
+    [
+     -966.97,
+     6916.97
+    ],
+    [
+     -970.78,
+     6912.0
+    ],
+    [
+     -973.18,
+     6906.21
+    ],
+    [
+     -974.0,
+     6900.0
+    ],
+    [
+     -973.18,
+     6893.79
+    ],
+    [
+     -970.78,
+     6888.0
+    ],
+    [
+     -966.97,
+     6883.03
+    ],
+    [
+     -962.0,
+     6879.22
+    ],
+    [
+     -956.21,
+     6876.82
+    ],
+    [
+     -950.0,
+     6876.0
+    ],
+    [
+     -943.79,
+     6876.82
+    ],
+    [
+     -938.0,
+     6879.22
+    ],
+    [
+     -933.03,
+     6883.03
+    ],
+    [
+     -929.22,
+     6888.0
+    ],
+    [
+     -926.82,
+     6893.79
+    ]
+   ],
+   "start": 600,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Landing Post 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Landing Post 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Landing Post 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Landing Post 2",
+   "points": [
+    [
+     974.0,
+     6900.0
+    ],
+    [
+     973.18,
+     6906.21
+    ],
+    [
+     970.78,
+     6912.0
+    ],
+    [
+     966.97,
+     6916.97
+    ],
+    [
+     962.0,
+     6920.78
+    ],
+    [
+     956.21,
+     6923.18
+    ],
+    [
+     950.0,
+     6924.0
+    ],
+    [
+     943.79,
+     6923.18
+    ],
+    [
+     938.0,
+     6920.78
+    ],
+    [
+     933.03,
+     6916.97
+    ],
+    [
+     929.22,
+     6912.0
+    ],
+    [
+     926.82,
+     6906.21
+    ],
+    [
+     926.0,
+     6900.0
+    ],
+    [
+     926.82,
+     6893.79
+    ],
+    [
+     929.22,
+     6888.0
+    ],
+    [
+     933.03,
+     6883.03
+    ],
+    [
+     938.0,
+     6879.22
+    ],
+    [
+     943.79,
+     6876.82
+    ],
+    [
+     950.0,
+     6876.0
+    ],
+    [
+     956.21,
+     6876.82
+    ],
+    [
+     962.0,
+     6879.22
+    ],
+    [
+     966.97,
+     6883.03
+    ],
+    [
+     970.78,
+     6888.0
+    ],
+    [
+     973.18,
+     6893.79
+    ]
+   ],
+   "start": 600,
+   "end": 1600
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Landing Post 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Landing Post 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Landing Post 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handrail Upper",
+   "points": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     6000,
+     1525
+    ],
+    [
+     7800,
+     1525
+    ],
+    [
+     7800,
+     1475
+    ],
+    [
+     6000,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "start": -975,
+   "end": -925,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handrail Upper",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handrail Upper",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handrail Upper",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handrail Upper Right",
+   "points": [
+    [
+     -300,
+     975
+    ],
+    [
+     -300,
+     1025
+    ],
+    [
+     0,
+     1025
+    ],
+    [
+     6000,
+     1525
+    ],
+    [
+     7800,
+     1525
+    ],
+    [
+     7800,
+     1475
+    ],
+    [
+     6000,
+     1475
+    ],
+    [
+     0,
+     975
+    ]
+   ],
+   "start": 925,
+   "end": 975,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handrail Upper Right",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handrail Upper Right",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handrail Upper Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handrail Lower",
+   "points": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     6000,
+     1125
+    ],
+    [
+     7800,
+     1125
+    ],
+    [
+     7800,
+     1075
+    ],
+    [
+     6000,
+     1075
+    ]
+   ],
+   "start": -970,
+   "end": -930,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handrail Lower",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handrail Lower",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handrail Lower",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handrail Lower Right",
+   "points": [
+    [
+     0,
+     575
+    ],
+    [
+     0,
+     625
+    ],
+    [
+     6000,
+     1125
+    ],
+    [
+     7800,
+     1125
+    ],
+    [
+     7800,
+     1075
+    ],
+    [
+     6000,
+     1075
+    ]
+   ],
+   "start": 930,
+   "end": 970,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handrail Lower Right",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handrail Lower Right",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handrail Lower Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail End Return 1",
+   "points": [
+    [
+     -925.0,
+     -300.0
+    ],
+    [
+     -925.85,
+     -293.53
+    ],
+    [
+     -928.35,
+     -287.5
+    ],
+    [
+     -932.32,
+     -282.32
+    ],
+    [
+     -937.5,
+     -278.35
+    ],
+    [
+     -943.53,
+     -275.85
+    ],
+    [
+     -950.0,
+     -275.0
+    ],
+    [
+     -956.47,
+     -275.85
+    ],
+    [
+     -962.5,
+     -278.35
+    ],
+    [
+     -967.68,
+     -282.32
+    ],
+    [
+     -971.65,
+     -287.5
+    ],
+    [
+     -974.15,
+     -293.53
+    ],
+    [
+     -975.0,
+     -300.0
+    ],
+    [
+     -974.15,
+     -306.47
+    ],
+    [
+     -971.65,
+     -312.5
+    ],
+    [
+     -967.68,
+     -317.68
+    ],
+    [
+     -962.5,
+     -321.65
+    ],
+    [
+     -956.47,
+     -324.15
+    ],
+    [
+     -950.0,
+     -325.0
+    ],
+    [
+     -943.53,
+     -324.15
+    ],
+    [
+     -937.5,
+     -321.65
+    ],
+    [
+     -932.32,
+     -317.68
+    ],
+    [
+     -928.35,
+     -312.5
+    ],
+    [
+     -925.85,
+     -306.47
+    ]
+   ],
+   "start": 700,
+   "end": 1025
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail End Return 1",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail End Return 1",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail End Return 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rail End Return 2",
+   "points": [
+    [
+     975.0,
+     -300.0
+    ],
+    [
+     974.15,
+     -293.53
+    ],
+    [
+     971.65,
+     -287.5
+    ],
+    [
+     967.68,
+     -282.32
+    ],
+    [
+     962.5,
+     -278.35
+    ],
+    [
+     956.47,
+     -275.85
+    ],
+    [
+     950.0,
+     -275.0
+    ],
+    [
+     943.53,
+     -275.85
+    ],
+    [
+     937.5,
+     -278.35
+    ],
+    [
+     932.32,
+     -282.32
+    ],
+    [
+     928.35,
+     -287.5
+    ],
+    [
+     925.85,
+     -293.53
+    ],
+    [
+     925.0,
+     -300.0
+    ],
+    [
+     925.85,
+     -306.47
+    ],
+    [
+     928.35,
+     -312.5
+    ],
+    [
+     932.32,
+     -317.68
+    ],
+    [
+     937.5,
+     -321.65
+    ],
+    [
+     943.53,
+     -324.15
+    ],
+    [
+     950.0,
+     -325.0
+    ],
+    [
+     956.47,
+     -324.15
+    ],
+    [
+     962.5,
+     -321.65
+    ],
+    [
+     967.68,
+     -317.68
+    ],
+    [
+     971.65,
+     -312.5
+    ],
+    [
+     974.15,
+     -306.47
+    ]
+   ],
+   "start": 700,
+   "end": 1025
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rail End Return 2",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rail End Return 2",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rail End Return 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Anti Slip Finish",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     6000,
+     502
+    ],
+    [
+     6000,
+     500
+    ]
+   ],
+   "start": -900,
+   "end": 900,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Anti Slip Finish",
+   "subcategory": "Safety"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Anti Slip Finish",
+   "param": "Safety Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Anti Slip Finish",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Channel Drain",
+   "points": [
+    [
+     -1000,
+     -150
+    ],
+    [
+     1000,
+     -150
+    ],
+    [
+     1000,
+     -50
+    ],
+    [
+     -1000,
+     -50
+    ]
+   ],
+   "start": -100,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Channel Drain",
+   "subcategory": "Ss"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Channel Drain",
+   "param": "Ss Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Channel Drain",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Ramp_Stretcher_External.png"
+  }
+ ],
+ "values": {
+  "Gradient 1:12, going 6000 mm, rise 500 mm": {
+   "value": "1:12",
+   "source_status": "assumed",
+   "source": "Approved Document M table 2"
+  },
+  "Clear width 1800 mm between handrails": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "stretcher/bed passing"
+  },
+  "Landing 1800 mm": {
+   "value": 1800,
+   "source_status": "assumed",
+   "source": "Approved Document M"
+  },
+  "Handrails 1000 and 600 mm, 300 extensions": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "Approved Document M / BS 8300-1"
+  }
+ }
+}

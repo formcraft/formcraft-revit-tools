@@ -1,0 +1,2056 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireProt_Hydrant_Pillar_External",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Pillar hydrant modelled as a generic product: bolted base flange, barrel and head, domed bonnet with operating nut, two side outlets with couplings, caps and chains, reflective band, drain boss and identification plate. Reference: query: fire prot hydrant pillar external fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+hydrant+pillar+external+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "2-way_Pillar"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Cost_Unit",
+   "type": "2-way_Pillar",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Geometry_Stage",
+   "type": "2-way_Pillar",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/IfcExportAs",
+   "type": "2-way_Pillar",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/Description",
+   "type": "2-way_Pillar",
+   "param": "Description",
+   "value": "External pillar fire hydrant, 2-way 65 mm instantaneous outlets with caps and chains, DN100 flanged base, cast iron painted red, reflective band"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/Keynote",
+   "type": "2-way_Pillar",
+   "param": "Keynote",
+   "value": "V.HYD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Keynote_Code",
+   "type": "2-way_Pillar",
+   "param": "FMC_Keynote_Code",
+   "value": "V.HYD_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Code_Description",
+   "type": "2-way_Pillar",
+   "param": "FMC_Code_Description",
+   "value": "Hydrant Pillar External: External hydrant"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Code_Group",
+   "type": "2-way_Pillar",
+   "param": "FMC_Code_Group",
+   "value": "V.HYD"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2-way_Pillar/FMC_Role_Code",
+   "type": "2-way_Pillar",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    200,
+    16,
+    46
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -222,
+     -170
+    ],
+    [
+     222,
+     -170
+    ],
+    [
+     222,
+     170
+    ],
+    [
+     -222,
+     170
+    ]
+   ],
+   "start": 0,
+   "end": 902
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Base Flange",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     170,
+     0
+    ],
+    [
+     170,
+     35
+    ],
+    [
+     0,
+     35
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Flange",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Flange",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Bolt X 1",
+   "points": [
+    [
+     -123.0,
+     0.0
+    ],
+    [
+     -123.41,
+     3.11
+    ],
+    [
+     -124.61,
+     6.0
+    ],
+    [
+     -126.51,
+     8.49
+    ],
+    [
+     -129.0,
+     10.39
+    ],
+    [
+     -131.89,
+     11.59
+    ],
+    [
+     -135.0,
+     12.0
+    ],
+    [
+     -138.11,
+     11.59
+    ],
+    [
+     -141.0,
+     10.39
+    ],
+    [
+     -143.49,
+     8.49
+    ],
+    [
+     -145.39,
+     6.0
+    ],
+    [
+     -146.59,
+     3.11
+    ],
+    [
+     -147.0,
+     0.0
+    ],
+    [
+     -146.59,
+     -3.11
+    ],
+    [
+     -145.39,
+     -6.0
+    ],
+    [
+     -143.49,
+     -8.49
+    ],
+    [
+     -141.0,
+     -10.39
+    ],
+    [
+     -138.11,
+     -11.59
+    ],
+    [
+     -135.0,
+     -12.0
+    ],
+    [
+     -131.89,
+     -11.59
+    ],
+    [
+     -129.0,
+     -10.39
+    ],
+    [
+     -126.51,
+     -8.49
+    ],
+    [
+     -124.61,
+     -6.0
+    ],
+    [
+     -123.41,
+     -3.11
+    ]
+   ],
+   "start": 35,
+   "end": 50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Bolt X 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Bolt X 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Bolt X 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Bolt X 2",
+   "points": [
+    [
+     147.0,
+     0.0
+    ],
+    [
+     146.59,
+     3.11
+    ],
+    [
+     145.39,
+     6.0
+    ],
+    [
+     143.49,
+     8.49
+    ],
+    [
+     141.0,
+     10.39
+    ],
+    [
+     138.11,
+     11.59
+    ],
+    [
+     135.0,
+     12.0
+    ],
+    [
+     131.89,
+     11.59
+    ],
+    [
+     129.0,
+     10.39
+    ],
+    [
+     126.51,
+     8.49
+    ],
+    [
+     124.61,
+     6.0
+    ],
+    [
+     123.41,
+     3.11
+    ],
+    [
+     123.0,
+     0.0
+    ],
+    [
+     123.41,
+     -3.11
+    ],
+    [
+     124.61,
+     -6.0
+    ],
+    [
+     126.51,
+     -8.49
+    ],
+    [
+     129.0,
+     -10.39
+    ],
+    [
+     131.89,
+     -11.59
+    ],
+    [
+     135.0,
+     -12.0
+    ],
+    [
+     138.11,
+     -11.59
+    ],
+    [
+     141.0,
+     -10.39
+    ],
+    [
+     143.49,
+     -8.49
+    ],
+    [
+     145.39,
+     -6.0
+    ],
+    [
+     146.59,
+     -3.11
+    ]
+   ],
+   "start": 35,
+   "end": 50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Bolt X 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Bolt X 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Bolt X 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Bolt Y 1",
+   "points": [
+    [
+     12.0,
+     -135.0
+    ],
+    [
+     11.59,
+     -131.89
+    ],
+    [
+     10.39,
+     -129.0
+    ],
+    [
+     8.49,
+     -126.51
+    ],
+    [
+     6.0,
+     -124.61
+    ],
+    [
+     3.11,
+     -123.41
+    ],
+    [
+     0.0,
+     -123.0
+    ],
+    [
+     -3.11,
+     -123.41
+    ],
+    [
+     -6.0,
+     -124.61
+    ],
+    [
+     -8.49,
+     -126.51
+    ],
+    [
+     -10.39,
+     -129.0
+    ],
+    [
+     -11.59,
+     -131.89
+    ],
+    [
+     -12.0,
+     -135.0
+    ],
+    [
+     -11.59,
+     -138.11
+    ],
+    [
+     -10.39,
+     -141.0
+    ],
+    [
+     -8.49,
+     -143.49
+    ],
+    [
+     -6.0,
+     -145.39
+    ],
+    [
+     -3.11,
+     -146.59
+    ],
+    [
+     -0.0,
+     -147.0
+    ],
+    [
+     3.11,
+     -146.59
+    ],
+    [
+     6.0,
+     -145.39
+    ],
+    [
+     8.49,
+     -143.49
+    ],
+    [
+     10.39,
+     -141.0
+    ],
+    [
+     11.59,
+     -138.11
+    ]
+   ],
+   "start": 35,
+   "end": 50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Bolt Y 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Bolt Y 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Bolt Y 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Bolt Y 2",
+   "points": [
+    [
+     12.0,
+     135.0
+    ],
+    [
+     11.59,
+     138.11
+    ],
+    [
+     10.39,
+     141.0
+    ],
+    [
+     8.49,
+     143.49
+    ],
+    [
+     6.0,
+     145.39
+    ],
+    [
+     3.11,
+     146.59
+    ],
+    [
+     0.0,
+     147.0
+    ],
+    [
+     -3.11,
+     146.59
+    ],
+    [
+     -6.0,
+     145.39
+    ],
+    [
+     -8.49,
+     143.49
+    ],
+    [
+     -10.39,
+     141.0
+    ],
+    [
+     -11.59,
+     138.11
+    ],
+    [
+     -12.0,
+     135.0
+    ],
+    [
+     -11.59,
+     131.89
+    ],
+    [
+     -10.39,
+     129.0
+    ],
+    [
+     -8.49,
+     126.51
+    ],
+    [
+     -6.0,
+     124.61
+    ],
+    [
+     -3.11,
+     123.41
+    ],
+    [
+     -0.0,
+     123.0
+    ],
+    [
+     3.11,
+     123.41
+    ],
+    [
+     6.0,
+     124.61
+    ],
+    [
+     8.49,
+     126.51
+    ],
+    [
+     10.39,
+     129.0
+    ],
+    [
+     11.59,
+     131.89
+    ]
+   ],
+   "start": 35,
+   "end": 50
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Bolt Y 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Bolt Y 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Bolt Y 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Barrel",
+   "profile": [
+    [
+     0,
+     35
+    ],
+    [
+     100,
+     35
+    ],
+    [
+     100,
+     75
+    ],
+    [
+     86,
+     95
+    ],
+    [
+     86,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Barrel",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Barrel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Head",
+   "profile": [
+    [
+     0,
+     600
+    ],
+    [
+     86,
+     600
+    ],
+    [
+     104,
+     630
+    ],
+    [
+     104,
+     760
+    ],
+    [
+     92,
+     780
+    ],
+    [
+     0,
+     780
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Head",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Head",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bonnet Dome",
+   "profile": [
+    [
+     0,
+     780
+    ],
+    [
+     82,
+     780
+    ],
+    [
+     72,
+     830
+    ],
+    [
+     42,
+     862
+    ],
+    [
+     0,
+     872
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bonnet Dome",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bonnet Dome",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Operating Nut",
+   "points": [
+    [
+     15.0,
+     -18.0
+    ],
+    [
+     16.15,
+     -17.77
+    ],
+    [
+     17.12,
+     -17.12
+    ],
+    [
+     17.77,
+     -16.15
+    ],
+    [
+     18.0,
+     -15.0
+    ],
+    [
+     18.0,
+     15.0
+    ],
+    [
+     17.77,
+     16.15
+    ],
+    [
+     17.12,
+     17.12
+    ],
+    [
+     16.15,
+     17.77
+    ],
+    [
+     15.0,
+     18.0
+    ],
+    [
+     -15.0,
+     18.0
+    ],
+    [
+     -16.15,
+     17.77
+    ],
+    [
+     -17.12,
+     17.12
+    ],
+    [
+     -17.77,
+     16.15
+    ],
+    [
+     -18.0,
+     15.0
+    ],
+    [
+     -18.0,
+     -15.0
+    ],
+    [
+     -17.77,
+     -16.15
+    ],
+    [
+     -17.12,
+     -17.12
+    ],
+    [
+     -16.15,
+     -17.77
+    ],
+    [
+     -15.0,
+     -18.0
+    ]
+   ],
+   "start": 866,
+   "end": 902
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Operating Nut",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Operating Nut",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Operating Nut",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Reflective Band",
+   "profile": [
+    [
+     86,
+     440
+    ],
+    [
+     88.5,
+     440
+    ],
+    [
+     88.5,
+     520
+    ],
+    [
+     86,
+     520
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reflective Band",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reflective Band",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Right",
+   "points": [
+    [
+     44.0,
+     690.0
+    ],
+    [
+     42.5,
+     701.39
+    ],
+    [
+     38.11,
+     712.0
+    ],
+    [
+     31.11,
+     721.11
+    ],
+    [
+     22.0,
+     728.11
+    ],
+    [
+     11.39,
+     732.5
+    ],
+    [
+     0.0,
+     734.0
+    ],
+    [
+     -11.39,
+     732.5
+    ],
+    [
+     -22.0,
+     728.11
+    ],
+    [
+     -31.11,
+     721.11
+    ],
+    [
+     -38.11,
+     712.0
+    ],
+    [
+     -42.5,
+     701.39
+    ],
+    [
+     -44.0,
+     690.0
+    ],
+    [
+     -42.5,
+     678.61
+    ],
+    [
+     -38.11,
+     668.0
+    ],
+    [
+     -31.11,
+     658.89
+    ],
+    [
+     -22.0,
+     651.89
+    ],
+    [
+     -11.39,
+     647.5
+    ],
+    [
+     -0.0,
+     646.0
+    ],
+    [
+     11.39,
+     647.5
+    ],
+    [
+     22.0,
+     651.89
+    ],
+    [
+     31.11,
+     658.89
+    ],
+    [
+     38.11,
+     668.0
+    ],
+    [
+     42.5,
+     678.61
+    ]
+   ],
+   "start": 100,
+   "end": 165,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Right",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Right",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Left",
+   "points": [
+    [
+     44.0,
+     690.0
+    ],
+    [
+     42.5,
+     701.39
+    ],
+    [
+     38.11,
+     712.0
+    ],
+    [
+     31.11,
+     721.11
+    ],
+    [
+     22.0,
+     728.11
+    ],
+    [
+     11.39,
+     732.5
+    ],
+    [
+     0.0,
+     734.0
+    ],
+    [
+     -11.39,
+     732.5
+    ],
+    [
+     -22.0,
+     728.11
+    ],
+    [
+     -31.11,
+     721.11
+    ],
+    [
+     -38.11,
+     712.0
+    ],
+    [
+     -42.5,
+     701.39
+    ],
+    [
+     -44.0,
+     690.0
+    ],
+    [
+     -42.5,
+     678.61
+    ],
+    [
+     -38.11,
+     668.0
+    ],
+    [
+     -31.11,
+     658.89
+    ],
+    [
+     -22.0,
+     651.89
+    ],
+    [
+     -11.39,
+     647.5
+    ],
+    [
+     -0.0,
+     646.0
+    ],
+    [
+     11.39,
+     647.5
+    ],
+    [
+     22.0,
+     651.89
+    ],
+    [
+     31.11,
+     658.89
+    ],
+    [
+     38.11,
+     668.0
+    ],
+    [
+     42.5,
+     678.61
+    ]
+   ],
+   "start": -165,
+   "end": -100,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Left",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Left",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Coupling Right",
+   "profile": [
+    [
+     32,
+     165
+    ],
+    [
+     52,
+     165
+    ],
+    [
+     52,
+     205
+    ],
+    [
+     32,
+     205
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "x",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coupling Right",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coupling Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Coupling Left",
+   "profile": [
+    [
+     32,
+     -205
+    ],
+    [
+     52,
+     -205
+    ],
+    [
+     52,
+     -165
+    ],
+    [
+     32,
+     -165
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "x",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Coupling Left",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coupling Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cap Right",
+   "profile": [
+    [
+     0,
+     205
+    ],
+    [
+     50,
+     205
+    ],
+    [
+     50,
+     222
+    ],
+    [
+     0,
+     222
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "x",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap Right",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Cap Left",
+   "profile": [
+    [
+     0,
+     -222
+    ],
+    [
+     50,
+     -222
+    ],
+    [
+     50,
+     -205
+    ],
+    [
+     0,
+     -205
+    ]
+   ],
+   "axis_at": [
+    0,
+    690
+   ],
+   "axis": "x",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap Left",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cap Chain Right",
+   "points": [
+    [
+     212,
+     -3
+    ],
+    [
+     216,
+     -3
+    ],
+    [
+     216,
+     3
+    ],
+    [
+     212,
+     3
+    ]
+   ],
+   "start": 560,
+   "end": 645
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cap Chain Right",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap Chain Right",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap Chain Right",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cap Chain Left",
+   "points": [
+    [
+     -216,
+     -3
+    ],
+    [
+     -212,
+     -3
+    ],
+    [
+     -212,
+     3
+    ],
+    [
+     -216,
+     3
+    ]
+   ],
+   "start": 560,
+   "end": 645
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cap Chain Left",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cap Chain Left",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cap Chain Left",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Drain Boss",
+   "profile": [
+    [
+     0,
+     84
+    ],
+    [
+     22,
+     84
+    ],
+    [
+     22,
+     104
+    ],
+    [
+     0,
+     104
+    ]
+   ],
+   "axis_at": [
+    0,
+    150
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Drain Boss",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Drain Boss",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Identification Plate",
+   "points": [
+    [
+     36.0,
+     300.0
+    ],
+    [
+     37.53,
+     300.3
+    ],
+    [
+     38.83,
+     301.17
+    ],
+    [
+     39.7,
+     302.47
+    ],
+    [
+     40.0,
+     304.0
+    ],
+    [
+     40.0,
+     376.0
+    ],
+    [
+     39.7,
+     377.53
+    ],
+    [
+     38.83,
+     378.83
+    ],
+    [
+     37.53,
+     379.7
+    ],
+    [
+     36.0,
+     380.0
+    ],
+    [
+     -36.0,
+     380.0
+    ],
+    [
+     -37.53,
+     379.7
+    ],
+    [
+     -38.83,
+     378.83
+    ],
+    [
+     -39.7,
+     377.53
+    ],
+    [
+     -40.0,
+     376.0
+    ],
+    [
+     -40.0,
+     304.0
+    ],
+    [
+     -39.7,
+     302.47
+    ],
+    [
+     -38.83,
+     301.17
+    ],
+    [
+     -37.53,
+     300.3
+    ],
+    [
+     -36.0,
+     300.0
+    ]
+   ],
+   "start": 86,
+   "end": 90,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Identification Plate",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Identification Plate",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Identification Plate",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Main",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Base Flange",
+   "side": "bottom",
+   "diameter": 100,
+   "flow": "In"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireProt_Hydrant_Pillar_External.png"
+  }
+ ],
+ "values": {
+  "Two 65 mm outlets": {
+   "value": "2x65",
+   "source_status": "assumed",
+   "source": "type name; BS 750 / BS 336 couplings"
+  },
+  "Height 900 mm above ground": {
+   "value": 900,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Inlet DN100 flange": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Barrel 172 mm diameter": {
+   "value": 172,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

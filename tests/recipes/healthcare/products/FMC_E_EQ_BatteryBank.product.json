@@ -1,0 +1,321 @@
+{
+ "family": "FMC_E_EQ_BatteryBank",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Lithium (LFP) battery bank 100 kWh, three 19 in racks of 9 modules with BMS and DC breaker",
+ "ifc": "IfcElectricFlowStorageDevice",
+ "keynote": "Z.BAT_04",
+ "types": [
+  {
+   "name": "100kWh_LFP",
+   "values": {
+    "Apparent Load": 50000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 50000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "black": "FMC_Plastic_ABS_Black",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "screen": "FMC_Plastic_ABS_Black",
+  "green": "FMC_Plastic_LED_Green",
+  "redabs": "FMC_Plastic_FireHoseReel_Red"
+ },
+ "reference": {
+  "query": "battery bank electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=battery+bank+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Rack Frame",
+   "shape": "box",
+   "at": [
+    -930,
+    -600,
+    0,
+    -330,
+    0,
+    2000
+   ],
+   "mat": "steel",
+   "lod": "mf",
+   "repeat": {
+    "n": 3,
+    "d": [
+     630,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rack Plinth",
+   "shape": "box",
+   "at": [
+    -930,
+    -600,
+    0,
+    960,
+    0,
+    60
+   ],
+   "mat": "black",
+   "lod": "mf"
+  },
+  {
+   "n": "Module",
+   "shape": "fbox",
+   "at": [
+    -910,
+    -610,
+    100,
+    -350,
+    -600,
+    260
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "Module Rack 2",
+   "shape": "fbox",
+   "at": [
+    -280,
+    -610,
+    100,
+    280,
+    -600,
+    260
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "Module Rack 3",
+   "shape": "fbox",
+   "at": [
+    350,
+    -610,
+    100,
+    910,
+    -600,
+    260
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "Module Handle",
+   "shape": "fbox",
+   "at": [
+    -900,
+    -625,
+    150,
+    -880,
+    -610,
+    220
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "Module Handle Rack 2",
+   "shape": "fbox",
+   "at": [
+    -270,
+    -625,
+    150,
+    -250,
+    -610,
+    220
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "Module Handle Rack 3",
+   "shape": "fbox",
+   "at": [
+    360,
+    -625,
+    150,
+    380,
+    -610,
+    220
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4,
+   "repeat": {
+    "n": 9,
+    "d": [
+     0,
+     0,
+     178
+    ]
+   }
+  },
+  {
+   "n": "BMS Unit",
+   "shape": "fbox",
+   "at": [
+    -910,
+    -612,
+    1720,
+    910,
+    -600,
+    1960
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "BMS Display",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -614,
+    1780,
+    100,
+    -612,
+    1920
+   ],
+   "mat": "screen",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "BMS LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    200,
+    1880
+   ],
+   "r": 6,
+   "y": [
+    -615,
+    -612
+   ],
+   "mat": "green",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     40,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Breaker Handle",
+   "shape": "fbox",
+   "at": [
+    600,
+    -630,
+    1790,
+    640,
+    -612,
+    1890
+   ],
+   "mat": "redabs",
+   "lod": "f",
+   "r": 4
+  }
+ ],
+ "connectors": [
+  {
+   "n": "DC Link",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "BMS Unit",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Envelope 1890 x 600 x 2000 mm": {
+   "value": "1890x600x2000",
+   "source_status": "assumed",
+   "source": "typical 3-rack LFP bank"
+  },
+  "Energy 100 kWh, LFP": {
+   "value": "100kWh",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Front access 1000 mm, ventilated room": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "battery room practice"
+  }
+ },
+ "about": "Battery bank: three rack frames on a plinth, 27 battery modules with handles, BMS unit with display and LEDs, red DC breaker handle. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open.",
+ "clearances": [
+  {
+   "n": "Working Space",
+   "shape": "box",
+   "at": [
+    -930,
+    -1625,
+    0,
+    960,
+    -625,
+    2000
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}

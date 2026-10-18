@@ -1,0 +1,294 @@
+{
+ "family": "FMC_E_EQ_MeterCabinet_Intake",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Intake and metering cabinet, wall/plinth mounted 600 x 800 x 250, rain hood, meter viewing window, utility cut-out",
+ "ifc": "IfcElectricDistributionBoard",
+ "keynote": "E.DBD_11",
+ "types": [
+  {
+   "name": "1-way_Intake",
+   "values": {
+    "Number of Poles": 1,
+    "Voltage": 240,
+    "Apparent Load": 23000
+   }
+  },
+  {
+   "name": "3-way_Intake",
+   "values": {
+    "Apparent Load": 69000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 69000,
+  "Number of Poles": 3,
+  "Default Elevation": 1000
+ },
+ "materials": {
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "mgrey": "FMC_Plastic_ABS_MedicalGrey",
+  "screen": "FMC_Plastic_ABS_Black",
+  "red": "FMC_Plastic_LED_Red",
+  "black": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "steel": "FMC_Metal_SteelLTZ_Painted"
+ },
+ "reference": {
+  "query": "meter cabinet intake electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=meter+cabinet+intake+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Cabinet",
+   "shape": "box",
+   "at": [
+    -300,
+    -250,
+    0,
+    300,
+    0,
+    800
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Rain Hood",
+   "shape": "box",
+   "at": [
+    -330,
+    -300,
+    800,
+    330,
+    10,
+    830
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Door",
+   "shape": "fbox",
+   "at": [
+    -295,
+    -260,
+    5,
+    295,
+    -250,
+    795
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Meter Window",
+   "shape": "fbox",
+   "at": [
+    -260,
+    -261,
+    450,
+    260,
+    -259,
+    720
+   ],
+   "mat": "pc",
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "Meter Body",
+   "shape": "fbox",
+   "at": [
+    -230,
+    -268,
+    480,
+    -90,
+    -261,
+    700
+   ],
+   "mat": "mgrey",
+   "lod": "mf",
+   "r": 6,
+   "repeat": {
+    "n": 3,
+    "d": [
+     165,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Meter LCD",
+   "shape": "fbox",
+   "at": [
+    -210,
+    -269,
+    620,
+    -110,
+    -268,
+    670
+   ],
+   "mat": "screen",
+   "lod": "f",
+   "r": 2,
+   "repeat": {
+    "n": 3,
+    "d": [
+     165,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Meter Pulse LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -160,
+    590
+   ],
+   "r": 4,
+   "y": [
+    -269.5,
+    -268
+   ],
+   "mat": "red",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     165,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cut-out Fuse",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -258,
+    120,
+    120,
+    -252,
+    300
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Fuse Carrier",
+   "shape": "fbox",
+   "at": [
+    -40,
+    -265,
+    170,
+    40,
+    -258,
+    260
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Hasp",
+   "shape": "fbox",
+   "at": [
+    255,
+    -275,
+    380,
+    280,
+    -260,
+    430
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Danger Label",
+   "shape": "fbox",
+   "at": [
+    -80,
+    -261,
+    330,
+    80,
+    -260,
+    400
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Vent",
+   "shape": "fbox",
+   "at": [
+    -250,
+    -261,
+    40,
+    -50,
+    -260,
+    90
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Gland Plate",
+   "shape": "box",
+   "at": [
+    -200,
+    -200,
+    -8,
+    200,
+    -50,
+    0
+   ],
+   "mat": "steel",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Gland Plate",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "Cabinet 600 x 800 x 250 mm": {
+   "value": "600x800x250",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "1 or 3 meter ways": {
+   "value": "1/3 way",
+   "source_status": "assumed",
+   "source": "type name; utility meters"
+  },
+  "Meter window at eye level, bottom at 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "utility reading practice"
+  }
+ },
+ "about": "Meter cabinet: steel cabinet with rain hood, door with meter window, three meter bodies with LCD and pulse LED, utility cut-out with fuse carrier, padlock hasp, danger label, vent, gland plate. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

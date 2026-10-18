@@ -1,0 +1,180 @@
+{
+ "family": "FMC_LP_LP_EarthBar_Main",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Main earthing terminal bar 12-way, copper on insulators with disconnect link, on a backplate",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "X.BND_00",
+ "types": [
+  {
+   "name": "12-way_Copper"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 500
+ },
+ "materials": {
+  "grey": "FMC_Plastic_ABS_Grey",
+  "black": "FMC_Plastic_ABS_Black",
+  "copper": "FMC_Metal_CopperTape_20x3",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "gy": "FMC_Plastic_CableCore_GreenYellow"
+ },
+ "reference": {
+  "query": "lp lp earth bar main lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+earth+bar+main+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Plate",
+   "shape": "fbox",
+   "at": [
+    -280,
+    -6,
+    0,
+    280,
+    0,
+    120
+   ],
+   "mat": "grey",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Insulator",
+   "shape": "box",
+   "at": [
+    -260,
+    -40,
+    30,
+    -220,
+    -6,
+    90
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 6,
+   "repeat": {
+    "n": 2,
+    "d": [
+     480,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Earth Bar",
+   "shape": "fbox",
+   "at": [
+    -270,
+    -50,
+    40,
+    270,
+    -40,
+    90
+   ],
+   "mat": "copper",
+   "lod": "mf",
+   "r": 2
+  },
+  {
+   "n": "Terminal Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -200,
+    65
+   ],
+   "r": 5,
+   "y": [
+    -62,
+    -50
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 12,
+    "d": [
+     36,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Disconnect Link",
+   "shape": "fbox",
+   "at": [
+    180,
+    -56,
+    35,
+    260,
+    -50,
+    95
+   ],
+   "mat": "copper",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Link Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    200,
+    65
+   ],
+   "r": 6,
+   "y": [
+    -64,
+    -56
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     40,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Label",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -7,
+    98,
+    120,
+    -6,
+    115
+   ],
+   "mat": "gy",
+   "lod": "f",
+   "r": 2
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Bar 540 x 50 x 10 mm": {
+   "value": "540x50x10",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "12 terminals M10, disconnect link for test": {
+   "value": "12-way",
+   "source_status": "assumed",
+   "source": "BS 7671 542.4"
+  },
+  "Height 500 mm": {
+   "value": 500,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "MET bar: grey backplate, two insulators, copper bar with 12 terminal bolts, disconnect link with bolts, green/yellow label. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

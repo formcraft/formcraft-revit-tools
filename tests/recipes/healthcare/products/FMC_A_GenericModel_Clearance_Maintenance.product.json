@@ -1,0 +1,58 @@
+{
+ "family": "FMC_A_GenericModel_Clearance_Maintenance",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Equipment maintenance envelope 1000 x 1000 x 2000 in front of the equipment face (non-plotting)",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "",
+ "types": [
+  {
+   "name": "1000x1000_Box",
+   "desc": "Maintenance envelope 1000 wide x 1000 deep x 2000 high"
+  }
+ ],
+ "materials": {
+  "clearance_maintenance": "FMC_Glass_Clear"
+ },
+ "parts": [
+  {
+   "n": "Maintenance Envelope",
+   "shape": "box",
+   "at": [
+    -500,
+    -1000,
+    0,
+    500,
+    0,
+    2000
+   ],
+   "mat": "clearance_maintenance",
+   "lod": "mf"
+  }
+ ],
+ "reference": {
+  "query": "clearance maintenance generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=clearance+maintenance+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Depth 1000 mm in front of the access face": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "BS 7671 / manufacturers' service space practice"
+  },
+  "Height 2000 mm": {
+   "value": 2000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Width 1000 mm": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Box in front of the equipment face (y = 0 toward -y), 2000 high, on Clearance Maintenance; nested by plant families.",
+ "shared": true,
+ "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
+}

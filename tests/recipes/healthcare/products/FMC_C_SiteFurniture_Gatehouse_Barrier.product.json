@@ -1,0 +1,393 @@
+{
+ "family": "FMC_C_SiteFurniture_Gatehouse_Barrier",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Automatic boom barrier for the main gate: steel housing on a concrete base, 3 m aluminium boom with red stripes, LEDs and rubber skirt, boom rest, photocells",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "T.GAT_00",
+ "types": [
+  {
+   "name": "3000_Boom"
+  }
+ ],
+ "materials": {
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "red": "FMC_Metal_SprinklerPipe_RedPainted",
+  "rubber": "FMC_Rubber_Black",
+  "ledr": "FMC_Plastic_LED_Red",
+  "abswhite": "FMC_Plastic_ABS_White",
+  "epoxy": "FMC_Metal_Steel_EpoxyCoated_White",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "parts": [
+  {
+   "n": "Base Plate",
+   "shape": "box",
+   "at": [
+    -200,
+    -225,
+    0,
+    200,
+    225,
+    12
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Anchor Nut",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -170,
+    -195
+   ],
+   "r": 12,
+   "z": [
+    12,
+    30
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     340,
+     0,
+     0
+    ]
+   },
+   "seg": 6
+  },
+  {
+   "n": "Anchor Nut Back",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -170,
+    195
+   ],
+   "r": 12,
+   "z": [
+    12,
+    30
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     340,
+     0,
+     0
+    ]
+   },
+   "seg": 6
+  },
+  {
+   "n": "Housing",
+   "shape": "box",
+   "at": [
+    -150,
+    -175,
+    12,
+    150,
+    175,
+    1000
+   ],
+   "mat": "epoxy",
+   "r": 20
+  },
+  {
+   "n": "Housing Top",
+   "shape": "box",
+   "at": [
+    -160,
+    -185,
+    1000,
+    160,
+    185,
+    1040
+   ],
+   "mat": "epoxy",
+   "r": 24
+  },
+  {
+   "n": "Housing Door",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -178,
+    100,
+    120,
+    -175,
+    900
+   ],
+   "mat": "epoxy",
+   "lod": "f",
+   "r": 10
+  },
+  {
+   "n": "Door Lock",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    80,
+    800
+   ],
+   "r": 10,
+   "y": [
+    -182,
+    -178
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Reflective Band",
+   "shape": "fbox",
+   "at": [
+    -150,
+    -177,
+    600,
+    150,
+    -175,
+    640
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Boom Hub",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    960
+   ],
+   "r": 70,
+   "y": [
+    -230,
+    -175
+   ],
+   "mat": "ss",
+   "seg": 24
+  },
+  {
+   "n": "Boom",
+   "shape": "box",
+   "at": [
+    0,
+    -260,
+    920,
+    3100,
+    -200,
+    1000
+   ],
+   "mat": "abswhite",
+   "r": 8
+  },
+  {
+   "n": "Boom Stripe",
+   "shape": "box",
+   "at": [
+    300,
+    -261,
+    919,
+    600,
+    -199,
+    1001
+   ],
+   "mat": "red",
+   "repeat": {
+    "n": 5,
+    "d": [
+     600,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Boom Skirt",
+   "shape": "box",
+   "at": [
+    200,
+    -240,
+    880,
+    3050,
+    -220,
+    920
+   ],
+   "mat": "rubber",
+   "lod": "f"
+  },
+  {
+   "n": "Boom LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    450,
+    960
+   ],
+   "r": 8,
+   "y": [
+    -263,
+    -260
+   ],
+   "mat": "ledr",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     500,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "Boom Rest Post",
+   "shape": "box",
+   "at": [
+    2960,
+    -270,
+    0,
+    3040,
+    -190,
+    860
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Rest Base Plate",
+   "shape": "box",
+   "at": [
+    2900,
+    -330,
+    0,
+    3100,
+    -130,
+    12
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Rest Fork Front",
+   "shape": "fbox",
+   "at": [
+    2965,
+    -280,
+    860,
+    3035,
+    -268,
+    1060
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Rest Fork Back",
+   "shape": "fbox",
+   "at": [
+    2965,
+    -192,
+    860,
+    3035,
+    -180,
+    1060
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Rest Pad",
+   "shape": "box",
+   "at": [
+    2965,
+    -268,
+    860,
+    3035,
+    -192,
+    880
+   ],
+   "mat": "rubber",
+   "lod": "f"
+  },
+  {
+   "n": "Photocell Post",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    600,
+    -600
+   ],
+   "r": 40,
+   "z": [
+    0,
+    600
+   ],
+   "mat": "epoxy",
+   "lod": "f",
+   "seg": 12
+  },
+  {
+   "n": "Photocell Post Far",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    600,
+    600
+   ],
+   "r": 40,
+   "z": [
+    0,
+    600
+   ],
+   "mat": "epoxy",
+   "lod": "f",
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "site furniture gatehouse barrier site hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=site+furniture+gatehouse+barrier+site+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Boom 3000 mm, pivot at 960 mm": {
+   "value": "3000 / 960",
+   "source_status": "assumed",
+   "source": "typical boom barrier"
+  },
+  "Housing 300 x 350 x 1040 mm": {
+   "value": "300x350x1040",
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Supply 240 V, 300 VA": {
+   "value": "240V 300VA",
+   "source_status": "assumed",
+   "source": "typical motor/controller; vendor to confirm"
+  },
+  "Opening time 1.5 to 3 s": {
+   "value": "1.5-3 s",
+   "source_status": "assumed",
+   "source": "typical; vendor to confirm"
+  }
+ },
+ "about": "Ground at z = 0 (foundation by the civil engineer): base plate with anchor nuts, housing with top, door, lock and reflective band, boom hub, white boom with five red stripes, rubber skirt and LEDs (Fine), boom rest with fork and pad, two photocell posts. Power on the housing.",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 300
+ },
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Housing",
+   "side": "back"
+  }
+ ]
+}

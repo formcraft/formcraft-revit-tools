@@ -1,0 +1,248 @@
+{
+ "family": "FMC_E_ElecFixture_NurseCall_PullCord_Toilet",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Assisted-toilet emergency pull cord, ceiling unit with reset button and reassurance LED, red cord with two bangles to 100 mm above floor",
+ "ifc": "IfcAlarm",
+ "keynote": "E.NCS_01",
+ "types": [
+  {
+   "name": "86_CeilingPull"
+  }
+ ],
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "orange": "FMC_Plastic_ABS_Yellow"
+ },
+ "reference": {
+  "query": "nurse call pull cord toilet electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=nurse+call+pull+cord+toilet+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Ceiling Unit",
+   "shape": "box",
+   "at": [
+    -43,
+    -43,
+    -40,
+    43,
+    43,
+    0
+   ],
+   "mat": "white",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Unit Cover",
+   "shape": "box",
+   "at": [
+    -40,
+    -40,
+    -46,
+    40,
+    40,
+    -40
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 10
+  },
+  {
+   "n": "Reset Button",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -18,
+    0
+   ],
+   "r": 8,
+   "z": [
+    -50,
+    -46
+   ],
+   "mat": "redabs",
+   "lod": "f"
+  },
+  {
+   "n": "Reassurance LED",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    18,
+    0
+   ],
+   "r": 4,
+   "z": [
+    -48,
+    -46
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Cord Gland",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    18
+   ],
+   "profile": [
+    [
+     0,
+     -46
+    ],
+    [
+     6,
+     -46
+    ],
+    [
+     4,
+     -58
+    ],
+    [
+     0,
+     -58
+    ]
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Pull Cord",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    18
+   ],
+   "r": 1.5,
+   "z": [
+    -1700,
+    -58
+   ],
+   "mat": "redabs",
+   "lod": "mf",
+   "seg": 8
+  },
+  {
+   "n": "Bangle Upper",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    18
+   ],
+   "profile": [
+    [
+     17,
+     -1012
+    ],
+    [
+     25,
+     -1012
+    ],
+    [
+     25,
+     -988
+    ],
+    [
+     17,
+     -988
+    ]
+   ],
+   "mat": "orange",
+   "lod": "mf"
+  },
+  {
+   "n": "Bangle Lower",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    18
+   ],
+   "profile": [
+    [
+     17,
+     -1712
+    ],
+    [
+     25,
+     -1712
+    ],
+    [
+     25,
+     -1688
+    ],
+    [
+     17,
+     -1688
+    ]
+   ],
+   "mat": "orange",
+   "lod": "mf"
+  },
+  {
+   "n": "Cord Toggle",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    18
+   ],
+   "profile": [
+    [
+     0,
+     -1715
+    ],
+    [
+     6,
+     -1712
+    ],
+    [
+     6,
+     -1688
+    ],
+    [
+     0,
+     -1685
+    ]
+   ],
+   "mat": "redabs",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "NurseCall",
+   "domain": "electrical",
+   "system": "NurseCall",
+   "part": "Ceiling Unit",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Ceiling unit 86 x 86 mm": {
+   "value": "86x86",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Bangles at 800-1000 mm and 100 mm above floor": {
+   "value": "bangles",
+   "source_status": "assumed",
+   "source": "Approved Document M / BS 8300"
+  },
+  "Cord length 1700 mm (2400 ceiling)": {
+   "value": 1700,
+   "source_status": "assumed",
+   "source": "set on site to ceiling height"
+  }
+ },
+ "about": "Pull cord: ceiling unit and cover, red reset button, reassurance LED, cord gland, red cord, two bangles and end toggle hanging below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

@@ -1,0 +1,102 @@
+{
+ "family": "FMC_S_StrFoundation_StripFooting",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Concrete strip footing on blinding, top at the foundation wall base",
+ "ifc": "IfcFooting",
+ "keynote": "C.STR_03",
+ "types": [
+  {
+   "name": "600_Strip",
+   "desc": "strip 600 wide x 200"
+  },
+  {
+   "name": "900_Strip",
+   "desc": "strip 900 wide x 250"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "blind": "FMC_Concrete_Blinding_C15",
+  "white": "FMC_Paint_RoadMarking_White"
+ },
+ "parts": [
+  {
+   "n": "Blinding",
+   "shape": "box",
+   "at": [
+    -1500,
+    -350,
+    -250,
+    1500,
+    350,
+    -200
+   ],
+   "mat": "blind"
+  },
+  {
+   "n": "Strip",
+   "shape": "box",
+   "at": [
+    -1500,
+    -300,
+    -200,
+    1500,
+    300,
+    0
+   ],
+   "mat": "conc"
+  },
+  {
+   "n": "Wall Setting-out Line",
+   "shape": "box",
+   "at": [
+    -1500,
+    -100,
+    0,
+    1500,
+    -95,
+    1
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Wall Setting-out Line Back",
+   "shape": "box",
+   "at": [
+    -1500,
+    95,
+    0,
+    1500,
+    100,
+    1
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "str foundation strip footing structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+strip+footing+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Strip 600 x 200 mm (geometry)": {
+   "value": "600x200",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Blinding 50 mm": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Wall set-out 200 mm wall centred": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical foundation wall"
+  }
+ },
+ "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible."
+}

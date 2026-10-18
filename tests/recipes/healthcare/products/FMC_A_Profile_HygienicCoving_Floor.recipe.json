@@ -1,0 +1,100 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_A_Profile_HygienicCoving_Floor",
+ "template": "Metric Profile.rft",
+ "about": "Sheet vinyl turned up the wall over a 38 mm cove former, 100 mm high. A 2D profile for sweeps (rails, coving, nosings); never scheduled.",
+ "ops": [
+  {
+   "op": "add_type",
+   "name": "100x38_Cove"
+  },
+  {
+   "op": "set_type_value",
+   "name": "100x38_Cove/Description",
+   "type": "100x38_Cove",
+   "param": "Description",
+   "value": "Sheet vinyl turned up the wall over a 38 mm cove former, 100 mm high"
+  },
+  {
+   "op": "profile_lines",
+   "name": "Section",
+   "start": [
+    0,
+    100
+   ],
+   "segments": [
+    {
+     "to": [
+      0,
+      38
+     ]
+    },
+    {
+     "to": [
+      38,
+      0
+     ],
+     "through": [
+      11.13,
+      11.13
+     ]
+    },
+    {
+     "to": [
+      150,
+      0
+     ]
+    },
+    {
+     "to": [
+      150,
+      2.5
+     ]
+    },
+    {
+     "to": [
+      38,
+      2.5
+     ]
+    },
+    {
+     "to": [
+      2.5,
+      38
+     ],
+     "through": [
+      12.9,
+      12.9
+     ]
+    },
+    {
+     "to": [
+      2.5,
+      100
+     ]
+    },
+    {
+     "to": [
+      0,
+      100
+     ]
+    }
+   ]
+  }
+ ],
+ "values": {
+  "Cove radius 38 mm": {
+   "value": 38,
+   "source_status": "assumed",
+   "source": "HBN 00-10 Part A: coved junctions"
+  },
+  "Turn-up 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "HBN 00-10 Part A"
+  }
+ },
+ "checks": {
+  "keynote_exempt": "profile family: used inside sweeps, never scheduled"
+ }
+}

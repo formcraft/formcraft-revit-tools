@@ -1,0 +1,229 @@
+{
+ "family": "FMC_LP_LP_DownConductor_TestClamp",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Down conductor test clamp, gunmetal, on 25 x 3 copper tape with DC clips above and below",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "X.TAP_04",
+ "types": [
+  {
+   "name": "25x3_Tape"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 1500
+ },
+ "materials": {
+  "copper": "FMC_Metal_CopperTape_20x3",
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "lp lp down conductor test clamp lightning protection hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=lp+lp+down+conductor+test+clamp+lightning+protection+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Tape Upper",
+   "shape": "box",
+   "at": [
+    -12.5,
+    -3,
+    60,
+    12.5,
+    0,
+    600
+   ],
+   "mat": "copper",
+   "lod": "mf"
+  },
+  {
+   "n": "Tape Lower",
+   "shape": "box",
+   "at": [
+    -12.5,
+    -3,
+    -600,
+    12.5,
+    0,
+    -60
+   ],
+   "mat": "copper",
+   "lod": "mf"
+  },
+  {
+   "n": "Clamp Back Plate",
+   "shape": "box",
+   "at": [
+    -25,
+    -6,
+    -70,
+    25,
+    -3,
+    70
+   ],
+   "mat": "brass",
+   "lod": "mf"
+  },
+  {
+   "n": "Clamp Front Plate",
+   "shape": "box",
+   "at": [
+    -25,
+    -12,
+    -70,
+    25,
+    -6,
+    70
+   ],
+   "mat": "brass",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Link Bar",
+   "shape": "box",
+   "at": [
+    -12.5,
+    -6,
+    -60,
+    12.5,
+    -3,
+    60
+   ],
+   "mat": "copper",
+   "lod": "f"
+  },
+  {
+   "n": "Clamp Bolt",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -14,
+    -45
+   ],
+   "r": 5,
+   "y": [
+    -18,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     28,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Clamp Bolt Upper",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -14,
+    45
+   ],
+   "r": 5,
+   "y": [
+    -18,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     28,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "DC Clip",
+   "shape": "box",
+   "at": [
+    -20,
+    -8,
+    400,
+    20,
+    0,
+    420
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     -800
+    ]
+   }
+  },
+  {
+   "n": "Clip Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    410
+   ],
+   "r": 3,
+   "y": [
+    -9,
+    -8
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     -800
+    ]
+   }
+  },
+  {
+   "n": "Test Label",
+   "shape": "fbox",
+   "at": [
+    -25,
+    -12.5,
+    75,
+    25,
+    -12,
+    95
+   ],
+   "mat": "white",
+   "lod": "f",
+   "r": 2
+  }
+ ],
+ "connectors": [],
+ "values": {
+  "Clamp 50 x 140 mm, tape 25 x 3 mm": {
+   "value": "50x140",
+   "source_status": "assumed",
+   "source": "BS EN 62561-1"
+  },
+  "Test point 1.5 m above ground": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "BS EN 62305-3 practice"
+  },
+  "Clips at 1 m centres": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Test clamp: front and back plates with four bolts, link bar, upper and lower 25 x 3 tape, two DC clips with screws, test label. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

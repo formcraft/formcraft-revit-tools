@@ -1,0 +1,3185 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_Furniture_Seating_Waiting_Beam",
+ "template": "Metric Generic Model.rft",
+ "about": "Beam seating modelled as a generic product: powder-coated beam on 2 T-legs with glides, seat brackets, moulded seat and back shells, vinyl seat and back pads, arm posts with pads between seats. Geometry is drawn at the 1920_3Seat type; the other types share it until a parametric pass. Reference: query: furniture seating waiting beam furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+seating+waiting+beam+furniture+hospital; basis: generic product; brand, model and supplier open for review; photo: https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Furniture"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "1920_3Seat"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Cost_Unit",
+   "type": "1920_3Seat",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Geometry_Stage",
+   "type": "1920_3Seat",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/IfcExportAs",
+   "type": "1920_3Seat",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/Description",
+   "type": "1920_3Seat",
+   "param": "Description",
+   "value": "Beam seating, 3 seats at 640 mm pitch, antimicrobial vinyl pads, steel beam on 2 T-legs"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/Keynote",
+   "type": "1920_3Seat",
+   "param": "Keynote",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Keynote_Code",
+   "type": "1920_3Seat",
+   "param": "FMC_Keynote_Code",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Code_Description",
+   "type": "1920_3Seat",
+   "param": "FMC_Code_Description",
+   "value": "Seating Waiting Beam: Beam seating"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Code_Group",
+   "type": "1920_3Seat",
+   "param": "FMC_Code_Group",
+   "value": "F.SEA"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/FMC_Role_Code",
+   "type": "1920_3Seat",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1920_3Seat/URL",
+   "type": "1920_3Seat",
+   "param": "URL",
+   "value": "https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms"
+  },
+  {
+   "op": "add_type",
+   "name": "2560_4Seat"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Cost_Unit",
+   "type": "2560_4Seat",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Geometry_Stage",
+   "type": "2560_4Seat",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/IfcExportAs",
+   "type": "2560_4Seat",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/Description",
+   "type": "2560_4Seat",
+   "param": "Description",
+   "value": "Beam seating, 4 seats at 640 mm pitch, antimicrobial vinyl pads, steel beam on 2 T-legs"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/Keynote",
+   "type": "2560_4Seat",
+   "param": "Keynote",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Keynote_Code",
+   "type": "2560_4Seat",
+   "param": "FMC_Keynote_Code",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Code_Description",
+   "type": "2560_4Seat",
+   "param": "FMC_Code_Description",
+   "value": "Seating Waiting Beam: Beam seating"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Code_Group",
+   "type": "2560_4Seat",
+   "param": "FMC_Code_Group",
+   "value": "F.SEA"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/FMC_Role_Code",
+   "type": "2560_4Seat",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2560_4Seat/URL",
+   "type": "2560_4Seat",
+   "param": "URL",
+   "value": "https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms"
+  },
+  {
+   "op": "add_type",
+   "name": "3200_5Seat"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Cost_Unit",
+   "type": "3200_5Seat",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Geometry_Stage",
+   "type": "3200_5Seat",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/IfcExportAs",
+   "type": "3200_5Seat",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/Description",
+   "type": "3200_5Seat",
+   "param": "Description",
+   "value": "Beam seating, 5 seats at 640 mm pitch, antimicrobial vinyl pads, steel beam on 2 T-legs"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/Keynote",
+   "type": "3200_5Seat",
+   "param": "Keynote",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Keynote_Code",
+   "type": "3200_5Seat",
+   "param": "FMC_Keynote_Code",
+   "value": "F.SEA_00"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Code_Description",
+   "type": "3200_5Seat",
+   "param": "FMC_Code_Description",
+   "value": "Seating Waiting Beam: Beam seating"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Code_Group",
+   "type": "3200_5Seat",
+   "param": "FMC_Code_Group",
+   "value": "F.SEA"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/FMC_Role_Code",
+   "type": "3200_5Seat",
+   "param": "FMC_Role_Code",
+   "value": "I"
+  },
+  {
+   "op": "set_type_value",
+   "name": "3200_5Seat/URL",
+   "type": "3200_5Seat",
+   "param": "URL",
+   "value": "https://www.medi-plinth.co.uk/products/kentra-beam-seating-for-waiting-rooms"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Frame",
+   "color": [
+    158,
+    164,
+    170
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Frame Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Frame Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Shell",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Shell Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Shell Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Vinyl",
+   "color": [
+    58,
+    110,
+    165
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Vinyl Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Vinyl_Upholstery_Blue",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Arm",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Arm Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Arm Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1000.0,
+     -340
+    ],
+    [
+     1000.0,
+     -340
+    ],
+    [
+     1000.0,
+     340
+    ],
+    [
+     -1000.0,
+     340
+    ]
+   ],
+   "start": -0.1,
+   "end": 900
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Beam",
+   "points": [
+    [
+     992.0,
+     -60.0
+    ],
+    [
+     995.06,
+     -59.39
+    ],
+    [
+     997.66,
+     -57.66
+    ],
+    [
+     999.39,
+     -55.06
+    ],
+    [
+     1000.0,
+     -52.0
+    ],
+    [
+     1000.0,
+     12.0
+    ],
+    [
+     999.39,
+     15.06
+    ],
+    [
+     997.66,
+     17.66
+    ],
+    [
+     995.06,
+     19.39
+    ],
+    [
+     992.0,
+     20.0
+    ],
+    [
+     -992.0,
+     20.0
+    ],
+    [
+     -995.06,
+     19.39
+    ],
+    [
+     -997.66,
+     17.66
+    ],
+    [
+     -999.39,
+     15.06
+    ],
+    [
+     -1000.0,
+     12.0
+    ],
+    [
+     -1000.0,
+     -52.0
+    ],
+    [
+     -999.39,
+     -55.06
+    ],
+    [
+     -997.66,
+     -57.66
+    ],
+    [
+     -995.06,
+     -59.39
+    ],
+    [
+     -992.0,
+     -60.0
+    ]
+   ],
+   "start": 380,
+   "end": 440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Beam",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Beam",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Beam",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg 1",
+   "points": [
+    [
+     -728.0,
+     -40.0
+    ],
+    [
+     -724.94,
+     -39.39
+    ],
+    [
+     -722.34,
+     -37.66
+    ],
+    [
+     -720.61,
+     -35.06
+    ],
+    [
+     -720.0,
+     -32.0
+    ],
+    [
+     -720.0,
+     -8.0
+    ],
+    [
+     -720.61,
+     -4.94
+    ],
+    [
+     -722.34,
+     -2.34
+    ],
+    [
+     -724.94,
+     -0.61
+    ],
+    [
+     -728.0,
+     0.0
+    ],
+    [
+     -772.0,
+     0.0
+    ],
+    [
+     -775.06,
+     -0.61
+    ],
+    [
+     -777.66,
+     -2.34
+    ],
+    [
+     -779.39,
+     -4.94
+    ],
+    [
+     -780.0,
+     -8.0
+    ],
+    [
+     -780.0,
+     -32.0
+    ],
+    [
+     -779.39,
+     -35.06
+    ],
+    [
+     -777.66,
+     -37.66
+    ],
+    [
+     -775.06,
+     -39.39
+    ],
+    [
+     -772.0,
+     -40.0
+    ]
+   ],
+   "start": 40,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg 2",
+   "points": [
+    [
+     772.0,
+     -40.0
+    ],
+    [
+     775.06,
+     -39.39
+    ],
+    [
+     777.66,
+     -37.66
+    ],
+    [
+     779.39,
+     -35.06
+    ],
+    [
+     780.0,
+     -32.0
+    ],
+    [
+     780.0,
+     -8.0
+    ],
+    [
+     779.39,
+     -4.94
+    ],
+    [
+     777.66,
+     -2.34
+    ],
+    [
+     775.06,
+     -0.61
+    ],
+    [
+     772.0,
+     0.0
+    ],
+    [
+     728.0,
+     0.0
+    ],
+    [
+     724.94,
+     -0.61
+    ],
+    [
+     722.34,
+     -2.34
+    ],
+    [
+     720.61,
+     -4.94
+    ],
+    [
+     720.0,
+     -8.0
+    ],
+    [
+     720.0,
+     -32.0
+    ],
+    [
+     720.61,
+     -35.06
+    ],
+    [
+     722.34,
+     -37.66
+    ],
+    [
+     724.94,
+     -39.39
+    ],
+    [
+     728.0,
+     -40.0
+    ]
+   ],
+   "start": 40,
+   "end": 380
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot 1",
+   "points": [
+    [
+     -712.0,
+     -320.0
+    ],
+    [
+     -707.41,
+     -319.09
+    ],
+    [
+     -703.51,
+     -316.49
+    ],
+    [
+     -700.91,
+     -312.59
+    ],
+    [
+     -700.0,
+     -308.0
+    ],
+    [
+     -700.0,
+     268.0
+    ],
+    [
+     -700.91,
+     272.59
+    ],
+    [
+     -703.51,
+     276.49
+    ],
+    [
+     -707.41,
+     279.09
+    ],
+    [
+     -712.0,
+     280.0
+    ],
+    [
+     -788.0,
+     280.0
+    ],
+    [
+     -792.59,
+     279.09
+    ],
+    [
+     -796.49,
+     276.49
+    ],
+    [
+     -799.09,
+     272.59
+    ],
+    [
+     -800.0,
+     268.0
+    ],
+    [
+     -800.0,
+     -308.0
+    ],
+    [
+     -799.09,
+     -312.59
+    ],
+    [
+     -796.49,
+     -316.49
+    ],
+    [
+     -792.59,
+     -319.09
+    ],
+    [
+     -788.0,
+     -320.0
+    ]
+   ],
+   "start": 0,
+   "end": 40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot 2",
+   "points": [
+    [
+     788.0,
+     -320.0
+    ],
+    [
+     792.59,
+     -319.09
+    ],
+    [
+     796.49,
+     -316.49
+    ],
+    [
+     799.09,
+     -312.59
+    ],
+    [
+     800.0,
+     -308.0
+    ],
+    [
+     800.0,
+     268.0
+    ],
+    [
+     799.09,
+     272.59
+    ],
+    [
+     796.49,
+     276.49
+    ],
+    [
+     792.59,
+     279.09
+    ],
+    [
+     788.0,
+     280.0
+    ],
+    [
+     712.0,
+     280.0
+    ],
+    [
+     707.41,
+     279.09
+    ],
+    [
+     703.51,
+     276.49
+    ],
+    [
+     700.91,
+     272.59
+    ],
+    [
+     700.0,
+     268.0
+    ],
+    [
+     700.0,
+     -308.0
+    ],
+    [
+     700.91,
+     -312.59
+    ],
+    [
+     703.51,
+     -316.49
+    ],
+    [
+     707.41,
+     -319.09
+    ],
+    [
+     712.0,
+     -320.0
+    ]
+   ],
+   "start": 0,
+   "end": 40
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide 1",
+   "points": [
+    [
+     -732.0,
+     -290.0
+    ],
+    [
+     -732.61,
+     -285.34
+    ],
+    [
+     -734.41,
+     -281.0
+    ],
+    [
+     -737.27,
+     -277.27
+    ],
+    [
+     -741.0,
+     -274.41
+    ],
+    [
+     -745.34,
+     -272.61
+    ],
+    [
+     -750.0,
+     -272.0
+    ],
+    [
+     -754.66,
+     -272.61
+    ],
+    [
+     -759.0,
+     -274.41
+    ],
+    [
+     -762.73,
+     -277.27
+    ],
+    [
+     -765.59,
+     -281.0
+    ],
+    [
+     -767.39,
+     -285.34
+    ],
+    [
+     -768.0,
+     -290.0
+    ],
+    [
+     -767.39,
+     -294.66
+    ],
+    [
+     -765.59,
+     -299.0
+    ],
+    [
+     -762.73,
+     -302.73
+    ],
+    [
+     -759.0,
+     -305.59
+    ],
+    [
+     -754.66,
+     -307.39
+    ],
+    [
+     -750.0,
+     -308.0
+    ],
+    [
+     -745.34,
+     -307.39
+    ],
+    [
+     -741.0,
+     -305.59
+    ],
+    [
+     -737.27,
+     -302.73
+    ],
+    [
+     -734.41,
+     -299.0
+    ],
+    [
+     -732.61,
+     -294.66
+    ]
+   ],
+   "start": -0.1,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide 2",
+   "points": [
+    [
+     768.0,
+     -290.0
+    ],
+    [
+     767.39,
+     -285.34
+    ],
+    [
+     765.59,
+     -281.0
+    ],
+    [
+     762.73,
+     -277.27
+    ],
+    [
+     759.0,
+     -274.41
+    ],
+    [
+     754.66,
+     -272.61
+    ],
+    [
+     750.0,
+     -272.0
+    ],
+    [
+     745.34,
+     -272.61
+    ],
+    [
+     741.0,
+     -274.41
+    ],
+    [
+     737.27,
+     -277.27
+    ],
+    [
+     734.41,
+     -281.0
+    ],
+    [
+     732.61,
+     -285.34
+    ],
+    [
+     732.0,
+     -290.0
+    ],
+    [
+     732.61,
+     -294.66
+    ],
+    [
+     734.41,
+     -299.0
+    ],
+    [
+     737.27,
+     -302.73
+    ],
+    [
+     741.0,
+     -305.59
+    ],
+    [
+     745.34,
+     -307.39
+    ],
+    [
+     750.0,
+     -308.0
+    ],
+    [
+     754.66,
+     -307.39
+    ],
+    [
+     759.0,
+     -305.59
+    ],
+    [
+     762.73,
+     -302.73
+    ],
+    [
+     765.59,
+     -299.0
+    ],
+    [
+     767.39,
+     -294.66
+    ]
+   ],
+   "start": -0.1,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide Back 1",
+   "points": [
+    [
+     -732.0,
+     250.0
+    ],
+    [
+     -732.61,
+     254.66
+    ],
+    [
+     -734.41,
+     259.0
+    ],
+    [
+     -737.27,
+     262.73
+    ],
+    [
+     -741.0,
+     265.59
+    ],
+    [
+     -745.34,
+     267.39
+    ],
+    [
+     -750.0,
+     268.0
+    ],
+    [
+     -754.66,
+     267.39
+    ],
+    [
+     -759.0,
+     265.59
+    ],
+    [
+     -762.73,
+     262.73
+    ],
+    [
+     -765.59,
+     259.0
+    ],
+    [
+     -767.39,
+     254.66
+    ],
+    [
+     -768.0,
+     250.0
+    ],
+    [
+     -767.39,
+     245.34
+    ],
+    [
+     -765.59,
+     241.0
+    ],
+    [
+     -762.73,
+     237.27
+    ],
+    [
+     -759.0,
+     234.41
+    ],
+    [
+     -754.66,
+     232.61
+    ],
+    [
+     -750.0,
+     232.0
+    ],
+    [
+     -745.34,
+     232.61
+    ],
+    [
+     -741.0,
+     234.41
+    ],
+    [
+     -737.27,
+     237.27
+    ],
+    [
+     -734.41,
+     241.0
+    ],
+    [
+     -732.61,
+     245.34
+    ]
+   ],
+   "start": -0.1,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide Back 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide Back 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide Back 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Glide Back 2",
+   "points": [
+    [
+     768.0,
+     250.0
+    ],
+    [
+     767.39,
+     254.66
+    ],
+    [
+     765.59,
+     259.0
+    ],
+    [
+     762.73,
+     262.73
+    ],
+    [
+     759.0,
+     265.59
+    ],
+    [
+     754.66,
+     267.39
+    ],
+    [
+     750.0,
+     268.0
+    ],
+    [
+     745.34,
+     267.39
+    ],
+    [
+     741.0,
+     265.59
+    ],
+    [
+     737.27,
+     262.73
+    ],
+    [
+     734.41,
+     259.0
+    ],
+    [
+     732.61,
+     254.66
+    ],
+    [
+     732.0,
+     250.0
+    ],
+    [
+     732.61,
+     245.34
+    ],
+    [
+     734.41,
+     241.0
+    ],
+    [
+     737.27,
+     237.27
+    ],
+    [
+     741.0,
+     234.41
+    ],
+    [
+     745.34,
+     232.61
+    ],
+    [
+     750.0,
+     232.0
+    ],
+    [
+     754.66,
+     232.61
+    ],
+    [
+     759.0,
+     234.41
+    ],
+    [
+     762.73,
+     237.27
+    ],
+    [
+     765.59,
+     241.0
+    ],
+    [
+     767.39,
+     245.34
+    ]
+   ],
+   "start": -0.1,
+   "end": 4
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Glide Back 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Glide Back 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Glide Back 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Bracket 1",
+   "points": [
+    [
+     -670.0,
+     -300
+    ],
+    [
+     -610.0,
+     -300
+    ],
+    [
+     -610.0,
+     260
+    ],
+    [
+     -670.0,
+     260
+    ]
+   ],
+   "start": 440,
+   "end": 455
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Bracket 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Bracket 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Bracket 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Bracket 2",
+   "points": [
+    [
+     -30.0,
+     -300
+    ],
+    [
+     30.0,
+     -300
+    ],
+    [
+     30.0,
+     260
+    ],
+    [
+     -30.0,
+     260
+    ]
+   ],
+   "start": 440,
+   "end": 455
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Bracket 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Bracket 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Bracket 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Bracket 3",
+   "points": [
+    [
+     610.0,
+     -300
+    ],
+    [
+     670.0,
+     -300
+    ],
+    [
+     670.0,
+     260
+    ],
+    [
+     610.0,
+     260
+    ]
+   ],
+   "start": 440,
+   "end": 455
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Bracket 3",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Bracket 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Bracket 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Shell 1",
+   "points": [
+    [
+     -330,
+     455
+    ],
+    [
+     260,
+     455
+    ],
+    [
+     260,
+     470
+    ],
+    [
+     -330,
+     470
+    ],
+    [
+     -340,
+     465
+    ]
+   ],
+   "start": -930.0,
+   "end": -350.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Shell 1",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Shell 1",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Shell 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Shell 2",
+   "points": [
+    [
+     -330,
+     455
+    ],
+    [
+     260,
+     455
+    ],
+    [
+     260,
+     470
+    ],
+    [
+     -330,
+     470
+    ],
+    [
+     -340,
+     465
+    ]
+   ],
+   "start": -290.0,
+   "end": 290.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Shell 2",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Shell 2",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Shell 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Shell 3",
+   "points": [
+    [
+     -330,
+     455
+    ],
+    [
+     260,
+     455
+    ],
+    [
+     260,
+     470
+    ],
+    [
+     -330,
+     470
+    ],
+    [
+     -340,
+     465
+    ]
+   ],
+   "start": 350.0,
+   "end": 930.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Shell 3",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Shell 3",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Shell 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Pad 1",
+   "points": [
+    [
+     -405.0,
+     -320.0
+    ],
+    [
+     -389.69,
+     -316.96
+    ],
+    [
+     -376.72,
+     -308.28
+    ],
+    [
+     -368.04,
+     -295.31
+    ],
+    [
+     -365.0,
+     -280.0
+    ],
+    [
+     -365.0,
+     210.0
+    ],
+    [
+     -368.04,
+     225.31
+    ],
+    [
+     -376.72,
+     238.28
+    ],
+    [
+     -389.69,
+     246.96
+    ],
+    [
+     -405.0,
+     250.0
+    ],
+    [
+     -875.0,
+     250.0
+    ],
+    [
+     -890.31,
+     246.96
+    ],
+    [
+     -903.28,
+     238.28
+    ],
+    [
+     -911.96,
+     225.31
+    ],
+    [
+     -915.0,
+     210.0
+    ],
+    [
+     -915.0,
+     -280.0
+    ],
+    [
+     -911.96,
+     -295.31
+    ],
+    [
+     -903.28,
+     -308.28
+    ],
+    [
+     -890.31,
+     -316.96
+    ],
+    [
+     -875.0,
+     -320.0
+    ]
+   ],
+   "start": 470,
+   "end": 510
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Pad 1",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Pad 1",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Pad 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Pad 2",
+   "points": [
+    [
+     235.0,
+     -320.0
+    ],
+    [
+     250.31,
+     -316.96
+    ],
+    [
+     263.28,
+     -308.28
+    ],
+    [
+     271.96,
+     -295.31
+    ],
+    [
+     275.0,
+     -280.0
+    ],
+    [
+     275.0,
+     210.0
+    ],
+    [
+     271.96,
+     225.31
+    ],
+    [
+     263.28,
+     238.28
+    ],
+    [
+     250.31,
+     246.96
+    ],
+    [
+     235.0,
+     250.0
+    ],
+    [
+     -235.0,
+     250.0
+    ],
+    [
+     -250.31,
+     246.96
+    ],
+    [
+     -263.28,
+     238.28
+    ],
+    [
+     -271.96,
+     225.31
+    ],
+    [
+     -275.0,
+     210.0
+    ],
+    [
+     -275.0,
+     -280.0
+    ],
+    [
+     -271.96,
+     -295.31
+    ],
+    [
+     -263.28,
+     -308.28
+    ],
+    [
+     -250.31,
+     -316.96
+    ],
+    [
+     -235.0,
+     -320.0
+    ]
+   ],
+   "start": 470,
+   "end": 510
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Pad 2",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Pad 2",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Pad 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Pad 3",
+   "points": [
+    [
+     875.0,
+     -320.0
+    ],
+    [
+     890.31,
+     -316.96
+    ],
+    [
+     903.28,
+     -308.28
+    ],
+    [
+     911.96,
+     -295.31
+    ],
+    [
+     915.0,
+     -280.0
+    ],
+    [
+     915.0,
+     210.0
+    ],
+    [
+     911.96,
+     225.31
+    ],
+    [
+     903.28,
+     238.28
+    ],
+    [
+     890.31,
+     246.96
+    ],
+    [
+     875.0,
+     250.0
+    ],
+    [
+     405.0,
+     250.0
+    ],
+    [
+     389.69,
+     246.96
+    ],
+    [
+     376.72,
+     238.28
+    ],
+    [
+     368.04,
+     225.31
+    ],
+    [
+     365.0,
+     210.0
+    ],
+    [
+     365.0,
+     -280.0
+    ],
+    [
+     368.04,
+     -295.31
+    ],
+    [
+     376.72,
+     -308.28
+    ],
+    [
+     389.69,
+     -316.96
+    ],
+    [
+     405.0,
+     -320.0
+    ]
+   ],
+   "start": 470,
+   "end": 510
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Pad 3",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Pad 3",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Pad 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Strut 1",
+   "points": [
+    [
+     -665.0,
+     230
+    ],
+    [
+     -615.0,
+     230
+    ],
+    [
+     -615.0,
+     260
+    ],
+    [
+     -665.0,
+     260
+    ]
+   ],
+   "start": 455,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Strut 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Strut 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Strut 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Strut 2",
+   "points": [
+    [
+     -25.0,
+     230
+    ],
+    [
+     25.0,
+     230
+    ],
+    [
+     25.0,
+     260
+    ],
+    [
+     -25.0,
+     260
+    ]
+   ],
+   "start": 455,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Strut 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Strut 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Strut 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Strut 3",
+   "points": [
+    [
+     615.0,
+     230
+    ],
+    [
+     665.0,
+     230
+    ],
+    [
+     665.0,
+     260
+    ],
+    [
+     615.0,
+     260
+    ]
+   ],
+   "start": 455,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Strut 3",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Strut 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Strut 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Shell 1",
+   "points": [
+    [
+     250,
+     540
+    ],
+    [
+     290,
+     540
+    ],
+    [
+     340,
+     900
+    ],
+    [
+     300,
+     900
+    ]
+   ],
+   "start": -930.0,
+   "end": -350.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Shell 1",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Shell 1",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Shell 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Shell 2",
+   "points": [
+    [
+     250,
+     540
+    ],
+    [
+     290,
+     540
+    ],
+    [
+     340,
+     900
+    ],
+    [
+     300,
+     900
+    ]
+   ],
+   "start": -290.0,
+   "end": 290.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Shell 2",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Shell 2",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Shell 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Shell 3",
+   "points": [
+    [
+     250,
+     540
+    ],
+    [
+     290,
+     540
+    ],
+    [
+     340,
+     900
+    ],
+    [
+     300,
+     900
+    ]
+   ],
+   "start": 350.0,
+   "end": 930.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Shell 3",
+   "subcategory": "Shell"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Shell 3",
+   "param": "Shell Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Shell 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Pad 1",
+   "points": [
+    [
+     215,
+     600
+    ],
+    [
+     250,
+     560
+    ],
+    [
+     300,
+     880
+    ],
+    [
+     265,
+     890
+    ]
+   ],
+   "start": -910.0,
+   "end": -370.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Pad 1",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Pad 1",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Pad 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Pad 2",
+   "points": [
+    [
+     215,
+     600
+    ],
+    [
+     250,
+     560
+    ],
+    [
+     300,
+     880
+    ],
+    [
+     265,
+     890
+    ]
+   ],
+   "start": -270.0,
+   "end": 270.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Pad 2",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Pad 2",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Pad 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Back Pad 3",
+   "points": [
+    [
+     215,
+     600
+    ],
+    [
+     250,
+     560
+    ],
+    [
+     300,
+     880
+    ],
+    [
+     265,
+     890
+    ]
+   ],
+   "start": 370.0,
+   "end": 910.0,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back Pad 3",
+   "subcategory": "Vinyl"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back Pad 3",
+   "param": "Vinyl Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back Pad 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Post 1",
+   "points": [
+    [
+     -975.0,
+     -260
+    ],
+    [
+     -945.0,
+     -260
+    ],
+    [
+     -945.0,
+     -220
+    ],
+    [
+     -975.0,
+     -220
+    ]
+   ],
+   "start": 455,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Post 1",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Post 1",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Post 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Post 2",
+   "points": [
+    [
+     -335.0,
+     -260
+    ],
+    [
+     -305.0,
+     -260
+    ],
+    [
+     -305.0,
+     -220
+    ],
+    [
+     -335.0,
+     -220
+    ]
+   ],
+   "start": 455,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Post 2",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Post 2",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Post 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Post 3",
+   "points": [
+    [
+     305.0,
+     -260
+    ],
+    [
+     335.0,
+     -260
+    ],
+    [
+     335.0,
+     -220
+    ],
+    [
+     305.0,
+     -220
+    ]
+   ],
+   "start": 455,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Post 3",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Post 3",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Post 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Post 4",
+   "points": [
+    [
+     945.0,
+     -260
+    ],
+    [
+     975.0,
+     -260
+    ],
+    [
+     975.0,
+     -220
+    ],
+    [
+     945.0,
+     -220
+    ]
+   ],
+   "start": 455,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Post 4",
+   "subcategory": "Frame"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Post 4",
+   "param": "Frame Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Post 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Pad 1",
+   "points": [
+    [
+     -955.0,
+     -300.0
+    ],
+    [
+     -947.35,
+     -298.48
+    ],
+    [
+     -940.86,
+     -294.14
+    ],
+    [
+     -936.52,
+     -287.65
+    ],
+    [
+     -935.0,
+     -280.0
+    ],
+    [
+     -935.0,
+     100.0
+    ],
+    [
+     -936.52,
+     107.65
+    ],
+    [
+     -940.86,
+     114.14
+    ],
+    [
+     -947.35,
+     118.48
+    ],
+    [
+     -955.0,
+     120.0
+    ],
+    [
+     -965.0,
+     120.0
+    ],
+    [
+     -972.65,
+     118.48
+    ],
+    [
+     -979.14,
+     114.14
+    ],
+    [
+     -983.48,
+     107.65
+    ],
+    [
+     -985.0,
+     100.0
+    ],
+    [
+     -985.0,
+     -280.0
+    ],
+    [
+     -983.48,
+     -287.65
+    ],
+    [
+     -979.14,
+     -294.14
+    ],
+    [
+     -972.65,
+     -298.48
+    ],
+    [
+     -965.0,
+     -300.0
+    ]
+   ],
+   "start": 640,
+   "end": 670
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Pad 1",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Pad 1",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Pad 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Pad 2",
+   "points": [
+    [
+     -315.0,
+     -300.0
+    ],
+    [
+     -307.35,
+     -298.48
+    ],
+    [
+     -300.86,
+     -294.14
+    ],
+    [
+     -296.52,
+     -287.65
+    ],
+    [
+     -295.0,
+     -280.0
+    ],
+    [
+     -295.0,
+     100.0
+    ],
+    [
+     -296.52,
+     107.65
+    ],
+    [
+     -300.86,
+     114.14
+    ],
+    [
+     -307.35,
+     118.48
+    ],
+    [
+     -315.0,
+     120.0
+    ],
+    [
+     -325.0,
+     120.0
+    ],
+    [
+     -332.65,
+     118.48
+    ],
+    [
+     -339.14,
+     114.14
+    ],
+    [
+     -343.48,
+     107.65
+    ],
+    [
+     -345.0,
+     100.0
+    ],
+    [
+     -345.0,
+     -280.0
+    ],
+    [
+     -343.48,
+     -287.65
+    ],
+    [
+     -339.14,
+     -294.14
+    ],
+    [
+     -332.65,
+     -298.48
+    ],
+    [
+     -325.0,
+     -300.0
+    ]
+   ],
+   "start": 640,
+   "end": 670
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Pad 2",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Pad 2",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Pad 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Pad 3",
+   "points": [
+    [
+     325.0,
+     -300.0
+    ],
+    [
+     332.65,
+     -298.48
+    ],
+    [
+     339.14,
+     -294.14
+    ],
+    [
+     343.48,
+     -287.65
+    ],
+    [
+     345.0,
+     -280.0
+    ],
+    [
+     345.0,
+     100.0
+    ],
+    [
+     343.48,
+     107.65
+    ],
+    [
+     339.14,
+     114.14
+    ],
+    [
+     332.65,
+     118.48
+    ],
+    [
+     325.0,
+     120.0
+    ],
+    [
+     315.0,
+     120.0
+    ],
+    [
+     307.35,
+     118.48
+    ],
+    [
+     300.86,
+     114.14
+    ],
+    [
+     296.52,
+     107.65
+    ],
+    [
+     295.0,
+     100.0
+    ],
+    [
+     295.0,
+     -280.0
+    ],
+    [
+     296.52,
+     -287.65
+    ],
+    [
+     300.86,
+     -294.14
+    ],
+    [
+     307.35,
+     -298.48
+    ],
+    [
+     315.0,
+     -300.0
+    ]
+   ],
+   "start": 640,
+   "end": 670
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Pad 3",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Pad 3",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Pad 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm Pad 4",
+   "points": [
+    [
+     965.0,
+     -300.0
+    ],
+    [
+     972.65,
+     -298.48
+    ],
+    [
+     979.14,
+     -294.14
+    ],
+    [
+     983.48,
+     -287.65
+    ],
+    [
+     985.0,
+     -280.0
+    ],
+    [
+     985.0,
+     100.0
+    ],
+    [
+     983.48,
+     107.65
+    ],
+    [
+     979.14,
+     114.14
+    ],
+    [
+     972.65,
+     118.48
+    ],
+    [
+     965.0,
+     120.0
+    ],
+    [
+     955.0,
+     120.0
+    ],
+    [
+     947.35,
+     118.48
+    ],
+    [
+     940.86,
+     114.14
+    ],
+    [
+     936.52,
+     107.65
+    ],
+    [
+     935.0,
+     100.0
+    ],
+    [
+     935.0,
+     -280.0
+    ],
+    [
+     936.52,
+     -287.65
+    ],
+    [
+     940.86,
+     -294.14
+    ],
+    [
+     947.35,
+     -298.48
+    ],
+    [
+     955.0,
+     -300.0
+    ]
+   ],
+   "start": 640,
+   "end": 670
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm Pad 4",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm Pad 4",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm Pad 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Furniture_Seating_Waiting_Beam.png"
+  }
+ ],
+ "values": {
+  "Seat pitch 640 mm": {
+   "value": 640,
+   "source_status": "assumed",
+   "source": "typical beam seating"
+  },
+  "Seat height 470 mm, overall height 900 mm": {
+   "value": "470/900",
+   "source_status": "assumed",
+   "source": "typical beam seating; BS EN 16139"
+  },
+  "Length 1920 / 2560 / 3200 mm": {
+   "value": "1920/2560/3200",
+   "source_status": "assumed",
+   "source": "seats x pitch"
+  }
+ }
+}

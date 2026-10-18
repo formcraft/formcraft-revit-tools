@@ -1,0 +1,723 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_S_StrFoundation_StripFooting",
+ "template": "Metric Generic Model.rft",
+ "about": "Strip footing with top at z = 0: strip, blinding and wall setting-out lines (Fine). Shown 3000 long; for runs, use a wall foundation where possible. Reference: query: str foundation strip footing structural foundations hospital; images: https://www.google.com/search?tbm=isch&q=str+foundation+strip+footing+structural+foundations+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Structural Foundations"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Curing_Days",
+   "guid": "33575e52-4390-562b-ae33-79cfb8763a86",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Concrete_Grade",
+   "guid": "9d0024a8-a7b4-52c5-9a19-54701506e804",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rebar_Ratio_kg_m3",
+   "guid": "293f58cb-42b0-53a4-8e7c-86c4ca9fac39",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Exposure_Class",
+   "guid": "a77fe04e-fd3a-51de-b34c-d3b808af5916",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Formwork_Type",
+   "guid": "c7110bef-8d3e-5198-b729-1e9664a2f20f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Founding_Depth_mm",
+   "guid": "4afd7044-04d2-558d-b2d5-5f6ecf253866",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Bearing_Capacity_kPa",
+   "guid": "6937252b-402d-56e5-b7a6-15a16de9ca4a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Member_Mark",
+   "guid": "31bc3197-1635-5d0a-be71-8658456cb6dc",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "600_Strip"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Cost_Unit",
+   "type": "600_Strip",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Geometry_Stage",
+   "type": "600_Strip",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/IfcExportAs",
+   "type": "600_Strip",
+   "param": "IfcExportAs",
+   "value": "IfcFooting"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/Description",
+   "type": "600_Strip",
+   "param": "Description",
+   "value": "strip 600 wide x 200"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/Keynote",
+   "type": "600_Strip",
+   "param": "Keynote",
+   "value": "C.STR_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Keynote_Code",
+   "type": "600_Strip",
+   "param": "FMC_Keynote_Code",
+   "value": "C.STR_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Code_Description",
+   "type": "600_Strip",
+   "param": "FMC_Code_Description",
+   "value": "StripFooting: Strip footing"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Code_Group",
+   "type": "600_Strip",
+   "param": "FMC_Code_Group",
+   "value": "C.STR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "600_Strip/FMC_Role_Code",
+   "type": "600_Strip",
+   "param": "FMC_Role_Code",
+   "value": "S"
+  },
+  {
+   "op": "add_type",
+   "name": "900_Strip"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Cost_Unit",
+   "type": "900_Strip",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Geometry_Stage",
+   "type": "900_Strip",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/IfcExportAs",
+   "type": "900_Strip",
+   "param": "IfcExportAs",
+   "value": "IfcFooting"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/Description",
+   "type": "900_Strip",
+   "param": "Description",
+   "value": "strip 900 wide x 250"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/Keynote",
+   "type": "900_Strip",
+   "param": "Keynote",
+   "value": "C.STR_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Keynote_Code",
+   "type": "900_Strip",
+   "param": "FMC_Keynote_Code",
+   "value": "C.STR_03"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Code_Description",
+   "type": "900_Strip",
+   "param": "FMC_Code_Description",
+   "value": "StripFooting: Strip footing"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Code_Group",
+   "type": "900_Strip",
+   "param": "FMC_Code_Group",
+   "value": "C.STR"
+  },
+  {
+   "op": "set_type_value",
+   "name": "900_Strip/FMC_Role_Code",
+   "type": "900_Strip",
+   "param": "FMC_Role_Code",
+   "value": "S"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Blind",
+   "color": [
+    175,
+    173,
+    165
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Blind Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_Blinding_C15",
+   "param": "Blind Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Conc",
+   "color": [
+    177,
+    175,
+    168
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Conc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Concrete_C30",
+   "param": "Conc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    242
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Paint_RoadMarking_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -1500,
+     -350
+    ],
+    [
+     1500,
+     -350
+    ],
+    [
+     1500,
+     350
+    ],
+    [
+     -1500,
+     350
+    ]
+   ],
+   "start": -250,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Blinding",
+   "points": [
+    [
+     -1500,
+     -350
+    ],
+    [
+     1500,
+     -350
+    ],
+    [
+     1500,
+     350
+    ],
+    [
+     -1500,
+     350
+    ]
+   ],
+   "start": -250,
+   "end": -200
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Blinding",
+   "subcategory": "Blind"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blinding",
+   "param": "Blind Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blinding",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Strip",
+   "points": [
+    [
+     -1500,
+     -300
+    ],
+    [
+     1500,
+     -300
+    ],
+    [
+     1500,
+     300
+    ],
+    [
+     -1500,
+     300
+    ]
+   ],
+   "start": -200,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Strip",
+   "subcategory": "Conc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Strip",
+   "param": "Conc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Strip",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Setting-out Line",
+   "points": [
+    [
+     -1500,
+     -100
+    ],
+    [
+     1500,
+     -100
+    ],
+    [
+     1500,
+     -95
+    ],
+    [
+     -1500,
+     -95
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Setting-out Line",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Setting-out Line",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Setting-out Line",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Setting-out Line Back",
+   "points": [
+    [
+     -1500,
+     95
+    ],
+    [
+     1500,
+     95
+    ],
+    [
+     1500,
+     100
+    ],
+    [
+     -1500,
+     100
+    ]
+   ],
+   "start": 0,
+   "end": 1
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Setting-out Line Back",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Setting-out Line Back",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Setting-out Line Back",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\S\\_Images\\FMC_S_StrFoundation_StripFooting.png"
+  }
+ ],
+ "values": {
+  "Strip 600 x 200 mm (geometry)": {
+   "value": "600x200",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Blinding 50 mm": {
+   "value": 50,
+   "source_status": "assumed",
+   "source": "typical practice"
+  },
+  "Wall set-out 200 mm wall centred": {
+   "value": 200,
+   "source_status": "assumed",
+   "source": "typical foundation wall"
+  }
+ }
+}

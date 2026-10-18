@@ -1,0 +1,258 @@
+{
+ "family": "FMC_S_StrFoundation_Pile_Bored",
+ "category": "Structural Foundations",
+ "template": "Metric Generic Model.rft",
+ "desc": "Bored cast-in-place concrete pile, cut-off at the reference, with the reinforcement cage projecting into the cap",
+ "ifc": "IfcPile",
+ "keynote": "C.PIL_01",
+ "types": [
+  {
+   "name": "450_Bored",
+   "desc": "bored pile 450 dia"
+  },
+  {
+   "name": "600_Bored",
+   "desc": "bored pile 600 dia"
+  }
+ ],
+ "materials": {
+  "conc": "FMC_Concrete_C30",
+  "rebar": "FMC_Metal_Rebar_B500_Ribbed"
+ },
+ "parts": [
+  {
+   "n": "Pile Shaft",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 225,
+   "z": [
+    -6000,
+    0
+   ],
+   "mat": "conc",
+   "seg": 36
+  },
+  {
+   "n": "Pile Toe",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -6040
+    ],
+    [
+     185,
+     -6040
+    ],
+    [
+     225,
+     -6000
+    ],
+    [
+     0,
+     -6000
+    ]
+   ],
+   "mat": "conc",
+   "seg": 36
+  },
+  {
+   "n": "Starter Bar 1",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    165.0,
+    0.0
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 2",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    116.7,
+    116.7
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 3",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0.0,
+    165.0
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 4",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -116.7,
+    116.7
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 5",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -165.0,
+    0.0
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 6",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -116.7,
+    -116.7
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 7",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -0.0,
+    -165.0
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Starter Bar 8",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    116.7,
+    -116.7
+   ],
+   "r": 8,
+   "z": [
+    0,
+    750
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 10
+  },
+  {
+   "n": "Link Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     155,
+     120
+    ],
+    [
+     175,
+     120
+    ],
+    [
+     175,
+     130
+    ],
+    [
+     155,
+     130
+    ]
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "seg": 36
+  }
+ ],
+ "reference": {
+  "query": "str foundation pile bored structural foundations hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=str+foundation+pile+bored+structural+foundations+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Diameter 450 mm (geometry)": {
+   "value": 450,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Length 6000 mm shown": {
+   "value": 6000,
+   "source_status": "assumed",
+   "source": "length by the engineer from the site investigation"
+  },
+  "Starter bars 8 x T16, 750 projection": {
+   "value": "8xT16 750",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Pile with cut-off level at z = 0: shaft, toe, eight starter bars and a link projecting into the cap (Fine). Length and cage by the engineer."
+}

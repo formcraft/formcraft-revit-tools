@@ -1,0 +1,4558 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_AC_Precision_ServerRoom",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: floor stand with legs, feet and an EC fan lowered into the floor void, grey cabinet, two dark doors with perforated panels, handles, hinges, touch display and LEDs, top return grille, rear drain. Reference: query: ac precision server room mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=ac+precision+server+room+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "10kW_Downflow"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Cost_Unit",
+   "type": "10kW_Downflow",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Geometry_Stage",
+   "type": "10kW_Downflow",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/IfcExportAs",
+   "type": "10kW_Downflow",
+   "param": "IfcExportAs",
+   "value": "IfcUnitaryEquipment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/Description",
+   "type": "10kW_Downflow",
+   "param": "Description",
+   "value": "Close-control (precision) air conditioner 10 kW, downflow, floor stand with EC fan, dark front doors with perforated upper panels, touch display"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/Keynote",
+   "type": "10kW_Downflow",
+   "param": "Keynote",
+   "value": "H.SPL_11"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Keynote_Code",
+   "type": "10kW_Downflow",
+   "param": "FMC_Keynote_Code",
+   "value": "H.SPL_11"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Code_Description",
+   "type": "10kW_Downflow",
+   "param": "FMC_Code_Description",
+   "value": "AC Precision ServerRoom: Close-control unit"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Code_Group",
+   "type": "10kW_Downflow",
+   "param": "FMC_Code_Group",
+   "value": "H.SPL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/FMC_Role_Code",
+   "type": "10kW_Downflow",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/Voltage",
+   "type": "10kW_Downflow",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/Apparent Load",
+   "type": "10kW_Downflow",
+   "param": "Apparent Load",
+   "value": 9000
+  },
+  {
+   "op": "set_type_value",
+   "name": "10kW_Downflow/Number of Poles",
+   "type": "10kW_Downflow",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Steel",
+   "color": [
+    110,
+    110,
+    110
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Steel Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_StructuralSteel_S275",
+   "param": "Steel Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pcg",
+   "color": [
+    158,
+    164,
+    170
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pcg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    183,
+    188,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Duct_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Mesh",
+   "color": [
+    94,
+    106,
+    115
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Mesh Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_InsectMesh_Fibreglass",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledb",
+   "color": [
+    58,
+    141,
+    255
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledb Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Blue",
+   "param": "Ledb Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledg",
+   "color": [
+    59,
+    209,
+    111
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Green",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Ledr",
+   "color": [
+    229,
+    72,
+    77
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Ledr Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_LED_Red",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Alu",
+   "color": [
+    192,
+    192,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Alu Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_Anodised_Silver",
+   "param": "Alu Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Grey",
+   "color": [
+    154,
+    160,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Grey Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Grey",
+   "param": "Grey Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Copper_Pipe",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Maintenance",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -454.0,
+     -394
+    ],
+    [
+     454.0,
+     -394
+    ],
+    [
+     454.0,
+     425
+    ],
+    [
+     -454.0,
+     425
+    ]
+   ],
+   "start": 0,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot Front 1",
+   "points": [
+    [
+     -380.0,
+     -335.0
+    ],
+    [
+     -381.02,
+     -327.24
+    ],
+    [
+     -384.02,
+     -320.0
+    ],
+    [
+     -388.79,
+     -313.79
+    ],
+    [
+     -395.0,
+     -309.02
+    ],
+    [
+     -402.24,
+     -306.02
+    ],
+    [
+     -410.0,
+     -305.0
+    ],
+    [
+     -417.76,
+     -306.02
+    ],
+    [
+     -425.0,
+     -309.02
+    ],
+    [
+     -431.21,
+     -313.79
+    ],
+    [
+     -435.98,
+     -320.0
+    ],
+    [
+     -438.98,
+     -327.24
+    ],
+    [
+     -440.0,
+     -335.0
+    ],
+    [
+     -438.98,
+     -342.76
+    ],
+    [
+     -435.98,
+     -350.0
+    ],
+    [
+     -431.21,
+     -356.21
+    ],
+    [
+     -425.0,
+     -360.98
+    ],
+    [
+     -417.76,
+     -363.98
+    ],
+    [
+     -410.0,
+     -365.0
+    ],
+    [
+     -402.24,
+     -363.98
+    ],
+    [
+     -395.0,
+     -360.98
+    ],
+    [
+     -388.79,
+     -356.21
+    ],
+    [
+     -384.02,
+     -350.0
+    ],
+    [
+     -381.02,
+     -342.76
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot Front 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot Front 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot Front 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot Front 2",
+   "points": [
+    [
+     440.0,
+     -335.0
+    ],
+    [
+     438.98,
+     -327.24
+    ],
+    [
+     435.98,
+     -320.0
+    ],
+    [
+     431.21,
+     -313.79
+    ],
+    [
+     425.0,
+     -309.02
+    ],
+    [
+     417.76,
+     -306.02
+    ],
+    [
+     410.0,
+     -305.0
+    ],
+    [
+     402.24,
+     -306.02
+    ],
+    [
+     395.0,
+     -309.02
+    ],
+    [
+     388.79,
+     -313.79
+    ],
+    [
+     384.02,
+     -320.0
+    ],
+    [
+     381.02,
+     -327.24
+    ],
+    [
+     380.0,
+     -335.0
+    ],
+    [
+     381.02,
+     -342.76
+    ],
+    [
+     384.02,
+     -350.0
+    ],
+    [
+     388.79,
+     -356.21
+    ],
+    [
+     395.0,
+     -360.98
+    ],
+    [
+     402.24,
+     -363.98
+    ],
+    [
+     410.0,
+     -365.0
+    ],
+    [
+     417.76,
+     -363.98
+    ],
+    [
+     425.0,
+     -360.98
+    ],
+    [
+     431.21,
+     -356.21
+    ],
+    [
+     435.98,
+     -350.0
+    ],
+    [
+     438.98,
+     -342.76
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot Front 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot Front 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot Front 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot Rear 1",
+   "points": [
+    [
+     -380.0,
+     335.0
+    ],
+    [
+     -381.02,
+     342.76
+    ],
+    [
+     -384.02,
+     350.0
+    ],
+    [
+     -388.79,
+     356.21
+    ],
+    [
+     -395.0,
+     360.98
+    ],
+    [
+     -402.24,
+     363.98
+    ],
+    [
+     -410.0,
+     365.0
+    ],
+    [
+     -417.76,
+     363.98
+    ],
+    [
+     -425.0,
+     360.98
+    ],
+    [
+     -431.21,
+     356.21
+    ],
+    [
+     -435.98,
+     350.0
+    ],
+    [
+     -438.98,
+     342.76
+    ],
+    [
+     -440.0,
+     335.0
+    ],
+    [
+     -438.98,
+     327.24
+    ],
+    [
+     -435.98,
+     320.0
+    ],
+    [
+     -431.21,
+     313.79
+    ],
+    [
+     -425.0,
+     309.02
+    ],
+    [
+     -417.76,
+     306.02
+    ],
+    [
+     -410.0,
+     305.0
+    ],
+    [
+     -402.24,
+     306.02
+    ],
+    [
+     -395.0,
+     309.02
+    ],
+    [
+     -388.79,
+     313.79
+    ],
+    [
+     -384.02,
+     320.0
+    ],
+    [
+     -381.02,
+     327.24
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot Rear 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot Rear 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot Rear 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg Foot Rear 2",
+   "points": [
+    [
+     440.0,
+     335.0
+    ],
+    [
+     438.98,
+     342.76
+    ],
+    [
+     435.98,
+     350.0
+    ],
+    [
+     431.21,
+     356.21
+    ],
+    [
+     425.0,
+     360.98
+    ],
+    [
+     417.76,
+     363.98
+    ],
+    [
+     410.0,
+     365.0
+    ],
+    [
+     402.24,
+     363.98
+    ],
+    [
+     395.0,
+     360.98
+    ],
+    [
+     388.79,
+     356.21
+    ],
+    [
+     384.02,
+     350.0
+    ],
+    [
+     381.02,
+     342.76
+    ],
+    [
+     380.0,
+     335.0
+    ],
+    [
+     381.02,
+     327.24
+    ],
+    [
+     384.02,
+     320.0
+    ],
+    [
+     388.79,
+     313.79
+    ],
+    [
+     395.0,
+     309.02
+    ],
+    [
+     402.24,
+     306.02
+    ],
+    [
+     410.0,
+     305.0
+    ],
+    [
+     417.76,
+     306.02
+    ],
+    [
+     425.0,
+     309.02
+    ],
+    [
+     431.21,
+     313.79
+    ],
+    [
+     435.98,
+     320.0
+    ],
+    [
+     438.98,
+     327.24
+    ]
+   ],
+   "start": 0,
+   "end": 25
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg Foot Rear 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg Foot Rear 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg Foot Rear 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stand Leg Front 1",
+   "points": [
+    [
+     -430,
+     -355
+    ],
+    [
+     -390,
+     -355
+    ],
+    [
+     -390,
+     -315
+    ],
+    [
+     -430,
+     -315
+    ]
+   ],
+   "start": 25,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stand Leg Front 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stand Leg Front 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stand Leg Front 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stand Leg Front 2",
+   "points": [
+    [
+     390,
+     -355
+    ],
+    [
+     430,
+     -355
+    ],
+    [
+     430,
+     -315
+    ],
+    [
+     390,
+     -315
+    ]
+   ],
+   "start": 25,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stand Leg Front 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stand Leg Front 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stand Leg Front 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stand Leg Rear 1",
+   "points": [
+    [
+     -430,
+     315
+    ],
+    [
+     -390,
+     315
+    ],
+    [
+     -390,
+     355
+    ],
+    [
+     -430,
+     355
+    ]
+   ],
+   "start": 25,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stand Leg Rear 1",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stand Leg Rear 1",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stand Leg Rear 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stand Leg Rear 2",
+   "points": [
+    [
+     390,
+     315
+    ],
+    [
+     430,
+     315
+    ],
+    [
+     430,
+     355
+    ],
+    [
+     390,
+     355
+    ]
+   ],
+   "start": 25,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stand Leg Rear 2",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stand Leg Rear 2",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stand Leg Rear 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Stand Frame",
+   "points": [
+    [
+     -450,
+     -375
+    ],
+    [
+     450,
+     -375
+    ],
+    [
+     450,
+     375
+    ],
+    [
+     -450,
+     375
+    ]
+   ],
+   "start": 260,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Stand Frame",
+   "subcategory": "Steel"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Stand Frame",
+   "param": "Steel Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Stand Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "EC Fan Rotor",
+   "profile": [
+    [
+     200,
+     60
+    ],
+    [
+     230,
+     60
+    ],
+    [
+     230,
+     250
+    ],
+    [
+     200,
+     250
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "EC Fan Rotor",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "EC Fan Rotor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "EC Fan Motor",
+   "points": [
+    [
+     110.0,
+     0.0
+    ],
+    [
+     106.25,
+     28.47
+    ],
+    [
+     95.26,
+     55.0
+    ],
+    [
+     77.78,
+     77.78
+    ],
+    [
+     55.0,
+     95.26
+    ],
+    [
+     28.47,
+     106.25
+    ],
+    [
+     0.0,
+     110.0
+    ],
+    [
+     -28.47,
+     106.25
+    ],
+    [
+     -55.0,
+     95.26
+    ],
+    [
+     -77.78,
+     77.78
+    ],
+    [
+     -95.26,
+     55.0
+    ],
+    [
+     -106.25,
+     28.47
+    ],
+    [
+     -110.0,
+     0.0
+    ],
+    [
+     -106.25,
+     -28.47
+    ],
+    [
+     -95.26,
+     -55.0
+    ],
+    [
+     -77.78,
+     -77.78
+    ],
+    [
+     -55.0,
+     -95.26
+    ],
+    [
+     -28.47,
+     -106.25
+    ],
+    [
+     -0.0,
+     -110.0
+    ],
+    [
+     28.47,
+     -106.25
+    ],
+    [
+     55.0,
+     -95.26
+    ],
+    [
+     77.78,
+     -77.78
+    ],
+    [
+     95.26,
+     -55.0
+    ],
+    [
+     106.25,
+     -28.47
+    ]
+   ],
+   "start": 80,
+   "end": 260
+  },
+  {
+   "op": "set_subcategory",
+   "name": "EC Fan Motor",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "EC Fan Motor",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "EC Fan Motor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "EC Fan Inlet Ring",
+   "profile": [
+    [
+     160,
+     250
+    ],
+    [
+     235,
+     250
+    ],
+    [
+     235,
+     260
+    ],
+    [
+     160,
+     260
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "EC Fan Inlet Ring",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "EC Fan Inlet Ring",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet",
+   "points": [
+    [
+     -450,
+     -370
+    ],
+    [
+     450,
+     -370
+    ],
+    [
+     450,
+     375
+    ],
+    [
+     -450,
+     375
+    ]
+   ],
+   "start": 300,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Left",
+   "points": [
+    [
+     -445,
+     310
+    ],
+    [
+     -3,
+     310
+    ],
+    [
+     -3,
+     2240
+    ],
+    [
+     -445,
+     2240
+    ]
+   ],
+   "start": 370,
+   "end": 380,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Left",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Left",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Right",
+   "points": [
+    [
+     3,
+     310
+    ],
+    [
+     445,
+     310
+    ],
+    [
+     445,
+     2240
+    ],
+    [
+     3,
+     2240
+    ]
+   ],
+   "start": 370,
+   "end": 380,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Right",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Right",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Perforation Left",
+   "points": [
+    [
+     -405,
+     1450
+    ],
+    [
+     -45,
+     1450
+    ],
+    [
+     -45,
+     2180
+    ],
+    [
+     -405,
+     2180
+    ]
+   ],
+   "start": 380,
+   "end": 382,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Perforation Left",
+   "subcategory": "Mesh"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Perforation Left",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Perforation Left",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Perforation Right",
+   "points": [
+    [
+     45,
+     1450
+    ],
+    [
+     405,
+     1450
+    ],
+    [
+     405,
+     2180
+    ],
+    [
+     45,
+     2180
+    ]
+   ],
+   "start": 380,
+   "end": 382,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Perforation Right",
+   "subcategory": "Mesh"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Perforation Right",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Perforation Right",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Left",
+   "points": [
+    [
+     -39.0,
+     1150.0
+    ],
+    [
+     -37.47,
+     1150.3
+    ],
+    [
+     -36.17,
+     1151.17
+    ],
+    [
+     -35.3,
+     1152.47
+    ],
+    [
+     -35.0,
+     1154.0
+    ],
+    [
+     -35.0,
+     1326.0
+    ],
+    [
+     -35.3,
+     1327.53
+    ],
+    [
+     -36.17,
+     1328.83
+    ],
+    [
+     -37.47,
+     1329.7
+    ],
+    [
+     -39.0,
+     1330.0
+    ],
+    [
+     -56.0,
+     1330.0
+    ],
+    [
+     -57.53,
+     1329.7
+    ],
+    [
+     -58.83,
+     1328.83
+    ],
+    [
+     -59.7,
+     1327.53
+    ],
+    [
+     -60.0,
+     1326.0
+    ],
+    [
+     -60.0,
+     1154.0
+    ],
+    [
+     -59.7,
+     1152.47
+    ],
+    [
+     -58.83,
+     1151.17
+    ],
+    [
+     -57.53,
+     1150.3
+    ],
+    [
+     -56.0,
+     1150.0
+    ]
+   ],
+   "start": 382,
+   "end": 394,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Left",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Left",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Left",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Handle Right",
+   "points": [
+    [
+     56.0,
+     1150.0
+    ],
+    [
+     57.53,
+     1150.3
+    ],
+    [
+     58.83,
+     1151.17
+    ],
+    [
+     59.7,
+     1152.47
+    ],
+    [
+     60.0,
+     1154.0
+    ],
+    [
+     60.0,
+     1326.0
+    ],
+    [
+     59.7,
+     1327.53
+    ],
+    [
+     58.83,
+     1328.83
+    ],
+    [
+     57.53,
+     1329.7
+    ],
+    [
+     56.0,
+     1330.0
+    ],
+    [
+     39.0,
+     1330.0
+    ],
+    [
+     37.47,
+     1329.7
+    ],
+    [
+     36.17,
+     1328.83
+    ],
+    [
+     35.3,
+     1327.53
+    ],
+    [
+     35.0,
+     1326.0
+    ],
+    [
+     35.0,
+     1154.0
+    ],
+    [
+     35.3,
+     1152.47
+    ],
+    [
+     36.17,
+     1151.17
+    ],
+    [
+     37.47,
+     1150.3
+    ],
+    [
+     39.0,
+     1150.0
+    ]
+   ],
+   "start": 382,
+   "end": 394,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Handle Right",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Handle Right",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Handle Right",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Display Bezel",
+   "points": [
+    [
+     324.0,
+     1210.0
+    ],
+    [
+     326.3,
+     1210.46
+    ],
+    [
+     328.24,
+     1211.76
+    ],
+    [
+     329.54,
+     1213.7
+    ],
+    [
+     330.0,
+     1216.0
+    ],
+    [
+     330.0,
+     1384.0
+    ],
+    [
+     329.54,
+     1386.3
+    ],
+    [
+     328.24,
+     1388.24
+    ],
+    [
+     326.3,
+     1389.54
+    ],
+    [
+     324.0,
+     1390.0
+    ],
+    [
+     96.0,
+     1390.0
+    ],
+    [
+     93.7,
+     1389.54
+    ],
+    [
+     91.76,
+     1388.24
+    ],
+    [
+     90.46,
+     1386.3
+    ],
+    [
+     90.0,
+     1384.0
+    ],
+    [
+     90.0,
+     1216.0
+    ],
+    [
+     90.46,
+     1213.7
+    ],
+    [
+     91.76,
+     1211.76
+    ],
+    [
+     93.7,
+     1210.46
+    ],
+    [
+     96.0,
+     1210.0
+    ]
+   ],
+   "start": 380,
+   "end": 384,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Display Bezel",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Display Bezel",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Display Bezel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Display Screen",
+   "points": [
+    [
+     315.0,
+     1222.0
+    ],
+    [
+     316.15,
+     1222.23
+    ],
+    [
+     317.12,
+     1222.88
+    ],
+    [
+     317.77,
+     1223.85
+    ],
+    [
+     318.0,
+     1225.0
+    ],
+    [
+     318.0,
+     1375.0
+    ],
+    [
+     317.77,
+     1376.15
+    ],
+    [
+     317.12,
+     1377.12
+    ],
+    [
+     316.15,
+     1377.77
+    ],
+    [
+     315.0,
+     1378.0
+    ],
+    [
+     105.0,
+     1378.0
+    ],
+    [
+     103.85,
+     1377.77
+    ],
+    [
+     102.88,
+     1377.12
+    ],
+    [
+     102.23,
+     1376.15
+    ],
+    [
+     102.0,
+     1375.0
+    ],
+    [
+     102.0,
+     1225.0
+    ],
+    [
+     102.23,
+     1223.85
+    ],
+    [
+     102.88,
+     1222.88
+    ],
+    [
+     103.85,
+     1222.23
+    ],
+    [
+     105.0,
+     1222.0
+    ]
+   ],
+   "start": 384,
+   "end": 386,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Display Screen",
+   "subcategory": "Ledb"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Display Screen",
+   "param": "Ledb Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Display Screen",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED Run",
+   "points": [
+    [
+     366.0,
+     1360.0
+    ],
+    [
+     365.8,
+     1361.55
+    ],
+    [
+     365.2,
+     1363.0
+    ],
+    [
+     364.24,
+     1364.24
+    ],
+    [
+     363.0,
+     1365.2
+    ],
+    [
+     361.55,
+     1365.8
+    ],
+    [
+     360.0,
+     1366.0
+    ],
+    [
+     358.45,
+     1365.8
+    ],
+    [
+     357.0,
+     1365.2
+    ],
+    [
+     355.76,
+     1364.24
+    ],
+    [
+     354.8,
+     1363.0
+    ],
+    [
+     354.2,
+     1361.55
+    ],
+    [
+     354.0,
+     1360.0
+    ],
+    [
+     354.2,
+     1358.45
+    ],
+    [
+     354.8,
+     1357.0
+    ],
+    [
+     355.76,
+     1355.76
+    ],
+    [
+     357.0,
+     1354.8
+    ],
+    [
+     358.45,
+     1354.2
+    ],
+    [
+     360.0,
+     1354.0
+    ],
+    [
+     361.55,
+     1354.2
+    ],
+    [
+     363.0,
+     1354.8
+    ],
+    [
+     364.24,
+     1355.76
+    ],
+    [
+     365.2,
+     1357.0
+    ],
+    [
+     365.8,
+     1358.45
+    ]
+   ],
+   "start": 380,
+   "end": 386,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED Run",
+   "subcategory": "Ledg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED Run",
+   "param": "Ledg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED Run",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Status LED Alarm",
+   "points": [
+    [
+     366.0,
+     1330.0
+    ],
+    [
+     365.8,
+     1331.55
+    ],
+    [
+     365.2,
+     1333.0
+    ],
+    [
+     364.24,
+     1334.24
+    ],
+    [
+     363.0,
+     1335.2
+    ],
+    [
+     361.55,
+     1335.8
+    ],
+    [
+     360.0,
+     1336.0
+    ],
+    [
+     358.45,
+     1335.8
+    ],
+    [
+     357.0,
+     1335.2
+    ],
+    [
+     355.76,
+     1334.24
+    ],
+    [
+     354.8,
+     1333.0
+    ],
+    [
+     354.2,
+     1331.55
+    ],
+    [
+     354.0,
+     1330.0
+    ],
+    [
+     354.2,
+     1328.45
+    ],
+    [
+     354.8,
+     1327.0
+    ],
+    [
+     355.76,
+     1325.76
+    ],
+    [
+     357.0,
+     1324.8
+    ],
+    [
+     358.45,
+     1324.2
+    ],
+    [
+     360.0,
+     1324.0
+    ],
+    [
+     361.55,
+     1324.2
+    ],
+    [
+     363.0,
+     1324.8
+    ],
+    [
+     364.24,
+     1325.76
+    ],
+    [
+     365.2,
+     1327.0
+    ],
+    [
+     365.8,
+     1328.45
+    ]
+   ],
+   "start": 380,
+   "end": 386,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Status LED Alarm",
+   "subcategory": "Ledr"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Status LED Alarm",
+   "param": "Ledr Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Status LED Alarm",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Left 1",
+   "points": [
+    [
+     -438.0,
+     -383.0
+    ],
+    [
+     -438.27,
+     -380.93
+    ],
+    [
+     -439.07,
+     -379.0
+    ],
+    [
+     -440.34,
+     -377.34
+    ],
+    [
+     -442.0,
+     -376.07
+    ],
+    [
+     -443.93,
+     -375.27
+    ],
+    [
+     -446.0,
+     -375.0
+    ],
+    [
+     -448.07,
+     -375.27
+    ],
+    [
+     -450.0,
+     -376.07
+    ],
+    [
+     -451.66,
+     -377.34
+    ],
+    [
+     -452.93,
+     -379.0
+    ],
+    [
+     -453.73,
+     -380.93
+    ],
+    [
+     -454.0,
+     -383.0
+    ],
+    [
+     -453.73,
+     -385.07
+    ],
+    [
+     -452.93,
+     -387.0
+    ],
+    [
+     -451.66,
+     -388.66
+    ],
+    [
+     -450.0,
+     -389.93
+    ],
+    [
+     -448.07,
+     -390.73
+    ],
+    [
+     -446.0,
+     -391.0
+    ],
+    [
+     -443.93,
+     -390.73
+    ],
+    [
+     -442.0,
+     -389.93
+    ],
+    [
+     -440.34,
+     -388.66
+    ],
+    [
+     -439.07,
+     -387.0
+    ],
+    [
+     -438.27,
+     -385.07
+    ]
+   ],
+   "start": 450,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Left 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Left 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Left 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Left 2",
+   "points": [
+    [
+     -438.0,
+     -383.0
+    ],
+    [
+     -438.27,
+     -380.93
+    ],
+    [
+     -439.07,
+     -379.0
+    ],
+    [
+     -440.34,
+     -377.34
+    ],
+    [
+     -442.0,
+     -376.07
+    ],
+    [
+     -443.93,
+     -375.27
+    ],
+    [
+     -446.0,
+     -375.0
+    ],
+    [
+     -448.07,
+     -375.27
+    ],
+    [
+     -450.0,
+     -376.07
+    ],
+    [
+     -451.66,
+     -377.34
+    ],
+    [
+     -452.93,
+     -379.0
+    ],
+    [
+     -453.73,
+     -380.93
+    ],
+    [
+     -454.0,
+     -383.0
+    ],
+    [
+     -453.73,
+     -385.07
+    ],
+    [
+     -452.93,
+     -387.0
+    ],
+    [
+     -451.66,
+     -388.66
+    ],
+    [
+     -450.0,
+     -389.93
+    ],
+    [
+     -448.07,
+     -390.73
+    ],
+    [
+     -446.0,
+     -391.0
+    ],
+    [
+     -443.93,
+     -390.73
+    ],
+    [
+     -442.0,
+     -389.93
+    ],
+    [
+     -440.34,
+     -388.66
+    ],
+    [
+     -439.07,
+     -387.0
+    ],
+    [
+     -438.27,
+     -385.07
+    ]
+   ],
+   "start": 1210,
+   "end": 1320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Left 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Left 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Left 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Left 3",
+   "points": [
+    [
+     -438.0,
+     -383.0
+    ],
+    [
+     -438.27,
+     -380.93
+    ],
+    [
+     -439.07,
+     -379.0
+    ],
+    [
+     -440.34,
+     -377.34
+    ],
+    [
+     -442.0,
+     -376.07
+    ],
+    [
+     -443.93,
+     -375.27
+    ],
+    [
+     -446.0,
+     -375.0
+    ],
+    [
+     -448.07,
+     -375.27
+    ],
+    [
+     -450.0,
+     -376.07
+    ],
+    [
+     -451.66,
+     -377.34
+    ],
+    [
+     -452.93,
+     -379.0
+    ],
+    [
+     -453.73,
+     -380.93
+    ],
+    [
+     -454.0,
+     -383.0
+    ],
+    [
+     -453.73,
+     -385.07
+    ],
+    [
+     -452.93,
+     -387.0
+    ],
+    [
+     -451.66,
+     -388.66
+    ],
+    [
+     -450.0,
+     -389.93
+    ],
+    [
+     -448.07,
+     -390.73
+    ],
+    [
+     -446.0,
+     -391.0
+    ],
+    [
+     -443.93,
+     -390.73
+    ],
+    [
+     -442.0,
+     -389.93
+    ],
+    [
+     -440.34,
+     -388.66
+    ],
+    [
+     -439.07,
+     -387.0
+    ],
+    [
+     -438.27,
+     -385.07
+    ]
+   ],
+   "start": 1970,
+   "end": 2080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Left 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Left 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Left 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Right 1",
+   "points": [
+    [
+     454.0,
+     -383.0
+    ],
+    [
+     453.73,
+     -380.93
+    ],
+    [
+     452.93,
+     -379.0
+    ],
+    [
+     451.66,
+     -377.34
+    ],
+    [
+     450.0,
+     -376.07
+    ],
+    [
+     448.07,
+     -375.27
+    ],
+    [
+     446.0,
+     -375.0
+    ],
+    [
+     443.93,
+     -375.27
+    ],
+    [
+     442.0,
+     -376.07
+    ],
+    [
+     440.34,
+     -377.34
+    ],
+    [
+     439.07,
+     -379.0
+    ],
+    [
+     438.27,
+     -380.93
+    ],
+    [
+     438.0,
+     -383.0
+    ],
+    [
+     438.27,
+     -385.07
+    ],
+    [
+     439.07,
+     -387.0
+    ],
+    [
+     440.34,
+     -388.66
+    ],
+    [
+     442.0,
+     -389.93
+    ],
+    [
+     443.93,
+     -390.73
+    ],
+    [
+     446.0,
+     -391.0
+    ],
+    [
+     448.07,
+     -390.73
+    ],
+    [
+     450.0,
+     -389.93
+    ],
+    [
+     451.66,
+     -388.66
+    ],
+    [
+     452.93,
+     -387.0
+    ],
+    [
+     453.73,
+     -385.07
+    ]
+   ],
+   "start": 450,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Right 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Right 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Right 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Right 2",
+   "points": [
+    [
+     454.0,
+     -383.0
+    ],
+    [
+     453.73,
+     -380.93
+    ],
+    [
+     452.93,
+     -379.0
+    ],
+    [
+     451.66,
+     -377.34
+    ],
+    [
+     450.0,
+     -376.07
+    ],
+    [
+     448.07,
+     -375.27
+    ],
+    [
+     446.0,
+     -375.0
+    ],
+    [
+     443.93,
+     -375.27
+    ],
+    [
+     442.0,
+     -376.07
+    ],
+    [
+     440.34,
+     -377.34
+    ],
+    [
+     439.07,
+     -379.0
+    ],
+    [
+     438.27,
+     -380.93
+    ],
+    [
+     438.0,
+     -383.0
+    ],
+    [
+     438.27,
+     -385.07
+    ],
+    [
+     439.07,
+     -387.0
+    ],
+    [
+     440.34,
+     -388.66
+    ],
+    [
+     442.0,
+     -389.93
+    ],
+    [
+     443.93,
+     -390.73
+    ],
+    [
+     446.0,
+     -391.0
+    ],
+    [
+     448.07,
+     -390.73
+    ],
+    [
+     450.0,
+     -389.93
+    ],
+    [
+     451.66,
+     -388.66
+    ],
+    [
+     452.93,
+     -387.0
+    ],
+    [
+     453.73,
+     -385.07
+    ]
+   ],
+   "start": 1210,
+   "end": 1320
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Right 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Right 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Right 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge Right 3",
+   "points": [
+    [
+     454.0,
+     -383.0
+    ],
+    [
+     453.73,
+     -380.93
+    ],
+    [
+     452.93,
+     -379.0
+    ],
+    [
+     451.66,
+     -377.34
+    ],
+    [
+     450.0,
+     -376.07
+    ],
+    [
+     448.07,
+     -375.27
+    ],
+    [
+     446.0,
+     -375.0
+    ],
+    [
+     443.93,
+     -375.27
+    ],
+    [
+     442.0,
+     -376.07
+    ],
+    [
+     440.34,
+     -377.34
+    ],
+    [
+     439.07,
+     -379.0
+    ],
+    [
+     438.27,
+     -380.93
+    ],
+    [
+     438.0,
+     -383.0
+    ],
+    [
+     438.27,
+     -385.07
+    ],
+    [
+     439.07,
+     -387.0
+    ],
+    [
+     440.34,
+     -388.66
+    ],
+    [
+     442.0,
+     -389.93
+    ],
+    [
+     443.93,
+     -390.73
+    ],
+    [
+     446.0,
+     -391.0
+    ],
+    [
+     448.07,
+     -390.73
+    ],
+    [
+     450.0,
+     -389.93
+    ],
+    [
+     451.66,
+     -388.66
+    ],
+    [
+     452.93,
+     -387.0
+    ],
+    [
+     453.73,
+     -385.07
+    ]
+   ],
+   "start": 1970,
+   "end": 2080
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge Right 3",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge Right 3",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge Right 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille",
+   "points": [
+    [
+     -430,
+     -355
+    ],
+    [
+     430,
+     -355
+    ],
+    [
+     430,
+     355
+    ],
+    [
+     -430,
+     355
+    ]
+   ],
+   "start": 2250,
+   "end": 2254
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille",
+   "subcategory": "Mesh"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille",
+   "param": "Mesh Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 1",
+   "points": [
+    [
+     -430.0,
+     -355
+    ],
+    [
+     -422.0,
+     -355
+    ],
+    [
+     -422.0,
+     355
+    ],
+    [
+     -430.0,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 1",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 1",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 2",
+   "points": [
+    [
+     -385.4,
+     -355
+    ],
+    [
+     -377.4,
+     -355
+    ],
+    [
+     -377.4,
+     355
+    ],
+    [
+     -385.4,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 2",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 2",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 3",
+   "points": [
+    [
+     -340.8,
+     -355
+    ],
+    [
+     -332.8,
+     -355
+    ],
+    [
+     -332.8,
+     355
+    ],
+    [
+     -340.8,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 3",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 3",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 4",
+   "points": [
+    [
+     -296.2,
+     -355
+    ],
+    [
+     -288.2,
+     -355
+    ],
+    [
+     -288.2,
+     355
+    ],
+    [
+     -296.2,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 4",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 4",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 5",
+   "points": [
+    [
+     -251.6,
+     -355
+    ],
+    [
+     -243.6,
+     -355
+    ],
+    [
+     -243.6,
+     355
+    ],
+    [
+     -251.6,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 5",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 5",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 6",
+   "points": [
+    [
+     -207.0,
+     -355
+    ],
+    [
+     -199.0,
+     -355
+    ],
+    [
+     -199.0,
+     355
+    ],
+    [
+     -207.0,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 6",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 6",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 6",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 7",
+   "points": [
+    [
+     -162.39999999999998,
+     -355
+    ],
+    [
+     -154.39999999999998,
+     -355
+    ],
+    [
+     -154.39999999999998,
+     355
+    ],
+    [
+     -162.39999999999998,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 7",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 7",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 7",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 8",
+   "points": [
+    [
+     -117.80000000000001,
+     -355
+    ],
+    [
+     -109.80000000000001,
+     -355
+    ],
+    [
+     -109.80000000000001,
+     355
+    ],
+    [
+     -117.80000000000001,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 8",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 8",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 8",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 9",
+   "points": [
+    [
+     -73.19999999999999,
+     -355
+    ],
+    [
+     -65.19999999999999,
+     -355
+    ],
+    [
+     -65.19999999999999,
+     355
+    ],
+    [
+     -73.19999999999999,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 9",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 9",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 9",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 10",
+   "points": [
+    [
+     -28.599999999999966,
+     -355
+    ],
+    [
+     -20.599999999999966,
+     -355
+    ],
+    [
+     -20.599999999999966,
+     355
+    ],
+    [
+     -28.599999999999966,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 10",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 10",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 10",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 11",
+   "points": [
+    [
+     16.0,
+     -355
+    ],
+    [
+     24.0,
+     -355
+    ],
+    [
+     24.0,
+     355
+    ],
+    [
+     16.0,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 11",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 11",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 11",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 12",
+   "points": [
+    [
+     60.60000000000002,
+     -355
+    ],
+    [
+     68.60000000000002,
+     -355
+    ],
+    [
+     68.60000000000002,
+     355
+    ],
+    [
+     60.60000000000002,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 12",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 12",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 12",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 13",
+   "points": [
+    [
+     105.20000000000005,
+     -355
+    ],
+    [
+     113.20000000000005,
+     -355
+    ],
+    [
+     113.20000000000005,
+     355
+    ],
+    [
+     105.20000000000005,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 13",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 13",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 13",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 14",
+   "points": [
+    [
+     149.80000000000007,
+     -355
+    ],
+    [
+     157.80000000000007,
+     -355
+    ],
+    [
+     157.80000000000007,
+     355
+    ],
+    [
+     149.80000000000007,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 14",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 14",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 14",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 15",
+   "points": [
+    [
+     194.39999999999998,
+     -355
+    ],
+    [
+     202.39999999999998,
+     -355
+    ],
+    [
+     202.39999999999998,
+     355
+    ],
+    [
+     194.39999999999998,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 15",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 15",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 15",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 16",
+   "points": [
+    [
+     239.0,
+     -355
+    ],
+    [
+     247.0,
+     -355
+    ],
+    [
+     247.0,
+     355
+    ],
+    [
+     239.0,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 16",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 16",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 16",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 17",
+   "points": [
+    [
+     283.6,
+     -355
+    ],
+    [
+     291.6,
+     -355
+    ],
+    [
+     291.6,
+     355
+    ],
+    [
+     283.6,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 17",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 17",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 17",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 18",
+   "points": [
+    [
+     328.20000000000005,
+     -355
+    ],
+    [
+     336.20000000000005,
+     -355
+    ],
+    [
+     336.20000000000005,
+     355
+    ],
+    [
+     328.20000000000005,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 18",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 18",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 18",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 19",
+   "points": [
+    [
+     372.80000000000007,
+     -355
+    ],
+    [
+     380.80000000000007,
+     -355
+    ],
+    [
+     380.80000000000007,
+     355
+    ],
+    [
+     372.80000000000007,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 19",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 19",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 19",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Top Grille Slat 20",
+   "points": [
+    [
+     417.4,
+     -355
+    ],
+    [
+     425.4,
+     -355
+    ],
+    [
+     425.4,
+     355
+    ],
+    [
+     417.4,
+     355
+    ]
+   ],
+   "start": 2254,
+   "end": 2262
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Top Grille Slat 20",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Top Grille Slat 20",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Top Grille Slat 20",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rating Plate",
+   "points": [
+    [
+     -400,
+     400
+    ],
+    [
+     -280,
+     400
+    ],
+    [
+     -280,
+     470
+    ],
+    [
+     -400,
+     470
+    ]
+   ],
+   "start": 380,
+   "end": 382,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rating Plate",
+   "subcategory": "Alu"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rating Plate",
+   "param": "Alu Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rating Plate",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Condensate Drain",
+   "points": [
+    [
+     316.0,
+     360.0
+    ],
+    [
+     315.45,
+     364.14
+    ],
+    [
+     313.86,
+     368.0
+    ],
+    [
+     311.31,
+     371.31
+    ],
+    [
+     308.0,
+     373.86
+    ],
+    [
+     304.14,
+     375.45
+    ],
+    [
+     300.0,
+     376.0
+    ],
+    [
+     295.86,
+     375.45
+    ],
+    [
+     292.0,
+     373.86
+    ],
+    [
+     288.69,
+     371.31
+    ],
+    [
+     286.14,
+     368.0
+    ],
+    [
+     284.55,
+     364.14
+    ],
+    [
+     284.0,
+     360.0
+    ],
+    [
+     284.55,
+     355.86
+    ],
+    [
+     286.14,
+     352.0
+    ],
+    [
+     288.69,
+     348.69
+    ],
+    [
+     292.0,
+     346.14
+    ],
+    [
+     295.86,
+     344.55
+    ],
+    [
+     300.0,
+     344.0
+    ],
+    [
+     304.14,
+     344.55
+    ],
+    [
+     308.0,
+     346.14
+    ],
+    [
+     311.31,
+     348.69
+    ],
+    [
+     313.86,
+     352.0
+    ],
+    [
+     315.45,
+     355.86
+    ]
+   ],
+   "start": -425,
+   "end": -375,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Condensate Drain",
+   "subcategory": "Grey"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Condensate Drain",
+   "param": "Grey Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Condensate Drain",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Humidifier Feed",
+   "points": [
+    [
+     208.0,
+     360.0
+    ],
+    [
+     207.73,
+     362.07
+    ],
+    [
+     206.93,
+     364.0
+    ],
+    [
+     205.66,
+     365.66
+    ],
+    [
+     204.0,
+     366.93
+    ],
+    [
+     202.07,
+     367.73
+    ],
+    [
+     200.0,
+     368.0
+    ],
+    [
+     197.93,
+     367.73
+    ],
+    [
+     196.0,
+     366.93
+    ],
+    [
+     194.34,
+     365.66
+    ],
+    [
+     193.07,
+     364.0
+    ],
+    [
+     192.27,
+     362.07
+    ],
+    [
+     192.0,
+     360.0
+    ],
+    [
+     192.27,
+     357.93
+    ],
+    [
+     193.07,
+     356.0
+    ],
+    [
+     194.34,
+     354.34
+    ],
+    [
+     196.0,
+     353.07
+    ],
+    [
+     197.93,
+     352.27
+    ],
+    [
+     200.0,
+     352.0
+    ],
+    [
+     202.07,
+     352.27
+    ],
+    [
+     204.0,
+     353.07
+    ],
+    [
+     205.66,
+     354.34
+    ],
+    [
+     206.93,
+     356.0
+    ],
+    [
+     207.73,
+     357.93
+    ]
+   ],
+   "start": -420,
+   "end": -375,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Humidifier Feed",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Humidifier Feed",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Humidifier Feed",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Service",
+   "points": [
+    [
+     -450,
+     -1280
+    ],
+    [
+     450,
+     -1280
+    ],
+    [
+     450,
+     -380
+    ],
+    [
+     -450,
+     -380
+    ]
+   ],
+   "start": 0,
+   "end": 2250
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Service",
+   "subcategory": "Clearance Maintenance"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Service",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Cabinet",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "add_connector",
+   "name": "Condensate",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Condensate Drain",
+   "side": "back",
+   "diameter": 40,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_AC_Precision_ServerRoom.png"
+  }
+ ],
+ "values": {
+  "Cabinet 900 x 750 x 1950 mm on 300 mm stand": {
+   "value": "900x750x1950",
+   "source_status": "assumed",
+   "source": "typical 10 kW close-control unit"
+  },
+  "Cooling 10 kW sensible": {
+   "value": "10kW",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Load 9 kVA, 415 V 3-phase (with heater and humidifier)": {
+   "value": 9000,
+   "source_status": "assumed",
+   "source": "engineer confirms"
+  },
+  "Front service clearance 900 mm": {
+   "value": 900,
+   "source_status": "assumed",
+   "source": "manufacturer practice"
+  }
+ }
+}

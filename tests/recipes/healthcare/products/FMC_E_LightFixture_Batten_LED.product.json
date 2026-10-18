@@ -1,0 +1,251 @@
+{
+ "family": "FMC_E_LightFixture_Batten_LED",
+ "category": "Lighting Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "LED batten, surface ceiling mount, white steel base channel, opal half-round diffuser, end caps",
+ "ifc": "IfcLightFixture",
+ "keynote": "E.LED_09",
+ "types": [
+  {
+   "name": "1200_Batten",
+   "values": {
+    "Apparent Load": 36
+   }
+  },
+  {
+   "name": "1500_Batten",
+   "values": {
+    "Apparent Load": 45
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 36
+ },
+ "materials": {
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "opal": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "chrome": "FMC_Metal_Chrome_Polished"
+ },
+ "reference": {
+  "query": "light fixture batten led lighting fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=light+fixture+batten+led+lighting+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base Channel",
+   "shape": "box",
+   "at": [
+    -600,
+    -35,
+    -12,
+    600,
+    35,
+    0
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Diffuser",
+   "shape": "right",
+   "pts": [
+    [
+     35.0,
+     -12.0
+    ],
+    [
+     33.80740392011739,
+     -19.764571353075624
+    ],
+    [
+     30.310889132455355,
+     -27.0
+    ],
+    [
+     24.748737341529164,
+     -33.21320343559643
+    ],
+    [
+     17.500000000000004,
+     -37.98076211353316
+    ],
+    [
+     9.058666578588227,
+     -40.97777478867205
+    ],
+    [
+     2.1431318985078682e-15,
+     -42.0
+    ],
+    [
+     -9.058666578588221,
+     -40.97777478867205
+    ],
+    [
+     -17.499999999999993,
+     -37.98076211353316
+    ],
+    [
+     -24.74873734152916,
+     -33.21320343559643
+    ],
+    [
+     -30.310889132455355,
+     -27.0
+    ],
+    [
+     -33.80740392011739,
+     -19.76457135307563
+    ],
+    [
+     -35.0,
+     -12.000000000000004
+    ]
+   ],
+   "x": [
+    -585,
+    585
+   ],
+   "mat": "opal",
+   "lod": "mf"
+  },
+  {
+   "n": "End Cap",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -12
+   ],
+   "profile": [
+    [
+     0,
+     -600
+    ],
+    [
+     36,
+     -600
+    ],
+    [
+     36,
+     -585
+    ],
+    [
+     0,
+     -585
+    ]
+   ],
+   "mat": "grey",
+   "lod": "mf"
+  },
+  {
+   "n": "End Cap Right",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    0,
+    -12
+   ],
+   "profile": [
+    [
+     0,
+     585
+    ],
+    [
+     36,
+     585
+    ],
+    [
+     36,
+     600
+    ],
+    [
+     0,
+     600
+    ]
+   ],
+   "mat": "grey",
+   "lod": "mf"
+  },
+  {
+   "n": "Fixing Screw",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -450,
+    0
+   ],
+   "r": 4,
+   "z": [
+    -13,
+    -12
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     900,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Cable Entry",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -500,
+    0
+   ],
+   "r": 10,
+   "z": [
+    0,
+    6
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "LED Strip",
+   "shape": "box",
+   "at": [
+    -580,
+    -6,
+    -14,
+    580,
+    6,
+    -12
+   ],
+   "mat": "grey",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Base Channel",
+   "side": "top"
+  }
+ ],
+ "values": {
+  "Length 1200 mm (1500 type longer), 70 x 45 mm": {
+   "value": "1200x70x45",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "36 / 45 W, 4000 K": {
+   "value": "W",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Batten: steel base channel on the ceiling, half-round opal diffuser, grey end caps, LED strip, fixing screws, cable entry; hangs below the ceiling (z = 0). Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

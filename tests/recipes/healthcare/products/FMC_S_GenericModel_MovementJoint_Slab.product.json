@@ -1,0 +1,245 @@
+{
+ "family": "FMC_S_GenericModel_MovementJoint_Slab",
+ "category": "Generic Models",
+ "template": "Metric Generic Model.rft",
+ "desc": "Slab movement joint: fibreboard filler, backer rod, flush aluminium floor joint cover with rubber insert, sleeved dowels",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "C.JNT_00",
+ "types": [
+  {
+   "name": "20_Joint",
+   "desc": "20 mm joint"
+  },
+  {
+   "name": "30_Joint",
+   "desc": "30 mm joint"
+  }
+ ],
+ "materials": {
+  "rebar": "FMC_Metal_Rebar_B500_Ribbed",
+  "rubber": "FMC_Rubber_Black",
+  "alu": "FMC_Metal_Aluminium_Anodised_Silver",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "filler": "FMC_Board_SoftBoard_Ceiling",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "parts": [
+  {
+   "n": "Filler Board",
+   "shape": "box",
+   "at": [
+    -500.0,
+    -10,
+    -150,
+    500.0,
+    10,
+    -30
+   ],
+   "mat": "filler"
+  },
+  {
+   "n": "Backer Rod",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    -22
+   ],
+   "r": 9,
+   "x": [
+    -500.0,
+    500.0
+   ],
+   "mat": "rubber",
+   "seg": 12
+  },
+  {
+   "n": "Frame Left",
+   "shape": "box",
+   "at": [
+    -500.0,
+    -60,
+    -10,
+    500.0,
+    -10,
+    0
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Frame Right",
+   "shape": "box",
+   "at": [
+    -500.0,
+    10,
+    -10,
+    500.0,
+    60,
+    0
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Anchor Leg Left",
+   "shape": "box",
+   "at": [
+    -500.0,
+    -60,
+    -50,
+    500.0,
+    -55,
+    -10
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Anchor Leg Right",
+   "shape": "box",
+   "at": [
+    -500.0,
+    55,
+    -50,
+    500.0,
+    60,
+    -10
+   ],
+   "mat": "alu"
+  },
+  {
+   "n": "Rubber Insert",
+   "shape": "box",
+   "at": [
+    -500.0,
+    -10,
+    -12,
+    500.0,
+    10,
+    0
+   ],
+   "mat": "rubber"
+  },
+  {
+   "n": "Screw Left",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -400,
+    -35
+   ],
+   "r": 4,
+   "z": [
+    0,
+    1
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     266,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "Screw Right",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -400,
+    35
+   ],
+   "r": 4,
+   "z": [
+    0,
+    1
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     266,
+     0,
+     0
+    ]
+   },
+   "seg": 10
+  },
+  {
+   "n": "Dowel",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -300,
+    -90
+   ],
+   "r": 10,
+   "y": [
+    -250,
+    250
+   ],
+   "mat": "rebar",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  },
+  {
+   "n": "Dowel Sleeve",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -300,
+    -90
+   ],
+   "r": 13,
+   "y": [
+    10,
+    260
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   },
+   "seg": 12
+  }
+ ],
+ "reference": {
+  "query": "movement joint slab generic models hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=movement+joint+slab+generic+models+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Joint width 20 mm (geometry)": {
+   "value": 20,
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  },
+  "Cover 120 mm wide, flush": {
+   "value": 120,
+   "source_status": "assumed",
+   "source": "typical hospital floor joint cover; cleanable"
+  },
+  "Dowels 20 dia at 300, 500 long": {
+   "value": "20 at 300",
+   "source_status": "assumed",
+   "source": "typical size, engineer to confirm"
+  }
+ },
+ "about": "Floor at z = 0, joint along x: filler board and backer rod in the gap, flush aluminium cover frames with anchor legs and screws, rubber insert, sleeved dowels across the joint (Fine). Shown 1000 long."
+}

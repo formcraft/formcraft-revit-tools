@@ -1,0 +1,292 @@
+{
+ "family": "FMC_M_AirTerminal_Diffuser_Square_4Way",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "Square 4-way ceiling supply diffuser 300 to 600, white powder-coated, nested cones with centre plaque, plenum box with round side spigot",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_00",
+ "types": [
+  {
+   "name": "300_4Way"
+  },
+  {
+   "name": "450_4Way"
+  },
+  {
+   "name": "600_4Way"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 2700
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "dark": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "galv": "FMC_Metal_Duct_Galvanised"
+ },
+ "reference": {
+  "query": "diffuser square 4way air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=diffuser+square+4way+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Plenum Box",
+   "shape": "box",
+   "at": [
+    -280,
+    -280,
+    0,
+    280,
+    280,
+    300
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 125,
+   "z": [
+    300,
+    400
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot Bead",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     124,
+     340
+    ],
+    [
+     130,
+     340
+    ],
+    [
+     130,
+     350
+    ],
+    [
+     124,
+     350
+    ]
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Face Frame",
+   "shape": "box",
+   "at": [
+    -297,
+    -297,
+    -12,
+    297,
+    297,
+    0
+   ],
+   "mat": "epw",
+   "r": 2
+  },
+  {
+   "n": "Air Gap Outer",
+   "shape": "box",
+   "at": [
+    -262,
+    -262,
+    -13,
+    262,
+    262,
+    -12
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Cone 1",
+   "shape": "box",
+   "at": [
+    -250,
+    -250,
+    -18,
+    250,
+    250,
+    -12
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Air Gap 1",
+   "shape": "box",
+   "at": [
+    -218,
+    -218,
+    -19,
+    218,
+    218,
+    -18
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Cone 2",
+   "shape": "box",
+   "at": [
+    -206,
+    -206,
+    -25,
+    206,
+    206,
+    -19
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Air Gap 2",
+   "shape": "box",
+   "at": [
+    -174,
+    -174,
+    -26,
+    174,
+    174,
+    -25
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Cone 3",
+   "shape": "box",
+   "at": [
+    -162,
+    -162,
+    -32,
+    162,
+    162,
+    -26
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Air Gap 3",
+   "shape": "box",
+   "at": [
+    -130,
+    -130,
+    -33,
+    130,
+    130,
+    -32
+   ],
+   "mat": "black"
+  },
+  {
+   "n": "Centre Plaque",
+   "shape": "box",
+   "at": [
+    -118,
+    -118,
+    -39,
+    118,
+    118,
+    -33
+   ],
+   "mat": "epw"
+  },
+  {
+   "n": "Centre Screw",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "r": 6,
+   "z": [
+    -41,
+    -39
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  },
+  {
+   "n": "Plenum Hanger Lug",
+   "shape": "box",
+   "at": [
+    -300,
+    -20,
+    250,
+    -280,
+    20,
+    290
+   ],
+   "mat": "galv",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     580,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Damper Spindle",
+   "shape": "box",
+   "at": [
+    -6,
+    -125,
+    360,
+    6,
+    125,
+    372
+   ],
+   "mat": "dark",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Supply",
+   "domain": "duct",
+   "system": "SupplyAir",
+   "part": "Spigot",
+   "side": "top",
+   "flow": "In",
+   "diameter": 250
+  }
+ ],
+ "values": {
+  "Face 595 x 595 mm (600 grid)": {
+   "value": 595,
+   "source_status": "assumed",
+   "source": "lay-in face for 600 grid"
+  },
+  "Neck / spigot 250 mm": {
+   "value": 250,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Throw 2.5 m at 0.25 m/s": {
+   "value": 2.5,
+   "source_status": "assumed",
+   "source": "typical selection"
+  }
+ },
+ "about": "Modelled as a generic product: face frame with three stepped cones and a centre plaque separated by dark air gaps, plenum box with hanger lugs, round top spigot with bead and damper spindle; face below the ceiling (z = 0)."
+}

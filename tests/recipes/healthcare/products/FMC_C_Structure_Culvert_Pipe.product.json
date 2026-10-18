@@ -1,0 +1,486 @@
+{
+ "family": "FMC_C_Structure_Culvert_Pipe",
+ "category": "Site",
+ "template": "Metric Generic Model.rft",
+ "desc": "Pipe culvert of ogee-jointed concrete pipes on a concrete bed and haunch, with headwalls, splayed wingwalls, aprons and stone pitching",
+ "ifc": "IfcBuildingElementProxy",
+ "keynote": "T.CUL_02",
+ "types": [
+  {
+   "name": "600_Ogee",
+   "desc": "600 mm concrete pipes"
+  },
+  {
+   "name": "900_Ogee",
+   "desc": "900 mm concrete pipes"
+  }
+ ],
+ "materials": {
+  "c20": "FMC_Concrete_C20",
+  "ogee": "FMC_Concrete_Pipe_Ogee",
+  "pitch": "FMC_Stone_Pitching"
+ },
+ "parts": [
+  {
+   "n": "Pipe",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "profile": [
+    [
+     300,
+     -2000
+    ],
+    [
+     375,
+     -2000
+    ],
+    [
+     375,
+     -1000
+    ],
+    [
+     300,
+     -1000
+    ]
+   ],
+   "mat": "ogee",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     1000,
+     0
+    ]
+   },
+   "seg": 40
+  },
+  {
+   "n": "Ogee Joint",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "profile": [
+    [
+     375,
+     -1050
+    ],
+    [
+     400,
+     -1050
+    ],
+    [
+     400,
+     -950
+    ],
+    [
+     375,
+     -950
+    ]
+   ],
+   "mat": "ogee",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     0,
+     1000,
+     0
+    ]
+   },
+   "seg": 40
+  },
+  {
+   "n": "Concrete Bed",
+   "shape": "box",
+   "at": [
+    -525,
+    -2000,
+    0,
+    525,
+    2000,
+    150
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Haunch Left",
+   "shape": "front",
+   "pts": [
+    [
+     -525,
+     150
+    ],
+    [
+     -215,
+     150
+    ],
+    [
+     -525,
+     470
+    ]
+   ],
+   "y": [
+    -2000,
+    2000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Haunch Right",
+   "shape": "front",
+   "pts": [
+    [
+     525,
+     150
+    ],
+    [
+     525,
+     470
+    ],
+    [
+     215,
+     150
+    ]
+   ],
+   "y": [
+    -2000,
+    2000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Headwall Inlet",
+   "shape": "box",
+   "at": [
+    -1100,
+    -2250,
+    0,
+    1100,
+    -2000,
+    1300
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Headwall Outlet",
+   "shape": "box",
+   "at": [
+    -1100,
+    2000,
+    0,
+    1100,
+    2250,
+    1300
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Pipe Opening Inlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "r": 375,
+   "y": [
+    -2251,
+    -1999
+   ],
+   "void": true
+  },
+  {
+   "n": "Pipe Opening Outlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "r": 375,
+   "y": [
+    1999,
+    2251
+   ],
+   "void": true
+  },
+  {
+   "n": "Pipe Inlet End",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "profile": [
+    [
+     300,
+     -2280
+    ],
+    [
+     375,
+     -2280
+    ],
+    [
+     375,
+     -2000
+    ],
+    [
+     300,
+     -2000
+    ]
+   ],
+   "mat": "ogee",
+   "seg": 40
+  },
+  {
+   "n": "Pipe Outlet End",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    525
+   ],
+   "profile": [
+    [
+     300,
+     2000
+    ],
+    [
+     375,
+     2000
+    ],
+    [
+     375,
+     2280
+    ],
+    [
+     300,
+     2280
+    ]
+   ],
+   "mat": "ogee",
+   "seg": 40
+  },
+  {
+   "n": "Wingwall Inlet Left",
+   "shape": "prism",
+   "pts": [
+    [
+     -1100,
+     -2250
+    ],
+    [
+     -850,
+     -2250
+    ],
+    [
+     -1550,
+     -2950
+    ],
+    [
+     -1800,
+     -2950
+    ]
+   ],
+   "z": [
+    0,
+    1000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Wingwall Inlet Right",
+   "shape": "prism",
+   "pts": [
+    [
+     850,
+     -2250
+    ],
+    [
+     1100,
+     -2250
+    ],
+    [
+     1800,
+     -2950
+    ],
+    [
+     1550,
+     -2950
+    ]
+   ],
+   "z": [
+    0,
+    1000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Wingwall Outlet Left",
+   "shape": "prism",
+   "pts": [
+    [
+     -1100,
+     2250
+    ],
+    [
+     -1800,
+     2950
+    ],
+    [
+     -1550,
+     2950
+    ],
+    [
+     -850,
+     2250
+    ]
+   ],
+   "z": [
+    0,
+    1000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Wingwall Outlet Right",
+   "shape": "prism",
+   "pts": [
+    [
+     1100,
+     2250
+    ],
+    [
+     850,
+     2250
+    ],
+    [
+     1550,
+     2950
+    ],
+    [
+     1800,
+     2950
+    ]
+   ],
+   "z": [
+    0,
+    1000
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Apron Inlet",
+   "shape": "prism",
+   "pts": [
+    [
+     -1100,
+     -2250
+    ],
+    [
+     1100,
+     -2250
+    ],
+    [
+     1550,
+     -2950
+    ],
+    [
+     -1550,
+     -2950
+    ]
+   ],
+   "z": [
+    0,
+    150
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Apron Outlet",
+   "shape": "prism",
+   "pts": [
+    [
+     -1100,
+     2250
+    ],
+    [
+     -1550,
+     2950
+    ],
+    [
+     1550,
+     2950
+    ],
+    [
+     1100,
+     2250
+    ]
+   ],
+   "z": [
+    0,
+    150
+   ],
+   "mat": "c20"
+  },
+  {
+   "n": "Stone Pitching",
+   "shape": "prism",
+   "pts": [
+    [
+     -1550,
+     2950
+    ],
+    [
+     -1900,
+     3800
+    ],
+    [
+     1900,
+     3800
+    ],
+    [
+     1550,
+     2950
+    ]
+   ],
+   "z": [
+    0,
+    100
+   ],
+   "mat": "pitch",
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "structure culvert pipe structures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=structure+culvert+pipe+structures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Pipe 600 internal, 75 wall (geometry)": {
+   "value": "600 t75",
+   "source_status": "assumed",
+   "source": "typical Uganda ogee concrete pipe; hydraulic size by the engineer"
+  },
+  "Pipes 1000 long, 4 shown": {
+   "value": 1000,
+   "source_status": "assumed",
+   "source": "typical"
+  },
+  "Bed and haunch C20 to pipe centreline": {
+   "value": "C20",
+   "source_status": "assumed",
+   "source": "typical class B bedding; engineer to confirm"
+  }
+ },
+ "about": "Bed underside at z = 0, flow along y: four ogee pipes with joint collars (Fine), bed and haunch, headwalls in two halves round the pipe, four wingwalls, aprons, outlet pitching."
+}

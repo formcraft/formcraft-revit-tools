@@ -1,0 +1,317 @@
+{
+ "family": "FMC_FP_FireAlarm_Detector_Heat",
+ "category": "Fire Alarm Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "Addressable heat detector with mounting base, class A1R rate-of-rise or CS fixed temperature, 100 mm diameter, 50 mm high",
+ "ifc": "IfcSensor",
+ "keynote": "V.FAL_02",
+ "types": [
+  {
+   "name": "A1R_Heat"
+  },
+  {
+   "name": "CS_Heat"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "ledr": "FMC_Plastic_LED_Red",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "detector heat fire alarm devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=detector+heat+fire+alarm+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Base",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -12
+    ],
+    [
+     51,
+     -12
+    ],
+    [
+     51,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Head",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -36
+    ],
+    [
+     38,
+     -36
+    ],
+    [
+     46,
+     -32
+    ],
+    [
+     50,
+     -24
+    ],
+    [
+     50,
+     -12
+    ],
+    [
+     0,
+     -12
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Vent Rib X",
+   "shape": "box",
+   "at": [
+    -50,
+    -2,
+    -30,
+    -44,
+    2,
+    -16
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     94,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Vent Rib Y",
+   "shape": "box",
+   "at": [
+    -2,
+    -50,
+    -30,
+    2,
+    -44,
+    -16
+   ],
+   "mat": "white",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     94,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Post X",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -13,
+    0
+   ],
+   "r": 2.5,
+   "z": [
+    -50,
+    -36
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     26,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Post Y",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -13
+   ],
+   "r": 2.5,
+   "z": [
+    -50,
+    -36
+   ],
+   "mat": "white",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     26,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Thermistor Guard Ring",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     10,
+     -53
+    ],
+    [
+     15.5,
+     -53
+    ],
+    [
+     15.5,
+     -50
+    ],
+    [
+     10,
+     -50
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Thermistor",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -48
+    ],
+    [
+     3,
+     -48
+    ],
+    [
+     3,
+     -36
+    ],
+    [
+     0,
+     -36
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "LED",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -32
+   ],
+   "r": 4,
+   "z": [
+    -37.5,
+    -36
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  }
+ ],
+ "values": {
+  "Diameter 100 mm": {
+   "value": 100,
+   "source_status": "assumed",
+   "source": "same base as the pack's smoke detector"
+  },
+  "Height 53 mm with base": {
+   "value": 53,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Class A1R / CS to BS EN 54-5": {
+   "value": "A1R/CS",
+   "source_status": "assumed",
+   "source": "type names"
+  },
+  "Coverage radius 5300 mm": {
+   "value": 5300,
+   "source_status": "assumed",
+   "source": "BS 5839-1 point heat detector, flat ceiling"
+  }
+ },
+ "about": "Heat detector modelled as a generic product: base, low-profile head with vent ribs, exposed thermistor in a guard of four posts and a ring, LED; hangs below the ceiling (z = 0).",
+ "connectors": [
+  {
+   "n": "Fire Alarm",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "part": "Base",
+   "side": "top"
+  }
+ ],
+ "clearances": [
+  {
+   "n": "Coverage",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -60
+    ],
+    [
+     5300,
+     -60
+    ],
+    [
+     5300,
+     -55
+    ],
+    [
+     0,
+     -55
+    ]
+   ],
+   "sub": "Coverage"
+  }
+ ]
+}

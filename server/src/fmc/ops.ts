@@ -65,12 +65,14 @@ export const OP = z.discriminatedUnion("op", [
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
     start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
-    view: z.string().optional() }),
+    view: z.string().optional(),
+    sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
     points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
     start: mm.default(0), end: mm.default(1000), end_plane: z.string().optional().describe("a level reference plane to lock the top to"),
-    view: z.string().optional() }),
+    view: z.string().optional(),
+    sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("set_material_param"), name: z.string().min(1).describe("the solid"), param: z.string().min(1) }),
   z.object({ op: z.literal("add_connector"), name: z.string().min(1), domain: z.enum(["electrical", "pipe", "duct"]),
     system: z.string().min(1).describe("e.g. Domestic Cold Water, PowerUnBalanced, SupplyAir"), solid: z.string().min(1),
@@ -91,7 +93,8 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("void_sweep"), ...sweepShape }),
   z.object({ op: z.literal("revolution"), name: z.string().min(1),
     profile: z.array(point).min(3).describe("closed profile as [r, z] in mm: distance from the axis, height"),
-    axis_at: point.default([0, 0]).describe("the vertical axis in plan, mm"),
+    axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm)"),
+    axis: z.enum(["z", "y", "x"]).optional().describe("z (default, vertical); y: faces the viewer, profile [r, depth toward -y]; x: profile [r, depth along +x] (knobs, ports, nozzles, LEDs)"),
     start_deg: z.number().default(0), end_deg: z.number().default(360), subcategory: z.string().optional() }),
   z.object({ op: z.literal("blend"), name: z.string().min(1),
     base: z.array(point).min(3).describe("closed base outline in plan, mm"), top: z.array(point).min(3).describe("closed top outline in plan, mm"),
@@ -154,6 +157,10 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_default_size"), name: z.string().min(1).describe("identity, e.g. Default size"),
     type: z.string().optional().describe("the type to make current (made when missing); default: the template's current type"),
     values: z.record(mm.positive()).describe("Length parameter → mm, e.g. { \"Width\": 900, \"Height\": 2100 }") }),
+  // Owner, 17 Oct: the product picture as Revit's built-in Type Image (Type Properties, schedules, legends).
+  z.object({ op: z.literal("set_type_image"), name: z.string().min(1).describe("identity, e.g. Type image"),
+    path: z.string().min(1).describe("a .png or .jpg in the kit's families folder, e.g. 04_Families\\_Staging\\<Role>\\_Images\\<family>.png"),
+    type: z.string().optional().describe("one type; default: every type") }),
 ]);
 export type Op = z.infer<typeof OP>;
 export const OPS = z.array(OP).min(1).max(500);
@@ -409,6 +416,16 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         }
         if (o.type) types.add(o.type);
         break;
+      case "set_type_image": {
+        const file = o.path.replace(/\//g, "\\");
+        if (!/\.(png|jpe?g)$/i.test(file)) p.push(`${at}: set_type_image takes a .png or .jpg`);
+        if (familiesRoot) {
+          const root = familiesRoot.replace(/\//g, "\\").replace(/\\+$/, "").toLowerCase() + "\\";
+          if (!file.toLowerCase().startsWith(root) || file.includes("..")) p.push(`${at}: ${o.path} isn't inside the kit's families folder (${familiesRoot})`);
+        }
+        if (o.type && !types.has(o.type)) p.push(`${at}: ${mayExist("type", o.type)}`);
+        break;
+      }
       case "set_subcategory":
         if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
         if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);

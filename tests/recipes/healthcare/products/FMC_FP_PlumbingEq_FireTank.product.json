@@ -1,0 +1,516 @@
+{
+ "family": "FMC_FP_PlumbingEq_FireTank",
+ "category": "Plumbing Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Sectional pressed-steel fire water tank, galvanised 1220 mm panels with external flanges, on concrete plinth walls; ladder, handrail, manhole, vent, level gauge, suction outlet, fill, overflow, drain",
+ "ifc": "IfcTank",
+ "keynote": "V.PMP_01",
+ "types": [
+  {
+   "name": "100m3_Sectional"
+  },
+  {
+   "name": "200m3_Sectional"
+  }
+ ],
+ "materials": {
+  "concg": "FMC_Concrete_C30",
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "gi": "FMC_Metal_GI_Pipe",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "red": "FMC_Metal_SprinklerPipe_RedPainted",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "fire tank plumbing equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=fire+tank+plumbing+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Plinth Wall",
+   "shape": "box",
+   "at": [
+    -3110,
+    -3150,
+    0,
+    -2990,
+    3150,
+    600
+   ],
+   "mat": "concg",
+   "repeat": {
+    "n": 6,
+    "d": [
+     1220,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Tank Shell",
+   "shape": "box",
+   "at": [
+    -3050,
+    -3050,
+    600,
+    3050,
+    3050,
+    3650
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Base Flange",
+   "shape": "box",
+   "at": [
+    -3080,
+    -3080,
+    600,
+    3080,
+    3080,
+    640
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Top Flange",
+   "shape": "box",
+   "at": [
+    -3080,
+    -3080,
+    3610,
+    3080,
+    3080,
+    3650
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Panel Flange X",
+   "shape": "box",
+   "at": [
+    -1855,
+    -3080,
+    640,
+    -1805,
+    3080,
+    3610
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 4,
+    "d": [
+     1220,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Panel Flange Y",
+   "shape": "box",
+   "at": [
+    -3080,
+    -1855,
+    640,
+    3080,
+    -1805,
+    3610
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     1220,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Panel Flange Z",
+   "shape": "box",
+   "at": [
+    -3080,
+    -3080,
+    1795,
+    3080,
+    3080,
+    1845
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     1220
+    ]
+   }
+  },
+  {
+   "n": "Roof",
+   "shape": "box",
+   "at": [
+    -3050,
+    -3050,
+    3650,
+    3050,
+    3050,
+    3670
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Manhole Frame",
+   "shape": "box",
+   "at": [
+    1800,
+    1800,
+    3670,
+    2500,
+    2500,
+    3720
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Manhole Lid",
+   "shape": "box",
+   "at": [
+    1780,
+    1780,
+    3720,
+    2520,
+    2520,
+    3735
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Vent Cowl",
+   "shape": "turn",
+   "axis": "z",
+   "c": [
+    -2000,
+    2000
+   ],
+   "profile": [
+    [
+     0,
+     3670
+    ],
+    [
+     60,
+     3670
+    ],
+    [
+     60,
+     3950
+    ],
+    [
+     150,
+     3950
+    ],
+    [
+     150,
+     3990
+    ],
+    [
+     0,
+     4050
+    ]
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Ladder Stringer",
+   "shape": "box",
+   "at": [
+    2300,
+    -3135,
+    0,
+    2340,
+    -3095,
+    3950
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Ladder Rung",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -3115,
+    300
+   ],
+   "r": 12,
+   "x": [
+    2340,
+    2700
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 12,
+    "d": [
+     0,
+     0,
+     300
+    ]
+   }
+  },
+  {
+   "n": "Roof Handrail Post",
+   "shape": "box",
+   "at": [
+    2300,
+    -3050,
+    3670,
+    2340,
+    -3010,
+    4700
+   ],
+   "mat": "galv",
+   "repeat": {
+    "n": 2,
+    "d": [
+     400,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Roof Handrail",
+   "shape": "box",
+   "at": [
+    2300,
+    -3050,
+    4660,
+    2740,
+    -3010,
+    4700
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Level Gauge Tube",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    -2500,
+    -3120
+   ],
+   "r": 20,
+   "z": [
+    700,
+    3600
+   ],
+   "mat": "pc"
+  },
+  {
+   "n": "Level Gauge Board",
+   "shape": "fbox",
+   "at": [
+    -2600,
+    -3105,
+    700,
+    -2400,
+    -3080,
+    3600
+   ],
+   "mat": "white",
+   "lod": "f"
+  },
+  {
+   "n": "Pump Suction Outlet",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -1200,
+    800
+   ],
+   "r": 110,
+   "x": [
+    3050,
+    3600
+   ],
+   "mat": "red"
+  },
+  {
+   "n": "Suction Flange",
+   "shape": "turn",
+   "axis": "x",
+   "c": [
+    -1200,
+    800
+   ],
+   "profile": [
+    [
+     0,
+     3600
+    ],
+    [
+     180,
+     3600
+    ],
+    [
+     180,
+     3625
+    ],
+    [
+     0,
+     3625
+    ]
+   ],
+   "mat": "red"
+  },
+  {
+   "n": "Fill Inlet",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    1200,
+    3300
+   ],
+   "r": 50,
+   "x": [
+    3050,
+    3500
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Overflow",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    0,
+    3420
+   ],
+   "r": 65,
+   "x": [
+    3050,
+    3420
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Overflow Downpipe",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    3420,
+    0
+   ],
+   "r": 65,
+   "z": [
+    700,
+    3420
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Drain",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    2000,
+    720
+   ],
+   "r": 40,
+   "y": [
+    -3050,
+    -3300
+   ],
+   "mat": "gi"
+  },
+  {
+   "n": "Drain Valve",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    2000,
+    720
+   ],
+   "profile": [
+    [
+     0,
+     -3300
+    ],
+    [
+     60,
+     -3300
+    ],
+    [
+     60,
+     -3360
+    ],
+    [
+     0,
+     -3360
+    ]
+   ],
+   "mat": "red"
+  },
+  {
+   "n": "Tank Label",
+   "shape": "fbox",
+   "at": [
+    -1400,
+    -3060,
+    2600,
+    1400,
+    -3052,
+    3000
+   ],
+   "mat": "white",
+   "lod": "f"
+  }
+ ],
+ "values": {
+  "100 m3: 6.1 x 6.1 x 3.05 m (5 x 5 x 2.5 panels)": {
+   "value": "6100x6100x3050",
+   "source_status": "assumed",
+   "source": "1220 mm sectional panels; effective capacity below overflow"
+  },
+  "200 m3: 8.5 x 8.5 x 3.05 m": {
+   "value": "8540x8540x3050",
+   "source_status": "assumed",
+   "source": "1220 mm sectional panels"
+  },
+  "Plinth walls 600 mm at panel centres": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "sectional tank supplier practice"
+  },
+  "Effective capacity to BS EN 12845": {
+   "value": "BS EN 12845",
+   "source_status": "assumed",
+   "source": "fire engineer sizes the store"
+  }
+ },
+ "about": "Fire tank modelled as a generic product: plinth walls under each panel line, galvanised shell with external base, top and panel flanges, roof with manhole and vent cowl, ladder with rungs and roof handrail, level gauge, pump suction outlet with flange, fill inlet, overflow and downpipe, drain and valve, label. Geometry drawn for 100m3_Sectional; the other types share it (sizes in the values).",
+ "connectors": [
+  {
+   "n": "Pump Suction",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "part": "Suction Flange",
+   "side": "right",
+   "diameter": 200,
+   "flow": "Out"
+  }
+ ]
+}

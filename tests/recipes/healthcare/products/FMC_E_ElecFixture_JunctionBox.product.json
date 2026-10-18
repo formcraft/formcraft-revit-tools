@@ -1,0 +1,246 @@
+{
+ "family": "FMC_E_ElecFixture_JunctionBox",
+ "category": "Electrical Fixtures",
+ "template": "Metric Generic Model.rft",
+ "desc": "Adaptable junction box, galvanised steel, screwed lid, 20 mm conduit spouts",
+ "ifc": "IfcJunctionBox",
+ "keynote": "E.CON_02",
+ "types": [
+  {
+   "name": "75x75_Galv",
+   "values": {}
+  },
+  {
+   "name": "100x100_Galv",
+   "values": {}
+  }
+ ],
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 0
+ },
+ "materials": {
+  "galv": "FMC_Metal_ColdFormed_Galvanised",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "conduit": "FMC_Plastic_Conduit_White",
+  "brass": "FMC_Metal_Brass_Polished"
+ },
+ "reference": {
+  "query": "junction box electrical fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=junction+box+electrical+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Box",
+   "shape": "box",
+   "at": [
+    -50,
+    -50,
+    0,
+    50,
+    0,
+    100
+   ],
+   "mat": "galv",
+   "lod": "mf"
+  },
+  {
+   "n": "Lid",
+   "shape": "fbox",
+   "at": [
+    -53,
+    -55,
+    -3,
+    53,
+    -50,
+    103
+   ],
+   "mat": "galv",
+   "lod": "mf",
+   "r": 3
+  },
+  {
+   "n": "Lid Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -44,
+    6
+   ],
+   "r": 3,
+   "y": [
+    -56,
+    -55
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     88,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Lid Screw Top",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -44,
+    94
+   ],
+   "r": 3,
+   "y": [
+    -56,
+    -55
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     88,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Spout Top",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -25
+   ],
+   "r": 12.5,
+   "z": [
+    100,
+    125
+   ],
+   "mat": "galv",
+   "lod": "mf"
+  },
+  {
+   "n": "Spout Bottom",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -25
+   ],
+   "r": 12.5,
+   "z": [
+    -25,
+    0
+   ],
+   "mat": "galv",
+   "lod": "mf"
+  },
+  {
+   "n": "Spout Side",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -25,
+    50
+   ],
+   "r": 12.5,
+   "x": [
+    50,
+    75
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Conduit Stub Top",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -25
+   ],
+   "r": 10,
+   "z": [
+    125,
+    200
+   ],
+   "mat": "conduit",
+   "lod": "f"
+  },
+  {
+   "n": "Conduit Stub Bottom",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -25
+   ],
+   "r": 10,
+   "z": [
+    -100,
+    -25
+   ],
+   "mat": "conduit",
+   "lod": "f"
+  },
+  {
+   "n": "Knockout",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -25,
+    50
+   ],
+   "r": 10,
+   "x": [
+    -51,
+    -50
+   ],
+   "mat": "galv",
+   "lod": "f"
+  },
+  {
+   "n": "Earth Terminal",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    50
+   ],
+   "r": 4,
+   "y": [
+    -2,
+    0
+   ],
+   "mat": "brass",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Box",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "Box 100 x 100 x 50 mm (75 x 75 type smaller)": {
+   "value": "100x100x50",
+   "source_status": "assumed",
+   "source": "BS EN 60670"
+  },
+  "20 mm conduit entries": {
+   "value": 20,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Junction box: galvanised box, lid with four screws, top/bottom/side spouts with conduit stubs, knockout, earth terminal. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open."
+}

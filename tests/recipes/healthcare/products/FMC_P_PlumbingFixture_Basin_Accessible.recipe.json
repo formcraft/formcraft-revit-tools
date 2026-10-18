@@ -1,0 +1,2841 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_P_PlumbingFixture_Basin_Accessible",
+ "template": "Metric Generic Model.rft",
+ "about": "Accessible basin modelled as a generic product: shallow china bowl (rim sectors, floor, slope), tap ledge, long-lever mixer, waste run tight to the wall to keep the knee space clear; approach zone as a clearance. Reference: query: basin accessible plumbing fixtures hospital; images: https://www.google.com/search?tbm=isch&q=basin+accessible+plumbing+fixtures+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Plumbing Fixtures"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Pipe_System",
+   "guid": "19b06c84-7f51-563a-ac4a-ed9b4addfabc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Discharge_Units",
+   "guid": "7aa955c0-3c0f-5f8c-a77b-9124e8d513eb",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_type",
+   "name": "550_Accessible"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Cost_Unit",
+   "type": "550_Accessible",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Geometry_Stage",
+   "type": "550_Accessible",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/IfcExportAs",
+   "type": "550_Accessible",
+   "param": "IfcExportAs",
+   "value": "IfcSanitaryTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/Description",
+   "type": "550_Accessible",
+   "param": "Description",
+   "value": "Accessible wall-hung basin 550 mm, vitreous china, shallow body and wall-tight waste for knee space, long-lever monobloc mixer"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/Keynote",
+   "type": "550_Accessible",
+   "param": "Keynote",
+   "value": "P.BAS_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Keynote_Code",
+   "type": "550_Accessible",
+   "param": "FMC_Keynote_Code",
+   "value": "P.BAS_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Code_Description",
+   "type": "550_Accessible",
+   "param": "FMC_Code_Description",
+   "value": "Basin Accessible: Accessible basin with knee space"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Code_Group",
+   "type": "550_Accessible",
+   "param": "FMC_Code_Group",
+   "value": "P.BAS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "550_Accessible/FMC_Role_Code",
+   "type": "550_Accessible",
+   "param": "FMC_Role_Code",
+   "value": "P"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "China",
+   "color": [
+    255,
+    255,
+    255
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "China Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Ceramic_VitreousChina_White",
+   "param": "China Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Clearance Accessibility",
+   "color": [
+    111,
+    168,
+    220
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -275.0,
+     -460.0
+    ],
+    [
+     275.0,
+     -460.0
+    ],
+    [
+     275.0,
+     0.0
+    ],
+    [
+     -275.0,
+     0.0
+    ]
+   ],
+   "start": 582.0,
+   "end": 930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 1",
+   "points": [
+    [
+     0.0,
+     -460.0
+    ],
+    [
+     139.9,
+     -456.1
+    ],
+    [
+     194.5,
+     -444.4
+    ],
+    [
+     231.2,
+     -424.2
+    ],
+    [
+     153.6,
+     -347.4
+    ],
+    [
+     115.1,
+     -368.1
+    ],
+    [
+     66.5,
+     -380.7
+    ],
+    [
+     0.0,
+     -385.0
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 1",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 1",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 2",
+   "points": [
+    [
+     231.2,
+     -424.2
+    ],
+    [
+     255.9,
+     -394.1
+    ],
+    [
+     270.3,
+     -349.5
+    ],
+    [
+     275.0,
+     -235.0
+    ],
+    [
+     205.0,
+     -235.0
+    ],
+    [
+     199.2,
+     -283.6
+    ],
+    [
+     181.8,
+     -319.2
+    ],
+    [
+     153.6,
+     -347.4
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 2",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 2",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 3",
+   "points": [
+    [
+     275.0,
+     -235.0
+    ],
+    [
+     270.3,
+     -120.5
+    ],
+    [
+     255.9,
+     -75.9
+    ],
+    [
+     231.2,
+     -45.8
+    ],
+    [
+     153.6,
+     -122.6
+    ],
+    [
+     181.8,
+     -150.8
+    ],
+    [
+     199.2,
+     -186.4
+    ],
+    [
+     205.0,
+     -235.0
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 3",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 3",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 3",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 4",
+   "points": [
+    [
+     231.2,
+     -45.8
+    ],
+    [
+     194.5,
+     -25.6
+    ],
+    [
+     139.9,
+     -13.9
+    ],
+    [
+     0.0,
+     -10.0
+    ],
+    [
+     0.0,
+     -85.0
+    ],
+    [
+     66.5,
+     -89.3
+    ],
+    [
+     115.1,
+     -101.9
+    ],
+    [
+     153.6,
+     -122.6
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 4",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 4",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 4",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 5",
+   "points": [
+    [
+     0.0,
+     -10.0
+    ],
+    [
+     -139.9,
+     -13.9
+    ],
+    [
+     -194.5,
+     -25.6
+    ],
+    [
+     -231.2,
+     -45.8
+    ],
+    [
+     -153.6,
+     -122.6
+    ],
+    [
+     -115.1,
+     -101.9
+    ],
+    [
+     -66.5,
+     -89.3
+    ],
+    [
+     0.0,
+     -85.0
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 5",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 5",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 5",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 6",
+   "points": [
+    [
+     -231.2,
+     -45.8
+    ],
+    [
+     -255.9,
+     -75.9
+    ],
+    [
+     -270.3,
+     -120.5
+    ],
+    [
+     -275.0,
+     -235.0
+    ],
+    [
+     -205.0,
+     -235.0
+    ],
+    [
+     -199.2,
+     -186.4
+    ],
+    [
+     -181.8,
+     -150.8
+    ],
+    [
+     -153.6,
+     -122.6
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 6",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 6",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 6",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 7",
+   "points": [
+    [
+     -275.0,
+     -235.0
+    ],
+    [
+     -270.3,
+     -349.5
+    ],
+    [
+     -255.9,
+     -394.1
+    ],
+    [
+     -231.2,
+     -424.2
+    ],
+    [
+     -153.6,
+     -347.4
+    ],
+    [
+     -181.8,
+     -319.2
+    ],
+    [
+     -199.2,
+     -283.6
+    ],
+    [
+     -205.0,
+     -235.0
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 7",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 7",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 7",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Rim 8",
+   "points": [
+    [
+     -231.2,
+     -424.2
+    ],
+    [
+     -194.5,
+     -444.4
+    ],
+    [
+     -139.9,
+     -456.1
+    ],
+    [
+     -0.0,
+     -460.0
+    ],
+    [
+     -0.0,
+     -385.0
+    ],
+    [
+     -66.5,
+     -380.7
+    ],
+    [
+     -115.1,
+     -368.1
+    ],
+    [
+     -153.6,
+     -347.4
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Rim 8",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Rim 8",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Rim 8",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Tap Ledge",
+   "points": [
+    [
+     245.0,
+     -85.0
+    ],
+    [
+     252.65,
+     -83.48
+    ],
+    [
+     259.14,
+     -79.14
+    ],
+    [
+     263.48,
+     -72.65
+    ],
+    [
+     265.0,
+     -65.0
+    ],
+    [
+     265.0,
+     -20.0
+    ],
+    [
+     263.48,
+     -12.35
+    ],
+    [
+     259.14,
+     -5.86
+    ],
+    [
+     252.65,
+     -1.52
+    ],
+    [
+     245.0,
+     0.0
+    ],
+    [
+     -245.0,
+     0.0
+    ],
+    [
+     -252.65,
+     -1.52
+    ],
+    [
+     -259.14,
+     -5.86
+    ],
+    [
+     -263.48,
+     -12.35
+    ],
+    [
+     -265.0,
+     -20.0
+    ],
+    [
+     -265.0,
+     -65.0
+    ],
+    [
+     -263.48,
+     -72.65
+    ],
+    [
+     -259.14,
+     -79.14
+    ],
+    [
+     -252.65,
+     -83.48
+    ],
+    [
+     -245.0,
+     -85.0
+    ]
+   ],
+   "start": 690,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tap Ledge",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tap Ledge",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tap Ledge",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Basin Floor",
+   "points": [
+    [
+     270.0,
+     -235.0
+    ],
+    [
+     266.6,
+     -131.2
+    ],
+    [
+     256.3,
+     -90.1
+    ],
+    [
+     238.7,
+     -61.3
+    ],
+    [
+     213.2,
+     -40.5
+    ],
+    [
+     177.8,
+     -26.2
+    ],
+    [
+     127.4,
+     -17.8
+    ],
+    [
+     0.0,
+     -15.0
+    ],
+    [
+     -127.4,
+     -17.8
+    ],
+    [
+     -177.8,
+     -26.2
+    ],
+    [
+     -213.2,
+     -40.5
+    ],
+    [
+     -238.7,
+     -61.3
+    ],
+    [
+     -256.3,
+     -90.1
+    ],
+    [
+     -266.6,
+     -131.2
+    ],
+    [
+     -270.0,
+     -235.0
+    ],
+    [
+     -266.6,
+     -338.8
+    ],
+    [
+     -256.3,
+     -379.9
+    ],
+    [
+     -238.7,
+     -408.7
+    ],
+    [
+     -213.2,
+     -429.5
+    ],
+    [
+     -177.8,
+     -443.8
+    ],
+    [
+     -127.4,
+     -452.2
+    ],
+    [
+     -0.0,
+     -455.0
+    ],
+    [
+     127.4,
+     -452.2
+    ],
+    [
+     177.8,
+     -443.8
+    ],
+    [
+     213.2,
+     -429.5
+    ],
+    [
+     238.7,
+     -408.7
+    ],
+    [
+     256.3,
+     -379.9
+    ],
+    [
+     266.6,
+     -338.8
+    ]
+   ],
+   "start": 655,
+   "end": 690
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Basin Floor",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Basin Floor",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Basin Floor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Bowl Slope",
+   "profile": [
+    [
+     50,
+     690
+    ],
+    [
+     170,
+     690
+    ],
+    [
+     170,
+     708
+    ],
+    [
+     50,
+     694
+    ]
+   ],
+   "axis_at": [
+    0,
+    -245
+   ],
+   "axis": "z",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bowl Slope",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bowl Slope",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Overflow Slot",
+   "points": [
+    [
+     8.0,
+     735.0
+    ],
+    [
+     7.73,
+     737.07
+    ],
+    [
+     6.93,
+     739.0
+    ],
+    [
+     5.66,
+     740.66
+    ],
+    [
+     4.0,
+     741.93
+    ],
+    [
+     2.07,
+     742.73
+    ],
+    [
+     0.0,
+     743.0
+    ],
+    [
+     -2.07,
+     742.73
+    ],
+    [
+     -4.0,
+     741.93
+    ],
+    [
+     -5.66,
+     740.66
+    ],
+    [
+     -6.93,
+     739.0
+    ],
+    [
+     -7.73,
+     737.07
+    ],
+    [
+     -8.0,
+     735.0
+    ],
+    [
+     -7.73,
+     732.93
+    ],
+    [
+     -6.93,
+     731.0
+    ],
+    [
+     -5.66,
+     729.34
+    ],
+    [
+     -4.0,
+     728.07
+    ],
+    [
+     -2.07,
+     727.27
+    ],
+    [
+     -0.0,
+     727.0
+    ],
+    [
+     2.07,
+     727.27
+    ],
+    [
+     4.0,
+     728.07
+    ],
+    [
+     5.66,
+     729.34
+    ],
+    [
+     6.93,
+     731.0
+    ],
+    [
+     7.73,
+     732.93
+    ]
+   ],
+   "start": 383,
+   "end": 387,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Overflow Slot",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Overflow Slot",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Overflow Slot",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Tail",
+   "points": [
+    [
+     18.0,
+     -235.0
+    ],
+    [
+     17.39,
+     -230.34
+    ],
+    [
+     15.59,
+     -226.0
+    ],
+    [
+     12.73,
+     -222.27
+    ],
+    [
+     9.0,
+     -219.41
+    ],
+    [
+     4.66,
+     -217.61
+    ],
+    [
+     0.0,
+     -217.0
+    ],
+    [
+     -4.66,
+     -217.61
+    ],
+    [
+     -9.0,
+     -219.41
+    ],
+    [
+     -12.73,
+     -222.27
+    ],
+    [
+     -15.59,
+     -226.0
+    ],
+    [
+     -17.39,
+     -230.34
+    ],
+    [
+     -18.0,
+     -235.0
+    ],
+    [
+     -17.39,
+     -239.66
+    ],
+    [
+     -15.59,
+     -244.0
+    ],
+    [
+     -12.73,
+     -247.73
+    ],
+    [
+     -9.0,
+     -250.59
+    ],
+    [
+     -4.66,
+     -252.39
+    ],
+    [
+     -0.0,
+     -253.0
+    ],
+    [
+     4.66,
+     -252.39
+    ],
+    [
+     9.0,
+     -250.59
+    ],
+    [
+     12.73,
+     -247.73
+    ],
+    [
+     15.59,
+     -244.0
+    ],
+    [
+     17.39,
+     -239.66
+    ]
+   ],
+   "start": 590,
+   "end": 655
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Tail",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Tail",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Tail",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Arm",
+   "points": [
+    [
+     18.0,
+     600.0
+    ],
+    [
+     17.39,
+     604.66
+    ],
+    [
+     15.59,
+     609.0
+    ],
+    [
+     12.73,
+     612.73
+    ],
+    [
+     9.0,
+     615.59
+    ],
+    [
+     4.66,
+     617.39
+    ],
+    [
+     0.0,
+     618.0
+    ],
+    [
+     -4.66,
+     617.39
+    ],
+    [
+     -9.0,
+     615.59
+    ],
+    [
+     -12.73,
+     612.73
+    ],
+    [
+     -15.59,
+     609.0
+    ],
+    [
+     -17.39,
+     604.66
+    ],
+    [
+     -18.0,
+     600.0
+    ],
+    [
+     -17.39,
+     595.34
+    ],
+    [
+     -15.59,
+     591.0
+    ],
+    [
+     -12.73,
+     587.27
+    ],
+    [
+     -9.0,
+     584.41
+    ],
+    [
+     -4.66,
+     582.61
+    ],
+    [
+     -0.0,
+     582.0
+    ],
+    [
+     4.66,
+     582.61
+    ],
+    [
+     9.0,
+     584.41
+    ],
+    [
+     12.73,
+     587.27
+    ],
+    [
+     15.59,
+     591.0
+    ],
+    [
+     17.39,
+     595.34
+    ]
+   ],
+   "start": 0,
+   "end": 235,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Arm",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Arm",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Flange",
+   "points": [
+    [
+     190.0,
+     660.0
+    ],
+    [
+     193.83,
+     660.76
+    ],
+    [
+     197.07,
+     662.93
+    ],
+    [
+     199.24,
+     666.17
+    ],
+    [
+     200.0,
+     670.0
+    ],
+    [
+     200.0,
+     690.0
+    ],
+    [
+     199.24,
+     693.83
+    ],
+    [
+     197.07,
+     697.07
+    ],
+    [
+     193.83,
+     699.24
+    ],
+    [
+     190.0,
+     700.0
+    ],
+    [
+     -190.0,
+     700.0
+    ],
+    [
+     -193.83,
+     699.24
+    ],
+    [
+     -197.07,
+     697.07
+    ],
+    [
+     -199.24,
+     693.83
+    ],
+    [
+     -200.0,
+     690.0
+    ],
+    [
+     -200.0,
+     670.0
+    ],
+    [
+     -199.24,
+     666.17
+    ],
+    [
+     -197.07,
+     662.93
+    ],
+    [
+     -193.83,
+     660.76
+    ],
+    [
+     -190.0,
+     660.0
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Flange",
+   "subcategory": "China"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Flange",
+   "param": "China Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Flange",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Supply Tails",
+   "points": [
+    [
+     9.0,
+     740.0
+    ],
+    [
+     8.69,
+     742.33
+    ],
+    [
+     7.79,
+     744.5
+    ],
+    [
+     6.36,
+     746.36
+    ],
+    [
+     4.5,
+     747.79
+    ],
+    [
+     2.33,
+     748.69
+    ],
+    [
+     0.0,
+     749.0
+    ],
+    [
+     -2.33,
+     748.69
+    ],
+    [
+     -4.5,
+     747.79
+    ],
+    [
+     -6.36,
+     746.36
+    ],
+    [
+     -7.79,
+     744.5
+    ],
+    [
+     -8.69,
+     742.33
+    ],
+    [
+     -9.0,
+     740.0
+    ],
+    [
+     -8.69,
+     737.67
+    ],
+    [
+     -7.79,
+     735.5
+    ],
+    [
+     -6.36,
+     733.64
+    ],
+    [
+     -4.5,
+     732.21
+    ],
+    [
+     -2.33,
+     731.31
+    ],
+    [
+     -0.0,
+     731.0
+    ],
+    [
+     2.33,
+     731.31
+    ],
+    [
+     4.5,
+     732.21
+    ],
+    [
+     6.36,
+     733.64
+    ],
+    [
+     7.79,
+     735.5
+    ],
+    [
+     8.69,
+     737.67
+    ]
+   ],
+   "start": 0,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Supply Tails",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Supply Tails",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Supply Tails",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Waste Plug",
+   "points": [
+    [
+     24.0,
+     -245.0
+    ],
+    [
+     23.18,
+     -238.79
+    ],
+    [
+     20.78,
+     -233.0
+    ],
+    [
+     16.97,
+     -228.03
+    ],
+    [
+     12.0,
+     -224.22
+    ],
+    [
+     6.21,
+     -221.82
+    ],
+    [
+     0.0,
+     -221.0
+    ],
+    [
+     -6.21,
+     -221.82
+    ],
+    [
+     -12.0,
+     -224.22
+    ],
+    [
+     -16.97,
+     -228.03
+    ],
+    [
+     -20.78,
+     -233.0
+    ],
+    [
+     -23.18,
+     -238.79
+    ],
+    [
+     -24.0,
+     -245.0
+    ],
+    [
+     -23.18,
+     -251.21
+    ],
+    [
+     -20.78,
+     -257.0
+    ],
+    [
+     -16.97,
+     -261.97
+    ],
+    [
+     -12.0,
+     -265.78
+    ],
+    [
+     -6.21,
+     -268.18
+    ],
+    [
+     -0.0,
+     -269.0
+    ],
+    [
+     6.21,
+     -268.18
+    ],
+    [
+     12.0,
+     -265.78
+    ],
+    [
+     16.97,
+     -261.97
+    ],
+    [
+     20.78,
+     -257.0
+    ],
+    [
+     23.18,
+     -251.21
+    ]
+   ],
+   "start": 690,
+   "end": 692
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Waste Plug",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Plug",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Plug",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Waste Grid",
+   "profile": [
+    [
+     8.399999999999999,
+     692
+    ],
+    [
+     10.8,
+     692
+    ],
+    [
+     10.8,
+     693
+    ],
+    [
+     8.399999999999999,
+     693
+    ]
+   ],
+   "axis_at": [
+    0,
+    -245
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Waste Grid",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Waste Grid",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "void_extrusion",
+   "name": "Waste Hole",
+   "points": [
+    [
+     19.2,
+     -245.0
+    ],
+    [
+     18.55,
+     -240.03
+    ],
+    [
+     16.63,
+     -235.4
+    ],
+    [
+     13.58,
+     -231.42
+    ],
+    [
+     9.6,
+     -228.37
+    ],
+    [
+     4.97,
+     -226.45
+    ],
+    [
+     0.0,
+     -225.8
+    ],
+    [
+     -4.97,
+     -226.45
+    ],
+    [
+     -9.6,
+     -228.37
+    ],
+    [
+     -13.58,
+     -231.42
+    ],
+    [
+     -16.63,
+     -235.4
+    ],
+    [
+     -18.55,
+     -240.03
+    ],
+    [
+     -19.2,
+     -245.0
+    ],
+    [
+     -18.55,
+     -249.97
+    ],
+    [
+     -16.63,
+     -254.6
+    ],
+    [
+     -13.58,
+     -258.58
+    ],
+    [
+     -9.6,
+     -261.63
+    ],
+    [
+     -4.97,
+     -263.55
+    ],
+    [
+     -0.0,
+     -264.2
+    ],
+    [
+     4.97,
+     -263.55
+    ],
+    [
+     9.6,
+     -261.63
+    ],
+    [
+     13.58,
+     -258.58
+    ],
+    [
+     16.63,
+     -254.6
+    ],
+    [
+     18.55,
+     -249.97
+    ]
+   ],
+   "start": 660,
+   "end": 691
+  },
+  {
+   "op": "revolution",
+   "name": "Mixer Base",
+   "profile": [
+    [
+     0,
+     760
+    ],
+    [
+     28,
+     760
+    ],
+    [
+     26,
+     768
+    ],
+    [
+     0,
+     768
+    ]
+   ],
+   "axis_at": [
+    0,
+    -45
+   ],
+   "axis": "z",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Base",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Base",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Body",
+   "points": [
+    [
+     22.0,
+     -45.0
+    ],
+    [
+     21.25,
+     -39.31
+    ],
+    [
+     19.05,
+     -34.0
+    ],
+    [
+     15.56,
+     -29.44
+    ],
+    [
+     11.0,
+     -25.95
+    ],
+    [
+     5.69,
+     -23.75
+    ],
+    [
+     0.0,
+     -23.0
+    ],
+    [
+     -5.69,
+     -23.75
+    ],
+    [
+     -11.0,
+     -25.95
+    ],
+    [
+     -15.56,
+     -29.44
+    ],
+    [
+     -19.05,
+     -34.0
+    ],
+    [
+     -21.25,
+     -39.31
+    ],
+    [
+     -22.0,
+     -45.0
+    ],
+    [
+     -21.25,
+     -50.69
+    ],
+    [
+     -19.05,
+     -56.0
+    ],
+    [
+     -15.56,
+     -60.56
+    ],
+    [
+     -11.0,
+     -64.05
+    ],
+    [
+     -5.69,
+     -66.25
+    ],
+    [
+     -0.0,
+     -67.0
+    ],
+    [
+     5.69,
+     -66.25
+    ],
+    [
+     11.0,
+     -64.05
+    ],
+    [
+     15.56,
+     -60.56
+    ],
+    [
+     19.05,
+     -56.0
+    ],
+    [
+     21.25,
+     -50.69
+    ]
+   ],
+   "start": 768,
+   "end": 930
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Body",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Body",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Spout",
+   "points": [
+    [
+     11.0,
+     918.0
+    ],
+    [
+     10.63,
+     920.85
+    ],
+    [
+     9.53,
+     923.5
+    ],
+    [
+     7.78,
+     925.78
+    ],
+    [
+     5.5,
+     927.53
+    ],
+    [
+     2.85,
+     928.63
+    ],
+    [
+     0.0,
+     929.0
+    ],
+    [
+     -2.85,
+     928.63
+    ],
+    [
+     -5.5,
+     927.53
+    ],
+    [
+     -7.78,
+     925.78
+    ],
+    [
+     -9.53,
+     923.5
+    ],
+    [
+     -10.63,
+     920.85
+    ],
+    [
+     -11.0,
+     918.0
+    ],
+    [
+     -10.63,
+     915.15
+    ],
+    [
+     -9.53,
+     912.5
+    ],
+    [
+     -7.78,
+     910.22
+    ],
+    [
+     -5.5,
+     908.47
+    ],
+    [
+     -2.85,
+     907.37
+    ],
+    [
+     -0.0,
+     907.0
+    ],
+    [
+     2.85,
+     907.37
+    ],
+    [
+     5.5,
+     908.47
+    ],
+    [
+     7.78,
+     910.22
+    ],
+    [
+     9.53,
+     912.5
+    ],
+    [
+     10.63,
+     915.15
+    ]
+   ],
+   "start": 45,
+   "end": 185,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Spout",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Spout",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Spout",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Nozzle",
+   "points": [
+    [
+     12.0,
+     -177.0
+    ],
+    [
+     11.59,
+     -173.89
+    ],
+    [
+     10.39,
+     -171.0
+    ],
+    [
+     8.49,
+     -168.51
+    ],
+    [
+     6.0,
+     -166.61
+    ],
+    [
+     3.11,
+     -165.41
+    ],
+    [
+     0.0,
+     -165.0
+    ],
+    [
+     -3.11,
+     -165.41
+    ],
+    [
+     -6.0,
+     -166.61
+    ],
+    [
+     -8.49,
+     -168.51
+    ],
+    [
+     -10.39,
+     -171.0
+    ],
+    [
+     -11.59,
+     -173.89
+    ],
+    [
+     -12.0,
+     -177.0
+    ],
+    [
+     -11.59,
+     -180.11
+    ],
+    [
+     -10.39,
+     -183.0
+    ],
+    [
+     -8.49,
+     -185.49
+    ],
+    [
+     -6.0,
+     -187.39
+    ],
+    [
+     -3.11,
+     -188.59
+    ],
+    [
+     -0.0,
+     -189.0
+    ],
+    [
+     3.11,
+     -188.59
+    ],
+    [
+     6.0,
+     -187.39
+    ],
+    [
+     8.49,
+     -185.49
+    ],
+    [
+     10.39,
+     -183.0
+    ],
+    [
+     11.59,
+     -180.11
+    ]
+   ],
+   "start": 870,
+   "end": 928
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Nozzle",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Nozzle",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Nozzle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Mixer Aerator",
+   "profile": [
+    [
+     0,
+     864
+    ],
+    [
+     10,
+     864
+    ],
+    [
+     12,
+     870
+    ],
+    [
+     0,
+     870
+    ]
+   ],
+   "axis_at": [
+    0,
+    -177
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Aerator",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Aerator",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Lever Hub",
+   "points": [
+    [
+     -31.0,
+     880.0
+    ],
+    [
+     -31.48,
+     883.62
+    ],
+    [
+     -32.88,
+     887.0
+    ],
+    [
+     -35.1,
+     889.9
+    ],
+    [
+     -38.0,
+     892.12
+    ],
+    [
+     -41.38,
+     893.52
+    ],
+    [
+     -45.0,
+     894.0
+    ],
+    [
+     -48.62,
+     893.52
+    ],
+    [
+     -52.0,
+     892.12
+    ],
+    [
+     -54.9,
+     889.9
+    ],
+    [
+     -57.12,
+     887.0
+    ],
+    [
+     -58.52,
+     883.62
+    ],
+    [
+     -59.0,
+     880.0
+    ],
+    [
+     -58.52,
+     876.38
+    ],
+    [
+     -57.12,
+     873.0
+    ],
+    [
+     -54.9,
+     870.1
+    ],
+    [
+     -52.0,
+     867.88
+    ],
+    [
+     -48.62,
+     866.48
+    ],
+    [
+     -45.0,
+     866.0
+    ],
+    [
+     -41.38,
+     866.48
+    ],
+    [
+     -38.0,
+     867.88
+    ],
+    [
+     -35.1,
+     870.1
+    ],
+    [
+     -32.88,
+     873.0
+    ],
+    [
+     -31.48,
+     876.38
+    ]
+   ],
+   "start": 20,
+   "end": 38,
+   "sketch": "right"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Lever Hub",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Lever Hub",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Lever Hub",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Mixer Lever",
+   "points": [
+    [
+     196.0,
+     -53.0
+    ],
+    [
+     197.53,
+     -52.7
+    ],
+    [
+     198.83,
+     -51.83
+    ],
+    [
+     199.7,
+     -50.53
+    ],
+    [
+     200.0,
+     -49.0
+    ],
+    [
+     200.0,
+     -41.0
+    ],
+    [
+     199.7,
+     -39.47
+    ],
+    [
+     198.83,
+     -38.17
+    ],
+    [
+     197.53,
+     -37.3
+    ],
+    [
+     196.0,
+     -37.0
+    ],
+    [
+     34.0,
+     -37.0
+    ],
+    [
+     32.47,
+     -37.3
+    ],
+    [
+     31.17,
+     -38.17
+    ],
+    [
+     30.3,
+     -39.47
+    ],
+    [
+     30.0,
+     -41.0
+    ],
+    [
+     30.0,
+     -49.0
+    ],
+    [
+     30.3,
+     -50.53
+    ],
+    [
+     31.17,
+     -51.83
+    ],
+    [
+     32.47,
+     -52.7
+    ],
+    [
+     34.0,
+     -53.0
+    ]
+   ],
+   "start": 874,
+   "end": 886
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Mixer Lever",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Mixer Lever",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Mixer Lever",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Approach Zone",
+   "points": [
+    [
+     -450,
+     -1550
+    ],
+    [
+     450,
+     -1550
+    ],
+    [
+     450,
+     -450
+    ],
+    [
+     -450,
+     -450
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Approach Zone",
+   "subcategory": "Clearance Accessibility"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Approach Zone",
+   "coarse": true,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "solid": "Supply Tails",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "HW",
+   "domain": "pipe",
+   "system": "DomesticHotWater",
+   "solid": "Mixer Body",
+   "side": "bottom",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "op": "add_connector",
+   "name": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "solid": "Waste Arm",
+   "side": "back",
+   "diameter": 40,
+   "flow": "Out"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\P\\_Images\\FMC_P_PlumbingFixture_Basin_Accessible.png"
+  }
+ ],
+ "values": {
+  "Width 550 mm, projection 450 mm": {
+   "value": "550x450",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Rim height 760 mm": {
+   "value": 760,
+   "source_status": "assumed",
+   "source": "BS 8300-2 basin rim 720-760 mm"
+  },
+  "Knee space under rim 600 mm min": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "BS 8300-2"
+  }
+ }
+}

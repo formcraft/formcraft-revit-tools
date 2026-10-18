@@ -1,0 +1,312 @@
+{
+ "family": "FMC_P_PlumbingFixture_Macerator_Pulp",
+ "category": "Plumbing Fixtures",
+ "desc": "Pulp macerator, floor-standing 500 x 560 x 1050 mm, white, hinged lid with handle and foot pedal, program console, 110 mm outlet",
+ "ifc": "IfcSanitaryTerminal",
+ "keynote": "P.SLU_00",
+ "types": [
+  {
+   "name": "500_Floor"
+  }
+ ],
+ "materials": {
+  "white": "FMC_Plastic_ABS_White",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "medical_grey": "FMC_Plastic_ABS_MedicalGrey",
+  "blue": "FMC_Plastic_ABS_Blue",
+  "led_green": "FMC_Plastic_LED_Green",
+  "led_red": "FMC_Plastic_LED_Red",
+  "chrome": "FMC_Metal_Chrome_Polished"
+ },
+ "reference": {
+  "query": "macerator pulp plumbing fixtures hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=macerator+pulp+plumbing+fixtures+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -250,
+    -560,
+    80,
+    250,
+    0,
+    900
+   ],
+   "mat": "white",
+   "r": 60
+  },
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -235,
+    -540,
+    0,
+    235,
+    -20,
+    80
+   ],
+   "mat": "grey",
+   "r": 40
+  },
+  {
+   "n": "Lid",
+   "shape": "right",
+   "pts": [
+    [
+     -555,
+     900
+    ],
+    [
+     -140,
+     940
+    ],
+    [
+     -140,
+     975
+    ],
+    [
+     -555,
+     930
+    ]
+   ],
+   "x": [
+    -245,
+    245
+   ],
+   "mat": "medical_grey"
+  },
+  {
+   "n": "Lid Handle",
+   "shape": "fbox",
+   "at": [
+    -120,
+    -580,
+    900,
+    120,
+    -555,
+    935
+   ],
+   "mat": "grey",
+   "r": 8
+  },
+  {
+   "n": "Console",
+   "shape": "box",
+   "at": [
+    -250,
+    -140,
+    900,
+    250,
+    0,
+    1050
+   ],
+   "mat": "white",
+   "r": 30
+  },
+  {
+   "n": "Program Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -100,
+    1000
+   ],
+   "r": 16,
+   "y": [
+    -146,
+    -140
+   ],
+   "mat": "blue",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     100,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Ready LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -100,
+    950
+   ],
+   "r": 6,
+   "y": [
+    -145,
+    -140
+   ],
+   "mat": "led_green",
+   "lod": "f"
+  },
+  {
+   "n": "Fault LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    950
+   ],
+   "r": 6,
+   "y": [
+    -145,
+    -140
+   ],
+   "mat": "led_red",
+   "lod": "f"
+  },
+  {
+   "n": "Lid Seal",
+   "shape": "fbox",
+   "at": [
+    -240,
+    -562,
+    880,
+    240,
+    -560,
+    895
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Front Panel",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -566,
+    200,
+    200,
+    -560,
+    780
+   ],
+   "mat": "white",
+   "r": 20
+  },
+  {
+   "n": "Vent Slot",
+   "shape": "fbox",
+   "at": [
+    -140,
+    -568,
+    250,
+    140,
+    -566,
+    258
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     22
+    ]
+   }
+  },
+  {
+   "n": "Foot Pedal",
+   "shape": "box",
+   "at": [
+    -90,
+    -660,
+    10,
+    90,
+    -540,
+    50
+   ],
+   "mat": "grey",
+   "r": 10
+  },
+  {
+   "n": "Outlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    150
+   ],
+   "r": 55,
+   "y": [
+    -80,
+    0
+   ],
+   "mat": "grey"
+  },
+  {
+   "n": "Supply Inlet",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    180,
+    1000
+   ],
+   "r": 8,
+   "y": [
+    -20,
+    0
+   ],
+   "mat": "chrome",
+   "lod": "f"
+  }
+ ],
+ "connectors": [
+  {
+   "n": "CW",
+   "domain": "pipe",
+   "system": "DomesticColdWater",
+   "part": "Supply Inlet",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  },
+  {
+   "n": "Waste",
+   "domain": "pipe",
+   "system": "Sanitary",
+   "part": "Outlet",
+   "side": "back",
+   "diameter": 110,
+   "flow": "Out"
+  },
+  {
+   "n": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Console",
+   "side": "back"
+  }
+ ],
+ "values": {
+  "500 x 560 x 1050 mm": {
+   "value": "500x560x1050",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Power 1.1 kW, 240 V": {
+   "value": 1100,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Outlet 110 mm": {
+   "value": 110,
+   "source_status": "assumed",
+   "source": "HBN 00-09 disposal hold"
+  }
+ },
+ "about": "Macerator modelled as a generic product: rounded body, plinth, sloped lid with handle and seal, foot pedal, console with buttons and LEDs, front panel with vents, outlet and inlet.",
+ "template": "Metric Generic Model.rft",
+ "type_values": {
+  "Voltage": 240,
+  "Apparent Load": 1100
+ }
+}

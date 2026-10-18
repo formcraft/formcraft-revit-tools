@@ -1,0 +1,233 @@
+{
+ "family": "FMC_FP_FireAlarm_DoorHolder_Magnetic",
+ "category": "Fire Alarm Devices",
+ "template": "Metric Generic Model.rft",
+ "desc": "Electromagnetic door holder, wall mounted, 24 V dc, 50 kg holding force, with release button; door keeper plate supplied with the door",
+ "ifc": "IfcAlarm",
+ "keynote": "V.FAL_06",
+ "types": [
+  {
+   "name": "Wall_Magnetic"
+  }
+ ],
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "ledg": "FMC_Plastic_LED_Green",
+  "ledr": "FMC_Plastic_LED_Red",
+  "ss": "FMC_Metal_StainlessSteel_Brushed",
+  "white": "FMC_Plastic_ABS_White"
+ },
+ "reference": {
+  "query": "door holder magnetic fire alarm devices hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=door+holder+magnetic+fire+alarm+devices+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Back Plate",
+   "shape": "fbox",
+   "at": [
+    -50,
+    -8,
+    -80,
+    50,
+    0,
+    65
+   ],
+   "r": 8,
+   "mat": "grey"
+  },
+  {
+   "n": "Housing",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -8
+    ],
+    [
+     42,
+     -8
+    ],
+    [
+     42,
+     -42
+    ],
+    [
+     38,
+     -48
+    ],
+    [
+     0,
+     -48
+    ]
+   ],
+   "mat": "white"
+  },
+  {
+   "n": "Magnet Face",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -48
+    ],
+    [
+     34,
+     -48
+    ],
+    [
+     34,
+     -54
+    ],
+    [
+     0,
+     -54
+    ]
+   ],
+   "mat": "ss"
+  },
+  {
+   "n": "Coil Ring",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     10,
+     -54
+    ],
+    [
+     15,
+     -54
+    ],
+    [
+     15,
+     -55.5
+    ],
+    [
+     10,
+     -55.5
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Release Button",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    0,
+    -62
+   ],
+   "r": 7,
+   "y": [
+    -8,
+    -15
+   ],
+   "mat": "ledr"
+  },
+  {
+   "n": "Status LED",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    36,
+    52
+   ],
+   "r": 3,
+   "y": [
+    -8,
+    -10
+   ],
+   "mat": "ledg",
+   "lod": "f"
+  },
+  {
+   "n": "Cable Entry",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    -4
+   ],
+   "r": 6,
+   "z": [
+    65,
+    75
+   ],
+   "mat": "grey",
+   "lod": "f"
+  },
+  {
+   "n": "Fixing Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -38,
+    52
+   ],
+   "r": 3,
+   "y": [
+    -8,
+    -10
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     76,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "values": {
+  "Holding force 50 kg": {
+   "value": "50kg",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "24 V dc, 40 mA": {
+   "value": "24V dc",
+   "source_status": "assumed",
+   "source": "BS EN 1155 hold-open device"
+  },
+  "Height 1800 to 1950 mm behind the door": {
+   "value": 1900,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Door holder modelled as a generic product: back plate, round housing, stainless magnet face with coil ring, red release button, status LED, cable entry, screws; released by the fire alarm.",
+ "type_values": {
+  "Default Elevation": 1900
+ },
+ "connectors": [
+  {
+   "n": "Fire Alarm",
+   "domain": "electrical",
+   "system": "FireAlarm",
+   "part": "Back Plate",
+   "side": "back"
+  }
+ ]
+}

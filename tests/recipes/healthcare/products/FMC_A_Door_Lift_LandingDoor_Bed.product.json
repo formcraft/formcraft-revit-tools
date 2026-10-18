@@ -1,0 +1,260 @@
+{
+ "family": "FMC_A_Door_Lift_LandingDoor_Bed",
+ "category": "Doors",
+ "template": "Metric Door.rft",
+ "desc": "Bed-lift landing door: two-panel telescopic stainless doors, stainless landing frame and header, aluminium landing sill, door hanger, hall lantern with position indicator, call station",
+ "ifc": "IfcDoor",
+ "keynote": "D.ACP_00",
+ "types": [
+  {
+   "name": "1400x2100_BedLift",
+   "values": {
+    "Width": 1400.0,
+    "Height": 2100.0
+   }
+  }
+ ],
+ "materials": {
+  "stainless": "FMC_Metal_StainlessSteel_Brushed",
+  "aluminium": "FMC_Metal_Aluminium_Anodised_Silver",
+  "black": "FMC_Plastic_ABS_Black",
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "seal": "FMC_Rubber_Black",
+  "led_green": "FMC_Plastic_LED_Green",
+  "led_red": "FMC_Plastic_LED_Red",
+  "sign_blue": "FMC_Plastic_ABS_Blue"
+ },
+ "parts": [
+  {
+   "n": "Landing Frame Jamb",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -800.0,
+    -115,
+    0,
+    -700.0,
+    -60,
+    2100
+   ],
+   "repeat": {
+    "n": 2,
+    "d": [
+     1500,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Landing Frame Header",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -800.0,
+    -115,
+    2100,
+    800.0,
+    -60,
+    2260
+   ]
+  },
+  {
+   "n": "Landing Sill",
+   "shape": "box",
+   "mat": "aluminium",
+   "at": [
+    -760.0,
+    -120,
+    -0.1,
+    760.0,
+    40,
+    2
+   ]
+  },
+  {
+   "n": "Sill Groove",
+   "shape": "box",
+   "mat": "black",
+   "at": [
+    -740.0,
+    -85,
+    2,
+    740.0,
+    -75,
+    2.5
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Door Hanger Header",
+   "shape": "box",
+   "mat": "steel",
+   "at": [
+    -780.0,
+    20,
+    2120,
+    1520.0,
+    120,
+    2320
+   ]
+  },
+  {
+   "n": "Fast Panel",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -715.0,
+    -50,
+    5,
+    15.0,
+    -20,
+    2115
+   ],
+   "r": 3
+  },
+  {
+   "n": "Slow Panel",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    -15.0,
+    -15,
+    5,
+    715.0,
+    15,
+    2115
+   ],
+   "r": 3
+  },
+  {
+   "n": "Panel Meeting Edge",
+   "shape": "box",
+   "mat": "seal",
+   "at": [
+    11.0,
+    -50,
+    5,
+    15.0,
+    -20,
+    2115
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Call Station Plate",
+   "shape": "fbox",
+   "mat": "stainless",
+   "at": [
+    880.0,
+    -103,
+    950,
+    980.0,
+    -100,
+    1200
+   ],
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "Call Button Up",
+   "shape": "cyl",
+   "mat": "led_green",
+   "c": [
+    930.0,
+    1130
+   ],
+   "y": [
+    -110,
+    -103
+   ],
+   "r": 18,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Call Button Down",
+   "shape": "cyl",
+   "mat": "stainless",
+   "c": [
+    930.0,
+    1030
+   ],
+   "y": [
+    -110,
+    -103
+   ],
+   "r": 18,
+   "lod": "f",
+   "axis": "y",
+   "seg": 24
+  },
+  {
+   "n": "Hall Lantern",
+   "shape": "fbox",
+   "mat": "black",
+   "at": [
+    -200,
+    -122,
+    2130,
+    200,
+    -115,
+    2230
+   ],
+   "lod": "f",
+   "r": 8
+  },
+  {
+   "n": "Position Indicator Digits",
+   "shape": "fbox",
+   "mat": "led_red",
+   "at": [
+    -60,
+    -123,
+    2150,
+    60,
+    -122,
+    2210
+   ],
+   "lod": "f"
+  },
+  {
+   "n": "Bed Lift Sign",
+   "shape": "fbox",
+   "mat": "sign_blue",
+   "at": [
+    -785.0,
+    -116,
+    1500,
+    -715.0,
+    -115,
+    1650
+   ],
+   "lod": "f"
+  }
+ ],
+ "reference": {
+  "query": "door lift landing door bed doors hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=door+lift+landing+door+bed+doors+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "values": {
+  "Opening 1400 x 2100 mm": {
+   "value": "1400x2100",
+   "source_status": "assumed",
+   "source": "clear landing opening, type 1; HTM 08-02 bed lifts / EN 81-20"
+  },
+  "Telescopic 2-panel side opening": {
+   "value": "2-panel",
+   "source_status": "assumed",
+   "source": "typical bed lift"
+  },
+  "Fire-rated landing door E120": {
+   "value": "E120",
+   "source_status": "assumed",
+   "source": "EN 81-58, lift supplier confirms"
+  }
+ },
+ "about": "Landing door modelled as a product (alternative to the one nested in the lift): stainless frame jambs and header on the landing face, aluminium landing sill with groove, hanger header on the shaft side (+y), fast and slow telescopic panels, meeting edge, call station with up and down buttons, hall lantern with digits, bed-lift sign. Geometry drawn at the first type's size; brand, model and supplier open for review."
+}

@@ -1,0 +1,556 @@
+{
+ "family": "FMC_E_EQ_ATS_Panel",
+ "category": "Electrical Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Automatic transfer switch panel, mains/generator changeover, floor standing 800 x 600 x 2000, controller and mimic",
+ "ifc": "IfcSwitchingDevice",
+ "keynote": "E.DBD_09",
+ "types": [
+  {
+   "name": "400A_4P",
+   "values": {
+    "Apparent Load": 287000
+   }
+  },
+  {
+   "name": "630A_4P",
+   "values": {
+    "Apparent Load": 453000
+   }
+  }
+ ],
+ "type_values": {
+  "Voltage": 415,
+  "Apparent Load": 287000,
+  "Number of Poles": 3
+ },
+ "materials": {
+  "steel": "FMC_Metal_SteelLTZ_Painted",
+  "epw": "FMC_Metal_Steel_EpoxyCoated_White",
+  "black": "FMC_Plastic_ABS_Black",
+  "screen": "FMC_Plastic_ABS_Black",
+  "grey": "FMC_Plastic_ABS_Grey",
+  "green": "FMC_Plastic_LED_Green",
+  "yellow": "FMC_Plastic_ABS_Yellow",
+  "red": "FMC_Plastic_LED_Red",
+  "redabs": "FMC_Plastic_FireHoseReel_Red",
+  "pc": "FMC_Plastic_Polycarbonate_Clear",
+  "chrome": "FMC_Metal_Chrome_Polished"
+ },
+ "reference": {
+  "query": "ats panel electrical equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=ats+panel+electrical+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Plinth",
+   "shape": "box",
+   "at": [
+    -400,
+    -600,
+    0,
+    400,
+    0,
+    100
+   ],
+   "mat": "steel",
+   "lod": "mf"
+  },
+  {
+   "n": "Body",
+   "shape": "box",
+   "at": [
+    -400,
+    -590,
+    100,
+    400,
+    0,
+    2000
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Top Cover",
+   "shape": "box",
+   "at": [
+    -410,
+    -600,
+    2000,
+    410,
+    10,
+    2030
+   ],
+   "mat": "epw",
+   "lod": "mf"
+  },
+  {
+   "n": "Control Door",
+   "shape": "fbox",
+   "at": [
+    -395,
+    -600,
+    1210,
+    395,
+    -590,
+    1990
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Switch Door",
+   "shape": "fbox",
+   "at": [
+    -395,
+    -600,
+    110,
+    395,
+    -590,
+    1200
+   ],
+   "mat": "epw",
+   "lod": "mf",
+   "r": 4
+  },
+  {
+   "n": "Controller Bezel",
+   "shape": "fbox",
+   "at": [
+    -230,
+    -603,
+    1560,
+    30,
+    -600,
+    1800
+   ],
+   "mat": "black",
+   "lod": "mf",
+   "r": 6
+  },
+  {
+   "n": "Controller Display",
+   "shape": "fbox",
+   "at": [
+    -205,
+    -605,
+    1640,
+    5,
+    -603,
+    1780
+   ],
+   "mat": "screen",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Controller Key",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -195,
+    1590
+   ],
+   "r": 8,
+   "y": [
+    -609,
+    -603
+   ],
+   "mat": "grey",
+   "lod": "f",
+   "repeat": {
+    "n": 6,
+    "d": [
+     38,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Mimic Source A",
+   "shape": "fbox",
+   "at": [
+    130,
+    -601,
+    1840,
+    140,
+    -600,
+    1930
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Mimic Source B",
+   "shape": "fbox",
+   "at": [
+    300,
+    -601,
+    1840,
+    310,
+    -600,
+    1930
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Mimic Bus",
+   "shape": "fbox",
+   "at": [
+    130,
+    -601,
+    1830,
+    310,
+    -600,
+    1840
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Mimic Load",
+   "shape": "fbox",
+   "at": [
+    215,
+    -601,
+    1720,
+    225,
+    -600,
+    1830
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Lamp Mains",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    135,
+    1945
+   ],
+   "r": 13,
+   "y": [
+    -614,
+    -600
+   ],
+   "mat": "green",
+   "lod": "f"
+  },
+  {
+   "n": "Lamp Generator",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    305,
+    1945
+   ],
+   "r": 13,
+   "y": [
+    -614,
+    -600
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "Lamp On Load",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    220,
+    1700
+   ],
+   "r": 13,
+   "y": [
+    -614,
+    -600
+   ],
+   "mat": "red",
+   "lod": "f"
+  },
+  {
+   "n": "Selector Body",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -100,
+    1380
+   ],
+   "profile": [
+    [
+     0,
+     -600
+    ],
+    [
+     30,
+     -600
+    ],
+    [
+     30,
+     -608
+    ],
+    [
+     0,
+     -608
+    ]
+   ],
+   "mat": "black",
+   "lod": "f"
+  },
+  {
+   "n": "Selector Knob",
+   "shape": "fbox",
+   "at": [
+    -108,
+    -626,
+    1355,
+    -92,
+    -608,
+    1405
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "E-Stop Collar",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    150,
+    1380
+   ],
+   "profile": [
+    [
+     0,
+     -600
+    ],
+    [
+     35,
+     -600
+    ],
+    [
+     35,
+     -612
+    ],
+    [
+     0,
+     -612
+    ]
+   ],
+   "mat": "yellow",
+   "lod": "f"
+  },
+  {
+   "n": "E-Stop Mushroom",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    150,
+    1380
+   ],
+   "profile": [
+    [
+     0,
+     -612
+    ],
+    [
+     12,
+     -612
+    ],
+    [
+     12,
+     -625
+    ],
+    [
+     30,
+     -628
+    ],
+    [
+     30,
+     -640
+    ],
+    [
+     0,
+     -644
+    ]
+   ],
+   "mat": "redabs",
+   "lod": "f"
+  },
+  {
+   "n": "Switch Window",
+   "shape": "fbox",
+   "at": [
+    -250,
+    -601,
+    450,
+    250,
+    -599,
+    1050
+   ],
+   "mat": "pc",
+   "lod": "f",
+   "r": 6
+  },
+  {
+   "n": "Changeover Switch",
+   "shape": "fbox",
+   "at": [
+    -200,
+    -598,
+    600,
+    200,
+    -592,
+    900
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 4
+  },
+  {
+   "n": "Changeover Handle",
+   "shape": "fbox",
+   "at": [
+    -20,
+    -599,
+    680,
+    20,
+    -598.5,
+    820
+   ],
+   "mat": "yellow",
+   "lod": "f",
+   "r": 2
+  },
+  {
+   "n": "Door Handle",
+   "shape": "fbox",
+   "at": [
+    325,
+    -620,
+    700,
+    345,
+    -600,
+    860
+   ],
+   "mat": "black",
+   "lod": "f",
+   "r": 6,
+   "repeat": {
+    "n": 2,
+    "d": [
+     0,
+     0,
+     880
+    ]
+   }
+  },
+  {
+   "n": "Vent Grille",
+   "shape": "fbox",
+   "at": [
+    -250,
+    -601,
+    160,
+    250,
+    -600,
+    300
+   ],
+   "mat": "steel",
+   "lod": "f",
+   "r": 3
+  },
+  {
+   "n": "Louvre Slat",
+   "shape": "fbox",
+   "at": [
+    -245,
+    -602,
+    175,
+    245,
+    -601,
+    185
+   ],
+   "mat": "epw",
+   "lod": "f",
+   "repeat": {
+    "n": 4,
+    "d": [
+     0,
+     0,
+     30
+    ]
+   }
+  },
+  {
+   "n": "Rating Plate",
+   "shape": "fbox",
+   "at": [
+    -350,
+    -601,
+    1250,
+    -230,
+    -600,
+    1310
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "r": 2
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Mains",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Body",
+   "side": "top"
+  },
+  {
+   "n": "Generator",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "part": "Body",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "Panel 800 x 600 x 2000 mm": {
+   "value": "800x600x2000",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Rating 400 A / 630 A, 4-pole": {
+   "value": "400A/630A 4P",
+   "source_status": "assumed",
+   "source": "type name"
+  },
+  "Transfer time under 10 s": {
+   "value": "10 s",
+   "source_status": "assumed",
+   "source": "BS 7671 / HTM 06-01 essential supply practice"
+  }
+ },
+ "about": "ATS panel: plinth, body, control door with controller bezel, display and keys, source mimic and lamps (mains, generator, on load), auto/manual selector, emergency stop; lower door with window over the changeover switch; handles, vents, rating plate. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open.",
+ "clearances": [
+  {
+   "n": "Working Space",
+   "shape": "box",
+   "at": [
+    -400,
+    -1600,
+    0,
+    400,
+    -600,
+    2000
+   ],
+   "sub": "Clearance Maintenance"
+  }
+ ]
+}

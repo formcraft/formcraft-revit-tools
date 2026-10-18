@@ -572,3 +572,14 @@ test("F-046: cleanup closes stale sessions and left-overs (dry run first), keeps
   assert.deepEqual((real.body.closed as any[]).map((c) => c.closed), [true, true]);
   assert.deepEqual(Object.keys(readLedger(dir)).sort(), ["live", "window"]);
 });
+
+test("a nested helper's missing keynote is exempt only when its recipe says why", () => {
+  const noKeynote = { ...passInspect, checks: [...passInspect.checks, { check: "Keynote set", state: "fail", detail: "1 of 1 types have no keynote" }] };
+  const plain = gateA("FMC_A_Door_SteelFanlight", parseRecipe(door()).recipe, { inspect: noKeynote, flex: passFlex, registerCategory: "Doors" });
+  const kn = (g: ReturnType<typeof gateA>) => g.lines.find((l) => /keynote/i.test(l.check))!;
+  assert.equal(kn(plain).state, "Fail");
+  const exempt = gateA("FMC_A_Door_SteelFanlight", parseRecipe(door({ checks: { keynote_exempt: "nested service point, never scheduled" } })).recipe,
+    { inspect: noKeynote, flex: passFlex, registerCategory: "Doors" });
+  assert.equal(kn(exempt).state, "Pass");
+  assert.match(kn(exempt).detail, /^Exempt: nested service point, never scheduled/);
+});

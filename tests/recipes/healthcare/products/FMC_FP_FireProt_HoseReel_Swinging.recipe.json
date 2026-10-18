@@ -1,0 +1,2867 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_FP_FireProt_HoseReel_Swinging",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Hose reel modelled as a generic product: red steel cabinet with label fascia; Medium shows the glazed door shut, Fine shows it open on its hinges with the reel inside: drum flanges, three hose coils, spokes, swivel cap, swing arm and pivot, inlet stop valve with red handwheel, hose guide, nozzle in its clip. Reference: query: fire prot hose reel swinging fire protection hospital; images: https://www.google.com/search?tbm=isch&q=fire+prot+hose+reel+swinging+fire+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "30m_Swinging"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Cost_Unit",
+   "type": "30m_Swinging",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Geometry_Stage",
+   "type": "30m_Swinging",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/IfcExportAs",
+   "type": "30m_Swinging",
+   "param": "IfcExportAs",
+   "value": "IfcFireSuppressionTerminal"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/Description",
+   "type": "30m_Swinging",
+   "param": "Description",
+   "value": "Swinging fire hose reel, 30 m x 19 mm hose, in a red steel cabinet 760 x 760 x 280 with glazed door, swivel inlet with stop valve"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/Keynote",
+   "type": "30m_Swinging",
+   "param": "Keynote",
+   "value": "V.HRL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Keynote_Code",
+   "type": "30m_Swinging",
+   "param": "FMC_Keynote_Code",
+   "value": "V.HRL_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Code_Description",
+   "type": "30m_Swinging",
+   "param": "FMC_Code_Description",
+   "value": "HoseReel Swinging: Hose reel in cabinet"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Code_Group",
+   "type": "30m_Swinging",
+   "param": "FMC_Code_Group",
+   "value": "V.HRL"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/FMC_Role_Code",
+   "type": "30m_Swinging",
+   "param": "FMC_Role_Code",
+   "value": "FP"
+  },
+  {
+   "op": "set_type_value",
+   "name": "30m_Swinging/Default Elevation",
+   "type": "30m_Swinging",
+   "param": "Default Elevation",
+   "value": 900
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Red",
+   "color": [
+    200,
+    16,
+    46
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Red Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SprinklerPipe_RedPainted",
+   "param": "Red Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "White",
+   "color": [
+    242,
+    242,
+    238
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "White Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_White",
+   "param": "White Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Glass",
+   "color": [
+    191,
+    217,
+    230
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Glass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Clear",
+   "param": "Glass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Hose",
+   "color": [
+    181,
+    18,
+    27
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Hose Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_FireHoseReel_Red",
+   "param": "Hose Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Gi",
+   "color": [
+    158,
+    163,
+    166
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Gi Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_GI_Pipe",
+   "param": "Gi Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -406.0,
+     -1028
+    ],
+    [
+     380,
+     -1028
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     -406.0,
+     0
+    ]
+   ],
+   "start": -60,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Back",
+   "points": [
+    [
+     -380,
+     0
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     380,
+     760
+    ],
+    [
+     -380,
+     760
+    ]
+   ],
+   "start": 0,
+   "end": 12,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Back",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Back",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Back",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Side 1",
+   "points": [
+    [
+     -380,
+     -280
+    ],
+    [
+     -368,
+     -280
+    ],
+    [
+     -368,
+     -12
+    ],
+    [
+     -380,
+     -12
+    ]
+   ],
+   "start": 0,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Side 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Side 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Side 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Side 2",
+   "points": [
+    [
+     368,
+     -280
+    ],
+    [
+     380,
+     -280
+    ],
+    [
+     380,
+     -12
+    ],
+    [
+     368,
+     -12
+    ]
+   ],
+   "start": 0,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Side 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Side 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Side 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Top",
+   "points": [
+    [
+     -368,
+     -280
+    ],
+    [
+     368,
+     -280
+    ],
+    [
+     368,
+     -12
+    ],
+    [
+     -368,
+     -12
+    ]
+   ],
+   "start": 748,
+   "end": 760
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Top",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Top",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Top",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Cabinet Bottom",
+   "points": [
+    [
+     -368,
+     -280
+    ],
+    [
+     368,
+     -280
+    ],
+    [
+     368,
+     -12
+    ],
+    [
+     -368,
+     -12
+    ]
+   ],
+   "start": 0,
+   "end": 12
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cabinet Bottom",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cabinet Bottom",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cabinet Bottom",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Frame Top",
+   "points": [
+    [
+     -380,
+     700
+    ],
+    [
+     380,
+     700
+    ],
+    [
+     380,
+     760
+    ],
+    [
+     -380,
+     760
+    ]
+   ],
+   "start": 280,
+   "end": 286,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Frame Top",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Frame Top",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Frame Top",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Frame Bottom",
+   "points": [
+    [
+     -380,
+     0
+    ],
+    [
+     380,
+     0
+    ],
+    [
+     380,
+     40
+    ],
+    [
+     -380,
+     40
+    ]
+   ],
+   "start": 280,
+   "end": 286,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Frame Bottom",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Frame Bottom",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Frame Bottom",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Frame Stile 1",
+   "points": [
+    [
+     -380,
+     40
+    ],
+    [
+     -350,
+     40
+    ],
+    [
+     -350,
+     700
+    ],
+    [
+     -380,
+     700
+    ]
+   ],
+   "start": 280,
+   "end": 286,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Frame Stile 1",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Frame Stile 1",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Frame Stile 1",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Front Frame Stile 2",
+   "points": [
+    [
+     350,
+     40
+    ],
+    [
+     380,
+     40
+    ],
+    [
+     380,
+     700
+    ],
+    [
+     350,
+     700
+    ]
+   ],
+   "start": 280,
+   "end": 286,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Front Frame Stile 2",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Front Frame Stile 2",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Front Frame Stile 2",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Label FIRE HOSE REEL",
+   "points": [
+    [
+     168.0,
+     712.0
+    ],
+    [
+     168.77,
+     712.15
+    ],
+    [
+     169.41,
+     712.59
+    ],
+    [
+     169.85,
+     713.23
+    ],
+    [
+     170.0,
+     714.0
+    ],
+    [
+     170.0,
+     746.0
+    ],
+    [
+     169.85,
+     746.77
+    ],
+    [
+     169.41,
+     747.41
+    ],
+    [
+     168.77,
+     747.85
+    ],
+    [
+     168.0,
+     748.0
+    ],
+    [
+     -168.0,
+     748.0
+    ],
+    [
+     -168.77,
+     747.85
+    ],
+    [
+     -169.41,
+     747.41
+    ],
+    [
+     -169.85,
+     746.77
+    ],
+    [
+     -170.0,
+     746.0
+    ],
+    [
+     -170.0,
+     714.0
+    ],
+    [
+     -169.85,
+     713.23
+    ],
+    [
+     -169.41,
+     712.59
+    ],
+    [
+     -168.77,
+     712.15
+    ],
+    [
+     -168.0,
+     712.0
+    ]
+   ],
+   "start": 286,
+   "end": 288,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Label FIRE HOSE REEL",
+   "subcategory": "White"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Label FIRE HOSE REEL",
+   "param": "White Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Label FIRE HOSE REEL",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Shut",
+   "points": [
+    [
+     368.0,
+     40.0
+    ],
+    [
+     369.53,
+     40.3
+    ],
+    [
+     370.83,
+     41.17
+    ],
+    [
+     371.7,
+     42.47
+    ],
+    [
+     372.0,
+     44.0
+    ],
+    [
+     372.0,
+     696.0
+    ],
+    [
+     371.7,
+     697.53
+    ],
+    [
+     370.83,
+     698.83
+    ],
+    [
+     369.53,
+     699.7
+    ],
+    [
+     368.0,
+     700.0
+    ],
+    [
+     -368.0,
+     700.0
+    ],
+    [
+     -369.53,
+     699.7
+    ],
+    [
+     -370.83,
+     698.83
+    ],
+    [
+     -371.7,
+     697.53
+    ],
+    [
+     -372.0,
+     696.0
+    ],
+    [
+     -372.0,
+     44.0
+    ],
+    [
+     -371.7,
+     42.47
+    ],
+    [
+     -370.83,
+     41.17
+    ],
+    [
+     -369.53,
+     40.3
+    ],
+    [
+     -368.0,
+     40.0
+    ]
+   ],
+   "start": 286,
+   "end": 298,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Shut",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Shut",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Shut",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Glass Shut",
+   "points": [
+    [
+     -320,
+     100
+    ],
+    [
+     320,
+     100
+    ],
+    [
+     320,
+     640
+    ],
+    [
+     -320,
+     640
+    ]
+   ],
+   "start": 298,
+   "end": 300,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Glass Shut",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Glass Shut",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Glass Shut",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Open",
+   "points": [
+    [
+     -392,
+     -1028
+    ],
+    [
+     -380,
+     -1028
+    ],
+    [
+     -380,
+     -286
+    ],
+    [
+     -392,
+     -286
+    ]
+   ],
+   "start": 40,
+   "end": 700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Open",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Open",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Open",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Glass Open",
+   "points": [
+    [
+     -394,
+     -980
+    ],
+    [
+     -392,
+     -980
+    ],
+    [
+     -392,
+     -334
+    ],
+    [
+     -394,
+     -334
+    ]
+   ],
+   "start": 100,
+   "end": 640
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Glass Open",
+   "subcategory": "Glass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Glass Open",
+   "param": "Glass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Glass Open",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Door Handle",
+   "points": [
+    [
+     -397.0,
+     -1004.0
+    ],
+    [
+     -395.85,
+     -1003.77
+    ],
+    [
+     -394.88,
+     -1003.12
+    ],
+    [
+     -394.23,
+     -1002.15
+    ],
+    [
+     -394.0,
+     -1001.0
+    ],
+    [
+     -394.0,
+     -991.0
+    ],
+    [
+     -394.23,
+     -989.85
+    ],
+    [
+     -394.88,
+     -988.88
+    ],
+    [
+     -395.85,
+     -988.23
+    ],
+    [
+     -397.0,
+     -988.0
+    ],
+    [
+     -403.0,
+     -988.0
+    ],
+    [
+     -404.15,
+     -988.23
+    ],
+    [
+     -405.12,
+     -988.88
+    ],
+    [
+     -405.77,
+     -989.85
+    ],
+    [
+     -406.0,
+     -991.0
+    ],
+    [
+     -406.0,
+     -1001.0
+    ],
+    [
+     -405.77,
+     -1002.15
+    ],
+    [
+     -405.12,
+     -1003.12
+    ],
+    [
+     -404.15,
+     -1003.77
+    ],
+    [
+     -403.0,
+     -1004.0
+    ]
+   ],
+   "start": 330,
+   "end": 440
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Door Handle",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Door Handle",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Door Handle",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 1",
+   "points": [
+    [
+     -388,
+     -294
+    ],
+    [
+     -376,
+     -294
+    ],
+    [
+     -376,
+     -282
+    ],
+    [
+     -388,
+     -282
+    ]
+   ],
+   "start": 80,
+   "end": 140
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hinge 2",
+   "points": [
+    [
+     -388,
+     -294
+    ],
+    [
+     -376,
+     -294
+    ],
+    [
+     -376,
+     -282
+    ],
+    [
+     -388,
+     -282
+    ]
+   ],
+   "start": 560,
+   "end": 620
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hinge 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hinge 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hinge 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Reel Back Flange",
+   "profile": [
+    [
+     0,
+     20
+    ],
+    [
+     300,
+     20
+    ],
+    [
+     300,
+     26
+    ],
+    [
+     0,
+     26
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reel Back Flange",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reel Back Flange",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Reel Hub",
+   "profile": [
+    [
+     0,
+     26
+    ],
+    [
+     95,
+     26
+    ],
+    [
+     95,
+     200
+    ],
+    [
+     0,
+     200
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reel Hub",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reel Hub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hose Coil Inner",
+   "profile": [
+    [
+     95,
+     30
+    ],
+    [
+     165,
+     30
+    ],
+    [
+     165,
+     196
+    ],
+    [
+     95,
+     196
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Hose"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hose Coil Inner",
+   "param": "Hose Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hose Coil Inner",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hose Coil Middle",
+   "profile": [
+    [
+     167,
+     36
+    ],
+    [
+     225,
+     36
+    ],
+    [
+     225,
+     190
+    ],
+    [
+     167,
+     190
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Hose"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hose Coil Middle",
+   "param": "Hose Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hose Coil Middle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Hose Coil Outer",
+   "profile": [
+    [
+     227,
+     44
+    ],
+    [
+     270,
+     44
+    ],
+    [
+     270,
+     182
+    ],
+    [
+     227,
+     182
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Hose"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hose Coil Outer",
+   "param": "Hose Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hose Coil Outer",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Reel Front Rim",
+   "profile": [
+    [
+     268,
+     200
+    ],
+    [
+     300,
+     200
+    ],
+    [
+     300,
+     206
+    ],
+    [
+     268,
+     206
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reel Front Rim",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reel Front Rim",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Reel Spoke Horizontal",
+   "points": [
+    [
+     -290,
+     383
+    ],
+    [
+     290,
+     383
+    ],
+    [
+     290,
+     397
+    ],
+    [
+     -290,
+     397
+    ]
+   ],
+   "start": 200,
+   "end": 206,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Reel Spoke Horizontal",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reel Spoke Horizontal",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reel Spoke Horizontal",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Reel Spoke Vertical",
+   "points": [
+    [
+     -7,
+     100
+    ],
+    [
+     7,
+     100
+    ],
+    [
+     7,
+     680
+    ],
+    [
+     -7,
+     680
+    ]
+   ],
+   "start": 200,
+   "end": 206,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Reel Spoke Vertical",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Reel Spoke Vertical",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Reel Spoke Vertical",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Swivel Cap",
+   "profile": [
+    [
+     0,
+     206
+    ],
+    [
+     48,
+     206
+    ],
+    [
+     48,
+     216
+    ],
+    [
+     0,
+     216
+    ]
+   ],
+   "axis_at": [
+    0,
+    390
+   ],
+   "axis": "y",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Swivel Cap",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Swivel Cap",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Swing Arm",
+   "points": [
+    [
+     0,
+     -20
+    ],
+    [
+     330,
+     -20
+    ],
+    [
+     330,
+     -14
+    ],
+    [
+     0,
+     -14
+    ]
+   ],
+   "start": 382,
+   "end": 398
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Swing Arm",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Swing Arm",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Swing Arm",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Swing Pivot",
+   "points": [
+    [
+     344.0,
+     -60.0
+    ],
+    [
+     343.52,
+     -56.38
+    ],
+    [
+     342.12,
+     -53.0
+    ],
+    [
+     339.9,
+     -50.1
+    ],
+    [
+     337.0,
+     -47.88
+    ],
+    [
+     333.62,
+     -46.48
+    ],
+    [
+     330.0,
+     -46.0
+    ],
+    [
+     326.38,
+     -46.48
+    ],
+    [
+     323.0,
+     -47.88
+    ],
+    [
+     320.1,
+     -50.1
+    ],
+    [
+     317.88,
+     -53.0
+    ],
+    [
+     316.48,
+     -56.38
+    ],
+    [
+     316.0,
+     -60.0
+    ],
+    [
+     316.48,
+     -63.62
+    ],
+    [
+     317.88,
+     -67.0
+    ],
+    [
+     320.1,
+     -69.9
+    ],
+    [
+     323.0,
+     -72.12
+    ],
+    [
+     326.38,
+     -73.52
+    ],
+    [
+     330.0,
+     -74.0
+    ],
+    [
+     333.62,
+     -73.52
+    ],
+    [
+     337.0,
+     -72.12
+    ],
+    [
+     339.9,
+     -69.9
+    ],
+    [
+     342.12,
+     -67.0
+    ],
+    [
+     343.52,
+     -63.62
+    ]
+   ],
+   "start": 120,
+   "end": 730
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Swing Pivot",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Swing Pivot",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Swing Pivot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Valve Body",
+   "points": [
+    [
+     354.0,
+     -60.0
+    ],
+    [
+     353.18,
+     -53.79
+    ],
+    [
+     350.78,
+     -48.0
+    ],
+    [
+     346.97,
+     -43.03
+    ],
+    [
+     342.0,
+     -39.22
+    ],
+    [
+     336.21,
+     -36.82
+    ],
+    [
+     330.0,
+     -36.0
+    ],
+    [
+     323.79,
+     -36.82
+    ],
+    [
+     318.0,
+     -39.22
+    ],
+    [
+     313.03,
+     -43.03
+    ],
+    [
+     309.22,
+     -48.0
+    ],
+    [
+     306.82,
+     -53.79
+    ],
+    [
+     306.0,
+     -60.0
+    ],
+    [
+     306.82,
+     -66.21
+    ],
+    [
+     309.22,
+     -72.0
+    ],
+    [
+     313.03,
+     -76.97
+    ],
+    [
+     318.0,
+     -80.78
+    ],
+    [
+     323.79,
+     -83.18
+    ],
+    [
+     330.0,
+     -84.0
+    ],
+    [
+     336.21,
+     -83.18
+    ],
+    [
+     342.0,
+     -80.78
+    ],
+    [
+     346.97,
+     -76.97
+    ],
+    [
+     350.78,
+     -72.0
+    ],
+    [
+     353.18,
+     -66.21
+    ]
+   ],
+   "start": 60,
+   "end": 120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Valve Body",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Valve Body",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Valve Body",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Valve Stem",
+   "points": [
+    [
+     335.0,
+     90.0
+    ],
+    [
+     334.83,
+     91.29
+    ],
+    [
+     334.33,
+     92.5
+    ],
+    [
+     333.54,
+     93.54
+    ],
+    [
+     332.5,
+     94.33
+    ],
+    [
+     331.29,
+     94.83
+    ],
+    [
+     330.0,
+     95.0
+    ],
+    [
+     328.71,
+     94.83
+    ],
+    [
+     327.5,
+     94.33
+    ],
+    [
+     326.46,
+     93.54
+    ],
+    [
+     325.67,
+     92.5
+    ],
+    [
+     325.17,
+     91.29
+    ],
+    [
+     325.0,
+     90.0
+    ],
+    [
+     325.17,
+     88.71
+    ],
+    [
+     325.67,
+     87.5
+    ],
+    [
+     326.46,
+     86.46
+    ],
+    [
+     327.5,
+     85.67
+    ],
+    [
+     328.71,
+     85.17
+    ],
+    [
+     330.0,
+     85.0
+    ],
+    [
+     331.29,
+     85.17
+    ],
+    [
+     332.5,
+     85.67
+    ],
+    [
+     333.54,
+     86.46
+    ],
+    [
+     334.33,
+     87.5
+    ],
+    [
+     334.83,
+     88.71
+    ]
+   ],
+   "start": 130,
+   "end": 84,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Valve Stem",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Valve Stem",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Valve Stem",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Inlet Handwheel",
+   "profile": [
+    [
+     26,
+     130
+    ],
+    [
+     34,
+     130
+    ],
+    [
+     34,
+     138
+    ],
+    [
+     26,
+     138
+    ]
+   ],
+   "axis_at": [
+    330,
+    90
+   ],
+   "axis": "y",
+   "subcategory": "Red"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Handwheel",
+   "param": "Red Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Handwheel",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Pipe",
+   "points": [
+    [
+     344.0,
+     -60.0
+    ],
+    [
+     343.52,
+     -56.38
+    ],
+    [
+     342.12,
+     -53.0
+    ],
+    [
+     339.9,
+     -50.1
+    ],
+    [
+     337.0,
+     -47.88
+    ],
+    [
+     333.62,
+     -46.48
+    ],
+    [
+     330.0,
+     -46.0
+    ],
+    [
+     326.38,
+     -46.48
+    ],
+    [
+     323.0,
+     -47.88
+    ],
+    [
+     320.1,
+     -50.1
+    ],
+    [
+     317.88,
+     -53.0
+    ],
+    [
+     316.48,
+     -56.38
+    ],
+    [
+     316.0,
+     -60.0
+    ],
+    [
+     316.48,
+     -63.62
+    ],
+    [
+     317.88,
+     -67.0
+    ],
+    [
+     320.1,
+     -69.9
+    ],
+    [
+     323.0,
+     -72.12
+    ],
+    [
+     326.38,
+     -73.52
+    ],
+    [
+     330.0,
+     -74.0
+    ],
+    [
+     333.62,
+     -73.52
+    ],
+    [
+     337.0,
+     -72.12
+    ],
+    [
+     339.9,
+     -69.9
+    ],
+    [
+     342.12,
+     -67.0
+    ],
+    [
+     343.52,
+     -63.62
+    ]
+   ],
+   "start": -60,
+   "end": 60
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Pipe",
+   "subcategory": "Gi"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Pipe",
+   "param": "Gi Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Pipe",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hose Guide",
+   "points": [
+    [
+     -256.0,
+     -250.0
+    ],
+    [
+     -253.7,
+     -249.54
+    ],
+    [
+     -251.76,
+     -248.24
+    ],
+    [
+     -250.46,
+     -246.3
+    ],
+    [
+     -250.0,
+     -244.0
+    ],
+    [
+     -250.0,
+     -156.0
+    ],
+    [
+     -250.46,
+     -153.7
+    ],
+    [
+     -251.76,
+     -151.76
+    ],
+    [
+     -253.7,
+     -150.46
+    ],
+    [
+     -256.0,
+     -150.0
+    ],
+    [
+     -334.0,
+     -150.0
+    ],
+    [
+     -336.3,
+     -150.46
+    ],
+    [
+     -338.24,
+     -151.76
+    ],
+    [
+     -339.54,
+     -153.7
+    ],
+    [
+     -340.0,
+     -156.0
+    ],
+    [
+     -340.0,
+     -244.0
+    ],
+    [
+     -339.54,
+     -246.3
+    ],
+    [
+     -338.24,
+     -248.24
+    ],
+    [
+     -336.3,
+     -249.54
+    ],
+    [
+     -334.0,
+     -250.0
+    ]
+   ],
+   "start": 40,
+   "end": 72
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hose Guide",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hose Guide",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hose Guide",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Nozzle Clip",
+   "points": [
+    [
+     -368,
+     -215
+    ],
+    [
+     -345,
+     -215
+    ],
+    [
+     -345,
+     -185
+    ],
+    [
+     -368,
+     -185
+    ]
+   ],
+   "start": 520,
+   "end": 560
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Nozzle Clip",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nozzle Clip",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nozzle Clip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Nozzle",
+   "profile": [
+    [
+     0,
+     300
+    ],
+    [
+     10,
+     300
+    ],
+    [
+     17,
+     350
+    ],
+    [
+     17,
+     480
+    ],
+    [
+     13,
+     520
+    ],
+    [
+     0,
+     520
+    ]
+   ],
+   "axis_at": [
+    -326,
+    -200
+   ],
+   "axis": "z",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nozzle",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nozzle",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Nozzle Tip",
+   "profile": [
+    [
+     0,
+     285
+    ],
+    [
+     7,
+     285
+    ],
+    [
+     10,
+     300
+    ],
+    [
+     0,
+     300
+    ]
+   ],
+   "axis_at": [
+    -326,
+    -200
+   ],
+   "axis": "z",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Nozzle Tip",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Nozzle Tip",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Hose Lead",
+   "points": [
+    [
+     -288.0,
+     -200.0
+    ],
+    [
+     -288.41,
+     -196.89
+    ],
+    [
+     -289.61,
+     -194.0
+    ],
+    [
+     -291.51,
+     -191.51
+    ],
+    [
+     -294.0,
+     -189.61
+    ],
+    [
+     -296.89,
+     -188.41
+    ],
+    [
+     -300.0,
+     -188.0
+    ],
+    [
+     -303.11,
+     -188.41
+    ],
+    [
+     -306.0,
+     -189.61
+    ],
+    [
+     -308.49,
+     -191.51
+    ],
+    [
+     -310.39,
+     -194.0
+    ],
+    [
+     -311.59,
+     -196.89
+    ],
+    [
+     -312.0,
+     -200.0
+    ],
+    [
+     -311.59,
+     -203.11
+    ],
+    [
+     -310.39,
+     -206.0
+    ],
+    [
+     -308.49,
+     -208.49
+    ],
+    [
+     -306.0,
+     -210.39
+    ],
+    [
+     -303.11,
+     -211.59
+    ],
+    [
+     -300.0,
+     -212.0
+    ],
+    [
+     -296.89,
+     -211.59
+    ],
+    [
+     -294.0,
+     -210.39
+    ],
+    [
+     -291.51,
+     -208.49
+    ],
+    [
+     -289.61,
+     -206.0
+    ],
+    [
+     -288.41,
+     -203.11
+    ]
+   ],
+   "start": 72,
+   "end": 300
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Hose Lead",
+   "subcategory": "Hose"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Hose Lead",
+   "param": "Hose Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Hose Lead",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Water Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "solid": "Inlet Pipe",
+   "side": "bottom",
+   "diameter": 25,
+   "flow": "In"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\FP\\_Images\\FMC_FP_FireProt_HoseReel_Swinging.png"
+  }
+ ],
+ "values": {
+  "Hose 30 m x 19 mm": {
+   "value": "30m 19mm",
+   "source_status": "assumed",
+   "source": "type name; BS EN 671-1 hose reel"
+  },
+  "Cabinet 760 x 760 x 280 mm": {
+   "value": "760x760x280",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Drum 600 mm diameter": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "Cabinet bottom 900 mm above floor": {
+   "value": 900,
+   "source_status": "assumed",
+   "source": "nozzle within reach, BS EN 671-3 practice"
+  }
+ }
+}

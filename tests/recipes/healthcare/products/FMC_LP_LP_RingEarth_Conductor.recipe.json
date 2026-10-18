@@ -1,0 +1,825 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_LP_LP_RingEarth_Conductor",
+ "template": "Metric Generic Model.rft",
+ "about": "Ring earth segment: copper tape on edge, joint clamp with two bolts, riveted joint; place along the route at -600 mm. Generic product modelled as real parts (photo-to-family, 17 Oct); sizes assumed, brand and model open. Reference: query: lp lp ring earth conductor lightning protection hospital; images: https://www.google.com/search?tbm=isch&q=lp+lp+ring+earth+conductor+lightning+protection+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Generic Models"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+  },
+  {
+   "op": "add_type",
+   "name": "25x3_Tape"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/FMC_Cost_Unit",
+   "type": "25x3_Tape",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/FMC_Geometry_Stage",
+   "type": "25x3_Tape",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/IfcExportAs",
+   "type": "25x3_Tape",
+   "param": "IfcExportAs",
+   "value": "IfcCableSegment"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/Description",
+   "type": "25x3_Tape",
+   "param": "Description",
+   "value": "Ring earth electrode: 25 x 3 bare copper tape laid on edge 600 mm deep, 1 m segment with a joint clamp and riveted joint"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/Keynote",
+   "type": "25x3_Tape",
+   "param": "Keynote",
+   "value": "X.EAR_04"
+  },
+  {
+   "op": "set_type_value",
+   "name": "25x3_Tape/FMC_Keynote_Code",
+   "type": "25x3_Tape",
+   "param": "FMC_Keynote_Code",
+   "value": "X.EAR_04"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Copper",
+   "color": [
+    184,
+    115,
+    51
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Copper Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_CopperTape_20x3",
+   "param": "Copper Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Chrome",
+   "color": [
+    192,
+    195,
+    199
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Chrome Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Chrome_Polished",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -500,
+     -14
+    ],
+    [
+     500,
+     -14
+    ],
+    [
+     500,
+     10
+    ],
+    [
+     -500,
+     10
+    ]
+   ],
+   "start": -20,
+   "end": 20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Tape Run",
+   "points": [
+    [
+     -500,
+     -1.5
+    ],
+    [
+     500,
+     -1.5
+    ],
+    [
+     500,
+     1.5
+    ],
+    [
+     -500,
+     1.5
+    ]
+   ],
+   "start": -12.5,
+   "end": 12.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Tape Run",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Tape Run",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Tape Run",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Joint Clamp",
+   "points": [
+    [
+     -30,
+     -10
+    ],
+    [
+     30,
+     -10
+    ],
+    [
+     30,
+     10
+    ],
+    [
+     -30,
+     10
+    ]
+   ],
+   "start": -20,
+   "end": 20
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Joint Clamp",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Joint Clamp",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Joint Clamp",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Clamp Bolt 1",
+   "points": [
+    [
+     -11.0,
+     0.0
+    ],
+    [
+     -11.14,
+     1.04
+    ],
+    [
+     -11.54,
+     2.0
+    ],
+    [
+     -12.17,
+     2.83
+    ],
+    [
+     -13.0,
+     3.46
+    ],
+    [
+     -13.96,
+     3.86
+    ],
+    [
+     -15.0,
+     4.0
+    ],
+    [
+     -16.04,
+     3.86
+    ],
+    [
+     -17.0,
+     3.46
+    ],
+    [
+     -17.83,
+     2.83
+    ],
+    [
+     -18.46,
+     2.0
+    ],
+    [
+     -18.86,
+     1.04
+    ],
+    [
+     -19.0,
+     0.0
+    ],
+    [
+     -18.86,
+     -1.04
+    ],
+    [
+     -18.46,
+     -2.0
+    ],
+    [
+     -17.83,
+     -2.83
+    ],
+    [
+     -17.0,
+     -3.46
+    ],
+    [
+     -16.04,
+     -3.86
+    ],
+    [
+     -15.0,
+     -4.0
+    ],
+    [
+     -13.96,
+     -3.86
+    ],
+    [
+     -13.0,
+     -3.46
+    ],
+    [
+     -12.17,
+     -2.83
+    ],
+    [
+     -11.54,
+     -2.0
+    ],
+    [
+     -11.14,
+     -1.04
+    ]
+   ],
+   "start": 10,
+   "end": 14,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Clamp Bolt 1",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Clamp Bolt 1",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Clamp Bolt 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Clamp Bolt 2",
+   "points": [
+    [
+     19.0,
+     0.0
+    ],
+    [
+     18.86,
+     1.04
+    ],
+    [
+     18.46,
+     2.0
+    ],
+    [
+     17.83,
+     2.83
+    ],
+    [
+     17.0,
+     3.46
+    ],
+    [
+     16.04,
+     3.86
+    ],
+    [
+     15.0,
+     4.0
+    ],
+    [
+     13.96,
+     3.86
+    ],
+    [
+     13.0,
+     3.46
+    ],
+    [
+     12.17,
+     2.83
+    ],
+    [
+     11.54,
+     2.0
+    ],
+    [
+     11.14,
+     1.04
+    ],
+    [
+     11.0,
+     0.0
+    ],
+    [
+     11.14,
+     -1.04
+    ],
+    [
+     11.54,
+     -2.0
+    ],
+    [
+     12.17,
+     -2.83
+    ],
+    [
+     13.0,
+     -3.46
+    ],
+    [
+     13.96,
+     -3.86
+    ],
+    [
+     15.0,
+     -4.0
+    ],
+    [
+     16.04,
+     -3.86
+    ],
+    [
+     17.0,
+     -3.46
+    ],
+    [
+     17.83,
+     -2.83
+    ],
+    [
+     18.46,
+     -2.0
+    ],
+    [
+     18.86,
+     -1.04
+    ]
+   ],
+   "start": 10,
+   "end": 14,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Clamp Bolt 2",
+   "subcategory": "Chrome"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Clamp Bolt 2",
+   "param": "Chrome Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Clamp Bolt 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rivet Joint",
+   "points": [
+    [
+     400,
+     -2
+    ],
+    [
+     450,
+     -2
+    ],
+    [
+     450,
+     2
+    ],
+    [
+     400,
+     2
+    ]
+   ],
+   "start": -12.5,
+   "end": 12.5
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rivet Joint",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rivet Joint",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rivet Joint",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rivet 1",
+   "points": [
+    [
+     418.0,
+     0.0
+    ],
+    [
+     417.9,
+     0.78
+    ],
+    [
+     417.6,
+     1.5
+    ],
+    [
+     417.12,
+     2.12
+    ],
+    [
+     416.5,
+     2.6
+    ],
+    [
+     415.78,
+     2.9
+    ],
+    [
+     415.0,
+     3.0
+    ],
+    [
+     414.22,
+     2.9
+    ],
+    [
+     413.5,
+     2.6
+    ],
+    [
+     412.88,
+     2.12
+    ],
+    [
+     412.4,
+     1.5
+    ],
+    [
+     412.1,
+     0.78
+    ],
+    [
+     412.0,
+     0.0
+    ],
+    [
+     412.1,
+     -0.78
+    ],
+    [
+     412.4,
+     -1.5
+    ],
+    [
+     412.88,
+     -2.12
+    ],
+    [
+     413.5,
+     -2.6
+    ],
+    [
+     414.22,
+     -2.9
+    ],
+    [
+     415.0,
+     -3.0
+    ],
+    [
+     415.78,
+     -2.9
+    ],
+    [
+     416.5,
+     -2.6
+    ],
+    [
+     417.12,
+     -2.12
+    ],
+    [
+     417.6,
+     -1.5
+    ],
+    [
+     417.9,
+     -0.78
+    ]
+   ],
+   "start": 2,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rivet 1",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rivet 1",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rivet 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Rivet 2",
+   "points": [
+    [
+     438.0,
+     0.0
+    ],
+    [
+     437.9,
+     0.78
+    ],
+    [
+     437.6,
+     1.5
+    ],
+    [
+     437.12,
+     2.12
+    ],
+    [
+     436.5,
+     2.6
+    ],
+    [
+     435.78,
+     2.9
+    ],
+    [
+     435.0,
+     3.0
+    ],
+    [
+     434.22,
+     2.9
+    ],
+    [
+     433.5,
+     2.6
+    ],
+    [
+     432.88,
+     2.12
+    ],
+    [
+     432.4,
+     1.5
+    ],
+    [
+     432.1,
+     0.78
+    ],
+    [
+     432.0,
+     0.0
+    ],
+    [
+     432.1,
+     -0.78
+    ],
+    [
+     432.4,
+     -1.5
+    ],
+    [
+     432.88,
+     -2.12
+    ],
+    [
+     433.5,
+     -2.6
+    ],
+    [
+     434.22,
+     -2.9
+    ],
+    [
+     435.0,
+     -3.0
+    ],
+    [
+     435.78,
+     -2.9
+    ],
+    [
+     436.5,
+     -2.6
+    ],
+    [
+     437.12,
+     -2.12
+    ],
+    [
+     437.6,
+     -1.5
+    ],
+    [
+     437.9,
+     -0.78
+    ]
+   ],
+   "start": 2,
+   "end": 3,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Rivet 2",
+   "subcategory": "Copper"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Rivet 2",
+   "param": "Copper Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Rivet 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\LP\\_Images\\FMC_LP_LP_RingEarth_Conductor.png"
+  }
+ ],
+ "values": {
+  "Tape 25 x 3 mm, 1000 mm segment": {
+   "value": "25x3",
+   "source_status": "assumed",
+   "source": "BS EN 62561-2"
+  },
+  "Depth 600 mm, 1 m from walls": {
+   "value": 600,
+   "source_status": "assumed",
+   "source": "BS EN 62305-3 type B arrangement"
+  }
+ }
+}

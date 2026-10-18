@@ -1,0 +1,249 @@
+{
+ "family": "FMC_FP_Sprinkler_Sidewall",
+ "category": "Sprinklers",
+ "template": "Metric Generic Model.rft",
+ "desc": "Horizontal sidewall sprinkler K80 (5.6K), 68 C 5 mm bulb, 1/2 in thread, brass, recessed chrome escutcheon",
+ "ifc": "IfcFireSuppressionTerminal",
+ "keynote": "V.SPR_05",
+ "types": [
+  {
+   "name": "K80_Sidewall"
+  }
+ ],
+ "materials": {
+  "brass": "FMC_Metal_Brass_Polished",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "ledr": "FMC_Plastic_LED_Red"
+ },
+ "reference": {
+  "query": "sprinkler sidewall sprinklers hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=sprinkler+sidewall+sprinklers+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Escutcheon",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     11,
+     0
+    ],
+    [
+     34,
+     0
+    ],
+    [
+     34,
+     -3
+    ],
+    [
+     14,
+     -9
+    ],
+    [
+     11,
+     -9
+    ]
+   ],
+   "mat": "chrome"
+  },
+  {
+   "n": "Body",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     6
+    ],
+    [
+     11,
+     6
+    ],
+    [
+     11,
+     -18
+    ],
+    [
+     0,
+     -18
+    ]
+   ],
+   "mat": "brass"
+  },
+  {
+   "n": "Wrench Boss",
+   "shape": "box",
+   "at": [
+    -13,
+    -24,
+    -8,
+    13,
+    -18,
+    8
+   ],
+   "r": 2,
+   "mat": "brass"
+  },
+  {
+   "n": "Frame Arm",
+   "shape": "box",
+   "at": [
+    -11,
+    -52,
+    -2.5,
+    -8,
+    -24,
+    2.5
+   ],
+   "mat": "brass",
+   "repeat": {
+    "n": 2,
+    "d": [
+     19,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Frame Head",
+   "shape": "box",
+   "at": [
+    -11,
+    -56,
+    -2.5,
+    11,
+    -52,
+    2.5
+   ],
+   "mat": "brass"
+  },
+  {
+   "n": "Bulb",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    0,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -52
+    ],
+    [
+     2.5,
+     -49
+    ],
+    [
+     2.5,
+     -28
+    ],
+    [
+     0,
+     -24
+    ]
+   ],
+   "mat": "ledr",
+   "lod": "f"
+  },
+  {
+   "n": "Deflector Plate",
+   "shape": "fbox",
+   "at": [
+    -24,
+    -60,
+    -10,
+    24,
+    -56,
+    14
+   ],
+   "r": 3,
+   "mat": "brass"
+  },
+  {
+   "n": "Deflector Hood",
+   "shape": "box",
+   "at": [
+    -26,
+    -64,
+    14,
+    26,
+    -50,
+    17
+   ],
+   "r": 3,
+   "mat": "brass"
+  },
+  {
+   "n": "Deflector Tine",
+   "shape": "box",
+   "at": [
+    -24,
+    -60,
+    -15,
+    -19,
+    -57,
+    -10
+   ],
+   "mat": "brass",
+   "lod": "f",
+   "repeat": {
+    "n": 3,
+    "d": [
+     21.5,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "values": {
+  "K-factor 5.6 (K80)": {
+   "value": "K80",
+   "source_status": "assumed",
+   "source": "type name; standard-response sidewall"
+  },
+  "Deflector 52 mm wide with top hood": {
+   "value": 52,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  },
+  "68 C bulb, 5 mm": {
+   "value": "68C 5mm",
+   "source_status": "assumed",
+   "source": "ordinary-hazard sidewall practice"
+  },
+  "Mounting 100-150 mm below ceiling": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "BS EN 12845 / NFPA 13 sidewall practice"
+  }
+ },
+ "about": "Sidewall sprinkler modelled as a generic product: chrome escutcheon at the wall, brass body and wrench boss, frame arms, red bulb, vertical deflector with top hood and tines.",
+ "type_values": {
+  "Default Elevation": 2550
+ },
+ "connectors": [
+  {
+   "n": "Inlet",
+   "domain": "pipe",
+   "system": "FireProtectWet",
+   "part": "Body",
+   "side": "back",
+   "diameter": 15,
+   "flow": "In"
+  }
+ ]
+}

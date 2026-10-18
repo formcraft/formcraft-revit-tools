@@ -1,0 +1,2885 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_M_MechEq_PneumaticTube_Blower",
+ "template": "Metric Mechanical Equipment.rft",
+ "about": "Modelled as a generic product: base frame on AV mounts, ribbed side-channel housing, finned motor with cowl, feet and terminal box, inlet and outlet ports with silencers, diverter valve with actuator, 110 mm line stub, atmosphere port, relief valve. Reference: query: pneumatic tube blower mechanical equipment hospital; images: https://www.google.com/search?tbm=isch&q=pneumatic+tube+blower+mechanical+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Mechanical Equipment"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Number of Poles",
+   "type": "NumberOfPoles",
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Unit_Rate",
+   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Rate_Source_Date",
+   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Waste_Factor",
+   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Measurement_Rule",
+   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Code_WBS",
+   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Labour_Rate",
+   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Procurement_Status",
+   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Construction_Status",
+   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Task_ID",
+   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Zone",
+   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lead_Time_Weeks",
+   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_PO_Reference",
+   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Code",
+   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Uniclass_Title",
+   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportType",
+   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_kW",
+   "guid": "b8350caf-f09b-5f8f-9f3c-762e1bc23422",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cooling_Capacity_BTUh",
+   "guid": "c52c4b8f-8bb9-57d2-863a-1534c6999f1e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Airflow_Ls",
+   "guid": "7a04ac1c-401d-5be5-a5c8-a1e42b8686b5",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Refrigerant",
+   "guid": "a46c59d0-d719-583b-99c0-074994d01603",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Fire_Compartment",
+   "guid": "44835034-0592-5381-bec3-d5076c40966b",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Factor",
+   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Carbon_Source",
+   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Recycled_Content_Pct",
+   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Supply_Distance_km",
+   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Asset_Tag",
+   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Serial_Number",
+   "guid": "d7588945-f14a-59c0-a35d-407cdc20d4cf",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Manufacturer",
+   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Model_Number",
+   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Install_Date",
+   "guid": "d21414d8-a409-5716-b95e-eae5708fba37",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Warranty_End",
+   "guid": "7c69adf7-5048-56d9-be69-67092685ee15",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Maintenance_Interval_Months",
+   "guid": "63ed8a18-5433-5409-adcd-485640c84760",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_OM_Link",
+   "guid": "a9ccd9dc-5900-5ce2-9908-08d779a83dfc",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Description",
+   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Code_Group",
+   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Standard_Ref",
+   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Local_Spec",
+   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Data_Sync_Stamp",
+   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Role_Code",
+   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_QA_Status",
+   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Author",
+   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Prefabricated",
+   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Lift_Weight_kg",
+   "guid": "7b09af84-0832-5e63-9c40-b7906299b7ba",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Delivery_Batch",
+   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Laydown_Area",
+   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Trade_Package",
+   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Subcontractor_ID",
+   "guid": "116341a9-a803-502d-862d-9cde946a808a",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Mounting_Height_mm",
+   "guid": "699b3d82-b1d4-5258-b746-263d42bccd7c",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W_2",
+   "guid": "bc92b509-8c0f-5d24-bd83-ea5770c8c8d2",
+   "instance": false
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Controller_ID",
+   "guid": "c6837dcb-e4b9-58d9-aa9d-bc967b1da939",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Type",
+   "guid": "778866fb-d081-5810-863f-5e03e18c3862",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Point_Signal",
+   "guid": "a62ce70b-dc43-5a8e-bf93-216e3f207150",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Protocol",
+   "guid": "7fea984b-290c-534d-b880-5c633888e7c6",
+   "instance": true
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Tank_Capacity_L",
+   "guid": "ad62b851-080e-5602-9fcb-b953607819e1",
+   "instance": false
+  },
+  {
+   "op": "add_type",
+   "name": "1.5kW_SideChannel"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Cost_Unit",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Geometry_Stage",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/IfcExportAs",
+   "type": "1.5kW_SideChannel",
+   "param": "IfcExportAs",
+   "value": "IfcFan"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/Description",
+   "type": "1.5kW_SideChannel",
+   "param": "Description",
+   "value": "Pneumatic tube system blower 1.5 kW, side-channel blower with inlet and outlet silencers, air diverter valve, 110 mm line connection, on AV base"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/Keynote",
+   "type": "1.5kW_SideChannel",
+   "param": "Keynote",
+   "value": "Z.PTS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Keynote_Code",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Keynote_Code",
+   "value": "Z.PTS_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Code_Description",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Code_Description",
+   "value": "PneumaticTube Blower: Pneumatic tube blower"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Code_Group",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Code_Group",
+   "value": "Z.PTS"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/FMC_Role_Code",
+   "type": "1.5kW_SideChannel",
+   "param": "FMC_Role_Code",
+   "value": "M"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/Voltage",
+   "type": "1.5kW_SideChannel",
+   "param": "Voltage",
+   "value": 415
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/Apparent Load",
+   "type": "1.5kW_SideChannel",
+   "param": "Apparent Load",
+   "value": 2000
+  },
+  {
+   "op": "set_type_value",
+   "name": "1.5kW_SideChannel/Number of Poles",
+   "type": "1.5kW_SideChannel",
+   "param": "Number of Poles",
+   "value": 3
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Dark",
+   "color": [
+    61,
+    70,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Dark Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_SteelLTZ_Painted",
+   "param": "Dark Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Rubber",
+   "color": [
+    32,
+    32,
+    32
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Rubber Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Pcg",
+   "color": [
+    158,
+    164,
+    170
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Pcg Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Aluminium_PowderCoated",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Galv",
+   "color": [
+    183,
+    188,
+    192
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Galv Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Duct_Galvanised",
+   "param": "Galv Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Black",
+   "color": [
+    30,
+    31,
+    34
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Black Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_ABS_Black",
+   "param": "Black Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upvc",
+   "color": [
+    74,
+    77,
+    80
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upvc Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_uPVC_Pipe_DarkGrey",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Brass",
+   "color": [
+    200,
+    164,
+    74
+   ],
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_family_param",
+   "name": "Brass Material",
+   "type": "Material",
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Brass_Polished",
+   "param": "Brass Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "color": [
+    120,
+    130,
+    140
+   ],
+   "line_weight_projection": 2
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -400,
+     -300
+    ],
+    [
+     400,
+     -300
+    ],
+    [
+     400,
+     345
+    ],
+    [
+     -400,
+     345
+    ]
+   ],
+   "start": -20,
+   "end": 1220
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base Frame",
+   "points": [
+    [
+     -400,
+     -300
+    ],
+    [
+     400,
+     -300
+    ],
+    [
+     400,
+     300
+    ],
+    [
+     -400,
+     300
+    ]
+   ],
+   "start": 0,
+   "end": 80
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base Frame",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base Frame",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base Frame",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AV Mount 1",
+   "points": [
+    [
+     -315.0,
+     -240.0
+    ],
+    [
+     -315.85,
+     -233.53
+    ],
+    [
+     -318.35,
+     -227.5
+    ],
+    [
+     -322.32,
+     -222.32
+    ],
+    [
+     -327.5,
+     -218.35
+    ],
+    [
+     -333.53,
+     -215.85
+    ],
+    [
+     -340.0,
+     -215.0
+    ],
+    [
+     -346.47,
+     -215.85
+    ],
+    [
+     -352.5,
+     -218.35
+    ],
+    [
+     -357.68,
+     -222.32
+    ],
+    [
+     -361.65,
+     -227.5
+    ],
+    [
+     -364.15,
+     -233.53
+    ],
+    [
+     -365.0,
+     -240.0
+    ],
+    [
+     -364.15,
+     -246.47
+    ],
+    [
+     -361.65,
+     -252.5
+    ],
+    [
+     -357.68,
+     -257.68
+    ],
+    [
+     -352.5,
+     -261.65
+    ],
+    [
+     -346.47,
+     -264.15
+    ],
+    [
+     -340.0,
+     -265.0
+    ],
+    [
+     -333.53,
+     -264.15
+    ],
+    [
+     -327.5,
+     -261.65
+    ],
+    [
+     -322.32,
+     -257.68
+    ],
+    [
+     -318.35,
+     -252.5
+    ],
+    [
+     -315.85,
+     -246.47
+    ]
+   ],
+   "start": -20,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AV Mount 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AV Mount 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AV Mount 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AV Mount 2",
+   "points": [
+    [
+     365.0,
+     -240.0
+    ],
+    [
+     364.15,
+     -233.53
+    ],
+    [
+     361.65,
+     -227.5
+    ],
+    [
+     357.68,
+     -222.32
+    ],
+    [
+     352.5,
+     -218.35
+    ],
+    [
+     346.47,
+     -215.85
+    ],
+    [
+     340.0,
+     -215.0
+    ],
+    [
+     333.53,
+     -215.85
+    ],
+    [
+     327.5,
+     -218.35
+    ],
+    [
+     322.32,
+     -222.32
+    ],
+    [
+     318.35,
+     -227.5
+    ],
+    [
+     315.85,
+     -233.53
+    ],
+    [
+     315.0,
+     -240.0
+    ],
+    [
+     315.85,
+     -246.47
+    ],
+    [
+     318.35,
+     -252.5
+    ],
+    [
+     322.32,
+     -257.68
+    ],
+    [
+     327.5,
+     -261.65
+    ],
+    [
+     333.53,
+     -264.15
+    ],
+    [
+     340.0,
+     -265.0
+    ],
+    [
+     346.47,
+     -264.15
+    ],
+    [
+     352.5,
+     -261.65
+    ],
+    [
+     357.68,
+     -257.68
+    ],
+    [
+     361.65,
+     -252.5
+    ],
+    [
+     364.15,
+     -246.47
+    ]
+   ],
+   "start": -20,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AV Mount 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AV Mount 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AV Mount 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AV Mount Rear 1",
+   "points": [
+    [
+     -315.0,
+     240.0
+    ],
+    [
+     -315.85,
+     246.47
+    ],
+    [
+     -318.35,
+     252.5
+    ],
+    [
+     -322.32,
+     257.68
+    ],
+    [
+     -327.5,
+     261.65
+    ],
+    [
+     -333.53,
+     264.15
+    ],
+    [
+     -340.0,
+     265.0
+    ],
+    [
+     -346.47,
+     264.15
+    ],
+    [
+     -352.5,
+     261.65
+    ],
+    [
+     -357.68,
+     257.68
+    ],
+    [
+     -361.65,
+     252.5
+    ],
+    [
+     -364.15,
+     246.47
+    ],
+    [
+     -365.0,
+     240.0
+    ],
+    [
+     -364.15,
+     233.53
+    ],
+    [
+     -361.65,
+     227.5
+    ],
+    [
+     -357.68,
+     222.32
+    ],
+    [
+     -352.5,
+     218.35
+    ],
+    [
+     -346.47,
+     215.85
+    ],
+    [
+     -340.0,
+     215.0
+    ],
+    [
+     -333.53,
+     215.85
+    ],
+    [
+     -327.5,
+     218.35
+    ],
+    [
+     -322.32,
+     222.32
+    ],
+    [
+     -318.35,
+     227.5
+    ],
+    [
+     -315.85,
+     233.53
+    ]
+   ],
+   "start": -20,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AV Mount Rear 1",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AV Mount Rear 1",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AV Mount Rear 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "AV Mount Rear 2",
+   "points": [
+    [
+     365.0,
+     240.0
+    ],
+    [
+     364.15,
+     246.47
+    ],
+    [
+     361.65,
+     252.5
+    ],
+    [
+     357.68,
+     257.68
+    ],
+    [
+     352.5,
+     261.65
+    ],
+    [
+     346.47,
+     264.15
+    ],
+    [
+     340.0,
+     265.0
+    ],
+    [
+     333.53,
+     264.15
+    ],
+    [
+     327.5,
+     261.65
+    ],
+    [
+     322.32,
+     257.68
+    ],
+    [
+     318.35,
+     252.5
+    ],
+    [
+     315.85,
+     246.47
+    ],
+    [
+     315.0,
+     240.0
+    ],
+    [
+     315.85,
+     233.53
+    ],
+    [
+     318.35,
+     227.5
+    ],
+    [
+     322.32,
+     222.32
+    ],
+    [
+     327.5,
+     218.35
+    ],
+    [
+     333.53,
+     215.85
+    ],
+    [
+     340.0,
+     215.0
+    ],
+    [
+     346.47,
+     215.85
+    ],
+    [
+     352.5,
+     218.35
+    ],
+    [
+     357.68,
+     222.32
+    ],
+    [
+     361.65,
+     227.5
+    ],
+    [
+     364.15,
+     233.53
+    ]
+   ],
+   "start": -20,
+   "end": 0
+  },
+  {
+   "op": "set_subcategory",
+   "name": "AV Mount Rear 2",
+   "subcategory": "Rubber"
+  },
+  {
+   "op": "set_material_param",
+   "name": "AV Mount Rear 2",
+   "param": "Rubber Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "AV Mount Rear 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Housing Foot",
+   "points": [
+    [
+     -200,
+     -230
+    ],
+    [
+     200,
+     -230
+    ],
+    [
+     200,
+     -60
+    ],
+    [
+     -200,
+     -60
+    ]
+   ],
+   "start": 80,
+   "end": 130
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Housing Foot",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Housing Foot",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Housing Foot",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Blower Housing",
+   "profile": [
+    [
+     0,
+     230
+    ],
+    [
+     255,
+     230
+    ],
+    [
+     272,
+     205
+    ],
+    [
+     272,
+     85
+    ],
+    [
+     255,
+     60
+    ],
+    [
+     0,
+     60
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Blower Housing",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Blower Housing",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Housing Rib 1",
+   "profile": [
+    [
+     272,
+     190
+    ],
+    [
+     280,
+     190
+    ],
+    [
+     280,
+     182
+    ],
+    [
+     272,
+     182
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Housing Rib 1",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Housing Rib 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Housing Rib 2",
+   "profile": [
+    [
+     272,
+     150
+    ],
+    [
+     280,
+     150
+    ],
+    [
+     280,
+     142
+    ],
+    [
+     272,
+     142
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Housing Rib 2",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Housing Rib 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Housing Rib 3",
+   "profile": [
+    [
+     272,
+     110
+    ],
+    [
+     280,
+     110
+    ],
+    [
+     280,
+     102
+    ],
+    [
+     272,
+     102
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Housing Rib 3",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Housing Rib 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Motor",
+   "points": [
+    [
+     140.0,
+     380.0
+    ],
+    [
+     135.23,
+     416.23
+    ],
+    [
+     121.24,
+     450.0
+    ],
+    [
+     98.99,
+     478.99
+    ],
+    [
+     70.0,
+     501.24
+    ],
+    [
+     36.23,
+     515.23
+    ],
+    [
+     0.0,
+     520.0
+    ],
+    [
+     -36.23,
+     515.23
+    ],
+    [
+     -70.0,
+     501.24
+    ],
+    [
+     -98.99,
+     478.99
+    ],
+    [
+     -121.24,
+     450.0
+    ],
+    [
+     -135.23,
+     416.23
+    ],
+    [
+     -140.0,
+     380.0
+    ],
+    [
+     -135.23,
+     343.77
+    ],
+    [
+     -121.24,
+     310.0
+    ],
+    [
+     -98.99,
+     281.01
+    ],
+    [
+     -70.0,
+     258.76
+    ],
+    [
+     -36.23,
+     244.77
+    ],
+    [
+     -0.0,
+     240.0
+    ],
+    [
+     36.23,
+     244.77
+    ],
+    [
+     70.0,
+     258.76
+    ],
+    [
+     98.99,
+     281.01
+    ],
+    [
+     121.24,
+     310.0
+    ],
+    [
+     135.23,
+     343.77
+    ]
+   ],
+   "start": -260,
+   "end": 60,
+   "sketch": "front"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Motor",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 1",
+   "profile": [
+    [
+     140,
+     30
+    ],
+    [
+     150,
+     30
+    ],
+    [
+     150,
+     20
+    ],
+    [
+     140,
+     20
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 1",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 1",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 2",
+   "profile": [
+    [
+     140,
+     -25
+    ],
+    [
+     150,
+     -25
+    ],
+    [
+     150,
+     -35
+    ],
+    [
+     140,
+     -35
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 2",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 2",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 3",
+   "profile": [
+    [
+     140,
+     -80
+    ],
+    [
+     150,
+     -80
+    ],
+    [
+     150,
+     -90
+    ],
+    [
+     140,
+     -90
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 3",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 3",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 4",
+   "profile": [
+    [
+     140,
+     -135
+    ],
+    [
+     150,
+     -135
+    ],
+    [
+     150,
+     -145
+    ],
+    [
+     140,
+     -145
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 4",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 4",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Motor Fin 5",
+   "profile": [
+    [
+     140,
+     -190
+    ],
+    [
+     150,
+     -190
+    ],
+    [
+     150,
+     -200
+    ],
+    [
+     140,
+     -200
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Fin 5",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Fin 5",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "revolution",
+   "name": "Fan Cowl",
+   "profile": [
+    [
+     0,
+     -260
+    ],
+    [
+     145,
+     -260
+    ],
+    [
+     145,
+     -315
+    ],
+    [
+     105,
+     -340
+    ],
+    [
+     0,
+     -345
+    ]
+   ],
+   "axis_at": [
+    0,
+    380
+   ],
+   "axis": "y",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Fan Cowl",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Fan Cowl",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Motor Feet",
+   "points": [
+    [
+     -120,
+     -60
+    ],
+    [
+     120,
+     -60
+    ],
+    [
+     120,
+     240
+    ],
+    [
+     -120,
+     240
+    ]
+   ],
+   "start": 80,
+   "end": 245
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Motor Feet",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Motor Feet",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Motor Feet",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Terminal Box",
+   "points": [
+    [
+     -60,
+     0
+    ],
+    [
+     60,
+     0
+    ],
+    [
+     60,
+     120
+    ],
+    [
+     -60,
+     120
+    ]
+   ],
+   "start": 515,
+   "end": 585
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Terminal Box",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Terminal Box",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Terminal Box",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Port",
+   "points": [
+    [
+     -88.0,
+     -145.0
+    ],
+    [
+     -89.43,
+     -134.13
+    ],
+    [
+     -93.63,
+     -124.0
+    ],
+    [
+     -100.3,
+     -115.3
+    ],
+    [
+     -109.0,
+     -108.63
+    ],
+    [
+     -119.13,
+     -104.43
+    ],
+    [
+     -130.0,
+     -103.0
+    ],
+    [
+     -140.87,
+     -104.43
+    ],
+    [
+     -151.0,
+     -108.63
+    ],
+    [
+     -159.7,
+     -115.3
+    ],
+    [
+     -166.37,
+     -124.0
+    ],
+    [
+     -170.57,
+     -134.13
+    ],
+    [
+     -172.0,
+     -145.0
+    ],
+    [
+     -170.57,
+     -155.87
+    ],
+    [
+     -166.37,
+     -166.0
+    ],
+    [
+     -159.7,
+     -174.7
+    ],
+    [
+     -151.0,
+     -181.37
+    ],
+    [
+     -140.87,
+     -185.57
+    ],
+    [
+     -130.0,
+     -187.0
+    ],
+    [
+     -119.13,
+     -185.57
+    ],
+    [
+     -109.0,
+     -181.37
+    ],
+    [
+     -100.3,
+     -174.7
+    ],
+    [
+     -93.63,
+     -166.0
+    ],
+    [
+     -89.43,
+     -155.87
+    ]
+   ],
+   "start": 600,
+   "end": 720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Port",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Port",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Port",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Port",
+   "points": [
+    [
+     172.0,
+     -145.0
+    ],
+    [
+     170.57,
+     -134.13
+    ],
+    [
+     166.37,
+     -124.0
+    ],
+    [
+     159.7,
+     -115.3
+    ],
+    [
+     151.0,
+     -108.63
+    ],
+    [
+     140.87,
+     -104.43
+    ],
+    [
+     130.0,
+     -103.0
+    ],
+    [
+     119.13,
+     -104.43
+    ],
+    [
+     109.0,
+     -108.63
+    ],
+    [
+     100.3,
+     -115.3
+    ],
+    [
+     93.63,
+     -124.0
+    ],
+    [
+     89.43,
+     -134.13
+    ],
+    [
+     88.0,
+     -145.0
+    ],
+    [
+     89.43,
+     -155.87
+    ],
+    [
+     93.63,
+     -166.0
+    ],
+    [
+     100.3,
+     -174.7
+    ],
+    [
+     109.0,
+     -181.37
+    ],
+    [
+     119.13,
+     -185.57
+    ],
+    [
+     130.0,
+     -187.0
+    ],
+    [
+     140.87,
+     -185.57
+    ],
+    [
+     151.0,
+     -181.37
+    ],
+    [
+     159.7,
+     -174.7
+    ],
+    [
+     166.37,
+     -166.0
+    ],
+    [
+     170.57,
+     -155.87
+    ]
+   ],
+   "start": 600,
+   "end": 720
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Port",
+   "subcategory": "Pcg"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Port",
+   "param": "Pcg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Port",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Inlet Silencer",
+   "points": [
+    [
+     -58.0,
+     -145.0
+    ],
+    [
+     -60.45,
+     -126.37
+    ],
+    [
+     -67.65,
+     -109.0
+    ],
+    [
+     -79.09,
+     -94.09
+    ],
+    [
+     -94.0,
+     -82.65
+    ],
+    [
+     -111.37,
+     -75.45
+    ],
+    [
+     -130.0,
+     -73.0
+    ],
+    [
+     -148.63,
+     -75.45
+    ],
+    [
+     -166.0,
+     -82.65
+    ],
+    [
+     -180.91,
+     -94.09
+    ],
+    [
+     -192.35,
+     -109.0
+    ],
+    [
+     -199.55,
+     -126.37
+    ],
+    [
+     -202.0,
+     -145.0
+    ],
+    [
+     -199.55,
+     -163.63
+    ],
+    [
+     -192.35,
+     -181.0
+    ],
+    [
+     -180.91,
+     -195.91
+    ],
+    [
+     -166.0,
+     -207.35
+    ],
+    [
+     -148.63,
+     -214.55
+    ],
+    [
+     -130.0,
+     -217.0
+    ],
+    [
+     -111.37,
+     -214.55
+    ],
+    [
+     -94.0,
+     -207.35
+    ],
+    [
+     -79.09,
+     -195.91
+    ],
+    [
+     -67.65,
+     -181.0
+    ],
+    [
+     -60.45,
+     -163.63
+    ]
+   ],
+   "start": 720,
+   "end": 960
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Inlet Silencer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Inlet Silencer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Inlet Silencer",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Outlet Silencer",
+   "points": [
+    [
+     202.0,
+     -145.0
+    ],
+    [
+     199.55,
+     -126.37
+    ],
+    [
+     192.35,
+     -109.0
+    ],
+    [
+     180.91,
+     -94.09
+    ],
+    [
+     166.0,
+     -82.65
+    ],
+    [
+     148.63,
+     -75.45
+    ],
+    [
+     130.0,
+     -73.0
+    ],
+    [
+     111.37,
+     -75.45
+    ],
+    [
+     94.0,
+     -82.65
+    ],
+    [
+     79.09,
+     -94.09
+    ],
+    [
+     67.65,
+     -109.0
+    ],
+    [
+     60.45,
+     -126.37
+    ],
+    [
+     58.0,
+     -145.0
+    ],
+    [
+     60.45,
+     -163.63
+    ],
+    [
+     67.65,
+     -181.0
+    ],
+    [
+     79.09,
+     -195.91
+    ],
+    [
+     94.0,
+     -207.35
+    ],
+    [
+     111.37,
+     -214.55
+    ],
+    [
+     130.0,
+     -217.0
+    ],
+    [
+     148.63,
+     -214.55
+    ],
+    [
+     166.0,
+     -207.35
+    ],
+    [
+     180.91,
+     -195.91
+    ],
+    [
+     192.35,
+     -181.0
+    ],
+    [
+     199.55,
+     -163.63
+    ]
+   ],
+   "start": 720,
+   "end": 960
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Outlet Silencer",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Outlet Silencer",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Outlet Silencer",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Diverter Valve",
+   "points": [
+    [
+     212.0,
+     -230.0
+    ],
+    [
+     215.06,
+     -229.39
+    ],
+    [
+     217.66,
+     -227.66
+    ],
+    [
+     219.39,
+     -225.06
+    ],
+    [
+     220.0,
+     -222.0
+    ],
+    [
+     220.0,
+     -68.0
+    ],
+    [
+     219.39,
+     -64.94
+    ],
+    [
+     217.66,
+     -62.34
+    ],
+    [
+     215.06,
+     -60.61
+    ],
+    [
+     212.0,
+     -60.0
+    ],
+    [
+     -212.0,
+     -60.0
+    ],
+    [
+     -215.06,
+     -60.61
+    ],
+    [
+     -217.66,
+     -62.34
+    ],
+    [
+     -219.39,
+     -64.94
+    ],
+    [
+     -220.0,
+     -68.0
+    ],
+    [
+     -220.0,
+     -222.0
+    ],
+    [
+     -219.39,
+     -225.06
+    ],
+    [
+     -217.66,
+     -227.66
+    ],
+    [
+     -215.06,
+     -229.39
+    ],
+    [
+     -212.0,
+     -230.0
+    ]
+   ],
+   "start": 960,
+   "end": 1060
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diverter Valve",
+   "subcategory": "Dark"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diverter Valve",
+   "param": "Dark Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diverter Valve",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Valve Actuator",
+   "points": [
+    [
+     -60,
+     -60
+    ],
+    [
+     60,
+     -60
+    ],
+    [
+     60,
+     40
+    ],
+    [
+     -60,
+     40
+    ]
+   ],
+   "start": 990,
+   "end": 1050
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Valve Actuator",
+   "subcategory": "Black"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Valve Actuator",
+   "param": "Black Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Valve Actuator",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Line Stub",
+   "points": [
+    [
+     55.0,
+     -145.0
+    ],
+    [
+     53.13,
+     -130.76
+    ],
+    [
+     47.63,
+     -117.5
+    ],
+    [
+     38.89,
+     -106.11
+    ],
+    [
+     27.5,
+     -97.37
+    ],
+    [
+     14.24,
+     -91.87
+    ],
+    [
+     0.0,
+     -90.0
+    ],
+    [
+     -14.24,
+     -91.87
+    ],
+    [
+     -27.5,
+     -97.37
+    ],
+    [
+     -38.89,
+     -106.11
+    ],
+    [
+     -47.63,
+     -117.5
+    ],
+    [
+     -53.13,
+     -130.76
+    ],
+    [
+     -55.0,
+     -145.0
+    ],
+    [
+     -53.13,
+     -159.24
+    ],
+    [
+     -47.63,
+     -172.5
+    ],
+    [
+     -38.89,
+     -183.89
+    ],
+    [
+     -27.5,
+     -192.63
+    ],
+    [
+     -14.24,
+     -198.13
+    ],
+    [
+     -0.0,
+     -200.0
+    ],
+    [
+     14.24,
+     -198.13
+    ],
+    [
+     27.5,
+     -192.63
+    ],
+    [
+     38.89,
+     -183.89
+    ],
+    [
+     47.63,
+     -172.5
+    ],
+    [
+     53.13,
+     -159.24
+    ]
+   ],
+   "start": 1060,
+   "end": 1220
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Line Stub",
+   "subcategory": "Upvc"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Line Stub",
+   "param": "Upvc Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Line Stub",
+   "coarse": false,
+   "medium": true,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Atmosphere Port",
+   "points": [
+    [
+     -140.0,
+     -145.0
+    ],
+    [
+     -141.02,
+     -137.24
+    ],
+    [
+     -144.02,
+     -130.0
+    ],
+    [
+     -148.79,
+     -123.79
+    ],
+    [
+     -155.0,
+     -119.02
+    ],
+    [
+     -162.24,
+     -116.02
+    ],
+    [
+     -170.0,
+     -115.0
+    ],
+    [
+     -177.76,
+     -116.02
+    ],
+    [
+     -185.0,
+     -119.02
+    ],
+    [
+     -191.21,
+     -123.79
+    ],
+    [
+     -195.98,
+     -130.0
+    ],
+    [
+     -198.98,
+     -137.24
+    ],
+    [
+     -200.0,
+     -145.0
+    ],
+    [
+     -198.98,
+     -152.76
+    ],
+    [
+     -195.98,
+     -160.0
+    ],
+    [
+     -191.21,
+     -166.21
+    ],
+    [
+     -185.0,
+     -170.98
+    ],
+    [
+     -177.76,
+     -173.98
+    ],
+    [
+     -170.0,
+     -175.0
+    ],
+    [
+     -162.24,
+     -173.98
+    ],
+    [
+     -155.0,
+     -170.98
+    ],
+    [
+     -148.79,
+     -166.21
+    ],
+    [
+     -144.02,
+     -160.0
+    ],
+    [
+     -141.02,
+     -152.76
+    ]
+   ],
+   "start": 1060,
+   "end": 1120
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Atmosphere Port",
+   "subcategory": "Galv"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Atmosphere Port",
+   "param": "Galv Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Atmosphere Port",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "extrusion",
+   "name": "Relief Valve",
+   "points": [
+    [
+     210.0,
+     -145.0
+    ],
+    [
+     209.32,
+     -139.82
+    ],
+    [
+     207.32,
+     -135.0
+    ],
+    [
+     204.14,
+     -130.86
+    ],
+    [
+     200.0,
+     -127.68
+    ],
+    [
+     195.18,
+     -125.68
+    ],
+    [
+     190.0,
+     -125.0
+    ],
+    [
+     184.82,
+     -125.68
+    ],
+    [
+     180.0,
+     -127.68
+    ],
+    [
+     175.86,
+     -130.86
+    ],
+    [
+     172.68,
+     -135.0
+    ],
+    [
+     170.68,
+     -139.82
+    ],
+    [
+     170.0,
+     -145.0
+    ],
+    [
+     170.68,
+     -150.18
+    ],
+    [
+     172.68,
+     -155.0
+    ],
+    [
+     175.86,
+     -159.14
+    ],
+    [
+     180.0,
+     -162.32
+    ],
+    [
+     184.82,
+     -164.32
+    ],
+    [
+     190.0,
+     -165.0
+    ],
+    [
+     195.18,
+     -164.32
+    ],
+    [
+     200.0,
+     -162.32
+    ],
+    [
+     204.14,
+     -159.14
+    ],
+    [
+     207.32,
+     -155.0
+    ],
+    [
+     209.32,
+     -150.18
+    ]
+   ],
+   "start": 1060,
+   "end": 1110
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Relief Valve",
+   "subcategory": "Brass"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Relief Valve",
+   "param": "Brass Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Relief Valve",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Terminal Box",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Number of Poles",
+   "connector": "Power",
+   "connector_param": "Number of Poles",
+   "param": "Number of Poles"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  },
+  {
+   "op": "set_type_image",
+   "name": "Type image",
+   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\M\\_Images\\FMC_M_MechEq_PneumaticTube_Blower.png"
+  }
+ ],
+ "values": {
+  "Motor 1.5 kW, 415 V 3-phase": {
+   "value": 1500,
+   "source_status": "assumed",
+   "source": "record basis"
+  },
+  "Unit 800 x 600 x 1220 mm": {
+   "value": "800x600x1220",
+   "source_status": "assumed",
+   "source": "typical PTS blower package"
+  },
+  "Line 110 mm": {
+   "value": 110,
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ }
+}

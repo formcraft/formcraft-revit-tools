@@ -1,0 +1,221 @@
+{
+ "family": "FMC_A_SpecEq_GrabRail_Straight",
+ "category": "Specialty Equipment",
+ "template": "Metric Generic Model.rft",
+ "desc": "Straight grab rail, 32 mm brushed stainless tube, 50 mm clear of the wall, concealed-fixing flanges with cover rosettes",
+ "ifc": "IfcDiscreteAccessory",
+ "keynote": "A.SAC_00",
+ "types": [
+  {
+   "name": "300_SS",
+   "desc": "Straight grab rail 300 mm centres, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "name": "450_SS",
+   "desc": "Straight grab rail 450 mm centres, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "name": "600_SS",
+   "desc": "Straight grab rail 600 mm centres, 32 mm stainless steel, concealed fixings"
+  },
+  {
+   "name": "900_SS",
+   "desc": "Straight grab rail 900 mm centres, 32 mm stainless steel, concealed fixings"
+  }
+ ],
+ "materials": {
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "parts": [
+  {
+   "n": "Rail Tube",
+   "shape": "cyl",
+   "axis": "x",
+   "c": [
+    -66,
+    0
+   ],
+   "r": 16,
+   "x": [
+    -150,
+    150
+   ],
+   "mat": "ss",
+   "lod": "mf"
+  },
+  {
+   "n": "Rail Return",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -150,
+    0
+   ],
+   "r": 16,
+   "y": [
+    -66,
+    -8
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rail Bend",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -150,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     -82.0
+    ],
+    [
+     6.12,
+     -80.78
+    ],
+    [
+     11.31,
+     -77.31
+    ],
+    [
+     14.78,
+     -72.12
+    ],
+    [
+     16.0,
+     -66.0
+    ],
+    [
+     14.78,
+     -59.88
+    ],
+    [
+     11.31,
+     -54.69
+    ],
+    [
+     6.12,
+     -51.22
+    ],
+    [
+     0,
+     -50.0
+    ]
+   ],
+   "mat": "ss",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Rail Flange",
+   "shape": "turn",
+   "axis": "y",
+   "c": [
+    -150,
+    0
+   ],
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     36,
+     0
+    ],
+    [
+     36,
+     -4
+    ],
+    [
+     30,
+     -9
+    ],
+    [
+     0,
+     -9
+    ]
+   ],
+   "mat": "ss",
+   "lod": "mf",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fixing Screw",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -150,
+    0
+   ],
+   "r": 4,
+   "y": [
+    -10,
+    -9
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "reference": {
+  "query": "grab rail straight specialty equipment hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=grab+rail+straight+specialty+equipment+hospital",
+  "basis": "generic product; brand, model and supplier open for review",
+  "photo": "https://www.archiexpo.com/architecture-design-manufacturer/healthcare-facility-grab-bar-65147.html"
+ },
+ "values": {
+  "Tube 32 mm, 50 mm clear of wall": {
+   "value": 32,
+   "source_status": "assumed",
+   "source": "BS 8300-2"
+  },
+  "Mounting height 800 mm (centreline)": {
+   "value": 800,
+   "source_status": "assumed",
+   "source": "Approved Document M"
+  },
+  "Length 300/450/600/900 mm centres": {
+   "value": "300-900",
+   "source_status": "assumed",
+   "source": "record types"
+  }
+ },
+ "about": "Grab rail modelled as a generic product: tube, returns with bends to the wall, flanges with rosettes. Centreline at z = 0, height set by Default Elevation; geometry is the 300 type.",
+ "type_values": {
+  "Default Elevation": 800
+ }
+}

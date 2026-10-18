@@ -1,0 +1,208 @@
+{
+ "family": "FMC_M_AirTerminal_Grille_Extract_LowLevel",
+ "category": "Air Terminals",
+ "template": "Metric Generic Model.rft",
+ "desc": "Low-level extract grille 600 x 300, flush stainless steel slotted face (cleanable, theatre and isolation rooms), plenum with top spigot",
+ "ifc": "IfcAirTerminal",
+ "keynote": "H.ATD_04",
+ "types": [
+  {
+   "name": "600x300_LowLevel"
+  }
+ ],
+ "type_values": {
+  "Default Elevation": 150
+ },
+ "materials": {
+  "black": "FMC_Plastic_ABS_Black",
+  "chrome": "FMC_Metal_Chrome_Polished",
+  "galv": "FMC_Metal_Duct_Galvanised",
+  "ss": "FMC_Metal_StainlessSteel_Brushed"
+ },
+ "reference": {
+  "query": "grille extract low level air terminals hospital",
+  "images": "https://www.google.com/search?tbm=isch&q=grille+extract+low+level+air+terminals+hospital",
+  "basis": "generic product; brand, model and supplier open for review"
+ },
+ "parts": [
+  {
+   "n": "Face Plate",
+   "shape": "fbox",
+   "at": [
+    -325,
+    -3,
+    -25,
+    325,
+    0,
+    325
+   ],
+   "mat": "ss",
+   "r": 4
+  },
+  {
+   "n": "Slot",
+   "shape": "fbox",
+   "at": [
+    -292,
+    -4,
+    25,
+    -280,
+    -3,
+    275
+   ],
+   "mat": "black",
+   "r": 5,
+   "repeat": {
+    "n": 19,
+    "d": [
+     31.4,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Kick Lip",
+   "shape": "fbox",
+   "at": [
+    -325,
+    -8,
+    -25,
+    325,
+    -3,
+    -10
+   ],
+   "mat": "ss",
+   "lod": "f"
+  },
+  {
+   "n": "Plenum Box",
+   "shape": "box",
+   "at": [
+    -300,
+    0,
+    0,
+    300,
+    200,
+    300
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Spigot",
+   "shape": "cyl",
+   "axis": "z",
+   "c": [
+    0,
+    100
+   ],
+   "r": 100,
+   "z": [
+    300,
+    420
+   ],
+   "mat": "galv"
+  },
+  {
+   "n": "Fixing Screw Bottom",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -305,
+    -5
+   ],
+   "r": 4,
+   "y": [
+    -4,
+    -3
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     610,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Fixing Screw Top",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -305,
+    305
+   ],
+   "r": 4,
+   "y": [
+    -4,
+    -3
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     610,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "n": "Quarter Turn Latch",
+   "shape": "cyl",
+   "axis": "y",
+   "c": [
+    -150,
+    300
+   ],
+   "r": 8,
+   "y": [
+    -6,
+    -3
+   ],
+   "mat": "chrome",
+   "lod": "f",
+   "repeat": {
+    "n": 2,
+    "d": [
+     300,
+     0,
+     0
+    ]
+   }
+  }
+ ],
+ "connectors": [
+  {
+   "n": "Extract",
+   "domain": "duct",
+   "system": "ExhaustAir",
+   "part": "Spigot",
+   "side": "top",
+   "flow": "Out",
+   "diameter": 200
+  }
+ ],
+ "values": {
+  "Face 650 x 350 mm, stainless": {
+   "value": "650x350",
+   "source_status": "assumed",
+   "source": "HTM 03-01 low-level extract practice"
+  },
+  "Bottom 150 mm above floor": {
+   "value": 150,
+   "source_status": "assumed",
+   "source": "HTM 03-01"
+  },
+  "Free area 45 %": {
+   "value": "45%",
+   "source_status": "assumed",
+   "source": "typical product, to confirm with the supplier"
+  }
+ },
+ "about": "Modelled as a generic product: flush stainless face plate with vertical slots, kick lip, quarter-turn latches and screws for cleaning access, plenum box in the wall with top spigot."
+}
