@@ -10,3 +10,11 @@
 | D6 | Licence service behind sign-in, seats and trials (a licensing service, or Autodesk App Store entitlement if sold there) | Open: shell uses a mock until decided |
 | D7 | Payment provider for the account website (card, mobile money, bank transfer) | Open |
 | D8 | Delivery gate names (DG1–DG3 proposed) so they don't clash with geometry stages G1–G5 | Open |
+
+## 18 Oct 2026: the engineering hub and the family LOD ladder (owner)
+- One Formcraft MCP server for Revit, Navisworks, Robot, Rhino and Power BI that makes them work together as one
+  application, with AI as the operator and the kit and rules in charge (docs/PLAN_ENGINEERING_HUB.md).
+- Scripts first, AI second: repeatable work runs as saved flows from a button or a schedule, without AI; tables move
+  between Excel and the kit by script.
+- Every product is one family carrying all three LODs: LOD 200 on Coarse, LOD 300 on Medium, LOD 400 on Fine, with the
+  LOD 400 parts modelled in Rhino through the hub.
