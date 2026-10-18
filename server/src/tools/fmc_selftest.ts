@@ -1,3 +1,5 @@
+import { appLines, appStatuses, realProbe } from "../hub/apps.js";
+import { serverRoot } from "./fmc_apps.js";
 import fs from "node:fs";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -61,6 +63,8 @@ export async function runFmcSelftest(args: FmcSelftestArgs) {
     ...guardPaths(config, probe, (p) => expandEnv(p)),
     aiRulebookLine(loadRulebook(config), config.rulebooks_dir),
     ...kitLayout((facts?.kit_folder || args.kit_folder || "").trim(), probe),
+    // the engineering hub: each app, its connector and whether it is on (fmc_apps)
+    ...appLines(appStatuses(realProbe(serverRoot()))),
   ];
   const s = summary(lines);
   const text = { ...s, lines, server, server_on_disk: onDisk, addin: facts?.addin ?? null, documents: facts?.documents ?? [] };
