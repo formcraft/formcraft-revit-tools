@@ -689,7 +689,7 @@ test("QS01: the level-of-detail ladder is read from the recipe: Coarse box LOD 1
   assert.equal(lodLine("FMC_I_Bed_Detailed", detailed).state, "Warn", "a detailed family without twins: LOD 300 on Fine");
   const twins = [env, body, vis("Coarse Envelope", true, false, false), vis("Wheel", false, true, false),
     { op: "import_part", name: "Wheel Fine", file: "D:\K\_Rhino\F\Wheel.3dm" }, vis("Wheel Fine", false, false, true)];
-  assert.deepEqual(lodLadder("FMC_I_Bed_Detailed", twins), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400" });
+  assert.deepEqual(lodLadder("FMC_I_Bed_Detailed", twins), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400 + Render" });
   assert.equal(lodLine("FMC_I_Bed_Detailed", twins).state, "Pass");
   const noCoarse = [body];
   assert.match(lodLine("FMC_A_Door", noCoarse).detail, /Coarse LOD 200.*expected LOD 100/, "a body on Coarse with no envelope is reported");

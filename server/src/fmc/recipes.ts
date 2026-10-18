@@ -259,7 +259,9 @@ export interface HostTestResult {
  * LOD 100; a standard family's body is LOD 200; a detailed family's native body on Medium is LOD 300; its smooth Rhino
  * twins on Fine are LOD 400. Read from the recipe: what each detail level shows.
  */
-export type LodLevel = "LOD 100" | "LOD 200" | "LOD 300" | "LOD 400" | "none";
+/** Owner, 19 Oct: the Rhino-smooth Fine level is "LOD 400 + Render" (not LOD 500). */
+export const LOD_RENDER = "LOD 400 + Render";
+export type LodLevel = "LOD 100" | "LOD 200" | "LOD 300" | "LOD 400 + Render" | "none";
 
 export function lodLadder(family: string, ops: Array<Record<string, any>>): { coarse: LodLevel; medium: LodLevel; fine: LodLevel } {
   const SOLIDS = new Set(["extrusion", "revolution", "sweep", "blend", "import_part"]);
@@ -273,7 +275,7 @@ export function lodLadder(family: string, ops: Array<Record<string, any>>): { co
     const seen = solids.filter((o) => shows(o, level));
     if (seen.length === 0) return "none";
     if (seen.every(envelope)) return "LOD 100";
-    if (seen.some((o) => o.op === "import_part")) return "LOD 400";
+    if (seen.some((o) => o.op === "import_part")) return LOD_RENDER;
     return detailed ? "LOD 300" : "LOD 200";
   };
   return { coarse: at("coarse"), medium: at("medium"), fine: at("fine") };
@@ -282,12 +284,12 @@ export function lodLadder(family: string, ops: Array<Record<string, any>>): { co
 export function lodLine(family: string, ops: Array<Record<string, any>>): GateLine {
   const l = lodLadder(family, ops);
   const detail = `Coarse ${l.coarse}, Medium ${l.medium}, Fine ${l.fine}`;
-  const want = /_Detailed$/.test(family) ? ["LOD 100", "LOD 300", "LOD 400"] : ["LOD 100", "LOD 200", "LOD 200"];
+  const want = /_Detailed$/.test(family) ? ["LOD 100", "LOD 300", LOD_RENDER] : ["LOD 100", "LOD 200", "LOD 200"];
   const got = [l.coarse, l.medium, l.fine];
   if (got.includes("none")) return { check: "Levels of detail", state: "Fail", detail: `${detail}: a level shows nothing` };
-  const ok = got.every((g, i) => g === want[i] || (i === 2 && want[2] === "LOD 400" && g === "LOD 300"));
-  return { check: "Levels of detail", state: ok && !(want[2] === "LOD 400" && l.fine === "LOD 300") ? "Pass" : "Warn",
-    detail: ok && l.fine === "LOD 300" && want[2] === "LOD 400" ? `${detail}: no Rhino twins yet (fmc_rhino twins)` : ok ? detail : `${detail}; expected ${want.join(", ")}` };
+  const ok = got.every((g, i) => g === want[i] || (i === 2 && want[2] === LOD_RENDER && g === "LOD 300"));
+  return { check: "Levels of detail", state: ok && !(want[2] === LOD_RENDER && l.fine === "LOD 300") ? "Pass" : "Warn",
+    detail: ok && l.fine === "LOD 300" && want[2] === LOD_RENDER ? `${detail}: no Rhino twins yet (fmc_rhino twins)` : ok ? detail : `${detail}; expected ${want.join(", ")}` };
 }
 
 export function hostTestKind(registerHost: string | null | undefined): "wall" | "ceiling" | null {
