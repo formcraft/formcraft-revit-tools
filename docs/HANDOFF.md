@@ -59,6 +59,12 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To Claude Code
 
+### 19 Oct · the 14-family engineer sample at three levels each (owner's priority, queue P00 · QS01–QS12)
+Plan: `docs/handoff/SAMPLE14_LOD_LADDER.md`. All 14 sample families get LOD 200 (standard), LOD 300 (detailed, Medium)
+and LOD 400 (Rhino twins, Fine), shown side by side like the first four. **Level names change:** the Coarse box is LOD
+100, the standard parametric family is LOD 200 (owner). Doors and windows are in the 14, plus a new laboratory window.
+The big code item is QS03, a detail generator that turns a standard recipe into a `_Detailed` one. Do F-067 (#191) first.
+
 ### 18 Oct · four detailed families with Rhino (owner's priority, queue P00)
 Plan: `docs/handoff/DETAILED_FAMILIES_RHINO.md`. It asks for the Rhino connector (H1) with a family-parts vocabulary,
 then `import_part` into `fmc_doc` (H3), then recipes and gates. Waits for the owner's yes before code. Retest F-065
