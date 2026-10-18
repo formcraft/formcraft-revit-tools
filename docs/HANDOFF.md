@@ -12,6 +12,30 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · the 14-family sample: what is ready to build, what is still the chat's
+- **Ready (QS03 generator, all recipe-checked):** `_Staging\_Batch\batch_QS03_SAMPLE_LOD400.json`, 14 recipes in build
+  order: 7 components (`FMC_A_Part_LeverRose`, `ButtHinge`, `OverheadCloser`, `PullHandle`, `RadiationWarningLight`,
+  `BlindKnob`, `SpeechGrille`, each with its Rhino twins on Fine), then 7 families:
+  - both doors (`_Detailed`): components on the door's planes, **`Open`** swings the leaf 90° in; the X-ray door has the
+    D-bar pull outside and the warning light box with the radiation sign over the head;
+  - the observation window (**`Open`** raises the integral blind), the pharmacy hatch (**`Open`** slides the hatch panel
+    up; speech grille; roller-shutter box), the laboratory window (PassHatch type: stainless pass box, **`Open`** drops
+    its inner door); each with a 500 mm working-zone clearance and **`Show Clearance`**;
+  - the generator (**`Open`** swings both side doors out; 44 twins) and the fire pump set (40 twins), each with
+    **`Show Clearance`** on its maintenance zone.
+- **The operating light** (`batch_DET_LOD400.json`) now shows its **light path**: a beam from each lens to a 250 mm
+  field 1 m away (IEC 60601-2-41 distance), on the Light Path subcategory, **`Show Light Path`** (the satellite's only on
+  the double type). The distance and field are assumed: confirm or correct them.
+- **Material swap:** the windows' blind uses `FMC_Plastic_ABS_White` until the kit has `FMC_Fabric_Blind_Venetian_White`
+  (requested in `FMC_Material_Requests.csv`).
+- **Still the chat's (not generated here):** the **laminar-flow canopy**, the **bedhead panel** and the **steriliser**
+  are drawn only with boxes (their round parts as three-box crosses, every face on its own per-type plane). Their LOD 300
+  needs true round parts (outlets, collars, the light boss, spigots, the chamber barrel) at each type's real centre and
+  radius: please regenerate them from the product generator (pgen), which knows those values; then
+  `fmc_rhino twins` gives their LOD 400 and the steriliser gets its sliding doors and `Open`.
+- **Build:** this batch after the PRs merge and Revit has restarted; flex-test every type with `Open` Yes and No, the
+  host tests for the doors and windows, then the pictures (they are written beside each `.rfa` now).
+
 ### 19 Oct · QS03 proof: the hygienic door with components, Open and clearance (build and flex-test it)
 - **Batch:** `_Staging\_Batch\batch_QS03_DOOR_LOD400.json`, in order: `FMC_A_Part_LeverRose`, `FMC_A_Part_ButtHinge`,
   `FMC_A_Part_OverheadCloser` (each Medium = native shape, Fine = its Rhino twins), then
@@ -26,10 +50,23 @@ what each side must know before its next step.** Newest entry at the top of each
   4. Coarse shows no hardware, Medium the native parts, Fine the smooth twins.
 - **Report** each lock's note from the build answer ("x locked to Rose L", or "not locked: why"); a failed lock is the
   first thing to fix before the other nine get the same treatment.
+### 19 Oct · pictures on every save, the LOD labels in Gate A (F-066 #189, QS01, QS10)
+- **Every family the builder saves** (`fmc_recipe batch`, `build`, `fmc_doc save`) gets the "FMC Preview" view as its
+  preview picture, with reference planes and lines, levels, dimensions, connector glyphs and the Clearance and Coarse
+  subcategories hidden, and the same view as `<Role>\_Images\<family>_3d.png` (1024 px) beside the `.rfa`. The batch
+  line and the save answer carry `image` (a path, or "none: why"). `fmc_doc screenshot` hides the same aids (QS10). The
+  face-based host plate is not hidden yet: say in Run 12 whether it shows.
+- **Gate A has a "Levels of detail" line** (QS01): Coarse box LOD 100; standard family LOD 200 on Medium and Fine;
+  detailed family LOD 300 on Medium and LOD 400 on Fine (Rhino twins; a detailed family without them is a Warn).
+- **Found by the new line:** the standard doors show their whole body on Coarse (no envelope box), e.g.
+  `FMC_A_Door_FlushSingle_Hygienic`: a Warn. Decide whether a door's Coarse is a box (LOD 100) or the simplified door
+  Revit users expect; the check follows your answer.
+- **F-067 (#191, PR #193):** `batch_DET_LOD400.json` is remade from the fixed recipes; `twins` refuses a body off its
+  envelope. Build from the remade file.
 
 ### 19 Oct · the four detailed families at LOD 400: build them (queue P00, QD01–QD05)
 - **Ready to build:** `_Staging\_Batch\batch_DET_LOD400.json` holds all four, each one family with three levels:
-  Coarse = the envelope (LOD 200), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in
+  Coarse = the envelope (LOD 100), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in
   Rhino (LOD 400: 210 twins in all, every one closed and checked). Made by `fmc_rhino twins` from `batch_DET.json`;
   the server's recipe check passes (4 valid, 4,820 ops).
 - **It needs this build in Revit** (`import_part`, and the preview fix): close Revit once after the PR merges.

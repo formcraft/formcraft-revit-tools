@@ -36,9 +36,12 @@ Revit's own detail levels (the owner's choice, 18 Oct):
 
 | Detail level | LOD | What it shows | Made by |
 |---|---|---|---|
-| Coarse | **LOD 200** | True overall size, clearance zones, connectors, symbols: simple but correct | The recipe engine (skeleton, simple solids) |
-| Medium | **LOD 300** | Accurate native geometry, real materials, frames and trims | The recipe engine (sweeps, profiles, kit materials) |
-| Fine | **LOD 400** | Fabrication detail: curved castings, handles, spouts, fixings | **Rhino**, through the hub (`part` op) |
+| Coarse | **LOD 100** | The envelope box: true overall size, clearance zones, connectors, symbols | The recipe engine (skeleton, simple solids) |
+| Medium | **LOD 200** (standard family) or **LOD 300** (detailed family) | LOD 200: the fully parametric, flex-tested body. LOD 300: accurate native geometry, real materials, frames and trims | The recipe engine (sweeps, profiles, kit materials) |
+| Fine | **LOD 200** (standard) or **LOD 400** (detailed) | LOD 400: the detailed body drawn smooth, curved castings, handles, fixings | **Rhino**, through the hub (`fmc_rhino twins`, `import_part`) |
+
+Labels: owner, 19 Oct (`docs/handoff/SAMPLE14_LOD_LADDER.md`, QS01); this replaces "Coarse = LOD 200" of 18 Oct. Gate A
+states the ladder each family carries ("Levels of detail", read from the recipe).
 
 How a LOD 400 part gets into a family:
 1. The recipe names each complex part with its parameters, per type, and where it sits: the reference planes that
@@ -48,7 +51,7 @@ How a LOD 400 part gets into a family:
 3. Revit brings it into the family as a **real solid** (with material, subcategory and detail-level visibility), locked
    to its anchor planes so it moves with the family's sizes; each type shows its own part. A part is fixed per type
    (as allowed for curved parts on 18 Oct): a new size means a new part, made automatically from the recipe.
-4. Gate A checks each level: LOD 200 size and clearances, LOD 300 materials, LOD 400 parts traceable to their recipe
+4. Gate A checks each level: LOD 100 size and clearances, LOD 200/300 body and materials, LOD 400 parts traceable to their recipe
    and revision, on their planes, following the sizes.
 5. `fmc_recipe batch` asks Rhino for the missing parts first, then builds the families in one Revit job, so a pack
    rebuild covers the LOD 400 parts too.

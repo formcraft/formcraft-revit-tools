@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { CATEGORY_CHECK, SIDES_CHECK, categoryLine, gateA, nameToken, parseRecipe, recordSides, releasePath, roleOf, stagingPath, typeValues } from "./recipes.js";
+import { CATEGORY_CHECK, SIDES_CHECK, categoryLine, gateA, lodLadder, lodLine, nameToken, parseRecipe, recordSides, releasePath, roleOf, stagingPath, typeValues } from "./recipes.js";
 import { checkFamily, familyKind, nameCheck } from "./library.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -676,4 +676,22 @@ test("a nested helper's missing keynote is exempt only when its recipe says why"
     { inspect: noKeynote, flex: passFlex, registerCategory: "Doors" });
   assert.equal(kn(exempt).state, "Pass");
   assert.match(kn(exempt).detail, /^Exempt: nested service point, never scheduled/);
+});
+
+test("QS01: the level-of-detail ladder is read from the recipe: Coarse box LOD 100, standard LOD 200, detailed LOD 300, Rhino twins LOD 400", () => {
+  const env = { op: "extrusion", name: "Coarse Envelope", rect: ["Left", "Right", "Front", "Back"], start: 0, end: 900 };
+  const body = { op: "revolution", name: "Wheel", profile: [[0, 0], [50, 0], [0, 40]] };
+  const vis = (name: string, coarse: boolean, medium: boolean, fine: boolean) => ({ op: "set_visibility", name, coarse, medium, fine });
+  const standard = [env, body, vis("Coarse Envelope", true, false, false), vis("Wheel", false, true, true)];
+  assert.deepEqual(lodLadder("FMC_I_Bed", standard), { coarse: "LOD 100", medium: "LOD 200", fine: "LOD 200" });
+  assert.equal(lodLine("FMC_I_Bed", standard).state, "Pass");
+  const detailed = [env, body, vis("Coarse Envelope", true, false, false), vis("Wheel", false, true, true)];
+  assert.equal(lodLine("FMC_I_Bed_Detailed", detailed).state, "Warn", "a detailed family without twins: LOD 300 on Fine");
+  const twins = [env, body, vis("Coarse Envelope", true, false, false), vis("Wheel", false, true, false),
+    { op: "import_part", name: "Wheel Fine", file: "D:\K\_Rhino\F\Wheel.3dm" }, vis("Wheel Fine", false, false, true)];
+  assert.deepEqual(lodLadder("FMC_I_Bed_Detailed", twins), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400" });
+  assert.equal(lodLine("FMC_I_Bed_Detailed", twins).state, "Pass");
+  const noCoarse = [body];
+  assert.match(lodLine("FMC_A_Door", noCoarse).detail, /Coarse LOD 200.*expected LOD 100/, "a body on Coarse with no envelope is reported");
+  assert.equal(lodLine("FMC_A_Door", [env, vis("Coarse Envelope", true, false, false)]).state, "Fail", "Medium shows nothing");
 });

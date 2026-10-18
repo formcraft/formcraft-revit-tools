@@ -7,7 +7,7 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
-import { recipeTwins, withTwins } from "../hub/recipe2rhino.js";
+import { ENVELOPE_ERROR_MM, envelopeVerdict, openOnlySolids, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
 import { OP } from "../fmc/ops.js";
 
 const win = path.win32;
@@ -180,9 +180,16 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
     catch (e) { failed.push({ part: p.name, solid: t.map.find((m) => m.part === p.name)!.solid, reason: e instanceof Error ? e.message : String(e) }); }
   }
   const facts = (((await call("rhino_facts")).facts ?? []) as PartFacts[]);
+  // F-067: every twin's real box against the family's Coarse envelope, so a body drawn off its envelope can't pass
+  // a part shown only when the family is Open (an open door or hatch) reaches past the closed envelope by design
+  const openOnly = openOnlySolids(recipe.ops);
+  const openParts = new Set(t.map.filter((m) => openOnly.has(m.solid)).map((m) => m.part));
+  const env = envelopeVerdict(recipe.ops, facts.filter((f) => !openParts.has(f.name)));
+  const offEnvelope = new Map(env.errors.map((e) => [e.part, e.by]));
   const good: PartFacts[] = [];
   for (const f of facts) {
     const errors = partProblems([f]).filter(isError);
+    if (offEnvelope.has(f.name)) errors.push(`${offEnvelope.get(f.name)} mm outside the Coarse envelope (more than ${ENVELOPE_ERROR_MM} mm)`);
     if (errors.length) failed.push({ part: f.name, solid: t.map.find((m) => m.part === f.name)?.solid ?? f.name, reason: errors.join("; ") });
     else good.push(f);
   }
@@ -191,7 +198,10 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   const summary = {
     family: args.family, recipe: file, twins: t.parts.length, built_and_checked: good.length, failed, stays_native: t.kept.length,
     kept: t.kept.slice(0, 40), mesh_faces: mesh,
+    envelope: env.box ? { box: env.box, outside_errors: env.errors.length, outside_warnings: env.warnings, family_off: env.family_off } : "no Coarse envelope in the recipe: not checked",
   };
+  if (env.family_off)
+    return [{ refused: true, ...summary, reasons: [`${env.errors.length} of ${facts.length} twins sit more than ${ENVELOPE_ERROR_MM} mm outside the Coarse envelope: the recipe's body is off its envelope (F-067). Fix the recipe; nothing was written`] }, true];
   if (args.dry_run) return [{ dry_run: true, ...summary, would_write: [where.parts, where.model, where.render, out], next: "Run again with dry_run=false" }, false];
 
   for (const target of [where.manifest, where.model, where.render, out]) {
