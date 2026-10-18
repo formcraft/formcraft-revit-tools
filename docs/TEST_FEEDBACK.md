@@ -80,6 +80,16 @@ States: `Open` → `Fixed – retest` → `Closed` (or back to `Open`), or `Answ
 
 ## Test runs
 
+### Run 11 · 2026-10-18 · pilot PC · Revit 2025.4 · build `ea13407` · four detailed true-shape families
+
+Batch build of `_Staging\_Batch\batch_DET.json` (ICU bed, ceiling operating light, anaesthesia machine, neonatal
+incubator; 717–1198 ops each). All four stopped at their first point-profile sweep; everything before it built. Isolated
+in Revit with direct `NewSweep` tests (straight, vertical and bent paths; line and arc loops; both overloads).
+
+| Id | Finding | State | Fixed in | Reply |
+|---|---|---|---|---|
+| F-065 | Every point-profile `sweep` is refused by Revit: `ProfileFor` draws the loop across the path; Revit 2025 accepts it only flat in XY at the origin (#183) | Fixed – retest | `fix/sweep-flat-profile` | Loop now drawn flat at the origin, x/y swapped on non-vertical starts so "x across, y up" holds |
+
 ### Run 10 · 2026-10-17 · pilot PC · Revit 2025.4 · build `e5b4188` · family editor, healthcare pilot
 
 **`fmc_selftest`: Fix first** (1 fail: no AI-use rulebook, which blocks AI modelling only; 2 warn: annotation standard
