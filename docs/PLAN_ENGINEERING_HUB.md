@@ -109,6 +109,9 @@ it is on (H0).
 | T | **Tables by script** | Excel ↔ kit tables, dry run first, from a button |
 | Later | build123d as a second part source; Blender; Speckle | — |
 
+**After X0, alongside the steps above:** the learning engine (`docs/PLAN_LEARNING_ENGINE.md`, steps L0–L9) turns the
+journal of every call into proven flows, lessons and rules, with a person's yes for each.
+
 ## The hard parts, honestly
 - Geometry translation between apps loses information: parts are fixed shapes, staging only, traced by the identity map.
 - Ids drift as models change: the identity map needs rules for deleted, copied and rebuilt elements.
