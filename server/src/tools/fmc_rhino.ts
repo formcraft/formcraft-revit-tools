@@ -7,7 +7,7 @@ import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { PartFacts, RHINO_PART, familyNameProblem, isError, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
-import { recipeTwins, withTwins } from "../hub/recipe2rhino.js";
+import { materialCheck, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
 import { OP } from "../fmc/ops.js";
 
 const win = path.win32;
@@ -190,7 +190,7 @@ async function twins(args: FmcRhinoArgs, config: GuardConfig, staging: string, w
   const out = win.join(staging, "_Batch", `${args.family}_LOD400.json`);
   const summary = {
     family: args.family, recipe: file, twins: t.parts.length, built_and_checked: good.length, failed, stays_native: t.kept.length,
-    kept: t.kept.slice(0, 40), mesh_faces: mesh,
+    kept: t.kept.slice(0, 40), mesh_faces: mesh, materials: materialCheck(recipe.ops, t.map),
   };
   if (args.dry_run) return [{ dry_run: true, ...summary, would_write: [where.parts, where.model, where.render, out], next: "Run again with dry_run=false" }, false];
 

@@ -112,11 +112,27 @@ export function withTwins(ops: Op[], map: TwinMap[], exported: Map<string, { fil
   for (const t of done) {
     const e = exported.get(t.part)!;
     if (!hasVis.has(t.solid)) out.push({ op: "set_visibility", name: t.solid, coarse: false, medium: true, fine: false });
-    out.push({ op: "import_part", name: t.form, file: e.file, ...(e.size_mm ? { size_mm: e.size_mm } : {}) });
+    out.push({ op: "import_part", name: t.form, file: e.file, ...(e.size_mm ? { size_mm: e.size_mm } : {}), ...(t.material ? { material: t.material } : {}) });
     if (t.subcategory) out.push({ op: "set_subcategory", name: t.form, subcategory: t.subcategory });
     if (t.material_param) out.push({ op: "set_material_param", name: t.form, param: t.material_param });
     out.push({ op: "set_visibility", name: t.form, coarse: false, medium: false, fine: true });
     if (t.visible_param) out.push({ op: "set_visible_param", name: `${t.form}/Visible`, solid: t.form, param: t.visible_param });
   }
   return { ops: out, twins: done.length };
+}
+
+/**
+ * F-068: each twin against its source solid: the same material parameter and the same kit material. By construction
+ * they match; a twin whose source has no material parameter (so the form would come in with none) is reported.
+ */
+export function materialCheck(ops: Op[], map: TwinMap[]): { same: number; differs: string[]; without: string[] } {
+  const param = new Map(ops.filter((o) => o.op === "set_material_param").map((o) => [String(o.name), String(o.param)]));
+  const out = { same: 0, differs: [] as string[], without: [] as string[] };
+  for (const t of map) {
+    const src = param.get(t.solid);
+    if (!src) out.without.push(t.solid);
+    else if (src !== t.material_param) out.differs.push(`${t.solid}: ${src} on the solid, ${t.material_param ?? "none"} on the twin`);
+    else out.same++;
+  }
+  return out;
 }
