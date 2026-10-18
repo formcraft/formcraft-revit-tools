@@ -59,7 +59,8 @@ export function recipeTwins(ops: Op[]): Twins {
   for (const o of ops) {
     if (!["extrusion", "revolution", "sweep"].includes(o.op)) continue;
     const solid = String(o.name);
-    const sc = subcat.get(solid)?.subcategory as string | undefined;
+    // a subcategory given in its own op, or on the solid op itself (revolution, sweep and blend take one)
+    const sc = (subcat.get(solid)?.subcategory ?? o.subcategory) as string | undefined;
     if (KEEP_NATIVE.test(solid) || (sc && KEEP_NATIVE.test(sc))) { kept.push({ solid, why: "stays native (envelope, clearance or connector)" }); continue; }
     const v = vis.get(solid);
     if (v && v.fine === false) { kept.push({ solid, why: "not shown on Fine" }); continue; }

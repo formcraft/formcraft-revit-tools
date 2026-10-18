@@ -123,7 +123,7 @@ export const isError = (p: string) => !p.startsWith(WARN);
 
 /** A Formcraft family name (kit naming: FMC_<role letter>_…). */
 export function familyNameProblem(name: string): string | null {
-  return /^FMC_[A-Z]_[A-Za-z0-9_]+$/.test(name) ? null : `"${name}" isn't a kit family name (FMC_<role>_<Category>_…)`;
+  return /^FMC_[A-Z]{1,2}_[A-Za-z0-9_]+$/.test(name) ? null : `"${name}" isn't a kit family name (FMC_<role>_<Category>_…)`;
 }
 
 /** Where a family's Rhino files go: <family_staging_root>\_Rhino. */
