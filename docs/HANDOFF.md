@@ -12,6 +12,24 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · the four detailed families at LOD 400: build them (queue P00, QD01–QD05)
+- **Ready to build:** `_Staging\_Batch\batch_DET_LOD400.json` holds all four, each one family with three levels:
+  Coarse = the envelope (LOD 200), Medium = the native recipe body (LOD 300), Fine = the same body drawn smooth in
+  Rhino (LOD 400: 210 twins in all, every one closed and checked). Made by `fmc_rhino twins` from `batch_DET.json`;
+  the server's recipe check passes (4 valid, 4,820 ops).
+- **It needs this build in Revit** (`import_part`, and the preview fix): close Revit once after the PR merges.
+  `fmc_selftest` shows the build.
+- **Then:** `fmc_recipe batch` with that file (a dry run, then `dry_run=false`), `batch_gate` on the batch, and the
+  ceiling host test for the operating light.
+- **Pictures for the catalogue and the canvas,** per family: `fmc_doc screenshot` with `detail_level: "all"` and
+  `style: "realistic"` (one image per level: Coarse, Medium, Fine), and the Fine 3D as each type's Type Image
+  (`set_type_image`). Every family the builder saves now carries an "FMC Preview" view (Fine, shaded with edges;
+  a ceiling family seen as it hangs) as its preview picture. Say in Run 12 whether the picture appears in Load Family.
+- **Rhino's own pictures** (check renders, no glass): `_Staging\_Rhino\<family>_3d.png`, `_3d_front.png`, `_3d_back_iso.png`.
+  The operating light shows upside down there (family coordinates); hosted on a ceiling it hangs right.
+- **Watch for:** an import_part that reports "arrived … mm, Rhino made it …" (units), a twin that shows on Medium,
+  and file size (each was 1–1.5 MB at LOD 300; the budget is 8 MB).
+
 ### 18 Oct · Rhino connector (H1): `fmc_rhino`
 - **Rhino now has a Formcraft connector.** `fmc_rhino status` first. The add-in loads when Rhino starts (or drag
   `Formcraft.Rhino.rhp` onto an open Rhino once). It builds parts in its own memory, never in the person's drawing.

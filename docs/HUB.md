@@ -19,7 +19,7 @@ The smooth, fixed-shape parts of LOD 400 families (castors, grips, light heads, 
 only (8191, the next free port up to 8199 for a second Rhino) and writes `%APPDATA%\Formcraft\apps\rhino.json`.
 
 - **Never the person's drawing.** Parts are built in the add-in's own memory, one set per family, on its own worker
-  thread; files are written with openNURBS. So it works whatever Rhino's licence state, as long as Rhino opens, and it
+  thread; files are written with openNURBS (Rhino must still be licensed, or in its trial, to open), and it
   never waits on Rhino's window.
 - **Named operations only:** `box_rounded`, `extrude` (rect, rounded_rect, circle, ellipse, points), `revolve` (a lathe
   profile, smooth or with corner_radius), `pipe` (a path with corner_radius, or an arc; flat or round caps), `loft`,
@@ -35,6 +35,12 @@ only (8191, the next free port up to 8199 for a second Rhino) and writes `%APPDA
   (`<family>\<part>.3dm` each, plus `parts.json` with sizes and SHA-256). Revit reads `.3dm` directly
   (`ShapeImporter`), which `fmc_doc import_part` uses next (H3 in the handoff).
 - **Without AI:** `connectors\rhino\samples\smoke.ps1` runs a part set through `fmc_rhino` end to end.
+- **`twins`: LOD 400 from a recipe.** For a detailed family, each native solid (point extrusion, revolution, sweep)
+  gets a smooth twin at the recipe's own coordinates: sampled arcs become true arcs (`RhinoFit`), a round 12-point
+  profile becomes a true pipe. The envelope, clearance zones, connector pads and boxes between planes stay native.
+  The twins are checked one by one (a failing twin stays native on Fine), exported, rendered, and the recipe gets,
+  per twin, `import_part` + the native solid's subcategory, material parameter and type switch on Fine only, while
+  the native solid becomes Medium only. Written to `<staging>\_Batch\<family>_LOD400.json`.
 
 ## `fmc_apps`
 - **`list`:** each app, whether it is installed (its program exists) and running (its process), its connector and

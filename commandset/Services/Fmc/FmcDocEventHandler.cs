@@ -180,7 +180,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             if (File.Exists(path) && Parameters.Value<bool?>("overwrite") != true)
                 throw new InvalidOperationException(path + " exists: pass overwrite (a person decided) or save under another name.");
-            var options = new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") == true, MaximumBackups = backups };
+            var options = FmcPreview.Options(s.Doc, Parameters.Value<bool?>("overwrite") == true, backups, path);
             s.Doc.SaveAs(path, options);
             return new JObject { ["saved"] = path, ["title"] = s.Doc.Title };
         }

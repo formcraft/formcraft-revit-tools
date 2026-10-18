@@ -177,7 +177,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                fam.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = overwrite, MaximumBackups = backups });
+                fam.SaveAs(target, FmcPreview.Options(fam, overwrite, backups, target));
                 result["saved"] = target;
                 result["types"] = fm.Types.Size;
                 result["shared_parameters_added"] = sharedAdded;

@@ -123,7 +123,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (File.Exists(target))
                     line["archived"] = Archive(target, item.Value<string>("archive_dir") ?? Path.Combine(Path.GetDirectoryName(target), "_Archive"));
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
-                doc.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = false, MaximumBackups = backups });
+                doc.SaveAs(target, FmcPreview.Options(doc, false, backups, target));
                 if (item["recipe"] is JObject recipe)
                     File.WriteAllText(Path.ChangeExtension(target, null) + ".recipe.json", recipe.ToString(Formatting.Indented), new UTF8Encoding(false));
                 line["saved"] = target;

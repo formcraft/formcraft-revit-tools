@@ -47,7 +47,7 @@ namespace Formcraft.Rhino
                 ["bridge"] = typeof(RhinoCommands).Assembly.GetName().Version.ToString(),
                 ["licence_validated"] = licensed,
                 ["licence"] = expires,
-                ["note"] = "The bridge builds in its own memory and writes with openNURBS: it works whatever the licence state",
+                ["note"] = "The bridge builds in its own memory, never in the open drawing, and writes files with openNURBS",
                 ["families"] = new JArray(Docs.Select(d => new JObject { ["family"] = d.Key, ["parts"] = d.Value.Count })),
                 ["operations"] = new JArray(RhinoParts.Ops),
             };
