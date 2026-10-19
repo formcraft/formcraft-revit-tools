@@ -30,9 +30,25 @@ namespace Formcraft.Shell.ViewModels
         private List<ReviewItemInfo>? _items;
         private ReviewItemInfo? _selected;
 
-        public ReviewPage(IReviewTools tools, IQaTools select, ProjectPage project, IUserSettings settings, Func<string> me, Action<string> status, Action<DialogViewModel> ask)
+        public static readonly string[] WhisperModels = { "small", "medium" };
+        public static readonly string[] Languages = { "auto", "en", "sw" };
+
+        private readonly IVoiceRecorder _recorder;
+        /// <summary>The ticket a voice reply is being recorded for.</summary>
+        private string? _recordingFor;
+
+        public ReviewPage(IReviewTools tools, IQaTools select, ProjectPage project, IUserSettings settings, Func<string> me, Action<string> status, Action<DialogViewModel> ask,
+                          IVoiceRecorder? recorder = null)
             : base("Team › Review", "Say what is wrong, call in every discipline it touches, and close it only when the raiser agrees.")
         {
+            _recorder = recorder ?? new WinMmVoiceRecorder();
+            ReplyCommand = new RelayCommand(AskReply);
+            RecordCommand = new RelayCommand(Record);
+            StopCommand = new AsyncCommand(StopAndSend, status);
+            DiscardCommand = new RelayCommand(Discard);
+            TranscribeCommand = new AsyncCommand(TranscribeNext, status);
+            TakeCommand = new AsyncCommand(Take, status);
+            WhisperCommand = new AsyncCommand(CheckWhisper, status);
             _tools = tools;
             _select = select;
             _project = project;
@@ -64,6 +80,14 @@ namespace Formcraft.Shell.ViewModels
         public ICommand CloudCommand { get; }
         public ICommand PrintReviewCommand { get; }
         public ICommand PrintRevisedCommand { get; }
+        public ICommand ReplyCommand { get; }
+        public ICommand RecordCommand { get; }
+        public ICommand StopCommand { get; }
+        public ICommand DiscardCommand { get; }
+        public ICommand TranscribeCommand { get; }
+        public ICommand TakeCommand { get; }
+        public ICommand WhisperCommand { get; }
+        public bool IsRecording => _recorder.IsRecording;
         private List<PrintInfo> _prints = new List<PrintInfo>();
         public IReadOnlyList<ReviewItemInfo> Items => _items ?? new List<ReviewItemInfo>();
         public ReviewItemInfo? Selected => _selected;
@@ -91,17 +115,19 @@ namespace Formcraft.Shell.ViewModels
                 return;
             }
             var reg = new List<SettingItem> { new ChoiceSetting(_store, "review.filter", "Show", Filters, changed: f => { var refresh = Refresh(); }) };
+            var reviewItems = (_items ?? new List<ReviewItemInfo>()).Where(i => !i.IsTicket).ToList();
             if (_items == null) reg.Add(new NoteSetting("Reading the register…"));
-            else if (_items.Count == 0) reg.Add(new NoteSetting("No items here."));
+            else if (reviewItems.Count == 0) reg.Add(new NoteSetting("No items here."));
             else
             {
                 var table = new TableSetting("", new[] { "ID", "Title", "Owner", "Due", "Status" },
-                    _items.Select(i => new TableRow(i, i.Id.Substring(Math.Max(0, i.Id.Length - 8)), i.Title, i.Owner, i.Due.Length >= 10 ? i.Due.Substring(5) : i.Due, i.Status)),
+                    reviewItems.Select(i => new TableRow(i, i.Id.Substring(Math.Max(0, i.Id.Length - 8)), i.Title, i.Owner, i.Due.Length >= 10 ? i.Due.Substring(5) : i.Due, i.Status)),
                     selectable: true, hint: "Click an item to answer, solve or check it.");
                 if (_selected != null) table.Selected = table.Rows.FirstOrDefault(r => (r.Tag as ReviewItemInfo)?.Id == _selected.Id);
                 table.PropertyChanged += (_, e) =>
                 {
                     if (e.PropertyName != nameof(TableSetting.Selected) || !(table.Selected?.Tag is ReviewItemInfo i) || i == _selected) return;
+                    if (_recorder.IsRecording) { _status("Stop or discard the voice reply first."); return; }
                     _selected = i;
                     Rebuild();
                 };
@@ -111,8 +137,10 @@ namespace Formcraft.Shell.ViewModels
                 "The project's register: " + Folder + "\\01_WIP\\_Reviews."));
             reg.Add(_messages);
             Groups.Add(new SettingsGroup("Review register", reg.ToArray()));
+            Groups.Add(TicketsGroup());
 
-            if (_selected != null)
+            if (_selected != null && _selected.IsTicket) AddTicket(_selected);
+            else if (_selected != null)
             {
                 var i = _selected;
                 var items = new List<SettingItem>
@@ -151,10 +179,182 @@ namespace Formcraft.Shell.ViewModels
                 }, "The sheet's PDF and its list of items (open ones to fix, or solved ones with their solutions), in 01_WIP\\_Reviews\\Prints."),
                 _prints.Count == 0 ? (SettingItem)new NoteSetting("No prints of this sheet yet.")
                     : new TableSetting("Print history", new[] { "Date", "Print", "Items" }, _prints.Select(p => new TableRow(p, p.At, p.Kind, p.Items.ToString())))));
+            Groups.Add(new SettingsGroup("Voice notes (offline)",
+                new ChoiceSetting(_store, "review.whisper_model", "Transcription model", WhisperModels,
+                    hint: "small: about 490 MB, good on site English and accents; medium: about 1.5 GB, for PCs with the memory."),
+                new ChoiceSetting(_store, "review.whisper_language", "Language", Languages, hint: "auto detects it; en English, sw Swahili. The audio is always kept."),
+                new ButtonsSetting("", new[] { new SettingButton("Check Whisper", WhisperCommand) },
+                    "whisper.cpp runs on this PC's processor at low priority; nothing leaves the PC. Downloaded once, after a dry run.")));
             Groups.Add(new SettingsGroup("Clouds, BCF and change requests",
                 new NoteSetting("A cloud goes on an unissued revision (Revit's rule): the latest one, or a new \"Review\" revision. BCF import and export come in Phase 2. " +
                                 "Codes stay separate: company revision, Revit revision, sheet status, approval.", ChipKind.Grey)));
             Groups.Add(new SettingsGroup("Author's considerations", new ConsiderationsSetting(_store, "review.considerations", _status)));
+        }
+
+        // ------------------------------------------------------------------------------------- Mark & Review tickets (R2)
+
+        /// <summary>Tickets: marks, clashes and BCF topics, each with who fixes it, where it came from and its latest note.</summary>
+        private SettingsGroup TicketsGroup()
+        {
+            var tickets = (_items ?? new List<ReviewItemInfo>()).Where(i => i.IsTicket).ToList();
+            if (_items == null) return new SettingsGroup("Tickets", new NoteSetting("Reading the register…"));
+            if (tickets.Count == 0)
+                return new SettingsGroup("Tickets", new NoteSetting("No tickets here. Marks in Revit, Navisworks clashes and BCF topics land in this list, for the AI, a person, a discipline or anyone.", ChipKind.Grey));
+            var table = new TableSetting("", new[] { "ID", "For", "From", "Media", "Latest note", "Status" },
+                tickets.Select(i => new TableRow(i, i.Id.Substring(Math.Max(0, i.Id.Length - 8)), i.ToShown, i.Source, i.Media, Short(i.LatestNote, 60), i.Status)),
+                selectable: true, hint: "Click a ticket to read its thread and reply, typed or by voice.");
+            if (_selected != null) table.Selected = table.Rows.FirstOrDefault(r => (r.Tag as ReviewItemInfo)?.Id == _selected.Id);
+            table.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName != nameof(TableSetting.Selected) || !(table.Selected?.Tag is ReviewItemInfo i) || i == _selected) return;
+                if (_recorder.IsRecording) { _status("Stop or discard the voice reply first."); return; }
+                _selected = i;
+                Rebuild();
+            };
+            return new SettingsGroup("Tickets", table);
+        }
+
+        private static string Short(string s, int max) { s = (s ?? "").Replace("\r", " ").Replace("\n", " "); return s.Length <= max ? s : s.Substring(0, max - 1).TrimEnd() + "…"; }
+
+        /// <summary>The selected ticket: what and where, its thread with transcripts, and a reply typed or spoken.</summary>
+        private void AddTicket(ReviewItemInfo i)
+        {
+            var items = new List<SettingItem>
+            {
+                new ReadOnlySetting(i.Title, i.Description),
+                new ReadOnlySetting("For · owner · due", i.ToShown + " · " + i.Owner + " · " + i.Due + " · " + i.Priority),
+                new ReadOnlySetting("Status", i.Status + " · raised by " + i.RaisedBy + " · from " + (i.Source.Length > 0 ? i.Source : "mark")),
+                new ReadOnlySetting("Where", (i.Elements > 0 ? i.Elements + (i.Elements == 1 ? " element" : " elements") : "A point in the model") + (i.View.Length > 0 ? " · " + i.View : "") + (i.HasPicture ? " · picture kept" : "")),
+                i.Notes.Count == 0 ? (SettingItem)new NoteSetting("No notes yet.")
+                    : new TableSetting("Thread", new[] { "When", "Who", "Note", "How" },
+                        i.Notes.Select((n, k) => new TableRow(n, n.At.Length >= 16 ? n.At.Substring(5, 11).Replace("T", " ") : n.At, n.By, n.Shown, n.How))),
+            };
+            var buttons = new List<SettingButton>();
+            if (_recorder.IsRecording && _recordingFor == i.Id)
+            {
+                items.Add(new NoteSetting("Recording a voice reply… speak, then Stop and send. It is transcribed on this PC.", ChipKind.Warn));
+                buttons.Add(new SettingButton("Stop and send", StopCommand, primary: true));
+                buttons.Add(new SettingButton("Discard", DiscardCommand));
+            }
+            else if (i.Status != "Closed")
+            {
+                buttons.Add(new SettingButton("Record a voice reply", RecordCommand, primary: true));
+                buttons.Add(new SettingButton("Reply…", ReplyCommand));
+                if (i.Notes.Any(n => n.NeedsTranscript)) buttons.Add(new SettingButton("Transcribe", TranscribeCommand));
+                if (i.Status == "Open" && i.To != "ai") buttons.Add(new SettingButton("Take it", TakeCommand));
+            }
+            items.Add(new ButtonsSetting("", buttons.ToArray(), i.Status == "Closed" ? "A closed ticket takes no replies: reopen it first." : "Voice replies are 16 kHz WAV, kept beside the register with their transcript."));
+            Groups.Add(new SettingsGroup("Ticket: " + i.Id, items.ToArray()));
+            if (i.Status == "Resolved")
+                Groups.Add(new SettingsGroup("Raiser's check",
+                    new ButtonsSetting("", new[] { new SettingButton("Accept and close", AcceptCommand, primary: true), new SettingButton("Reopen…", ReopenCommand) },
+                        "Closed only after the raiser's check (MAN 10.5); the AI never closes its own ticket.")));
+        }
+
+        private string Model => _store.Get("review.whisper_model") is string m && WhisperModels.Contains(m) ? m : WhisperModels[0];
+        private string Language => _store.Get("review.whisper_language") is string l && Languages.Contains(l) ? l : Languages[0];
+
+        private void Say(ChipKind kind, string text) { _messages.Show(kind, text); _status(text); }
+
+        private void AskReply()
+        {
+            if (_selected == null || !_selected.IsTicket) return;
+            var i = _selected;
+            var form = new InMemoryUserSettings();
+            _ask(DialogViewModel.WithItems("Reply to " + i.Id, i.Title, new SettingItem[]
+            {
+                new TextSetting("Reply", "", "What you found, changed or need", store: new SettingStore(form, ""), key: "text"),
+            }, "Reply", async () =>
+            {
+                var text = (form.Get("text") ?? "").Trim();
+                if (text.Length == 0) return "Write the reply, or record a voice reply.";
+                return await After(await _tools.ReplyAsync(Folder, i.Id, _me(), text, ""));
+            }));
+        }
+
+        private void Record()
+        {
+            if (_selected == null || !_selected.IsTicket || _recorder.IsRecording) return;
+            var problem = _recorder.Problem();
+            if (problem != null) { Say(ChipKind.Warn, problem); return; }
+            try { _recorder.Start(); }
+            catch (Exception ex) { Say(ChipKind.Warn, ex.Message); return; }
+            _recordingFor = _selected.Id;
+            Say(ChipKind.Info, "Recording a voice reply to " + _selected.Id + "…");
+            Rebuild();
+        }
+
+        private void Discard()
+        {
+            if (!_recorder.IsRecording) return;
+            _recorder.Discard();
+            _recordingFor = null;
+            Say(ChipKind.Info, "Voice reply discarded.");
+            Rebuild();
+        }
+
+        /// <summary>Stop, send the WAV as a reply (copied beside the register), then transcribe it offline.</summary>
+        private async Task StopAndSend()
+        {
+            if (!_recorder.IsRecording || _recordingFor == null) return;
+            var id = _recordingFor;
+            _recordingFor = null;
+            string wav;
+            try { wav = _recorder.Stop(); }
+            catch (Exception ex) { Say(ChipKind.Warn, ex.Message); Rebuild(); return; }
+            try
+            {
+                var r = await _tools.ReplyAsync(Folder, id, _me(), "", wav);
+                if (!r.Ok || r.Item == null) { Say(ChipKind.Warn, "Voice reply not sent: " + r.Message); Rebuild(); return; }
+                _selected = r.Item;
+                Say(ChipKind.Info, "Voice reply sent; transcribing on this PC…");
+                Rebuild();
+                await Transcribe(id, r.Item.Notes.Count);
+            }
+            finally
+            {
+                try { System.IO.File.Delete(wav); } catch { /* the register keeps its own copy; a temp file left behind is harmless */ }
+            }
+        }
+
+        private Task TranscribeNext()
+        {
+            if (_selected == null) return Task.CompletedTask;
+            var k = _selected.Notes.FindLastIndex(n => n.NeedsTranscript);
+            return k < 0 ? Task.CompletedTask : Transcribe(_selected.Id, k + 1);
+        }
+
+        private async Task Transcribe(string id, int note)
+        {
+            var t = await _tools.TranscribeAsync(Folder, id, note, Model, Language, _me());
+            if (t.Ok) _selected = t.Item;
+            // the register is read again first, so the message below is the one left showing
+            await Refresh();
+            if (!t.Ok) Say(ChipKind.Warn, "Voice note kept, not transcribed: " + t.Message);
+            else Say(ChipKind.Good, t.Message);
+        }
+
+        private async Task Take()
+        {
+            if (_selected == null) return;
+            await After(await _tools.ActAsync(Folder, "take", _selected.Id, _me()));
+        }
+
+        /// <summary>Whisper on this PC: what is there; a download only after its dry run and a yes.</summary>
+        private async Task CheckWhisper()
+        {
+            var model = Model;
+            var dry = await _tools.WhisperSetupAsync(model, true);
+            if (!dry.Ok) { _messages.Show(dry.Messages); _status(dry.Messages.FirstOrDefault()?.Text ?? "Whisper check failed."); return; }
+            if (dry.Details.Count == 0) { _messages.Show(dry.Messages); _status(dry.Messages.FirstOrDefault()?.Text ?? "Whisper is ready."); return; }
+            _ask(DialogViewModel.WithItems("Download Whisper (" + model + ")?", "Once per PC, into %LOCALAPPDATA%\\Formcraft\\whisper. Each file's SHA-256 is checked against the published one.",
+                new SettingItem[] { new ReadOnlySetting("Will download", string.Join(Environment.NewLine, dry.Details), mono: true) }, "Download", async () =>
+                {
+                    var r = await _tools.WhisperSetupAsync(model, false);
+                    _messages.Show(r.Messages);
+                    _status(r.Messages.FirstOrDefault()?.Text ?? (r.Ok ? "Whisper is ready." : "Download failed."));
+                    return r.Ok ? null : r.Messages.FirstOrDefault()?.Text ?? "Download failed.";
+                }));
         }
 
         private async Task Refresh()
