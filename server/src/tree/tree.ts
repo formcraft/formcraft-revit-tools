@@ -23,7 +23,13 @@ export interface TreeNode {
   children?: TreeNode[];
   /** A person's recorded change to what the tree would make (adopted or kept as an override: T3). */
   overrides?: Array<{ what: string; by: string; at: string }>;
+  /** Options (docs/PLAN_OPTIONS.md, O0): other answers to the same node, each changing its inputs, its recipe or its children. */
+  variants?: Variant[];
+  /** The variant the tree builds (none: the node as it is). */
+  active?: string;
 }
+
+export interface Variant { id: string; name?: string; note?: string; inputs?: Record<string, unknown>; make?: { tool: string; args: Record<string, unknown> }; children?: TreeNode[] }
 
 export const NODE: z.ZodType<TreeNode> = z.lazy(() => z.object({
   id: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_.-]*$/, "a node id is letters, digits, _ . -"),
@@ -34,7 +40,24 @@ export const NODE: z.ZodType<TreeNode> = z.lazy(() => z.object({
   make: z.object({ tool: z.string().regex(/^fmc_[a-z_]+$/, "a node is made by a Formcraft tool (fmc_…)"), args: z.record(z.string(), z.unknown()).default({}) }).optional(),
   children: z.array(NODE).optional(),
   overrides: z.array(z.object({ what: z.string(), by: z.string(), at: z.string() })).optional(),
+  variants: z.array(z.object({
+    id: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]*$/, "a variant id is letters, digits, _ -"), name: z.string().optional(), note: z.string().optional(),
+    inputs: z.record(z.string(), z.unknown()).optional(),
+    make: z.object({ tool: z.string().regex(/^fmc_[a-z_]+$/), args: z.record(z.string(), z.unknown()).default({}) }).optional(),
+    children: z.array(NODE).optional(),
+  })).optional(),
+  active: z.string().optional(),
 })) as z.ZodType<TreeNode>;
+
+/**
+ * The node as the tree builds it: its active variant's inputs over its own, the variant's recipe and children when it
+ * has them (O0). Children are the same objects, so a change made to them stays in the variant.
+ */
+export function effective(n: TreeNode): TreeNode {
+  const v = n.active ? n.variants?.find((x) => x.id === n.active) : undefined;
+  if (!v) return n;
+  return { ...n, inputs: { ...(n.inputs ?? {}), ...(v.inputs ?? {}) }, make: v.make ?? n.make, children: v.children ?? n.children };
+}
 
 export const TREE = z.object({ schema: z.literal("fmc-tree/0.1").default("fmc-tree/0.1"), project: z.string().default(""), root: NODE });
 export type Tree = z.infer<typeof TREE>;
@@ -52,7 +75,8 @@ const hash = (v: unknown) => crypto.createHash("sha256").update(JSON.stringify(v
  */
 export function resolve(tree: Tree): Resolved[] {
   const out: Resolved[] = [];
-  const walk = (n: TreeNode, path: string[], inherited: Record<string, unknown>): string => {
+  const walk = (raw: TreeNode, path: string[], inherited: Record<string, unknown>): string => {
+    const n = effective(raw);
     const vars = { ...inherited, ...(n.inputs ?? {}) };
     let args: Record<string, unknown> | undefined, error: string | undefined;
     if (n.make) {
@@ -62,7 +86,7 @@ export function resolve(tree: Tree): Resolved[] {
     const at = out.length;
     out.push({ node: n, path: [...path, n.id], vars, args, error, revision: "" });
     const kids = (n.children ?? []).map((c) => walk(c, [...path, n.id], vars));
-    const rev = hash({ kind: n.kind, inputs: n.inputs ?? {}, refs: n.refs ?? {}, tool: n.make?.tool, args: args ?? n.make?.args ?? null, kids });
+    const rev = hash({ kind: n.kind, inputs: n.inputs ?? {}, refs: n.refs ?? {}, tool: n.make?.tool, args: args ?? n.make?.args ?? null, kids, ...(raw.active ? { active: raw.active } : {}) });
     out[at].revision = rev;
     return rev;
   };
@@ -114,6 +138,7 @@ export function recordBuilt(tree: Tree, last: BuiltState | null, built: string[]
 
 /** A node by id, and its place (for set). */
 export function findNode(tree: Tree, id: string): TreeNode | null {
-  const walk = (n: TreeNode): TreeNode | null => n.id === id ? n : (n.children ?? []).map(walk).find(Boolean) ?? null;
+  // through the active variant's children too: they are what the tree builds
+  const walk = (n: TreeNode): TreeNode | null => n.id === id ? n : (effective(n).children ?? []).map(walk).find(Boolean) ?? null;
   return walk(tree.root);
 }

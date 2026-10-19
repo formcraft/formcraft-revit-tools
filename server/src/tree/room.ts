@@ -29,6 +29,7 @@ export const ROOM = z.object({
     kind: z.enum(["door", "window"]), family: z.string().min(1), type: z.string().min(1), wall: z.enum(WALLS),
     along: mm.describe("from the wall's left end seen from inside, to the opening's centre, mm"), width: mm.positive(),
     sill: mm.optional().describe("window sill height, mm"),
+    height: mm.positive().optional().describe("the opening's height, mm (a window's glazing for the daylight proxy: options, O1)"),
   })).default([]),
   items: z.array(z.object({
     id: z.string().min(1), family: z.string().min(1), type: z.string().min(1),
@@ -49,7 +50,7 @@ export type Room = z.infer<typeof ROOM>;
 
 export type Op =
   | { op: "wall"; side: WallSide; start: number[]; end: number[]; height: number; type: string }
-  | { op: "opening"; kind: "door" | "window"; family: string; type: string; wall: WallSide; at: number[]; sill: number }
+  | { op: "opening"; kind: "door" | "window"; family: string; type: string; wall: WallSide; at: number[]; sill: number; width?: number; height?: number }
   | { op: "place"; id: string; family: string; type: string; at: number[]; rotate_deg: number; host: "floor" | "wall" | "ceiling"; wall?: WallSide }
   | { op: "ceiling"; outline: number[][]; height: number; type: string }
   | { op: "room"; name: string; number?: string; at: number[]; params?: Record<string, string | number> };
@@ -90,7 +91,7 @@ export function planRoom(input: Room): RoomPlan {
     if (o.along - o.width / 2 < 100 || o.along + o.width / 2 > l.length - 100)
       problems.push(`${o.kind} ${o.type} on the ${o.wall} wall: ${o.width} wide at ${o.along} doesn't fit a ${l.length} mm wall with 100 mm returns`);
     const p = along(l, o.along);
-    ops.push({ op: "opening", kind: o.kind, family: o.family, type: o.type, wall: o.wall, at: [r1(p[0]), r1(p[1]), 0], sill: o.kind === "window" ? o.sill ?? 900 : 0 });
+    ops.push({ op: "opening", kind: o.kind, family: o.family, type: o.type, wall: o.wall, at: [r1(p[0]), r1(p[1]), 0], sill: o.kind === "window" ? o.sill ?? 900 : 0, width: o.width, ...(o.height ? { height: o.height } : {}) });
   }
   const [x0, y0] = r.origin_mm;
   const centre = [x0 + r.width / 2, y0 + r.depth / 2];
