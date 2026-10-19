@@ -44,4 +44,12 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public override string CommandName => "fmc_structural_facts";
         protected override string Action => "structural";
     }
+
+    /// <summary>E1: rooms, plumbing fixtures, pipe systems, tanks, fire devices, LP parts and circuits for the MEP calcs (read-only, no transaction).</summary>
+    public class FmcMepFactsCommand : FmcSystemsCommandBase
+    {
+        public FmcMepFactsCommand(UIApplication uiApp) : base(uiApp) { }
+        public override string CommandName => "fmc_mep_facts";
+        protected override string Action => "mep";
+    }
 }

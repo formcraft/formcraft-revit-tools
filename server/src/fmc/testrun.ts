@@ -25,7 +25,7 @@ export const NEEDS_APPS = ["navisworks", "rhino", "robot"] as const;
 export type NeedsApp = (typeof NEEDS_APPS)[number];
 
 /** Revit commands a scenario may send directly. Read-only, every one (a test checks none is a write). */
-export const READ_ONLY_REVIT = ["fmc_document_info", "fmc_element_facts", "fmc_design_options"] as const;
+export const READ_ONLY_REVIT = ["fmc_document_info", "fmc_element_facts", "fmc_design_options", "fmc_mep_facts"] as const;
 
 export const RUNNER_ACTIONS = ["open_in_revit", "close_revit"] as const;
 
@@ -34,7 +34,7 @@ export const CLI_TOOLS = [
   "fmc_file", "fmc_family", "fmc_project", "fmc_template", "fmc_library", "fmc_qa", "fmc_material", "fmc_sheets", "fmc_annotate",
   "fmc_issue", "fmc_links", "fmc_selftest", "fmc_workshare", "fmc_review", "fmc_report", "fmc_doc", "fmc_revit", "fmc_brief",
   "fmc_scripts", "fmc_systems", "fmc_build", "fmc_ai", "fmc_recipe", "fmc_robot", "fmc_navis", "fmc_rhino", "fmc_legend", "fmc_apps",
-  "fmc_flow", "fmc_select", "fmc_find", "fmc_tree", "fmc_room", "fmc_casework", "fmc_ceiling", "fmc_schedules", "fmc_changes", "fmc_balance", "fmc_powerbi", "fmc_tables"];
+  "fmc_flow", "fmc_select", "fmc_find", "fmc_tree", "fmc_room", "fmc_casework", "fmc_ceiling", "fmc_schedules", "fmc_changes", "fmc_balance", "fmc_powerbi", "fmc_tables", "fmc_calc"];
 
 /** A step that fails is run once more from its scenario's setup; an interruption (sleep, shutdown) doesn't count. */
 export const MAX_TRIES = 2;

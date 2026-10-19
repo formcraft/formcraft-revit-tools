@@ -105,7 +105,7 @@ export const WRITE_COMMANDS = new Set<string>([
  */
 export const READ_VIA_SEND_COMMAND = new Set<string>([
   "ai_element_filter", "analyze_model_statistics", "export_room_data", "get_available_family_types", "get_current_view_elements", "fmc_diagram_scan", "get_current_view_info", "get_material_quantities",
-  "get_selected_elements", "say_hello",
+  "get_selected_elements", "say_hello", "fmc_mep_facts",
 ]);
 
 /** Commands that read or steer the Formcraft pane only. They never change the model, so they work on live models. */
