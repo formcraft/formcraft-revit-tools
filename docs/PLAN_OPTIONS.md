@@ -1,7 +1,7 @@
 # Plan: options side by side
 
-**Status: Proposed, 19 October 2026.** The owner picked this from `IDEAS_BACKLOG.md`; it waits for a yes before any
-code. Steps O0–O4, one PR each.
+**Status: Approved, 19 October 2026 (owner's yes).** Picked from `IDEAS_BACKLOG.md`. Steps O0–O4. Decisions: cost is
+compared as **quantities only**; daylight is the **glazing-to-floor proxy** for now.
 
 ## The idea
 A design question ("4.2 m or 4.5 m ICU bays?", "one corridor or two?", "store here or there?") gets two or three
@@ -39,9 +39,6 @@ whether it meets the brief, what it costs in quantities, and what it gains.
 - A person chooses (rule 5).
 - Revit's destructive steps (accepting a primary option, deleting option sets) are people's.
 
-## Decisions for the owner
-1. **Cost.** Either **quantities only**, joined to the kit's codes and bill groups (recommended: consistent with "rates are
-   never returned" today), or a **rates file the QS owns** joined to them for a cost per option. Rates stay the QS's file
-   and are never kept by the plugin.
-2. **Daylight.** Either the glazing-to-floor proxy only (recommended now), or a later step that sends a variant to a real
-   daylight tool. That is a paid option, worth it only if the clients ask for daylight figures.
+## Decisions (owner, 19 October 2026)
+1. **Cost:** quantities only, joined to the kit's codes and bill groups; no rates (as today).
+2. **Daylight:** the glazing-to-floor proxy; a real daylight tool only if clients ask for figures later.
