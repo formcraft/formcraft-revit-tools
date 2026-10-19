@@ -43,6 +43,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             var ops = (Parameters["ops"] as JArray ?? new JArray()).OfType<JObject>().ToList();
             var notes = new JArray();
             var made = new List<Element>();
+            var keys = new List<string>();
+            // each element made, with the key of the op that made it (the server keeps the identity map: T3)
+            void Made(Element e, JObject o) { made.Add(e); keys.Add(o.Value<string>("key") ?? ""); }
             int removed = 0;
             string levelName = Parameters.Value<string>("level") ?? "";
             Level level = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>()
@@ -69,7 +72,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     var line = Line.CreateBound(new XYZ(Ft(a[0].Value<double>()), Ft(a[1].Value<double>()), level.Elevation), new XYZ(Ft(b[0].Value<double>()), Ft(b[1].Value<double>()), level.Elevation));
                     Wall w = Wall.Create(doc, line, wt.Id, level.Id, Ft(o.Value<double>("height")), 0, false, false);
                     walls[o.Value<string>("side")] = w;
-                    made.Add(w);
+                    Made(w, o);
                 }
                 doc.Regenerate();
                 foreach (JObject o in ops.Where(x => x.Value<string>("op") == "ceiling"))
@@ -79,7 +82,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     for (int i = 0; i < pts.Count; i++) loop.Append(Line.CreateBound(pts[i], pts[(i + 1) % pts.Count]));
                     ceiling = Ceiling.Create(doc, new List<CurveLoop> { loop }, Type<CeilingType>(doc, o.Value<string>("type")).Id, level.Id);
                     ceiling.get_Parameter(BuiltInParameter.CEILING_HEIGHTABOVELEVEL_PARAM)?.Set(Ft(o.Value<double>("height")));
-                    made.Add(ceiling);
+                    Made(ceiling, o);
                 }
                 doc.Regenerate();
                 foreach (JObject o in ops.Where(x => x.Value<string>("op") == "opening"))
@@ -92,11 +95,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (o.Value<string>("kind") == "window") fi.get_Parameter(BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM)?.Set(Ft(o.Value<double>("sill")));
                     // a door swings into the room: flip its facing when it faces out
                     if (fi.CanFlipFacing && fi.FacingOrientation.DotProduct(into[o.Value<string>("wall")]) < 0) fi.flipFacing();
-                    made.Add(fi);
+                    Made(fi, o);
                 }
                 foreach (JObject o in ops.Where(x => x.Value<string>("op") == "place"))
                 {
-                    try { made.Add(Place(doc, o, level, walls, into, ceiling)); }
+                    try { Made(Place(doc, o, level, walls, into, ceiling), o); }
                     catch (Exception e) { notes.Add($"{o.Value<string>("id")}: {e.Message}"); }
                 }
                 doc.Regenerate();
@@ -106,12 +109,18 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Autodesk.Revit.DB.Architecture.Room room = doc.Create.NewRoom(level, new UV(Ft(at[0].Value<double>()), Ft(at[1].Value<double>())));
                     room.Name = o.Value<string>("name") ?? room.Name;
                     if (o["number"] != null) room.Number = o.Value<string>("number");
-                    made.Add(room);
+                    Made(room, o);
                 }
                 foreach (Element e in made) e.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.Set("FMC:" + node);
                 t.Commit();
             }
-            return new JObject { ["made"] = new JArray(made.Select(e => e.UniqueId)), ["removed"] = removed, ["notes"] = notes };
+            return new JObject
+            {
+                ["made"] = new JArray(made.Select(e => e.UniqueId)),
+                ["elements"] = new JArray(made.Select((e, i) => new JObject { ["unique_id"] = e.UniqueId, ["key"] = keys[i] })),
+                ["removed"] = removed,
+                ["notes"] = notes,
+            };
         }
 
         private static FamilyInstance Place(Document doc, JObject o, Level level, Dictionary<string, Wall> walls, Dictionary<string, XYZ> into, Ceiling ceiling)
