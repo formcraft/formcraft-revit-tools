@@ -12,6 +12,18 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To the tester (read first, every run)
 
+### 19 Oct · Mark & Review in Revit and Navisworks (R4, R5): to test when Revit is free
+- **Mark** (Flow's small buttons: Settings › Flow › pick "Mark"): pick elements, linked elements or a place; say what
+  is wrong; choose who fixes it. The ticket lands in `<project>\01_WIP\_Reviews\FMC_Review_Register.json` with the
+  view, camera, section box and a picture. Marking never changes the model.
+- **Pins:** open tickets show as pins at their place (3D and plans), drawn on screen only, coloured by priority.
+- **`fmc_review show`** (id): selects the ticket's elements (here and in links) and opens "FMC Review - <you>" on its
+  camera and section box (`view: false`: select and zoom only).
+- **Navisworks:** the Formcraft pane's **Send clashes to review** puts a test's New and Active clashes in the same
+  register (or `fmc_review clashes`, a dry run first); a clash ticket's `show` selects the elements from this model.
+- **Say in the next run:** whether the pins draw, the IFC GUIDs on BCF export match what Revit's IFC export writes,
+  and whether the camera restores the view as it was.
+
 ### 19 Oct · QS03 plan agreed: components on planes, Open toggle, clearances shown
 - **Plan:** `docs/handoff/QS03_DETAIL_GENERATOR.md` (owner's yes, 19 Oct). Detail parts become small component families
   nested on the host's planes (so doors and windows still cut and flex); everything that opens gets an instance
