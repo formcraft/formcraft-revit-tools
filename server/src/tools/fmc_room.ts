@@ -55,6 +55,21 @@ export function readRoomRecord(project: string, node: string): RoomRecord | null
   return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8").replace(/^﻿/, "")) : null;
 }
 
+/** Which room node and recipe key made this element (the identity map: T3), from the build records; null if none. */
+export function findRecipeElement(project: string, uid: string): { node: string; key: string } | null {
+  if (!project.trim() || !uid) return null;
+  const dir = win.join(expandEnv(project.trim()), "01_WIP", "_Tree", "rooms");
+  if (!fs.existsSync(dir)) return null;
+  for (const f of fs.readdirSync(dir).filter((x) => x.toLowerCase().endsWith(".json"))) {
+    try {
+      const r = JSON.parse(fs.readFileSync(win.join(dir, f), "utf8").replace(/^﻿/, "")) as RoomRecord;
+      const e = (r.elements ?? []).find((x) => x.unique_id === uid);
+      if (e) return { node: r.node, key: e.key };
+    } catch { /* a broken record is skipped */ }
+  }
+  return null;
+}
+
 /** Revit's facts for these elements now (read-only); a missing one is null (deleted). */
 async function liveFacts(uids: string[]): Promise<Map<string, LiveFacts | null>> {
   const r = await withRevitConnection((c) => c.sendRaw("fmc_element_facts", { unique_ids: uids }, 30000)) as { elements?: LiveFacts[] };
