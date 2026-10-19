@@ -143,6 +143,11 @@ what each side must know before its next step.** Newest entry at the top of each
 
 ## To Claude Code
 
+### 19 Oct · ArchiCAD connector first (owner: too many credits spent on screen work)
+Read `docs/PLAN_ARCHICAD.md`. Build AC1 (`fmc_archicad`: status, build with LP_XMLConverter, library_reload, check,
+place, capture, selftest) before anything else in that plan, so ArchiCAD objects are built and checked with no screen
+work. Then Q-MCP1, the handshake on connect (server instructions + map resources + session journal).
+
 ### 19 Oct · 4D / 5D and Temporary Works plan: PARKED, read only, no code yet
 Read `docs/PLAN_4D_5D_TEMPWORKS.md`. The owner packaged these ideas for later: do not start T1–T12 (Project
 `QUEUE.md` › P9) until the owner says go. Already done on the kit (pilot PC): 16 new 4D, date and temp-works shared
