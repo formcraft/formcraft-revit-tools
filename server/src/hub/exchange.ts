@@ -97,15 +97,30 @@ const stamp = (d: Date) => {
 };
 const slug = (s: string) => s.replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40) || "exchange";
 
-/** A new package folder; never an existing one (a second package in the same second gets a suffix). */
+/**
+ * A file's name inside a package: a plain name, or a relative path in sub-folders ("data/FMC_Rooms.csv") written with
+ * forward slashes. Anything that could leave the package (an absolute path, "..", a drive) keeps only its base name.
+ */
+export function packageName(name: string): string {
+  const parts = name.split(/[\\/]+/).filter((s) => s.length > 0);
+  const safe = !win.isAbsolute(name) && !/^[A-Za-z]:/.test(name) && parts.length > 0 && parts.every((s) => s !== "." && s !== "..");
+  return safe ? parts.join("/") : win.basename(name);
+}
+
+/**
+ * A new package folder; never an existing one (a second package in the same second gets a suffix). files may be a
+ * function of the package's folder, for files that name where they live (a Power BI model pointing at its own data).
+ */
 export function writePackage(root: string, p: { from: PackageManifest["from"]; to: PackageManifest["to"]; what: string;
-  files: Array<{ name: string; text: string }>; source?: Record<string, unknown>; flow?: string; notes?: string[]; now?: Date }): { dir: string; manifest: PackageManifest } {
+  files: Array<{ name: string; text: string }> | ((dir: string) => Array<{ name: string; text: string }>); source?: Record<string, unknown>; flow?: string; notes?: string[]; now?: Date }): { dir: string; manifest: PackageManifest } {
   const base = `${stamp(p.now ?? new Date())}_${p.from}-${p.to}_${slug(p.what)}`;
   let dir = win.join(root, "Packages", base);
   for (let k = 2; fs.existsSync(dir); k++) dir = win.join(root, "Packages", `${base}_${k}`);
   fs.mkdirSync(dir, { recursive: true });
-  const files: PackageFile[] = p.files.map((f) => {
-    const name = win.basename(f.name);
+  const list = typeof p.files === "function" ? p.files(dir) : p.files;
+  const files: PackageFile[] = list.map((f) => {
+    const name = packageName(f.name);
+    fs.mkdirSync(win.dirname(win.join(dir, name)), { recursive: true });
     fs.writeFileSync(win.join(dir, name), f.text);
     const buf = Buffer.from(f.text, "utf8");
     return { name, sha256: crypto.createHash("sha256").update(buf).digest("hex"), bytes: buf.length };

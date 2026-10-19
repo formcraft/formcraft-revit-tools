@@ -10,7 +10,7 @@ One Formcraft MCP server reaches every engineering app through a connector per a
 | Navisworks Manage 2025 | `Formcraft.Navis` add-in, local socket 8190 | Add-in bridge | `fmc_navis` |
 | Robot Structural Analysis 2025 | `fmc-robot.exe` beside the server | Process | `fmc_robot` |
 | Rhino 8 | `Formcraft.Rhino` package, local socket 8191 (H1) | Add-in bridge | `fmc_rhino` |
-| Power BI Desktop | Not built yet (plan step H2): a gateway to Microsoft's Power BI Modeling MCP server | Gateway | `fmc_powerbi` (to come) |
+| Power BI Desktop | Files Power BI reads (H2); the gateway to Microsoft's Power BI Modeling MCP server is designed, not set up | Gateway | `fmc_powerbi` |
 
 ## Navisworks: `fmc_navis` (H3)
 Built, not yet checked in Navisworks. The bridge (`connectors/navisworks`) answers on `127.0.0.1:8190`; reading
@@ -63,6 +63,41 @@ only (8191, the next free port up to 8199 for a second Rhino) and writes `%APPDA
   per twin, `import_part` + the native solid's subcategory, material parameter and type switch on Fine only, while
   the native solid becomes Medium only. Written to `<staging>\_Batch\<family>_LOD400.json`.
 
+## Power BI: `fmc_powerbi` (H2)
+The project's data model as files Power BI Desktop reads, with no binary step and no connector to install.
+
+- **Tables** (tidy CSV in `data\`): `Rooms` (Revit's rooms joined by number to the recipe tree's planned area and the
+  brief's target; Over, Under or On target past `tolerance_pct`), `Quantities` (by keynote code, from the same read as
+  `fmc_build`; quantities only, never rates), `QA` (one row per rule result of a read-only QA run), `Tickets` and
+  `TicketElements` (the review register by discipline and priority; no owner, raiser or answerer, rule 9), `Clashes`
+  (every Navisworks clash test, both Revit elements, the ticket raised for it; never Navisworks' "assigned to"),
+  `Structural` (NEd and MEd from the newest Robot results package), `Identity` (the identity map) and `Sources` (where
+  each table came from and why one is empty). Keys: room number, Revit UniqueId or element id, ticket id, Formcraft id.
+- **The model:** `FMC_Project.pbip` with a TMDL semantic model (`FMC_Project.SemanticModel\definition\`): each table
+  reads its CSV through Power Query from one parameter, `DataFolder`; relationships TicketElements → Tickets,
+  TicketElements → Identity, Clashes → Tickets, Rooms → Identity, Structural → Identity; measures for rooms over and
+  under target, open and overdue tickets (slice by `lead_discipline` and `priority`), clashes open and with a ticket,
+  quantity lines and unmeasured lines by bill, QA fails and warnings, the largest NEd and MEd. The report is one blank
+  page for a person to build on.
+- **Where:** an exchange package (hub → powerbi, `Packages\<time>_hub-powerbi_Project_data_model\`, its model pointing
+  at its own `data\`), and `<project>\01_WIP\_Exchange\PowerBI\latest\` for Power BI to point at. Each build replaces
+  the latest CSVs; the latest model is written once and then kept with the person's edits (`refresh_model=true`
+  archives it to `PowerBI\_Archive\` and writes a new one, refused while Power BI Desktop is open). Writes are checked
+  with the guard's write folders and go only to the project's WIP.
+- **Actions:** `plan` (the tables, their columns and what each reads now; read-only), `build` (a dry run first; Revit
+  and Navisworks are read only when they answer, otherwise the table is empty with a note; `live=false` reads files
+  only), `status` (the newest package, the latest folder, whether Power BI Desktop is running), `gateway`.
+- **Opening it:** in Power BI Desktop, File › Open › `PowerBI\latest\FMC_Project.pbip`, then Refresh. If Desktop asks,
+  turn on the preview features for Power BI Project files and the TMDL format (Options › Preview features). To read
+  another folder: Transform data › Edit parameters › `DataFolder` (ending in a backslash).
+
+**The gateway to Microsoft's Power BI Modeling MCP server (design note; not set up).** Microsoft's Modeling MCP server
+(preview) edits a semantic model open in Power BI Desktop. The hub will start it as a gateway like any connector: off by
+default, a dry run first, and passing on only an allow-list of read operations (list tables, columns, measures and
+relationships; run a DAX query), every write refused until the owner decides otherwise, each call through the same log.
+Its exact package name and start command are to be confirmed from Microsoft's release before it is wired; until then
+`fmc_powerbi gateway` answers "not set up" and nothing is started. The Formcraft data model above works without it.
+
 ## `fmc_apps`
 - **`list`:** each app, whether it is installed (its program exists) and running (its process), its connector and
   whether it is built, whether it is on, and the tools it brings. `fmc_selftest` has the same, as its **Apps** lines.
@@ -99,3 +134,35 @@ Without AI, from a command line (or a scheduled task):
 ```
 node build\fmc\cli.js fmc_flow < run.json      (run.json: {"action":"run","flow":"chain_test","vars":{"role":"A"}})
 ```
+
+## One selection: `fmc_select` (X1)
+Select elements in one app and the same elements are selected, and zoomed to, in the others. Selection changes only
+what each app shows (its selection and camera), never a model, so it has no dry run.
+
+- **`show`** (`from`, `to`, `ids`): `from` is revit, navisworks, rhino or robot; without `ids` it takes that app's
+  current selection. Each app is asked in its own terms, and the identity map fills in the rest:
+  - **Revit:** `fmc_selection_get` reads the selection (UniqueIds, element ids, categories, model, and elements picked
+    in links); `fmc_selection_show` selects by UniqueId or element id and zooms (`select: false` only looks them up).
+    Revit is asked first, so every element has both its UniqueId and its element id + model.
+  - **Navisworks:** `navis_select` finds the items a Revit element became by its "Element ID" property in the model
+    from the same file (as the clash results read it), selects them and zooms; `navis_selection` reads the selection
+    back as Revit ids.
+  - **Rhino:** `rhino_select` selects objects in the open drawing by id, or by the user text `fmc.id` (the Formcraft
+    id); `rhino_selection` reads it back. These run on Rhino's window thread and give up after 30 s when Rhino is busy.
+  - **Robot:** `fmc-robot.exe select` selects the bars of the run open in Robot (`<run>#<bar>` in the map) and
+    `selection` reads them back. It never starts Robot; Robot's API selects but doesn't zoom.
+- **`read`:** every open app's current selection with what the map knows about each element; nothing changes.
+
+The answer says, per app, what was selected, what wasn't found, and which elements have no id there yet (`not_mapped`).
+
+## One search and one log: `fmc_find` (X3)
+- **`find`** (`query`: a mark such as D-12, a room number, a name, a Formcraft id, a UniqueId or element id): the
+  identity map; Revit (`fmc_find_elements`: mark, type mark, number, room name, sheet number, name, comments holding
+  the tree's FMC: mark; with `touching`, the model elements within 25 mm of each match's box); Navisworks (the items
+  the matches became, looked up without selecting, and every clash naming them with what they clash with); review
+  tickets (by their elements, clash items, recipe node or words); recipe tree nodes (by id, name or a value such as a
+  room number); exchange packages that carry it (manifest, or a text file under 1 MB).
+- **`log`:** one timeline, newest first, for the same query: `FMC_MCP_FileLog.csv`, exchange packages, review ticket
+  history and identity links, read from files only.
+
+Both are read-only; an app that isn't open is skipped and said so.

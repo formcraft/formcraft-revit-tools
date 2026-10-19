@@ -1,0 +1,615 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_E_LightFixture_Pendant_Woven",
+ "template": "Metric Generic Model face based.rft",
+ "about": "Kisasi lobby: woven banana-fibre drum pendant over the 3-seater (biophilic, Ugandan craft), face based on the ceiling; instance Drop; light source: point 800 lm 2700 K inside the shade (post build). | LOD 400: woven drum shell with rolled rims, opal diffuser disc, LED lamp, 3-arm spider, cord grip, canopy",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Lighting Fixtures"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Voltage",
+   "type": "Voltage",
+   "instance": false,
+   "group": "Electrical"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Apparent Load",
+   "type": "ApparentPower",
+   "instance": false,
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Shade Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Vernacular_BananaFibre",
+   "param": "Shade Material"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Cord Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Rubber_Black",
+   "param": "Cord Material"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Power_W",
+   "guid": "f1e5bf1d-3a44-5416-a962-710f69136c5e",
+   "instance": false,
+   "group": "ElectricalLoads"
+  },
+  {
+   "op": "add_type",
+   "name": "450_Drum_2700K"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/FMC_Cost_Unit",
+   "type": "450_Drum_2700K",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/FMC_Geometry_Stage",
+   "type": "450_Drum_2700K",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/IfcExportAs",
+   "type": "450_Drum_2700K",
+   "param": "IfcExportAs",
+   "value": "IfcLightFixture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/Description",
+   "type": "450_Drum_2700K",
+   "param": "Description",
+   "value": "Woven banana-fibre drum pendant 450 mm, LED 8 W 2700 K lamp, 900 mm drop"
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/Voltage",
+   "type": "450_Drum_2700K",
+   "param": "Voltage",
+   "value": 240
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/Apparent Load",
+   "type": "450_Drum_2700K",
+   "param": "Apparent Load",
+   "value": 9
+  },
+  {
+   "op": "set_type_value",
+   "name": "450_Drum_2700K/FMC_Power_W",
+   "type": "450_Drum_2700K",
+   "param": "FMC_Power_W",
+   "value": 8
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Shade",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Cord",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -225,
+     -225
+    ],
+    [
+     225,
+     -225
+    ],
+    [
+     225,
+     225
+    ],
+    [
+     -225,
+     225
+    ]
+   ],
+   "start": 700,
+   "end": 1100
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "revolution",
+   "name": "Canopy",
+   "profile": [
+    [
+     0,
+     0
+    ],
+    [
+     50,
+     0
+    ],
+    [
+     50,
+     25
+    ],
+    [
+     0,
+     25
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "start_deg": 0,
+   "end_deg": 360,
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy",
+   "param": "Cord Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Cord",
+   "points": [
+    [
+     -3,
+     -3
+    ],
+    [
+     3,
+     -3
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     -3,
+     3
+    ]
+   ],
+   "start": 25,
+   "end": 700
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cord",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cord",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cord",
+   "param": "Cord Material"
+  },
+  {
+   "op": "revolution",
+   "name": "Shade",
+   "profile": [
+    [
+     215,
+     700
+    ],
+    [
+     225,
+     700
+    ],
+    [
+     225,
+     1050
+    ],
+    [
+     215,
+     1050
+    ]
+   ],
+   "axis_at": [
+    0,
+    0
+   ],
+   "axis": "z",
+   "start_deg": 0,
+   "end_deg": 360,
+   "subcategory": "Shade"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shade",
+   "param": "Shade Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shade",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "add_family_param",
+   "name": "Diffuser Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Plastic_Diffuser_Opal",
+   "param": "Diffuser Material"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Diffuser",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "import_part",
+   "name": "Canopy Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Canopy.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Canopy Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Canopy Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Canopy Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Cord Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Cord.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cord Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cord Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cord Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "CordGrip Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\CordGrip.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "CordGrip Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "CordGrip Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "CordGrip Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "LampHolder Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\LampHolder.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LampHolder Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LampHolder Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LampHolder Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Lamp Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Lamp.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Lamp Fine",
+   "subcategory": "Diffuser"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Lamp Fine",
+   "param": "Diffuser Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Lamp Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Shade Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Shade.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Shade Fine",
+   "subcategory": "Shade"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Shade Fine",
+   "param": "Shade Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Shade Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Diffuser Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Diffuser.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Diffuser Fine",
+   "subcategory": "Diffuser"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Diffuser Fine",
+   "param": "Diffuser Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Diffuser Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "SpiderRing Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\SpiderRing.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "SpiderRing Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "SpiderRing Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "SpiderRing Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Spider1 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Spider1.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spider1 Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spider1 Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spider1 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Spider2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Spider2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spider2 Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spider2 Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spider2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Spider3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_LightFixture_Pendant_Woven\\Spider3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Spider3 Fine",
+   "subcategory": "Cord"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Spider3 Fine",
+   "param": "Cord Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Spider3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Cord",
+   "side": "top"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Voltage",
+   "connector": "Power",
+   "connector_param": "Voltage",
+   "param": "Voltage"
+  },
+  {
+   "op": "link_connector_param",
+   "name": "Power/Apparent Load",
+   "connector": "Power",
+   "connector_param": "Apparent Load",
+   "param": "Apparent Load"
+  }
+ ],
+ "values": {
+  "Shade 450 dia x 350, drop to shade 700 mm (bottom ~1050 below ceiling)": {
+   "value": "450/350/700",
+   "source_status": "assumed",
+   "source": "design choice; Kampala craft makers (banana fibre / raffia)"
+  },
+  "Type keynote": {
+   "value": "none",
+   "source_status": "pending",
+   "source": "keynote_request E.LED: decorative pendant"
+  },
+  "LOD 400 geometry": {
+   "value": "Rhino parts",
+   "source_status": "assumed",
+   "source": "Formcraft design, Kisasi 19 Oct 2026; maker drawings to confirm"
+  }
+ },
+ "checks": {
+  "clear_opening_param": "Width"
+ }
+}
