@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { COMPONENTS, detailDoor, roundedRect } from "./detailgen.js";
+import { COMPONENTS, coarseEnvelope, detailDoor, hideBodyOnCoarse, roundedRect } from "./detailgen.js";
 import { OP, opsProblems } from "./ops.js";
-import { RECIPE } from "./recipes.js";
+import { LOD_RENDER, NestedLod, RECIPE, lodLadder, lodLine } from "./recipes.js";
 
 const realProblems = (ops: any[]) => opsProblems(ops.map((o) => OP.parse(o)), null).filter((x) => !/isn't readable/.test(x));
 
@@ -102,4 +102,76 @@ test("QS03 fix: an extrusion locked to the same plane at both ends is refused be
     { op: "extrusion", name: "Slab", rect: ["Center (Left/Right)", "Center (Left/Right)", "Center (Front/Back)", "Center (Front/Back)"], start: 40, end: 50, start_plane: "Top", end_plane: "Top" },
   ] as any, null);
   assert.ok(p.some((x) => /both locked to "Top"/.test(x)));
+});
+
+/** The ladder of a generated component, with its Rhino twins on Fine (what fmc_rhino twins adds) when `twins`. */
+function componentLadder(twins: boolean): NestedLod {
+  const all = Object.values(COMPONENTS).map((c) => c.recipe("A"));
+  return (family) => {
+    const r = all.find((x) => x.family === family);
+    if (!r) return null;
+    const ops = twins ? [...r.ops, { op: "import_part", name: "Twin" }, { op: "set_visibility", name: "Twin", coarse: false, medium: false, fine: true }] : r.ops;
+    return lodLadder(r.family, ops);
+  };
+}
+
+test("F-071: a generated door is Coarse LOD 100 (its envelope box), Medium LOD 300, Fine LOD 400 + Render with the parts' twins", () => {
+  const std = door();
+  const at = std.ops.findIndex((o) => o.op === "add_type");
+  const plane = (name: string, v: number, axis: "x" | "y" | "z") => axis === "x" ? { op: "add_ref_plane", name, from: [v, -1500], to: [v, 1500] }
+    : axis === "y" ? { op: "add_ref_plane", name, from: [-2500, v], to: [2500, v] } : { op: "add_ref_plane", name, from: [-2500, v], to: [2500, v], view: "Exterior" };
+  std.ops.splice(at, 0,
+    plane("Floor", 0, "z"), plane("Arch L Out", -501, "x"), plane("Arch L In", -431, "x"), plane("Arch R Out", 501, "x"),
+    plane("Arch Ext", -82, "y"), plane("Frame Ext", -70, "y"), plane("Frame Int", 70, "y"), plane("Arch Int", 82, "y"), plane("Arch Top", 2138, "z"),
+    { op: "add_family_param", name: "Show Clearance", type: "YesNo", group: "Constraints", instance: true },
+    { op: "extrusion", name: "Architrave Jamb L Ext", rect: ["Arch L Out", "Arch L In", "Arch Ext", "Frame Ext"], start: 0, end: 2138, end_plane: "Arch Top" },
+    { op: "set_visibility", name: "Architrave Jamb L Ext", coarse: false, medium: true, fine: true },
+    { op: "extrusion", name: "Architrave Head Int", rect: ["Arch L Out", "Arch R Out", "Frame Int", "Arch Int"], start: 2068, end: 2138, end_plane: "Arch Top" },
+    { op: "extrusion", name: "Perimeter Seal L", rect: ["Leaf Left", "Rose L", "Leaf Ext", "Leaf Int"], start: 0, end: 2060 },
+    { op: "set_visibility", name: "Perimeter Seal L", coarse: false, medium: false, fine: true },
+    { op: "extrusion", name: "Clearance Zone Int", rect: ["Arch L Out", "Arch R Out", "Frame Int", "Arch Int"], start: 0, end: 10 },
+    { op: "set_visibility", name: "Clearance Zone Int", coarse: true, medium: true, fine: false },
+    { op: "set_visible_param", name: "Clearance Zone Int/Visible", solid: "Clearance Zone Int", param: "Show Clearance" },
+    { op: "symbolic_lines", name: "Swing A", view: "plan", subcategory: "Plan Swing", arc: { center: { planes: ["Leaf Left", "Leaf Int"] }, radius: 846, radius_param: "Main Leaf Width", start_deg: 0, end_deg: 90 } },
+  );
+  const d = detailDoor(std, (f) => `A\\${f}.rfa`);
+  const ops = d.recipe.ops;
+  // the envelope: architraves outside, their faces, floor to the architrave head; on its subcategory, Coarse only
+  const env = ops.find((o) => o.op === "extrusion" && o.name === "Coarse Envelope")!;
+  assert.deepEqual(env.rect, ["Arch L Out", "Arch R Out", "Arch Ext", "Arch Int"], "it flexes with Width and the frame depth");
+  assert.deepEqual([env.start, env.end, env.start_plane, env.end_plane], [0, 2138, "Floor", "Arch Top"], "and with Height");
+  assert.ok(ops.some((o) => o.op === "add_subcategory" && o.name === "Coarse Envelope"));
+  assert.ok(ops.some((o) => o.op === "set_subcategory" && o.name === "Coarse Envelope" && o.subcategory === "Coarse Envelope"));
+  const vis = (n: string) => ops.filter((o) => o.op === "set_visibility" && o.name === n).map((o) => [o.coarse, o.medium, o.fine]);
+  assert.deepEqual(vis("Coarse Envelope"), [[true, false, false]]);
+  // the body hides on Coarse: leaf, frame, the open leaves; a Fine-only part stays Fine-only; the clearance keeps its levels
+  for (const n of ["Leaf A", "Architrave Jamb L Ext", "Architrave Head Int", "Leaf A Open", "Leaf B Open"]) assert.deepEqual(vis(n), [[false, true, true]], n);
+  assert.deepEqual(vis("Perimeter Seal L"), [[false, false, true]]);
+  assert.deepEqual(vis("Clearance Zone Int"), [[true, true, false]]);
+  assert.ok(ops.some((o) => o.op === "symbolic_lines" && o.name === "Swing A"), "the plan swing stays (symbolic lines show on every level)");
+  // Gate A's ladder
+  assert.deepEqual(lodLadder(d.recipe.family, ops, componentLadder(true)), { coarse: "LOD 100", medium: "LOD 300", fine: LOD_RENDER });
+  assert.equal(lodLine(d.recipe.family, ops, componentLadder(true)).state, "Pass");
+  assert.deepEqual(lodLadder(d.recipe.family, ops, componentLadder(false)), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 300" }, "before the twins");
+  // still a clean recipe, each op once
+  assert.equal(RECIPE.safeParse(d.recipe).success, true);
+  const keys = ops.map((o) => `${o.op}|${o.name}`);
+  assert.equal(new Set(keys).size, keys.length);
+  assert.deepEqual(realProblems(ops).filter((x) => !/isn't made earlier/.test(x)), []);
+  // the X-ray variant too
+  const x = detailDoor(std, (f) => `A\\${f}.rfa`, { pull: true, warning_light: true });
+  assert.equal(lodLine(x.recipe.family, x.recipe.ops, componentLadder(true)).state, "Pass");
+});
+
+test("F-071: a recipe that has an envelope keeps it; the body is still hidden on Coarse", () => {
+  const ops = [
+    { op: "add_ref_plane", name: "L", from: [-100, -500], to: [-100, 500] }, { op: "add_ref_plane", name: "R", from: [100, -500], to: [100, 500] },
+    { op: "add_ref_plane", name: "E", from: [-500, -50], to: [500, -50] }, { op: "add_ref_plane", name: "I", from: [-500, 50], to: [500, 50] },
+    { op: "extrusion", name: "Coarse Envelope", rect: ["L", "R", "E", "I"], start: 0, end: 900 },
+    { op: "extrusion", name: "Body", rect: ["L", "R", "E", "I"], start: 0, end: 900 },
+  ];
+  assert.equal(coarseEnvelope(ops), null);
+  const out = hideBodyOnCoarse(ops);
+  assert.deepEqual(out.filter((o) => o.op === "set_visibility").map((o) => o.name), ["Body"], "the envelope isn't hidden");
+  assert.equal(coarseEnvelope([{ op: "extrusion", name: "Body", points: [[0, 0], [1, 0], [1, 1]], start: 0, end: 10 }]), null, "no planes: nothing guessed");
 });

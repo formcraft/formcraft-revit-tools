@@ -85,9 +85,9 @@
     "area": "App",
     "group": "Core",
     "feature": "Updates and the log window",
-    "status": "Built, Revit check due",
-    "ref": "U09",
-    "note": "Updater installs when Revit is closed; logs when the Claude app still runs the old server, and fmc_selftest fails until it restarts (F-042)"
+    "status": "Tested in Revit",
+    "ref": "U09, TR-20261019-1528",
+    "note": "Updater installs when Revit is closed; logs when the Claude app still runs the old server, and fmc_selftest fails until it restarts (F-042) Unattended run TR-20261019-1528 (19 Oct): the update installed by itself when Revit closed and the self-test in the runner's Revit passed on the new build."
   },
   {
     "id": "F11",
@@ -384,7 +384,7 @@
     "feature": "fmc_doc engine (B1)",
     "status": "Built, Revit check due",
     "ref": "#68-#71",
-    "note": "Acceptance run passed 14 Oct; sessions idle past session_idle_hours (12 h) listed as stale, closed by fmc_recipe cleanup (F-046); retest due"
+    "note": "Acceptance run passed 14 Oct; sessions idle past session_idle_hours (12 h) listed as stale, closed by fmc_recipe cleanup (F-046); retest due Unattended run TR-20261019-1528 (19 Oct): family pictures in a background fmc_doc session closed without saving passed (scenario 08)."
   },
   {
     "id": "F44",
@@ -393,7 +393,7 @@
     "feature": "Recipes, Gate A, release in the pane (B2)",
     "status": "In progress",
     "ref": "#91, #97, #228, #232",
-    "note": "Doors merged; vent windows #113; 17 Oct: first healthcare family built and gated in Revit (run 10); recipe inline from chat, cropped screenshots and detailed report in this PR 17 Oct: photo-to-family parts compiler (fmc_parts.py), generic photo references for all 418 healthcare families, open brand/model params, front/right sketches and x/y revolution axes (F-059); Gate A rules by family kind, category vs register, spec and name token, dimension sides on every gate (F-045, F-047); retest due. 18 Oct: fmc_recipe check stops planes under 1.5 mm, solids under 0.78 mm, lock_face with no face on its plane, values for parameters never added and reused solid names; warns on unhosted templates for face-hosted families (F-061, F-064); builds name skipped ops; Gate A checks the family hosts as the register says and runs a host test in a throw-away project (place, move host, follows, upright, connectors into the host; F-061); Revit check due; engine ops: skeleton (W/D/H planes, labelled, EQ, mounting height), start_plane/end_plane snap and lock, levels such as Upper Ref. Level, name_template_plane (F-062) 19 Oct: Gate A's family size limit is a guard setting (family_max_mb, #232; 2.7 MB for now, back to 2 MB later); planes driven by a formula and nested parts hidden at Coarse no longer fail; lever rose and pass box generator fixes (#228)."
+    "note": "Doors merged; vent windows #113; 17 Oct: first healthcare family built and gated in Revit (run 10); recipe inline from chat, cropped screenshots and detailed report in this PR 17 Oct: photo-to-family parts compiler (fmc_parts.py), generic photo references for all 418 healthcare families, open brand/model params, front/right sketches and x/y revolution axes (F-059); Gate A rules by family kind, category vs register, spec and name token, dimension sides on every gate (F-045, F-047); retest due. 18 Oct: fmc_recipe check stops planes under 1.5 mm, solids under 0.78 mm, lock_face with no face on its plane, values for parameters never added and reused solid names; warns on unhosted templates for face-hosted families (F-061, F-064); builds name skipped ops; Gate A checks the family hosts as the register says and runs a host test in a throw-away project (place, move host, follows, upright, connectors into the host; F-061); Revit check due; engine ops: skeleton (W/D/H planes, labelled, EQ, mounting height), start_plane/end_plane snap and lock, levels such as Upper Ref. Level, name_template_plane (F-062) 19 Oct: Gate A's family size limit is a guard setting (family_max_mb, #232; 2.7 MB for now, back to 2 MB later); planes driven by a formula and nested parts hidden at Coarse no longer fail; lever rose and pass box generator fixes (#228). Unattended run TR-20261019-1528 (19 Oct): the host test did not run for families the register gives no Host (F-069, fixed in #241); retest due."
   },
   {
     "id": "F45",
@@ -420,7 +420,7 @@
     "feature": "Recipe ops: arrays, parametric symbols, template clean-up, nested hardware",
     "status": "Built, Revit check due",
     "ref": "PR #142, F-026",
-    "note": "From the Ogala field review; LinearArray and symbol locks to confirm in Revit"
+    "note": "From the Ogala field review; LinearArray and symbol locks to confirm in Revit Unattended run TR-20261019-1528 (19 Oct): the QS03 sample batch built and gated in Revit again (scenario 03)."
   },
   {
     "id": "F47",
@@ -546,7 +546,7 @@
     "feature": "Schedules for every discipline",
     "status": "In progress",
     "ref": "Canvas Sch_*, #218",
-    "note": "The engine is built (fmc_schedules, fmc_schedules_apply, fmc-schedules/0.1 in docs/SCHEDULES.md): check, plan rolled back, apply adding only missing fields. The discipline sets themselves wait for the kit (FMC_Schedule_Sets.json from the Sch_* canvases). Not Revit-checked In the unattended test scenarios (10_schedules)."
+    "note": "The engine is built (fmc_schedules, fmc_schedules_apply, fmc-schedules/0.1 in docs/SCHEDULES.md): check, plan rolled back, apply adding only missing fields. The discipline sets themselves wait for the kit (FMC_Schedule_Sets.json from the Sch_* canvases). Not Revit-checked In the unattended test scenarios (10_schedules). Unattended run TR-20261019-1528 (19 Oct): the engine's check, plan, apply in a scratch project and a second plan passed in Revit (scenario 10); the discipline sets still wait for the kit."
   },
   {
     "id": "F61",
@@ -618,16 +618,16 @@
     "feature": "Apps work as one: identity map, exchange packages, saved flows (X0–X4)",
     "status": "In progress",
     "ref": "docs/PLAN_ENGINEERING_HUB.md, #217, #219",
-    "note": "X0 built: identity map (FMC_Identity.json), exchange packages with SHA-256 manifests, fmc_flow saved flows (built in: health, pack_rebuild, chain_test, robot_send, robot_results); Revit ↔ Robot recorded on the identity map. Next: X1 selection, X2 changes, X3 search and log, X4 pane. Step T built (Revit check due): fmc_tables compares, exports and imports kit tables (Excel ↔ CSV/JSON) by script, dry run first, proposals and a kit change request in staging; Check › Scripts runs it as \"Kit tables (dry run)\". X1 and X3 built (19 Oct), not app-checked: fmc_select (one selection Revit ↔ Navisworks ↔ Rhino ↔ Robot through the identity map; Revit fmc_selection_get/show, navis_select/selection, rhino_select/selection, fmc-robot select/selection) and fmc_find (find: identity map, Revit by mark/number/name and what touches it, Navisworks items and clashes, review tickets, tree nodes, packages; log: one timeline of the file log, packages, ticket history and identity links). X2 built (#217): fmc_changes flags what a change in one app affects in the others (parts, recipes, tree, exports, flows; Robot and Navisworks results marked out of date). Next: X4 pane"
+    "note": "X0 built: identity map (FMC_Identity.json), exchange packages with SHA-256 manifests, fmc_flow saved flows (built in: health, pack_rebuild, chain_test, robot_send, robot_results); Revit ↔ Robot recorded on the identity map. Next: X1 selection, X2 changes, X3 search and log, X4 pane. Step T built (Revit check due): fmc_tables compares, exports and imports kit tables (Excel ↔ CSV/JSON) by script, dry run first, proposals and a kit change request in staging; Check › Scripts runs it as \"Kit tables (dry run)\". X1 and X3 built (19 Oct), not app-checked: fmc_select (one selection Revit ↔ Navisworks ↔ Rhino ↔ Robot through the identity map; Revit fmc_selection_get/show, navis_select/selection, rhino_select/selection, fmc-robot select/selection) and fmc_find (find: identity map, Revit by mark/number/name and what touches it, Navisworks items and clashes, review tickets, tree nodes, packages; log: one timeline of the file log, packages, ticket history and identity links). X2 built (#217): fmc_changes flags what a change in one app affects in the others (parts, recipes, tree, exports, flows; Robot and Navisworks results marked out of date). Next: X4 pane X2 built (#217): fmc_changes flags what a change in one app affects in the others (parts, recipes, tree, exports, flows; Robot and Navisworks results marked out of date). Next: X4 pane"
   },
   {
     "id": "F70",
     "area": "Engine",
     "group": "Families",
     "feature": "One family, three levels: LOD 100 Coarse box, LOD 200 standard or LOD 300 detailed on Medium, LOD 400 Rhino twins on Fine",
-    "status": "Tested in Revit",
-    "ref": "docs/PLAN_ENGINEERING_HUB.md, #224",
-    "note": "Owner's choice 18 Oct: one family, three levels. Built 19 Oct: fmc_rhino twins (Fine = the native body drawn smooth in Rhino, 210 twins for the four detailed families, all checked), import_part, previews on save. The Revit build and Gate A per level are the tester's (HANDOFF 19 Oct) 19 Oct (run 12): the LOD 400 render families built in Revit with their Rhino parts (import_part, size check fixed in #224) and passed Gate A; preview pictures without connector markers come with #233."
+    "status": "Built, Revit check due",
+    "ref": "docs/PLAN_ENGINEERING_HUB.md, #224, #244",
+    "note": "Owner's choice 18 Oct: one family, three levels. Built 19 Oct: fmc_rhino twins (Fine = the native body drawn smooth in Rhino, 210 twins for the four detailed families, all checked), import_part, previews on save. The Revit build and Gate A per level are the tester's (HANDOFF 19 Oct) 19 Oct (run 12): the LOD 400 render families built in Revit with their Rhino parts (import_part, size check fixed in #224) and passed Gate A; preview pictures without connector markers come with #233. 19 Oct (run 12): the LOD 400 render families built in Revit with their Rhino parts (import_part, size check fixed in #224) and passed Gate A. Unattended run TR-20261019-1528: the levels-of-detail check found the detailed door and window have no Coarse LOD 100 box (F-071, #244; the Fine reading is fixed in #241), so this stays Built, Revit check due until the generator adds the Coarse box and the families are rebuilt."
   },
   {
     "id": "F71",
@@ -645,7 +645,7 @@
     "feature": "The recipe tree: the whole building as one recipe of recipes",
     "status": "In progress",
     "ref": "docs/PLAN_RECIPE_TREE.md, #203, #205, #208, #209, #210, #211, #212",
-    "note": "Approved in principle 19 Oct. Built: T0 node format and fmc_tree; T1 room recipe (fmc_room, fmc_room_build); T3 hand edits adopt or override; T4 departments along a corridor, shared walls once; T5 the whole tree from the approved CIS (fmc_tree brief) with quantities across it; tickets link to their recipe node. T2 waits for a room-services rulebook in the kit. None Revit-checked yet"
+    "note": "Approved in principle 19 Oct. Built: T0 node format and fmc_tree; T1 room recipe (fmc_room, fmc_room_build); T3 hand edits adopt or override; T4 departments along a corridor, shared walls once; T5 the whole tree from the approved CIS (fmc_tree brief) with quantities across it; tickets link to their recipe node. T2 waits for a room-services rulebook in the kit. None Revit-checked yet Unattended run TR-20261019-1528 (19 Oct): the room builds failed on the scenarios' fixed level name (F-070, fixed in #241); retest due."
   },
   {
     "id": "F73",
@@ -663,7 +663,7 @@
     "feature": "Automation balance tracker: AI-written code against plugin tools, add-ons and outside scripts, and the move list",
     "status": "Built, Revit check due",
     "ref": "docs/AUTOMATION_BALANCE.md, #229",
-    "note": "Owner's decisions 19 Oct: the tracker before the add-on work, in the pane, Power BI and the weekly report. Built: the local call ledger (every server call: tool, action, ok, ms, project, started by ai/pane/job/schedule/cli; send_code adds purpose and a code hash; never names or content), one-line hooks for pyRevit, Dynamo, Grasshopper, Python, JS, PowerShell and batch (resources/hooks), fmc_balance summary/backlog/inventory/export (move list seeded with the KISIC inventory, status from this tracker), Check › Automation in the pane, an Automation balance section in the weekly report, tidy CSVs for Power BI. The PaneAutomation board is a placeholder still to draw; the Power BI table ships with fmc_powerbi (#220). None Revit-checked"
+    "note": "Owner's decisions 19 Oct: the tracker before the add-on work, in the pane, Power BI and the weekly report. Built: the local call ledger (every server call: tool, action, ok, ms, project, started by ai/pane/job/schedule/cli; send_code adds purpose and a code hash; never names or content), one-line hooks for pyRevit, Dynamo, Grasshopper, Python, JS, PowerShell and batch (resources/hooks), fmc_balance summary/backlog/inventory/export (move list seeded with the KISIC inventory, status from this tracker), Check › Automation in the pane, an Automation balance section in the weekly report, tidy CSVs for Power BI. The PaneAutomation board is a placeholder still to draw; the Power BI table ships with fmc_powerbi (#220). None Revit-checked the Power BI table ships with fmc_powerbi (#220)"
   },
   {
     "id": "F75",
@@ -672,7 +672,7 @@
     "feature": "Unattended Revit tests: scenarios as data, run with no AI in the runner's own Revit, paused on battery saver or battery, resumed after sleep",
     "status": "Built, Revit check due",
     "ref": "docs/TESTING.md, #230",
-    "note": "Asked 19 Oct. Built: tests/revit scenarios (self-test, the sample batches with batch_gate and host tests, ICU bay room build, element facts, Mark & Review fix dry run, selection, design options, schedules, 3D pictures, offline ceiling; apps skipped when closed), fmc_testrun (list, plan, run, status, resume, report) with a checkpoint and findings, its own Revit only (FMC_UNATTENDED_TEST, no keep-awake), dialogs answered by rule (Duplicate Types), scripts/fmc-testrun.ps1 and fmc-testrun-schedule.ps1 (the owner registers the task). First real run not yet done Merged 19 Oct (#230); the first unattended run is the Revit check."
+    "note": "Asked 19 Oct. Built: tests/revit scenarios (self-test, the sample batches with batch_gate and host tests, ICU bay room build, element facts, Mark & Review fix dry run, selection, design options, schedules, 3D pictures, offline ceiling; apps skipped when closed), fmc_testrun (list, plan, run, status, resume, report) with a checkpoint and findings, its own Revit only (FMC_UNATTENDED_TEST, no keep-awake), dialogs answered by rule (Duplicate Types), scripts/fmc-testrun.ps1 and fmc-testrun-schedule.ps1 (the owner registers the task). First real run not yet done Merged 19 Oct (#230); the first unattended run is the Revit check. Unattended run TR-20261019-1528 (19 Oct): the first full run: 15 scenarios in 39 minutes with no AI or person, retries, scratch projects closed without saving, findings written (F-069, F-070, F-071)."
   },
   {
     "id": "F76",
@@ -690,7 +690,7 @@
     "feature": "MEP calculations from the kit (E1)",
     "status": "Built, Revit check due",
     "ref": "docs/PLAN_ENGINEERING_SERVICES.md, #238, docs/MEP_CALCULATIONS.md",
-    "note": "Built 19 Oct (#238): fmc_calc runs CA-E-01, CA-E-02, CA-P-01, CA-P-02, CA-FP-01, CA-FP-02 and CA-LP-02 from the kit workbook on facts read by fmc_mep_facts (read-only); sheets go to 01_WIP _Calcs as drafts for the engineer to sign. TBC until the kit adds an mV/A/m table, hose-reel throw and travel distances, and an earth resistance target. Not Revit-checked; scenario tests/revit/15_mep_calc.json"
+    "note": "Built 19 Oct (#238): fmc_calc runs CA-E-01, CA-E-02, CA-P-01, CA-P-02, CA-FP-01, CA-FP-02 and CA-LP-02 from the kit workbook on facts read by fmc_mep_facts (read-only); sheets go to 01_WIP _Calcs as drafts for the engineer to sign. TBC until the kit adds an mV/A/m table, hose-reel throw and travel distances, and an earth resistance target. Not Revit-checked; scenario tests/revit/15_mep_calc.json Unattended run TR-20261019-1528 (19 Oct): fmc_mep_facts and the calc list ran in Revit (scenario 15); the calc run was skipped because the scratch project has no MEP elements, so the calcs themselves are not Revit-checked yet."
   },
   {
     "id": "F78",
