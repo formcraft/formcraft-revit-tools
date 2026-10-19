@@ -1,0 +1,61 @@
+{
+  "schema": "fmc-testrun/0.1",
+  "id": "16_diagrams",
+  "title": "Line diagrams (LD5, E2) in a scratch project: scan, plan, the draw and the register sheets as dry runs, and Gate D; the draw is skipped when the model has no circuits or pipes",
+  "features": ["F78"],
+  "setup": [
+    {
+      "id": "new",
+      "note": "A new scratch project from the kit's template in _ChainTests\\_TestRun (a new folder per run and try: nothing is saved over)",
+      "tool": "fmc_file",
+      "args": { "action": "create_from_template", "kind": "project", "template_path": "{{project_template}}", "save_path": "{{scratch}}\\FMC_ChainTest_A.rvt", "close_after": true, "dry_run": false },
+      "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
+    },
+    { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    { "id": "levels", "note": "The scratch project's levels (the kit template names them): the diagrams' level bands come from them", "revit": "fmc_document_info", "params": {},
+      "checks": [{ "path": "active.levels", "at_least": 1 }] }
+  ],
+  "steps": [
+    {
+      "id": "scan",
+      "note": "Read-only: the scan opens no transaction",
+      "tool": "fmc_diagram",
+      "args": { "action": "scan", "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "diagrams", "exists": true }, { "path": "levels", "at_least": 1 }]
+    },
+    {
+      "id": "plan",
+      "tool": "fmc_diagram",
+      "args": { "action": "plan", "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "views", "exists": true }, { "path": "not_drawn.0.kind", "equals": "p_drainage_long" }]
+    },
+    {
+      "id": "draw_dry",
+      "note": "Skipped on a model with no circuits or pipes (the template has none): the draw refuses when there is nothing to draw",
+      "when": { "path": "steps.plan.views", "at_least": 1 },
+      "tool": "fmc_diagram",
+      "args": { "action": "draw", "kit_folder": "{{kit}}", "dry_run": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "dry_run", "equals": true }, { "path": "result.dry_run", "equals": true }]
+    },
+    {
+      "id": "sheets_dry",
+      "note": "The register's diagram sheets (E-0003, E-0004, E-6002, P-0003) are listed even when nothing is drawn; the drainage long section is TBC",
+      "tool": "fmc_diagram",
+      "args": { "action": "sheets", "kit_folder": "{{kit}}", "dry_run": true },
+      "timeout_s": 600,
+      "checks": [{ "no_error": true }, { "path": "sheets", "at_least": 4 }, { "path": "sheets.0.title_block", "matches": "^FMC_TitleBlock" }, { "path": "tbc.0.kind", "equals": "p_drainage_long" }]
+    },
+    {
+      "id": "gate",
+      "note": "Gate D, read-only: on the empty template it is Not checked (nothing to compare), never an error",
+      "tool": "fmc_diagram",
+      "args": { "action": "gate", "kit_folder": "{{kit}}" },
+      "timeout_s": 300,
+      "checks": [{ "no_error": true }, { "path": "gate", "equals": "D" }, { "path": "verdict", "matches": "^(Pass|Warn|Fail|Not checked)$" }, { "path": "lines", "at_least": 1 }]
+    }
+  ],
+  "teardown": [{ "runner": "close_revit" }]
+}
