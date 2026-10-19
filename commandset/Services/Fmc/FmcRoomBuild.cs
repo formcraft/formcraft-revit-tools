@@ -50,9 +50,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             void Made(Element e, JObject o) { made.Add(e); keys.Add(o.Value<string>("key") ?? ""); }
             int removed = 0;
             string levelName = Parameters.Value<string>("level") ?? "";
-            Level level = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>()
-                .FirstOrDefault(l => string.Equals(l.Name, levelName, StringComparison.OrdinalIgnoreCase))
-                ?? throw new InvalidOperationException($"No level {levelName} in the model");
+            Level level = FmcLevels.Find(doc, levelName);
 
             using (var t = new Transaction(doc, "FMC room " + node))
             {

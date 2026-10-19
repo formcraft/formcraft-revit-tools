@@ -695,3 +695,36 @@ test("QS01: the level-of-detail ladder is read from the recipe: Coarse box LOD 1
   assert.match(lodLine("FMC_A_Door", noCoarse).detail, /Coarse LOD 200.*expected LOD 100/, "a body on Coarse with no envelope is reported");
   assert.equal(lodLine("FMC_A_Door", [env, vis("Coarse Envelope", true, false, false)]).state, "Fail", "Medium shows nothing");
 });
+
+test("QS01: nested parts count with their own ladder: the detailed door's Rhino twins live in its hinges, lever and closer", () => {
+  const vis = (name: string, coarse: boolean, medium: boolean, fine: boolean) => ({ op: "set_visibility", name, coarse, medium, fine });
+  const env = { op: "extrusion", name: "Coarse Envelope", rect: ["Left", "Right", "Front", "Back"], start: 0, end: 2100 };
+  const leaf = { op: "extrusion", name: "Leaf A", rect: ["Left", "Right", "Front", "Back"], start: 0, end: 2040 };
+  // the part, as the QS03 generator and fmc_rhino twins make it: Medium native, Fine twins, nothing on Coarse
+  const hinge = [{ op: "revolution", name: "Knuckle", profile: [[0, 0], [6, 0], [0, 100]] }, vis("Knuckle", false, true, false),
+    { op: "import_part", name: "Knuckle Fine", file: "K.3dm" }, vis("Knuckle Fine", false, false, true)];
+  const parts: Record<string, Array<Record<string, any>>> = { FMC_A_Part_ButtHinge: hinge };
+  const nested = (f: string) => (parts[f] ? lodLadder(f, parts[f]) : null);
+  const door = [env, vis("Coarse Envelope", true, false, false), leaf, vis("Leaf A", false, true, true),
+    { op: "place_nested", name: "Hinge A 1", family: "FMC_A_Part_ButtHinge" }];
+  assert.deepEqual(lodLadder("FMC_A_Door_X_Detailed", door), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 300" }, "without the look-up: as before");
+  assert.deepEqual(lodLadder("FMC_A_Door_X_Detailed", door, nested), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400 + Render" });
+  assert.equal(lodLine("FMC_A_Door_X_Detailed", door, nested).state, "Pass");
+  // a part the host hides on Fine, or one whose recipe can't be read, adds nothing
+  assert.equal(lodLadder("FMC_A_Door_X_Detailed", [...door, vis("Hinge A 1", true, true, false)], nested).fine, "LOD 300");
+  assert.equal(lodLadder("FMC_A_Door_X_Detailed", [...door.slice(0, 4), { op: "place_nested", name: "K", family: "FMC_A_Part_Gone" }], nested).fine, "LOD 300");
+  // the sample door as staged: no Coarse envelope, the frame and leaf shown on every level: Coarse really is LOD 300
+  const staged = [leaf, { op: "place_nested", name: "Hinge A 1", family: "FMC_A_Part_ButtHinge" }];
+  const l = lodLine("FMC_A_Door_FlushSingle_Hygienic_Detailed", staged, nested);
+  assert.equal(l.state, "Warn");
+  assert.equal(l.detail, "Coarse LOD 300, Medium LOD 300, Fine LOD 400 + Render; expected LOD 100, LOD 300, LOD 400 + Render");
+});
+
+test("QS01: a lighting fixture's light path beam isn't its body: the Coarse envelope with the beam is still LOD 100", () => {
+  const vis = (name: string, coarse: boolean, medium: boolean, fine: boolean) => ({ op: "set_visibility", name, coarse, medium, fine });
+  const ops = [{ op: "extrusion", name: "Coarse Envelope", rect: ["a", "b", "c", "d"], start: 0, end: 300 }, vis("Coarse Envelope", true, false, false),
+    { op: "revolution", name: "Lens Main", profile: [[0, 0], [5, 0], [0, 5]] }, vis("Lens Main", false, true, false),
+    { op: "import_part", name: "Lens Main Fine", file: "L.3dm" }, vis("Lens Main Fine", false, false, true),
+    { op: "revolution", name: "Lens Main Light Path", profile: [[0, 0], [5, 0], [0, 5]] }, vis("Lens Main Light Path", true, true, true)];
+  assert.deepEqual(lodLadder("FMC_E_LightFixture_OperatingLight_Ceiling_Detailed", ops), { coarse: "LOD 100", medium: "LOD 300", fine: "LOD 400 + Render" });
+});

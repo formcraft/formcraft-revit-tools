@@ -11,13 +11,15 @@
       "checks": [{ "no_error": true }, { "path": "done", "equals": true }]
     },
     { "id": "open", "runner": "open_in_revit", "path": "{{scratch}}\\FMC_ChainTest_A.rvt" },
+    { "id": "levels", "note": "The scratch project's levels (the kit template names them): the room goes on the lowest", "revit": "fmc_document_info", "params": {},
+      "checks": [{ "path": "active.levels", "at_least": 1 }] },
     {
       "id": "build",
       "tool": "fmc_room",
       "args": {
         "action": "build", "node": "Review-Bay", "project_folder": "{{scratch}}", "dry_run": false,
         "room": {
-          "name": "Review bay", "number": "T-01", "level": "Level 2", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
+          "name": "Review bay", "number": "T-01", "level": "{{steps.levels.active.levels.0.name}}", "origin_mm": [0, 0], "width": 4200, "depth": 5000, "height": 3300,
           "walls": { "type": "Generic - 200mm", "thickness": 200 }
         }
       },

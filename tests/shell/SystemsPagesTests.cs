@@ -30,7 +30,7 @@ namespace Formcraft.Shell.Tests
             await Assert.That(done).IsEqualTo(0);
             await Assert.That(SystemCapabilities.Status("Power distribution", "1 Enrich")).IsEqualTo("Planned");
             await Assert.That(SystemCapabilities.Status("Power distribution", "3 Diagram")).IsEqualTo("Built, Revit check due");
-            await Assert.That(SystemCapabilities.Status("Drainage", "4 Calculate")).IsEqualTo("Kit calculation only");
+            await Assert.That(SystemCapabilities.Status("Drainage", "4 Calculate")).IsEqualTo("Built, Revit check due");
             await Assert.That(SystemCapabilities.Status("Structural", "Diagram")).IsEqualTo("Not applicable");
             await Assert.That(SystemCapabilities.Cell("Power distribution", "1 Enrich")!.Note).Contains("Electrical 0.1");
         }

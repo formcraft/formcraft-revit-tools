@@ -7,25 +7,31 @@
   "steps": [
     {
       "id": "door",
-      "note": "Gate A places a wall-hosted family in a throw-away project and moves its host (fmc_family_host_test)",
+      "note": "Gate A places a wall-hosted family in a throw-away project and moves its host (fmc_family_host_test); with no Host in the register, the host comes from the family's template (hostKind)",
       "tool": "fmc_recipe",
       "args": { "action": "gate", "file": "{{staging}}\\A\\FMC_A_Door_FlushSingle_Hygienic_Detailed.rfa" },
       "timeout_s": 1200,
-      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" },
+        { "path": "hostTestError", "equals": "" }, { "path": "hostKind", "equals": "wall" },
+        { "path": "lines[check^=Hosts].state", "equals": "Pass" }, { "path": "lines[check=Host test].state", "equals": "Pass" }]
     },
     {
       "id": "window",
       "tool": "fmc_recipe",
       "args": { "action": "gate", "file": "{{staging}}\\A\\FMC_A_Window_Observation_Internal_Nurse_Detailed.rfa" },
       "timeout_s": 1200,
-      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" },
+        { "path": "hostTestError", "equals": "" }, { "path": "hostKind", "equals": "wall" },
+        { "path": "lines[check^=Hosts].state", "equals": "Pass" }, { "path": "lines[check=Host test].state", "equals": "Pass" }]
     },
     {
       "id": "light",
       "tool": "fmc_recipe",
       "args": { "action": "gate", "file": "{{staging}}\\E\\FMC_E_LightFixture_OperatingLight_Ceiling_Detailed.rfa" },
       "timeout_s": 1200,
-      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" }, { "path": "hostTestError", "equals": "" }]
+      "checks": [{ "no_error": true }, { "path": "verdict", "equals": "Pass" },
+        { "path": "hostTestError", "equals": "" }, { "path": "hostKind", "equals": "ceiling" },
+        { "path": "lines[check^=Hosts].state", "equals": "Pass" }, { "path": "lines[check=Host test].state", "equals": "Pass" }]
     }
   ],
   "teardown": []

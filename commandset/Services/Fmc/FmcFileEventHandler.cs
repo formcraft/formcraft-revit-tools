@@ -107,6 +107,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             JObject subject = target.Length == 0 ? (active != null ? Describe(active, active) : null)
                 : named != null ? Describe(named, active)
                 : File.Exists(target) ? FromFile(target) : null;
+            // the subject's levels, lowest first, so a caller (a test scenario) can name one the model really has
+            Document subjectDoc = target.Length == 0 ? active : named;
+            if (subject != null && subjectDoc != null && !subjectDoc.IsFamilyDocument) subject["levels"] = FmcLevels.List(subjectDoc);
             return new JObject
             {
                 ["active"] = subject,
