@@ -55,6 +55,7 @@ namespace revit_mcp_plugin.Shell
 #endif
             Settings = new JsonUserSettings(JsonUserSettings.DefaultPath);
             FlowTools.Register();
+            ReviewPins.Register();
             BuildViews.Register();
             LiveData = new RevitLiveData();
             // Connect's "Switch on when Revit starts" is start_with_revit in fmc_connect.json, the file the MCP server reads too.

@@ -5,7 +5,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { Filter, PRIORITIES, Register, ReviewItem, answer, filterItems, find, printItems, printList, raise, raiseProblems, shownStatus, solve, verdict } from "../fmc/review.js";
-import { AI_OWNER, applyBcf, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { AI_OWNER, applyBcf, clashTickets, comment, mark, markProblems, queue, take } from "../fmc/tickets.js";
+import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { fromBcf, toBcf } from "../fmc/bcf.js";
 import { ElementFacts, intentAfterReply, parseNote, planFix } from "../fmc/noteparse.js";
 import { readDb } from "./fmc_material.js";
@@ -68,13 +69,15 @@ export const FMC_REVIEW_DESCRIPTION =
     "element facts) and the ticket goes back to the raiser as Resolved to check.";
 
 export const FMC_REVIEW_SHAPE = {
-  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix"]),
+  action: z.enum(["list", "item", "raise", "answer", "solve", "check", "cloud", "print", "prints", "mark", "comment", "take", "queue", "bcf_export", "bcf_import", "plan_fix", "apply_fix", "show", "clashes"]),
   approved_by: z.string().optional().default("").describe("apply_fix: the person who said yes to the steps (never the AI)"),
   plan_hash: z.string().optional().default("").describe("apply_fix: the plan_hash from the dry run that person saw"),
   facts: z.object({ unique_id: z.string().optional(), category: z.string().optional(), family: z.string().optional(), type_name: z.string().optional(),
     params: z.record(z.union([z.number(), z.string(), z.null()])).optional(), types: z.array(z.string()).optional(),
     reference: z.object({ type_name: z.string().optional(), unique_id: z.string().optional() }).optional(), view: z.string().optional() })
     .optional().describe("plan_fix: the marked element's facts (lengths in mm); without them it asks Revit, then plans from the note alone"),
+  test: z.string().optional().default("").describe("clashes: the Navisworks clash test"),
+  view: z.boolean().optional().default(true).describe("show: open your own review view on the ticket's camera and box (false: select and zoom only)"),
   to: z.enum(["ai", "person", "discipline", "anyone"]).optional().default("ai").describe("mark: who fixes it; queue: whose list"),
   assignee: z.string().optional().default("").describe("mark: the person or discipline; queue: the person or discipline to list"),
   where: z.object({ unique_ids: z.array(z.string()).default([]), ifc_guids: z.array(z.string()).optional(),
@@ -177,6 +180,13 @@ export async function runFmcReview(args: FmcReviewArgs) {
         next: problems.length ? "Settle these first (the AI, a person or an engineer), then run the dry run again"
           : `Show these steps to ${item.raised_by || "the person who raised it"}; on a clear yes run again with dry_run=false, approved_by and this plan_hash` }, problems.length > 0);
     }
+    if (args.action === "show") {
+      // selecting and your own review view only: no element of the model changes
+      const t = find(reg, args.id);
+      const revit_ids = (t.links?.clash?.items ?? []).map((x) => ({ model: x.model, id: x.id }));
+      const r = await withRevitConnection((c) => c.sendRaw("fmc_review_show", { where: t.where ?? { unique_ids: [] }, revit_ids, view: args.view }, 60000));
+      return reply({ id: t.id, ...r });
+    }
     if (args.action === "prints")
       return reply({ sheet: args.sheet, prints: (reg.prints ?? []).filter((p) => !args.sheet || p.sheet.toUpperCase() === args.sheet.toUpperCase()).slice(-20).reverse() });
 
@@ -217,6 +227,20 @@ export async function runFmcReview(args: FmcReviewArgs) {
       return win.relative(win.dirname(file), to);
     };
     if (args.action === "bcf_export" || args.action === "bcf_import") return reply(...bcf(args, reg, file, config, now, by, media));
+    if (args.action === "clashes") {
+      if (!args.test.trim()) return reply({ refused: true, reasons: ["Name the clash test (fmc_navis tests lists them)"] }, true);
+      const st = readState();
+      if (!st || !processAlive(st.pid)) return reply({ refused: true, reasons: ["Navisworks with the Formcraft bridge isn't open (fmc_navis status)"] }, true);
+      const res = await navisCall(st.port, "navis_clash_results", { test: args.test.trim(), status: "", limit: 2000 });
+      const rows = ((res.results ?? []) as Array<Record<string, any>>).map((x) => ({ ...x, center_mm: x.center_mm })) as any;
+      const preview = { ...reg, items: [...reg.items] };
+      const would = clashTickets(preview, args.test.trim(), rows, by, now);
+      if (args.dry_run !== false) return reply({ dry_run: true, test: args.test, clashes: rows.length, would_add: would.added.length, skipped: would.skipped, next: "Run again with dry_run=false" });
+      const done = clashTickets(reg, args.test.trim(), rows, by, now);
+      fs.writeFileSync(file, JSON.stringify(reg, null, 2));
+      log(config, "review_clashes", file, "done", `${args.test}: ${done.added.length} tickets, ${done.skipped} skipped`);
+      return reply({ done: true, test: args.test, added: done.added, skipped: done.skipped, next: "Open a ticket with show: Revit selects the elements and opens your review view on the clash" });
+    }
     let item: ReviewItem;
     if (args.action === "mark") {
       const q = { to: args.to, assignee: args.assignee, title: args.title, text: args.description || args.text, transcript: args.transcript,
