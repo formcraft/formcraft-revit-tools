@@ -1,0 +1,208 @@
+{
+  "recipe": "KISIC – Imaging Centre Kisasi – full model build recipe",
+  "version": "2026-10-19 r1 (after Revit crash; replays everything built so far + everything still to build)",
+  "how_to_run": [
+    "Revit 2025 open. Ctrl+N → Metric Multi-discipline (Default-Multi-Discipline_Metric.rte) → Project. Do NOT save; the person saves at the end over D:\\Fomcraft\\FMC_PROJECTS_27\\KISASI IMAGING CENTRE\\01_WIP\\A\\KISIC-FMC-ZZ-ZZ-M3-A-0001.rvt",
+    "Run the steps below in order with send_code_to_revit on the unsaved document (document = its title, e.g. Project1). Each script takes parameter 'dry' (rolls back) or 'real'.",
+    "One step per call. Never two model-changing scripts in parallel. After each real run: export the check view (step 03) and read it before moving on.",
+    "Families are built with fmc_doc (open template → apply ops → save to 04_Families\\_Staging\\<Role>) and loaded by the step scripts."
+  ],
+  "frame": {
+    "units": "metres in this file; scripts convert to mm",
+    "origin": "inside face, north-west corner of the X-ray room",
+    "axes": "+x east, +y south on plan. Revit X = x, Revit Y = -y",
+    "phases": "Existing structure (walls, slabs, existing doors) = phase Existing. Everything we add (fit-out, MEP, furniture) = New Construction. Structure does not change."
+  },
+  "levels": [
+    {"name": "L00 FFL", "elevation_mm": 0},
+    {"name": "L00 Roof Slab", "elevation_mm": 3400, "note": "renamed template L2; slab top 3550"}
+  ],
+  "heights_mm": {"ceiling": 3000, "veranda_soffit": 2700, "door_head_single": 2100, "door_head_slider": 2400, "wall_height": 3400, "status": "ASSUMED until Monday's measurements"},
+  "steps": [
+    {
+      "id": "01",
+      "name": "Existing shell",
+      "script": "01_shell.cs",
+      "status": "built and checked once (lost in the crash) – replay",
+      "wall_type": "Generic - 150mm Masonry (template); location line = wall centreline",
+      "walls_centreline": [
+        {"id": "W-N",        "from": [-0.075, -0.075], "to": [8.815, -0.075]},
+        {"id": "W-W",        "from": [-0.075, -0.075], "to": [-0.075, 6.775]},
+        {"id": "W-E-facade", "from": [8.815, -0.075],  "to": [9.675, 6.775], "note": "slanted façade; inner face 8.74 at y=0 so Scan width = 3.29"},
+        {"id": "W-S",        "from": [-0.075, 6.775],  "to": [9.675, 6.775]},
+        {"id": "W-XR-E",     "from": [4.075, -0.075],  "to": [4.075, 3.575]},
+        {"id": "W-XR-S",     "from": [-0.075, 3.575],  "to": [5.375, 3.575]},
+        {"id": "W-CTL-E",    "from": [5.375, -0.075],  "to": [5.375, 3.575]},
+        {"id": "W-CTL-S",    "from": [4.075, 2.275],   "to": [5.375, 2.275]},
+        {"id": "W-SCN-S",    "from": [5.375, 2.375],   "to": [9.1326, 2.375], "note": "ends 10 mm inside the façade centreline so the T-join forms (exact centreline did not join)"},
+        {"id": "W-LAB-E",    "from": [4.15, 3.575],    "to": [4.15, 6.775]}
+      ],
+      "join_rule": "Every wall end sits on another wall's centreline. After creation: AllowWallJoinAtEnd on both ends; verify every end has ElementsAtJoin ≠ empty (20/20). Fail the step otherwise.",
+      "openings_existing": [
+        {"id": "D06", "wall": "W-S", "x": [1.05, 3.15], "head_mm": 2400, "what": "Lab 4-leaf slider (middle 2 slide), kept closed"},
+        {"id": "D07", "wall": "W-S", "x": [5.45, 8.40], "head_mm": 2400, "what": "Lobby 4-leaf slider to veranda"},
+        {"id": "D08", "wall": "W-E-facade", "fraction": [0.45, 0.80], "head_mm": 2400, "what": "Main entrance 4-leaf slider, ≈2.42 m"}
+      ],
+      "doors_existing": {
+        "family": "M_Door-Passage-Single-Flush (types '<w> x 2100mm' duplicated)",
+        "list": [
+          {"mark": "D01 X-ray (shielded)", "wall": "W-XR-E", "centre": [4.075, 2.93], "width_mm": 1000, "swing": "into X-ray", "note": "centre 2.93 keeps the frame 80 mm clear of W-CTL-S join"},
+          {"mark": "D02 Control", "wall": "W-CTL-S", "centre": [4.875, 2.275], "width_mm": 750, "swing": "into Control"},
+          {"mark": "D03 Scan", "wall": "W-SCN-S", "centre": [5.90, 2.375], "width_mm": 800, "swing": "into Scan"},
+          {"mark": "D04 Shared X-ray/Control", "wall": "W-CTL-E", "centre": [5.375, 2.95], "width_mm": 1000, "swing": "into Lobby", "note": "light-tight transfer grille"},
+          {"mark": "D05 Lab", "wall": "W-LAB-E", "centre": [4.15, 6.20], "width_mm": 900, "swing": "into Lab"}
+        ]
+      },
+      "slabs": [
+        {"name": "Building floor slab", "type": "Concrete 150mm", "level": "L00 FFL", "offset_mm": 0, "outline": [[-0.15,-0.15],[8.89,-0.15],[9.75,6.85],[-0.15,6.85]]},
+        {"name": "Veranda floor, 50 mm step down", "type": "Concrete 150mm", "level": "L00 FFL", "offset_mm": -50, "outline": [[-0.15,6.85],[9.75,6.85],[9.92,8.25],[-0.15,8.25]]},
+        {"name": "Roof slab, existing", "type": "Concrete 150mm", "level": "L00 Roof Slab", "offset_mm": 150, "outline": "as building slab"},
+        {"name": "Veranda canopy slab, soffit 2700", "type": "Concrete 150mm", "level": "L00 FFL", "offset_mm": 2850, "outline": "as veranda floor"}
+      ],
+      "ceiling": {"type": "16mm GWB on Metal Stud", "height_mm": 3000, "outline": [[0,0],[8.74,0],[9.60,6.70],[0,6.70]], "phase": "New Construction (it is part of the fit-out)", "later": "split per room in step 05 when the light layout is fixed"}
+    },
+    {
+      "id": "02",
+      "name": "Rooms",
+      "script": "02_rooms.cs",
+      "status": "built once – replay",
+      "rooms": [
+        {"no": "01", "name": "X-ray", "point": [2.0, 1.7], "check_m2": 14.0},
+        {"no": "02", "name": "Control", "point": [4.7, 1.1], "check_m2": 2.53},
+        {"no": "03", "name": "Scan (Ultrasound)", "point": [7.0, 1.2], "check_m2": 7.92},
+        {"no": "04", "name": "X-ray/Control Lobby", "point": [4.75, 2.9], "check_m2": 1.32},
+        {"no": "05", "name": "Laboratory", "point": [2.0, 5.2], "check_m2": 12.43},
+        {"no": "06", "name": "Waiting / Reception", "point": [7.0, 4.6], "check_m2": 20.2}
+      ],
+      "upper_offset_mm": 3000
+    },
+    {
+      "id": "03",
+      "name": "Check views",
+      "script": "03_check_views.cs",
+      "what": "FMC Check - Plan (own plan view, no view template, crop to model, 1:50, room tags) and FMC Check - 3D (section box, roof + ceiling hidden, levels hidden, crop to section box). Exports PNGs to 01_WIP\\A\\_check. Run after every step."
+    },
+    {
+      "id": "04",
+      "name": "LED strips (horizontal round every room + one vertical corner run) and veranda strip",
+      "family": "FMC_E_LightFixture_StripLED.rfa – built and saved in _Staging\\E (survived the crash). Face-based, Lighting Fixtures, instance Length, Body/Diffuser material params, types 14Wpm_24V and 10Wpm_24V-IP65 (FMC_Power_W per metre – ASSUMED).",
+      "script": "04_strips.cs",
+      "rules": {
+        "horizontal": "on the room-side face of every bounding wall, 150 mm below the ceiling (z 2850), inset 30 mm from each corner, one piece per wall segment",
+        "vertical": "one run per room from z 300 to z 2800 at the start corner of the chosen boundary segment",
+        "vertical_corner_segment_index": {"01": 2, "02": 0, "03": 1, "05": 2, "06": 1, "04": "none (1.15 m vestibule)"},
+        "veranda": "type 10Wpm_24V-IP65 on the outside face of W-S at z 2600, 9.5 m, own switch V1",
+        "switching": "every room's strip on its own switch (X2, C2, S2 dimmer, B2, L4), veranda V1 separate"
+      },
+      "crash_note": "Revit crashed (fatal error) during the first strip run. Suspect: creating AppearanceAssetElement copies + AppearanceAssetEditScope (self-illumination) inside the same transaction as LoadFamily and placement. The new script does NOT touch appearance assets; materials are created plain. Self-illumination is set in step 04b on its own, or in Enscape's material editor.",
+      "step_04b": {"script": "04b_led_material.cs", "what": "give FMC_LED_Diffuser_Opal_3000K a self-illuminating appearance (luminance ≈1500 cd/m², 3000 K) – run alone, with Revit saved-state nothing to lose; if it crashes again, do it in Enscape (Material Editor → Self Illumination) instead"}
+    },
+    {
+      "id": "05",
+      "name": "Light fittings (simple Ugandan products) + switches",
+      "families_needed": [
+        {"family": "FMC_E_LightFixture_Downlight_LED", "status": "staged, light source ON (1400/900 lm, 3000 K, spot 100/120°)", "use": "downlights + spotlights"},
+        {"family": "FMC_E_LightFixture_Panel_LED", "status": "spec only – build: surface 600x600 36 W ≈3600 lm 4000 K, rectangle light source", "use": "general light X-ray, Lab, reception"},
+        {"family": "FMC_E_LightFixture_CeilingFan_Light", "status": "NOT in the kit – kit change request; build: 52\" (1320 mm) 4-blade fan, 300 mm drop rod, 18 W LED light kit ≈1600 lm 3000 K", "use": "lobby L1/L2"},
+        {"family": "FMC_E_LightFixture_WallLight", "status": "spec only – build 12W_UpDown-IP65", "use": "veranda V2"},
+        {"family": "FMC_E_LightFixture_Linear_LED", "status": "spec only – build 1200_36W-Surface (under-shelf 600 mm 9 W variant)", "use": "lab task B3, control task C3"},
+        {"family": "M_Lighting Switches", "status": "template family", "use": "switch positions A–G"}
+      ],
+      "placements": [
+        {"room": "06", "fixture": "Ceiling fan + light", "at": [7.3, 4.4], "switch": "L1 light / L2 fan regulator"},
+        {"room": "06", "fixture": "Panel 600x600 (reception general)", "at": [5.0, 4.75], "switch": "L5"},
+        {"room": "06", "fixture": "Spotlight (downlight 150)", "at": [[4.8, 6.25], [5.8, 6.25], [6.8, 6.25]], "switch": "L6", "note": "3 along the south wall from the lab door"},
+        {"room": "06", "fixture": "Spotlight (downlight 150)", "at": [[8.05, 6.0], [8.70, 6.0]], "switch": "L3", "note": "2 over the 2-seater"},
+        {"room": "06", "fixture": "Downlight 150", "at": [[5.75, 2.75], [5.75, 3.25]], "switch": "L7", "note": "2 at the X-ray/Control door"},
+        {"room": "06", "fixture": "Reception desk joinery LED", "with": "desk family, step 08", "switch": "at the desk"},
+        {"room": "01", "fixture": "Panel 600x600", "at": [[1.35, 1.75], [2.70, 1.75]], "switch": "X1"},
+        {"room": "02", "fixture": "Downlight 200", "at": [4.70, 1.10], "switch": "C1"},
+        {"room": "02", "fixture": "Linear task 600", "at": "under the console shelf", "switch": "C3"},
+        {"room": "03", "fixture": "Downlight 150 (dimmer)", "at": [[6.30, 0.80], [7.60, 0.80], [6.30, 1.60], [7.60, 1.60]], "switch": "S1 dimmer"},
+        {"room": "05", "fixture": "Panel 600x600", "at": [[1.35, 5.20], [2.75, 5.20]], "switch": "B1"},
+        {"room": "05", "fixture": "Linear task under shelf", "at": "along both worktop runs", "switch": "B3"},
+        {"room": "veranda", "fixture": "Wall light 12W up/down IP65", "at_on_W-S_outside": [0.6, 4.6, 9.0], "z_mm": 2200, "switch": "V2"}
+      ],
+      "switch_height_mm": 1200,
+      "switches": "beside each door on the lock side: lobby bank at D08 entrance (L1–L8) and by reception; X-ray bank by D01 inside; Control by D02; Scan by D03 (dimmers); Lab by D05; veranda V1/V2 inside by D07"
+    },
+    {
+      "id": "06",
+      "name": "Electrical (power, data, DB)",
+      "source": "canvas Sheet 04",
+      "elements": {
+        "DB": "proposed on the reception wall beside the lab door (W-LAB-E lobby face, x 4.15, y ≈ 5.0, 1.6 m to top) – confirm existing",
+        "circuits": "P1–P18 per Sheet 04 (lighting P1–P4, sockets P5–P7, equipment P8–P12, AC P13–P16, heaters P17, pump P18)",
+        "sockets": "13 A BS 1363: lobby/reception doubles + TV high level + phone charging; lab worktop doubles at 1.1 m; scan dedicated (backup) at couch head; control + reception on backup; veranda weatherproof RCD",
+        "isolators": "X-ray generator (in Control), one per AC indoor unit, water heaters",
+        "data": "reception rack + 2 points, control 1–2, scan 1, lab analyser 1, TV 1",
+        "containment": "PVC conduit in the ceiling void and chased down walls (existing walls: surface trunking where chasing is not allowed)"
+      },
+      "families": "M_Duplex Receptacle (replace with an FMC 13A socket family from the kit if staged), M_Data Outlet, M_Lighting and Appliance Panelboard as DB placeholder",
+      "rule": "Ratings and circuit sizes are placeholders for the licensed electrician (kit rule 5)"
+    },
+    {
+      "id": "07",
+      "name": "Mechanical (AC + fresh air)",
+      "source": "canvas Sheet 05 + the 3-room options message (A two splits / B multi-split / C ducted)",
+      "decision_needed": "the person picks A, B or C for X-ray/Control/Scan",
+      "default_if_no_answer": "A",
+      "units": [
+        {"tag": "AC-1", "serves": "X-ray + Control (via D04/D01 transfer grille)", "size": "12k BTU on area (Sheet 05 said 18k with high ceiling + equipment heat) – final from heat load", "indoor": "wall split, X-ray west wall high level", "outdoor": "roof, above"},
+        {"tag": "AC-2", "serves": "Scan", "size": "9k BTU", "indoor": "north wall, blowing along the room not onto the couch"},
+        {"tag": "AC-3", "serves": "Laboratory", "size": "12k BTU", "indoor": "west wall high level"},
+        {"tag": "AC-4", "serves": "Lobby + reception", "size": "18–24k BTU", "indoor": "north (top) wall of lobby", "with": "ceiling fan"}
+      ],
+      "3d_model": {
+        "option_A_B": "indoor units (Mechanical Equipment), refrigerant pair as pipe (Other system, 10/16 mm Cu insulated) straight up through the ceiling void and roof slab to the outdoor unit on a raised frame; condensate 20 mm PVC falling to the outside wall → gully",
+        "option_C": "concealed ducted unit over the X-ray/Control lobby ceiling void (z 3000–3400); rectangular supply duct 300x150 to linear grilles in X-ray, Control, Scan; one return grille in the lobby; lead-lined/offset section where the duct passes the shielded wall",
+        "fresh_air": "transfer grilles in D01/D04 (light-tight) and D03; Scan exhaust fan 150 mm through the north wall"
+      },
+      "families": "kit AC indoor/outdoor families if staged; else M_Air Handling Unit - Split System - Vertical is NOT right – build FMC_M_AC_Split_Indoor (wall) and FMC_M_AC_Split_Outdoor with pipe connectors"
+    },
+    {
+      "id": "08",
+      "name": "Plumbing",
+      "source": "canvas Sheet 07",
+      "fixtures": [
+        {"tag": "HWB-1", "room": "X-ray", "where": "west wall near the door", "with": "instant heater, hands-free tap"},
+        {"tag": "HWB-2", "room": "Laboratory", "where": "separate from the lab sink"},
+        {"tag": "Lab sink", "room": "Laboratory", "at": [0.3, 5.9], "status": "existing + add heater"},
+        {"tag": "HWB-3", "room": "Scan", "where": "by the door"},
+        {"tag": "HW-4", "room": "Veranda east wedge", "where": "entrance"}
+      ],
+      "pipes": "Domestic Cold Water from mains (entry TBC) + roof tank 1,000–2,000 L; hot from point heaters; Sanitary 40/50 mm PVC out through outside walls to gullies G1–G4; veranda channel drain G5; AC condensate to G1–G4",
+      "systems_in_template": ["Domestic Cold Water", "Domestic Hot Water", "Sanitary", "Vent"]
+    },
+    {
+      "id": "09",
+      "name": "Furniture, equipment, planting",
+      "source": "model brief + Sheets 01 and 06",
+      "items": [
+        {"room": "03", "item": "Ultrasound machine", "at": [6.10, 0.45]},
+        {"room": "03", "item": "Scan couch", "box": [[6.70, 0.15], [8.65, 0.75]]},
+        {"room": "01", "item": "X-ray unit, diagonal (maker footprint TBC)", "box": [[1.0, 1.0], [2.85, 2.5]]},
+        {"room": "06", "item": "Reception desk with joinery LED + magazine rack on the front", "box": [[5.0, 3.75], [5.55, 5.5]]},
+        {"room": "06", "item": "3-seater couch", "box": [[6.6, 2.52], [8.6, 3.32]]},
+        {"room": "06", "item": "2-seater couch", "box": [[7.75, 5.8], [9.0, 6.55]]},
+        {"room": "06", "item": "Stools, plants, hanging shades (pendants L8)"},
+        {"room": "06", "item": "TV on flexible arm, south wall above door head", "at": [4.9, 6.6]},
+        {"room": "05", "item": "Lab worktop L-shape", "runs": [[[0.6, 3.65], [2.75, 4.25]], [[0.0, 3.65], [0.6, 6.70]]]},
+        {"room": "veranda", "item": "built-in benches 0.45 deep, planters, green screen, roll-down blinds, canopy extension 0.6 m"}
+      ],
+      "sources": "kit families first (fmc_context for_task), else build; Enscape asset library for plants/people/decor in the render only"
+    },
+    {
+      "id": "10",
+      "name": "Views, Enscape scenes and video",
+      "renders": ["R1 Lobby day", "R2 Lobby evening (strips, spots, pendants)", "R3 Reception close-up", "R4 X-ray + Control", "R5 Scan dimmed", "R6 Lab task lighting", "R7 Veranda dusk", "R8 Roof AC units + tank"],
+      "video": "Enscape fly-through: veranda → entrance → lobby → reception → X-ray lobby → scan; evening light"
+    },
+    {
+      "id": "11",
+      "name": "Hand-over",
+      "what": "final QA (walls joined, doors clear, no orphan fixtures, MEP connected), then the PERSON saves over the KISIC path. After saving, the live-model lock applies; further changes go through the person or Fix-with-approval."
+    }
+  ],
+  "open_items": ["AC option A/B/C", "toilet missing", "Recovery location", "ceiling + soffit heights", "existing DB", "X-ray and ultrasound make/model", "orientation / afternoon sun side", "roof build-up for AC units and tank", "water main entry + gullies"]
+}
