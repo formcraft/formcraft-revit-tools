@@ -1,0 +1,1548 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_I_Furniture_Sofa",
+ "template": "Metric Furniture.rft",
+ "about": "Kisasi lobby sofas: low modern sofa, wipe-clean upholstery (clinic), tapered Mvule legs, two kitenge accent cushions; width by type. | LOD 400: upholstered frame, rounded seat/back cushions per seat, arms, tapered Mvule legs, kitenge throw cushions; per-type parts by Yes/No",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Furniture"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Sofa Width",
+   "type": "Length",
+   "instance": false,
+   "group": "Dimensions"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Upholstery Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Upholstery_WipeClean_Grey",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Leg Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Timber_Mvule",
+   "param": "Leg Material"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Cushion Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Fabric_Kitenge_Print",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sofa Left",
+   "from": [
+    -800,
+    -600
+   ],
+   "to": [
+    -800,
+    600
+   ],
+   "is_reference": "Left"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sofa Right",
+   "from": [
+    800,
+    -600
+   ],
+   "to": [
+    800,
+    600
+   ],
+   "is_reference": "Right"
+  },
+  {
+   "op": "add_dimension",
+   "name": "Sofa Width",
+   "between": [
+    "Sofa Left",
+    "Sofa Right"
+   ],
+   "label": "Sofa Width",
+   "offset": 300
+  },
+  {
+   "op": "add_eq_dimension",
+   "name": "Width EQ",
+   "planes": [
+    "Sofa Left",
+    "Center (Left/Right)",
+    "Sofa Right"
+   ],
+   "offset": 600
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sofa Front",
+   "from": [
+    -1300,
+    -425
+   ],
+   "to": [
+    1300,
+    -425
+   ],
+   "is_reference": "Front"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Sofa Back",
+   "from": [
+    -1300,
+    425
+   ],
+   "to": [
+    1300,
+    425
+   ],
+   "is_reference": "Back"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_type",
+   "name": "1600x0850_2Seat"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/Keynote",
+   "type": "1600x0850_2Seat",
+   "param": "Keynote",
+   "value": "F.SEA_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/FMC_Keynote_Code",
+   "type": "1600x0850_2Seat",
+   "param": "FMC_Keynote_Code",
+   "value": "F.SEA_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/FMC_Cost_Unit",
+   "type": "1600x0850_2Seat",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/FMC_Geometry_Stage",
+   "type": "1600x0850_2Seat",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/IfcExportAs",
+   "type": "1600x0850_2Seat",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/Description",
+   "type": "1600x0850_2Seat",
+   "param": "Description",
+   "value": "2-seat sofa 1600 x 850, seat 430, wipe-clean grey upholstery, Mvule legs, kitenge cushions"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/Sofa Width",
+   "type": "1600x0850_2Seat",
+   "param": "Sofa Width",
+   "value": 1600
+  },
+  {
+   "op": "add_type",
+   "name": "2200x0850_3Seat"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/Keynote",
+   "type": "2200x0850_3Seat",
+   "param": "Keynote",
+   "value": "F.SEA_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/FMC_Keynote_Code",
+   "type": "2200x0850_3Seat",
+   "param": "FMC_Keynote_Code",
+   "value": "F.SEA_07"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/FMC_Cost_Unit",
+   "type": "2200x0850_3Seat",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/FMC_Geometry_Stage",
+   "type": "2200x0850_3Seat",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/IfcExportAs",
+   "type": "2200x0850_3Seat",
+   "param": "IfcExportAs",
+   "value": "IfcFurniture"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/Description",
+   "type": "2200x0850_3Seat",
+   "param": "Description",
+   "value": "3-seat sofa 2200 x 850, seat 430, wipe-clean grey upholstery, Mvule legs, kitenge cushions"
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/Sofa Width",
+   "type": "2200x0850_3Seat",
+   "param": "Sofa Width",
+   "value": 2200
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Upholstery",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Legs",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Cushions",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "rect": [
+    "Sofa Left",
+    "Sofa Right",
+    "Sofa Front",
+    "Sofa Back"
+   ],
+   "start": 0,
+   "end": 780
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Base",
+   "rect": [
+    "Sofa Left",
+    "Sofa Right",
+    "Sofa Front",
+    "Sofa Back"
+   ],
+   "start": 150,
+   "end": 330
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Seat Cushion",
+   "rect": [
+    "Sofa Left",
+    "Sofa Right",
+    "Sofa Front",
+    "Sofa Back"
+   ],
+   "start": 330,
+   "end": 430
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat Cushion",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat Cushion",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat Cushion",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "add_ref_plane",
+   "name": "Back Inner",
+   "from": [
+    -1300,
+    245
+   ],
+   "to": [
+    1300,
+    245
+   ],
+   "is_reference": "WeakReference"
+  },
+  {
+   "op": "extrusion",
+   "name": "Back",
+   "rect": [
+    "Sofa Left",
+    "Sofa Right",
+    "Back Inner",
+    "Sofa Back"
+   ],
+   "start": 430,
+   "end": 780
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg FL",
+   "points": [
+    [
+     -760,
+     -385
+    ],
+    [
+     -720,
+     -385
+    ],
+    [
+     -720,
+     -345
+    ],
+    [
+     -760,
+     -345
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg FL",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg FL",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg FL",
+   "param": "Leg Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg BL",
+   "points": [
+    [
+     -760,
+     345
+    ],
+    [
+     -720,
+     345
+    ],
+    [
+     -720,
+     385
+    ],
+    [
+     -760,
+     385
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg BL",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg BL",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg BL",
+   "param": "Leg Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg FR",
+   "points": [
+    [
+     720,
+     -385
+    ],
+    [
+     760,
+     -385
+    ],
+    [
+     760,
+     -345
+    ],
+    [
+     720,
+     -345
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg FR",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg FR",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg FR",
+   "param": "Leg Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Leg BR",
+   "points": [
+    [
+     720,
+     345
+    ],
+    [
+     760,
+     345
+    ],
+    [
+     760,
+     385
+    ],
+    [
+     720,
+     385
+    ]
+   ],
+   "start": 0,
+   "end": 150
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Leg BR",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Leg BR",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Leg BR",
+   "param": "Leg Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Cushion L",
+   "points": [
+    [
+     -700,
+     150
+    ],
+    [
+     -260,
+     150
+    ],
+    [
+     -260,
+     245
+    ],
+    [
+     -700,
+     245
+    ]
+   ],
+   "start": 440,
+   "end": 840
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cushion L",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cushion L",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cushion L",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Cushion R",
+   "points": [
+    [
+     260,
+     150
+    ],
+    [
+     700,
+     150
+    ],
+    [
+     700,
+     245
+    ],
+    [
+     260,
+     245
+    ]
+   ],
+   "start": 440,
+   "end": 840
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Cushion R",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Cushion R",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Cushion R",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "add_family_param",
+   "name": "LOD400 3 Seat",
+   "type": "YesNo",
+   "instance": false,
+   "group": "Visibility"
+  },
+  {
+   "op": "add_family_param",
+   "name": "LOD400 2 Seat",
+   "type": "YesNo",
+   "instance": false,
+   "group": "Visibility"
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/LOD400 3 Seat",
+   "type": "1600x0850_2Seat",
+   "param": "LOD400 3 Seat",
+   "value": 0
+  },
+  {
+   "op": "set_type_value",
+   "name": "1600x0850_2Seat/LOD400 2 Seat",
+   "type": "1600x0850_2Seat",
+   "param": "LOD400 2 Seat",
+   "value": 1
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/LOD400 3 Seat",
+   "type": "2200x0850_3Seat",
+   "param": "LOD400 3 Seat",
+   "value": 1
+  },
+  {
+   "op": "set_type_value",
+   "name": "2200x0850_3Seat/LOD400 2 Seat",
+   "type": "2200x0850_3Seat",
+   "param": "LOD400 2 Seat",
+   "value": 0
+  },
+  {
+   "op": "import_part",
+   "name": "LegLF_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegLF_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegLF_3 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegLF_3 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegLF_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegLF_3 Fine/Visible",
+   "solid": "LegLF_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegLB_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegLB_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegLB_3 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegLB_3 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegLB_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegLB_3 Fine/Visible",
+   "solid": "LegLB_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegRF_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegRF_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegRF_3 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegRF_3 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegRF_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegRF_3 Fine/Visible",
+   "solid": "LegRF_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegRB_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegRB_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegRB_3 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegRB_3 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegRB_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegRB_3 Fine/Visible",
+   "solid": "LegRB_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Base_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Base_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base_3 Fine/Visible",
+   "solid": "Base_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ArmL_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ArmL_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ArmL_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ArmL_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ArmL_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ArmL_3 Fine/Visible",
+   "solid": "ArmL_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ArmR_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ArmR_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ArmR_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ArmR_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ArmR_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ArmR_3 Fine/Visible",
+   "solid": "ArmR_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Seat1_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Seat1_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat1_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat1_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat1_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat1_3 Fine/Visible",
+   "solid": "Seat1_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Back1_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Back1_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back1_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back1_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back1_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back1_3 Fine/Visible",
+   "solid": "Back1_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Seat2_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Seat2_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat2_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat2_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat2_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat2_3 Fine/Visible",
+   "solid": "Seat2_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Back2_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Back2_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back2_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back2_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back2_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back2_3 Fine/Visible",
+   "solid": "Back2_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Seat3_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Seat3_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat3_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat3_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat3_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat3_3 Fine/Visible",
+   "solid": "Seat3_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Back3_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Back3_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back3_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back3_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back3_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back3_3 Fine/Visible",
+   "solid": "Back3_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "BackFrame_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\BackFrame_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "BackFrame_3 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "BackFrame_3 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "BackFrame_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "BackFrame_3 Fine/Visible",
+   "solid": "BackFrame_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ThrowL_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ThrowL_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ThrowL_3 Fine",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ThrowL_3 Fine",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ThrowL_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ThrowL_3 Fine/Visible",
+   "solid": "ThrowL_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ThrowR_3 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ThrowR_3.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ThrowR_3 Fine",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ThrowR_3 Fine",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ThrowR_3 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ThrowR_3 Fine/Visible",
+   "solid": "ThrowR_3 Fine",
+   "param": "LOD400 3 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegLF_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegLF_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegLF_2 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegLF_2 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegLF_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegLF_2 Fine/Visible",
+   "solid": "LegLF_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegLB_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegLB_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegLB_2 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegLB_2 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegLB_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegLB_2 Fine/Visible",
+   "solid": "LegLB_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegRF_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegRF_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegRF_2 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegRF_2 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegRF_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegRF_2 Fine/Visible",
+   "solid": "LegRF_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "LegRB_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\LegRB_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "LegRB_2 Fine",
+   "subcategory": "Legs"
+  },
+  {
+   "op": "set_material_param",
+   "name": "LegRB_2 Fine",
+   "param": "Leg Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "LegRB_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "LegRB_2 Fine/Visible",
+   "solid": "LegRB_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Base_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Base_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Base_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Base_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Base_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Base_2 Fine/Visible",
+   "solid": "Base_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ArmL_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ArmL_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ArmL_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ArmL_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ArmL_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ArmL_2 Fine/Visible",
+   "solid": "ArmL_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ArmR_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ArmR_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ArmR_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ArmR_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ArmR_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ArmR_2 Fine/Visible",
+   "solid": "ArmR_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Seat1_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Seat1_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat1_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat1_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat1_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat1_2 Fine/Visible",
+   "solid": "Seat1_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Back1_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Back1_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back1_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back1_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back1_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back1_2 Fine/Visible",
+   "solid": "Back1_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Seat2_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Seat2_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Seat2_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Seat2_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Seat2_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Seat2_2 Fine/Visible",
+   "solid": "Seat2_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "Back2_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\Back2_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Back2_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Back2_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Back2_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "Back2_2 Fine/Visible",
+   "solid": "Back2_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "BackFrame_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\BackFrame_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "BackFrame_2 Fine",
+   "subcategory": "Upholstery"
+  },
+  {
+   "op": "set_material_param",
+   "name": "BackFrame_2 Fine",
+   "param": "Upholstery Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "BackFrame_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "BackFrame_2 Fine/Visible",
+   "solid": "BackFrame_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ThrowL_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ThrowL_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ThrowL_2 Fine",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ThrowL_2 Fine",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ThrowL_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ThrowL_2 Fine/Visible",
+   "solid": "ThrowL_2 Fine",
+   "param": "LOD400 2 Seat"
+  },
+  {
+   "op": "import_part",
+   "name": "ThrowR_2 Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_I_Furniture_Sofa\\ThrowR_2.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "ThrowR_2 Fine",
+   "subcategory": "Cushions"
+  },
+  {
+   "op": "set_material_param",
+   "name": "ThrowR_2 Fine",
+   "param": "Cushion Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "ThrowR_2 Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "set_visible_param",
+   "name": "ThrowR_2 Fine/Visible",
+   "solid": "ThrowR_2 Fine",
+   "param": "LOD400 2 Seat"
+  }
+ ],
+ "values": {
+  "Legs fixed at the 1600 positions (720/760 from centre); 3-seat legs stay inside the frame": {
+   "value": "legs",
+   "source_status": "assumed",
+   "source": "G4 simplification; locked legs per width are a follow-up"
+  },
+  "LOD 400 geometry": {
+   "value": "Rhino parts",
+   "source_status": "assumed",
+   "source": "Formcraft design, Kisasi 19 Oct 2026; maker drawings to confirm"
+  }
+ },
+ "checks": {
+  "clear_opening_param": "Width"
+ }
+}

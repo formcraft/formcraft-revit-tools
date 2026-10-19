@@ -1,0 +1,520 @@
+{
+ "schema": "fmc-recipe/0.1",
+ "family": "FMC_E_ICT_TV_WallArm",
+ "template": "Metric Generic Model face based.rft",
+ "about": "Kisasi lobby: 43\" TV on a flexible wall arm above door-head level on the south wall; face based on the wall; power + data at the bracket. | LOD 400: 43 in TV 968x562, slim panel on a low-profile tilt mount (112 mm off the wall), black bezel, glass screen",
+ "ops": [
+  {
+   "op": "set_category",
+   "name": "Communication Devices"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Arm Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Metal_Steel_PowderCoated_LightGrey",
+   "param": "Arm Material"
+  },
+  {
+   "op": "add_family_param",
+   "name": "Screen Material",
+   "type": "Material",
+   "instance": false,
+   "group": "Materials"
+  },
+  {
+   "op": "add_material",
+   "name": "FMC_Glass_Display_Black",
+   "param": "Screen Material"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Keynote_Code",
+   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Cost_Unit",
+   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "FMC_Geometry_Stage",
+   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_shared_param",
+   "name": "IfcExportAs",
+   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+   "instance": false,
+   "group": "Data"
+  },
+  {
+   "op": "add_type",
+   "name": "43in_FlexArm"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/Keynote",
+   "type": "43in_FlexArm",
+   "param": "Keynote",
+   "value": "E.ICT_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/FMC_Keynote_Code",
+   "type": "43in_FlexArm",
+   "param": "FMC_Keynote_Code",
+   "value": "E.ICT_01"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/FMC_Cost_Unit",
+   "type": "43in_FlexArm",
+   "param": "FMC_Cost_Unit",
+   "value": "nr"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/FMC_Geometry_Stage",
+   "type": "43in_FlexArm",
+   "param": "FMC_Geometry_Stage",
+   "value": "G4"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/IfcExportAs",
+   "type": "43in_FlexArm",
+   "param": "IfcExportAs",
+   "value": "IfcAudioVisualAppliance"
+  },
+  {
+   "op": "set_type_value",
+   "name": "43in_FlexArm/Description",
+   "type": "43in_FlexArm",
+   "param": "Description",
+   "value": "43 inch TV on full-motion wall arm, 450 mm reach"
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Arm",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Screen",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "add_subcategory",
+   "name": "Coarse Envelope",
+   "line_weight_projection": 1
+  },
+  {
+   "op": "extrusion",
+   "name": "Coarse Envelope",
+   "points": [
+    [
+     -490,
+     -300
+    ],
+    [
+     490,
+     -300
+    ],
+    [
+     490,
+     300
+    ],
+    [
+     -490,
+     300
+    ]
+   ],
+   "start": 0,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Coarse Envelope",
+   "subcategory": "Coarse Envelope"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Coarse Envelope",
+   "coarse": true,
+   "medium": false,
+   "fine": false
+  },
+  {
+   "op": "extrusion",
+   "name": "Wall Plate",
+   "points": [
+    [
+     -100,
+     -150
+    ],
+    [
+     100,
+     -150
+    ],
+    [
+     100,
+     150
+    ],
+    [
+     -100,
+     150
+    ]
+   ],
+   "start": 0,
+   "end": 10
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Wall Plate",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Wall Plate",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Wall Plate",
+   "param": "Arm Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Arm",
+   "points": [
+    [
+     -25,
+     -25
+    ],
+    [
+     25,
+     -25
+    ],
+    [
+     25,
+     25
+    ],
+    [
+     -25,
+     25
+    ]
+   ],
+   "start": 10,
+   "end": 450
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Arm",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Arm",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Arm",
+   "param": "Arm Material"
+  },
+  {
+   "op": "extrusion",
+   "name": "Screen",
+   "points": [
+    [
+     -485,
+     -280
+    ],
+    [
+     485,
+     -280
+    ],
+    [
+     485,
+     280
+    ],
+    [
+     -485,
+     280
+    ]
+   ],
+   "start": 450,
+   "end": 520
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen",
+   "coarse": false,
+   "medium": true,
+   "fine": false
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen",
+   "param": "Screen Material"
+  },
+  {
+   "op": "import_part",
+   "name": "WallPlate Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\WallPlate.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "WallPlate Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "WallPlate Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "WallPlate Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "RailL Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\RailL.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RailL Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RailL Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RailL Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "RailR Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\RailR.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "RailR Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "RailR Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "RailR Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "BracketTop Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\BracketTop.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "BracketTop Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "BracketTop Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "BracketTop Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "BracketBot Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\BracketBot.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "BracketBot Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_material_param",
+   "name": "BracketBot Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "BracketBot Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "BackShell Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\BackShell.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "BackShell Fine",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "BackShell Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "BackShell Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Bezel Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\Bezel.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Bezel Fine",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Bezel Fine",
+   "param": "Arm Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Bezel Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Screen Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\Screen.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Screen Fine",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_material_param",
+   "name": "Screen Fine",
+   "param": "Screen Material"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Screen Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "Logo Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\Logo.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "Logo Fine",
+   "subcategory": "Arm"
+  },
+  {
+   "op": "set_visibility",
+   "name": "Logo Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "import_part",
+   "name": "PowerLED Fine",
+   "file": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\_Rhino\\FMC_E_ICT_TV_WallArm\\PowerLED.3dm"
+  },
+  {
+   "op": "set_subcategory",
+   "name": "PowerLED Fine",
+   "subcategory": "Screen"
+  },
+  {
+   "op": "set_visibility",
+   "name": "PowerLED Fine",
+   "coarse": false,
+   "medium": false,
+   "fine": true
+  },
+  {
+   "op": "add_connector",
+   "name": "Power",
+   "domain": "electrical",
+   "system": "PowerBalanced",
+   "solid": "Wall Plate",
+   "side": "bottom"
+  },
+  {
+   "op": "add_connector",
+   "name": "Data",
+   "domain": "electrical",
+   "system": "Data",
+   "solid": "Wall Plate",
+   "side": "bottom"
+  }
+ ],
+ "values": {
+  "LOD 400 geometry": {
+   "value": "Rhino parts",
+   "source_status": "assumed",
+   "source": "Formcraft design, Kisasi 19 Oct 2026; maker drawings to confirm"
+  }
+ },
+ "checks": {
+  "clear_opening_param": "Width"
+ }
+}

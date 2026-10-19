@@ -125,7 +125,7 @@ namespace Formcraft.Shell.ViewModels
                               IMaterialTools? materials = null, ISheetTools? sheets = null,
                               IAnnotateTools? annotate = null, IIssueTools? issue = null, ILinkTools? links = null, IWorkshareTools? workshare = null, IReviewTools? review = null, IReportTools? reports = null,
                               IFlowTools? flow = null, IBriefTools? brief = null, IScriptTools? scripts = null, ISystemTools? systems = null, IBuildTools? build = null, IAskTools? ask = null, IAiTools? ai = null, IReleaseTools? release = null, IRobotTools? robot = null, ILiveDataService? liveData = null,
-                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null)
+                              ICaseworkTools? casework = null, ICeilingTools? ceilings = null, IVoiceRecorder? recorder = null, IOptionsTools? options = null)
         {
             _licence = licence;
             _connection = connection;
@@ -177,6 +177,9 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Reports"] = Reports;
             Brief = new BriefPage(brief ?? new MockBriefTools(), picker ?? new WindowsFilePicker(), settings, s => Status = s, ShowDialog);
             _hostSections["Brief"] = Brief;
+            // Engineer › Options (O2): a recipe-tree node's options side by side; a choice is recorded under the signed-in person.
+            Options = new OptionsPage(options ?? new MockOptionsTools(), Project, settings, () => _licence.Current.Account?.Name ?? "", s => Status = s, ShowDialog);
+            _hostSections["Options"] = Options;
             Scripts = new ScriptsPage(scripts ?? new MockScriptTools(), Project, settings, s => Status = s, ShowDialog);
             _hostSections["Scripts"] = Scripts;
             var systemTools = systems ?? new MockSystemTools();
@@ -426,6 +429,9 @@ namespace Formcraft.Shell.ViewModels
 
         /// <summary>Model › Start from brief: a new model set up from the approved concept (U23).</summary>
         public BriefPage Brief { get; }
+
+        /// <summary>Engineer › Options: a recipe-tree node's options side by side (docs/PLAN_OPTIONS.md, O2).</summary>
+        public OptionsPage Options { get; }
 
         /// <summary>Check › Scripts: the kit's scripts and automations of Formcraft's own checks (U24).</summary>
         public ScriptsPage Scripts { get; }
